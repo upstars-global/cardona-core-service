@@ -1,0 +1,1051 @@
+<template>
+  <div :class="{ 'base-list-small': config.small }">
+    <!-- Sidebar -->
+    <side-bar
+      v-if="config.sidebar"
+      :sidebar-active.sync="isSidebarShown"
+      :item="selectedItem"
+      :can-remove="canRemove"
+      :can-update="canUpdate"
+      :entity-name="entityName"
+      :side-bar-model="SideBarModel"
+      @update="routerToUpdatePageId(selectedItem)"
+      @remove="onClickRemove(selectedItem)"
+    >
+      <template v-for="key in Object.keys($scopedSlots)" :slot="key" slot-scope="{ item }">
+        <slot :name="key" :item="item" />
+      </template>
+    </side-bar>
+
+    <!-- Search -->
+    <b-row class="filters-row">
+      <b-col>
+        <div class="d-flex align-items-center justify-content-end">
+          <search-input
+            v-if="config.withSearch"
+            v-model="searchQuery"
+            class="search"
+            :size="size"
+            :placeholder="config.searchPlaceholder"
+          />
+
+          <b-button
+            v-if="config.filterList.isNotEmpty"
+            variant="outline-secondary"
+            :class="{ 'btn-icon': config.small }"
+            class="d-flex align-items-center ml-1"
+            :size="size"
+            @click="isFiltersShown = !isFiltersShown"
+          >
+            <feather-icon icon="FilterIcon" />
+
+            <span v-if="!config.small" class="align-middle ml-50">
+              {{ $t('common.filter._') }}
+            </span>
+
+            <span v-if="selectedFilters.isNotEmpty" class="align-middle ml-50">
+              {{ selectedFilters.length }}
+            </span>
+          </b-button>
+
+          <export-format-selector
+            v-if="config.withExport && canExport"
+            :disabled="!total"
+            class="ml-1"
+            @export-format-selected="onExportFormatSelected"
+          />
+
+          <slot name="right-search-btn">
+            <b-button
+              v-if="isExistsCreatePage && canCreate"
+              variant="primary"
+              :to="{ name: CreatePageName }"
+              class="ml-1"
+            >
+              <feather-icon icon="PlusIcon" class="mr-50" />
+
+              <span class="text-nowrap">
+                {{ $t('action.create') }}
+              </span>
+            </b-button>
+          </slot>
+        </div>
+      </b-col>
+    </b-row>
+
+    <!-- Filters -->
+    <filters-block
+      v-if="config.filterList.isNotEmpty"
+      :is-open="config.filterList.isNotEmpty && isFiltersShown"
+      :entity-name="entityName"
+      :filters="filters"
+      :size="size"
+      @apply="reFetchList"
+      @changeSelectedFilters="onChangeSelectedFilters"
+    />
+
+    <slot name="table-info" :selected-items="selectedItems" :total="total" />
+
+    <!-- Table card -->
+    <b-card no-body>
+      <!-- Table actions -->
+      <div
+        v-if="config.withSettings && (!canUpdate || selectedItems.isEmpty)"
+        class="table-settings"
+      >
+        <!-- Table per page select -->
+        <div class="d-flex align-items-center justify-content-start">
+          <span class="mr-1">
+            {{ $t('common.show') }}
+          </span>
+
+          <v-select
+            v-model="perPage"
+            :options="perPageOptions"
+            class="per-page-selector d-inline-block"
+            :dir="$store.getters['appConfig/dirOption']"
+            :searchable="false"
+            :clearable="false"
+            @input="setPerPage"
+          />
+        </div>
+
+        <!-- Table field settings -->
+        <div class="d-flex align-items-center justify-content-end">
+          <table-fields v-model="selectedFields" :entity-name="entityName" :list="fields" />
+        </div>
+      </div>
+
+      <div
+        v-else-if="config.withMultipleActions && selectedItems.isNotEmpty"
+        class="table-settings"
+      >
+        <span class="py-25">
+          {{ $t('common.numberOfSelected', { number: selectedItems.length }) }}
+        </span>
+
+        <div>
+          <b-button
+            variant="outline-secondary"
+            size="sm"
+            @click="onClickToggleStatusMultiple(true)"
+          >
+            {{ $t('action.activate') }}
+          </b-button>
+
+          <b-button
+            class="ml-1"
+            variant="outline-secondary"
+            size="sm"
+            @click="onClickToggleStatusMultiple(false)"
+          >
+            {{ $t('action.deactivate') }}
+          </b-button>
+
+          <b-button
+            v-if="canRemove"
+            class="ml-1"
+            variant="outline-danger"
+            size="sm"
+            @click="onClickDeleteMultiple"
+          >
+            {{ $t('action.remove') }}
+          </b-button>
+        </div>
+      </div>
+
+      <!-- Table skeleton -->
+      <b-skeleton-table
+        v-if="isLoadingList"
+        :rows="config.skeletonRows"
+        :columns="config.skeletonColumns"
+      />
+
+      <!-- Table -->
+      <c-table
+        v-show="!isLoadingList"
+        ref="refListTable"
+        hover
+        show-empty
+        :responsive="config.responsive"
+        :select-mode="config.selectMode"
+        :selectable="config.selectable"
+        :small="config.small"
+        :fields="selectedFields"
+        :items="getList"
+        class="our-table"
+        :draggable="config.draggable"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
+        @end="onDragChanged"
+        @row-selected="onRowSelected"
+        @row-clicked="onClickRow"
+      >
+        <template v-if="config.selectable" #head(selected)>
+          <b-form-checkbox
+            v-model="allSelected"
+            :indeterminate="indeterminate"
+            @change="toggleAll"
+          />
+        </template>
+
+        <template
+          v-for="({ key }, index) in selectedFields"
+          :slot="`cell(${key})`"
+          slot-scope="{ field, item, value }"
+        >
+          <slot
+            v-if="checkSlotExistence(`cell(${key})`)"
+            :name="`cell(${key})`"
+            :field="field"
+            :item="item"
+            :value="value"
+            :set-selected-item="setSelectedItem"
+          />
+
+          <status-field
+            v-else-if="field.type === ListFieldType.Status"
+            :key="index"
+            :status="value"
+          />
+
+          <status-with-date-field
+            v-else-if="field.type === ListFieldType.StatusWithDate"
+            :key="index"
+            :item="item"
+            size="sm"
+            class="align-items-start"
+          />
+
+          <sum-and-currency
+            v-else-if="field.type === ListFieldType.SumAndCurrency"
+            :key="index"
+            :data="item"
+          />
+
+          <pill-status-field
+            v-else-if="field.type === ListFieldType.PillStatus"
+            :key="index"
+            :is-active="value"
+          />
+
+          <name-with-id-field
+            v-else-if="field.type === ListFieldType.NameWithId"
+            :key="index"
+            :item="item"
+            :get-update-route="getUpdateRoute"
+            :is-show-you="config.isShowYou"
+          />
+
+          <email-field
+            v-else-if="field.type === ListFieldType.Email"
+            :key="index"
+            :item="item"
+            :get-update-route="getUpdateRoute"
+          />
+
+          <date-field v-else-if="field.type === ListFieldType.Date" :key="index" :date="value" />
+
+          <statement-field
+            v-else-if="field.type === ListFieldType.Statement"
+            :key="index"
+            :state="value"
+          />
+
+          <badges-field
+            v-else-if="field.type === ListFieldType.Badges"
+            :key="index"
+            :list-badges="value"
+          />
+
+          <position-field
+            v-else-if="field.type === ListFieldType.Priority"
+            :key="index"
+            :position="value"
+            :size="field.size"
+            :can-update="canUpdate || config.draggable"
+            @edit-position="(val) => onEditPosition(item, val)"
+          />
+
+          <button-field
+            v-else-if="field.type === ListFieldType.Button"
+            :key="index"
+            :btn-name="value"
+          />
+
+          <comment-field
+            v-else-if="field.type === ListFieldType.Comment"
+            :key="index"
+            :value="value"
+          />
+
+          <template v-else-if="field.type === ListFieldType.Percent"> {{ value }} % </template>
+
+          <template v-else>
+            {{ value }}
+          </template>
+        </template>
+
+        <template v-if="config.selectable" #cell(selected)="{ index, rowSelected, item }">
+          <div :id="item.id" :data-index="index" class="table-checkbox">
+            <b-form-checkbox :checked="rowSelected" @change="onChangeSelected($event, index)" />
+          </div>
+        </template>
+
+        <template v-if="canUpdate || canUpdateSeo" #cell(actions)="{ item }">
+          <b-dropdown class="d-flex" variant="link" no-caret toggle-class="p-0" right :data="item">
+            <template #button-content>
+              <b-button variant="flat-dark" class="btn-icon">
+                <feather-icon icon="MoreVerticalIcon" />
+              </b-button>
+            </template>
+
+            <b-dropdown-item
+              v-if="canUpdate && config.withDeactivation"
+              @click="onClickToggleStatus(item)"
+            >
+              <feather-icon
+                :icon="item.isActive ? 'ToggleLeftIcon' : 'ToggleRightIcon'"
+                size="16"
+              />
+
+              <span class="align-middle ml-50">
+                {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
+              </span>
+            </b-dropdown-item>
+
+            <b-dropdown-item :to="{ name: UpdatePageName, params: { id: item.id } }">
+              <feather-icon icon="EditIcon" size="16" />
+
+              <span class="align-middle ml-50">
+                {{ $t('action.edit') }}
+              </span>
+            </b-dropdown-item>
+
+            <b-dropdown-item v-if="canRemove" @click="onClickRemove(item)">
+              <feather-icon icon="Trash2Icon" size="16" />
+
+              <span class="align-middle ml-50">
+                {{ $t('action.remove') }}
+              </span>
+            </b-dropdown-item>
+          </b-dropdown>
+        </template>
+
+        <template #empty>
+          <div class="d-flex flex-column justify-content-center align-items-center p-1">
+            <div>
+              {{ config.emptyText }}
+            </div>
+
+            <b-button
+              v-if="isExistsCreatePage && canCreate"
+              variant="primary"
+              :to="{ name: CreatePageName }"
+              class="mt-2"
+            >
+              <feather-icon icon="PlusIcon" />
+
+              <span class="text-nowrap">
+                {{ $t('action.create') }}
+              </span>
+            </b-button>
+          </div>
+        </template>
+      </c-table>
+    </b-card>
+
+    <!-- Footer pagination -->
+    <div class="mx-2">
+      <b-row>
+        <b-col
+          cols="12"
+          sm="6"
+          class="d-flex align-items-center justify-content-center justify-content-sm-start p-0"
+        >
+          <span class="text-muted">
+            {{ $t('pagination.showing', dataMeta) }}
+          </span>
+        </b-col>
+
+        <b-col
+          cols="12"
+          sm="6"
+          class="d-flex align-items-center justify-content-center justify-content-sm-end p-0"
+        >
+          <b-pagination-nav
+            v-if="numberOfPages"
+            v-model="currentPage"
+            first-number
+            last-number
+            class="pagination-nav mb-0 mt-1 mt-sm-0"
+            prev-class="prev-item"
+            next-class="next-item"
+            :link-gen="linkGenerator"
+            :number-of-pages="numberOfPages"
+            use-router
+          >
+            <template #prev-text>
+              <feather-icon icon="ChevronLeftIcon" size="18" />
+            </template>
+
+            <template #next-text>
+              <feather-icon icon="ChevronRightIcon" size="18" />
+            </template>
+          </b-pagination-nav>
+        </b-col>
+      </b-row>
+    </div>
+
+    <!-- Remove modal -->
+
+    <!-- TODO: config.withRemoveModal - Delete and permission -->
+    <c-modal
+      v-if="canRemove || config.withRemoveModal"
+      :id="removeModalId"
+      :title="$t(`modal.remove${entityName}.title`)"
+      ok-variant="danger"
+      :ok-title="$t('action.remove')"
+      @ok="onClickModalOk"
+      @hidden="onCloseModal"
+    >
+      <span>
+        {{ $t(`modal.remove${entityName}.description`) }}
+      </span>
+
+      <b-form-group
+        v-if="config.withRemoveComment"
+        class="mt-1 mb-0"
+        label-for="removeComment"
+        :label="$t('common.comment._')"
+      >
+        <b-form-textarea
+          id="removeComment"
+          v-model.trim="commentToRemove"
+          no-resize
+          rows="3"
+          :placeholder="$t('common.comment._')"
+        />
+      </b-form-group>
+    </c-modal>
+  </div>
+</template>
+
+<script lang="ts">
+import { PropType, ref, computed, onMounted, watch } from 'vue'
+import store, { dispatch, getters } from '@/store'
+import { useFilters } from '@/components/FiltersBlock/useFilters'
+import { useBvModal } from '@/helpers/bvModal'
+import { useUtils as useI18nUtils } from '@core/libs/i18n'
+import { useRouter } from '@core/utils/utils'
+import usePagination from '@/use/pagination'
+import {
+  IBaseListConfig,
+  BaseListConfig,
+  DownloadFormat,
+  UseListType,
+  FilterListItem,
+} from './model'
+import { TableField, ListFieldType } from '@core/components/table-fields/model'
+import { FieldType } from '@model/field'
+import FiltersBlock from '@/components/FiltersBlock'
+import TableFields from '@core/components/table-fields/TableFields.vue'
+import { convertCamelCase, checkExistsPage, convertLowerCaseFirstSymbol } from '@/helpers'
+import { parseDateRange } from '@/helpers/filters'
+import SearchInput from './_components/SearchInput.vue'
+import CTable from '@/components/CTable'
+import StatusField from './_components/StatusField.vue'
+import StatusWithDateField from './_components/StatusWithDateField.vue'
+import PillStatusField from './_components/PillStatusField.vue'
+import NameWithIdField from './_components/NameWithIdField.vue'
+import EmailField from './_components/EmailField.vue'
+import DateField from './_components/DateField.vue'
+import StatementField from './_components/StatementField.vue'
+import PositionField from './_components/PositionField.vue'
+import ExportFormatSelector from './_components/ExportFormatSelector.vue'
+import BadgesField from './_components/BadgesField.vue'
+import ButtonField from './_components/ButtonField.vue'
+import CommentField from './_components/CommentField.vue'
+import { GameActionType, GamesListItem, GamesSectionGamesItem } from '@model/games'
+import SideBar from '@/components/templates/BaseList/_components/SideBar.vue'
+import CModal from '@/components/CModal.vue'
+import SumAndCurrency from '@/components/SumAndCurrency.vue'
+export default {
+  name: 'BaseList',
+  components: {
+    CommentField,
+    SumAndCurrency,
+    CModal,
+    SideBar,
+    BadgesField,
+    PositionField,
+    ExportFormatSelector,
+    SearchInput,
+    FiltersBlock,
+    TableFields,
+    CTable,
+    StatusField,
+    StatusWithDateField,
+    PillStatusField,
+    NameWithIdField,
+    EmailField,
+    DateField,
+    StatementField,
+    ButtonField,
+  },
+
+  props: {
+    config: {
+      type: Object as PropType<IBaseListConfig>,
+      default: () => new BaseListConfig({}),
+    },
+
+    useList: {
+      type: Function as PropType<() => UseListType>,
+      required: true,
+    },
+  },
+
+  emits: ['end', 'row-clicked'],
+
+  setup(props, { slots, emit }) {
+    const bvModal = useBvModal()
+    const { t } = useI18nUtils()
+    const { router } = useRouter()
+
+    const searchQuery = ref('')
+
+    // Sort
+    const sortBy = ref('')
+    const sortDesc = ref(false)
+
+    const {
+      currentPage,
+      perPage,
+      perPageOptions,
+      numberOfPages,
+      total,
+      setPerPage,
+      setupDataMeta,
+      linkGen,
+      updateTotal,
+      onChangePagination,
+    } = usePagination({
+      defaultPerPage: props.config.defaultPerPage,
+      withIndependentPagination: props.config.withIndependentPagination,
+    })
+
+    const {
+      entityName,
+      fields,
+      ListFilterModel,
+      isGameTable,
+      SideBarModel,
+      pageName,
+      beforeRemoveCallback,
+    } = props.useList()
+
+    // Pages
+    const CreatePageName: string = pageName ? `${pageName}Create` : `${entityName}Create`
+    const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Update`
+
+    const isExistsCreatePage: boolean = checkExistsPage(CreatePageName)
+    const isExistsUpdatePage: boolean = checkExistsPage(UpdatePageName)
+
+    // Action names
+    const moduleName: string = convertLowerCaseFirstSymbol(entityName)
+    const fetchActionName: string = props.config?.withCustomFetchList
+      ? `${moduleName}/fetch${entityName}List`
+      : 'baseStore/fetchListEntity'
+    const fetchReportActionName: string = 'baseStore/fetchReport'
+    const updateActionName: string = 'baseStore/updateEntity'
+    const deleteActionName: string = 'baseStore/deleteEntity'
+    const multipleUpdateActionName: string = 'baseStore/multipleUpdateEntity'
+    const multipleDeleteActionName: string = 'baseStore/multipleDeleteEntity'
+
+    // Permissions
+    const permissionKey: string = `backoffice-${convertCamelCase(entityName, '-')}`
+    const permissionKeySeo: string = `backoffice-${convertCamelCase(entityName, '-')}-seo`
+    const permissionKeyReport: string = `backoffice-${convertCamelCase(entityName, '-')}-report`
+
+    const onePermission: boolean = getters.abilityCan(props.config?.onePermissionKey, 'view')
+
+    const canCreate: boolean = props.config?.onePermissionKey
+      ? onePermission
+      : getters.abilityCan(permissionKey, 'create')
+    const canUpdate: boolean = props.config?.onePermissionKey
+      ? onePermission
+      : getters.abilityCan(permissionKey, 'update')
+    const canUpdateSeo: boolean = props.config?.onePermissionKey
+      ? onePermission
+      : getters.abilityCan(permissionKeySeo, 'update')
+    const canRemove: boolean = props.config?.onePermissionKey
+      ? onePermission
+      : getters.abilityCan(permissionKey, 'delete')
+    const canExport: boolean = props.config?.onePermissionKey
+      ? onePermission
+      : getters.abilityCan(permissionKeyReport, 'view')
+
+    // Sidebar
+    const isSidebarShown = ref(false)
+    const selectedItem: any = ref(null)
+    const setSelectedItem = (item: any) => {
+      selectedItem.value = item
+    }
+
+    const onClickRow = (data) => {
+      if (props.config?.selectable) return
+
+      const isExistSidebarSlot: boolean = !!slots.sidebar || props.config?.sidebar
+      if (isExistSidebarSlot) {
+        isSidebarShown.value = true
+        selectedItem.value = data
+      }
+      emit('row-clicked', data)
+    }
+
+    const routerToUpdatePageId = (item) => {
+      router.push(getUpdateRoute(item))
+    }
+
+    // Table
+    const refListTable: any = ref(null)
+    const items = ref([])
+
+    watch(
+      () => items.value,
+      () => {
+        selectedItem.value = items.value.find((item: any) => item?.id === selectedItem.value?.id)
+      },
+      { deep: true }
+    )
+
+    const selectedFields = ref<TableField[]>([...fields])
+
+    const isLoadingList = computed(() => {
+      const entityUrl: string = convertCamelCase(entityName, '/')
+
+      return getters.isLoadingEndpoint([
+        `${entityUrl}/list`,
+        `${entityUrl}/update`,
+        `${entityUrl}/delete`,
+      ])
+    })
+
+    const size: string = props.config?.small ? 'sm' : 'md'
+
+    const getList = async () => {
+      const filter: object = setRequestFilters()
+
+      const { list, total } = await dispatch(fetchActionName, {
+        type: entityName,
+        data: {
+          perPage: perPage.value,
+          page: currentPage.value,
+          filter,
+          sort: sortBy.value
+            ? [
+                {
+                  field: sortBy.value,
+                  dir: sortDesc.value ? 'ASC' : 'DESC',
+                },
+              ]
+            : [],
+        },
+        options: { saveCountItem: props.config?.saveCountItem || false },
+      })
+
+      items.value = list
+
+      updateTotal(total)
+
+      return list
+    }
+
+    const reFetchList = () => refListTable.value?.refresh()
+
+    const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
+
+    const getUpdateRoute = ({ id }) => {
+      return isExistsUpdatePage && (canUpdate || canUpdateSeo)
+        ? { name: UpdatePageName, params: { id } }
+        : {}
+    }
+
+    const onClickToggleStatus = async ({ id, isActive }) => {
+      await dispatch(updateActionName, {
+        type: entityName,
+        data: { form: { id, isActive: !isActive } },
+      })
+
+      reFetchList()
+    }
+
+    const onEditPosition = async (item: GamesListItem, position: number) => {
+      const data = isGameTable
+        ? {
+            form: {
+              id: props.config?.staticFilters?.id,
+              games: [
+                { id: item.id, position, type: GameActionType.Update } as GamesSectionGamesItem,
+              ],
+            },
+          }
+        : { form: { id: item.id, position } }
+
+      // TODO slice(0, -5) "Games"
+      const type = isGameTable ? entityName.slice(0, -5) : entityName
+      await dispatch(updateActionName, {
+        type,
+        data,
+      })
+
+      reFetchList()
+    }
+
+    // Search
+    watch(searchQuery, reFetchList)
+
+    // Export
+    const onExportFormatSelected = async (format: string) => {
+      const filter: object = setRequestFilters()
+
+      const report: string = await dispatch(fetchReportActionName, {
+        type: entityName,
+        data: {
+          filter: {
+            ...filter,
+            format,
+          },
+          perPage: total.value,
+          sort: sortBy.value
+            ? [
+                {
+                  field: sortBy.value,
+                  dir: sortDesc.value ? 'ASC' : 'DESC',
+                },
+              ]
+            : [],
+        },
+      })
+
+      const fakeLink: HTMLElement = document.createElement('a')
+      fakeLink.setAttribute(
+        'href',
+        `data:${DownloadFormat[format]};charset=utf-8,${encodeURIComponent(report)}`
+      )
+      fakeLink.setAttribute('target', '_blank')
+      fakeLink.setAttribute('download', `${entityName}Report`)
+      fakeLink.click()
+    }
+
+    // Filters
+    const isFiltersShown = ref(false)
+    const appliedFilters = computed(() => {
+      const isSameEntity: boolean = entityName === store.getters['filters/listEntityName']
+
+      return isSameEntity ? store.getters['filters/appliedListFilters'] : []
+    })
+
+    onMounted(() => {
+      isFiltersShown.value = selectedFilters && selectedFilters.value.isNotEmpty
+    })
+    const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
+      props.config.filterList
+    )
+
+    const setRequestFilters = (): object => {
+      if (!ListFilterModel) return {}
+
+      let filters = new ListFilterModel(props.config?.staticFilters)
+
+      if (searchQuery.value) {
+        filters = new ListFilterModel({ ...props.config?.staticFilters, search: searchQuery.value })
+      }
+
+      filters = appliedFilters.value.reduce(
+        (acc, filter) => {
+          const { key, trackBy = 'name' }: FilterListItem = props.config?.filterList.find(
+            ({ type }: FilterListItem) => type === filter.key
+          )
+
+          if (filter.type === FieldType.Select) {
+            acc[key] = filter.value?.[trackBy]
+          } else if (filter.type === FieldType.MultiSelect) {
+            acc[key] = filter.value.map((item: object) => item[trackBy])
+          } else if (filter.type === FieldType.DateRange) {
+            if (!filter.value || typeof filter.value !== 'string') return acc
+
+            const [dateFrom, dateTo]: Array<string> = parseDateRange(filter.value)
+
+            acc[`${key}From`] = dateFrom
+            acc[`${key}To`] = dateTo
+          } else if (filter.type === FieldType.SumRange) {
+            if (filter.value) {
+              const [sumFrom, sumTo]: Array<number> = filter.value
+              acc[`${key}From`] = sumFrom
+              acc[`${key}To`] = sumTo
+            }
+          } else {
+            acc[key] = filter.value
+          }
+
+          return acc
+        },
+        new ListFilterModel({
+          ...props.config?.staticFilters,
+          ...filters,
+        })
+      )
+
+      return filters
+    }
+
+    // Selectable
+    const selectedItems = ref([])
+    const allSelected = ref(false)
+    const indeterminate = ref(false)
+
+    watch(selectedItems, (newItems) => {
+      if (newItems.isEmpty) {
+        indeterminate.value = false
+        allSelected.value = false
+      } else if (newItems.length === items.value.length) {
+        indeterminate.value = false
+        allSelected.value = true
+      } else {
+        indeterminate.value = true
+        allSelected.value = false
+      }
+    })
+
+    const onRowSelected = (items) => (selectedItems.value = items)
+
+    const onChangeSelected = (state: boolean, index: number) =>
+      state ? refListTable.value.selectRow(index) : refListTable.value.unselectRow(index)
+
+    const toggleAll = (state: boolean) =>
+      state ? refListTable.value.selectAllRows() : refListTable.value.clearSelected()
+
+    // Multiple actions
+    const onClickToggleStatusMultiple = async (isActive: boolean) => {
+      const data: Array<{ id: string; isActive: boolean }> = selectedItems.value.map(
+        ({ id }: { id: string }) => ({
+          id,
+          isActive,
+        })
+      )
+
+      await dispatch(multipleUpdateActionName, {
+        type: entityName,
+        data,
+      })
+
+      reFetchList()
+    }
+
+    const onClickDeleteMultiple = async () => {
+      const ids: Array<string> = selectedItems.value.map(({ id }) => id)
+
+      await dispatch(multipleDeleteActionName, {
+        type: entityName,
+        ids,
+      })
+
+      reFetchList()
+    }
+
+    // Pagination
+    const dataMeta = setupDataMeta(refListTable)
+
+    const linkGenerator = (page: number) => {
+      if (props.config?.withIndependentPagination) return
+
+      return linkGen(page)
+    }
+
+    onChangePagination(reFetchList)
+
+    // Draggable
+    const onDragChanged = (e) => {
+      emit('end', e)
+    }
+
+    // Remove
+    const removeModalId: string = 'list-item-remove-modal'
+    const commentToRemove = ref()
+
+    const onClickRemove = (item) => {
+      selectedItem.value = item
+      if (beforeRemoveCallback) {
+        const isAllowedRemove = beforeRemoveCallback(item)
+        if (!isAllowedRemove) return
+      }
+      bvModal.show(removeModalId)
+    }
+
+    const onClickModalOk = async (hide: Function) => {
+      await dispatch(deleteActionName, {
+        type: entityName,
+        id: selectedItem.value.id,
+        comment: commentToRemove.value,
+      })
+
+      hide()
+      reFetchList()
+    }
+
+    const onCloseModal = () => {
+      commentToRemove.value = undefined
+    }
+
+    return {
+      //SideBar
+      SideBarModel,
+
+      // Pages
+      entityName,
+      CreatePageName,
+      UpdatePageName,
+      isExistsCreatePage,
+
+      // Permissions
+      canCreate,
+      canUpdate,
+      canUpdateSeo,
+      canRemove,
+      canExport,
+
+      // Sidebar
+      isSidebarShown,
+      selectedItem,
+      setSelectedItem,
+      routerToUpdatePageId,
+
+      // Search
+      searchQuery,
+
+      // Export
+      onExportFormatSelected,
+
+      // Filters
+      isFiltersShown,
+      filters,
+      selectedFilters,
+      onChangeSelectedFilters,
+
+      //Sort
+      sortBy,
+      sortDesc,
+
+      // Table
+      refListTable,
+      isLoadingList,
+      size,
+      fields,
+      ListFieldType,
+      selectedFields,
+      getList,
+      checkSlotExistence,
+      getUpdateRoute,
+      reFetchList,
+
+      // Remove
+      removeModalId,
+      commentToRemove,
+      onClickRemove,
+      onClickModalOk,
+      onCloseModal,
+
+      // Selectable
+      indeterminate,
+      allSelected,
+      selectedItems,
+      toggleAll,
+      onRowSelected,
+      onChangeSelected,
+
+      // Multiple actions
+      onClickToggleStatusMultiple,
+      onClickDeleteMultiple,
+
+      // Pagination
+      total,
+      dataMeta,
+      numberOfPages,
+      currentPage,
+      linkGenerator,
+      perPage,
+      perPageOptions,
+      setPerPage,
+
+      // Draggable
+      onDragChanged,
+
+      // Handlers
+      onClickRow,
+      onClickToggleStatus,
+      onEditPosition,
+    }
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.filters-row {
+  margin-bottom: 2rem;
+
+  .search {
+    flex-basis: 0;
+    flex-grow: 1;
+  }
+}
+
+.table-settings::v-deep {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1.5rem;
+
+  .per-page-selector {
+    min-width: 6rem;
+  }
+
+  .btn-icon {
+    padding: 0;
+  }
+}
+
+.our-table::v-deep {
+  &.b-table-selectable {
+    border-radius: 5px;
+    display: block;
+
+    th {
+      &:first-child {
+        width: 5%;
+      }
+    }
+  }
+
+  .custom-control-input,
+  .custom-control-label {
+    cursor: pointer;
+  }
+}
+
+.pagination-nav::v-deep {
+  ul {
+    margin: 0;
+  }
+}
+
+.base-list-small::v-deep {
+  .filters-row {
+    margin-bottom: 1rem;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+}
+</style>

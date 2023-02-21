@@ -1,0 +1,135 @@
+// ================================================================================================
+//   File Name: app-chat-area.scss
+//   Description: SCC file for chat area application page.
+//   ----------------------------------------------------------------------------------------------
+//   Item Name: Vuexy  - Vuejs, HTML & Laravel Admin Dashboard Template
+//   Author: PIXINVENT
+//   Author URL: http://www.themeforest.net/user/pixinvent
+// ================================================================================================
+
+@import '../bootstrap-extended/include'; // Bootstrap includes
+@import '../components/include'; // Components includes
+
+@import '../core/colors/palette-variables';
+
+@import 'bootstrap/scss/mixins/gradients';
+
+//Variables
+$chat-head-footer-height: 65px;
+$chat-widget-head-footer-height: 56px;
+$chat-widget-height: 390px;
+
+// User chat window css
+.chat-app-window {
+  // User chats
+  .user-chats {
+    height: calc(100% - #{$chat-head-footer-height} - #{$chat-head-footer-height});
+    position: relative;
+
+    .avatar {
+      img {
+        border: 2px solid $white;
+      }
+    }
+  }
+
+  .active-chat {
+    height: inherit;
+
+    .chat-header {
+      background-color: $white;
+      border-bottom: 1px solid $border-color;
+      display: flex;
+      height: $chat-head-footer-height;
+      justify-content: space-between;
+      padding: 0 1rem;
+    }
+  }
+
+  // Chat area css
+  .chats {
+    .chat-avatar {
+      float: right;
+    }
+
+    .chat-body {
+      display: block;
+      overflow: hidden;
+
+      .chat-content {
+        @include gradient-directional(map-get($primary-color, 'base'), map-get($primary-color, 'lighten-2'), 80deg);
+
+        border-radius: $border-radius;
+        box-shadow: 0 4px 8px 0 rgba($black, 0.12);
+        clear: both;
+        color: $white;
+        float: right;
+        margin: 0 0 10px;
+        max-width: 75%;
+        padding: 0.7rem 1rem;
+
+        p {
+          margin: 0;
+        }
+      }
+    }
+    // Chat area left css
+    .chat-left {
+      .chat-avatar {
+        float: left;
+      }
+
+      .chat-body {
+        .chat-content {
+          background: none;
+          background-color: lighten($white, 18%);
+          color: $body-color;
+          float: left;
+          margin: 0 0 10px 1rem;
+        }
+      }
+    }
+  }
+  // Chat form of user area
+  .chat-app-form {
+    align-items: center;
+    background-color: $white;
+    border-top: 1px solid $border-color;
+    display: flex;
+    height: $chat-head-footer-height;
+    padding: 0 1rem;
+  }
+}
+
+// Chat Widget
+.chat-widget {
+  .card-header {
+    padding-bottom: 0.8rem;
+    padding-top: 0.8rem;
+  }
+
+  .chat-app-window {
+    // User chats
+    .user-chats {
+      background-color: $body-bg;
+      height: $chat-widget-height;
+    }
+
+    .chat-app-form {
+      border-bottom-left-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
+      border-top: 0;
+      height: $chat-widget-head-footer-height;
+
+      .input-group-text,
+      .message {
+        border: 0;
+        padding-left: 0;
+      }
+
+      .input-group:not(.bootstrap-touchspin):focus-within {
+        box-shadow: none;
+      }
+    }
+  }
+}

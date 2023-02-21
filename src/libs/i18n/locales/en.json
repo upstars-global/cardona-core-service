@@ -1,0 +1,1160 @@
+{
+  "auth": {
+    "login": "Login",
+    "forgotPassword": "Forgot password?",
+    "logout": "Logout"
+  },
+  "locale": {
+    "localization": "Localization",
+    "default": {
+      "name": "Name",
+      "buttonName": "Button name",
+      "description": "Text",
+      "fakeDescription": "Fake text",
+      "metaTitle": "Title",
+      "fakeMetaTitle": "Fake Title",
+      "metaDescription": "Description",
+      "fakeMetaDescription": "Fake description"
+    }
+  },
+  "common": {
+    "manager": "Manager",
+    "you": "You",
+    "additionally": "Additionally",
+    "managing": "Managing",
+    "general": "General",
+    "email": "Email",
+    "user": "User",
+    "conciergeService": "Concierge service",
+    "listIsEmpty": "List is empty",
+    "show": "Show",
+    "nothingFound": "Nothing found",
+    "enterSomething": "Enter something",
+    "recentRequests": "Recent Requests",
+    "bonusAccount": "Bonus account",
+    "bonusBalance": "Bonus balance",
+    "realAccount": "Real account",
+    "realBalance": "Real balance",
+    "additionalPhone": "Additional phone",
+    "noAccess": "No access",
+    "view": "View",
+    "addition": "Addition",
+    "editing": "Editing",
+    "deletion": "Deletion",
+    "withdraw": "Withdraw",
+    "refill": "Refill",
+    "generalInformation": "General information",
+    "status": "Status",
+    "level": "Level",
+    "description": "Description",
+    "password": "Password",
+    "id": "ID",
+    "notes": "Notes",
+    "ok": "OK",
+    "from": "from",
+    "personalData": "Personal data",
+    "name": "Name",
+    "slug": "Slug",
+    "lastName": "Surname",
+    "middleName": "Patronymic",
+    "country": "Country",
+    "address": "Address",
+    "additionalAddress": "Additional Address",
+    "perEmail": "Primary email",
+    "additionalEmail": "Additional email",
+    "configuration": "Configuration",
+    "generalSettings": "General settings",
+    "mainInfo": "Main information",
+    "localization": "Localization",
+    "alias": "Alias",
+    "url": "URL",
+    "activity": "Activity",
+    "time": "Time",
+    "in": "in",
+    "date": "Date",
+    "dateOfCreation": "Date of creation",
+    "dateOfUpdate": "Date of update",
+    "entity": "Entity",
+    "order": "Order",
+    "priority": "Priority",
+    "loading": "Loading...",
+    "empty": "Empty",
+    "yes": "Yes",
+    "no": "No",
+    "type": "Type",
+    "back": "Back",
+    "btn": "Button",
+    "link": "Link",
+    "displayPeriod": "Display period",
+    "image": "Image",
+    "numberOfSelected": "{number} selected",
+    "notification": "Notification",
+    "notifications": "Notifications",
+    "SMSmessage": "SMS-message",
+    "sum": "Sum",
+    "city": "City",
+    "message": "Message",
+    "remainder": "Left",
+    "M": "Male",
+    "W": "Female",
+    "created": "Created",
+    "expires": "Expires",
+    "processed": "Processed",
+    "payout": "Payout",
+    "deposit": "Deposit",
+    "dateOfIssued": "Received",
+    "dateOfReceived": "Received",
+    "dateOfExpired": "Expires",
+    "dateOfActivated": "Activated",
+    "dateOfUsed": "Used",
+    "history": "History",
+    "data": "Data",
+    "before": "Before",
+    "after": "After",
+    "reason": "Reason",
+    "dateAndTime": "Date and time",
+    "verification": "Verification",
+    "gift": "Gift",
+    "supportService" : {
+      "_": "Support service",
+      "searchPlaceholder": "Search by id, digitain id, email and login"
+    },
+    "adminSection" : {
+      "_": "Admin section",
+      "header": "Admin section",
+      "logoText": "Administrator"
+    },
+    "admin" : {
+      "_": "Admin",
+      "list" : "Admins",
+      "full": "Administrator",
+      "fullList": "Administrators",
+      "group": "Administrators group",
+      "add": "Add administrator"
+    },
+    "groups": {
+      "_": "Group",
+      "list": "Groups",
+      "name": "Group name",
+      "adminAdd": "Add an admin to a group",
+      "searchPlaceholder": "Search by name and id"
+    },
+    "player": {
+      "_": "Player",
+      "list": "Players",
+      "data": "Player data",
+      "card": "Player card",
+      "status": {
+        "0": "Not set",
+        "10": "New",
+        "20": "Potential Star",
+        "30": "Potential Bronze",
+        "40" : "Potential Silver",
+        "50": "Potential gold",
+        "60": "Ace",
+        "70": "Star",
+        "80": "Bronze",
+        "90": "Silver",
+        "100": "Gold",
+        "110": "Platinum"
+      }
+    },
+    "filter": {
+      "_": "Filter",
+      "list": "Filters",
+      "filtrate": "Filter",
+      "appliedFilters": "Applied filters"
+    },
+    "logging": {
+      "searchPlaceholder": "Search by admin and post id"
+    },
+    "project": {
+      "_": "Project",
+      "list": "Projects",
+      "name": "Project name",
+      "publicName": "Project public name",
+      "searchPlaceholder": "Search by title, id and alias"
+    },
+    "products": {
+      "_": "Products",
+      "list": "Products"
+    },
+    "banners": {
+      "_": "Banners",
+      "list": "Banners",
+      "name": "Banner name",
+      "publicName": "Public banner name",
+      "buttonUrl": "Banner URL",
+      "buttonName": "Button Name",
+      "slug": "Slug",
+      "empty": "Empty",
+      "variableTitle": "Variable Setting",
+      "content": "Description",
+      "imagePath": "path to image",
+      "searchPlaceholder": "Search by title, id and slug"
+    },
+    "editor": {
+      "addedVariables": "Added variables"
+    },
+    "phone": {
+      "_": "Phone",
+      "list": "Phones",
+      "reg": "Primary phone",
+      "additional": "Additional phone"
+    },
+    "balance": {
+      "_": "Balance",
+      "list": "Balances"
+    },
+    "comment": {
+      "_": "Comment",
+      "list": "Comments"
+    },
+    "locale": {
+      "_": "Locale",
+      "additional": "Additional locale"
+    },
+    "category": {
+      "_": "Category",
+      "name": "Category name",
+      "url": "URL category",
+      "searchPlaceholder": "Search by title, id and slug"
+    },
+    "producers": {
+      "name": "Producer name",
+      "isNew": "New producer",
+      "url": "URL producer",
+      "currencies": {
+        "label": "Supported currencies",
+        "description": "All currencies available in the system are supported if no currencies are selected"
+      },
+      "searchPlaceholder": "Search by title, id and slug"
+    },
+    "staticPages": {
+      "_": "Static pages",
+      "name": "Name",
+      "url": "URL static page",
+      "buttonName": "The text of the button «list of games»",
+      "isHiddenTable": "Hide",
+      "isHidden": "Hide page",
+      "isHiddenDescription": "The page will exist on its own at the specified URL",
+      "searchPlaceholder": "Search by title, id and slug"
+    },
+    "bonuses": {
+      "_": "Bonuses",
+      "status": "Status",
+      "name": "Bonus name",
+      "giftName": "Gift",
+      "type": "Type",
+      "sum": "Sum",
+      "wagering": "Wagering",
+      "accrueBonus": "Accrue bonus",
+      "cancelBonus": "Cancel bonus",
+      "amountAtWagering": "Amount at the time of wagering",
+      "transferredToReal": "Transferred to Real",
+      "winLimit": "Win limit",
+      "valueInPercentage": "Value in percentage",
+      "initiator": "Initiator"
+    },
+    "gifts": {
+      "_": "Gifts",
+      "status": "Status",
+      "name": "Name",
+      "type": "Type",
+      "accrue": "Accrue a gift"
+    },
+    "transactions": {
+      "_": "Transactions",
+      "updateBalance": "Update balance",
+      "method": "Method",
+      "accrue": "Accrue",
+      "writeOff": "Write off",
+      "isAddTransactions": {
+        "labelAccrue": "Charge with transaction",
+        "labelWriteOff": "Write off with transaction"
+      },
+      "gift": "Gift",
+      "cause": "Cause",
+      "amount": {
+        "labelAccrue": "Accrual amount",
+        "labelWriteOff": "Write-off amount",
+        "placeholder": "0.00"
+      },
+      "modal": {
+        "accrue": {
+          "title": "Accrue real balance"
+        },
+        "writeOff": {
+          "title": "Write off real balance"
+        }
+      }
+    },
+    "provider": {
+      "_": "Provider"
+    },
+    "game": {
+      "name": "Game name",
+      "searchPlaceholder": "Search by title, id and slug"
+    },
+    "producer": {
+      "_": "Producer"
+    },
+    "users": {
+      "_": "Administrators",
+      "firstName": "o.karpenko",
+      "email": "o.karpenko@gmail.com",
+      "password": "qWerty1234",
+      "searchPlaceholder": "Search by login, id and email"
+    }
+  },
+  "title": {
+    "dashboard": "Dashboard",
+    "accessManagement": "Access management",
+    "conciergeService": "Concierge service",
+    "supportService": "Support service",
+    "noAccess": "No access to the page",
+    "logging": "Logging",
+    "logInfo": "Log info",
+    "main": "Main",
+    "mainInfo": "Main info",
+    "content": "Content",
+    "localization": "Localization",
+    "seo": "SEO",
+    "bonuses": "Bonuses",
+    "transactions": "Transactions",
+    "gifts": {
+      "_": "Gifts",
+      "players": {
+        "sidebarTitle": "Gift"
+      }
+    },
+    "balanceHistory": "Balance history",
+    "player": {
+      "list": "Players",
+      "card": "Card player"
+    },
+    "admin": {
+      "list": "Administrators",
+      "create": "Create administrator",
+      "edit": "Edit administrator"
+    },
+    "groups": {
+      "list": "Groups",
+      "create": "Create group",
+      "edit": "Edit group",
+      "sidebarTitle": "Groups"
+    },
+    "configuration": "Configuration",
+    "promo": "Promo",
+    "project": {
+      "list": "Projects",
+      "create": "Create project",
+      "edit": "Edit project"
+    },
+    "banners": {
+      "list": "Banners",
+      "create": "Create banner",
+      "edit": "Edit banner"
+    },
+    "game": {
+      "_": "Game",
+      "list": "Games",
+      "listOfGames": "List of games",
+      "categories": "Game categories",
+      "producers": "Producers",
+      "all": "All games",
+      "added": "Added games",
+      "create": "Game creation",
+      "edit": "Game editing"
+    },
+    "gamesCategories": {
+      "_": "Category",
+      "list": "Categories",
+      "create": "Category creation",
+      "edit": "Category editing"
+    },
+    "gamesProducers": {
+      "_": "Producer",
+      "list": "Producers",
+      "create": "Producer creation",
+      "edit": "Producer editing"
+    },
+    "staticPages": {
+      "_": "Static pages",
+      "list": "Static pages",
+      "create": "Page creation",
+      "edit": "Page editing"
+    },
+    "adminSection": {
+      "_": "Admin Section",
+      "header": "Admin section",
+      "logoText": "Administrator"
+    },
+    "usersAdminSection": {
+      "_": "All users",
+      "list": "All users",
+      "create": "Adding a user",
+      "edit": "Edit user",
+      "sidebarTitle": "User"
+    },
+    "users": {
+      "_": "Administrators",
+      "list": "Administrators",
+      "create": "Administrator creation",
+      "edit": "Administrator editing",
+      "sidebarTitle": "Administrators"
+    },
+    "treasury": {
+      "balances":{
+        "logs": {
+          "sidebarTitle": "Event"
+        },
+        "bonuses": {
+          "history": {
+            "sidebarTitle": "Bonus"
+          }
+        }
+      }
+    },
+    "players": {
+      "transactions": {
+        "sidebarTitle": "Transaction"
+      }
+    }
+  },
+  "component": {
+    "periods": {
+      "all": "All period",
+      "year": "Year",
+      "month": "Month",
+      "week": "This week",
+      "today": "Today"
+    },
+    "select": {
+      "selectedAllBanners": "You have selected all banners",
+      "selectedAllProjects": "You selected all projects",
+      "selectedAllGroups": "You selected all groups"
+    },
+    "tags": {
+      "duplicateTag": "Duplicate tag"
+    },
+    "countriesSelect": {
+      "banInCountries": "Ban in countries",
+      "allowInCountries": "Allow in countries",
+      "bannedCountries": "Banned countries",
+      "allowedCountries": "Allowed countries",
+      "allowAll": "Allow All",
+      "banAll": "Deny All"
+    }
+  },
+  "page": {
+    "noAccess": {
+      "noAccessToPartition": "No access to partition",
+      "textPage": "Please contact the main administrator for access."
+    },
+    "login": {
+      "welcomeToAdminPanel": "Welcome to admin panel",
+      "inCaseForgotPassword": "If you forgot your password, contact the administrator"
+    },
+    "userUpdate": {
+      "generalInfo": "General info",
+      "groupNames": "Group names",
+      "projectNames": "Project names",
+      "accessProducts": "Product Access",
+      "accessAllUsers": "Access to all users",
+      "productsNames": "Destination of products"
+    },
+    "groupList": {
+      "groupID": "Group ID",
+      "createAnotherOne": "Create another one",
+      "areYouSureModal": {
+        "title": "Remove Group",
+        "text": "Are you sure you want to remove the group?"
+      },
+      "groupHasUsers": {
+        "title": "",
+        "text": ""
+      }
+    },
+    "groupCreate": {
+      "createOneMore": "Create one more"
+    },
+    "groupUpdate": {
+      "groupHasUsers": {
+        "title": "Unable to delete group",
+        "text": "Remove users from the group and try again"
+      }
+    },
+    "groupFragment": {
+      "groupSettings": "Group settings",
+      "sectionsAccess": "Access to sections",
+      "accessControl": "Access control",
+      "configurations": "Configurations",
+      "promo": "Promo",
+      "other": "Other",
+      "playersAccess": "Access to players",
+      "playersNotes": "Notes to players",
+      "winBack": "Win Back",
+      "withdrawAmount": "Amount to withdraw",
+      "mainComment": "Main comment",
+      "playerPortrait": "Player portrait",
+      "addAdminToGroup": "Add an admin to a group",
+      "playerCommunication": "Player Communication",
+      "games": "Games",
+      "gamesCategories": "Games categories",
+      "listGames": "List of games",
+      "gamesProducers": "Producers",
+      "staticPages": "Static pages"
+    },
+    "project": {
+      "majorApiVer": "Major API Version",
+      "websiteUrl": "Project URL",
+      "clientId": "Client ID",
+      "privateKey": "Private Key",
+      "callbackUrl": "Callback URL",
+      "techUrl": "Tech. URL",
+      "wlIdentifier": "WL Identifier",
+      "addAdmin": "Add an administrator to the project",
+      "configName": "Сonfig Name",
+      "publicKey": "Public Key",
+      "vcoinsUrl": "Vcoins URL",
+      "icon": "Icon",
+      "removeModal": {
+        "title": "Remove project",
+        "description": "Are you sure you want to remove the project?"
+      }
+    },
+    "banners": {
+      "startDate": "Start date",
+      "completionDate": "Completion Date",
+      "show": "Show",
+      "googleEventCategory": "Google Event Category",
+      "backgroundColor": "Background Color",
+      "backgroundColorGrad": "Gradient Options",
+      "useGradient": "Use Gradient",
+      "listRefcodes": "List of refcodes",
+      "listRefcodesDescription": "Separator - comma",
+      "range": "Range",
+      "slider": "Slider",
+      "promo": "Promo",
+      "bannerType": "Banner type",
+      "removeModal": {
+        "title": "Remove banner",
+        "description": "Are you sure you want to remove this banner?"
+      },
+      "keyStrategy": {
+        "LEVEL_IN_RANGE": "Level in range",
+        "DAYS_PASSED_SINCE_LAST_DEPOSIT" : "Days passed since deposit",
+        "DEPOSIT_COUNT_IN_RANGE": "Number of deposits in pockets",
+        "DEPOSIT_SUM_GTE": "GTE deposit amount",
+        "EXPRESSION": "Expression",
+        "SHOW_ALWAYS": "Everyone",
+        "WL_RELATION": "For players from the project",
+        "GUEST": "Guests only",
+        "FIRST_DEPOSIT": "First deposit",
+        "AUTHORIZED": "Only registered",
+        "REFCODE": "According to the given refcodes"
+      }
+    },
+    "conciergePlayer": {
+      "portraits": "Portraits",
+      "realAccount": "Real account",
+      "bonusAccount": "Bonus account",
+      "newPayouts": "New payouts",
+      "winBack": "Win Back",
+      "casinoBalance": "Balance Casino",
+      "roleplaying": "Roleplaying",
+      "sportBalance": "Balance Sport",
+      "freebetSport": "Freebet Sport"
+    },
+    "supportService": {
+      "limitDaily": "In a day",
+      "limitWeekly": "In a week",
+      "limitMonthly": "In a month",
+      "playerAccounts": "Player Accounts",
+      "realAccount": "Real balance",
+      "casinoBonusBalance": "Casino Bonus Balance",
+      "sportBonusBalance": "Sports bonus balance",
+      "payout": "Payout",
+      "winBack": "Winback",
+      "cashback": "cashback",
+      "wager": "Wager",
+      "wagered": "Wagered",
+      "freebetSport": "Freebet Sport",
+      "showLess": "Show Less",
+      "showMore": "Show more",
+      "playerSettings": "Player settings",
+      "digitainID": "Digitain ID",
+      "partnercode": "Partnercode",
+      "registrationDate": "Registration Date",
+      "lastLogin": "Last login",
+      "ip": "IP",
+      "lastIp": "Last IP",
+      "registrationCountry": "Registration Country",
+      "manager": "Manager",
+      "managerModal": "Assign a manager",
+      "noManager": "No manager",
+      "testAccount": "Test account",
+      "accountBlocking": "Account blocking",
+      "emailVerification": "Email verification",
+      "phoneVerification": "Phone verification",
+      "automaticPayouts": "Automatic payouts",
+      "KYCVerification": "KYC verification",
+      "paymentSystem": "Payment system",
+      "paymentSystems": "Payment systems",
+      "none": "none",
+      "savedCards": "Saved cards",
+      "cardMask": "Card mask",
+      "payoutLimits": "Payout limits",
+      "payoutLimitsTitleModal": "Set withdrawal limits",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "middleName": "Middle name",
+      "gender": "Gender",
+      "dateOfBirth": "Date of birth",
+      "postalCode": "Postal code",
+      "address": "Full address",
+      "avgDep": "AVG Dep",
+      "totalIN": "Total IN",
+      "totalOUT": "Total OUT",
+      "totalINOUT": "Total IN-OUT",
+      "vipStatus": "Vip status",
+      "changeStatusModalTitle": "Change player vip status",
+      "expiredAtLabel" : "Date and time",
+      "changeExtendGiftsModalTitle": "Extend the gift",
+      "addGiftModal": "Send a gift",
+      "requisites": "Requisites",
+      "cancelReason": "Cancel reason",
+      "dateTime": "Date & Time",
+      "templateName": "Template name",
+      "needsValidEmail": "Needs valid email",
+      "needsValidPhone": "Needs valid phone",
+      "depositLimits": "Deposit limits",
+      "accrualAmount": "Accrual amount",
+      "bonusMultiplier": "Bonus multiplier",
+      "cancelBonusDescription": "Are you sure you want to cancel this bonus?",
+      "keepBonus": "Keep bonus",
+      "pinnedMessages": "Pinned messages",
+      "pinnedMessagesWithCount": "Pinned messages ({count})",
+      "walletNumber": "Wallet number",
+      "expiryDate": "Expiry date",
+      "holderName": "Holder name",
+      "firstDep": "Firstdep",
+      "lastDep": "Lastdep",
+      "lastChange": "Last change",
+      "notifications": {
+        "sendNotification": "Send notification",
+        "history": "History",
+        "lifetime": "Lifetime",
+        "addButton": "Add button",
+        "buttonName": "Button name",
+        "buttonUrl": "Button URL",
+        "deletedBy": "Deleted by {name}"
+      }
+    },
+    "logging": {
+      "logId": "Log ID {id}",
+      "action": "Action",
+      "entry": "Entry",
+      "entityId": "Entity id",
+      "prop": "Properties",
+      "oldProp": "Old properties",
+      "newProp": "New properties"
+    },
+    "games": {
+      "name": "Title",
+      "numberOfGames": "Number of games",
+      "selectedCounter": "Selected {items} out of {total}",
+      "runner": "Runner",
+      "wageringBonusRatioFull": "Bonus wagering percent",
+      "wageringBonusRatio": "Bonus wagering",
+      "gameForBonuses": "Game for bonuses",
+      "gameForBonusesDescription": "Is it possible to play with bonus funds in this game",
+      "availableWithBonuses": "Availability\nwith bonuses",
+      "availableWithBonusesDescription": "Prohibit starting the game if there are funds on the bonus balance",
+      "desktopKey": "Desktop Key",
+      "mobileKey": "Mobile Key",
+      "playsonMobileGameId": "Playson mobile game ID",
+      "playsonDesktopGameId": "Playson desktop game ID",
+      "pragmaticLiveTableId": "Pragmatic Live table ID",
+      "decreaseRatio": "Decrease ratio",
+      "decreaseRatioDescription": "Ratio for reducing the experience gain multiplier",
+      "demoMode": "Demo mode",
+      "IFrame": "Running the game on mobile devices in an iframe",
+      "IFrameDescription": "The game will run in a frame or in a new tab",
+      "aliases": "Aliases",
+      "aliasesPlaceholder": "Add...",
+      "preview": "Preview",
+      "categoryGamePriority": "Category game priority",
+      "allowedDomains": "Allowed domains",
+      "allowedDomainsPlaceholder": "example.com",
+      "allowedDomainsInfo": "The manufacturer and its games will be available on all domains if no domain is specified. The domain must be specified without a protocol. example.com",
+      "slugsModal": {
+        "title": "Turn on in bulk",
+        "slugList": "Slug list",
+        "placeholder": "midasgoldentouch\npoker\nreeloffortune\n\n",
+        "prompt": "List of slug separated by commas or each element on a new line",
+        "enableGames": "Enable games",
+        "error": {
+          "title": "No games found for {value} slug",
+          "description": "Correct the following slug to include games in the category:"
+        }
+      }
+    }
+  },
+  "pagination": {
+    "showing": "Showing {from} to {to} of {of} entries"
+  },
+  "validations": {
+    "banners_type_IS_BLANK_ERROR": "The field must not be empty",
+    "banners_slug_ALREADY_EXISTS": "An entry with this slug already exists",
+    "static_slug_ALREADY_EXISTS": "An entry with this slug already exists",
+    "static_title_ALREADY_EXISTS": "An entry with this title already exists",
+    "static_name_ALREADY_EXISTS": "An entry with this name already exists",
+    "games_slug_ALREADY_EXISTS": "An entry with this slug already exists",
+    "projects_name_ALREADY_EXISTS": "Project with this name already exists",
+    "projects_alias_NOT_UNIQUE": "Project with this alias already exists",
+    "groups_name_ALREADY_EXISTS": "There is already a group with this name",
+    "games_slug_REGEX_FAILED_ERROR": "Invalid slug format",
+    "users_userName_ALREADY_EXISTS": "There is already a user with this login",
+    "incorrectLoginOrPassword": "Incorrect login or password",
+    "alpha": "The {_field_} field may only contain alphabetic characters",
+    "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
+    "alpha_dash": "The {_field_} field may contain alpha-numeric characters as well as dashes and underscores",
+    "alpha_spaces": "The {_field_} field may only contain alphabetic characters as well as spaces",
+    "between": "The {_field_} field must be between {min} and {max}",
+    "confirmed": "The {_field_} field confirmation does not match",
+    "digits": "The {_field_} field must be numeric and exactly contain {length} digits",
+    "dimensions": "The {_field_} field must be {width} pixels by {height} pixels",
+    "email": "The {_field_} field must be a valid email",
+    "excluded": "The {_field_} field is not a valid value",
+    "ext": "The {_field_} field is not a valid file",
+    "image": "The {_field_} field must be an image",
+    "integer": "The {_field_} field must be an integer",
+    "length": "The {_field_} field must be {length} long",
+    "max_value": "The {_field_} field must be {max} or less",
+    "max": "The {_field_} field may not be greater than {length} characters",
+    "mimes": "The {_field_} field must have a valid file type",
+    "min_value": "The {_field_} field must be {min} or more",
+    "min": "The {_field_} field must be at least {length} characters",
+    "numeric": "The {_field_} field may only contain numeric characters",
+    "oneOf": "The {_field_} field is not a valid value",
+    "regex": "The {_field_} field format is invalid",
+    "required_if": "The {_field_} field is required",
+    "required": "The {_field_} field is required",
+    "size": "The {_field_} field size must be less than {size}KB",
+    "double": "The {_field_} field must be a valid decimal",
+    "password": "Your {_field_} must contain at least one uppercase, one lowercase, one special character, one digit and be at least 8 characters",
+    "phone": "Phone can contain only numbers and one plus"
+  },
+  "toast": {
+    "success": {
+      "default": "Operation successful",
+      "passwordCopied": "Password copied",
+      "userSuccessfullyCreated": "User {name} successfully created",
+      "userSuccessfullyDeleted": "User {name} successfully deleted",
+      "userSuccessfullyDeactivated": "User {name} successfully deactivated",
+      "bannerSuccessfullyUpdated": "Banner successfully updated",
+      "bannerSuccessfullyDeleted": "Banner {name} successfully deleted",
+      "bannerSuccessfullyEnabled": "Banner enabled",
+      "bannerSuccessfullyDisabled": "Banner disabled",
+      "IDcopied": "ID copied",
+      "/api/v2/games/categories/create": "Category successfully created",
+      "/api/v2/games/categories/update": "Category successfully updated",
+      "/api/v2/games/categories/delete": "Category successfully deleted",
+      "/api/v2/games/create": "Game successfully created",
+      "/api/v2/games/update": "Game successfully updated",
+      "/api/v2/games/delete": "Game successfully deleted",
+      "/api/v2/games/update/multiple": "Game statuses updated successfully",
+      "/api/v2/games/delete/multiple": "Games successfully deleted",
+      "/api/v2/projects/create": "Project successfully created",
+      "/api/v2/projects/update": "Project successfully updated",
+      "/api/v2/projects/delete": "Project successfully deleted",
+      "/api/v2/groups/create": "Group successfully created",
+      "/api/v2/groups/update": "Group successfully updated",
+      "/api/v2/groups/delete": "Group successfully deleted",
+      "/api/v2/notifications/web/send": "Notification sent successfully",
+      "/api/v2/notifications/web/update": "Notification message successfully updated",
+      "/api/v2/notifications/web/delete": "Notification successfully deleted",
+      "/api/v2/players/update": "Player successfully updated",
+      "/api/v2/players/details/update": "Player successfully updated",
+      "/api/v2/notes/create": "Note successfully created",
+      "/api/v2/notes/update": "Note successfully updated",
+      "/api/v2/treasury/balances/bonuses/add": "Bonus successfully accrued",
+      "/api/v2/treasury/balances/bonuses/cancel": "Bonus successfully canceled",
+      "/api/v2/players/payments/systems/update": "Payment system successfully updated",
+      "/api/v2/players/settings/payout-limits/update": "Payout limits successfully updated",
+      "/api/v2/marbella/cards/delete": "Player card successfully deleted",
+      "filtersSavedByDefault": "Filters saved by default"
+    },
+    "error": {
+      "default": "An error has occurred",
+      "UNAUTHORIZED": "User not authorized",
+      "BAD_CREDENTIALS": "Wrong login or password",
+      "TOKEN_EXPIRED": "Token expired",
+      "TOKEN_INVALID": "Token invalid",
+      "VALIDATION": "Incorrect data entered",
+      "serverError": "Server error: {message}",
+      "loadFile": "Loading error",
+      "fileSizeError": "File is larger than {MB} MB",
+      "upload_path_IN_USE": "An image with the same name or path already exists in the gallery",
+      "axiosError": "Data loading error"
+    }
+  },
+  "userStatuses": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "placeholder": {
+    "select": "Select",
+    "login": "Enter your login",
+    "newPassword": "New password",
+    "password": "Enter your password",
+    "repeatPassword": "Repeat your password",
+    "enterName": "Enter name",
+    "comment": "Comment text",
+    "portrait": "Portrait text",
+    "loginOrEmail": "Login or email",
+    "fullAccessToAllGroups": "Full access to all groups",
+    "datePicker": "Date picker",
+    "choose": {
+      "_": "Choose",
+      "group": "Choose a group",
+      "project": "Choose a project"
+    },
+    "dropFile": "Drop file",
+    "search": {
+      "_": "Search",
+      "login": "Search by login",
+      "nameIdSlug": "Search by name, ID and slug",
+      "idAndRequisites": "Search by id and requisites",
+      "idName": "Search by id and name",
+      "idNameTemplateName": "Search by id, name and template name"
+    },
+    "filter": {
+      "group": "Search by group",
+      "project": "Search by project",
+      "bannerStrategy": "Choose a strategy",
+      "admin": "Search by login",
+      "action": "Choose an action",
+      "entityType": "Search by entity",
+      "gamesType": "Choose a game type",
+      "gamesCategories": "Choose a game category",
+      "gamesProducers": "Choose a game producer",
+      "slug": "Slug",
+      "name": "Name",
+      "gamesRunners": "Choose a runner",
+      "sumFrom": "Sum from",
+      "sumTo": "Sum to",
+      "type": "Choose a type",
+      "types": "Choose some types",
+      "status": "Choose a status",
+      "manager": "Choose a manager",
+      "reason": "Choose some reasons"
+    }
+  },
+  "emptyState": {
+    "search": "Nothing found",
+    "list": "No entries created",
+    "listWithBtn": "No entries created. It's time to do it",
+    "project": "No projects created. It's time to do it",
+    "conciergeService": "No recently viewed players",
+    "supportService": "No recently viewed players",
+    "banner": "No banners created. It's time to do it",
+    "group": "No group created. It's time to do it",
+    "user": "No user created. It's time to do it",
+    "notes": "No notes yet",
+    "comment": "No comments yet",
+    "portrait": "No portraits yet",
+    "logging": "No logging data",
+    "gamesCategories": "No category of games created. It's time to do it",
+    "gamesProducers": "No game providers created. It's time to do it",
+    "staticPages": "No pages have been created.",
+    "games": "No games created. It's time to do it",
+    "enabledCategoryGames": "No games added for this category",
+    "enabledStaticPagesGames": "No games added for this page",
+    "users": "No user created. It's time to do it",
+    "playersTransactions": "This player has no transactions yet",
+    "playersNotifications": "This player has no notifications yet",
+    "paymentSystems": "This player has no payment systems",
+    "bonuses": "No bonuses",
+    "gifts": "No gifts",
+    "history": "No history yet",
+    "savedCards": "No cards saved yet"
+  },
+  "permission": {
+    "access": "Access",
+    "show": "Show",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "fullAccess": "Full access",
+    "backoffice-users": "Administrators",
+    "backoffice-groups": "Groups",
+    "backoffice-projects": "Projects",
+    "backoffice-banners": "Banners",
+    "treasury-real-balance": "Treasury-real-balance",
+    "treasury-winback-balance": "Winback",
+    "treasury-payouts-balance": "Amount to withdraw",
+    "treasury-bonus-balance": "Casino Bonus Balance",
+    "treasury-wager-balance": "Casino Wagering",
+    "section-concierge-service": "Concierge service",
+    "section-support-service": "Support service",
+    "sys-player-data-generalinfo-access": "General Info",
+    "field-player-generalinfo": "General Info",
+    "field-player-login": "Login",
+    "field-player-level": "Level",
+    "field-player-istest": "Test Account Feature",
+    "field-player-firstname": "Field-player-firstname",
+    "field-player-lastname": "Player's last name",
+    "field-player-middlename": "Field Player Middle Name",
+    "field-player-country": "Country",
+    "field-player-address": "Address",
+    "field-player-main-comment": "Main Comment",
+    "field-treasury-betting-balance": "Sport Bonus Balance",
+    "field-treasury-betting-wagger": "Playback Sport",
+    "field-treasury-betting-free-bet": "Freebet Sport",
+    "field-vcoins-balance": "Vcoins balance",
+    "backoffice-player-contacts-email": "Mail",
+    "backoffice-player-contacts-phone": "Phone",
+    "record-player-comments": "Comments",
+    "record-player-portraits": "Player Portrait",
+    "record-vcoins-log": "VCoins transaction history",
+    "api-sms-send": "Sending SMS",
+    "api-sms-log": "SMS send history",
+    "api-vcoins-withdraw": "Withdraw VCoins balance",
+    "api-vcoins-replenishment": "VCoins balance calculation",
+    "backoffice-logaction": "Logging",
+    "backoffice-games-categories": "Main section",
+    "backoffice-games-categories-seo": "SEO section and localization",
+    "backoffice-games-categories-report": "Data Export",
+    "backoffice-games": "Main section",
+    "backoffice-games-seo": "SEO section and localization",
+    "backoffice-games-report": "Data Export",
+    "backoffice-games-producers": "Main section",
+    "backoffice-games-producers-seo": "SEO section and localization",
+    "backoffice-games-producers-report": "Data Export",
+    "backoffice-static-pages": "Main section",
+    "backoffice-static-pages-seo": "SEO section and localization",
+    "backoffice-static-pages-report": "Data Export",
+
+    "field-player-main": "Main inform",
+    "field-player-status": "Vip status",
+    "field-player-isblocked": "Account blocking",
+    "field-player-verification": "Verification",
+    "field-player-manager": "Manager",
+    "field-player-autopayment": "Automatic payouts",
+    "backoffice-notes": "Notes",
+    "backoffice-notifications-sms": "SMS messages",
+    "backoffice-notifications-web": "Notifications",
+    "field-read-balance": "Balance",
+    "backoffice-real-balance-update": "Update real balance",
+    "backoffice-player-payment-system": "Payments systems",
+    "marbella-cards": "Saved cards",
+    "backoffice-payment-dailylimits": "Payout limits",
+    "backoffice-transactions": "Transactions",
+    "backoffice-players-bonus": "Bonus balance",
+    "backoffice-player-gifts": "Gifts",
+    "backoffice-payment-balanceslog": "Balance history"
+  },
+  "vCoin": {
+    "fetchingError": "Error fetching vcoins",
+    "type": "type",
+    "amount": "amount of coins",
+    "date": "date",
+    "login": "admin login",
+    "comment": "comment",
+    "commentOptional": "Comment (optional)",
+    "sum": "Sum",
+    "withdrawCoinsMessage": "{value} coins have been withdrawn from the player's balance",
+    "refillCoinsMessage": "{value} coins have been added to the player's balance",
+    "coinManagement": "Coin management",
+    "withdrawCoins": "Withdraw coins",
+    "refillCoins": "Refill coins",
+    "balance": "VCoins balance",
+    "transactionHistory": "History of transactions with VCoins"
+  },
+  "mainInfo": {
+    "registration": "Registration",
+    "lastLogin": "Last login",
+    "manager": "Manager",
+    "noManager": "No manager",
+    "digitainIDcopied": "DigitainID copied",
+    "writeSomething": "Write something...",
+    "blocked": "Blocked",
+    "test": "Test",
+    "addMainComment": "Add Main Comment",
+    "mainCommentUpdated": "Main Comment Updated"
+  },
+  "action": {
+    "create": "Create",
+    "createAndExit": "Create and exit",
+    "createAndStay": "Create and stay",
+    "add": "Add",
+    "addAll": "Add all ({total})",
+    "addToCategory": "Add to category",
+    "edit": "Edit",
+    "save": "Save",
+    "remove": "Remove",
+    "delete": "Delete",
+    "removeAll": "Remove all ({total})",
+    "removeSelected": "Remove selected",
+    "cancel": "Cancel",
+    "cancel_2": "Cancel",
+    "withdraw": "Withdraw",
+    "refill": "Refill",
+    "setNewPassword": "Set a new password",
+    "apply": "Apply",
+    "applyFilters": "Apply filters",
+    "saveByDefault": "Save by default",
+    "clearAll": "Clear all",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "addEmail": "Add email",
+    "addPhone": "Add phone",
+    "login": "Sign in",
+    "selectEntity": "Select entity",
+    "export": "Export",
+    "creation": "Creating",
+    "updating": "Updating",
+    "deleting": "Deleting",
+    "reporting": "Export",
+    "repeat": "Repeat",
+    "send": "Send",
+    "extend": "Extend",
+    "assign": "Assign",
+    "accrue": "Accrue",
+    "pin": "Pin",
+    "unpin": "Unpin"
+  },
+  "sms": {
+    "smsMessages": "SMS messages",
+    "sendSMS": "Send SMS",
+    "favoritePhone": "Favorite Phone",
+    "cancel": "Cancel",
+    "send": "Send",
+    "history": "History",
+    "date": "Date",
+    "phone": "Phone",
+    "sender": "Sender",
+    "text": "Text",
+    "messageText": "Message text",
+    "message": "message"
+  },
+  "uploadImg": {
+    "label": "Image",
+    "textBtn": "Select",
+    "selectImage": "Select Image",
+    "delete": "Delete",
+    "dragText": "Drag file here or upload from device",
+    "maxSize": "Max size 4 MB",
+    "downloadNew": "Download new",
+    "downloadDevice": "Download from device",
+    "dragTextDrop": "Drag file here",
+    "chooseFromDownloaded": "Choose From Downloaded",
+    "tableCol1Name": "URL",
+    "tableCol2Name": "Image",
+    "nothingInFolder": "There is nothing in this folder",
+    "ChooseDifferentFolder": "Choose a different folder or upload a new image",
+    "loadError": "Load error",
+    "modalLabel": {
+      "project": "Are you sure you want to remove the project icon?",
+      "banners": "Are you sure you want to delete the image?"
+    },
+    "modalTitle": {
+      "project": "Delete icon",
+      "banners": "Image Removal"
+    }
+  },
+  "filters": {
+    "entryId": "Entity ID",
+    "giftId": "Gift Id",
+    "gameType": "Game type",
+    "gamesCategories": "Game category",
+    "gamesProducers": "Game producer",
+    "dateRangeCreative": "Creation date range",
+    "dateRangeUpdate": "Update date range",
+    "dateRangeProcessing": "Processing date range",
+    "dateRangeIssued": "Issued date range",
+    "dateRangeExpired": "Expired date range",
+    "dateRangeReceive": "Receive date range",
+    "dateRangeActivated": "Activated date range",
+    "dateRangeUsed": "Used date range",
+    "runner": "Runner",
+    "gameForBonuses": "Game for bonuses",
+    "availableWithBonuses": "Availability with bonuses",
+    "hidden": "Is hidden",
+    "initialSumRange": "Initial bonus amount",
+    "winBackSumRange": "Sum at the time of wagering",
+    "realSumRange": "Switched to real balance",
+    "wagerLimitRange": "Win Limit"
+  },
+  "modal": {
+    "groupsErrorDelete": {
+      "title": "Can't delete group",
+      "description": "Remove users from the group and try again"
+    },
+    "addAllGames": {
+      "title": "Adding games",
+      "description": "Are you sure you want to add all games?"
+    },
+    "deleteGame": {
+      "title": "Deleting a game",
+      "description": "Are you sure you want to delete this game?"
+    },
+    "deleteAllGames": {
+      "title": "Deleting games",
+      "description": "Are you sure you want to delete all games?"
+    },
+    "removeGamesCategories": {
+      "title": "Remove category",
+      "description": "Are you sure you want to remove the category?"
+    },
+    "removeGamesProducers": {
+      "title": "Remove producer",
+      "description": "Are you sure you want to remove the producer?"
+    },
+    "removeStaticPages": {
+      "title": "Delete Static Page",
+      "description": "Are you sure you want to delete this static page?"
+    },
+    "removeGames": {
+      "title": "Remove game",
+      "description": "Are you sure you want to remove the game?"
+    },
+    "removeUsers": {
+      "title": "Remove administrator",
+      "description": "Are you sure you want to remove the administrator?"
+    },
+    "removeGroups": {
+      "title": "Remove Group",
+      "description": "Are you sure you want to remove the group?"
+    },
+    "removeWebNotification": {
+      "title": "Remove notification",
+      "description": "Are you sure you want to remove the notification?"
+    },
+    "removeGiftsPlayers": {
+      "title": "Remove gift",
+      "description": "Are you sure you want to remove the gift?"
+    }
+  },
+  "activityStatus" : {
+    "he": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "she": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "seo": {
+    "metaTitle": "Title",
+    "fakeMetaTitle": "Fake Title",
+    "metaDescription": "Description",
+    "fakeMetaDescription": "Fake description",
+    "description": "Text",
+    "fakeDescription": "Fake text"
+  }
+}

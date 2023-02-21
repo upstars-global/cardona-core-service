@@ -1,0 +1,18 @@
+version: v1
+spec:
+  meta:
+    name: "Cardona-core-service"
+    canonicalName: сardona-core-service
+    goals:
+      - "Админка"
+      - "Core service"
+  code:
+    languages:
+      - lang: js
+        version: ES6+
+    frameworks:
+      - vendor: Vue
+        version: 2.x
+  maintainers: [solaris, o.miha]
+  uses: [luckyroot]
+  documentation: []

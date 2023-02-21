@@ -1,0 +1,31 @@
+include:
+  - project: gitops/gitlab-ci-templates
+    file: '/build/docker-build-1.0.0.yaml'
+    ref: master
+  - project: gitops/gitlab-ci-templates
+    file: "/changelog/generate-changelog-1.0.0.yaml"
+    ref: master
+
+stages:
+  - docker-build
+  - docker-push
+
+docker-build:
+  extends: .docker-build
+  variables:
+    DOCKERFILE_PATH: './Dockerfile'
+
+docker-push-do:
+  extends: .docker-push-do
+  only:
+    refs:
+      - develop
+      - master
+
+generate-changelog-with-master:
+  extends: .generate-changelog-with-master
+  stage: docker-push
+generate-changelog-with-before-sha:
+  extends: .generate-changelog-with-before-sha
+  stage: docker-push
+

@@ -1,0 +1,109 @@
+/*================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+@import '~@core/scss/base/core/colors/palette-variables';
+@import '~@core/scss/vue/libs/vue-select';
+
+$bg-light-purple: rgba(115, 103, 240, 0.08);
+$bg-light-grey: rgba(186, 191, 199, 0.12);
+
+.form-required label:after {
+  content: '*';
+  margin-left: 5px;
+  color: $red;
+}
+
+.swap-btn .btn:last-child {
+  order: -1;
+}
+
+.our-table {
+  tr {
+    th {
+      vertical-align: middle;
+    }
+
+    th:first-child {
+      width: 30%;
+    }
+
+    th:last-child {
+      padding-left: 0;
+      padding-right: 0;
+      width: 4rem;
+    }
+
+    td:last-child {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+.circle-status {
+  position: relative;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  margin: 0.286rem;
+
+  &.active:before,
+  &.inactive:before,
+  &.creation:before,
+  &.updating:before,
+  &.deleting:before {
+    content: '';
+    display: block;
+    background: $orange;
+    position: absolute;
+    top: -0.286rem;
+    left: -0.286rem;
+    border-radius: 50%;
+    width: 1.071rem;
+    height: 1.071rem;
+    opacity: 0.12;
+  }
+
+  &.active, &.creation {
+    background: $green;
+    &:before {
+      background: $green;
+    }
+  }
+  &.inactive, &.updating {
+    background: $orange;
+    &:before {
+      background: $orange;
+    }
+  }
+
+  &.deleting {
+    background: $red;
+    &:before {
+      background: $red;
+    }
+  }
+}
+
+.white-space-nowrap {
+  white-space: nowrap;
+}
+
+.table thead th,
+.table tfoot th {
+  white-space: nowrap;
+}
+
+.table-responsive {
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.text-primary-hover {
+  &:hover {
+    color: $primary;
+  }
+}

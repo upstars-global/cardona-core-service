@@ -1,0 +1,46 @@
+<template>
+  <div class="white-space-nowrap">
+    <router-link :to="getUpdateRoute(item)" class="d-flex align-items-center">
+      {{ item.name || item.userName || item.title }}
+      <b-badge v-if="isYou" variant="light-info" class="font-weight-bold ml-25">
+        {{ $t('common.you') }}
+      </b-badge>
+    </router-link>
+    <small> ID {{ item.id }} </small>
+  </div>
+</template>
+
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
+import { getters } from '@/store'
+
+export default defineComponent({
+  name: 'NameWithIdField',
+
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+
+    getUpdateRoute: {
+      type: Function,
+      default: () => ({}),
+    },
+
+    isShowYou: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  setup(props) {
+    const isYou = computed(() => {
+      return props.isShowYou && props.item.id.toString() === getters.userInfo.id.toString()
+    })
+    return {
+      isYou,
+    }
+  },
+})
+</script>
