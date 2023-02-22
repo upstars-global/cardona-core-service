@@ -1,0 +1,1 @@
+export * from "src/components/templates/BaseList/index.vue";
