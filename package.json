@@ -1,6 +1,6 @@
 {
-  "name": "vuexy-vuejs-react-html-laravel-admin-dashboard-template",
-  "version": "6.4.0",
+  "name": "сardona-core-service",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "build": "vue-cli-service build",
