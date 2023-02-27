@@ -101,12 +101,8 @@ module.exports = {
         captureClassesFromDoc: [],
       },
     ],
-    'vue/multi-word-component-names': [
-      'error',
-      {
-        ignores: ['index'],
-      },
-    ],
+    'vue/multi-word-component-names': 0,
+    'vue/no-mutating-props': 0,
   },
 
   overrides: [

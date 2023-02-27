@@ -1,1 +1,5 @@
-export * from "src/components/templates/BaseList/index.vue";
+// NPM export
+export * from 'vue';
+export * from 'vue-i18n';
+export * from 'bootstrap-vue'
+

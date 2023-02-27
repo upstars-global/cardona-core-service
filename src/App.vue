@@ -3,10 +3,14 @@
     <component :is="layout">
       <router-view />
     </component>
+
+    <scroll-to-top v-if="enableScrollToTop" />
   </div>
 </template>
 
 <script>
+import ScrollToTop from '@core/components/scroll-to-top/ScrollToTop.vue'
+
 // This will be populated in `beforeCreate` hook
 import { $themeColors, $themeBreakpoints, $themeConfig } from '@themeConfig'
 import { provideToast } from 'vue-toastification/composition'
@@ -16,7 +20,6 @@ import useAppConfig from '@core/app-config/useAppConfig'
 import { useWindowSize, useCssVar } from '@vueuse/core'
 
 import store from '@/store'
-import { useRouter } from '@core/utils/utils'
 
 const LayoutVertical = () => import('@/layouts/vertical/LayoutVertical.vue')
 const LayoutHorizontal = () => import('@/layouts/horizontal/LayoutHorizontal.vue')
@@ -28,10 +31,12 @@ export default {
     LayoutHorizontal,
     LayoutVertical,
     LayoutFull,
+
+    ScrollToTop,
   },
   setup() {
-    const { route } = useRouter()
-    const { skin, skinClasses, navMenuType } = useAppConfig()
+    const { skin, skinClasses } = useAppConfig()
+    const { enableScrollToTop } = $themeConfig.layout
 
     // If skin is dark when initialized => Add class to body
     if (skin.value === 'dark') document.body.classList.add('dark-layout')
@@ -49,22 +54,15 @@ export default {
     })
 
     // Set Window Width in store
-    store.commit('breakpoint/UPDATE_WINDOW_WIDTH', window.innerWidth)
+    store.commit('app/UPDATE_WINDOW_WIDTH', window.innerWidth)
     const { width: windowWidth } = useWindowSize()
     watch(windowWidth, (val) => {
-      store.commit('breakpoint/UPDATE_WINDOW_WIDTH', val)
-    })
-
-    watch(route, (val) => {
-      if (val?.meta?.menuType) {
-        navMenuType.value = val?.meta?.menuType
-      } else {
-        navMenuType.value = 'main'
-      }
+      store.commit('app/UPDATE_WINDOW_WIDTH', val)
     })
 
     return {
       skinClasses,
+      enableScrollToTop,
     }
   },
   // ! We can move this computed: layout & contentLayoutType once we get to use Vue 3
@@ -78,7 +76,7 @@ export default {
       return this.$store.state.appConfig.layout.type
     },
   },
-  async beforeCreate() {
+  beforeCreate() {
     // Set colors in theme
     const colors = ['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark']
 

@@ -1,6 +1,6 @@
 {
-  "name": "сardona-core-service",
-  "version": "0.0.1",
+  "name": "cardona-core-service",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "build": "vue-cli-service build",
