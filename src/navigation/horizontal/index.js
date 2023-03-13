@@ -32,4 +32,12 @@ import formAndTable from './forms-and-table'
 import others from './others'
 
 // Array of sections
-export default [...dashboard, ...apps, ...uiElements, ...formAndTable, ...pages, ...chartsAndMaps, ...others]
+export default [
+  ...dashboard,
+  ...apps,
+  ...uiElements,
+  ...formAndTable,
+  ...pages,
+  ...chartsAndMaps,
+  ...others,
+]

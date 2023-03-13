@@ -11,7 +11,8 @@ const data = {
       userFullName: 'Ghani Pradita',
       blogPosted: 'Jan 10, 2020',
       tags: ['Quote', 'Fashion'],
-      excerpt: 'Donut fruitcake soufflé apple pie candy canes jujubes croissant chocolate bar ice cream.',
+      excerpt:
+        'Donut fruitcake soufflé apple pie candy canes jujubes croissant chocolate bar ice cream.',
       comment: 76,
     },
     {
@@ -22,7 +23,8 @@ const data = {
       userFullName: 'Jorge Griffin',
       blogPosted: 'Jan 10, 2020',
       tags: ['Gaming', 'Video'],
-      excerpt: 'Apple pie caramels lemon drops halvah liquorice carrot cake. Tiramisu brownie lemon drops.',
+      excerpt:
+        'Apple pie caramels lemon drops halvah liquorice carrot cake. Tiramisu brownie lemon drops.',
       comment: 2100,
     },
     {
@@ -33,7 +35,8 @@ const data = {
       userFullName: 'Claudia Neal',
       blogPosted: 'Jan 10, 2020',
       tags: ['Gaming', 'Food'],
-      excerpt: 'Tiramisu jelly-o chupa chups tootsie roll donut wafer marshmallow cheesecake topping.',
+      excerpt:
+        'Tiramisu jelly-o chupa chups tootsie roll donut wafer marshmallow cheesecake topping.',
       comment: 243,
     },
     {
@@ -44,7 +47,8 @@ const data = {
       userFullName: 'Fred Boone',
       blogPosted: 'Jan 10, 2020',
       tags: ['Video'],
-      excerpt: 'Croissant apple pie lollipop gingerbread. Cookie jujubes chocolate cake icing cheesecake.',
+      excerpt:
+        'Croissant apple pie lollipop gingerbread. Cookie jujubes chocolate cake icing cheesecake.',
       comment: 10,
     },
     {
@@ -55,7 +59,8 @@ const data = {
       userFullName: 'Billy French',
       blogPosted: 'Jan 10, 2020',
       tags: ['Quote', 'Fashion'],
-      excerpt: 'Muffin liquorice candy soufflé bear claw apple pie icing halvah. Pie marshmallow jelly.',
+      excerpt:
+        'Muffin liquorice candy soufflé bear claw apple pie icing halvah. Pie marshmallow jelly.',
       comment: 319,
     },
     {
@@ -66,7 +71,8 @@ const data = {
       userFullName: 'Helena Hunt',
       blogPosted: 'Jan 10, 2020',
       tags: ['Fashion', 'Video'],
-      excerpt: 'A little personality goes a long way, especially on a business blog. So don’t be afraid to let loose.',
+      excerpt:
+        'A little personality goes a long way, especially on a business blog. So don’t be afraid to let loose.',
       comment: 1500,
     },
   ],

@@ -76,11 +76,20 @@ const data = {
       subtitle: 'Add files to new design folder',
       duration: '2 day ago',
       avatars: [
-        { userImg: require('@/assets/images/portrait/small/avatar-s-9.jpg'), name: 'Billy Hopkins' },
+        {
+          userImg: require('@/assets/images/portrait/small/avatar-s-9.jpg'),
+          name: 'Billy Hopkins',
+        },
         { userImg: require('@/assets/images/portrait/small/avatar-s-6.jpg'), name: 'Amy Carson' },
-        { userImg: require('@/assets/images/portrait/small/avatar-s-8.jpg'), name: 'Brandon Miles' },
+        {
+          userImg: require('@/assets/images/portrait/small/avatar-s-8.jpg'),
+          name: 'Brandon Miles',
+        },
         { userImg: require('@/assets/images/portrait/small/avatar-s-7.jpg'), name: 'Daisy Weber' },
-        { userImg: require('@/assets/images/portrait/small/avatar-s-20.jpg'), name: 'Jenny Looper' },
+        {
+          userImg: require('@/assets/images/portrait/small/avatar-s-20.jpg'),
+          name: 'Jenny Looper',
+        },
       ],
     },
     step4: {
@@ -104,7 +113,8 @@ const data = {
   appDesign: {
     date: '03 Sep, 20',
     title: 'App design',
-    subtitle: 'You can Find Only Post and Quotes Related to IOS like ipad app design, iphone app design',
+    subtitle:
+      'You can Find Only Post and Quotes Related to IOS like ipad app design, iphone app design',
     teams: [
       { name: 'Figma', color: 'light-warning' },
       { name: 'Wireframe', color: 'light-primary' },

@@ -1,7 +1,4 @@
 import mock from './mock'
-
-/* eslint-disable import/extensions */
-
 // JWT
 import './jwt'
 
@@ -31,6 +28,5 @@ import './data/pages/pricing-data'
 import './data/pages/account-setting'
 import './data/pages/profile-data'
 import './data/pages/blog'
-/* eslint-enable import/extensions */
 
 mock.onAny().passThrough() // forwards the matched request over network

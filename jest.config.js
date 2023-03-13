@@ -6,7 +6,6 @@ module.exports = {
     '^.+\\.svg$': 'jest-transform-stub',
     '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
     '^@model/(.*)$': '<rootDir>/src/@model/$1',
-    '^@queries/(.*)$': '<rootDir>/src/@queries/$1',
     '^@core/(.*)$': '<rootDir>/src/@core/$1',
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@axios$': '<rootDir>/src/libs/axios',

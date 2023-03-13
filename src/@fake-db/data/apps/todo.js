@@ -281,7 +281,7 @@ const data = {
 // ------------------------------------------------
 // GET: Return Tasks
 // ------------------------------------------------
-mock.onGet('/apps/todo/tasks').reply(config => {
+mock.onGet('/apps/todo/tasks').reply((config) => {
   // eslint-disable-next-line object-curly-newline
   const { q = '', filter, tag, sortBy: sortByParam = 'latest' } = config.params
   /* eslint-enable */
@@ -313,22 +313,26 @@ mock.onGet('/apps/todo/tasks').reply(config => {
   // ------------------------------------------------
   const queryLowered = q.toLowerCase()
 
-  const hasFilter = task => {
+  const hasFilter = (task) => {
     if (filter === 'important') return task.isImportant && !task.isDeleted
     if (filter === 'completed') return task.isCompleted && !task.isDeleted
     if (filter === 'deleted') return task.isDeleted
     return !task.isDeleted
   }
   /* eslint-disable no-confusing-arrow, implicit-arrow-linebreak, arrow-body-style */
-  const filteredData = data.tasks.filter(task => {
-    return task.title.toLowerCase().includes(queryLowered) && hasFilter(task) && (tag ? task.tags.includes(tag) : true)
+  const filteredData = data.tasks.filter((task) => {
+    return (
+      task.title.toLowerCase().includes(queryLowered) &&
+      hasFilter(task) &&
+      (tag ? task.tags.includes(tag) : true)
+    )
   })
   /* eslint-enable  */
 
   // ------------------------------------------------
   // Perform sorting
   // ------------------------------------------------
-  const sortTasks = key => (a, b) => {
+  const sortTasks = (key) => (a, b) => {
     let fieldA
     let fieldB
 
@@ -375,7 +379,7 @@ mock.onGet('/apps/todo/tasks').reply(config => {
 // ------------------------------------------------
 // POST: Add new task
 // ------------------------------------------------
-mock.onPost('/apps/todo/tasks').reply(config => {
+mock.onPost('/apps/todo/tasks').reply((config) => {
   // Get event from post data
   const { task } = JSON.parse(config.data)
 
@@ -394,13 +398,13 @@ mock.onPost('/apps/todo/tasks').reply(config => {
 // ------------------------------------------------
 // POST: Update Task
 // ------------------------------------------------
-mock.onPost(/\/apps\/todo\/tasks\/\d+/).reply(config => {
+mock.onPost(/\/apps\/todo\/tasks\/\d+/).reply((config) => {
   const { task: taskData } = JSON.parse(config.data)
 
   // Convert Id to number
   taskData.id = Number(taskData.id)
 
-  const task = data.tasks.find(e => e.id === Number(taskData.id))
+  const task = data.tasks.find((e) => e.id === Number(taskData.id))
   Object.assign(task, taskData)
 
   return [200, { task }]
@@ -409,14 +413,14 @@ mock.onPost(/\/apps\/todo\/tasks\/\d+/).reply(config => {
 // ------------------------------------------------
 // DELETE: Remove Task
 // ------------------------------------------------
-mock.onDelete(/\/apps\/todo\/tasks\/\d+/).reply(config => {
+mock.onDelete(/\/apps\/todo\/tasks\/\d+/).reply((config) => {
   // Get task id from URL
   let taskId = config.url.substring(config.url.lastIndexOf('/') + 1)
 
   // Convert Id to number
   taskId = Number(taskId)
 
-  const task = data.tasks.find(t => t.id === taskId)
+  const task = data.tasks.find((t) => t.id === taskId)
   Object.assign(task, { isDeleted: true })
   return [200]
 })

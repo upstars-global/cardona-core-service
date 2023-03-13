@@ -94,13 +94,9 @@ module.exports = {
         trailingComma: 'es5',
       },
     ],
-    'vue-scoped-css/no-unused-selector': [
-      'error',
-      {
-        ignoreBEMModifier: false,
-        captureClassesFromDoc: [],
-      },
-    ],
+    'vue-scoped-css/no-unused-selector': 0,
+    'import/no-extraneous-dependencies': 0,
+    'vue/no-useless-template-attributes': 0,
     'vue/multi-word-component-names': 0,
     'vue/no-mutating-props': 0,
   },

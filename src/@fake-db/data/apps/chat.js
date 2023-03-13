@@ -23,7 +23,8 @@ const data = {
       id: 1,
       fullName: 'Felecia Rower',
       role: 'Frontend Developer',
-      about: 'Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing',
+      about:
+        'Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing',
       avatar: require('@/assets/images/avatars/1.png'),
       status: 'offline',
     },
@@ -58,7 +59,8 @@ const data = {
       id: 5,
       fullName: 'Margot Henschke',
       role: 'Dietitian',
-      about: 'Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing',
+      about:
+        'Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing',
       avatar: require('@/assets/images/avatars/5.png'),
       status: 'busy',
     },
@@ -102,7 +104,8 @@ const data = {
       id: 10,
       fullName: 'Zenia Jacobs',
       role: 'Building surveyor',
-      about: 'Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing',
+      about:
+        'Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing',
       avatar: require('@/assets/images/avatars/10.png'),
       status: 'away',
     },
@@ -156,7 +159,8 @@ const data = {
           senderId: 11,
         },
         {
-          message: 'Hey John, I am looking for the best admin template. Could you please help me to find it out?',
+          message:
+            'Hey John, I am looking for the best admin template. Could you please help me to find it out?',
           time: 'Mon Dec 10 2018 07:45:23 GMT+0000 (GMT)',
           senderId: 1,
         },
@@ -211,9 +215,13 @@ const data = {
 // ------------------------------------------------
 mock.onGet('/apps/chat/chats-and-contacts').reply(() => {
   const chatsContacts = data.chats
-    .map(chat => {
-      const contact = data.contacts.find(c => c.id === chat.userId)
-      contact.chat = { id: chat.id, unseenMsgs: chat.unseenMsgs, lastMessage: chat.chat[chat.chat.length - 1] }
+    .map((chat) => {
+      const contact = data.contacts.find((c) => c.id === chat.userId)
+      contact.chat = {
+        id: chat.id,
+        unseenMsgs: chat.unseenMsgs,
+        lastMessage: chat.chat[chat.chat.length - 1],
+      }
       return contact
     })
     .reverse()
@@ -235,21 +243,21 @@ mock.onGet('/apps/chat/users/profile-user').reply(() => [200, data.profileUser])
 // ------------------------------------------------
 // GET: Return Single Chat
 // ------------------------------------------------
-mock.onGet(/\/apps\/chat\/chats\/\d+/).reply(config => {
+mock.onGet(/\/apps\/chat\/chats\/\d+/).reply((config) => {
   // Get event id from URL
   let userId = config.url.substring(config.url.lastIndexOf('/') + 1)
 
   // Convert Id to number
   userId = Number(userId)
 
-  const chat = data.chats.find(c => c.userId === userId)
+  const chat = data.chats.find((c) => c.userId === userId)
   if (chat) chat.unseenMsgs = 0
 
   return [
     200,
     {
       chat,
-      contact: data.contacts.find(c => c.id === userId),
+      contact: data.contacts.find((c) => c.id === userId),
     },
   ]
 })
@@ -257,14 +265,14 @@ mock.onGet(/\/apps\/chat\/chats\/\d+/).reply(config => {
 // ------------------------------------------------
 // POST: Add new chat message
 // ------------------------------------------------
-mock.onPost(/\/apps\/chat\/chats\/\d+/).reply(config => {
+mock.onPost(/\/apps\/chat\/chats\/\d+/).reply((config) => {
   // Get user id from URL
   const contactId = Number(config.url.substring(config.url.lastIndexOf('/') + 1))
 
   // Get event from post data
   const { message, senderId } = JSON.parse(config.data)
 
-  let activeChat = data.chats.find(chat => chat.userId === contactId)
+  let activeChat = data.chats.find((chat) => chat.userId === contactId)
   const newMessageData = {
     message,
     time: new Date(),
