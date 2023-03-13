@@ -9,7 +9,8 @@ const data = {
       coverImg: require('@/assets/images/profile/user-uploads/timeline.jpg'),
     },
     userAbout: {
-      about: 'Tart I love sugar plum I love oat cake. Sweet ⭐️ roll caramels I love jujubes. Topping cake wafer.',
+      about:
+        'Tart I love sugar plum I love oat cake. Sweet ⭐️ roll caramels I love jujubes. Topping cake wafer.',
       joined: 'November 15, 2015',
       lives: 'New York, USA',
       email: 'bucketful@fiendhead.org',
@@ -92,25 +93,42 @@ const data = {
         comments: 1240,
         share: 1240,
         likedUsers: [
-          { avatar: require('@/assets/images/portrait/small/avatar-s-1.jpg'), username: 'Trine Lynes' },
-          { avatar: require('@/assets/images/portrait/small/avatar-s-2.jpg'), username: 'Lilian Nenes' },
-          { avatar: require('@/assets/images/portrait/small/avatar-s-3.jpg'), username: 'Alberto Glotzbach' },
-          { avatar: require('@/assets/images/portrait/small/avatar-s-5.jpg'), username: 'George Nordic' },
-          { avatar: require('@/assets/images/portrait/small/avatar-s-4.jpg'), username: 'Vinnie Mostowy' },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-1.jpg'),
+            username: 'Trine Lynes',
+          },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-2.jpg'),
+            username: 'Lilian Nenes',
+          },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-3.jpg'),
+            username: 'Alberto Glotzbach',
+          },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-5.jpg'),
+            username: 'George Nordic',
+          },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-4.jpg'),
+            username: 'Vinnie Mostowy',
+          },
         ],
         likedCount: 140,
         detailedComments: [
           {
             avatar: require('@/assets/images/portrait/small/avatar-s-6.jpg'),
             username: 'Kitty Allanson',
-            comment: 'Easy & smart fuzzy search🕵🏻 functionality which enables users to search quickly.',
+            comment:
+              'Easy & smart fuzzy search🕵🏻 functionality which enables users to search quickly.',
             commentsLikes: 34,
             youLiked: false,
           },
           {
             avatar: require('@/assets/images/portrait/small/avatar-s-8.jpg'),
             username: 'Jackey Potter',
-            comment: 'Unlimited color🖌 options allows you to set your application color as per your branding 🤪.',
+            comment:
+              'Unlimited color🖌 options allows you to set your application color as per your branding 🤪.',
             commentsLikes: 61,
             youLiked: true,
           },
@@ -128,18 +146,34 @@ const data = {
         comments: 1240,
         share: 1240,
         likedUsers: [
-          { avatar: require('@/assets/images/portrait/small/avatar-s-1.jpg'), username: 'Trine Lynes' },
-          { avatar: require('@/assets/images/portrait/small/avatar-s-2.jpg'), username: 'Lilian Nenes' },
-          { avatar: require('@/assets/images/portrait/small/avatar-s-3.jpg'), username: 'Alberto Glotzbach' },
-          { avatar: require('@/assets/images/portrait/small/avatar-s-5.jpg'), username: 'George Nordic' },
-          { avatar: require('@/assets/images/portrait/small/avatar-s-4.jpg'), username: 'Vinnie Mostowy' },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-1.jpg'),
+            username: 'Trine Lynes',
+          },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-2.jpg'),
+            username: 'Lilian Nenes',
+          },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-3.jpg'),
+            username: 'Alberto Glotzbach',
+          },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-5.jpg'),
+            username: 'George Nordic',
+          },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-4.jpg'),
+            username: 'Vinnie Mostowy',
+          },
         ],
         likedCount: 271,
         detailedComments: [
           {
             avatar: require('@/assets/images/portrait/small/avatar-s-3.jpg'),
             username: 'Kitty Allanson',
-            comment: 'Easy & smart fuzzy search🕵🏻 functionality which enables users to search quickly.',
+            comment:
+              'Easy & smart fuzzy search🕵🏻 functionality which enables users to search quickly.',
             commentsLikes: 34,
             youLiked: false,
           },
@@ -157,18 +191,34 @@ const data = {
         comments: 1240,
         share: 1240,
         likedUsers: [
-          { avatar: require('@/assets/images/portrait/small/avatar-s-1.jpg'), username: 'Trine Lynes' },
-          { avatar: require('@/assets/images/portrait/small/avatar-s-2.jpg'), username: 'Lilian Nenes' },
-          { avatar: require('@/assets/images/portrait/small/avatar-s-3.jpg'), username: 'Alberto Glotzbach' },
-          { avatar: require('@/assets/images/portrait/small/avatar-s-5.jpg'), username: 'George Nordic' },
-          { avatar: require('@/assets/images/portrait/small/avatar-s-4.jpg'), username: 'Vinnie Mostowy' },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-1.jpg'),
+            username: 'Trine Lynes',
+          },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-2.jpg'),
+            username: 'Lilian Nenes',
+          },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-3.jpg'),
+            username: 'Alberto Glotzbach',
+          },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-5.jpg'),
+            username: 'George Nordic',
+          },
+          {
+            avatar: require('@/assets/images/portrait/small/avatar-s-4.jpg'),
+            username: 'Vinnie Mostowy',
+          },
         ],
         likedCount: 264,
         detailedComments: [
           {
             avatar: require('@/assets/images/portrait/small/avatar-s-3.jpg'),
             username: 'Kitty Allanson',
-            comment: 'Easy & smart fuzzy search🕵🏻 functionality which enables users to search quickly.',
+            comment:
+              'Easy & smart fuzzy search🕵🏻 functionality which enables users to search quickly.',
             commentsLikes: 34,
             youLiked: false,
           },
@@ -223,10 +273,22 @@ const data = {
         name: 'RDJ',
         result: '82%',
         votedUser: [
-          { img: require('@/assets/images/portrait/small/avatar-s-12.jpg'), username: 'Tonia Seabold' },
-          { img: require('@/assets/images/portrait/small/avatar-s-5.jpg'), username: 'Carissa Dolle' },
-          { img: require('@/assets/images/portrait/small/avatar-s-9.jpg'), username: 'Kelle Herrick' },
-          { img: require('@/assets/images/portrait/small/avatar-s-10.jpg'), username: 'Len Bregantini' },
+          {
+            img: require('@/assets/images/portrait/small/avatar-s-12.jpg'),
+            username: 'Tonia Seabold',
+          },
+          {
+            img: require('@/assets/images/portrait/small/avatar-s-5.jpg'),
+            username: 'Carissa Dolle',
+          },
+          {
+            img: require('@/assets/images/portrait/small/avatar-s-9.jpg'),
+            username: 'Kelle Herrick',
+          },
+          {
+            img: require('@/assets/images/portrait/small/avatar-s-10.jpg'),
+            username: 'Len Bregantini',
+          },
           { img: require('@/assets/images/portrait/small/avatar-s-11.jpg'), username: 'John Doe' },
         ],
       },
@@ -234,9 +296,18 @@ const data = {
         name: 'Chris Hemswort',
         result: '67%',
         votedUser: [
-          { img: require('@/assets/images/portrait/small/avatar-s-9.jpg'), username: 'Tonia Seabold' },
-          { img: require('@/assets/images/portrait/small/avatar-s-1.jpg'), username: 'Carissa Dolle' },
-          { img: require('@/assets/images/portrait/small/avatar-s-8.jpg'), username: 'Jonathan Lyons' },
+          {
+            img: require('@/assets/images/portrait/small/avatar-s-9.jpg'),
+            username: 'Tonia Seabold',
+          },
+          {
+            img: require('@/assets/images/portrait/small/avatar-s-1.jpg'),
+            username: 'Carissa Dolle',
+          },
+          {
+            img: require('@/assets/images/portrait/small/avatar-s-8.jpg'),
+            username: 'Jonathan Lyons',
+          },
         ],
       },
     ],

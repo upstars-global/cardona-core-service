@@ -746,7 +746,7 @@ const data = {
 // ------------------------------------------------
 // GET: Return Emails
 // ------------------------------------------------
-mock.onGet('/apps/email/emails').reply(config => {
+mock.onGet('/apps/email/emails').reply((config) => {
   // eslint-disable-next-line object-curly-newline
   const { q = '', folder = 'inbox', label } = config.params
   /* eslint-enable */
@@ -767,11 +767,11 @@ mock.onGet('/apps/email/emails').reply(config => {
   }
 
   const filteredData = data.emails.filter(
-    email =>
+    (email) =>
       /* eslint-disable operator-linebreak, implicit-arrow-linebreak */
       email.subject.toLowerCase().includes(queryLowered) &&
       isInFolder(email) &&
-      (label ? email.labels.includes(label) : true),
+      (label ? email.labels.includes(label) : true)
   )
   /* eslint-enable  */
 
@@ -779,9 +779,13 @@ mock.onGet('/apps/email/emails').reply(config => {
   // Email Meta
   // ------------------------------------------------
   const emailsMeta = {
-    inbox: data.emails.filter(email => !email.isDeleted && !email.isRead && email.folder === 'inbox').length,
-    draft: data.emails.filter(email => email.folder === 'draft').length,
-    spam: data.emails.filter(email => !email.isDeleted && !email.isRead && email.folder === 'spam').length,
+    inbox: data.emails.filter(
+      (email) => !email.isDeleted && !email.isRead && email.folder === 'inbox'
+    ).length,
+    draft: data.emails.filter((email) => email.folder === 'draft').length,
+    spam: data.emails.filter(
+      (email) => !email.isDeleted && !email.isRead && email.folder === 'spam'
+    ).length,
   }
 
   return [
@@ -796,14 +800,14 @@ mock.onGet('/apps/email/emails').reply(config => {
 // ------------------------------------------------
 // POST: Update Email
 // ------------------------------------------------
-mock.onPost('/apps/email/update-emails').reply(config => {
+mock.onPost('/apps/email/update-emails').reply((config) => {
   const { emailIds, dataToUpdate } = JSON.parse(config.data)
 
   function updateMailData(email) {
     Object.assign(email, dataToUpdate)
   }
 
-  data.emails.forEach(email => {
+  data.emails.forEach((email) => {
     if (emailIds.includes(email.id)) updateMailData(email)
   })
 
@@ -813,7 +817,7 @@ mock.onPost('/apps/email/update-emails').reply(config => {
 // ------------------------------------------------
 // POST: Update Emails Label
 // ------------------------------------------------
-mock.onPost('/apps/email/update-emails-label').reply(config => {
+mock.onPost('/apps/email/update-emails-label').reply((config) => {
   const { emailIds, label } = JSON.parse(config.data)
 
   function updateMailLabels(email) {
@@ -823,7 +827,7 @@ mock.onPost('/apps/email/update-emails-label').reply(config => {
     else email.labels.splice(labelIndex, 1)
   }
 
-  data.emails.forEach(email => {
+  data.emails.forEach((email) => {
     if (emailIds.includes(email.id)) updateMailLabels(email)
   })
 
@@ -833,10 +837,10 @@ mock.onPost('/apps/email/update-emails-label').reply(config => {
 // ------------------------------------------------
 // GET: Paginate Existing Email
 // ------------------------------------------------
-mock.onGet('/apps/email/paginate-email').reply(config => {
+mock.onGet('/apps/email/paginate-email').reply((config) => {
   const { dir, emailId } = config.params
 
-  const currentEmailIndex = data.emails.findIndex(e => e.id === emailId)
+  const currentEmailIndex = data.emails.findIndex((e) => e.id === emailId)
 
   const newEmailIndex = dir === 'previous' ? currentEmailIndex - 1 : currentEmailIndex + 1
 

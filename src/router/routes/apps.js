@@ -161,7 +161,8 @@ export default [
   {
     path: '/apps/e-commerce/:slug',
     name: 'apps-e-commerce-product-details',
-    component: () => import('@/views/apps/e-commerce/e-commerce-product-details/ECommerceProductDetails.vue'),
+    component: () =>
+      import('@/views/apps/e-commerce/e-commerce-product-details/ECommerceProductDetails.vue'),
     meta: {
       pageTitle: 'Product Details',
       contentClass: 'ecommerce-application',

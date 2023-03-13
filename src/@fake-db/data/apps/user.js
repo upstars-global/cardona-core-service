@@ -661,7 +661,7 @@ const data = {
 // ------------------------------------------------
 // GET: Return Users
 // ------------------------------------------------
-mock.onGet('/apps/user/users').reply(config => {
+mock.onGet('/apps/user/users').reply((config) => {
   // eslint-disable-next-line object-curly-newline
   const {
     q = '',
@@ -677,12 +677,13 @@ mock.onGet('/apps/user/users').reply(config => {
 
   const queryLowered = q.toLowerCase()
   const filteredData = data.users.filter(
-    user =>
+    (user) =>
       /* eslint-disable operator-linebreak, implicit-arrow-linebreak */
-      (user.username.toLowerCase().includes(queryLowered) || user.fullName.toLowerCase().includes(queryLowered)) &&
+      (user.username.toLowerCase().includes(queryLowered) ||
+        user.fullName.toLowerCase().includes(queryLowered)) &&
       user.role === (role || user.role) &&
       user.currentPlan === (plan || user.currentPlan) &&
-      user.status === (status || user.status),
+      user.status === (status || user.status)
   )
   /* eslint-enable  */
 
@@ -701,7 +702,7 @@ mock.onGet('/apps/user/users').reply(config => {
 // ------------------------------------------------
 // POST: Add new user
 // ------------------------------------------------
-mock.onPost('/apps/user/users').reply(config => {
+mock.onPost('/apps/user/users').reply((config) => {
   // Get event from post data
   const { user } = JSON.parse(config.data)
 
@@ -723,14 +724,14 @@ mock.onPost('/apps/user/users').reply(config => {
 // ------------------------------------------------
 // GET: Return Single User
 // ------------------------------------------------
-mock.onGet(/\/apps\/user\/users\/\d+/).reply(config => {
+mock.onGet(/\/apps\/user\/users\/\d+/).reply((config) => {
   // Get event id from URL
   let userId = config.url.substring(config.url.lastIndexOf('/') + 1)
 
   // Convert Id to number
   userId = Number(userId)
 
-  const userIndex = data.users.findIndex(e => e.id === userId)
+  const userIndex = data.users.findIndex((e) => e.id === userId)
   const user = data.users[userIndex]
 
   if (user) return [200, user]

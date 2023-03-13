@@ -179,11 +179,20 @@ const data = {
       { avatar: 'MapPinIcon', title: 'Central Park', subtitle: 'Manhattan, New york City' },
     ],
     avatars: [
-      { avatar: require('@/assets/images/portrait/small/avatar-s-9.jpg'), fullName: 'Billy Hopkins' },
+      {
+        avatar: require('@/assets/images/portrait/small/avatar-s-9.jpg'),
+        fullName: 'Billy Hopkins',
+      },
       { avatar: require('@/assets/images/portrait/small/avatar-s-6.jpg'), fullName: 'Amy Carson' },
-      { avatar: require('@/assets/images/portrait/small/avatar-s-8.jpg'), fullName: 'Brandon Miles' },
+      {
+        avatar: require('@/assets/images/portrait/small/avatar-s-8.jpg'),
+        fullName: 'Brandon Miles',
+      },
       { avatar: require('@/assets/images/portrait/small/avatar-s-7.jpg'), fullName: 'Daisy Weber' },
-      { avatar: require('@/assets/images/portrait/small/avatar-s-20.jpg'), fullName: 'Jenny Looper' },
+      {
+        avatar: require('@/assets/images/portrait/small/avatar-s-20.jpg'),
+        fullName: 'Jenny Looper',
+      },
     ],
   },
   goalOverview: {

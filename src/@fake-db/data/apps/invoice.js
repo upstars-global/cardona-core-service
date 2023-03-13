@@ -911,18 +911,25 @@ const data = {
 // ------------------------------------------------
 // GET: Return Users
 // ------------------------------------------------
-mock.onGet('/apps/invoice/invoices').reply(config => {
+mock.onGet('/apps/invoice/invoices').reply((config) => {
   // eslint-disable-next-line object-curly-newline
-  const { q = '', perPage = 10, page = 1, sortBy = 'id', sortDesc = false, status = null } = config.params
+  const {
+    q = '',
+    perPage = 10,
+    page = 1,
+    sortBy = 'id',
+    sortDesc = false,
+    status = null,
+  } = config.params
   /* eslint-enable */
 
   const queryLowered = q.toLowerCase()
   const filteredData = data.invoices.filter(
-    invoice =>
+    (invoice) =>
       /* eslint-disable operator-linebreak, implicit-arrow-linebreak */
       (invoice.client.companyEmail.toLowerCase().includes(queryLowered) ||
         invoice.client.name.toLowerCase().includes(queryLowered)) &&
-      invoice.invoiceStatus === (status || invoice.invoiceStatus),
+      invoice.invoiceStatus === (status || invoice.invoiceStatus)
   )
   /* eslint-enable  */
 
@@ -941,14 +948,14 @@ mock.onGet('/apps/invoice/invoices').reply(config => {
 // ------------------------------------------------
 // GET: Return Single Invoice
 // ------------------------------------------------
-mock.onGet(/\/apps\/invoice\/invoices\/\d+/).reply(config => {
+mock.onGet(/\/apps\/invoice\/invoices\/\d+/).reply((config) => {
   // Get event id from URL
   let invoiceId = config.url.substring(config.url.lastIndexOf('/') + 1)
 
   // Convert Id to number
   invoiceId = Number(invoiceId)
 
-  const invoiceIndex = data.invoices.findIndex(e => e.id === invoiceId)
+  const invoiceIndex = data.invoices.findIndex((e) => e.id === invoiceId)
   const invoice = data.invoices[invoiceIndex]
   const responseData = {
     invoice,
@@ -969,6 +976,6 @@ mock.onGet(/\/apps\/invoice\/invoices\/\d+/).reply(config => {
 // GET: Return Clients
 // ------------------------------------------------
 mock.onGet('/apps/invoice/clients').reply(() => {
-  const clients = data.invoices.map(invoice => invoice.client)
+  const clients = data.invoices.map((invoice) => invoice.client)
   return [200, clients.slice(0, 5)]
 })
