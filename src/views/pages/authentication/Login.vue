@@ -1,9 +1,8 @@
 <template>
   <div class="auth-wrapper auth-v2">
-    <b-row class="auth-inner m-0">
+    <b-row class="auth-inner m-0 flex-nowrap">
       <!-- Brand logo-->
       <b-link class="brand-logo">
-        <vuexy-logo />
         <h2 class="brand-text text-primary ml-1">Vuexy</h2>
       </b-link>
       <!-- /Brand logo-->
@@ -158,9 +157,7 @@
 </template>
 
 <script>
-/* eslint-disable global-require */
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import VuexyLogo from '@core/layouts/components/AppLogo.vue'
 import {
   BRow,
   BCol,
@@ -205,7 +202,6 @@ export default {
     BForm,
     BButton,
     BAlert,
-    VuexyLogo,
     ValidationProvider,
     ValidationObserver,
   },
