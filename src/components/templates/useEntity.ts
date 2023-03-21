@@ -1,9 +1,4 @@
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
 import { TableField } from '@core/components/table-fields/model'
-import { UseListType } from '@/components/templates/BaseList/model'
-import { UseEntityType } from '@/components/templates/BaseCreateUpdate/model'
-
-const { t } = useI18nUtils()
 
 const entityName: string = 'Entity'
 
@@ -24,7 +19,7 @@ export const useEntityList = () /*: UseListType */ => {
 }
 
 // Entity create & update
-export const useEntity = () /*: UseEntityType */ => {
+export const useEntity = () /*: UseEntityType<EntityFormClass> */ => {
   // const EntityFormClass = EntityFormClass
 
   return {

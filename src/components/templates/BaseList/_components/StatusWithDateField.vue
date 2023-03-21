@@ -2,28 +2,17 @@
 import { StatusWithDateValue } from '@model/view'
 import StatusField from './StatusField.vue'
 import DateField from './DateField.vue'
-import { computed } from 'vue'
 
-const props = withDefaults(
-  defineProps<{
-    item: StatusWithDateValue
-    size?: string
-  }>(),
-  {
-    size: 'md',
-  }
-)
-
-const dateClasses = computed(() => ({
-  'font-small-3': props.size === 'sm',
-}))
+const props = defineProps<{
+  item: StatusWithDateValue
+}>()
 </script>
 
 <template>
   <div class="status-with-date">
     <status-field :status="item.status" />
 
-    <date-field :class="dateClasses" :date="item.updatedAt" />
+    <date-field :date="item.updatedAt" />
   </div>
 </template>
 

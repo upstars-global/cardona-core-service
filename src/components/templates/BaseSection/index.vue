@@ -14,46 +14,48 @@
         />
       </card-loader>
 
-      <div class="d-flex align-items-center">
-        <template v-if="isCreatePage">
-          <b-button class="mr-2" variant="primary" @click="onSubmit(false)">
-            {{ $t('action.createAndExit') }}
-          </b-button>
+      <slot v-if="pageType" name="actions" :form="form">
+        <div class="d-flex align-items-center">
+          <template v-if="isCreatePage">
+            <b-button class="mr-2" variant="primary" @click="onSubmit(false)">
+              {{ $t('action.createAndExit') }}
+            </b-button>
 
-          <b-button class="mr-2" variant="outline-secondary" @click="onSubmit(true)">
-            {{ $t('action.createAndStay') }}
-          </b-button>
-        </template>
+            <b-button class="mr-2" variant="outline-secondary" @click="onSubmit(true)">
+              {{ $t('action.createAndStay') }}
+            </b-button>
+          </template>
 
-        <template v-if="isUpdatePage">
-          <b-button class="mr-2" variant="primary" @click="onSubmit(false)">
-            {{ $t('action.save') }}
-          </b-button>
-        </template>
+          <template v-if="isUpdatePage">
+            <b-button class="mr-2" variant="primary" @click="onSubmit(false)">
+              {{ $t('action.save') }}
+            </b-button>
+          </template>
 
-        <b-button variant="outline-secondary" @click.prevent="onClickCancel">
-          {{ $t('action.cancel') }}
-        </b-button>
-      </div>
+          <b-button variant="outline-secondary" @click.prevent="onClickCancel">
+            {{ $t('action.cancel') }}
+          </b-button>
+        </div>
+      </slot>
     </b-form>
   </validation-observer>
 </template>
 
 <script lang="ts">
-import { getCurrentInstance, PropType, ref, computed, onBeforeMount } from 'vue'
+import { getCurrentInstance, PropType, ref, computed, onBeforeMount, defineComponent } from 'vue'
 import { getters, dispatch } from '@/store'
 import { PageType, UseEntityType } from './model'
 import { ValidationObserver } from 'vee-validate'
 import formValidation from '@core/comp-functions/forms/form-validation'
 import CardLoader from '@core/components/card-loader/CardLoader.vue'
-import { convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '@/helpers'
+import { convertCamelCase, transformFormData } from '@/helpers'
 import { useBvModal } from '@/helpers/bvModal'
 import { useUtils as useI18nUtils } from '@core/libs/i18n'
 import { useRouter } from '@core/utils/utils'
 import { BaseListConfig, IBaseListConfig } from '@/components/templates/BaseList/model'
 
-export default {
-  name: 'BaseCreateUpdate',
+export default defineComponent({
+  name: 'BaseSection',
   components: {
     ValidationObserver,
     CardLoader,
@@ -67,7 +69,7 @@ export default {
 
     pageType: {
       type: String as PropType<PageType>,
-      required: true,
+      default: '',
     },
 
     useEntity: {
@@ -92,7 +94,6 @@ export default {
     const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Update`
 
     // Action names
-    const moduleName: string = convertLowerCaseFirstSymbol(entityName)
     const createActionName: string = 'baseStore/createEntity'
     const readActionName: string = 'baseStore/readEntity'
     const updateActionName: string = 'baseStore/updateEntity'
@@ -141,14 +142,17 @@ export default {
       })
     }
 
-    const { refFormObserver } = formValidation(() => {
+    const resetForm = () => {
       form.value = new EntityFormClass()
-    })
+    }
+    const { refFormObserver } = formValidation(resetForm)
+    const validate = async () => {
+      return await refFormObserver.value.validate()
+    }
 
     // Handlers
     const onSubmit = async (isStay: boolean) => {
-      const isValid: boolean = await refFormObserver.value.validate()
-      if (!isValid) return
+      if (!(await validate())) return
 
       const actionName: string = isCreatePage ? createActionName : updateActionName
       const transformedForm = transformFormData(form.value)
@@ -209,11 +213,17 @@ export default {
       canCreateSeo,
       canUpdateSeo,
 
+      // Validate
+      validate,
+
+      // Reset
+      resetForm,
+
       // Handlers
       onSubmit,
       onClickCancel,
       onClickRemove,
     }
   },
-}
+})
 </script>

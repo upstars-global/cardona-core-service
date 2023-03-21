@@ -58,9 +58,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import TextEditorWysiwyg from '@/components/TextEditorWysiwyg/index.vue'
-import { dispatch, getters } from '@/store'
+import { getters } from '@/store'
 import { SeoForm } from '@model/seo'
 import { FieldTranslationsData } from '@model/translations'
 
@@ -86,7 +86,7 @@ export default defineComponent({
 
   emits: ['input'],
 
-  setup(props, { emit }) {
+  setup(props) {
     const selectEditeInput = ref('')
     const selectedProject = computed(() => getters.selectedProject)
     const mainLocale = computed(() => selectedProject.value?.mainLocale || 'ru')
@@ -141,12 +141,6 @@ export default defineComponent({
         props!.value['fieldTranslations'] = fieldTranslations.value
       }
     }
-
-    onMounted(async () => {
-      if (getters['locale/allLocalesInfo'].isEmpty) {
-        await dispatch('locale/getLocalesList')
-      }
-    })
 
     watch(
       () => props.value,

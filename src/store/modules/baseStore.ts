@@ -1,7 +1,12 @@
 import ApiService from '@/services/api'
 import { ListData } from '@/@model'
-import { IRequestListPayload } from '@model/index'
+import { IRequestListPayload } from '@/@model/index'
 import { ExportFormat, IOptionsBaseFetch } from '@/components/templates/BaseList/model'
+import {
+  GamesSectionGamesItem,
+  IGamesSectionGamesFilters,
+  IGamesSectionGamesListPayload,
+} from '@model/games'
 import { convertLowerCaseFirstSymbol } from '@/helpers'
 
 const transformNameToType = (type: string): string => {
@@ -35,16 +40,37 @@ export default {
       state.totalItem = total
     },
 
-    SET_APPLIED_FILTERS(state, filters) {
+    SET_APPLIED_FILTERS(state, filters: IGamesSectionGamesFilters) {
       state.appliedFilters = filters
     },
   },
 
   actions: {
+    async fetchGamesList(
+      { rootGetters, commit },
+      { type, data }: { type: string; data: IGamesSectionGamesListPayload }
+    ) {
+      return new ListData<GamesSectionGamesItem>(
+        await ApiService.request({
+          type: 'App.V2.' + transformNameToType(type) + '.Games.List',
+          pagination: {
+            pageNumber: data?.page || 1,
+            perPage: data?.perPage,
+          },
+          sort: data?.sort,
+          filter: {
+            ...data?.filter,
+            project: rootGetters.selectedProject.alias,
+          },
+        })
+      )
+    },
+
     async fetchListEntity(
       { commit, rootGetters },
       payload: { type: string; data: IRequestListPayload; options: IOptionsBaseFetch }
     ) {
+      const { saveCountItem, listItemModel } = payload.options
       const fetchData = new ListData(
         await ApiService.request({
           type: 'App.V2.' + transformNameToType(payload.type) + '.List',
@@ -57,14 +83,14 @@ export default {
             ...payload.data?.filter,
             project: rootGetters.selectedProject.alias,
           },
-        })
+        }),
+        listItemModel
       )
 
-      if (payload.options.saveCountItem) {
+      if (saveCountItem) {
         commit('SET_TOTAL', fetchData.total)
         commit('SET_APPLIED_FILTERS', payload.data?.filter)
       }
-
       return fetchData
     },
 
@@ -109,18 +135,24 @@ export default {
       })
     },
 
-    async deleteEntity({ rootGetters }, payload: { type: string; id: string; comment: string }) {
-      return await ApiService.request(
+    async createEntity(
+      { rootGetters },
+      payload: { type: string; data: { form: any; formRef: any } }
+    ) {
+      const { data } = await ApiService.request(
         {
-          type: 'App.V2.' + transformNameToType(payload.type) + '.Delete',
+          type: 'App.V2.' + transformNameToType(payload.type) + '.Create',
           data: {
-            id: payload.id,
-            comment: payload.comment,
+            ...payload.data.form,
+            id: payload.data.form?.id,
             project: rootGetters.selectedProject.alias,
+            productId: rootGetters['product/productId'],
           },
         },
-        { withSuccessToast: true }
+        { withSuccessToast: true, formRef: payload.data.formRef }
       )
+
+      return data
     },
 
     async updateEntity(
@@ -133,6 +165,7 @@ export default {
           data: {
             ...payload.data.form,
             id: payload.data.form?.id,
+            productId: rootGetters['product/productId'],
             project: rootGetters.selectedProject.alias,
           },
         },
@@ -158,6 +191,20 @@ export default {
       )
     },
 
+    async deleteEntity({ rootGetters }, payload: { type: string; id: string; comment: string }) {
+      return await ApiService.request(
+        {
+          type: 'App.V2.' + transformNameToType(payload.type) + '.Delete',
+          data: {
+            id: payload.id,
+            comment: payload.comment,
+            project: rootGetters.selectedProject.alias,
+          },
+        },
+        { withSuccessToast: true }
+      )
+    },
+
     async multipleDeleteEntity(
       { rootGetters },
       { type, ids }: { type: string; ids: Array<string> }
@@ -172,25 +219,6 @@ export default {
         },
         { withSuccessToast: true }
       )
-    },
-
-    async createEntity(
-      { rootGetters },
-      payload: { type: string; data: { form: any; formRef: any } }
-    ) {
-      const { data } = await ApiService.request(
-        {
-          type: 'App.V2.' + transformNameToType(payload.type) + '.Create',
-          data: {
-            ...payload.data.form,
-            id: payload.data.form?.id,
-            project: rootGetters.selectedProject.alias,
-          },
-        },
-        { withSuccessToast: true, formRef: payload.data.formRef }
-      )
-
-      return data
     },
   },
 }

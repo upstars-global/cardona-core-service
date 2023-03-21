@@ -18,9 +18,9 @@ const props = withDefaults(defineProps<TextareaWithCounterFieldProps>(), {
 const emit = defineEmits<{
   (event: 'input', value: string): void
 }>()
+const maxCharsDefault: number = 100
 
-const maxChars: number = 100
-
+const maxChars = computed(() => props.field?.maxLength || maxCharsDefault)
 const modelValue = computed({
   get: (): string => props.value,
   set: (value: string) => emit('input', value),
@@ -38,7 +38,6 @@ const modelValue = computed({
       :disabled="disabled"
       :maxlength="maxChars"
     />
-
     <small class="textarea-counter-value float-right">
       <span class="char-count">{{ modelValue.length }}</span> / {{ maxChars }}
     </small>

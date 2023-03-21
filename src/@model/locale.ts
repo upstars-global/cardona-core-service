@@ -1,11 +1,9 @@
-export class LocaleInfo {
-  readonly code: string
+export class LocaleOption {
+  readonly id: string
   readonly name: string
-  readonly label: string
 
   constructor(code: string, name: string) {
-    this.code = code
-    this.name = name
-    this.label = `${name} - ${code}`
+    this.id = code
+    this.name = `${name} - ${code}`
   }
 }

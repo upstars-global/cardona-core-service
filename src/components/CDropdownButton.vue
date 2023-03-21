@@ -6,19 +6,20 @@ export default {
 
 <script lang="ts" setup>
 import { getters } from '@/store'
-import { CDropdownItems, Ripple } from '@model/cDropdownButton'
+import { CDropdownItems } from '@model/cDropdownButton'
+import { BVariant, BVariants } from '@model/bootstrap'
 
 const props = withDefaults(
   defineProps<{
     items: Array<CDropdownItems>
     label: string
-    variant: keyof typeof Ripple
+    variant: BVariant
     size?: string
     icon?: string
   }>(),
   {
     size: 'md',
-    variant: 'primary',
+    variant: BVariants.Primary,
     icon: '',
   }
 )
@@ -28,7 +29,7 @@ const checkCanView = (permission: string): boolean =>
 </script>
 
 <template>
-  <b-dropdown v-ripple.400="Ripple[variant]" right :variant="variant" :size="size">
+  <b-dropdown right :variant="variant" :size="size">
     <template #button-content>
       <feather-icon v-if="icon" :icon="icon" />
 

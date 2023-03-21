@@ -1,11 +1,14 @@
 import { Location } from 'vue-router'
+import { TranslateResult } from 'vue-i18n'
 
 export enum ViewType {
   Text = 'text',
+  Locale = 'locale',
+  Region = 'region',
   Textarea = 'textarea',
   Link = 'link',
   Badges = 'badges',
-  BadgeId = 'badge-id',
+  Badge = 'badge',
   Status = 'status',
   Statement = 'statement',
   Date = 'date',
@@ -15,14 +18,7 @@ export enum ViewType {
   StatusWithDateHistory = 'status-with-date-history',
   Comment = 'comment',
   TransactionType = 'transaction-type',
-  BalanceTable = 'balance-table',
   ObjectToRows = 'object-to-rows',
-}
-export enum ViewSize {
-  Xs = 'xs',
-  Sm = 'sm',
-  Md = 'md',
-  Lg = 'lg',
 }
 export enum ViewJustifyContent {
   Start = 'start',
@@ -51,11 +47,11 @@ export type StatusWithDateValue = {
 interface IViewInfo {
   readonly type?: ViewType
   readonly value?: LinkViewValue | SumAndCurrencyViewValue | StatusWithDateValue | any
-  readonly label?: string
-  readonly description?: string
+  readonly label?: TranslateResult
+  readonly description?: TranslateResult
   readonly icon?: string
   readonly withSeparator?: boolean
-  readonly permission?: string
+  readonly permission?: string // TODO: Change to type after creation permissions enum https://upstars.atlassian.net/browse/BAC-1244
   readonly withSearch?: boolean
 }
 
@@ -63,8 +59,8 @@ interface IViewInfo {
 export class ViewInfo<T = {}> {
   readonly type?: ViewType
   readonly value: LinkViewValue | SumAndCurrencyViewValue | StatusWithDateValue | any
-  readonly label?: string
-  readonly description?: string
+  readonly label?: TranslateResult
+  readonly description?: TranslateResult
   readonly icon?: string
   readonly withSeparator?: boolean
   readonly permission?: string
