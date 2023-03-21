@@ -67,11 +67,11 @@
 
 <script lang="ts">
 import { nextTick, computed, defineComponent, PropType, ref, watch } from 'vue'
-import { uploadFile } from '@/_@queries/сompostela'
 import ModalFileUpload from '@/components/UploadImage/ModalFileUpload.vue'
 import i18n from '@/libs/i18n'
 import useToastService from '@/helpers/toasts'
 import { useBvModal } from '@/helpers/bvModal'
+import { dispatch } from '@/store'
 
 export default defineComponent({
   name: 'UploadImage',
@@ -158,7 +158,7 @@ export default defineComponent({
         if (file.size > maxSizeFileKB) {
           clearFile()
 
-          toastError('fileSizeError', { MB: maxSizeFileKB / 1048576 })
+          toastError('fileSizeError', { MB: String(maxSizeFileKB / 1048576) })
 
           return
         }
@@ -167,7 +167,7 @@ export default defineComponent({
           isLoad.value = true
 
           const _path = props.path + '/' + file.name.replace(/\W/g, '_')
-          const { publicPath } = await uploadFile({
+          const { publicPath } = await dispatch('compostela/uploadFile', {
             file,
             path: _path,
           })

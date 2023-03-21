@@ -14,7 +14,8 @@
       "metaTitle": "Title",
       "fakeMetaTitle": "Fake Title",
       "metaDescription": "Description",
-      "fakeMetaDescription": "Fake description"
+      "fakeMetaDescription": "Fake description",
+      "content": "Description"
     }
   },
   "common": {
@@ -32,9 +33,10 @@
     "enterSomething": "Enter something",
     "recentRequests": "Recent Requests",
     "bonusAccount": "Bonus account",
-    "bonusBalance": "Bonus balance",
     "realAccount": "Real account",
+    "bonusBalance": "Bonus balance",
     "realBalance": "Real balance",
+    "wageringAmount": "Wagering Amount",
     "additionalPhone": "Additional phone",
     "noAccess": "No access",
     "view": "View",
@@ -108,6 +110,7 @@
     "dateOfActivated": "Activated",
     "dateOfUsed": "Used",
     "history": "History",
+    "log": "Log",
     "data": "Data",
     "before": "Before",
     "after": "After",
@@ -115,6 +118,9 @@
     "dateAndTime": "Date and time",
     "verification": "Verification",
     "gift": "Gift",
+    "showLess": "Show less",
+    "showMore": "Show more",
+    "callback": "Callback",
     "supportService" : {
       "_": "Support service",
       "searchPlaceholder": "Search by id, digitain id, email and login"
@@ -128,6 +134,7 @@
       "_": "Admin",
       "list" : "Admins",
       "full": "Administrator",
+      "fullListCount": "Administrators ({count})",
       "fullList": "Administrators",
       "group": "Administrators group",
       "add": "Add administrator"
@@ -135,6 +142,7 @@
     "groups": {
       "_": "Group",
       "list": "Groups",
+      "listCount": "Groups ({count})",
       "name": "Group name",
       "adminAdd": "Add an admin to a group",
       "searchPlaceholder": "Search by name and id"
@@ -171,13 +179,15 @@
     "project": {
       "_": "Project",
       "list": "Projects",
+      "listCount": "Projects ({count})",
       "name": "Project name",
       "publicName": "Project public name",
       "searchPlaceholder": "Search by title, id and alias"
     },
     "products": {
       "_": "Products",
-      "list": "Products"
+      "list": "Products",
+      "listCount": "Products ({count})"
     },
     "banners": {
       "_": "Banners",
@@ -254,12 +264,14 @@
       "transferredToReal": "Transferred to Real",
       "winLimit": "Win limit",
       "valueInPercentage": "Value in percentage",
-      "initiator": "Initiator"
+      "initiator": "Initiator",
+      "transferToReal": "Transfer to real"
     },
     "gifts": {
       "_": "Gifts",
       "status": "Status",
       "name": "Name",
+      "templateName": "Template name",
       "type": "Type",
       "accrue": "Accrue a gift"
     },
@@ -269,23 +281,25 @@
       "method": "Method",
       "accrue": "Accrue",
       "writeOff": "Write off",
+      "increase": "Increase",
+      "decrease": "Decrease",
       "isAddTransactions": {
         "labelAccrue": "Charge with transaction",
-        "labelWriteOff": "Write off with transaction"
+        "labelDecrease": "Decrease with transaction"
       },
       "gift": "Gift",
       "cause": "Cause",
       "amount": {
-        "labelAccrue": "Accrual amount",
-        "labelWriteOff": "Write-off amount",
+        "labelIncrease": "Increase amount",
+        "labelDecrease": "Decrease amount",
         "placeholder": "0.00"
       },
       "modal": {
-        "accrue": {
-          "title": "Accrue real balance"
+        "increase": {
+          "title": "Increase real balance"
         },
-        "writeOff": {
-          "title": "Write off real balance"
+        "decrease": {
+          "title": "Decrease real balance"
         }
       }
     },
@@ -346,10 +360,11 @@
     },
     "configuration": "Configuration",
     "promo": "Promo",
-    "project": {
+    "projects": {
       "list": "Projects",
       "create": "Create project",
-      "edit": "Edit project"
+      "edit": "Edit project",
+      "sidebarTitle": "Project"
     },
     "banners": {
       "list": "Banners",
@@ -522,6 +537,13 @@
       "removeModal": {
         "title": "Remove project",
         "description": "Are you sure you want to remove the project?"
+      },
+      "sidebarPart": {
+        "general": "General settings",
+        "alaro": "Alaro",
+        "valencia": "Valencia",
+        "marbella": "Marbella",
+        "administrators": "Project administrators"
       }
     },
     "banners": {
@@ -538,10 +560,6 @@
       "slider": "Slider",
       "promo": "Promo",
       "bannerType": "Banner type",
-      "removeModal": {
-        "title": "Remove banner",
-        "description": "Are you sure you want to remove this banner?"
-      },
       "keyStrategy": {
         "LEVEL_IN_RANGE": "Level in range",
         "DAYS_PASSED_SINCE_LAST_DEPOSIT" : "Days passed since deposit",
@@ -581,8 +599,6 @@
       "wager": "Wager",
       "wagered": "Wagered",
       "freebetSport": "Freebet Sport",
-      "showLess": "Show Less",
-      "showMore": "Show more",
       "playerSettings": "Player settings",
       "digitainID": "Digitain ID",
       "partnercode": "Partnercode",
@@ -590,7 +606,7 @@
       "lastLogin": "Last login",
       "ip": "IP",
       "lastIp": "Last IP",
-      "registrationCountry": "Registration Country",
+      "lastCountry": "Last country",
       "manager": "Manager",
       "managerModal": "Assign a manager",
       "noManager": "No manager",
@@ -607,6 +623,8 @@
       "cardMask": "Card mask",
       "payoutLimits": "Payout limits",
       "payoutLimitsTitleModal": "Set withdrawal limits",
+      "login": "Login",
+      "nickname": "Nickname",
       "firstName": "First name",
       "lastName": "Last name",
       "middleName": "Middle name",
@@ -707,15 +725,18 @@
   },
   "validations": {
     "banners_type_IS_BLANK_ERROR": "The field must not be empty",
-    "banners_slug_ALREADY_EXISTS": "An entry with this slug already exists",
-    "static_slug_ALREADY_EXISTS": "An entry with this slug already exists",
-    "static_title_ALREADY_EXISTS": "An entry with this title already exists",
-    "static_name_ALREADY_EXISTS": "An entry with this name already exists",
-    "games_slug_ALREADY_EXISTS": "An entry with this slug already exists",
+    "banners_slug_ALREADY_EXISTS": "A banner with this slug already exists",
+    "static_slug_ALREADY_EXISTS": "A static page with this slug already exists",
+    "static_title_ALREADY_EXISTS": "A static page with this title already exists",
+    "static_name_ALREADY_EXISTS": "A static page with this name already exists",
+    "games_slug_ALREADY_EXISTS": "An entity with this slug already exists",
+    "games_desktopKey_ALREADY_EXISTS": "A game with this desktop key already exists",
+    "games_mobileKey_ALREADY_EXISTS": "A game with this mobile key already exists",
     "projects_name_ALREADY_EXISTS": "Project with this name already exists",
     "projects_alias_NOT_UNIQUE": "Project with this alias already exists",
     "groups_name_ALREADY_EXISTS": "There is already a group with this name",
     "games_slug_REGEX_FAILED_ERROR": "Invalid slug format",
+    "projects_publicName_REGEX_FAILED_ERROR": "This value is not valid.",
     "users_userName_ALREADY_EXISTS": "There is already a user with this login",
     "incorrectLoginOrPassword": "Incorrect login or password",
     "alpha": "The {_field_} field may only contain alphabetic characters",
@@ -793,7 +814,10 @@
       "BAD_CREDENTIALS": "Wrong login or password",
       "TOKEN_EXPIRED": "Token expired",
       "TOKEN_INVALID": "Token invalid",
-      "VALIDATION": "Incorrect data entered",
+      "field_ALREADY_EXISTS": "This {field} already exists in the collection",
+      "games_desktopKey_ALREADY_EXISTS": "This desktop key already exists in the games",
+      "games_mobileKey_ALREADY_EXISTS": "This mobile key already exists in the games",
+      "games_slug_REGEX_FAILED_ERROR": "Invalid slug format",
       "serverError": "Server error: {message}",
       "loadFile": "Loading error",
       "fileSizeError": "File is larger than {MB} MB",
@@ -857,7 +881,7 @@
     "search": "Nothing found",
     "list": "No entries created",
     "listWithBtn": "No entries created. It's time to do it",
-    "project": "No projects created. It's time to do it",
+    "projects": "No projects created. It's time to do it",
     "conciergeService": "No recently viewed players",
     "supportService": "No recently viewed players",
     "banner": "No banners created. It's time to do it",
@@ -893,37 +917,12 @@
     "backoffice-groups": "Groups",
     "backoffice-projects": "Projects",
     "backoffice-banners": "Banners",
-    "treasury-real-balance": "Treasury-real-balance",
-    "treasury-winback-balance": "Winback",
-    "treasury-payouts-balance": "Amount to withdraw",
-    "treasury-bonus-balance": "Casino Bonus Balance",
-    "treasury-wager-balance": "Casino Wagering",
     "section-concierge-service": "Concierge service",
     "section-support-service": "Support service",
-    "sys-player-data-generalinfo-access": "General Info",
-    "field-player-generalinfo": "General Info",
-    "field-player-login": "Login",
-    "field-player-level": "Level",
-    "field-player-istest": "Test Account Feature",
-    "field-player-firstname": "Field-player-firstname",
-    "field-player-lastname": "Player's last name",
-    "field-player-middlename": "Field Player Middle Name",
-    "field-player-country": "Country",
-    "field-player-address": "Address",
-    "field-player-main-comment": "Main Comment",
-    "field-treasury-betting-balance": "Sport Bonus Balance",
-    "field-treasury-betting-wagger": "Playback Sport",
-    "field-treasury-betting-free-bet": "Freebet Sport",
-    "field-vcoins-balance": "Vcoins balance",
     "backoffice-player-contacts-email": "Mail",
     "backoffice-player-contacts-phone": "Phone",
-    "record-player-comments": "Comments",
-    "record-player-portraits": "Player Portrait",
-    "record-vcoins-log": "VCoins transaction history",
     "api-sms-send": "Sending SMS",
     "api-sms-log": "SMS send history",
-    "api-vcoins-withdraw": "Withdraw VCoins balance",
-    "api-vcoins-replenishment": "VCoins balance calculation",
     "backoffice-logaction": "Logging",
     "backoffice-games-categories": "Main section",
     "backoffice-games-categories-seo": "SEO section and localization",
@@ -937,7 +936,6 @@
     "backoffice-static-pages": "Main section",
     "backoffice-static-pages-seo": "SEO section and localization",
     "backoffice-static-pages-report": "Data Export",
-
     "field-player-main": "Main inform",
     "field-player-status": "Vip status",
     "field-player-isblocked": "Account blocking",
@@ -1034,7 +1032,6 @@
     "cancel": "Cancel",
     "send": "Send",
     "history": "History",
-    "date": "Date",
     "phone": "Phone",
     "sender": "Sender",
     "text": "Text",
@@ -1068,6 +1065,7 @@
   },
   "filters": {
     "entryId": "Entity ID",
+    "paymentSystem": "Payment system",
     "giftId": "Gift Id",
     "gameType": "Game type",
     "gamesCategories": "Game category",
@@ -1137,6 +1135,14 @@
     "removeGiftsPlayers": {
       "title": "Remove gift",
       "description": "Are you sure you want to remove the gift?"
+    },
+    "removeBanners": {
+      "title": "Remove banner",
+      "description": "Are you sure you want to remove this banner?"
+    },
+    "removeProjects": {
+      "title": "Remove project",
+      "description": "Are you sure you want to remove the project?"
     }
   },
   "activityStatus" : {

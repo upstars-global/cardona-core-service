@@ -1,13 +1,9 @@
 import i18n from '@/libs/i18n'
 import { SeoData } from '@model/seo'
-import { FieldType, FieldInfo } from '@model/field'
 import { IRequestListPayload } from '@model/index'
 import { FieldTranslationsData } from '@model/translations'
-
-interface GameItemInfo {
-  readonly gameId: string
-  readonly position: number
-}
+import { IGameItemInfo } from '@model/staticPages'
+import { TextBaseField, NumberBaseField } from '@model/baseField'
 
 export interface GamesCategoriesData {
   readonly id?: string
@@ -19,52 +15,48 @@ export interface GamesCategoriesData {
   readonly imagePath?: string
   readonly localisationParameters: object
   seo: SeoData
-  games: Array<GameItemInfo>
+  games: Array<IGameItemInfo>
   fieldTranslations: any
 }
 
 export class GamesCategoriesForm {
   readonly id?: string
-  readonly name: FieldInfo<string>
-  readonly slug: FieldInfo<string>
-  readonly path: FieldInfo<string>
+  readonly name: TextBaseField
+  readonly slug: TextBaseField
+  readonly path: TextBaseField
   readonly isActive: boolean
-  readonly position: FieldInfo<number>
+  readonly position: NumberBaseField
   readonly imagePath: string
   readonly localisationParameters?: object
   readonly seo?: SeoData
-  public games?: Array<GameItemInfo>
+  public games?: Array<IGameItemInfo>
   public fieldTranslations?: any
 
   constructor(data?: GamesCategoriesData) {
     this.id = data?.id
     this.isActive = data?.isActive || false
-    this.name = new FieldInfo<string>({
-      type: FieldType.Text,
+    this.name = new TextBaseField({
       key: 'name',
-      value: data?.name || '',
-      label: String(i18n.t('common.category.name')),
+      value: data?.name,
+      label: i18n.t('common.category.name'),
       validationRules: 'required',
       isLocalization: true,
     })
-    this.slug = new FieldInfo<string>({
-      type: FieldType.Text,
+    this.slug = new TextBaseField({
       key: 'slug',
-      value: data?.slug || '',
-      label: String(i18n.t('common.slug')),
+      value: data?.slug,
+      label: i18n.t('common.slug'),
       validationRules: 'required',
     })
-    this.path = new FieldInfo<string>({
-      type: FieldType.Text,
+    this.path = new TextBaseField({
       key: 'path',
-      value: data?.path || '',
-      label: String(i18n.t('common.category.url')),
+      value: data?.path,
+      label: i18n.t('common.category.url'),
     })
-    this.position = new FieldInfo<number>({
-      type: FieldType.Number,
+    this.position = new NumberBaseField({
       key: 'position',
       value: data?.position || 1,
-      label: String(i18n.t('common.order')),
+      label: i18n.t('common.order'),
     })
     this.imagePath = data?.imagePath || ''
     this.seo = data?.seo

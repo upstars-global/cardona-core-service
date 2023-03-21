@@ -74,9 +74,9 @@ import NoFiles from '@/components/UploadImage/NoFiles.vue'
 import GridView from '@/components/UploadImage/GridView.vue'
 import ListView from '@/components/UploadImage/ListView.vue'
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
-import { getStructureList, uploadFile } from '@/_@queries/сompostela'
 import usePagination from '@/use/pagination'
 import i18n from '@/libs/i18n'
+import { dispatch } from '@/store'
 
 export default defineComponent({
   name: 'FileGallery',
@@ -150,12 +150,12 @@ export default defineComponent({
       if (isLoad.value) return
       isLoad.value = true
       try {
-        const { data, pagination } = await getStructureList(
-          url.value,
-          currentPage.value,
-          perPage.value,
-          searchQuery.value.trim()
-        )
+        const { data, pagination } = await dispatch('compostela/getStructureList', {
+          path: url.value,
+          pageNumber: currentPage.value,
+          perPage: perPage.value,
+          search: searchQuery.value.trim(),
+        })
         if (pagination?.total) {
           updateTotal(pagination.total)
         }
@@ -230,7 +230,7 @@ export default defineComponent({
       } else {
         const nameFileArr = path?.split('/')
         const nameFile = nameFileArr[nameFileArr.length - 1]
-        const { publicPath } = await uploadFile({
+        const { publicPath } = await dispatch('compostela/uploadFile', {
           path: props.path + '/' + nameFile,
           replace: path,
         })

@@ -19,41 +19,52 @@
 
         <feather-icon class="ml-1 cursor-pointer" icon="XIcon" size="21" @click="hide" />
       </div>
-      <div class="p-2">
+      <div class="p-1">
         <!--  ViewInfo   -->
         <template v-if="Object.keys(viewForm).isNotEmpty">
-          <template v-for="key in Object.keys(viewForm)">
-            <slot
-              v-if="checkSlotExistence(`sidebar-row(${key})`)"
-              :name="`sidebar-row(${key})`"
-              :item="viewForm[key]"
-            />
-
-            <view-generator
-              v-else-if="!checkSlotExistence(`sidebar-row(${key})`) && viewForm[key]"
-              :key="key"
-              :value="viewForm[key]"
-              :justify-content="ViewJustifyContent.End"
-              class="mb-1"
-              :class="`${key}-view`"
-            />
-          </template>
+          <div v-for="key in Object.keys(viewForm)" :key="key" class="px-50">
+            <slot :name="`sidebar-row(${key})`" :item="viewForm[key]">
+              <view-generator
+                v-if="viewForm[key] instanceof ViewInfo"
+                :key="key"
+                :value="viewForm[key]"
+                :key-name="key"
+                class="py-25"
+                :class="`${key}-view`"
+              >
+                <template
+                  v-if="checkSlotExistence(`sidebar-value(${key})`)"
+                  :slot="`sidebar-value(${key})`"
+                  slot-scope="{ item }"
+                >
+                  <slot :name="`sidebar-value(${key})`" :item="item" />
+                </template>
+              </view-generator>
+            </slot>
+          </div>
         </template>
 
-        <div v-if="canUpdate" class="d-flex mt-2">
-          <b-button
-            v-if="canRemove"
-            variant="outline-danger"
-            class="mr-1"
-            size="sm"
-            @click="action('remove', hide)"
-          >
-            {{ $t('action.remove') }}
-          </b-button>
-          <b-button variant="outline-secondary" size="sm" @click="action('update', hide)">
-            {{ $t('action.edit') }}
-          </b-button>
-        </div>
+        <slot name="sidebar-actions" :form="viewForm">
+          <div v-if="canUpdate" class="d-flex mt-2">
+            <b-button
+              variant="outline-secondary"
+              size="sm"
+              class="mr-1"
+              @click="action('update', hide)"
+            >
+              {{ $t('action.edit') }}
+            </b-button>
+
+            <b-button
+              v-if="canRemove"
+              variant="outline-danger"
+              size="sm"
+              @click="action('remove', hide)"
+            >
+              {{ $t('action.remove') }}
+            </b-button>
+          </div>
+        </slot>
       </div>
     </template>
   </b-sidebar>
@@ -64,7 +75,7 @@ import { BSidebar } from 'bootstrap-vue'
 import { convertCamelCase } from '@/helpers'
 import { ref, watch } from 'vue'
 import ViewGenerator from '@/components/templates/ViewGenerator/index.vue'
-import { ViewJustifyContent } from '@model/view'
+import { ViewInfo, ViewJustifyContent } from '@model/view'
 
 const emitAfterAnimationSidebar = 200
 
@@ -122,7 +133,7 @@ export default {
       }
     )
 
-    const title: string = `title.${convertCamelCase(props.entityName, '.')}.sidebarTitle`
+    const title = `title.${convertCamelCase(props.entityName, '.')}.sidebarTitle`
 
     const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
 
@@ -131,6 +142,7 @@ export default {
       title,
       viewForm,
       ViewJustifyContent,
+      ViewInfo,
       checkSlotExistence,
     }
   },

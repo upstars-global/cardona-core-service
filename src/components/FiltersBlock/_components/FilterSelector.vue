@@ -1,6 +1,5 @@
 <template>
   <b-dropdown
-    v-ripple.400="'rgba(186, 191, 199, 0.15)'"
     :text="$t('action.selectEntity')"
     variant="outline-secondary"
     :disabled="filters.isEmpty"

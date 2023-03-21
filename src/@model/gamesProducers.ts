@@ -4,6 +4,7 @@ import i18n from '@/libs/i18n'
 import { IRequestListPayload, OptionsItem } from '@model/index'
 import { getters } from '@/store'
 import { FieldTranslationsData } from '@model/translations'
+import { IGameItemInfo } from '@model/staticPages'
 
 export type GamesProducersData = {
   readonly id: string
@@ -22,7 +23,7 @@ export type GamesProducersData = {
   readonly seo: SeoData
   readonly fieldTranslations: any
   readonly restrictedCountries: Array<string>
-  games: Array<GameItemInfo>
+  games: Array<IGameItemInfo>
 }
 
 // List
@@ -43,11 +44,6 @@ export interface IGamesProducersListPayload extends IRequestListPayload {
   readonly filter?: IGamesProducersFilters
 }
 
-interface GameItemInfo {
-  readonly gameId: string
-  readonly position: number
-}
-
 export class GamesProducersForm {
   readonly id?: string
   readonly name: FieldInfo<string>
@@ -61,7 +57,7 @@ export class GamesProducersForm {
   readonly seo?: SeoData
   readonly isNew: FieldInfo<boolean>
   public currencies: FieldInfo<string[]>
-  public games?: Array<GameItemInfo>
+  public games?: Array<IGameItemInfo>
   public fieldTranslations?: any
   readonly restrictedCountries: Array<string>
 

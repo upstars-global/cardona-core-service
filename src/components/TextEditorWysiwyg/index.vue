@@ -37,7 +37,6 @@
 <script lang="ts">
 import { computed, ref } from 'vue'
 import { VBTooltip } from 'bootstrap-vue'
-import Ripple from 'vue-ripple-directive'
 import VariableModal from '@/components/TextEditorWysiwyg/VariableModal'
 import 'vue-froala-wysiwyg'
 import FroalaEditor from 'froala-editor'
@@ -48,7 +47,6 @@ export default {
   components: { VariableModal },
   directives: {
     'b-tooltip': VBTooltip,
-    Ripple,
   },
   props: {
     value: {

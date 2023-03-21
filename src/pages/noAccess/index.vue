@@ -7,7 +7,7 @@
     <p class="text-sub font-medium-1 mb-3">
       {{ $t('page.noAccess.textPage') }}
     </p>
-    <b-button v-ripple.400="'rgba(255, 255, 255, 0.15)'" variant="primary" @click="backHistoryPage">
+    <b-button variant="primary" @click="backHistoryPage">
       {{ $t('common.back') }}
     </b-button>
   </div>

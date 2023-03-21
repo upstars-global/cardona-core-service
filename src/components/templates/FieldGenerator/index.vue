@@ -21,7 +21,7 @@
         :rules="value.validationRules"
       >
         <component
-          :is="`${value.type}-field`"
+          :is="value.component || `${value.type}-field`"
           :id="value.key"
           v-model="fieldModel"
           :options="options"
@@ -31,7 +31,6 @@
           :is-switch="isSwitch"
           :placeholder="value.placeholder"
           :size="size"
-          :append="value?.append"
           @search="onSearch"
         />
 
@@ -52,6 +51,7 @@
 import { defineComponent, PropType, computed } from 'vue'
 import { getters } from '@/store'
 import { FieldInfo, FieldType } from '@model/field'
+import { BaseField } from '@model/baseField'
 import TextField from './_components/TextField.vue'
 import NumberField from './_components/NumberField.vue'
 import PercentField from './_components/PercentField.vue'
@@ -73,11 +73,13 @@ import SwitchField from './_components/SwitchField.vue'
 import SwitchWithStateField from './_components/SwitchWithStateField.vue'
 import SumRangeField from './_components/SumRangeField.vue'
 import PhoneField from './_components/PhoneField.vue'
+import PasswordField from './_components/PasswordField.vue'
 
 export default defineComponent({
   name: 'FieldGenerator',
   components: {
     TextField,
+    PasswordField,
     NumberField,
     PercentField,
     MinuteField,
@@ -102,7 +104,7 @@ export default defineComponent({
 
   props: {
     value: {
-      type: Object as PropType<FieldInfo>,
+      type: Object as PropType<FieldInfo | BaseField>,
       required: true,
     },
 
@@ -143,13 +145,14 @@ export default defineComponent({
     const canView = computed<boolean>(() =>
       props.value.permission ? getters.abilityCan(props.value.permission, 'view') : true
     )
-
     const checkFields: Array<string> = [
       FieldType.Check,
       FieldType.Switch,
       FieldType.SwitchWithState,
     ]
-    const isCheckType = computed(() => checkFields.includes(props.value.type))
+    const isCheckType = computed(
+      () => props.value instanceof FieldInfo && checkFields.includes(props.value.type)
+    )
     const groupLabel = computed(() =>
       props.withLabel && !isCheckType.value ? props.value.label : ''
     )
@@ -159,7 +162,14 @@ export default defineComponent({
 
     const fieldModel = computed({
       get: () => props.value.value,
-      set: (value) => emit('input', new FieldInfo<any>({ ...props.value, value })),
+      set: (value) => {
+        if (props.value instanceof BaseField) {
+          // eslint-disable-next-line vue/no-mutating-props
+          props.value.value = value
+        } else {
+          emit('input', new FieldInfo<any>({ ...props.value, value }))
+        }
+      },
     })
 
     const onSearch = (search: string) => emit('search', search)

@@ -1,5 +1,9 @@
 <template>
-  <b-badge :variant="variant" class="cursor-pointer" @click="copyToClipboard(value)">
+  <b-badge
+    :variant="variant"
+    class="cursor-pointer overflow-hidden copy-badge"
+    @click="copyToClipboard(value)"
+  >
     <span v-if="isViewLabel">{{ label }}: </span>
     {{ value }}
     <feather-icon icon="CopyIcon" class="ml-25" />
@@ -41,3 +45,9 @@ export default defineComponent({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+.copy-badge {
+  text-overflow: ellipsis;
+}
+</style>

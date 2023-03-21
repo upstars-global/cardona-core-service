@@ -10,7 +10,7 @@ const props = defineProps<{
 
 <template>
   <div class="d-flex flex-column width-content">
-    <div class="text-right">
+    <div>
       <span :key="data.amount" v-currency="data.amount" />
 
       <span>
@@ -18,7 +18,7 @@ const props = defineProps<{
       </span>
     </div>
 
-    <div v-if="data?.remainder" class="font-small-3">
+    <div v-if="data?.remainder" class="font-weight-light">
       <span>
         {{ $t('common.remainder') }}
       </span>

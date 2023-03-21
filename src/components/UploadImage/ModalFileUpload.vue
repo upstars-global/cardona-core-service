@@ -76,7 +76,6 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import { uploadFile } from '@/_@queries/сompostela'
 import FileGallery from '@/components/UploadImage/FileGallery.vue'
 
 export default defineComponent({

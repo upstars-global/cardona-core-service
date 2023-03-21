@@ -1,12 +1,23 @@
 <template>
   <div v-if="canView">
-    <component
-      :is="`${value.type}-view`"
-      :item="value"
-      :row-classes="rowClasses"
-      :justify-class="justifyClass"
-    />
+    <b-row class="font-small-3">
+      <b-col :cols="cols">
+        <div v-if="value.icon !== undefined" class="icon-block">
+          <feather-icon v-if="value.icon" :icon="value.icon" />
+        </div>
 
+        <label class="mb-0">{{ value.label }}</label>
+      </b-col>
+      <b-col
+        :cols="valueColsCount"
+        class="font-weight-bolder d-flex align-items-start text-break"
+        :class="justifyClass"
+      >
+        <slot :name="`sidebar-value(${keyName})`">
+          <component :is="`${value.type}-view`" :item="value" />
+        </slot>
+      </b-col>
+    </b-row>
     <hr v-if="value.withSeparator" />
   </div>
 </template>
@@ -14,10 +25,10 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
 import { getters } from '@/store'
-import { ViewInfo, ViewJustifyContent, ViewSize } from '@model/view'
+import { ViewInfo, ViewJustifyContent } from '@model/view'
 import TextView from './_components/TextView.vue'
 import BadgesView from './_components/BadgesView.vue'
-import BadgeIdView from './_components/BadgeIdView.vue'
+import BadgeView from './_components/BadgeView.vue'
 import StatusView from './_components/StatusView.vue'
 import StatusWithDateView from './_components/StatusWithDateView.vue'
 import StatusWithDateHistoryView from './_components/StatusWithDateHistoryView.vue'
@@ -28,14 +39,15 @@ import DateView from './_components/DateView.vue'
 import SumAndCurrencyView from './_components/SumAndCurrencyView.vue'
 import CommentView from './_components/CommentView.vue'
 import TransactionTypeView from './_components/TransactionTypeView.vue'
-import BalanceTableView from './_components/BalanceTableView.vue'
 import ObjectToRowsView from './_components/ObjectToRowsView.vue'
+import LocaleView from './_components/LocaleView.vue'
+import RegionView from '@/components/templates/ViewGenerator/_components/RegionView.vue'
 
 export default defineComponent({
   name: 'ViewGenerator',
   components: {
     TextView,
-    BadgeIdView,
+    BadgeView,
     BadgesView,
     StatusView,
     StatusWithDateView,
@@ -47,8 +59,9 @@ export default defineComponent({
     SumAndCurrencyView,
     CommentView,
     TransactionTypeView,
-    BalanceTableView,
     ObjectToRowsView,
+    LocaleView,
+    RegionView,
   },
 
   props: {
@@ -56,13 +69,17 @@ export default defineComponent({
       type: Object as PropType<ViewInfo>,
       required: true,
     },
-    size: {
-      type: String as PropType<ViewSize>,
-      default: ViewSize.Md,
+    keyName: {
+      type: String,
+      default: '',
     },
     justifyContent: {
       type: String as PropType<ViewJustifyContent>,
       default: ViewJustifyContent.Start,
+    },
+    cols: {
+      type: Number,
+      default: 4,
     },
   },
 
@@ -70,16 +87,24 @@ export default defineComponent({
     const canView = computed<boolean>(() =>
       props.value.permission ? getters.abilityCan(props.value.permission, 'view') : true
     )
-    const isSmallSize = computed(() => props.size === ViewSize.Sm)
     const justifyClass = computed(() => `justify-content-${props.justifyContent}`)
-    const rowClasses = computed(() => ({
-      'font-small-3': isSmallSize.value,
-    }))
+    const valueColsCount = computed(() => 12 - props.cols)
+
     return {
       canView,
       justifyClass,
-      rowClasses,
+      valueColsCount,
     }
   },
 })
 </script>
+
+
+<style lang="scss" scoped>
+.icon-block {
+  display: inline-block;
+  width: 1rem;
+  margin-right: 0.5rem;
+}
+</style>
+

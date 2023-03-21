@@ -1,28 +1,28 @@
 import ApiService from '@/services/api'
-import { LocaleInfo } from '@model/locale'
+import { LocaleOption } from '@model/locale'
 
 export default {
   namespaced: true,
   state: {
-    allLocales: [],
+    allLocales: {},
   },
 
   getters: {
-    allLocalesInfo: ({ allLocales }) =>
-      Object.entries(allLocales).map(
-        ([code, name]: Array<any>): LocaleInfo => new LocaleInfo(code, name)
-      ),
     allLocalesKeys: ({ allLocales }) => allLocales,
+    allLocalesOptions: ({ allLocales }: Record<string, string>) =>
+      Object.entries(allLocales).map(([code, name]): LocaleOption => new LocaleOption(code, name)),
   },
 
   mutations: {
-    SET_LOCALES(state, locales) {
+    SET_LOCALES(state, locales: Record<string, string>) {
       state.allLocales = locales
     },
   },
 
   actions: {
-    async getLocalesList({ commit }) {
+    async getLocalesList({ commit, getters }) {
+      if (getters.allLocalesOptions.isNotEmpty) return
+
       const { data } = await ApiService.request({
         type: 'App.V2.Core.System.Locales',
       })

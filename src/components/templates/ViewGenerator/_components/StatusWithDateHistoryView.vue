@@ -4,28 +4,18 @@ import StatusWithDateField from '@/components/templates/BaseList/_components/Sta
 
 const props = defineProps<{
   item: ViewInfo
-  rowClasses: object
-  justifyClass: string
 }>()
 </script>
 
 <template>
-  <b-row :class="rowClasses">
-    <b-col>
-      <span>
-        {{ item.label }}
-      </span>
-    </b-col>
-
-    <b-col :class="justifyClass">
-      <status-with-date-field
-        v-for="(data, index) in item.value"
-        :key="index"
-        :item="data"
-        class="status-history"
-      />
-    </b-col>
-  </b-row>
+  <div>
+    <status-with-date-field
+      v-for="(data, index) in item.value"
+      :key="index"
+      :item="data"
+      class="status-history justify-content-between"
+    />
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -34,7 +24,6 @@ const props = defineProps<{
 .status-history::v-deep {
   flex-direction: row;
   font-weight: $font-weight-bolder;
-  justify-content: end;
 
   &:not(:last-child) {
     margin-bottom: 0.5rem;

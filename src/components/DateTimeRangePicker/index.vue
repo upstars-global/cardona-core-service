@@ -1,7 +1,7 @@
 <template>
   <b-row>
     <b-col md="4">
-      <b-form-group :label="$t('page.banners.startDate')">
+      <b-form-group :label="$t('page.banners.startDate')" :disabled="disabled">
         <flat-picker
           v-model="startedAtModel"
           class="cursor-pointer form-control"
@@ -12,7 +12,7 @@
     </b-col>
 
     <b-col md="4">
-      <b-form-group :label="$t('page.banners.completionDate')">
+      <b-form-group :label="$t('page.banners.completionDate')" :disabled="disabled">
         <flat-picker
           v-model="endedAtModel"
           class="cursor-pointer form-control"
@@ -47,6 +47,10 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   setup(props, { emit }) {
@@ -68,7 +72,7 @@ export default defineComponent({
 
     const startedAtModel = computed({
       get: (): string => props.startedAt && getISOStringWithoutTimezone(props.startedAt),
-      set: (value: string) => emit('update:startedAt', value ? getUTCISOString(value) : null),
+      set: (value: string) => emit('update:startedAt', value && getUTCISOString(value)),
     })
 
     const startedFlatPickerConfig = computed(() => ({
@@ -80,7 +84,7 @@ export default defineComponent({
 
     const endedAtModel = computed({
       get: (): string => props.endedAt && getISOStringWithoutTimezone(props.endedAt),
-      set: (value: string) => emit('update:endedAt', value ? getUTCISOString(value) : null),
+      set: (value: string) => emit('update:endedAt', value && getUTCISOString(value)),
     })
 
     const endedFlatPickerConfig = computed(() => ({

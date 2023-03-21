@@ -1,40 +1,42 @@
-export type FilterType =
-  | 'admin'
-  | 'group'
-  | 'project'
-  | 'status'
-  | 'bannerStrategy'
-  | 'bannerTypes'
-  | 'date'
-  | 'action'
-  | 'entryId'
-  | 'entityType'
-  | 'gamesType'
-  | 'gamesCategories'
-  | 'gamesProducers'
-  | 'gamesRunners'
-  | 'gameForBonuses'
-  | 'availableWithBonuses'
-  | 'slug'
-  | 'name'
-  | 'dateRangeCreative'
-  | 'dateRangeUpdate'
-  | 'dateRangeProcessing'
-  | 'hidden'
-  | 'sumRange'
-  | 'transactionsType'
-  | 'transactionsStatuses'
-  | 'giftId'
-  | 'initialSumRange'
-  | 'winBackSumRange'
-  | 'realSumRange'
-  | 'bonusStatus'
-  | 'giftsStatus'
-  | 'bonusType'
-  | 'giftsType'
-  | 'wagerLimitRange'
-  | 'dateRangeIssued'
-  | 'dateRangeExpired'
-  | 'dateRangeActivated'
-  | 'dateRangeUsed'
-  | 'balancesReasons'
+export enum FilterType {
+  Admin = 'admin',
+  Group = 'group',
+  Project = 'project',
+  Status = 'status',
+  BannerStrategy = 'bannerStrategy',
+  BannerTypes = 'bannerTypes',
+  Date = 'date',
+  Action = 'action',
+  PaymentSystem = 'paymentSystem',
+  EntryId = 'entryId',
+  EntityType = 'entityType',
+  GamesType = 'gamesType',
+  GamesCategories = 'gamesCategories',
+  GamesProducers = 'gamesProducers',
+  GamesRunners = 'gamesRunners',
+  GameForBonuses = 'gameForBonuses',
+  AvailableWithBonuses = 'availableWithBonuses',
+  Slug = 'slug',
+  Name = 'name',
+  DateRangeCreative = 'dateRangeCreative',
+  DateRangeUpdate = 'dateRangeUpdate',
+  DateRangeProcessing = 'dateRangeProcessing',
+  Hidden = 'hidden',
+  SumRange = 'sumRange',
+  TransactionsType = 'transactionsType',
+  TransactionsStatuses = 'transactionsStatuses',
+  GiftId = 'giftId',
+  InitialSumRange = 'initialSumRange',
+  WinBackSumRange = 'winBackSumRange',
+  RealSumRange = 'realSumRange',
+  BonusStatus = 'bonusStatus',
+  GiftsStatus = 'giftsStatus',
+  BonusType = 'bonusType',
+  GiftsType = 'giftsType',
+  WagerLimitRange = 'wagerLimitRange',
+  DateRangeIssued = 'dateRangeIssued',
+  DateRangeExpired = 'dateRangeExpired',
+  DateRangeActivated = 'dateRangeActivated',
+  DateRangeUsed = 'dateRangeUsed',
+  BalancesReasons = 'balancesReasons',
+}

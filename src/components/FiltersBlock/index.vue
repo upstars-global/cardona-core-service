@@ -37,7 +37,6 @@
               />
 
               <b-button
-                v-ripple.400="'rgba(113, 102, 240, 0.15)'"
                 variant="outline-danger"
                 class="btn-icon"
                 :size="size"
@@ -147,7 +146,7 @@ export default defineComponent({
     const { toastSuccess } = useToastService()
 
     const { name: pageName } = route.value
-    const keyStorage: string = `${pageName}-${props.entityName}-list-filters`
+    const keyStorage = `${pageName}-${props.entityName}-list-filters`
 
     const selectedFilters = ref<FieldInfo[]>([])
 
@@ -182,9 +181,10 @@ export default defineComponent({
 
     onMounted(() => {
       const initFiltersStorage = localStorage.getItem(keyStorage)
-      const isSameList: boolean = route.value.path === store.getters['filters/listPath']
+      const isSamePath = route.value.path === store.getters['filters/listPath']
+      const isSameEntity = props.entityName === store.getters['filters/listEntityName']
 
-      if (!isSameList) {
+      if (!isSamePath || !isSameEntity) {
         store.commit('filters/SET_LIST_ENTITY_NAME')
         store.commit('filters/SET_LIST_PATH')
         store.commit('filters/SET_LIST_FILTERS')

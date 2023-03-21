@@ -1,9 +1,15 @@
 import { FilterType } from '@model/filter'
 import i18n from '@/libs/i18n'
 import { TableField } from '@core/components/table-fields/model'
+import { IListSort } from '@/@model'
 
+export enum SortDirection {
+  asc = 'ASC',
+  desc = 'DESC',
+}
 export interface IOptionsBaseFetch {
   readonly saveCountItem?: boolean
+  readonly listItemModel?: { new (item: unknown): unknown }
 }
 
 export type UseListType = {
@@ -14,6 +20,7 @@ export type UseListType = {
   readonly ListFilterModel: Function
   readonly SideBarModel?: Function
   readonly beforeRemoveCallback?: Function
+  readonly ListItemModel?: Function
 }
 
 export type FilterListItem = {
@@ -31,6 +38,7 @@ export interface IBaseListConfig {
   readonly emptyText?: string
   readonly filterList?: Array<FilterListItem>
   readonly staticFilters?: Record<string, string>
+  readonly staticSorts?: IListSort
   readonly responsive?: boolean
   readonly selectMode?: string
   readonly selectable?: boolean
@@ -60,6 +68,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly emptyText?: string
   readonly filterList: Array<FilterListItem>
   readonly staticFilters: Record<string, string>
+  readonly staticSorts?: IListSort
   readonly responsive?: boolean
   readonly selectMode?: string
   readonly selectable?: boolean
@@ -88,6 +97,7 @@ export class BaseListConfig implements IBaseListConfig {
     emptyText,
     filterList,
     staticFilters,
+    staticSorts,
     responsive,
     selectMode,
     selectable,
@@ -115,6 +125,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.emptyText = emptyText || String(i18n.t('emptyState.list'))
     this.filterList = filterList || []
     this.staticFilters = staticFilters || {}
+    this.staticSorts = staticSorts
     this.responsive = responsive
     this.selectMode = selectMode
     this.selectable = selectable
