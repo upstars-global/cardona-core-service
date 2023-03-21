@@ -3,8 +3,8 @@ export enum PageType {
   Update = 'update',
 }
 
-export type UseEntityType = {
+export type UseEntityType<T> = {
   readonly entityName: string
   readonly pageName?: string
-  readonly EntityFormClass: Function
+  readonly EntityFormClass: { new (data?: any): T }
 }

@@ -6,7 +6,7 @@ const {
 module.exports = {
   publicPath: '/',
   devServer: {
-    proxy: 'https://cardona-develop.os.show', //https://luckyroot-dev.os.show | https://cardona-develop.os.show
+    proxy: 'https://cardona-develop.upstr.to',
   },
   css: {
     loaderOptions: {

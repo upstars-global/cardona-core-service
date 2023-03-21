@@ -12,7 +12,11 @@
       @update="routerToUpdatePageId(selectedItem)"
       @remove="onClickRemove(selectedItem)"
     >
-      <template v-for="key in Object.keys($scopedSlots)" :slot="key" slot-scope="{ item }">
+      <template #sidebar-actions="{ form }">
+        <slot name="sidebar-actions" :form="form" :item="selectedItem" />
+      </template>
+
+      <template v-for="key in sidebarSlots" :slot="key" slot-scope="{ item }">
         <slot :name="key" :item="item" />
       </template>
     </side-bar>
@@ -209,14 +213,6 @@
             :status="value"
           />
 
-          <status-with-date-field
-            v-else-if="field.type === ListFieldType.StatusWithDate"
-            :key="index"
-            :item="item"
-            size="sm"
-            class="align-items-start"
-          />
-
           <sum-and-currency
             v-else-if="field.type === ListFieldType.SumAndCurrency"
             :key="index"
@@ -277,6 +273,18 @@
             v-else-if="field.type === ListFieldType.Comment"
             :key="index"
             :value="value"
+          />
+
+          <image-field
+            v-else-if="field.type === ListFieldType.Image"
+            :key="index"
+            :image-path="value"
+          />
+
+          <date-period-field
+            v-else-if="field.type === ListFieldType.Period"
+            :key="index"
+            :period="value"
           />
 
           <template v-else-if="field.type === ListFieldType.Percent"> {{ value }} % </template>
@@ -432,30 +440,30 @@
 </template>
 
 <script lang="ts">
-import { PropType, ref, computed, onMounted, watch } from 'vue'
+import { computed, onMounted, PropType, ref, watch } from 'vue'
 import store, { dispatch, getters } from '@/store'
 import { useFilters } from '@/components/FiltersBlock/useFilters'
 import { useBvModal } from '@/helpers/bvModal'
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
 import { useRouter } from '@core/utils/utils'
 import usePagination from '@/use/pagination'
 import {
-  IBaseListConfig,
   BaseListConfig,
   DownloadFormat,
-  UseListType,
   FilterListItem,
+  IBaseListConfig,
+  SortDirection,
+  UseListType,
 } from './model'
+import { Location } from 'vue-router'
 import { TableField, ListFieldType } from '@core/components/table-fields/model'
 import { FieldType } from '@model/field'
 import FiltersBlock from '@/components/FiltersBlock'
 import TableFields from '@core/components/table-fields/TableFields.vue'
-import { convertCamelCase, checkExistsPage, convertLowerCaseFirstSymbol } from '@/helpers'
+import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol } from '@/helpers'
 import { parseDateRange } from '@/helpers/filters'
 import SearchInput from './_components/SearchInput.vue'
 import CTable from '@/components/CTable'
 import StatusField from './_components/StatusField.vue'
-import StatusWithDateField from './_components/StatusWithDateField.vue'
 import PillStatusField from './_components/PillStatusField.vue'
 import NameWithIdField from './_components/NameWithIdField.vue'
 import EmailField from './_components/EmailField.vue'
@@ -466,13 +474,19 @@ import ExportFormatSelector from './_components/ExportFormatSelector.vue'
 import BadgesField from './_components/BadgesField.vue'
 import ButtonField from './_components/ButtonField.vue'
 import CommentField from './_components/CommentField.vue'
+import ImageField from './_components/ImageField.vue'
+import DatePeriodField from './_components/DatePeriodField.vue'
 import { GameActionType, GamesListItem, GamesSectionGamesItem } from '@model/games'
 import SideBar from '@/components/templates/BaseList/_components/SideBar.vue'
 import CModal from '@/components/CModal.vue'
 import SumAndCurrency from '@/components/SumAndCurrency.vue'
+import { IListSort } from '@/@model'
+
 export default {
   name: 'BaseList',
   components: {
+    DatePeriodField,
+    ImageField,
     CommentField,
     SumAndCurrency,
     CModal,
@@ -485,7 +499,6 @@ export default {
     TableFields,
     CTable,
     StatusField,
-    StatusWithDateField,
     PillStatusField,
     NameWithIdField,
     EmailField,
@@ -510,7 +523,6 @@ export default {
 
   setup(props, { slots, emit }) {
     const bvModal = useBvModal()
-    const { t } = useI18nUtils()
     const { router } = useRouter()
 
     const searchQuery = ref('')
@@ -543,6 +555,7 @@ export default {
       SideBarModel,
       pageName,
       beforeRemoveCallback,
+      ListItemModel,
     } = props.useList()
 
     // Pages
@@ -557,16 +570,16 @@ export default {
     const fetchActionName: string = props.config?.withCustomFetchList
       ? `${moduleName}/fetch${entityName}List`
       : 'baseStore/fetchListEntity'
-    const fetchReportActionName: string = 'baseStore/fetchReport'
-    const updateActionName: string = 'baseStore/updateEntity'
-    const deleteActionName: string = 'baseStore/deleteEntity'
-    const multipleUpdateActionName: string = 'baseStore/multipleUpdateEntity'
-    const multipleDeleteActionName: string = 'baseStore/multipleDeleteEntity'
+    const fetchReportActionName = 'baseStore/fetchReport'
+    const updateActionName = 'baseStore/updateEntity'
+    const deleteActionName = 'baseStore/deleteEntity'
+    const multipleUpdateActionName = 'baseStore/multipleUpdateEntity'
+    const multipleDeleteActionName = 'baseStore/multipleDeleteEntity'
 
     // Permissions
-    const permissionKey: string = `backoffice-${convertCamelCase(entityName, '-')}`
-    const permissionKeySeo: string = `backoffice-${convertCamelCase(entityName, '-')}-seo`
-    const permissionKeyReport: string = `backoffice-${convertCamelCase(entityName, '-')}-report`
+    const permissionKey = `backoffice-${convertCamelCase(entityName, '-')}`
+    const permissionKeySeo = `backoffice-${convertCamelCase(entityName, '-')}-seo`
+    const permissionKeyReport = `backoffice-${convertCamelCase(entityName, '-')}-report`
 
     const onePermission: boolean = getters.abilityCan(props.config?.onePermissionKey, 'view')
 
@@ -593,11 +606,16 @@ export default {
       selectedItem.value = item
     }
 
+    const sidebarSlots = computed(() =>
+      Object.keys(slots).filter(
+        (key) => key.includes('sidebar-row') || key.includes('sidebar-value')
+      )
+    )
+
     const onClickRow = (data) => {
       if (props.config?.selectable) return
 
-      const isExistSidebarSlot: boolean = !!slots.sidebar || props.config?.sidebar
-      if (isExistSidebarSlot) {
+      if (props.config?.sidebar) {
         isSidebarShown.value = true
         selectedItem.value = data
       }
@@ -634,25 +652,33 @@ export default {
 
     const size: string = props.config?.small ? 'sm' : 'md'
 
+    const setRequestSort = () => {
+      const sort: Array<IListSort> = []
+      if (sortBy.value) {
+        sort.push({
+          field: sortBy.value,
+          dir: sortDesc.value ? SortDirection.asc : SortDirection.desc,
+        })
+      } else if (props.config.staticSorts) {
+        sort.push(props.config.staticSorts)
+      }
+      return sort
+    }
     const getList = async () => {
       const filter: object = setRequestFilters()
-
+      const sort: Array<IListSort> = setRequestSort()
       const { list, total } = await dispatch(fetchActionName, {
         type: entityName,
         data: {
           perPage: perPage.value,
           page: currentPage.value,
           filter,
-          sort: sortBy.value
-            ? [
-                {
-                  field: sortBy.value,
-                  dir: sortDesc.value ? 'ASC' : 'DESC',
-                },
-              ]
-            : [],
+          sort,
         },
-        options: { saveCountItem: props.config?.saveCountItem || false },
+        options: {
+          saveCountItem: props.config?.saveCountItem,
+          listItemModel: ListItemModel,
+        },
       })
 
       items.value = list
@@ -666,7 +692,7 @@ export default {
 
     const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
 
-    const getUpdateRoute = ({ id }) => {
+    const getUpdateRoute = ({ id }): Location => {
       return isExistsUpdatePage && (canUpdate || canUpdateSeo)
         ? { name: UpdatePageName, params: { id } }
         : {}
@@ -679,6 +705,17 @@ export default {
       })
 
       reFetchList()
+    }
+
+    const onUpdateItem = async (item) => {
+      const response = await dispatch(updateActionName, {
+        type: entityName,
+        data: { form: item },
+      })
+
+      reFetchList()
+
+      return response
     }
 
     const onEditPosition = async (item: GamesListItem, position: number) => {
@@ -867,12 +904,23 @@ export default {
     onChangePagination(reFetchList)
 
     // Draggable
-    const onDragChanged = (e) => {
+    const onDragChanged = async (e) => {
+      if (e && !isGameTable) {
+        const localItems: Array<any> = items.value
+        const id = localItems[e.oldIndex].id
+        const position: number = localItems[e.newIndex].position!
+
+        await dispatch(updateActionName, {
+          type: entityName,
+          data: { form: { id, position } },
+        })
+        reFetchList()
+      }
       emit('end', e)
     }
 
     // Remove
-    const removeModalId: string = 'list-item-remove-modal'
+    const removeModalId = 'list-item-remove-modal'
     const commentToRemove = ref()
 
     const onClickRemove = (item) => {
@@ -921,6 +969,7 @@ export default {
       selectedItem,
       setSelectedItem,
       routerToUpdatePageId,
+      sidebarSlots,
 
       // Search
       searchQuery,
@@ -949,6 +998,9 @@ export default {
       checkSlotExistence,
       getUpdateRoute,
       reFetchList,
+
+      // Update
+      onUpdateItem,
 
       // Remove
       removeModalId,

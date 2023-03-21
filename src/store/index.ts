@@ -10,6 +10,7 @@ import baseStore from './modules/baseStore'
 import product from './modules/product'
 import filters from './modules/filters'
 import auth from './modules/auth'
+import compostela from './modules/compostela'
 
 import ecommerceStoreModule from '@/views/apps/e-commerce/eCommerceStoreModule'
 import app from './app'
@@ -26,6 +27,7 @@ const store = new Vuex.Store({
     product,
     filters,
     auth,
+    compostela,
 
     app,
     'app-ecommerce': ecommerceStoreModule,

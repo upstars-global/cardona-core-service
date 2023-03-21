@@ -1,19 +1,21 @@
+import { SortDirection } from '@/components/templates/BaseList/model'
+
 export interface PaginationData {
   readonly pageNumber: number
   readonly perPage?: number
   readonly total?: number
 }
 
-export interface IRequestListPayload {
+export interface IRequestListPayload<T = any> {
   readonly page?: number
   readonly perPage?: number
   readonly sort?: Array<IListSort>
-  readonly filter?: any
+  readonly filter?: T
 }
 
 export type IListSort = {
   readonly field: string
-  readonly dir: string
+  readonly dir: SortDirection
 }
 
 export class ListData<T> {

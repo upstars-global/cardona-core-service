@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import en from '@/libs/i18n/locales/en.json'
-import axios from '@axios'
 
 Vue.use(VueI18n)
 const i18n = new VueI18n({
@@ -14,7 +13,6 @@ const loadedLanguages = [i18n.locale]
 
 function setI18nLanguage(lang) {
   i18n.locale = lang
-  //axios.defaults.headers.common['Accept-Language'] = lang
   document.querySelector('html')?.setAttribute('lang', lang)
   return lang
 }

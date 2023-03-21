@@ -1,6 +1,7 @@
 <template>
   <b-input-group
     :append="appendText"
+    :prepend="field.prepend"
     class="input-group-merge"
     :class="{ error: errors.isNotEmpty }"
   >
@@ -16,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType } from 'vue'
+import { computed, PropType, ref } from 'vue'
 import { FieldInfo } from '@model/field'
 
 export default {
@@ -37,11 +38,6 @@ export default {
       default: () => [],
     },
 
-    append: {
-      type: String,
-      default: '',
-    },
-
     disabled: {
       type: Boolean,
       default: false,
@@ -50,7 +46,7 @@ export default {
 
   setup(props, { emit }) {
     const inputType: string = 'text'
-    const appendText: string = String(props.append)
+    const appendText = ref(props.field?.append)
 
     const modelValue = computed({
       get: () => props.value,

@@ -1,9 +1,5 @@
 <template>
-  <b-dropdown
-    v-ripple.400="'rgba(186, 191, 199, 0.15)'"
-    variant="outline-secondary"
-    :disabled="disabled"
-  >
+  <b-dropdown variant="outline-secondary" :disabled="disabled">
     <template #button-content>
       <feather-icon icon="UploadIcon" />
 

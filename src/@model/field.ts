@@ -3,6 +3,7 @@ import { OptionsItem } from '@model/index'
 
 export enum FieldType {
   Text = 'text',
+  Password = 'password',
   Number = 'number',
   Textarea = 'textarea',
   TextareaWithCounter = 'textarea-with-counter',
@@ -40,7 +41,9 @@ export interface IFieldInfo {
   readonly description?: string
   readonly info?: string
   readonly append?: string
+  readonly prepend?: string
   readonly permission?: string
+  readonly maxLength?: number
 }
 
 export class FieldInfo<T = {}> {
@@ -58,7 +61,9 @@ export class FieldInfo<T = {}> {
   readonly description?: string
   readonly info?: string
   readonly append?: string
+  readonly prepend?: string
   readonly permission?: string
+  readonly maxLength?: number
 
   constructor({
     type,
@@ -75,7 +80,9 @@ export class FieldInfo<T = {}> {
     description,
     info,
     append,
+    prepend,
     permission,
+    maxLength,
   }: IFieldInfo) {
     this.type = type
     this.key = key
@@ -91,7 +98,9 @@ export class FieldInfo<T = {}> {
     this.description = description
     this.info = info
     this.append = append
+    this.prepend = prepend
     this.permission = permission
+    this.maxLength = maxLength
   }
 
   get value() {
