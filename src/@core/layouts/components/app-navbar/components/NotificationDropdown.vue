@@ -71,9 +71,7 @@
 
     <!-- Cart Footer -->
     <li class="dropdown-menu-footer">
-      <b-button v-ripple.400="'rgba(255, 255, 255, 0.15)'" variant="primary" block
-        >Read all notifications</b-button
-      >
+      <b-button variant="primary" block>Read all notifications</b-button>
     </li>
   </b-nav-item-dropdown>
 </template>
@@ -89,7 +87,6 @@ import {
   BFormCheckbox,
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import Ripple from 'vue-ripple-directive'
 
 export default {
   components: {
@@ -101,9 +98,6 @@ export default {
     VuePerfectScrollbar,
     BButton,
     BFormCheckbox,
-  },
-  directives: {
-    Ripple,
   },
   setup() {
     /* eslint-disable global-require */

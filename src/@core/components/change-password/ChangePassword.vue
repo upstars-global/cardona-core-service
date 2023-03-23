@@ -31,7 +31,7 @@
 import { BForm, BModal } from 'bootstrap-vue'
 import ChangePasswordInput from './ChangePasswordInput.vue'
 import { ref, defineComponent, computed, WritableComputedRef } from 'vue'
-import { updateUserPassword } from '@/_@queries/user'
+import { updateUserPassword } from '@queries/user'
 import useToastService from '@/helpers/toasts'
 
 export default defineComponent({
@@ -42,7 +42,7 @@ export default defineComponent({
   },
   props: {
     id: {
-      type: String,
+      type: [String, Number],
       required: true,
     },
     value: {

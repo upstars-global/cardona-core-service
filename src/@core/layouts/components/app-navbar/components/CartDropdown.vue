@@ -63,12 +63,7 @@
         <h6 class="font-weight-bolder mb-0">Total:</h6>
         <h6 class="text-primary font-weight-bolder mb-0">${{ totalAmount }}</h6>
       </div>
-      <b-button
-        v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-        variant="primary"
-        block
-        :to="{ name: 'apps-e-commerce-checkout' }"
-      >
+      <b-button variant="primary" block :to="{ name: 'apps-e-commerce-checkout' }">
         Checkout
       </b-button>
     </li>
@@ -88,7 +83,6 @@ import {
   BButton,
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import Ripple from 'vue-ripple-directive'
 
 export default {
   components: {
@@ -100,9 +94,6 @@ export default {
     BFormSpinbutton,
     VuePerfectScrollbar,
     BButton,
-  },
-  directives: {
-    Ripple,
   },
   data() {
     return {
