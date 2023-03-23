@@ -100,14 +100,14 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ['input', 'setPath', 'uploadFile', 'clear'],
+  emits: ['input', 'setPath', 'uploadFileEvent', 'clear'],
 
   setup(props, { emit }) {
     const modalFileUpload: any = ref(null)
 
     const fileInner = computed({
       get: () => props.file,
-      set: (value) => emit('uploadFile', value),
+      set: (value) => emit('uploadFileEvent', value),
     })
     const setUrlFile = (val) => {
       emit('input', val)
