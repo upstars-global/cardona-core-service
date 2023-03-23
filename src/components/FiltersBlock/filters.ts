@@ -1,13 +1,9 @@
 import i18n from '@/libs/i18n'
-import { UserInfo } from '@model/user'
-import { GroupData } from '@model/group'
 import { ProjectInfo } from '@model/project'
 import { FieldInfo, FieldType } from '@model/field'
 import { OptionsItem } from '@/@model'
 import { GamesProducersListItem } from '@model/gamesProducers'
 import { GamesCategoriesListItem } from '@model/gamesCategories'
-import { TransactionType } from '@model/playersTransactions'
-import { typesOptions } from '@model/banners'
 import { FilterType } from '@model/filter'
 
 // Options
@@ -17,21 +13,6 @@ const stateOptions: Array<object> = [
 ]
 
 // Filters
-const admin = new FieldInfo<UserInfo>({
-  type: FieldType.Select,
-  key: FilterType.Admin,
-  label: String(i18n.t('common.admin._')),
-  placeholder: String(i18n.t('placeholder.filter.admin')),
-  fetchOptionsActionName: 'users/fetchUsersList',
-})
-
-const group = new FieldInfo<GroupData>({
-  type: FieldType.MultiSelect,
-  key: FilterType.Group,
-  label: String(i18n.t('common.groups.list')),
-  placeholder: String(i18n.t('placeholder.filter.group')),
-  fetchOptionsActionName: 'groups/fetchGroupsList',
-})
 
 const project = new FieldInfo<ProjectInfo>({
   type: FieldType.MultiSelect,
@@ -105,14 +86,6 @@ const bannerStrategy = new FieldInfo<OptionsItem>({
   label: String(i18n.t('common.show')),
   placeholder: String(i18n.t('placeholder.filter.bannerStrategy')),
   fetchOptionsActionName: 'banner/fetchBannersStrategy',
-})
-
-const bannerTypes = new FieldInfo<OptionsItem>({
-  type: FieldType.MultiSelect,
-  key: FilterType.BannerTypes,
-  label: i18n.t('common.type') as string,
-  placeholder: i18n.t('placeholder.filter.types') as string,
-  options: typesOptions,
 })
 
 const paymentSystem = new FieldInfo<string>({
@@ -252,23 +225,6 @@ const dateRangeProcessing = new FieldInfo<string>({
 })
 
 // Transactions
-const transactionsType = new FieldInfo<OptionsItem>({
-  type: FieldType.Select,
-  key: FilterType.TransactionsType,
-  label: String(i18n.t('common.type')),
-  placeholder: String(i18n.t('placeholder.filter.type')),
-  options: [
-    {
-      id: TransactionType.Payout,
-      name: i18n.t(`common.payout`),
-    },
-    {
-      id: TransactionType.Deposit,
-      name: i18n.t(`common.deposit`),
-    },
-  ],
-})
-
 const transactionsStatuses = new FieldInfo<OptionsItem>({
   type: FieldType.MultiSelect,
   key: FilterType.TransactionsStatuses,
@@ -298,8 +254,6 @@ const balancesReasons = new FieldInfo<OptionsItem>({
 })
 
 export default {
-  admin,
-  group,
   project,
   bonusStatus,
   giftsStatus,
@@ -308,7 +262,6 @@ export default {
   status,
   hidden,
   bannerStrategy,
-  bannerTypes,
   action,
   paymentSystem,
   entryId,
@@ -338,7 +291,6 @@ export default {
   dateRangeProcessing,
 
   // Transactions
-  transactionsType,
   transactionsStatuses,
   dateRangeActivated,
   dateRangeUsed,

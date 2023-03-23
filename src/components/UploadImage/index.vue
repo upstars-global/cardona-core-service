@@ -6,7 +6,7 @@
       :path="path"
       :file="file"
       :is-load="isLoad"
-      @uploadFile="onUploadFile"
+      @uploadFileEvent="onUploadFile"
       @setPath="onSetPath"
       @clear="clearFileModal"
     />
