@@ -1,7 +1,7 @@
 ARG NODE_BASE_VERSION="node:14.20.1"
 ARG NGINX_BASE_VERSION="nginx:1.18"
 
-FROM ${NODE_BASE_VERSION}-alpine AS install
+FROM ${NODE_BASE_VERSION} AS install
 
 WORKDIR /app
 COPY package.json .

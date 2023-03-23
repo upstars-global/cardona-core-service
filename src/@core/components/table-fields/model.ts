@@ -36,7 +36,8 @@ export enum ListFieldType {
   Button = 'button',
   SumAndCurrency = 'sum-and-currency',
   Comment = 'comment',
-  StatusWithDate = 'status-with-date',
+  Image = 'image',
+  Period = 'period',
 }
 export enum ListSize {
   SM = 'sm',
