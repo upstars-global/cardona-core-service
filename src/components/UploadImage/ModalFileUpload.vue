@@ -77,6 +77,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
 import FileGallery from '@/components/UploadImage/FileGallery.vue'
+import { dispatch } from '@/store'
 
 export default defineComponent({
   name: 'ModalFileUpload',
@@ -126,6 +127,10 @@ export default defineComponent({
       modalFileUpload.value.hide()
     }
 
+    const uploadFile = async (input) => {
+      await dispatch('compostela/uploadFile', input)
+    }
+
     return {
       modalFileUpload,
       clearFile,
@@ -133,6 +138,7 @@ export default defineComponent({
       setPathFile,
       fileInner,
       hideModal,
+      uploadFile,
     }
   },
 })
