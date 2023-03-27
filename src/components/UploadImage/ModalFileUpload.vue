@@ -76,8 +76,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import FileGallery from 'src/components/UploadImage/FileGallery.vue'
-import { dispatch } from 'src/store'
+import FileGallery from '../UploadImage/FileGallery.vue'
+import { dispatch } from '../../store'
 
 export default defineComponent({
   name: 'ModalFileUpload',
