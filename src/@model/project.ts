@@ -1,5 +1,18 @@
 import { IRequestListPayload } from '@model/index'
-import { UserSmallInfo } from './user'
+
+export interface UserSmallInfoInput {
+  readonly id: number
+  readonly userName: string
+}
+export class UserSmallInfo {
+  readonly id: number
+  readonly name: string
+
+  constructor({ id, userName }: UserSmallInfoInput) {
+    this.id = Number(id)
+    this.name = userName
+  }
+}
 
 interface ProjectIntegrationsInput {
   readonly marbella: boolean
