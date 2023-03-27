@@ -13,7 +13,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/bootstrap-extended/_include';
+@import 'src/@core/scss/base/bootstrap-extended/_include';
 
 .item-file {
   position: relative;

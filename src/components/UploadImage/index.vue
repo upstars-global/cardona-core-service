@@ -67,11 +67,11 @@
 
 <script lang="ts">
 import { nextTick, computed, defineComponent, PropType, ref, watch } from 'vue'
-import ModalFileUpload from '@/components/UploadImage/ModalFileUpload.vue'
-import i18n from '@/libs/i18n'
-import useToastService from '@/helpers/toasts'
-import { useBvModal } from '@/helpers/bvModal'
-import { dispatch } from '@/store'
+import ModalFileUpload from 'src/components/UploadImage/ModalFileUpload.vue'
+import i18n from 'src/libs/i18n'
+import useToastService from 'src/helpers/toasts'
+import { useBvModal } from 'src/helpers/bvModal'
+import { dispatch } from 'src/store'
 
 export default defineComponent({
   name: 'UploadImage',
