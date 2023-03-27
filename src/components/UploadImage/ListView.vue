@@ -108,8 +108,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import { TableField } from '@core/components/table-fields/model'
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
+import { TableField } from 'src/@core/components/table-fields/model'
+import { useUtils as useI18nUtils } from 'src/@core/libs/i18n'
 
 export default defineComponent({
   name: 'ListView',
