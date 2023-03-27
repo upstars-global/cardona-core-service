@@ -42,8 +42,8 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { debounce } from 'lodash'
-import SkeletonGrid from 'src/components/UploadImage/SkeletonGrid.vue'
-import SkeletonGridItem from 'src/components/UploadImage/SkeletonGridItem.vue'
+import SkeletonGrid from '../UploadImage/SkeletonGrid.vue'
+import SkeletonGridItem from '../UploadImage/SkeletonGridItem.vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
 export default defineComponent({

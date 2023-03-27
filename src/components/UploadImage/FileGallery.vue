@@ -70,13 +70,13 @@
 </template>
 
 <script lang="ts">
-import NoFiles from 'src/components/UploadImage/NoFiles.vue'
-import GridView from 'src/components/UploadImage/GridView.vue'
-import ListView from 'src/components/UploadImage/ListView.vue'
+import NoFiles from '../UploadImage/NoFiles.vue'
+import GridView from '../UploadImage/GridView.vue'
+import ListView from '../UploadImage/ListView.vue'
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
-import usePagination from 'src/use/pagination'
-import i18n from 'src/libs/i18n'
-import { dispatch } from 'src/store'
+import usePagination from '../../use/pagination'
+import i18n from '../../libs/i18n'
+import { dispatch } from '../../store'
 
 export default defineComponent({
   name: 'FileGallery',
