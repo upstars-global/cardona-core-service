@@ -45,8 +45,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_include.scss';
-@import '~@core/scss/base/components/_variables-dark.scss';
+@import '../../../@core/scss/base/bootstrap-extended/_include.scss';
+@import '../../../@core/scss/base/components/_variables-dark.scss';
 
 .dark-layout {
   div ::v-deep .card .card-body {

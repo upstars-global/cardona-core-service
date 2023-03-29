@@ -264,8 +264,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/include';
-@import '~@core/scss/base/components/variables-dark';
+@import '../../../../@core/scss/base/bootstrap-extended/include';
+@import '../../../../@core/scss/base/components/variables-dark';
 
 .customizer-section {
   border-bottom: 1px solid #ebe9f1;

@@ -548,5 +548,5 @@ export default {
 </style>
 
 <style lang="scss">
-@import '~@core/scss/base/pages/app-email.scss';
+@import '../../../@core/scss/base/pages/app-email.scss';
 </style>

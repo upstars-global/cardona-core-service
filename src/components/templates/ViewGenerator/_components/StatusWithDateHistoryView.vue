@@ -19,7 +19,7 @@ const props = defineProps<{
 </template>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_variables.scss';
+@import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
 
 .status-history::v-deep {
   flex-direction: row;

@@ -48,7 +48,7 @@ const togglePasswordVisibility = () => {
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_variables.scss';
+@import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
 
 .error :deep(.input-group-text) {
   border-color: $red;

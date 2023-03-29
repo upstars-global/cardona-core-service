@@ -53,7 +53,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_variables.scss';
+@import '../@core/scss/base/bootstrap-extended/_variables.scss';
 
 .code-view-editor::v-deep {
   pointer-events: none;

@@ -86,7 +86,7 @@ export default {
 
 <style lang="scss">
 @import '@core/scss/vue/libs/vue-wizard.scss';
-@import '~@core/scss/base/pages/app-ecommerce.scss';
+@import '../../../../@core/scss/base/pages/app-ecommerce.scss';
 @import '../../../../../node_modules/vue-form-wizard/dist/vue-form-wizard.min.css';
 </style>
 

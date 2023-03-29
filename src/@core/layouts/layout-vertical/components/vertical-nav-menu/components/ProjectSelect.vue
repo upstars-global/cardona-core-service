@@ -68,11 +68,11 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/bootstrap-extended/include'; // Bootstrap includes
-@import '~@core/scss/base/components/include'; // Components includes
+@import '../../../../../../@core/scss/base/bootstrap-extended/include'; // Bootstrap includes
+@import '../../../../../../@core/scss/base/components/include'; // Components includes
 
 // Color palettes
-@import '~@core/scss/base/core/colors/palette-variables';
+@import '../../../../../../@core/scss/base/core/colors/palette-variables';
 .dark-layout {
   .main-menu {
     .project-select {

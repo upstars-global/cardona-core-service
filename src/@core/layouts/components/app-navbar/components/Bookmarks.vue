@@ -151,5 +151,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/include';
+@import '../../../../../@core/scss/base/bootstrap-extended/include';
 </style>

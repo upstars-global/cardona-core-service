@@ -126,8 +126,8 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_variables.scss';
-@import '@/assets/scss/style.scss';
+@import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
+@import '../../../../assets/scss/style.scss';
 
 .select-field::v-deep {
   &:not(.vs--single) {

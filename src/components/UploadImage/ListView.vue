@@ -171,7 +171,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_include';
+@import '../../@core/scss/base/bootstrap-extended/_include';
 .table-box {
   border: 1px solid $border-color;
   border-radius: 0.5rem;

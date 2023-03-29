@@ -351,8 +351,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/bootstrap-extended/_include';
-@import '~@core/scss/base/components/include';
+@import '../../@core/scss/base/bootstrap-extended/_include';
+@import '../../@core/scss/base/components/include';
 
 .dark-layout {
   .block-text-edite {

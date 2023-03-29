@@ -218,7 +218,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/bootstrap-extended/_include';
+@import '../../@core/scss/base/bootstrap-extended/_include';
 .block-load-img {
   position: absolute;
   top: 0;

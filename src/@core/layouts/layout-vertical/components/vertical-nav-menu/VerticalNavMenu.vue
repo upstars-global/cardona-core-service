@@ -197,7 +197,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/core/menu/menu-types/vertical-menu';
+@import '../../../../../@core/scss/base/core/menu/menu-types/vertical-menu';
 .main-menu {
   .router-link-active {
     color: $body-color;

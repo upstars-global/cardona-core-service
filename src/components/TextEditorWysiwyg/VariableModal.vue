@@ -101,7 +101,7 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scoped>
-@import '~@core/scss/base/core/colors/palette-variables.scss';
+@import '../../@core/scss/base/core/colors/palette-variables.scss';
 .variable-box {
   margin-top: 0.571rem;
 }

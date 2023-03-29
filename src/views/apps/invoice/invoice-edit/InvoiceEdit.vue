@@ -647,7 +647,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/pages/app-invoice.scss';
+@import '../../../../@core/scss/base/pages/app-invoice.scss';
 
 .form-item-section {
   background-color: $product-details-bg;

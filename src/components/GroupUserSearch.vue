@@ -129,8 +129,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/bootstrap-extended/_include';
-@import '~@core/scss/base/components/_include';
+@import '../@core/scss/base/bootstrap-extended/_include';
+@import '../@core/scss/base/components/_include';
 
 .field-group-disabled {
   cursor: pointer;

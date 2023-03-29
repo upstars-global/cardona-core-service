@@ -183,7 +183,7 @@ export default defineComponent({
 })
 </script>
 <style lang="scss">
-@import '~@core/scss/base/bootstrap-extended/_include';
+@import '../../../@core/scss/base/bootstrap-extended/_include';
 
 .locale-tab {
   .local-key-block {
