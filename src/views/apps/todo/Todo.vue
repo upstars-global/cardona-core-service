@@ -404,5 +404,5 @@ export default {
 </style>
 
 <style lang="scss">
-@import '~@core/scss/base/pages/app-todo.scss';
+@import '../../../@core/scss/base/pages/app-todo.scss';
 </style>

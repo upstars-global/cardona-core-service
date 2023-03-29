@@ -188,5 +188,5 @@ export default {
 }
 </style>
 <style lang="scss">
-@import '~@core/scss/base/themes/bordered-layout';
+@import '../../../@core/scss/base/themes/bordered-layout';
 </style>

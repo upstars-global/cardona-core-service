@@ -106,5 +106,5 @@ export default defineComponent({
 
 
 <style lang="scss">
-@import '~@core/scss/vue/libs/vue-flatpicker.scss';
+@import '../../@core/scss/vue/libs/vue-flatpicker.scss';
 </style>

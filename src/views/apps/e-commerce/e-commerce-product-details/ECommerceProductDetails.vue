@@ -241,5 +241,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/pages/app-ecommerce-details.scss';
+@import '../../../../@core/scss/base/pages/app-ecommerce-details.scss';
 </style>

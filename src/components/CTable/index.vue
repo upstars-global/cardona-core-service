@@ -601,7 +601,7 @@ export default defineComponent({
 
 <style lang="scss">
 // Extended Style
-@import '~@core/scss/base/core/colors/palette-variables.scss';
+@import '../../@core/scss/base/core/colors/palette-variables.scss';
 .item_tr {
   -webkit-transition: all 0.2s, border-color 0s;
   transition: all 0.2s, border-color 0s;

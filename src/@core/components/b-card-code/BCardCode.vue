@@ -89,9 +89,9 @@ export default {
 
 <style lang="scss" scoped>
 @import 'bootstrap/scss/functions';
-@import '~@core/scss/base/bootstrap-extended/variables';
+@import '../../../@core/scss/base/bootstrap-extended/variables';
 @import 'bootstrap/scss/variables';
-@import '~@core/scss/base/components/variables-dark';
+@import '../../../@core/scss/base/components/variables-dark';
 
 .card-code {
   pre[class*='language-'] {

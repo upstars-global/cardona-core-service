@@ -128,5 +128,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/pages/app-ecommerce.scss';
+@import '../../../../@core/scss/base/pages/app-ecommerce.scss';
 </style>

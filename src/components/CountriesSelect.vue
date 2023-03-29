@@ -144,8 +144,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_variables.scss';
-@import '@/assets/scss/style.scss';
+@import '../@core/scss/base/bootstrap-extended/_variables.scss';
+@import '../assets/scss/style.scss';
 
 .countries-select::v-deep {
   .vs__selected,

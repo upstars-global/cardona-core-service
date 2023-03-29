@@ -287,7 +287,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_include.scss';
+@import '../../../@core/scss/base/bootstrap-extended/_include.scss';
 
 .assignee-selector {
   ::v-deep .vs__dropdown-toggle {

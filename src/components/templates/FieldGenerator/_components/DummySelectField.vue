@@ -95,7 +95,7 @@ export default defineComponent({
 
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_variables.scss';
+@import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
 
 .select-field::v-deep {
   &.error {

@@ -354,7 +354,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/pages/app-invoice.scss';
+@import '../../../../@core/scss/base/pages/app-invoice.scss';
 </style>
 
 <style lang="scss">
