@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosInstance, AxiosError } from '@axios'
+import axios, { AxiosRequestConfig, AxiosInstance, AxiosError } from '../../libs/axios'
 import {
   IApiServiceConfig,
   IResponseError,
