@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BRow, BCol, BCalendar, BCardText } from 'bootstrap-vue'
 import Prism from 'vue-prism-component'
 import 'prismjs'

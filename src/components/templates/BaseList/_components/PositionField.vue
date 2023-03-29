@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
-import { ListSize } from '@core/components/table-fields/model'
+import { ListSize } from '../../../../@core/components/table-fields/model'
 
 export default defineComponent({
   name: 'PositionField',

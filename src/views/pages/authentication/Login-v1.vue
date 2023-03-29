@@ -126,9 +126,9 @@ import {
   BInputGroupAppend,
   BFormCheckbox,
 } from 'bootstrap-vue'
-import VuexyLogo from '@core/layouts/components/AppLogo.vue'
+import VuexyLogo from '../../../@core/layouts/components/AppLogo.vue'
 import { required, email } from '@validations'
-import { togglePasswordVisibility } from '@core/mixins/ui/forms'
+import { togglePasswordVisibility } from '../../../@core/mixins/ui/forms'
 
 export default {
   components: {

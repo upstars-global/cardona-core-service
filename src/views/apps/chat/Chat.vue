@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import store from '@/store'
+import store from '../../../store'
 import { ref, onUnmounted, nextTick } from 'vue'
 import {
   BAvatar,
@@ -151,9 +151,9 @@ import {
   BButton,
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-// import { formatDate } from '@core/utils/filter'
+// import { formatDate } from '../../../@core/utils/filter'
 import { $themeBreakpoints } from '@themeConfig'
-import { useResponsiveAppLeftSidebarVisibility } from '@core/comp-functions/ui/app'
+import { useResponsiveAppLeftSidebarVisibility } from '../../../@core/comp-functions/ui/app'
 import ChatLeftSidebar from './ChatLeftSidebar.vue'
 import chatStoreModule from './chatStoreModule'
 import ChatActiveChatContentDetailsSidedbar from './ChatActiveChatContentDetailsSidedbar.vue'

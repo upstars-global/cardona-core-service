@@ -36,11 +36,11 @@
 </template>
 
 <script>
-import store from '@/store'
-import router from '@/router'
+import store from '../../../../store'
+import router from '../../../../router'
 import { ref, onUnmounted } from 'vue'
 import { BRow, BCol, BAlert, BLink } from 'bootstrap-vue'
-import InvoiceList from '@/views/apps/invoice/invoice-list/InvoiceList.vue'
+import InvoiceList from '../../../../views/apps/invoice/invoice-list/InvoiceList.vue'
 import userStoreModule from '../userStoreModule'
 import UserViewUserInfoCard from './UserViewUserInfoCard.vue'
 import UserViewUserPlanCard from './UserViewUserPlanCard.vue'

@@ -146,7 +146,7 @@
 <script>
 /* eslint-disable global-require */
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import VuexyLogo from '@core/layouts/components/AppLogo.vue'
+import VuexyLogo from '../../../@core/layouts/components/AppLogo.vue'
 import {
   BRow,
   BCol,
@@ -163,9 +163,9 @@ import {
   BCardText,
 } from 'bootstrap-vue'
 import { required, email } from '@validations'
-import { togglePasswordVisibility } from '@core/mixins/ui/forms'
-import store from '@/store'
-import useJwt from '@/auth/jwt/useJwt'
+import { togglePasswordVisibility } from '../../../@core/mixins/ui/forms'
+import store from '../../../store'
+import useJwt from '../../../auth/jwt/useJwt'
 
 export default {
   components: {

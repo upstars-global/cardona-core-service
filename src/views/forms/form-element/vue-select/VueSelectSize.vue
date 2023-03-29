@@ -56,7 +56,7 @@
 
 <script>
 import { BRow, BCol, BFormGroup, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import vSelect from 'vue-select'
 import { codeVueSize } from './code'
 

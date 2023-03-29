@@ -36,7 +36,7 @@
 
 <script>
 import { BCarousel, BCarouselSlide, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { codeCarouselCaption } from './code'
 
 export default {

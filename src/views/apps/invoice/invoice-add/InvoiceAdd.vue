@@ -441,11 +441,11 @@
 </template>
 
 <script>
-import Logo from '@core/layouts/components/AppLogo.vue'
+import Logo from '../../../../@core/layouts/components/AppLogo.vue'
 import { ref, onUnmounted } from 'vue'
-import { heightTransition } from '@core/mixins/ui/transition'
+import { heightTransition } from '../../../../@core/mixins/ui/transition'
 import Ripple from 'vue-ripple-directive'
-import store from '@/store'
+import store from '../../../../store'
 import {
   BRow,
   BCol,

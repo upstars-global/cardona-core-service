@@ -46,7 +46,7 @@
 
 <script>
 import { BListGroup, BListGroupItem, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { codeCustom } from './code'
 
 export default {

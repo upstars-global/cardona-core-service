@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ViewInfo } from '@model/view'
+import { ViewInfo } from '../../../../@model/view'
 
 const props = defineProps<{
   item: ViewInfo

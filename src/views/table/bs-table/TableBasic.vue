@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BTable } from 'bootstrap-vue'
 import { codeBasic } from './code'
 

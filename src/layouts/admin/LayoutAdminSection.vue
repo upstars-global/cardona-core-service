@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import LayoutVerticalAdminSection from '@core/layouts/layout-vertical/LayoutVerticalAdminSection.vue'
+import LayoutVerticalAdminSection from '../../@core/layouts/layout-vertical/LayoutVerticalAdminSection.vue'
 import Navbar from '../components/Navbar.vue'
 
 export default {

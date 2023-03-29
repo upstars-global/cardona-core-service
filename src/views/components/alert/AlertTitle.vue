@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BAlert, BCardText, BLink } from 'bootstrap-vue'
 import { codeAlertTitle } from './code'
 

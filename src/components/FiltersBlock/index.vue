@@ -105,13 +105,13 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, PropType, watch, onMounted } from 'vue'
-import store from '@/store'
-import { useRouter } from '@core/utils/utils'
-import { setStorage } from '@/helpers/storage'
-import useToastService from '@/helpers/toasts'
-import { FieldInfo } from '@model/field'
+import store from '../../store'
+import { useRouter } from '../../@core/utils/utils'
+import { setStorage } from '../../helpers/storage'
+import useToastService from '../../helpers/toasts'
+import { FieldInfo } from '../../@model/field'
 import FilterSelector from './_components/FilterSelector.vue'
-import FieldGenerator from '@/components/templates/FieldGenerator'
+import FieldGenerator from '../../components/templates/FieldGenerator'
 
 export default defineComponent({
   name: 'FiltersBlock',

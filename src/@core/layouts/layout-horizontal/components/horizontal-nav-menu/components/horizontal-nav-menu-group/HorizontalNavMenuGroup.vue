@@ -34,9 +34,9 @@
 
 <script>
 import { BLink } from 'bootstrap-vue'
-import { resolveHorizontalNavMenuItemComponent as resolveNavItemComponent } from '@core/layouts/utils'
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
-import { useUtils as useAclUtils } from '@core/libs/acl'
+import { resolveHorizontalNavMenuItemComponent as resolveNavItemComponent } from '../../../../../../../@core/layouts/utils'
+import { useUtils as useI18nUtils } from '../../../../../../../@core/libs/i18n'
+import { useUtils as useAclUtils } from '../../../../../../../@core/libs/acl'
 import HorizontalNavMenuLink from '../horizontal-nav-menu-link/HorizontalNavMenuLink.vue'
 
 // Composition Function

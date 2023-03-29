@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { TransactionType } from '@model/playersTransactions'
+import { TransactionType } from '../@model/playersTransactions'
 
 const props = defineProps<{
   type: string

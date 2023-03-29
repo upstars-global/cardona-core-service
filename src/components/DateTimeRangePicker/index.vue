@@ -26,11 +26,11 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
-import i18n from '@/libs/i18n'
+import i18n from '../../libs/i18n'
 import flatPicker from 'vue-flatpickr-component'
 import en from 'flatpickr/dist/l10n/default.js'
 import { Russian as ru } from 'flatpickr/dist/l10n/ru.js'
-import { getISOStringWithoutTimezone, getUTCISOString } from '@/helpers/date'
+import { getISOStringWithoutTimezone, getUTCISOString } from '../../helpers/date'
 
 export default defineComponent({
   name: 'DateTimeRangePicker',

@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormInput, BCardText, BFormGroup } from 'bootstrap-vue'
 import { codeDatalist } from './code'
 

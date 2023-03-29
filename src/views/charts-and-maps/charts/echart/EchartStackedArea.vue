@@ -6,7 +6,7 @@
 
 <script>
 import { BCard } from 'bootstrap-vue'
-import AppEchartStackedArea from '@core/components/charts/echart/AppEchartStackedArea.vue'
+import AppEchartStackedArea from '../../../../@core/components/charts/echart/AppEchartStackedArea.vue'
 
 export default {
   components: {

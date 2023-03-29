@@ -24,10 +24,10 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BFormSelect, BFormSelectOption, BFormGroup, BFormInput } from 'bootstrap-vue'
 import VueSlider from 'vue-slider-component'
-import store from '@/store'
+import store from '../../../store'
 import { codeInput } from './code'
 
 export default {

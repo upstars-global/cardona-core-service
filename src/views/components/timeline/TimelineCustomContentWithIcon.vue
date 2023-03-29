@@ -191,7 +191,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import {
   BImg,
   BAvatar,
@@ -205,8 +205,8 @@ import {
   BBadge,
   VBTooltip,
 } from 'bootstrap-vue'
-import AppTimeline from '@core/components/app-timeline/AppTimeline.vue'
-import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem.vue'
+import AppTimeline from '../../../@core/components/app-timeline/AppTimeline.vue'
+import AppTimelineItem from '../../../@core/components/app-timeline/AppTimelineItem.vue'
 import Ripple from 'vue-ripple-directive'
 import { codeCustomContentWithIcon } from './code'
 

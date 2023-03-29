@@ -62,7 +62,7 @@
 <script>
 /* eslint-disable global-require */
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import VuexyLogo from '@core/layouts/components/AppLogo.vue'
+import VuexyLogo from '../../../@core/layouts/components/AppLogo.vue'
 import {
   BRow,
   BCol,
@@ -76,8 +76,8 @@ import {
   BButton,
 } from 'bootstrap-vue'
 import { required, email } from '@validations'
-import store from '@/store'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import store from '../../../store'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {

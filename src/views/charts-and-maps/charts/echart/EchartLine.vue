@@ -22,7 +22,7 @@
 
 <script>
 import { BCard, BBadge } from 'bootstrap-vue'
-import AppEchartLine from '@core/components/charts/echart/AppEchartLine.vue'
+import AppEchartLine from '../../../../@core/components/charts/echart/AppEchartLine.vue'
 
 export default {
   components: {

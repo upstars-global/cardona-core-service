@@ -25,8 +25,8 @@
 
 <script>
 import { BAvatar } from 'bootstrap-vue'
-import AppCollapse from '@core/components/app-collapse/AppCollapse.vue'
-import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
+import AppCollapse from '../../../@core/components/app-collapse/AppCollapse.vue'
+import AppCollapseItem from '../../../@core/components/app-collapse/AppCollapseItem.vue'
 
 export default {
   components: {

@@ -25,7 +25,7 @@
 <script>
 /* eslint-disable vue/no-unused-components */
 /* eslint no-unused-expressions: ["error", { "allowShortCircuit": true }] */
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../../@core/components/b-card-code/BCardCode.vue'
 import { BCard, BCardText, BAvatar } from 'bootstrap-vue'
 import { VueAutosuggest } from 'vue-autosuggest'
 import axios from 'axios'

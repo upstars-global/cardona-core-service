@@ -266,8 +266,8 @@ import {
   BButton,
   BBadge,
 } from 'bootstrap-vue'
-import AppCollapse from '@core/components/app-collapse/AppCollapse.vue'
-import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
+import AppCollapse from '../../../@core/components/app-collapse/AppCollapse.vue'
+import AppCollapseItem from '../../../@core/components/app-collapse/AppCollapseItem.vue'
 import Ripple from 'vue-ripple-directive'
 /* eslint-disable global-require */
 export default {

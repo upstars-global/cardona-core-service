@@ -22,7 +22,7 @@
 
 <script>
 import { BCard, BFormRadioGroup, BFormGroup } from 'bootstrap-vue'
-import AppEchartScatter from '@core/components/charts/echart/AppEchartScatter.vue'
+import AppEchartScatter from '../../../../@core/components/charts/echart/AppEchartScatter.vue'
 
 export default {
   components: {

@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BProgress, BProgressBar, BCardText } from 'bootstrap-vue'
 import { codeCustomLabel } from './code'
 

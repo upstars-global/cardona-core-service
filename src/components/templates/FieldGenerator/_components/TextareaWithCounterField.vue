@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { FieldInfo } from '@model/field'
+import { FieldInfo } from '../../../../@model/field'
 
 type TextareaWithCounterFieldProps = {
   value: string

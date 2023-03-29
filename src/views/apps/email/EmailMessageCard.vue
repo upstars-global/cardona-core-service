@@ -106,7 +106,7 @@ import {
   BLink,
   BImg,
 } from 'bootstrap-vue'
-import { formatDate } from '@core/utils/filter'
+import { formatDate } from '../../../@core/utils/filter'
 
 export default {
   components: {

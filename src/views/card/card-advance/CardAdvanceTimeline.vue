@@ -87,8 +87,8 @@ import {
   BAvatarGroup,
   VBTooltip,
 } from 'bootstrap-vue'
-import AppTimeline from '@core/components/app-timeline/AppTimeline.vue'
-import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem.vue'
+import AppTimeline from '../../../@core/components/app-timeline/AppTimeline.vue'
+import AppTimelineItem from '../../../@core/components/app-timeline/AppTimelineItem.vue'
 /* eslint-disable global-require */
 export default {
   components: {

@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BCalendar, BRow, BCol, BFormCheckbox, BFormSelect, BCardText } from 'bootstrap-vue'
 import Prism from 'vue-prism-component'
 import 'prismjs'

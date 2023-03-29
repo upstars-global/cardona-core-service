@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BTab, BTabs, BCardText } from 'bootstrap-vue'
 import { codeThemes } from './code'
 

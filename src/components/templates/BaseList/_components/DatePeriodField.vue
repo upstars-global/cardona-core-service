@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import DateField from './DateField.vue'
-import { IBaseDatePeriod } from '@model/date'
+import { IBaseDatePeriod } from '../../../../@model/date'
 
 const props = defineProps<{
   period: IBaseDatePeriod

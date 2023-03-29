@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormCheckboxGroup, BCardText, BFormGroup } from 'bootstrap-vue'
 import { codeGroupArray } from './code'
 

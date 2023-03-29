@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../../@core/components/b-card-code/BCardCode.vue'
 import { LMap, LTileLayer, LCircle } from 'vue2-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { codeBasic } from './code'

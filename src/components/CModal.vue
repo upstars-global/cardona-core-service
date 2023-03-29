@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import i18n from '@/libs/i18n'
-import { BSize, BSizes, BVariant, BVariants } from '@model/bootstrap'
+import i18n from '../libs/i18n'
+import { BSize, BSizes, BVariant, BVariants } from '../@model/bootstrap'
 
 type CModalProps = {
   id: string

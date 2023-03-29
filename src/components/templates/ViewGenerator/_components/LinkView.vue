@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { getters } from '@/store'
-import { ViewInfo } from '@model/view'
+import { getters } from '../../../../store'
+import { ViewInfo } from '../../../../@model/view'
 
 const props = defineProps<{
   item: ViewInfo

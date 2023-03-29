@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { StatusWithDateValue } from '@model/view'
+import { StatusWithDateValue } from '../../../../@model/view'
 import StatusField from './StatusField.vue'
 import DateField from './DateField.vue'
 

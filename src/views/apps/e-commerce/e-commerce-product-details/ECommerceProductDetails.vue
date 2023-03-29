@@ -155,8 +155,8 @@
 </template>
 
 <script>
-import { useRouter } from '@core/utils/utils'
-import store from '@/store'
+import { useRouter } from '../../../../@core/utils/utils'
+import store from '../../../../store'
 import { ref } from 'vue'
 import {
   BCard,

@@ -49,9 +49,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
-import { getters } from '@/store'
-import { FieldInfo, FieldType } from '@model/field'
-import { BaseField } from '@model/baseField'
+import { getters } from '../../../store'
+import { FieldInfo, FieldType } from '../../../@model/field'
+import { BaseField } from '../../../@model/baseField'
 import TextField from './_components/TextField.vue'
 import NumberField from './_components/NumberField.vue'
 import PercentField from './_components/PercentField.vue'

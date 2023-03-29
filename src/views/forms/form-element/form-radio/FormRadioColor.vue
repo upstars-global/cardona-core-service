@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormRadio, BCardText } from 'bootstrap-vue'
 import { codeColor } from './code'
 

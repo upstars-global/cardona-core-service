@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { getters } from '@/store'
+import { getters } from '../../../../store'
 import { Location } from 'vue-router'
 
 export default defineComponent({

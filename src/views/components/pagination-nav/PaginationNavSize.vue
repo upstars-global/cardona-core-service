@@ -33,7 +33,7 @@
 
 <script>
 import { BPaginationNav, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { codeSize } from './code'
 
 export default {

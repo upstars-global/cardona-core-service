@@ -55,9 +55,9 @@
 
 <script>
 import { BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
-import AppCollapse from '@core/components/app-collapse/AppCollapse.vue'
-import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
+import BCardCode from '../../../@core/components/b-card-code'
+import AppCollapse from '../../../@core/components/app-collapse/AppCollapse.vue'
+import AppCollapseItem from '../../../@core/components/app-collapse/AppCollapseItem.vue'
 import { codeAccordionDefault } from './code'
 
 export default {

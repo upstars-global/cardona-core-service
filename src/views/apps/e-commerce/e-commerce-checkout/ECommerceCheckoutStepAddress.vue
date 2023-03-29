@@ -209,7 +209,7 @@ import {
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import vSelect from 'vue-select'
 import { required, integer } from '@validations'
-import formValidation from '@core/comp-functions/forms/form-validation'
+import formValidation from '../../../../@core/comp-functions/forms/form-validation'
 
 export default {
   components: {

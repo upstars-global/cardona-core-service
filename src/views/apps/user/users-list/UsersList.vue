@@ -194,9 +194,9 @@ import {
   BPagination,
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
-import store from '@/store'
+import store from '../../../../store'
 import { ref, onUnmounted } from 'vue'
-import { avatarText } from '@core/utils/filter'
+import { avatarText } from '../../../../@core/utils/filter'
 import UsersListFilters from './UsersListFilters.vue'
 import useUsersList from './useUsersList'
 import userStoreModule from '../userStoreModule'

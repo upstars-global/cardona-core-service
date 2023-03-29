@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BMedia, BImg, BMediaAside, BMediaBody, BCardText } from 'bootstrap-vue'
 import { codeNoBody } from './code'
 

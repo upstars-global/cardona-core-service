@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { getters } from '@/store'
-import { FieldInfo } from '@model/field'
+import { getters } from '../../../../store'
+import { FieldInfo } from '../../../../@model/field'
 
 type SwitchFieldProps = {
   value: boolean

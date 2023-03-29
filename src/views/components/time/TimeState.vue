@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BFormRadioGroup, BFormGroup, BFormRadio, BTime } from 'bootstrap-vue'
 import { codeState } from './code'
 

@@ -95,7 +95,7 @@
 
 <script>
 /* eslint-disable global-require */
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../../@core/components/b-card-code/BCardCode.vue'
 import { BButton, BFormSelect, BRow, BCol, BFormGroup } from 'bootstrap-vue'
 import {
   LMap,

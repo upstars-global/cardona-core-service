@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import useAppConfig from '@core/app-config/useAppConfig'
+import useAppConfig from '../../../@core/app-config/useAppConfig'
 
 export default {
   setup() {

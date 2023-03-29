@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../../@core/components/b-card-code/BCardCode.vue'
 import { BRow, BCol, BFormGroup } from 'bootstrap-vue'
 import flatPickr from 'vue-flatpickr-component'
 import { codeBasic } from './code'

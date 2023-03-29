@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BTable, BFormCheckbox, BButton, BCard, BRow, BCol, BAvatar, BBadge } from 'bootstrap-vue'
 import { codeRowDetailsSupport } from './code'
 

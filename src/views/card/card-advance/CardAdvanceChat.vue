@@ -41,7 +41,7 @@
 <script>
 import { BCard, BCardHeader, BAvatar, BForm, BFormInput, BInputGroup, BButton } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import ChatLog from '@/views/apps/chat/ChatLog.vue'
+import ChatLog from '../../../views/apps/chat/ChatLog.vue'
 
 export default {
   components: {

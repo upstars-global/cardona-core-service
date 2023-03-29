@@ -10,7 +10,7 @@
 
 <script>
 import { BBreadcrumb } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { codeDefault } from './code'
 
 export default {

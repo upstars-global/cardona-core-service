@@ -46,7 +46,7 @@
 
 <script>
 import { computed } from 'vue'
-import { dispatch, getters } from '@/store'
+import { dispatch, getters } from '../../../../../../store'
 
 export default {
   name: 'ProjectSelect',

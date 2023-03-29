@@ -40,7 +40,7 @@
 
 <script>
 import { BPaginationNav, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { codeGoto } from './code'
 
 export default {

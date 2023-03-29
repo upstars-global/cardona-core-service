@@ -135,7 +135,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import {
   BAvatar,
   BBadge,
@@ -150,7 +150,7 @@ import { VueGoodTable } from 'vue-good-table'
 import 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
 import Prism from 'vue-prism-component'
-import store from '@/store'
+import store from '../../../store'
 import { codeSSR } from './code'
 
 export default {

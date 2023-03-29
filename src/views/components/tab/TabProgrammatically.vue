@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BButtonGroup, BButton, BCard, BTab, BTabs, BCardText } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
 import { codeProgrammatically } from './code'

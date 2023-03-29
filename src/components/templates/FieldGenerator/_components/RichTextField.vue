@@ -10,9 +10,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed, watch, ref } from 'vue'
-import TextEditorWysiwyg from '@/components/TextEditorWysiwyg'
-import { FieldInfo } from '@model/field'
-import { getters } from '@/store'
+import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg'
+import { FieldInfo } from '../../../../@model/field'
+import { getters } from '../../../../store'
 
 export default defineComponent({
   name: 'RichTextField',

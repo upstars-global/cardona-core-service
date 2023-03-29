@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import navMenuItems from '@/navigation/horizontal'
+import navMenuItems from '../../../../../navigation/horizontal'
 import HorizontalNavMenuItems from './components/horizontal-nav-menu-items/HorizontalNavMenuItems.vue'
 
 export default {

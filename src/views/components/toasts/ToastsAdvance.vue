@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 // eslint-disable-next-line
 import { BButton, BSpinner,BCardText } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'

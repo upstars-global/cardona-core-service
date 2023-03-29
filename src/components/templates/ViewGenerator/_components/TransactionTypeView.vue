@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ViewInfo } from '@model/view'
-import TransactionType from '@/components/TransactionType.vue'
+import { ViewInfo } from '../../../../@model/view'
+import TransactionType from '../../../../components/TransactionType.vue'
 
 const props = defineProps<{
   item: ViewInfo
