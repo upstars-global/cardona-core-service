@@ -208,7 +208,7 @@ import {
 } from 'bootstrap-vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import vSelect from 'vue-select'
-import { required, integer } from '@validations'
+import { required, integer } from '../../../../@core/utils/validations/validations'
 import formValidation from '../../../../@core/comp-functions/forms/form-validation'
 
 export default {

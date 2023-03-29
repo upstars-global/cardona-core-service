@@ -1,7 +1,7 @@
-import { useRouter } from '@core/utils/utils'
-import { FieldInfo } from '@model/field'
-import { BaseField } from '@model/baseField'
-import { OptionsItem } from '@/@model'
+import { useRouter } from '../@core/utils/utils'
+import { FieldInfo } from '../@model/field'
+import { BaseField } from '../@model/baseField'
+import { OptionsItem } from '../@model'
 
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
 

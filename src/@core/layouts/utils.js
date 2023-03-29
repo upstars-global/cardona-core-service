@@ -1,5 +1,5 @@
-import router from '@/router'
-import { isObject } from '@core/utils/utils'
+import router from '../../router'
+import { isObject } from '../../@core/utils/utils'
 import { computed } from 'vue'
 
 /**

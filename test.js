@@ -63,6 +63,6 @@ function findFiles(ext) {
   })
 }
 
-;['vue'].forEach((item) => {
+;['vue', 'js', 'ts'].forEach((item) => {
   findFiles(item)
 })

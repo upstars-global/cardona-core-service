@@ -239,7 +239,7 @@ import {
   digits,
   alphaDash,
   length,
-} from '@validations'
+} from '../../../@core/utils/validations/validations'
 import { codeType } from './code'
 
 export default {

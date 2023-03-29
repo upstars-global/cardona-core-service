@@ -1,4 +1,4 @@
-import store from '@/store'
+import store from '../../../store'
 import { ref, watch, computed } from 'vue'
 
 export const useResponsiveAppLeftSidebarVisibility = () => {

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { ValidationObserver, ValidationProvider, configure } from 'vee-validate'
-import '@validations'
+import '../@core/utils/validations/validations'
 
 Vue.component('ValidationProvider', ValidationProvider)
 Vue.component('ValidationObserver', ValidationObserver)

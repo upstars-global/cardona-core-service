@@ -50,7 +50,7 @@
 import BCardCode from '../../../@core/components/b-card-code'
 import { BFormInput, BFormGroup, BButton, BRow, BCol, BCardText } from 'bootstrap-vue'
 import { ValidationProvider, ValidationObserver, localize } from 'vee-validate'
-import { password, required } from '@validations'
+import { password, required } from '../../../@core/utils/validations/validations'
 import { codeLocale } from './code'
 
 export default {

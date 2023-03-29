@@ -1,5 +1,5 @@
-import { FieldInfo, FieldType } from '@model/field'
-import i18n from '@/libs/i18n'
+import { FieldInfo, FieldType } from '../@model/field'
+import i18n from '../libs/i18n'
 
 export interface SeoData {
   readonly metaTitle?: string

@@ -157,7 +157,7 @@ import {
   BAvatar, BBadge, BPagination, BFormGroup, BFormInput, BFormSelect, BDropdown, BDropdownItem,
 } from 'bootstrap-vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -402,7 +402,7 @@ import {
   BAvatar, BBadge, BPagination, BFormGroup, BFormInput, BFormSelect, BDropdown, BDropdownItem,
 } from 'bootstrap-vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -664,7 +664,7 @@ import {
   BAvatar, BBadge, BPagination, BFormGroup, BFormInput, BFormSelect, BDropdownItem, BDropdown,
 } from 'bootstrap-vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -919,9 +919,9 @@ export const codeAdvance = `
 import {
   BAvatar, BPagination, BFormGroup, BFormInput, BFormSelect, BRow, BCol,
 } from 'bootstrap-vue'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -1212,7 +1212,7 @@ import {
   BAvatar, BBadge, BPagination, BFormGroup, BFormInput, BFormSelect, BAlert, BDropdown, BDropdownItem,
 } from 'bootstrap-vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -1473,7 +1473,7 @@ import { VueGoodTable } from 'vue-good-table'
 import 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
 import Prism from 'vue-prism-component'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {

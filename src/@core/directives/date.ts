@@ -1,4 +1,4 @@
-import { dayDate, fullDate, fullDateWithSeconds } from '@core/utils/date'
+import { dayDate, fullDate, fullDateWithSeconds } from '../../@core/utils/date'
 import Vue from 'vue'
 
 Vue.directive('day-date', {

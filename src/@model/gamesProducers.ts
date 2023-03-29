@@ -1,10 +1,10 @@
-import { SeoData } from '@model/seo'
-import { FieldInfo, FieldType } from '@model/field'
-import i18n from '@/libs/i18n'
-import { IRequestListPayload, OptionsItem } from '@model/index'
-import { getters } from '@/store'
-import { FieldTranslationsData } from '@model/translations'
-import { IGameItemInfo } from '@model/staticPages'
+import { SeoData } from '../@model/seo'
+import { FieldInfo, FieldType } from '../@model/field'
+import i18n from '../libs/i18n'
+import { IRequestListPayload, OptionsItem } from '../@model/index'
+import { getters } from '../store'
+import { FieldTranslationsData } from '../@model/translations'
+import { IGameItemInfo } from '../@model/staticPages'
 
 export type GamesProducersData = {
   readonly id: string

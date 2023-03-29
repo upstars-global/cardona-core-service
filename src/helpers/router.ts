@@ -1,5 +1,5 @@
-import { RouterConfig } from '@model/router'
-import { convertCamelCase } from '@/helpers/index'
+import { RouterConfig } from '../@model/router'
+import { convertCamelCase } from '../helpers/index'
 
 export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfig>) {
   const arrRouters: Array<any> = []

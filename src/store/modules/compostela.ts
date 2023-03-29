@@ -1,5 +1,5 @@
-import ApiService, { ContentType } from '@/services/api'
-import { LoadFile } from '@model/compostela'
+import ApiService, { ContentType } from '../../services/api'
+import { LoadFile } from '../../@model/compostela'
 
 export default {
   namespaced: true,

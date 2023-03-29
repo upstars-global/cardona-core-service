@@ -209,7 +209,7 @@ import {
 } from 'bootstrap-vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { ref } from 'vue'
-import { required, alphaNum, email } from '@validations'
+import { required, alphaNum, email } from '../../../../@core/utils/validations/validations'
 import formValidation from '../../../../@core/comp-functions/forms/form-validation'
 import Ripple from 'vue-ripple-directive'
 import vSelect from 'vue-select'

@@ -1,5 +1,5 @@
 import { onBeforeUnmount } from 'vue'
-import userAppConfig from '@core/app-config/useAppConfig'
+import userAppConfig from '../../../@core/app-config/useAppConfig'
 
 /**
  * Collapse vertical menu when route is visited and restore the state on route leave

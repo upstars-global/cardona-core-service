@@ -1,5 +1,5 @@
 import { getCurrentInstance } from 'vue'
-import i18n from '@/libs/i18n'
+import i18n from '../libs/i18n'
 
 export const useBvModal = () => {
   const vm = getCurrentInstance()!.proxy

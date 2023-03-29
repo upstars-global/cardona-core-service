@@ -61,7 +61,7 @@
 import BCardCode from '../../../@core/components/b-card-code'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { BFormInput, BFormGroup, BForm, BRow, BCol, BButton, BCardText } from 'bootstrap-vue'
-import { required, email } from '@validations'
+import { required, email } from '../../../@core/utils/validations/validations'
 import { codeSimple } from './code'
 
 export default {

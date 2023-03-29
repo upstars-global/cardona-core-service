@@ -118,7 +118,7 @@ import {
   BFormInput,
   BButton,
 } from 'bootstrap-vue'
-import { required } from '@validations'
+import { required } from '../../../@core/utils/validations/validations'
 import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 
 export default {

@@ -1,5 +1,5 @@
 import { ref, watch, computed } from 'vue'
-import { useRouter } from '@core/utils/utils'
+import { useRouter } from '../@core/utils/utils'
 
 type PaginationConfig = {
   defaultCurrentPage?: number

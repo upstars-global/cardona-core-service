@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { getters, dispatch, commit } from '@/store'
+import { getters, dispatch, commit } from '../store'
 
 // modules
-import noAccess from '@/router/noAccess'
-import error from '@/router/error'
-import sectionRouterGenerator from '@/helpers/router'
+import noAccess from '../router/noAccess'
+import error from '../router/error'
+import sectionRouterGenerator from '../helpers/router'
 
 if (!process || process.env.NODE_ENV !== 'test') {
   Vue.use(VueRouter)

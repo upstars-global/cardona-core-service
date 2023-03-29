@@ -1,5 +1,5 @@
-import store from '@/store'
-import { OptionsItem } from '@model/index'
+import store from '../store'
+import { OptionsItem } from '../@model/index'
 
 export enum FieldType {
   Text = 'text',

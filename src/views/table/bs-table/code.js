@@ -1723,7 +1723,7 @@ export const codeLight = `
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BTableLite } from 'bootstrap-vue'
 
 export default {

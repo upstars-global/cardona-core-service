@@ -1,4 +1,4 @@
-import { TableField } from '@core/components/table-fields/model'
+import { TableField } from '../../@core/components/table-fields/model'
 
 const entityName: string = 'Entity'
 

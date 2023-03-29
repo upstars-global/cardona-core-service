@@ -1,5 +1,5 @@
-import mock from '@/@fake-db/mock'
-import { paginateArray, sortCompare } from '@/@fake-db/utils'
+import mock from '../../../@fake-db/mock'
+import { paginateArray, sortCompare } from '../../../@fake-db/utils'
 
 /* eslint-disable global-require */
 const data = {
