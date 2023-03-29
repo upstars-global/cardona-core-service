@@ -136,6 +136,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/swiper.scss';
-@import '../../../../../node_modules/swiper/css/swiper.css';
+@import '../../../../@core/scss/vue/libs/swiper.scss';
+//@import '../../../../../node_modules/swiper/css/swiper.css';
 </style>
