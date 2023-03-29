@@ -211,7 +211,7 @@ export default {
       status: '',
       password: 'admin',
       userEmail: 'admin@demo.com',
-      sideImg: require('@/assets/images/pages/login-v2.svg'),
+      sideImg: require('../../../assets/images/pages/login-v2.svg'),
 
       // validation rules
       required,
@@ -225,7 +225,7 @@ export default {
     imgUrl() {
       if (store.state.appConfig.layout.skin === 'dark') {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.sideImg = require('@/assets/images/pages/login-v2-dark.svg')
+        this.sideImg = require('../../../assets/images/pages/login-v2-dark.svg')
         return this.sideImg
       }
       return this.sideImg

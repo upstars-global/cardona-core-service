@@ -13,10 +13,10 @@
 
     <div>
       <h6>Small image with <code>fluid</code>:</h6>
-      <b-img :src="require('@/assets/images/slider/03.jpg')" fluid alt="Fluid image" />
+      <b-img :src="require('../../../assets/images/slider/03.jpg')" fluid alt="Fluid image" />
 
       <h6 class="my-1">Small image with <code>fluid-grow</code>:</h6>
-      <b-img :src="require('@/assets/images/slider/03.jpg')" fluid-grow alt="Fluid-grow image" />
+      <b-img :src="require('../../../assets/images/slider/03.jpg')" fluid-grow alt="Fluid-grow image" />
     </div>
 
     <template #code>

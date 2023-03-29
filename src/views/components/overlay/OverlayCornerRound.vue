@@ -24,7 +24,7 @@
             <b-img
               rounded="circle"
               height="300"
-              :src="require('@/assets/images/banner/banner-27.jpg')"
+              :src="require('../../../assets/images/banner/banner-27.jpg')"
               alt="Image 1"
             />
           </b-overlay>
@@ -35,7 +35,7 @@
             <b-img
               rounded="circle"
               height="300"
-              :src="require('@/assets/images/banner/banner-27.jpg')"
+              :src="require('../../../assets/images/banner/banner-27.jpg')"
               alt="Image 1"
             />
           </b-overlay>

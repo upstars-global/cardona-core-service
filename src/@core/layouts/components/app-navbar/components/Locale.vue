@@ -30,22 +30,22 @@ export default {
     const locales = [
       {
         locale: 'en',
-        img: require('@/assets/images/flags/en.png'),
+        img: require('../../../../../assets/images/flags/en.png'),
         name: 'English',
       },
       {
         locale: 'fr',
-        img: require('@/assets/images/flags/fr.png'),
+        img: require('../../../../../assets/images/flags/fr.png'),
         name: 'French',
       },
       {
         locale: 'de',
-        img: require('@/assets/images/flags/de.png'),
+        img: require('../../../../../assets/images/flags/de.png'),
         name: 'German',
       },
       {
         locale: 'pt',
-        img: require('@/assets/images/flags/pt.png'),
+        img: require('../../../../../assets/images/flags/pt.png'),
         name: 'Portuguese',
       },
     ]

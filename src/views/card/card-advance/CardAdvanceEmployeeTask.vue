@@ -81,37 +81,37 @@ export default {
       chartSeries: [45, 65, 60, 35, 65, 80],
       employeeData: [
         {
-          avatar: require('@/assets/images/portrait/small/avatar-s-9.jpg'),
+          avatar: require('../../../assets/images/portrait/small/avatar-s-9.jpg'),
           userFullName: 'Ryan Harrington',
           designation: 'iOS Developer',
           duration: '9hr 20m',
         },
         {
-          avatar: require('@/assets/images/portrait/small/avatar-s-20.jpg'),
+          avatar: require('../../../assets/images/portrait/small/avatar-s-20.jpg'),
           userFullName: 'Louisa Norton',
           designation: 'UI Designer',
           duration: '4hr 17m',
         },
         {
-          avatar: require('@/assets/images/portrait/small/avatar-s-1.jpg'),
+          avatar: require('../../../assets/images/portrait/small/avatar-s-1.jpg'),
           userFullName: 'Jayden Duncan',
           designation: 'Java Developer',
           duration: '12hr 8m',
         },
         {
-          avatar: require('@/assets/images/portrait/small/avatar-s-20.jpg'),
+          avatar: require('../../../assets/images/portrait/small/avatar-s-20.jpg'),
           userFullName: 'Cynthia Howell',
           designation: 'Anguler Developer',
           duration: '3hr 19m',
         },
         {
-          avatar: require('@/assets/images/portrait/small/avatar-s-16.jpg'),
+          avatar: require('../../../assets/images/portrait/small/avatar-s-16.jpg'),
           userFullName: 'Helena Payne',
           designation: 'Marketing',
           duration: '9hr 50m',
         },
         {
-          avatar: require('@/assets/images/portrait/small/avatar-s-13.jpg'),
+          avatar: require('../../../assets/images/portrait/small/avatar-s-13.jpg'),
           userFullName: 'Troy Jensen',
           designation: 'iOS Developer',
           duration: '4hr 48m',

@@ -7,7 +7,7 @@
     </h3>
     <b-button v-ripple.400="'rgba(255, 255, 255, 0.15)'" variant="primary"> View Sales </b-button>
     <b-img
-      :src="require('@/assets/images/illustration/badge.svg')"
+      :src="require('../../../assets/images/illustration/badge.svg')"
       class="congratulation-medal"
       alt="Medal Pic"
     />

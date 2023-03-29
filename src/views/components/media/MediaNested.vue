@@ -3,7 +3,7 @@
     <b-media>
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-12.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-12.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -20,7 +20,7 @@
       <b-media class="mt-3">
         <template #aside>
           <b-img
-            :src="require('@/assets/images/portrait/small/avatar-s-13.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-13.jpg')"
             blank-color="#ccc"
             width="64"
             alt="placeholder"

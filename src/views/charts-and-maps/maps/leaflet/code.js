@@ -590,7 +590,7 @@ export const codeCustomIcon = `
       <l-marker :lat-lng="[47.41322, -1.199482]">
         <l-icon>
           <b-img
-            :src="require('@/assets/images/misc/leaf-red.png')"
+            :src="require('../../../../assets/images/misc/leaf-red.png')"
             height="50"
           />
         </l-icon>
@@ -632,7 +632,7 @@ export default {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       icon: icon({
-        iconUrl: require('@/assets/images/misc/leaf-green.png'),
+        iconUrl: require('../../../../assets/images/misc/leaf-green.png'),
         iconSize: [50, 50],
         iconAnchor: [16, 37],
       }),

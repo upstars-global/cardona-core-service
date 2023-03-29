@@ -4,7 +4,7 @@
       <div class="d-flex align-items-center">
         <b-avatar
           size="34"
-          :src="require('@/assets/images/avatars/1.png')"
+          :src="require('../../../assets/images/avatars/1.png')"
           class="mr-50 badge-minimal"
           badge
           badge-variant="success"
@@ -23,7 +23,7 @@
       >
         <chat-log
           :chat-data="chatData"
-          :profile-user-avatar="require('@/assets/images/avatars/10.png')"
+          :profile-user-avatar="require('../../../assets/images/avatars/10.png')"
         />
       </vue-perfect-scrollbar>
 
@@ -129,7 +129,7 @@ export default {
           id: 1,
           fullName: 'Felecia Rower',
           // eslint-disable-next-line global-require
-          avatar: require('@/assets/images/avatars/1.png'),
+          avatar: require('../../../assets/images/avatars/1.png'),
           status: 'away',
         },
       },

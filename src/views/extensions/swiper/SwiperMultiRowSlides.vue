@@ -37,16 +37,16 @@ export default {
       codeMultiRowSlides,
       swiperData: [
         /* eslint-disable global-require */
-        { img: require('@/assets/images/banner/banner-26.jpg') },
-        { img: require('@/assets/images/banner/banner-39.jpg') },
-        { img: require('@/assets/images/banner/banner-28.jpg') },
-        { img: require('@/assets/images/banner/banner-29.jpg') },
-        { img: require('@/assets/images/banner/banner-30.jpg') },
-        { img: require('@/assets/images/banner/banner-31.jpg') },
-        { img: require('@/assets/images/banner/banner-32.jpg') },
-        { img: require('@/assets/images/banner/banner-33.jpg') },
-        { img: require('@/assets/images/banner/banner-34.jpg') },
-        { img: require('@/assets/images/banner/banner-35.jpg') },
+        { img: require('../../../assets/images/banner/banner-26.jpg') },
+        { img: require('../../../assets/images/banner/banner-39.jpg') },
+        { img: require('../../../assets/images/banner/banner-28.jpg') },
+        { img: require('../../../assets/images/banner/banner-29.jpg') },
+        { img: require('../../../assets/images/banner/banner-30.jpg') },
+        { img: require('../../../assets/images/banner/banner-31.jpg') },
+        { img: require('../../../assets/images/banner/banner-32.jpg') },
+        { img: require('../../../assets/images/banner/banner-33.jpg') },
+        { img: require('../../../assets/images/banner/banner-34.jpg') },
+        { img: require('../../../assets/images/banner/banner-35.jpg') },
         /* eslint-disable global-require */
       ],
       swiperOption: {

@@ -12,7 +12,7 @@
       <b-avatar
         badge-variant="success"
         badge="1"
-        :src="require('@/assets/images/portrait/small/avatar-s-16.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-16.jpg')"
       />
     </div>
 

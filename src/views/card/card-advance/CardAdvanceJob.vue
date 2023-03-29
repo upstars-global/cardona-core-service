@@ -3,7 +3,7 @@
     <b-card-header class="pb-1">
       <b-media no-body>
         <b-media-aside class="mr-1">
-          <b-avatar size="42" :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')" />
+          <b-avatar size="42" :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')" />
         </b-media-aside>
         <b-media-body>
           <h5 class="mb-0">Mittie Evans</h5>

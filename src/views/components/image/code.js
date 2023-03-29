@@ -17,9 +17,9 @@ export default {
 export const codeAlignment = `
 <template>
   <div class="clearfix">
-    <b-img  left class="mb-1 mb-sm-0" height="120" :src="require('@/assets/images/banner/banner-34.jpg" alt="Left image')"/>
-    <b-img right class="mb-1 mb-sm-0" height="120" :src="require('@/assets/images/banner/banner-34.jpg" alt="Right image')"/>
-    <b-img center class="mb-1 mb-sm-0" height="120" :src="require('@/assets/images/banner/banner-34.jpg" alt="Center image')"/>
+    <b-img  left class="mb-1 mb-sm-0" height="120" :src="require('../../../assets/images/banner/banner-34.jpg" alt="Left image')"/>
+    <b-img right class="mb-1 mb-sm-0" height="120" :src="require('../../../assets/images/banner/banner-34.jpg" alt="Right image')"/>
+    <b-img center class="mb-1 mb-sm-0" height="120" :src="require('../../../assets/images/banner/banner-34.jpg" alt="Center image')"/>
   </div>
 </template>
 
@@ -112,10 +112,10 @@ export const codeResponsive = `
 <template>
   <div>
     <h6>Small image with <code>fluid</code>:</h6>
-    <b-img :src="require('@/assets/images/water-drop-small.jpg" fluid alt="Fluid image')" />
+    <b-img :src="require('../../../assets/images/water-drop-small.jpg" fluid alt="Fluid image')" />
 
     <h6 class="my-1">Small image with <code>fluid-grow</code>:</h6>
-    <b-img :src="require('@/assets/images/water-drop-small.jpg" fluid-grow alt="Fluid-grow image')" />
+    <b-img :src="require('../../../assets/images/water-drop-small.jpg" fluid-grow alt="Fluid-grow image')" />
   </div>
 </template>
 
@@ -201,13 +201,13 @@ export const codeThumbnails = `
   <b-container fluid class="p-1 bg-dark">
     <b-row>
       <b-col>
-        <b-img thumbnail fluid :src="require('@/assets/images/sky-high.jpg" alt="Image 1')" />
+        <b-img thumbnail fluid :src="require('../../../assets/images/sky-high.jpg" alt="Image 1')" />
       </b-col>
       <b-col>
-        <b-img thumbnail fluid :src="require('@/assets/images/light-house-thumb.jpg" alt="Image 2')" />
+        <b-img thumbnail fluid :src="require('../../../assets/images/light-house-thumb.jpg" alt="Image 2')" />
       </b-col>
       <b-col>
-        <b-img thumbnail fluid :src="require('@/assets/images/border.jpg" alt="Image 3')" />
+        <b-img thumbnail fluid :src="require('../../../assets/images/border.jpg" alt="Image 3')" />
       </b-col>
     </b-row>
   </b-container>
@@ -230,7 +230,7 @@ export default {
 export const codeLazy = `
 <template>
   <div>
-    <b-img-lazy :src="require('@/assets/images/banner/banner-6.jpg" fluid class="w-100')"/>
+    <b-img-lazy :src="require('../../../assets/images/banner/banner-6.jpg" fluid class="w-100')"/>
   </div>
 </template>
 

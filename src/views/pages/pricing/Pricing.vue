@@ -220,7 +220,7 @@
             <!-- images -->
             <b-img
               fluid
-              :src="require('@/assets/images/illustration/pricing-Illustration.svg')"
+              :src="require('../../../assets/images/illustration/pricing-Illustration.svg')"
               class="pricing-trial-img"
               alt="svg img"
             />

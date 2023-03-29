@@ -120,7 +120,7 @@ export const codeCustomContent = `
       <p>Invoices have been paid to the company.</p>
       <p>
         <b-img
-          :src="require('@/assets/images/icons/pdf.png')"
+          :src="require('../../../assets/images/icons/pdf.png')"
           height="auto"
           width="20"
           class="mr-1"
@@ -138,7 +138,7 @@ export const codeCustomContent = `
       <p>Project meeting with john @10:15am.</p>
       <b-media>
         <template #aside>
-          <b-avatar :src="require('@/assets/images/avatars/12-small.png')" />
+          <b-avatar :src="require('../../../assets/images/avatars/12-small.png')" />
         </template>
         <h6>John Doe (Client)</h6>
         <p>CEO of Infibeam</p>
@@ -215,7 +215,7 @@ export const codeCustomContent = `
       <div class="d-flex flex-sm-row flex-column justify-content-between align-items-start">
         <b-media>
           <template #aside>
-            <b-avatar :src="require('@/assets/images/avatars/1-small.png')" />
+            <b-avatar :src="require('../../../assets/images/avatars/1-small.png')" />
           </template>
           <h6>Katy Turner</h6>
           <span class="text-muted">Javascript Developer</span>
@@ -302,19 +302,19 @@ export const codeCustomContent = `
             v-b-tooltip.hover
             class="pull-up"
             title="Jenny Looper"
-            :src="require('@/assets/images/portrait/small/avatar-s-5.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-5.jpg')"
           />
           <b-avatar
             v-b-tooltip.hover
             class="pull-up"
             title="Jennifer Lopez"
-            :src="require('@/assets/images/portrait/small/avatar-s-6.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-6.jpg')"
           />
           <b-avatar
             v-b-tooltip.hover
             class="pull-up"
             title="Arya Stark"
-            :src="require('@/assets/images/portrait/small/avatar-s-7.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-7.jpg')"
           />
         </b-avatar-group>
       </div>
@@ -362,7 +362,7 @@ export const codeCustomContentWithIcon = `
       <p>Invoices have been paid to the company.</p>
       <p>
         <b-img
-          :src="require('@/assets/images/icons/pdf.png')"
+          :src="require('../../../assets/images/icons/pdf.png')"
           height="auto"
           width="20"
           class="mr-1"
@@ -383,7 +383,7 @@ export const codeCustomContentWithIcon = `
       <p>Project meeting with john @10:15am.</p>
       <b-media>
         <template #aside>
-          <b-avatar :src="require('@/assets/images/avatars/12-small.png')" />
+          <b-avatar :src="require('../../../assets/images/avatars/12-small.png')" />
         </template>
         <h6>John Doe (Client)</h6>
         <p>CEO of Infibeam</p>
@@ -466,7 +466,7 @@ export const codeCustomContentWithIcon = `
       <div class="d-flex flex-sm-row flex-column justify-content-between align-items-start">
         <b-media>
           <template #aside>
-            <b-avatar :src="require('@/assets/images/avatars/1-small.png')" />
+            <b-avatar :src="require('../../../assets/images/avatars/1-small.png')" />
           </template>
           <h6>Katy Turner</h6>
           <span class="text-muted">Javascript Developer</span>
@@ -559,19 +559,19 @@ export const codeCustomContentWithIcon = `
             v-b-tooltip.hover
             class="pull-up"
             title="Jenny Looper"
-            :src="require('@/assets/images/portrait/small/avatar-s-5.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-5.jpg')"
           />
           <b-avatar
             v-b-tooltip.hover
             class="pull-up"
             title="Jennifer Lopez"
-            :src="require('@/assets/images/portrait/small/avatar-s-6.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-6.jpg')"
           />
           <b-avatar
             v-b-tooltip.hover
             class="pull-up"
             title="Arya Stark"
-            :src="require('@/assets/images/portrait/small/avatar-s-7.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-7.jpg')"
           />
         </b-avatar-group>
       </div>

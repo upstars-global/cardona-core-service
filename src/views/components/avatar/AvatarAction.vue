@@ -17,7 +17,7 @@
       <span> Button Avatar</span>
 
       <!-- link avatar -->
-      <b-avatar href="#foobar" :src="require('@/assets/images/portrait/small/avatar-s-8.jpg')" />
+      <b-avatar href="#foobar" :src="require('../../../assets/images/portrait/small/avatar-s-8.jpg')" />
       <span>Link Avatar</span>
     </div>
 

@@ -2,7 +2,7 @@
   <b-row class="match-height">
     <b-col md="6" lg="4">
       <b-card
-        :img-src="require('@/assets/images/slider/04.jpg')"
+        :img-src="require('../../../assets/images/slider/04.jpg')"
         img-alt="Card image cap"
         img-top
         title="Card title"
@@ -22,7 +22,7 @@
           <b-card-title>Card title</b-card-title>
           <b-card-sub-title>Support card subtitle</b-card-sub-title>
         </b-card-body>
-        <b-img fluid :src="require('@/assets/images/slider/03.jpg')" alt="Card image cap" />
+        <b-img fluid :src="require('../../../assets/images/slider/03.jpg')" alt="Card image cap" />
         <b-card-body>
           <b-card-text>Bear claw sesame snaps gummies chocolate.</b-card-text>
           <b-link class="card-link"> Card link </b-link>
@@ -32,7 +32,7 @@
     </b-col>
     <b-col md="6" lg="4">
       <b-card title="Card title" sub-title="Support card subtitle">
-        <b-img fluid class="mb-2" :src="require('@/assets/images/slider/06.jpg')" />
+        <b-img fluid class="mb-2" :src="require('../../../assets/images/slider/06.jpg')" />
         <b-card-text>Bear claw sesame snaps gummies chocolate.</b-card-text>
         <b-link class="card-link"> Card link </b-link>
         <b-link class="card-link"> Another link </b-link>

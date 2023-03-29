@@ -4,7 +4,7 @@ export const codeLeftAlign = `
     <b-media vertical-align="top">
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-3.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-3.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -20,7 +20,7 @@ export const codeLeftAlign = `
     <b-media vertical-align="top">
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-6.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-6.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -37,7 +37,7 @@ export const codeLeftAlign = `
     <b-media vertical-align="top">
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-1.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-1.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -72,7 +72,7 @@ export const codeLeftAlignBorder = `
     <b-media>
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-23.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-23.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -90,7 +90,7 @@ export const codeLeftAlignBorder = `
     <b-media>
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-16.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-16.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -108,7 +108,7 @@ export const codeLeftAlignBorder = `
     <b-media>
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-15.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-15.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -142,7 +142,7 @@ export const codeNested = `
   <b-media>
     <template #aside>
       <b-img
-        :src="require('@/assets/images/portrait/small/avatar-s-12.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-12.jpg')"
         blank-color="#ccc"
         width="64"
         alt="placeholder"
@@ -161,7 +161,7 @@ export const codeNested = `
     <b-media class="mt-3">
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-13.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-13.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -202,7 +202,7 @@ export const codeRightAlign = `
     >
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-10.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-10.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -225,7 +225,7 @@ export const codeRightAlign = `
     >
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-7.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-7.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -248,7 +248,7 @@ export const codeRightAlign = `
     >
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-2.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-2.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -287,7 +287,7 @@ export const codeRightAlignBorder = `
     >
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-9.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-9.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -309,7 +309,7 @@ export const codeRightAlignBorder = `
     >
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-14.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-14.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -331,7 +331,7 @@ export const codeRightAlignBorder = `
     >
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-21.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-21.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -367,7 +367,7 @@ export const codeVerticalAlign = `
     <b-media vertical-align="top">
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-4.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-4.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -391,7 +391,7 @@ export const codeVerticalAlign = `
     <b-media vertical-align="center">
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-1.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-1.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -415,7 +415,7 @@ export const codeVerticalAlign = `
     <b-media vertical-align="bottom">
       <template #aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-16.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-16.jpg')"
           blank-color="#ccc"
           width="64"
           alt="placeholder"
@@ -455,7 +455,7 @@ export const codeNoBody = `
   <b-media no-body>
     <b-media-aside>
       <b-img
-        :src="require('@/assets/images/portrait/small/avatar-s-2.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-2.jpg')"
         blank-color="#ccc"
         fluid
         alt="placeholder"
@@ -479,7 +479,7 @@ export const codeNoBody = `
       <b-media no-body>
         <b-media-aside>
           <b-img
-            :src="require('@/assets/images/portrait/small/avatar-s-10.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-10.jpg')"
             blank-color="#ccc"
             width="64"
             alt="placeholder"

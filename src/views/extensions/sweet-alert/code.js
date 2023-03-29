@@ -515,7 +515,7 @@ export default {
         title: 'Sweet!',
         text: 'Modal with a custom image.',
         // eslint-disable-next-line global-require
-        imageUrl: require('@/assets/images/slider/04.jpg'),
+        imageUrl: require('../../../assets/images/slider/04.jpg'),
         imageWidth: 400,
         imageHeight: 200,
         imageAlt: 'Custom image',

@@ -5,9 +5,9 @@ export const codeCarouselBasic = `
     controls
     indicators
   >
-    <b-carousel-slide :img-src="require('@/assets/images/slider/01.jpg')" />
-    <b-carousel-slide :img-src="require('@/assets/images/slider/02.jpg')" />
-    <b-carousel-slide :img-src="require('@/assets/images/slider/03.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/01.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/02.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/03.jpg')" />
   </b-carousel>
 </template>
 
@@ -34,19 +34,19 @@ export const codeCarouselCaption = `
       caption-html="<span class='text-white'>First Slide Label</span>"
       class="card-img-overlay"
       text="Donut jujubes I love topping I love sweet. Jujubes I love brownie gummi bears I love donut sweet chocolate. Tart chocolate marshmallow.Tart carrot cake muffin."
-      :img-src="require('@/assets/images/slider/08.jpg')"
+      :img-src="require('../../../assets/images/slider/08.jpg')"
     />
     <b-carousel-slide
       caption-html="<span class='text-white'>Second Slide Label</span>"
       class="card-img-overlay"
       text="Tart macaroon marzipan I love soufflé apple pie wafer. Chocolate bar jelly caramels jujubes chocolate cake gummies. Cupcake cake I love cake danish carrot cake."
-      :img-src="require('@/assets/images/slider/09.jpg')"
+      :img-src="require('../../../assets/images/slider/09.jpg')"
     />
     <b-carousel-slide
       caption-html="<span class='text-white'>Third Slide Label</span>"
       class="card-img-overlay"
       text="Pudding sweet pie gummies. Chocolate bar sweet tiramisu cheesecake chocolate cotton candy pastry muffin. Marshmallow cake powder icing."
-      :img-src="require('@/assets/images/slider/10.jpg')"
+      :img-src="require('../../../assets/images/slider/10.jpg')"
     />
   </b-carousel>
 </template>
@@ -71,9 +71,9 @@ export const codeCarouselCrossfade = `
     indicators
     fade
   >
-    <b-carousel-slide :img-src="require('@/assets/images/slider/01.jpg')" />
-    <b-carousel-slide :img-src="require('@/assets/images/slider/02.jpg')" />
-    <b-carousel-slide :img-src="require('@/assets/images/slider/03.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/01.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/02.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/03.jpg')" />
   </b-carousel>
 </template>
 
@@ -97,9 +97,9 @@ export const codeCarouselInterval = `
     indicators
     :interval="400"
   >
-    <b-carousel-slide :img-src="require('@/assets/images/slider/01.jpg')" />
-    <b-carousel-slide :img-src="require('@/assets/images/slider/02.jpg')" />
-    <b-carousel-slide :img-src="require('@/assets/images/slider/03.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/01.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/02.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/03.jpg')" />
   </b-carousel>
 </template>
 
@@ -133,14 +133,14 @@ export const codeVsupport = `
       <!-- Text slides with image -->
       <b-carousel-slide
         text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-        :img-src="require('@/assets/images/slider/05.jpg')"
+        :img-src="require('../../../assets/images/slider/05.jpg')"
       />
 
       <!-- Slides with custom text -->
-      <b-carousel-slide :img-src="require('@/assets/images/slider/06.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/06.jpg')" />
 
       <!-- Slides with image only -->
-      <b-carousel-slide :img-src="require('@/assets/images/slider/03.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/03.jpg')" />
 
       <!-- Slides with img slot -->
       <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
@@ -150,7 +150,7 @@ export const codeVsupport = `
             class="d-block img-fluid w-100"
             width="924"
             height="380"
-            :src="require('@/assets/images/slider/04.jpg')"
+            :src="require('../../../assets/images/slider/04.jpg')"
             alt="image slot"
           >
         </template>
@@ -204,14 +204,14 @@ export const codeProgrammaticSlide = `
       <!-- Text slides with image -->
       <b-carousel-slide
         text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-        :img-src="require('@/assets/images/slider/01.jpg')"
+        :img-src="require('../../../assets/images/slider/01.jpg')"
       />
 
       <!-- Slides with custom text -->
-      <b-carousel-slide :img-src="require('@/assets/images/slider/02.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/02.jpg')" />
 
       <!-- Slides with image only -->
-      <b-carousel-slide :img-src="require('@/assets/images/slider/03.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/03.jpg')" />
 
       <!-- Slides with img slot -->
       <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
@@ -221,7 +221,7 @@ export const codeProgrammaticSlide = `
             class="d-block img-fluid w-100"
             width="924"
             height="380"
-            :src="require('@/assets/images/slider/04.jpg')"
+            :src="require('../../../assets/images/slider/04.jpg')"
             alt="image slot"
           >
         </template>
@@ -307,9 +307,9 @@ export const codeWrap = `
     indicators
     :interval="400"
   >
-    <b-carousel-slide :img-src="require('@/assets/images/slider/01.jpg')" />
-    <b-carousel-slide :img-src="require('@/assets/images/slider/02.jpg')" />
-    <b-carousel-slide :img-src="require('@/assets/images/slider/04.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/01.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/02.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/04.jpg')" />
   </b-carousel>
 </template>
 
@@ -334,9 +334,9 @@ export const codePause = `
     indicators
     :interval="5000"
   >
-    <b-carousel-slide :img-src="require('@/assets/images/slider/04.jpg')" />
-    <b-carousel-slide :img-src="require('@/assets/images/slider/05.jpg')" />
-    <b-carousel-slide :img-src="require('@/assets/images/slider/06.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/04.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/05.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/06.jpg')" />
   </b-carousel>
 </template>
 
@@ -360,9 +360,9 @@ export const codeKeyboard = `
     indicators
     :interval="400"
   >
-    <b-carousel-slide :img-src="require('@/assets/images/slider/07.jpg')" />
-    <b-carousel-slide :img-src="require('@/assets/images/slider/08.jpg')" />
-    <b-carousel-slide :img-src="require('@/assets/images/slider/09.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/07.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/08.jpg')" />
+    <b-carousel-slide :img-src="require('../../../assets/images/slider/09.jpg')" />
   </b-carousel>
 </template>
 

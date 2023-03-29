@@ -13,7 +13,7 @@ async function processLineByLine(path) {
   const lines = []
   const file = []
   for await (let line of rl) {
-    if (line.match(/ from '@/) || line.match(/@import '/)) {
+    if (line.match(/ from '@/) || line.match(/@import '/) || line.includes("require('@/assets")) {
       if (line.match(/@(casl|fullcalendar|vueuse)/)) {
         file.push(line)
       } else if (line.includes('@/')) {
