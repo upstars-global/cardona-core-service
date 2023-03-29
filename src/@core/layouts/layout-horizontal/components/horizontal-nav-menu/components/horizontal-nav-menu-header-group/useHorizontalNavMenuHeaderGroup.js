@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { isNavGroupActive } from '@core/layouts/utils'
+import { isNavGroupActive } from '../../../../../../../@core/layouts/utils'
 
 export default function useHorizontalNavMenuHeaderGroup(item) {
   // ------------------------------------------------

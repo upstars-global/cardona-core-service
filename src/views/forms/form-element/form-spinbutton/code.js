@@ -463,7 +463,7 @@ export const codeSlots = `
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormSpinbutton, BRow, BCol } from 'bootstrap-vue'
 import { codeBasic } from './code'
 

@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import useAppConfig from '@core/app-config/useAppConfig'
+import useAppConfig from '../../../../@core/app-config/useAppConfig'
 
 export default function useAppCustomizer() {
   // Customizer

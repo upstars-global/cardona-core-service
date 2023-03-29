@@ -1,5 +1,5 @@
-import ApiService from '@/services/api'
-import { LocaleOption } from '@model/locale'
+import ApiService from '../../services/api'
+import { LocaleOption } from '../../@model/locale'
 
 export default {
   namespaced: true,

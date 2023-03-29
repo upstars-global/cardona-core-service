@@ -1,3 +1,3 @@
-import * as validationRules from '@validations'
+import * as validationRules from '../@core/utils/validations/validations'
 
 export type ValidationRule = keyof typeof validationRules

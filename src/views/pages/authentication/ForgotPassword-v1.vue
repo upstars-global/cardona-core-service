@@ -61,7 +61,7 @@ import {
   BForm,
   BButton,
 } from 'bootstrap-vue'
-import { required, email } from '@validations'
+import { required, email } from '../../../@core/utils/validations/validations'
 
 export default {
   components: {

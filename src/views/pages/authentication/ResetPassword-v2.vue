@@ -134,7 +134,7 @@ import {
   BButton,
   BImg,
 } from 'bootstrap-vue'
-import { required } from '@validations'
+import { required } from '../../../@core/utils/validations/validations.ts'
 import store from '../../../store'
 import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 

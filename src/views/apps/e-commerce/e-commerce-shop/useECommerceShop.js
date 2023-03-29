@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import store from '@/store'
+import store from '../../../../store'
 
 export const useShopFiltersSortingAndPagination = () => {
   const filters = ref({

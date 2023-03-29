@@ -1,7 +1,7 @@
 import { ref } from 'vue'
-import { FieldInfo } from '@model/field'
-import { FilterType } from '@model/filter'
-import { FilterListItem } from '@/components/templates/BaseList/model'
+import { FieldInfo } from '../../@model/field'
+import { FilterType } from '../../@model/filter'
+import { FilterListItem } from '../../components/templates/BaseList/model'
 import allFilters from './filters'
 
 export const useFilters = (initFilters: Array<FilterListItem | FilterType>) => {

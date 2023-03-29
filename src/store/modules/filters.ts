@@ -1,4 +1,4 @@
-import { FieldInfo } from '@model/field'
+import { FieldInfo } from '../../@model/field'
 
 export default {
   namespaced: true,

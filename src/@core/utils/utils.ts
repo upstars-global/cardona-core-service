@@ -1,4 +1,4 @@
-import router from '@/router'
+import router from '../../router'
 // eslint-disable-next-line object-curly-newline
 import { reactive, getCurrentInstance, watch, toRefs } from 'vue'
 

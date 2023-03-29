@@ -1,6 +1,6 @@
-import mock from '@/@fake-db/mock'
+import mock from '../../../@fake-db/mock'
 // eslint-disable-next-line object-curly-newline
-import { paginateArray, sortCompare, randomDate, getRandomInt } from '@/@fake-db/utils'
+import { paginateArray, sortCompare, randomDate, getRandomInt } from '../../../@fake-db/utils'
 
 const nextDay = new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
 const nextWeek = new Date(nextDay.getTime() + 7 * 24 * 60 * 60 * 1000)

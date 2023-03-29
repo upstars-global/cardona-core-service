@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
-import i18n from '@/libs/i18n'
+import ToastificationContent from '../@core/components/toastification/ToastificationContent.vue'
+import i18n from '../libs/i18n'
 
 type ToastOptions = Record<string | 'defaultCode', string>
 

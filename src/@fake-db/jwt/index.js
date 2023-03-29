@@ -1,4 +1,4 @@
-import mock from '@/@fake-db/mock'
+import mock from '../../@fake-db/mock'
 import jwt from 'jsonwebtoken'
 
 const data = {

@@ -570,7 +570,7 @@ export const codeAction = `
 
 <script>
 import { BAvatar} from 'bootstrap-vue'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {

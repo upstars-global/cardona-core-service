@@ -34,7 +34,7 @@ export const codeSimple = `
 <script>
 import { BButton, BLink } from 'bootstrap-vue'
 import { VueContext } from 'vue-context'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 import Ripple from 'vue-ripple-directive'
 
 export default {
@@ -115,7 +115,7 @@ export const codeCloseOnClick = `
 <script>
 import { BButton, BLink } from 'bootstrap-vue'
 import { VueContext } from 'vue-context'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 import Ripple from 'vue-ripple-directive'
 
 export default {

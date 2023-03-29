@@ -1,5 +1,5 @@
 import { extend, localize, configure } from 'vee-validate'
-import i18n from '@/libs/i18n'
+import i18n from '../../../libs/i18n'
 import {
   required as rule_required,
   email as rule_email,

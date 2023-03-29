@@ -33,8 +33,8 @@ export const codeCollapseDefault = `
 </template>
 
 <script>
-import AppCollapse from '@core/components/app-collapse/AppCollapse.vue'
-import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
+import AppCollapse from '../../../@core/components/app-collapse/AppCollapse.vue'
+import AppCollapseItem from '../../../@core/components/app-collapse/AppCollapseItem.vue'
 
 export default {
   components: {
@@ -64,8 +64,8 @@ export const codeAccordionDefault = `
 </template>
 
 <script>
-import AppCollapse from '@core/components/app-collapse/AppCollapse.vue'
-import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
+import AppCollapse from '../../../@core/components/app-collapse/AppCollapse.vue'
+import AppCollapseItem from '../../../@core/components/app-collapse/AppCollapseItem.vue'
 
 export default {
   components: {
@@ -99,8 +99,8 @@ export const codeHover = `
 </template>
 
 <script>
-import AppCollapse from '@core/components/app-collapse/AppCollapse.vue'
-import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
+import AppCollapse from '../../../@core/components/app-collapse/AppCollapse.vue'
+import AppCollapseItem from '../../../@core/components/app-collapse/AppCollapseItem.vue'
 
 export default {
   components: {
@@ -215,8 +215,8 @@ export const codeCollapseTypes = `
 </template>
 
 <script>
-import AppCollapse from '@core/components/app-collapse/AppCollapse.vue'
-import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
+import AppCollapse from '../../../@core/components/app-collapse/AppCollapse.vue'
+import AppCollapseItem from '../../../@core/components/app-collapse/AppCollapseItem.vue'
 import {  BFormRadioGroup, BFormRadio, BFormGroup} from 'bootstrap-vue'
 
 export default {

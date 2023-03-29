@@ -1,5 +1,5 @@
-import i18n from '@/libs/i18n'
-import { getLocaleDateString, transformDateToISO } from '@/helpers/date'
+import i18n from '../libs/i18n'
+import { getLocaleDateString, transformDateToISO } from '../helpers/date'
 
 export const formatPhone = (phone) => {
   const mask = '1 111 111 11 11'

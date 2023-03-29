@@ -1,4 +1,4 @@
-import { IRequestListPayload } from '@model/index'
+import { IRequestListPayload } from '../@model/index'
 
 export interface UserSmallInfoInput {
   readonly id: number

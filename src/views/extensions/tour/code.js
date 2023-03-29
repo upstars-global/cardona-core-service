@@ -16,7 +16,7 @@ export const codeTour = `
 <script>
 import { BButton } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
-import AppTour from '@core/components/app-tour/AppTour.vue'
+import AppTour from '../../../@core/components/app-tour/AppTour.vue'
 
 export default {
   name: 'ShepherdExample',

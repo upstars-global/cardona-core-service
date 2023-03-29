@@ -1,6 +1,6 @@
 import { Component } from 'vue'
 import { TranslateResult } from 'vue-i18n'
-import { ValidationRule } from '@model/validations'
+import { ValidationRule } from '../../@model/validations'
 
 export interface IBaseField {
   readonly key: string

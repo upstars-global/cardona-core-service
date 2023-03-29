@@ -285,7 +285,7 @@ export const codeIcon = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../@core/components/app-card/AppCard.vue'
 import { FormWizard, TabContent } from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import {
@@ -651,7 +651,7 @@ export const codeIconInfo = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../@core/components/app-card/AppCard.vue'
 import { FormWizard, TabContent } from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import {
@@ -885,14 +885,14 @@ export const codeValidation = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../@core/components/app-card/AppCard.vue'
 import { FormWizard, TabContent } from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import {
   BRow, BCol, BFormGroup, BFormInput, BFormSelect, BForm, BFormTextarea, BFormCheckbox,
 } from 'bootstrap-vue'
-import { required } from '@validations'
+import { required } from '../../../@core/utils/validations/validations'
 
 export default {
   components: {

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import FeatherIcon from '@core/components/feather-icon/FeatherIcon.vue'
+import FeatherIcon from './@core/components/feather-icon/FeatherIcon.vue'
 import vSelect from 'vue-select'
 import Ripple from 'vue-ripple-directive'
 

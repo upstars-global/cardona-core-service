@@ -1,4 +1,4 @@
-import { SortDirection } from '@/components/templates/BaseList/model'
+import { SortDirection } from '../components/templates/BaseList/model'
 
 export interface PaginationData {
   readonly pageNumber: number

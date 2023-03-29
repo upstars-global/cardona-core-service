@@ -1,5 +1,5 @@
 import { computed, watch } from 'vue'
-import store from '@/store'
+import store from '../../store'
 
 const state: any = store.state
 

@@ -7,12 +7,12 @@ import {
   IValidationError,
   IApiServiceRequestPayload,
 } from './config'
-import { getters, dispatch } from '@/store'
+import { getters, dispatch } from '../../store'
 import { v4 as uuidv4 } from 'uuid'
-import useToastService from '@/helpers/toasts'
-import router from '@/router'
-import i18n from '@/libs/i18n'
-import { convertCamelCase } from '@/helpers'
+import useToastService from '../../helpers/toasts'
+import router from '../../router'
+import i18n from '../../libs/i18n'
+import { convertCamelCase } from '../../helpers'
 
 const { toastSuccess, toastError, toastErrorMessageString } = useToastService()
 

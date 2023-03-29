@@ -1,4 +1,4 @@
-import { IListSort, PaginationData } from '@/@model'
+import { IListSort, PaginationData } from '../../@model'
 
 // ContentType
 interface IContentType {

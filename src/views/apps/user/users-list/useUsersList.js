@@ -1,10 +1,10 @@
 import { ref, watch, computed } from 'vue'
-import store from '@/store'
-import { title } from '@core/utils/filter'
+import store from '../../../../store'
+import { title } from '../../../../@core/utils/filter'
 
 // Notification
 import { useToast } from 'vue-toastification/composition'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../../@core/components/toastification/ToastificationContent.vue'
 
 export default function useUsersList() {
   // Use toast

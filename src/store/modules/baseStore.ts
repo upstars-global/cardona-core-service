@@ -1,13 +1,13 @@
-import ApiService from '@/services/api'
-import { ListData } from '@/@model'
-import { IRequestListPayload } from '@/@model/index'
-import { ExportFormat, IOptionsBaseFetch } from '@/components/templates/BaseList/model'
+import ApiService from '../../services/api'
+import { ListData } from '../../@model'
+import { IRequestListPayload } from '../../@model/index'
+import { ExportFormat, IOptionsBaseFetch } from '../../components/templates/BaseList/model'
 import {
   GamesSectionGamesItem,
   IGamesSectionGamesFilters,
   IGamesSectionGamesListPayload,
-} from '@model/games'
-import { convertLowerCaseFirstSymbol } from '@/helpers'
+} from '../../@model/games'
+import { convertLowerCaseFirstSymbol } from '../../helpers'
 
 const transformNameToType = (type: string): string => {
   return [...type]

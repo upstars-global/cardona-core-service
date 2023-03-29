@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import axios, { AxiosRequestConfig, AxiosInstance, AxiosError } from 'axios'
-import store from '@/store'
+import store from '../store'
 import { IAuthTokens, TokenRefreshRequest, applyAuthTokenInterceptor } from 'axios-jwt'
 
 const requestRefresh: TokenRefreshRequest = async (refreshToken: string): Promise<IAuthTokens> =>

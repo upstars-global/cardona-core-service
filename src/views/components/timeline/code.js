@@ -38,8 +38,8 @@ export const codeBasic = `
 </template>
 
 <script>
-import AppTimeline from '@core/components/app-timeline/AppTimeline.vue'
-import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem.vue'
+import AppTimeline from '../../../@core/components/app-timeline/AppTimeline.vue'
+import AppTimelineItem from '../../../@core/components/app-timeline/AppTimelineItem.vue'
 
 export default {
   components: {
@@ -95,8 +95,8 @@ export const codeWithIcon = `
 </template>
 
 <script>
-import AppTimeline from '@core/components/app-timeline/AppTimeline.vue'
-import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem.vue'
+import AppTimeline from '../../../@core/components/app-timeline/AppTimeline.vue'
+import AppTimelineItem from '../../../@core/components/app-timeline/AppTimelineItem.vue'
 
 export default {
   components: {
@@ -326,8 +326,8 @@ export const codeCustomContent = `
 import {
   BImg, BAvatar, BMedia, BButton, BCollapse, VBToggle, BListGroup, BListGroupItem, BAvatarGroup, BBadge, VBTooltip,
 } from 'bootstrap-vue'
-import AppTimeline from '@core/components/app-timeline/AppTimeline.vue'
-import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem.vue'
+import AppTimeline from '../../../@core/components/app-timeline/AppTimeline.vue'
+import AppTimelineItem from '../../../@core/components/app-timeline/AppTimelineItem.vue'
 import Ripple from 'vue-ripple-directive'
 
 export default {
@@ -583,8 +583,8 @@ export const codeCustomContentWithIcon = `
 import {
   BImg, BAvatar, BMedia, BButton, BCollapse, VBToggle, BListGroup, BListGroupItem, BAvatarGroup, BBadge, VBTooltip,
 } from 'bootstrap-vue'
-import AppTimeline from '@core/components/app-timeline/AppTimeline.vue'
-import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem.vue'
+import AppTimeline from '../../../@core/components/app-timeline/AppTimeline.vue'
+import AppTimelineItem from '../../../@core/components/app-timeline/AppTimelineItem.vue'
 import Ripple from 'vue-ripple-directive'
 
 export default {
