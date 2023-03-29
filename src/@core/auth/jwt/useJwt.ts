@@ -1,4 +1,4 @@
-class JwtService {
+export class JwtService {
   // Will be used by this service for making API calls
   axiosIns = null
 
