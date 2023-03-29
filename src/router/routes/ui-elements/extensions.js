@@ -2,7 +2,7 @@ export default [
   {
     path: '/extensions/sweet-alert',
     name: 'extensions-sweet-alert',
-    component: () => import('@/views/extensions/sweet-alert/SweetAlert.vue'),
+    component: () => import('../../../views/extensions/sweet-alert/SweetAlert.vue'),
     meta: {
       pageTitle: 'Sweet Alerts',
       breadcrumb: [
@@ -20,7 +20,7 @@ export default [
   {
     path: '/extensions/drag-drop',
     name: 'extensions-drag-and-drop',
-    component: () => import('@/views/extensions/drag-drop/DragDrop.vue'),
+    component: () => import('../../../views/extensions/drag-drop/DragDrop.vue'),
     meta: {
       pageTitle: 'Drag & Drop',
       breadcrumb: [
@@ -37,7 +37,7 @@ export default [
   {
     path: '/extensions/swiper',
     name: 'extensions-swiper',
-    component: () => import('@/views/extensions/swiper/Swiper.vue'),
+    component: () => import('../../../views/extensions/swiper/Swiper.vue'),
     meta: {
       pageTitle: 'Swiper',
       breadcrumb: [
@@ -54,7 +54,7 @@ export default [
   {
     path: '/extensions/clipboard',
     name: 'extensions-clipboard',
-    component: () => import('@/views/extensions/clipboard/Clipboard.vue'),
+    component: () => import('../../../views/extensions/clipboard/Clipboard.vue'),
     meta: {
       pageTitle: 'Clipboard',
       breadcrumb: [
@@ -71,7 +71,7 @@ export default [
   {
     path: '/extensions/context-menu',
     name: 'extensions-context-menu',
-    component: () => import('@/views/extensions/context-menu/ContextMenu.vue'),
+    component: () => import('../../../views/extensions/context-menu/ContextMenu.vue'),
     meta: {
       pageTitle: 'Context Menu',
       breadcrumb: [
@@ -88,7 +88,7 @@ export default [
   {
     path: '/extensions/toastification',
     name: 'extensions-toastification',
-    component: () => import('@/views/extensions/toastification/Toastification.vue'),
+    component: () => import('../../../views/extensions/toastification/Toastification.vue'),
     meta: {
       pageTitle: 'Toastification',
       breadcrumb: [
@@ -105,7 +105,7 @@ export default [
   {
     path: '/extensions/i18n',
     name: 'extensions-i18n',
-    component: () => import('@/views/extensions/i18n/i18n.vue'),
+    component: () => import('../../../views/extensions/i18n/i18n.vue'),
     meta: {
       pageTitle: 'I18n',
       breadcrumb: [
@@ -122,7 +122,7 @@ export default [
   {
     path: '/extensions/slider',
     name: 'extensions-slider',
-    component: () => import('@/views/extensions/slider/Slider.vue'),
+    component: () => import('../../../views/extensions/slider/Slider.vue'),
     meta: {
       pageTitle: 'Slider',
       breadcrumb: [
@@ -139,7 +139,7 @@ export default [
   {
     path: '/extensions/tour',
     name: 'extensions-tour',
-    component: () => import('@/views/extensions/tour/Tour.vue'),
+    component: () => import('../../../views/extensions/tour/Tour.vue'),
     meta: {
       pageTitle: 'Tour',
       breadcrumb: [
@@ -156,7 +156,7 @@ export default [
   // {
   //   path: '/extensions/tree',
   //   name: 'extensions-tree',
-  //   component: () => import('@/views/extensions/tree/Tree.vue'),
+  //   component: () => import('../../../views/extensions/tree/Tree.vue'),
   //   meta: {
   //     pageTitle: 'Tree',
   //     breadcrumb: [
