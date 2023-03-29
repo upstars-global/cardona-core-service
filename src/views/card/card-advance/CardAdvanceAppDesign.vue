@@ -15,18 +15,18 @@
     <div class="design-group">
       <h6 class="section-label">Members</h6>
       <b-avatar
-        :src="require('@/assets/images/portrait/small/avatar-s-9.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-9.jpg')"
         size="34"
         class="mr-1"
       />
       <b-avatar text="PI" size="32" variant="light-danger" class="mr-1" />
       <b-avatar
-        :src="require('@/assets/images/portrait/small/avatar-s-14.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-14.jpg')"
         size="34"
         class="mr-1"
       />
       <b-avatar
-        :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')"
         size="34"
         class="mr-1"
       />

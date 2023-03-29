@@ -4,7 +4,7 @@ const data = {
   pricing: {
     basicPlan: {
       title: 'Basic',
-      img: require('@/assets/images/illustration/Pot1.svg'),
+      img: require('../../../assets/images/illustration/Pot1.svg'),
       subtitle: 'A simple start for everyone',
       monthlyPrice: 0,
       yearlyPlan: {
@@ -22,7 +22,7 @@ const data = {
     },
     standardPlan: {
       title: 'Standard',
-      img: require('@/assets/images/illustration/Pot2.svg'),
+      img: require('../../../assets/images/illustration/Pot2.svg'),
       subtitle: 'For small to medium businesses',
       monthlyPrice: 49,
       yearlyPlan: {
@@ -40,7 +40,7 @@ const data = {
     },
     enterprisePlan: {
       title: 'Enterprise',
-      img: require('@/assets/images/illustration/Pot3.svg'),
+      img: require('../../../assets/images/illustration/Pot3.svg'),
       subtitle: 'Solution for big organizations',
       monthlyPrice: 99,
       yearlyPlan: {

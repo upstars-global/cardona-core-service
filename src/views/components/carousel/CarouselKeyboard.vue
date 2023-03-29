@@ -6,9 +6,9 @@
     </b-card-text>
 
     <b-carousel id="carousel-interval" controls indicators :interval="400">
-      <b-carousel-slide :img-src="require('@/assets/images/slider/07.jpg')" />
-      <b-carousel-slide :img-src="require('@/assets/images/slider/08.jpg')" />
-      <b-carousel-slide :img-src="require('@/assets/images/slider/09.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/07.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/08.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/09.jpg')" />
     </b-carousel>
 
     <template #code>

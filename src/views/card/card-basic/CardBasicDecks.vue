@@ -7,7 +7,7 @@
       <b-card-group deck class="mb-0">
         <!-- card 1 -->
         <b-card
-          :img-src="require('@/assets/images/slider/03.jpg')"
+          :img-src="require('../../../assets/images/slider/03.jpg')"
           img-alt="Card image cap"
           img-top
           no-body
@@ -26,7 +26,7 @@
 
         <!-- card 2 -->
         <b-card
-          :img-src="require('@/assets/images/slider/02.jpg')"
+          :img-src="require('../../../assets/images/slider/02.jpg')"
           img-alt="Card image cap"
           img-top
           no-body
@@ -44,7 +44,7 @@
 
         <!-- card 3 -->
         <b-card
-          :img-src="require('@/assets/images/slider/01.jpg')"
+          :img-src="require('../../../assets/images/slider/01.jpg')"
           img-alt="Card image cap"
           img-top
           no-body

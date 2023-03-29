@@ -31,11 +31,11 @@ export default {
     return {
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-13.jpg') },
-        { img: require('@/assets/images/banner/banner-7.jpg') },
-        { img: require('@/assets/images/banner/banner-4.jpg') },
-        { img: require('@/assets/images/banner/banner-2.jpg') },
-        { img: require('@/assets/images/banner/banner-1.jpg') },
+        { img: require('../../../assets/images/banner/banner-13.jpg') },
+        { img: require('../../../assets/images/banner/banner-7.jpg') },
+        { img: require('../../../assets/images/banner/banner-4.jpg') },
+        { img: require('../../../assets/images/banner/banner-2.jpg') },
+        { img: require('../../../assets/images/banner/banner-1.jpg') },
       ],
       /* eslint-disable global-require */
     }
@@ -108,12 +108,12 @@ export default {
 
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-20.jpg') },
-        { img: require('@/assets/images/banner/banner-7.jpg') },
-        { img: require('@/assets/images/banner/banner-8.jpg') },
-        { img: require('@/assets/images/banner/banner-9.jpg') },
-        { img: require('@/assets/images/banner/banner-10.jpg') },
-        { img: require('@/assets/images/banner/banner-11.jpg') },
+        { img: require('../../../assets/images/banner/banner-20.jpg') },
+        { img: require('../../../assets/images/banner/banner-7.jpg') },
+        { img: require('../../../assets/images/banner/banner-8.jpg') },
+        { img: require('../../../assets/images/banner/banner-9.jpg') },
+        { img: require('../../../assets/images/banner/banner-10.jpg') },
+        { img: require('../../../assets/images/banner/banner-11.jpg') },
       ],
       /* eslint-disable global-require */
 
@@ -283,15 +283,15 @@ export default {
 
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-35.jpg') },
-        { img: require('@/assets/images/banner/banner-39.jpg') },
-        { img: require('@/assets/images/banner/banner-38.jpg') },
-        { img: require('@/assets/images/banner/banner-37.jpg') },
-        { img: require('@/assets/images/banner/banner-36.jpg') },
-        { img: require('@/assets/images/banner/banner-34.jpg') },
-        { img: require('@/assets/images/banner/banner-33.jpg') },
-        { img: require('@/assets/images/banner/banner-32.jpg') },
-        { img: require('@/assets/images/banner/banner-31.jpg') },
+        { img: require('../../../assets/images/banner/banner-35.jpg') },
+        { img: require('../../../assets/images/banner/banner-39.jpg') },
+        { img: require('../../../assets/images/banner/banner-38.jpg') },
+        { img: require('../../../assets/images/banner/banner-37.jpg') },
+        { img: require('../../../assets/images/banner/banner-36.jpg') },
+        { img: require('../../../assets/images/banner/banner-34.jpg') },
+        { img: require('../../../assets/images/banner/banner-33.jpg') },
+        { img: require('../../../assets/images/banner/banner-32.jpg') },
+        { img: require('../../../assets/images/banner/banner-31.jpg') },
       ],
       /* eslint-disable global-require */
 
@@ -355,10 +355,10 @@ export default {
     return {
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-21.jpg') },
-        { img: require('@/assets/images/banner/banner-22.jpg') },
-        { img: require('@/assets/images/banner/banner-23.jpg') },
-        { img: require('@/assets/images/banner/banner-24.jpg') },
+        { img: require('../../../assets/images/banner/banner-21.jpg') },
+        { img: require('../../../assets/images/banner/banner-22.jpg') },
+        { img: require('../../../assets/images/banner/banner-23.jpg') },
+        { img: require('../../../assets/images/banner/banner-24.jpg') },
       ],
       /* eslint-disable global-require */
 
@@ -430,11 +430,11 @@ export default {
 
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-20.jpg') },
-        { img: require('@/assets/images/banner/banner-19.jpg') },
-        { img: require('@/assets/images/banner/banner-18.jpg') },
-        { img: require('@/assets/images/banner/banner-17.jpg') },
-        { img: require('@/assets/images/banner/banner-16.jpg') },
+        { img: require('../../../assets/images/banner/banner-20.jpg') },
+        { img: require('../../../assets/images/banner/banner-19.jpg') },
+        { img: require('../../../assets/images/banner/banner-18.jpg') },
+        { img: require('../../../assets/images/banner/banner-17.jpg') },
+        { img: require('../../../assets/images/banner/banner-16.jpg') },
       ],
       /* eslint-disable global-require */
 
@@ -518,11 +518,11 @@ export default {
 
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-11.jpg') },
-        { img: require('@/assets/images/banner/banner-12.jpg') },
-        { img: require('@/assets/images/banner/banner-13.jpg') },
-        { img: require('@/assets/images/banner/banner-15.jpg') },
-        { img: require('@/assets/images/banner/banner-16.jpg') },
+        { img: require('../../../assets/images/banner/banner-11.jpg') },
+        { img: require('../../../assets/images/banner/banner-12.jpg') },
+        { img: require('../../../assets/images/banner/banner-13.jpg') },
+        { img: require('../../../assets/images/banner/banner-15.jpg') },
+        { img: require('../../../assets/images/banner/banner-16.jpg') },
       ],
       /* eslint-disable global-require */
 
@@ -607,12 +607,12 @@ export default {
     return {
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-9.jpg') },
-        { img: require('@/assets/images/banner/banner-8.jpg') },
-        { img: require('@/assets/images/banner/banner-7.jpg') },
-        { img: require('@/assets/images/banner/banner-20.jpg') },
-        { img: require('@/assets/images/banner/banner-5.jpg') },
-        { img: require('@/assets/images/banner/banner-4.jpg') },
+        { img: require('../../../assets/images/banner/banner-9.jpg') },
+        { img: require('../../../assets/images/banner/banner-8.jpg') },
+        { img: require('../../../assets/images/banner/banner-7.jpg') },
+        { img: require('../../../assets/images/banner/banner-20.jpg') },
+        { img: require('../../../assets/images/banner/banner-5.jpg') },
+        { img: require('../../../assets/images/banner/banner-4.jpg') },
       ],
       /* eslint-disable global-require */
 
@@ -672,11 +672,11 @@ export default {
     return {
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-31.jpg') },
-        { img: require('@/assets/images/banner/banner-32.jpg') },
-        { img: require('@/assets/images/banner/banner-33.jpg') },
-        { img: require('@/assets/images/banner/banner-34.jpg') },
-        { img: require('@/assets/images/banner/banner-35.jpg') },
+        { img: require('../../../assets/images/banner/banner-31.jpg') },
+        { img: require('../../../assets/images/banner/banner-32.jpg') },
+        { img: require('../../../assets/images/banner/banner-33.jpg') },
+        { img: require('../../../assets/images/banner/banner-34.jpg') },
+        { img: require('../../../assets/images/banner/banner-35.jpg') },
       ],
       /* eslint-disable global-require */
 
@@ -733,16 +733,16 @@ export default {
     return {
       swiperData: [
         /* eslint-disable global-require */
-        { img: require('@/assets/images/banner/banner-26.jpg') },
-        { img: require('@/assets/images/banner/banner-39.jpg') },
-        { img: require('@/assets/images/banner/banner-28.jpg') },
-        { img: require('@/assets/images/banner/banner-29.jpg') },
-        { img: require('@/assets/images/banner/banner-30.jpg') },
-        { img: require('@/assets/images/banner/banner-31.jpg') },
-        { img: require('@/assets/images/banner/banner-32.jpg') },
-        { img: require('@/assets/images/banner/banner-33.jpg') },
-        { img: require('@/assets/images/banner/banner-34.jpg') },
-        { img: require('@/assets/images/banner/banner-35.jpg') },
+        { img: require('../../../assets/images/banner/banner-26.jpg') },
+        { img: require('../../../assets/images/banner/banner-39.jpg') },
+        { img: require('../../../assets/images/banner/banner-28.jpg') },
+        { img: require('../../../assets/images/banner/banner-29.jpg') },
+        { img: require('../../../assets/images/banner/banner-30.jpg') },
+        { img: require('../../../assets/images/banner/banner-31.jpg') },
+        { img: require('../../../assets/images/banner/banner-32.jpg') },
+        { img: require('../../../assets/images/banner/banner-33.jpg') },
+        { img: require('../../../assets/images/banner/banner-34.jpg') },
+        { img: require('../../../assets/images/banner/banner-35.jpg') },
         /* eslint-disable global-require */
       ],
       swiperOption: {
@@ -831,11 +831,11 @@ export default {
     return {
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-7.jpg') },
-        { img: require('@/assets/images/banner/banner-4.jpg') },
-        { img: require('@/assets/images/banner/banner-14.jpg') },
-        { img: require('@/assets/images/banner/banner-3.jpg') },
-        { img: require('@/assets/images/banner/banner-2.jpg') },
+        { img: require('../../../assets/images/banner/banner-7.jpg') },
+        { img: require('../../../assets/images/banner/banner-4.jpg') },
+        { img: require('../../../assets/images/banner/banner-14.jpg') },
+        { img: require('../../../assets/images/banner/banner-3.jpg') },
+        { img: require('../../../assets/images/banner/banner-2.jpg') },
       ],
       /* eslint-disable global-require */
 
@@ -891,11 +891,11 @@ export default {
 
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-12.jpg') },
-        { img: require('@/assets/images/banner/banner-9.jpg') },
-        { img: require('@/assets/images/banner/banner-8.jpg') },
-        { img: require('@/assets/images/banner/banner-7.jpg') },
-        { img: require('@/assets/images/banner/banner-20.jpg') },
+        { img: require('../../../assets/images/banner/banner-12.jpg') },
+        { img: require('../../../assets/images/banner/banner-9.jpg') },
+        { img: require('../../../assets/images/banner/banner-8.jpg') },
+        { img: require('../../../assets/images/banner/banner-7.jpg') },
+        { img: require('../../../assets/images/banner/banner-20.jpg') },
       ],
       /* eslint-disable global-require */
 
@@ -924,7 +924,7 @@ export const codeParallax = `
     >
       <b-img
         class="img-fluid"
-        :src="require('@/assets/images/banner/parallax-4.jpg')"
+        :src="require('../../../assets/images/banner/parallax-4.jpg')"
         alt="banner"
       />
     </div>
@@ -1054,11 +1054,11 @@ export default {
     return {
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-8.jpg') },
-        { img: require('@/assets/images/banner/banner-7.jpg') },
-        { img: require('@/assets/images/banner/banner-20.jpg') },
-        { img: require('@/assets/images/banner/banner-4.jpg') },
-        { img: require('@/assets/images/banner/banner-5.jpg') },
+        { img: require('../../../assets/images/banner/banner-8.jpg') },
+        { img: require('../../../assets/images/banner/banner-7.jpg') },
+        { img: require('../../../assets/images/banner/banner-20.jpg') },
+        { img: require('../../../assets/images/banner/banner-4.jpg') },
+        { img: require('../../../assets/images/banner/banner-5.jpg') },
       ],
       /* eslint-disable global-require */
 
@@ -1117,15 +1117,15 @@ export default {
     return {
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-30.jpg') },
-        { img: require('@/assets/images/banner/banner-31.jpg') },
-        { img: require('@/assets/images/banner/banner-32.jpg') },
-        { img: require('@/assets/images/banner/banner-33.jpg') },
-        { img: require('@/assets/images/banner/banner-34.jpg') },
-        { img: require('@/assets/images/banner/banner-35.jpg') },
-        { img: require('@/assets/images/banner/banner-36.jpg') },
-        { img: require('@/assets/images/banner/banner-37.jpg') },
-        { img: require('@/assets/images/banner/banner-38.jpg') },
+        { img: require('../../../assets/images/banner/banner-30.jpg') },
+        { img: require('../../../assets/images/banner/banner-31.jpg') },
+        { img: require('../../../assets/images/banner/banner-32.jpg') },
+        { img: require('../../../assets/images/banner/banner-33.jpg') },
+        { img: require('../../../assets/images/banner/banner-34.jpg') },
+        { img: require('../../../assets/images/banner/banner-35.jpg') },
+        { img: require('../../../assets/images/banner/banner-36.jpg') },
+        { img: require('../../../assets/images/banner/banner-37.jpg') },
+        { img: require('../../../assets/images/banner/banner-38.jpg') },
       ],
       /* eslint-disable global-require */
 

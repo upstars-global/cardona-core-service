@@ -1,6 +1,6 @@
 <template>
   <b-card
-    :img-src="require('@/assets/images/banner/banner-12.jpg')"
+    :img-src="require('../../../assets/images/banner/banner-12.jpg')"
     img-alt="Profile Cover Photo"
     img-top
     class="card-profile"
@@ -10,7 +10,7 @@
         <b-avatar
           size="114"
           variant="light"
-          :src="require('@/assets/images/portrait/small/avatar-s-9.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-9.jpg')"
         />
       </div>
     </div>

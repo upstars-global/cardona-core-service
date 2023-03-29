@@ -37,15 +37,15 @@ export default {
 
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-35.jpg') },
-        { img: require('@/assets/images/banner/banner-39.jpg') },
-        { img: require('@/assets/images/banner/banner-38.jpg') },
-        { img: require('@/assets/images/banner/banner-37.jpg') },
-        { img: require('@/assets/images/banner/banner-36.jpg') },
-        { img: require('@/assets/images/banner/banner-34.jpg') },
-        { img: require('@/assets/images/banner/banner-33.jpg') },
-        { img: require('@/assets/images/banner/banner-32.jpg') },
-        { img: require('@/assets/images/banner/banner-31.jpg') },
+        { img: require('../../../assets/images/banner/banner-35.jpg') },
+        { img: require('../../../assets/images/banner/banner-39.jpg') },
+        { img: require('../../../assets/images/banner/banner-38.jpg') },
+        { img: require('../../../assets/images/banner/banner-37.jpg') },
+        { img: require('../../../assets/images/banner/banner-36.jpg') },
+        { img: require('../../../assets/images/banner/banner-34.jpg') },
+        { img: require('../../../assets/images/banner/banner-33.jpg') },
+        { img: require('../../../assets/images/banner/banner-32.jpg') },
+        { img: require('../../../assets/images/banner/banner-31.jpg') },
       ],
       /* eslint-disable global-require */
 

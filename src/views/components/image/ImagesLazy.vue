@@ -10,7 +10,7 @@
       <span> pixels of the viewport).</span>
     </b-card-text>
 
-    <b-img-lazy :src="require('@/assets/images/banner/banner-6.jpg')" fluid class="w-100" />
+    <b-img-lazy :src="require('../../../assets/images/banner/banner-6.jpg')" fluid class="w-100" />
 
     <template #code>
       {{ codeLazy }}

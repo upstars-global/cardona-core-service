@@ -38,11 +38,11 @@ export default {
 
       /* eslint-disable global-require */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-31.jpg') },
-        { img: require('@/assets/images/banner/banner-32.jpg') },
-        { img: require('@/assets/images/banner/banner-33.jpg') },
-        { img: require('@/assets/images/banner/banner-34.jpg') },
-        { img: require('@/assets/images/banner/banner-35.jpg') },
+        { img: require('../../../assets/images/banner/banner-31.jpg') },
+        { img: require('../../../assets/images/banner/banner-32.jpg') },
+        { img: require('../../../assets/images/banner/banner-33.jpg') },
+        { img: require('../../../assets/images/banner/banner-34.jpg') },
+        { img: require('../../../assets/images/banner/banner-35.jpg') },
       ],
       /* eslint-disable global-require */
 

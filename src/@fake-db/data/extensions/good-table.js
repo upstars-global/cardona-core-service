@@ -4,7 +4,7 @@ const data = {
   tableBasic: [
     {
       id: 1,
-      avatar: require('@/assets/images/avatars/10-small.png'),
+      avatar: require('../../../assets/images/avatars/10-small.png'),
       fullName: "Korrie O'Crevy",
       email: 'kocrevy0@thetimes.co.uk',
       startDate: '09/23/2016',
@@ -13,7 +13,7 @@ const data = {
     },
     {
       id: 2,
-      avatar: require('@/assets/images/avatars/1-small.png'),
+      avatar: require('../../../assets/images/avatars/1-small.png'),
       fullName: 'Bailie Coulman',
       email: 'bcoulman1@yolasite.com',
       startDate: '05/20/2018',
@@ -22,7 +22,7 @@ const data = {
     },
     {
       id: 3,
-      avatar: require('@/assets/images/avatars/9-small.png'),
+      avatar: require('../../../assets/images/avatars/9-small.png'),
       fullName: 'Stella Ganderton',
       email: 'sganderton2@tuttocitta.it',
       startDate: '03/24/2018',
@@ -31,7 +31,7 @@ const data = {
     },
     {
       id: 4,
-      avatar: require('@/assets/images/avatars/3-small.png'),
+      avatar: require('../../../assets/images/avatars/3-small.png'),
       fullName: 'Dorolice Crossman',
       email: 'dcrossman3@google.co.jp',
       startDate: '12/03/2017',
@@ -40,7 +40,7 @@ const data = {
     },
     {
       id: 5,
-      avatar: require('@/assets/images/avatars/4-small.png'),
+      avatar: require('../../../assets/images/avatars/4-small.png'),
       fullName: 'Harmonia Nisius',
       email: 'hnisius4@gnu.org',
       startDate: '08/25/2017',
@@ -49,7 +49,7 @@ const data = {
     },
     {
       id: 6,
-      avatar: require('@/assets/images/avatars/5-small.png'),
+      avatar: require('../../../assets/images/avatars/5-small.png'),
       fullName: 'Genevra Honeywood',
       email: 'ghoneywood5@narod.ru',
       startDate: '06/01/2017',
@@ -58,7 +58,7 @@ const data = {
     },
     {
       id: 7,
-      avatar: require('@/assets/images/avatars/7-small.png'),
+      avatar: require('../../../assets/images/avatars/7-small.png'),
       fullName: 'Eileen Diehn',
       email: 'ediehn6@163.com',
       startDate: '10/15/2017',
@@ -67,7 +67,7 @@ const data = {
     },
     {
       id: 8,
-      avatar: require('@/assets/images/avatars/9-small.png'),
+      avatar: require('../../../assets/images/avatars/9-small.png'),
       fullName: 'Richardo Aldren',
       email: 'raldren7@mtv.com',
       startDate: '11/05/2016',
@@ -76,7 +76,7 @@ const data = {
     },
     {
       id: 9,
-      avatar: require('@/assets/images/avatars/2-small.png'),
+      avatar: require('../../../assets/images/avatars/2-small.png'),
       fullName: 'Allyson Moakler',
       email: 'amoakler8@shareasale.com',
       startDate: '12/29/2018',
@@ -85,7 +85,7 @@ const data = {
     },
     {
       id: 10,
-      avatar: require('@/assets/images/avatars/6-small.png'),
+      avatar: require('../../../assets/images/avatars/6-small.png'),
       fullName: 'Merline Penhalewick',
       email: 'mpenhalewick9@php.net',
       startDate: '04/19/2019',
@@ -102,7 +102,7 @@ const data = {
       children: [
         {
           id: 1,
-          avatar: require('@/assets/images/avatars/10-small.png'),
+          avatar: require('../../../assets/images/avatars/10-small.png'),
           fullName: "Korrie O'Crevy",
           email: 'kocrevy0@thetimes.co.uk',
           startDate: '09/23/2016',
@@ -118,7 +118,7 @@ const data = {
       children: [
         {
           id: 2,
-          avatar: require('@/assets/images/avatars/1-small.png'),
+          avatar: require('../../../assets/images/avatars/1-small.png'),
           fullName: 'Bailie Coulman',
           email: 'bcoulman1@yolasite.com',
           startDate: '05/20/2018',
@@ -133,7 +133,7 @@ const data = {
       children: [
         {
           id: 3,
-          avatar: require('@/assets/images/avatars/9-small.png'),
+          avatar: require('../../../assets/images/avatars/9-small.png'),
           fullName: 'Stella Ganderton',
           email: 'sganderton2@tuttocitta.it',
           startDate: '03/24/2018',
@@ -142,7 +142,7 @@ const data = {
         },
         {
           id: 4,
-          avatar: require('@/assets/images/avatars/3-small.png'),
+          avatar: require('../../../assets/images/avatars/3-small.png'),
           fullName: 'Dorolice Crossman',
           email: 'dcrossman3@google.co.jp',
           startDate: '12/03/2017',
@@ -151,7 +151,7 @@ const data = {
         },
         {
           id: 5,
-          avatar: require('@/assets/images/avatars/4-small.png'),
+          avatar: require('../../../assets/images/avatars/4-small.png'),
           fullName: 'Harmonia Nisius',
           email: 'hnisius4@gnu.org',
           startDate: '08/25/2017',
@@ -166,7 +166,7 @@ const data = {
       children: [
         {
           id: 6,
-          avatar: require('@/assets/images/avatars/5-small.png'),
+          avatar: require('../../../assets/images/avatars/5-small.png'),
           fullName: 'Genevra Honeywood',
           email: 'ghoneywood5@narod.ru',
           startDate: '06/01/2017',
@@ -176,7 +176,7 @@ const data = {
         },
         {
           id: 7,
-          avatar: require('@/assets/images/avatars/7-small.png'),
+          avatar: require('../../../assets/images/avatars/7-small.png'),
           fullName: 'Eileen Diehn',
           email: 'ediehn6@163.com',
           startDate: '10/15/2017',
@@ -191,7 +191,7 @@ const data = {
       children: [
         {
           id: 8,
-          avatar: require('@/assets/images/avatars/9-small.png'),
+          avatar: require('../../../assets/images/avatars/9-small.png'),
           fullName: 'Richardo Aldren',
           email: 'raldren7@mtv.com',
           startDate: '11/05/2016',
@@ -200,7 +200,7 @@ const data = {
         },
         {
           id: 9,
-          avatar: require('@/assets/images/avatars/2-small.png'),
+          avatar: require('../../../assets/images/avatars/2-small.png'),
           fullName: 'Allyson Moakler',
           email: 'amoakler8@shareasale.com',
           startDate: '12/29/2018',
@@ -209,7 +209,7 @@ const data = {
         },
         {
           id: 10,
-          avatar: require('@/assets/images/avatars/6-small.png'),
+          avatar: require('../../../assets/images/avatars/6-small.png'),
           fullName: 'Merline Penhalewick',
           email: 'mpenhalewick9@php.net',
           startDate: '04/19/2019',
@@ -223,7 +223,7 @@ const data = {
   tableAdvancedSearch: [
     {
       id: 1,
-      avatar: require('@/assets/images/avatars/10-small.png'),
+      avatar: require('../../../assets/images/avatars/10-small.png'),
       fullName: "Korrie O'Crevy",
       post: 'Nuclear Power Engineer',
       email: 'kocrevy0@thetimes.co.uk',
@@ -233,7 +233,7 @@ const data = {
     },
     {
       id: 2,
-      avatar: require('@/assets/images/avatars/1-small.png'),
+      avatar: require('../../../assets/images/avatars/1-small.png'),
       fullName: 'Bailie Coulman',
       post: 'VP Quality Control',
       email: 'bcoulman1@yolasite.com',
@@ -243,7 +243,7 @@ const data = {
     },
     {
       id: 3,
-      avatar: require('@/assets/images/avatars/9-small.png'),
+      avatar: require('../../../assets/images/avatars/9-small.png'),
       fullName: 'Stella Ganderton',
       post: 'Operator',
       email: 'sganderton2@tuttocitta.it',
@@ -253,7 +253,7 @@ const data = {
     },
     {
       id: 4,
-      avatar: require('@/assets/images/avatars/3-small.png'),
+      avatar: require('../../../assets/images/avatars/3-small.png'),
       fullName: 'Dorolice Crossman',
       post: 'Cost Accountant',
       email: 'dcrossman3@google.co.jp',
@@ -263,7 +263,7 @@ const data = {
     },
     {
       id: 5,
-      avatar: require('@/assets/images/avatars/4-small.png'),
+      avatar: require('../../../assets/images/avatars/4-small.png'),
       fullName: 'Harmonia Nisius',
       post: 'Senior Cost Accountant',
       email: 'hnisius4@gnu.org',
@@ -273,7 +273,7 @@ const data = {
     },
     {
       id: 6,
-      avatar: require('@/assets/images/avatars/5-small.png'),
+      avatar: require('../../../assets/images/avatars/5-small.png'),
       fullName: 'Genevra Honeywood',
       post: 'Geologist',
       email: 'ghoneywood5@narod.ru',
@@ -283,7 +283,7 @@ const data = {
     },
     {
       id: 7,
-      avatar: require('@/assets/images/avatars/7-small.png'),
+      avatar: require('../../../assets/images/avatars/7-small.png'),
       fullName: 'Eileen Diehn',
       post: 'Environmental Specialist',
       email: 'ediehn6@163.com',
@@ -293,7 +293,7 @@ const data = {
     },
     {
       id: 8,
-      avatar: require('@/assets/images/avatars/9-small.png'),
+      avatar: require('../../../assets/images/avatars/9-small.png'),
       fullName: 'Richardo Aldren',
       post: 'Senior Sales Associate',
       email: 'raldren7@mtv.com',
@@ -303,7 +303,7 @@ const data = {
     },
     {
       id: 9,
-      avatar: require('@/assets/images/avatars/2-small.png'),
+      avatar: require('../../../assets/images/avatars/2-small.png'),
       fullName: 'Allyson Moakler',
       post: 'Safety Technician',
       email: 'amoakler8@shareasale.com',
@@ -313,7 +313,7 @@ const data = {
     },
     {
       id: 10,
-      avatar: require('@/assets/images/avatars/6-small.png'),
+      avatar: require('../../../assets/images/avatars/6-small.png'),
       fullName: 'Merline Penhalewick',
       post: 'Junior Executive',
       email: 'mpenhalewick9@php.net',
@@ -325,7 +325,7 @@ const data = {
   tableSsr: [
     {
       id: 1,
-      avatar: require('@/assets/images/avatars/10-small.png'),
+      avatar: require('../../../assets/images/avatars/10-small.png'),
       fullName: "Korrie O'Crevy",
       email: 'kocrevy0@thetimes.co.uk',
       startDate: '09/23/2016',
@@ -334,7 +334,7 @@ const data = {
     },
     {
       id: 2,
-      avatar: require('@/assets/images/avatars/1-small.png'),
+      avatar: require('../../../assets/images/avatars/1-small.png'),
       fullName: 'Bailie Coulman',
       email: 'bcoulman1@yolasite.com',
       startDate: '05/20/2018',
@@ -343,7 +343,7 @@ const data = {
     },
     {
       id: 3,
-      avatar: require('@/assets/images/avatars/9-small.png'),
+      avatar: require('../../../assets/images/avatars/9-small.png'),
       fullName: 'Stella Ganderton',
       email: 'sganderton2@tuttocitta.it',
       startDate: '03/24/2018',
@@ -352,7 +352,7 @@ const data = {
     },
     {
       id: 4,
-      avatar: require('@/assets/images/avatars/3-small.png'),
+      avatar: require('../../../assets/images/avatars/3-small.png'),
       fullName: 'Dorolice Crossman',
       email: 'dcrossman3@google.co.jp',
       startDate: '12/03/2017',
@@ -361,7 +361,7 @@ const data = {
     },
     {
       id: 5,
-      avatar: require('@/assets/images/avatars/4-small.png'),
+      avatar: require('../../../assets/images/avatars/4-small.png'),
       fullName: 'Harmonia Nisius',
       email: 'hnisius4@gnu.org',
       startDate: '08/25/2017',

@@ -49,12 +49,12 @@ export default function useTaskHandler(props, emit) {
 
   /* eslint-disable global-require */
   const assigneeOptions = [
-    { avatar: require('@/assets/images/avatars/1-small.png'), fullName: 'Jane Foster' },
-    { avatar: require('@/assets/images/avatars/3-small.png'), fullName: 'Donna Frank' },
-    { avatar: require('@/assets/images/avatars/5-small.png'), fullName: 'Gabrielle Robertson' },
-    { avatar: require('@/assets/images/avatars/7-small.png'), fullName: 'Lori Spears' },
-    { avatar: require('@/assets/images/avatars/9-small.png'), fullName: 'Sandy Vega' },
-    { avatar: require('@/assets/images/avatars/11-small.png'), fullName: 'Cheryl May' },
+    { avatar: require('../../../assets/images/avatars/1-small.png'), fullName: 'Jane Foster' },
+    { avatar: require('../../../assets/images/avatars/3-small.png'), fullName: 'Donna Frank' },
+    { avatar: require('../../../assets/images/avatars/5-small.png'), fullName: 'Gabrielle Robertson' },
+    { avatar: require('../../../assets/images/avatars/7-small.png'), fullName: 'Lori Spears' },
+    { avatar: require('../../../assets/images/avatars/9-small.png'), fullName: 'Sandy Vega' },
+    { avatar: require('../../../assets/images/avatars/11-small.png'), fullName: 'Cheryl May' },
   ]
   /* eslint-enable global-require */
 

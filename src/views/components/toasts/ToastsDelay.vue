@@ -27,7 +27,7 @@
         <template #toast-title>
           <div class="d-flex flex-grow-1 align-items-center mr-25">
             <b-img
-              :src="require('@/assets/images/logo/logo.png')"
+              :src="require('../../../assets/images/logo/logo.png')"
               class="rounded mr-2"
               height="18"
               width="25"

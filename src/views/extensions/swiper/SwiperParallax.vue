@@ -8,7 +8,7 @@
       <div slot="parallax-bg" class="parallax-bg" data-swiper-parallax="-23%">
         <b-img
           class="img-fluid"
-          :src="require('@/assets/images/banner/parallax-4.jpg')"
+          :src="require('../../../assets/images/banner/parallax-4.jpg')"
           alt="banner"
         />
       </div>

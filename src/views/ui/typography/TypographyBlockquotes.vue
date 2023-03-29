@@ -115,7 +115,7 @@
             <b-media no-body>
               <b-media-aside class="mr-1">
                 <b-img
-                  :src="require('@/assets/images/portrait/small/avatar-s-5.jpg')"
+                  :src="require('../../../assets/images/portrait/small/avatar-s-5.jpg')"
                   alt="Generic placeholder image"
                   height="64"
                   width="64"
@@ -136,7 +136,7 @@
               <b-media-aside class="mr-1">
                 <b-img
                   rounded="circle"
-                  :src="require('@/assets/images/portrait/small/avatar-s-3.jpg')"
+                  :src="require('../../../assets/images/portrait/small/avatar-s-3.jpg')"
                   alt="Generic placeholder image"
                   height="64"
                   width="64"

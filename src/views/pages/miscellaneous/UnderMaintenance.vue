@@ -50,14 +50,14 @@ export default {
   },
   data() {
     return {
-      downImg: require('@/assets/images/pages/under-maintenance.svg'),
+      downImg: require('../../../assets/images/pages/under-maintenance.svg'),
     }
   },
   computed: {
     imgUrl() {
       if (store.state.appConfig.layout.skin === 'dark') {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.downImg = require('@/assets/images/pages/under-maintenance-dark.svg')
+        this.downImg = require('../../../assets/images/pages/under-maintenance-dark.svg')
         return this.downImg
       }
       return this.downImg

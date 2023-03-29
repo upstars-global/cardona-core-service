@@ -9,9 +9,9 @@
     </b-card-text>
 
     <b-carousel id="carousel-crossfade" controls indicators fade>
-      <b-carousel-slide :img-src="require('@/assets/images/slider/01.jpg')" />
-      <b-carousel-slide :img-src="require('@/assets/images/slider/02.jpg')" />
-      <b-carousel-slide :img-src="require('@/assets/images/slider/03.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/01.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/02.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/03.jpg')" />
     </b-carousel>
 
     <template #code>

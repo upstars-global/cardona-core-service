@@ -5,7 +5,7 @@
       <b-card
         no-body
         class="faq-search"
-        :style="{ backgroundImage: `url(${require('@/assets/images/banner/banner.png')})` }"
+        :style="{ backgroundImage: `url(${require('../../../assets/images/banner/banner.png')})` }"
       >
         <b-card-body class="text-center">
           <h2 class="text-primary">Let's answer some questions</h2>
@@ -57,7 +57,7 @@
         <template #tabs-end>
           <b-img
             fluid
-            :src="require('@/assets/images/illustration/faq-illustrations.svg')"
+            :src="require('../../../assets/images/illustration/faq-illustrations.svg')"
             class="d-none d-md-block mt-auto"
           />
         </template>

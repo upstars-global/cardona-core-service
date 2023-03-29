@@ -294,7 +294,7 @@ export const codeListAvatar = `
     <b-list-group flush>
       <b-list-group-item>
         <div class="d-flex align-items-center">
-        <b-avatar :src="require('@/assets/images/small/avatar-s-8.jpg')" />
+        <b-avatar :src="require('../../../assets/images/small/avatar-s-8.jpg')" />
           <div class="d-flex flex-column ml-1">
             <strong>Steve Jobes</strong>
             <small>Top Contributor</small>
@@ -303,7 +303,7 @@ export const codeListAvatar = `
       </b-list-group-item>
       <b-list-group-item>
         <div class="d-flex align-items-center">
-        <b-avatar :src="require('@/assets/images/small/avatar-s-10.jpg')" />
+        <b-avatar :src="require('../../../assets/images/small/avatar-s-10.jpg')" />
           <div class="d-flex flex-column ml-1">
             <strong>Matt</strong>
             <small>11 Points</small>
@@ -312,7 +312,7 @@ export const codeListAvatar = `
       </b-list-group-item>
       <b-list-group-item>
         <div class="d-flex align-items-center">
-        <b-avatar :src="require('@/assets/images/small/avatar-s-24.jpg')" />
+        <b-avatar :src="require('../../../assets/images/small/avatar-s-24.jpg')" />
           <div class="d-flex flex-column ml-1">
             <strong>Xian Famous Foods</strong>
             <small>A taste of Shaanxi's delicious culinary traditions.</small>
