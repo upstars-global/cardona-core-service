@@ -2,7 +2,7 @@ export default [
   {
     path: '/components/alert',
     name: 'components-alert',
-    component: () => import('@/views/components/alert/Alert.vue'),
+    component: () => import('../../../views/components/alert/Alert.vue'),
     meta: {
       pageTitle: 'Alerts',
       breadcrumb: [
@@ -19,7 +19,7 @@ export default [
   {
     path: '/components/aspect',
     name: 'components-aspect',
-    component: () => import('@/views/components/aspect/Aspect.vue'),
+    component: () => import('../../../views/components/aspect/Aspect.vue'),
     meta: {
       pageTitle: 'Aspect',
       breadcrumb: [
@@ -36,7 +36,7 @@ export default [
   {
     path: '/components/avatar',
     name: 'components-avatar',
-    component: () => import('@/views/components/avatar/Avatar.vue'),
+    component: () => import('../../../views/components/avatar/Avatar.vue'),
     meta: {
       pageTitle: 'Avatar',
       breadcrumb: [
@@ -53,7 +53,7 @@ export default [
   {
     path: '/components/badge',
     name: 'components-badge',
-    component: () => import('@/views/components/badge/Badge.vue'),
+    component: () => import('../../../views/components/badge/Badge.vue'),
     meta: {
       pageTitle: 'Badge',
       breadcrumb: [
@@ -70,7 +70,7 @@ export default [
   {
     path: '/components/breadcrumb',
     name: 'components-breadcrumb',
-    component: () => import('@/views/components/breadcrumb/Breadcrumb.vue'),
+    component: () => import('../../../views/components/breadcrumb/Breadcrumb.vue'),
     meta: {
       pageTitle: 'Breadcrumb',
       breadcrumb: [
@@ -87,7 +87,7 @@ export default [
   {
     path: '/components/button',
     name: 'components-button',
-    component: () => import('@/views/components/button/Button.vue'),
+    component: () => import('../../../views/components/button/Button.vue'),
     meta: {
       pageTitle: 'Button',
       breadcrumb: [
@@ -104,7 +104,7 @@ export default [
   {
     path: '/components/button-group',
     name: 'components-button-group',
-    component: () => import('@/views/components/button-group/ButtonGroup.vue'),
+    component: () => import('../../../views/components/button-group/ButtonGroup.vue'),
     meta: {
       pageTitle: 'Button Group',
       breadcrumb: [
@@ -121,7 +121,7 @@ export default [
   {
     path: '/components/button-toolbar',
     name: 'components-button-toolbar',
-    component: () => import('@/views/components/button-toolbar/ButtonToolbar.vue'),
+    component: () => import('../../../views/components/button-toolbar/ButtonToolbar.vue'),
     meta: {
       pageTitle: 'Button Toolbar',
       breadcrumb: [
@@ -138,7 +138,7 @@ export default [
   {
     path: '/components/calendar',
     name: 'components-calendar',
-    component: () => import('@/views/components/calendar/Calendar.vue'),
+    component: () => import('../../../views/components/calendar/Calendar.vue'),
     meta: {
       pageTitle: 'Calendar',
       breadcrumb: [
@@ -155,7 +155,7 @@ export default [
   {
     path: '/components/carousel',
     name: 'components-carousel',
-    component: () => import('@/views/components/carousel/Carousel.vue'),
+    component: () => import('../../../views/components/carousel/Carousel.vue'),
     meta: {
       pageTitle: 'Carousel',
       breadcrumb: [
@@ -172,7 +172,7 @@ export default [
   {
     path: '/components/collapse',
     name: 'components-collapse',
-    component: () => import('@/views/components/collapse/Collapse.vue'),
+    component: () => import('../../../views/components/collapse/Collapse.vue'),
     meta: {
       pageTitle: 'Collapse',
       breadcrumb: [
@@ -189,7 +189,7 @@ export default [
   {
     path: '/components/dropdown',
     name: 'components-dropdown',
-    component: () => import('@/views/components/dropdown/Dropdown.vue'),
+    component: () => import('../../../views/components/dropdown/Dropdown.vue'),
     meta: {
       pageTitle: 'Dropdown',
       breadcrumb: [
@@ -206,7 +206,7 @@ export default [
   {
     path: '/components/embed',
     name: 'components-embed',
-    component: () => import('@/views/components/embed/Embed.vue'),
+    component: () => import('../../../views/components/embed/Embed.vue'),
     meta: {
       pageTitle: 'Embed',
       breadcrumb: [
@@ -223,7 +223,7 @@ export default [
   {
     path: '/components/image',
     name: 'components-image',
-    component: () => import('@/views/components/image/Image.vue'),
+    component: () => import('../../../views/components/image/Image.vue'),
     meta: {
       pageTitle: 'Image',
       breadcrumb: [
@@ -240,7 +240,7 @@ export default [
   {
     path: '/components/list-group',
     name: 'components-list-group',
-    component: () => import('@/views/components/list-group/ListGroup.vue'),
+    component: () => import('../../../views/components/list-group/ListGroup.vue'),
     meta: {
       pageTitle: 'List Group',
       breadcrumb: [
@@ -257,7 +257,7 @@ export default [
   {
     path: '/components/media',
     name: 'components-media',
-    component: () => import('@/views/components/media/Media.vue'),
+    component: () => import('../../../views/components/media/Media.vue'),
     meta: {
       pageTitle: 'Media Objects',
       breadcrumb: [
@@ -274,7 +274,7 @@ export default [
   {
     path: '/components/modal',
     name: 'components-modal',
-    component: () => import('@/views/components/modal/Modal.vue'),
+    component: () => import('../../../views/components/modal/Modal.vue'),
     meta: {
       pageTitle: 'Modal',
       breadcrumb: [
@@ -291,7 +291,7 @@ export default [
   {
     path: '/components/nav',
     name: 'components-nav',
-    component: () => import('@/views/components/nav/Nav.vue'),
+    component: () => import('../../../views/components/nav/Nav.vue'),
     meta: {
       pageTitle: 'Nav',
       breadcrumb: [
@@ -308,7 +308,7 @@ export default [
   {
     path: '/components/overlay',
     name: 'components-overlay',
-    component: () => import('@/views/components/overlay/Overlay.vue'),
+    component: () => import('../../../views/components/overlay/Overlay.vue'),
     meta: {
       pageTitle: 'Overlay',
       breadcrumb: [
@@ -325,7 +325,7 @@ export default [
   {
     path: '/components/pagination',
     name: 'components-pagination',
-    component: () => import('@/views/components/pagination/Pagination.vue'),
+    component: () => import('../../../views/components/pagination/Pagination.vue'),
     meta: {
       pageTitle: 'Pagination',
       breadcrumb: [
@@ -342,7 +342,7 @@ export default [
   {
     path: '/components/pagination-nav',
     name: 'components-pagination-nav',
-    component: () => import('@/views/components/pagination-nav/PaginationNav.vue'),
+    component: () => import('../../../views/components/pagination-nav/PaginationNav.vue'),
     meta: {
       pageTitle: 'Pagination Nav',
       breadcrumb: [
@@ -359,7 +359,7 @@ export default [
   {
     path: '/components/pill',
     name: 'components-pill',
-    component: () => import('@/views/components/pill/Pill.vue'),
+    component: () => import('../../../views/components/pill/Pill.vue'),
     meta: {
       pageTitle: 'Pill',
       breadcrumb: [
@@ -376,7 +376,7 @@ export default [
   {
     path: '/components/pill-badge',
     name: 'components-pill-badge',
-    component: () => import('@/views/components/pill-badge/PillBadge.vue'),
+    component: () => import('../../../views/components/pill-badge/PillBadge.vue'),
     meta: {
       pageTitle: 'Pill Badge',
       breadcrumb: [
@@ -393,7 +393,7 @@ export default [
   {
     path: '/components/popover',
     name: 'components-popover',
-    component: () => import('@/views/components/popover/Popover.vue'),
+    component: () => import('../../../views/components/popover/Popover.vue'),
     meta: {
       pageTitle: 'Popover',
       breadcrumb: [
@@ -410,7 +410,7 @@ export default [
   {
     path: '/components/progress',
     name: 'components-progress',
-    component: () => import('@/views/components/progress/Progress.vue'),
+    component: () => import('../../../views/components/progress/Progress.vue'),
     meta: {
       pageTitle: 'Progress',
       breadcrumb: [
@@ -427,7 +427,7 @@ export default [
   {
     path: '/components/sidebar',
     name: 'components-sidebar',
-    component: () => import('@/views/components/sidebar/Sidebar.vue'),
+    component: () => import('../../../views/components/sidebar/Sidebar.vue'),
     meta: {
       pageTitle: 'Sidebar',
       breadcrumb: [
@@ -444,7 +444,7 @@ export default [
   {
     path: '/components/spinner',
     name: 'components-spinner',
-    component: () => import('@/views/components/spinner/Spinner.vue'),
+    component: () => import('../../../views/components/spinner/Spinner.vue'),
     meta: {
       pageTitle: 'Spinner',
       breadcrumb: [
@@ -461,7 +461,7 @@ export default [
   {
     path: '/components/tab',
     name: 'components-tab',
-    component: () => import('@/views/components/tab/Tab.vue'),
+    component: () => import('../../../views/components/tab/Tab.vue'),
     meta: {
       pageTitle: 'Tab',
       breadcrumb: [
@@ -478,7 +478,7 @@ export default [
   {
     path: '/components/time',
     name: 'components-time',
-    component: () => import('@/views/components/time/Time.vue'),
+    component: () => import('../../../views/components/time/Time.vue'),
     meta: {
       pageTitle: 'Time',
       breadcrumb: [
@@ -495,7 +495,7 @@ export default [
   {
     path: '/components/timeline',
     name: 'components-timeline',
-    component: () => import('@/views/components/timeline/Timeline.vue'),
+    component: () => import('../../../views/components/timeline/Timeline.vue'),
     meta: {
       pageTitle: 'Timeline',
       breadcrumb: [
@@ -512,7 +512,7 @@ export default [
   {
     path: '/components/toasts',
     name: 'components-toasts',
-    component: () => import('@/views/components/toasts/Toasts.vue'),
+    component: () => import('../../../views/components/toasts/Toasts.vue'),
     meta: {
       pageTitle: 'Toasts',
       breadcrumb: [
@@ -529,7 +529,7 @@ export default [
   {
     path: '/components/tooltip',
     name: 'components-tooltip',
-    component: () => import('@/views/components/tooltip/Tooltip.vue'),
+    component: () => import('../../../views/components/tooltip/Tooltip.vue'),
     meta: {
       pageTitle: 'Tooltip',
       breadcrumb: [

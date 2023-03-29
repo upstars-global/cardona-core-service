@@ -2,7 +2,7 @@ export default [
   {
     path: '/ui/typography',
     name: 'ui-typography',
-    component: () => import('@/views/ui/typography/Typography.vue'),
+    component: () => import('../../../views/ui/typography/Typography.vue'),
     meta: {
       pageTitle: 'Typography',
       breadcrumb: [
@@ -19,7 +19,7 @@ export default [
   {
     path: '/ui/colors',
     name: 'ui-colors',
-    component: () => import('@/views/ui/colors/Colors.vue'),
+    component: () => import('../../../views/ui/colors/Colors.vue'),
     meta: {
       pageTitle: 'Colors',
       breadcrumb: [
@@ -36,7 +36,7 @@ export default [
   {
     path: '/ui/feather',
     name: 'ui-feather',
-    component: () => import('@/views/ui/feather/Feather.vue'),
+    component: () => import('../../../views/ui/feather/Feather.vue'),
     meta: {
       pageTitle: 'Feather',
       breadcrumb: [
