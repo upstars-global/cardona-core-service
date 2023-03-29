@@ -1,7 +1,7 @@
 <script lang="ts">
 import { PropType, computed } from 'vue'
 import SelectField from './SelectField.vue'
-import { FieldInfo } from '@model/field'
+import { FieldInfo } from '../../../../@model/field'
 
 export default {
   name: 'MultiSelectField',

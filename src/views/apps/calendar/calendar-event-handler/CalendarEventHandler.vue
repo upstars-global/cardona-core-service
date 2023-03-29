@@ -236,7 +236,7 @@ import flatPickr from 'vue-flatpickr-component'
 import Ripple from 'vue-ripple-directive'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { required, email, url } from '@validations'
-import formValidation from '@core/comp-functions/forms/form-validation'
+import formValidation from '../../../../@core/comp-functions/forms/form-validation'
 import { ref, toRefs } from 'vue'
 import useCalendarEventHandler from './useCalendarEventHandler'
 

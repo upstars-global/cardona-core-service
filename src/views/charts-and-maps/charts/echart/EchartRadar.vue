@@ -6,7 +6,7 @@
 
 <script>
 import { BCard } from 'bootstrap-vue'
-import AppEchartRadar from '@core/components/charts/echart/AppEchartRadar.vue'
+import AppEchartRadar from '../../../../@core/components/charts/echart/AppEchartRadar.vue'
 
 export default {
   components: {

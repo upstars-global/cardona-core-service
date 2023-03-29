@@ -13,7 +13,7 @@
 
 <script>
 import { LMap, LTileLayer, LGeoJson } from 'vue2-leaflet'
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../../@core/components/b-card-code/BCardCode.vue'
 import { codeGeoJSON } from './code'
 
 export default {

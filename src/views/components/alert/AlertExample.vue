@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BAlert, BFormGroup, BFormInput, BCardText } from 'bootstrap-vue'
-import { heightFade } from '@core/directives/animations'
+import { heightFade } from '../../../@core/directives/animations'
 import { codeExample } from './code'
 
 export default {

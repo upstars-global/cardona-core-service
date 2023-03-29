@@ -19,7 +19,7 @@ import useAppConfig from '@core/app-config/useAppConfig'
 
 import { useWindowSize, useCssVar } from '@vueuse/core'
 
-import store from '@/store'
+import store from './store'
 
 const LayoutVertical = () => import('@/layouts/vertical/LayoutVertical.vue')
 const LayoutHorizontal = () => import('@/layouts/horizontal/LayoutHorizontal.vue')

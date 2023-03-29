@@ -47,8 +47,8 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { debounce } from 'lodash'
-import FieldGenerator from '@/components/templates/FieldGenerator/index.vue'
-import { FieldInfo } from '@model/field'
+import FieldGenerator from '../components/templates/FieldGenerator/index.vue'
+import { FieldInfo } from '../@model/field'
 
 export default defineComponent({
   name: 'DynamicFieldList',

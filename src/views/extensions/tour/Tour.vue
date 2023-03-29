@@ -17,10 +17,10 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BButton } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
-import AppTour from '@core/components/app-tour/AppTour.vue'
+import AppTour from '../../../@core/components/app-tour/AppTour.vue'
 import { codeTour } from './code'
 
 export default {

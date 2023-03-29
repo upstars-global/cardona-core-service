@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormSpinbutton, BFormGroup, BCardText } from 'bootstrap-vue'
 import { codeWidth } from './code'
 

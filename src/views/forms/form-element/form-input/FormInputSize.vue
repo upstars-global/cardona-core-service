@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormInput, BRow, BCol, BCardText, BFormGroup } from 'bootstrap-vue'
 import { codeSize } from './code'
 

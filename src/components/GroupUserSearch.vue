@@ -53,10 +53,10 @@
 </template>
 
 <script lang="ts">
-import { fetchUsers } from '@queries/user'
+import { fetchUsers } from '../@queries/user'
 import vSelect from 'vue-select'
 import { ref, PropType, defineComponent, computed } from 'vue'
-import { UserInfo } from '@model/user'
+import { UserInfo } from '../@model/user'
 import { debounce } from 'lodash'
 
 export default defineComponent({

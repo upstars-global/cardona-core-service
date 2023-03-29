@@ -129,7 +129,7 @@ import {
   BEmbed,
 } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
-import { kFormatter } from '@core/utils/filter'
+import { kFormatter } from '../../../@core/utils/filter'
 
 export default {
   components: {

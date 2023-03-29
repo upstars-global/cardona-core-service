@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import VueSlider from 'vue-slider-component'
-import store from '@/store'
+import store from '../../../store'
 import { codeSingle } from './code'
 
 export default {

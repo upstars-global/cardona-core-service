@@ -180,8 +180,8 @@ import {
   BInputGroupAppend,
   BPagination,
 } from 'bootstrap-vue'
-import { kFormatter } from '@core/utils/filter'
-import ContentWithSidebar from '@core/layouts/components/content-with-sidebar/ContentWithSidebar.vue'
+import { kFormatter } from '../../../@core/utils/filter'
+import ContentWithSidebar from '../../../@core/layouts/components/content-with-sidebar/ContentWithSidebar.vue'
 
 export default {
   components: {

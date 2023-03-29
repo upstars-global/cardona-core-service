@@ -152,7 +152,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import {
   BAvatar,
   BPagination,
@@ -162,9 +162,9 @@ import {
   BRow,
   BCol,
 } from 'bootstrap-vue'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store'
+import store from '../../../store'
 import { codeAdvance } from './code'
 
 export default {

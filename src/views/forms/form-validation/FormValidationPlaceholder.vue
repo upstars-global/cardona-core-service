@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { BFormInput, BFormGroup, BForm, BRow, BCol, BButton, BCardText } from 'bootstrap-vue'
 import { required } from '@validations'

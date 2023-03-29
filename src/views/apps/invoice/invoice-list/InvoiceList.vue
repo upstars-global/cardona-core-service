@@ -237,10 +237,10 @@ import {
   BPagination,
   BTooltip,
 } from 'bootstrap-vue'
-import { avatarText } from '@core/utils/filter'
+import { avatarText } from '../../../../@core/utils/filter'
 import vSelect from 'vue-select'
 import { onUnmounted } from 'vue'
-import store from '@/store'
+import store from '../../../../store'
 import useInvoicesList from './useInvoiceList'
 
 import invoiceStoreModule from '../invoiceStoreModule'

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 import { codeCenterSlides } from './code'

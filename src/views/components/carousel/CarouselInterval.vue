@@ -20,7 +20,7 @@
 
 <script>
 import { BCarousel, BCarouselSlide, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { codeCarouselInterval } from './code'
 
 export default {

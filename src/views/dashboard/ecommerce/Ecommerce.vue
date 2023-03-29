@@ -70,7 +70,7 @@
 <script>
 import { BRow, BCol } from 'bootstrap-vue'
 
-import { getUserData } from '@/auth/utils'
+import { getUserData } from '../../../auth/utils'
 import EcommerceMedal from './EcommerceMedal.vue'
 import EcommerceStatistics from './EcommerceStatistics.vue'
 import EcommerceRevenueReport from './EcommerceRevenueReport.vue'

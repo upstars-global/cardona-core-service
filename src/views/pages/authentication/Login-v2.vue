@@ -128,7 +128,7 @@
 <script>
 /* eslint-disable global-require */
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import VuexyLogo from '@core/layouts/components/AppLogo.vue'
+import VuexyLogo from '../../../@core/layouts/components/AppLogo.vue'
 import {
   BRow,
   BCol,
@@ -145,9 +145,9 @@ import {
   BButton,
 } from 'bootstrap-vue'
 import { required, email } from '@validations'
-import { togglePasswordVisibility } from '@core/mixins/ui/forms'
-import store from '@/store'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import { togglePasswordVisibility } from '../../../@core/mixins/ui/forms'
+import store from '../../../store'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {
@@ -175,7 +175,7 @@ export default {
       password: '',
       userEmail: '',
       sideImg: require('@/assets/images/pages/login-v2.svg'),
-      // validation rulesimport store from '@/store/index'
+      // validation rulesimport store from '../../../store/index'
       required,
       email,
     }

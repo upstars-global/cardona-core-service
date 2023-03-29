@@ -40,7 +40,7 @@ import {
   VBTooltip,
 } from 'bootstrap-vue'
 import { useClipboard } from '@vueuse/core'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 import { useToast } from 'vue-toastification/composition'
 
 export default {

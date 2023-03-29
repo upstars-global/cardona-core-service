@@ -33,9 +33,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
-import store from '@/store'
-import i18n from '@/libs/i18n'
-import { RegionInfo } from '@model/regions'
+import store from '../store'
+import i18n from '../libs/i18n'
+import { RegionInfo } from '../@model/regions'
 
 export default defineComponent({
   name: 'CountriesSelect',

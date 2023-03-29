@@ -15,7 +15,7 @@
 
 <script>
 /* eslint-disable global-require */
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../../@core/components/b-card-code/BCardCode.vue'
 import { LMap, LTileLayer, LMarker, LCircle, LPolygon } from 'vue2-leaflet'
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'

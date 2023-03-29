@@ -105,7 +105,7 @@
 
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import VuexyLogo from '@core/layouts/components/AppLogo.vue'
+import VuexyLogo from '../../../@core/layouts/components/AppLogo.vue'
 import {
   BCard,
   BCardTitle,
@@ -119,7 +119,7 @@ import {
   BButton,
 } from 'bootstrap-vue'
 import { required } from '@validations'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {

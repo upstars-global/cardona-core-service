@@ -82,7 +82,7 @@
 
 <script>
 import { BCard, BCardBody, BImg, BCardText, BLink, BButton } from 'bootstrap-vue'
-import store from '@/store'
+import store from '../../../../store'
 import { ref } from 'vue'
 import { useEcommerce, useEcommerceUi } from '../useEcommerce'
 

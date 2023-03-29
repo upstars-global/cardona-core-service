@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { FieldInfo } from '@model/field'
+import { FieldInfo } from '../../../../@model/field'
 
 const props = defineProps<{
   value: string

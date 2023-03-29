@@ -64,7 +64,7 @@
 
 <script>
 import { BButtonToolbar, BButtonGroup, BButton, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import Ripple from 'vue-ripple-directive'
 import { codeNavigation } from './code'
 

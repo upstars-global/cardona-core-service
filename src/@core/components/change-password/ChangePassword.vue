@@ -31,8 +31,8 @@
 import { BForm, BModal } from 'bootstrap-vue'
 import ChangePasswordInput from './ChangePasswordInput.vue'
 import { ref, defineComponent, computed, WritableComputedRef } from 'vue'
-import { updateUserPassword } from '@queries/user'
-import useToastService from '@/helpers/toasts'
+import { updateUserPassword } from '../../../@queries/user'
+import useToastService from '../../../helpers/toasts'
 
 export default defineComponent({
   components: {

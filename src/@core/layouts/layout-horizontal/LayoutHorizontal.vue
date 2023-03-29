@@ -79,26 +79,26 @@
 </template>
 
 <script>
-import AppBreadcrumb from '@core/layouts/components/AppBreadcrumb.vue'
-import AppNavbarHorizontalLayout from '@core/layouts/components/app-navbar/AppNavbarHorizontalLayout.vue'
-import AppNavbarHorizontalLayoutBrand from '@core/layouts/components/app-navbar/AppNavbarHorizontalLayoutBrand.vue'
-import AppFooter from '@core/layouts/components/AppFooter.vue'
-import useAppConfig from '@core/app-config/useAppConfig'
+import AppBreadcrumb from '../../../@core/layouts/components/AppBreadcrumb.vue'
+import AppNavbarHorizontalLayout from '../../../@core/layouts/components/app-navbar/AppNavbarHorizontalLayout.vue'
+import AppNavbarHorizontalLayoutBrand from '../../../@core/layouts/components/app-navbar/AppNavbarHorizontalLayoutBrand.vue'
+import AppFooter from '../../../@core/layouts/components/AppFooter.vue'
+import useAppConfig from '../../../@core/app-config/useAppConfig'
 import { BNavbar } from 'bootstrap-vue'
-import { useScrollListener } from '@core/comp-functions/misc/event-listeners'
+import { useScrollListener } from '../../../@core/comp-functions/misc/event-listeners'
 
 import { onUnmounted } from 'vue'
 
 // Content Renderer
-import LayoutContentRendererDefault from '@core/layouts/components/layout-content-renderer/LayoutContentRendererDefault.vue'
-import LayoutContentRendererLeft from '@core/layouts/components/layout-content-renderer/LayoutContentRendererLeft.vue'
-import LayoutContentRendererLeftDetached from '@core/layouts/components/layout-content-renderer/LayoutContentRendererLeftDetached.vue'
+import LayoutContentRendererDefault from '../../../@core/layouts/components/layout-content-renderer/LayoutContentRendererDefault.vue'
+import LayoutContentRendererLeft from '../../../@core/layouts/components/layout-content-renderer/LayoutContentRendererLeft.vue'
+import LayoutContentRendererLeftDetached from '../../../@core/layouts/components/layout-content-renderer/LayoutContentRendererLeftDetached.vue'
 import useLayoutHorizontal from './useLayoutHorizontal'
 import HorizontalNavMenu from './components/horizontal-nav-menu/HorizontalNavMenu.vue'
 
 // Vertical Menu
-import VerticalNavMenu from '@core/layouts/layout-vertical/components/vertical-nav-menu/VerticalNavMenu.vue'
-import useVerticalLayout from '@core/layouts/layout-vertical/useVerticalLayout'
+import VerticalNavMenu from '../../../@core/layouts/layout-vertical/components/vertical-nav-menu/VerticalNavMenu.vue'
+import useVerticalLayout from '../../../@core/layouts/layout-vertical/useVerticalLayout'
 import mixinLayoutHorizontal from './mixinLayoutHorizontal'
 
 export default {

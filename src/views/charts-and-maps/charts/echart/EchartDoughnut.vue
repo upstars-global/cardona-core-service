@@ -12,7 +12,7 @@
 
 <script>
 import { BCard } from 'bootstrap-vue'
-import AppEchartDoughnut from '@core/components/charts/echart/AppEchartDoughnut.vue'
+import AppEchartDoughnut from '../../../../@core/components/charts/echart/AppEchartDoughnut.vue'
 
 export default {
   components: {

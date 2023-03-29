@@ -26,8 +26,8 @@
 <script>
 /* eslint-disable global-require */
 import { BLink, BButton, BImg } from 'bootstrap-vue'
-import AppLogo from '@core/layouts/components/AppLogo.vue'
-import store from '@/store'
+import AppLogo from '../../../@core/layouts/components/AppLogo.vue'
+import store from '../../../store'
 
 export default {
   name: 'NotFound',

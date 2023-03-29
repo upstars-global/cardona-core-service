@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { convertUpperCaseFirstSymbol } from '@/helpers'
+import { convertUpperCaseFirstSymbol } from '../../../../helpers'
 
 const props = defineProps<{
   status: string

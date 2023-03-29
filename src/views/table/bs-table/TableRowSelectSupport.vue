@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BTable, BButton, BFormGroup, BAvatar, BBadge, BCardBody } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import Ripple from 'vue-ripple-directive'

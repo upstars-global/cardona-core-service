@@ -96,7 +96,7 @@
 import { BSidebar, BForm, BFormGroup, BFormInput, BFormTextarea, BButton } from 'bootstrap-vue'
 import { ref } from 'vue'
 import Ripple from 'vue-ripple-directive'
-import countries from '@/@fake-db/data/other/countries'
+import countries from '../../../@fake-db/data/other/countries'
 import vSelect from 'vue-select'
 
 export default {

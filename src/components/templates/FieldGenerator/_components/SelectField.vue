@@ -2,9 +2,9 @@
 import { PropType, computed, watch } from 'vue'
 import { debounce } from 'lodash'
 import vSelect from 'vue-select'
-import i18n from '@/libs/i18n'
-import { FieldInfo } from '@model/field'
-import { OptionsItem } from '@/@model'
+import i18n from '../../../../libs/i18n'
+import { FieldInfo } from '../../../../@model/field'
+import { OptionsItem } from '../../../../@model'
 
 export default {
   name: 'SelectField',

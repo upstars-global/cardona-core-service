@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BCarousel, BCarouselSlide, BCardText } from 'bootstrap-vue'
 import { codePause } from './code'
 

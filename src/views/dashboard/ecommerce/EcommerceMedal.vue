@@ -17,7 +17,7 @@
 <script>
 import { BCard, BCardText, BLink, BButton, BImg } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
-import { kFormatter } from '@core/utils/filter'
+import { kFormatter } from '../../../@core/utils/filter'
 
 export default {
   components: {

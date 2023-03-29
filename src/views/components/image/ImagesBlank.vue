@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BImg, BCardText } from 'bootstrap-vue'
 import { codeBlank } from './code'
 

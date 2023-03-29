@@ -67,9 +67,9 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BForm, BFormGroup, BFormInput, BRow, BCol, BButton } from 'bootstrap-vue'
-import { heightTransition } from '@core/mixins/ui/transition'
+import { heightTransition } from '../../../@core/mixins/ui/transition'
 import Ripple from 'vue-ripple-directive'
 import { codeBasic } from './code'
 

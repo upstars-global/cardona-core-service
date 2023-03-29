@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { FieldInfo } from '@model/field'
-import { allPhoneCodesWithFlags } from '@/helpers/countries'
+import { FieldInfo } from '../../../../@model/field'
+import { allPhoneCodesWithFlags } from '../../../../helpers/countries'
 import Cleave from 'vue-cleave-component'
 
 type PhoneFieldProps = {

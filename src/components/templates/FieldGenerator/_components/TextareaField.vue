@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
-import { FieldInfo } from '@model/field'
+import { FieldInfo } from '../../../../@model/field'
 
 export default defineComponent({
   name: 'TextareaField',

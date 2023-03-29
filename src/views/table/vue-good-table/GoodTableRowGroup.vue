@@ -128,7 +128,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import {
   BAvatar,
   BBadge,
@@ -140,7 +140,7 @@ import {
   BDropdown,
 } from 'bootstrap-vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store'
+import store from '../../../store'
 import { codeRowGroup } from './code'
 
 export default {

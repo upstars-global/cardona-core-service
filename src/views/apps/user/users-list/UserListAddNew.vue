@@ -210,11 +210,11 @@ import {
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { ref } from 'vue'
 import { required, alphaNum, email } from '@validations'
-import formValidation from '@core/comp-functions/forms/form-validation'
+import formValidation from '../../../../@core/comp-functions/forms/form-validation'
 import Ripple from 'vue-ripple-directive'
 import vSelect from 'vue-select'
-import countries from '@/@fake-db/data/other/countries'
-import store from '@/store'
+import countries from '../../../../@fake-db/data/other/countries'
+import store from '../../../../store'
 
 export default {
   components: {

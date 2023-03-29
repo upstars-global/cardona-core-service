@@ -90,7 +90,7 @@ import {
 import VueApexCharts from 'vue-apexcharts'
 import Ripple from 'vue-ripple-directive'
 import { $themeColors } from '@themeConfig'
-import { kFormatter } from '@core/utils/filter'
+import { kFormatter } from '../../../@core/utils/filter'
 
 export default {
   components: {

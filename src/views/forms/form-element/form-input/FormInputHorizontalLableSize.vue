@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../../@core/components/b-card-code/BCardCode.vue'
 import { BFormGroup, BFormInput, BCardText } from 'bootstrap-vue'
 import { codeHorizontalSize } from './code'
 

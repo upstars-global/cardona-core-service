@@ -36,10 +36,10 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { dispatch } from '@/store'
+import { dispatch } from '../../../store'
 import AllGamesCard from './AllGamesCard.vue'
 import EnabledGamesCard from './EnabledGamesCard.vue'
-import { GamesSectionGamesItem } from '@model/games'
+import { GamesSectionGamesItem } from '../../../@model/games'
 import AddingGamesBySlugsModal from './AddingGamesBySlugsModal.vue'
 
 export default defineComponent({

@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BAvatarGroup, BAvatar, BCardText } from 'bootstrap-vue'
 import { codeGroup } from './code'
 

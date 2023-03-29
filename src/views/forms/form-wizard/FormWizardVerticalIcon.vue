@@ -152,7 +152,7 @@ import { FormWizard, TabContent } from 'vue-form-wizard'
 import vSelect from 'vue-select'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import { BRow, BCol, BFormGroup, BFormInput } from 'bootstrap-vue'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 import { codeIconInfo } from './code'
 
 export default {

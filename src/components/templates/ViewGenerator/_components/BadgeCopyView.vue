@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ViewInfo } from '@model/view'
-import BadgeCopy from '@/components/BadgeCopy.vue'
+import { ViewInfo } from '../../../../@model/view'
+import BadgeCopy from '../../../../components/BadgeCopy.vue'
 
 const props = defineProps<{
   item: ViewInfo

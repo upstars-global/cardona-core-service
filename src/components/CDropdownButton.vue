@@ -5,9 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { getters } from '@/store'
-import { CDropdownItems } from '@model/cDropdownButton'
-import { BVariant, BVariants } from '@model/bootstrap'
+import { getters } from '../store'
+import { CDropdownItems } from '../@model/cDropdownButton'
+import { BVariant, BVariants } from '../@model/bootstrap'
 
 const props = withDefaults(
   defineProps<{

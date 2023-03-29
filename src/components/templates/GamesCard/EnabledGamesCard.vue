@@ -44,13 +44,13 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import BaseList from '@/components/templates/BaseList/index.vue'
-import { BaseListConfig } from '@/components/templates/BaseList/model'
+import BaseList from '../../../components/templates/BaseList/index.vue'
+import { BaseListConfig } from '../../../components/templates/BaseList/model'
 import { useEnabledGames } from './useGameCard'
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
-import { GameActionType, GamesSectionGamesItem, IGamesSectionGamesFilters } from '@model/games'
-import { dispatch, getters } from '@/store'
-import { useModal } from '@/helpers/bvModal'
+import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
+import { GameActionType, GamesSectionGamesItem, IGamesSectionGamesFilters } from '../../../@model/games'
+import { dispatch, getters } from '../../../store'
+import { useModal } from '../../../helpers/bvModal'
 
 export default defineComponent({
   name: 'EnabledGamesCard',

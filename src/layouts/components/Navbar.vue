@@ -73,8 +73,8 @@ import {
   BDropdownDivider,
   BAvatar,
 } from 'bootstrap-vue'
-import DarkToggler from '@core/layouts/components/app-navbar/components/DarkToggler.vue'
-import { getters, dispatch } from '@/store'
+import DarkToggler from '../../@core/layouts/components/app-navbar/components/DarkToggler.vue'
+import { getters, dispatch } from '../../store'
 
 export default {
   name: 'AppNavbar',

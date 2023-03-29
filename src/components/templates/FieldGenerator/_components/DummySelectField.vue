@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
 import vSelect from 'vue-select'
-import i18n from '@/libs/i18n'
+import i18n from '../../../../libs/i18n'
 
 export default defineComponent({
   name: 'DummySelectField',

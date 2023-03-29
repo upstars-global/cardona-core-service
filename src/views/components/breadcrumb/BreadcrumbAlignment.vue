@@ -28,7 +28,7 @@
 
 <script>
 import { BBreadcrumb, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { codeAlignment } from './code'
 
 export default {

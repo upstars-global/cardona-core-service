@@ -123,7 +123,7 @@ import {
 import vSelect from 'vue-select'
 import { quillEditor } from 'vue-quill-editor'
 import Ripple from 'vue-ripple-directive'
-import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
+import { useInputImageRenderer } from '../../../@core/comp-functions/forms/form-utils'
 import { ref } from 'vue'
 
 export default {

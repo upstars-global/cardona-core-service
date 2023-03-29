@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BImgLazy, BCardText } from 'bootstrap-vue'
 import { codeLazy } from './code'
 

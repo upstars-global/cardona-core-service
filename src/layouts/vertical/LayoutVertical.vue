@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import LayoutVertical from '@core/layouts/layout-vertical/LayoutVertical.vue'
-import AppCustomizer from '@core/layouts/components/app-customizer/AppCustomizer.vue'
+import LayoutVertical from '../../@core/layouts/layout-vertical/LayoutVertical.vue'
+import AppCustomizer from '../../@core/layouts/components/app-customizer/AppCustomizer.vue'
 import { $themeConfig } from '@themeConfig'
 
 export default {

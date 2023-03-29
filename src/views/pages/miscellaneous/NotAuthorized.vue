@@ -21,9 +21,9 @@
 <script>
 /* eslint-disable global-require */
 import { BLink, BImg, BButton } from 'bootstrap-vue'
-import VuexyLogo from '@core/layouts/components/AppLogo.vue'
-import store from '@/store'
-import { getHomeRouteForLoggedInUser } from '@/auth/utils'
+import VuexyLogo from '../../../@core/layouts/components/AppLogo.vue'
+import store from '../../../store'
+import { getHomeRouteForLoggedInUser } from '../../../auth/utils'
 
 export default {
   components: {

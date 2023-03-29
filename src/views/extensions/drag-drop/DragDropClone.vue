@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BBadge, BRow, BCol, BCardText } from 'bootstrap-vue'
 import draggable from 'vuedraggable'
 import Prism from 'vue-prism-component'

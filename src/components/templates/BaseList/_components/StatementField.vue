@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
+import { useUtils as useI18nUtils } from '../../../../@core/libs/i18n'
 
 export default defineComponent({
   name: 'StatementField',

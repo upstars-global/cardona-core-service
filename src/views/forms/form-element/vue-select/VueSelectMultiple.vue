@@ -120,7 +120,7 @@
 
 <script>
 import { BRow, BCol, BFormRadio, BCard, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import vSelect from 'vue-select'
 import {
   codeVueMultiBasic,

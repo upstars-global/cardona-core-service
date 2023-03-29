@@ -26,7 +26,7 @@
 <script>
 /* eslint-disable global-require */
 import { BImg } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../../@core/components/b-card-code/BCardCode.vue'
 import { LMap, LTileLayer, LMarker, LIcon } from 'vue2-leaflet'
 import { latLng, icon, Icon } from 'leaflet'
 import { codeCustomIcon } from './code'

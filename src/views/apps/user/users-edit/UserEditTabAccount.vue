@@ -141,9 +141,9 @@ import {
   BCardTitle,
   BFormCheckbox,
 } from 'bootstrap-vue'
-import { avatarText } from '@core/utils/filter'
+import { avatarText } from '../../../../@core/utils/filter'
 import vSelect from 'vue-select'
-import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
+import { useInputImageRenderer } from '../../../../@core/comp-functions/forms/form-utils'
 import { ref } from 'vue'
 import useUsersList from '../users-list/useUsersList'
 

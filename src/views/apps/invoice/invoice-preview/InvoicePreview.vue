@@ -252,8 +252,8 @@
 
 <script>
 import { ref, onUnmounted } from 'vue'
-import store from '@/store'
-import router from '@/router'
+import store from '../../../../store'
+import router from '../../../../router'
 import {
   BRow,
   BCol,
@@ -266,7 +266,7 @@ import {
   BLink,
   VBToggle,
 } from 'bootstrap-vue'
-import Logo from '@core/layouts/components/AppLogo.vue'
+import Logo from '../../../../@core/layouts/components/AppLogo.vue'
 import Ripple from 'vue-ripple-directive'
 import invoiceStoreModule from '../invoiceStoreModule'
 import InvoiceSidebarSendInvoice from '../InvoiceSidebarSendInvoice.vue'

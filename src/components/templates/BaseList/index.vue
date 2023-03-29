@@ -441,11 +441,11 @@
 
 <script lang="ts">
 import { computed, onMounted, PropType, ref, watch } from 'vue'
-import store, { dispatch, getters } from '@/store'
-import { useFilters } from '@/components/FiltersBlock/useFilters'
-import { useBvModal } from '@/helpers/bvModal'
-import { useRouter } from '@core/utils/utils'
-import usePagination from '@/use/pagination'
+import store, { dispatch, getters } from '../../../store'
+import { useFilters } from '../../../components/FiltersBlock/useFilters'
+import { useBvModal } from '../../../helpers/bvModal'
+import { useRouter } from '../../../@core/utils/utils'
+import usePagination from '../../../use/pagination'
 import {
   BaseListConfig,
   DownloadFormat,
@@ -455,14 +455,14 @@ import {
   UseListType,
 } from './model'
 import { Location } from 'vue-router'
-import { TableField, ListFieldType } from '@core/components/table-fields/model'
-import { FieldType } from '@model/field'
-import FiltersBlock from '@/components/FiltersBlock'
-import TableFields from '@core/components/table-fields/TableFields.vue'
-import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol } from '@/helpers'
-import { parseDateRange } from '@/helpers/filters'
+import { TableField, ListFieldType } from '../../../@core/components/table-fields/model'
+import { FieldType } from '../../../@model/field'
+import FiltersBlock from '../../../components/FiltersBlock'
+import TableFields from '../../../@core/components/table-fields/TableFields.vue'
+import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol } from '../../../helpers'
+import { parseDateRange } from '../../../helpers/filters'
 import SearchInput from './_components/SearchInput.vue'
-import CTable from '@/components/CTable'
+import CTable from '../../../components/CTable'
 import StatusField from './_components/StatusField.vue'
 import PillStatusField from './_components/PillStatusField.vue'
 import NameWithIdField from './_components/NameWithIdField.vue'
@@ -476,11 +476,11 @@ import ButtonField from './_components/ButtonField.vue'
 import CommentField from './_components/CommentField.vue'
 import ImageField from './_components/ImageField.vue'
 import DatePeriodField from './_components/DatePeriodField.vue'
-import { GameActionType, GamesListItem, GamesSectionGamesItem } from '@model/games'
-import SideBar from '@/components/templates/BaseList/_components/SideBar.vue'
-import CModal from '@/components/CModal.vue'
-import SumAndCurrency from '@/components/SumAndCurrency.vue'
-import { IListSort } from '@/@model'
+import { GameActionType, GamesListItem, GamesSectionGamesItem } from '../../../@model/games'
+import SideBar from '../../../components/templates/BaseList/_components/SideBar.vue'
+import CModal from '../../../components/CModal.vue'
+import SumAndCurrency from '../../../components/SumAndCurrency.vue'
+import { IListSort } from '../../../@model'
 
 export default {
   name: 'BaseList',

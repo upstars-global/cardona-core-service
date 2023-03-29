@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from 'vue'
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
-import { ActionType, ActionVariant } from '@model/action'
+import { useUtils as useI18nUtils } from '../../../../@core/libs/i18n'
+import { ActionType, ActionVariant } from '../../../../@model/action'
 import StatementField from './StatementField.vue'
 
 export default defineComponent({

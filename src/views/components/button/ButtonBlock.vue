@@ -35,7 +35,7 @@
 
 <script>
 import { BButton, BCol, BRow, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import Ripple from 'vue-ripple-directive'
 import { codeBlockButton } from './code'
 

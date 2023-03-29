@@ -92,9 +92,9 @@
 
 <script>
 import { BCard, BCardBody, BLink, BImg, BButton, BBadge, BFormSpinbutton } from 'bootstrap-vue'
-import store from '@/store'
+import store from '../../../../store'
 import { ref } from 'vue'
-import { formatDate } from '@core/utils/filter'
+import { formatDate } from '../../../../@core/utils/filter'
 import { useEcommerce, useEcommerceUi } from '../useEcommerce'
 
 export default {

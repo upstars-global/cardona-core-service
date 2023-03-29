@@ -38,8 +38,8 @@
 
 <script>
 import { computed } from 'vue'
-import { dispatch, getters } from '@/store'
-import i18n from '@/libs/i18n'
+import { dispatch, getters } from '../../../../../../store'
+import i18n from '../../../../../../libs/i18n'
 
 export default {
   name: 'ProductsSelect',

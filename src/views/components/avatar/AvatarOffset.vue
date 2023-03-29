@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BAvatar, BCardText } from 'bootstrap-vue'
 import { codeBadgeOffset } from './code'
 

@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BRow, BCol, BFormGroup, BFormInput, BFormCheckbox, BForm, BButton } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
 import { codeMultipleColumn } from './code'

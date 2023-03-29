@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormSpinbutton, BRow, BCol, BCardText } from 'bootstrap-vue'
 import { codeSlots } from './code'
 

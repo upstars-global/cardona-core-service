@@ -79,9 +79,9 @@
 
 <script>
 import { BButton, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import Ripple from 'vue-ripple-directive'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 import { codeVariant } from './code'
 
 export default {

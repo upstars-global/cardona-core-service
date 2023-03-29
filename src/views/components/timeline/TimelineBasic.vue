@@ -43,9 +43,9 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
-import AppTimeline from '@core/components/app-timeline/AppTimeline.vue'
-import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem.vue'
+import BCardCode from '../../../@core/components/b-card-code'
+import AppTimeline from '../../../@core/components/app-timeline/AppTimeline.vue'
+import AppTimelineItem from '../../../@core/components/app-timeline/AppTimelineItem.vue'
 import { codeBasic } from './code'
 
 export default {

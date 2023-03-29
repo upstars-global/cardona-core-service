@@ -19,7 +19,7 @@
 
 <script>
 import { BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import VueSlider from 'vue-slider-component'
 import { codeRTL } from './code'
 

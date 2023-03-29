@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { Swiper } from 'vue-awesome-swiper'
 import { BButton } from 'bootstrap-vue'
 import 'swiper/css/swiper.css'

@@ -219,7 +219,7 @@ import {
 } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
 import { watch } from 'vue'
-import { useResponsiveAppLeftSidebarVisibility } from '@core/comp-functions/ui/app'
+import { useResponsiveAppLeftSidebarVisibility } from '../../../../@core/comp-functions/ui/app'
 import ShopLeftFilterSidebar from './ECommerceShopLeftFilterSidebar.vue'
 import {
   useShopFiltersSortingAndPagination,

@@ -50,7 +50,7 @@
 
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import VuexyLogo from '@core/layouts/components/AppLogo.vue'
+import VuexyLogo from '../../../@core/layouts/components/AppLogo.vue'
 import {
   BCard,
   BLink,
