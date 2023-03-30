@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 // Modules
-import appConfigCore from './app-config-core/index'
+import appConfigCore from './modules/appConfigCore'
 import verticalMenuCore from './modules/verticalMenuCore'
 import breakpointCore from './modules/breakpointCore'
 import localeCore from './modules/localeCore'
