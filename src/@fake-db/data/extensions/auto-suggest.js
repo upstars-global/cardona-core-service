@@ -1,5 +1,5 @@
 import mock from '../../../@fake-db/mock'
-/* eslint-disable global-require */
+/* eslint-disable */
 const data = {
   dataSuggest: [
     {
@@ -109,6 +109,6 @@ const data = {
     },
   ],
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 
 mock.onGet('/autosuggest/data').reply(() => [200, data.dataSuggest])

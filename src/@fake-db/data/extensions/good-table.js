@@ -1,5 +1,5 @@
 import mock from '../../../@fake-db/mock'
-/* eslint-disable global-require */
+/* eslint-disable */
 const data = {
   tableBasic: [
     {
@@ -369,7 +369,7 @@ const data = {
       status: 'Professional',
     },
   ],
-  /* eslint-disable global-require */
+  /* eslint-disable */
 }
 
 mock.onGet('/good-table/basic').reply(() => [200, data.tableBasic])

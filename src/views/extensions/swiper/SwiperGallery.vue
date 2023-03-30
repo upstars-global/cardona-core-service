@@ -46,7 +46,7 @@ export default {
     return {
       codeGallery,
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-11.jpg') },
         { img: require('../../../assets/images/banner/banner-12.jpg') },
@@ -54,7 +54,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-15.jpg') },
         { img: require('../../../assets/images/banner/banner-16.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         loop: true,

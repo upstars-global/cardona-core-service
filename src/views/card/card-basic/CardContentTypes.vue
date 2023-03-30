@@ -38,7 +38,11 @@
       <!-- image card -->
       <b-col md="6" lg="4">
         <h6 class="my-2 text-muted">Images</h6>
-        <b-card :img-src="require('../../../assets/images/slider/01.jpg')" img-alt="Card image" img-top>
+        <b-card
+          :img-src="require('../../../assets/images/slider/01.jpg')"
+          img-alt="Card image"
+          img-top
+        >
           <b-card-text>
             Some quick example text to build on the card title and make up the bulk of the card's
             content.

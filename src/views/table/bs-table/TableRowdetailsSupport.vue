@@ -80,7 +80,7 @@ export default {
         'experience',
         { key: 'status', label: 'Status' },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
       items: [
         {
           id: 1,
@@ -213,7 +213,7 @@ export default {
           status: 2,
         },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
       status: [
         {
           1: 'Current',

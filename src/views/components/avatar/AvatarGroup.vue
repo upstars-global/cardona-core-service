@@ -9,19 +9,28 @@
     </b-card-text>
 
     <b-avatar-group size="32px">
-      <b-avatar class="pull-up" :src="require('../../../assets/images/portrait/small/avatar-s-5.jpg')" />
+      <b-avatar
+        class="pull-up"
+        :src="require('../../../assets/images/portrait/small/avatar-s-5.jpg')"
+      />
       <b-avatar
         class="pull-up"
         variant="primary"
         :src="require('../../../assets/images/portrait/small/avatar-s-7.jpg')"
       />
-      <b-avatar class="pull-up" :src="require('../../../assets/images/portrait/small/avatar-s-10.jpg')" />
+      <b-avatar
+        class="pull-up"
+        :src="require('../../../assets/images/portrait/small/avatar-s-10.jpg')"
+      />
       <b-avatar
         class="pull-up"
         variant="danger"
         :src="require('../../../assets/images/portrait/small/avatar-s-8.jpg')"
       />
-      <b-avatar class="pull-up" :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')" />
+      <b-avatar
+        class="pull-up"
+        :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')"
+      />
     </b-avatar-group>
 
     <template #code>

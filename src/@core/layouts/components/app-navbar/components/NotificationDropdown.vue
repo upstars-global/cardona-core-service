@@ -100,7 +100,7 @@ export default {
     BFormCheckbox,
   },
   setup() {
-    /* eslint-disable global-require */
+    /* eslint-disable */
     const notifications = [
       {
         title: 'Congratulation Sam 🎉',
@@ -121,7 +121,7 @@ export default {
         type: 'light-danger',
       },
     ]
-    /* eslint-disable global-require */
+    /* eslint-disable */
 
     const systemNotifications = [
       {

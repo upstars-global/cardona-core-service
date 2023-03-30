@@ -53,7 +53,7 @@ export default {
         },
       },
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-20.jpg') },
         { img: require('../../../assets/images/banner/banner-7.jpg') },
@@ -62,7 +62,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-10.jpg') },
         { img: require('../../../assets/images/banner/banner-11.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
     }
   },
 }

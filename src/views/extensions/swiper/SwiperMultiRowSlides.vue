@@ -36,7 +36,7 @@ export default {
     return {
       codeMultiRowSlides,
       swiperData: [
-        /* eslint-disable global-require */
+        /* eslint-disable */
         { img: require('../../../assets/images/banner/banner-26.jpg') },
         { img: require('../../../assets/images/banner/banner-39.jpg') },
         { img: require('../../../assets/images/banner/banner-28.jpg') },
@@ -47,7 +47,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-33.jpg') },
         { img: require('../../../assets/images/banner/banner-34.jpg') },
         { img: require('../../../assets/images/banner/banner-35.jpg') },
-        /* eslint-disable global-require */
+        /* eslint-disable */
       ],
       swiperOption: {
         slidesPerView: 3,

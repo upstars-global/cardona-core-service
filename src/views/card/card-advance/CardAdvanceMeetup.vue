@@ -65,7 +65,7 @@ import {
   VBTooltip,
   BMediaBody,
 } from 'bootstrap-vue'
-/* eslint-disable global-require */
+/* eslint-disable */
 export default {
   components: {
     BCard,

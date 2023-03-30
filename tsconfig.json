@@ -23,6 +23,9 @@
       "@themeConfig": [
         "./themeConfig"
       ],
+      "@core/*": [
+        "src/@core/*"
+      ]
     },
     "lib": [
       "esnext",
