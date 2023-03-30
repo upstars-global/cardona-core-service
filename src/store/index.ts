@@ -12,6 +12,7 @@ import filtersCore from './modules/filtersCore'
 import authCore from './modules/authCore'
 import compostelaCore from './modules/compostelaCore'
 import user from './modules/user'
+import users from './modules/users'
 import loader from './modules/loader'
 import tags from './modules/tags'
 
@@ -32,6 +33,7 @@ const store = new Vuex.Store({
     authCore,
     compostelaCore,
     user,
+    users,
     loader,
     tags,
 
