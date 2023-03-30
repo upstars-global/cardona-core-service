@@ -4,6 +4,7 @@ import { IAuthTokens, isLoggedIn, setAuthTokens, clearAuthTokens } from 'axios-j
 import { ILoginData } from '../../@model/auth'
 
 export default {
+  namespaced: true,
   state: {
     isAuthorized: isLoggedIn(),
   },

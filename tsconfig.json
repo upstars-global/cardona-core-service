@@ -23,27 +23,6 @@
       "@themeConfig": [
         "./themeConfig"
       ],
-      "@axios": [
-        "src/libs/axios"
-      ],
-      "@model/*": [
-        "src/@model/*"
-      ],
-      "@queries/*": [
-        "src/@queries/*"
-      ],
-      "@core/*": [
-        "src/@core/*"
-      ],
-      "@fake-db/*": [
-        "src/@fake-db/*"
-      ],
-      "@validations": [
-        "src/@core/utils/validations/validations"
-      ],
-      "@/*": [
-        "src/*"
-      ]
     },
     "lib": [
       "esnext",

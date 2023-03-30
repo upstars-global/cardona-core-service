@@ -69,8 +69,8 @@ class ApiService {
 
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', 'TOKEN_INVALID']
 
-      if (getters.isAuthorizedUser && errorsType.includes(error.type)) {
-        dispatch('clearAuth')
+      if (getters['auth/isAuthorizedUser'] && errorsType.includes(error.type)) {
+        dispatch('auth/clearAuth')
 
         if (!isLoginPage) router.push({ name: 'Login' })
       }
