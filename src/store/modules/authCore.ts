@@ -53,7 +53,6 @@ export default {
       clearAuthTokens()
 
       commit('SET_AUTH', false)
-      commit('SET_USER_INFO', {})
     },
   },
 }
