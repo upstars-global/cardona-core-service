@@ -2,18 +2,50 @@ import router from '../../router'
 import { setStorage } from '../../helpers/storage'
 import { storageKeys } from '../../configs/storage'
 import { ProjectInfo, ProjectInfoInput } from '../../@model/project'
+import { UserInfo } from '../../@model/user'
 import { OptionsItem } from '../../@model'
-import { AllPermission, PermissionGroup, PermissionLevel } from '../../@model/permission'
+import {
+  Permission,
+  AllPermission,
+  PermissionGroup,
+  PermissionLevel,
+} from '../../@model/permission'
+import ApiService from '../../services/api'
 
+export const fetchCurrentUser = async () => {
+  const { data } = await ApiService.request({
+    type: 'App.V2.Users.Current.Read',
+  })
+
+  const [firstName, lastName] = (data.fullName || '').split(' ')
+
+  return new UserInfo({
+    id: data.id,
+    firstName: firstName,
+    lastName: lastName || '',
+    userName: data.userName,
+    email: data.email,
+    description: data.description || '',
+    roles: data.roles,
+    status: UserInfo.toStatus(data.isActive),
+    groups: data.groups,
+    projects: data.projects.map((project: any) => new ProjectInfo(project)),
+    products: data.products.map((project: any) => project as OptionsItem),
+    permissions: data.permissions.map((permission: any) => new Permission(permission)),
+  })
+}
 export default {
   state: {
     accessLevels: ['noaccess', 'view', 'create', 'update', 'delete'],
+    userInfo: new UserInfo(),
     permissions: new AllPermission(),
     selectedProduct: null,
     selectedProject: null,
   },
 
   getters: {
+    userInfo: ({ userInfo }) => userInfo,
+
     userProjects: ({ userInfo }) => userInfo.projects,
 
     selectedProject: ({ selectedProject }, { userProjects }): ProjectInfoInput => {
@@ -34,6 +66,14 @@ export default {
       ({ userInfo }) =>
       (projectAlias: string): ProjectInfo =>
         userInfo.projects.find((project) => project.alias === projectAlias),
+
+    canViewVCoinInProject:
+      ({ userInfo }) =>
+      (projectAlias: string) => {
+        const project = userInfo.projects.find((item) => item.alias === projectAlias)
+
+        return project?.integrations?.vCoins
+      },
 
     abilityCan:
       ({ accessLevels, userInfo }) =>
@@ -65,6 +105,11 @@ export default {
   },
 
   mutations: {
+    SET_USER_INFO(state, userInfo: UserInfo) {
+      state.userInfo = userInfo
+      state.permissions.setAccessAllPermission(userInfo.permissions)
+      state.selectedProduct = userInfo.products[0]
+    },
     SET_SELECTED_PROJECT(state, project: ProjectInfoInput) {
       state.selectedProject = project
     },
@@ -74,6 +119,12 @@ export default {
   },
 
   actions: {
+    async fetchCurrentUser({ commit }) {
+      const currentUser: UserInfo = await fetchCurrentUser()
+
+      commit('SET_USER_INFO', currentUser)
+    },
+
     setSelectedProduct({ commit }, product: OptionsItem) {
       commit('SET_SELECTED_PRODUCT', product)
     },

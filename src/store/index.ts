@@ -11,7 +11,7 @@ import productCore from './modules/productCore'
 import filtersCore from './modules/filtersCore'
 import authCore from './modules/authCore'
 import compostelaCore from './modules/compostelaCore'
-import permissionsCore from './modules/permissionsCore'
+import user from './modules/user'
 
 import ecommerceStoreModuleCore from '../views/apps/e-commerce/eCommerceStoreModule'
 import app from './app'
@@ -29,7 +29,7 @@ const store = new Vuex.Store({
     filtersCore,
     authCore,
     compostelaCore,
-    permissionsCore,
+    user,
 
     app,
     'app-ecommerce': ecommerceStoreModuleCore,
