@@ -1,8 +1,8 @@
-@import '~vue-tree-halower/dist/halower-tree.min.css';
+@import '../../../../vue-tree-halower/dist/halower-tree.min.css';
 
-@import '~/src/@core/scss/base/bootstrap-extended/include';
+@import '../../../../@core/scss/base/bootstrap-extended/include';
 // Overrides user variable
-@import '~/src/@core/scss/base/components/include';
+@import '../../../../@core/scss/base/components/include';
 
 .tree-container {
   .tag-box-container {
