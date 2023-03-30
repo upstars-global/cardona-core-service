@@ -26,6 +26,7 @@ export enum FilterType {
   TransactionsType = 'transactionsType',
   TransactionsStatuses = 'transactionsStatuses',
   GiftId = 'giftId',
+  GiftName = 'giftName',
   InitialSumRange = 'initialSumRange',
   WinBackSumRange = 'winBackSumRange',
   RealSumRange = 'realSumRange',
@@ -39,4 +40,5 @@ export enum FilterType {
   DateRangeActivated = 'dateRangeActivated',
   DateRangeUsed = 'dateRangeUsed',
   BalancesReasons = 'balancesReasons',
+  TagNames = 'tagNames',
 }

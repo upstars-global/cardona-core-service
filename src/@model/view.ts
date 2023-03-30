@@ -40,10 +40,23 @@ export type SumAndCurrencyViewValue = {
 }
 
 export type StatusWithDateValue = {
-  status: string
+  status: string | IStatusWithVariant
   updatedAt: string | Date
 }
 
+export interface IStatusWithVariant {
+  status: string
+  variant: string
+}
+
+export class StatusWithVariant implements IStatusWithVariant {
+  public status: string
+  public variant: string
+  constructor(status: string, variant: string) {
+    this.status = status
+    this.variant = variant
+  }
+}
 interface IViewInfo {
   readonly type?: ViewType
   readonly value?: LinkViewValue | SumAndCurrencyViewValue | StatusWithDateValue | any
