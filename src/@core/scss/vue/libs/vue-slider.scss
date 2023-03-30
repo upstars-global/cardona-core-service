@@ -9,7 +9,7 @@ $themeColor: $primary;
 $bgColor: rgba($primary, 0.12);
 $dotShadow: none;
 /* import theme style */
-@import '../../../../vue-slider-component/lib/theme/default.scss';
+@import 'vue-slider-component/lib/theme/default.scss';
 
 .vue-slider-dot-handle {
   border: 2px solid $primary;
