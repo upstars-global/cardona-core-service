@@ -3,7 +3,7 @@
     <v-select
       v-if="isCollapsedMenu"
       v-model="selectedProduct"
-      :dir="$store.getters['appConfig/dirOption']"
+      :dir="$store.getters['appConfigCore/dirOption']"
       :options="products"
       label="name"
       :clearable="false"

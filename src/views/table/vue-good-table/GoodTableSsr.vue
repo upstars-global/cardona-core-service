@@ -235,7 +235,7 @@ export default {
       return (status) => statusColor[status]
     },
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = true
         return this.dir

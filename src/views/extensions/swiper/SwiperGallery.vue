@@ -5,7 +5,7 @@
       ref="swiperTop"
       class="swiper-gallery gallery-top"
       :options="swiperOptions"
-      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+      :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     >
       <swiper-slide v-for="(data, index) in swiperData" :key="index">
         <b-img :src="data.img" fluid />

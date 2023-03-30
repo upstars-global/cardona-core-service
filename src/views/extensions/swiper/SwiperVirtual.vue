@@ -4,7 +4,7 @@
       ref="mySwiper15"
       class="swiper-virtual"
       :options="swiperOptions"
-      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+      :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     >
       <div slot="pagination" class="swiper-pagination" />
       <div slot="button-next" class="swiper-button-next" />

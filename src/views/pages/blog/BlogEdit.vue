@@ -27,7 +27,7 @@
             <v-select
               id="blog-edit-category"
               v-model="blogEdit.blogCategories"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               multiple
               :options="categoryOption"
             />
@@ -43,7 +43,7 @@
             <v-select
               id="blog-edit-category"
               v-model="blogEdit.status"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               :options="statusOption"
             />
           </b-form-group>

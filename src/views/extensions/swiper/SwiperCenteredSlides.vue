@@ -3,7 +3,7 @@
     <swiper
       class="swiper-centered-slides p-1"
       :options="swiperOptions"
-      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+      :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     >
       <!-- slides -->
       <swiper-slide v-for="data in swiperData" :key="data.text" class="rounded swiper-shadow">

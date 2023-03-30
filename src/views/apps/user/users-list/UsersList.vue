@@ -31,7 +31,7 @@
             <label>Show</label>
             <v-select
               v-model="perPage"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               :options="perPageOptions"
               :clearable="false"
               class="per-page-selector d-inline-block mx-50"
@@ -115,7 +115,7 @@
 
         <!-- Column: Actions -->
         <template #cell(actions)="data">
-          <b-dropdown variant="link" no-caret :right="$store.state.appConfig.isRTL">
+          <b-dropdown variant="link" no-caret :right="$store.state.appConfigCore.isRTL">
             <template #button-content>
               <feather-icon icon="MoreVerticalIcon" size="16" class="align-middle text-body" />
             </template>

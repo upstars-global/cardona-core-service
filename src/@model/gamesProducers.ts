@@ -68,7 +68,7 @@ export class GamesProducersForm {
       type: FieldType.CheckGroup,
       key: 'currencies',
       value: data?.currencies || [],
-      options: getters['appConfig/allCurrencies'].map(
+      options: getters['appConfigCore/allCurrencies'].map(
         (item) => <OptionsItem>{ id: item, name: item }
       ),
       label: String(i18n.t('common.producers.currencies.label')),

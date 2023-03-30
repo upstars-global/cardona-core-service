@@ -146,7 +146,7 @@ export default {
             ...payload.data.form,
             id: payload.data.form?.id,
             project: rootGetters.selectedProject.alias,
-            productId: rootGetters['product/productId'],
+            productId: rootGetters['productCore/productId'],
           },
         },
         { withSuccessToast: true, formRef: payload.data.formRef }
@@ -165,7 +165,7 @@ export default {
           data: {
             ...payload.data.form,
             id: payload.data.form?.id,
-            productId: rootGetters['product/productId'],
+            productId: rootGetters['productCore/productId'],
             project: rootGetters.selectedProject.alias,
           },
         },

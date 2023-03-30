@@ -104,7 +104,7 @@ export default {
   <v-select
     v-model="valueModel"
     :placeholder="placeholder"
-    :dir="$store.getters['appConfig/dirOption']"
+    :dir="$store.getters['appConfigCore/dirOption']"
     label="name"
     :multiple="isMultiple"
     :options="options"

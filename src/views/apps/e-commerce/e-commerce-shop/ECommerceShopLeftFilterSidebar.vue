@@ -26,7 +26,7 @@
             <h6 class="filter-title">Price Range</h6>
             <vue-slider
               v-model="filters.priceRange"
-              :direction="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :direction="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             />
           </div>
 

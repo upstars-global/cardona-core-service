@@ -73,7 +73,7 @@
             <b-form-group label="Assignee" label-for="assignee">
               <v-select
                 v-model="taskLocal.assignee"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 :options="assigneeOptions"
                 label="fullName"
                 class="assignee-selector"
@@ -111,7 +111,7 @@
             <b-form-group label="Tag" label-for="tag">
               <v-select
                 v-model="taskLocal.tags"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 multiple
                 :close-on-select="false"
                 :options="tagOptions"

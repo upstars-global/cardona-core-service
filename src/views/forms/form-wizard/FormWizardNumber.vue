@@ -130,7 +130,7 @@
                   <v-select
                     id="country"
                     v-model="selectedContry"
-                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                     :options="countryName"
                     :selectable="(option) => !option.value.includes('select_value')"
                     label="text"
@@ -151,7 +151,7 @@
                   <v-select
                     id="language"
                     v-model="selectedLanguage"
-                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                     :options="languageName"
                     :selectable="(option) => !option.value.includes('nothing_selected')"
                     label="text"

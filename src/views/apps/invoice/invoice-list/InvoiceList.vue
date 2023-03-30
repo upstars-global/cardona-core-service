@@ -13,7 +13,7 @@
           <label>Entries</label>
           <v-select
             v-model="perPage"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             :options="perPageOptions"
             :clearable="false"
             class="per-page-selector d-inline-block ml-50 mr-1"
@@ -31,7 +31,7 @@
             />
             <v-select
               v-model="statusFilter"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               :options="statusOptions"
               class="invoice-filter-select"
               placeholder="Select Status"
@@ -155,7 +155,7 @@
             variant="link"
             toggle-class="p-0"
             no-caret
-            :right="$store.state.appConfig.isRTL"
+            :right="$store.state.appConfigCore.isRTL"
           >
             <template #button-content>
               <feather-icon icon="MoreVerticalIcon" size="16" class="align-middle text-body" />

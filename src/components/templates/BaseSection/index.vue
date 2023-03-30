@@ -94,10 +94,10 @@ export default defineComponent({
     const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Update`
 
     // Action names
-    const createActionName: string = 'baseStore/createEntity'
-    const readActionName: string = 'baseStore/readEntity'
-    const updateActionName: string = 'baseStore/updateEntity'
-    const deleteActionName: string = 'baseStore/deleteEntity'
+    const createActionName: string = 'baseStoreCore/createEntity'
+    const readActionName: string = 'baseStoreCore/readEntity'
+    const updateActionName: string = 'baseStoreCore/updateEntity'
+    const deleteActionName: string = 'baseStoreCore/deleteEntity'
 
     // Permissions
     const permissionKey: string = `backoffice-${convertCamelCase(entityName, '-')}`

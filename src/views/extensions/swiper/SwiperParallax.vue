@@ -3,7 +3,7 @@
     <swiper
       class="swiper-parallax"
       :options="swiperOptions"
-      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+      :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     >
       <div slot="parallax-bg" class="parallax-bg" data-swiper-parallax="-23%">
         <b-img

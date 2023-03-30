@@ -6,7 +6,7 @@
       <div class="email-header-left d-flex align-items-center">
         <span class="go-back mr-1">
           <feather-icon
-            :icon="$store.state.appConfig.isRTL ? 'ChevronRightIcon' : 'ChevronLeftIcon'"
+            :icon="$store.state.appConfigCore.isRTL ? 'ChevronRightIcon' : 'ChevronLeftIcon'"
             size="20"
             class="align-bottom"
             @click="$emit('close-email-view')"
@@ -95,7 +95,7 @@
 
         <!-- Show Previous Mail -->
         <feather-icon
-          :icon="$store.state.appConfig.isRTL ? 'ChevronRightIcon' : 'ChevronLeftIcon'"
+          :icon="$store.state.appConfigCore.isRTL ? 'ChevronRightIcon' : 'ChevronLeftIcon'"
           size="17"
           class="ml-75 cursor-pointer"
           :class="{ 'text-muted pointer-events-none': !opendedEmailMeta.hasPreviousEmail }"
@@ -104,7 +104,7 @@
 
         <!-- Show Next Mail -->
         <feather-icon
-          :icon="$store.state.appConfig.isRTL ? 'ChevronLeftIcon' : 'ChevronRightIcon'"
+          :icon="$store.state.appConfigCore.isRTL ? 'ChevronLeftIcon' : 'ChevronRightIcon'"
           size="17"
           class="ml-75 cursor-pointer"
           :class="{ 'text-muted pointer-events-none': !opendedEmailMeta.hasNextEmail }"

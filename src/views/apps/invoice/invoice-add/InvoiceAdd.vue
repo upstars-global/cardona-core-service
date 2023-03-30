@@ -63,7 +63,7 @@
                   <!-- Select Client -->
                   <v-select
                     v-model="invoiceData.client"
-                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                     :options="clients"
                     label="company"
                     input-id="invoice-data-client"
@@ -166,7 +166,7 @@
                           <label class="d-inline d-lg-none">Item</label>
                           <v-select
                             v-model="item.itemTitle"
-                            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                             :options="itemsOptions"
                             label="itemTitle"
                             :clearable="false"
@@ -241,7 +241,7 @@
                                   :label-for="`setting-item-${index}-tax-1`"
                                 >
                                   <v-select
-                                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                                     :value="'10%'"
                                     :options="['0%', '1%', '10%', '14%', '18%']"
                                     :input-id="`setting-item-${index}-tax-1`"
@@ -257,7 +257,7 @@
                                   :label-for="`setting-item-${index}-tax-2`"
                                 >
                                   <v-select
-                                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                                     :value="'10%'"
                                     :options="['0%', '1%', '10%', '14%', '18%']"
                                     :input-id="`setting-item-${index}-tax-2`"
@@ -406,7 +406,7 @@
           <b-form-group label="Accept Payment Via" label-for="payment-method">
             <v-select
               v-model="invoiceData.paymentMethod"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               :options="paymentMethods"
               input-id="payment-method"
               class="payment-selector"

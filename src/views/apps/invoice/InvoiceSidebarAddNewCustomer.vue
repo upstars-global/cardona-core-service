@@ -50,7 +50,7 @@
         <b-form-group label="Country" label-for="country">
           <v-select
             v-model="customer.country"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             :options="countries"
             :clearable="false"
             input-id="country"

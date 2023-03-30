@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import store from '../../../store'
 
 export default function useLayoutHorizontal(navbarMenuType, footerType, isVerticalMenuActive) {
-  const currentBreakpoint = computed(() => store.getters['breakpoint/currentBreakPoint'])
+  const currentBreakpoint = computed(() => store.getters['breakpointCore/currentBreakPoint'])
 
   const layoutClasses = computed(() => {
     const classes = []

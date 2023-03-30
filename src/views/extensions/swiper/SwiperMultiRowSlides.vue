@@ -3,7 +3,7 @@
     <swiper
       class="swiper"
       :options="swiperOption"
-      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+      :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     >
       <swiper-slide v-for="(data, index) in swiperData" :key="index">
         <b-img :src="data.img" fluid />

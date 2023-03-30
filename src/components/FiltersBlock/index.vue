@@ -168,9 +168,9 @@ export default defineComponent({
     }
 
     const onApply = () => {
-      store.commit('filters/SET_LIST_ENTITY_NAME', props.entityName)
-      store.commit('filters/SET_LIST_PATH', route.value.path)
-      store.commit('filters/SET_LIST_FILTERS', selectedFilters.value)
+      store.commit('filtersCore/SET_LIST_ENTITY_NAME', props.entityName)
+      store.commit('filtersCore/SET_LIST_PATH', route.value.path)
+      store.commit('filtersCore/SET_LIST_FILTERS', selectedFilters.value)
 
       emit('apply')
     }
@@ -181,17 +181,17 @@ export default defineComponent({
 
     onMounted(() => {
       const initFiltersStorage = localStorage.getItem(keyStorage)
-      const isSamePath = route.value.path === store.getters['filters/listPath']
-      const isSameEntity = props.entityName === store.getters['filters/listEntityName']
+      const isSamePath = route.value.path === store.getters['filtersCore/listPath']
+      const isSameEntity = props.entityName === store.getters['filtersCore/listEntityName']
 
       if (!isSamePath || !isSameEntity) {
-        store.commit('filters/SET_LIST_ENTITY_NAME')
-        store.commit('filters/SET_LIST_PATH')
-        store.commit('filters/SET_LIST_FILTERS')
+        store.commit('filtersCore/SET_LIST_ENTITY_NAME')
+        store.commit('filtersCore/SET_LIST_PATH')
+        store.commit('filtersCore/SET_LIST_FILTERS')
       }
 
-      if (store.getters['filters/appliedListFilters'].length) {
-        selectedFilters.value = store.getters['filters/appliedListFilters']
+      if (store.getters['filtersCore/appliedListFilters'].length) {
+        selectedFilters.value = store.getters['filtersCore/appliedListFilters']
       } else if (initFiltersStorage) {
         selectedFilters.value = props.filters.filter(({ key }: FieldInfo) =>
           initFiltersStorage?.includes(key)

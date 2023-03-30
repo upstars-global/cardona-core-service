@@ -6,7 +6,7 @@
           <v-select
             value=""
             :placeholder="$t('placeholder.loginOrEmail')"
-            :dir="$store.getters['appConfig/dirOption']"
+            :dir="$store.getters['appConfigCore/dirOption']"
             label="userName"
             :options="notSelectedUsers"
             @search="fetchOptions"

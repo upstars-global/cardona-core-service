@@ -49,7 +49,7 @@
         <b-form-group label="Payment Method" label-for="payment-method">
           <v-select
             v-model="addPaymentData.paymentMethod"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             :options="paymentMethods"
             label="Payment Method"
             placeholder="Select Payment Method"

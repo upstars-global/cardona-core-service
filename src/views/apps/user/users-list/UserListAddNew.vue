@@ -120,7 +120,7 @@
             >
               <v-select
                 v-model="userData.country"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 :options="countries"
                 :clearable="false"
                 input-id="country"
@@ -140,7 +140,7 @@
             >
               <v-select
                 v-model="userData.role"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 :options="roleOptions"
                 :reduce="(val) => val.value"
                 :clearable="false"
@@ -161,7 +161,7 @@
             >
               <v-select
                 v-model="userData.currentPlan"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 :options="planOptions"
                 :reduce="(val) => val.value"
                 :clearable="false"

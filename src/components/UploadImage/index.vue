@@ -167,7 +167,7 @@ export default defineComponent({
           isLoad.value = true
 
           const _path = props.path + '/' + file.name.replace(/\W/g, '_')
-          const { publicPath } = await dispatch('compostela/uploadFile', {
+          const { publicPath } = await dispatch('compostelaCore/uploadFile', {
             file,
             path: _path,
           })

@@ -1,6 +1,6 @@
 export class JwtService {
   // Will be used by this service for making API calls
-  axiosIns = null
+  axiosIns: null | any = null
 
   // jwtConfig <= Will be used by this service
   jwtConfig = {
@@ -23,7 +23,7 @@ export class JwtService {
   isAlreadyFetchingAccessToken = false
 
   // For Refreshing Token
-  subscribers = []
+  subscribers: any = []
 
   constructor(axiosIns, jwtOverrideConfig) {
     this.axiosIns = axiosIns
@@ -46,7 +46,7 @@ export class JwtService {
     )
 
     // Add request/response interceptor
-    this.axiosIns.interceptors.response.use(
+    this.axiosIns?.interceptors.response.use(
       (response) => response,
       (error) => {
         // const { config, response: { status } } = error

@@ -33,14 +33,17 @@ export default {
   },
   data() {
     return {
-      isVerticalMenuCollapsed: this.$store.state.verticalMenu.isVerticalMenuCollapsed,
+      isVerticalMenuCollapsed: this.$store.state.verticalMenuCore.isVerticalMenuCollapsed,
     }
   },
   created() {
-    this.$store.commit('verticalMenu/UPDATE_VERTICAL_MENU_COLLAPSED', true)
+    this.$store.commit('verticalMenuCore/UPDATE_VERTICAL_MENU_COLLAPSED', true)
   },
   destroyed() {
-    this.$store.commit('verticalMenu/UPDATE_VERTICAL_MENU_COLLAPSED', this.isVerticalMenuCollapsed)
+    this.$store.commit(
+      'verticalMenuCore/UPDATE_VERTICAL_MENU_COLLAPSED',
+      this.isVerticalMenuCollapsed
+    )
   },
 }
 </script>
