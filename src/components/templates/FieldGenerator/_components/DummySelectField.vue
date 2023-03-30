@@ -73,7 +73,7 @@ export default defineComponent({
   <v-select
     v-model="valueModel"
     :placeholder="placeholder"
-    :dir="$store.getters['appConfig/dirOption']"
+    :dir="$store.getters['appConfigCore/dirOption']"
     label="name"
     :disabled="disabled"
     :options="options"

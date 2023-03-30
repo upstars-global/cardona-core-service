@@ -2,7 +2,7 @@
   <div class="project-select">
     <v-select
       v-model="selectProject"
-      :dir="$store.getters['appConfig/dirOption']"
+      :dir="$store.getters['appConfigCore/dirOption']"
       :options="projects"
       label="publicName"
       :clearable="false"

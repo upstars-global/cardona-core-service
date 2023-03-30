@@ -11,5 +11,5 @@ const props = defineProps<{
   item: ViewInfo
 }>()
 
-const locale = computed(() => store.getters['locale/allLocalesKeys'][props.item.value])
+const locale = computed(() => store.getters['localeCore/allLocalesKeys'][props.item.value])
 </script>

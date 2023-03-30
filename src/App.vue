@@ -73,7 +73,7 @@ export default {
       return `layout-${this.contentLayoutType}`
     },
     contentLayoutType() {
-      return this.$store.state.appConfig.layout.type
+      return this.$store.state.appConfigCore.layout.type
     },
   },
   beforeCreate() {

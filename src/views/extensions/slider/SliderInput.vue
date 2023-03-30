@@ -58,7 +58,7 @@ export default {
       },
     },
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = 'rtl'
         return this.dir

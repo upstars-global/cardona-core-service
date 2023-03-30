@@ -44,7 +44,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const localisationParameters = ref({})
-    const allCurrencies = computed(() => getters['appConfig/allCurrencies'])
+    const allCurrencies = computed(() => getters['appConfigCore/allCurrencies'])
     const modelValue = computed({
       get: () => props.value,
       set: (value) => emit('input', value),

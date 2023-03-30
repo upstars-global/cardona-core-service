@@ -8,9 +8,9 @@ export default function usAppConfig() {
   // isVerticalMenuCollapsed
   // ------------------------------------------------
   const isVerticalMenuCollapsed = computed({
-    get: () => state.verticalMenu.isVerticalMenuCollapsed,
+    get: () => state.verticalMenuCore.isVerticalMenuCollapsed,
     set: (val) => {
-      store.commit('verticalMenu/UPDATE_VERTICAL_MENU_COLLAPSED', val)
+      store.commit('verticalMenuCore/UPDATE_VERTICAL_MENU_COLLAPSED', val)
     },
   })
 
@@ -18,9 +18,9 @@ export default function usAppConfig() {
   // RTL
   // ------------------------------------------------
   const isRTL = computed({
-    get: () => state.appConfig.layout.isRTL,
+    get: () => state.appConfigCore.layout.isRTL,
     set: (val) => {
-      store.commit('appConfig/TOGGLE_RTL', val)
+      store.commit('appConfigCore/TOGGLE_RTL', val)
     },
   })
 
@@ -28,9 +28,9 @@ export default function usAppConfig() {
   // Skin
   // ------------------------------------------------
   const skin = computed({
-    get: () => state.appConfig.layout.skin,
+    get: () => state.appConfigCore.layout.skin,
     set: (val) => {
-      store.commit('appConfig/UPDATE_SKIN', val)
+      store.commit('appConfigCore/UPDATE_SKIN', val)
     },
   })
 
@@ -47,9 +47,9 @@ export default function usAppConfig() {
   // routerTransition
   // ------------------------------------------------
   const routerTransition = computed({
-    get: () => state.appConfig.layout.routerTransition,
+    get: () => state.appConfigCore.layout.routerTransition,
     set: (val) => {
-      store.commit('appConfig/UPDATE_ROUTER_TRANSITION', val)
+      store.commit('appConfigCore/UPDATE_ROUTER_TRANSITION', val)
     },
   })
 
@@ -62,9 +62,9 @@ export default function usAppConfig() {
   // ------------------------------------------------
 
   const layoutType = computed({
-    get: () => state.appConfig.layout.type,
+    get: () => state.appConfigCore.layout.type,
     set: (val) => {
-      store.commit('appConfig/UPDATE_LAYOUT_TYPE', val)
+      store.commit('appConfigCore/UPDATE_LAYOUT_TYPE', val)
     },
   })
 
@@ -77,9 +77,9 @@ export default function usAppConfig() {
   // Content Width (Full/Boxed)
   // ------------------------------------------------
   const contentWidth = computed({
-    get: () => state.appConfig.layout.contentWidth,
+    get: () => state.appConfigCore.layout.contentWidth,
     set: (val) => {
-      store.commit('appConfig/UPDATE_CONTENT_WIDTH', val)
+      store.commit('appConfigCore/UPDATE_CONTENT_WIDTH', val)
     },
   })
 
@@ -87,9 +87,9 @@ export default function usAppConfig() {
   // isNavMenuHidden
   // ------------------------------------------------
   const isNavMenuHidden = computed({
-    get: () => state.appConfig.layout.menu.hidden,
+    get: () => state.appConfigCore.layout.menu.hidden,
     set: (val) => {
-      store.commit('appConfig/UPDATE_NAV_MENU_HIDDEN', val)
+      store.commit('appConfigCore/UPDATE_NAV_MENU_HIDDEN', val)
     },
   })
 
@@ -97,30 +97,30 @@ export default function usAppConfig() {
   // navMenuType
   // ------------------------------------------------
   const navMenuType = computed({
-    get: () => state.appConfig.layout.menu.type,
+    get: () => state.appConfigCore.layout.menu.type,
     set: (val) => {
-      store.commit('appConfig/UPDATE_NAV_MENU_TYPE', val)
+      store.commit('appConfigCore/UPDATE_NAV_MENU_TYPE', val)
     },
   })
 
-  const isMenuTypeAdmin = computed(() => state.appConfig.layout.menu.type === 'admin')
-  const isMenuTypeMain = computed(() => state.appConfig.layout.menu.type === 'main')
+  const isMenuTypeAdmin = computed(() => state.appConfigCore.layout.menu.type === 'admin')
+  const isMenuTypeMain = computed(() => state.appConfigCore.layout.menu.type === 'main')
 
   // *===============================================---*
   // *--------- NAVBAR ---------------------------------------*
   // *===============================================---*
 
   const navbarBackgroundColor = computed({
-    get: () => state.appConfig.layout.navbar.backgroundColor,
+    get: () => state.appConfigCore.layout.navbar.backgroundColor,
     set: (val) => {
-      store.commit('appConfig/UPDATE_NAVBAR_CONFIG', { backgroundColor: val })
+      store.commit('appConfigCore/UPDATE_NAVBAR_CONFIG', { backgroundColor: val })
     },
   })
 
   const navbarType = computed({
-    get: () => state.appConfig.layout.navbar.type,
+    get: () => state.appConfigCore.layout.navbar.type,
     set: (val) => {
-      store.commit('appConfig/UPDATE_NAVBAR_CONFIG', { type: val })
+      store.commit('appConfigCore/UPDATE_NAVBAR_CONFIG', { type: val })
     },
   })
 
@@ -129,9 +129,9 @@ export default function usAppConfig() {
   // *===============================================---*
 
   const footerType = computed({
-    get: () => state.appConfig.layout.footer.type,
+    get: () => state.appConfigCore.layout.footer.type,
     set: (val) => {
-      store.commit('appConfig/UPDATE_FOOTER_CONFIG', { type: val })
+      store.commit('appConfigCore/UPDATE_FOOTER_CONFIG', { type: val })
     },
   })
 

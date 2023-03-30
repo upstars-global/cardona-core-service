@@ -154,7 +154,7 @@
                 >
                   <v-select
                     v-model="addressDetails.addressType"
-                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                     :options="['Home', 'Work']"
                     input-id="address-type"
                     :clearable="false"

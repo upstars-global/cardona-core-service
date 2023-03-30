@@ -3,7 +3,7 @@
     <swiper
       class="swiper-autoplay"
       :options="swiperOptions"
-      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+      :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     >
       <swiper-slide v-for="data in swiperData" :key="data.img">
         <b-img :src="data.img" fluid />

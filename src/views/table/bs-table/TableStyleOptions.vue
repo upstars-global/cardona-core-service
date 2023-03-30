@@ -36,7 +36,7 @@
       >
         <v-select
           v-model="tableVariant"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           label="tableVariants"
           :options="tableVariants"
         />

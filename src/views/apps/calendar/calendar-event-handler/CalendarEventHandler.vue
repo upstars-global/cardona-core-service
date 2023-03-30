@@ -62,7 +62,7 @@
               >
                 <v-select
                   v-model="eventLocal.extendedProps.calendar"
-                  :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                  :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                   :options="calendarOptions"
                   label="label"
                   :reduce="(calendar) => calendar.label"
@@ -157,7 +157,7 @@
             <b-form-group label="Add Guests" label-for="add-guests">
               <v-select
                 v-model="eventLocal.extendedProps.guests"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 multiple
                 :close-on-select="false"
                 :options="guestsOptions"

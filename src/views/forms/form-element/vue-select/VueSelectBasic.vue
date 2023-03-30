@@ -14,7 +14,7 @@
         <b-form-group>
           <v-select
             v-model="selected"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             label="title"
             :options="option"
           />
@@ -36,7 +36,7 @@
         <b-form-group>
           <v-select
             v-model="selected1"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             :options="books"
             label="title"
           >

@@ -560,7 +560,7 @@ export const codeFormScroll = `
           <v-select
             id="vue-select"
             v-model="selected"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             :options="option"
           />
         </b-form-group>

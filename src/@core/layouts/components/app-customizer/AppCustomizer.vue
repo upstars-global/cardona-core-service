@@ -59,7 +59,7 @@
         <b-form-group label="Router Transition" label-cols="6">
           <v-select
             v-model="routerTransition"
-            :dir="$store.getters['appConfig/dirOption']"
+            :dir="$store.getters['appConfigCore/dirOption']"
             :clearable="false"
             label="title"
             :options="routerTransitionOptions"

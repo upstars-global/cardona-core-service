@@ -3,7 +3,7 @@
     <swiper
       class="swiper-centered-slides-2 p-1"
       :options="swiperOptions"
-      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+      :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     >
       <swiper-slide
         v-for="(data, index) in swiperData"

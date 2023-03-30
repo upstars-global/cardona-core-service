@@ -35,7 +35,7 @@
             <v-select
               id="countryList"
               v-model="localOptions.country"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               label="title"
               :options="countryOption"
             />

@@ -38,7 +38,7 @@ router.beforeEach(async (to, _, next) => {
   const permissionLevel: number = to.meta.level || 1
 
   if (getters.isAuthorizedUser && getters.userInfo.isEmpty) await dispatch('fetchCurrentUser')
-  if (getters.isAuthorizedUser) await dispatch('appConfig/fetchConfig')
+  if (getters.isAuthorizedUser) await dispatch('appConfigCore/fetchConfig')
 
   const hasPermission: boolean = permission
     ? getters.abilityCan(permission, permissionLevel)

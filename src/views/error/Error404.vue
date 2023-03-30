@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     imgUrl() {
-      if (store.state.appConfig.layout.skin === 'dark') {
+      if (store.state.appConfigCore.layout.skin === 'dark') {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.downImg = require('../../assets/images/pages/error-dark.svg')
         return this.downImg

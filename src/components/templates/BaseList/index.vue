@@ -107,7 +107,7 @@
             v-model="perPage"
             :options="perPageOptions"
             class="per-page-selector d-inline-block"
-            :dir="$store.getters['appConfig/dirOption']"
+            :dir="$store.getters['appConfigCore/dirOption']"
             :searchable="false"
             :clearable="false"
             @input="setPerPage"
@@ -569,12 +569,12 @@ export default {
     const moduleName: string = convertLowerCaseFirstSymbol(entityName)
     const fetchActionName: string = props.config?.withCustomFetchList
       ? `${moduleName}/fetch${entityName}List`
-      : 'baseStore/fetchListEntity'
-    const fetchReportActionName = 'baseStore/fetchReport'
-    const updateActionName = 'baseStore/updateEntity'
-    const deleteActionName = 'baseStore/deleteEntity'
-    const multipleUpdateActionName = 'baseStore/multipleUpdateEntity'
-    const multipleDeleteActionName = 'baseStore/multipleDeleteEntity'
+      : 'baseStoreCore/fetchListEntity'
+    const fetchReportActionName = 'baseStoreCore/fetchReport'
+    const updateActionName = 'baseStoreCore/updateEntity'
+    const deleteActionName = 'baseStoreCore/deleteEntity'
+    const multipleUpdateActionName = 'baseStoreCore/multipleUpdateEntity'
+    const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
 
     // Permissions
     const permissionKey = `backoffice-${convertCamelCase(entityName, '-')}`
@@ -779,9 +779,9 @@ export default {
     // Filters
     const isFiltersShown = ref(false)
     const appliedFilters = computed(() => {
-      const isSameEntity: boolean = entityName === store.getters['filters/listEntityName']
+      const isSameEntity: boolean = entityName === store.getters['filtersCore/listEntityName']
 
-      return isSameEntity ? store.getters['filters/appliedListFilters'] : []
+      return isSameEntity ? store.getters['filtersCore/appliedListFilters'] : []
     })
 
     onMounted(() => {

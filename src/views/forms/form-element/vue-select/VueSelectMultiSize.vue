@@ -14,7 +14,7 @@
         <b-form-group>
           <v-select
             v-model="selected"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             label="title"
             :options="option"
             class="select-size-sm"
@@ -28,7 +28,7 @@
         <b-form-group>
           <v-select
             v-model="selected"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             label="title"
             :options="option"
             multiple
@@ -41,7 +41,7 @@
         <b-form-group>
           <v-select
             v-model="selected"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             label="title"
             :options="option"
             class="select-size-lg"

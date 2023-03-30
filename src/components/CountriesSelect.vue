@@ -20,7 +20,7 @@
     >
       <v-select
         v-model="selectedCountries"
-        :dir="$store.getters['appConfig/dirOption']"
+        :dir="$store.getters['appConfigCore/dirOption']"
         multiple
         :disabled="disabled"
         :options="regionsOptions"

@@ -57,7 +57,7 @@
           <b-form-group label="Status" label-for="user-status">
             <v-select
               v-model="userData.status"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               :options="statusOptions"
               :reduce="(val) => val.value"
               :clearable="false"
@@ -71,7 +71,7 @@
           <b-form-group label="User Role" label-for="user-role">
             <v-select
               v-model="userData.role"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               :options="roleOptions"
               :reduce="(val) => val.value"
               :clearable="false"

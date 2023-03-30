@@ -13,7 +13,7 @@
 
           <v-select
             :value="paginated.perPage"
-            :dir="$store.getters['appConfig/dirOption']"
+            :dir="$store.getters['appConfigCore/dirOption']"
             label="per page"
             :options="paginated.perPageOptions"
             :clearable="false"

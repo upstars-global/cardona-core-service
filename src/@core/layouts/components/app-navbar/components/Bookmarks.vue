@@ -106,7 +106,7 @@ export default {
     })
 
     watch(searchQuery, (val) => {
-      store.commit('breakpoint/TOGGLE_OVERLAY', Boolean(val))
+      store.commit('breakpointCore/TOGGLE_OVERLAY', Boolean(val))
     })
 
     watch(filteredData, (val) => {

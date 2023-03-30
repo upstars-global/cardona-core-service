@@ -150,7 +150,7 @@ export default defineComponent({
       if (isLoad.value) return
       isLoad.value = true
       try {
-        const { data, pagination } = await dispatch('compostela/getStructureList', {
+        const { data, pagination } = await dispatch('compostelaCore/getStructureList', {
           path: url.value,
           pageNumber: currentPage.value,
           perPage: perPage.value,
@@ -230,7 +230,7 @@ export default defineComponent({
       } else {
         const nameFileArr = path?.split('/')
         const nameFile = nameFileArr[nameFileArr.length - 1]
-        const { publicPath } = await dispatch('compostela/uploadFile', {
+        const { publicPath } = await dispatch('compostelaCore/uploadFile', {
           path: props.path + '/' + nameFile,
           replace: path,
         })

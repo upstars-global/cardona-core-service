@@ -4,7 +4,7 @@
       <b-form-group label="Selection mode:" label-cols-md="3" label-align-sm="right" class="mb-0">
         <v-select
           v-model="selectMode"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           label="title"
           :options="modes"
         />

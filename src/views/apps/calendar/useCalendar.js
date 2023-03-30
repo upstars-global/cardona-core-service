@@ -349,7 +349,7 @@ export default function userCalendar() {
     },
 
     // Get direction from app state (store)
-    direction: computed(() => (store.state.appConfig.isRTL ? 'rtl' : 'ltr')),
+    direction: computed(() => (store.state.appConfigCore.isRTL ? 'rtl' : 'ltr')),
     rerenderDelay: 350,
   })
 

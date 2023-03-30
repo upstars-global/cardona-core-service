@@ -2,7 +2,7 @@ export const codeDefault = `
 <template>
   <swiper
     ref="mySwiper"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="data in swiperData"
@@ -50,7 +50,7 @@ export const codeAutoplay = `
   <swiper
     class="swiper-autoplay"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="data in swiperData"
@@ -128,7 +128,7 @@ export const codeCenterSlides = `
   <swiper
     class="swiper-centered-slides p-1"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
 
     <!-- slides -->
@@ -196,7 +196,7 @@ export const codeCenterSlides2 = `
   <swiper
     class="swiper-centered-slides-2 p-1"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -249,7 +249,7 @@ export const codeCoverflowEffect = `
   <swiper
     class="swiper-coverflow"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -322,7 +322,7 @@ export const codeCube = `
   <swiper
     class="swiper-cube-effect"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -386,7 +386,7 @@ export const codeFadeEffect = `
   <swiper
     class="swiper-navigations"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -462,7 +462,7 @@ export const codeGallery = `
     ref="swiperTop"
     class="swiper-gallery gallery-top"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -563,7 +563,7 @@ export const codeLazy = `
   <swiper
     class="swiper-lazy-loading"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -638,7 +638,7 @@ export const codeMultipleSlides = `
   <swiper
     class="swiper-multiple"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -699,7 +699,7 @@ export const codeMultiRowSlides = `
   <swiper
     class="swiper"
     :options="swiperOption"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -792,7 +792,7 @@ export const codeNavigation = `
   <swiper
     class="swiper-navigations"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -856,7 +856,7 @@ export const codePagination = `
   <swiper
     class="swiper-paginations"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -915,7 +915,7 @@ export const codeParallax = `
   <swiper
     class="swiper-parallax"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <div
       slot="parallax-bg"
@@ -1011,7 +1011,7 @@ export const codeProgress = `
   <swiper
     class="swiper-progress"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -1083,7 +1083,7 @@ export const codeResponsive = `
   <swiper
     class="swiper-responsive-breakpoints"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -1168,7 +1168,7 @@ export const codeVirtual = `
       ref="mySwiper15"
       class="swiper-virtual"
       :options="swiperOptions"
-      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+      :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     >
       <div
         slot="pagination"

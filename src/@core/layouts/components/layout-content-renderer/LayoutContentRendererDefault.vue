@@ -2,7 +2,7 @@
   <div
     class="app-content content"
     :class="[
-      { 'show-overlay': $store.state.breakpoint.shallShowOverlay },
+      { 'show-overlay': $store.state.breakpointCore.shallShowOverlay },
       $route.meta.contentClass,
     ]"
   >

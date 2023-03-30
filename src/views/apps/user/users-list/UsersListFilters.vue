@@ -8,7 +8,7 @@
         <b-col cols="12" md="4" class="mb-md-0 mb-2">
           <label>Role</label>
           <v-select
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             :value="roleFilter"
             :options="roleOptions"
             class="w-100"
@@ -19,7 +19,7 @@
         <b-col cols="12" md="4" class="mb-md-0 mb-2">
           <label>Plan</label>
           <v-select
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             :value="planFilter"
             :options="planOptions"
             class="w-100"
@@ -30,7 +30,7 @@
         <b-col cols="12" md="4" class="mb-md-0 mb-2">
           <label>Status</label>
           <v-select
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             :value="statusFilter"
             :options="statusOptions"
             class="w-100"
