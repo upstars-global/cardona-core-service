@@ -210,7 +210,7 @@
           <status-field
             v-else-if="field.type === ListFieldType.Status"
             :key="index"
-            :status="value"
+            :value="value"
           />
 
           <sum-and-currency
@@ -442,7 +442,6 @@
 <script lang="ts">
 import { computed, onMounted, PropType, ref, watch } from 'vue'
 import store, { dispatch, getters } from '../../../store'
-import { useFilters } from '../../../components/FiltersBlock/useFilters'
 import { useBvModal } from '../../../helpers/bvModal'
 import { useRouter } from '../../../@core/utils/utils'
 import usePagination from '../../../use/pagination'
@@ -457,12 +456,10 @@ import {
 import { Location } from 'vue-router'
 import { TableField, ListFieldType } from '../../../@core/components/table-fields/model'
 import { FieldType } from '../../../@model/field'
-import FiltersBlock from '../../../components/FiltersBlock'
 import TableFields from '../../../@core/components/table-fields/TableFields.vue'
 import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol } from '../../../helpers'
 import { parseDateRange } from '../../../helpers/filters'
 import SearchInput from './_components/SearchInput.vue'
-import CTable from '../../../components/CTable'
 import StatusField from './_components/StatusField.vue'
 import PillStatusField from './_components/PillStatusField.vue'
 import NameWithIdField from './_components/NameWithIdField.vue'
@@ -481,6 +478,9 @@ import SideBar from '../../../components/templates/BaseList/_components/SideBar.
 import CModal from '../../../components/CModal.vue'
 import SumAndCurrency from '../../../components/SumAndCurrency.vue'
 import { IListSort } from '../../../@model'
+import CTable from '../../CTable/index.vue'
+import { useFilters } from '../../FiltersBlock/useFilters'
+import FiltersBlock from '../../FiltersBlock/index.vue'
 
 export default {
   name: 'BaseList',
