@@ -87,7 +87,7 @@ export default {
       },
     }
 
-    /* eslint-disable global-require */
+    /* eslint-disable */
     const relatedProducts = [
       {
         name: 'Apple Watch Series 6',
@@ -125,7 +125,7 @@ export default {
         image: require('../../../../assets/images/elements/iphone-x.png'),
       },
     ]
-    /* eslint-disable global-require */
+    /* eslint-disable */
 
     return {
       swiperOptions,

@@ -39,7 +39,7 @@ export default {
     return {
       codeLazy,
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-9.jpg') },
         { img: require('../../../assets/images/banner/banner-8.jpg') },
@@ -48,7 +48,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-5.jpg') },
         { img: require('../../../assets/images/banner/banner-4.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         lazy: true,

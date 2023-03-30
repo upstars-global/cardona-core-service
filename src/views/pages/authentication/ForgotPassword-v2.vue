@@ -60,7 +60,7 @@
 </template>
 
 <script>
-/* eslint-disable global-require */
+/* eslint-disable */
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import VuexyLogo from '../../../@core/layouts/components/AppLogo.vue'
 import {

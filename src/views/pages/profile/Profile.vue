@@ -50,7 +50,7 @@ import ProfileSuggestion from './ProfileSuggestion.vue'
 import ProfilePolls from './ProfilePolls.vue'
 import profileBottom from './profileBottom.vue'
 
-/* eslint-disable global-require */
+/* eslint-disable */
 export default {
   components: {
     BRow,
@@ -77,7 +77,7 @@ export default {
     })
   },
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 </script>
 
 <style lang="scss" >

@@ -35,14 +35,14 @@ export default {
     return {
       codeCube,
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-21.jpg') },
         { img: require('../../../assets/images/banner/banner-22.jpg') },
         { img: require('../../../assets/images/banner/banner-23.jpg') },
         { img: require('../../../assets/images/banner/banner-24.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         effect: 'cube',

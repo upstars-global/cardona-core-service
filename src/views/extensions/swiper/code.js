@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-13.jpg') },
         { img: require('../../../assets/images/banner/banner-7.jpg') },
@@ -37,7 +37,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-2.jpg') },
         { img: require('../../../assets/images/banner/banner-1.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
     }
   },
 }
@@ -106,7 +106,7 @@ export default {
         },
       },
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-20.jpg') },
         { img: require('../../../assets/images/banner/banner-7.jpg') },
@@ -115,7 +115,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-10.jpg') },
         { img: require('../../../assets/images/banner/banner-11.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
     }
   },
@@ -281,7 +281,7 @@ export default {
   data() {
     return {
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-35.jpg') },
         { img: require('../../../assets/images/banner/banner-39.jpg') },
@@ -293,7 +293,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-32.jpg') },
         { img: require('../../../assets/images/banner/banner-31.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         effect: 'coverflow',
@@ -353,14 +353,14 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-21.jpg') },
         { img: require('../../../assets/images/banner/banner-22.jpg') },
         { img: require('../../../assets/images/banner/banner-23.jpg') },
         { img: require('../../../assets/images/banner/banner-24.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         effect: 'cube',
@@ -428,7 +428,7 @@ export default {
   data() {
     return {
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-20.jpg') },
         { img: require('../../../assets/images/banner/banner-19.jpg') },
@@ -436,7 +436,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-17.jpg') },
         { img: require('../../../assets/images/banner/banner-16.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         spaceBetween: 30,
@@ -516,7 +516,7 @@ export default {
   data() {
     return {
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-11.jpg') },
         { img: require('../../../assets/images/banner/banner-12.jpg') },
@@ -524,7 +524,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-15.jpg') },
         { img: require('../../../assets/images/banner/banner-16.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         loop: true,
@@ -605,7 +605,7 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-9.jpg') },
         { img: require('../../../assets/images/banner/banner-8.jpg') },
@@ -614,7 +614,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-5.jpg') },
         { img: require('../../../assets/images/banner/banner-4.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         lazy: true,
@@ -670,7 +670,7 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-31.jpg') },
         { img: require('../../../assets/images/banner/banner-32.jpg') },
@@ -678,7 +678,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-34.jpg') },
         { img: require('../../../assets/images/banner/banner-35.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         slidesPerView: 3,
@@ -732,7 +732,7 @@ export default {
   data() {
     return {
       swiperData: [
-        /* eslint-disable global-require */
+        /* eslint-disable */
         { img: require('../../../assets/images/banner/banner-26.jpg') },
         { img: require('../../../assets/images/banner/banner-39.jpg') },
         { img: require('../../../assets/images/banner/banner-28.jpg') },
@@ -743,7 +743,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-33.jpg') },
         { img: require('../../../assets/images/banner/banner-34.jpg') },
         { img: require('../../../assets/images/banner/banner-35.jpg') },
-        /* eslint-disable global-require */
+        /* eslint-disable */
       ],
       swiperOption: {
         slidesPerView: 3,
@@ -829,7 +829,7 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-7.jpg') },
         { img: require('../../../assets/images/banner/banner-4.jpg') },
@@ -837,7 +837,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-3.jpg') },
         { img: require('../../../assets/images/banner/banner-2.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         navigation: {
@@ -889,7 +889,7 @@ export default {
   data() {
     return {
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-12.jpg') },
         { img: require('../../../assets/images/banner/banner-9.jpg') },
@@ -897,7 +897,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-7.jpg') },
         { img: require('../../../assets/images/banner/banner-20.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         pagination: {
@@ -1052,7 +1052,7 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-8.jpg') },
         { img: require('../../../assets/images/banner/banner-7.jpg') },
@@ -1060,7 +1060,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-4.jpg') },
         { img: require('../../../assets/images/banner/banner-5.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         navigation: {
@@ -1115,7 +1115,7 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-30.jpg') },
         { img: require('../../../assets/images/banner/banner-31.jpg') },
@@ -1127,7 +1127,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-37.jpg') },
         { img: require('../../../assets/images/banner/banner-38.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         slidesPerView: 5,

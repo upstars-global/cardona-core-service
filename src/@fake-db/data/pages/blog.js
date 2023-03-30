@@ -1,5 +1,5 @@
 import mock from '../../../@fake-db/mock'
-/* eslint-disable global-require */
+/* eslint-disable */
 const data = {
   // blog list
   blogList: [
@@ -161,7 +161,7 @@ const data = {
     featuredImage: require('../../../assets/images/slider/03.jpg'),
   },
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 mock.onGet('/blog/list/data').reply(() => [200, data.blogList])
 mock.onGet('/blog/list/data/sidebar').reply(() => [200, data.blogSidebar])
 mock.onGet('/blog/list/data/detail').reply(() => [200, data.blogDetail])

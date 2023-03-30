@@ -33,7 +33,7 @@
 </template>
 
 <script>
-/* eslint-disable global-require */
+/* eslint-disable */
 import { BLink, BForm, BFormInput, BButton, BImg } from 'bootstrap-vue'
 import VuexyLogo from '../../../@core/layouts/components/AppLogo.vue'
 import store from '../../../store'

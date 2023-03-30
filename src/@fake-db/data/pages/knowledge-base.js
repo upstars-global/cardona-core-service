@@ -1,5 +1,5 @@
 import mock from '../../../@fake-db/mock'
-/* eslint-disable global-require */
+/* eslint-disable */
 const data = {
   // knowledge base
   knowledgeBase: [
@@ -271,7 +271,7 @@ const data = {
   },
   // category
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 mock.onGet('/kb/data/knowledge_base').reply(() => [200, data.knowledgeBase])
 mock.onGet('/kb/data/category').reply(() => [200, data.categoryData])
 mock.onGet('/kb/data/question').reply(() => [200, data.questionData])

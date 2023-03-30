@@ -1,5 +1,5 @@
 import mock from '../../../@fake-db/mock'
-/* eslint-disable global-require */
+/* eslint-disable */
 const data = {
   profileData: {
     header: {
@@ -313,5 +313,5 @@ const data = {
     ],
   },
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 mock.onGet('/profile/data').reply(() => [200, data.profileData])

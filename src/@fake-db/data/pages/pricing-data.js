@@ -1,5 +1,5 @@
 import mock from '../../../@fake-db/mock'
-/* eslint-disable global-require */
+/* eslint-disable */
 const data = {
   pricing: {
     basicPlan: {
@@ -72,5 +72,5 @@ const data = {
     ],
   },
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 mock.onGet('/pricing/data').reply(() => [200, data.pricing])

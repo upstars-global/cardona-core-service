@@ -225,7 +225,7 @@ export default {
       placeholder: 'Message',
     }
 
-    /* eslint-disable global-require */
+    /* eslint-disable */
     const emailToOptions = [
       { avatar: require('../../../assets/images/avatars/1-small.png'), name: 'Jane Foster' },
       { avatar: require('../../../assets/images/avatars/3-small.png'), name: 'Donna Frank' },

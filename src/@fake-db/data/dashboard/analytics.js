@@ -1,5 +1,5 @@
 import mock from '../../../@fake-db/mock'
-/* eslint-disable global-require */
+/* eslint-disable */
 const data = {
   congratulations: {
     name: 'John',
@@ -133,5 +133,5 @@ const data = {
     ],
   },
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 mock.onGet('/analytics/data').reply(() => [200, data])

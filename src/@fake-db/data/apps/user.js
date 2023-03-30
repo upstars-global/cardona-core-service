@@ -1,7 +1,7 @@
 import mock from '../../../@fake-db/mock'
 import { paginateArray, sortCompare } from '../../../@fake-db/utils'
 
-/* eslint-disable global-require */
+/* eslint-disable */
 const data = {
   users: [
     {
