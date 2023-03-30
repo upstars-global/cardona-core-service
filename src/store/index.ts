@@ -13,6 +13,7 @@ import authCore from './modules/authCore'
 import compostelaCore from './modules/compostelaCore'
 import user from './modules/user'
 import loader from './modules/loader'
+import tags from './modules/tags'
 
 import ecommerceStoreModuleCore from '../views/apps/e-commerce/eCommerceStoreModule'
 import app from './app'
@@ -32,6 +33,7 @@ const store = new Vuex.Store({
     compostelaCore,
     user,
     loader,
+    tags,
 
     app,
     'app-ecommerce': ecommerceStoreModuleCore,
