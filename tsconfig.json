@@ -22,6 +22,9 @@
     "paths": {
       "@themeConfig": [
         "./themeConfig"
+      ],
+      "@core/*": [
+        "src/@core/*"
       ]
     },
     "lib": [
