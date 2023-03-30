@@ -47,7 +47,7 @@ export default function useTaskHandler(props, emit) {
   // guestOptions
   // ------------------------------------------------
 
-  /* eslint-disable global-require */
+  /* eslint-disable */
   const assigneeOptions = [
     { avatar: require('../../../assets/images/avatars/1-small.png'), fullName: 'Jane Foster' },
     { avatar: require('../../../assets/images/avatars/3-small.png'), fullName: 'Donna Frank' },

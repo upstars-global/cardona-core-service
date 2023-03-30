@@ -50,7 +50,7 @@ export default function useCalendarEventHandler(props, clearForm, emit) {
   // guestOptions
   // ------------------------------------------------
 
-  /* eslint-disable global-require */
+  /* eslint-disable */
   const guestsOptions = [
     { avatar: require('../../../../assets/images/avatars/1-small.png'), name: 'Jane Foster' },
     { avatar: require('../../../../assets/images/avatars/3-small.png'), name: 'Donna Frank' },
@@ -59,7 +59,7 @@ export default function useCalendarEventHandler(props, clearForm, emit) {
     { avatar: require('../../../../assets/images/avatars/9-small.png'), name: 'Sandy Vega' },
     { avatar: require('../../../../assets/images/avatars/11-small.png'), name: 'Cheryl May' },
   ]
-  /* eslint-enable global-require */
+  /* eslint-enable */
 
   return {
     eventLocal,

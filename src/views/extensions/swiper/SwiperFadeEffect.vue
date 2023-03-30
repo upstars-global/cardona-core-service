@@ -39,7 +39,7 @@ export default {
     return {
       codeFadeEffect,
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-20.jpg') },
         { img: require('../../../assets/images/banner/banner-19.jpg') },
@@ -47,7 +47,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-17.jpg') },
         { img: require('../../../assets/images/banner/banner-16.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         spaceBetween: 30,

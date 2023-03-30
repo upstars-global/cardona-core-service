@@ -19,7 +19,11 @@
           <p>Invoices have been paid to the company.</p>
           <b-media no-body>
             <b-media-aside class="mr-1">
-              <b-img :src="require('../../../assets/images/icons/json.png')" height="23" alt="data.json" />
+              <b-img
+                :src="require('../../../assets/images/icons/json.png')"
+                height="23"
+                alt="data.json"
+              />
             </b-media-aside>
             <b-media-body class="my-auto">
               <h6 class="media-body mb-0">data.json</h6>
@@ -35,7 +39,10 @@
           <p>Project meeting with john @10:15am</p>
           <b-media no-body>
             <b-media-aside class="mr-50">
-              <b-avatar :src="require('../../../assets/images/portrait/small/avatar-s-9.jpg')" size="38" />
+              <b-avatar
+                :src="require('../../../assets/images/portrait/small/avatar-s-9.jpg')"
+                size="38"
+              />
             </b-media-aside>
             <b-media-body class="my-auto">
               <h6 class="mb-0">John Doe (Client)</h6>
@@ -89,7 +96,7 @@ import {
 } from 'bootstrap-vue'
 import AppTimeline from '../../../@core/components/app-timeline/AppTimeline.vue'
 import AppTimelineItem from '../../../@core/components/app-timeline/AppTimelineItem.vue'
-/* eslint-disable global-require */
+/* eslint-disable */
 export default {
   components: {
     BCard,

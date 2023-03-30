@@ -36,7 +36,7 @@ export default {
     return {
       codePagination,
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-12.jpg') },
         { img: require('../../../assets/images/banner/banner-9.jpg') },
@@ -44,7 +44,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-7.jpg') },
         { img: require('../../../assets/images/banner/banner-20.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         pagination: {

@@ -1,5 +1,5 @@
 import mock from '../../../@fake-db/mock'
-/* eslint-disable global-require */
+/* eslint-disable */
 const data = {
   accountSetting: {
     general: {
@@ -48,5 +48,5 @@ const data = {
     },
   },
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 mock.onGet('/account-setting/data').reply(() => [200, data.accountSetting])

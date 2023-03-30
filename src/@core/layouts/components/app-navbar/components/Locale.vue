@@ -26,7 +26,7 @@ export default {
     BImg,
   },
   setup() {
-    /* eslint-disable global-require */
+    /* eslint-disable */
     const locales = [
       {
         locale: 'en',
@@ -49,7 +49,7 @@ export default {
         name: 'Portuguese',
       },
     ]
-    /* eslint-disable global-require */
+    /* eslint-disable */
 
     return {
       locales,

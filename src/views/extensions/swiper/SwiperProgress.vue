@@ -39,7 +39,7 @@ export default {
     return {
       codeProgress,
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-8.jpg') },
         { img: require('../../../assets/images/banner/banner-7.jpg') },
@@ -47,7 +47,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-4.jpg') },
         { img: require('../../../assets/images/banner/banner-5.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         navigation: {

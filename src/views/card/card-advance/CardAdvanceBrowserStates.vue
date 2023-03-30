@@ -37,7 +37,7 @@
 import { BCard, BCardHeader, BCardTitle, BCardText, BCardBody, BMedia, BImg } from 'bootstrap-vue'
 import VueApexCharts from 'vue-apexcharts'
 import { $themeColors } from '@themeConfig'
-/* eslint-disable global-require */
+/* eslint-disable */
 const $trackBgColor = '#e9ecef'
 export default {
   components: {

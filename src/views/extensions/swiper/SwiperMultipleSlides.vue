@@ -36,7 +36,7 @@ export default {
     return {
       codeMultipleSlides,
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-31.jpg') },
         { img: require('../../../assets/images/banner/banner-32.jpg') },
@@ -44,7 +44,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-34.jpg') },
         { img: require('../../../assets/images/banner/banner-35.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         slidesPerView: 3,

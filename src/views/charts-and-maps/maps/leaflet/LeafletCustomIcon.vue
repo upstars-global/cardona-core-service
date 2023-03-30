@@ -24,7 +24,7 @@
 </template>
 
 <script>
-/* eslint-disable global-require */
+/* eslint-disable */
 import { BImg } from 'bootstrap-vue'
 import BCardCode from '../../../../@core/components/b-card-code/BCardCode.vue'
 import { LMap, LTileLayer, LMarker, LIcon } from 'vue2-leaflet'
@@ -64,7 +64,7 @@ export default {
     }
   },
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 </script>
 
 <style lang="scss">

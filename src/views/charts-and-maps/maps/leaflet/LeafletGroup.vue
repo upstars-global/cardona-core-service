@@ -94,7 +94,7 @@
 </template>
 
 <script>
-/* eslint-disable global-require */
+/* eslint-disable */
 import BCardCode from '../../../../@core/components/b-card-code/BCardCode.vue'
 import { BButton, BFormSelect, BRow, BCol, BFormGroup } from 'bootstrap-vue'
 import {
@@ -121,7 +121,7 @@ Icon.Default.mergeOptions({
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 })
-/* eslint-disable global-require */
+/* eslint-disable */
 const markers1 = [
   {
     position: { lng: -1.219482, lat: 47.41322 },

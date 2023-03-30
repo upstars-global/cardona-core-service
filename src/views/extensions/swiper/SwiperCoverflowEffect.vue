@@ -35,7 +35,7 @@ export default {
     return {
       codeCoverflowEffect,
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
         { img: require('../../../assets/images/banner/banner-35.jpg') },
         { img: require('../../../assets/images/banner/banner-39.jpg') },
@@ -47,7 +47,7 @@ export default {
         { img: require('../../../assets/images/banner/banner-32.jpg') },
         { img: require('../../../assets/images/banner/banner-31.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         effect: 'coverflow',

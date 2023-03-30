@@ -72,7 +72,7 @@ export const codeMarkerPolygon = `
 </template>
 
 <script>
-/* eslint-disable global-require */
+/* eslint-disable */
 import {
   LMap, LTileLayer, LMarker, LCircle, LPolygon,
 } from 'vue2-leaflet'
@@ -86,7 +86,7 @@ Icon.Default.mergeOptions({
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 })
-/* eslint-disable global-require */
+/* eslint-disable */
 
 export default {
   components: {
@@ -334,7 +334,7 @@ export const codeLayerGroup = `
 </template>
 
 <script>
-/* eslint-disable global-require */
+/* eslint-disable */
 import {
   BButton, BFormSelect, BRow, BCol, BFormGroup,
 } from 'bootstrap-vue'
@@ -360,7 +360,7 @@ Icon.Default.mergeOptions({
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 })
-/* eslint-disable global-require */
+/* eslint-disable */
 const markers1 = [
   {
     position: { lng: -1.219482, lat: 47.41322 },
@@ -601,7 +601,7 @@ export const codeCustomIcon = `
 
 <script>
 
-/* eslint-disable global-require */
+/* eslint-disable */
 import { BImg } from 'bootstrap-vue'
 import {
   LMap, LTileLayer, LMarker, LIcon,
@@ -639,7 +639,7 @@ export default {
     }
   },
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 </script>
 
 <style lang="scss">
