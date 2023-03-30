@@ -48,5 +48,5 @@ export default {
 </script>
 
 <style lang="scss" >
-@import '~/src/@core//scss/vue/libs/vue-slider.scss';
+@import '../../../@core/scss/vue/libs/vue-slider.scss';
 </style>

@@ -72,5 +72,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~/src/@core//scss/vue/libs/tour.scss';
+@import '../../../@core/scss/vue/libs/tour.scss';
 </style>

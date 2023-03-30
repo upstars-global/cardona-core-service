@@ -52,5 +52,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~/src/@core//scss/vue/libs/vue-flatpicker.scss';
+@import '../../../../@core/scss/vue/libs/vue-flatpicker.scss';
 </style>

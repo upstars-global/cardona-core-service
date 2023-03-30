@@ -81,5 +81,5 @@ export default {
 </script>
 
 <style lang="scss" >
-@import '~/src/@core//scss/vue/pages/page-profile.scss';
+@import '../../../@core/scss/vue/pages/page-profile.scss';
 </style>

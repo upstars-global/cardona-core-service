@@ -101,5 +101,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~/src/@core//scss/vue/apps/calendar.scss';
+@import '../../../@core/scss/vue/apps/calendar.scss';
 </style>

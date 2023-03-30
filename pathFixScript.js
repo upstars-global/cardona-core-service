@@ -13,13 +13,23 @@ async function processLineByLine(path) {
   const lines = []
   const file = []
   for await (let line of rl) {
-    if (line.match(/ from '@/) || line.match(/@import '/) || line.includes("require('@/assets")) {
+    if (
+      line.match(/ from '@/) ||
+      line.match(/@import '/) ||
+      line.includes("require('@/assets") ||
+      line.includes('~/src/@core')
+    ) {
       if (line.match(/@(casl|fullcalendar|vueuse)/)) {
         file.push(line)
       } else if (line.includes('@/')) {
         const [alias] = line.match(/@[^/,import]*/)
         lines.push(line)
         const newL = line.replace(`${alias}/`, '../'.repeat(deep - 1))
+        lines.push(newL)
+        file.push(newL)
+      } else if (line.includes('~/src/@core')) {
+        lines.push(line)
+        const newL = line.replace(`~/src/`, '../'.repeat(deep - 1))
         lines.push(newL)
         file.push(newL)
       } else if (line.includes("@import '~")) {
