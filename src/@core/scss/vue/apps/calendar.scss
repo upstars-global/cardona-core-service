@@ -1,10 +1,10 @@
-@import '~@core/scss/base/bootstrap-extended/include'; // Bootstrap includes
-@import '~@core/scss/base/components/include'; // Components includes
+@import '~/src/@core/scss/base/bootstrap-extended/include'; // Bootstrap includes
+@import '~/src/@core/scss/base/components/include'; // Components includes
 
-@import '~@core/scss/base/pages/app-calendar.scss';
+@import '~/src/@core/scss/base/pages/app-calendar.scss';
 
 // Color palettes
-@import '~@core/scss/base/core/colors/palette-variables.scss';
+@import '~/src/@core/scss/base/core/colors/palette-variables.scss';
 
 .fc-sidebarToggle-button {
   // content: '';

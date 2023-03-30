@@ -65,7 +65,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/tour.scss';
+@import '~/src/@core//scss/vue/libs/tour.scss';
 </style>
 `
 export const codedefault = 'defaul'

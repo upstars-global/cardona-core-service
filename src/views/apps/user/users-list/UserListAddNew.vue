@@ -298,7 +298,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
+@import '~/src/@core//scss/vue/libs/vue-select.scss';
 
 #add-new-user-sidebar {
   .vs__dropdown-menu {

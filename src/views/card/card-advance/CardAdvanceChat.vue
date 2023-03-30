@@ -162,5 +162,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/base/pages/app-chat-list.scss';
+@import '~/src/@core//scss/base/pages/app-chat-list.scss';
 </style>

@@ -21,5 +21,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/tree.scss';
+@import '~/src/@core//scss/vue/libs/tree.scss';
 </style>

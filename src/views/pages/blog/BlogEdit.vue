@@ -183,7 +183,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
-@import '@core/scss/vue/libs/quill.scss';
-@import '@core/scss/vue/pages/page-blog.scss';
+@import '~/src/@core//scss/vue/libs/vue-select.scss';
+@import '~/src/@core//scss/vue/libs/quill.scss';
+@import '~/src/@core//scss/vue/pages/page-blog.scss';
 </style>

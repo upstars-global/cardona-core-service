@@ -4,8 +4,8 @@ NOTE:
 ------
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
-@import '~@core/scss/base/core/colors/palette-variables';
-@import '~@core/scss/vue/libs/vue-select';
+@import '../../@core/scss/base/core/colors/palette-variables';
+@import '../../@core/scss/vue/libs/vue-select';
 
 $bg-light-purple: rgba(115, 103, 240, 0.08);
 $bg-light-grey: rgba(186, 191, 199, 0.12);
