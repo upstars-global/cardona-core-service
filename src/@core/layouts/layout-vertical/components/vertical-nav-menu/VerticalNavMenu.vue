@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import navMenuItems from '../../../../../navigation/vertical'
+import navMenuItems from '@/navigation/vertical'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { BLink } from 'bootstrap-vue'
 import { provide, computed, ref } from 'vue'
