@@ -42,8 +42,8 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { debounce } from 'lodash'
-import SkeletonGrid from '@/components/UploadImage/SkeletonGrid.vue'
-import SkeletonGridItem from '@/components/UploadImage/SkeletonGridItem.vue'
+import SkeletonGrid from '../UploadImage/SkeletonGrid.vue'
+import SkeletonGridItem from '../UploadImage/SkeletonGridItem.vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
 export default defineComponent({
@@ -90,7 +90,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/bootstrap-extended/_include';
+@import '../../@core/scss/base/bootstrap-extended/_include';
 .scroll-area {
   position: relative;
   width: 100%;

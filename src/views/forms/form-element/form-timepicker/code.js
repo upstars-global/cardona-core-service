@@ -7,7 +7,7 @@ export const codeBasic = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../../@core/components/app-card/AppCard.vue'
 import { BFormTimepicker } from 'bootstrap-vue'
 
 export default {
@@ -36,7 +36,7 @@ export const codeButtonOnly = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../../@core/components/app-card/AppCard.vue'
 import {
   BFormTimepicker, BInputGroup, BFormInput, BInputGroupAppend,
 } from 'bootstrap-vue'
@@ -91,7 +91,7 @@ export const codeInternationalization = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../../@core/components/app-card/AppCard.vue'
 import {
   BFormTimepicker, BRow, BCol, BFormSelect,
 } from 'bootstrap-vue'
@@ -175,7 +175,7 @@ export const codeOptional = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../../@core/components/app-card/AppCard.vue'
 import { BFormTimepicker } from 'bootstrap-vue'
 
 export default {
@@ -199,7 +199,7 @@ export const codePlaceholder = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../../@core/components/app-card/AppCard.vue'
 import { BFormTimepicker } from 'bootstrap-vue'
 
 export default {
@@ -225,7 +225,7 @@ export const codeSecond = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../../@core/components/app-card/AppCard.vue'
 import { BFormTimepicker } from 'bootstrap-vue'
 
 export default {
@@ -261,7 +261,7 @@ export const codeSize = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../../@core/components/app-card/AppCard.vue'
 import { BFormTimepicker } from 'bootstrap-vue'
 
 export default {
@@ -316,7 +316,7 @@ export const codeState = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../../@core/components/app-card/AppCard.vue'
 import {
   BFormTimepicker, BFormGroup, BFormRadioGroup, BFormRadio,
 } from 'bootstrap-vue'
@@ -362,7 +362,7 @@ export const codeValidation = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../../@core/components/app-card/AppCard.vue'
 import { BFormTimepicker } from 'bootstrap-vue'
 
 export default {

@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import VueSlider from 'vue-slider-component'
-import store from '@/store'
+import store from '../../../store'
 import { codeSingle } from './code'
 
 export default {
@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = 'rtl'
         return this.dir

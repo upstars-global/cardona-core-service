@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
-import i18n from '@/libs/i18n'
+import i18n from '../../../../libs/i18n'
 
 export default defineComponent({
   name: 'SearchInput',

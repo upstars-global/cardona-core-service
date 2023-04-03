@@ -64,7 +64,7 @@
 
 <script>
 import { BPagination, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { codeColorOption } from './code'
 
 export default {

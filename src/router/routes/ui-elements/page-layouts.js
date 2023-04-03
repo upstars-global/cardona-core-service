@@ -2,7 +2,7 @@ export default [
   {
     path: '/page-layouts/collapsed-menu',
     name: 'page-layout-collapsed-menu',
-    component: () => import('@/views/ui/page-layouts/CollapsedMenu.vue'),
+    component: () => import('../../../views/ui/page-layouts/CollapsedMenu.vue'),
     meta: {
       pageTitle: 'Layout Collapsed Menu',
       breadcrumb: [
@@ -19,7 +19,7 @@ export default [
   {
     path: '/page-layouts/boxed-layout',
     name: 'page-layout-boxed-layout',
-    component: () => import('@/views/ui/page-layouts/BoxedLayout.vue'),
+    component: () => import('../../../views/ui/page-layouts/BoxedLayout.vue'),
     meta: {
       pageTitle: 'Boxed Layout',
       breadcrumb: [
@@ -36,7 +36,7 @@ export default [
   {
     path: '/page-layouts/without-menu',
     name: 'page-layout-without-menu',
-    component: () => import('@/views/ui/page-layouts/WithoutMenu.vue'),
+    component: () => import('../../../views/ui/page-layouts/WithoutMenu.vue'),
     meta: {
       pageTitle: 'Layout Without Menu',
       breadcrumb: [
@@ -53,7 +53,7 @@ export default [
   {
     path: '/page-layouts/layout-empty',
     name: 'page-layout-layout-empty',
-    component: () => import('@/views/ui/page-layouts/LayoutEmpty.vue'),
+    component: () => import('../../../views/ui/page-layouts/LayoutEmpty.vue'),
     meta: {
       pageTitle: 'Layout Empty',
       breadcrumb: [
@@ -70,7 +70,7 @@ export default [
   {
     path: '/page-layouts/layout-blank',
     name: 'page-layout-layout-blank',
-    component: () => import('@/views/ui/page-layouts/LayoutBlank.vue'),
+    component: () => import('../../../views/ui/page-layouts/LayoutBlank.vue'),
     meta: {
       layout: 'full',
       pageTitle: 'Layout Blank',

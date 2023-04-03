@@ -87,45 +87,45 @@ export default {
       },
     }
 
-    /* eslint-disable global-require */
+    /* eslint-disable */
     const relatedProducts = [
       {
         name: 'Apple Watch Series 6',
         brand: 'Apple',
         price: 399.98,
         rating: 4,
-        image: require('@/assets/images/elements/apple-watch.png'),
+        image: require('../../../../assets/images/elements/apple-watch.png'),
       },
       {
         name: 'Apple MacBook Pro - Silver',
         brand: 'Apple',
         price: 2449.49,
         rating: 2,
-        image: require('@/assets/images/elements/macbook-pro.png'),
+        image: require('../../../../assets/images/elements/macbook-pro.png'),
       },
       {
         name: 'Apple HomePod (Space Grey)',
         brand: 'Apple',
         price: 229.29,
         rating: 3,
-        image: require('@/assets/images/elements/homepod.png'),
+        image: require('../../../../assets/images/elements/homepod.png'),
       },
       {
         name: 'Magic Mouse 2 - Black',
         brand: 'Apple',
         price: 90.98,
         rating: 5,
-        image: require('@/assets/images/elements/magic-mouse.png'),
+        image: require('../../../../assets/images/elements/magic-mouse.png'),
       },
       {
         name: 'iPhone 12 Pro',
         brand: 'Apple',
         price: 1559.99,
         rating: 4,
-        image: require('@/assets/images/elements/iphone-x.png'),
+        image: require('../../../../assets/images/elements/iphone-x.png'),
       },
     ]
-    /* eslint-disable global-require */
+    /* eslint-disable */
 
     return {
       swiperOptions,
@@ -136,6 +136,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/swiper.scss';
-@import '../../../../../node_modules/swiper/css/swiper.css';
+@import '../../../../@core/scss/vue/libs/swiper.scss';
+//@import '../../../../../node_modules/swiper/css/swiper.css';
 </style>

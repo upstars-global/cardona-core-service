@@ -14,7 +14,7 @@
         <b-form-group>
           <v-select
             v-model="selected"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             label="title"
             :options="option"
           />
@@ -36,7 +36,7 @@
         <b-form-group>
           <v-select
             v-model="selected1"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             :options="books"
             label="title"
           >
@@ -58,7 +58,7 @@
 <script>
 import { BRow, BCol, BFormGroup, BCardText } from 'bootstrap-vue'
 
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import vSelect from 'vue-select'
 import { codeVueBasic } from './code'
 

@@ -82,10 +82,10 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { BFormInput, BFormGroup, BForm, BRow, BCol, BButton } from 'bootstrap-vue'
-import { required, email, confirmed, password } from '@validations'
+import { required, email, confirmed, password } from '../../../@core/utils/validations/validations'
 import { codeMultiple } from './code'
 
 export default {

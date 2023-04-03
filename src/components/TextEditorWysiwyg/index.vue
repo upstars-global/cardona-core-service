@@ -37,10 +37,10 @@
 <script lang="ts">
 import { computed, ref } from 'vue'
 import { VBTooltip } from 'bootstrap-vue'
-import VariableModal from '@/components/TextEditorWysiwyg/VariableModal'
+import VariableModal from '../../components/TextEditorWysiwyg/VariableModal'
 import 'vue-froala-wysiwyg'
 import FroalaEditor from 'froala-editor'
-import i18n from '@/libs/i18n'
+import i18n from '../../libs/i18n'
 
 export default {
   name: 'TextEditorWysiwyg',
@@ -351,8 +351,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/bootstrap-extended/_include';
-@import '~@core/scss/base/components/include';
+@import '../../@core/scss/base/bootstrap-extended/_include';
+@import '../../@core/scss/base/components/include';
 
 .dark-layout {
   .block-text-edite {

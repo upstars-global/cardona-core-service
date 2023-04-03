@@ -18,5 +18,5 @@ export default {
 </script>
 
 <style lang="scss" >
-@import '@core/scss/vue/libs/vue-context.scss';
+@import '../../../@core/scss/vue/libs/vue-context.scss';
 </style>

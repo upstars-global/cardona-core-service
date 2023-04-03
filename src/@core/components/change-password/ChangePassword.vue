@@ -1,95 +1,46 @@
 <template>
-  <validation-observer v-slot="{ invalid }">
-    <b-modal
-      v-model="isShow"
-      cancel-variant="outline-secondary"
-      :ok-title="$t('action.save')"
-      :ok-disabled="invalid"
-      :cancel-title="$t('action.cancel')"
-      centered
-      title="Задать новый пароль"
-      @hidden="onCancel"
-      @ok="onSuccess"
-    >
-      <b-form>
-        <change-password-input
-          v-model="password"
-          vid="Password"
-          rules="required|password"
-          :label="$t('placeholder.newPassword')"
-        />
-        <change-password-input
-          v-model="repeatPassword"
-          rules="required|confirmed:Password"
-          :label="$t('placeholder.repeatPassword')"
-        />
-      </b-form>
-    </b-modal>
-  </validation-observer>
+  <c-modal
+    :id="ModalsId.ChangePassword"
+    :title="$t('modal.changePassword.title')"
+    :size="BSizes.Md"
+    :ok-title="$t('action.save')"
+    @ok="onSuccess"
+    @hidden="clearForm"
+  >
+    <base-section ref="formRef" :use-entity="useSection">
+      <template #default="{ form }">
+        <field-generator v-model="form.password" class="mb-2" />
+        <field-generator v-model="form.repeatPassword" class="mb-2" />
+      </template>
+    </base-section>
+  </c-modal>
 </template>
-<script lang="ts">
-import { BForm, BModal } from 'bootstrap-vue'
-import ChangePasswordInput from './ChangePasswordInput.vue'
-import { ref, defineComponent, computed, WritableComputedRef } from 'vue'
-import { updateUserPassword } from '@queries/user'
-import useToastService from '@/helpers/toasts'
 
-export default defineComponent({
-  components: {
-    ChangePasswordInput,
-    BForm,
-    BModal,
-  },
-  props: {
-    id: {
-      type: [String, Number],
-      required: true,
-    },
-    value: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props, { emit }) {
-    const { toastSuccess, toastError } = useToastService()
+<script setup lang="ts">
+import { ref } from 'vue'
+import FieldGenerator from '../../../components/templates/FieldGenerator/index.vue'
+import BaseSection from '../../../components/templates/BaseSection/index.vue'
+import { useSection } from '../../../@model/changePassword'
+import store from '../../../store'
+import CModal from '../../../components/CModal.vue'
+import { ModalsId } from '../../../@model/modalsId'
+import { BSizes } from '../../../@model/bootstrap'
 
-    const isShow: WritableComputedRef<boolean> = computed({
-      get() {
-        return props.value
-      },
-      set(value) {
-        emit('input', value)
-      },
-    })
+const props = defineProps<{
+  id: string | number
+}>()
+const formRef = ref<InstanceType<typeof BaseSection> | null>(null)
 
-    const password = ref('')
-    const repeatPassword = ref('')
+const clearForm = () => {
+  formRef.value?.resetForm()
+}
 
-    const onCancel = () => {
-      password.value = ''
-      repeatPassword.value = ''
-    }
+const onSuccess = async (hide: Function) => {
+  if (!(await formRef.value?.validate())) return
 
-    const onSuccess = async () => {
-      try {
-        await updateUserPassword(props.id, {
-          password: password.value,
-        })
+  const payload = { id: props.id, password: formRef.value?.form.password.value }
+  await store.dispatch('users/updateUserPassword', payload)
 
-        toastSuccess('Пароль успешно изменён')
-      } catch (err) {
-        toastError(err)
-      }
-    }
-
-    return {
-      onCancel,
-      onSuccess,
-
-      isShow,
-      password,
-      repeatPassword,
-    }
-  },
-})
+  hide()
+}
 </script>

@@ -223,7 +223,7 @@ export const codeAutoDismiss = `
 
 <script>
 import { BAlert, BButton } from 'bootstrap-vue'
-import { heightFade } from '@core/directives/animations'
+import { heightFade } from '../../../@core/directives/animations'
 import Ripple from 'vue-ripple-directive'
 
 export default {
@@ -283,7 +283,7 @@ export const codeVsupport = `
 
 <script>
 import { BAlert, BButton } from 'bootstrap-vue'
-import { heightFade } from '@core/directives/animations'
+import { heightFade } from '../../../@core/directives/animations'
 import Ripple from 'vue-ripple-directive'
 
 export default {
@@ -383,7 +383,7 @@ export const codeAnimation = `
 
 <script>
 import { BAlert, BButton, BCardText } from 'bootstrap-vue'
-import { heightFade } from '@core/directives/animations'
+import { heightFade } from '../../../@core/directives/animations'
 import Ripple from 'vue-ripple-directive'
 
 export default {
@@ -448,7 +448,7 @@ export const codeExample = `
 
 <script>
 import {BAlert, BFormGroup, BFormInput} from 'bootstrap-vue'
-import { heightFade } from '@core/directives/animations'
+import { heightFade } from '../../../@core/directives/animations'
 
 export default {
   components: {

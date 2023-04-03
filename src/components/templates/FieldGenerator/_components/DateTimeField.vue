@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import flatPickr from 'vue-flatpickr-component'
 import en from 'flatpickr/dist/l10n/default.js'
 import { Russian as ru } from 'flatpickr/dist/l10n/ru.js'
-import i18n from '@/libs/i18n'
+import i18n from '../../../../libs/i18n'
 
 export default {
   name: 'DateRangeField',
@@ -69,5 +69,5 @@ export default {
 </template>
 
 <style scoped lang="scss">
-@import '~@core/scss/vue/libs/vue-flatpicker.scss';
+@import '../../../../@core/scss/vue/libs/vue-flatpicker.scss';
 </style>

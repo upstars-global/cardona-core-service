@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import BCardActions from '@core/components/b-card-actions/BCardActions.vue'
+import BCardActions from '../../../@core/components/b-card-actions/BCardActions.vue'
 import { BRow, BCol, BTable, BCardText } from 'bootstrap-vue'
 
 export default {

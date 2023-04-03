@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ViewInfo } from '@model/view'
+import { ViewInfo } from '../../../../@model/view'
 import { computed, ref } from 'vue'
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
+import { useUtils as useI18nUtils } from '../../../../@core/libs/i18n'
 
 const { t } = useI18nUtils()
 const props = defineProps<{

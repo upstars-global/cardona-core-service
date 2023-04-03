@@ -2,7 +2,7 @@ export default [
   {
     path: '/card/card-basic',
     name: 'card-basic',
-    component: () => import('@/views/card/card-basic/CardBasic.vue'),
+    component: () => import('../../../views/card/card-basic/CardBasic.vue'),
     meta: {
       pageTitle: 'Basic Card',
       breadcrumb: [
@@ -19,7 +19,7 @@ export default [
   {
     path: '/card/card-advance',
     name: 'card-advance',
-    component: () => import('@/views/card/card-advance/CardAdvance.vue'),
+    component: () => import('../../../views/card/card-advance/CardAdvance.vue'),
     meta: {
       pageTitle: 'Advance Card',
       breadcrumb: [
@@ -36,7 +36,7 @@ export default [
   {
     path: '/card/statistic',
     name: 'card-statistic',
-    component: () => import('@/views/card/card-statistic/CardStatistic.vue'),
+    component: () => import('../../../views/card/card-statistic/CardStatistic.vue'),
     meta: {
       pageTitle: 'Statistics Cards',
       breadcrumb: [
@@ -53,7 +53,7 @@ export default [
   {
     path: '/card/analytic',
     name: 'card-analytic',
-    component: () => import('@/views/card/card-analytic/CardAnalytic.vue'),
+    component: () => import('../../../views/card/card-analytic/CardAnalytic.vue'),
     meta: {
       pageTitle: 'Analytics Cards',
       breadcrumb: [
@@ -70,7 +70,7 @@ export default [
   {
     path: '/card/action',
     name: 'card-action',
-    component: () => import('@/views/card/card-action/CardAction.vue'),
+    component: () => import('../../../views/card/card-action/CardAction.vue'),
     meta: {
       pageTitle: 'Card Actions',
       breadcrumb: [

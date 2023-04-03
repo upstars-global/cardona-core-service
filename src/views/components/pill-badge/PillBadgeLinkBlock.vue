@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BBadge, BRow, BCol, BCardText } from 'bootstrap-vue'
 import { codeLinkBadge, codeLinkBlock } from './code'
 

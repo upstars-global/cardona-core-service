@@ -71,10 +71,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
-import { getters, dispatch } from '@/store'
-import { GameActionType, GamesSectionGamesItem } from '@model/games'
-import { GamesListItem } from '@model/games'
-import { ListData } from '@/@model'
+import { getters, dispatch } from '../../../store'
+import { GameActionType, GamesSectionGamesItem } from '../../../@model/games'
+import { GamesListItem } from '../../../@model/games'
+import { ListData } from '../../../@model'
 
 export default defineComponent({
   name: 'AddingGamesBySlugsModal',

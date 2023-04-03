@@ -154,7 +154,7 @@
                 >
                   <v-select
                     v-model="addressDetails.addressType"
-                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                     :options="['Home', 'Work']"
                     input-id="address-type"
                     :clearable="false"
@@ -208,8 +208,8 @@ import {
 } from 'bootstrap-vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import vSelect from 'vue-select'
-import { required, integer } from '@validations'
-import formValidation from '@core/comp-functions/forms/form-validation'
+import { required, integer } from '../../../../@core/utils/validations/validations'
+import formValidation from '../../../../@core/comp-functions/forms/form-validation'
 
 export default {
   components: {
@@ -265,5 +265,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
+@import '../../../../@core/scss/vue/libs/vue-select.scss';
 </style>

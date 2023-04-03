@@ -6,7 +6,7 @@ export const BSizes = {
   Xl: 'xl',
 } as const
 
-export type BSize = typeof BSizes[keyof typeof BSizes]
+export type BSize = (typeof BSizes)[keyof typeof BSizes]
 
 export const BVariants = {
   Primary: 'primary',
@@ -21,4 +21,4 @@ export const BVariants = {
   Info: 'info',
 } as const
 
-export type BVariant = typeof BVariants[keyof typeof BVariants]
+export type BVariant = (typeof BVariants)[keyof typeof BVariants]

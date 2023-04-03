@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BTable, BFormCheckbox, BButton, BCard, BRow, BCol, BAvatar, BBadge } from 'bootstrap-vue'
 import { codeRowDetailsSupport } from './code'
 
@@ -80,11 +80,11 @@ export default {
         'experience',
         { key: 'status', label: 'Status' },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
       items: [
         {
           id: 1,
-          avatar: require('@/assets/images/avatars/10-small.png'),
+          avatar: require('../../../assets/images/avatars/10-small.png'),
           full_name: "Korrie O'Crevy",
           post: 'Nuclear Power Engineer',
           email: 'kocrevy0@thetimes.co.uk',
@@ -97,7 +97,7 @@ export default {
         },
         {
           id: 2,
-          avatar: require('@/assets/images/avatars/1-small.png'),
+          avatar: require('../../../assets/images/avatars/1-small.png'),
           full_name: 'Bailie Coulman',
           post: 'VP Quality Control',
           email: 'bcoulman1@yolasite.com',
@@ -110,7 +110,7 @@ export default {
         },
         {
           id: 3,
-          avatar: require('@/assets/images/avatars/9-small.png'),
+          avatar: require('../../../assets/images/avatars/9-small.png'),
           full_name: 'Stella Ganderton',
           post: 'Operator',
           email: 'sganderton2@tuttocitta.it',
@@ -123,7 +123,7 @@ export default {
         },
         {
           id: 4,
-          avatar: require('@/assets/images/avatars/3-small.png'),
+          avatar: require('../../../assets/images/avatars/3-small.png'),
           full_name: 'Dorolice Crossman',
           post: 'Cost Accountant',
           email: 'dcrossman3@google.co.jp',
@@ -136,7 +136,7 @@ export default {
         },
         {
           id: 5,
-          avatar: require('@/assets/images/avatars/4-small.png'),
+          avatar: require('../../../assets/images/avatars/4-small.png'),
           full_name: 'Harmonia Nisius',
           post: 'Senior Cost Accountant',
           email: 'hnisius4@gnu.org',
@@ -149,7 +149,7 @@ export default {
         },
         {
           id: 6,
-          avatar: require('@/assets/images/avatars/5-small.png'),
+          avatar: require('../../../assets/images/avatars/5-small.png'),
           full_name: 'Genevra Honeywood',
           post: 'Geologist',
           email: 'ghoneywood5@narod.ru',
@@ -162,7 +162,7 @@ export default {
         },
         {
           id: 7,
-          avatar: require('@/assets/images/avatars/7-small.png'),
+          avatar: require('../../../assets/images/avatars/7-small.png'),
           full_name: 'Eileen Diehn',
           post: 'Environmental Specialist',
           email: 'ediehn6@163.com',
@@ -175,7 +175,7 @@ export default {
         },
         {
           id: 8,
-          avatar: require('@/assets/images/avatars/9-small.png'),
+          avatar: require('../../../assets/images/avatars/9-small.png'),
           full_name: 'Richardo Aldren',
           post: 'Senior Sales Associate',
           email: 'raldren7@mtv.com',
@@ -188,7 +188,7 @@ export default {
         },
         {
           id: 9,
-          avatar: require('@/assets/images/avatars/2-small.png'),
+          avatar: require('../../../assets/images/avatars/2-small.png'),
           full_name: 'Allyson Moakler',
           post: 'Safety Technician',
           email: 'amoakler8@shareasale.com',
@@ -201,7 +201,7 @@ export default {
         },
         {
           id: 10,
-          avatar: require('@/assets/images/avatars/6-small.png'),
+          avatar: require('../../../assets/images/avatars/6-small.png'),
           full_name: 'Merline Penhalewick',
           post: 'Junior Executive',
           email: 'mpenhalewick9@php.net',
@@ -213,7 +213,7 @@ export default {
           status: 2,
         },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
       status: [
         {
           1: 'Current',

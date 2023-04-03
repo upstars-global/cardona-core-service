@@ -50,7 +50,7 @@
 
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import VuexyLogo from '@core/layouts/components/AppLogo.vue'
+import VuexyLogo from '../../../@core/layouts/components/AppLogo.vue'
 import {
   BCard,
   BLink,
@@ -61,7 +61,7 @@ import {
   BForm,
   BButton,
 } from 'bootstrap-vue'
-import { required, email } from '@validations'
+import { required, email } from '../../../@core/utils/validations/validations'
 
 export default {
   components: {
@@ -98,5 +98,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/pages/page-auth.scss';
+@import '../../../@core/scss/vue/pages/page-auth.scss';
 </style>

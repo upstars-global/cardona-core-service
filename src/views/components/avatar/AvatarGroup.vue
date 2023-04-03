@@ -9,19 +9,28 @@
     </b-card-text>
 
     <b-avatar-group size="32px">
-      <b-avatar class="pull-up" :src="require('@/assets/images/portrait/small/avatar-s-5.jpg')" />
+      <b-avatar
+        class="pull-up"
+        :src="require('../../../assets/images/portrait/small/avatar-s-5.jpg')"
+      />
       <b-avatar
         class="pull-up"
         variant="primary"
-        :src="require('@/assets/images/portrait/small/avatar-s-7.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-7.jpg')"
       />
-      <b-avatar class="pull-up" :src="require('@/assets/images/portrait/small/avatar-s-10.jpg')" />
+      <b-avatar
+        class="pull-up"
+        :src="require('../../../assets/images/portrait/small/avatar-s-10.jpg')"
+      />
       <b-avatar
         class="pull-up"
         variant="danger"
-        :src="require('@/assets/images/portrait/small/avatar-s-8.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-8.jpg')"
       />
-      <b-avatar class="pull-up" :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')" />
+      <b-avatar
+        class="pull-up"
+        :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')"
+      />
     </b-avatar-group>
 
     <template #code>
@@ -31,7 +40,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BAvatarGroup, BAvatar, BCardText } from 'bootstrap-vue'
 import { codeGroup } from './code'
 

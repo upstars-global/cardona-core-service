@@ -14,7 +14,7 @@ export const codeVueBasic = `
       <b-form-group>
         <v-select
           v-model="selected"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           label="title"
           :options="option"
         />
@@ -35,7 +35,7 @@ export const codeVueBasic = `
       <b-form-group>
         <v-select
           v-model="selected1"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           :options="books"
           label="title"
         >
@@ -96,7 +96,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
+@import '../../../../@core/scss/vue/libs/vue-select.scss';
 </style>
 `
 
@@ -109,7 +109,7 @@ export const codeVueSize = `
       <b-form-group>
         <v-select
           v-model="selected"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           label="title"
           :options="option"
           class="select-size-sm"
@@ -122,7 +122,7 @@ export const codeVueSize = `
       <b-form-group>
         <v-select
           v-model="selected"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           label="title"
           :options="option"
         />
@@ -134,7 +134,7 @@ export const codeVueSize = `
       <b-form-group>
         <v-select
           v-model="selected"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           label="title"
           :options="option"
           class="select-size-lg"
@@ -165,7 +165,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
+@import '../../../../@core/scss/vue/libs/vue-select.scss';
 </style>
 `
 
@@ -178,7 +178,7 @@ export const codeVueMultipleSize = `
       <b-form-group>
         <v-select
           v-model="selected"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           label="title"
           :options="option"
           class="select-size-sm"
@@ -192,7 +192,7 @@ export const codeVueMultipleSize = `
       <b-form-group>
         <v-select
           v-model="selected"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           label="title"
           :options="option"
           multiple
@@ -205,7 +205,7 @@ export const codeVueMultipleSize = `
       <b-form-group>
         <v-select
           v-model="selected"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           label="title"
           :options="option"
           class="select-size-lg"
@@ -241,7 +241,7 @@ export const codeVueMultiBasic = `
 <template>
   <v-select
     v-model="selected"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     multiple
     label="title"
     :options="option"
@@ -272,7 +272,7 @@ export const codeVueMultiIcon = `
 <template>
   <v-select
     v-model="selected1"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     multiple
     :options="books"
     label="title"
@@ -331,7 +331,7 @@ export const codeMultiPush = `
 <template>
   <div>
     <v-select
-      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+      :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
       multiple
       taggable
       push-tags
@@ -356,7 +356,7 @@ export const codeVueSelectionLimit = `
 <template>
   <v-select
     v-model="selected2"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     multiple
     placeholder="Choose up to 3 books!"
     label="title"

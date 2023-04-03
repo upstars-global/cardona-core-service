@@ -24,7 +24,7 @@
 </template>
 <script lang="ts">
 import { BFormGroup, BFormInput, BInputGroupAppend, BInputGroup } from 'bootstrap-vue'
-import { togglePasswordVisibility } from '@core/mixins/ui/forms'
+import { togglePasswordVisibility } from '../../../@core/mixins/ui/forms'
 import { defineComponent } from 'vue'
 
 export default defineComponent({

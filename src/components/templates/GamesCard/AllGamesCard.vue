@@ -42,13 +42,18 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import BaseList from '@/components/templates/BaseList'
-import { BaseListConfig } from '@/components/templates/BaseList/model'
+import BaseList from '../../../components/templates/BaseList'
+import { BaseListConfig } from '../../../components/templates/BaseList/model'
 import { useAllGames } from './useGameCard'
-import { GamesListItem, IGamesFilters, GamesSectionGamesItem, GameActionType } from '@model/games'
-import { dispatch, getters } from '@/store'
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
-import { ConfirmModal, useModal } from '@/helpers/bvModal'
+import {
+  GamesListItem,
+  IGamesFilters,
+  GamesSectionGamesItem,
+  GameActionType,
+} from '../../../@model/games'
+import { dispatch, getters } from '../../../store'
+import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
+import { ConfirmModal, useModal } from '../../../helpers/bvModal'
 
 export default defineComponent({
   name: 'AllGamesCard',

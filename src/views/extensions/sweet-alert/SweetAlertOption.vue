@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BButton } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
 import { codeOptions } from './code'
@@ -61,7 +61,7 @@ export default {
         title: 'Sweet!',
         text: 'Modal with a custom image.',
         // eslint-disable-next-line global-require
-        imageUrl: require('@/assets/images/slider/04.jpg'),
+        imageUrl: require('../../../assets/images/slider/04.jpg'),
         imageWidth: 400,
         imageHeight: 200,
         imageAlt: 'Custom image',

@@ -101,7 +101,7 @@
           <v-select
             id="vue-select"
             v-model="selected"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             :options="option"
           />
         </b-form-group>
@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BButton, BModal, VBModal, BForm, BFormInput, BFormGroup, BCardText } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import Ripple from 'vue-ripple-directive'
@@ -165,5 +165,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
+@import '../../../@core/scss/vue/libs/vue-select.scss';
 </style>

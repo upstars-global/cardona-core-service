@@ -3,7 +3,7 @@
     <swiper
       class="swiper-navigations"
       :options="swiperOptions"
-      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+      :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     >
       <swiper-slide v-for="(data, index) in swiperData" :key="index">
         <b-img :src="data.img" fluid />
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import { BImg } from 'bootstrap-vue'
 import 'swiper/css/swiper.css'
@@ -38,15 +38,15 @@ export default {
     return {
       codeNavigation,
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-7.jpg') },
-        { img: require('@/assets/images/banner/banner-4.jpg') },
-        { img: require('@/assets/images/banner/banner-14.jpg') },
-        { img: require('@/assets/images/banner/banner-3.jpg') },
-        { img: require('@/assets/images/banner/banner-2.jpg') },
+        { img: require('../../../assets/images/banner/banner-7.jpg') },
+        { img: require('../../../assets/images/banner/banner-4.jpg') },
+        { img: require('../../../assets/images/banner/banner-14.jpg') },
+        { img: require('../../../assets/images/banner/banner-3.jpg') },
+        { img: require('../../../assets/images/banner/banner-2.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         navigation: {

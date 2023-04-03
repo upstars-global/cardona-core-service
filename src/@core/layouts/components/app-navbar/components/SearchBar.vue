@@ -115,10 +115,10 @@
 import { BFormInput, BLink, BImg, BAvatar } from 'bootstrap-vue'
 import { ref, watch } from 'vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import useAutoSuggest from '@core/components/app-auto-suggest/useAutoSuggest'
-import { title } from '@core/utils/filter'
-import router from '@/router'
-import store from '@/store'
+import useAutoSuggest from '../../../../../@core/components/app-auto-suggest/useAutoSuggest'
+import { title } from '../../../../../@core/utils/filter'
+import router from '../../../../../router'
+import store from '../../../../../store'
 import searchAndBookmarkData from '../search-and-bookmark-data'
 
 export default {
@@ -161,7 +161,7 @@ export default {
     })
 
     watch(searchQuery, (val) => {
-      store.commit('breakpoint/TOGGLE_OVERLAY', Boolean(val))
+      store.commit('breakpointCore/TOGGLE_OVERLAY', Boolean(val))
     })
 
     const currentSelected = ref(-1)
@@ -248,8 +248,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/include';
-@import '~@core/scss/base/components/variables-dark';
+@import '../../../../../@core/scss/base/bootstrap-extended/include';
+@import '../../../../../@core/scss/base/components/variables-dark';
 
 ul {
   list-style: none;

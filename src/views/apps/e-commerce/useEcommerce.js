@@ -1,5 +1,5 @@
-import store from '@/store'
-import { useRouter } from '@core/utils/utils'
+import store from '../../../store'
+import { useRouter } from '../../../@core/utils/utils'
 
 export const useEcommerce = () => {
   // eslint-disable-next-line arrow-body-style

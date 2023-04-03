@@ -74,17 +74,17 @@
 
 <script>
 import { computed, onUnmounted } from 'vue'
-import AppNavbarVerticalLayout from '@core/layouts/components/app-navbar/AppNavbarVerticalLayout.vue'
-import AppFooter from '@core/layouts/components/AppFooter.vue'
-import useAppConfig from '@core/app-config/useAppConfig'
+import AppNavbarVerticalLayout from '../../../@core/layouts/components/app-navbar/AppNavbarVerticalLayout.vue'
+import AppFooter from '../../../@core/layouts/components/AppFooter.vue'
+import useAppConfig from '../../../@core/app-config/useAppConfig'
 import { BNavbar } from 'bootstrap-vue'
-import LayoutContentRendererDefault from '@core/layouts/components/layout-content-renderer/LayoutContentRendererDefault.vue'
-import LayoutContentRendererLeft from '@core/layouts/components/layout-content-renderer/LayoutContentRendererLeft.vue'
-import LayoutContentRendererLeftDetached from '@core/layouts/components/layout-content-renderer/LayoutContentRendererLeftDetached.vue'
+import LayoutContentRendererDefault from '../../../@core/layouts/components/layout-content-renderer/LayoutContentRendererDefault.vue'
+import LayoutContentRendererLeft from '../../../@core/layouts/components/layout-content-renderer/LayoutContentRendererLeft.vue'
+import LayoutContentRendererLeftDetached from '../../../@core/layouts/components/layout-content-renderer/LayoutContentRendererLeftDetached.vue'
 import VerticalNavMenu from './components/vertical-nav-menu/VerticalNavMenu.vue'
 import useVerticalLayout from './useVerticalLayout'
 import mixinVerticalLayout from './mixinVerticalLayout'
-import { getters, dispatch } from '@/store'
+import { getters, dispatch } from '../../../store'
 
 export default {
   components: {
@@ -153,7 +153,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/themes/bordered-layout.scss';
+@import '../../../@core/scss/base/themes/bordered-layout.scss';
 </style>
 
 <style lang="scss" scoped>

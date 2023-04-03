@@ -1,9 +1,10 @@
-import ApiService from '@/services/api'
-import router from '@/router'
+import ApiService from '../../services/api'
+import router from '../../router'
 import { IAuthTokens, isLoggedIn, setAuthTokens, clearAuthTokens } from 'axios-jwt'
-import { ILoginData } from '@model/auth'
+import { ILoginData } from '../../@model/auth'
 
 export default {
+  namespaced: true,
   state: {
     isAuthorized: isLoggedIn(),
   },
@@ -52,7 +53,6 @@ export default {
       clearAuthTokens()
 
       commit('SET_AUTH', false)
-      commit('SET_USER_INFO', {})
     },
   },
 }

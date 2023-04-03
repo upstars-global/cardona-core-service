@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BProgress, BCardText, BRow, BCol } from 'bootstrap-vue'
 import { codeAnimated } from './code'
 

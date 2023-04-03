@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { VBTooltip, BButton, BCardText } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
 import { codeVariantCustom } from './code'

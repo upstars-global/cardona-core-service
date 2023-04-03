@@ -1,8 +1,8 @@
-import { SeoData } from '@model/seo'
-import { FieldInfo, FieldType } from '@model/field'
-import i18n from '@/libs/i18n'
-import { IRequestListPayload } from '@model/index'
-import { FieldTranslationsData } from '@model/translations'
+import { SeoData } from '../@model/seo'
+import { FieldInfo, FieldType } from '../@model/field'
+import i18n from '../libs/i18n'
+import { IRequestListPayload } from '../@model/index'
+import { FieldTranslationsData } from '../@model/translations'
 
 export type StaticPagesData = {
   readonly id: string

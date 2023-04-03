@@ -6,7 +6,7 @@
           <v-select
             value=""
             :placeholder="$t('placeholder.loginOrEmail')"
-            :dir="$store.getters['appConfig/dirOption']"
+            :dir="$store.getters['appConfigCore/dirOption']"
             label="userName"
             :options="notSelectedUsers"
             @search="fetchOptions"
@@ -53,10 +53,10 @@
 </template>
 
 <script lang="ts">
-import { fetchUsers } from '@queries/user'
+import { fetchUsers } from '../@queries/user'
 import vSelect from 'vue-select'
 import { ref, PropType, defineComponent, computed } from 'vue'
-import { UserInfo } from '@model/user'
+import { UserInfo } from '../@model/user'
 import { debounce } from 'lodash'
 
 export default defineComponent({
@@ -129,8 +129,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/bootstrap-extended/_include';
-@import '~@core/scss/base/components/_include';
+@import '../@core/scss/base/bootstrap-extended/_include';
+@import '../@core/scss/base/components/_include';
 
 .field-group-disabled {
   cursor: pointer;

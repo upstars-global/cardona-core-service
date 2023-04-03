@@ -1,5 +1,5 @@
-import mock from '@/@fake-db/mock'
-/* eslint-disable global-require */
+import mock from '../../../@fake-db/mock'
+/* eslint-disable */
 const data = {
   faqData: {
     // payment

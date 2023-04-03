@@ -107,7 +107,7 @@
             v-model="perPage"
             :options="perPageOptions"
             class="per-page-selector d-inline-block"
-            :dir="$store.getters['appConfig/dirOption']"
+            :dir="$store.getters['appConfigCore/dirOption']"
             :searchable="false"
             :clearable="false"
             @input="setPerPage"
@@ -210,7 +210,7 @@
           <status-field
             v-else-if="field.type === ListFieldType.Status"
             :key="index"
-            :status="value"
+            :value="value"
           />
 
           <sum-and-currency
@@ -441,11 +441,10 @@
 
 <script lang="ts">
 import { computed, onMounted, PropType, ref, watch } from 'vue'
-import store, { dispatch, getters } from '@/store'
-import { useFilters } from '@/components/FiltersBlock/useFilters'
-import { useBvModal } from '@/helpers/bvModal'
-import { useRouter } from '@core/utils/utils'
-import usePagination from '@/use/pagination'
+import store, { dispatch, getters } from '../../../store'
+import { useBvModal } from '../../../helpers/bvModal'
+import { useRouter } from '../../../@core/utils/utils'
+import usePagination from '../../../use/pagination'
 import {
   BaseListConfig,
   DownloadFormat,
@@ -455,14 +454,12 @@ import {
   UseListType,
 } from './model'
 import { Location } from 'vue-router'
-import { TableField, ListFieldType } from '@core/components/table-fields/model'
-import { FieldType } from '@model/field'
-import FiltersBlock from '@/components/FiltersBlock'
-import TableFields from '@core/components/table-fields/TableFields.vue'
-import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol } from '@/helpers'
-import { parseDateRange } from '@/helpers/filters'
+import { TableField, ListFieldType } from '../../../@core/components/table-fields/model'
+import { FieldType } from '../../../@model/field'
+import TableFields from '../../../@core/components/table-fields/TableFields.vue'
+import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol } from '../../../helpers'
+import { parseDateRange } from '../../../helpers/filters'
 import SearchInput from './_components/SearchInput.vue'
-import CTable from '@/components/CTable'
 import StatusField from './_components/StatusField.vue'
 import PillStatusField from './_components/PillStatusField.vue'
 import NameWithIdField from './_components/NameWithIdField.vue'
@@ -476,16 +473,21 @@ import ButtonField from './_components/ButtonField.vue'
 import CommentField from './_components/CommentField.vue'
 import ImageField from './_components/ImageField.vue'
 import DatePeriodField from './_components/DatePeriodField.vue'
-import { GameActionType, GamesListItem, GamesSectionGamesItem } from '@model/games'
-import SideBar from '@/components/templates/BaseList/_components/SideBar.vue'
-import CModal from '@/components/CModal.vue'
-import SumAndCurrency from '@/components/SumAndCurrency.vue'
-import { IListSort } from '@/@model'
+import DataObjectField from './_components/DataObjectField.vue'
+import { GameActionType, GamesListItem, GamesSectionGamesItem } from '../../../@model/games'
+import SideBar from '../../../components/templates/BaseList/_components/SideBar.vue'
+import CModal from '../../../components/CModal.vue'
+import SumAndCurrency from '../../../components/SumAndCurrency.vue'
+import { IListSort } from '../../../@model'
+import CTable from '../../CTable/index.vue'
+import { useFilters } from '../../FiltersBlock/useFilters'
+import FiltersBlock from '../../FiltersBlock/index.vue'
 
 export default {
   name: 'BaseList',
   components: {
     DatePeriodField,
+    DataObjectField,
     ImageField,
     CommentField,
     SumAndCurrency,
@@ -569,12 +571,12 @@ export default {
     const moduleName: string = convertLowerCaseFirstSymbol(entityName)
     const fetchActionName: string = props.config?.withCustomFetchList
       ? `${moduleName}/fetch${entityName}List`
-      : 'baseStore/fetchListEntity'
-    const fetchReportActionName = 'baseStore/fetchReport'
-    const updateActionName = 'baseStore/updateEntity'
-    const deleteActionName = 'baseStore/deleteEntity'
-    const multipleUpdateActionName = 'baseStore/multipleUpdateEntity'
-    const multipleDeleteActionName = 'baseStore/multipleDeleteEntity'
+      : 'baseStoreCore/fetchListEntity'
+    const fetchReportActionName = 'baseStoreCore/fetchReport'
+    const updateActionName = 'baseStoreCore/updateEntity'
+    const deleteActionName = 'baseStoreCore/deleteEntity'
+    const multipleUpdateActionName = 'baseStoreCore/multipleUpdateEntity'
+    const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
 
     // Permissions
     const permissionKey = `backoffice-${convertCamelCase(entityName, '-')}`
@@ -779,9 +781,9 @@ export default {
     // Filters
     const isFiltersShown = ref(false)
     const appliedFilters = computed(() => {
-      const isSameEntity: boolean = entityName === store.getters['filters/listEntityName']
+      const isSameEntity: boolean = entityName === store.getters['filtersCore/listEntityName']
 
-      return isSameEntity ? store.getters['filters/appliedListFilters'] : []
+      return isSameEntity ? store.getters['filtersCore/appliedListFilters'] : []
     })
 
     onMounted(() => {

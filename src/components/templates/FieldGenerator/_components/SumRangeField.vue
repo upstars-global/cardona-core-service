@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import NumberField from './NumberField.vue'
-import { FieldInfo } from '@model/field'
+import { FieldInfo } from '../../../../@model/field'
 
 type SumRangeFieldProps = {
   value: Array<number>

@@ -3,12 +3,12 @@
     <swiper
       class="swiper-parallax"
       :options="swiperOptions"
-      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+      :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     >
       <div slot="parallax-bg" class="parallax-bg" data-swiper-parallax="-23%">
         <b-img
           class="img-fluid"
-          :src="require('@/assets/images/banner/parallax-4.jpg')"
+          :src="require('../../../assets/images/banner/parallax-4.jpg')"
           alt="banner"
         />
       </div>
@@ -40,7 +40,7 @@
 
 <script>
 import { BImg, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 import { codeParallax } from './code'

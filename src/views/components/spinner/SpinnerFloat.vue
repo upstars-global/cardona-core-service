@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BSpinner, BCardText } from 'bootstrap-vue'
 import { codeFloat } from './code'
 

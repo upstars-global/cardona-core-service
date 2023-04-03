@@ -1,9 +1,9 @@
-import mock from '@/@fake-db/mock'
-/* eslint-disable global-require */
+import mock from '../../../@fake-db/mock'
+/* eslint-disable */
 const data = {
   accountSetting: {
     general: {
-      avatar: require('@/assets/images/portrait/small/avatar-s-11.jpg'),
+      avatar: require('../../../assets/images/portrait/small/avatar-s-11.jpg'),
       username: 'johndoe',
       fullName: 'John Doe',
       email: 'granger007@hogward.com',
@@ -27,11 +27,11 @@ const data = {
       },
       connections: {
         twitter: {
-          profileImg: require('@/assets/images/avatars/11-small.png'),
+          profileImg: require('../../../assets/images/avatars/11-small.png'),
           id: 'johndoe',
         },
         google: {
-          profileImg: require('@/assets/images/avatars/3-small.png'),
+          profileImg: require('../../../assets/images/avatars/3-small.png'),
           id: 'luraweber',
         },
         facebook: {},
@@ -48,5 +48,5 @@ const data = {
     },
   },
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 mock.onGet('/account-setting/data').reply(() => [200, data.accountSetting])

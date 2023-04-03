@@ -9,13 +9,28 @@
     <b-container fluid class="p-1 bg-dark">
       <b-row>
         <b-col>
-          <b-img thumbnail fluid :src="require('@/assets/images/avatars/1.png')" alt="Image 1" />
+          <b-img
+            thumbnail
+            fluid
+            :src="require('../../../assets/images/avatars/1.png')"
+            alt="Image 1"
+          />
         </b-col>
         <b-col>
-          <b-img thumbnail fluid :src="require('@/assets/images/avatars/2.png')" alt="Image 2" />
+          <b-img
+            thumbnail
+            fluid
+            :src="require('../../../assets/images/avatars/2.png')"
+            alt="Image 2"
+          />
         </b-col>
         <b-col>
-          <b-img thumbnail fluid :src="require('@/assets/images/avatars/3.png')" alt="Image 3" />
+          <b-img
+            thumbnail
+            fluid
+            :src="require('../../../assets/images/avatars/3.png')"
+            alt="Image 3"
+          />
         </b-col>
       </b-row>
     </b-container>
@@ -27,7 +42,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BImg, BContainer, BRow, BCol, BCardText } from 'bootstrap-vue'
 import { codeThumbnails } from './code'
 

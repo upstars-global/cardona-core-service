@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BProgressBar, BProgress, BCardText } from 'bootstrap-vue'
 import { codeMultipleBar } from './code'
 

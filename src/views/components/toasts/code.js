@@ -78,7 +78,7 @@ export const codeToastDelay = `
       <template #toast-title>
         <div class="d-flex flex-grow-1 align-items-center mr-25">
           <b-img
-            :src="require('@/assets/images/logo/logo.png')"
+            :src="require('../../../assets/images/logo/logo.png')"
             class="rounded mr-2"
             height="18"
             width="25"
@@ -126,7 +126,7 @@ export const codeBasic = `
       <template #toast-title>
         <div class="d-flex flex-grow-1 align-items-center mr-1">
           <b-img
-            :src="require('@/assets/images/logo/logo.png')"
+            :src="require('../../../assets/images/logo/logo.png')"
             class="mr-1"
             height="18"
             width="25"
@@ -297,7 +297,7 @@ export const codeTranslucent = `
       <template #toast-title>
         <div class="d-flex flex-grow-1 align-items-center mr-1">
           <b-img
-            :src="require('@/assets/images/logo/logo.png')"
+            :src="require('../../../assets/images/logo/logo.png')"
             class="mr-1"
             height="18"
             width="25"

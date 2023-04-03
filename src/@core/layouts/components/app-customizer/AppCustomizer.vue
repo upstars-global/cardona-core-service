@@ -59,7 +59,7 @@
         <b-form-group label="Router Transition" label-cols="6">
           <v-select
             v-model="routerTransition"
-            :dir="$store.getters['appConfig/dirOption']"
+            :dir="$store.getters['appConfigCore/dirOption']"
             :clearable="false"
             label="title"
             :options="routerTransitionOptions"
@@ -264,8 +264,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/include';
-@import '~@core/scss/base/components/variables-dark';
+@import '../../../../@core/scss/base/bootstrap-extended/include';
+@import '../../../../@core/scss/base/components/variables-dark';
 
 .customizer-section {
   border-bottom: 1px solid #ebe9f1;

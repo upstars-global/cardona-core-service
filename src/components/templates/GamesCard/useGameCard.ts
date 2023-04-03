@@ -1,7 +1,7 @@
-import { ListFieldType, ListSize, TableField } from '@core/components/table-fields/model'
-import { GamesFilters, EnabledGamesFilters } from '@model/games'
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
-import { UseListType } from '@/components/templates/BaseList/model'
+import { ListFieldType, ListSize, TableField } from '../../../@core/components/table-fields/model'
+import { GamesFilters, EnabledGamesFilters } from '../../../@model/games'
+import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
+import { UseListType } from '../../../components/templates/BaseList/model'
 
 const { t } = useI18nUtils()
 

@@ -117,9 +117,9 @@
 </template>
 
 <script>
-/* eslint-disable global-require */
+/* eslint-disable */
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import VuexyLogo from '@core/layouts/components/AppLogo.vue'
+import VuexyLogo from '../../../@core/layouts/components/AppLogo.vue'
 import {
   BRow,
   BCol,
@@ -134,9 +134,9 @@ import {
   BButton,
   BImg,
 } from 'bootstrap-vue'
-import { required } from '@validations'
-import store from '@/store'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import { required } from '../../../@core/utils/validations/validations.ts'
+import store from '../../../store'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {
@@ -161,7 +161,7 @@ export default {
       userEmail: '',
       cPassword: '',
       password: '',
-      sideImg: require('@/assets/images/pages/reset-password-v2.svg'),
+      sideImg: require('../../../assets/images/pages/reset-password-v2.svg'),
       // validation
       required,
 
@@ -175,9 +175,9 @@ export default {
       return this.passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon'
     },
     imgUrl() {
-      if (store.state.appConfig.layout.skin === 'dark') {
+      if (store.state.appConfigCore.layout.skin === 'dark') {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.sideImg = require('@/assets/images/pages/reset-password-v2-dark.svg')
+        this.sideImg = require('../../../assets/images/pages/reset-password-v2-dark.svg')
         return this.sideImg
       }
       return this.sideImg
@@ -215,5 +215,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/pages/page-auth.scss';
+@import '../../../@core/scss/vue/pages/page-auth.scss';
 </style>

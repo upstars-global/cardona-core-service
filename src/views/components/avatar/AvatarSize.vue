@@ -14,10 +14,13 @@
     </b-card-text>
 
     <div class="demo-inline-spacing">
-      <b-avatar size="sm" :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')" />
-      <b-avatar :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')" />
-      <b-avatar size="lg" :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')" />
-      <b-avatar size="70px" :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')" />
+      <b-avatar size="sm" :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')" />
+      <b-avatar :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')" />
+      <b-avatar size="lg" :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')" />
+      <b-avatar
+        size="70px"
+        :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')"
+      />
     </div>
 
     <template #code>
@@ -27,7 +30,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BAvatar, BCardText } from 'bootstrap-vue'
 import { codeSizes } from './code'
 

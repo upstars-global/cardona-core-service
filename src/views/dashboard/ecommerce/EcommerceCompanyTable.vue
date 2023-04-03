@@ -87,8 +87,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_include.scss';
-@import '~@core/scss/base/components/_variables-dark.scss';
+@import '../../../@core/scss/base/bootstrap-extended/_include.scss';
+@import '../../../@core/scss/base/components/_variables-dark.scss';
 
 .card-company-table ::v-deep td .b-avatar.badge-light-company {
   .dark-layout & {

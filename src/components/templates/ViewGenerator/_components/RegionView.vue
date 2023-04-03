@@ -4,8 +4,8 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount } from 'vue'
-import store from '@/store'
-import { ViewInfo } from '@model/view'
+import store from '../../../../store'
+import { ViewInfo } from '../../../../@model/view'
 
 const props = defineProps<{
   item: ViewInfo

@@ -73,7 +73,7 @@
 
 <script>
 import { BPagination, BSpinner, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { codeContent } from './code'
 
 export default {

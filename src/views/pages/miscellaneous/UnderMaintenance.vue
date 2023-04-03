@@ -34,10 +34,10 @@
 </template>
 
 <script>
-/* eslint-disable global-require */
+/* eslint-disable */
 import { BLink, BFormInput, BButton, BForm, BImg } from 'bootstrap-vue'
-import VuexyLogo from '@core/layouts/components/AppLogo.vue'
-import store from '@/store'
+import VuexyLogo from '../../../@core/layouts/components/AppLogo.vue'
+import store from '../../../store'
 
 export default {
   components: {
@@ -50,14 +50,14 @@ export default {
   },
   data() {
     return {
-      downImg: require('@/assets/images/pages/under-maintenance.svg'),
+      downImg: require('../../../assets/images/pages/under-maintenance.svg'),
     }
   },
   computed: {
     imgUrl() {
-      if (store.state.appConfig.layout.skin === 'dark') {
+      if (store.state.appConfigCore.layout.skin === 'dark') {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.downImg = require('@/assets/images/pages/under-maintenance-dark.svg')
+        this.downImg = require('../../../assets/images/pages/under-maintenance-dark.svg')
         return this.downImg
       }
       return this.downImg
@@ -67,5 +67,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/pages/page-misc.scss';
+@import '../../../@core/scss/vue/pages/page-misc.scss';
 </style>

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { TransactionType } from '@model/playersTransactions'
+
+enum TransactionType {
+  Payout = 'payout',
+  Deposit = 'deposit',
+}
 
 const props = defineProps<{
   type: string

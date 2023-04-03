@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BButton, BCardText } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
 import { codeMessageBox } from './code'

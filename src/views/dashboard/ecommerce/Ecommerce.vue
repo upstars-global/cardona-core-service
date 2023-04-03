@@ -70,7 +70,7 @@
 <script>
 import { BRow, BCol } from 'bootstrap-vue'
 
-import { getUserData } from '@/auth/utils'
+import { getUserData } from '../../../auth/utils'
 import EcommerceMedal from './EcommerceMedal.vue'
 import EcommerceStatistics from './EcommerceStatistics.vue'
 import EcommerceRevenueReport from './EcommerceRevenueReport.vue'
@@ -120,6 +120,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/pages/dashboard-ecommerce.scss';
-@import '@core/scss/vue/libs/chart-apex.scss';
+@import '../../../@core/scss/vue/pages/dashboard-ecommerce.scss';
+@import '../../../@core/scss/vue/libs/chart-apex.scss';
 </style>

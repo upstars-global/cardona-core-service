@@ -1,10 +1,10 @@
-import i18n from '@/libs/i18n'
-import { ProjectInfo } from '@model/project'
-import { FieldInfo, FieldType } from '@model/field'
-import { OptionsItem } from '@/@model'
-import { GamesProducersListItem } from '@model/gamesProducers'
-import { GamesCategoriesListItem } from '@model/gamesCategories'
-import { FilterType } from '@model/filter'
+import i18n from '../../libs/i18n'
+import { ProjectInfo } from '../../@model/project'
+import { FieldInfo, FieldType } from '../../@model/field'
+import { OptionsItem } from '../../@model'
+import { GamesProducersListItem } from '../../@model/gamesProducers'
+import { GamesCategoriesListItem } from '../../@model/gamesCategories'
+import { FilterType } from '../../@model/filter'
 
 // Options
 const stateOptions: Array<object> = [

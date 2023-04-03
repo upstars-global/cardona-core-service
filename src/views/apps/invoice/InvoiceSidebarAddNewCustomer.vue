@@ -50,7 +50,7 @@
         <b-form-group label="Country" label-for="country">
           <v-select
             v-model="customer.country"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             :options="countries"
             :clearable="false"
             input-id="country"
@@ -96,7 +96,7 @@
 import { BSidebar, BForm, BFormGroup, BFormInput, BFormTextarea, BButton } from 'bootstrap-vue'
 import { ref } from 'vue'
 import Ripple from 'vue-ripple-directive'
-import countries from '@/@fake-db/data/other/countries'
+import countries from '../../../@fake-db/data/other/countries'
 import vSelect from 'vue-select'
 
 export default {
@@ -130,5 +130,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
+@import '../../../@core/scss/vue/libs/vue-select.scss';
 </style>

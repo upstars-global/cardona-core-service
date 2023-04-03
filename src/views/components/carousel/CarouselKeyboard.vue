@@ -6,9 +6,9 @@
     </b-card-text>
 
     <b-carousel id="carousel-interval" controls indicators :interval="400">
-      <b-carousel-slide :img-src="require('@/assets/images/slider/07.jpg')" />
-      <b-carousel-slide :img-src="require('@/assets/images/slider/08.jpg')" />
-      <b-carousel-slide :img-src="require('@/assets/images/slider/09.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/07.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/08.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/09.jpg')" />
     </b-carousel>
 
     <template #code>
@@ -19,7 +19,7 @@
 
 <script>
 import { BCarousel, BCarouselSlide, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { codeKeyboard } from './code'
 
 export default {

@@ -1,4 +1,4 @@
-import axios from '@axios'
+import axios from '../../../libs/axios'
 
 export default {
   namespaced: true,

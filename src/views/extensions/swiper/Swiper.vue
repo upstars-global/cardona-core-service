@@ -69,5 +69,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/swiper.scss';
+@import '../../../@core/scss/vue/libs/swiper.scss';
 </style>

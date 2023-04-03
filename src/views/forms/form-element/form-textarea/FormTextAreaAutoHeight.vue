@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormTextarea, BRow, BCol, BCardText } from 'bootstrap-vue'
 import { codeAutoHeight } from './code'
 

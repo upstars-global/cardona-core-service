@@ -46,10 +46,10 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BCardText, BButton } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
-import '../../../../node_modules/animate.css/animate.css'
+import 'animate.css/animate.css'
 import { codeAnimation } from './code'
 
 export default {

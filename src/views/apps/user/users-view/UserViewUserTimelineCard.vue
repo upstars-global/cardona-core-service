@@ -10,7 +10,7 @@
         <p>Invoices have been paid to the company.</p>
         <p class="mb-0">
           <b-img
-            :src="require('@/assets/images/icons/pdf.png')"
+            :src="require('../../../../assets/images/icons/pdf.png')"
             height="auto"
             width="20"
             class="mr-1"
@@ -26,7 +26,7 @@
         <p>Project meeting with john @10:15am.</p>
         <b-media>
           <template #aside>
-            <b-avatar :src="require('@/assets/images/avatars/8-small.png')" />
+            <b-avatar :src="require('../../../../assets/images/avatars/8-small.png')" />
           </template>
           <h6>John Doe (Client)</h6>
           <p class="mb-0">CEO of Infibeam</p>
@@ -44,8 +44,8 @@
 
 <script>
 import { BCard, BImg, BMedia, BAvatar } from 'bootstrap-vue'
-import AppTimeline from '@core/components/app-timeline/AppTimeline.vue'
-import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem.vue'
+import AppTimeline from '../../../../@core/components/app-timeline/AppTimeline.vue'
+import AppTimelineItem from '../../../../@core/components/app-timeline/AppTimelineItem.vue'
 
 export default {
   components: {

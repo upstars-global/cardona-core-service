@@ -14,8 +14,8 @@
 </template>
 
 <script>
-/* eslint-disable global-require */
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+/* eslint-disable */
+import BCardCode from '../../../../@core/components/b-card-code/BCardCode.vue'
 import { LMap, LTileLayer, LMarker, LCircle, LPolygon } from 'vue2-leaflet'
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -28,7 +28,7 @@ Icon.Default.mergeOptions({
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 })
-/* eslint-disable global-require */
+/* eslint-disable */
 
 export default {
   components: {

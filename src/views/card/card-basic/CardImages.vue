@@ -5,7 +5,7 @@
       <!-- image top -->
       <b-col md="6" xl="4">
         <b-card
-          :img-src="require('@/assets/images/slider/06.jpg')"
+          :img-src="require('../../../assets/images/slider/06.jpg')"
           img-top
           img-alt="card img"
           title="Card title"
@@ -24,7 +24,7 @@
       <!-- img bottom -->
       <b-col md="6" xl="4">
         <b-card
-          :img-src="require('@/assets/images/slider/09.jpg')"
+          :img-src="require('../../../assets/images/slider/09.jpg')"
           img-bottom
           img-alt="card img"
           title="Card title"
@@ -43,7 +43,7 @@
       <!-- img overlay -->
       <b-col md="6" xl="4">
         <b-card
-          :img-src="require('@/assets/images/slider/10.jpg')"
+          :img-src="require('../../../assets/images/slider/10.jpg')"
           overlay
           text-variant="white"
           img-alt="card img"

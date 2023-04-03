@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormCheckbox, BCardText } from 'bootstrap-vue'
 import { codeColor } from './code'
 

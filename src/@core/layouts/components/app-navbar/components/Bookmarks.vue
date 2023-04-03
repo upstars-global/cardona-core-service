@@ -74,10 +74,10 @@ import {
   BDropdownItem,
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import useAutoSuggest from '@core/components/app-auto-suggest/useAutoSuggest'
+import useAutoSuggest from '../../../../../@core/components/app-auto-suggest/useAutoSuggest'
 import { ref, watch } from 'vue'
-import router from '@/router'
-import store from '@/store'
+import router from '../../../../../router'
+import store from '../../../../../store'
 import searchAndBookmarkData from '../search-and-bookmark-data'
 
 export default {
@@ -106,7 +106,7 @@ export default {
     })
 
     watch(searchQuery, (val) => {
-      store.commit('breakpoint/TOGGLE_OVERLAY', Boolean(val))
+      store.commit('breakpointCore/TOGGLE_OVERLAY', Boolean(val))
     })
 
     watch(filteredData, (val) => {
@@ -151,5 +151,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/include';
+@import '../../../../../@core/scss/base/bootstrap-extended/include';
 </style>

@@ -2,7 +2,7 @@
   <b-card v-if="data" no-body class="card-developer-meetup">
     <div class="bg-light-primary rounded-top text-center">
       <b-img
-        :src="require('@/assets/images/illustration/email.svg')"
+        :src="require('../../../assets/images/illustration/email.svg')"
         alt="Meeting Pic"
         height="170"
       />

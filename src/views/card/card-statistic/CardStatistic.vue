@@ -175,11 +175,11 @@
 
 <script>
 import { BRow, BCol } from 'bootstrap-vue'
-import StatisticCardVertical from '@core/components/statistics-cards/StatisticCardVertical.vue'
-import StatisticCardHorizontal from '@core/components/statistics-cards/StatisticCardHorizontal.vue'
-import StatisticCardWithAreaChart from '@core/components/statistics-cards/StatisticCardWithAreaChart.vue'
-import StatisticCardWithLineChart from '@core/components/statistics-cards/StatisticCardWithLineChart.vue'
-import { kFormatter } from '@core/utils/filter'
+import StatisticCardVertical from '../../../@core/components/statistics-cards/StatisticCardVertical.vue'
+import StatisticCardHorizontal from '../../../@core/components/statistics-cards/StatisticCardHorizontal.vue'
+import StatisticCardWithAreaChart from '../../../@core/components/statistics-cards/StatisticCardWithAreaChart.vue'
+import StatisticCardWithLineChart from '../../../@core/components/statistics-cards/StatisticCardWithLineChart.vue'
+import { kFormatter } from '../../../@core/utils/filter'
 import CardStatisticOrderChart from './CardStatisticOrderChart.vue'
 import CardStatisticProfitChart from './CardStatisticProfitChart.vue'
 import CardStatisticsGroup from './CardStatisticsGroup.vue'

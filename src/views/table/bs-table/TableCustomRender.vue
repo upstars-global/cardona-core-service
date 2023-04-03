@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BTable, BProgress, BBadge } from 'bootstrap-vue'
 import { codeDataRendering } from './code'
 

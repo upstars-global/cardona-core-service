@@ -5,7 +5,7 @@
       <b-card
         no-body
         class="knowledge-base-bg text-center"
-        :style="{ backgroundImage: `url(${require('@/assets/images/banner/banner.png')})` }"
+        :style="{ backgroundImage: `url(${require('../../../assets/images/banner/banner.png')})` }"
       >
         <b-card-body class="card-body">
           <h2 class="text-primary">Dedicated Source Used on Website</h2>
@@ -127,5 +127,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/pages/page-knowledge-base.scss';
+@import '../../../@core/scss/vue/pages/page-knowledge-base.scss';
 </style>

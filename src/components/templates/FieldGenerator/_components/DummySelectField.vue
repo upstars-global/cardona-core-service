@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
 import vSelect from 'vue-select'
-import i18n from '@/libs/i18n'
+import i18n from '../../../../libs/i18n'
 
 export default defineComponent({
   name: 'DummySelectField',
@@ -73,7 +73,7 @@ export default defineComponent({
   <v-select
     v-model="valueModel"
     :placeholder="placeholder"
-    :dir="$store.getters['appConfig/dirOption']"
+    :dir="$store.getters['appConfigCore/dirOption']"
     label="name"
     :disabled="disabled"
     :options="options"
@@ -95,7 +95,7 @@ export default defineComponent({
 
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_variables.scss';
+@import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
 
 .select-field::v-deep {
   &.error {

@@ -157,7 +157,7 @@ import {
   BAvatar, BBadge, BPagination, BFormGroup, BFormInput, BFormSelect, BDropdown, BDropdownItem,
 } from 'bootstrap-vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -234,7 +234,7 @@ export default {
       return status => statusColor[status]
     },
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = true
         return this.dir
@@ -402,7 +402,7 @@ import {
   BAvatar, BBadge, BPagination, BFormGroup, BFormInput, BFormSelect, BDropdown, BDropdownItem,
 } from 'bootstrap-vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -485,7 +485,7 @@ export default {
       return status => statusColor[status]
     },
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = true
         return this.dir
@@ -664,7 +664,7 @@ import {
   BAvatar, BBadge, BPagination, BFormGroup, BFormInput, BFormSelect, BDropdownItem, BDropdown,
 } from 'bootstrap-vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -727,7 +727,7 @@ export default {
       return status => statusColor[status]
     },
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = true
         return this.dir
@@ -919,9 +919,9 @@ export const codeAdvance = `
 import {
   BAvatar, BPagination, BFormGroup, BFormInput, BFormSelect, BRow, BCol,
 } from 'bootstrap-vue'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -972,7 +972,7 @@ export default {
   },
   computed: {
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = true
         return this.dir
@@ -1212,7 +1212,7 @@ import {
   BAvatar, BBadge, BPagination, BFormGroup, BFormInput, BFormSelect, BAlert, BDropdown, BDropdownItem,
 } from 'bootstrap-vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -1277,7 +1277,7 @@ export default {
       return status => statusColor[status]
     },
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = true
         return this.dir
@@ -1473,7 +1473,7 @@ import { VueGoodTable } from 'vue-good-table'
 import 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
 import Prism from 'vue-prism-component'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -1546,7 +1546,7 @@ export default {
       return status => statusColor[status]
     },
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = true
         return this.dir

@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BTabs, BTab } from 'bootstrap-vue'
 import { codeAlignment } from './code'
 

@@ -26,7 +26,7 @@
             <h6 class="filter-title">Price Range</h6>
             <vue-slider
               v-model="filters.priceRange"
-              :direction="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :direction="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             />
           </div>
 
@@ -121,7 +121,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@core/scss/vue/libs/vue-slider.scss';
+@import '../../../../@core/scss/vue/libs/vue-slider.scss';
 </style>
 
 <style lang="scss" scoped>

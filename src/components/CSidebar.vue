@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import i18n from '@/libs/i18n'
+import i18n from '../libs/i18n'
 
 const props = withDefaults(
   defineProps<{
@@ -71,7 +71,7 @@ const onHidden = () => emit('hidden')
 </template>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_variables.scss';
+@import '../@core/scss/base/bootstrap-extended/_variables.scss';
 
 .c-sidebar::v-deep {
   .b-sidebar-header {

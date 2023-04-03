@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { computed, PropType, ref } from 'vue'
-import { FieldInfo } from '@model/field'
+import { FieldInfo } from '../../../../@model/field'
 
 export default {
   name: 'TextField',

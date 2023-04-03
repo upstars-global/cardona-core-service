@@ -72,10 +72,10 @@
 
 <script lang="ts">
 import { BSidebar } from 'bootstrap-vue'
-import { convertCamelCase } from '@/helpers'
+import { convertCamelCase } from '../../../../helpers'
 import { ref, watch } from 'vue'
-import ViewGenerator from '@/components/templates/ViewGenerator/index.vue'
-import { ViewInfo, ViewJustifyContent } from '@model/view'
+import ViewGenerator from '../../../../components/templates/ViewGenerator/index.vue'
+import { ViewInfo, ViewJustifyContent } from '../../../../@model/view'
 
 const emitAfterAnimationSidebar = 200
 

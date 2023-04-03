@@ -62,7 +62,7 @@
               >
                 <v-select
                   v-model="eventLocal.extendedProps.calendar"
-                  :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                  :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                   :options="calendarOptions"
                   label="label"
                   :reduce="(calendar) => calendar.label"
@@ -157,7 +157,7 @@
             <b-form-group label="Add Guests" label-for="add-guests">
               <v-select
                 v-model="eventLocal.extendedProps.guests"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 multiple
                 :close-on-select="false"
                 :options="guestsOptions"
@@ -235,8 +235,8 @@ import vSelect from 'vue-select'
 import flatPickr from 'vue-flatpickr-component'
 import Ripple from 'vue-ripple-directive'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { required, email, url } from '@validations'
-import formValidation from '@core/comp-functions/forms/form-validation'
+import { required, email, url } from '../../../../@core/utils/validations/validations'
+import formValidation from '../../../../@core/comp-functions/forms/form-validation'
 import { ref, toRefs } from 'vue'
 import useCalendarEventHandler from './useCalendarEventHandler'
 
@@ -334,6 +334,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
-@import '@core/scss/vue/libs/vue-flatpicker.scss';
+@import '../../../../@core/scss/vue/libs/vue-select.scss';
+@import '../../../../@core/scss/vue/libs/vue-flatpicker.scss';
 </style>

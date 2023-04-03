@@ -1,5 +1,5 @@
 import { ref, computed, watch } from 'vue'
-import store from '@/store'
+import store from '../../../store'
 
 export default function useVerticalLayout(navbarType, footerType) {
   const isVerticalMenuActive = ref(true)
@@ -9,7 +9,9 @@ export default function useVerticalLayout(navbarType, footerType) {
 
   const currentBreakpoint = ref('xl')
 
-  const isVerticalMenuCollapsed = computed(() => store.state.verticalMenu.isVerticalMenuCollapsed)
+  const isVerticalMenuCollapsed = computed(
+    () => store.state.verticalMenuCore.isVerticalMenuCollapsed
+  )
 
   const layoutClasses = computed(() => {
     const classes = []

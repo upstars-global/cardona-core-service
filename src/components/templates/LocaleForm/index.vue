@@ -59,10 +59,10 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
-import TextEditorWysiwyg from '@/components/TextEditorWysiwyg/index.vue'
-import { getters } from '@/store'
-import { SeoForm } from '@model/seo'
-import { FieldTranslationsData } from '@model/translations'
+import TextEditorWysiwyg from '../../../components/TextEditorWysiwyg/index.vue'
+import { getters } from '../../../store'
+import { SeoForm } from '../../../@model/seo'
+import { FieldTranslationsData } from '../../../@model/translations'
 
 export default defineComponent({
   name: 'LocaleForm',
@@ -91,8 +91,8 @@ export default defineComponent({
     const selectedProject = computed(() => getters.selectedProject)
     const mainLocale = computed(() => selectedProject.value?.mainLocale || 'ru')
     const locales = computed(() => selectedProject.value?.locales || [])
-    const allLocales = computed(() => getters['locale/allLocalesKeys'])
-    const allCurrencies = computed(() => getters['appConfig/allCurrencies'])
+    const allLocales = computed(() => getters['localeCore/allLocalesKeys'])
+    const allCurrencies = computed(() => getters['appConfigCore/allCurrencies'])
 
     const getDefaultFieldTranslations = (objForm) => {
       const _defaultFieldTranslations = {}
@@ -183,7 +183,7 @@ export default defineComponent({
 })
 </script>
 <style lang="scss">
-@import '~@core/scss/base/bootstrap-extended/_include';
+@import '../../../@core/scss/base/bootstrap-extended/_include';
 
 .locale-tab {
   .local-key-block {

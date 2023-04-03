@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormTags, BCardText } from 'bootstrap-vue'
 import { codeBasic } from './code'
 

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormRadioGroup, BCardText } from 'bootstrap-vue'
 import { codeFieldNames } from './code'
 

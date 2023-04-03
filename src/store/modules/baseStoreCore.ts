@@ -1,13 +1,13 @@
-import ApiService from '@/services/api'
-import { ListData } from '@/@model'
-import { IRequestListPayload } from '@/@model/index'
-import { ExportFormat, IOptionsBaseFetch } from '@/components/templates/BaseList/model'
+import ApiService from '../../services/api'
+import { ListData } from '../../@model'
+import { IRequestListPayload } from '../../@model/index'
+import { ExportFormat, IOptionsBaseFetch } from '../../components/templates/BaseList/model'
 import {
   GamesSectionGamesItem,
   IGamesSectionGamesFilters,
   IGamesSectionGamesListPayload,
-} from '@model/games'
-import { convertLowerCaseFirstSymbol } from '@/helpers'
+} from '../../@model/games'
+import { convertLowerCaseFirstSymbol } from '../../helpers'
 
 const transformNameToType = (type: string): string => {
   return [...type]
@@ -146,7 +146,7 @@ export default {
             ...payload.data.form,
             id: payload.data.form?.id,
             project: rootGetters.selectedProject.alias,
-            productId: rootGetters['product/productId'],
+            productId: rootGetters['productCore/productId'],
           },
         },
         { withSuccessToast: true, formRef: payload.data.formRef }
@@ -165,7 +165,7 @@ export default {
           data: {
             ...payload.data.form,
             id: payload.data.form?.id,
-            productId: rootGetters['product/productId'],
+            productId: rootGetters['productCore/productId'],
             project: rootGetters.selectedProject.alias,
           },
         },

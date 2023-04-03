@@ -105,7 +105,7 @@
 
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import VuexyLogo from '@core/layouts/components/AppLogo.vue'
+import VuexyLogo from '../../../@core/layouts/components/AppLogo.vue'
 import {
   BCard,
   BCardTitle,
@@ -118,8 +118,8 @@ import {
   BFormInput,
   BButton,
 } from 'bootstrap-vue'
-import { required } from '@validations'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import { required } from '../../../@core/utils/validations/validations'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {
@@ -184,5 +184,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/pages/page-auth.scss';
+@import '../../../@core/scss/vue/pages/page-auth.scss';
 </style>

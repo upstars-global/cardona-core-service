@@ -120,7 +120,7 @@ export const codeBasic = `
 import {
   BForm, BFormGroup, BFormInput, BRow, BCol, BButton,
 } from 'bootstrap-vue'
-import { heightTransition } from '@core/mixins/ui/transition'
+import { heightTransition } from '../../../@core/mixins/ui/transition'
 import Ripple from 'vue-ripple-directive'
 
 export default {

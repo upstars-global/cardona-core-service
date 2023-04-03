@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BOverlay, BButton, BCard, BCardText } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
 import { codeNoWrapMode } from './code'

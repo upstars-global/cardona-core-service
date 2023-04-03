@@ -2,7 +2,7 @@ export const codeDefault = `
 <template>
   <swiper
     ref="mySwiper"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="data in swiperData"
@@ -29,15 +29,15 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-13.jpg') },
-        { img: require('@/assets/images/banner/banner-7.jpg') },
-        { img: require('@/assets/images/banner/banner-4.jpg') },
-        { img: require('@/assets/images/banner/banner-2.jpg') },
-        { img: require('@/assets/images/banner/banner-1.jpg') },
+        { img: require('../../../assets/images/banner/banner-13.jpg') },
+        { img: require('../../../assets/images/banner/banner-7.jpg') },
+        { img: require('../../../assets/images/banner/banner-4.jpg') },
+        { img: require('../../../assets/images/banner/banner-2.jpg') },
+        { img: require('../../../assets/images/banner/banner-1.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
     }
   },
 }
@@ -50,7 +50,7 @@ export const codeAutoplay = `
   <swiper
     class="swiper-autoplay"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="data in swiperData"
@@ -106,16 +106,16 @@ export default {
         },
       },
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-20.jpg') },
-        { img: require('@/assets/images/banner/banner-7.jpg') },
-        { img: require('@/assets/images/banner/banner-8.jpg') },
-        { img: require('@/assets/images/banner/banner-9.jpg') },
-        { img: require('@/assets/images/banner/banner-10.jpg') },
-        { img: require('@/assets/images/banner/banner-11.jpg') },
+        { img: require('../../../assets/images/banner/banner-20.jpg') },
+        { img: require('../../../assets/images/banner/banner-7.jpg') },
+        { img: require('../../../assets/images/banner/banner-8.jpg') },
+        { img: require('../../../assets/images/banner/banner-9.jpg') },
+        { img: require('../../../assets/images/banner/banner-10.jpg') },
+        { img: require('../../../assets/images/banner/banner-11.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
     }
   },
@@ -128,7 +128,7 @@ export const codeCenterSlides = `
   <swiper
     class="swiper-centered-slides p-1"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
 
     <!-- slides -->
@@ -196,7 +196,7 @@ export const codeCenterSlides2 = `
   <swiper
     class="swiper-centered-slides-2 p-1"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -249,7 +249,7 @@ export const codeCoverflowEffect = `
   <swiper
     class="swiper-coverflow"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -281,19 +281,19 @@ export default {
   data() {
     return {
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-35.jpg') },
-        { img: require('@/assets/images/banner/banner-39.jpg') },
-        { img: require('@/assets/images/banner/banner-38.jpg') },
-        { img: require('@/assets/images/banner/banner-37.jpg') },
-        { img: require('@/assets/images/banner/banner-36.jpg') },
-        { img: require('@/assets/images/banner/banner-34.jpg') },
-        { img: require('@/assets/images/banner/banner-33.jpg') },
-        { img: require('@/assets/images/banner/banner-32.jpg') },
-        { img: require('@/assets/images/banner/banner-31.jpg') },
+        { img: require('../../../assets/images/banner/banner-35.jpg') },
+        { img: require('../../../assets/images/banner/banner-39.jpg') },
+        { img: require('../../../assets/images/banner/banner-38.jpg') },
+        { img: require('../../../assets/images/banner/banner-37.jpg') },
+        { img: require('../../../assets/images/banner/banner-36.jpg') },
+        { img: require('../../../assets/images/banner/banner-34.jpg') },
+        { img: require('../../../assets/images/banner/banner-33.jpg') },
+        { img: require('../../../assets/images/banner/banner-32.jpg') },
+        { img: require('../../../assets/images/banner/banner-31.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         effect: 'coverflow',
@@ -322,7 +322,7 @@ export const codeCube = `
   <swiper
     class="swiper-cube-effect"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -353,14 +353,14 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-21.jpg') },
-        { img: require('@/assets/images/banner/banner-22.jpg') },
-        { img: require('@/assets/images/banner/banner-23.jpg') },
-        { img: require('@/assets/images/banner/banner-24.jpg') },
+        { img: require('../../../assets/images/banner/banner-21.jpg') },
+        { img: require('../../../assets/images/banner/banner-22.jpg') },
+        { img: require('../../../assets/images/banner/banner-23.jpg') },
+        { img: require('../../../assets/images/banner/banner-24.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         effect: 'cube',
@@ -386,7 +386,7 @@ export const codeFadeEffect = `
   <swiper
     class="swiper-navigations"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -428,15 +428,15 @@ export default {
   data() {
     return {
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-20.jpg') },
-        { img: require('@/assets/images/banner/banner-19.jpg') },
-        { img: require('@/assets/images/banner/banner-18.jpg') },
-        { img: require('@/assets/images/banner/banner-17.jpg') },
-        { img: require('@/assets/images/banner/banner-16.jpg') },
+        { img: require('../../../assets/images/banner/banner-20.jpg') },
+        { img: require('../../../assets/images/banner/banner-19.jpg') },
+        { img: require('../../../assets/images/banner/banner-18.jpg') },
+        { img: require('../../../assets/images/banner/banner-17.jpg') },
+        { img: require('../../../assets/images/banner/banner-16.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         spaceBetween: 30,
@@ -462,7 +462,7 @@ export const codeGallery = `
     ref="swiperTop"
     class="swiper-gallery gallery-top"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -516,15 +516,15 @@ export default {
   data() {
     return {
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-11.jpg') },
-        { img: require('@/assets/images/banner/banner-12.jpg') },
-        { img: require('@/assets/images/banner/banner-13.jpg') },
-        { img: require('@/assets/images/banner/banner-15.jpg') },
-        { img: require('@/assets/images/banner/banner-16.jpg') },
+        { img: require('../../../assets/images/banner/banner-11.jpg') },
+        { img: require('../../../assets/images/banner/banner-12.jpg') },
+        { img: require('../../../assets/images/banner/banner-13.jpg') },
+        { img: require('../../../assets/images/banner/banner-15.jpg') },
+        { img: require('../../../assets/images/banner/banner-16.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         loop: true,
@@ -563,7 +563,7 @@ export const codeLazy = `
   <swiper
     class="swiper-lazy-loading"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -605,16 +605,16 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-9.jpg') },
-        { img: require('@/assets/images/banner/banner-8.jpg') },
-        { img: require('@/assets/images/banner/banner-7.jpg') },
-        { img: require('@/assets/images/banner/banner-20.jpg') },
-        { img: require('@/assets/images/banner/banner-5.jpg') },
-        { img: require('@/assets/images/banner/banner-4.jpg') },
+        { img: require('../../../assets/images/banner/banner-9.jpg') },
+        { img: require('../../../assets/images/banner/banner-8.jpg') },
+        { img: require('../../../assets/images/banner/banner-7.jpg') },
+        { img: require('../../../assets/images/banner/banner-20.jpg') },
+        { img: require('../../../assets/images/banner/banner-5.jpg') },
+        { img: require('../../../assets/images/banner/banner-4.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         lazy: true,
@@ -638,7 +638,7 @@ export const codeMultipleSlides = `
   <swiper
     class="swiper-multiple"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -670,15 +670,15 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-31.jpg') },
-        { img: require('@/assets/images/banner/banner-32.jpg') },
-        { img: require('@/assets/images/banner/banner-33.jpg') },
-        { img: require('@/assets/images/banner/banner-34.jpg') },
-        { img: require('@/assets/images/banner/banner-35.jpg') },
+        { img: require('../../../assets/images/banner/banner-31.jpg') },
+        { img: require('../../../assets/images/banner/banner-32.jpg') },
+        { img: require('../../../assets/images/banner/banner-33.jpg') },
+        { img: require('../../../assets/images/banner/banner-34.jpg') },
+        { img: require('../../../assets/images/banner/banner-35.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         slidesPerView: 3,
@@ -699,7 +699,7 @@ export const codeMultiRowSlides = `
   <swiper
     class="swiper"
     :options="swiperOption"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -732,18 +732,18 @@ export default {
   data() {
     return {
       swiperData: [
-        /* eslint-disable global-require */
-        { img: require('@/assets/images/banner/banner-26.jpg') },
-        { img: require('@/assets/images/banner/banner-39.jpg') },
-        { img: require('@/assets/images/banner/banner-28.jpg') },
-        { img: require('@/assets/images/banner/banner-29.jpg') },
-        { img: require('@/assets/images/banner/banner-30.jpg') },
-        { img: require('@/assets/images/banner/banner-31.jpg') },
-        { img: require('@/assets/images/banner/banner-32.jpg') },
-        { img: require('@/assets/images/banner/banner-33.jpg') },
-        { img: require('@/assets/images/banner/banner-34.jpg') },
-        { img: require('@/assets/images/banner/banner-35.jpg') },
-        /* eslint-disable global-require */
+        /* eslint-disable */
+        { img: require('../../../assets/images/banner/banner-26.jpg') },
+        { img: require('../../../assets/images/banner/banner-39.jpg') },
+        { img: require('../../../assets/images/banner/banner-28.jpg') },
+        { img: require('../../../assets/images/banner/banner-29.jpg') },
+        { img: require('../../../assets/images/banner/banner-30.jpg') },
+        { img: require('../../../assets/images/banner/banner-31.jpg') },
+        { img: require('../../../assets/images/banner/banner-32.jpg') },
+        { img: require('../../../assets/images/banner/banner-33.jpg') },
+        { img: require('../../../assets/images/banner/banner-34.jpg') },
+        { img: require('../../../assets/images/banner/banner-35.jpg') },
+        /* eslint-disable */
       ],
       swiperOption: {
         slidesPerView: 3,
@@ -792,7 +792,7 @@ export const codeNavigation = `
   <swiper
     class="swiper-navigations"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -829,15 +829,15 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-7.jpg') },
-        { img: require('@/assets/images/banner/banner-4.jpg') },
-        { img: require('@/assets/images/banner/banner-14.jpg') },
-        { img: require('@/assets/images/banner/banner-3.jpg') },
-        { img: require('@/assets/images/banner/banner-2.jpg') },
+        { img: require('../../../assets/images/banner/banner-7.jpg') },
+        { img: require('../../../assets/images/banner/banner-4.jpg') },
+        { img: require('../../../assets/images/banner/banner-14.jpg') },
+        { img: require('../../../assets/images/banner/banner-3.jpg') },
+        { img: require('../../../assets/images/banner/banner-2.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         navigation: {
@@ -856,7 +856,7 @@ export const codePagination = `
   <swiper
     class="swiper-paginations"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -889,15 +889,15 @@ export default {
   data() {
     return {
 
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-12.jpg') },
-        { img: require('@/assets/images/banner/banner-9.jpg') },
-        { img: require('@/assets/images/banner/banner-8.jpg') },
-        { img: require('@/assets/images/banner/banner-7.jpg') },
-        { img: require('@/assets/images/banner/banner-20.jpg') },
+        { img: require('../../../assets/images/banner/banner-12.jpg') },
+        { img: require('../../../assets/images/banner/banner-9.jpg') },
+        { img: require('../../../assets/images/banner/banner-8.jpg') },
+        { img: require('../../../assets/images/banner/banner-7.jpg') },
+        { img: require('../../../assets/images/banner/banner-20.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         pagination: {
@@ -915,7 +915,7 @@ export const codeParallax = `
   <swiper
     class="swiper-parallax"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <div
       slot="parallax-bg"
@@ -924,7 +924,7 @@ export const codeParallax = `
     >
       <b-img
         class="img-fluid"
-        :src="require('@/assets/images/banner/parallax-4.jpg')"
+        :src="require('../../../assets/images/banner/parallax-4.jpg')"
         alt="banner"
       />
     </div>
@@ -1011,7 +1011,7 @@ export const codeProgress = `
   <swiper
     class="swiper-progress"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -1052,15 +1052,15 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-8.jpg') },
-        { img: require('@/assets/images/banner/banner-7.jpg') },
-        { img: require('@/assets/images/banner/banner-20.jpg') },
-        { img: require('@/assets/images/banner/banner-4.jpg') },
-        { img: require('@/assets/images/banner/banner-5.jpg') },
+        { img: require('../../../assets/images/banner/banner-8.jpg') },
+        { img: require('../../../assets/images/banner/banner-7.jpg') },
+        { img: require('../../../assets/images/banner/banner-20.jpg') },
+        { img: require('../../../assets/images/banner/banner-4.jpg') },
+        { img: require('../../../assets/images/banner/banner-5.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         navigation: {
@@ -1083,7 +1083,7 @@ export const codeResponsive = `
   <swiper
     class="swiper-responsive-breakpoints"
     :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
   >
     <swiper-slide
       v-for="(data,index) in swiperData"
@@ -1115,19 +1115,19 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable global-require */
+      /* eslint-disable */
       swiperData: [
-        { img: require('@/assets/images/banner/banner-30.jpg') },
-        { img: require('@/assets/images/banner/banner-31.jpg') },
-        { img: require('@/assets/images/banner/banner-32.jpg') },
-        { img: require('@/assets/images/banner/banner-33.jpg') },
-        { img: require('@/assets/images/banner/banner-34.jpg') },
-        { img: require('@/assets/images/banner/banner-35.jpg') },
-        { img: require('@/assets/images/banner/banner-36.jpg') },
-        { img: require('@/assets/images/banner/banner-37.jpg') },
-        { img: require('@/assets/images/banner/banner-38.jpg') },
+        { img: require('../../../assets/images/banner/banner-30.jpg') },
+        { img: require('../../../assets/images/banner/banner-31.jpg') },
+        { img: require('../../../assets/images/banner/banner-32.jpg') },
+        { img: require('../../../assets/images/banner/banner-33.jpg') },
+        { img: require('../../../assets/images/banner/banner-34.jpg') },
+        { img: require('../../../assets/images/banner/banner-35.jpg') },
+        { img: require('../../../assets/images/banner/banner-36.jpg') },
+        { img: require('../../../assets/images/banner/banner-37.jpg') },
+        { img: require('../../../assets/images/banner/banner-38.jpg') },
       ],
-      /* eslint-disable global-require */
+      /* eslint-disable */
 
       swiperOptions: {
         slidesPerView: 5,
@@ -1168,7 +1168,7 @@ export const codeVirtual = `
       ref="mySwiper15"
       class="swiper-virtual"
       :options="swiperOptions"
-      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+      :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     >
       <div
         slot="pagination"
@@ -1235,7 +1235,7 @@ export const codeVirtual = `
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { Swiper } from 'vue-awesome-swiper'
 import { BButton } from 'bootstrap-vue'
 import 'swiper/css/swiper.css'

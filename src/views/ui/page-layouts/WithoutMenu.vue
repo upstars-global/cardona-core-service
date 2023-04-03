@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Ecommerce from '@/views/dashboard/ecommerce/Ecommerce.vue'
+import Ecommerce from '../../../views/dashboard/ecommerce/Ecommerce.vue'
 import { BAlert, BLink } from 'bootstrap-vue'
 
 export default {
@@ -31,14 +31,14 @@ export default {
   },
   data() {
     return {
-      menuHidden: this.$store.state.appConfig.layout.menu.hidden,
+      menuHidden: this.$store.state.appConfigCore.layout.menu.hidden,
     }
   },
   created() {
-    this.$store.commit('appConfig/UPDATE_NAV_MENU_HIDDEN', true)
+    this.$store.commit('appConfigCore/UPDATE_NAV_MENU_HIDDEN', true)
   },
   destroyed() {
-    this.$store.commit('appConfig/UPDATE_NAV_MENU_HIDDEN', this.menuHidden)
+    this.$store.commit('appConfigCore/UPDATE_NAV_MENU_HIDDEN', this.menuHidden)
   },
 }
 </script>

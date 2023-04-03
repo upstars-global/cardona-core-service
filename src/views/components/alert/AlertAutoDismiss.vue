@@ -45,9 +45,9 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BAlert, BButton, BCardText } from 'bootstrap-vue'
-import { heightFade } from '@core/directives/animations'
+import { heightFade } from '../../../@core/directives/animations'
 import Ripple from 'vue-ripple-directive'
 import { codeAutoDismiss } from './code'
 

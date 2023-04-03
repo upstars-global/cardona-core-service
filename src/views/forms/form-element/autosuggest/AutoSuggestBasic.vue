@@ -23,7 +23,7 @@
 
 <script>
 import { VueAutosuggest } from 'vue-autosuggest'
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../../@core/components/b-card-code/BCardCode.vue'
 import { codeBasic } from './code'
 
 export default {

@@ -9,21 +9,21 @@
 </template>
 
 <script>
-import ScrollToTop from '@core/components/scroll-to-top/ScrollToTop.vue'
+import ScrollToTop from './@core/components/scroll-to-top/ScrollToTop.vue'
 
 // This will be populated in `beforeCreate` hook
 import { $themeColors, $themeBreakpoints, $themeConfig } from '@themeConfig'
 import { provideToast } from 'vue-toastification/composition'
 import { watch } from 'vue'
-import useAppConfig from '@core/app-config/useAppConfig'
+import useAppConfig from './@core/app-config/useAppConfig'
 
 import { useWindowSize, useCssVar } from '@vueuse/core'
 
-import store from '@/store'
+import store from './store'
 
-const LayoutVertical = () => import('@/layouts/vertical/LayoutVertical.vue')
-const LayoutHorizontal = () => import('@/layouts/horizontal/LayoutHorizontal.vue')
-const LayoutFull = () => import('@/layouts/full/LayoutFull.vue')
+const LayoutVertical = () => import('./layouts/vertical/LayoutVertical.vue')
+const LayoutHorizontal = () => import('./layouts/horizontal/LayoutHorizontal.vue')
+const LayoutFull = () => import('./layouts/full/LayoutFull.vue')
 
 export default {
   components: {
@@ -73,7 +73,7 @@ export default {
       return `layout-${this.contentLayoutType}`
     },
     contentLayoutType() {
-      return this.$store.state.appConfig.layout.type
+      return this.$store.state.appConfigCore.layout.type
     },
   },
   beforeCreate() {

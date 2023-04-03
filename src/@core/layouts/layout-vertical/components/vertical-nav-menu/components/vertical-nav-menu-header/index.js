@@ -1,5 +1,5 @@
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
-import { useUtils as useAclUtils } from '@core/libs/acl'
+import { useUtils as useI18nUtils } from '../../../../../../../@core/libs/i18n'
+import { useUtils as useAclUtils } from '../../../../../../../@core/libs/acl'
 
 const { t } = useI18nUtils()
 const { canViewVerticalNavMenuHeader } = useAclUtils()

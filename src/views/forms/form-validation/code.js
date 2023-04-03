@@ -56,7 +56,7 @@ import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import {
   BFormInput, BFormGroup, BForm, BRow, BCol, BButton, BCardText,
 } from 'bootstrap-vue'
-import { required, email } from '@validations'
+import { required, email } from '../../../@core/utils/validations/validations'
 
 export default {
   components: {
@@ -188,7 +188,7 @@ import {
 } from 'bootstrap-vue'
 import {
   required, email, confirmed, password,
-} from '@validations'
+} from '../../../@core/utils/validations/validations'
 
 export default {
   components: {
@@ -486,7 +486,7 @@ import {
 } from 'bootstrap-vue'
 import {
   required, email, confirmed, url, between, alpha, integer, password, min, digits, alphaDash, length,
-} from '@validations'
+} from '../../../@core/utils/validations/validations'
 
 export default {
   components: {
@@ -610,7 +610,7 @@ export const codePlaceholder = `
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import {BFormInput, BFormGroup, BForm, BRow, BCol, BButton, BCardText,} from 'bootstrap-vue'
-import { required } from '@validations'
+import { required } from '../../../@core/utils/validations/validations'
 
 export default {
   components: {
@@ -721,7 +721,7 @@ import {
 } from 'bootstrap-vue'
 import {
   required, min, confirmed,
-} from '@validations'
+} from '../../../@core/utils/validations/validations'
 
 export default {
   components: {
@@ -806,7 +806,7 @@ import {
   BFormInput, BFormGroup, BButton, BRow, BCol, BCardText,
 } from 'bootstrap-vue'
 import { ValidationProvider, ValidationObserver, localize } from 'vee-validate'
-import { password, required } from '@validations'
+import { password, required } from '../../../@core/utils/validations/validations'
 
 export default {
   components: {

@@ -14,7 +14,7 @@
         <b-form-group>
           <v-select
             v-model="selected"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             label="title"
             :options="option"
             class="select-size-sm"
@@ -27,7 +27,7 @@
         <b-form-group>
           <v-select
             v-model="selected"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             label="title"
             :options="option"
           />
@@ -39,7 +39,7 @@
         <b-form-group>
           <v-select
             v-model="selected"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             label="title"
             :options="option"
             class="select-size-lg"
@@ -56,7 +56,7 @@
 
 <script>
 import { BRow, BCol, BFormGroup, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import vSelect from 'vue-select'
 import { codeVueSize } from './code'
 

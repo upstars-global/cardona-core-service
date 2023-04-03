@@ -76,8 +76,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import FileGallery from '@/components/UploadImage/FileGallery.vue'
-import { dispatch } from '@/store'
+import FileGallery from '../UploadImage/FileGallery.vue'
+import { dispatch } from '../../store'
 
 export default defineComponent({
   name: 'ModalFileUpload',
@@ -140,7 +140,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/bootstrap-extended/_include';
+@import '../../@core/scss/base/bootstrap-extended/_include';
 
 .tabs-file-upload {
   .img-block {

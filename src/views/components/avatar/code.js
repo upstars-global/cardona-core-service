@@ -3,18 +3,18 @@ export const codeSizes = `
   <div class="demo-inline-spacing">
     <b-avatar
       size="sm"
-      :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')"
     />
     <b-avatar
-      :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')"
     />
     <b-avatar
       size="lg"
-      :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')"
     />
     <b-avatar
       size="70px"
-      :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')"
     />
   </div>
 </template>
@@ -284,7 +284,7 @@ export const codeBadgeContent = `
     <b-avatar
       badge-variant="success"
       badge="1"
-      :src="require('@/assets/images/portrait/small/avatar-s-16.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-16.jpg')"
     />
 </div>
 </template>
@@ -458,25 +458,25 @@ export const codeGroup = `
   <b-avatar-group size="32px">
     <b-avatar
       class="pull-up"
-      :src="require('@/assets/images/portrait/small/avatar-s-5.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-5.jpg')"
     />
     <b-avatar
       class="pull-up"
       variant="primary"
-      :src="require('@/assets/images/portrait/small/avatar-s-7.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-7.jpg')"
     />
     <b-avatar
       class="pull-up"
-      :src="require('@/assets/images/portrait/small/avatar-s-10.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-10.jpg')"
     />
     <b-avatar
       class="pull-up"
       variant="danger"
-      :src="require('@/assets/images/portrait/small/avatar-s-8.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-8.jpg')"
     />
     <b-avatar
       class="pull-up"
-      :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')"
     />
   </b-avatar-group>
 </template>
@@ -500,33 +500,33 @@ export const codeGroupTooltip = `
       v-b-tooltip.hover
       class="pull-up"
       title="Jenny Looper"
-      :src="require('@/assets/images/portrait/small/avatar-s-5.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-5.jpg')"
     />
     <b-avatar
       v-b-tooltip.hover
       class="pull-up"
       title="Darcey Nooner"
       variant="primary"
-      :src="require('@/assets/images/portrait/small/avatar-s-7.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-7.jpg')"
     />
     <b-avatar
       v-b-tooltip.hover
       class="pull-up"
       title="Julee Rossignol"
-      :src="require('@/assets/images/portrait/small/avatar-s-10.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-10.jpg')"
     />
     <b-avatar
       v-b-tooltip.hover
       class="pull-up"
       title="Elicia Rieske"
       variant="danger"
-      :src="require('@/assets/images/portrait/small/avatar-s-8.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-8.jpg')"
     />
     <b-avatar
       v-b-tooltip.hover
       class="pull-up"
       title="Vinnie Mostowy"
-      :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')"
     />
   </b-avatar-group>
 </template>
@@ -562,7 +562,7 @@ export const codeAction = `
     <!-- link avatar -->
     <b-avatar
       href="#foobar"
-      :src="require('@/assets/images/portrait/small/avatar-s-8.jpg')"
+      :src="require('../../../assets/images/portrait/small/avatar-s-8.jpg')"
     />
     <span>Link Avatar</span>
   </div>
@@ -570,7 +570,7 @@ export const codeAction = `
 
 <script>
 import { BAvatar} from 'bootstrap-vue'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {

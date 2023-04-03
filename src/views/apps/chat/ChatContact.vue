@@ -29,7 +29,7 @@
 
 <script>
 import { BAvatar, BBadge } from 'bootstrap-vue'
-import { formatDateToMonthShort } from '@core/utils/filter'
+import { formatDateToMonthShort } from '../../../@core/utils/filter'
 import useChat from './useChat'
 
 export default {

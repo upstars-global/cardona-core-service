@@ -9,9 +9,9 @@
     </b-card-text>
 
     <b-carousel id="carousel-crossfade" controls indicators fade>
-      <b-carousel-slide :img-src="require('@/assets/images/slider/01.jpg')" />
-      <b-carousel-slide :img-src="require('@/assets/images/slider/02.jpg')" />
-      <b-carousel-slide :img-src="require('@/assets/images/slider/03.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/01.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/02.jpg')" />
+      <b-carousel-slide :img-src="require('../../../assets/images/slider/03.jpg')" />
     </b-carousel>
 
     <template #code>
@@ -22,7 +22,7 @@
 
 <script>
 import { BCarousel, BCarouselSlide, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { codeCarouselCrossfade } from './code'
 
 export default {

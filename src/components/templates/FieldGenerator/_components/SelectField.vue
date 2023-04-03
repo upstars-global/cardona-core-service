@@ -2,9 +2,9 @@
 import { PropType, computed, watch } from 'vue'
 import { debounce } from 'lodash'
 import vSelect from 'vue-select'
-import i18n from '@/libs/i18n'
-import { FieldInfo } from '@model/field'
-import { OptionsItem } from '@/@model'
+import i18n from '../../../../libs/i18n'
+import { FieldInfo } from '../../../../@model/field'
+import { OptionsItem } from '../../../../@model'
 
 export default {
   name: 'SelectField',
@@ -104,7 +104,7 @@ export default {
   <v-select
     v-model="valueModel"
     :placeholder="placeholder"
-    :dir="$store.getters['appConfig/dirOption']"
+    :dir="$store.getters['appConfigCore/dirOption']"
     label="name"
     :multiple="isMultiple"
     :options="options"
@@ -126,8 +126,8 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_variables.scss';
-@import '@/assets/scss/style.scss';
+@import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
+@import '../../../../assets/scss/style.scss';
 
 .select-field::v-deep {
   &:not(.vs--single) {

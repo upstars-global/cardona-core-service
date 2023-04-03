@@ -24,8 +24,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { getters } from '@/store'
-import { ViewInfo, ViewJustifyContent } from '@model/view'
+import { getters } from '../../../store'
+import { ViewInfo, ViewJustifyContent } from '../../../@model/view'
 import TextView from './_components/TextView.vue'
 import BadgesView from './_components/BadgesView.vue'
 import BadgeView from './_components/BadgeView.vue'
@@ -41,7 +41,7 @@ import CommentView from './_components/CommentView.vue'
 import TransactionTypeView from './_components/TransactionTypeView.vue'
 import ObjectToRowsView from './_components/ObjectToRowsView.vue'
 import LocaleView from './_components/LocaleView.vue'
-import RegionView from '@/components/templates/ViewGenerator/_components/RegionView.vue'
+import RegionView from '../../../components/templates/ViewGenerator/_components/RegionView.vue'
 
 export default defineComponent({
   name: 'ViewGenerator',

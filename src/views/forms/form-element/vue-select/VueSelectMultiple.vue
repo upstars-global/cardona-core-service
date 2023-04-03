@@ -13,7 +13,7 @@
 
           <v-select
             v-model="selected"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             multiple
             label="title"
             :options="option"
@@ -34,7 +34,7 @@
 
           <v-select
             v-model="selected1"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             multiple
             :options="books"
             label="title"
@@ -57,7 +57,7 @@
           </b-card-text>
 
           <v-select
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             multiple
             taggable
             push-tags
@@ -83,7 +83,7 @@
 
           <v-select
             v-model="selected2"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
             multiple
             placeholder="Choose up to 3 books!"
             label="title"
@@ -120,7 +120,7 @@
 
 <script>
 import { BRow, BCol, BFormRadio, BCard, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import vSelect from 'vue-select'
 import {
   codeVueMultiBasic,

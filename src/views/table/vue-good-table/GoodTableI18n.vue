@@ -163,7 +163,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import {
   BAvatar,
   BBadge,
@@ -176,7 +176,7 @@ import {
   BDropdownItem,
 } from 'bootstrap-vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store'
+import store from '../../../store'
 import { codeI18n } from './code'
 
 export default {
@@ -243,7 +243,7 @@ export default {
       return (status) => statusColor[status]
     },
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = true
         return this.dir

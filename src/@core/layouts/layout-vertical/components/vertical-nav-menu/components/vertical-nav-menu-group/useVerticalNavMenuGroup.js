@@ -1,13 +1,15 @@
 // eslint-disable-next-line object-curly-newline
 import { ref, watch, inject, computed } from 'vue'
-import store from '@/store'
-import { isNavGroupActive } from '@core/layouts/utils'
+import store from '../../../../../../../store'
+import { isNavGroupActive } from '../../../../../../../@core/layouts/utils'
 
 export default function useVerticalNavMenuGroup(item) {
   // ------------------------------------------------
   // isVerticalMenuCollapsed
   // ------------------------------------------------
-  const isVerticalMenuCollapsed = computed(() => store.state.verticalMenu.isVerticalMenuCollapsed)
+  const isVerticalMenuCollapsed = computed(
+    () => store.state.verticalMenuCore.isVerticalMenuCollapsed
+  )
 
   watch(isVerticalMenuCollapsed, (val) => {
     /* eslint-disable no-use-before-define */

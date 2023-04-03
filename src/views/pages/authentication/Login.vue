@@ -175,13 +175,13 @@ import {
   BAlert,
   VBTooltip,
 } from 'bootstrap-vue'
-import useJwt from '@/auth/jwt/useJwt'
-import { required, email } from '@validations'
-import { togglePasswordVisibility } from '@core/mixins/ui/forms'
-import store from '@/store'
-import { getHomeRouteForLoggedInUser } from '@/auth/utils'
+import useJwt from '../../../auth/jwt/useJwt'
+import { required, email } from '../../../@core/utils/validations/validations'
+import { togglePasswordVisibility } from '../../../@core/mixins/ui/forms'
+import store from '../../../store'
+import { getHomeRouteForLoggedInUser } from '../../../auth/utils'
 
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 
 export default {
   directives: {
@@ -211,7 +211,7 @@ export default {
       status: '',
       password: 'admin',
       userEmail: 'admin@demo.com',
-      sideImg: require('@/assets/images/pages/login-v2.svg'),
+      sideImg: require('../../../assets/images/pages/login-v2.svg'),
 
       // validation rules
       required,
@@ -223,9 +223,9 @@ export default {
       return this.passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon'
     },
     imgUrl() {
-      if (store.state.appConfig.layout.skin === 'dark') {
+      if (store.state.appConfigCore.layout.skin === 'dark') {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.sideImg = require('@/assets/images/pages/login-v2-dark.svg')
+        this.sideImg = require('../../../assets/images/pages/login-v2-dark.svg')
         return this.sideImg
       }
       return this.sideImg
@@ -287,5 +287,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/pages/page-auth.scss';
+@import '../../../@core/scss/vue/pages/page-auth.scss';
 </style>

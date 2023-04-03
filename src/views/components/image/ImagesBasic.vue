@@ -10,7 +10,7 @@
     </b-card-text>
 
     <b-img
-      :src="require('@/assets/images/banner/banner-6.jpg')"
+      :src="require('../../../assets/images/banner/banner-6.jpg')"
       fluid
       class="w-100"
       alt="Responsive image"
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BImg, BCardText } from 'bootstrap-vue'
 import { codeBasic } from './code'
 

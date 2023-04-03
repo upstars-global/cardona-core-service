@@ -1,7 +1,7 @@
-import mock from '@/@fake-db/mock'
-// import { paginateArray, sortCompare } from '@/@fake-db/utils'
+import mock from '../../../@fake-db/mock'
+// import { paginateArray, sortCompare } from '../../../@fake-db/utils'
 
-/* eslint-disable global-require */
+/* eslint-disable */
 const data = {
   tasks: [
     {
@@ -12,7 +12,7 @@ const data = {
         '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
       assignee: {
         fullName: 'Jacob Ramirez',
-        avatar: require('@/assets/images/avatars/12.png'),
+        avatar: require('../../../assets/images/avatars/12.png'),
       },
       tags: ['update'],
       isCompleted: false,
@@ -57,7 +57,7 @@ const data = {
         '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
       assignee: {
         fullName: 'Curtis Schmidt',
-        avatar: require('@/assets/images/avatars/9.png'),
+        avatar: require('../../../assets/images/avatars/9.png'),
       },
       tags: ['medium'],
       isCompleted: false,
@@ -72,7 +72,7 @@ const data = {
         '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
       assignee: {
         fullName: 'Katherine Perkins',
-        avatar: require('@/assets/images/avatars/9.png'),
+        avatar: require('../../../assets/images/avatars/9.png'),
       },
       tags: ['medium'],
       isCompleted: true,
@@ -102,7 +102,7 @@ const data = {
         '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
       assignee: {
         fullName: 'Karina Miller',
-        avatar: require('@/assets/images/avatars/1.png'),
+        avatar: require('../../../assets/images/avatars/1.png'),
       },
       tags: ['medium'],
       isCompleted: false,
@@ -117,7 +117,7 @@ const data = {
         '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
       assignee: {
         fullName: 'Thomas Moses',
-        avatar: require('@/assets/images/avatars/7.png'),
+        avatar: require('../../../assets/images/avatars/7.png'),
       },
       tags: ['low', 'medium'],
       isCompleted: false,
@@ -162,7 +162,7 @@ const data = {
         '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
       assignee: {
         fullName: 'Timothy Brewer',
-        avatar: require('@/assets/images/avatars/1.png'),
+        avatar: require('../../../assets/images/avatars/1.png'),
       },
       tags: ['low'],
       isCompleted: true,
@@ -192,7 +192,7 @@ const data = {
         '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
       assignee: {
         fullName: 'Joshua Golden',
-        avatar: require('@/assets/images/avatars/5.png'),
+        avatar: require('../../../assets/images/avatars/5.png'),
       },
       tags: ['team'],
       isCompleted: false,
@@ -207,7 +207,7 @@ const data = {
         '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
       assignee: {
         fullName: 'Paula Hammond',
-        avatar: require('@/assets/images/avatars/5.png'),
+        avatar: require('../../../assets/images/avatars/5.png'),
       },
       tags: ['medium'],
       isCompleted: true,
@@ -237,7 +237,7 @@ const data = {
         '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
       assignee: {
         fullName: 'Darlene Shields',
-        avatar: require('@/assets/images/avatars/1.png'),
+        avatar: require('../../../assets/images/avatars/1.png'),
       },
       tags: ['low'],
       isCompleted: true,
@@ -267,7 +267,7 @@ const data = {
         '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
       assignee: {
         fullName: 'Danielle Anderson',
-        avatar: require('@/assets/images/avatars/12.png'),
+        avatar: require('../../../assets/images/avatars/12.png'),
       },
       tags: ['low'],
       isCompleted: false,

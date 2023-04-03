@@ -1,7 +1,7 @@
-import { FilterType } from '@model/filter'
-import i18n from '@/libs/i18n'
-import { TableField } from '@core/components/table-fields/model'
-import { IListSort } from '@/@model'
+import { FilterType } from '../../../@model/filter'
+import i18n from '../../../libs/i18n'
+import { TableField } from '../../../@core/components/table-fields/model'
+import { IListSort } from '../../../@model'
 
 export enum SortDirection {
   asc = 'ASC',

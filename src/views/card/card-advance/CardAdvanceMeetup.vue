@@ -2,7 +2,7 @@
   <b-card no-body class="card-developer-meetup">
     <div class="bg-light-primary rounded-top text-center">
       <b-img
-        :src="require('@/assets/images/illustration/email.svg')"
+        :src="require('../../../assets/images/illustration/email.svg')"
         alt="Meeting Pic"
         height="170"
       />
@@ -65,7 +65,7 @@ import {
   VBTooltip,
   BMediaBody,
 } from 'bootstrap-vue'
-/* eslint-disable global-require */
+/* eslint-disable */
 export default {
   components: {
     BCard,
@@ -90,23 +90,23 @@ export default {
       ],
       avatars: [
         {
-          avatar: require('@/assets/images/portrait/small/avatar-s-9.jpg'),
+          avatar: require('../../../assets/images/portrait/small/avatar-s-9.jpg'),
           fullName: 'Billy Hopkins',
         },
         {
-          avatar: require('@/assets/images/portrait/small/avatar-s-6.jpg'),
+          avatar: require('../../../assets/images/portrait/small/avatar-s-6.jpg'),
           fullName: 'Amy Carson',
         },
         {
-          avatar: require('@/assets/images/portrait/small/avatar-s-8.jpg'),
+          avatar: require('../../../assets/images/portrait/small/avatar-s-8.jpg'),
           fullName: 'Brandon Miles',
         },
         {
-          avatar: require('@/assets/images/portrait/small/avatar-s-7.jpg'),
+          avatar: require('../../../assets/images/portrait/small/avatar-s-7.jpg'),
           fullName: 'Daisy Weber',
         },
         {
-          avatar: require('@/assets/images/portrait/small/avatar-s-20.jpg'),
+          avatar: require('../../../assets/images/portrait/small/avatar-s-20.jpg'),
           fullName: 'Jenny Looper',
         },
       ],

@@ -73,7 +73,7 @@
             <b-form-group label="Assignee" label-for="assignee">
               <v-select
                 v-model="taskLocal.assignee"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 :options="assigneeOptions"
                 label="fullName"
                 class="assignee-selector"
@@ -111,7 +111,7 @@
             <b-form-group label="Tag" label-for="tag">
               <v-select
                 v-model="taskLocal.tags"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 multiple
                 :close-on-select="false"
                 :options="tagOptions"
@@ -177,9 +177,9 @@ import vSelect from 'vue-select'
 import flatPickr from 'vue-flatpickr-component'
 import Ripple from 'vue-ripple-directive'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { required, email, url } from '@validations'
-import { avatarText } from '@core/utils/filter'
-import formValidation from '@core/comp-functions/forms/form-validation'
+import { required, email, url } from '../../../@core/utils/validations/validations'
+import { avatarText } from '../../../@core/utils/filter'
+import formValidation from '../../../@core/comp-functions/forms/form-validation'
 import { toRefs } from 'vue'
 import { quillEditor } from 'vue-quill-editor'
 import useTaskHandler from './useTaskHandler'
@@ -281,13 +281,13 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
-@import '@core/scss/vue/libs/vue-flatpicker.scss';
-@import '@core/scss/vue/libs/quill.scss';
+@import '../../../@core/scss/vue/libs/vue-select.scss';
+@import '../../../@core/scss/vue/libs/vue-flatpicker.scss';
+@import '../../../@core/scss/vue/libs/quill.scss';
 </style>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_include.scss';
+@import '../../../@core/scss/base/bootstrap-extended/_include.scss';
 
 .assignee-selector {
   ::v-deep .vs__dropdown-toggle {

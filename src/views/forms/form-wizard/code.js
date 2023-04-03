@@ -198,7 +198,7 @@ export const codeIcon = `
             <div class="d-flex justify-content-between flex-wrap align-items-center">
               <div class="vs-radio-con vs-radio-primary">
                 <b-img
-                  :src="require('@/assets/images/images/pages/bank.png')"
+                  :src="require('../../../assets/images/images/pages/bank.png')"
                   height="40"
                   class="d-inline-block"
                 />
@@ -247,7 +247,7 @@ export const codeIcon = `
                 plain
               >
                 <b-img
-                  :src="require('@/assets/images/images/pages/PayPal_logo.png')"
+                  :src="require('../../../assets/images/images/pages/PayPal_logo.png')"
                   alt="PayPal Logo"
                 />
               </b-form-radio>
@@ -262,7 +262,7 @@ export const codeIcon = `
                 plain
               >
                 <b-img
-                  :src="require('@/assets/images/images/pages/google-pay.png')"
+                  :src="require('../../../assets/images/images/pages/google-pay.png')"
                   height="30"
                   alt="google Logo"
                 />
@@ -285,7 +285,7 @@ export const codeIcon = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../@core/components/app-card/AppCard.vue'
 import { FormWizard, TabContent } from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import {
@@ -651,7 +651,7 @@ export const codeIconInfo = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../@core/components/app-card/AppCard.vue'
 import { FormWizard, TabContent } from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import {
@@ -885,14 +885,14 @@ export const codeValidation = `
 </template>
 
 <script>
-import AppCard from '@core/components/app-card/AppCard.vue'
+import AppCard from '../../../@core/components/app-card/AppCard.vue'
 import { FormWizard, TabContent } from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import {
   BRow, BCol, BFormGroup, BFormInput, BFormSelect, BForm, BFormTextarea, BFormCheckbox,
 } from 'bootstrap-vue'
-import { required } from '@validations'
+import { required } from '../../../@core/utils/validations/validations'
 
 export default {
   components: {

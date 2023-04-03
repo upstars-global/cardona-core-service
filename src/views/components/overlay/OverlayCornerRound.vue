@@ -24,7 +24,7 @@
             <b-img
               rounded="circle"
               height="300"
-              :src="require('@/assets/images/banner/banner-27.jpg')"
+              :src="require('../../../assets/images/banner/banner-27.jpg')"
               alt="Image 1"
             />
           </b-overlay>
@@ -35,7 +35,7 @@
             <b-img
               rounded="circle"
               height="300"
-              :src="require('@/assets/images/banner/banner-27.jpg')"
+              :src="require('../../../assets/images/banner/banner-27.jpg')"
               alt="Image 1"
             />
           </b-overlay>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BOverlay, BButton, BImg, BRow, BCol, BCardText } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
 import { codeCornerRounded } from './code'

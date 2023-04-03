@@ -8,7 +8,7 @@
       <b-card-group columns>
         <!-- card image top -->
         <b-card
-          :img-src="require('@/assets/images/slider/06.jpg')"
+          :img-src="require('../../../assets/images/slider/06.jpg')"
           img-top
           img-alt="card img"
           title="Card title that wraps to a new line"
@@ -37,7 +37,7 @@
 
         <!-- card image top -->
         <b-card
-          :img-src="require('@/assets/images/slider/01.jpg')"
+          :img-src="require('../../../assets/images/slider/01.jpg')"
           img-alt="card img"
           img-top
           title="Card title"
@@ -76,7 +76,7 @@
         <!-- overlay card -->
         <b-card
           overlay
-          :img-src="require('@/assets/images/slider/02.jpg')"
+          :img-src="require('../../../assets/images/slider/02.jpg')"
           img-alt="overlay img"
           class="position-static"
         />

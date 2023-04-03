@@ -63,7 +63,7 @@
                   <!-- Select Client -->
                   <v-select
                     v-model="invoiceData.client"
-                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                     :options="clients"
                     label="company"
                     input-id="invoice-data-client"
@@ -166,7 +166,7 @@
                           <label class="d-inline d-lg-none">Item</label>
                           <v-select
                             v-model="item.itemTitle"
-                            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                            :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                             :options="itemsOptions"
                             label="itemTitle"
                             :clearable="false"
@@ -241,7 +241,7 @@
                                   :label-for="`setting-item-${index}-tax-1`"
                                 >
                                   <v-select
-                                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                                     :value="'10%'"
                                     :options="['0%', '1%', '10%', '14%', '18%']"
                                     :input-id="`setting-item-${index}-tax-1`"
@@ -257,7 +257,7 @@
                                   :label-for="`setting-item-${index}-tax-2`"
                                 >
                                   <v-select
-                                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                    :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                                     :value="'10%'"
                                     :options="['0%', '1%', '10%', '14%', '18%']"
                                     :input-id="`setting-item-${index}-tax-2`"
@@ -406,7 +406,7 @@
           <b-form-group label="Accept Payment Via" label-for="payment-method">
             <v-select
               v-model="invoiceData.paymentMethod"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               :options="paymentMethods"
               input-id="payment-method"
               class="payment-selector"
@@ -441,11 +441,11 @@
 </template>
 
 <script>
-import Logo from '@core/layouts/components/AppLogo.vue'
+import Logo from '../../../../@core/layouts/components/AppLogo.vue'
 import { ref, onUnmounted } from 'vue'
-import { heightTransition } from '@core/mixins/ui/transition'
+import { heightTransition } from '../../../../@core/mixins/ui/transition'
 import Ripple from 'vue-ripple-directive'
-import store from '@/store'
+import store from '../../../../store'
 import {
   BRow,
   BCol,
@@ -612,8 +612,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
-@import '@core/scss/vue/libs/vue-flatpicker.scss';
+@import '../../../../@core/scss/vue/libs/vue-select.scss';
+@import '../../../../@core/scss/vue/libs/vue-flatpicker.scss';
 .invoice-add-wrapper {
   .add-new-client-header {
     padding: $options-padding-y $options-padding-x;
@@ -627,8 +627,8 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/pages/app-invoice.scss';
-@import '~@core/scss/base/components/_variables-dark.scss';
+@import '../../../../@core/scss/base/pages/app-invoice.scss';
+@import '../../../../@core/scss/base/components/_variables-dark.scss';
 
 .form-item-section {
   background-color: $product-details-bg;

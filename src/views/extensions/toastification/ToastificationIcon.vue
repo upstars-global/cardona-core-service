@@ -70,8 +70,8 @@
 
 <script>
 import { BButton, BCardText } from 'bootstrap-vue'
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 import Ripple from 'vue-ripple-directive'
 import { codeIcon } from './code'
 

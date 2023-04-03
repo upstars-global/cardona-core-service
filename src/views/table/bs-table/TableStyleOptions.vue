@@ -36,7 +36,7 @@
       >
         <v-select
           v-model="tableVariant"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           label="tableVariants"
           :options="tableVariants"
         />
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import {
   BTable,
   BFormGroup,

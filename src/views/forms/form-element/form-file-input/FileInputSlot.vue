@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormFile, BBadge, BCardText } from 'bootstrap-vue'
 import { codeSlot } from './code'
 

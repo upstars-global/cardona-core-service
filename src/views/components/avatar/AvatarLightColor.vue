@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BCardText, BAvatar } from 'bootstrap-vue'
 import { codeColorLight } from './code'
 

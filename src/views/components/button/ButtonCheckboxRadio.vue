@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BFormRadioGroup, BFormCheckboxGroup, BFormGroup, BRow, BCol } from 'bootstrap-vue'
 import { codeCheckboxRadio } from './code'
 

@@ -13,7 +13,7 @@
 
           <v-select
             :value="paginated.perPage"
-            :dir="$store.getters['appConfig/dirOption']"
+            :dir="$store.getters['appConfigCore/dirOption']"
             label="per page"
             :options="paginated.perPageOptions"
             :clearable="false"
@@ -108,8 +108,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import { TableField } from '@core/components/table-fields/model'
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
+import { TableField } from '../../@core/components/table-fields/model'
+import { useUtils as useI18nUtils } from '../../@core/libs/i18n'
 
 export default defineComponent({
   name: 'ListView',
@@ -171,7 +171,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_include';
+@import '../../@core/scss/base/bootstrap-extended/_include';
 .table-box {
   border: 1px solid $border-color;
   border-radius: 0.5rem;

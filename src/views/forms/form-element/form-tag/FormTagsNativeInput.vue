@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormTags, BInputGroup, BInputGroupAppend, BCard, BButton, BCardText } from 'bootstrap-vue'
 import { codeNativeInput } from './code'
 

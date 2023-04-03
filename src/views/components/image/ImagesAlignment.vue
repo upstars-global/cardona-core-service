@@ -19,21 +19,21 @@
         left
         class="mb-1 mb-sm-0"
         height="120"
-        :src="require('@/assets/images/banner/banner-34.jpg')"
+        :src="require('../../../assets/images/banner/banner-34.jpg')"
         alt="Left image"
       />
       <b-img
         right
         class="mb-1 mb-sm-0"
         height="120"
-        :src="require('@/assets/images/banner/banner-34.jpg')"
+        :src="require('../../../assets/images/banner/banner-34.jpg')"
         alt="Right image"
       />
       <b-img
         center
         class="mb-1 mb-sm-0"
         height="120"
-        :src="require('@/assets/images/banner/banner-34.jpg')"
+        :src="require('../../../assets/images/banner/banner-34.jpg')"
         alt="Center image"
       />
     </div>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BImg, BCardText } from 'bootstrap-vue'
 import { codeAlignment } from './code'
 

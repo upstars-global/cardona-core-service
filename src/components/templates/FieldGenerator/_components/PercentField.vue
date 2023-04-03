@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_variables.scss';
+@import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
 
 .input-group-text {
   font-weight: 600;

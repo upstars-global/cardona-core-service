@@ -6,11 +6,11 @@ import interactionPlugin from '@fullcalendar/interaction'
 
 // Notification
 import { useToast } from 'vue-toastification/composition'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 
 // eslint-disable-next-line object-curly-newline
 import { ref, computed, watch, onMounted } from 'vue'
-import store from '@/store'
+import store from '../../../store'
 
 export default function userCalendar() {
   // Use toast
@@ -349,7 +349,7 @@ export default function userCalendar() {
     },
 
     // Get direction from app state (store)
-    direction: computed(() => (store.state.appConfig.isRTL ? 'rtl' : 'ltr')),
+    direction: computed(() => (store.state.appConfigCore.isRTL ? 'rtl' : 'ltr')),
     rerenderDelay: 350,
   })
 

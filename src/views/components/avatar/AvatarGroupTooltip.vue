@@ -14,33 +14,33 @@
         v-b-tooltip.hover
         class="pull-up"
         title="Jenny Looper"
-        :src="require('@/assets/images/portrait/small/avatar-s-5.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-5.jpg')"
       />
       <b-avatar
         v-b-tooltip.hover
         class="pull-up"
         title="Darcey Nooner"
         variant="primary"
-        :src="require('@/assets/images/portrait/small/avatar-s-7.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-7.jpg')"
       />
       <b-avatar
         v-b-tooltip.hover
         class="pull-up"
         title="Julee Rossignol"
-        :src="require('@/assets/images/portrait/small/avatar-s-10.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-10.jpg')"
       />
       <b-avatar
         v-b-tooltip.hover
         class="pull-up"
         title="Elicia Rieske"
         variant="danger"
-        :src="require('@/assets/images/portrait/small/avatar-s-8.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-8.jpg')"
       />
       <b-avatar
         v-b-tooltip.hover
         class="pull-up"
         title="Vinnie Mostowy"
-        :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-20.jpg')"
       />
     </b-avatar-group>
 
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BAvatarGroup, BAvatar, BCardText, VBTooltip } from 'bootstrap-vue'
 import { codeGroupTooltip } from './code'
 

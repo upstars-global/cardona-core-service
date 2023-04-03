@@ -1,4 +1,4 @@
-import mock from '@/@fake-db/mock'
+import mock from '../../@fake-db/mock'
 import jwt from 'jsonwebtoken'
 
 const data = {
@@ -9,7 +9,7 @@ const data = {
       username: 'johndoe',
       password: 'admin',
       // eslint-disable-next-line global-require
-      avatar: require('@/assets/images/avatars/13-small.png'),
+      avatar: require('../../assets/images/avatars/13-small.png'),
       email: 'admin@demo.com',
       role: 'admin',
       ability: [
@@ -28,7 +28,7 @@ const data = {
       username: 'janedoe',
       password: 'client',
       // eslint-disable-next-line global-require
-      avatar: require('@/assets/images/avatars/1-small.png'),
+      avatar: require('../../assets/images/avatars/1-small.png'),
       email: 'client@demo.com',
       role: 'client',
       ability: [

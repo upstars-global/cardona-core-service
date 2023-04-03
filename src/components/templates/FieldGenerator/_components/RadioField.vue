@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, PropType } from 'vue'
-import { FieldInfo } from '@model/field'
+import { FieldInfo } from '../../../../@model/field'
 
 export default defineComponent({
   name: 'RadioField',

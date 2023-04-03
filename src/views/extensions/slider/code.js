@@ -8,7 +8,7 @@ export const codeSingle = `
 
 <script>
 import VueSlider from 'vue-slider-component'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = 'rtl'
         return this.dir
@@ -64,7 +64,7 @@ export const codeMultiple = `
 
 <script>
 import VueSlider from 'vue-slider-component'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -80,7 +80,7 @@ export default {
   },
   computed: {
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = 'rtl'
         return this.dir
@@ -108,7 +108,7 @@ export const codeRange = `
 
 <script>
 import VueSlider from 'vue-slider-component'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -122,7 +122,7 @@ export default {
   },
   computed: {
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = 'rtl'
         return this.dir
@@ -178,7 +178,7 @@ export const codeLazy = `
 <script>
 import { BCardText } from 'bootstrap-vue'
 import VueSlider from 'vue-slider-component'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -192,7 +192,7 @@ export default {
   },
   computed: {
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = 'rtl'
         return this.dir
@@ -229,7 +229,7 @@ export const codeDisabled = `
 
 <script>
 import VueSlider from 'vue-slider-component'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -249,7 +249,7 @@ export default {
   },
   computed: {
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = 'rtl'
         return this.dir
@@ -295,7 +295,7 @@ export const codeAdsorb = `
 
 <script>
 import VueSlider from 'vue-slider-component'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -313,7 +313,7 @@ export default {
   },
   computed: {
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = 'rtl'
         return this.dir
@@ -344,7 +344,7 @@ export const codeContained = `
 <script>
 import { BCardText } from 'bootstrap-vue'
 import VueSlider from 'vue-slider-component'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -359,7 +359,7 @@ export default {
   },
   computed: {
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = 'rtl'
         return this.dir
@@ -474,7 +474,7 @@ export const codebehavior = `
 <script>
 import { BCardText } from 'bootstrap-vue'
 import VueSlider from 'vue-slider-component'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -493,7 +493,7 @@ export default {
   },
   computed: {
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = 'rtl'
         return this.dir
@@ -571,7 +571,7 @@ export const codeColors = `
 
 <script>
 import VueSlider from 'vue-slider-component'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -591,7 +591,7 @@ export default {
   },
   computed: {
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = 'rtl'
         return this.dir
@@ -643,7 +643,7 @@ import {
   BFormSelect, BFormSelectOption, BFormGroup, BFormInput,
 } from 'bootstrap-vue'
 import VueSlider from 'vue-slider-component'
-import store from '@/store/index'
+import store from '../../../store/index'
 
 export default {
   components: {
@@ -671,7 +671,7 @@ export default {
       },
     },
     direction() {
-      if (store.state.appConfig.isRTL) {
+      if (store.state.appConfigCore.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.dir = 'rtl'
         return this.dir
@@ -960,7 +960,7 @@ export const codeTooltips = `
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { BRow, BCol } from 'bootstrap-vue'
 import VueSlider from 'vue-slider-component'
 

@@ -27,7 +27,7 @@
         <template #toast-title>
           <div class="d-flex flex-grow-1 align-items-center mr-25">
             <b-img
-              :src="require('@/assets/images/logo/logo.png')"
+              :src="require('../../../assets/images/logo/logo.png')"
               class="rounded mr-2"
               height="18"
               width="25"
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BToast, BButton, BImg, BCardText } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
 import { codeToastDelay } from './code'

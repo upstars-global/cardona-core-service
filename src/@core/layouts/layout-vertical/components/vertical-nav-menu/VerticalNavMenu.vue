@@ -91,14 +91,14 @@ import navMenuItems from '@/navigation/vertical'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { BLink } from 'bootstrap-vue'
 import { provide, computed, ref } from 'vue'
-import useAppConfig from '@core/app-config/useAppConfig'
+import useAppConfig from '../../../../../@core/app-config/useAppConfig'
 import VerticalNavMenuItems from './components/vertical-nav-menu-items/VerticalNavMenuItems.vue'
 import useVerticalNavMenu from './useVerticalNavMenu'
 import ProjectSelect from './components/ProjectSelect'
-import { getters } from '@/store'
-import ProductsSelect from '@core/layouts/layout-vertical/components/vertical-nav-menu/components/ProductsSelect'
-import router from '@/router'
-import i18n from '@/libs/i18n'
+import { getters } from '../../../../../store'
+import ProductsSelect from '../../../../../@core/layouts/layout-vertical/components/vertical-nav-menu/components/ProductsSelect'
+import router from '../../../../../router'
+import i18n from '../../../../../libs/i18n'
 
 export default {
   name: 'VerticalNavMenu',
@@ -197,7 +197,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/core/menu/menu-types/vertical-menu';
+@import '../../../../../@core/scss/base/core/menu/menu-types/vertical-menu';
 .main-menu {
   .router-link-active {
     color: $body-color;

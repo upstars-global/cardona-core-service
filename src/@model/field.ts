@@ -1,5 +1,6 @@
-import store from '@/store'
-import { OptionsItem } from '@model/index'
+import store from '../store'
+import { OptionsItem } from './index'
+import { TranslateResult } from 'vue-i18n'
 
 export enum FieldType {
   Text = 'text',
@@ -30,15 +31,15 @@ export interface IFieldInfo {
   readonly type: FieldType
   readonly key: string
   readonly value?: any
-  readonly label: string
+  readonly label: TranslateResult
   readonly options?: Array<any>
   readonly fetchOptionsActionName?: string
   readonly staticFilters?: Record<string, string>
   readonly validationRules?: string
   form?: object | null
   readonly isLocalization?: boolean
-  readonly placeholder?: string
-  readonly description?: string
+  readonly placeholder?: TranslateResult
+  readonly description?: TranslateResult
   readonly info?: string
   readonly append?: string
   readonly prepend?: string
@@ -50,15 +51,15 @@ export class FieldInfo<T = {}> {
   readonly type: FieldType
   readonly key: string
   private _value: any
-  readonly label: string
+  readonly label: TranslateResult
   public options?: Array<T>
   readonly fetchOptionsActionName?: string
   readonly staticFilters?: Record<string, string>
   public form?: object | null
   readonly validationRules?: string
   readonly isLocalization?: boolean
-  readonly placeholder?: string
-  readonly description?: string
+  readonly placeholder?: TranslateResult
+  readonly description?: TranslateResult
   readonly info?: string
   readonly append?: string
   readonly prepend?: string

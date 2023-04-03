@@ -2,7 +2,7 @@
   <div
     class="app-content content"
     :class="[
-      { 'show-overlay': $store.state.breakpoint.shallShowOverlay },
+      { 'show-overlay': $store.state.breakpointCore.shallShowOverlay },
       $route.meta.contentClass,
     ]"
   >
@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import AppBreadcrumb from '@core/layouts/components/AppBreadcrumb.vue'
-import useAppConfig from '@core/app-config/useAppConfig'
+import AppBreadcrumb from '../../../../@core/layouts/components/AppBreadcrumb.vue'
+import useAppConfig from '../../../../@core/app-config/useAppConfig'
 
 export default {
   components: {

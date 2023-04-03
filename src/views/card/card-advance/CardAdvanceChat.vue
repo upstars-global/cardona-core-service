@@ -4,7 +4,7 @@
       <div class="d-flex align-items-center">
         <b-avatar
           size="34"
-          :src="require('@/assets/images/avatars/1.png')"
+          :src="require('../../../assets/images/avatars/1.png')"
           class="mr-50 badge-minimal"
           badge
           badge-variant="success"
@@ -23,7 +23,7 @@
       >
         <chat-log
           :chat-data="chatData"
-          :profile-user-avatar="require('@/assets/images/avatars/10.png')"
+          :profile-user-avatar="require('../../../assets/images/avatars/10.png')"
         />
       </vue-perfect-scrollbar>
 
@@ -41,7 +41,7 @@
 <script>
 import { BCard, BCardHeader, BAvatar, BForm, BFormInput, BInputGroup, BButton } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import ChatLog from '@/views/apps/chat/ChatLog.vue'
+import ChatLog from '../../../views/apps/chat/ChatLog.vue'
 
 export default {
   components: {
@@ -129,7 +129,7 @@ export default {
           id: 1,
           fullName: 'Felecia Rower',
           // eslint-disable-next-line global-require
-          avatar: require('@/assets/images/avatars/1.png'),
+          avatar: require('../../../assets/images/avatars/1.png'),
           status: 'away',
         },
       },
@@ -162,5 +162,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/base/pages/app-chat-list.scss';
+@import '../../../@core/scss/base/pages/app-chat-list.scss';
 </style>

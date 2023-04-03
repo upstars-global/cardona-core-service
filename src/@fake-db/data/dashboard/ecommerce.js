@@ -1,5 +1,5 @@
-import mock from '@/@fake-db/mock'
-/* eslint-disable global-require */
+import mock from '../../../@fake-db/mock'
+/* eslint-disable */
 const data = {
   congratulations: {
     name: 'John',
@@ -82,7 +82,7 @@ const data = {
   },
   companyTable: [
     {
-      avatarImg: require('@/assets/images/icons/toolbox.svg'),
+      avatarImg: require('../../../assets/images/icons/toolbox.svg'),
       title: 'Dixons',
       subtitle: 'meguc@ruj.io',
       avatarIcon: 'MonitorIcon',
@@ -95,7 +95,7 @@ const data = {
       loss: true,
     },
     {
-      avatarImg: require('@/assets/images/icons/parachute.svg'),
+      avatarImg: require('../../../assets/images/icons/parachute.svg'),
       title: 'Motels',
       subtitle: 'vecav@hodzi.co.uk',
       avatarIcon: 'CoffeeIcon',
@@ -108,7 +108,7 @@ const data = {
       loss: false,
     },
     {
-      avatarImg: require('@/assets/images/icons/brush.svg'),
+      avatarImg: require('../../../assets/images/icons/brush.svg'),
       title: 'Zipcar',
       subtitle: 'davcilse@is.gov',
       avatarIcon: 'WatchIcon',
@@ -121,7 +121,7 @@ const data = {
       loss: false,
     },
     {
-      avatarImg: require('@/assets/images/icons/star.svg'),
+      avatarImg: require('../../../assets/images/icons/star.svg'),
       title: 'Owning',
       subtitle: 'us@cuhil.gov',
       avatarIcon: 'MonitorIcon',
@@ -134,7 +134,7 @@ const data = {
       loss: false,
     },
     {
-      avatarImg: require('@/assets/images/icons/book.svg'),
+      avatarImg: require('../../../assets/images/icons/book.svg'),
       title: 'Cafés',
       subtitle: 'pudais@jife.com',
       avatarIcon: 'CoffeeIcon',
@@ -147,7 +147,7 @@ const data = {
       loss: true,
     },
     {
-      avatarImg: require('@/assets/images/icons/rocket.svg'),
+      avatarImg: require('../../../assets/images/icons/rocket.svg'),
       title: 'Kmart',
       subtitle: 'bipri@cawiw.com',
       avatarIcon: 'WatchIcon',
@@ -160,7 +160,7 @@ const data = {
       loss: false,
     },
     {
-      avatarImg: require('@/assets/images/icons/speaker.svg'),
+      avatarImg: require('../../../assets/images/icons/speaker.svg'),
       title: 'Payers',
       subtitle: 'luk@izug.io',
       avatarIcon: 'WatchIcon',
@@ -180,17 +180,17 @@ const data = {
     ],
     avatars: [
       {
-        avatar: require('@/assets/images/portrait/small/avatar-s-9.jpg'),
+        avatar: require('../../../assets/images/portrait/small/avatar-s-9.jpg'),
         fullName: 'Billy Hopkins',
       },
-      { avatar: require('@/assets/images/portrait/small/avatar-s-6.jpg'), fullName: 'Amy Carson' },
+      { avatar: require('../../../assets/images/portrait/small/avatar-s-6.jpg'), fullName: 'Amy Carson' },
       {
-        avatar: require('@/assets/images/portrait/small/avatar-s-8.jpg'),
+        avatar: require('../../../assets/images/portrait/small/avatar-s-8.jpg'),
         fullName: 'Brandon Miles',
       },
-      { avatar: require('@/assets/images/portrait/small/avatar-s-7.jpg'), fullName: 'Daisy Weber' },
+      { avatar: require('../../../assets/images/portrait/small/avatar-s-7.jpg'), fullName: 'Daisy Weber' },
       {
-        avatar: require('@/assets/images/portrait/small/avatar-s-20.jpg'),
+        avatar: require('../../../assets/images/portrait/small/avatar-s-20.jpg'),
         fullName: 'Jenny Looper',
       },
     ],
@@ -243,5 +243,5 @@ const data = {
     },
   ],
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 mock.onGet('/ecommerce/data').reply(() => [200, data])

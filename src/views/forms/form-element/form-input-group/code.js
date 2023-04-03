@@ -134,7 +134,7 @@ export const codeBasic = `
 import {
   BInputGroup, BFormInput, BInputGroupPrepend, BInputGroupAppend, BFormGroup, BFormTextarea,
 } from 'bootstrap-vue'
-import { togglePasswordVisibility } from '@core/mixins/ui/forms'
+import { togglePasswordVisibility } from '../../../../@core/mixins/ui/forms'
 
 export default {
   components: {
@@ -508,7 +508,7 @@ export const codeMerged = `
 
 <script>
 import {BInputGroup, BFormInput, BInputGroupPrepend, BInputGroupAppend, BFormGroup, BFormTextarea} from 'bootstrap-vue'
-import { togglePasswordVisibility } from '@core/mixins/ui/forms'
+import { togglePasswordVisibility } from '../../../../@core/mixins/ui/forms'
 
 export default {
   components: {

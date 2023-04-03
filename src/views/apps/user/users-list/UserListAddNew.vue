@@ -120,7 +120,7 @@
             >
               <v-select
                 v-model="userData.country"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 :options="countries"
                 :clearable="false"
                 input-id="country"
@@ -140,7 +140,7 @@
             >
               <v-select
                 v-model="userData.role"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 :options="roleOptions"
                 :reduce="(val) => val.value"
                 :clearable="false"
@@ -161,7 +161,7 @@
             >
               <v-select
                 v-model="userData.currentPlan"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 :options="planOptions"
                 :reduce="(val) => val.value"
                 :clearable="false"
@@ -209,12 +209,12 @@ import {
 } from 'bootstrap-vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { ref } from 'vue'
-import { required, alphaNum, email } from '@validations'
-import formValidation from '@core/comp-functions/forms/form-validation'
+import { required, alphaNum, email } from '../../../../@core/utils/validations/validations'
+import formValidation from '../../../../@core/comp-functions/forms/form-validation'
 import Ripple from 'vue-ripple-directive'
 import vSelect from 'vue-select'
-import countries from '@/@fake-db/data/other/countries'
-import store from '@/store'
+import countries from '../../../../@fake-db/data/other/countries'
+import store from '../../../../store'
 
 export default {
   components: {
@@ -298,7 +298,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
+@import '../../../../@core/scss/vue/libs/vue-select.scss';
 
 #add-new-user-sidebar {
   .vs__dropdown-menu {

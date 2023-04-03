@@ -29,5 +29,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-autosuggest.scss';
+@import '../../../../@core/scss/vue/libs/vue-autosuggest.scss';
 </style>

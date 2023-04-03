@@ -43,16 +43,16 @@
 
 <script lang="ts">
 import { getCurrentInstance, PropType, ref, computed, onBeforeMount, defineComponent } from 'vue'
-import { getters, dispatch } from '@/store'
+import { getters, dispatch } from '../../../store'
 import { PageType, UseEntityType } from './model'
 import { ValidationObserver } from 'vee-validate'
-import formValidation from '@core/comp-functions/forms/form-validation'
-import CardLoader from '@core/components/card-loader/CardLoader.vue'
-import { convertCamelCase, transformFormData } from '@/helpers'
-import { useBvModal } from '@/helpers/bvModal'
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
-import { useRouter } from '@core/utils/utils'
-import { BaseListConfig, IBaseListConfig } from '@/components/templates/BaseList/model'
+import formValidation from '../../../@core/comp-functions/forms/form-validation'
+import CardLoader from '../../../@core/components/card-loader/CardLoader.vue'
+import { convertCamelCase, transformFormData } from '../../../helpers'
+import { useBvModal } from '../../../helpers/bvModal'
+import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
+import { useRouter } from '../../../@core/utils/utils'
+import { BaseListConfig, IBaseListConfig } from '../../../components/templates/BaseList/model'
 
 export default defineComponent({
   name: 'BaseSection',
@@ -94,10 +94,10 @@ export default defineComponent({
     const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Update`
 
     // Action names
-    const createActionName: string = 'baseStore/createEntity'
-    const readActionName: string = 'baseStore/readEntity'
-    const updateActionName: string = 'baseStore/updateEntity'
-    const deleteActionName: string = 'baseStore/deleteEntity'
+    const createActionName: string = 'baseStoreCore/createEntity'
+    const readActionName: string = 'baseStoreCore/readEntity'
+    const updateActionName: string = 'baseStoreCore/updateEntity'
+    const deleteActionName: string = 'baseStoreCore/deleteEntity'
 
     // Permissions
     const permissionKey: string = `backoffice-${convertCamelCase(entityName, '-')}`

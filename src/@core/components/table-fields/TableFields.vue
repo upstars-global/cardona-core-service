@@ -19,8 +19,8 @@
 import { computed, defineComponent, onMounted, PropType } from 'vue'
 import { BButton, BDropdown, BDropdownItem } from 'bootstrap-vue'
 import { TableField } from './model'
-import { getListStorage, setStorage } from '@/helpers/storage'
-import { useRouter } from '@core/utils/utils'
+import { getListStorage, setStorage } from '../../../helpers/storage'
+import { useRouter } from '../../../@core/utils/utils'
 
 export default defineComponent({
   components: {

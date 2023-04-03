@@ -5,7 +5,7 @@
       <b-avatar
         size="72px"
         class="mr-1"
-        :src="require('@/assets/images/portrait/small/avatar-s-8.jpg')"
+        :src="require('../../../assets/images/portrait/small/avatar-s-8.jpg')"
       />
 
       <!-- Name -->

@@ -215,7 +215,7 @@
 </template>
 
 <script>
-import store from '@/store'
+import store from '../../../store'
 import {
   ref,
   onUnmounted,
@@ -236,9 +236,9 @@ import {
   BAvatar,
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import { filterTags, formatDateToMonthShort } from '@core/utils/filter'
-import { useRouter } from '@core/utils/utils'
-import { useResponsiveAppLeftSidebarVisibility } from '@core/comp-functions/ui/app'
+import { filterTags, formatDateToMonthShort } from '../../../@core/utils/filter'
+import { useRouter } from '../../../@core/utils/utils'
+import { useResponsiveAppLeftSidebarVisibility } from '../../../@core/comp-functions/ui/app'
 import EmailLeftSidebar from './EmailLeftSidebar.vue'
 import EmailView from './EmailView.vue'
 import emailStoreModule from './emailStoreModule'
@@ -548,5 +548,5 @@ export default {
 </style>
 
 <style lang="scss">
-@import '~@core/scss/base/pages/app-email.scss';
+@import '../../../@core/scss/base/pages/app-email.scss';
 </style>

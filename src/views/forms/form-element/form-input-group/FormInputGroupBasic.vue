@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import {
   BInputGroup,
   BFormInput,
@@ -65,7 +65,7 @@ import {
   BFormGroup,
   BFormTextarea,
 } from 'bootstrap-vue'
-import { togglePasswordVisibility } from '@core/mixins/ui/forms'
+import { togglePasswordVisibility } from '../../../../@core/mixins/ui/forms'
 import { codeBasic } from './code'
 
 export default {

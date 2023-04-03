@@ -20,7 +20,7 @@
     >
       <v-select
         v-model="selectedCountries"
-        :dir="$store.getters['appConfig/dirOption']"
+        :dir="$store.getters['appConfigCore/dirOption']"
         multiple
         :disabled="disabled"
         :options="regionsOptions"
@@ -33,9 +33,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
-import store from '@/store'
-import i18n from '@/libs/i18n'
-import { RegionInfo } from '@model/regions'
+import store from '../store'
+import i18n from '../libs/i18n'
+import { RegionInfo } from '../@model/regions'
 
 export default defineComponent({
   name: 'CountriesSelect',
@@ -144,8 +144,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_variables.scss';
-@import '@/assets/scss/style.scss';
+@import '../@core/scss/base/bootstrap-extended/_variables.scss';
+@import '../assets/scss/style.scss';
 
 .countries-select::v-deep {
   .vs__selected,

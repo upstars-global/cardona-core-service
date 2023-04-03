@@ -1,47 +1,47 @@
-import mock from '@/@fake-db/mock'
-/* eslint-disable global-require */
+import mock from '../../../@fake-db/mock'
+/* eslint-disable */
 const data = {
   // knowledge base
   knowledgeBase: [
     {
       id: 1,
       category: 'sales-automation',
-      img: require('@/assets/images/illustration/sales.svg'),
+      img: require('../../../assets/images/illustration/sales.svg'),
       title: 'Sales Automation',
       desc: 'There is perhaps no better demonstration of the folly of image of our tiny world.',
     },
     {
       id: 2,
       category: 'marketing-automation',
-      img: require('@/assets/images/illustration/marketing.svg'),
+      img: require('../../../assets/images/illustration/marketing.svg'),
       title: 'Marketing Automation',
       desc: 'Look again at that dot. That’s here. That’s home. That’s us. On it everyone you love.',
     },
     {
       id: 3,
       category: 'api-questions',
-      img: require('@/assets/images/illustration/api.svg'),
+      img: require('../../../assets/images/illustration/api.svg'),
       title: 'API Questions',
       desc: 'every hero and coward, every creator and destroyer of civilization.',
     },
     {
       id: 4,
       category: 'personalization',
-      img: require('@/assets/images/illustration/personalization.svg'),
+      img: require('../../../assets/images/illustration/personalization.svg'),
       title: 'Personalization',
       desc: 'It has been said that astronomy is a humbling and character experience.',
     },
     {
       id: 5,
       category: 'email-marketing',
-      img: require('@/assets/images/illustration/email.svg'),
+      img: require('../../../assets/images/illustration/email.svg'),
       title: 'Email Marketing',
       desc: 'There is perhaps no better demonstration of the folly of human conceits.',
     },
     {
       id: 6,
       category: 'demand-generation',
-      img: require('@/assets/images/illustration/demand.svg'),
+      img: require('../../../assets/images/illustration/demand.svg'),
       title: 'Demand Generation',
       desc: 'Competent means we will never take anything for granted.',
     },
@@ -267,11 +267,11 @@ const data = {
       },
     ],
     // ! Here we have used require for image source but in API it shall be URL of live image, this is just for demo purpose
-    content: `<p>It has been said that astronomy is a humbling and character-building experience. There is perhaps no better demonstration of the folly of human conceits than this distant image of our tiny world. To me, it underscores our responsibility to deal more kindly with one another, and to preserve and cherish the pale blue dot, the only home we’ve ever known. The Earth is a very small stage in a vast cosmic arena. Think of the rivers of blood spilled by all those generals and emperors so that, in glory and triumph, they could become the momentary masters of a fraction of a dot. Think of the endless cruelties visited by the inhabitants of one corner of this pixel on the scarcely distinguishable inhabitants of some other corner, how frequent their misunderstandings, how eager they are to kill one another, how fervent their hatreds.</p><p class="ql-align-center"><img class="img-fluid w-100" src="${require('@/assets/images/pages/kb-image.jpg')}"></p></p><h5>Houston</h5><p>that may have seemed like a very long final phase. The auto targeting was taking us right into a … crater, with a large number of big boulders and rocks … and it required … flying manually over the rock field to find a reasonably good area.</p><ul><li><a href="javascript:void(0)" rel="noopener noreferrer" >I am a stranger. I come in peace. Take me to your leader and there will be a massive reward for you in eternity.</a></li><li><a href="javascript:void(0)" rel="noopener noreferrer" >It’s just mind-blowingly awesome. I apologize, and I wish I was more articulate, but it’s hard to be articulate when your mind’s blown—but in a very good way.</a></li><li><a href="javascript:void(0)" rel="noopener noreferrer" >A good rule for rocket experimenters to follow is this</a></li></ul>`,
+    content: `<p>It has been said that astronomy is a humbling and character-building experience. There is perhaps no better demonstration of the folly of human conceits than this distant image of our tiny world. To me, it underscores our responsibility to deal more kindly with one another, and to preserve and cherish the pale blue dot, the only home we’ve ever known. The Earth is a very small stage in a vast cosmic arena. Think of the rivers of blood spilled by all those generals and emperors so that, in glory and triumph, they could become the momentary masters of a fraction of a dot. Think of the endless cruelties visited by the inhabitants of one corner of this pixel on the scarcely distinguishable inhabitants of some other corner, how frequent their misunderstandings, how eager they are to kill one another, how fervent their hatreds.</p><p class="ql-align-center"><img class="img-fluid w-100" src="${require('../../../assets/images/pages/kb-image.jpg')}"></p></p><h5>Houston</h5><p>that may have seemed like a very long final phase. The auto targeting was taking us right into a … crater, with a large number of big boulders and rocks … and it required … flying manually over the rock field to find a reasonably good area.</p><ul><li><a href="javascript:void(0)" rel="noopener noreferrer" >I am a stranger. I come in peace. Take me to your leader and there will be a massive reward for you in eternity.</a></li><li><a href="javascript:void(0)" rel="noopener noreferrer" >It’s just mind-blowingly awesome. I apologize, and I wish I was more articulate, but it’s hard to be articulate when your mind’s blown—but in a very good way.</a></li><li><a href="javascript:void(0)" rel="noopener noreferrer" >A good rule for rocket experimenters to follow is this</a></li></ul>`,
   },
   // category
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 mock.onGet('/kb/data/knowledge_base').reply(() => [200, data.knowledgeBase])
 mock.onGet('/kb/data/category').reply(() => [200, data.categoryData])
 mock.onGet('/kb/data/question').reply(() => [200, data.questionData])

@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BAlert, BAspect, BFormGroup, BFormSelect, BCardText, BLink } from 'bootstrap-vue'
 import codeAspectDefaut from './code'
 

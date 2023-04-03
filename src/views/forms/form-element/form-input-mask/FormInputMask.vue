@@ -137,7 +137,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../../@core/components/b-card-code/BCardCode.vue'
 import { BRow, BCol, BFormGroup, BInputGroupPrepend, BInputGroup } from 'bootstrap-vue'
 import Cleave from 'vue-cleave-component'
 import 'cleave.js/dist/addons/cleave-phone.us'

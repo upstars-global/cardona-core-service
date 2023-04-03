@@ -220,7 +220,7 @@
             <!-- images -->
             <b-img
               fluid
-              :src="require('@/assets/images/illustration/pricing-Illustration.svg')"
+              :src="require('../../../assets/images/illustration/pricing-Illustration.svg')"
               class="pricing-trial-img"
               alt="svg img"
             />
@@ -266,10 +266,10 @@ import {
   BButton,
   BBadge,
 } from 'bootstrap-vue'
-import AppCollapse from '@core/components/app-collapse/AppCollapse.vue'
-import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
+import AppCollapse from '../../../@core/components/app-collapse/AppCollapse.vue'
+import AppCollapseItem from '../../../@core/components/app-collapse/AppCollapseItem.vue'
 import Ripple from 'vue-ripple-directive'
-/* eslint-disable global-require */
+/* eslint-disable */
 export default {
   components: {
     BFormCheckbox,
@@ -310,9 +310,9 @@ export default {
     },
   },
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/pages/page-pricing.scss';
+@import '../../../@core/scss/vue/pages/page-pricing.scss';
 </style>

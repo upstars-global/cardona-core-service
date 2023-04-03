@@ -15,7 +15,7 @@
       <b-media vertical-align="top">
         <template #aside>
           <b-img
-            :src="require('@/assets/images/portrait/small/avatar-s-4.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-4.jpg')"
             blank-color="#ccc"
             width="64"
             alt="placeholder"
@@ -39,7 +39,7 @@
       <b-media vertical-align="center">
         <template #aside>
           <b-img
-            :src="require('@/assets/images/portrait/small/avatar-s-1.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-1.jpg')"
             blank-color="#ccc"
             width="64"
             alt="placeholder"
@@ -63,7 +63,7 @@
       <b-media vertical-align="bottom">
         <template #aside>
           <b-img
-            :src="require('@/assets/images/portrait/small/avatar-s-16.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-16.jpg')"
             blank-color="#ccc"
             width="64"
             alt="placeholder"
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BMedia, BImg, BCardText } from 'bootstrap-vue'
 import { codeVerticalAlign } from './code'
 

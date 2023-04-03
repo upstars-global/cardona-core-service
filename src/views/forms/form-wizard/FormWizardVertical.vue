@@ -62,7 +62,7 @@
               <v-select
                 id="v-country"
                 v-model="selectedContry"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 :options="countryName"
                 :selectable="(option) => !option.value.includes('select_value')"
                 label="text"
@@ -74,7 +74,7 @@
               <v-select
                 id="Language"
                 v-model="selectedLanguage"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
                 :selectable="(option) => !option.value.includes('select_value')"
                 :options="languageName"
                 label="text"
@@ -152,7 +152,7 @@ import { FormWizard, TabContent } from 'vue-form-wizard'
 import vSelect from 'vue-select'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import { BRow, BCol, BFormGroup, BFormInput } from 'bootstrap-vue'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import ToastificationContent from '../../../@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {

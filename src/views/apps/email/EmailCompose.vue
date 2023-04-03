@@ -78,7 +78,7 @@
         <label for="email-to" class="form-label">To: </label>
         <v-select
           v-model="composeData.to"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           multiple
           label="name"
           class="flex-grow-1 email-to-selector"
@@ -105,7 +105,7 @@
         <label for="email-cc">CC: </label>
         <v-select
           v-model="composeData.cc"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           multiple
           label="name"
           class="flex-grow-1 email-cc-selector"
@@ -130,7 +130,7 @@
         <label for="email-bcc">Bcc </label>
         <v-select
           v-model="composeData.bcc"
-          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+          :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
           multiple
           label="name"
           class="flex-grow-1 email-bcc-selector"
@@ -225,14 +225,17 @@ export default {
       placeholder: 'Message',
     }
 
-    /* eslint-disable global-require */
+    /* eslint-disable */
     const emailToOptions = [
-      { avatar: require('@/assets/images/avatars/1-small.png'), name: 'Jane Foster' },
-      { avatar: require('@/assets/images/avatars/3-small.png'), name: 'Donna Frank' },
-      { avatar: require('@/assets/images/avatars/5-small.png'), name: 'Gabrielle Robertson' },
-      { avatar: require('@/assets/images/avatars/7-small.png'), name: 'Lori Spears' },
-      { avatar: require('@/assets/images/avatars/9-small.png'), name: 'Sandy Vega' },
-      { avatar: require('@/assets/images/avatars/11-small.png'), name: 'Cheryl May' },
+      { avatar: require('../../../assets/images/avatars/1-small.png'), name: 'Jane Foster' },
+      { avatar: require('../../../assets/images/avatars/3-small.png'), name: 'Donna Frank' },
+      {
+        avatar: require('../../../assets/images/avatars/5-small.png'),
+        name: 'Gabrielle Robertson',
+      },
+      { avatar: require('../../../assets/images/avatars/7-small.png'), name: 'Lori Spears' },
+      { avatar: require('../../../assets/images/avatars/9-small.png'), name: 'Sandy Vega' },
+      { avatar: require('../../../assets/images/avatars/11-small.png'), name: 'Cheryl May' },
     ]
     /* eslint-enable global-require */
 
@@ -264,8 +267,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
-@import '@core/scss/vue/libs/quill.scss';
+@import '../../../@core/scss/vue/libs/vue-select.scss';
+@import '../../../@core/scss/vue/libs/quill.scss';
 </style>
 
 <style lang="scss" scoped>

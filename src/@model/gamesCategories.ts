@@ -1,9 +1,9 @@
-import i18n from '@/libs/i18n'
-import { SeoData } from '@model/seo'
-import { IRequestListPayload } from '@model/index'
-import { FieldTranslationsData } from '@model/translations'
-import { IGameItemInfo } from '@model/staticPages'
-import { TextBaseField, NumberBaseField } from '@model/baseField'
+import i18n from '../libs/i18n'
+import { SeoData } from '../@model/seo'
+import { IRequestListPayload } from '../@model/index'
+import { FieldTranslationsData } from '../@model/translations'
+import { IGameItemInfo } from '../@model/staticPages'
+import { TextBaseField, NumberBaseField } from '../@model/baseField'
 
 export interface GamesCategoriesData {
   readonly id?: string

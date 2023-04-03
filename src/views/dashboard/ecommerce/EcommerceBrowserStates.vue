@@ -61,7 +61,7 @@ import {
 } from 'bootstrap-vue'
 import VueApexCharts from 'vue-apexcharts'
 import { $themeColors } from '@themeConfig'
-/* eslint-disable global-require */
+/* eslint-disable */
 const $trackBgColor = '#e9ecef'
 export default {
   components: {
@@ -92,27 +92,27 @@ export default {
       chartSeries: [54.4, 6.1, 14.6, 4.2, 8],
       browserData: [
         {
-          browserImg: require('@/assets/images/icons/google-chrome.png'),
+          browserImg: require('../../../assets/images/icons/google-chrome.png'),
           name: 'Google Chrome',
           usage: '54.4%',
         },
         {
-          browserImg: require('@/assets/images/icons/mozila-firefox.png'),
+          browserImg: require('../../../assets/images/icons/mozila-firefox.png'),
           name: 'Mozila Firefox',
           usage: '6.1%',
         },
         {
-          browserImg: require('@/assets/images/icons/apple-safari.png'),
+          browserImg: require('../../../assets/images/icons/apple-safari.png'),
           name: 'Apple Safari',
           usage: '14.6%',
         },
         {
-          browserImg: require('@/assets/images/icons/internet-explorer.png'),
+          browserImg: require('../../../assets/images/icons/internet-explorer.png'),
           name: 'Internet Explorer',
           usage: '4.2%',
         },
         {
-          browserImg: require('@/assets/images/icons/opera.png'),
+          browserImg: require('../../../assets/images/icons/opera.png'),
           name: 'Opera Mini',
           usage: '8.%',
         },

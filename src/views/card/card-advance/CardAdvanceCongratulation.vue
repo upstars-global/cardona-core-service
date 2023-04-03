@@ -2,11 +2,11 @@
   <b-card text-variant="center" class="card card-congratulations">
     <!-- images -->
     <b-img
-      :src="require('@/assets/images/elements/decore-left.png')"
+      :src="require('../../../assets/images/elements/decore-left.png')"
       class="congratulations-img-left"
     />
     <b-img
-      :src="require('@/assets/images/elements/decore-right.png')"
+      :src="require('../../../assets/images/elements/decore-right.png')"
       class="congratulations-img-right"
     />
     <!--/ images -->

@@ -1,5 +1,5 @@
-import mock from '@/@fake-db/mock'
-/* eslint-disable global-require */
+import mock from '../../../@fake-db/mock'
+/* eslint-disable */
 const data = {
   congratulations: {
     name: 'John',
@@ -59,14 +59,14 @@ const data = {
     step1: {
       title: '12 Invoices have been paid',
       subtitle: 'Invoices have been paid to the company.',
-      img: require('@/assets/images/icons/json.png'),
+      img: require('../../../assets/images/icons/json.png'),
       fileName: 'data.json',
       duration: '12 min ago',
     },
     step2: {
       title: 'Client Meeting',
       subtitle: 'Project meeting with john @10:15am',
-      avatar: require('@/assets/images/portrait/small/avatar-s-9.jpg'),
+      avatar: require('../../../assets/images/portrait/small/avatar-s-9.jpg'),
       avatarName: 'John Doe (Client)',
       occupation: 'CEO of Infibeam',
       duration: '45 min ago',
@@ -77,17 +77,17 @@ const data = {
       duration: '2 day ago',
       avatars: [
         {
-          userImg: require('@/assets/images/portrait/small/avatar-s-9.jpg'),
+          userImg: require('../../../assets/images/portrait/small/avatar-s-9.jpg'),
           name: 'Billy Hopkins',
         },
-        { userImg: require('@/assets/images/portrait/small/avatar-s-6.jpg'), name: 'Amy Carson' },
+        { userImg: require('../../../assets/images/portrait/small/avatar-s-6.jpg'), name: 'Amy Carson' },
         {
-          userImg: require('@/assets/images/portrait/small/avatar-s-8.jpg'),
+          userImg: require('../../../assets/images/portrait/small/avatar-s-8.jpg'),
           name: 'Brandon Miles',
         },
-        { userImg: require('@/assets/images/portrait/small/avatar-s-7.jpg'), name: 'Daisy Weber' },
+        { userImg: require('../../../assets/images/portrait/small/avatar-s-7.jpg'), name: 'Daisy Weber' },
         {
-          userImg: require('@/assets/images/portrait/small/avatar-s-20.jpg'),
+          userImg: require('../../../assets/images/portrait/small/avatar-s-20.jpg'),
           name: 'Jenny Looper',
         },
       ],
@@ -120,10 +120,10 @@ const data = {
       { name: 'Wireframe', color: 'light-primary' },
     ],
     members: [
-      { img: require('@/assets/images/portrait/small/avatar-s-9.jpg'), color: 'primary' },
+      { img: require('../../../assets/images/portrait/small/avatar-s-9.jpg'), color: 'primary' },
       { text: 'PI', color: 'light-danger' },
-      { img: require('@/assets/images/portrait/small/avatar-s-14.jpg'), color: 'primary' },
-      { img: require('@/assets/images/portrait/small/avatar-s-7.jpg'), color: 'primary' },
+      { img: require('../../../assets/images/portrait/small/avatar-s-14.jpg'), color: 'primary' },
+      { img: require('../../../assets/images/portrait/small/avatar-s-7.jpg'), color: 'primary' },
       { text: 'AL', color: 'light-secondary' },
     ],
     planing: [
@@ -133,5 +133,5 @@ const data = {
     ],
   },
 }
-/* eslint-disable global-require */
+/* eslint-disable */
 mock.onGet('/analytics/data').reply(() => [200, data])

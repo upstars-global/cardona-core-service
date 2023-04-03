@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosInstance, AxiosError } from '@axios'
+import axios, { AxiosRequestConfig, AxiosInstance, AxiosError } from '../../libs/axios'
 import {
   IApiServiceConfig,
   IResponseError,
@@ -7,12 +7,12 @@ import {
   IValidationError,
   IApiServiceRequestPayload,
 } from './config'
-import { getters, dispatch } from '@/store'
+import { getters, dispatch } from '../../store'
 import { v4 as uuidv4 } from 'uuid'
-import useToastService from '@/helpers/toasts'
-import router from '@/router'
-import i18n from '@/libs/i18n'
-import { convertCamelCase } from '@/helpers'
+import useToastService from '../../helpers/toasts'
+import router from '../../router'
+import i18n from '../../libs/i18n'
+import { convertCamelCase } from '../../helpers'
 
 const { toastSuccess, toastError, toastErrorMessageString } = useToastService()
 
@@ -69,8 +69,8 @@ class ApiService {
 
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', 'TOKEN_INVALID']
 
-      if (getters.isAuthorizedUser && errorsType.includes(error.type)) {
-        dispatch('clearAuth')
+      if (getters['auth/isAuthorizedUser'] && errorsType.includes(error.type)) {
+        dispatch('auth/clearAuth')
 
         if (!isLoginPage) router.push({ name: 'Login' })
       }

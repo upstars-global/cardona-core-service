@@ -1,7 +1,7 @@
 import { Component } from 'vue'
 import { TranslateResult } from 'vue-i18n'
-import { ValidationRule } from '@model/validations'
-import { PermissionType } from '@model/permission'
+import { PermissionType } from '../..@model/permission'
+import { ValidationRule } from '../../@model/validations'
 
 export interface IBaseField {
   readonly key: string

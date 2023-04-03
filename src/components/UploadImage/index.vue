@@ -67,11 +67,11 @@
 
 <script lang="ts">
 import { nextTick, computed, defineComponent, PropType, ref, watch } from 'vue'
-import ModalFileUpload from '@/components/UploadImage/ModalFileUpload.vue'
-import i18n from '@/libs/i18n'
-import useToastService from '@/helpers/toasts'
-import { useBvModal } from '@/helpers/bvModal'
-import { dispatch } from '@/store'
+import ModalFileUpload from '../UploadImage/ModalFileUpload.vue'
+import i18n from '../../libs/i18n'
+import useToastService from '../../helpers/toasts'
+import { useBvModal } from '../../helpers/bvModal'
+import { dispatch } from '../../store'
 
 export default defineComponent({
   name: 'UploadImage',
@@ -167,7 +167,7 @@ export default defineComponent({
           isLoad.value = true
 
           const _path = props.path + '/' + file.name.replace(/\W/g, '_')
-          const { publicPath } = await dispatch('compostela/uploadFile', {
+          const { publicPath } = await dispatch('compostelaCore/uploadFile', {
             file,
             path: _path,
           })
@@ -218,7 +218,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/bootstrap-extended/_include';
+@import '../../@core/scss/base/bootstrap-extended/_include';
 .block-load-img {
   position: absolute;
   top: 0;

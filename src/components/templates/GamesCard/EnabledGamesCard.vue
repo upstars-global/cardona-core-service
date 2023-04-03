@@ -44,13 +44,17 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import BaseList from '@/components/templates/BaseList/index.vue'
-import { BaseListConfig } from '@/components/templates/BaseList/model'
+import BaseList from '../../../components/templates/BaseList/index.vue'
+import { BaseListConfig } from '../../../components/templates/BaseList/model'
 import { useEnabledGames } from './useGameCard'
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
-import { GameActionType, GamesSectionGamesItem, IGamesSectionGamesFilters } from '@model/games'
-import { dispatch, getters } from '@/store'
-import { useModal } from '@/helpers/bvModal'
+import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
+import {
+  GameActionType,
+  GamesSectionGamesItem,
+  IGamesSectionGamesFilters,
+} from '../../../@model/games'
+import { dispatch, getters } from '../../../store'
+import { useModal } from '../../../helpers/bvModal'
 
 export default defineComponent({
   name: 'EnabledGamesCard',
@@ -126,8 +130,8 @@ export default defineComponent({
 
       if (!isConfirmed) return
 
-      const perPage: number = getters['baseStore/totalItem']
-      const filter: IGamesSectionGamesFilters = getters['baseStore/appliedFilters']
+      const perPage: number = getters['baseStoreCore/totalItem']
+      const filter: IGamesSectionGamesFilters = getters['baseStoreCore/appliedFilters']
 
       const { list } = await dispatch(`baseStore/fetchGamesList`, {
         type: props.entityName,

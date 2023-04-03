@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Ecommerce from '@/views/dashboard/ecommerce/Ecommerce.vue'
+import Ecommerce from '../../../views/dashboard/ecommerce/Ecommerce.vue'
 import { BAlert, BLink } from 'bootstrap-vue'
 
 export default {
@@ -31,14 +31,14 @@ export default {
   },
   data() {
     return {
-      contentWidth: this.$store.state.appConfig.layout.contentWidth,
+      contentWidth: this.$store.state.appConfigCore.layout.contentWidth,
     }
   },
   created() {
-    this.$store.commit('appConfig/UPDATE_CONTENT_WIDTH', 'boxed')
+    this.$store.commit('appConfigCore/UPDATE_CONTENT_WIDTH', 'boxed')
   },
   destroyed() {
-    this.$store.commit('appConfig/UPDATE_CONTENT_WIDTH', this.contentWidth)
+    this.$store.commit('appConfigCore/UPDATE_CONTENT_WIDTH', this.contentWidth)
   },
 }
 </script>

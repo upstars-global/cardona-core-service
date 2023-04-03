@@ -3,7 +3,7 @@
     <swiper
       class="swiper"
       :options="swiperOption"
-      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+      :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
     >
       <swiper-slide v-for="(data, index) in swiperData" :key="index">
         <b-img :src="data.img" fluid />
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code/BCardCode.vue'
+import BCardCode from '../../../@core/components/b-card-code/BCardCode.vue'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import { BImg } from 'bootstrap-vue'
 import 'swiper/css/swiper.css'
@@ -36,18 +36,18 @@ export default {
     return {
       codeMultiRowSlides,
       swiperData: [
-        /* eslint-disable global-require */
-        { img: require('@/assets/images/banner/banner-26.jpg') },
-        { img: require('@/assets/images/banner/banner-39.jpg') },
-        { img: require('@/assets/images/banner/banner-28.jpg') },
-        { img: require('@/assets/images/banner/banner-29.jpg') },
-        { img: require('@/assets/images/banner/banner-30.jpg') },
-        { img: require('@/assets/images/banner/banner-31.jpg') },
-        { img: require('@/assets/images/banner/banner-32.jpg') },
-        { img: require('@/assets/images/banner/banner-33.jpg') },
-        { img: require('@/assets/images/banner/banner-34.jpg') },
-        { img: require('@/assets/images/banner/banner-35.jpg') },
-        /* eslint-disable global-require */
+        /* eslint-disable */
+        { img: require('../../../assets/images/banner/banner-26.jpg') },
+        { img: require('../../../assets/images/banner/banner-39.jpg') },
+        { img: require('../../../assets/images/banner/banner-28.jpg') },
+        { img: require('../../../assets/images/banner/banner-29.jpg') },
+        { img: require('../../../assets/images/banner/banner-30.jpg') },
+        { img: require('../../../assets/images/banner/banner-31.jpg') },
+        { img: require('../../../assets/images/banner/banner-32.jpg') },
+        { img: require('../../../assets/images/banner/banner-33.jpg') },
+        { img: require('../../../assets/images/banner/banner-34.jpg') },
+        { img: require('../../../assets/images/banner/banner-35.jpg') },
+        /* eslint-disable */
       ],
       swiperOption: {
         slidesPerView: 3,

@@ -27,7 +27,7 @@
             <v-select
               id="blog-edit-category"
               v-model="blogEdit.blogCategories"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               multiple
               :options="categoryOption"
             />
@@ -43,7 +43,7 @@
             <v-select
               id="blog-edit-category"
               v-model="blogEdit.status"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               :options="statusOption"
             />
           </b-form-group>
@@ -123,7 +123,7 @@ import {
 import vSelect from 'vue-select'
 import { quillEditor } from 'vue-quill-editor'
 import Ripple from 'vue-ripple-directive'
-import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
+import { useInputImageRenderer } from '../../../@core/comp-functions/forms/form-utils'
 import { ref } from 'vue'
 
 export default {
@@ -183,7 +183,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
-@import '@core/scss/vue/libs/quill.scss';
-@import '@core/scss/vue/pages/page-blog.scss';
+@import '../../../@core/scss/vue/libs/vue-select.scss';
+@import '../../../@core/scss/vue/libs/quill.scss';
+@import '../../../@core/scss/vue/pages/page-blog.scss';
 </style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ViewInfo } from '@model/view'
-import StatusWithDateField from '@/components/templates/BaseList/_components/StatusWithDateField.vue'
+import { ViewInfo } from '../../../../@model/view'
+import StatusWithDateField from '../../../../components/templates/BaseList/_components/StatusWithDateField.vue'
 
 const props = defineProps<{
   item: ViewInfo
@@ -19,7 +19,7 @@ const props = defineProps<{
 </template>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_variables.scss';
+@import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
 
 .status-history::v-deep {
   flex-direction: row;

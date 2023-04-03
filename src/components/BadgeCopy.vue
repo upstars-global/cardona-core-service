@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { copyToClipboard } from '@/helpers/clipboard'
+import { copyToClipboard } from '../helpers/clipboard'
 
 export default defineComponent({
   name: 'BadgeCopy',

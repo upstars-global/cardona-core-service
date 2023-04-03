@@ -152,7 +152,7 @@
 </template>
 
 <script>
-import store from '@/store'
+import store from '../../../store'
 import { ref, watch, computed, onUnmounted } from 'vue'
 import {
   BFormInput,
@@ -166,9 +166,9 @@ import {
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import draggable from 'vuedraggable'
-import { formatDate, avatarText } from '@core/utils/filter'
-import { useRouter } from '@core/utils/utils'
-import { useResponsiveAppLeftSidebarVisibility } from '@core/comp-functions/ui/app'
+import { formatDate, avatarText } from '../../../@core/utils/filter'
+import { useRouter } from '../../../@core/utils/utils'
+import { useResponsiveAppLeftSidebarVisibility } from '../../../@core/comp-functions/ui/app'
 import TodoLeftSidebar from './TodoLeftSidebar.vue'
 import todoStoreModule from './todoStoreModule'
 import TodoTaskHandlerSidebar from './TodoTaskHandlerSidebar.vue'
@@ -404,5 +404,5 @@ export default {
 </style>
 
 <style lang="scss">
-@import '~@core/scss/base/pages/app-todo.scss';
+@import '../../../@core/scss/base/pages/app-todo.scss';
 </style>

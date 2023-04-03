@@ -3,7 +3,7 @@
     <b-media no-body>
       <b-media-aside>
         <b-img
-          :src="require('@/assets/images/portrait/small/avatar-s-2.jpg')"
+          :src="require('../../../assets/images/portrait/small/avatar-s-2.jpg')"
           blank-color="#ccc"
           fluid
           alt="placeholder"
@@ -25,7 +25,7 @@
         <b-media no-body>
           <b-media-aside>
             <b-img
-              :src="require('@/assets/images/portrait/small/avatar-s-10.jpg')"
+              :src="require('../../../assets/images/portrait/small/avatar-s-10.jpg')"
               blank-color="#ccc"
               width="64"
               alt="placeholder"
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BMedia, BImg, BMediaAside, BMediaBody, BCardText } from 'bootstrap-vue'
 import { codeNoBody } from './code'
 

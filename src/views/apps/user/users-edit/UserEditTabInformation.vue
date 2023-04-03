@@ -40,7 +40,7 @@
           <b-form-group label="Language" label-for="language">
             <v-select
               v-model="userDataInfo.language"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               :options="languageOptions"
               :clearable="false"
               input-id="language"
@@ -225,5 +225,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-flatpicker.scss';
+@import '../../../../@core/scss/vue/libs/vue-flatpicker.scss';
 </style>

@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormDatepicker, BFormSelect, BFormCheckbox, BCardText } from 'bootstrap-vue'
 import { codeInternationalization } from './code'
 

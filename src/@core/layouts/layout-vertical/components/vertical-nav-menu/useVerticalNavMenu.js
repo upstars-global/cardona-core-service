@@ -1,14 +1,14 @@
 import { ref, computed } from 'vue'
-import store from '@/store'
+import store from '../../../../../store'
 
 export default function useVerticalNavMenu(props) {
   // ------------------------------------------------
   // isVerticalMenuCollapsed
   // ------------------------------------------------
   const isVerticalMenuCollapsed = computed({
-    get: () => store.state.verticalMenu.isVerticalMenuCollapsed,
+    get: () => store.state.verticalMenuCore.isVerticalMenuCollapsed,
     set: (val) => {
-      store.commit('verticalMenu/UPDATE_VERTICAL_MENU_COLLAPSED', val)
+      store.commit('verticalMenuCore/UPDATE_VERTICAL_MENU_COLLAPSED', val)
     },
   })
 

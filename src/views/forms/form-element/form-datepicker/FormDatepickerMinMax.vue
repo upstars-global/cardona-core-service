@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../../@core/components/b-card-code'
 import { BFormDatepicker, BCardText } from 'bootstrap-vue'
 import { codeMinMax } from './code'
 

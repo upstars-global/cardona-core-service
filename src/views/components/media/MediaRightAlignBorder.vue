@@ -10,7 +10,7 @@
       <b-media right-align class="text-right">
         <template #aside>
           <b-img
-            :src="require('@/assets/images/portrait/small/avatar-s-9.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-9.jpg')"
             blank-color="#ccc"
             width="64"
             alt="placeholder"
@@ -27,7 +27,7 @@
       <b-media right-align class="text-right">
         <template #aside>
           <b-img
-            :src="require('@/assets/images/portrait/small/avatar-s-14.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-14.jpg')"
             blank-color="#ccc"
             width="64"
             alt="placeholder"
@@ -44,7 +44,7 @@
       <b-media right-align class="text-right">
         <template #aside>
           <b-img
-            :src="require('@/assets/images/portrait/small/avatar-s-21.jpg')"
+            :src="require('../../../assets/images/portrait/small/avatar-s-21.jpg')"
             blank-color="#ccc"
             width="64"
             alt="placeholder"
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
+import BCardCode from '../../../@core/components/b-card-code'
 import { BMedia, BImg, BCardText } from 'bootstrap-vue'
 import { codeRightAlignBorder } from './code'
 

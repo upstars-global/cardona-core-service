@@ -2,7 +2,7 @@
   <div class="project-select">
     <v-select
       v-model="selectProject"
-      :dir="$store.getters['appConfig/dirOption']"
+      :dir="$store.getters['appConfigCore/dirOption']"
       :options="projects"
       label="publicName"
       :clearable="false"
@@ -46,7 +46,7 @@
 
 <script>
 import { computed } from 'vue'
-import { dispatch, getters } from '@/store'
+import { dispatch, getters } from '../../../../../../store'
 
 export default {
   name: 'ProjectSelect',
@@ -68,11 +68,11 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@core/scss/base/bootstrap-extended/include'; // Bootstrap includes
-@import '~@core/scss/base/components/include'; // Components includes
+@import '../../../../../../@core/scss/base/bootstrap-extended/include'; // Bootstrap includes
+@import '../../../../../../@core/scss/base/components/include'; // Components includes
 
 // Color palettes
-@import '~@core/scss/base/core/colors/palette-variables';
+@import '../../../../../../@core/scss/base/core/colors/palette-variables';
 .dark-layout {
   .main-menu {
     .project-select {

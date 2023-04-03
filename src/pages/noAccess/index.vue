@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@core/scss/base/bootstrap-extended/_include.scss';
+@import '../../@core/scss/base/bootstrap-extended/_include.scss';
 .page-full {
   height: calc(100vh - 180px);
 }

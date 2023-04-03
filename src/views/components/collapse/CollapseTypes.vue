@@ -66,9 +66,9 @@
 </template>
 
 <script>
-import BCardCode from '@core/components/b-card-code'
-import AppCollapse from '@core/components/app-collapse/AppCollapse.vue'
-import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
+import BCardCode from '../../../@core/components/b-card-code'
+import AppCollapse from '../../../@core/components/app-collapse/AppCollapse.vue'
+import AppCollapseItem from '../../../@core/components/app-collapse/AppCollapseItem.vue'
 import { BFormRadioGroup, BFormRadio, BFormGroup, BCardText } from 'bootstrap-vue'
 import { codeCollapseTypes } from './code'
 

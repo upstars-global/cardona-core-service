@@ -57,7 +57,7 @@
           <b-form-group label="Status" label-for="user-status">
             <v-select
               v-model="userData.status"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               :options="statusOptions"
               :reduce="(val) => val.value"
               :clearable="false"
@@ -71,7 +71,7 @@
           <b-form-group label="User Role" label-for="user-role">
             <v-select
               v-model="userData.role"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :dir="$store.state.appConfigCore.isRTL ? 'rtl' : 'ltr'"
               :options="roleOptions"
               :reduce="(val) => val.value"
               :clearable="false"
@@ -141,9 +141,9 @@ import {
   BCardTitle,
   BFormCheckbox,
 } from 'bootstrap-vue'
-import { avatarText } from '@core/utils/filter'
+import { avatarText } from '../../../../@core/utils/filter'
 import vSelect from 'vue-select'
-import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
+import { useInputImageRenderer } from '../../../../@core/comp-functions/forms/form-utils'
 import { ref } from 'vue'
 import useUsersList from '../users-list/useUsersList'
 
@@ -252,5 +252,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
+@import '../../../../@core/scss/vue/libs/vue-select.scss';
 </style>
