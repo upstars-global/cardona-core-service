@@ -1,6 +1,7 @@
 import { Component } from 'vue'
 import { TranslateResult } from 'vue-i18n'
-import { ValidationRule } from '../../@model/validations'
+import { PermissionType } from '../permission'
+import { ValidationRule } from '../validations'
 
 export interface IBaseField {
   readonly key: string
@@ -9,7 +10,7 @@ export interface IBaseField {
   readonly description?: TranslateResult
   readonly info?: TranslateResult
   readonly validationRules?: ValidationRule
-  readonly permission?: string // TODO: Change to type after creation permissions enum https://upstars.atlassian.net/browse/BAC-1244
+  readonly permission?: PermissionType
   readonly isLocalization?: boolean
 }
 
@@ -22,7 +23,7 @@ export abstract class BaseField implements IBaseField {
   readonly description?: TranslateResult
   readonly info?: TranslateResult
   readonly validationRules?: ValidationRule // TODO: Expand for cases by type 'required|password'
-  readonly permission?: string
+  readonly permission?: PermissionType
   readonly isLocalization?: boolean
 
   protected constructor(field: IBaseField) {
