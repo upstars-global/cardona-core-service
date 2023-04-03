@@ -1,5 +1,6 @@
 import { Location } from 'vue-router'
 import { TranslateResult } from 'vue-i18n'
+import { PermissionType } from '@model/permission'
 
 export enum ViewType {
   Text = 'text',
@@ -64,7 +65,7 @@ interface IViewInfo {
   readonly description?: TranslateResult
   readonly icon?: string
   readonly withSeparator?: boolean
-  readonly permission?: string // TODO: Change to type after creation permissions enum https://upstars.atlassian.net/browse/BAC-1244
+  readonly permission?: PermissionType
   readonly withSearch?: boolean
 }
 
@@ -76,7 +77,7 @@ export class ViewInfo<T = {}> {
   readonly description?: TranslateResult
   readonly icon?: string
   readonly withSeparator?: boolean
-  readonly permission?: string
+  readonly permission?: PermissionType
   readonly withSearch?: boolean
 
   constructor(data: IViewInfo) {
