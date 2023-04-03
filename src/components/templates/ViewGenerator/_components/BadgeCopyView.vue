@@ -8,6 +8,12 @@ const props = defineProps<{
 </script>
 
 <template>
-  <badge-copy :value="item.value" :is-view-label="false" />
+  <badge-copy class="copy-badge" :value="item.value" :is-view-label="false" />
 </template>
 
+<style lang="scss" scoped>
+.copy-badge {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+</style>
