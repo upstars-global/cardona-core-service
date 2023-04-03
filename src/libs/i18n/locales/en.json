@@ -16,6 +16,17 @@
       "metaDescription": "Description",
       "fakeMetaDescription": "Fake description",
       "content": "Description"
+    },
+    "staticPage": {
+      "name": "Name",
+      "gameListTitle": "Game list name",
+      "description": "Text",
+      "fakeDescription": "Fake text",
+      "metaTitle": "Title",
+      "fakeMetaTitle": "Fake Title",
+      "buttonName": "Game list button label",
+      "fakeMetaDescription": "Fake description",
+      "metaDescription": "Description"
     }
   },
   "common": {
@@ -60,6 +71,7 @@
     "lastName": "Surname",
     "middleName": "Patronymic",
     "country": "Country",
+    "region": "Region",
     "address": "Address",
     "additionalAddress": "Additional Address",
     "perEmail": "Primary email",
@@ -121,6 +133,12 @@
     "showLess": "Show less",
     "showMore": "Show more",
     "callback": "Callback",
+    "event": "Event",
+    "eventDate": "Event date",
+    "factor": "Odds",
+    "fullStake": "Bet",
+    "score": "Score",
+    "possibleWinAmount": "Possible win",
     "supportService" : {
       "_": "Support service",
       "searchPlaceholder": "Search by id, digitain id, email and login"
@@ -244,7 +262,7 @@
       "_": "Static pages",
       "name": "Name",
       "url": "URL static page",
-      "buttonName": "The text of the button «list of games»",
+      "buttonName": "Game list button label",
       "isHiddenTable": "Hide",
       "isHidden": "Hide page",
       "isHiddenDescription": "The page will exist on its own at the specified URL",
@@ -274,6 +292,10 @@
       "templateName": "Template name",
       "type": "Type",
       "accrue": "Accrue a gift"
+    },
+    "betting":{
+      "searchPlaceholder": "Search by id and bonus id",
+      "id": "Coupon ID"
     },
     "transactions": {
       "_": "Transactions",
@@ -343,6 +365,7 @@
       }
     },
     "balanceHistory": "Balance history",
+    "bettingHistory": "Betting history",
     "player": {
       "list": "Players",
       "card": "Card player"
@@ -428,6 +451,11 @@
           "history": {
             "sidebarTitle": "Bonus"
           }
+        }
+      },
+      "betting": {
+        "history": {
+          "sidebarTitle": "Bet"
         }
       }
     },
@@ -660,6 +688,17 @@
       "firstDep": "Firstdep",
       "lastDep": "Lastdep",
       "lastChange": "Last change",
+      "betAmount": "Bet amount",
+      "winAmount": "Win amount",
+      "betDate": "Bet date",
+      "bonus": "Bonus",
+      "bonusId": "Bonus ID",
+      "cashout": "Cashout",
+      "eventType": "Event type",
+      "currentWin": "Current win",
+      "bonusType": "Bonus Type",
+      "bonusWalletBet": "Bonus wallet bet",
+      "transferredToReal": "Transferred to real",
       "notifications": {
         "sendNotification": "Send notification",
         "history": "History",
@@ -953,7 +992,9 @@
     "backoffice-transactions": "Transactions",
     "backoffice-players-bonus": "Bonus balance",
     "backoffice-player-gifts": "Gifts",
-    "backoffice-payment-balanceslog": "Balance history"
+    "backoffice-payment-balanceslog": "Balance history",
+    "backoffice-betting-history": "Betting history",
+    "backoffice-player-multiaccounts": "Multiaccounts"
   },
   "vCoin": {
     "fetchingError": "Error fetching vcoins",
@@ -1033,7 +1074,7 @@
     "send": "Send",
     "history": "History",
     "phone": "Phone",
-    "sender": "Sender",
+    "creator": "Creator",
     "text": "Text",
     "messageText": "Message text",
     "message": "message"
@@ -1143,6 +1184,9 @@
     "removeProjects": {
       "title": "Remove project",
       "description": "Are you sure you want to remove the project?"
+    },
+    "changePassword": {
+      "title": "Set a new password"
     }
   },
   "activityStatus" : {

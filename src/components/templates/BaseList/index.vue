@@ -216,7 +216,11 @@
           <sum-and-currency
             v-else-if="field.type === ListFieldType.SumAndCurrency"
             :key="index"
-            :data="item"
+            :data="{
+              amount: item[key],
+              currency: item.currency,
+              remainder: item.remainder,
+            }"
           />
 
           <pill-status-field
