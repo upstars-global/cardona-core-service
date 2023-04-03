@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { convertUpperCaseFirstSymbol } from '../../../../helpers'
-import { computed } from 'vue'
-import { StatusWithVariant } from '../../../../@model/view'
 
 const props = defineProps<{
-  value: any // TODO: change to type because string | StatusWithVariant get warning
+  status: string
 }>()
 
 enum StatusVariants {
@@ -55,26 +53,10 @@ enum StatusVariants {
   deleting = 'light-danger',
   // TODO: Add status variant here
 }
-
-const value = computed(() => {
-  if (!props.value) {
-    return ''
-  }
-  const status = props.value instanceof StatusWithVariant ? props.value.status : props.value
-  return convertUpperCaseFirstSymbol(status.replace(RegExp('_', 'g'), ' '))
-})
-const variantName = computed(() => {
-  if (!props.value) {
-    return ''
-  }
-  return props.value instanceof StatusWithVariant
-    ? props.value.variant
-    : StatusVariants[props.value]
-})
 </script>
 
 <template>
-  <b-badge :variant="variantName">
-    {{ value }}
+  <b-badge :variant="StatusVariants[status]">
+    {{ convertUpperCaseFirstSymbol(status.replace(RegExp('_', 'g'), ' ')) }}
   </b-badge>
 </template>

@@ -10,7 +10,7 @@ const props = defineProps<{
 
 <template>
   <div class="status-with-date">
-    <status-field :value="item.status" />
+    <status-field :status="item.status" />
 
     <date-field :date="item.updatedAt" />
   </div>
