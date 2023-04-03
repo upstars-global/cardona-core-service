@@ -1,5 +1,11 @@
 export type PermissionUpdatableType = 'switch' | 'table'
-export type PermissionLevel = 'noaccess' | 'view' | 'create' | 'update' | 'delete'
+export enum PermissionLevel {
+  noaccess = 'noaccess',
+  view = 'view',
+  create = 'create',
+  update = 'update',
+  delete = 'delete',
+}
 
 export interface PermissionInput {
   readonly access: number
@@ -65,203 +71,255 @@ export class PermissionUpdatableTableList {
   }
 }
 
-export type PermissionGroup =
-  | 'manageAccess'
-  | 'players'
-  | 'configurations'
-  | 'promo'
-  | 'playerData'
-  | 'balances'
-  | 'playerCommunication'
-  | 'notes'
-  | 'games'
-  | 'gamesCategories'
-  | 'gamesProducers'
-  | 'staticPages'
+export enum PermissionGroup {
+  manageAccess = 'manageAccess',
+  players = 'players',
+  configurations = 'configurations',
+  promo = 'promo',
+  playerData = 'playerData',
+  balances = 'balances',
+  playerCommunication = 'playerCommunication',
+  notes = 'notes',
+  games = 'games',
+  gamesCategories = 'gamesCategories',
+  gamesProducers = 'gamesProducers',
+  staticPages = 'staticPages',
+}
+export enum PermissionType {
+  BackofficGroups = 'backoffice-groups',
+  BackofficeUsers = 'backoffice-users',
+  BackofficeUsersControl = 'backoffice-users-control',
+  BackofficeGamesCategories = 'backoffice-games-categories',
+  BackofficeGamesCategoriesSeo = 'backoffice-games-categories-seo',
+  BackofficeGamesCategoriesReport = 'backoffice-games-categories-report',
+  BackofficeGames = 'backoffice-games',
+  BackofficeGamesSeo = 'backoffice-games-seo',
+  BackofficeGamesReport = 'backoffice-games-report',
+  BackofficeGamesProducers = 'backoffice-games-producers',
+  BackofficeGamesProducersSeo = 'backoffice-games-producers-seo',
+  BackofficeGamesProducersReport = 'backoffice-games-producers-report',
+  SectionSupportService = 'section-support-service',
+  BackofficeProjects = 'backoffice-projects',
+  BackofficeBanners = 'backoffice-banners',
+  BackofficeStaticPages = 'backoffice-static-pages',
+  BackofficeStaticPagesSeo = 'backoffice-static-pages-seo',
+  BackofficeStaticPagesReport = 'backoffice-static-pages-report',
+  FieldPlayerMain = 'field-player-main',
+  FieldPlayerStatus = 'field-player-status',
+  FieldPlayerIsblocked = 'field-player-isblocked',
+  FieldPlayerVerification = 'field-player-verification',
+  FieldPlayerManager = 'field-player-manager',
+  FieldPlayerAutopayment = 'field-player-autopayment',
+  BackofficeNotes = 'backoffice-notes',
+  BackofficeNotificationsSms = 'backoffice-notifications-sms',
+  BackofficeNotificationsWeb = 'backoffice-notifications-web',
+  FieldReadBalance = 'field-read-balance',
+  BackofficeRealBalanceUpdate = 'backoffice-real-balance-update',
+  BackofficePlayerPaymentSystem = 'backoffice-player-payment-system',
+  MarbellaCards = 'marbella-cards',
+  BackofficePaymentDailylimits = 'backoffice-payment-dailylimits',
+  BackofficeTransactions = 'backoffice-transactions',
+  BackofficePlayersBonus = 'backoffice-players-bonus',
+  BackofficePlayerGifts = 'backoffice-player-gifts',
+  BackofficePaymentBalanceslog = 'backoffice-payment-balanceslog',
+  BettingHistory = 'backoffice-betting-history',
+  Multiaccounts = 'backoffice-player-multiaccounts',
+  BackofficeLogaction = 'backoffice-logaction',
+}
 
 export class AllPermission {
   private _allPermission = {
     manageAccess: [
       {
         type: 'table',
-        target: 'backoffice-groups',
+        target: PermissionType.BackofficGroups,
       },
       {
         type: 'table',
-        target: 'backoffice-users',
+        target: PermissionType.BackofficeUsers,
       },
     ] as PermissionUpdatableTable[],
     gamesCategories: [
       {
         type: 'table',
-        target: 'backoffice-games-categories',
+        target: PermissionType.BackofficeGamesCategories,
       },
       {
         type: 'table',
-        target: 'backoffice-games-categories-seo',
+        target: PermissionType.BackofficeGamesCategoriesSeo,
         notAccessLevel: [4],
       },
       {
         type: 'switch',
-        target: 'backoffice-games-categories-report',
+        target: PermissionType.BackofficeGamesCategoriesReport,
       },
     ] as PermissionUpdatableTable[],
     games: [
       {
         type: 'table',
-        target: 'backoffice-games',
+        target: PermissionType.BackofficeGames,
       },
       {
         type: 'table',
-        target: 'backoffice-games-seo',
+        target: PermissionType.BackofficeGamesSeo,
         notAccessLevel: [4],
       },
       {
         type: 'switch',
-        target: 'backoffice-games-report',
+        target: PermissionType.BackofficeGamesReport,
       },
     ] as PermissionUpdatableTable[],
     gamesProducers: [
       {
         type: 'table',
-        target: 'backoffice-games-producers',
+        target: PermissionType.BackofficeGamesProducers,
       },
       {
         type: 'table',
-        target: 'backoffice-games-producers-seo',
+        target: PermissionType.BackofficeGamesProducersSeo,
         notAccessLevel: [4],
       },
       {
         type: 'switch',
-        target: 'backoffice-games-producers-report',
+        target: PermissionType.BackofficeGamesProducersReport,
       },
     ] as PermissionUpdatableTable[],
     players: [
       {
         type: 'switch',
-        target: 'section-support-service',
+        target: PermissionType.SectionSupportService,
       },
     ] as PermissionUpdatableTable[],
     configurations: [
       {
         type: 'table',
-        target: 'backoffice-projects',
+        target: PermissionType.BackofficeProjects,
       },
     ] as PermissionUpdatableTable[],
     promo: [
       {
         type: 'table',
-        target: 'backoffice-banners',
+        target: PermissionType.BackofficeBanners,
       },
     ] as PermissionUpdatableTable[],
     staticPages: [
       {
         type: 'table',
-        target: 'backoffice-static-pages',
+        target: PermissionType.BackofficeStaticPages,
       },
       {
         type: 'table',
-        target: 'backoffice-static-pages-seo',
+        target: PermissionType.BackofficeStaticPagesSeo,
         notAccessLevel: [4],
       },
       {
         type: 'switch',
-        target: 'backoffice-static-pages-report',
+        target: PermissionType.BackofficeStaticPagesReport,
       },
     ] as PermissionUpdatableTable[],
     playerCard: [
       {
-        target: 'field-player-main',
+        target: PermissionType.FieldPlayerMain,
         type: 'table',
         notAccessLevel: [2, 4],
       },
       {
-        target: 'field-player-status',
+        target: PermissionType.FieldPlayerStatus,
         type: 'table',
         notAccessLevel: [2, 4],
       },
       {
-        target: 'field-player-isblocked',
+        target: PermissionType.FieldPlayerIsblocked,
         type: 'table',
         notAccessLevel: [2, 4],
       },
       {
-        target: 'field-player-verification',
+        target: PermissionType.FieldPlayerVerification,
         type: 'table',
         notAccessLevel: [2, 4],
       },
       {
-        target: 'field-player-manager',
+        target: PermissionType.FieldPlayerManager,
         type: 'table',
         notAccessLevel: [2, 4],
       },
       {
-        target: 'field-player-autopayment',
+        target: PermissionType.FieldPlayerAutopayment,
         type: 'table',
         notAccessLevel: [2, 4],
       },
       {
-        target: 'backoffice-notes',
+        target: PermissionType.BackofficeNotes,
         type: 'table',
         notAccessLevel: [4],
       },
       {
-        target: 'backoffice-notifications-sms',
+        target: PermissionType.BackofficeNotificationsSms,
         type: 'table',
         notAccessLevel: [3, 4],
       },
       {
-        target: 'backoffice-notifications-web',
+        target: PermissionType.BackofficeNotificationsWeb,
         type: 'table',
       },
       {
-        target: 'field-read-balance',
+        target: PermissionType.FieldReadBalance,
         type: 'table',
         notAccessLevel: [2, 3, 4],
       },
       {
-        target: 'backoffice-real-balance-update',
+        target: PermissionType.BackofficeRealBalanceUpdate,
         type: 'switch',
       },
       {
-        target: 'backoffice-player-payment-system',
+        target: PermissionType.BackofficePlayerPaymentSystem,
         type: 'table',
         notAccessLevel: [2, 4],
       },
       {
-        target: 'marbella-cards',
+        target: PermissionType.MarbellaCards,
         type: 'table',
         notAccessLevel: [2, 3],
       },
       {
-        target: 'backoffice-payment-dailylimits',
+        target: PermissionType.BackofficePaymentDailylimits,
         type: 'table',
         notAccessLevel: [2, 4],
       },
       {
-        target: 'backoffice-transactions',
+        target: PermissionType.BackofficeTransactions,
         type: 'table',
         notAccessLevel: [2, 3, 4],
       },
       {
-        target: 'backoffice-players-bonus',
+        target: PermissionType.BackofficePlayersBonus,
         type: 'table',
         notAccessLevel: [3],
       },
       {
-        target: 'backoffice-player-gifts',
+        target: PermissionType.BackofficePlayerGifts,
         type: 'table',
       },
       {
-        target: 'backoffice-payment-balanceslog',
+        target: PermissionType.BackofficePaymentBalanceslog,
         type: 'table',
         notAccessLevel: [2, 3, 4],
+      },
+      {
+        target: PermissionType.BettingHistory,
+        type: 'table',
+        notAccessLevel: [2, 3, 4],
+      },
+      {
+        target: PermissionType.Multiaccounts,
+        type: 'table',
+        notAccessLevel: [2, 4],
       },
     ] as PermissionUpdatableTable[],
     other: [
       {
         type: 'switch',
-        target: 'backoffice-logaction',
+        target: PermissionType.BackofficeLogaction,
       },
     ] as PermissionUpdatableTable[],
   }
