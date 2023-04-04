@@ -133,7 +133,7 @@ export default defineComponent({
       const perPage: number = getters['baseStoreCore/totalItem']
       const filter: IGamesSectionGamesFilters = getters['baseStoreCore/appliedFilters']
 
-      const { list } = await dispatch(`baseStore/fetchGamesList`, {
+      const { list } = await dispatch(`baseStoreCore/fetchGamesList`, {
         type: props.entityName,
         data: {
           perPage,

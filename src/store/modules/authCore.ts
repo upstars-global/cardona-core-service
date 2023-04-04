@@ -30,7 +30,7 @@ export default {
 
       commit('SET_AUTH', true)
 
-      await dispatch('fetchCurrentUser')
+      await dispatch('fetchCurrentUser', {}, { root: true })
 
       await router.push({ name: 'Dashboard' })
     },

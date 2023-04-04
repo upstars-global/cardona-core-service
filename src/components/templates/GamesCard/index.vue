@@ -77,7 +77,7 @@ export default defineComponent({
 
     const onUpdateCategory = async (games: Array<GamesSectionGamesItem>) => {
       const id: string = props.id
-      await dispatch(`baseStore/updateEntity`, {
+      await dispatch(`baseStoreCore/updateEntity`, {
         type: props.entityName,
         data: {
           form: {
