@@ -20,7 +20,7 @@ export const $themeConfig = {
     type: 'vertical', // vertical, horizontal
     contentWidth: 'full', // full, boxed
     menu: {
-      type: 'main', // admin , main
+      type: 'admin', // admin , main
       hidden: false,
       isCollapsed: false,
     },
