@@ -44,6 +44,7 @@ const checkCanView = (permission: string): boolean =>
           v-if="checkCanView(item.permission)"
           :key="item.name"
           v-b-modal="item.modalId"
+          :disabled="item.disabled"
         >
           <div class="d-flex align-items-center">
             <feather-icon v-if="item.icon" :icon="item.icon" class="mr-50" />

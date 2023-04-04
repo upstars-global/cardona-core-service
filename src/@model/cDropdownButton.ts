@@ -3,4 +3,5 @@ export type CDropdownItems = {
   icon?: string
   modalId?: string
   permission: string
+  disabled?: boolean
 }
