@@ -1,4 +1,5 @@
 import { SortDirection } from '../components/templates/BaseList/model'
+import { TranslateResult } from 'vue-i18n'
 
 export interface PaginationData {
   readonly pageNumber: number
@@ -37,5 +38,5 @@ export class ListData<T> {
 
 export type OptionsItem = {
   readonly id: string
-  readonly name: string
+  readonly name: TranslateResult
 }
