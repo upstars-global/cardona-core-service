@@ -9,9 +9,10 @@ export interface IBaseField {
   readonly placeholder?: TranslateResult
   readonly description?: TranslateResult
   readonly info?: TranslateResult
-  readonly validationRules?: ValidationRule
+  readonly validationRules?: ValidationRule | Array<ValidationRule>
   readonly permission?: PermissionType
   readonly isLocalization?: boolean
+  readonly form?: object
 }
 
 export abstract class BaseField implements IBaseField {
@@ -25,16 +26,20 @@ export abstract class BaseField implements IBaseField {
   readonly validationRules?: ValidationRule // TODO: Expand for cases by type 'required|password'
   readonly permission?: PermissionType
   readonly isLocalization?: boolean
+  public form?: object
 
   protected constructor(field: IBaseField) {
     this.key = field.key
     this.label = field.label
     this.placeholder = field.placeholder
-    this.validationRules = field.validationRules
+    this.validationRules = Array.isArray(field.validationRules)
+      ? (field.validationRules.join('|') as ValidationRule)
+      : field.validationRules
     this.description = field.description
     this.info = field.info
     this.permission = field.permission
     this.isLocalization = field.isLocalization
+    this.form = field.form
   }
 
   get value() {
