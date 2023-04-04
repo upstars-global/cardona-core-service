@@ -111,7 +111,7 @@ import { setStorage } from '../../helpers/storage'
 import useToastService from '../../helpers/toasts'
 import { FieldInfo } from '../../@model/field'
 import FilterSelector from './_components/FilterSelector.vue'
-import FieldGenerator from '../../components/templates/FieldGenerator'
+import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 
 export default defineComponent({
   name: 'FiltersBlock',
