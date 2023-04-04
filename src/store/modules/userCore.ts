@@ -5,8 +5,8 @@ import { ProjectInfo, ProjectInfoInput } from '../../@model/project'
 import { UserInfo } from '../../@model/user'
 import { OptionsItem } from '../../@model'
 import {
-  Permission,
   AllPermission,
+  Permission,
   PermissionGroup,
   PermissionLevel,
 } from '../../@model/permission'
