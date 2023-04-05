@@ -23,6 +23,9 @@
       "@themeConfig": [
         "./themeConfig"
       ],
+      "@configs": [
+        "./configs"
+      ],
       "@/*": [
         "src/*"
       ]
