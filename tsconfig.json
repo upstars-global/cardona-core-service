@@ -23,12 +23,12 @@
       "@themeConfig": [
         "./themeConfig"
       ],
-      "@configs": [
-        "./configs"
+      "@productConfig": [
+        "./productConfig"
       ],
       "@/*": [
         "src/*"
-      ]
+      ],
     },
     "lib": [
       "esnext",

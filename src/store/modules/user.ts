@@ -11,7 +11,7 @@ import {
   PermissionLevel,
 } from '../../@model/permission'
 import ApiService from '../../services/api'
-import { productName } from '@configs/productName'
+import { productConfig } from '@productConfig'
 
 export const fetchCurrentUser = async () => {
   const { data } = await ApiService.request({
@@ -109,7 +109,7 @@ export default {
     SET_USER_INFO(state, userInfo: UserInfo) {
       state.userInfo = userInfo
       state.permissions.setAccessAllPermission(userInfo.permissions)
-      state.selectedProduct = userInfo.products.find(({ name }) => name === productName)
+      state.selectedProduct = userInfo.products.find(({ name }) => name === productConfig)
     },
     SET_SELECTED_PROJECT(state, project: ProjectInfoInput) {
       state.selectedProject = project
