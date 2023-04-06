@@ -37,7 +37,7 @@
 
 <script>
 import store from '../../../../store'
-import router from '@/router'
+import router from '../../../../router'
 import { ref, onUnmounted } from 'vue'
 import { BRow, BCol, BAlert, BLink } from 'bootstrap-vue'
 import InvoiceList from '../../../../views/apps/invoice/invoice-list/InvoiceList.vue'

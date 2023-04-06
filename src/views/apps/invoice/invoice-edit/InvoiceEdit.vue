@@ -449,7 +449,7 @@ import { ref, onUnmounted } from 'vue'
 import { heightTransition } from '../../../../@core/mixins/ui/transition'
 import Ripple from 'vue-ripple-directive'
 import store from '../../../../store'
-import router from '@/router'
+import router from '../../../../router'
 import {
   BRow,
   BCol,
