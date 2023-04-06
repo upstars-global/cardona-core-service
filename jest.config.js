@@ -10,6 +10,7 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@axios$': '<rootDir>/src/libs/axios',
     '@themeConfig': '<rootDir>/themeConfig',
+    '@productConfig': '<rootDir>/productConfig',
   },
   transform: {
     '.*\\.(vue)$': 'vue-jest',
