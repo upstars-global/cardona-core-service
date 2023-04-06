@@ -40,7 +40,7 @@
 import { computed } from 'vue'
 import { dispatch, getters } from '../../../../../../store'
 import i18n from '../../../../../../libs/i18n'
-import { useRouter } from '@/@core/utils/utils'
+import { useRouter } from '../../../@core/utils/utils'
 
 export default {
   name: 'ProductsSelect',
