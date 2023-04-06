@@ -35,18 +35,18 @@ export default {
       await router.push({ name: 'Dashboard' })
     },
 
-    async refreshAuth() {
-      // const { data }: { data: IAuthTokens } = await ApiService.request(
-      //   {
-      //     type: 'App.V2.Auth.Refresh',
-      //     data: {
-      //       refreshToken,
-      //     },
-      //   },
-      //   { newAxiosInstance: true }
-      // )
-      //
-      // return data
+    async refreshAuth(context, refreshToken: string): Promise<IAuthTokens> {
+      const { data }: { data: IAuthTokens } = await ApiService.request(
+        {
+          type: 'App.V2.Auth.Refresh',
+          data: {
+            refreshToken,
+          },
+        },
+        { newAxiosInstance: true }
+      )
+
+      return data
     },
 
     clearAuth({ commit }) {
