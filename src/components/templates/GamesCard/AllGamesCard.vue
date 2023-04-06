@@ -54,6 +54,7 @@ import {
 import { dispatch, getters } from '../../../store'
 import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
 import { ConfirmModal, useModal } from '../../../helpers/bvModal'
+import { FilterType } from '../../../@model/filter'
 
 export default defineComponent({
   name: 'AllGamesCard',
@@ -90,15 +91,15 @@ export default defineComponent({
         ? []
         : [
             {
-              type: 'gamesType',
+              type: FilterType.GamesType,
               key: 'type',
             },
             {
-              type: 'gamesProducers',
+              type: FilterType.GamesProducers,
               key: 'producerNames',
             },
             {
-              type: 'gamesCategories',
+              type: FilterType.GamesCategories,
               key: 'categoryNames',
             },
           ],

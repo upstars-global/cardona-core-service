@@ -133,12 +133,6 @@
     "showLess": "Show less",
     "showMore": "Show more",
     "callback": "Callback",
-    "event": "Event",
-    "eventDate": "Event date",
-    "factor": "Odds",
-    "fullStake": "Bet",
-    "score": "Score",
-    "possibleWinAmount": "Possible win",
     "supportService" : {
       "_": "Support service",
       "searchPlaceholder": "Search by id, digitain id, email and login"
@@ -293,10 +287,6 @@
       "type": "Type",
       "accrue": "Accrue a gift"
     },
-    "betting":{
-      "searchPlaceholder": "Search by id and bonus id",
-      "id": "Coupon ID"
-    },
     "transactions": {
       "_": "Transactions",
       "updateBalance": "Update balance",
@@ -365,7 +355,6 @@
       }
     },
     "balanceHistory": "Balance history",
-    "bettingHistory": "Betting history",
     "player": {
       "list": "Players",
       "card": "Card player"
@@ -451,11 +440,6 @@
           "history": {
             "sidebarTitle": "Bonus"
           }
-        }
-      },
-      "betting": {
-        "history": {
-          "sidebarTitle": "Bet"
         }
       }
     },
@@ -688,17 +672,6 @@
       "firstDep": "Firstdep",
       "lastDep": "Lastdep",
       "lastChange": "Last change",
-      "betAmount": "Bet amount",
-      "winAmount": "Win amount",
-      "betDate": "Bet date",
-      "bonus": "Bonus",
-      "bonusId": "Bonus ID",
-      "cashout": "Cashout",
-      "eventType": "Event type",
-      "currentWin": "Current win",
-      "bonusType": "Bonus Type",
-      "bonusWalletBet": "Bonus wallet bet",
-      "transferredToReal": "Transferred to real",
       "notifications": {
         "sendNotification": "Send notification",
         "history": "History",
@@ -1108,6 +1081,7 @@
     "entryId": "Entity ID",
     "paymentSystem": "Payment system",
     "giftId": "Gift Id",
+    "giftName": "Gift Name",
     "gameType": "Game type",
     "gamesCategories": "Game category",
     "gamesProducers": "Game producer",
