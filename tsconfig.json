@@ -24,11 +24,8 @@
         "./themeConfig"
       ],
       "@productConfig": [
-        "./productConfig"
-      ],
-      "@/*": [
-        "src/*"
-      ],
+        "./src/configs/productConfig"
+      ]
     },
     "lib": [
       "esnext",
