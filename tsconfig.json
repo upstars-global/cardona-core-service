@@ -23,8 +23,8 @@
       "@themeConfig": [
         "./themeConfig"
       ],
-      "@/*": [
-        "src/*"
+      "@productConfig": [
+        "./src/configs/productConfig"
       ]
     },
     "lib": [
