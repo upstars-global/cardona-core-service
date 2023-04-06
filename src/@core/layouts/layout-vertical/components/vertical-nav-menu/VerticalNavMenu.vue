@@ -97,7 +97,7 @@ import useVerticalNavMenu from './useVerticalNavMenu'
 import ProjectSelect from './components/ProjectSelect'
 import { getters } from '../../../../../store'
 import ProductsSelect from '../../../../../@core/layouts/layout-vertical/components/vertical-nav-menu/components/ProductsSelect'
-import router from '../../../../../router'
+import router from '@/router'
 import i18n from '../../../../../libs/i18n'
 
 export default {

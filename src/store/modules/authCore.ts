@@ -1,5 +1,5 @@
 import ApiService from '../../services/api'
-import router from '../../router'
+import router from '@/router'
 import { IAuthTokens, isLoggedIn, setAuthTokens, clearAuthTokens } from 'axios-jwt'
 import { ILoginData } from '../../@model/auth'
 

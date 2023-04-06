@@ -253,7 +253,7 @@
 <script>
 import { ref, onUnmounted } from 'vue'
 import store from '../../../../store'
-import router from '../../../../router'
+import router from '@/router'
 import {
   BRow,
   BCol,

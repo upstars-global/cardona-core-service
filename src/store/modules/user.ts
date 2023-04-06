@@ -1,4 +1,4 @@
-import router from '../../router'
+import router from '@/router'
 import { setStorage } from '../../helpers/storage'
 import { storageKeys } from '../../configs/storage'
 import { ProjectInfo, ProjectInfoInput } from '../../@model/project'

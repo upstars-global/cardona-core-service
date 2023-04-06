@@ -44,7 +44,7 @@
 <script>
 import { BTab, BTabs, BCard, BAlert, BLink } from 'bootstrap-vue'
 import { ref, onUnmounted } from 'vue'
-import router from '../../../../router'
+import router from '@/router'
 import store from '../../../../store'
 import userStoreModule from '../userStoreModule'
 import UserEditTabAccount from './UserEditTabAccount.vue'
