@@ -40,6 +40,7 @@
 import { computed } from 'vue'
 import { dispatch, getters } from '../../../../../../store'
 import i18n from '../../../../../../libs/i18n'
+import { useRouter } from '@/@core/utils/utils'
 
 export default {
   name: 'ProductsSelect',
@@ -50,10 +51,12 @@ export default {
     },
   },
   setup(props) {
+    const { router } = useRouter()
     const selectedProduct = computed({
       get: () => getters.selectedProduct,
       set: (val) => {
-        dispatch('setSelectedProduct', val)
+        router.push(`/${val}`)
+        // dispatch('setSelectedProduct', val)
       },
     })
     const products = computed(() => getters.userInfo.products)
