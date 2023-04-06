@@ -107,7 +107,7 @@ export default {
 
   methods: {
     onClickLogout() {
-      dispatch('auth/clearAuth')
+      dispatch('authCore/clearAuth')
 
       this.$router.push({ name: 'Login' })
     },
