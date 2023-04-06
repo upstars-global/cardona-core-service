@@ -7,7 +7,7 @@ export default {
   actions: {
     async fetchUsersList({ rootGetters, rootState }, inputData) {
       const data = inputData?.data ? inputData.data : inputData
-      const isMenuTypeAdmin = rootState.appConfig.layout.menu.type === 'admin'
+      const isMenuTypeAdmin = rootState.appConfigCore.layout.menu.type === 'admin'
       return new ListData(
         await ApiService.request({
           type: 'App.V2.Users.List',
