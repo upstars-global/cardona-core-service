@@ -88,7 +88,7 @@ export default defineComponent({
     const isCreatePage: boolean = props.pageType === PageType.Create
     const isUpdatePage: boolean = props.pageType === PageType.Update
 
-    const { entityName, pageName, EntityFormClass } = props.useEntity()
+    const { entityName, pageName, EntityFormClass, onSubmitCallback } = props.useEntity()
 
     const ListPageName: string = pageName ? `${pageName}List` : `${entityName}List`
     const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Update`
@@ -170,6 +170,8 @@ export default defineComponent({
           ? await router.push({ name: UpdatePageName, params: { id: String(data?.id) } })
           : await router.push({ name: ListPageName })
       }
+
+      if (onSubmitCallback) await onSubmitCallback(String(transformedForm?.id))
     }
 
     const onClickCancel = () => router.push({ name: ListPageName })
