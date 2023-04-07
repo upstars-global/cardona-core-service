@@ -7,4 +7,5 @@ export type UseEntityType<T> = {
   readonly entityName: string
   readonly pageName?: string
   readonly EntityFormClass: { new (data?: any): T }
+  readonly onSubmitCallback?: (id: string) => void
 }
