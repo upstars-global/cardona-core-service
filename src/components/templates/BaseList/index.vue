@@ -210,7 +210,7 @@
           <status-field
             v-else-if="field.type === ListFieldType.Status"
             :key="index"
-            :status="value"
+            :value="item.status"
           />
 
           <sum-and-currency
