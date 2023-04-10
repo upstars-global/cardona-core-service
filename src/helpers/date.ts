@@ -36,3 +36,14 @@ export const transformDateToISO = (dateString: string): string => {
 
   return new Date(Date.UTC(year, month - 1, day, hour, minute)).toISOString()
 }
+
+export const convertDateToUTC = (date: Date): Date => {
+  return new Date(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds()
+  )
+}
