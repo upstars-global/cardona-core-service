@@ -1,5 +1,4 @@
 import ApiService from '../../services/api'
-import router from '../../router'
 import { IAuthTokens, isLoggedIn, setAuthTokens, clearAuthTokens } from 'axios-jwt'
 import { ILoginData } from '../../@model/auth'
 
@@ -31,8 +30,6 @@ export default {
       commit('SET_AUTH', true)
 
       await dispatch('fetchCurrentUser', {}, { root: true })
-
-      await router.push({ name: 'Dashboard' })
     },
 
     async refreshAuth(context, refreshToken: string): Promise<IAuthTokens> {
