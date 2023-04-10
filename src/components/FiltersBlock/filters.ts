@@ -302,6 +302,14 @@ const balancesReasons = new FieldInfo<OptionsItem>({
   fetchOptionsActionName: 'balance/fetchBalancesReasonsList',
 })
 
+const tagNames = new FieldInfo<OptionsItem>({
+  type: FieldType.MultiSelect,
+  key: 'tagNames',
+  label: i18n.t('common.tags') as string,
+  placeholder: i18n.t('common.tags') as string,
+  fetchOptionsActionName: 'tags/fetchTags',
+})
+
 export default {
   admin,
   group,
@@ -348,4 +356,5 @@ export default {
   transactionsStatuses,
   dateRangeActivated,
   dateRangeUsed,
+  tagNames,
 }
