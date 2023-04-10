@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <status-field :status="item.value" />
+  <status-field :value="item.status" />
 </template>
 
 
