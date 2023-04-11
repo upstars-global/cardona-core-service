@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import { convertUpperCaseFirstSymbol } from '../../../../helpers'
+import { computed } from 'vue'
 
-const props = defineProps<{
+interface IStatusWithVariantReplace {
+  // copy of IStatusWithVariant
   status: string
+  variant: string
+}
+
+type ValueType = string | IStatusWithVariantReplace
+const props = defineProps<{
+  value: ValueType
 }>()
 
 enum StatusVariants {
@@ -49,14 +57,20 @@ enum StatusVariants {
   lost = 'light-danger',
   cancelled = 'light-danger',
   'erased_by_withdraw' = 'light-danger',
-
   deleting = 'light-danger',
   // TODO: Add status variant here
 }
+const value = computed(() => {
+  const status = typeof props.value === 'string' ? props.value : props.value?.status
+  return status && convertUpperCaseFirstSymbol(status?.replace(RegExp('_', 'g'), ' '))
+})
+const variantName = computed(() => {
+  return typeof props.value === 'string' ? StatusVariants[props.value] : props.value?.variant
+})
 </script>
 
 <template>
-  <b-badge :variant="StatusVariants[status]">
-    {{ convertUpperCaseFirstSymbol(status.replace(RegExp('_', 'g'), ' ')) }}
+  <b-badge :variant="variantName">
+    {{ value }}
   </b-badge>
 </template>
