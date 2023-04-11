@@ -604,7 +604,6 @@
       }
     },
     "conciergePlayer": {
-      "portraits": "Portraits",
       "realAccount": "Real account",
       "bonusAccount": "Bonus account",
       "newPayouts": "New payouts",
@@ -623,6 +622,8 @@
       "casinoBonusBalance": "Casino Bonus Balance",
       "sportBonusBalance": "Sports bonus balance",
       "payout": "Payout",
+      "payouts": "Payouts",
+      "portraits": "Portraits",
       "winBack": "Winback",
       "cashback": "cashback",
       "wager": "Wager",
@@ -882,6 +883,7 @@
     "enterName": "Enter name",
     "comment": "Comment text",
     "portrait": "Portrait text",
+    "payout": "Payout text",
     "loginOrEmail": "Login or email",
     "fullAccessToAllGroups": "Full access to all groups",
     "datePicker": "Date picker",
@@ -934,6 +936,7 @@
     "notes": "No notes yet",
     "comment": "No comments yet",
     "portrait": "No portraits yet",
+    "payout": "No payouts yet",
     "logging": "No logging data",
     "gamesCategories": "No category of games created. It's time to do it",
     "gamesProducers": "No game providers created. It's time to do it",
