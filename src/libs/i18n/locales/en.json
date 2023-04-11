@@ -630,6 +630,7 @@
       "KYCVerification": "KYC verification",
       "paymentSystem": "Payment system",
       "paymentSystems": "Payment systems",
+      "payoutsOnReview": "Payouts on review",
       "none": "none",
       "savedCards": "Saved cards",
       "cardMask": "Card mask",
@@ -672,6 +673,7 @@
       "firstDep": "Firstdep",
       "lastDep": "Lastdep",
       "lastChange": "Last change",
+      "sentToReview": "Sent to review",
       "notifications": {
         "sendNotification": "Send notification",
         "history": "History",
@@ -817,6 +819,8 @@
       "/api/v2/treasury/balances/bonuses/cancel": "Bonus successfully canceled",
       "/api/v2/players/payments/systems/update": "Payment system successfully updated",
       "/api/v2/players/settings/payout-limits/update": "Payout limits successfully updated",
+      "/api/v2/treasury/transactions/checks/approve": "Payouts approved",
+      "/api/v2/treasury/transactions/checks/reject": "Payouts rejected",
       "/api/v2/marbella/cards/delete": "Player card successfully deleted",
       "filtersSavedByDefault": "Filters saved by default"
     },
@@ -967,7 +971,8 @@
     "backoffice-player-gifts": "Gifts",
     "backoffice-payment-balanceslog": "Balance history",
     "backoffice-betting-history": "Betting history",
-    "backoffice-player-multiaccounts": "Multiaccounts"
+    "backoffice-player-multiaccounts": "Multiaccounts",
+    "backoffice-treasury-transactions-checks": "Payouts"
   },
   "vCoin": {
     "fetchingError": "Error fetching vcoins",
@@ -1037,7 +1042,9 @@
     "assign": "Assign",
     "accrue": "Accrue",
     "pin": "Pin",
-    "unpin": "Unpin"
+    "unpin": "Unpin",
+    "approveAll": "Approve all",
+    "rejectAll": "Reject all"
   },
   "sms": {
     "smsMessages": "SMS messages",
