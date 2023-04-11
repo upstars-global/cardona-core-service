@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { convertUpperCaseFirstSymbol } from '../../../../helpers'
 import { computed } from 'vue'
-import { StatusWithVariant } from '../../../../@model/view'
 
+interface IStatusWithVariantReplace {
+  // copy of IStatusWithVariant
+  status: string
+  variant: string
+}
+
+type ValueType = string | IStatusWithVariantReplace
 const props = defineProps<{
-  value: string | StatusWithVariant
+  value: ValueType
 }>()
 
 enum StatusVariants {
@@ -55,19 +61,11 @@ enum StatusVariants {
   // TODO: Add status variant here
 }
 const value = computed(() => {
-  if (!props.value) {
-    return ''
-  }
-  const status = props.value instanceof StatusWithVariant ? props.value.status : props.value
-  return convertUpperCaseFirstSymbol(status.replace(RegExp('_', 'g'), ' '))
+  const status = typeof props.value === 'string' ? props.value : props.value?.status
+  return status && convertUpperCaseFirstSymbol(status?.replace(RegExp('_', 'g'), ' '))
 })
 const variantName = computed(() => {
-  if (!props.value) {
-    return ''
-  }
-  return props.value instanceof StatusWithVariant
-    ? props.value.variant
-    : StatusVariants[props.value]
+  return typeof props.value === 'string' ? StatusVariants[props.value] : props.value?.variant
 })
 </script>
 
