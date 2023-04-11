@@ -210,7 +210,7 @@
           <status-field
             v-else-if="field.type === ListFieldType.Status"
             :key="index"
-            :value="item?.status || item.value"
+            :value="item[key]"
           />
 
           <sum-and-currency
@@ -477,7 +477,6 @@ import ButtonField from './_components/ButtonField.vue'
 import CommentField from './_components/CommentField.vue'
 import ImageField from './_components/ImageField.vue'
 import DatePeriodField from './_components/DatePeriodField.vue'
-import DataObjectField from './_components/DataObjectField.vue'
 import { GameActionType, GamesListItem, GamesSectionGamesItem } from '../../../@model/games'
 import SideBar from '../../../components/templates/BaseList/_components/SideBar.vue'
 import CModal from '../../../components/CModal.vue'
@@ -491,7 +490,6 @@ export default {
   name: 'BaseList',
   components: {
     DatePeriodField,
-    DataObjectField,
     ImageField,
     CommentField,
     SumAndCurrency,
