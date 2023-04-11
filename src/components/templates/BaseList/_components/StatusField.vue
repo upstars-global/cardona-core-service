@@ -4,7 +4,7 @@ import { computed } from 'vue'
 import { StatusWithVariant } from '../../../../@model/view'
 
 const props = defineProps<{
-  value: any // TODO: change to type because string | StatusWithVariant get warning
+  value: string | StatusWithVariant
 }>()
 
 enum StatusVariants {
