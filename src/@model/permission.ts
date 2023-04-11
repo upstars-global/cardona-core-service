@@ -125,6 +125,7 @@ export enum PermissionType {
   BettingHistory = 'backoffice-betting-history',
   Multiaccounts = 'backoffice-player-multiaccounts',
   BackofficeLogaction = 'backoffice-logaction',
+  TreasuryTransactionsChecks = 'backoffice-treasury-transactions-checks',
 }
 
 export class AllPermission {
@@ -314,6 +315,11 @@ export class AllPermission {
         target: PermissionType.Multiaccounts,
         type: 'table',
         notAccessLevel: [2, 4],
+      },
+      {
+        target: PermissionType.TreasuryTransactionsChecks,
+        type: 'table',
+        notAccessLevel: [4],
       },
     ] as PermissionUpdatableTable[],
     other: [
