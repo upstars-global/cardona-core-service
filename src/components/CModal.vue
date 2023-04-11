@@ -56,5 +56,9 @@ const onHidden = () => emit('hidden')
     <template #default="{ hide }">
       <slot :hide="hide" />
     </template>
+
+    <template #modal-footer="{ hide }">
+      <slot name="modal-footer" :hide="hide" />
+    </template>
   </b-modal>
 </template>

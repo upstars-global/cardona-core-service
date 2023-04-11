@@ -42,3 +42,11 @@ export enum FilterType {
   BalancesReasons = 'balancesReasons',
   TagNames = 'tagNames',
 }
+
+export class FilterID {
+  readonly id: string
+
+  constructor({ id }) {
+    this.id = id
+  }
+}
