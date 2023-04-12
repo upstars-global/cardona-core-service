@@ -18,20 +18,21 @@
             v-for="local in Object.keys(fieldTranslations[item])"
             :key="item + local"
             class="row-item-field-translations"
-            :class="{ 'order-first': local === mainLocale }"
+            :class="{ 'order-first': isMainLocale(local) }"
           >
             <b-col md="2">
-              <span v-if="local === mainLocale" class="font-small-3 font-weight-bolder mr-1">
-                {{ $t('locale.' + type + '.' + item) }}
+              <span v-if="isMainLocale(local)" class="font-small-3 font-weight-bolder mr-1">
+                {{ $t(`locale.${type}.${item}`) }}
               </span>
             </b-col>
             <b-col md="3">
               <span>{{ allLocales[local] }}</span>
             </b-col>
+
             <b-col md="7">
               <text-editor-wysiwyg
                 v-if="item + local === selectEditeInput"
-                :value="fieldTranslations[item][local]"
+                :value="fieldTranslations[item][local].value"
                 :options-variable="allCurrencies"
                 :localisation-parameters="value.localisationParameters"
                 :data-at="`input-${item}-${local}`"
@@ -40,15 +41,24 @@
               />
               <div
                 v-else
-                class="input-text"
-                :class="{ disable: local === mainLocale || disabled }"
+                class="input-text mb-50"
+                :class="{ disable: isMainLocale(local) || disabled }"
                 :data-at="`text-${item}-${local}`"
                 @click="onSelectEditeInput(item, local)"
                 v-html="
-                  fieldTranslations[item][local] ||
+                  fieldTranslations[item][local].value ||
                   `<span class=\'span-empty\'>${$t('common.empty')}</span>`
                 "
               />
+
+              <div class="d-flex justify-content-end">
+                <check-field
+                  v-if="!isMainLocale(local)"
+                  v-model="fieldTranslations[item][local].disabled"
+                  :field="{ label: $t('action.hide') }"
+                  class="d-flex align-items-center"
+                />
+              </div>
             </b-col>
           </b-row>
         </template>
@@ -63,10 +73,12 @@ import TextEditorWysiwyg from '../../../components/TextEditorWysiwyg/index.vue'
 import { getters } from '../../../store'
 import { SeoForm } from '../../../@model/seo'
 import { FieldTranslationsData } from '../../../@model/translations'
+import CheckField from '../FieldGenerator/_components/CheckField.vue'
 
 export default defineComponent({
   name: 'LocaleForm',
   components: {
+    CheckField,
     TextEditorWysiwyg,
   },
   props: {
@@ -89,7 +101,7 @@ export default defineComponent({
   setup(props) {
     const selectEditeInput = ref('')
     const selectedProject = computed(() => getters.selectedProject)
-    const mainLocale = computed(() => selectedProject.value?.mainLocale || 'ru')
+    const mainLocale = computed<string>(() => selectedProject.value?.mainLocale || 'ru')
     const locales = computed(() => selectedProject.value?.locales || [])
     const allLocales = computed(() => getters['localeCore/allLocalesKeys'])
     const allCurrencies = computed(() => getters['appConfigCore/allCurrencies'])
@@ -113,11 +125,11 @@ export default defineComponent({
     }
     const fieldTranslations = ref<FieldTranslationsData>(getDefaultFieldTranslations(props.value))
     const localFieldAdd = (newForm) => {
-      let isUpdate: boolean = false
+      let isUpdate = false
       let newFieldTranslations = { ...fieldTranslations.value } as FieldTranslationsData
 
       Object.keys(newFieldTranslations).forEach((key) => {
-        const mainLocalInner: string = fieldTranslations.value[key][mainLocale.value]
+        const mainLocalInner: string = fieldTranslations.value[key][mainLocale.value]?.value
         const mainLocalMainForm: string = newForm[key]?.value || newForm?.seo?.[key]
 
         if (
@@ -127,11 +139,16 @@ export default defineComponent({
           isUpdate = true
         }
 
-        newFieldTranslations![key][mainLocale.value] =
-          newForm[key]?.value !== undefined ? newForm[key]?.value : newForm?.seo?.[key]
+        newFieldTranslations![key][mainLocale.value] = {
+          value: newForm[key]?.value !== undefined ? newForm[key]?.value : newForm?.seo?.[key],
+          disabled: false,
+        }
 
         locales.value.forEach((locale) => {
-          newFieldTranslations[key][locale] = newForm?.fieldTranslations?.[key]?.[locale] || ''
+          newFieldTranslations[key][locale] = {
+            value: newForm?.fieldTranslations?.[key]?.[locale]?.value || '',
+            disabled: newForm?.fieldTranslations?.[key]?.[locale]?.disabled,
+          }
         })
       })
       fieldTranslations.value = newFieldTranslations
@@ -151,14 +168,16 @@ export default defineComponent({
     )
 
     const onInputLocalEditor = (val, item, local) => {
-      fieldTranslations.value[item][local] = val
+      fieldTranslations.value[item][local].value = val
       // TODO emit('input', form) - not work
       props!.value['fieldTranslations'] = fieldTranslations.value
     }
 
+    const isMainLocale = (locale: string): boolean => locale === mainLocale.value
+
     const onSelectEditeInput = (item, local) => {
       if (props.disabled) return
-      if (local !== mainLocale.value) {
+      if (!isMainLocale(local)) {
         selectEditeInput.value = item + local
       }
     }
@@ -178,6 +197,7 @@ export default defineComponent({
       allCurrencies,
       updateLocalisationParameters,
       onInputLocalEditor,
+      isMainLocale,
     }
   },
 })
@@ -192,6 +212,10 @@ export default defineComponent({
 
     .row-item-field-translations {
       margin-bottom: 1.5rem;
+
+      .custom-control-label {
+        font-size: $small-font-size;
+      }
     }
   }
   .input-text {
