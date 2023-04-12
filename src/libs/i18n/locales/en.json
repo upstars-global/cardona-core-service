@@ -113,6 +113,7 @@
     "M": "Male",
     "W": "Female",
     "created": "Created",
+    "updated": "Updated",
     "expires": "Expires",
     "processed": "Processed",
     "payout": "Payout",
@@ -359,6 +360,7 @@
     "seo": "SEO",
     "bonuses": "Bonuses",
     "transactions": "Transactions",
+    "multiaccounts": "Multiaccounts",
     "gifts": {
       "_": "Gifts",
       "players": {
