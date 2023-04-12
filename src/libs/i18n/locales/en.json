@@ -1075,7 +1075,8 @@
     "pin": "Pin",
     "unpin": "Unpin",
     "approveAll": "Approve all",
-    "rejectAll": "Reject all"
+    "rejectAll": "Reject all",
+    "hide": "Hide"
   },
   "sms": {
     "smsMessages": "SMS messages",
