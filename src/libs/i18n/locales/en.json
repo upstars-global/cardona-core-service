@@ -296,7 +296,16 @@
     },
     "betting":{
       "searchPlaceholder": "Search by id and bonus id",
-      "id": "Coupon ID"
+      "id": "Coupon ID",
+      "new": "New",
+      "won": "Won",
+      "lost": "Lost",
+      "cashOut": "Cash Out",
+      "cashBack": "Cash Back",
+      "expressBonus": "Express Bonus",
+      "boreDrawMoneyBack": "Bore Draw Money Back",
+      "ultraCashBack": "Ultra Cash Back",
+      "multyBetOfTheDay": "Multy Bet Of The Day"
     },
     "transactions": {
       "_": "Transactions",
