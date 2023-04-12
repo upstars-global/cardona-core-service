@@ -146,8 +146,8 @@ export default defineComponent({
 
         locales.value.forEach((locale) => {
           newFieldTranslations[key][locale] = {
-            value: newForm?.fieldTranslations?.[key]?.[locale].value || '',
-            disabled: newForm?.fieldTranslations?.[key]?.[locale].disabled,
+            value: newForm?.fieldTranslations?.[key]?.[locale]?.value || '',
+            disabled: newForm?.fieldTranslations?.[key]?.[locale]?.disabled,
           }
         })
       })
