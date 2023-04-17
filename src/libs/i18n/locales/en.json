@@ -297,7 +297,16 @@
     },
     "betting":{
       "searchPlaceholder": "Search by id and bonus id",
-      "id": "Coupon ID"
+      "id": "Coupon ID",
+      "new": "New",
+      "won": "Won",
+      "lost": "Lost",
+      "cashout": "Cash Out",
+      "cashback": "Cash Back",
+      "express_bonus": "Express Bonus",
+      "bore_draw_money_back": "Bore Draw Money Back",
+      "ultra_cache_back": "Ultra Cash Back",
+      "multy_bet_of_the_day": "Multy Bet Of The Day"
     },
     "transactions": {
       "_": "Transactions",
@@ -1078,7 +1087,8 @@
     "pin": "Pin",
     "unpin": "Unpin",
     "approveAll": "Approve all",
-    "rejectAll": "Reject all"
+    "rejectAll": "Reject all",
+    "hide": "Hide"
   },
   "sms": {
     "smsMessages": "SMS messages",
