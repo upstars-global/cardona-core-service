@@ -113,6 +113,7 @@
     "M": "Male",
     "W": "Female",
     "created": "Created",
+    "updated": "Updated",
     "expires": "Expires",
     "processed": "Processed",
     "payout": "Payout",
@@ -368,6 +369,7 @@
     "seo": "SEO",
     "bonuses": "Bonuses",
     "transactions": "Transactions",
+    "multiaccounts": "Multiaccounts",
     "gifts": {
       "_": "Gifts",
       "players": {
@@ -860,6 +862,7 @@
       "/api/v2/treasury/transactions/checks/approve": "Payouts approved",
       "/api/v2/treasury/transactions/checks/reject": "Payouts rejected",
       "/api/v2/marbella/cards/delete": "Player card successfully deleted",
+      "/api/v2/players/multiaccounts/update": "Multiaccount successfully updated",
       "filtersSavedByDefault": "Filters saved by default"
     },
     "error": {
