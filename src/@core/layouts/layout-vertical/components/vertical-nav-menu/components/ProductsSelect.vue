@@ -31,15 +31,15 @@
   </div>
   <b-link v-else class="navbar-brand" to="/">
     <span class="brand-logo text-primary">
-      {{ productName }}
+      {{ productNameSelected }}
     </span>
   </b-link>
 </template>
 
 <script>
 import { computed } from 'vue'
-import { dispatch, getters } from '../../../../../../store'
-import i18n from '../../../../../../libs/i18n'
+import { getters } from '../../../../../../store'
+import { productName } from '@productConfig'
 
 export default {
   name: 'ProductsSelect',
@@ -53,19 +53,23 @@ export default {
     const selectedProduct = computed({
       get: () => getters.selectedProduct,
       set: (val) => {
-        dispatch('setSelectedProduct', val)
+        if (val.name === 'alaro') {
+          window.location.replace(`${window.location.origin}/${productName}`)
+        } else {
+          window.location.replace(window.location.origin)
+        }
       },
     })
     const products = computed(() => getters.userInfo.products)
 
-    const productName = computed(() =>
+    const productNameSelected = computed(() =>
       props.isCollapsedMenu ? selectedProduct.value?.name : selectedProduct.value?.name.slice(0, 2)
     )
 
     return {
       selectedProduct,
       products,
-      productName,
+      productNameSelected,
     }
   },
 }
