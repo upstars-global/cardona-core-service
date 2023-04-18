@@ -31,7 +31,7 @@ export default {
 
     async getImagesList(
       { commit },
-      { path, pageNumber, perPage }: { path: String; pageNumber: number; perPage: number }
+      { pageNumber, perPage, search }: { pageNumber: number; perPage: number; search: string }
     ) {
       const data = await ApiService.request({
         type: 'App.V2.Compostela.Images.List',
@@ -40,7 +40,7 @@ export default {
           perPage,
         },
         filter: {
-          path,
+          path: search,
         },
       })
 
@@ -61,7 +61,7 @@ export default {
         pageNumber,
         perPage,
         search,
-      }: { path: String; pageNumber: number; perPage: number; search: String }
+      }: { path: string; pageNumber: number; perPage: number; search: string }
     ) {
       if (search) {
         return dispatch('getImagesList', { pageNumber, perPage, search })
