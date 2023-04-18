@@ -31,7 +31,12 @@ export default {
 
     async getImagesList(
       { commit },
-      { path, pageNumber, perPage }: { path: String; pageNumber: number; perPage: number }
+      {
+        path,
+        pageNumber,
+        perPage,
+        search,
+      }: { path: string; pageNumber: number; perPage: number; search: string }
     ) {
       const data = await ApiService.request({
         type: 'App.V2.Compostela.Images.List',
@@ -41,6 +46,7 @@ export default {
         },
         filter: {
           path,
+          search,
         },
       })
 
