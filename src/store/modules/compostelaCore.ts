@@ -61,7 +61,7 @@ export default {
         pageNumber,
         perPage,
         search,
-      }: { path: String; pageNumber: number; perPage: number; search: String }
+      }: { path: string; pageNumber: number; perPage: number; search: string }
     ) {
       if (search) {
         return dispatch('getImagesList', { pageNumber, perPage, search })
