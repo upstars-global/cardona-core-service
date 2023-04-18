@@ -39,6 +39,7 @@
 <script>
 import { computed } from 'vue'
 import { getters } from '../../../../../../store'
+import { productsName } from '@productConfig'
 
 export default {
   name: 'ProductsSelect',
@@ -52,11 +53,12 @@ export default {
     const selectedProduct = computed({
       get: () => getters.selectedProduct,
       set: (val) => {
-        if (val.name === 'alaro') {
-          window.location.replace(`${window.location.origin}/alaro`)
-        } else {
-          window.location.replace(window.location.origin)
-        }
+        const url =
+          val.name === productsName.alaro
+            ? `${window.location.origin}/${productsName.alaro}`
+            : window.location.origin
+
+        window.location.replace(url)
       },
     })
     const products = computed(() => getters.userInfo.products)
