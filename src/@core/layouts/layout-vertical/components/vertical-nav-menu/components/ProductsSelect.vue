@@ -39,7 +39,7 @@
 <script>
 import { computed } from 'vue'
 import { getters } from '../../../../../../store'
-import { productsName } from '@productConfig'
+import { productsName } from '../../../../../../configs/productsName'
 
 export default {
   name: 'ProductsSelect',
