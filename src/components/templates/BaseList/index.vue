@@ -660,7 +660,7 @@ export default {
 
     const sortBy = sortFromStorage?.field || props.config.staticSorts?.field
     const sortDir = sortFromStorage?.dir || props.config.staticSorts?.dir
-    const sortDesc = sortDir && sortDir === SortDirection.asc
+    const sortDesc = !!sortDir && sortDir === SortDirection.asc
 
     const sortData = reactive<IListSortData>({ sortBy, sortDesc })
 
