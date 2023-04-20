@@ -658,10 +658,9 @@ export default {
     const sortStorageKey = `${currentPageName}-${entityName}-sort`
     const sortFromStorage = getStorage(sortStorageKey, ListSort) as ListSort
 
-    const sortBy = sortFromStorage?.field || props.config.staticSorts?.field || ''
-    const sortDesc = sortFromStorage
-      ? sortFromStorage.dir === SortDirection.asc
-      : !!props.config.staticSorts?.dir
+    const sortBy = sortFromStorage?.field || props.config.staticSorts?.field
+    const sortDir = sortFromStorage?.dir || props.config.staticSorts?.dir
+    const sortDesc = sortDir && sortDir === SortDirection.asc
 
     const sortData = reactive<IListSortData>({ sortBy, sortDesc })
 
@@ -670,6 +669,7 @@ export default {
     // Fetch list
     const getList = async () => {
       const filter: object = setRequestFilters()
+      const sort = sortData.sortBy && [new ListSort(sortData)]
 
       const { list, total } = await dispatch(fetchActionName, {
         type: entityName,
@@ -677,7 +677,7 @@ export default {
           perPage: perPage.value,
           page: currentPage.value,
           filter,
-          sort: sortData.sortBy ? [new ListSort(sortData)] : undefined,
+          sort,
         },
         options: {
           saveCountItem: props.config?.saveCountItem,
@@ -750,6 +750,7 @@ export default {
     // Export
     const onExportFormatSelected = async (format: string) => {
       const filter: object = setRequestFilters()
+      const sort = sortData.sortBy && [new ListSort(sortData)]
 
       const report: string = await dispatch(fetchReportActionName, {
         type: entityName,
@@ -759,7 +760,7 @@ export default {
             format,
           },
           perPage: total.value,
-          sort: sortData.sortBy ? [new ListSort(sortData)] : undefined,
+          sort,
         },
       })
 
