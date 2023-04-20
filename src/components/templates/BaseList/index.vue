@@ -534,22 +534,6 @@ export default {
     const searchQuery = ref('')
 
     const {
-      currentPage,
-      perPage,
-      perPageOptions,
-      numberOfPages,
-      total,
-      setPerPage,
-      setupDataMeta,
-      linkGen,
-      updateTotal,
-      onChangePagination,
-    } = usePagination({
-      defaultPerPage: props.config.defaultPerPage,
-      withIndependentPagination: props.config.withIndependentPagination,
-    })
-
-    const {
       entityName,
       fields,
       ListFilterModel,
@@ -891,6 +875,25 @@ export default {
     }
 
     // Pagination
+    const perPageStorageKey = `${currentPageName}-${entityName}-perPage`
+
+    const {
+      currentPage,
+      perPage,
+      perPageOptions,
+      numberOfPages,
+      total,
+      setPerPage,
+      setupDataMeta,
+      linkGen,
+      updateTotal,
+      onChangePagination,
+    } = usePagination({
+      defaultPerPage: props.config.defaultPerPage,
+      withIndependentPagination: props.config.withIndependentPagination,
+      storageKey: perPageStorageKey,
+    })
+
     const dataMeta = setupDataMeta(refListTable)
 
     const linkGenerator = (page: number) => {
