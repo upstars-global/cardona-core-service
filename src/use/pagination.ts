@@ -1,5 +1,6 @@
 import { ref, watch, computed } from 'vue'
 import { useRouter } from '../@core/utils/utils'
+import { getStorage, setStorage } from '../helpers/storage'
 
 type PaginationConfig = {
   defaultCurrentPage?: number
@@ -7,15 +8,17 @@ type PaginationConfig = {
   defaultPerPage?: number
   withIndependentPagination?: boolean
   isUseRouter?: boolean
+  storageKey: string
 }
 
-export default function usePagination(config: PaginationConfig = {}) {
+export default function usePagination(config: PaginationConfig = { storageKey: 'list-perPage' }) {
   const {
     defaultCurrentPage = 1,
     defaultPerPageOptions = [10, 25, 50, 100],
     defaultPerPage = defaultPerPageOptions[0],
     withIndependentPagination = false,
     isUseRouter = true,
+    storageKey,
   } = config
 
   const { route, router } = useRouter()
@@ -28,7 +31,10 @@ export default function usePagination(config: PaginationConfig = {}) {
   const currentPage = ref(
     isUseRouter ? Number(query.page) || defaultCurrentPage : defaultCurrentPage
   )
-  const perPage = ref(isUseRouter ? Number(query.perPage) || defaultPerPage : defaultPerPage)
+  const perPageFromStorage = getStorage<string>(storageKey)
+  const perPageValue =
+    isUseRouter && query.perPage ? query.perPage : perPageFromStorage || defaultPerPage
+  const perPage = ref(Number(perPageValue))
 
   const setupDataMeta = (refTable: any) =>
     computed(() => {
@@ -53,9 +59,11 @@ export default function usePagination(config: PaginationConfig = {}) {
       perPage.value = value
       CbFunction.value()
     }
+
+    setStorage(storageKey, value)
   }
 
-  const setPage = (page: number = 1, perPageProps: any = null) => {
+  const setPage = (page = 1, perPageProps: any = null) => {
     if (isUseRouter) {
       router.push({
         query: {
