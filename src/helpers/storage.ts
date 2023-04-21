@@ -48,7 +48,7 @@ export const getListStorage =
  *
  * @param {string} key of the local storage
  */
-export const clearStorage = (key: string): void => {
+export const removeStorageItem = (key: string): void => {
   localStorage.removeItem(key)
 }
 
