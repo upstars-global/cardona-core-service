@@ -669,7 +669,7 @@ export default {
     // Fetch list
     const getList = async () => {
       const filter: object = setRequestFilters()
-      const sort = sortData.sortBy && [new ListSort(sortData)]
+      const sort = sortData.sortBy ? [new ListSort(sortData)] : undefined
 
       const { list, total } = await dispatch(fetchActionName, {
         type: entityName,
@@ -750,7 +750,7 @@ export default {
     // Export
     const onExportFormatSelected = async (format: string) => {
       const filter: object = setRequestFilters()
-      const sort = sortData.sortBy && [new ListSort(sortData)]
+      const sort = sortData.sortBy ? [new ListSort(sortData)] : undefined
 
       const report: string = await dispatch(fetchReportActionName, {
         type: entityName,
