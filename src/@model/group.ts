@@ -72,7 +72,7 @@ export class GroupForm {
   constructor(data?: any) {
     const users = data?.users.map((user) => new UserSmallInfo(user))
     this.id = data?.id
-    this.productId = getters['product/productId']
+    this.productId = getters['productCore/productId']
     this.name = new FieldInfo<string>({
       type: FieldType.Text,
       key: 'name',
