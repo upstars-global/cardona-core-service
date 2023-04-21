@@ -447,7 +447,7 @@
 import { computed, onMounted, PropType, reactive, ref, watch } from 'vue'
 import store, { dispatch, getters } from '../../../store'
 import { useBvModal } from '../../../helpers/bvModal'
-import { getStorage, setStorage } from '../../../helpers/storage'
+import { getStorage, setStorage, removeStorageItem } from '../../../helpers/storage'
 import { useRouter } from '../../../@core/utils/utils'
 import usePagination from '../../../use/pagination'
 import {
@@ -664,7 +664,11 @@ export default {
 
     const sortData = reactive<IListSortData>({ sortBy, sortDesc })
 
-    watch(sortData, (newSortData) => setStorage(sortStorageKey, newSortData))
+    watch(sortData, (newSortData) => {
+      newSortData.sortBy
+        ? setStorage(sortStorageKey, newSortData)
+        : removeStorageItem(sortStorageKey)
+    })
 
     // Fetch list
     const getList = async () => {
