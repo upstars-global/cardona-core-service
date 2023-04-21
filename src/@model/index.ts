@@ -14,9 +14,24 @@ export interface IRequestListPayload<T = any> {
   readonly filter?: T
 }
 
-export type IListSort = {
+export interface IListSort {
   readonly field: string
   readonly dir: SortDirection
+}
+
+export interface IListSortData {
+  readonly sortBy: string
+  readonly sortDesc: boolean
+}
+
+export class ListSort implements IListSort {
+  readonly field: string
+  readonly dir: SortDirection
+
+  constructor({ sortBy, sortDesc }: IListSortData) {
+    this.field = sortBy
+    this.dir = sortDesc ? SortDirection.asc : SortDirection.desc
+  }
 }
 
 export class ListData<T> {
