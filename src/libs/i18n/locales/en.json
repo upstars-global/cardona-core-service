@@ -306,7 +306,11 @@
       "express_bonus": "Express Bonus",
       "bore_draw_money_back": "Bore Draw Money Back",
       "ultra_cache_back": "Ultra Cash Back",
-      "multy_bet_of_the_day": "Multy Bet Of The Day"
+      "multy_bet_of_the_day": "Multy Bet Of The Day",
+      "status": "Status",
+      "type": "Type",
+      "bonusType": "Bonus type",
+      "eventType": "Event type"
     },
     "transactions": {
       "_": "Transactions",
@@ -1151,7 +1155,8 @@
     "initialSumRange": "Initial bonus amount",
     "winBackSumRange": "Sum at the time of wagering",
     "realSumRange": "Switched to real balance",
-    "wagerLimitRange": "Win Limit"
+    "wagerLimitRange": "Win Limit",
+    "bettingHistoryIsBonus": "Bonus"
   },
   "modal": {
     "groupsErrorDelete": {

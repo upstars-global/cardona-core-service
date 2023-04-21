@@ -310,6 +310,47 @@ const tagNames = new FieldInfo<OptionsItem>({
   fetchOptionsActionName: 'tags/fetchTags',
 })
 
+//Betting history
+const bettingHistoryStatus = new FieldInfo<OptionsItem>({
+  type: FieldType.Select,
+  key: FilterType.BettingHistoryStatus,
+  label: String(i18n.t('common.betting.status')),
+  placeholder: String(i18n.t('common.betting.status')),
+  fetchOptionsActionName: 'bettings/fetchBettingHistoryStatusList',
+})
+
+const bettingHistoryType = new FieldInfo<OptionsItem>({
+  type: FieldType.Select,
+  key: FilterType.BettingHistoryType,
+  label: String(i18n.t('common.betting.type')),
+  placeholder: String(i18n.t('common.betting.type')),
+  fetchOptionsActionName: 'bettings/fetchBettingHistoryTypeList',
+})
+
+const BettingHistoryBonusType = new FieldInfo<OptionsItem>({
+  type: FieldType.Select,
+  key: FilterType.BettingHistoryBonusType,
+  label: String(i18n.t('common.betting.bonusType')),
+  placeholder: String(i18n.t('common.betting.bonusType')),
+  fetchOptionsActionName: 'bettings/fetchBettingHistoryBonusTypeList',
+})
+
+const BettingHistoryEventType = new FieldInfo<OptionsItem>({
+  type: FieldType.Select,
+  key: FilterType.BettingHistoryEventType,
+  label: String(i18n.t('common.betting.eventType')),
+  placeholder: String(i18n.t('common.betting.eventType')),
+  fetchOptionsActionName: 'bettings/fetchBettingHistoryEventTypeList',
+})
+
+const bettingHistoryIsBonus = new FieldInfo<boolean>({
+  type: FieldType.Radio,
+  key: FilterType.BettingHistoryIsBonus,
+  label: String(i18n.t('filters.bettingHistoryIsBonus')),
+  value: true,
+  options: stateOptions,
+})
+
 export default {
   admin,
   group,
@@ -357,4 +398,11 @@ export default {
   dateRangeActivated,
   dateRangeUsed,
   tagNames,
+
+  //Betting history
+  bettingHistoryStatus,
+  BettingHistoryEventType,
+  BettingHistoryBonusType,
+  bettingHistoryType,
+  bettingHistoryIsBonus,
 }
