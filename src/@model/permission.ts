@@ -160,8 +160,8 @@ export enum PermissionType {
 }
 
 export enum PermissionFormType {
-  switch = 'switch',
-  table = 'table',
+  Switch = 'switch',
+  Table = 'table',
 }
 
 export class AllPermission {
@@ -367,99 +367,99 @@ export class AllPermission {
 
     configurationsDistributors: [
       {
-        type: PermissionFormType.table,
+        type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeDistributors,
       },
       {
-        type: PermissionFormType.switch,
+        type: PermissionFormType.Switch,
         target: PermissionType.AlaroBackofficeDistributorsReport,
       },
     ] as PermissionUpdatableTable[],
     configurationsConnections: [
       {
-        type: PermissionFormType.table,
+        type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeConnections,
       },
       {
-        type: PermissionFormType.table,
+        type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeConnectionsBrands,
       },
       {
-        type: PermissionFormType.table,
+        type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeConnectionsGames,
       },
       {
-        type: PermissionFormType.switch,
+        type: PermissionFormType.Switch,
         target: PermissionType.AlaroBackofficeDistributorsReport,
       },
     ] as PermissionUpdatableTable[],
     configurationsOrganizations: [
       {
-        type: PermissionFormType.table,
+        type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeOrganizations,
       },
       {
-        type: PermissionFormType.switch,
+        type: PermissionFormType.Switch,
         target: PermissionType.AlaroBackofficeOrganizationsReport,
       },
     ] as PermissionUpdatableTable[],
 
     configurationsBrands: [
       {
-        type: PermissionFormType.table,
+        type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeBrands,
       },
       {
-        type: PermissionFormType.table,
+        type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeBrandsConnections,
       },
       {
-        type: PermissionFormType.table,
+        type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeBrandsGames,
       },
       {
-        type: PermissionFormType.switch,
+        type: PermissionFormType.Switch,
         target: PermissionType.AlaroBackofficeBrandsReport,
       },
     ] as PermissionUpdatableTable[],
     gamesCatalog: [
       {
-        type: PermissionFormType.table,
+        type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeGamecatalog,
       },
       {
-        type: PermissionFormType.switch,
+        type: PermissionFormType.Switch,
         target: PermissionType.AlaroBackofficeGamecatalogReport,
       },
     ] as PermissionUpdatableTable[],
 
     reportsGames: [
       {
-        type: PermissionFormType.table,
+        type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeGameactivity,
       },
       {
-        type: PermissionFormType.switch,
+        type: PermissionFormType.Switch,
         target: PermissionType.AlaroBackofficeGameactivityReport,
       },
     ] as PermissionUpdatableTable[],
     reportsRoundHistory: [
       {
-        type: PermissionFormType.table,
+        type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeRoundhistory,
       },
       {
-        type: PermissionFormType.switch,
+        type: PermissionFormType.Switch,
         target: PermissionType.AlaroBackofficeRoundhistoryReport,
       },
     ] as PermissionUpdatableTable[],
     reportsBonuses: [
       {
-        type: PermissionFormType.table,
+        type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeBonuses,
       },
       {
-        type: PermissionFormType.switch,
+        type: PermissionFormType.Switch,
         target: PermissionType.AlaroBackofficeBonusesReports,
       },
     ] as PermissionUpdatableTable[],
