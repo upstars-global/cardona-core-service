@@ -390,7 +390,7 @@ export class AllPermission {
       },
       {
         type: PermissionFormType.Switch,
-        target: PermissionType.AlaroBackofficeDistributorsReport,
+        target: PermissionType.AlaroBackofficeConnectionsReport,
       },
     ] as PermissionUpdatableTable[],
     configurationsOrganizations: [
@@ -437,6 +437,7 @@ export class AllPermission {
       {
         type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeGameactivity,
+        notAccessLevel: [2, 3, 4],
       },
       {
         type: PermissionFormType.Switch,
@@ -447,6 +448,7 @@ export class AllPermission {
       {
         type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeRoundhistory,
+        notAccessLevel: [2, 3, 4],
       },
       {
         type: PermissionFormType.Switch,
@@ -457,6 +459,7 @@ export class AllPermission {
       {
         type: PermissionFormType.Table,
         target: PermissionType.AlaroBackofficeBonuses,
+        notAccessLevel: [2, 3, 4],
       },
       {
         type: PermissionFormType.Switch,
