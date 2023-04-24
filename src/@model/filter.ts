@@ -37,6 +37,7 @@ export enum FilterType {
   BettingHistoryType = 'bettingHistoryType',
   BettingHistoryEventType = 'bettingHistoryEventType',
   BettingHistoryBonusType = 'bettingHistoryBonusType',
+  GameId = 'gameId',
   BonusType = 'bonusType',
   GiftsType = 'giftsType',
   WagerLimitRange = 'wagerLimitRange',
