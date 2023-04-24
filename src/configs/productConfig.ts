@@ -1,5 +1,2 @@
 export const productName = 'demo'
-export enum productsName {
-  neocore = 'neocore',
-  alaro = 'alaro',
-}
+export const productId = 0

@@ -16,7 +16,7 @@ export default {
             perPage: data?.perPage || 20,
           },
           filter: {
-            productIds: isMenuTypeAdmin ? [] : [rootGetters['product/productId']],
+            productIds: isMenuTypeAdmin ? [] : [rootGetters['productCore/productId']],
             ...data?.filter,
           },
         }),
