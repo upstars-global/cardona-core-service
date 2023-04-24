@@ -327,7 +327,7 @@ const bettingHistoryType = new FieldInfo<OptionsItem>({
   fetchOptionsActionName: 'betting/fetchBettingHistoryTypeList',
 })
 
-const BettingHistoryBonusType = new FieldInfo<OptionsItem>({
+const bettingHistoryBonusType = new FieldInfo<OptionsItem>({
   type: FieldType.Select,
   key: FilterType.BettingHistoryBonusType,
   label: String(i18n.t('common.betting.bonusType')),
@@ -335,7 +335,7 @@ const BettingHistoryBonusType = new FieldInfo<OptionsItem>({
   fetchOptionsActionName: 'betting/fetchBettingHistoryBonusTypeList',
 })
 
-const BettingHistoryEventType = new FieldInfo<OptionsItem>({
+const bettingHistoryEventType = new FieldInfo<OptionsItem>({
   type: FieldType.Select,
   key: FilterType.BettingHistoryEventType,
   label: String(i18n.t('common.betting.eventType')),
@@ -407,8 +407,8 @@ export default {
 
   //Betting history
   bettingHistoryStatus,
-  BettingHistoryEventType,
-  BettingHistoryBonusType,
+  bettingHistoryEventType,
+  bettingHistoryBonusType,
   bettingHistoryType,
   bettingHistoryIsBonus,
   gameId,
