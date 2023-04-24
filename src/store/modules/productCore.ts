@@ -1,7 +1,9 @@
+import { productId } from '@productConfig'
+
 export default {
   namespaced: true,
   state: {
-    productId: 1,
+    productId,
   },
 
   getters: {
