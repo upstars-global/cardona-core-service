@@ -316,7 +316,7 @@ const bettingHistoryStatus = new FieldInfo<OptionsItem>({
   key: FilterType.BettingHistoryStatus,
   label: String(i18n.t('common.betting.status')),
   placeholder: String(i18n.t('common.betting.status')),
-  fetchOptionsActionName: 'bettings/fetchBettingHistoryStatusList',
+  fetchOptionsActionName: 'betting/fetchBettingHistoryStatusList',
 })
 
 const bettingHistoryType = new FieldInfo<OptionsItem>({
@@ -324,7 +324,7 @@ const bettingHistoryType = new FieldInfo<OptionsItem>({
   key: FilterType.BettingHistoryType,
   label: String(i18n.t('common.betting.type')),
   placeholder: String(i18n.t('common.betting.type')),
-  fetchOptionsActionName: 'bettings/fetchBettingHistoryTypeList',
+  fetchOptionsActionName: 'betting/fetchBettingHistoryTypeList',
 })
 
 const BettingHistoryBonusType = new FieldInfo<OptionsItem>({
@@ -332,7 +332,7 @@ const BettingHistoryBonusType = new FieldInfo<OptionsItem>({
   key: FilterType.BettingHistoryBonusType,
   label: String(i18n.t('common.betting.bonusType')),
   placeholder: String(i18n.t('common.betting.bonusType')),
-  fetchOptionsActionName: 'bettings/fetchBettingHistoryBonusTypeList',
+  fetchOptionsActionName: 'betting/fetchBettingHistoryBonusTypeList',
 })
 
 const BettingHistoryEventType = new FieldInfo<OptionsItem>({
@@ -340,7 +340,7 @@ const BettingHistoryEventType = new FieldInfo<OptionsItem>({
   key: FilterType.BettingHistoryEventType,
   label: String(i18n.t('common.betting.eventType')),
   placeholder: String(i18n.t('common.betting.eventType')),
-  fetchOptionsActionName: 'bettings/fetchBettingHistoryEventTypeList',
+  fetchOptionsActionName: 'betting/fetchBettingHistoryEventTypeList',
 })
 
 const bettingHistoryIsBonus = new FieldInfo<boolean>({
@@ -349,6 +349,12 @@ const bettingHistoryIsBonus = new FieldInfo<boolean>({
   label: String(i18n.t('filters.bettingHistoryIsBonus')),
   value: true,
   options: stateOptions,
+})
+
+const gameId = new FieldInfo<string>({
+  type: FieldType.Text,
+  key: FilterType.GameId,
+  label: String(i18n.t('filters.gameId')),
 })
 
 export default {
@@ -405,4 +411,5 @@ export default {
   BettingHistoryBonusType,
   bettingHistoryType,
   bettingHistoryIsBonus,
+  gameId,
 }

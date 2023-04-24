@@ -1133,6 +1133,7 @@
     }
   },
   "filters": {
+    "gameId": "Game ID",
     "entryId": "Entity ID",
     "paymentSystem": "Payment system",
     "giftId": "Gift Id",
