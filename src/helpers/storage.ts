@@ -12,19 +12,15 @@ export const setStorage = <T>(key: string, data: T): void => {
 /**
  * Get instance value of the local storage by key
  *
- * @param {string} cls class constructor for create instance from raw data
+ * @param {string} key storage key
+ * @param {FunctionConstructor} cls class constructor for create instance from raw data
  */
 
-export const getStorage =
-  <T>(cls: { new (data: any): T }) =>
-  (key: string): T | null => {
-    const value = localStorage.getItem(key)
-    if (value) {
-      return new cls(JSON.parse(value))
-    }
+export const getStorage = <T>(key: string, cls?: { new (data: any): T }): T | string | null => {
+  const item = localStorage.getItem(key)
 
-    return null
-  }
+  return item && cls ? new cls(JSON.parse(item)) : item
+}
 
 /**
  * Get list of instance of the local storage by key
@@ -52,7 +48,7 @@ export const getListStorage =
  *
  * @param {string} key of the local storage
  */
-export const clearStorage = (key: string): void => {
+export const removeStorageItem = (key: string): void => {
   localStorage.removeItem(key)
 }
 

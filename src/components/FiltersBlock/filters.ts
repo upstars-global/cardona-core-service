@@ -310,6 +310,53 @@ const tagNames = new FieldInfo<OptionsItem>({
   fetchOptionsActionName: 'tags/fetchTags',
 })
 
+//Betting history
+const bettingHistoryStatus = new FieldInfo<OptionsItem>({
+  type: FieldType.Select,
+  key: FilterType.BettingHistoryStatus,
+  label: String(i18n.t('common.betting.status')),
+  placeholder: String(i18n.t('common.betting.status')),
+  fetchOptionsActionName: 'betting/fetchBettingHistoryStatusList',
+})
+
+const bettingHistoryType = new FieldInfo<OptionsItem>({
+  type: FieldType.Select,
+  key: FilterType.BettingHistoryType,
+  label: String(i18n.t('common.betting.type')),
+  placeholder: String(i18n.t('common.betting.type')),
+  fetchOptionsActionName: 'betting/fetchBettingHistoryTypeList',
+})
+
+const bettingHistoryBonusType = new FieldInfo<OptionsItem>({
+  type: FieldType.Select,
+  key: FilterType.BettingHistoryBonusType,
+  label: String(i18n.t('common.betting.bonusType')),
+  placeholder: String(i18n.t('common.betting.bonusType')),
+  fetchOptionsActionName: 'betting/fetchBettingHistoryBonusTypeList',
+})
+
+const bettingHistoryEventType = new FieldInfo<OptionsItem>({
+  type: FieldType.Select,
+  key: FilterType.BettingHistoryEventType,
+  label: String(i18n.t('common.betting.eventType')),
+  placeholder: String(i18n.t('common.betting.eventType')),
+  fetchOptionsActionName: 'betting/fetchBettingHistoryEventTypeList',
+})
+
+const bettingHistoryIsBonus = new FieldInfo<boolean>({
+  type: FieldType.Radio,
+  key: FilterType.BettingHistoryIsBonus,
+  label: String(i18n.t('filters.bettingHistoryIsBonus')),
+  value: true,
+  options: stateOptions,
+})
+
+const gameId = new FieldInfo<string>({
+  type: FieldType.Text,
+  key: FilterType.GameId,
+  label: String(i18n.t('filters.gameId')),
+})
+
 export default {
   admin,
   group,
@@ -357,4 +404,12 @@ export default {
   dateRangeActivated,
   dateRangeUsed,
   tagNames,
+
+  //Betting history
+  bettingHistoryStatus,
+  bettingHistoryEventType,
+  bettingHistoryBonusType,
+  bettingHistoryType,
+  bettingHistoryIsBonus,
+  gameId,
 }

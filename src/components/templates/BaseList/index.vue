@@ -179,8 +179,8 @@
         :items="getList"
         class="our-table"
         :draggable="config.draggable"
-        :sort-by.sync="sortBy"
-        :sort-desc.sync="sortDesc"
+        :sort-by.sync="sortData.sortBy"
+        :sort-desc.sync="sortData.sortDesc"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"
@@ -444,9 +444,10 @@
 </template>
 
 <script lang="ts">
-import { computed, onMounted, PropType, ref, watch } from 'vue'
+import { computed, onMounted, PropType, reactive, ref, watch } from 'vue'
 import store, { dispatch, getters } from '../../../store'
 import { useBvModal } from '../../../helpers/bvModal'
+import { getStorage, setStorage, removeStorageItem } from '../../../helpers/storage'
 import { useRouter } from '../../../@core/utils/utils'
 import usePagination from '../../../use/pagination'
 import {
@@ -481,7 +482,7 @@ import { GameActionType, GamesListItem, GamesSectionGamesItem } from '../../../@
 import SideBar from '../../../components/templates/BaseList/_components/SideBar.vue'
 import CModal from '../../../components/CModal.vue'
 import SumAndCurrency from '../../../components/SumAndCurrency.vue'
-import { IListSort } from '../../../@model'
+import { IListSortData, ListSort } from '../../../@model'
 import CTable from '../../CTable/index.vue'
 import { useFilters } from '../../FiltersBlock/useFilters'
 import FiltersBlock from '../../FiltersBlock/index.vue'
@@ -527,29 +528,10 @@ export default {
 
   setup(props, { slots, emit }) {
     const bvModal = useBvModal()
-    const { router } = useRouter()
+    const { router, route } = useRouter()
+    const { name: currentPageName } = route.value
 
     const searchQuery = ref('')
-
-    // Sort
-    const sortBy = ref('')
-    const sortDesc = ref(false)
-
-    const {
-      currentPage,
-      perPage,
-      perPageOptions,
-      numberOfPages,
-      total,
-      setPerPage,
-      setupDataMeta,
-      linkGen,
-      updateTotal,
-      onChangePagination,
-    } = usePagination({
-      defaultPerPage: props.config.defaultPerPage,
-      withIndependentPagination: props.config.withIndependentPagination,
-    })
 
     const {
       entityName,
@@ -563,11 +545,11 @@ export default {
     } = props.useList()
 
     // Pages
-    const CreatePageName: string = pageName ? `${pageName}Create` : `${entityName}Create`
-    const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Update`
+    const CreatePageName = pageName ? `${pageName}Create` : `${entityName}Create`
+    const UpdatePageName = pageName ? `${pageName}Update` : `${entityName}Update`
 
-    const isExistsCreatePage: boolean = checkExistsPage(CreatePageName)
-    const isExistsUpdatePage: boolean = checkExistsPage(UpdatePageName)
+    const isExistsCreatePage = checkExistsPage(CreatePageName)
+    const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 
     // Action names
     const moduleName: string = convertLowerCaseFirstSymbol(entityName)
@@ -654,23 +636,29 @@ export default {
       ])
     })
 
-    const size: string = props.config?.small ? 'sm' : 'md'
+    const size = props.config?.small ? 'sm' : 'md'
 
-    const setRequestSort = () => {
-      const sort: Array<IListSort> = []
-      if (sortBy.value) {
-        sort.push({
-          field: sortBy.value,
-          dir: sortDesc.value ? SortDirection.asc : SortDirection.desc,
-        })
-      } else if (props.config.staticSorts) {
-        sort.push(props.config.staticSorts)
-      }
-      return sort
-    }
+    // Sort
+    const sortStorageKey = `${currentPageName}-${entityName}-sort`
+    const sortFromStorage = getStorage(sortStorageKey, ListSort) as ListSort
+
+    const sortBy = sortFromStorage?.field || props.config.staticSorts?.field
+    const sortDir = sortFromStorage?.dir || props.config.staticSorts?.dir
+    const sortDesc = !!sortDir && sortDir === SortDirection.asc
+
+    const sortData = reactive<IListSortData>({ sortBy, sortDesc })
+
+    watch(sortData, (newSortData) => {
+      newSortData.sortBy
+        ? setStorage(sortStorageKey, newSortData)
+        : removeStorageItem(sortStorageKey)
+    })
+
+    // Fetch list
     const getList = async () => {
       const filter: object = setRequestFilters()
-      const sort: Array<IListSort> = setRequestSort()
+      const sort = sortData.sortBy ? [new ListSort(sortData)] : undefined
+
       const { list, total } = await dispatch(fetchActionName, {
         type: entityName,
         data: {
@@ -750,6 +738,7 @@ export default {
     // Export
     const onExportFormatSelected = async (format: string) => {
       const filter: object = setRequestFilters()
+      const sort = sortData.sortBy ? [new ListSort(sortData)] : undefined
 
       const report: string = await dispatch(fetchReportActionName, {
         type: entityName,
@@ -759,14 +748,7 @@ export default {
             format,
           },
           perPage: total.value,
-          sort: sortBy.value
-            ? [
-                {
-                  field: sortBy.value,
-                  dir: sortDesc.value ? 'ASC' : 'DESC',
-                },
-              ]
-            : [],
+          sort,
         },
       })
 
@@ -897,6 +879,25 @@ export default {
     }
 
     // Pagination
+    const perPageStorageKey = `${currentPageName}-${entityName}-perPage`
+
+    const {
+      currentPage,
+      perPage,
+      perPageOptions,
+      numberOfPages,
+      total,
+      setPerPage,
+      setupDataMeta,
+      linkGen,
+      updateTotal,
+      onChangePagination,
+    } = usePagination({
+      defaultPerPage: props.config.defaultPerPage,
+      withIndependentPagination: props.config.withIndependentPagination,
+      storageKey: perPageStorageKey,
+    })
+
     const dataMeta = setupDataMeta(refListTable)
 
     const linkGenerator = (page: number) => {
@@ -988,8 +989,7 @@ export default {
       onChangeSelectedFilters,
 
       //Sort
-      sortBy,
-      sortDesc,
+      sortData,
 
       // Table
       refListTable,
