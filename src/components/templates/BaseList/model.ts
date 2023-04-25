@@ -2,6 +2,7 @@ import { FilterType } from '../../../@model/filter'
 import i18n from '../../../libs/i18n'
 import { TableField } from '../../../@core/components/table-fields/model'
 import { IListSort } from '../../../@model'
+import { ProjectFilterTypes } from '@filterConfig'
 
 export enum SortDirection {
   asc = 'ASC',
@@ -24,7 +25,7 @@ export type UseListType = {
 }
 
 export type FilterListItem = {
-  readonly type: FilterType
+  readonly type: FilterType | ProjectFilterTypes
   readonly key: string
   readonly trackBy?: string
 }

@@ -25,6 +25,9 @@
       ],
       "@productConfig": [
         "./src/configs/productConfig"
+      ],
+      "@filterConfig": [
+        "./src/@model/filterConfig"
       ]
     },
     "lib": [
