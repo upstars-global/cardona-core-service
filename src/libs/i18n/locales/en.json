@@ -30,6 +30,7 @@
     }
   },
   "common": {
+    "segments": "Segments",
     "manager": "Manager",
     "you": "You",
     "additionally": "Additionally",
