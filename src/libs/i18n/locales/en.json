@@ -30,6 +30,7 @@
     }
   },
   "common": {
+    "segments": "Segments",
     "manager": "Manager",
     "you": "You",
     "additionally": "Additionally",
@@ -738,6 +739,8 @@
       "newProp": "New properties"
     },
     "games": {
+      "segmentsDescription": "If no segments are selected, then access to the games of this producer is not limited",
+      "segmentsInfo": "The producer's games will only be available to users who have the specified segment",
       "name": "Title",
       "numberOfGames": "Number of games",
       "selectedCounter": "Selected {items} out of {total}",

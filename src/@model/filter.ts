@@ -47,6 +47,7 @@ export enum FilterType {
   DateRangeUsed = 'dateRangeUsed',
   BalancesReasons = 'balancesReasons',
   TagNames = 'tagNames',
+  Segments = 'segments',
 }
 
 export class FilterID {

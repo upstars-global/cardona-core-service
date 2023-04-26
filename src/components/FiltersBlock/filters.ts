@@ -357,6 +357,15 @@ const gameId = new FieldInfo<string>({
   label: String(i18n.t('filters.gameId')),
 })
 
+//Segments
+const segments = new FieldInfo<OptionsItem>({
+  type: FieldType.MultiSelect,
+  key: FilterType.Segments,
+  label: i18n.t('common.segments') as string,
+  placeholder: i18n.t('common.segments') as string,
+  fetchOptionsActionName: 'segments/fetchList',
+})
+
 export default {
   admin,
   group,
@@ -412,4 +421,7 @@ export default {
   bettingHistoryType,
   bettingHistoryIsBonus,
   gameId,
+
+  //Segments
+  segments,
 }
