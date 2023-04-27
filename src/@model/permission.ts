@@ -127,36 +127,32 @@ export enum PermissionType {
   BackofficeLogaction = 'backoffice-logaction',
   TreasuryTransactionsChecks = 'backoffice-treasury-transactions-checks',
 
-  JsonapiUsers = 'jsonapi-users',
-  JsonapiGroups = 'jsonapi-groups',
+  AlaroUsers = 'alaro-users',
+  AlaroGroups = 'alaro-groups',
 
-  AlaroBackofficeDistributors = 'alaro-backoffice-distributors',
-  AlaroBackofficeDistributorsReport = 'alaro-backoffice-distributors-report',
+  AlaroDistributors = 'alaro-distributors',
+  AlaroDistributorsReport = 'alaro-distributors-report',
 
-  AlaroBackofficeConnections = 'alaro-backoffice-connections',
-  AlaroBackofficeConnectionsBrands = 'alaro-backoffice-connections-brands',
-  AlaroBackofficeConnectionsGames = 'alaro-backoffice-connections-games',
-  AlaroBackofficeConnectionsReport = 'alaro-backoffice-connections-report',
+  AlaroConnections = 'alaro-connections',
+  AlaroConnectionsReport = 'alaro-connections-report',
 
-  AlaroBackofficeOrganizations = 'alaro-backoffice-organizations',
-  AlaroBackofficeOrganizationsReport = 'alaro-backoffice-organizations-report',
+  AlaroOrganizations = 'alaro-organizations',
+  AlaroOrganizationsReport = 'alaro-organizations-report',
 
-  AlaroBackofficeBrands = 'alaro-backoffice-brands',
-  AlaroBackofficeBrandsConnections = 'alaro-backoffice-brands-connections',
-  AlaroBackofficeBrandsGames = 'alaro-backoffice-brands-games',
-  AlaroBackofficeBrandsReport = 'alaro-backoffice-brands-report',
+  AlaroBrands = 'alaro-brands',
+  AlaroBrandsReport = 'alaro-brands-report',
 
-  AlaroBackofficeGamecatalog = 'alaro-backoffice-gamecatalog',
-  AlaroBackofficeGamecatalogReport = 'alaro-backoffice-gamecatalog-report',
+  AlaroGames = 'alaro-games',
+  AlaroGamesReport = 'alaro-games',
 
-  AlaroBackofficeGameactivity = 'alaro-backoffice-gameactivity',
-  AlaroBackofficeGameactivityReport = 'alaro-backoffice-gameactivity-report',
+  AlaroGameActivity = 'alaro-gameactivity',
+  AlaroGameActivityReport = 'alaro-gameactivity-report',
 
-  AlaroBackofficeRoundhistory = 'alaro-backoffice-roundhistory',
-  AlaroBackofficeRoundhistoryReport = 'alaro-backoffice-roundhistory-report',
+  AlaroRoundHistory = 'alaro-roundhistory',
+  AlaroRoundHistoryReport = 'alaro-roundhistory-report',
 
-  AlaroBackofficeBonuses = 'alaro-backoffice-bonuses',
-  AlaroBackofficeBonusesReports = 'alaro-backoffice-bonuses-reports',
+  AlaroBonuses = 'alaro-bonuses',
+  AlaroBonusesReports = 'alaro-bonuses-reports',
 }
 
 export enum PermissionFormType {
@@ -365,105 +361,100 @@ export class AllPermission {
       },
     ] as PermissionUpdatableTable[],
 
+    alaroManageAccess: [
+      {
+        type: 'table',
+        target: PermissionType.AlaroGroups,
+      },
+      {
+        type: 'table',
+        target: PermissionType.AlaroUsers,
+      },
+    ] as PermissionUpdatableTable[],
+
     configurationsDistributors: [
       {
         type: PermissionFormType.Table,
-        target: PermissionType.AlaroBackofficeDistributors,
+        target: PermissionType.AlaroDistributors,
       },
       {
         type: PermissionFormType.Switch,
-        target: PermissionType.AlaroBackofficeDistributorsReport,
+        target: PermissionType.AlaroDistributorsReport,
       },
     ] as PermissionUpdatableTable[],
     configurationsConnections: [
       {
         type: PermissionFormType.Table,
-        target: PermissionType.AlaroBackofficeConnections,
-      },
-      {
-        type: PermissionFormType.Table,
-        target: PermissionType.AlaroBackofficeConnectionsBrands,
-      },
-      {
-        type: PermissionFormType.Table,
-        target: PermissionType.AlaroBackofficeConnectionsGames,
+        target: PermissionType.AlaroConnections,
       },
       {
         type: PermissionFormType.Switch,
-        target: PermissionType.AlaroBackofficeConnectionsReport,
+        target: PermissionType.AlaroConnectionsReport,
       },
     ] as PermissionUpdatableTable[],
     configurationsOrganizations: [
       {
         type: PermissionFormType.Table,
-        target: PermissionType.AlaroBackofficeOrganizations,
+        target: PermissionType.AlaroOrganizations,
       },
       {
         type: PermissionFormType.Switch,
-        target: PermissionType.AlaroBackofficeOrganizationsReport,
+        target: PermissionType.AlaroOrganizationsReport,
       },
     ] as PermissionUpdatableTable[],
 
     configurationsBrands: [
       {
         type: PermissionFormType.Table,
-        target: PermissionType.AlaroBackofficeBrands,
-      },
-      {
-        type: PermissionFormType.Table,
-        target: PermissionType.AlaroBackofficeBrandsConnections,
-      },
-      {
-        type: PermissionFormType.Table,
-        target: PermissionType.AlaroBackofficeBrandsGames,
+        target: PermissionType.AlaroBrands,
       },
       {
         type: PermissionFormType.Switch,
-        target: PermissionType.AlaroBackofficeBrandsReport,
+        target: PermissionType.AlaroBrandsReport,
       },
     ] as PermissionUpdatableTable[],
     gamesCatalog: [
       {
         type: PermissionFormType.Table,
-        target: PermissionType.AlaroBackofficeGamecatalog,
+        target: PermissionType.AlaroGames,
       },
       {
         type: PermissionFormType.Switch,
-        target: PermissionType.AlaroBackofficeGamecatalogReport,
+        target: PermissionType.AlaroGamesReport,
       },
     ] as PermissionUpdatableTable[],
 
     reportsGames: [
       {
         type: PermissionFormType.Table,
-        target: PermissionType.AlaroBackofficeGameactivity,
+        target: PermissionType.AlaroGameActivity,
         notAccessLevel: [2, 3, 4],
       },
       {
         type: PermissionFormType.Switch,
-        target: PermissionType.AlaroBackofficeGameactivityReport,
+        target: PermissionType.AlaroGameActivityReport,
       },
     ] as PermissionUpdatableTable[],
     reportsRoundHistory: [
       {
         type: PermissionFormType.Table,
-        target: PermissionType.AlaroBackofficeRoundhistory,
+        target: PermissionType.AlaroRoundHistory,
         notAccessLevel: [2, 3, 4],
       },
       {
         type: PermissionFormType.Switch,
-        target: PermissionType.AlaroBackofficeRoundhistoryReport,
+        target: PermissionType.AlaroRoundHistoryReport,
       },
     ] as PermissionUpdatableTable[],
     reportsBonuses: [
       {
         type: PermissionFormType.Table,
-        target: PermissionType.AlaroBackofficeBonuses,
+        target: PermissionType.AlaroBonuses,
         notAccessLevel: [2, 3, 4],
       },
       {
         type: PermissionFormType.Switch,
-        target: PermissionType.AlaroBackofficeBonusesReports,
+        target: PermissionType.AlaroBonusesReports,
       },
     ] as PermissionUpdatableTable[],
   }

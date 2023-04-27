@@ -486,6 +486,7 @@ import { IListSortData, ListSort } from '../../../@model'
 import CTable from '../../CTable/index.vue'
 import { useFilters } from '../../FiltersBlock/useFilters'
 import FiltersBlock from '../../FiltersBlock/index.vue'
+import { permissionPrefix } from '@productConfig'
 
 export default {
   name: 'BaseList',
@@ -563,9 +564,9 @@ export default {
     const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
 
     // Permissions
-    const permissionKey = `backoffice-${convertCamelCase(entityName, '-')}`
-    const permissionKeySeo = `backoffice-${convertCamelCase(entityName, '-')}-seo`
-    const permissionKeyReport = `backoffice-${convertCamelCase(entityName, '-')}-report`
+    const permissionKey = `${permissionPrefix}${convertCamelCase(entityName, '-')}`
+    const permissionKeySeo = `${permissionPrefix}${convertCamelCase(entityName, '-')}-seo`
+    const permissionKeyReport = `${permissionPrefix}${convertCamelCase(entityName, '-')}-report`
 
     const onePermission: boolean = getters.abilityCan(props.config?.onePermissionKey, 'view')
 

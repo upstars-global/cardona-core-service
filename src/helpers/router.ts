@@ -1,5 +1,6 @@
 import { RouterConfig } from '../@model/router'
 import { convertCamelCase } from '../helpers/index'
+import { permissionPrefix } from '@productConfig'
 
 export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfig>) {
   const arrRouters: Array<any> = []
@@ -14,7 +15,7 @@ export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfi
 
     const entityUrl = sectionConfig.isProject ? '/:project/' + importSTR : '/' + importSTR
     const entityName = sectionConfig.name[0].toUpperCase() + sectionConfig.name.slice(1)
-    const permission = `backoffice-${convertCamelCase(sectionConfig.name, '-')}`
+    const permission = `${permissionPrefix}-${convertCamelCase(sectionConfig.name, '-')}`
 
     arrRouters.push(
       ...[

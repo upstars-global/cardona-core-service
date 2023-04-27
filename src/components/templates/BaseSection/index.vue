@@ -53,6 +53,7 @@ import { useBvModal } from '../../../helpers/bvModal'
 import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
 import { useRouter } from '../../../@core/utils/utils'
 import { BaseListConfig, IBaseListConfig } from '../../../components/templates/BaseList/model'
+import { permissionPrefix } from '@productConfig'
 
 export default defineComponent({
   name: 'BaseSection',
@@ -100,8 +101,8 @@ export default defineComponent({
     const deleteActionName: string = 'baseStoreCore/deleteEntity'
 
     // Permissions
-    const permissionKey: string = `backoffice-${convertCamelCase(entityName, '-')}`
-    const permissionKeySeo: string = `backoffice-${convertCamelCase(entityName, '-')}-seo`
+    const permissionKey: string = `${permissionPrefix}${convertCamelCase(entityName, '-')}`
+    const permissionKeySeo: string = `${permissionPrefix}${convertCamelCase(entityName, '-')}-seo`
 
     const onePermission: boolean = getters.abilityCan(props.config?.onePermissionKey, 'view')
 
