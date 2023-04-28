@@ -143,16 +143,16 @@ export enum PermissionType {
   AlaroBrandsReport = 'alaro-brands-report',
 
   AlaroGames = 'alaro-games',
-  AlaroGamesReport = 'alaro-games',
+  AlaroGamesReport = 'alaro-games-report',
 
-  AlaroGameActivity = 'alaro-gameactivity',
-  AlaroGameActivityReport = 'alaro-gameactivity-report',
+  AlaroReportsGame = 'alaro-reports-gameactivity',
+  AlaroReportsGameActivityReport = 'alaro-reports-gameactivity-report',
 
-  AlaroRoundHistory = 'alaro-roundhistory',
-  AlaroRoundHistoryReport = 'alaro-roundhistory-report',
+  AlaroReportsRoundHistory = 'alaro-reports-roundhistory',
+  AlaroReportsRoundHistoryReport = 'alaro-reports-roundhistory-report',
 
-  AlaroBonuses = 'alaro-bonuses',
-  AlaroBonusesReports = 'alaro-bonuses-reports',
+  AlaroReportsBonuses = 'alaro-reports-bonuses',
+  AlaroReportsBonusesReports = 'alaro-reports-bonuses-report',
 }
 
 export enum PermissionFormType {
@@ -427,34 +427,34 @@ export class AllPermission {
     reportsGames: [
       {
         type: PermissionFormType.Table,
-        target: PermissionType.AlaroGameActivity,
+        target: PermissionType.AlaroReportsGame,
         notAccessLevel: [2, 3, 4],
       },
       {
         type: PermissionFormType.Switch,
-        target: PermissionType.AlaroGameActivityReport,
+        target: PermissionType.AlaroReportsGameActivityReport,
       },
     ] as PermissionUpdatableTable[],
     reportsRoundHistory: [
       {
         type: PermissionFormType.Table,
-        target: PermissionType.AlaroRoundHistory,
+        target: PermissionType.AlaroReportsRoundHistory,
         notAccessLevel: [2, 3, 4],
       },
       {
         type: PermissionFormType.Switch,
-        target: PermissionType.AlaroRoundHistoryReport,
+        target: PermissionType.AlaroReportsRoundHistoryReport,
       },
     ] as PermissionUpdatableTable[],
     reportsBonuses: [
       {
         type: PermissionFormType.Table,
-        target: PermissionType.AlaroBonuses,
+        target: PermissionType.AlaroReportsBonuses,
         notAccessLevel: [2, 3, 4],
       },
       {
         type: PermissionFormType.Switch,
-        target: PermissionType.AlaroBonusesReports,
+        target: PermissionType.AlaroReportsBonusesReports,
       },
     ] as PermissionUpdatableTable[],
   }
