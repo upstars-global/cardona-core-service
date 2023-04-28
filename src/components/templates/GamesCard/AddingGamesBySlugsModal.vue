@@ -71,7 +71,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
-import { getters, dispatch } from '../../../store'
+import store from '../../../store'
 import { GameActionType, GamesSectionGamesItem } from '../../../@model/games'
 import { GamesListItem } from '../../../@model/games'
 import { ListData } from '../../../@model'
@@ -85,7 +85,9 @@ export default defineComponent({
     const slugsValue = ref('')
     const errorSlugList = ref([])
 
-    const isLoadingCheckSlugsList = computed(() => getters.isLoadingEndpoint('games/list/by-slugs'))
+    const isLoadingCheckSlugsList = computed(() =>
+      store.getters.isLoadingEndpoint('games/list/by-slugs')
+    )
 
     const onClickEnableGames = async (hide: Function) => {
       const slugsList: Array<string> = slugsValue.value
@@ -94,7 +96,10 @@ export default defineComponent({
         .filter((slug: string) => slug)
 
       try {
-        const { list }: ListData<GamesListItem> = await dispatch('games/checkSlugsList', slugsList)
+        const { list }: ListData<GamesListItem> = await store.dispatch(
+          'games/checkSlugsList',
+          slugsList
+        )
         const gamesData: Array<GamesSectionGamesItem> = list.map(
           ({ id }: GamesListItem) =>
             ({

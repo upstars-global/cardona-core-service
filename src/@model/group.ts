@@ -4,7 +4,7 @@ import { IRequestListPayload, OptionsItem } from '../@model/index'
 import { ViewInfo, ViewType } from '../@model/view'
 import i18n from '../libs/i18n'
 import { FieldInfo, FieldType } from '../@model/field'
-import { getters } from '../store'
+import store from '../store'
 
 export class GroupData {
   readonly id?: string
@@ -72,7 +72,7 @@ export class GroupForm {
   constructor(data?: any) {
     const users = data?.users.map((user) => new UserSmallInfo(user))
     this.id = data?.id
-    this.productId = getters['productCore/productId']
+    this.productId = store.getters['productCore/productId']
     this.name = new FieldInfo<string>({
       type: FieldType.Text,
       key: 'name',

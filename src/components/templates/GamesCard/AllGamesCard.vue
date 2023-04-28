@@ -42,8 +42,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import BaseList from '../../../components/templates/BaseList'
-import { BaseListConfig } from '../../../components/templates/BaseList/model'
+import BaseList from '../BaseList/index.vue'
+import { BaseListConfig } from '../BaseList/model'
 import { useAllGames } from './useGameCard'
 import {
   GamesListItem,
@@ -51,7 +51,7 @@ import {
   GamesSectionGamesItem,
   GameActionType,
 } from '../../../@model/games'
-import { dispatch, getters } from '../../../store'
+import store from '../../../store'
 import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
 import { ConfirmModal, useModal } from '../../../helpers/bvModal'
 import { FilterType } from '../../../@model/filter'
@@ -111,7 +111,7 @@ export default defineComponent({
 
     // TODO: Game deactivation logic will be completed later
     // const deactivateGames = () => {
-    //   const enabledGamesIds: Array<string> = getters['gamesCategoriesGames/enabledGames'].map(
+    //   const enabledGamesIds: Array<string> = store.getters['gamesCategoriesGames/enabledGames'].map(
     //     ({ id }) => id
     //   )
     //   const baseList: HTMLElement | null = document.querySelector('.all-games-list')
@@ -134,7 +134,7 @@ export default defineComponent({
     // }
 
     // onMounted(() => {
-    //   watch(() => getters['gamesCategoriesGames/enabledGames'], deactivateGames, {
+    //   watch(() => store.getters['gamesCategoriesGames/enabledGames'], deactivateGames, {
     //     deep: true,
     //     immediate: true,
     //   })
@@ -157,10 +157,10 @@ export default defineComponent({
 
       if (!isConfirmed) return
 
-      const perPage: number = getters['games/totalGames']
-      const filter: IGamesFilters = getters['games/appliedFilters']
+      const perPage: number = store.getters['games/totalGames']
+      const filter: IGamesFilters = store.getters['games/appliedFilters']
 
-      const { list } = await dispatch(`games/fetchGamesList`, { data: { perPage, filter } })
+      const { list } = await store.dispatch(`games/fetchGamesList`, { data: { perPage, filter } })
 
       addToCategory(list)
     }

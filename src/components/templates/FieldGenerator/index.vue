@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
-import { getters } from '../../../store'
+import store from '../../../store'
 import { FieldInfo, FieldType } from '../../../@model/field'
 import { BaseField } from '../../../@model/baseField'
 import TextField from './_components/TextField.vue'
@@ -143,7 +143,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const canView = computed<boolean>(() =>
-      props.value.permission ? getters.abilityCan(props.value.permission, 'view') : true
+      props.value.permission ? store.getters.abilityCan(props.value.permission, 'view') : true
     )
     const checkFields: Array<string> = [
       FieldType.Check,
