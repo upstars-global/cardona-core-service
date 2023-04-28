@@ -364,7 +364,7 @@ export class AllPermission {
     alaroManageAccess: [
       {
         type: 'table',
-        target: PermissionType.AlaroGroups,
+        target: PermissionType.BackofficGroups,
       },
       {
         type: 'table',
