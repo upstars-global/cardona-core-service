@@ -101,8 +101,8 @@ export default defineComponent({
     const deleteActionName: string = 'baseStoreCore/deleteEntity'
 
     // Permissions
-    const permissionKey: string = `${permissionPrefix}${convertCamelCase(entityName, '-')}`
-    const permissionKeySeo: string = `${permissionPrefix}${convertCamelCase(entityName, '-')}-seo`
+    const permissionKey: string = `${permissionPrefix}-${convertCamelCase(entityName, '-')}`
+    const permissionKeySeo: string = `${permissionPrefix}-${convertCamelCase(entityName, '-')}-seo`
 
     const onePermission: boolean = getters.abilityCan(props.config?.onePermissionKey, 'view')
 

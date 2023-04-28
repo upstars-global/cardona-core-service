@@ -564,9 +564,9 @@ export default {
     const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
 
     // Permissions
-    const permissionKey = `${permissionPrefix}${convertCamelCase(entityName, '-')}`
-    const permissionKeySeo = `${permissionPrefix}${convertCamelCase(entityName, '-')}-seo`
-    const permissionKeyReport = `${permissionPrefix}${convertCamelCase(entityName, '-')}-report`
+    const permissionKey = `${permissionPrefix}-${convertCamelCase(entityName, '-')}`
+    const permissionKeySeo = `${permissionPrefix}-${convertCamelCase(entityName, '-')}-seo`
+    const permissionKeyReport = `${permissionPrefix}-${convertCamelCase(entityName, '-')}-report`
 
     const onePermission: boolean = getters.abilityCan(props.config?.onePermissionKey, 'view')
 
