@@ -60,7 +60,7 @@ export default {
           sort: data?.sort,
           filter: {
             ...data?.filter,
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
           },
         })
       )
@@ -81,7 +81,7 @@ export default {
           sort: payload.data?.sort,
           filter: {
             ...payload.data?.filter,
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
           },
         }),
         listItemModel
@@ -107,7 +107,7 @@ export default {
         },
         filter: {
           ...data?.filter,
-          project: rootGetters.selectedProject.alias,
+          project: rootGetters.selectedProject?.alias,
         },
       })
 
@@ -119,7 +119,7 @@ export default {
         type: 'App.V2.' + transformNameToType(payload.type) + '.Read',
         data: {
           id: payload.id,
-          project: rootGetters.selectedProject.alias,
+          project: rootGetters.selectedProject?.alias,
         },
       })
 
@@ -130,7 +130,7 @@ export default {
       return await ApiService.request({
         type: 'App.V2.' + transformNameToType(type) + '.Types.List',
         data: {
-          project: rootGetters.selectedProject.alias,
+          project: rootGetters.selectedProject?.alias,
         },
       })
     },
@@ -145,7 +145,7 @@ export default {
           data: {
             ...payload.data.form,
             id: payload.data.form?.id,
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
             productId: rootGetters['productCore/productId'],
           },
         },
@@ -166,7 +166,7 @@ export default {
             ...payload.data.form,
             id: payload.data.form?.id,
             productId: rootGetters['productCore/productId'],
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
           },
         },
         { withSuccessToast: true, formRef: payload.data.formRef }
@@ -183,7 +183,7 @@ export default {
         {
           type: 'App.V2.' + transformNameToType(type) + '.Update.Multiple',
           data: {
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
             [entityKey]: data,
           },
         },
@@ -198,7 +198,7 @@ export default {
           data: {
             id: payload.id,
             comment: payload.comment,
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
           },
         },
         { withSuccessToast: true }
@@ -214,7 +214,7 @@ export default {
           type: 'App.V2.' + transformNameToType(type) + '.Delete.Multiple',
           data: {
             ids,
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
           },
         },
         { withSuccessToast: true }
