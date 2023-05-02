@@ -363,11 +363,11 @@ export class AllPermission {
 
     alaroManageAccess: [
       {
-        type: 'table',
+        type: PermissionFormType.Table,
         target: PermissionType.BackofficGroups,
       },
       {
-        type: 'table',
+        type: PermissionFormType.Switch,
         target: PermissionType.AlaroUsers,
       },
     ] as PermissionUpdatableTable[],
