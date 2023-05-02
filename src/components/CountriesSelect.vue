@@ -110,7 +110,7 @@ export default defineComponent({
     )
 
     watch([selectedCountries, countriesRadioModel], () => {
-      const bannedCountries: Array<string> = selectedCountries.value.map(
+      const bannedCountries = selectedCountries.value.map(
         ({ code }: RegionInfo) => code
       )
 
@@ -120,7 +120,7 @@ export default defineComponent({
         const allowedCountries: Array<string> = regions.value
           .map(({ code }: RegionInfo) => code)
           .filter((code: string) => {
-            const [country, region]: Array<string> = code.split('-')
+            const [country, region] = code.split('-')
 
             return region
               ? !bannedCountries.includes(country) && !bannedCountries.includes(code)
