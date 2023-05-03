@@ -367,7 +367,7 @@ export class AllPermission {
         target: PermissionType.BackofficGroups,
       },
       {
-        type: PermissionFormType.Switch,
+        type: PermissionFormType.Table,
         target: PermissionType.AlaroUsers,
       },
     ] as PermissionUpdatableTable[],
