@@ -48,11 +48,11 @@ import { PageType, UseEntityType } from './model'
 import { ValidationObserver } from 'vee-validate'
 import formValidation from '../../../@core/comp-functions/forms/form-validation'
 import CardLoader from '../../../@core/components/card-loader/CardLoader.vue'
-import { convertCamelCase, transformFormData } from '../../../helpers'
+import { convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
 import { useBvModal } from '../../../helpers/bvModal'
 import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
 import { useRouter } from '../../../@core/utils/utils'
-import { BaseListConfig, IBaseListConfig } from '../../../components/templates/BaseList/model'
+import { BaseSectionConfig, IBaseSectionConfig } from '../../../components/templates/BaseList/model'
 import { permissionPrefix } from '@productConfig'
 
 export default defineComponent({
@@ -64,8 +64,8 @@ export default defineComponent({
 
   props: {
     config: {
-      type: Object as PropType<IBaseListConfig>,
-      default: () => new BaseListConfig({}),
+      type: Object as PropType<IBaseSectionConfig>,
+      default: () => new BaseSectionConfig({}),
     },
 
     pageType: {
@@ -95,10 +95,14 @@ export default defineComponent({
     const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Update`
 
     // Action names
-    const createActionName: string = 'baseStoreCore/createEntity'
-    const readActionName: string = 'baseStoreCore/readEntity'
-    const updateActionName: string = 'baseStoreCore/updateEntity'
-    const deleteActionName: string = 'baseStoreCore/deleteEntity'
+    const moduleName: string = props.config?.withCustomModuleName
+      ? props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
+      : 'baseStoreCore'
+
+    const createActionName: string = `${moduleName}/createEntity`
+    const readActionName: string = `${moduleName}/readEntity`
+    const updateActionName: string = `${moduleName}/updateEntity`
+    const deleteActionName: string = `${moduleName}/deleteEntity`
 
     // Permissions
     const permissionKey: string = `${permissionPrefix}-${convertCamelCase(entityName, '-')}`

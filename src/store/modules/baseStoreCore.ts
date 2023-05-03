@@ -8,6 +8,7 @@ import {
   IGamesSectionGamesListPayload,
 } from '../../@model/games'
 import { convertLowerCaseFirstSymbol } from '../../helpers'
+import { ApiTypeService } from '@productConfig'
 
 const transformNameToType = (type: string): string => {
   return [...type]
@@ -52,7 +53,7 @@ export default {
     ) {
       return new ListData<GamesSectionGamesItem>(
         await ApiService.request({
-          type: 'App.V2.' + transformNameToType(type) + '.Games.List',
+          type: ApiTypeService + transformNameToType(type) + '.Games.List',
           pagination: {
             pageNumber: data?.page || 1,
             perPage: data?.perPage,
@@ -73,7 +74,7 @@ export default {
       const { saveCountItem, listItemModel } = payload.options
       const fetchData = new ListData(
         await ApiService.request({
-          type: 'App.V2.' + transformNameToType(payload.type) + '.List',
+          type: ApiTypeService + transformNameToType(payload.type) + '.List',
           pagination: {
             pageNumber: payload.data?.page || 1,
             perPage: payload.data?.perPage || 10,
@@ -99,7 +100,7 @@ export default {
       { type, data }: { type: string; data: IRequestListPayload }
     ) {
       const response = await ApiService.request({
-        type: 'App.V2.' + transformNameToType(type) + '.List.Report',
+        type: ApiTypeService + transformNameToType(type) + '.List.Report',
         sort: data?.sort,
         pagination: {
           pageNumber: data?.page || 1,
@@ -116,7 +117,7 @@ export default {
 
     async readEntity({ rootGetters }, payload: { type: string; id: string }) {
       const { data } = await ApiService.request({
-        type: 'App.V2.' + transformNameToType(payload.type) + '.Read',
+        type: ApiTypeService + transformNameToType(payload.type) + '.Read',
         data: {
           id: payload.id,
           project: rootGetters.selectedProject?.alias,
@@ -128,7 +129,7 @@ export default {
 
     async fetchTypes({ rootGetters }, type: string) {
       return await ApiService.request({
-        type: 'App.V2.' + transformNameToType(type) + '.Types.List',
+        type: ApiTypeService + transformNameToType(type) + '.Types.List',
         data: {
           project: rootGetters.selectedProject?.alias,
         },
@@ -141,7 +142,7 @@ export default {
     ) {
       const { data } = await ApiService.request(
         {
-          type: 'App.V2.' + transformNameToType(payload.type) + '.Create',
+          type: ApiTypeService + transformNameToType(payload.type) + '.Create',
           data: {
             ...payload.data.form,
             id: payload.data.form?.id,
@@ -161,7 +162,7 @@ export default {
     ) {
       return await ApiService.request(
         {
-          type: 'App.V2.' + transformNameToType(payload.type) + '.Update',
+          type: ApiTypeService + transformNameToType(payload.type) + '.Update',
           data: {
             ...payload.data.form,
             id: payload.data.form?.id,
@@ -181,7 +182,7 @@ export default {
 
       return await ApiService.request(
         {
-          type: 'App.V2.' + transformNameToType(type) + '.Update.Multiple',
+          type: ApiTypeService + transformNameToType(type) + '.Update.Multiple',
           data: {
             project: rootGetters.selectedProject?.alias,
             [entityKey]: data,
@@ -194,7 +195,7 @@ export default {
     async deleteEntity({ rootGetters }, payload: { type: string; id: string; comment: string }) {
       return await ApiService.request(
         {
-          type: 'App.V2.' + transformNameToType(payload.type) + '.Delete',
+          type: ApiTypeService + transformNameToType(payload.type) + '.Delete',
           data: {
             id: payload.id,
             comment: payload.comment,
@@ -211,7 +212,7 @@ export default {
     ) {
       return await ApiService.request(
         {
-          type: 'App.V2.' + transformNameToType(type) + '.Delete.Multiple',
+          type: ApiTypeService + transformNameToType(type) + '.Delete.Multiple',
           data: {
             ids,
             project: rootGetters.selectedProject?.alias,
