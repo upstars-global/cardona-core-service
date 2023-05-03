@@ -95,7 +95,7 @@ import useAppConfig from '../../../../../@core/app-config/useAppConfig'
 import VerticalNavMenuItems from './components/vertical-nav-menu-items/VerticalNavMenuItems.vue'
 import useVerticalNavMenu from './useVerticalNavMenu'
 import ProjectSelect from './components/ProjectSelect'
-import { getters } from '../../../../../store'
+import store from '../../../../../store'
 import ProductsSelect from '../../../../../@core/layouts/layout-vertical/components/vertical-nav-menu/components/ProductsSelect'
 import router from '../../../../../router'
 import i18n from '../../../../../libs/i18n'
@@ -143,7 +143,7 @@ export default {
     const collapseTogglerIconFeather = computed(() =>
       collapseTogglerIcon.value === 'unpinned' ? 'CircleIcon' : 'DiscIcon'
     )
-    const isNeocore = computed(() => getters.isNeocore)
+    const isNeocore = computed(() => store.getters.isNeocore)
 
     const isCollapsedMenu = computed(
       () =>
@@ -163,7 +163,7 @@ export default {
       ]
     })
     const selectedProjectTitle = computed(() =>
-      isNeocore.value ? getters.selectedProject?.name : 'Alaro'
+      isNeocore.value ? store.getters.selectedProject?.name : 'Alaro'
     )
     const goBack = () => {
       window.history.length > 2 ? router.go(-1) : router.push('/')

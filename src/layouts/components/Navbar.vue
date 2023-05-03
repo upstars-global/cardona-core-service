@@ -74,7 +74,7 @@ import {
   BAvatar,
 } from 'bootstrap-vue'
 import DarkToggler from '../../@core/layouts/components/app-navbar/components/DarkToggler.vue'
-import { getters, dispatch } from '../../store'
+import store from '../../store'
 
 export default {
   name: 'AppNavbar',
@@ -98,16 +98,16 @@ export default {
 
   computed: {
     userName() {
-      return getters.userInfo?.userName || 'No name'
+      return store.getters.userInfo?.userName || 'No name'
     },
     canAllAdminSection() {
-      return getters.abilityCan('backoffice-users-control', 'view')
+      return store.getters.abilityCan('backoffice-users-control', 'view')
     },
   },
 
   methods: {
     onClickLogout() {
-      dispatch('authCore/clearAuth')
+      store.dispatch('authCore/clearAuth')
 
       this.$router.push({ name: 'Login' })
     },

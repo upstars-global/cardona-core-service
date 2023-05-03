@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { dispatch } from '../../../store'
+import store from '../../../store'
 import AllGamesCard from './AllGamesCard.vue'
 import EnabledGamesCard from './EnabledGamesCard.vue'
 import { GamesSectionGamesItem } from '../../../@model/games'
@@ -77,7 +77,7 @@ export default defineComponent({
 
     const onUpdateCategory = async (games: Array<GamesSectionGamesItem>) => {
       const id: string = props.id
-      await dispatch(`baseStoreCore/updateEntity`, {
+      await store.dispatch(`baseStoreCore/updateEntity`, {
         type: props.entityName,
         data: {
           form: {

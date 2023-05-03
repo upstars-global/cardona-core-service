@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { getters } from '../../../../store'
+import store from '../../../../store'
 import { ViewInfo } from '../../../../@model/view'
 
 const props = defineProps<{
@@ -8,7 +8,7 @@ const props = defineProps<{
 }>()
 
 const canUpdate = computed<boolean>(() =>
-  props.item.permission ? getters.abilityCan(props.item.permission, 'update') : true
+  props.item.permission ? store.getters.abilityCan(props.item.permission, 'update') : true
 )
 </script>
 

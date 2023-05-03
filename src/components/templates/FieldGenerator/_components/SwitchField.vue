@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { getters } from '../../../../store'
+import store from '../../../../store'
 import { FieldInfo } from '../../../../@model/field'
 
 type SwitchFieldProps = {
@@ -24,7 +24,7 @@ const modelValue = computed({
 })
 
 const canUpdate = computed<boolean>(() =>
-  props.field.permission ? getters.abilityCan(props.field.permission, 'update') : true
+  props.field.permission ? store.getters.abilityCan(props.field.permission, 'update') : true
 )
 </script>
 
