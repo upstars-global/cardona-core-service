@@ -8,7 +8,6 @@ export default {
       return userData && userData.extras ? userData.extras.eCommerceCartItemsCount : 0
     })(),
   },
-  getters: {},
   mutations: {
     UPDATE_CART_ITEMS_COUNT(state, count) {
       state.cartItemsCount = count

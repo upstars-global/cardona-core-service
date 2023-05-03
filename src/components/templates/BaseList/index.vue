@@ -445,7 +445,7 @@
 
 <script lang="ts">
 import { computed, onMounted, PropType, reactive, ref, watch } from 'vue'
-import store, { dispatch, getters } from '../../../store'
+import store from '../../../store'
 import { useBvModal } from '../../../helpers/bvModal'
 import { getStorage, setStorage, removeStorageItem } from '../../../helpers/storage'
 import { useRouter } from '../../../@core/utils/utils'
@@ -567,23 +567,23 @@ export default {
     const permissionKeySeo = `backoffice-${convertCamelCase(entityName, '-')}-seo`
     const permissionKeyReport = `backoffice-${convertCamelCase(entityName, '-')}-report`
 
-    const onePermission: boolean = getters.abilityCan(props.config?.onePermissionKey, 'view')
+    const onePermission: boolean = store.getters.abilityCan(props.config?.onePermissionKey, 'view')
 
     const canCreate: boolean = props.config?.onePermissionKey
       ? onePermission
-      : getters.abilityCan(permissionKey, 'create')
+      : store.getters.abilityCan(permissionKey, 'create')
     const canUpdate: boolean = props.config?.onePermissionKey
       ? onePermission
-      : getters.abilityCan(permissionKey, 'update')
+      : store.getters.abilityCan(permissionKey, 'update')
     const canUpdateSeo: boolean = props.config?.onePermissionKey
       ? onePermission
-      : getters.abilityCan(permissionKeySeo, 'update')
+      : store.getters.abilityCan(permissionKeySeo, 'update')
     const canRemove: boolean = props.config?.onePermissionKey
       ? onePermission
-      : getters.abilityCan(permissionKey, 'delete')
+      : store.getters.abilityCan(permissionKey, 'delete')
     const canExport: boolean = props.config?.onePermissionKey
       ? onePermission
-      : getters.abilityCan(permissionKeyReport, 'view')
+      : store.getters.abilityCan(permissionKeyReport, 'view')
 
     // Sidebar
     const isSidebarShown = ref(false)
@@ -629,7 +629,7 @@ export default {
     const isLoadingList = computed(() => {
       const entityUrl: string = convertCamelCase(entityName, '/')
 
-      return getters.isLoadingEndpoint([
+      return store.getters.isLoadingEndpoint([
         `${entityUrl}/list`,
         `${entityUrl}/update`,
         `${entityUrl}/delete`,
@@ -659,7 +659,7 @@ export default {
       const filter: object = setRequestFilters()
       const sort = sortData.sortBy ? [new ListSort(sortData)] : undefined
 
-      const { list, total } = await dispatch(fetchActionName, {
+      const { list, total } = await store.dispatch(fetchActionName, {
         type: entityName,
         data: {
           perPage: perPage.value,
@@ -691,7 +691,7 @@ export default {
     }
 
     const onClickToggleStatus = async ({ id, isActive }) => {
-      await dispatch(updateActionName, {
+      await store.dispatch(updateActionName, {
         type: entityName,
         data: { form: { id, isActive: !isActive } },
       })
@@ -700,7 +700,7 @@ export default {
     }
 
     const onUpdateItem = async (item) => {
-      const response = await dispatch(updateActionName, {
+      const response = await store.dispatch(updateActionName, {
         type: entityName,
         data: { form: item },
       })
@@ -724,7 +724,7 @@ export default {
 
       // TODO slice(0, -5) "Games"
       const type = isGameTable ? entityName.slice(0, -5) : entityName
-      await dispatch(updateActionName, {
+      await store.dispatch(updateActionName, {
         type,
         data,
       })
@@ -740,7 +740,7 @@ export default {
       const filter: object = setRequestFilters()
       const sort = sortData.sortBy ? [new ListSort(sortData)] : undefined
 
-      const report: string = await dispatch(fetchReportActionName, {
+      const report: string = await store.dispatch(fetchReportActionName, {
         type: entityName,
         data: {
           filter: {
@@ -859,7 +859,7 @@ export default {
         })
       )
 
-      await dispatch(multipleUpdateActionName, {
+      await store.dispatch(multipleUpdateActionName, {
         type: entityName,
         data,
       })
@@ -870,7 +870,7 @@ export default {
     const onClickDeleteMultiple = async () => {
       const ids: Array<string> = selectedItems.value.map(({ id }) => id)
 
-      await dispatch(multipleDeleteActionName, {
+      await store.dispatch(multipleDeleteActionName, {
         type: entityName,
         ids,
       })
@@ -915,7 +915,7 @@ export default {
         const id = localItems[e.oldIndex].id
         const position: number = localItems[e.newIndex].position!
 
-        await dispatch(updateActionName, {
+        await store.dispatch(updateActionName, {
           type: entityName,
           data: { form: { id, position } },
         })
@@ -938,7 +938,7 @@ export default {
     }
 
     const onClickModalOk = async (hide: Function) => {
-      await dispatch(deleteActionName, {
+      await store.dispatch(deleteActionName, {
         type: entityName,
         id: selectedItem.value.id,
         comment: commentToRemove.value,

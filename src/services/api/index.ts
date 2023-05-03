@@ -7,7 +7,7 @@ import {
   IValidationError,
   IApiServiceRequestPayload,
 } from './config'
-import { getters, dispatch } from '../../store'
+import store from '../../store'
 import { v4 as uuidv4 } from 'uuid'
 import useToastService from '../../helpers/toasts'
 import router from '../../router'
@@ -38,7 +38,7 @@ class ApiService {
     const url: string = convertedType.join('/')
 
     try {
-      if (withLoader) dispatch('loaderOn', url)
+      if (withLoader) store.dispatch('loaderOn', url)
 
       const axiosInstance: AxiosInstance = newAxiosInstance ? axios.create() : axios
       const headers: { 'Content-Type': string } = {
@@ -69,8 +69,8 @@ class ApiService {
 
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', 'TOKEN_INVALID']
 
-      if (getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type)) {
-        dispatch('authCore/clearAuth')
+      if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type)) {
+        store.dispatch('authCore/clearAuth')
 
         if (!isLoginPage) router.push({ name: 'Login' })
       }
@@ -82,7 +82,7 @@ class ApiService {
 
       return Promise.reject(error)
     } finally {
-      dispatch('loaderOff', url)
+      store.dispatch('loaderOff', url)
     }
   }
 

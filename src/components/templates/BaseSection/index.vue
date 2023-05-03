@@ -43,7 +43,7 @@
 
 <script lang="ts">
 import { getCurrentInstance, PropType, ref, computed, onBeforeMount, defineComponent } from 'vue'
-import { getters, dispatch } from '../../../store'
+import store from '../../../store'
 import { PageType, UseEntityType } from './model'
 import { ValidationObserver } from 'vee-validate'
 import formValidation from '../../../@core/comp-functions/forms/form-validation'
@@ -103,28 +103,28 @@ export default defineComponent({
     const permissionKey: string = `backoffice-${convertCamelCase(entityName, '-')}`
     const permissionKeySeo: string = `backoffice-${convertCamelCase(entityName, '-')}-seo`
 
-    const onePermission: boolean = getters.abilityCan(props.config?.onePermissionKey, 'view')
+    const onePermission: boolean = store.getters.abilityCan(props.config?.onePermissionKey, 'view')
 
     const canUpdate: boolean = props.config?.onePermissionKey
       ? onePermission
-      : getters.abilityCan(permissionKey, 'update')
+      : store.getters.abilityCan(permissionKey, 'update')
     const canRemove: boolean = props.config?.onePermissionKey
       ? onePermission
-      : getters.abilityCan(permissionKey, 'delete')
+      : store.getters.abilityCan(permissionKey, 'delete')
     const canViewSeo: boolean = props.config?.onePermissionKey
       ? onePermission
-      : getters.abilityCan(permissionKeySeo, 'view')
+      : store.getters.abilityCan(permissionKeySeo, 'view')
     const canCreateSeo: boolean = props.config?.onePermissionKey
       ? onePermission
-      : getters.abilityCan(permissionKeySeo, 'create')
+      : store.getters.abilityCan(permissionKeySeo, 'create')
     const canUpdateSeo: boolean = props.config?.onePermissionKey
       ? onePermission
-      : getters.abilityCan(permissionKeySeo, 'update')
+      : store.getters.abilityCan(permissionKeySeo, 'update')
 
     const isLoadingPage = computed(() => {
       const entityUrl = convertCamelCase(entityName, '/')
 
-      return getters.isLoadingEndpoint([
+      return store.getters.isLoadingEndpoint([
         `${entityUrl}/create`,
         `${entityUrl}/read`,
         `${entityUrl}/update`,
@@ -136,7 +136,10 @@ export default defineComponent({
 
     if (isUpdatePage && entityId) {
       onBeforeMount(async () => {
-        const receivedEntity = await dispatch(readActionName, { type: entityName, id: entityId })
+        const receivedEntity = await store.dispatch(readActionName, {
+          type: entityName,
+          id: entityId,
+        })
 
         form.value = new EntityFormClass(receivedEntity)
       })
@@ -157,7 +160,7 @@ export default defineComponent({
       const actionName: string = isCreatePage ? createActionName : updateActionName
       const transformedForm = transformFormData(form.value)
 
-      const data = await dispatch(actionName, {
+      const data = await store.dispatch(actionName, {
         type: entityName,
         data: {
           form: transformedForm,
@@ -182,7 +185,7 @@ export default defineComponent({
 
       if (!isRemoveConfirmed) return
 
-      await dispatch(deleteActionName, { type: entityName, id })
+      await store.dispatch(deleteActionName, { type: entityName, id })
 
       await router.push({ name: ListPageName })
     }

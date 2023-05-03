@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { getters } from '../store'
+import store from '../store'
 import { CDropdownItems } from '../@model/cDropdownButton'
 import { BVariant, BVariants } from '../@model/bootstrap'
 
@@ -25,7 +25,7 @@ const props = withDefaults(
 )
 
 const checkCanView = (permission: string): boolean =>
-  permission ? getters.abilityCan(permission, 'view') : true
+  permission ? store.getters.abilityCan(permission, 'view') : true
 </script>
 
 <template>

@@ -46,19 +46,19 @@
 
 <script>
 import { computed } from 'vue'
-import { dispatch, getters } from '../../../../../../store'
+import store from '../../../../../../store'
 
 export default {
   name: 'ProjectSelect',
   props: {},
   setup() {
     const selectProject = computed({
-      get: () => getters.selectedProject,
+      get: () => store.getters.selectedProject,
       set: (val) => {
-        dispatch('setSelectedProject', val)
+        store.dispatch('setSelectedProject', val)
       },
     })
-    const projects = computed(() => getters.userInfo.projects)
+    const projects = computed(() => store.getters.userInfo.projects)
     return {
       selectProject,
       projects,
