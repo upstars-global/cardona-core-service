@@ -351,6 +351,12 @@ const bettingHistoryIsBonus = new FieldInfo<boolean>({
   options: stateOptions,
 })
 
+const bettingDateCreative = new FieldInfo<string>({
+  type: FieldType.DateRange,
+  key: FilterType.BettingDateCreative,
+  label: String(i18n.t('filters.bettingDateCreative')),
+})
+
 const gameId = new FieldInfo<string>({
   type: FieldType.Text,
   key: FilterType.GameId,
@@ -420,6 +426,7 @@ export default {
   bettingHistoryBonusType,
   bettingHistoryType,
   bettingHistoryIsBonus,
+  bettingDateCreative,
   gameId,
 
   //Segments

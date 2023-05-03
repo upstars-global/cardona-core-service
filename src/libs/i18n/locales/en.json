@@ -1160,7 +1160,8 @@
     "winBackSumRange": "Sum at the time of wagering",
     "realSumRange": "Switched to real balance",
     "wagerLimitRange": "Win Limit",
-    "bettingHistoryIsBonus": "Bonus"
+    "bettingHistoryIsBonus": "Bonus",
+    "bettingDateCreative": "Bet date"
   },
   "modal": {
     "groupsErrorDelete": {
