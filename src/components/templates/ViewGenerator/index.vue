@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { getters } from '../../../store'
+import store from '../../../store'
 import { ViewInfo, ViewJustifyContent } from '../../../@model/view'
 import TextView from './_components/TextView.vue'
 import BadgesView from './_components/BadgesView.vue'
@@ -85,7 +85,7 @@ export default defineComponent({
 
   setup(props) {
     const canView = computed<boolean>(() =>
-      props.value.permission ? getters.abilityCan(props.value.permission, 'view') : true
+      props.value.permission ? store.getters.abilityCan(props.value.permission, 'view') : true
     )
     const justifyClass = computed(() => `justify-content-${props.justifyContent}`)
     const valueColsCount = computed(() => 12 - props.cols)

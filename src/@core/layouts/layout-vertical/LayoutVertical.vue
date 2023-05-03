@@ -84,7 +84,6 @@ import LayoutContentRendererLeftDetached from '../../../@core/layouts/components
 import VerticalNavMenu from './components/vertical-nav-menu/VerticalNavMenu.vue'
 import useVerticalLayout from './useVerticalLayout'
 import mixinVerticalLayout from './mixinVerticalLayout'
-import { getters, dispatch } from '../../../store'
 
 export default {
   components: {

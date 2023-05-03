@@ -53,7 +53,7 @@ import {
   GamesSectionGamesItem,
   IGamesSectionGamesFilters,
 } from '../../../@model/games'
-import { dispatch, getters } from '../../../store'
+import store from '../../../store'
 import { useModal } from '../../../helpers/bvModal'
 
 export default defineComponent({
@@ -130,10 +130,10 @@ export default defineComponent({
 
       if (!isConfirmed) return
 
-      const perPage: number = getters['baseStoreCore/totalItem']
-      const filter: IGamesSectionGamesFilters = getters['baseStoreCore/appliedFilters']
+      const perPage: number = store.getters['baseStoreCore/totalItem']
+      const filter: IGamesSectionGamesFilters = store.getters['baseStoreCore/appliedFilters']
 
-      const { list } = await dispatch(`baseStoreCore/fetchGamesList`, {
+      const { list } = await store.dispatch(`baseStoreCore/fetchGamesList`, {
         type: props.entityName,
         data: {
           perPage,
