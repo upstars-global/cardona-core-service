@@ -1,6 +1,6 @@
 import { Location } from 'vue-router'
 import { TranslateResult } from 'vue-i18n'
-import { PermissionType } from './permission'
+import { PermissionType } from './enums/permissions'
 
 export enum ViewType {
   Text = 'text',

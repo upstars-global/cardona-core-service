@@ -73,11 +73,6 @@ export class PermissionUpdatableTableList {
   }
 }
 
-export enum PermissionFormType {
-  Switch = 'switch',
-  Table = 'table',
-}
-
 export class AllPermission {
   private _allPermission = {
     ...permissions,

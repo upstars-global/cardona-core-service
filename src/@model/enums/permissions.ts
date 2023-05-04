@@ -81,3 +81,7 @@ export enum PermissionType {
   AlaroReportsBonuses = 'alaro-reports-bonuses',
   AlaroReportsBonusesReports = 'alaro-reports-bonuses-report',
 }
+export enum PermissionFormType {
+  Switch = 'switch',
+  Table = 'table',
+}
