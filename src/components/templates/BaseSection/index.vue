@@ -134,7 +134,7 @@ export default defineComponent({
 
     const form = ref(new EntityFormClass())
 
-    if (isUpdatePage && entityId) {
+    if ((isUpdatePage || isCreatePage) && entityId) {
       onBeforeMount(async () => {
         const receivedEntity = await store.dispatch(readActionName, {
           type: entityName,
