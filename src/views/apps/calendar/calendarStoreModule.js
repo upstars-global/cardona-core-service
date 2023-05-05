@@ -27,7 +27,6 @@ export default {
     ],
     selectedCalendars: ['Personal', 'Business', 'Family', 'Holiday', 'ETC'],
   },
-  getters: {},
   mutations: {
     SET_SELECTED_EVENTS(state, val) {
       state.selectedCalendars = val

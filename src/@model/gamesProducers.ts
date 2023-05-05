@@ -2,7 +2,7 @@ import { SeoData } from '../@model/seo'
 import { FieldInfo, FieldType } from '../@model/field'
 import i18n from '../libs/i18n'
 import { IRequestListPayload, OptionsItem } from '../@model/index'
-import { getters } from '../store'
+import store from '../store'
 import { FieldTranslationsData } from '../@model/translations'
 import { IGameItemInfo } from '../@model/staticPages'
 
@@ -68,7 +68,7 @@ export class GamesProducersForm {
       type: FieldType.CheckGroup,
       key: 'currencies',
       value: data?.currencies || [],
-      options: getters['appConfigCore/allCurrencies'].map(
+      options: store.getters['appConfigCore/allCurrencies'].map(
         (item) => <OptionsItem>{ id: item, name: item }
       ),
       label: String(i18n.t('common.producers.currencies.label')),

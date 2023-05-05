@@ -43,6 +43,4 @@ const store = new Vuex.Store({
   strict: Boolean(process.env.DEV),
 })
 
-export const { state, getters, commit, dispatch } = store
-
 export default store

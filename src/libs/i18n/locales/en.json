@@ -309,6 +309,133 @@
     "rejectAll": "Reject all",
     "hide": "Hide"
   },
+  "sms": {
+    "smsMessages": "SMS messages",
+    "sendSMS": "Send SMS",
+    "favoritePhone": "Favorite Phone",
+    "cancel": "Cancel",
+    "send": "Send",
+    "history": "History",
+    "phone": "Phone",
+    "creator": "Creator",
+    "text": "Text",
+    "messageText": "Message text",
+    "message": "message"
+  },
+  "uploadImg": {
+    "label": "Image",
+    "textBtn": "Select",
+    "selectImage": "Select Image",
+    "delete": "Delete",
+    "dragText": "Drag file here or upload from device",
+    "maxSize": "Max size 4 MB",
+    "downloadNew": "Download new",
+    "downloadDevice": "Download from device",
+    "dragTextDrop": "Drag file here",
+    "chooseFromDownloaded": "Choose From Downloaded",
+    "tableCol1Name": "URL",
+    "tableCol2Name": "Image",
+    "nothingInFolder": "There is nothing in this folder",
+    "ChooseDifferentFolder": "Choose a different folder or upload a new image",
+    "loadError": "Load error",
+    "modalLabel": {
+      "project": "Are you sure you want to remove the project icon?",
+      "banners": "Are you sure you want to delete the image?"
+    },
+    "modalTitle": {
+      "project": "Delete icon",
+      "banners": "Image Removal"
+    }
+  },
+  "filters": {
+    "gameId": "Game ID",
+    "entryId": "Entity ID",
+    "paymentSystem": "Payment system",
+    "giftId": "Gift Id",
+    "giftName": "Gift Name",
+    "gameType": "Game type",
+    "gamesCategories": "Game category",
+    "gamesProducers": "Game producer",
+    "dateRangeCreative": "Creation date range",
+    "dateRangeUpdate": "Update date range",
+    "dateRangeProcessing": "Processing date range",
+    "dateRangeIssued": "Issued date range",
+    "dateRangeExpired": "Expired date range",
+    "dateRangeReceive": "Receive date range",
+    "dateRangeActivated": "Activated date range",
+    "dateRangeUsed": "Used date range",
+    "runner": "Runner",
+    "gameForBonuses": "Game for bonuses",
+    "availableWithBonuses": "Availability with bonuses",
+    "hidden": "Is hidden",
+    "initialSumRange": "Initial bonus amount",
+    "winBackSumRange": "Sum at the time of wagering",
+    "realSumRange": "Switched to real balance",
+    "wagerLimitRange": "Win Limit",
+    "bettingHistoryIsBonus": "Bonus",
+    "bettingDateCreative": "Bet date"
+  },
+  "modal": {
+    "groupsErrorDelete": {
+      "title": "Can't delete group",
+      "description": "Remove users from the group and try again"
+    },
+    "addAllGames": {
+      "title": "Adding games",
+      "description": "Are you sure you want to add all games?"
+    },
+    "deleteGame": {
+      "title": "Deleting a game",
+      "description": "Are you sure you want to delete this game?"
+    },
+    "deleteAllGames": {
+      "title": "Deleting games",
+      "description": "Are you sure you want to delete all games?"
+    },
+    "removeGamesCategories": {
+      "title": "Remove category",
+      "description": "Are you sure you want to remove the category?"
+    },
+    "removeGamesProducers": {
+      "title": "Remove producer",
+      "description": "Are you sure you want to remove the producer?"
+    },
+    "removeStaticPages": {
+      "title": "Delete Static Page",
+      "description": "Are you sure you want to delete this static page?"
+    },
+    "removeGames": {
+      "title": "Remove game",
+      "description": "Are you sure you want to remove the game?"
+    },
+    "removeUsers": {
+      "title": "Remove administrator",
+      "description": "Are you sure you want to remove the administrator?"
+    },
+    "removeGroups": {
+      "title": "Remove Group",
+      "description": "Are you sure you want to remove the group?"
+    },
+    "removeWebNotification": {
+      "title": "Remove notification",
+      "description": "Are you sure you want to remove the notification?"
+    },
+    "removeGiftsPlayers": {
+      "title": "Remove gift",
+      "description": "Are you sure you want to remove the gift?"
+    },
+    "removeBanners": {
+      "title": "Remove banner",
+      "description": "Are you sure you want to remove this banner?"
+    },
+    "removeProjects": {
+      "title": "Remove project",
+      "description": "Are you sure you want to remove the project?"
+    },
+    "changePassword": {
+      "title": "Set a new password"
+    }
+  },
   "activityStatus" : {
     "he": {
       "active": "Active",

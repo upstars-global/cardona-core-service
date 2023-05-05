@@ -76,7 +76,7 @@ import ListView from '../UploadImage/ListView.vue'
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import usePagination from '../../use/pagination'
 import i18n from '../../libs/i18n'
-import { dispatch } from '../../store'
+import store from '../../store'
 
 export default defineComponent({
   name: 'FileGallery',
@@ -150,7 +150,7 @@ export default defineComponent({
       if (isLoad.value) return
       isLoad.value = true
       try {
-        const { data, pagination } = await dispatch('compostelaCore/getStructureList', {
+        const { data, pagination } = await store.dispatch('compostelaCore/getStructureList', {
           path: url.value,
           pageNumber: currentPage.value,
           perPage: perPage.value,
@@ -230,7 +230,7 @@ export default defineComponent({
       } else {
         const nameFileArr = path?.split('/')
         const nameFile = nameFileArr[nameFileArr.length - 1]
-        const { publicPath } = await dispatch('compostelaCore/uploadFile', {
+        const { publicPath } = await store.dispatch('compostelaCore/uploadFile', {
           path: props.path + '/' + nameFile,
           replace: path,
         })
