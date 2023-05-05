@@ -1061,6 +1061,7 @@
     "addAll": "Add all ({total})",
     "addToCategory": "Add to category",
     "edit": "Edit",
+    "makeCopy": "Make a copy",
     "save": "Save",
     "remove": "Remove",
     "delete": "Delete",

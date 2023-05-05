@@ -334,6 +334,14 @@
               </span>
             </b-dropdown-item>
 
+            <b-dropdown-item :to="{ name: CreatePageName, params: { id: item.id } }">
+              <feather-icon icon="CopyIcon" size="16" />
+
+              <span class="align-middle ml-50">
+                {{ $t('action.makeCopy') }}
+              </span>
+            </b-dropdown-item>
+
             <b-dropdown-item v-if="canRemove" @click="onClickRemove(item)">
               <feather-icon icon="Trash2Icon" size="16" />
 
