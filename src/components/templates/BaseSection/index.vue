@@ -141,6 +141,10 @@ export default defineComponent({
           id: entityId,
         })
 
+        if (isCreatePage) {
+          receivedEntity.id = null
+        }
+
         form.value = new EntityFormClass(receivedEntity)
       })
     }
