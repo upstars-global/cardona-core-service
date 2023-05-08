@@ -70,7 +70,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
 import TextEditorWysiwyg from '../../../components/TextEditorWysiwyg/index.vue'
-import { getters } from '../../../store'
+import store from '../../../store'
 import { SeoForm } from '../../../@model/seo'
 import { FieldTranslationsData } from '../../../@model/translations'
 import CheckField from '../FieldGenerator/_components/CheckField.vue'
@@ -100,11 +100,11 @@ export default defineComponent({
 
   setup(props) {
     const selectEditeInput = ref('')
-    const selectedProject = computed(() => getters.selectedProject)
+    const selectedProject = computed(() => store.getters.selectedProject)
     const mainLocale = computed<string>(() => selectedProject.value?.mainLocale || 'ru')
     const locales = computed(() => selectedProject.value?.locales || [])
-    const allLocales = computed(() => getters['localeCore/allLocalesKeys'])
-    const allCurrencies = computed(() => getters['appConfigCore/allCurrencies'])
+    const allLocales = computed(() => store.getters['localeCore/allLocalesKeys'])
+    const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
 
     const getDefaultFieldTranslations = (objForm) => {
       const _defaultFieldTranslations = {}

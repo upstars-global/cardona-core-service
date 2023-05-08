@@ -351,10 +351,25 @@ const bettingHistoryIsBonus = new FieldInfo<boolean>({
   options: stateOptions,
 })
 
+const bettingDateCreative = new FieldInfo<string>({
+  type: FieldType.DateRange,
+  key: FilterType.BettingDateCreative,
+  label: String(i18n.t('filters.bettingDateCreative')),
+})
+
 const gameId = new FieldInfo<string>({
   type: FieldType.Text,
   key: FilterType.GameId,
   label: String(i18n.t('filters.gameId')),
+})
+
+//Segments
+const segments = new FieldInfo<OptionsItem>({
+  type: FieldType.MultiSelect,
+  key: FilterType.Segments,
+  label: i18n.t('common.segments') as string,
+  placeholder: i18n.t('common.segments') as string,
+  fetchOptionsActionName: 'segments/fetchList',
 })
 
 export default {
@@ -411,5 +426,9 @@ export default {
   bettingHistoryBonusType,
   bettingHistoryType,
   bettingHistoryIsBonus,
+  bettingDateCreative,
   gameId,
+
+  //Segments
+  segments,
 }

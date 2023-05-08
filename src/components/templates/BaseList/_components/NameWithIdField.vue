@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { getters } from '../../../../store'
+import store from '../../../../store'
 import { Location } from 'vue-router'
 
 export default defineComponent({
@@ -43,7 +43,7 @@ export default defineComponent({
 
   setup(props) {
     const isYou = computed(() => {
-      return props.isShowYou && props.item.id.toString() === getters.userInfo.id.toString()
+      return props.isShowYou && props.item.id.toString() === store.getters.userInfo.id.toString()
     })
     const isExistsRoute = computed(() => {
       const { name }: Location = props.getUpdateRoute(props.item)

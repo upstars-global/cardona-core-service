@@ -28,6 +28,9 @@
       ],
       "@filterConfig": [
         "./src/@model/filterConfig"
+      ],
+      "@permissions": [
+        "./src/configs/permissions"
       ]
     },
     "lib": [

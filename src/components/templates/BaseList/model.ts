@@ -148,6 +148,23 @@ export class BaseListConfig implements IBaseListConfig {
   }
 }
 
+export interface IBaseSectionConfig {
+  readonly onePermissionKey?: string
+  readonly withCustomModuleName?: boolean
+  readonly customModuleName?: string
+}
+
+export class BaseSectionConfig implements IBaseSectionConfig {
+  readonly onePermissionKey?: string
+  readonly withCustomModuleName?: boolean
+  readonly customModuleName?: string
+  constructor(data: IBaseSectionConfig) {
+    this.onePermissionKey = data?.onePermissionKey
+    this.withCustomModuleName = data?.withCustomModuleName
+    this.customModuleName = data?.customModuleName
+  }
+}
+
 // Export
 export enum ExportFormat {
   JSON = 'json',

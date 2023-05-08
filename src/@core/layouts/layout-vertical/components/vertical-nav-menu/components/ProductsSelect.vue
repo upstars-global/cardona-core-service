@@ -38,7 +38,7 @@
 
 <script>
 import { computed } from 'vue'
-import { getters } from '../../../../../../store'
+import store from '../../../../../../store'
 import { productsName } from '../../../../../../configs/productsName'
 
 export default {
@@ -51,7 +51,7 @@ export default {
   },
   setup(props) {
     const selectedProduct = computed({
-      get: () => getters.selectedProduct,
+      get: () => store.getters.selectedProduct,
       set: (val) => {
         const url =
           val.name === productsName.alaro
@@ -61,7 +61,7 @@ export default {
         window.location.replace(url)
       },
     })
-    const products = computed(() => getters.userInfo.products)
+    const products = computed(() => store.getters.userInfo.products)
 
     const productNameSelected = computed(() =>
       props.isCollapsedMenu ? selectedProduct.value?.name : selectedProduct.value?.name.slice(0, 2)

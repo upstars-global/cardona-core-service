@@ -21,7 +21,6 @@ export default {
       },
     },
   },
-  getters: {},
   mutations: {
     TOGGLE_RTL(state) {
       state.layout.isRTL = !state.layout.isRTL

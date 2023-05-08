@@ -37,6 +37,7 @@ export enum FilterType {
   BettingHistoryType = 'bettingHistoryType',
   BettingHistoryEventType = 'bettingHistoryEventType',
   BettingHistoryBonusType = 'bettingHistoryBonusType',
+  BettingDateCreative = 'bettingDateCreative',
   GameId = 'gameId',
   BonusType = 'bonusType',
   GiftsType = 'giftsType',
@@ -47,6 +48,7 @@ export enum FilterType {
   DateRangeUsed = 'dateRangeUsed',
   BalancesReasons = 'balancesReasons',
   TagNames = 'tagNames',
+  Segments = 'segments',
 }
 
 export class FilterID {
