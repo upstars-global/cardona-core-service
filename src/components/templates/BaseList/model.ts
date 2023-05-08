@@ -57,6 +57,7 @@ export interface IBaseListConfig {
   readonly onePermissionKey?: string
   readonly withRemoveComment?: boolean
   readonly withRemoveModal?: boolean
+  readonly createFromCopy?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -87,6 +88,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly onePermissionKey?: string
   readonly withRemoveComment?: boolean
   readonly withRemoveModal?: boolean
+  readonly createFromCopy?: boolean
 
   constructor({
     withSearch,
@@ -116,6 +118,7 @@ export class BaseListConfig implements IBaseListConfig {
     onePermissionKey,
     withRemoveComment,
     withRemoveModal,
+    createFromCopy,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -144,6 +147,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.onePermissionKey = onePermissionKey
     this.withRemoveComment = withRemoveComment
     this.withRemoveModal = withRemoveModal
+    this.createFromCopy = createFromCopy
   }
 }
 
