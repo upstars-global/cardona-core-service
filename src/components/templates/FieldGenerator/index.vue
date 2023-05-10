@@ -74,6 +74,7 @@ import SwitchWithStateField from './_components/SwitchWithStateField.vue'
 import SumRangeField from './_components/SumRangeField.vue'
 import PhoneField from './_components/PhoneField.vue'
 import PasswordField from './_components/PasswordField.vue'
+import RatesField from './_components/RatesField.vue'
 
 export default defineComponent({
   name: 'FieldGenerator',
@@ -100,6 +101,7 @@ export default defineComponent({
     SwitchWithStateField,
     SumRangeField,
     PhoneField,
+    RatesField,
   },
 
   props: {
