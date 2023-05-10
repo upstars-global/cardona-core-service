@@ -1,27 +1,24 @@
 <template>
   <div v-if="allCurrencies.isNotEmpty">
-    <div class="font-small-4 font-weight-bolder mb-1">
-      {{ field.label }}
-    </div>
-
-    <div class="row align-items-center flex-wrap">
-      <b-input-group
-        v-for="currency in allCurrencies"
-        :key="currency"
-        class="input-group-merge m-1"
-        :class="{ error: errors.isNotEmpty }"
-      >
-        <b-form-input
-          :value="value[currency]"
-          :placeholder="currency"
-          :state="errors.isNotEmpty ? false : null"
-          :type="inputType"
-          :disabled="disabled"
-          autocomplete="off"
-          @input="(val) => inputForm('currency', val)"
-        />
-      </b-input-group>
-    </div>
+    <b-row class="mt-2 flex-wrap">
+      <b-col v-for="currency in allCurrencies" :key="currency" md="2" class="p-1">
+        <b-input-group
+          class="input-group-merge m-1"
+          :class="{ error: errors.isNotEmpty }"
+          :label="currency"
+        >
+          <b-form-input
+            :value="value[currency]"
+            :placeholder="currency"
+            :state="errors.isNotEmpty ? false : null"
+            :type="inputType"
+            :disabled="disabled"
+            autocomplete="off"
+            @input="(val) => inputForm('currency', val)"
+          />
+        </b-input-group>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
