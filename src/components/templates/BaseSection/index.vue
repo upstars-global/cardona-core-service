@@ -139,12 +139,16 @@ export default defineComponent({
 
     const form = ref(new EntityFormClass())
 
-    if (isUpdatePage && entityId) {
+    if (entityId) {
       onBeforeMount(async () => {
         const receivedEntity = await store.dispatch(readActionName, {
           type: entityName,
           id: entityId,
         })
+
+        if (isCreatePage) {
+          receivedEntity.id = null
+        }
 
         form.value = new EntityFormClass(receivedEntity)
       })
