@@ -79,6 +79,14 @@ export default defineComponent({
       return selectedCountriesPlaceholders[countriesRadioModel.value]
     })
 
+      const hasCountryCode = (codeList: string[], countryCode: string): boolean => {
+        return codeList.some((code) => {
+            const [country] = code.split('-')
+
+            return country === countryCode
+        })
+      }
+
     onMounted(async () => {
       regions.value = await store.dispatch('regions/fetchRegionList')
 
@@ -90,7 +98,11 @@ export default defineComponent({
         if (formRestrictedCountries.length > regions.value.length / 2) {
           countriesRadioModel.value = 'allow'
           selectedCountries.value = regions.value.filter(
-            ({ code }: RegionInfo) => !props.value.includes(code)
+            ({ code }: RegionInfo) => {
+                const [country, region] = code.split('-')
+
+                return region ? !props.value.includes(code) : !hasCountryCode(props.value, country)
+            }
           )
         } else {
           countriesRadioModel.value = 'ban'
@@ -110,7 +122,7 @@ export default defineComponent({
     )
 
     watch([selectedCountries, countriesRadioModel], () => {
-      const bannedCountries: Array<string> = selectedCountries.value.map(
+      const bannedCountries = selectedCountries.value.map(
         ({ code }: RegionInfo) => code
       )
 
@@ -120,11 +132,11 @@ export default defineComponent({
         const allowedCountries: Array<string> = regions.value
           .map(({ code }: RegionInfo) => code)
           .filter((code: string) => {
-            const [country, region]: Array<string> = code.split('-')
+            const [country, region] = code.split('-')
 
             return region
               ? !bannedCountries.includes(country) && !bannedCountries.includes(code)
-              : !bannedCountries.some((bannedCode: string) => bannedCode.includes(country))
+              : !hasCountryCode(bannedCountries, country)
           })
 
         emit('input', allowedCountries)
