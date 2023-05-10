@@ -25,6 +25,9 @@
       ],
       "@productConfig": [
         "./src/configs/productConfig"
+      ],
+      "@permissions": [
+        "./src/configs/permissions"
       ]
     },
     "lib": [

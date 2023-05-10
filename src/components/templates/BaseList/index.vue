@@ -334,6 +334,17 @@
               </span>
             </b-dropdown-item>
 
+            <b-dropdown-item
+              v-if="config.createFromCopy"
+              :to="{ name: CreatePageName, params: { id: item.id } }"
+            >
+              <feather-icon icon="CopyIcon" size="16" />
+
+              <span class="align-middle ml-50">
+                {{ $t('action.makeCopy') }}
+              </span>
+            </b-dropdown-item>
+
             <b-dropdown-item v-if="canRemove" @click="onClickRemove(item)">
               <feather-icon icon="Trash2Icon" size="16" />
 
@@ -486,6 +497,7 @@ import { IListSortData, ListSort } from '../../../@model'
 import CTable from '../../CTable/index.vue'
 import { useFilters } from '../../FiltersBlock/useFilters'
 import FiltersBlock from '../../FiltersBlock/index.vue'
+import { permissionPrefix } from '@productConfig'
 
 export default {
   name: 'BaseList',
@@ -563,9 +575,9 @@ export default {
     const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
 
     // Permissions
-    const permissionKey = `backoffice-${convertCamelCase(entityName, '-')}`
-    const permissionKeySeo = `backoffice-${convertCamelCase(entityName, '-')}-seo`
-    const permissionKeyReport = `backoffice-${convertCamelCase(entityName, '-')}-report`
+    const permissionKey = `${permissionPrefix}-${convertCamelCase(entityName, '-')}`
+    const permissionKeySeo = `${permissionPrefix}-${convertCamelCase(entityName, '-')}-seo`
+    const permissionKeyReport = `${permissionPrefix}-${convertCamelCase(entityName, '-')}-report`
 
     const onePermission: boolean = store.getters.abilityCan(props.config?.onePermissionKey, 'view')
 
