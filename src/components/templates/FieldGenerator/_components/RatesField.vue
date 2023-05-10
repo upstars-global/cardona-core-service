@@ -1,25 +1,41 @@
 <template>
-  <b-form-tags
-    v-model="modelValue"
-    separator=" "
-    :placeholder="field.placeholder"
-    :disabled="disabled"
-    :state="errors.isNotEmpty ? false : null"
-    class="tags-field"
-    :duplicate-tag-text="$t('component.tags.duplicateTag')"
-  />
+  <div v-if="allCurrencies.isNotEmpty">
+    <div class="font-small-4 font-weight-bolder mb-1">
+      {{ field.label }}
+    </div>
+
+    <div class="row align-items-center flex-wrap">
+      <b-input-group
+        v-for="currency in allCurrencies"
+        :key="currency"
+        class="input-group-merge m-1"
+        :class="{ error: errors.isNotEmpty }"
+      >
+        <b-form-input
+          :value="value[currency]"
+          :placeholder="currency"
+          :state="errors.isNotEmpty ? false : null"
+          :type="inputType"
+          :disabled="disabled"
+          autocomplete="off"
+          @input="(val) => inputForm('currency', val)"
+        />
+      </b-input-group>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, PropType } from 'vue'
+import { computed, PropType, ref } from 'vue'
 import { FieldInfo } from '../../../../@model/field'
+import store from '../../../../store'
 
-export default defineComponent({
-  name: 'TagsField',
+export default {
+  name: 'RatesField',
   props: {
     value: {
-      type: Array as PropType<Array<string>>,
-      default: () => [],
+      type: [String, Number],
+      default: '',
     },
 
     field: {
@@ -39,30 +55,22 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
-    const modelValue = computed({
-      get: () => props.value,
-      set: (value) => emit('input', value),
-    })
+    const inputType: string = 'text'
+    const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
 
-    return { modelValue }
+    const inputForm = (name, val) => {
+      emit('input', {
+        ...props.value,
+        [name]: val,
+      })
+    }
+
+    return {
+      inputType,
+      allCurrencies,
+
+      inputForm,
+    }
   },
-})
-</script>
-
-<style lang="scss" scoped>
-@import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
-@import '../../../../assets/scss/style.scss';
-
-.tags-field::v-deep {
-  .b-form-tag {
-    background-color: $bg-light-purple;
-    color: $purple;
-    font-weight: $font-weight-bold;
-    font-size: 0.9rem;
-  }
-
-  .b-form-tags-button {
-    display: none;
-  }
 }
-</style>
+</script>
