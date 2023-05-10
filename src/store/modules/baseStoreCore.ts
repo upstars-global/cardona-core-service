@@ -8,6 +8,7 @@ import {
   IGamesSectionGamesListPayload,
 } from '../../@model/games'
 import { convertLowerCaseFirstSymbol } from '../../helpers'
+import { ApiTypePrefix } from '@productConfig'
 
 const transformNameToType = (type: string): string => {
   return [...type]
@@ -52,7 +53,7 @@ export default {
     ) {
       return new ListData<GamesSectionGamesItem>(
         await ApiService.request({
-          type: 'App.V2.' + transformNameToType(type) + '.Games.List',
+          type: ApiTypePrefix + transformNameToType(type) + '.Games.List',
           pagination: {
             pageNumber: data?.page || 1,
             perPage: data?.perPage,
@@ -60,7 +61,7 @@ export default {
           sort: data?.sort,
           filter: {
             ...data?.filter,
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
           },
         })
       )
@@ -73,7 +74,7 @@ export default {
       const { saveCountItem, listItemModel } = payload.options
       const fetchData = new ListData(
         await ApiService.request({
-          type: 'App.V2.' + transformNameToType(payload.type) + '.List',
+          type: ApiTypePrefix + transformNameToType(payload.type) + '.List',
           pagination: {
             pageNumber: payload.data?.page || 1,
             perPage: payload.data?.perPage || 10,
@@ -81,7 +82,7 @@ export default {
           sort: payload.data?.sort,
           filter: {
             ...payload.data?.filter,
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
           },
         }),
         listItemModel
@@ -99,7 +100,7 @@ export default {
       { type, data }: { type: string; data: IRequestListPayload }
     ) {
       const response = await ApiService.request({
-        type: 'App.V2.' + transformNameToType(type) + '.List.Report',
+        type: ApiTypePrefix + transformNameToType(type) + '.List.Report',
         sort: data?.sort,
         pagination: {
           pageNumber: data?.page || 1,
@@ -107,7 +108,7 @@ export default {
         },
         filter: {
           ...data?.filter,
-          project: rootGetters.selectedProject.alias,
+          project: rootGetters.selectedProject?.alias,
         },
       })
 
@@ -116,10 +117,10 @@ export default {
 
     async readEntity({ rootGetters }, payload: { type: string; id: string }) {
       const { data } = await ApiService.request({
-        type: 'App.V2.' + transformNameToType(payload.type) + '.Read',
+        type: ApiTypePrefix + transformNameToType(payload.type) + '.Read',
         data: {
           id: payload.id,
-          project: rootGetters.selectedProject.alias,
+          project: rootGetters.selectedProject?.alias,
         },
       })
 
@@ -128,9 +129,9 @@ export default {
 
     async fetchTypes({ rootGetters }, type: string) {
       return await ApiService.request({
-        type: 'App.V2.' + transformNameToType(type) + '.Types.List',
+        type: ApiTypePrefix + transformNameToType(type) + '.Types.List',
         data: {
-          project: rootGetters.selectedProject.alias,
+          project: rootGetters.selectedProject?.alias,
         },
       })
     },
@@ -141,11 +142,11 @@ export default {
     ) {
       const { data } = await ApiService.request(
         {
-          type: 'App.V2.' + transformNameToType(payload.type) + '.Create',
+          type: ApiTypePrefix + transformNameToType(payload.type) + '.Create',
           data: {
             ...payload.data.form,
             id: payload.data.form?.id,
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
             productId: rootGetters['productCore/productId'],
           },
         },
@@ -161,12 +162,12 @@ export default {
     ) {
       return await ApiService.request(
         {
-          type: 'App.V2.' + transformNameToType(payload.type) + '.Update',
+          type: ApiTypePrefix + transformNameToType(payload.type) + '.Update',
           data: {
             ...payload.data.form,
             id: payload.data.form?.id,
             productId: rootGetters['productCore/productId'],
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
           },
         },
         { withSuccessToast: true, formRef: payload.data.formRef }
@@ -181,9 +182,9 @@ export default {
 
       return await ApiService.request(
         {
-          type: 'App.V2.' + transformNameToType(type) + '.Update.Multiple',
+          type: ApiTypePrefix + transformNameToType(type) + '.Update.Multiple',
           data: {
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
             [entityKey]: data,
           },
         },
@@ -194,11 +195,11 @@ export default {
     async deleteEntity({ rootGetters }, payload: { type: string; id: string; comment: string }) {
       return await ApiService.request(
         {
-          type: 'App.V2.' + transformNameToType(payload.type) + '.Delete',
+          type: ApiTypePrefix + transformNameToType(payload.type) + '.Delete',
           data: {
             id: payload.id,
             comment: payload.comment,
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
           },
         },
         { withSuccessToast: true }
@@ -211,10 +212,10 @@ export default {
     ) {
       return await ApiService.request(
         {
-          type: 'App.V2.' + transformNameToType(type) + '.Delete.Multiple',
+          type: ApiTypePrefix + transformNameToType(type) + '.Delete.Multiple',
           data: {
             ids,
-            project: rootGetters.selectedProject.alias,
+            project: rootGetters.selectedProject?.alias,
           },
         },
         { withSuccessToast: true }

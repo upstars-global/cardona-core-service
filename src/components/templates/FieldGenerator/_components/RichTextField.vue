@@ -12,7 +12,7 @@
 import { defineComponent, PropType, computed, watch, ref } from 'vue'
 import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg'
 import { FieldInfo } from '../../../../@model/field'
-import { getters } from '../../../../store'
+import store from '../../../../store'
 
 export default defineComponent({
   name: 'RichTextField',
@@ -44,7 +44,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const localisationParameters = ref({})
-    const allCurrencies = computed(() => getters['appConfigCore/allCurrencies'])
+    const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
     const modelValue = computed({
       get: () => props.value,
       set: (value) => emit('input', value),
