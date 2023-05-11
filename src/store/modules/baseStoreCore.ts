@@ -67,7 +67,7 @@ export default {
       )
     },
 
-    async fetchListEntity(
+    async fetchEntityList(
       { commit, rootGetters },
       payload: { type: string; data: IRequestListPayload; options: IOptionsBaseFetch }
     ) {
