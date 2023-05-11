@@ -105,8 +105,21 @@ export default defineComponent({
     const deleteActionName: string = `${moduleName}/deleteEntity`
 
     // Permissions
-    const permissionKey: string = `${permissionPrefix}-${convertCamelCase(entityName, '-')}`
-    const permissionKeySeo: string = `${permissionPrefix}-${convertCamelCase(entityName, '-')}-seo`
+    const entityNamePermission = entityName.replace('-', '')
+    let permissionKey: string = ''
+    let permissionKeySeo: string = ''
+
+    if (props.config?.permissionKey) {
+      permissionKey = props.config?.permissionKey
+      permissionKeySeo = `${props.config?.permissionKey}-seo`
+    } else {
+      permissionKey = props.config?.noPermissionPrefix
+        ? `${convertCamelCase(entityNamePermission, '-')}`
+        : `${permissionPrefix}-${convertCamelCase(entityNamePermission, '-')}`
+      permissionKeySeo = props.config?.noPermissionPrefix
+        ? `${convertCamelCase(entityNamePermission, '-')}-seo`
+        : `${permissionPrefix}-${convertCamelCase(entityNamePermission, '-')}-seo`
+    }
 
     const onePermission: boolean = store.getters.abilityCan(props.config?.onePermissionKey, 'view')
 
@@ -168,6 +181,8 @@ export default defineComponent({
 
       const actionName: string = isCreatePage ? createActionName : updateActionName
       const transformedForm = transformFormData(form.value)
+
+      console.log(transformedForm)
 
       const data = await store.dispatch(actionName, {
         type: entityName,

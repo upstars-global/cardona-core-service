@@ -2,6 +2,7 @@ import { useRouter } from '../@core/utils/utils'
 import { FieldInfo } from '../@model/field'
 import { BaseField } from '../@model/baseField'
 import { OptionsItem } from '../@model'
+import { isObject } from '../@core/utils/utils'
 
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
 
@@ -18,6 +19,18 @@ export const transformFormData = (form): object => {
       acc[key] = valueData
         .map((item) => (item instanceof FieldInfo ? item.value : transformFormData(item)))
         .filter((item) => !!item)
+    } else if (isObject(valueData)) {
+      const valueDataInner = JSON.parse(JSON.stringify(valueData))
+      Object.keys(valueData).forEach((keyInner) => {
+        if (valueData[keyInner] instanceof FieldInfo) {
+          valueDataInner[keyInner] = Array.isArray(valueData[keyInner].value)
+            ? valueData[keyInner].value.map((item) => item.id || item)
+            : valueData[keyInner].value?.id ?? valueData[keyInner].value ?? ''
+        } else {
+          valueDataInner[keyInner] = valueData[keyInner]
+        }
+      })
+      acc[key] = valueDataInner
     } else {
       acc[key] = valueData
     }

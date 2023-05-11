@@ -15,7 +15,10 @@ const transformNameToType = (type: string): string => {
     .map((item, index) => {
       if (index === 0) {
         return item.toUpperCase()
+      } else if (item === '-') {
+        return ''
       } else if (item.toUpperCase() === item) {
+        if (type[index - 1] === '-') return item
         return '.' + item
       } else {
         return item
