@@ -570,7 +570,7 @@ export default {
       : 'baseStoreCore/fetchListEntity'
     const fetchReportActionName = 'baseStoreCore/fetchReport'
     const updateActionName = 'baseStoreCore/updateEntity'
-    const deleteActionName = props.config?.withCustomDeleteItem
+    const deleteActionName = props.config?.withCustomDelete
       ? `${moduleName}/deleteEntity`
       : 'baseStoreCore/deleteEntity'
     const multipleUpdateActionName = 'baseStoreCore/multipleUpdateEntity'
