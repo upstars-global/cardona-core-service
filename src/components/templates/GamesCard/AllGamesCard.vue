@@ -106,7 +106,7 @@ export default defineComponent({
       withSearch: true,
       searchPlaceholder: t('placeholder.search.nameIdSlug'),
       withIndependentPagination: true,
-      withCustomModuleName: true,
+      withCustomFetchList: true,
     })
 
     // TODO: Game deactivation logic will be completed later
