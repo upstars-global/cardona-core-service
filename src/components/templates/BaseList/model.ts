@@ -57,8 +57,8 @@ export interface IBaseListConfig {
   readonly withRemoveComment?: boolean
   readonly withRemoveModal?: boolean
   readonly createFromCopy?: boolean
-  readonly withCustomModuleName?: boolean
-  readonly customModuleName?: string
+  readonly withCustomFetchList?: boolean
+  readonly withCustomDeleteItem?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -89,8 +89,8 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withRemoveComment?: boolean
   readonly withRemoveModal?: boolean
   readonly createFromCopy?: boolean
-  readonly withCustomModuleName?: boolean
-  readonly customModuleName?: string
+  readonly withCustomFetchList?: boolean
+  readonly withCustomDeleteItem?: boolean
 
   constructor({
     withSearch,
@@ -120,8 +120,8 @@ export class BaseListConfig implements IBaseListConfig {
     withRemoveComment,
     withRemoveModal,
     createFromCopy,
-    withCustomModuleName,
-    customModuleName,
+    withCustomFetchList,
+    withCustomDeleteItem,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -150,8 +150,8 @@ export class BaseListConfig implements IBaseListConfig {
     this.withRemoveComment = withRemoveComment
     this.withRemoveModal = withRemoveModal
     this.createFromCopy = createFromCopy
-    this.withCustomModuleName = withCustomModuleName
-    this.customModuleName = customModuleName
+    this.withCustomFetchList = withCustomFetchList
+    this.withCustomDeleteItem = withCustomDeleteItem
   }
 }
 
