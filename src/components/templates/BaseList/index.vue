@@ -567,7 +567,7 @@ export default {
     const moduleName: string = props.config?.withCustomModuleName
       ? props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
       : 'baseStoreCore'
-    const fetchActionName: string = `${moduleName}/fetch${entityName}List`
+    const fetchActionName: string = `${moduleName}/fetchEntityList`
     const fetchReportActionName = `${moduleName}/fetchReport`
     const updateActionName = `${moduleName}/updateEntity`
     const deleteActionName = `${moduleName}/deleteEntity`
