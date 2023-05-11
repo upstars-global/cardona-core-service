@@ -564,15 +564,15 @@ export default {
     const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 
     // Action names
-    const moduleName: string = convertLowerCaseFirstSymbol(entityName)
-    const fetchActionName: string = props.config?.withCustomFetchList
-      ? `${moduleName}/fetch${entityName}List`
-      : 'baseStoreCore/fetchListEntity'
-    const fetchReportActionName = 'baseStoreCore/fetchReport'
-    const updateActionName = 'baseStoreCore/updateEntity'
-    const deleteActionName = 'baseStoreCore/deleteEntity'
-    const multipleUpdateActionName = 'baseStoreCore/multipleUpdateEntity'
-    const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
+    const moduleName: string = props.config?.withCustomModuleName
+      ? props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
+      : 'baseStoreCore'
+    const fetchActionName: string = `${moduleName}/fetch${entityName}List`
+    const fetchReportActionName = `${moduleName}/fetchReport`
+    const updateActionName = `${moduleName}/updateEntity`
+    const deleteActionName = `${moduleName}/deleteEntity`
+    const multipleUpdateActionName = `${moduleName}/multipleUpdateEntity`
+    const multipleDeleteActionName = `${moduleName}/multipleDeleteEntity`
 
     // Permissions
     const permissionKey = `${permissionPrefix}-${convertCamelCase(entityName, '-')}`
