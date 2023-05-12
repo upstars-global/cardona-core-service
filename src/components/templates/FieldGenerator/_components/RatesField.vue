@@ -1,22 +1,24 @@
 <template>
-  <div v-if="allCurrencies.isNotEmpty">
-    <b-row class="mt-2 flex-wrap">
-      <b-col v-for="currency in allCurrencies" :key="currency" md="2" class="p-1">
-        <b-input-group
-          class="input-group-merge m-1"
-          :class="{ error: errors.isNotEmpty }"
-          :label="currency"
-        >
-          <b-form-input
-            :value="value[currency]"
-            :placeholder="currency"
-            :state="errors.isNotEmpty ? false : null"
-            :type="inputType"
-            :disabled="disabled"
-            autocomplete="off"
-            @input="(val) => inputForm('currency', val)"
-          />
-        </b-input-group>
+  <div v-if="allCurrencies.isNotEmpty" class="full-width">
+    <div class="font-small-4 font-weight-bolder">
+      {{ field.label }}
+    </div>
+    <b-row class="flex-wrap mt-1">
+      <b-col v-for="(currency, index) in allCurrencies" :key="currency" md="2" class="px-1">
+        <b-form-group :label="currency" :label-for="`currency-${index}`" :class="formGroupClasses">
+          <b-input-group :class="{ error: errors.isNotEmpty }">
+            <b-form-input
+              :id="`currency-${index}`"
+              :value="value.find((item) => item.currency === currency).bet / 100"
+              :placeholder="currency"
+              :state="errors.isNotEmpty ? false : null"
+              :type="inputType"
+              :disabled="disabled"
+              autocomplete="off"
+              @input="(val) => inputForm(currency, val)"
+            />
+          </b-input-group>
+        </b-form-group>
       </b-col>
     </b-row>
   </div>
@@ -31,7 +33,7 @@ export default {
   name: 'RatesField',
   props: {
     value: {
-      type: [String, Number],
+      type: Array,
       default: '',
     },
 
@@ -52,19 +54,30 @@ export default {
   },
 
   setup(props, { emit }) {
-    const inputType: string = 'text'
+    const inputType: string = 'number'
     const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
 
     const inputForm = (name, val) => {
-      emit('input', {
-        ...props.value,
-        [name]: val,
+      const form = props.value.map((item) => {
+        if (item.currency === name) {
+          return {
+            currency: name,
+            bet: val * 100,
+          }
+        }
+        return item
       })
+      emit('input', form)
     }
+
+    const formGroupClasses = computed(() => ({
+      'form-required': props.field?.validationRules?.includes('required'),
+    }))
 
     return {
       inputType,
       allCurrencies,
+      formGroupClasses,
 
       inputForm,
     }
