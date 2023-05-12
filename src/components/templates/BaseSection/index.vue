@@ -182,8 +182,6 @@ export default defineComponent({
       const actionName: string = isCreatePage ? createActionName : updateActionName
       const transformedForm = transformFormData(form.value)
 
-      console.log(transformedForm)
-
       const data = await store.dispatch(actionName, {
         type: entityName,
         data: {
