@@ -25,39 +25,41 @@
     <b-row class="filters-row">
       <b-col>
         <div class="d-flex align-items-center justify-content-end">
-          <search-input
-            v-if="config.withSearch"
-            v-model="searchQuery"
-            class="search"
-            :size="size"
-            :placeholder="config.searchPlaceholder"
-          />
+          <slot name="left-search">
+            <export-format-selector
+              v-if="config.withExport && canExport"
+              :disabled="!total"
+              class="ml-1"
+              @export-format-selected="onExportFormatSelected"
+            />
 
-          <b-button
-            v-if="config.filterList.isNotEmpty"
-            variant="outline-secondary"
-            :class="{ 'btn-icon': config.small }"
-            class="d-flex align-items-center ml-1"
-            :size="size"
-            @click="isFiltersShown = !isFiltersShown"
-          >
-            <feather-icon icon="FilterIcon" />
+            <search-input
+              v-if="config.withSearch"
+              v-model="searchQuery"
+              class="search"
+              :size="size"
+              :placeholder="config.searchPlaceholder"
+            />
 
-            <span v-if="!config.small" class="align-middle ml-50">
-              {{ $t('common.filter._') }}
-            </span>
+            <b-button
+              v-if="config.filterList.isNotEmpty"
+              variant="outline-secondary"
+              :class="{ 'btn-icon': config.small }"
+              class="d-flex align-items-center ml-1"
+              :size="size"
+              @click="isFiltersShown = !isFiltersShown"
+            >
+              <feather-icon icon="FilterIcon" />
 
-            <span v-if="selectedFilters.isNotEmpty" class="align-middle ml-50">
-              {{ selectedFilters.length }}
-            </span>
-          </b-button>
+              <span v-if="!config.small" class="align-middle ml-50">
+                {{ $t('common.filter._') }}
+              </span>
 
-          <export-format-selector
-            v-if="config.withExport && canExport"
-            :disabled="!total"
-            class="ml-1"
-            @export-format-selected="onExportFormatSelected"
-          />
+              <span v-if="selectedFilters.isNotEmpty" class="align-middle ml-50">
+                {{ selectedFilters.length }}
+              </span>
+            </b-button>
+          </slot>
 
           <slot name="right-search-btn">
             <b-button
@@ -331,17 +333,6 @@
 
               <span class="align-middle ml-50">
                 {{ $t('action.edit') }}
-              </span>
-            </b-dropdown-item>
-
-            <b-dropdown-item
-              v-if="config.createFromCopy"
-              :to="{ name: CreatePageName, params: { id: item.id } }"
-            >
-              <feather-icon icon="CopyIcon" size="16" />
-
-              <span class="align-middle ml-50">
-                {{ $t('action.makeCopy') }}
               </span>
             </b-dropdown-item>
 
