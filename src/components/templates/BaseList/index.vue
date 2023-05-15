@@ -657,7 +657,13 @@ export default {
     const selectedFields = ref<TableField[]>([...fields])
 
     const isLoadingList = computed(() => {
-      const entityUrl: string = convertCamelCase(entityName, '/')
+      const indexSymbolNextDash = entityName.indexOf('-') + 1
+      const entityNameForLoad = entityName.replace(
+        entityName[indexSymbolNextDash],
+        entityName[indexSymbolNextDash].toLowerCase()
+      )
+
+      const entityUrl: string = convertCamelCase(entityNameForLoad, '/')
       return store.getters.isLoadingEndpoint([
         `${entityUrl}/list`,
         `${entityUrl}/update`,

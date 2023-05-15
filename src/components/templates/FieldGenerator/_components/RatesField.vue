@@ -9,7 +9,7 @@
           <b-input-group :class="{ error: errors.isNotEmpty }">
             <b-form-input
               :id="`currency-${index}`"
-              :value="value.find((item) => item.currency === currency).bet / 100"
+              :value="value.find((item) => item.currency === currency)?.bet / 100"
               :placeholder="currency"
               :state="errors.isNotEmpty ? false : null"
               :type="inputType"
