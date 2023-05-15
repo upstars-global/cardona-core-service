@@ -24,63 +24,51 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, PropType, ref } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
 import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
 
-export default {
-  name: 'RatesField',
-  props: {
-    value: {
-      type: Array,
-      default: '',
-    },
-
-    field: {
-      type: Object as PropType<FieldInfo>,
-      required: true,
-    },
-
-    errors: {
-      type: Array as PropType<Array<string>>,
-      default: () => [],
-    },
-
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  setup(props, { emit }) {
-    const inputType: string = 'number'
-    const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
-
-    const inputForm = (name, val) => {
-      const form = props.value.map((item) => {
-        if (item.currency === name) {
-          return {
-            currency: name,
-            bet: val * 100,
-          }
-        }
-        return item
-      })
-      emit('input', form)
-    }
-
-    const formGroupClasses = computed(() => ({
-      'form-required': props.field?.validationRules?.includes('required'),
-    }))
-
-    return {
-      inputType,
-      allCurrencies,
-      formGroupClasses,
-
-      inputForm,
-    }
-  },
+type Rates = {
+  readonly currency: string
+  readonly bet: number
 }
+
+const props = withDefaults(
+  defineProps<{
+    value: Array<Rates>
+    field: FieldInfo
+    errors: Array<string>
+    disabled: Boolean
+  }>(),
+  {
+    value: () => [],
+    errors: () => [],
+    disabled: () => false,
+  }
+)
+
+const emit = defineEmits<{
+  (event: 'input', value: Array<Rates>): void
+}>()
+
+const inputType: string = 'number'
+const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
+
+const inputForm = (name, val) => {
+  const form = props.value.map((item) => {
+    if (item.currency === name) {
+      return {
+        currency: name,
+        bet: val * 100,
+      }
+    }
+    return item
+  })
+  emit('input', form)
+}
+
+const formGroupClasses = computed(() => ({
+  'form-required': props.field?.validationRules?.includes('required'),
+}))
 </script>
