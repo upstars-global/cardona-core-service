@@ -60,7 +60,7 @@ export class FilterID {
 }
 
 export class FilterSearch {
-  readonly search: string
+  readonly search?: string
 
   constructor({ search }) {
     this.search = search
