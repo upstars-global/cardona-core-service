@@ -46,9 +46,7 @@
     <b-button
       size="sm"
       variant="outline-secondary"
-      :disabled="
-        disabled || (!value[0] instanceof FieldInfo && !filteredOptions.length) || isDisabled
-      "
+      :disabled="disabled || isDisabled || isSelectItemNotEmpty"
       @click="onAdd"
     >
       <feather-icon icon="PlusIcon" />
@@ -102,11 +100,25 @@ export default defineComponent({
       { deep: true, immediate: true }
     )
 
+    const isSelectItemNotEmpty = computed(() => {
+      if (
+        props.value?.[0] &&
+        Object.values(props.value[0])?.[0] &&
+        Object.values(props.value[0])?.[0] instanceof FieldInfo
+      ) {
+        return (
+          Object.values(props.value[0])[0].type.includes('select') && !filteredOptions.value.length
+        )
+      }
+      return false
+    })
+
     const isDisabled = computed(() => {
       return props.value?.some((row: any): boolean => {
         if (row instanceof FieldInfo) {
           return !row.value
         }
+
         return Object.values(row).some((item: any): boolean => !item.value)
       })
     })
@@ -186,6 +198,7 @@ export default defineComponent({
       onAdd,
       onRemove,
       isDisabled,
+      isSelectItemNotEmpty,
     }
   },
 })
