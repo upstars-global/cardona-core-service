@@ -7,6 +7,7 @@
       class="mr-50 mb-50"
     >
       {{ value.name }}
+      <span v-if="value?.position" class="ml-1">value.position</span>
     </b-badge>
     <b-badge v-if="isShowBadgeCount" variant="light-primary" class="mr-50 mb-50">
       +{{ listBadges.length - countItemShowBadge }}
