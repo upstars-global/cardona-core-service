@@ -54,7 +54,7 @@ const emit = defineEmits<{
 
 const inputType: string = 'number'
 const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
-const formArr = ref([])
+const formArr = ref([] as Array<Rates>)
 
 onMounted(() => {
   allCurrencies.value.map((cur) => {
