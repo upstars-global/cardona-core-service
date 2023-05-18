@@ -48,7 +48,6 @@ export interface IBaseListConfig {
   readonly withIndependentPagination?: boolean
   readonly searchPlaceholder?: string
   readonly withExport?: boolean
-  readonly withCustomFetchList?: boolean
   readonly withMultipleActions?: boolean
   readonly saveCountItem?: boolean
   readonly sidebar?: boolean
@@ -58,6 +57,8 @@ export interface IBaseListConfig {
   readonly withRemoveComment?: boolean
   readonly withRemoveModal?: boolean
   readonly createFromCopy?: boolean
+  readonly withCustomFetchList?: boolean
+  readonly withCustomDelete?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -79,7 +80,6 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withIndependentPagination?: boolean
   readonly searchPlaceholder?: string
   readonly withExport?: boolean
-  readonly withCustomFetchList?: boolean
   readonly withMultipleActions?: boolean
   readonly saveCountItem?: boolean
   readonly sidebar?: boolean
@@ -89,6 +89,8 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withRemoveComment?: boolean
   readonly withRemoveModal?: boolean
   readonly createFromCopy?: boolean
+  readonly withCustomFetchList?: boolean
+  readonly withCustomDelete?: boolean
 
   constructor({
     withSearch,
@@ -109,7 +111,6 @@ export class BaseListConfig implements IBaseListConfig {
     withIndependentPagination,
     searchPlaceholder,
     withExport,
-    withCustomFetchList,
     withMultipleActions,
     saveCountItem,
     sidebar,
@@ -119,6 +120,8 @@ export class BaseListConfig implements IBaseListConfig {
     withRemoveComment,
     withRemoveModal,
     createFromCopy,
+    withCustomFetchList,
+    withCustomDelete,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -138,7 +141,6 @@ export class BaseListConfig implements IBaseListConfig {
     this.withIndependentPagination = withIndependentPagination
     this.searchPlaceholder = searchPlaceholder
     this.withExport = withExport
-    this.withCustomFetchList = withCustomFetchList
     this.withMultipleActions = withMultipleActions
     this.saveCountItem = saveCountItem
     this.sidebar = sidebar
@@ -148,6 +150,8 @@ export class BaseListConfig implements IBaseListConfig {
     this.withRemoveComment = withRemoveComment
     this.withRemoveModal = withRemoveModal
     this.createFromCopy = createFromCopy
+    this.withCustomFetchList = withCustomFetchList
+    this.withCustomDelete = withCustomDelete
   }
 }
 
