@@ -119,7 +119,9 @@ export default defineComponent({
           return !row.value
         }
 
-        return Object.values(row).some((item: any): boolean => !item.value)
+        return Object.values(row).some(
+          (item: any): boolean => item.value !== null || item.value !== undefined
+        )
       })
     })
 
