@@ -5,7 +5,7 @@
         <label>{{ templateField?.label }}</label>
       </b-col>
       <b-col v-for="(item, index) in Object.values(templateField)" v-else :key="index">
-        <label>{{ item?.label }}</label>
+        <label v-if="!(index > 0 && !rows.length)">{{ item?.label }}</label>
       </b-col>
       <b-col md="1"></b-col>
     </b-row>
