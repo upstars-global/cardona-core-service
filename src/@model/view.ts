@@ -13,6 +13,7 @@ export enum ViewType {
   Status = 'status',
   Statement = 'statement',
   Date = 'date',
+  DateWithSeconds = 'date-with-seconds',
   BadgeCopy = 'badge-copy',
   SumAndCurrency = 'sum-and-currency',
   StatusWithDate = 'status-with-date',
