@@ -118,10 +118,10 @@ export default defineComponent({
         if (row instanceof FieldInfo) {
           return !row.value
         }
-
-        return Object.values(row).some(
-          (item: any): boolean => item.value !== null || item.value !== undefined
-        )
+        if (row instanceof Array) {
+          return !Object.values(row)?.[0].value
+        }
+        return false
       })
     })
 
