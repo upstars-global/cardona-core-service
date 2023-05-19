@@ -449,10 +449,7 @@
   },
   "seo": {
     "metaTitle": "Title",
-    "fakeMetaTitle": "Fake Title",
     "metaDescription": "Description",
-    "fakeMetaDescription": "Fake description",
-    "description": "Text",
-    "fakeDescription": "Fake text"
+    "description": "Text"
   }
 }
