@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { debounce } from 'lodash'
 import FieldGenerator from '../components/templates/FieldGenerator/index.vue'
 import { FieldInfo } from '../@model/field'
@@ -72,7 +72,7 @@ export default defineComponent({
 
   props: {
     value: {
-      type: Array,
+      type: Array as PropType<FieldInfo[] | Record<string, FieldInfo>[]>,
       default: () => [],
     },
 
@@ -114,14 +114,12 @@ export default defineComponent({
     })
 
     const isDisabled = computed(() => {
-      return props.value?.some((row: any): boolean => {
+      return props.value?.some((row: FieldInfo | Record<string, FieldInfo>): boolean => {
         if (row instanceof FieldInfo) {
           return !row.value
-        }
-        if (row instanceof Array) {
+        } else {
           return !Object.values(row)?.[0].value
         }
-        return false
       })
     })
 
