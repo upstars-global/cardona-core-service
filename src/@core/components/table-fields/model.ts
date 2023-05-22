@@ -28,6 +28,7 @@ export enum ListFieldType {
   NameWithId = 'name-with-id',
   Email = 'email',
   Date = 'date',
+  DateWithSeconds = 'date-with-seconds',
   Statement = 'statement',
   Priority = 'priority',
   Badges = 'badges',
