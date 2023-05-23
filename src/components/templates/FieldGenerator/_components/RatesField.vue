@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
 
@@ -54,22 +54,9 @@ const emit = defineEmits<{
 
 const inputType: string = 'number'
 const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
-const formArr = ref([] as Array<Rates>)
-
-onMounted(() => {
-  allCurrencies.value.map((cur) => {
-    const findItemBet = props.value.find((item) => item.currency === cur)?.bet
-    formArr.value.push({
-      currency: cur,
-      bet: findItemBet || 0,
-    })
-  })
-
-  emit('input', formArr.value)
-})
 
 const inputForm = (name, val) => {
-  formArr.value.map((item) => {
+  const newValue = props.value.map((item) => {
     if (item.currency === name) {
       return {
         currency: name,
@@ -78,8 +65,7 @@ const inputForm = (name, val) => {
     }
     return item
   })
-  console.log(formArr)
-  emit('input', formArr.value)
+  emit('input', newValue)
 }
 
 const formGroupClasses = computed(() => ({
