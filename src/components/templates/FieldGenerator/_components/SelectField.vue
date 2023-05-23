@@ -1,5 +1,5 @@
 <script lang="ts">
-import { PropType, computed, watch } from 'vue'
+import { PropType, ref, computed, watch } from 'vue'
 import { debounce } from 'lodash'
 import vSelect from 'vue-select'
 import i18n from '../../../../libs/i18n'
@@ -14,7 +14,7 @@ export default {
 
   props: {
     value: {
-      type: Object as PropType<OptionsItem>,
+      type: [Object, String, Number],
       default: null,
     },
 
@@ -48,14 +48,18 @@ export default {
 
   setup(props, { emit }) {
     const isMultiple = false
+    const isLoading = ref(false)
 
-    const valueModel = computed({
-      get: () => props.value,
+    const valueModel = computed<OptionsItem>({
+      get: () =>
+        typeof props.value === 'string' || typeof props.value === 'number'
+          ? props.field.options?.find((option: OptionsItem) => option.id == props.value)
+          : props.value,
       set: (item: object) => emit('input', item),
     })
 
     const selectClasses = computed(() => {
-      const size: string = `select-${props.size}`
+      const size = `select-${props.size}`
       const classes: object = {
         error: props.errors?.isNotEmpty,
       }
@@ -66,14 +70,20 @@ export default {
     // Options
     const options = computed(() =>
       props.field.options
-        ? props.field.options.filter((option: any) => option.id !== props.value?.id)
+        ? props.field.options.filter((option: OptionsItem) => option.id !== valueModel.value?.id)
         : []
     )
 
     watch(
       () => props.field.options,
       async () => {
-        if (!props.field.options) await props.field.fetchOptions()
+        if (!props.field.options) {
+          isLoading.value = true
+
+          await props.field.fetchOptions()
+
+          isLoading.value = false
+        }
       },
       { deep: true, immediate: true }
     )
@@ -91,6 +101,7 @@ export default {
 
     return {
       isMultiple,
+      isLoading,
       selectClasses,
       valueModel,
       options,
@@ -104,8 +115,9 @@ export default {
   <v-select
     v-model="valueModel"
     :placeholder="placeholder"
-    :dir="$store.getters['appConfigCore/dirOption']"
+    :dir="$store.getters['appConfig/dirOption']"
     label="name"
+    :loading="isLoading"
     :multiple="isMultiple"
     :options="options"
     class="select-field"

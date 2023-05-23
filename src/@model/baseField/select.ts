@@ -4,7 +4,7 @@ import { BaseField, IBaseField } from './base'
 import { OptionsItem } from '../../@model'
 import SelectField from '../../components/templates/FieldGenerator/_components/SelectField.vue'
 
-type SelectValue = OptionsItem | string | null
+type SelectValue = OptionsItem | string | number | null
 
 export interface ISelectBaseField<T> extends IBaseField {
   readonly value?: T | SelectValue
