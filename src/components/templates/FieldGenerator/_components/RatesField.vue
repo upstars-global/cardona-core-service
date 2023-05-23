@@ -14,6 +14,7 @@
               :state="errors.isNotEmpty ? false : null"
               :type="inputType"
               :disabled="disabled"
+              required
               autocomplete="off"
               @input="(val) => inputForm(currency, val)"
             />
@@ -25,13 +26,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, ref, watch, watchEffect } from 'vue'
 import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
 
 type Rates = {
   readonly currency: string
-  readonly bet: number
+  readonly bet: number | null
 }
 
 const props = withDefaults(
@@ -55,12 +56,18 @@ const emit = defineEmits<{
 const inputType: string = 'number'
 const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
 
+watchEffect(() => {
+  if (props.field.value.some((item: Rates) => item.bet === null)) {
+    props.errors.push('')
+  }
+})
+
 const inputForm = (name, val) => {
   const newValue = props.value.map((item) => {
     if (item.currency === name) {
       return {
         currency: name,
-        bet: val * 100,
+        bet: val ? val * 100 : null,
       }
     }
     return item
