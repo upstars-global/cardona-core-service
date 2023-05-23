@@ -1,12 +1,21 @@
 <template>
   <div>
+    <b-row v-if="templateField">
+      <b-col v-if="templateField instanceof FieldInfo">
+        <label>{{ templateField?.label }}</label>
+      </b-col>
+      <b-col v-for="(item, index) in Object.values(templateField)" v-else :key="index">
+        <label v-if="!(index > 0 && !rows.length)">{{ item?.label }}</label>
+      </b-col>
+      <b-col md="1"></b-col>
+    </b-row>
     <b-row v-for="(row, index) in rows" :key="index" class="mb-1">
       <b-col v-if="row instanceof FieldInfo">
         <field-generator
           v-model="rows[index]"
           :options="filteredOptions"
-          :with-label="!index"
-          :with-info="!index"
+          :with-label="false"
+          :with-info="false"
           :disabled="disabled"
           @search="fetchSelectOptions"
         />
@@ -16,8 +25,8 @@
         <field-generator
           v-model="rows[index][key]"
           :options="filteredOptions"
-          :with-label="!index"
-          :with-info="!index"
+          :with-label="false"
+          :with-info="false"
           :disabled="disabled"
           @search="fetchSelectOptions"
         />
@@ -25,7 +34,7 @@
 
       <b-col md="1" class="d-flex align-items-center">
         <feather-icon
-          v-if="index"
+          v-if="index || !required"
           icon="Trash2Icon"
           class="text-danger cursor-pointer"
           :class="{ 'cursor-default': disabled }"
@@ -34,7 +43,12 @@
       </b-col>
     </b-row>
 
-    <b-button size="sm" variant="outline-secondary" :disabled="disabled" @click="onAdd">
+    <b-button
+      size="sm"
+      variant="outline-secondary"
+      :disabled="disabled || isDisabled || isSelectItemNotEmpty"
+      @click="onAdd"
+    >
       <feather-icon icon="PlusIcon" />
 
       <span class="text-nowrap">
@@ -45,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { debounce } from 'lodash'
 import FieldGenerator from '../components/templates/FieldGenerator/index.vue'
 import { FieldInfo } from '../@model/field'
@@ -58,11 +72,20 @@ export default defineComponent({
 
   props: {
     value: {
-      type: Array,
+      type: Array as PropType<FieldInfo[] | Record<string, FieldInfo>[]>,
       default: () => [],
     },
 
+    templateField: {
+      type: Object,
+    },
+
     disabled: {
+      type: Boolean,
+      default: false,
+    },
+
+    required: {
       type: Boolean,
       default: false,
     },
@@ -77,8 +100,31 @@ export default defineComponent({
       { deep: true, immediate: true }
     )
 
+    const isSelectItemNotEmpty = computed(() => {
+      if (
+        props.value?.[0] &&
+        Object.values(props.value[0])?.[0] &&
+        Object.values(props.value[0])?.[0] instanceof FieldInfo
+      ) {
+        return (
+          Object.values(props.value[0])[0].type.includes('select') && !filteredOptions.value.length
+        )
+      }
+      return false
+    })
+
+    const isDisabled = computed(() => {
+      return props.value?.some((row: FieldInfo | Record<string, FieldInfo>): boolean => {
+        if (row instanceof FieldInfo) {
+          return !row.value
+        } else {
+          return !Object.values(row)?.[0].value
+        }
+      })
+    })
+
     // Options
-    const filteredOptions = computed(() => {
+    const filteredOptions = computed<Array<any>>(() => {
       const selectedIds: Array<string> = rows.value
         .map((row: object) => {
           if (row instanceof FieldInfo) {
@@ -123,7 +169,7 @@ export default defineComponent({
 
     // Handlers
     const onAdd = () => {
-      let [itemTemplate] = JSON.parse(JSON.stringify(rows.value))
+      let [itemTemplate]: any = [props.templateField] || JSON.parse(JSON.stringify(rows.value))
 
       if (rows.value[0] instanceof FieldInfo) {
         itemTemplate = new FieldInfo({
@@ -151,6 +197,8 @@ export default defineComponent({
       fetchSelectOptions,
       onAdd,
       onRemove,
+      isDisabled,
+      isSelectItemNotEmpty,
     }
   },
 })

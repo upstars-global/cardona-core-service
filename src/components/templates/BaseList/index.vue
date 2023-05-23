@@ -246,6 +246,12 @@
 
           <date-field v-else-if="field.type === ListFieldType.Date" :key="index" :date="value" />
 
+          <date-with-seconds-field
+            v-else-if="field.type === ListFieldType.DateWithSeconds"
+            :key="index"
+            :date="value"
+          />
+
           <statement-field
             v-else-if="field.type === ListFieldType.Statement"
             :key="index"
@@ -481,6 +487,7 @@ import PillStatusField from './_components/PillStatusField.vue'
 import NameWithIdField from './_components/NameWithIdField.vue'
 import EmailField from './_components/EmailField.vue'
 import DateField from './_components/DateField.vue'
+import DateWithSecondsField from './_components/DateWithSecondsField.vue'
 import StatementField from './_components/StatementField.vue'
 import PositionField from './_components/PositionField.vue'
 import ExportFormatSelector from './_components/ExportFormatSelector.vue'
@@ -520,6 +527,7 @@ export default {
     NameWithIdField,
     EmailField,
     DateField,
+    DateWithSecondsField,
     StatementField,
     ButtonField,
   },
@@ -570,7 +578,9 @@ export default {
       : 'baseStoreCore/fetchListEntity'
     const fetchReportActionName = 'baseStoreCore/fetchReport'
     const updateActionName = 'baseStoreCore/updateEntity'
-    const deleteActionName = 'baseStoreCore/deleteEntity'
+    const deleteActionName = props.config?.withCustomDelete
+      ? `${moduleName}/deleteEntity`
+      : 'baseStoreCore/deleteEntity'
     const multipleUpdateActionName = 'baseStoreCore/multipleUpdateEntity'
     const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
 
