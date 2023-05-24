@@ -37,7 +37,7 @@
 <script lang="ts">
 import { computed, ref } from 'vue'
 import { VBTooltip } from 'bootstrap-vue'
-import VariableModal from '../../components/TextEditorWysiwyg/VariableModal'
+import VariableModal from './VariableModal.vue'
 import 'vue-froala-wysiwyg'
 import FroalaEditor from 'froala-editor'
 import i18n from '../../libs/i18n'

@@ -15,6 +15,7 @@ import user from './modules/user'
 import users from './modules/users'
 import loader from './modules/loader'
 import tags from './modules/tags'
+import demo from './modules/demo'
 
 import ecommerceStoreModuleCore from '../views/apps/e-commerce/eCommerceStoreModule'
 import app from './app'
@@ -36,7 +37,7 @@ const store = new Vuex.Store({
     users,
     loader,
     tags,
-
+    demo,
     app,
     'app-ecommerce': ecommerceStoreModuleCore,
   },

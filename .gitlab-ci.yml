@@ -1,14 +1,18 @@
 include:
-  - project: gitops/gitlab-ci-templates
+  - project: common/gitlab-ci-templates
     file: '/build/docker-build-1.0.0.yaml'
     ref: master
-  - project: gitops/gitlab-ci-templates
+  - project: common/gitlab-ci-templates
     file: "/changelog/generate-changelog-1.0.0.yaml"
     ref: master
 
 stages:
   - docker-build
   - docker-push
+
+default:
+  tags:
+    - ${CI_PROJECT_ROOT_NAMESPACE}-staging
 
 docker-build:
   extends: .docker-build

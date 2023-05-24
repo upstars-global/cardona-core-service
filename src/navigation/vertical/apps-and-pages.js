@@ -3,6 +3,11 @@ export default [
     header: 'Apps & Pages',
   },
   {
+    title: 'BO-Demo',
+    route: 'Demo',
+    icon: 'BoxIcon',
+  },
+  {
     title: 'Email',
     route: 'apps-email',
     icon: 'MailIcon',

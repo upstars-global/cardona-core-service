@@ -11,9 +11,6 @@ export type FieldTranslationsData = {
   readonly title?: FieldTranslationsLocale
   readonly description: FieldTranslationsLocale
   readonly content?: FieldTranslationsLocale
-  readonly fakeDescription: FieldTranslationsLocale
   readonly metaTitle: FieldTranslationsLocale
   readonly metaDescription: FieldTranslationsLocale
-  readonly fakeMetaTitle: FieldTranslationsLocale
-  readonly fakeMetaDescription: FieldTranslationsLocale
 }

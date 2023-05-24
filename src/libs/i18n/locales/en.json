@@ -116,7 +116,9 @@
     "factor": "Odds",
     "fullStake": "Bet",
     "score": "Score",
-    "possibleWinAmount": "Possible win"
+    "possibleWinAmount": "Possible win",
+    "state": "State",
+    "comment": "Comment"
   },
   "pagination": {
     "showing": "Showing {from} to {to} of {of} entries"
@@ -449,10 +451,7 @@
   },
   "seo": {
     "metaTitle": "Title",
-    "fakeMetaTitle": "Fake Title",
     "metaDescription": "Description",
-    "fakeMetaDescription": "Fake description",
-    "description": "Text",
-    "fakeDescription": "Fake text"
+    "description": "Text"
   }
 }

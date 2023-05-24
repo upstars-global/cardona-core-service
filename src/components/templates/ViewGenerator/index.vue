@@ -36,6 +36,7 @@ import StatementView from './_components/StatementView.vue'
 import LinkView from './_components/LinkView.vue'
 import BadgeCopyView from './_components/BadgeCopyView.vue'
 import DateView from './_components/DateView.vue'
+import DateWithSecondsView from './_components/DateWithSecondsView.vue'
 import SumAndCurrencyView from './_components/SumAndCurrencyView.vue'
 import CommentView from './_components/CommentView.vue'
 import TransactionTypeView from './_components/TransactionTypeView.vue'
@@ -56,6 +57,7 @@ export default defineComponent({
     LinkView,
     BadgeCopyView,
     DateView,
+    DateWithSecondsView,
     SumAndCurrencyView,
     CommentView,
     TransactionTypeView,

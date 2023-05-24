@@ -12,7 +12,7 @@ import { ApiTypePrefix, productName } from '@productConfig'
 import { productsName } from '../../configs/productsName'
 import { isUndefined } from 'lodash'
 
-const transformNameToType = (type: string): string => {
+export const transformNameToType = (type: string): string => {
   return [...type]
     .map((item, index) => {
       if (index === 0) {

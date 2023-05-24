@@ -16,15 +16,6 @@
             @input="onInput"
           />
         </b-col>
-
-        <b-col md="4">
-          <field-generator
-            v-model="form.fakeMetaTitle"
-            :disabled="disabled"
-            data-at="fakeMetaTitle"
-            @input="onInput"
-          />
-        </b-col>
       </b-row>
 
       <b-row class="mb-2">
@@ -36,15 +27,6 @@
             @input="onInput"
           />
         </b-col>
-
-        <b-col md="4">
-          <field-generator
-            v-model="form.fakeMetaDescription"
-            :disabled="disabled"
-            data-at="fakeMetaDescription"
-            @input="onInput"
-          />
-        </b-col>
       </b-row>
 
       <b-row class="mb-2">
@@ -53,17 +35,6 @@
             v-model="form.description"
             :disabled="disabled"
             data-at="description"
-            @input="onInput"
-          />
-        </b-col>
-      </b-row>
-
-      <b-row>
-        <b-col>
-          <field-generator
-            v-model="form.fakeDescription"
-            :disabled="disabled"
-            data-at="fakeDescription"
             @input="onInput"
           />
         </b-col>
