@@ -116,7 +116,9 @@
     "factor": "Odds",
     "fullStake": "Bet",
     "score": "Score",
-    "possibleWinAmount": "Possible win"
+    "possibleWinAmount": "Possible win",
+    "state": "State",
+    "comment": "Comment"
   },
   "pagination": {
     "showing": "Showing {from} to {to} of {of} entries"
