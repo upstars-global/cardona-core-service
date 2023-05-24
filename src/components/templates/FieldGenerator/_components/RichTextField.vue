@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed, watch, ref } from 'vue'
-import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg'
+import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg/index.vue'
 import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
 

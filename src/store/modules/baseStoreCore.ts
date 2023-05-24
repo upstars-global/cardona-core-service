@@ -10,7 +10,7 @@ import {
 import { convertLowerCaseFirstSymbol } from '../../helpers'
 import { ApiTypePrefix } from '@productConfig'
 
-const transformNameToType = (type: string): string => {
+export const transformNameToType = (type: string): string => {
   return [...type]
     .map((item, index) => {
       if (index === 0) {

@@ -29,4 +29,7 @@ import './data/pages/account-setting'
 import './data/pages/profile-data'
 import './data/pages/blog'
 
+// Demo
+import './data/demo'
+
 mock.onAny().passThrough() // forwards the matched request over network
