@@ -2,11 +2,6 @@ import ApiService from '../../services/api'
 import { ListData } from '../../@model'
 import { IRequestListPayload } from '../../@model/index'
 import { ExportFormat, IOptionsBaseFetch } from '../../components/templates/BaseList/model'
-import {
-  GamesSectionGamesItem,
-  IGamesSectionGamesFilters,
-  IGamesSectionGamesListPayload,
-} from '../../@model/games'
 import { convertLowerCaseFirstSymbol } from '../../helpers'
 import { ApiTypePrefix } from '@productConfig'
 
@@ -26,53 +21,13 @@ export const transformNameToType = (type: string): string => {
 
 export default {
   namespaced: true,
-  state: {
-    totalItem: 0,
-    appliedFilters: {},
-  },
-
-  getters: {
-    totalItem: ({ totalItem }) => totalItem,
-    appliedFilters: ({ appliedFilters }) => appliedFilters,
-  },
-
-  mutations: {
-    SET_TOTAL(state, total: number) {
-      state.totalItem = total
-    },
-
-    SET_APPLIED_FILTERS(state, filters: IGamesSectionGamesFilters) {
-      state.appliedFilters = filters
-    },
-  },
 
   actions: {
-    async fetchGamesList(
-      { rootGetters, commit },
-      { type, data }: { type: string; data: IGamesSectionGamesListPayload }
-    ) {
-      return new ListData<GamesSectionGamesItem>(
-        await ApiService.request({
-          type: ApiTypePrefix + transformNameToType(type) + '.Games.List',
-          pagination: {
-            pageNumber: data?.page || 1,
-            perPage: data?.perPage,
-          },
-          sort: data?.sort,
-          filter: {
-            ...data?.filter,
-            project: rootGetters.selectedProject?.alias,
-          },
-        })
-      )
-    },
-
-    async fetchListEntity(
+    async fetchEntityList(
       { commit, rootGetters },
       payload: { type: string; data: IRequestListPayload; options: IOptionsBaseFetch }
     ) {
-      const { saveCountItem, listItemModel } = payload.options
-      const fetchData = new ListData(
+      return new ListData(
         await ApiService.request({
           type: ApiTypePrefix + transformNameToType(payload.type) + '.List',
           pagination: {
@@ -85,14 +40,8 @@ export default {
             project: rootGetters.selectedProject?.alias,
           },
         }),
-        listItemModel
+        payload.options?.listItemModel
       )
-
-      if (saveCountItem) {
-        commit('SET_TOTAL', fetchData.total)
-        commit('SET_APPLIED_FILTERS', payload.data?.filter)
-      }
-      return fetchData
     },
 
     async fetchReport(

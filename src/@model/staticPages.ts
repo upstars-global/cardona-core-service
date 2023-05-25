@@ -22,23 +22,6 @@ export type StaticPagesData = {
 }
 
 // List
-export class StaticPagesListItem {
-  readonly id: string
-  readonly name: string
-  readonly position: number
-  readonly slug: string
-
-  constructor({ id, name, position, slug }) {
-    this.id = id
-    this.name = name
-    this.position = position
-    this.slug = slug
-  }
-}
-export interface IStaticPagesListPayload extends IRequestListPayload {
-  readonly filter?: IStaticPagesFilters
-}
-
 export interface IGameItemInfo {
   readonly gameId: string
   readonly position: number

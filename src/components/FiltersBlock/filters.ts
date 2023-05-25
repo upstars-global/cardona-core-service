@@ -4,7 +4,6 @@ import { GroupData } from '../../@model/group'
 import { ProjectInfo } from '../../@model/project'
 import { FieldInfo, FieldType } from '../../@model/field'
 import { OptionsItem } from '../../@model'
-import { GamesProducersListItem } from '../../@model/gamesProducers'
 import { GamesCategoriesListItem } from '../../@model/gamesCategories'
 import { TransactionType } from '../../@model/playersTransactions'
 import { typesOptions } from '../../@model/banners'
@@ -187,7 +186,7 @@ const gamesCategories = new FieldInfo<GamesCategoriesListItem>({
   fetchOptionsActionName: 'gamesCategories/fetchGamesCategoriesList',
 })
 
-const gamesProducers = new FieldInfo<GamesProducersListItem>({
+const gamesProducers = new FieldInfo({
   type: FieldType.MultiSelect,
   key: FilterType.GamesProducers,
   label: String(i18n.t('filters.gamesProducers')),

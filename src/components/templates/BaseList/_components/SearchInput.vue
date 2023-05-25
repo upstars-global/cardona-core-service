@@ -9,6 +9,7 @@
       :placeholder="placeholder"
       debounce="500"
       :size="size"
+      autocomplete="off"
     />
   </b-input-group>
 </template>
