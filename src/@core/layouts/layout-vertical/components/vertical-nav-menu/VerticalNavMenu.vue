@@ -163,7 +163,7 @@ export default {
       ]
     })
     const selectedProjectTitle = computed(() =>
-      isNeocore.value ? store.getters.selectedProject?.name : 'Alaro'
+      isNeocore.value ? store.getters.selectedProject?.publicName : 'Alaro'
     )
     const goBack = () => {
       window.history.length > 2 ? router.go(-1) : router.push('/')
