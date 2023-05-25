@@ -74,9 +74,8 @@ export default defineComponent({
       () => props.value,
       () => {
         form.value = new SeoForm(props.value['seo'])
-        if (form.value.description && form.value.fakeDescription) {
+        if (form.value.description) {
           form.value.description.form = props.value
-          form.value.fakeDescription.form = props.value
         }
       },
       { immediate: true, deep: true }
