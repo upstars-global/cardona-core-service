@@ -59,7 +59,11 @@
             @export-format-selected="onExportFormatSelected"
           />
 
-          <slot name="right-search-btn">
+          <slot
+            name="right-search-btn"
+            :can-create="isExistsCreatePage && canCreate"
+            :create-page-name="CreatePageName"
+          >
             <b-button
               v-if="isExistsCreatePage && canCreate"
               variant="primary"
