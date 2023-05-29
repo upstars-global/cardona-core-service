@@ -18,6 +18,7 @@ const data = [
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     buttonName: 'Test button name',
+    login: 'My login',
     position: 1,
     imagePath: '/svc/img/i/ThorDevelop/banners/f16c86bc_4a13_4426_a278_c9de1a211e99_png',
     tags: [
@@ -51,6 +52,7 @@ const data = [
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     buttonName: 'button name',
+    login: 'Some',
     position: 4,
     imagePath: '/svc/img/i/ThorDevelop/banners/5394d94a_63be_4e39_8d23_9269320c13c1_png',
     tags: [
@@ -83,6 +85,7 @@ const data = [
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     buttonName: 'Test button name',
+    login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: '/svc/img/i/ThorDevelop/banners/309f0a98_60dd_4b01_aed4_5dc811f5abd5_png',
     tags: [
@@ -116,6 +119,7 @@ const data = [
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     buttonName: 'Some name',
+    login: '',
     position: 55,
     imagePath: '/svc/img/i/ThorDevelop/banners/f16c86bc_4a13_4426_a278_c9de1a211e99_png',
     tags: [
