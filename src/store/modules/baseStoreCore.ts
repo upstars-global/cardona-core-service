@@ -3,7 +3,9 @@ import { ListData } from '../../@model'
 import { IRequestListPayload } from '../../@model/index'
 import { ExportFormat, IOptionsBaseFetch } from '../../components/templates/BaseList/model'
 import { convertLowerCaseFirstSymbol } from '../../helpers'
-import { ApiTypePrefix } from '@productConfig'
+import { ApiTypePrefix, productName } from '@productConfig'
+import { productsName } from '../../configs/productsName'
+import { isUndefined } from 'lodash'
 
 export const transformNameToType = (type: string): string => {
   return [...type]
@@ -17,6 +19,16 @@ export const transformNameToType = (type: string): string => {
       }
     })
     .join('')
+}
+
+// @ts-ignore
+const isNeocoreProduct = productName === productsName.neocore
+const combineFilter = (filters, project) => {
+  const filter = {
+    ...filters,
+    project: isNeocoreProduct ? project : undefined,
+  }
+  return Object.values(filter).some((value) => !isUndefined(value)) ? filter : undefined
 }
 
 export default {
@@ -35,10 +47,7 @@ export default {
             perPage: payload.data?.perPage || 10,
           },
           sort: payload.data?.sort,
-          filter: {
-            ...payload.data?.filter,
-            project: rootGetters.selectedProject?.alias,
-          },
+          filter: combineFilter(payload.data?.filter, rootGetters.selectedProject?.alias),
         }),
         payload.options?.listItemModel
       )
@@ -55,10 +64,7 @@ export default {
           pageNumber: data?.page || 1,
           perPage: data?.perPage,
         },
-        filter: {
-          ...data?.filter,
-          project: rootGetters.selectedProject?.alias,
-        },
+        filter: combineFilter(data?.filter, rootGetters.selectedProject?.alias),
       })
 
       return data.filter.format === ExportFormat.JSON ? JSON.stringify(response) : response
@@ -69,7 +75,7 @@ export default {
         type: ApiTypePrefix + transformNameToType(payload.type) + '.Read',
         data: {
           id: payload.id,
-          project: rootGetters.selectedProject?.alias,
+          project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
         },
       })
 
@@ -80,7 +86,7 @@ export default {
       return await ApiService.request({
         type: ApiTypePrefix + transformNameToType(type) + '.Types.List',
         data: {
-          project: rootGetters.selectedProject?.alias,
+          project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
         },
       })
     },
@@ -95,7 +101,7 @@ export default {
           data: {
             ...payload.data.form,
             id: payload.data.form?.id,
-            project: rootGetters.selectedProject?.alias,
+            project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
             productId: rootGetters['productCore/productId'],
           },
         },
@@ -116,7 +122,7 @@ export default {
             ...payload.data.form,
             id: payload.data.form?.id,
             productId: rootGetters['productCore/productId'],
-            project: rootGetters.selectedProject?.alias,
+            project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
           },
         },
         { withSuccessToast: true, formRef: payload.data.formRef }
@@ -133,7 +139,7 @@ export default {
         {
           type: ApiTypePrefix + transformNameToType(type) + '.Update.Multiple',
           data: {
-            project: rootGetters.selectedProject?.alias,
+            project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
             [entityKey]: data,
           },
         },
@@ -148,7 +154,7 @@ export default {
           data: {
             id: payload.id,
             comment: payload.comment,
-            project: rootGetters.selectedProject?.alias,
+            project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
           },
         },
         { withSuccessToast: true }
@@ -164,7 +170,7 @@ export default {
           type: ApiTypePrefix + transformNameToType(type) + '.Delete.Multiple',
           data: {
             ids,
-            project: rootGetters.selectedProject?.alias,
+            project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
           },
         },
         { withSuccessToast: true }
