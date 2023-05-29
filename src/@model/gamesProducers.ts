@@ -27,23 +27,6 @@ export type GamesProducersData = {
 }
 
 // List
-export class GamesProducersListItem {
-  readonly id: string
-  readonly name: string
-  readonly position: number
-  readonly slug: string
-
-  constructor({ id, name, position, slug }) {
-    this.id = id
-    this.name = name
-    this.position = position
-    this.slug = slug
-  }
-}
-export interface IGamesProducersListPayload extends IRequestListPayload {
-  readonly filter?: IGamesProducersFilters
-}
-
 export class GamesProducersForm {
   readonly id?: string
   readonly name: FieldInfo<string>

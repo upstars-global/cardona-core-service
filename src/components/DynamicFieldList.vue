@@ -78,6 +78,7 @@ export default defineComponent({
 
     templateField: {
       type: Object,
+      require: true,
     },
 
     disabled: {
@@ -147,8 +148,8 @@ export default defineComponent({
     // Search
     const selectField: any = ref()
 
-    onMounted(async () => {
-      const [row]: Array<FieldInfo> = rows.value
+    const fetcStarSelect = async (rows) => {
+      const [row]: Array<FieldInfo> = rows
 
       if (row) {
         const selectFieldItem: FieldInfo | undefined = Object.values(row).find(
@@ -161,6 +162,9 @@ export default defineComponent({
           await selectField.value.fetchOptions()
         }
       }
+    }
+    onMounted(async () => {
+      await fetcStarSelect([props.templateField])
     })
 
     const fetchSelectOptions = debounce(async (search: string = '') => {
@@ -168,8 +172,8 @@ export default defineComponent({
     }, 250)
 
     // Handlers
-    const onAdd = () => {
-      let [itemTemplate]: any = [props.templateField] || JSON.parse(JSON.stringify(rows.value))
+    const onAdd = async () => {
+      let [itemTemplate]: any = [props.templateField]
 
       if (rows.value[0] instanceof FieldInfo) {
         itemTemplate = new FieldInfo({

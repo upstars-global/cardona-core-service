@@ -8,14 +8,12 @@ export enum SortDirection {
   desc = 'DESC',
 }
 export interface IOptionsBaseFetch {
-  readonly saveCountItem?: boolean
   readonly listItemModel?: { new (item: unknown): unknown }
 }
 
 export type UseListType = {
   readonly entityName: string
   readonly pageName?: string
-  readonly isGameTable?: boolean
   readonly fields: Array<TableField>
   readonly ListFilterModel: Function
   readonly SideBarModel?: Function
@@ -49,7 +47,6 @@ export interface IBaseListConfig {
   readonly searchPlaceholder?: string
   readonly withExport?: boolean
   readonly withMultipleActions?: boolean
-  readonly saveCountItem?: boolean
   readonly sidebar?: boolean
   readonly isShowYou?: boolean
   readonly isShowUpdatePassword?: boolean
@@ -57,10 +54,14 @@ export interface IBaseListConfig {
   readonly withRemoveComment?: boolean
   readonly withRemoveModal?: boolean
   readonly createFromCopy?: boolean
+  readonly withCustomDrag?: boolean
+  readonly pagination?: boolean
+  readonly withCreateBtn?: boolean
   readonly withCustomFetchList?: boolean
   readonly withCustomDelete?: boolean
   readonly noPermissionPrefix?: boolean
   readonly permissionKey?: string
+  readonly customModuleName?: string
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -83,7 +84,6 @@ export class BaseListConfig implements IBaseListConfig {
   readonly searchPlaceholder?: string
   readonly withExport?: boolean
   readonly withMultipleActions?: boolean
-  readonly saveCountItem?: boolean
   readonly sidebar?: boolean
   readonly isShowYou?: boolean
   readonly isShowUpdatePassword?: boolean
@@ -91,10 +91,14 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withRemoveComment?: boolean
   readonly withRemoveModal?: boolean
   readonly createFromCopy?: boolean
+  readonly withCustomDrag?: boolean
+  readonly pagination?: boolean
+  readonly withCreateBtn?: boolean
   readonly withCustomFetchList?: boolean
   readonly withCustomDelete?: boolean
   readonly noPermissionPrefix?: boolean
   readonly permissionKey?: string
+  readonly customModuleName?: string
 
   constructor({
     withSearch,
@@ -116,7 +120,6 @@ export class BaseListConfig implements IBaseListConfig {
     searchPlaceholder,
     withExport,
     withMultipleActions,
-    saveCountItem,
     sidebar,
     isShowYou,
     isShowUpdatePassword,
@@ -124,10 +127,14 @@ export class BaseListConfig implements IBaseListConfig {
     withRemoveComment,
     withRemoveModal,
     createFromCopy,
+    withCustomDrag,
+    pagination,
+    withCreateBtn,
     withCustomFetchList,
     withCustomDelete,
     noPermissionPrefix,
     permissionKey,
+    customModuleName,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -148,18 +155,21 @@ export class BaseListConfig implements IBaseListConfig {
     this.searchPlaceholder = searchPlaceholder
     this.withExport = withExport
     this.withMultipleActions = withMultipleActions
-    this.saveCountItem = saveCountItem
     this.sidebar = sidebar
     this.isShowYou = isShowYou
     this.isShowUpdatePassword = isShowUpdatePassword
     this.onePermissionKey = onePermissionKey
     this.withRemoveComment = withRemoveComment
     this.withRemoveModal = withRemoveModal
+    this.withCustomDrag = withCustomDrag
+    this.pagination = pagination ?? true
     this.createFromCopy = createFromCopy
+    this.withCreateBtn = withCreateBtn ?? true
     this.withCustomFetchList = withCustomFetchList
     this.withCustomDelete = withCustomDelete
     this.noPermissionPrefix = noPermissionPrefix
     this.permissionKey = permissionKey
+    this.customModuleName = customModuleName
   }
 }
 

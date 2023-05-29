@@ -21,6 +21,13 @@
       </template>
     </side-bar>
 
+    <slot
+      name="table-header"
+      :selected-items="selectedItems"
+      :total="total"
+      :search="searchQuery"
+    />
+
     <!-- Search -->
     <b-row class="filters-row">
       <b-col>
@@ -61,7 +68,7 @@
 
           <slot name="right-search-btn">
             <b-button
-              v-if="isExistsCreatePage && canCreate"
+              v-if="isShownCreateBtn"
               variant="primary"
               :to="{ name: CreatePageName }"
               class="ml-1"
@@ -352,9 +359,9 @@
             </b-dropdown-item>
 
             <b-dropdown-item v-if="canRemove" @click="onClickRemove(item)">
-              <feather-icon icon="Trash2Icon" size="16" />
+              <feather-icon icon="Trash2Icon" size="16" class="text-danger" />
 
-              <span class="align-middle ml-50">
+              <span class="text-danger align-middle ml-50">
                 {{ $t('action.remove') }}
               </span>
             </b-dropdown-item>
@@ -368,7 +375,7 @@
             </div>
 
             <b-button
-              v-if="isExistsCreatePage && canCreate"
+              v-if="isShownCreateBtn"
               variant="primary"
               :to="{ name: CreatePageName }"
               class="mt-2"
@@ -385,7 +392,7 @@
     </b-card>
 
     <!-- Footer pagination -->
-    <div class="mx-2">
+    <div v-if="config?.pagination" class="mx-2">
       <b-row>
         <b-col
           cols="12"
@@ -496,7 +503,6 @@ import ButtonField from './_components/ButtonField.vue'
 import CommentField from './_components/CommentField.vue'
 import ImageField from './_components/ImageField.vue'
 import DatePeriodField from './_components/DatePeriodField.vue'
-import { GameActionType, GamesListItem, GamesSectionGamesItem } from '../../../@model/games'
 import SideBar from '../../../components/templates/BaseList/_components/SideBar.vue'
 import CModal from '../../../components/CModal.vue'
 import SumAndCurrency from '../../../components/SumAndCurrency.vue'
@@ -557,7 +563,6 @@ export default {
       entityName,
       fields,
       ListFilterModel,
-      isGameTable,
       SideBarModel,
       pageName,
       beforeRemoveCallback,
@@ -572,10 +577,10 @@ export default {
     const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 
     // Action names
-    const moduleName: string = convertLowerCaseFirstSymbol(entityName)
+    const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
     const fetchActionName: string = props.config?.withCustomFetchList
       ? `${moduleName}/fetch${entityName}List`
-      : 'baseStoreCore/fetchListEntity'
+      : 'baseStoreCore/fetchEntityList'
     const fetchReportActionName = 'baseStoreCore/fetchReport'
     const updateActionName = 'baseStoreCore/updateEntity'
     const deleteActionName = props.config?.withCustomDelete
@@ -624,6 +629,8 @@ export default {
     const canExport: boolean = props.config?.onePermissionKey
       ? onePermission
       : store.getters.abilityCan(permissionKeyReport, 'view')
+
+    const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
 
     // Sidebar
     const isSidebarShown = ref(false)
@@ -712,7 +719,6 @@ export default {
           sort,
         },
         options: {
-          saveCountItem: props.config?.saveCountItem,
           listItemModel: ListItemModel,
         },
       })
@@ -754,23 +760,10 @@ export default {
       return response
     }
 
-    const onEditPosition = async (item: GamesListItem, position: number) => {
-      const data = isGameTable
-        ? {
-            form: {
-              id: props.config?.staticFilters?.id,
-              games: [
-                { id: item.id, position, type: GameActionType.Update } as GamesSectionGamesItem,
-              ],
-            },
-          }
-        : { form: { id: item.id, position } }
-
-      // TODO slice(0, -5) "Games"
-      const type = isGameTable ? entityName.slice(0, -5) : entityName
+    const onEditPosition = async ({ id }: { id: string }, position: number) => {
       await store.dispatch(updateActionName, {
-        type,
-        data,
+        type: entityName,
+        data: { form: { id, position } },
       })
 
       reFetchList()
@@ -954,18 +947,22 @@ export default {
 
     // Draggable
     const onDragChanged = async (e) => {
-      if (e && !isGameTable) {
-        const localItems: Array<any> = items.value
-        const id = localItems[e.oldIndex].id
-        const position: number = localItems[e.newIndex].position!
+      if (!e) return
 
+      const localItems: Array<any> = items.value
+      const id = localItems[e.oldIndex].id
+      const position: number = localItems[e.newIndex].position!
+
+      if (!props.config?.withCustomDrag) {
         await store.dispatch(updateActionName, {
           type: entityName,
           data: { form: { id, position } },
         })
+
         reFetchList()
       }
-      emit('end', e)
+
+      emit('end', { itemId: id, newIndex: e.newIndex, oldIndex: e.oldIndex })
     }
 
     // Remove
@@ -1004,10 +1001,8 @@ export default {
       entityName,
       CreatePageName,
       UpdatePageName,
-      isExistsCreatePage,
 
       // Permissions
-      canCreate,
       canUpdate,
       canUpdateSeo,
       canRemove,
@@ -1022,6 +1017,7 @@ export default {
 
       // Search
       searchQuery,
+      isShownCreateBtn,
 
       // Export
       onExportFormatSelected,

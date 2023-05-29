@@ -1,7 +1,7 @@
 ARG NODE_BASE_VERSION="node:14.20.1"
 ARG NGINX_BASE_VERSION="nginx:1.18"
 
-FROM ${NODE_BASE_VERSION} AS install
+FROM public.ecr.aws/docker/library/${NODE_BASE_VERSION} AS install
 
 WORKDIR /app
 COPY package.json .
@@ -18,7 +18,7 @@ RUN yarn build
 FROM build AS unit-test
 RUN yarn test:unit
 
-FROM ${NGINX_BASE_VERSION}-alpine
+FROM public.ecr.aws/docker/library/${NGINX_BASE_VERSION}-alpine
 RUN mkdir /app
 COPY --from=build /app/dist /app
 COPY nginx/default.conf /etc/nginx/templates/default.conf.template

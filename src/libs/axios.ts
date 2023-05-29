@@ -4,7 +4,7 @@ import store from '../store'
 import { IAuthTokens, TokenRefreshRequest, applyAuthTokenInterceptor } from 'axios-jwt'
 
 const requestRefresh: TokenRefreshRequest = async (refreshToken: string): Promise<IAuthTokens> =>
-  await store.dispatch('refreshAuth', refreshToken)
+  await store.dispatch('authCore/refreshAuth', refreshToken)
 
 applyAuthTokenInterceptor(axios, { requestRefresh })
 const axiosIns = axios.create({

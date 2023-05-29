@@ -73,35 +73,3 @@ export class GamesFilters implements IGamesFilters {
     this.tagNames = tagNames
   }
 }
-
-//gamesSection
-export enum GameActionType {
-  Add = 'add',
-  Update = 'upd',
-  Delete = 'del',
-}
-export interface IGamesSectionGamesListPayload extends IRequestListPayload {
-  readonly filter?: IGamesSectionGamesFilters
-}
-
-export type IGamesSectionGamesFilters = {
-  readonly search: string
-  readonly id: string
-}
-
-export class EnabledGamesFilters {
-  readonly search?: string
-  readonly id: string
-
-  constructor({ search, id }: IGamesSectionGamesFilters) {
-    this.search = search
-    this.id = id
-  }
-}
-
-export type GamesSectionGamesItem = {
-  readonly id: string
-  readonly name?: string
-  readonly position?: number
-  readonly type?: GameActionType
-}
