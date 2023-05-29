@@ -70,7 +70,7 @@
 
           <slot
             name="right-search-btn"
-            :can-create="isExistsCreatePage && canCreate"
+            :can-create="isShownCreateBtn"
             :create-page-name="CreatePageName"
           >
             <b-button
