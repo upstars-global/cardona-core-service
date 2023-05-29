@@ -310,6 +310,8 @@
             :period="value"
           />
 
+          <copy-field v-else-if="field.type === ListFieldType.Copy" :key="index" :value="value" />
+
           <template v-else-if="field.type === ListFieldType.Percent"> {{ value }} % </template>
 
           <template v-else>
@@ -498,6 +500,7 @@ import ButtonField from './_components/ButtonField.vue'
 import CommentField from './_components/CommentField.vue'
 import ImageField from './_components/ImageField.vue'
 import DatePeriodField from './_components/DatePeriodField.vue'
+import CopyField from './_components/CopyField.vue'
 import SideBar from '../../../components/templates/BaseList/_components/SideBar.vue'
 import CModal from '../../../components/CModal.vue'
 import SumAndCurrency from '../../../components/SumAndCurrency.vue'
@@ -531,6 +534,7 @@ export default {
     DateWithSecondsField,
     StatementField,
     ButtonField,
+    CopyField,
   },
 
   props: {

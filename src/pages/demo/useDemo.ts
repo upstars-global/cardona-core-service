@@ -36,6 +36,11 @@ export const useDemoList = (): UseListType => {
       type: ListFieldType.Badges,
     }),
     new TableField({
+      key: 'login',
+      label: t('auth.login'),
+      type: ListFieldType.Copy,
+    }),
+    new TableField({
       key: 'date',
       label: t('common.date'),
       type: ListFieldType.Date,

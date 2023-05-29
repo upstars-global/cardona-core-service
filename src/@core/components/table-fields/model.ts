@@ -39,6 +39,7 @@ export enum ListFieldType {
   Comment = 'comment',
   Image = 'image',
   Period = 'period',
+  Copy = 'copy',
 }
 export enum ListSize {
   SM = 'sm',

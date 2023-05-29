@@ -157,7 +157,8 @@
   "toast": {
     "success": {
       "default": "Operation successful",
-      "passwordCopied": "Password copied"
+      "passwordCopied": "Password copied",
+      "copied": "Copied"
     },
     "error": {
       "default": "An error has occurred",
