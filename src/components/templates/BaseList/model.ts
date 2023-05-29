@@ -10,6 +10,7 @@ export enum SortDirection {
 }
 export interface IOptionsBaseFetch {
   readonly listItemModel?: { new (item: unknown): unknown }
+  readonly customApiPrefix?: string
 }
 
 export type UseListType = {
@@ -61,6 +62,7 @@ export interface IBaseListConfig {
   readonly withCustomFetchList?: boolean
   readonly withCustomDelete?: boolean
   readonly customModuleName?: string
+  readonly customApiPrefix?: string
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -96,6 +98,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withCustomFetchList?: boolean
   readonly withCustomDelete?: boolean
   readonly customModuleName?: string
+  readonly customApiPrefix?: string
 
   constructor({
     withSearch,
@@ -130,6 +133,7 @@ export class BaseListConfig implements IBaseListConfig {
     withCustomFetchList,
     withCustomDelete,
     customModuleName,
+    customApiPrefix,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -163,6 +167,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.withCustomFetchList = withCustomFetchList
     this.withCustomDelete = withCustomDelete
     this.customModuleName = customModuleName
+    this.customApiPrefix = customApiPrefix
   }
 }
 
@@ -170,16 +175,19 @@ export interface IBaseSectionConfig {
   readonly onePermissionKey?: string
   readonly withCustomModuleName?: boolean
   readonly customModuleName?: string
+  readonly customApiPrefix?: string
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig {
   readonly onePermissionKey?: string
   readonly withCustomModuleName?: boolean
   readonly customModuleName?: string
+  readonly customApiPrefix?: string
   constructor(data: IBaseSectionConfig) {
     this.onePermissionKey = data?.onePermissionKey
     this.withCustomModuleName = data?.withCustomModuleName
     this.customModuleName = data?.customModuleName
+    this.customApiPrefix = data?.customApiPrefix
   }
 }
 

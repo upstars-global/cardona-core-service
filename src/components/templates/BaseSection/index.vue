@@ -149,6 +149,7 @@ export default defineComponent({
         const receivedEntity = await store.dispatch(readActionName, {
           type: entityName,
           id: entityId,
+          customApiPrefix: props.config?.customApiPrefix,
         })
 
         if (isCreatePage) {
@@ -180,6 +181,7 @@ export default defineComponent({
           form: transformedForm,
           formRef: refFormObserver.value,
         },
+        customApiPrefix: props.config?.customApiPrefix,
       })
 
       if (isCreatePage) {
@@ -199,7 +201,11 @@ export default defineComponent({
 
       if (!isRemoveConfirmed) return
 
-      await store.dispatch(deleteActionName, { type: entityName, id })
+      await store.dispatch(deleteActionName, {
+        type: entityName,
+        id,
+        customApiPrefix: props.config?.customApiPrefix,
+      })
 
       await router.push({ name: ListPageName })
     }
