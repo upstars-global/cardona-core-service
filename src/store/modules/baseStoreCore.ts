@@ -37,11 +37,17 @@ export default {
   actions: {
     async fetchEntityList(
       { commit, rootGetters },
-      payload: { type: string; data: IRequestListPayload; options: IOptionsBaseFetch }
+      payload: {
+        type: string
+        data: IRequestListPayload
+        options: IOptionsBaseFetch
+      }
     ) {
       return new ListData(
         await ApiService.request({
-          type: ApiTypePrefix + transformNameToType(payload.type) + '.List',
+          type: `${payload.options.customApiPrefix || ApiTypePrefix}${transformNameToType(
+            payload.type
+          )}.List`,
           pagination: {
             pageNumber: payload.data?.page || 1,
             perPage: payload.data?.perPage || 10,
@@ -55,24 +61,31 @@ export default {
 
     async fetchReport(
       { rootGetters },
-      { type, data }: { type: string; data: IRequestListPayload }
+      payload: { type: string; data: IRequestListPayload; customApiPrefix: string }
     ) {
       const response = await ApiService.request({
-        type: ApiTypePrefix + transformNameToType(type) + '.List.Report',
-        sort: data?.sort,
+        type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+          payload.type
+        )}.List.Report`,
+        sort: payload.data?.sort,
         pagination: {
-          pageNumber: data?.page || 1,
-          perPage: data?.perPage,
+          pageNumber: payload.data?.page || 1,
+          perPage: payload.data?.perPage,
         },
-        filter: combineFilter(data?.filter, rootGetters.selectedProject?.alias),
+        filter: combineFilter(payload.data?.filter, rootGetters.selectedProject?.alias),
       })
 
-      return data.filter.format === ExportFormat.JSON ? JSON.stringify(response) : response
+      return payload.data.filter.format === ExportFormat.JSON ? JSON.stringify(response) : response
     },
 
-    async readEntity({ rootGetters }, payload: { type: string; id: string }) {
+    async readEntity(
+      { rootGetters },
+      payload: { type: string; id: string; customApiPrefix: string }
+    ) {
       const { data } = await ApiService.request({
-        type: ApiTypePrefix + transformNameToType(payload.type) + '.Read',
+        type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+          payload.type
+        )}.Read`,
         data: {
           id: payload.id,
           project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
@@ -93,11 +106,13 @@ export default {
 
     async createEntity(
       { rootGetters },
-      payload: { type: string; data: { form: any; formRef: any } }
+      payload: { type: string; data: { form: any; formRef: any }; customApiPrefix: string }
     ) {
       const { data } = await ApiService.request(
         {
-          type: ApiTypePrefix + transformNameToType(payload.type) + '.Create',
+          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+            payload.type
+          )}.Create`,
           data: {
             ...payload.data.form,
             id: payload.data.form?.id,
@@ -113,11 +128,13 @@ export default {
 
     async updateEntity(
       { rootGetters },
-      payload: { type: string; data: { form: any; formRef: any } }
+      payload: { type: string; data: { form: any; formRef: any }; customApiPrefix: string }
     ) {
       return await ApiService.request(
         {
-          type: ApiTypePrefix + transformNameToType(payload.type) + '.Update',
+          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+            payload.type
+          )}.Update`,
           data: {
             ...payload.data.form,
             id: payload.data.form?.id,
@@ -131,26 +148,37 @@ export default {
 
     async multipleUpdateEntity(
       { rootGetters },
-      { type, data }: { type: string; data: Array<{ id: string; isActive: boolean }> }
+      payload: {
+        type: string
+        data: Array<{ id: string; isActive: boolean }>
+        customApiPrefix: string
+      }
     ) {
-      const entityKey: string = convertLowerCaseFirstSymbol(type)
+      const entityKey: string = convertLowerCaseFirstSymbol(payload.type)
 
       return await ApiService.request(
         {
-          type: ApiTypePrefix + transformNameToType(type) + '.Update.Multiple',
+          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+            payload.type
+          )}.Update.Multiple`,
           data: {
             project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
-            [entityKey]: data,
+            [entityKey]: payload.data,
           },
         },
         { withSuccessToast: true }
       )
     },
 
-    async deleteEntity({ rootGetters }, payload: { type: string; id: string; comment: string }) {
+    async deleteEntity(
+      { rootGetters },
+      payload: { type: string; id: string; comment: string; customApiPrefix }
+    ) {
       return await ApiService.request(
         {
-          type: ApiTypePrefix + transformNameToType(payload.type) + '.Delete',
+          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+            payload.type
+          )}.Delete`,
           data: {
             id: payload.id,
             comment: payload.comment,
@@ -163,13 +191,15 @@ export default {
 
     async multipleDeleteEntity(
       { rootGetters },
-      { type, ids }: { type: string; ids: Array<string> }
+      payload: { type: string; ids: Array<string>; customApiPrefix: string }
     ) {
       return await ApiService.request(
         {
-          type: ApiTypePrefix + transformNameToType(type) + '.Delete.Multiple',
+          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+            payload.type
+          )}.Delete.Multiple`,
           data: {
-            ids,
+            ids: payload.ids,
             project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
           },
         },

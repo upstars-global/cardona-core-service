@@ -693,6 +693,7 @@ export default {
         },
         options: {
           listItemModel: ListItemModel,
+          customApiPrefix: props.config?.customApiPrefix,
         },
       })
 
@@ -717,6 +718,7 @@ export default {
       await store.dispatch(updateActionName, {
         type: entityName,
         data: { form: { id, isActive: !isActive } },
+        customApiPrefix: props.config?.customApiPrefix,
       })
 
       reFetchList()
@@ -726,6 +728,7 @@ export default {
       const response = await store.dispatch(updateActionName, {
         type: entityName,
         data: { form: item },
+        customApiPrefix: props.config?.customApiPrefix,
       })
 
       reFetchList()
@@ -737,6 +740,7 @@ export default {
       await store.dispatch(updateActionName, {
         type: entityName,
         data: { form: { id, position } },
+        customApiPrefix: props.config?.customApiPrefix,
       })
 
       reFetchList()
@@ -760,6 +764,7 @@ export default {
           perPage: total.value,
           sort,
         },
+        customApiPrefix: props.config?.customApiPrefix,
       })
 
       const fakeLink: HTMLElement = document.createElement('a')
@@ -883,6 +888,7 @@ export default {
       await store.dispatch(multipleDeleteActionName, {
         type: entityName,
         ids,
+        customApiPrefix: props.config?.customApiPrefix,
       })
 
       reFetchList()
@@ -930,6 +936,7 @@ export default {
         await store.dispatch(updateActionName, {
           type: entityName,
           data: { form: { id, position } },
+          customApiPrefix: props.config?.customApiPrefix,
         })
 
         reFetchList()
@@ -956,6 +963,7 @@ export default {
         type: entityName,
         id: selectedItem.value.id,
         comment: commentToRemove.value,
+        customApiPrefix: props.config?.customApiPrefix,
       })
 
       hide()
