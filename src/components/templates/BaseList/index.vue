@@ -68,7 +68,11 @@
             </b-button>
           </slot>
 
-          <slot name="right-search-btn">
+          <slot
+            name="right-search-btn"
+            :can-create="isExistsCreatePage && canCreate"
+            :create-page-name="CreatePageName"
+          >
             <b-button
               v-if="isShownCreateBtn"
               variant="primary"
