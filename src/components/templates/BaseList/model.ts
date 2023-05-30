@@ -2,6 +2,7 @@ import { FilterType } from '../../../@model/filter'
 import i18n from '../../../libs/i18n'
 import { TableField } from '../../../@core/components/table-fields/model'
 import { IListSort } from '../../../@model'
+import { ProjectFilterTypes } from '@filterConfig'
 
 export enum SortDirection {
   asc = 'ASC',
@@ -9,6 +10,7 @@ export enum SortDirection {
 }
 export interface IOptionsBaseFetch {
   readonly listItemModel?: { new (item: unknown): unknown }
+  readonly customApiPrefix?: string
 }
 
 export type UseListType = {
@@ -22,7 +24,7 @@ export type UseListType = {
 }
 
 export type FilterListItem = {
-  readonly type: FilterType
+  readonly type: FilterType | ProjectFilterTypes
   readonly key: string
   readonly trackBy?: string
 }
@@ -62,6 +64,7 @@ export interface IBaseListConfig {
   readonly noPermissionPrefix?: boolean
   readonly permissionKey?: string
   readonly customModuleName?: string
+  readonly customApiPrefix?: string
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -99,6 +102,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly noPermissionPrefix?: boolean
   readonly permissionKey?: string
   readonly customModuleName?: string
+  readonly customApiPrefix?: string
 
   constructor({
     withSearch,
@@ -135,6 +139,7 @@ export class BaseListConfig implements IBaseListConfig {
     noPermissionPrefix,
     permissionKey,
     customModuleName,
+    customApiPrefix,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -170,6 +175,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.noPermissionPrefix = noPermissionPrefix
     this.permissionKey = permissionKey
     this.customModuleName = customModuleName
+    this.customApiPrefix = customApiPrefix
   }
 }
 
@@ -177,16 +183,19 @@ export interface IBaseSectionConfig {
   readonly onePermissionKey?: string
   readonly withCustomModuleName?: boolean
   readonly customModuleName?: string
+  readonly customApiPrefix?: string
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig {
   readonly onePermissionKey?: string
   readonly withCustomModuleName?: boolean
   readonly customModuleName?: string
+  readonly customApiPrefix?: string
   constructor(data: IBaseSectionConfig) {
     this.onePermissionKey = data?.onePermissionKey
     this.withCustomModuleName = data?.withCustomModuleName
     this.customModuleName = data?.customModuleName
+    this.customApiPrefix = data?.customApiPrefix
   }
 }
 

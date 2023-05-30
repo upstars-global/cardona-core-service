@@ -32,6 +32,8 @@
     <b-row class="filters-row">
       <b-col>
         <div class="d-flex align-items-center justify-content-end">
+          <slot name="left-search-btn" />
+
           <search-input
             v-if="config.withSearch"
             v-model="searchQuery"
@@ -66,7 +68,11 @@
             @export-format-selected="onExportFormatSelected"
           />
 
-          <slot name="right-search-btn">
+          <slot
+            name="right-search-btn"
+            :can-create="isShownCreateBtn"
+            :create-page-name="CreatePageName"
+          >
             <b-button
               v-if="isShownCreateBtn"
               variant="primary"
@@ -304,6 +310,8 @@
             :period="value"
           />
 
+          <copy-field v-else-if="field.type === ListFieldType.Copy" :key="index" :value="value" />
+
           <template v-else-if="field.type === ListFieldType.Percent"> {{ value }} % </template>
 
           <template v-else>
@@ -503,6 +511,7 @@ import ButtonField from './_components/ButtonField.vue'
 import CommentField from './_components/CommentField.vue'
 import ImageField from './_components/ImageField.vue'
 import DatePeriodField from './_components/DatePeriodField.vue'
+import CopyField from './_components/CopyField.vue'
 import SideBar from '../../../components/templates/BaseList/_components/SideBar.vue'
 import CModal from '../../../components/CModal.vue'
 import SumAndCurrency from '../../../components/SumAndCurrency.vue'
@@ -536,6 +545,7 @@ export default {
     DateWithSecondsField,
     StatementField,
     ButtonField,
+    CopyField,
   },
 
   props: {
@@ -720,6 +730,7 @@ export default {
         },
         options: {
           listItemModel: ListItemModel,
+          customApiPrefix: props.config?.customApiPrefix,
         },
       })
 
@@ -744,6 +755,7 @@ export default {
       await store.dispatch(updateActionName, {
         type: entityName,
         data: { form: { id, isActive: !isActive } },
+        customApiPrefix: props.config?.customApiPrefix,
       })
 
       reFetchList()
@@ -753,6 +765,7 @@ export default {
       const response = await store.dispatch(updateActionName, {
         type: entityName,
         data: { form: item },
+        customApiPrefix: props.config?.customApiPrefix,
       })
 
       reFetchList()
@@ -764,6 +777,7 @@ export default {
       await store.dispatch(updateActionName, {
         type: entityName,
         data: { form: { id, position } },
+        customApiPrefix: props.config?.customApiPrefix,
       })
 
       reFetchList()
@@ -787,6 +801,7 @@ export default {
           perPage: total.value,
           sort,
         },
+        customApiPrefix: props.config?.customApiPrefix,
       })
 
       const fakeLink: HTMLElement = document.createElement('a')
@@ -910,6 +925,7 @@ export default {
       await store.dispatch(multipleDeleteActionName, {
         type: entityName,
         ids,
+        customApiPrefix: props.config?.customApiPrefix,
       })
 
       reFetchList()
@@ -957,6 +973,7 @@ export default {
         await store.dispatch(updateActionName, {
           type: entityName,
           data: { form: { id, position } },
+          customApiPrefix: props.config?.customApiPrefix,
         })
 
         reFetchList()
@@ -983,6 +1000,7 @@ export default {
         type: entityName,
         id: selectedItem.value.id,
         comment: commentToRemove.value,
+        customApiPrefix: props.config?.customApiPrefix,
       })
 
       hide()

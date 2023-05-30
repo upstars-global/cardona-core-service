@@ -7,7 +7,7 @@
     @ok="onSuccess"
     @hidden="clearForm"
   >
-    <base-section ref="formRef" :use-entity="useSection">
+    <base-section ref="formRef" :use-entity="useSection" :with-read-action="false">
       <template #default="{ form }">
         <field-generator v-model="form.password" class="mb-2" />
         <field-generator v-model="form.repeatPassword" class="mb-2" />

@@ -1,7 +1,7 @@
 <template>
   <b-input-group class="input-group-merge" :class="{ error: errors.isNotEmpty }">
     <b-form-input
-      id="login-password"
+      :id="field.key"
       v-model.trim="modelValue"
       :state="errors.isNotEmpty ? false : null"
       :type="inputType"
