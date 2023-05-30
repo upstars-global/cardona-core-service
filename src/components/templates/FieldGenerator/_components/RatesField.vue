@@ -3,32 +3,20 @@
     <div class="font-small-4 font-weight-bolder">
       {{ field.label }}
     </div>
-    <b-row class="flex-wrap mt-1">
-      <b-col v-for="(currency, index) in allCurrencies" :key="currency" md="2" class="px-1">
-        <b-form-group :label="currency" :label-for="`currency-${index}`" :class="formGroupClasses">
-          <b-input-group :class="{ error: errors.isNotEmpty }">
-            <b-form-input
-              :id="`currency-${index}`"
-              :value="value.find((item) => item.currency === currency)?.bet / 100"
-              :placeholder="currency"
-              :state="errors.isNotEmpty ? false : null"
-              :type="inputType"
-              :disabled="disabled"
-              required
-              autocomplete="off"
-              @input="(val) => inputForm(currency, val)"
-            />
-          </b-input-group>
-        </b-form-group>
+    <b-row v-if="formRates.length" class="flex-wrap mt-1">
+      <b-col v-for="(currency, index) in allCurrencies" :key="currency" md="2" class="px-1 pb-1">
+        <field-generator v-model="formRates[index]" />
       </b-col>
     </b-row>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, watchEffect } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
+import { NumberBaseField } from '../../../../@model/baseField'
+import FieldGenerator from '../../../../components/templates/FieldGenerator'
 
 type Rates = {
   readonly currency: string
@@ -53,29 +41,49 @@ const emit = defineEmits<{
   (event: 'input', value: Array<Rates>): void
 }>()
 
-const inputType: string = 'number'
+const isNotFilledFormRates = ref(true)
 const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
 
-watchEffect(() => {
-  if (props.field.value.some((item: Rates) => item.bet === null)) {
-    props.errors.push('')
-  }
-})
-
-const inputForm = (name, val) => {
-  const newValue = props.value.map((item) => {
-    if (item.currency === name) {
-      return {
-        currency: name,
-        bet: val ? val * 100 : null,
-      }
-    }
-    return item
+const formRates = ref(
+  allCurrencies.value.map((item) => {
+    return new NumberBaseField({
+      key: item,
+      value: 0,
+      label: item,
+      validationRules: 'required',
+    })
   })
-  emit('input', newValue)
-}
+)
 
-const formGroupClasses = computed(() => ({
-  'form-required': props.field?.validationRules?.includes('required'),
-}))
+watch(
+  () => props.value,
+  () => {
+    if (isNotFilledFormRates.value && props?.value.some((item: Rates) => item.bet)) {
+      formRates.value = props.value.map((item: Rates) => {
+        return new NumberBaseField({
+          key: item.currency,
+          value: item.bet ? item.bet / 100 : 0,
+          label: item.currency,
+          validationRules: 'required',
+        })
+      })
+      isNotFilledFormRates.value = false
+    }
+  },
+  { deep: true }
+)
+
+watch(
+  () => formRates,
+  () => {
+    emit(
+      'input',
+      formRates.value.map((item) => ({
+        currency: item.key,
+        bet: item.value ? item.value * 100 : 0,
+      }))
+    )
+  },
+  { deep: true }
+)
 </script>
