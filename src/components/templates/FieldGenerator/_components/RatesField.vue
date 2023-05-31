@@ -5,7 +5,7 @@
     </div>
     <b-row v-if="formRates.length" class="flex-wrap mt-1">
       <b-col v-for="(currency, index) in allCurrencies" :key="currency" md="2" class="px-1 pb-1">
-        <field-generator v-model="formRates[index]" />
+        <field-generator v-model="formRates[index]" :disabled="disabled" />
       </b-col>
     </b-row>
   </div>
@@ -27,12 +27,10 @@ const props = withDefaults(
   defineProps<{
     value: Array<Rates>
     field: FieldInfo
-    errors: Array<string>
     disabled: Boolean
   }>(),
   {
     value: () => [] as Array<Rates>,
-    errors: () => [],
     disabled: () => false,
   }
 )
