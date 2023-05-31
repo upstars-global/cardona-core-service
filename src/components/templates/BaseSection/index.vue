@@ -115,7 +115,7 @@ export default defineComponent({
     let permissionKeySeo: string = ''
 
     if (props.config?.permissionKey) {
-      permissionKey = props.config?.permissionKey
+      permissionKey = props.config?.permissionKey || ''
       permissionKeySeo = `${props.config?.permissionKey}-seo`
     } else {
       permissionKey = props.config?.noPermissionPrefix

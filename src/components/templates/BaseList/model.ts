@@ -182,18 +182,24 @@ export class BaseListConfig implements IBaseListConfig {
 export interface IBaseSectionConfig {
   readonly onePermissionKey?: string
   readonly withCustomModuleName?: boolean
+  readonly noPermissionPrefix?: boolean
   readonly customModuleName?: string
   readonly customApiPrefix?: string
+  readonly permissionKey?: string
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig {
   readonly onePermissionKey?: string
+  readonly permissionKey?: string
   readonly withCustomModuleName?: boolean
+  readonly noPermissionPrefix?: boolean
   readonly customModuleName?: string
   readonly customApiPrefix?: string
   constructor(data: IBaseSectionConfig) {
+    this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
     this.withCustomModuleName = data?.withCustomModuleName
+    this.noPermissionPrefix = data?.noPermissionPrefix
     this.customModuleName = data?.customModuleName
     this.customApiPrefix = data?.customApiPrefix
   }

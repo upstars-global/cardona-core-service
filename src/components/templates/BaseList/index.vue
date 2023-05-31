@@ -606,7 +606,7 @@ export default {
     let permissionKeyReport: string = ''
 
     if (props.config?.permissionKey) {
-      permissionKey = props.config?.permissionKey
+      permissionKey = props.config?.permissionKey || ''
       permissionKeySeo = `${props.config?.permissionKey}-seo`
       permissionKeyReport = `${props.config?.permissionKey}-report`
     } else {

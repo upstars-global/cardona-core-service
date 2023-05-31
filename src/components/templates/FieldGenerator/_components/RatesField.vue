@@ -27,11 +27,10 @@ const props = withDefaults(
   defineProps<{
     value: Array<Rates>
     field: FieldInfo
-    disabled: Boolean
+    disabled?: boolean
   }>(),
   {
     value: () => [] as Array<Rates>,
-    disabled: () => false,
   }
 )
 
