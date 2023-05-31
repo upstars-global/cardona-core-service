@@ -40,10 +40,13 @@ export default function useToastService() {
   }
 
   const toastErrorMessageString = (message: string) => {
+    const strToRemove = 'Invalid response. '
+    const newMessage = message.replace(strToRemove, '')
+
     Vue.$toast({
       component: ToastificationContent,
       props: {
-        title: message,
+        title: newMessage,
         icon: 'AlertTriangleIcon',
         variant: 'danger',
       },
