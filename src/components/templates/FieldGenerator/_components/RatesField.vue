@@ -47,6 +47,7 @@ const formRates = ref(
       key: item,
       value: 0,
       label: item,
+      placeholder: '0.00',
       validationRules: 'required',
     })
   })

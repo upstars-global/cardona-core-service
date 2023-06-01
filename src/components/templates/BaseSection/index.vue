@@ -145,7 +145,12 @@ export default defineComponent({
       : store.getters.abilityCan(permissionKeySeo, 'update')
 
     const isLoadingPage = computed(() => {
-      const entityUrl = convertCamelCase(entityName, '/')
+      const indexSymbolNextDash = entityName.indexOf('-') + 1
+      const entityNameForLoad = entityName.replace(
+        entityName[indexSymbolNextDash],
+        entityName[indexSymbolNextDash].toLowerCase()
+      )
+      const entityUrl = convertCamelCase(entityNameForLoad, '/')
 
       return store.getters.isLoadingEndpoint([
         `${entityUrl}/create`,
