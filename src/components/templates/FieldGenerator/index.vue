@@ -157,7 +157,7 @@ export default defineComponent({
       props.withLabel && !isCheckType.value ? props.value.label : ''
     )
     const formGroupClasses = computed(() => ({
-      'form-required': props.value?.validationRules?.includes('required'),
+      'form-required': props.value?.validationRules?.includes('required') && groupLabel.value,
     }))
 
     const fieldModel = computed({
