@@ -62,6 +62,7 @@ watch(
           key: item.currency,
           value: item.bet ? item.bet / 100 : 0,
           label: item.currency,
+          placeholder: '0.00',
           validationRules: 'required',
         })
       })
