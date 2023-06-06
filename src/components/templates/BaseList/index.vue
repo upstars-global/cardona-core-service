@@ -320,7 +320,7 @@
         </template>
 
         <template v-if="config.selectable" #cell(selected)="{ index, rowSelected, item }">
-          <div :id="item.id" :data-index="index" class="table-checkbox">
+          <div :id="`c-${item.id}`" :data-index="index" class="table-checkbox">
             <b-form-checkbox :checked="rowSelected" @change="onChangeSelected($event, index)" />
           </div>
         </template>
@@ -1056,6 +1056,7 @@ export default {
       fields,
       ListFieldType,
       selectedFields,
+      items,
       getList,
       checkSlotExistence,
       getUpdateRoute,
