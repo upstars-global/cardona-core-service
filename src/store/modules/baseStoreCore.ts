@@ -7,7 +7,7 @@ import { ApiTypePrefix, productName } from '@productConfig'
 import { productsName } from '../../configs/productsName'
 import { isUndefined } from 'lodash'
 
-const isSymbolIsDash = (symbol: string) => symbol === '-'
+const isSymbolIsDash = (symbol: string): boolean => symbol === '-'
 
 export const transformNameToType = (type: string): string => {
   return [...type]

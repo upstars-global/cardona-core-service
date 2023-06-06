@@ -68,13 +68,13 @@ export const convertDictionaryToOptions = (
   )
 }
 
-const formatPermissionResponse = (
-  basePermission: string
-): {
+interface permissionKeys {
   permissionKey: string
   permissionKeySeo: string
   permissionKeyReport: string
-} => {
+}
+
+const formatPermissionResponse = (basePermission: string): permissionKeys => {
   return {
     permissionKey: basePermission,
     permissionKeySeo: basePermission + '-seo',
@@ -89,7 +89,7 @@ export const getPermissionKeys = ({
   permissionKey?: string
   permissionPrefix?: string
   entityNamePermission?: string
-}) => {
+}): permissionKeys => {
   if (!permissionKey && !entityNamePermission) {
     throw new Error('No permission detected')
   }
