@@ -110,8 +110,21 @@ export default defineComponent({
     const deleteActionName: string = `${moduleName}/deleteEntity`
 
     // Permissions
-    const permissionKey: string = `${permissionPrefix}-${convertCamelCase(entityName, '-')}`
-    const permissionKeySeo: string = `${permissionPrefix}-${convertCamelCase(entityName, '-')}-seo`
+    const entityNamePermission = entityName.replace('-', '')
+    let permissionKey: string = ''
+    let permissionKeySeo: string = ''
+
+    if (props.config?.permissionKey) {
+      permissionKey = props.config?.permissionKey || ''
+      permissionKeySeo = `${props.config?.permissionKey}-seo`
+    } else {
+      permissionKey = props.config?.noPermissionPrefix
+        ? `${convertCamelCase(entityNamePermission, '-')}`
+        : `${permissionPrefix}-${convertCamelCase(entityNamePermission, '-')}`
+      permissionKeySeo = props.config?.noPermissionPrefix
+        ? `${convertCamelCase(entityNamePermission, '-')}-seo`
+        : `${permissionPrefix}-${convertCamelCase(entityNamePermission, '-')}-seo`
+    }
 
     const onePermission: boolean = store.getters.abilityCan(props.config?.onePermissionKey, 'view')
 
@@ -132,7 +145,12 @@ export default defineComponent({
       : store.getters.abilityCan(permissionKeySeo, 'update')
 
     const isLoadingPage = computed(() => {
-      const entityUrl = convertCamelCase(entityName, '/')
+      const indexSymbolNextDash = entityName.indexOf('-') + 1
+      const entityNameForLoad = entityName.replace(
+        entityName[indexSymbolNextDash],
+        entityName[indexSymbolNextDash].toLowerCase()
+      )
+      const entityUrl = convertCamelCase(entityNameForLoad, '/')
 
       return store.getters.isLoadingEndpoint([
         `${entityUrl}/create`,

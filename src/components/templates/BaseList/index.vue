@@ -600,15 +600,33 @@ export default {
     const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
 
     // Permissions
-    const permissionKey = `${permissionPrefix}-${convertCamelCase(entityName, '-')}`
-    const permissionKeySeo = `${permissionPrefix}-${convertCamelCase(entityName, '-')}-seo`
-    const permissionKeyReport = `${permissionPrefix}-${convertCamelCase(entityName, '-')}-report`
+    const entityNamePermission = entityName.replace('-', '')
+    let permissionKey: string = ''
+    let permissionKeySeo: string = ''
+    let permissionKeyReport: string = ''
+
+    if (props.config?.permissionKey) {
+      permissionKey = props.config?.permissionKey || ''
+      permissionKeySeo = `${props.config?.permissionKey}-seo`
+      permissionKeyReport = `${props.config?.permissionKey}-report`
+    } else {
+      permissionKey = props.config?.noPermissionPrefix
+        ? `${convertCamelCase(entityNamePermission, '-')}`
+        : `${permissionPrefix}-${convertCamelCase(entityNamePermission, '-')}`
+      permissionKeySeo = props.config?.noPermissionPrefix
+        ? `${convertCamelCase(entityNamePermission, '-')}-seo`
+        : `${permissionPrefix}-${convertCamelCase(entityNamePermission, '-')}-seo`
+      permissionKeyReport = props.config?.noPermissionPrefix
+        ? `${convertCamelCase(entityNamePermission, '-')}-report`
+        : `${permissionPrefix}-${convertCamelCase(entityNamePermission, '-')}-report`
+    }
 
     const onePermission: boolean = store.getters.abilityCan(props.config?.onePermissionKey, 'view')
 
     const canCreate: boolean = props.config?.onePermissionKey
       ? onePermission
       : store.getters.abilityCan(permissionKey, 'create')
+
     const canUpdate: boolean = props.config?.onePermissionKey
       ? onePermission
       : store.getters.abilityCan(permissionKey, 'update')
@@ -666,8 +684,13 @@ export default {
     const selectedFields = ref<TableField[]>([...fields])
 
     const isLoadingList = computed(() => {
-      const entityUrl: string = convertCamelCase(entityName, '/')
+      const indexSymbolNextDash = entityName.indexOf('-') + 1
+      const entityNameForLoad = entityName.replace(
+        entityName[indexSymbolNextDash],
+        entityName[indexSymbolNextDash].toLowerCase()
+      )
 
+      const entityUrl: string = convertCamelCase(entityNameForLoad, '/')
       return store.getters.isLoadingEndpoint([
         `${entityUrl}/list`,
         `${entityUrl}/update`,
@@ -697,7 +720,6 @@ export default {
     const getList = async () => {
       const filter: object = setRequestFilters()
       const sort = sortData.sortBy ? [new ListSort(sortData)] : undefined
-
       const { list, total } = await store.dispatch(fetchActionName, {
         type: entityName,
         data: {

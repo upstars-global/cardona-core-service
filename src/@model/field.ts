@@ -25,6 +25,7 @@ export enum FieldType {
   SwitchWithState = 'switch-with-state',
   SumRange = 'sum-range',
   Phone = 'phone',
+  Rates = 'rates',
 }
 
 export interface IFieldInfo {
