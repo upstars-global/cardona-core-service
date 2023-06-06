@@ -81,15 +81,14 @@ const formatPermissionResponse = (basePermission: string): permissionKeys => {
     permissionKeyReport: basePermission + '-report',
   }
 }
-export const getPermissionKeys = ({
-  permissionKey,
-  permissionPrefix,
-  entityNamePermission,
-}: {
+export const getPermissionKeys = (config: {
   permissionKey?: string
   permissionPrefix?: string
   entityNamePermission?: string
 }): permissionKeys => {
+  const { entityNamePermission } = config
+  let { permissionKey = '', permissionPrefix = '' } = config
+
   if (!permissionKey && !entityNamePermission) {
     throw new Error('No permission detected')
   }
@@ -101,7 +100,5 @@ export const getPermissionKeys = ({
   if (!permissionKey && entityNamePermission) {
     permissionKey = convertCamelCase(entityNamePermission, '-')
   }
-
-  const basePermission = String(permissionPrefix) + String(permissionKey)
-  return formatPermissionResponse(basePermission)
+  return formatPermissionResponse(permissionPrefix + permissionKey)
 }
