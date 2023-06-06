@@ -58,3 +58,11 @@ export class FilterID {
     this.id = id
   }
 }
+
+export class FilterSearch {
+  readonly search?: string
+
+  constructor({ search }) {
+    this.search = search
+  }
+}

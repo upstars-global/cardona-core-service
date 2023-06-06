@@ -1,0 +1,88 @@
+<template>
+  <div v-if="allCurrencies.isNotEmpty" class="full-width">
+    <div class="font-small-4 font-weight-bolder">
+      {{ field.label }}
+    </div>
+    <b-row v-if="formRates.length" class="flex-wrap mt-1">
+      <b-col v-for="(currency, index) in allCurrencies" :key="currency" md="2" class="px-1 pb-1">
+        <field-generator v-model="formRates[index]" :disabled="disabled" />
+      </b-col>
+    </b-row>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue'
+import { FieldInfo } from '../../../../@model/field'
+import store from '../../../../store'
+import { NumberBaseField } from '../../../../@model/baseField'
+import FieldGenerator from '../../../../components/templates/FieldGenerator'
+
+type Rates = {
+  readonly currency: string
+  readonly bet: number | null
+}
+
+const props = withDefaults(
+  defineProps<{
+    value: Array<Rates>
+    field: FieldInfo
+    disabled?: boolean
+  }>(),
+  {
+    value: () => [] as Array<Rates>,
+  }
+)
+
+const emit = defineEmits<{
+  (event: 'input', value: Array<Rates>): void
+}>()
+
+const isNotFilledFormRates = ref(true)
+const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
+
+const formRates = ref(
+  allCurrencies.value.map((item) => {
+    return new NumberBaseField({
+      key: item,
+      value: 0,
+      label: item,
+      placeholder: '0.00',
+      validationRules: 'required',
+    })
+  })
+)
+
+watch(
+  () => props.value,
+  () => {
+    if (isNotFilledFormRates.value && props?.value.some((item: Rates) => item.bet)) {
+      formRates.value = props.value.map((item: Rates) => {
+        return new NumberBaseField({
+          key: item.currency,
+          value: item.bet ? item.bet / 100 : 0,
+          label: item.currency,
+          placeholder: '0.00',
+          validationRules: 'required',
+        })
+      })
+      isNotFilledFormRates.value = false
+    }
+  },
+  { deep: true }
+)
+
+watch(
+  () => formRates,
+  () => {
+    emit(
+      'input',
+      formRates.value.map((item) => ({
+        currency: item.key,
+        bet: item.value ? item.value * 100 : 0,
+      }))
+    )
+  },
+  { deep: true }
+)
+</script>

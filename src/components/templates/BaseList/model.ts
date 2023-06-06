@@ -61,6 +61,8 @@ export interface IBaseListConfig {
   readonly withCreateBtn?: boolean
   readonly withCustomFetchList?: boolean
   readonly withCustomDelete?: boolean
+  readonly noPermissionPrefix?: boolean
+  readonly permissionKey?: string
   readonly customModuleName?: string
   readonly customApiPrefix?: string
 }
@@ -97,6 +99,8 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withCreateBtn?: boolean
   readonly withCustomFetchList?: boolean
   readonly withCustomDelete?: boolean
+  readonly noPermissionPrefix?: boolean
+  readonly permissionKey?: string
   readonly customModuleName?: string
   readonly customApiPrefix?: string
 
@@ -132,6 +136,8 @@ export class BaseListConfig implements IBaseListConfig {
     withCreateBtn,
     withCustomFetchList,
     withCustomDelete,
+    noPermissionPrefix,
+    permissionKey,
     customModuleName,
     customApiPrefix,
   }: IBaseListConfig) {
@@ -166,6 +172,8 @@ export class BaseListConfig implements IBaseListConfig {
     this.withCreateBtn = withCreateBtn ?? true
     this.withCustomFetchList = withCustomFetchList
     this.withCustomDelete = withCustomDelete
+    this.noPermissionPrefix = noPermissionPrefix
+    this.permissionKey = permissionKey
     this.customModuleName = customModuleName
     this.customApiPrefix = customApiPrefix
   }
@@ -174,18 +182,24 @@ export class BaseListConfig implements IBaseListConfig {
 export interface IBaseSectionConfig {
   readonly onePermissionKey?: string
   readonly withCustomModuleName?: boolean
+  readonly noPermissionPrefix?: boolean
   readonly customModuleName?: string
   readonly customApiPrefix?: string
+  readonly permissionKey?: string
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig {
   readonly onePermissionKey?: string
+  readonly permissionKey?: string
   readonly withCustomModuleName?: boolean
+  readonly noPermissionPrefix?: boolean
   readonly customModuleName?: string
   readonly customApiPrefix?: string
   constructor(data: IBaseSectionConfig) {
+    this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
     this.withCustomModuleName = data?.withCustomModuleName
+    this.noPermissionPrefix = data?.noPermissionPrefix
     this.customModuleName = data?.customModuleName
     this.customApiPrefix = data?.customApiPrefix
   }
