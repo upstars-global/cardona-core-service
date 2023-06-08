@@ -35,6 +35,7 @@ import StatusWithDateHistoryView from './_components/StatusWithDateHistoryView.v
 import StatementView from './_components/StatementView.vue'
 import LinkView from './_components/LinkView.vue'
 import BadgeCopyView from './_components/BadgeCopyView.vue'
+import CopyView from './_components/CopyView.vue'
 import DateView from './_components/DateView.vue'
 import DateWithSecondsView from './_components/DateWithSecondsView.vue'
 import SumAndCurrencyView from './_components/SumAndCurrencyView.vue'
@@ -64,6 +65,7 @@ export default defineComponent({
     ObjectToRowsView,
     LocaleView,
     RegionView,
+    CopyView,
   },
 
   props: {
