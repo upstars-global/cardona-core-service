@@ -1107,6 +1107,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table-responsive {
+  min-height: 198px;
+}
+
 .filters-row {
   margin-bottom: 2rem;
 
