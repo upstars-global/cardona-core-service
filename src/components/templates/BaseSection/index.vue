@@ -48,7 +48,12 @@ import { PageType, UseEntityType } from './model'
 import { ValidationObserver } from 'vee-validate'
 import formValidation from '../../../@core/comp-functions/forms/form-validation'
 import CardLoader from '../../../@core/components/card-loader/CardLoader.vue'
-import { convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
+import {
+  convertCamelCase,
+  convertLowerCaseFirstSymbol,
+  getPermissionKeys,
+  transformFormData,
+} from '../../../helpers'
 import { useBvModal } from '../../../helpers/bvModal'
 import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
 import { useRouter } from '../../../@core/utils/utils'
@@ -111,20 +116,11 @@ export default defineComponent({
 
     // Permissions
     const entityNamePermission = entityName.replace('-', '')
-    let permissionKey: string = ''
-    let permissionKeySeo: string = ''
-
-    if (props.config?.permissionKey) {
-      permissionKey = props.config?.permissionKey || ''
-      permissionKeySeo = `${props.config?.permissionKey}-seo`
-    } else {
-      permissionKey = props.config?.noPermissionPrefix
-        ? `${convertCamelCase(entityNamePermission, '-')}`
-        : `${permissionPrefix}-${convertCamelCase(entityNamePermission, '-')}`
-      permissionKeySeo = props.config?.noPermissionPrefix
-        ? `${convertCamelCase(entityNamePermission, '-')}-seo`
-        : `${permissionPrefix}-${convertCamelCase(entityNamePermission, '-')}-seo`
-    }
+    const { permissionKey, permissionKeySeo } = getPermissionKeys({
+      permissionKey: props.config?.permissionKey,
+      permissionPrefix: props.config?.noPermissionPrefix ? undefined : permissionPrefix,
+      entityNamePermission,
+    })
 
     const onePermission: boolean = store.getters.abilityCan(props.config?.onePermissionKey, 'view')
 

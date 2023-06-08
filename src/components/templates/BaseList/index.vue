@@ -494,7 +494,12 @@ import { Location } from 'vue-router'
 import { TableField, ListFieldType } from '../../../@core/components/table-fields/model'
 import { FieldType } from '../../../@model/field'
 import TableFields from '../../../@core/components/table-fields/TableFields.vue'
-import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol } from '../../../helpers'
+import {
+  checkExistsPage,
+  convertCamelCase,
+  convertLowerCaseFirstSymbol,
+  getPermissionKeys,
+} from '../../../helpers'
 import { parseDateRange } from '../../../helpers/filters'
 import SearchInput from './_components/SearchInput.vue'
 import StatusField from './_components/StatusField.vue'
@@ -601,25 +606,11 @@ export default {
 
     // Permissions
     const entityNamePermission = entityName.replace('-', '')
-    let permissionKey: string = ''
-    let permissionKeySeo: string = ''
-    let permissionKeyReport: string = ''
-
-    if (props.config?.permissionKey) {
-      permissionKey = props.config?.permissionKey || ''
-      permissionKeySeo = `${props.config?.permissionKey}-seo`
-      permissionKeyReport = `${props.config?.permissionKey}-report`
-    } else {
-      permissionKey = props.config?.noPermissionPrefix
-        ? `${convertCamelCase(entityNamePermission, '-')}`
-        : `${permissionPrefix}-${convertCamelCase(entityNamePermission, '-')}`
-      permissionKeySeo = props.config?.noPermissionPrefix
-        ? `${convertCamelCase(entityNamePermission, '-')}-seo`
-        : `${permissionPrefix}-${convertCamelCase(entityNamePermission, '-')}-seo`
-      permissionKeyReport = props.config?.noPermissionPrefix
-        ? `${convertCamelCase(entityNamePermission, '-')}-report`
-        : `${permissionPrefix}-${convertCamelCase(entityNamePermission, '-')}-report`
-    }
+    const { permissionKey, permissionKeySeo, permissionKeyReport } = getPermissionKeys({
+      permissionKey: props.config?.permissionKey,
+      permissionPrefix: props.config?.noPermissionPrefix ? undefined : permissionPrefix,
+      entityNamePermission,
+    })
 
     const onePermission: boolean = store.getters.abilityCan(props.config?.onePermissionKey, 'view')
 

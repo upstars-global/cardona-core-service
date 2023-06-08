@@ -7,15 +7,18 @@ import { ApiTypePrefix, productName } from '@productConfig'
 import { productsName } from '../../configs/productsName'
 import { isUndefined } from 'lodash'
 
+const isSymbolIsDash = (symbol: string): boolean => symbol === '-'
+
 export const transformNameToType = (type: string): string => {
   return [...type]
     .map((item, index) => {
+      //First symbol
       if (index === 0) {
         return item.toUpperCase()
-      } else if (item === '-') {
+      } else if (isSymbolIsDash(item)) {
         return ''
       } else if (item.toUpperCase() === item) {
-        if (type[index - 1] === '-') return item
+        if (isSymbolIsDash(type[index - 1])) return item
         return '.' + item
       } else {
         return item

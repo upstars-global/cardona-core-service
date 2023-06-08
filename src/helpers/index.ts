@@ -67,3 +67,38 @@ export const convertDictionaryToOptions = (
       } as OptionsItem)
   )
 }
+
+interface permissionKeys {
+  permissionKey: string
+  permissionKeySeo: string
+  permissionKeyReport: string
+}
+
+const formatPermissionResponse = (basePermission: string): permissionKeys => {
+  return {
+    permissionKey: basePermission,
+    permissionKeySeo: basePermission + '-seo',
+    permissionKeyReport: basePermission + '-report',
+  }
+}
+export const getPermissionKeys = (config: {
+  permissionKey?: string
+  permissionPrefix?: string
+  entityNamePermission?: string
+}): permissionKeys => {
+  const { entityNamePermission } = config
+  let { permissionKey = '', permissionPrefix = '' } = config
+
+  if (!permissionKey && !entityNamePermission) {
+    throw new Error('No permission detected')
+  }
+
+  if (permissionPrefix) {
+    permissionPrefix += '-'
+  }
+
+  if (!permissionKey && entityNamePermission) {
+    permissionKey = convertCamelCase(entityNamePermission, '-')
+  }
+  return formatPermissionResponse(permissionPrefix + permissionKey)
+}
