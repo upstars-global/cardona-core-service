@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { FieldInfo } from '../../../../@model/field'
 
 type TextareaWithCounterFieldProps = {
-  value: string
+  value?: string
   field: FieldInfo
   disabled: boolean
   errors: Array<string>
@@ -18,13 +18,15 @@ const props = withDefaults(defineProps<TextareaWithCounterFieldProps>(), {
 const emit = defineEmits<{
   (event: 'input', value: string): void
 }>()
-const maxCharsDefault: number = 100
+const maxCharsDefault = 100
 
 const maxChars = computed(() => props.field?.maxLength || maxCharsDefault)
 const modelValue = computed({
   get: (): string => props.value,
   set: (value: string) => emit('input', value),
 })
+
+const enteredValueLength = computed(() => (props.value ? props.value.length : 0))
 </script>
 
 <template>
@@ -39,7 +41,7 @@ const modelValue = computed({
       :maxlength="maxChars"
     />
     <small class="textarea-counter-value float-right">
-      <span class="char-count">{{ modelValue.length }}</span> / {{ maxChars }}
+      <span class="char-count">{{ enteredValueLength }}</span> / {{ maxChars }}
     </small>
   </div>
 </template>
