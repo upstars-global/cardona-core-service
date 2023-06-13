@@ -89,7 +89,7 @@ export default defineComponent({
     },
 
     useEntity: {
-      type: Function as PropType<() => UseEntityType>,
+      type: Function as PropType<() => UseEntityType<{}>>,
       required: true,
     },
   },
@@ -193,7 +193,7 @@ export default defineComponent({
       if (!(await validate())) return
 
       const actionName: string = isCreatePage ? createActionName : updateActionName
-      const transformedForm = transformFormData(form.value)
+      const transformedForm: any = transformFormData(form.value)
 
       const data = await store.dispatch(actionName, {
         type: entityName,

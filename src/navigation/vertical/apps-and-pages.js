@@ -4,7 +4,7 @@ export default [
   },
   {
     title: 'BO-Demo',
-    route: 'Demo',
+    route: 'DemoList',
     icon: 'BoxIcon',
   },
   {

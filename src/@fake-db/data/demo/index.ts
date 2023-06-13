@@ -1,7 +1,8 @@
 import mock from '../../mock'
 import { PaginationData } from '../../../@model'
 
-const data = [
+// List
+const listData = [
   {
     id: '632c39448e03b2dab20c8a77',
     name: 'Test',
@@ -138,4 +139,82 @@ const data = [
 ]
 
 const pagination: PaginationData = { pageNumber: 1, perPage: 10, total: 4 }
-mock.onPost('/api/v2/demo/list').reply(() => [200, { data, pagination }])
+mock.onPost('/api/v2/demo/list').reply(() => [200, { data: listData, pagination }])
+
+// CRUD
+const entityData = {
+  id: '2',
+  switch: true,
+  switchWithState: true,
+  text: 'Some text',
+  number: 99,
+  minute: 12,
+  sumRange: [1000, 5000],
+  percent: 25,
+  password: '111111',
+  phone: '+380957777888',
+  check: true,
+  radio: true,
+  checkGroup: ['option3', 'option5'],
+  select: 'option3',
+  multiSelect: ['option4'],
+  date: '2023-06-05T00:00:00+00:00',
+  dateRange: '',
+  dateTime: '2023-06-18T05:55:00+00:00',
+  textarea: 'Some text',
+  textareaWithCounter: 'Some text',
+  tags: ['some', 'tag', 'first'],
+}
+
+mock.onPost('/api/v2/demo/read').reply(() => [
+  200,
+  {
+    data: entityData,
+  },
+])
+
+mock.onPost('/api/v2/demo/create').reply(() => [200, { data: null }])
+mock.onPost('/api/v2/demo/update').reply(() => [200, { data: null }])
+mock.onPost('/api/v2/demo/delete').reply(() => [200, { data: null }])
+
+// Options
+const options = [
+  {
+    id: 'option1',
+    name: 'Option 1',
+  },
+  {
+    id: 'option2',
+    name: 'Option 2',
+  },
+  {
+    id: 'option3',
+    name: 'Option 3',
+  },
+  {
+    id: 'option4',
+    name: 'Option 4',
+  },
+  {
+    id: 'option5',
+    name: 'Option 5',
+  },
+  {
+    id: 'option6',
+    name: 'Option 6',
+  },
+  {
+    id: 'option7',
+    name: 'Option 7',
+  },
+  {
+    id: 'option8',
+    name: 'Option 8',
+  },
+  {
+    id: 'option9',
+    name: 'Option 9',
+  },
+]
+
+mock.onPost('/api/v2/options/list').reply(() => [200, { data: options }])

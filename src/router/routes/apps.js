@@ -10,8 +10,45 @@ export default [
   // *===============================================---*
   {
     path: '/demo',
-    name: 'Demo',
+    name: 'DemoList',
     component: () => import('../../pages/demo/list'),
+  },
+
+  {
+    path: '/demo/create',
+    name: 'DemoCreate',
+    component: () => import('../../pages/demo/create'),
+    meta: {
+      title: 'demo.create',
+      breadcrumb: [
+        {
+          to: { name: 'DemoList' },
+          text: 'demo.list',
+        },
+        {
+          text: 'demo.create',
+          active: true,
+        },
+      ],
+    },
+  },
+  {
+    path: '/demo/update/:id',
+    name: 'DemoUpdate',
+    component: () => import('../../pages/demo/update'),
+    meta: {
+      title: 'demo.edit',
+      breadcrumb: [
+        {
+          to: { name: 'DemoList' },
+          text: 'demo.list',
+        },
+        {
+          text: 'demo.edit',
+          active: true,
+        },
+      ],
+    },
   },
 
   // *===============================================---*

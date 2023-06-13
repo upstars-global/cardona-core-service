@@ -1,5 +1,19 @@
 <template>
   <base-list :use-list="useDemoList" :config="listConfig" class="demo-list">
+    <template #right-search-btn>
+      <b-button variant="primary" :to="{ name: 'DemoCreate' }" class="ml-1">
+        <feather-icon icon="PlusIcon" class="mr-50" />
+
+        <span class="text-nowrap">
+          {{ $t('action.create') }}
+        </span>
+      </b-button>
+    </template>
+
+    <template #cell(name)="{ item }">
+      <name-with-id-field :item="item" :get-update-route="getUpdateRoute" />
+    </template>
+
     <template #cell(winBack)="{ item }">
       <sum-and-currency
         :data="{
@@ -26,7 +40,7 @@
           </span>
         </b-dropdown-item>
 
-        <b-dropdown-item>
+        <b-dropdown-item :to="{ name: 'DemoUpdate', params: { id: '1' } }">
           <feather-icon icon="EditIcon" size="16" />
 
           <span class="align-middle ml-50">
@@ -64,8 +78,10 @@ export default {
 import BaseList from '../../../components/templates/BaseList/index.vue'
 import SumAndCurrency from '../../../components/SumAndCurrency.vue'
 import { BaseListConfig } from '../../../components/templates/BaseList/model'
+import { Location } from 'vue-router'
 import { useDemoList } from '../useDemo'
 import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
+import NameWithIdField from '../../../components/templates/BaseList/_components/NameWithIdField.vue'
 
 const { t } = useI18nUtils()
 
@@ -75,7 +91,10 @@ const listConfig = new BaseListConfig({
   responsive: true,
   draggable: true,
   withCustomFetchList: true,
+  withSearch: true,
 })
+
+const getUpdateRoute = ({ id }): Location => ({ name: 'DemoUpdate', params: { id } })
 </script>
 
 <style lang="scss" scoped>

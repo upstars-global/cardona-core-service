@@ -22,12 +22,18 @@
 import { computed, ref } from 'vue'
 import { FieldInfo } from '../../../../@model/field'
 
-const props = defineProps<{
+type Props = {
   value: string
   field: FieldInfo
   errors: Array<string>
-  disabled: Boolean
-}>()
+  disabled?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  value: '',
+  errors: () => [],
+})
+
 const emit = defineEmits<{
   (event: 'input', value: string): void
 }>()

@@ -47,7 +47,7 @@
 import { defineComponent, ref, watch } from 'vue'
 import { transformFormData } from '../../../helpers'
 import { SeoForm } from '../../../@model/seo'
-import FieldGenerator from '../../../components/templates/FieldGenerator'
+import FieldGenerator from '../../../components/templates/FieldGenerator/index.vue'
 
 export default defineComponent({
   name: 'SeoForm',
