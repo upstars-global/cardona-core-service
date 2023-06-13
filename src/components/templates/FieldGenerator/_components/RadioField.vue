@@ -11,7 +11,7 @@ export default defineComponent({
   props: {
     value: {
       type: [String, Boolean],
-      required: true,
+      default: false,
     },
 
     field: {

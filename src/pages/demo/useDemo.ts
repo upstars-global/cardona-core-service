@@ -1,7 +1,8 @@
 import { ListFieldType, TableField } from '../../@core/components/table-fields/model'
 import { useUtils as useI18nUtils } from '../../@core/libs/i18n'
 import { UseListType } from '../../components/templates/BaseList/model'
-import { DemoFilter } from '../../@model/demo'
+import { UseEntityType } from '../../components/templates/BaseSection/model'
+import { DemoFilter, DemoForm } from '../../@model/demo'
 const { t } = useI18nUtils()
 
 const entityName = 'Demo'
@@ -95,5 +96,14 @@ export const useDemoList = (): UseListType => {
     entityName,
     fields,
     ListFilterModel,
+  }
+}
+
+export const useDemoSection = (): UseEntityType<DemoForm> => {
+  const EntityFormClass = DemoForm
+
+  return {
+    entityName,
+    EntityFormClass,
   }
 }

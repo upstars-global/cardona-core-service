@@ -118,7 +118,55 @@
     "score": "Score",
     "possibleWinAmount": "Possible win",
     "state": "State",
-    "comment": "Comment"
+    "comment": "Comment",
+    "phone": {
+      "_": "Phone",
+      "list": "Phones"
+    }
+  },
+  "title": {
+    "seo": "Seo",
+    "localization": "Localization",
+    "demo": {
+      "list": "Demo list",
+      "create": "Demo create",
+      "edit": "Demo edit"
+    }
+  },
+  "component": {
+    "tags": {
+      "duplicateTag": "Duplicate tag"
+    }
+  },
+  "page": {
+    "demo": {
+      "fields": "Fields",
+      "input": "Input",
+      "check": "Check",
+      "select": "Select",
+      "textarea": "Textarea",
+      "specific": "Specific",
+      "switchField": "Switch field",
+      "switchWithStateField": "Switch with state field",
+      "textField": "Text field",
+      "numberField": "Number field",
+      "minuteField": "Minute field",
+      "sumRangeField": "Sum Range field",
+      "percentField": "Percent field",
+      "passwordField": "Password field",
+      "phoneField": "Phone field",
+      "checkField": "Check field",
+      "radioField": "Radio field",
+      "checkGroupField": "Check group field",
+      "dateField": "Date field",
+      "dateRangeField": "Date range field",
+      "dateTimeField": "Date time field",
+      "selectField": "Select field",
+      "multiSelectField": "Multi select field",
+      "textareaField": "Textarea field",
+      "textareaWithCounterField": "Textarea with counter field",
+      "tagsField": "Tags field"
+    }
   },
   "pagination": {
     "showing": "Showing {from} to {to} of {of} entries"
@@ -435,6 +483,10 @@
     "removeProjects": {
       "title": "Remove project",
       "description": "Are you sure you want to remove the project?"
+    },
+    "removeDemo": {
+      "title": "Remove demo",
+      "description": "Are you sure you want to remove the demo?"
     },
     "changePassword": {
       "title": "Set a new password"
