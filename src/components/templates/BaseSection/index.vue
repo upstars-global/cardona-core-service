@@ -27,7 +27,12 @@
           </template>
 
           <template v-if="isUpdatePage">
-            <b-button class="mr-2" variant="primary" @click="onSubmit(false)">
+            <b-button
+              class="mr-2"
+              variant="primary"
+              :disabled="isLoadingPage"
+              @click="onSubmit(false)"
+            >
               {{ $t('action.save') }}
             </b-button>
           </template>
@@ -153,6 +158,7 @@ export default defineComponent({
         `${entityUrl}/read`,
         `${entityUrl}/update`,
         `${entityUrl}/delete`,
+        ...props.config.loadingEndpointArr,
       ])
     })
 
