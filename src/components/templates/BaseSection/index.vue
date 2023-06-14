@@ -79,7 +79,7 @@ export default defineComponent({
     },
 
     config: {
-      type: Object as PropType<IBaseSectionConfig>,
+      type: Object as PropType<BaseSectionConfig>,
       default: () => new BaseSectionConfig({}),
     },
 
