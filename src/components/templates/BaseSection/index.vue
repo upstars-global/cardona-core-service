@@ -26,7 +26,7 @@
             </b-button>
           </template>
 
-          <template v-if="isUpdatePage">
+          <template v-if="isUpdatePage && !isLoadingErrorPage">
             <b-button
               class="mr-2"
               variant="primary"
@@ -145,19 +145,33 @@ export default defineComponent({
       ? onePermission
       : store.getters.abilityCan(permissionKeySeo, 'update')
 
-    const isLoadingPage = computed(() => {
+    const generateEntityUrl = () => {
       const indexSymbolNextDash = entityName.indexOf('-') + 1
       const entityNameForLoad = entityName.replace(
         entityName[indexSymbolNextDash],
         entityName[indexSymbolNextDash].toLowerCase()
       )
-      const entityUrl = convertCamelCase(entityNameForLoad, '/')
+      return convertCamelCase(entityNameForLoad, '/')
+    }
+
+    const isLoadingPage = computed(() => {
+      const entityUrl = generateEntityUrl()
 
       return store.getters.isLoadingEndpoint([
         `${entityUrl}/create`,
         `${entityUrl}/read`,
         `${entityUrl}/update`,
         `${entityUrl}/delete`,
+        ...props.config.loadingEndpointArr,
+      ])
+    })
+
+    const isLoadingErrorPage = computed(() => {
+      const entityUrl = generateEntityUrl()
+
+      return store.getters.isErrorEndpoint([
+        `${entityUrl}/create`,
+        `${entityUrl}/read`,
         ...props.config.loadingEndpointArr,
       ])
     })
@@ -190,7 +204,7 @@ export default defineComponent({
 
     // Handlers
     const onSubmit = async (isStay: boolean) => {
-      if (!(await validate())) return
+      if (!(await validate()) || isLoadingErrorPage.value) return
 
       const actionName: string = isCreatePage ? createActionName : updateActionName
       const transformedForm: any = transformFormData(form.value)
@@ -248,6 +262,7 @@ export default defineComponent({
       isCreatePage,
       isUpdatePage,
       isLoadingPage,
+      isLoadingErrorPage,
       refFormObserver,
       form,
 

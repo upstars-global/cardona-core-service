@@ -39,6 +39,7 @@ class ApiService {
 
     try {
       if (withLoader) store.dispatch('loaderOn', url)
+      store.dispatch('resetErrorUrls')
 
       const axiosInstance: AxiosInstance = newAxiosInstance ? axios.create() : axios
       const headers: { 'Content-Type': string } = {
@@ -74,6 +75,8 @@ class ApiService {
 
         if (!isLoginPage) router.push({ name: 'Login' })
       }
+
+      store.dispatch('addErrorUrl', url)
 
       const notVisibleErrorToast = !withErrorNotFound && error.type === 'NOT_FOUND'
       if (!notVisibleErrorToast) {

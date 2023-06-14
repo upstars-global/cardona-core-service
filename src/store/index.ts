@@ -14,6 +14,7 @@ import compostelaCore from './modules/compostelaCore'
 import user from './modules/user'
 import users from './modules/users'
 import loader from './modules/loader'
+import baseSectionErrors from './modules/baseSectionErrors'
 import tags from './modules/tags'
 import demo from './modules/demo'
 
@@ -36,6 +37,7 @@ const store = new Vuex.Store({
     user,
     users,
     loader,
+    baseSectionErrors,
     tags,
     demo,
     app,
