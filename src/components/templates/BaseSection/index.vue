@@ -172,7 +172,6 @@ export default defineComponent({
       const entityUrl = generateEntityUrl()
 
       return store.getters.isErrorEndpoint([
-        `${entityUrl}/create`,
         `${entityUrl}/read`,
         ...props.config.loadingEndpointArr,
       ])
