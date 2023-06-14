@@ -95,6 +95,8 @@ export default defineComponent({
   },
 
   setup(props) {
+    store.dispatch('resetErrorUrls')
+
     const { proxy } = getCurrentInstance() as any
     const bvModal = useBvModal()
     const { t } = useI18nUtils()

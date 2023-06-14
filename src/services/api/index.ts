@@ -39,7 +39,6 @@ class ApiService {
 
     try {
       if (withLoader) store.dispatch('loaderOn', url)
-      store.dispatch('resetErrorUrls')
 
       const axiosInstance: AxiosInstance = newAxiosInstance ? axios.create() : axios
       const headers: { 'Content-Type': string } = {
