@@ -47,7 +47,15 @@
 </template>
 
 <script lang="ts">
-import { getCurrentInstance, PropType, ref, computed, onBeforeMount, defineComponent } from 'vue'
+import {
+  getCurrentInstance,
+  PropType,
+  ref,
+  computed,
+  onBeforeMount,
+  defineComponent,
+  onBeforeUnmount,
+} from 'vue'
 import store from '../../../store'
 import { PageType, UseEntityType } from './model'
 import { ValidationObserver } from 'vee-validate'
@@ -62,7 +70,7 @@ import {
 import { useBvModal } from '../../../helpers/bvModal'
 import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
 import { useRouter } from '../../../@core/utils/utils'
-import { BaseSectionConfig, IBaseSectionConfig } from '../../../components/templates/BaseList/model'
+import { BaseSectionConfig } from '../../../components/templates/BaseList/model'
 import { permissionPrefix } from '@productConfig'
 
 export default defineComponent({
@@ -256,7 +264,7 @@ export default defineComponent({
       })
     }
 
-    onBeforeMount(() => {
+    onBeforeUnmount(() => {
       store.dispatch('resetErrorUrls')
     })
 
