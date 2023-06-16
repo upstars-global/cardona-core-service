@@ -30,7 +30,7 @@
             <b-button
               class="mr-2"
               variant="primary"
-              :disabled="isLoadingPage"
+              :disabled="isLoadingPage || isDisableSubmitBtn"
               @click="onSubmit(false)"
             >
               {{ $t('action.save') }}
@@ -79,7 +79,7 @@ export default defineComponent({
     },
 
     config: {
-      type: Object as PropType<IBaseSectionConfig>,
+      type: Object as PropType<BaseSectionConfig>,
       default: () => new BaseSectionConfig({}),
     },
 
@@ -145,21 +145,28 @@ export default defineComponent({
       ? onePermission
       : store.getters.abilityCan(permissionKeySeo, 'update')
 
-    const isLoadingPage = computed(() => {
+    const generateEntityUrl = () => {
       const indexSymbolNextDash = entityName.indexOf('-') + 1
       const entityNameForLoad = entityName.replace(
         entityName[indexSymbolNextDash],
         entityName[indexSymbolNextDash].toLowerCase()
       )
-      const entityUrl = convertCamelCase(entityNameForLoad, '/')
+      return convertCamelCase(entityNameForLoad, '/')
+    }
+
+    const isLoadingPage = computed(() => {
+      const entityUrl = generateEntityUrl()
 
       return store.getters.isLoadingEndpoint([
         `${entityUrl}/create`,
         `${entityUrl}/read`,
         `${entityUrl}/update`,
         `${entityUrl}/delete`,
-        ...props.config.loadingEndpointArr,
       ])
+    })
+
+    const isDisableSubmitBtn = computed(() => {
+      return store.getters.isLoadingEndpoint(props.config.loadingEndpointArr)
     })
 
     const form = ref(new EntityFormClass())
@@ -248,6 +255,7 @@ export default defineComponent({
       isCreatePage,
       isUpdatePage,
       isLoadingPage,
+      isDisableSubmitBtn,
       refFormObserver,
       form,
 
