@@ -26,11 +26,11 @@
             </b-button>
           </template>
 
-          <template v-if="isUpdatePage && !isLoadingErrorPage">
+          <template v-if="isUpdatePage">
             <b-button
               class="mr-2"
               variant="primary"
-              :disabled="isLoadingPage"
+              :disabled="isLoadingPage || isExistsEndpointsWithError"
               @click="onSubmit(false)"
             >
               {{ $t('action.save') }}
@@ -95,8 +95,6 @@ export default defineComponent({
   },
 
   setup(props) {
-    store.dispatch('resetErrorUrls')
-
     const { proxy } = getCurrentInstance() as any
     const bvModal = useBvModal()
     const { t } = useI18nUtils()
@@ -168,7 +166,7 @@ export default defineComponent({
       ])
     })
 
-    const isLoadingErrorPage = computed(() => {
+    const isExistsEndpointsWithError = computed(() => {
       const entityUrl = generateEntityUrl()
 
       return store.getters.isErrorEndpoint([
@@ -205,7 +203,7 @@ export default defineComponent({
 
     // Handlers
     const onSubmit = async (isStay: boolean) => {
-      if (!(await validate()) || isLoadingErrorPage.value) return
+      if (!(await validate()) || isExistsEndpointsWithError.value) return
 
       const actionName: string = isCreatePage ? createActionName : updateActionName
       const transformedForm: any = transformFormData(form.value)
@@ -258,12 +256,16 @@ export default defineComponent({
       })
     }
 
+    onBeforeMount(() => {
+      store.dispatch('resetErrorUrls')
+    })
+
     return {
       entityId,
       isCreatePage,
       isUpdatePage,
       isLoadingPage,
-      isLoadingErrorPage,
+      isExistsEndpointsWithError,
       refFormObserver,
       form,
 

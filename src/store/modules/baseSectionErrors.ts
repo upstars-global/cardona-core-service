@@ -6,10 +6,8 @@ export default {
   getters: {
     isErrorEndpoint:
       ({ errorEndpoints }) =>
-      (url: string | Array<string>): boolean =>
-        Array.isArray(url)
-          ? url.some((url) => errorEndpoints.includes(`/api/v2/${url}`))
-          : errorEndpoints.includes(`/api/v2/${url}`),
+      (url: Array<string>): boolean =>
+        url.some((url) => errorEndpoints.includes(`/api/v2/${url}`)),
   },
 
   mutations: {
