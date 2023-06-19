@@ -172,6 +172,11 @@
       "textareaField": "Textarea field",
       "textareaWithCounterField": "Textarea with counter field",
       "tagsField": "Tags field"
+    },
+    "groupFragment": {
+      "demoPage": "Demo page access",
+      "accessControl": "Access control",
+      "groupSettings": "Group settings"
     }
   },
   "title": {
@@ -360,7 +365,9 @@
     "add": "Add",
     "edit": "Edit",
     "delete": "Delete",
-    "fullAccess": "Full access"
+    "fullAccess": "Full access",
+    "demo-demo": "Demo page",
+    "demo-demo-report": "Data export"
   },
   "action": {
     "create": "Create",

@@ -8,6 +8,11 @@ export default [
     icon: 'BoxIcon',
   },
   {
+    title: 'BO-Permission',
+    route: { name: 'PermissionPage', params: { id: 'demo' } },
+    icon: 'BoxIcon',
+  },
+  {
     title: 'Email',
     route: 'apps-email',
     icon: 'MailIcon',

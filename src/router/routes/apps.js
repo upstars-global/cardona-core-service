@@ -12,6 +12,9 @@ export default [
     path: '/demo',
     name: 'DemoList',
     component: () => import('../../pages/demo/list'),
+    meta: {
+      permission: 'demo-demo',
+    },
   },
 
   {
@@ -20,6 +23,8 @@ export default [
     component: () => import('../../pages/demo/create'),
     meta: {
       title: 'demo.create',
+      permission: 'demo-demo',
+      level: 'create',
       breadcrumb: [
         {
           to: { name: 'DemoList' },
@@ -38,6 +43,8 @@ export default [
     component: () => import('../../pages/demo/update'),
     meta: {
       title: 'demo.edit',
+      permission: 'demo-demo',
+      level: 'update',
       breadcrumb: [
         {
           to: { name: 'DemoList' },
@@ -49,6 +56,12 @@ export default [
         },
       ],
     },
+  },
+
+  {
+    path: '/permission/:id',
+    name: 'PermissionPage',
+    component: () => import('../../pages/permission/form'),
   },
 
   // *===============================================---*
