@@ -5,10 +5,33 @@ import { NumberBaseField, SelectBaseField, TextBaseField } from './baseField'
 import { FieldInfo, FieldType } from './field'
 import { getLocaleDateStringWithoutTimezone } from '../helpers/date'
 
-export class DemoFilter {
-  constructor() {}
+export interface IDemoFilter {
+  readonly search?: string
+  readonly createdFrom?: string
+  readonly createdTo?: string
+  readonly isActive?: boolean
+  readonly type: string
+  readonly tagsIds?: Array<string>
+  readonly gameId?: string
 }
-
+export class DemoFilter {
+  readonly search?: string
+  readonly isActive?: boolean
+  readonly type: string
+  readonly tagsIds?: Array<string>
+  readonly gameId?: string
+  readonly createdFrom?: string
+  readonly createdTo?: string
+  constructor(data: IDemoFilter) {
+    this.search = data.search
+    this.createdFrom = data.createdFrom
+    this.createdTo = data.createdTo
+    this.isActive = data.isActive
+    this.tagsIds = data.tagsIds
+    this.type = data.type
+    this.gameId = data.gameId
+  }
+}
 export class DemoForm {
   readonly id?: string
   readonly switch: FieldInfo

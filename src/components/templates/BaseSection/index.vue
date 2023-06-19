@@ -30,7 +30,7 @@
             <b-button
               class="mr-2"
               variant="primary"
-              :disabled="isLoadingPage || isExistsEndpointsWithError"
+              :disabled="isLoadingPage || isDisableSubmitBtn || isExistsEndpointsWithError"
               @click="onSubmit(false)"
             >
               {{ $t('action.save') }}
@@ -70,7 +70,7 @@ import {
 import { useBvModal } from '../../../helpers/bvModal'
 import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
 import { useRouter } from '../../../@core/utils/utils'
-import { BaseSectionConfig } from '../../../components/templates/BaseList/model'
+import { BaseSectionConfig } from '../BaseList/model'
 import { permissionPrefix } from '@productConfig'
 
 export default defineComponent({
@@ -170,8 +170,11 @@ export default defineComponent({
         `${entityUrl}/read`,
         `${entityUrl}/update`,
         `${entityUrl}/delete`,
-        ...props.config.loadingEndpointArr,
       ])
+    })
+
+    const isDisableSubmitBtn = computed(() => {
+      return store.getters.isLoadingEndpoint(props.config.loadingEndpointArr)
     })
 
     const isExistsEndpointsWithError = computed(() => {
@@ -273,6 +276,7 @@ export default defineComponent({
       isCreatePage,
       isUpdatePage,
       isLoadingPage,
+      isDisableSubmitBtn,
       isExistsEndpointsWithError,
       refFormObserver,
       form,
