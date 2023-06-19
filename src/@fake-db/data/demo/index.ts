@@ -1,6 +1,58 @@
 import mock from '../../mock'
 import { PaginationData } from '../../../@model'
+import { filterDemoList } from '../../helpers/filterDemoList'
+import { TransactionType } from '../../../@model/playersTransactions'
+import i18n from '../../../libs/i18n'
 
+export const tagsList = [
+  {
+    id: '638f1a4c9bb32010930bf230',
+    name: 'test',
+    position: 3,
+  },
+  {
+    id: '638f1a4c9bb32010930bf231',
+    name: 'test 1',
+    position: 23,
+  },
+  {
+    id: '638f1a4c9bb32010930bf232',
+    name: 'test 2',
+    position: 5,
+  },
+  {
+    id: '638f1a4c9bb32010930bf233',
+    name: 'test 3',
+  },
+  {
+    id: '638f1a4c9bb32010930bf234',
+    name: 'test 4',
+    position: 3,
+  },
+  {
+    id: '638f1a4c9bb32010930bf235',
+    name: 'test 5',
+    position: 23,
+  },
+  {
+    id: '638f1a4c9bb32010930bf236',
+    name: 'test 6',
+    position: 3,
+  },
+  {
+    id: '638f1a4c9bb32010930bf237',
+    name: 'test 7',
+    position: 23,
+  },
+  {
+    id: '638f1a4c9bb32010930bf238',
+    name: 'test 8',
+  },
+  {
+    id: '638f1a4c9bb32010930bf239',
+    name: 'test 9',
+  },
+]
 // List
 const listData = [
   {
@@ -13,7 +65,7 @@ const listData = [
     wagerValue: '4000',
     wagerLimit: '300',
     date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-12-31T10:00:00+00:00',
+    newDate: '2022-11-31T10:00:00+00:00',
     period: {
       dateFrom: '2022-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
@@ -22,23 +74,17 @@ const listData = [
     login: 'My login',
     position: 1,
     imagePath: '/svc/img/i/ThorDevelop/banners/f16c86bc_4a13_4426_a278_c9de1a211e99_png',
-    tags: [
-      {
-        id: '638f1a4c9bb32010930bf232',
-        name: 'test1',
-        position: 3,
-      },
-      {
-        id: '638f1a4c9bb32010930bf232',
-        name: 'test2',
-        position: 23,
-      },
-    ],
+    tags: [tagsList[0], tagsList[1], tagsList[2]],
+    type: {
+      id: TransactionType.Deposit,
+      name: i18n.t(`common.deposit`),
+    },
+    gameId: '622c39448e03b2dab20c8a77',
     state: true,
     comment: 'Some commmmmmmmmmmmmmment',
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '632c39448e03b2dab20c8a78',
     name: 'Test1',
     isActive: false,
     amount: 1000,
@@ -47,7 +93,7 @@ const listData = [
     wagerLimit: '3200',
     status: 'active',
     date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-12-31T10:00:00+00:00',
+    newDate: '2022-10-31T10:00:00+00:00',
     period: {
       dateFrom: '2022-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
@@ -56,22 +102,17 @@ const listData = [
     login: 'Some',
     position: 4,
     imagePath: '/svc/img/i/ThorDevelop/banners/5394d94a_63be_4e39_8d23_9269320c13c1_png',
-    tags: [
-      {
-        id: '638f1a4c9bb32010930bf232',
-        name: 'test1',
-        position: 5,
-      },
-      {
-        id: '638f1a4c9bb32010930bf232',
-        name: 'test2',
-      },
-    ],
+    tags: [tagsList[3], tagsList[4], tagsList[5]],
+    type: {
+      id: TransactionType.Deposit,
+      name: i18n.t(`common.deposit`),
+    },
+    gameId: '622c39448e03b2dab20c8a78',
     state: false,
     comment: 'Some',
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '632c39448e03b2dab20c8a79',
     name: 'Test2',
     isActive: true,
     amount: 0,
@@ -80,7 +121,7 @@ const listData = [
     wagerLimit: '0',
     status: 'inactive',
     date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-12-31T10:00:00+00:00',
+    newDate: '2022-09-31T10:00:00+00:00',
     period: {
       dateFrom: '2022-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
@@ -89,23 +130,17 @@ const listData = [
     login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: '/svc/img/i/ThorDevelop/banners/309f0a98_60dd_4b01_aed4_5dc811f5abd5_png',
-    tags: [
-      {
-        id: '638f1a4c9bb32010930bf232',
-        name: 'test1',
-        position: 3,
-      },
-      {
-        id: '638f1a4c9bb32010930bf232',
-        name: 'test2',
-        position: 23,
-      },
-    ],
+    tags: [tagsList[1], tagsList[6], tagsList[5]],
+    gameId: '622c39448e03b2dab20c8a79',
     state: true,
     comment: '',
+    type: {
+      id: TransactionType.Payout,
+      name: i18n.t(`common.payout`),
+    },
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '632c39448e03b2dab20c8a75',
     name: 'Test',
     isActive: false,
     status: 'delete',
@@ -123,23 +158,23 @@ const listData = [
     login: '',
     position: 55,
     imagePath: '/svc/img/i/ThorDevelop/banners/f16c86bc_4a13_4426_a278_c9de1a211e99_png',
-    tags: [
-      {
-        id: '638f1a4c9bb32010930bf232',
-        name: 'test1',
-      },
-      {
-        id: '638f1a4c9bb32010930bf232',
-        name: 'test2',
-      },
-    ],
+    tags: [tagsList[1], tagsList[8], tagsList[9]],
+    gameId: '622c39448e03b2dab20c8a75',
     state: true,
     comment: 'Some commmmmmmmmmmmmmment',
+    type: {
+      id: TransactionType.Deposit,
+      name: i18n.t(`common.deposit`),
+    },
   },
 ]
 
 const pagination: PaginationData = { pageNumber: 1, perPage: 10, total: 4 }
-mock.onPost('/api/v2/demo/list').reply(() => [200, { data: listData, pagination }])
+mock.onPost('/api/v2/demo/list').reply(({ data }) => {
+  const { filter } = JSON.parse(data)
+  const filteredList = filterDemoList(listData, filter)
+  return [200, { data: filteredList, pagination }]
+})
 
 // CRUD
 const entityData = {
