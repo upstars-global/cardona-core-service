@@ -75,6 +75,8 @@ class ApiService {
         if (!isLoginPage) router.push({ name: 'Login' })
       }
 
+      store.dispatch('addErrorUrl', url)
+
       const notVisibleErrorToast = !withErrorNotFound && error.type === 'NOT_FOUND'
       if (!notVisibleErrorToast) {
         if (withErrorToast) this.showError(error, entity, formRef, withErrorDescriptionToast)

@@ -30,7 +30,7 @@
             <b-button
               class="mr-2"
               variant="primary"
-              :disabled="isLoadingPage || isDisableSubmitBtn"
+              :disabled="isLoadingPage || isDisableSubmitBtn || isExistsEndpointsWithError"
               @click="onSubmit(false)"
             >
               {{ $t('action.save') }}
@@ -47,7 +47,15 @@
 </template>
 
 <script lang="ts">
-import { getCurrentInstance, PropType, ref, computed, onBeforeMount, defineComponent } from 'vue'
+import {
+  getCurrentInstance,
+  PropType,
+  ref,
+  computed,
+  onBeforeMount,
+  defineComponent,
+  onBeforeUnmount,
+} from 'vue'
 import store from '../../../store'
 import { PageType, UseEntityType } from './model'
 import { ValidationObserver } from 'vee-validate'
@@ -169,6 +177,15 @@ export default defineComponent({
       return store.getters.isLoadingEndpoint(props.config.loadingEndpointArr)
     })
 
+    const isExistsEndpointsWithError = computed(() => {
+      const entityUrl = generateEntityUrl()
+
+      return store.getters.isErrorEndpoint([
+        `${entityUrl}/read`,
+        ...props.config.loadingEndpointArr,
+      ])
+    })
+
     const form = ref(new EntityFormClass())
 
     if (props.withReadAction && entityId) {
@@ -197,7 +214,7 @@ export default defineComponent({
 
     // Handlers
     const onSubmit = async (isStay: boolean) => {
-      if (!(await validate())) return
+      if (!(await validate()) || isExistsEndpointsWithError.value) return
 
       const actionName: string = isCreatePage ? createActionName : updateActionName
       const transformedForm: any = transformFormData(form.value)
@@ -250,12 +267,17 @@ export default defineComponent({
       })
     }
 
+    onBeforeUnmount(() => {
+      store.dispatch('resetErrorUrls')
+    })
+
     return {
       entityId,
       isCreatePage,
       isUpdatePage,
       isLoadingPage,
       isDisableSubmitBtn,
+      isExistsEndpointsWithError,
       refFormObserver,
       form,
 
