@@ -31,5 +31,7 @@ import './data/pages/blog'
 
 // Demo
 import './data/demo'
+import './data/permissions'
+import './data/user'
 
 mock.onAny().passThrough() // forwards the matched request over network

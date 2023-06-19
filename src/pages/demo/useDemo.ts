@@ -94,10 +94,7 @@ export const useDemoList = (): UseListType => {
       key: 'type',
       label: t('common.type'),
     }),
-    new TableField({
-      key: 'customActions',
-      label: '',
-    }),
+    new TableField({ key: 'actions', label: '' }),
   ]
 
   return {

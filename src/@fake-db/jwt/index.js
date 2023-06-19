@@ -1,52 +1,72 @@
 import mock from '../../@fake-db/mock'
 import jwt from 'jsonwebtoken'
 
-const data = {
-  users: [
-    {
-      id: 1,
-      fullName: 'John Doe',
-      username: 'johndoe',
-      password: 'admin',
-      // eslint-disable-next-line global-require
-      avatar: require('../../assets/images/avatars/13-small.png'),
-      email: 'admin@demo.com',
-      role: 'admin',
-      ability: [
-        {
-          action: 'manage',
-          subject: 'all',
-        },
-      ],
-      extras: {
-        eCommerceCartItemsCount: 5,
+export const usersList = [
+  {
+    id: 1,
+    fullName: 'John Doe',
+    username: 'johndoe',
+    password: 'admin',
+    // eslint-disable-next-line global-require
+    avatar: require('../../assets/images/avatars/13-small.png'),
+    email: 'admin@demo.com',
+    role: 'admin',
+    permissions: [
+      {
+        target: 'demo-demo',
+        access: 4,
       },
-    },
-    {
-      id: 2,
-      fullName: 'Jane Doe',
-      username: 'janedoe',
-      password: 'client',
-      // eslint-disable-next-line global-require
-      avatar: require('../../assets/images/avatars/1-small.png'),
-      email: 'client@demo.com',
-      role: 'client',
-      ability: [
-        {
-          action: 'read',
-          subject: 'ACL',
-        },
-        {
-          action: 'read',
-          subject: 'Auth',
-        },
-      ],
-      extras: {
-        eCommerceCartItemsCount: 5,
+      {
+        target: 'demo-demo-report',
+        access: 1,
       },
+    ],
+    projects: [],
+    products: [],
+    ability: [
+      {
+        action: 'manage',
+        subject: 'all',
+      },
+    ],
+    extras: {
+      eCommerceCartItemsCount: 5,
     },
-  ],
-}
+  },
+  {
+    id: 2,
+    fullName: 'Jane Doe',
+    username: 'janedoe',
+    password: 'client',
+    // eslint-disable-next-line global-require
+    avatar: require('../../assets/images/avatars/1-small.png'),
+    email: 'client@demo.com',
+    role: 'client',
+    permissions: [
+      {
+        target: 'demo-demo',
+        access: 4,
+      },
+      {
+        target: 'demo-demo-report',
+        access: 1,
+      },
+    ],
+    ability: [
+      {
+        action: 'read',
+        subject: 'ACL',
+      },
+      {
+        action: 'read',
+        subject: 'Auth',
+      },
+    ],
+    extras: {
+      eCommerceCartItemsCount: 5,
+    },
+  },
+]
 
 // ! These two secrets shall be in .env file and not in any other file
 const jwtConfig = {
@@ -56,14 +76,14 @@ const jwtConfig = {
   refreshTokenExpireTime: '10m',
 }
 
-mock.onPost('/jwt/login').reply((request) => {
+mock.onPost('/jwt/login').reply(async (request) => {
   const { email, password } = JSON.parse(request.data)
 
   let error = {
     email: ['Something went wrong'],
   }
 
-  const user = data.users.find((u) => u.email === email && u.password === password)
+  const user = usersList.find((u) => u.email === email && u.password === password)
 
   if (user) {
     try {
@@ -103,8 +123,8 @@ mock.onPost('/jwt/register').reply((request) => {
   // If not any of data is missing return 400
   if (!(username && email && password)) return [400]
 
-  const isEmailAlreadyInUse = data.users.find((user) => user.email === email)
-  const isUsernameAlreadyInUse = data.users.find((user) => user.username === username)
+  const isEmailAlreadyInUse = usersList.find((user) => user.email === email)
+  const isUsernameAlreadyInUse = usersList.find((user) => user.username === username)
 
   const error = {
     password: !password ? ['Please enter password'] : null,
@@ -137,14 +157,14 @@ mock.onPost('/jwt/register').reply((request) => {
     }
 
     // Add user id
-    const { length } = data.users
+    const { length } = usersList
     let lastIndex = 0
     if (length) {
-      lastIndex = data.users[length - 1].id
+      lastIndex = usersList[length - 1].id
     }
     userData.id = lastIndex + 1
 
-    data.users.push(userData)
+    usersList.push(userData)
 
     const accessToken = jwt.sign({ id: userData.id }, jwtConfig.secret, {
       expiresIn: jwtConfig.expireTime,
@@ -168,7 +188,7 @@ mock.onPost('/jwt/refresh-token').reply((request) => {
   try {
     const { id } = jwt.verify(refreshToken, jwtConfig.refreshTokenSecret)
 
-    const userData = { ...data.users.find((user) => user.id === id) }
+    const userData = { ...usersList.find((user) => user.id === id) }
 
     const newAccessToken = jwt.sign({ id: userData.id }, jwtConfig.secret, {
       expiresIn: jwtConfig.expiresIn,

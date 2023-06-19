@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
 
 // Routes
 import { canNavigate } from '../libs/acl/routeProtection'
@@ -36,8 +37,16 @@ const router = new VueRouter({
   ],
 })
 
-router.beforeEach((to, _, next) => {
+router.beforeEach(async (to, _, next) => {
   const isLoggedIn = isUserLoggedIn()
+  const permission = to.meta.permission
+  const permissionGroup = to.meta.permissionGroup
+  const isAllPermissions = to.meta.isAllPermissions
+  const permissionLevel = to.meta.level || 1
+
+  if (isLoggedIn && store.getters.userInfo.isEmpty) {
+    await store.dispatch('fetchCurrentUser')
+  }
   if (!canNavigate(to)) {
     // Redirect to login if not logged in
     if (!isLoggedIn) return next({ name: 'auth-login' })
@@ -46,11 +55,17 @@ router.beforeEach((to, _, next) => {
     return next({ name: 'misc-not-authorized' })
   }
 
+  const hasPermission = permission
+    ? store.getters.abilityCan(permission, permissionLevel)
+    : permissionGroup
+    ? store.getters.abilityCanInGroup(permissionGroup, permissionLevel, isAllPermissions)
+    : true
+
   // Redirect if logged in
   if (to.meta.redirectIfLoggedIn && isLoggedIn) {
     const userData = getUserData()
     next(getHomeRouteForLoggedInUser(userData ? userData.role : null))
-  }
+  } else if (!hasPermission) next({ name: 'error-404' })
 
   return next()
 })
