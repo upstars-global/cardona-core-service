@@ -87,6 +87,14 @@ export const useDemoList = (): UseListType => {
       label: t('common.comment'),
     }),
     new TableField({
+      key: 'gameId',
+      label: t('filters.gameId'),
+    }),
+    new TableField({
+      key: 'type',
+      label: t('common.type'),
+    }),
+    new TableField({
       key: 'customActions',
       label: '',
     }),

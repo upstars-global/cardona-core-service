@@ -62,7 +62,7 @@ import {
 import { useBvModal } from '../../../helpers/bvModal'
 import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
 import { useRouter } from '../../../@core/utils/utils'
-import { BaseSectionConfig, IBaseSectionConfig } from '../../../components/templates/BaseList/model'
+import { BaseSectionConfig } from '../BaseList/model'
 import { permissionPrefix } from '@productConfig'
 
 export default defineComponent({

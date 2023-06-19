@@ -24,6 +24,10 @@
       />
     </template>
 
+    <template #cell(type)="{ item }">
+      {{ item.type.name }}
+    </template>
+
     <template #cell(customActions)="{ item }">
       <b-dropdown class="d-flex" variant="link" no-caret toggle-class="p-0" right>
         <template #button-content>
@@ -81,6 +85,8 @@ import { BaseListConfig } from '../../../components/templates/BaseList/model'
 import { Location } from 'vue-router'
 import { useDemoList } from '../useDemo'
 import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
+import { FilterType } from '../../../@model/filter'
+import { ProjectFilterTypes } from '@filterConfig'
 import NameWithIdField from '../../../components/templates/BaseList/_components/NameWithIdField.vue'
 
 const { t } = useI18nUtils()
@@ -92,6 +98,30 @@ const listConfig = new BaseListConfig({
   draggable: true,
   withCustomFetchList: true,
   withSearch: true,
+  filterList: [
+    {
+      type: FilterType.Status,
+      key: 'isActive',
+    },
+    {
+      type: FilterType.DateRangeCreative,
+      key: 'created',
+    },
+    {
+      type: ProjectFilterTypes.Tags,
+      key: 'tagsIds',
+      trackBy: 'id',
+    },
+    {
+      type: FilterType.TransactionsType,
+      key: 'type',
+      trackBy: 'id',
+    },
+    {
+      type: FilterType.GameId,
+      key: 'gameId',
+    },
+  ],
 })
 
 const getUpdateRoute = ({ id }): Location => ({ name: 'DemoUpdate', params: { id } })

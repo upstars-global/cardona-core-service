@@ -1,16 +1,29 @@
 import ApiService from '../../services/api'
 import { ApiTypePrefix } from '@productConfig'
+import { IRequestListPayload, ListData } from '../../@model'
 import { transformNameToType } from './baseStoreCore'
-import { ListData } from '../../@model'
 
 export default {
   namespaced: true,
 
   actions: {
-    async fetchDemoList(_, { type }: { type: string }) {
+    async fetchDemoList(
+      _,
+      payload: {
+        type: string
+        data: IRequestListPayload
+      }
+    ) {
       return new ListData(
         await ApiService.request({
-          type: ApiTypePrefix + transformNameToType(type) + '.List',
+          type: `${ApiTypePrefix}${transformNameToType(payload.type)}.List`,
+          pagination: {
+            pageNumber: payload.data?.page || 1,
+            perPage: payload.data?.perPage || 10,
+          },
+          filter: {
+            ...payload?.data.filter,
+          },
         })
       )
     },
