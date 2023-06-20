@@ -83,6 +83,12 @@
       <vertical-nav-menu-items :items="navMenuItems" class="navigation navigation-main" />
     </vue-perfect-scrollbar>
     <!-- /main menu content-->
+    <slot
+      name="footer"
+      :toggle-vertical-menu-active="toggleVerticalMenuActive"
+      :toggle-collapsed="toggleCollapsed"
+      :collapse-toggler-icon="collapseTogglerIcon"
+    />
   </div>
 </template>
 

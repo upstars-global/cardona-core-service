@@ -34,6 +34,9 @@
       <template #header="slotProps">
         <slot name="vertical-menu-header" v-bind="slotProps" />
       </template>
+      <template #footer="slotProps">
+        <slot name="vertical-menu-footer" v-bind="slotProps" />
+      </template>
     </vertical-nav-menu>
     <!-- /Vertical Nav Menu -->
 
@@ -68,7 +71,7 @@
     </footer>
     <!-- /Footer -->
 
-    <slot name="customizer" />
+    <slot name="customizer" :is-vertical-menu-active="isVerticalMenuActive" />
   </div>
 </template>
 
