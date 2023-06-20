@@ -220,8 +220,8 @@ const onChangeCheckboxTable = (
 </script>
 
 <style lang="scss">
-@import './src/@core/scss/base/bootstrap-extended/_include';
-@import './src/@core/scss/base/components/_include';
+@import '../../../@core/scss/base/bootstrap-extended/_include';
+@import '../../../@core/scss/base/components/_include';
 
 .field-group-disabled {
   cursor: pointer;
