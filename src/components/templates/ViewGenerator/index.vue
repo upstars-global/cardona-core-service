@@ -34,6 +34,7 @@ import StatusWithDateView from './_components/StatusWithDateView.vue'
 import StatusWithDateHistoryView from './_components/StatusWithDateHistoryView.vue'
 import StatementView from './_components/StatementView.vue'
 import LinkView from './_components/LinkView.vue'
+import InnerBlankLinkView from './_components/InnerBlankLinkView.vue'
 import BadgeCopyView from './_components/BadgeCopyView.vue'
 import CopyView from './_components/CopyView.vue'
 import DateView from './_components/DateView.vue'
@@ -43,7 +44,7 @@ import CommentView from './_components/CommentView.vue'
 import TransactionTypeView from './_components/TransactionTypeView.vue'
 import ObjectToRowsView from './_components/ObjectToRowsView.vue'
 import LocaleView from './_components/LocaleView.vue'
-import RegionView from '../../../components/templates/ViewGenerator/_components/RegionView.vue'
+import RegionView from './_components/RegionView.vue'
 
 export default defineComponent({
   name: 'ViewGenerator',
@@ -56,6 +57,7 @@ export default defineComponent({
     StatusWithDateHistoryView,
     StatementView,
     LinkView,
+    InnerBlankLinkView,
     BadgeCopyView,
     DateView,
     DateWithSecondsView,

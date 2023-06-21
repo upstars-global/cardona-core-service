@@ -9,6 +9,12 @@
         }"
       />
     </template>
+
+    <template #cell(innerLink)="{ item }">
+      <inner-blank-link :value="{ title: item.name, route: getUpdateRoute(item) }" size="xl" />
+      <inner-blank-link :value="{ title: item.name, route: getUpdateRoute(item) }" />
+      <inner-blank-link :value="{ title: item.name, route: getUpdateRoute(item) }" size="sm" />
+    </template>
   </base-list>
 </template>
 
@@ -27,6 +33,7 @@ import { useDemoList } from '../useDemo'
 import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
 import { FilterType } from '../../../@model/filter'
 import { ProjectFilterTypes } from '@filterConfig'
+import InnerBlankLink from '../../../components/templates/_components/InnerBlankLink.vue'
 
 const { t } = useI18nUtils()
 

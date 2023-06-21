@@ -8,6 +8,7 @@ export enum ViewType {
   Region = 'region',
   Textarea = 'textarea',
   Link = 'link',
+  InnerBlankLink = 'inner-blank-link',
   Badges = 'badges',
   Badge = 'badge',
   Status = 'status',
@@ -31,7 +32,7 @@ export enum ViewJustifyContent {
 }
 
 export type LinkViewValue = {
-  title: string
+  title: TranslateResult
   route?: Location
   modalId?: string
 }

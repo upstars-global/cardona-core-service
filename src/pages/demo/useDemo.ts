@@ -27,6 +27,10 @@ export const useDemoList = (): UseListType => {
       type: ListFieldType.NameWithId,
     }),
     new TableField({
+      key: 'innerLink',
+      label: t('common.link'),
+    }),
+    new TableField({
       key: 'buttonName',
       label: t('common.btn'),
       type: ListFieldType.Button,
