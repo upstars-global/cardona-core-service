@@ -55,6 +55,7 @@
     "configuration": "Configuration",
     "generalSettings": "General settings",
     "mainInfo": "Main information",
+    "additionalInfo": "Additional information",
     "localization": "Localization",
     "alias": "Alias",
     "url": "URL",
@@ -119,6 +120,7 @@
     "possibleWinAmount": "Possible win",
     "state": "State",
     "comment": "Comment",
+    "isActive": "Is active",
     "phone": {
       "_": "Phone",
       "list": "Phones"
@@ -128,6 +130,9 @@
       "list": "Filters",
       "filtrate": "Filter",
       "appliedFilters": "Applied filters"
+    },
+    "locale": {
+      "_": "Locale"
     },
     "mode": {
       "dark": "Dark mode",
@@ -180,7 +185,8 @@
     "demo": {
       "list": "Demo list",
       "create": "Demo create",
-      "edit": "Demo edit"
+      "edit": "Demo edit",
+      "sidebarTitle": "Sidebar"
     }
   },
   "pagination": {

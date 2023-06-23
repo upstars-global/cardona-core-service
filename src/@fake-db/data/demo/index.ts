@@ -3,8 +3,9 @@ import { PaginationData } from '../../../@model'
 import { filterDemoList } from '../../helpers/filterDemoList'
 import { TransactionType } from '../../../@model/playersTransactions'
 import i18n from '../../../libs/i18n'
+import { IDemoTypeItem } from '../../../@model/demo'
 
-export const tagsList = [
+export const tagsList: Array<IDemoTypeItem> = [
   {
     id: '638f1a4c9bb32010930bf230',
     name: 'test',
@@ -66,12 +67,15 @@ const listData = [
     wagerLimit: '300',
     date: '2022-12-31T10:00:00+00:00',
     newDate: '2022-11-31T10:00:00+00:00',
+    email: 'test@test.com',
     period: {
       dateFrom: '2022-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     buttonName: 'Test button name',
     login: 'My login',
+    localization: 'en',
+    country: 'en',
     position: 1,
     imagePath: '/svc/img/i/ThorDevelop/banners/f16c86bc_4a13_4426_a278_c9de1a211e99_png',
     tags: [tagsList[0], tagsList[1], tagsList[2]],
@@ -81,7 +85,8 @@ const listData = [
     },
     gameId: '622c39448e03b2dab20c8a77',
     state: true,
-    comment: 'Some commmmmmmmmmmmmmment',
+    comment:
+      'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
   },
   {
     id: '632c39448e03b2dab20c8a78',
@@ -98,6 +103,7 @@ const listData = [
       dateFrom: '2022-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
+    email: 'test@test.com',
     buttonName: 'button name',
     login: 'Some',
     position: 4,
@@ -126,6 +132,7 @@ const listData = [
       dateFrom: '2022-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
+    email: 'test@test.com',
     buttonName: 'Test button name',
     login: 'cwilliams1956@game.com',
     position: 1,
@@ -154,6 +161,7 @@ const listData = [
       dateFrom: '2022-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
+    email: 'test@test.com',
     buttonName: 'Some name',
     login: '',
     position: 55,

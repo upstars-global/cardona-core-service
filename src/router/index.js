@@ -46,6 +46,7 @@ router.beforeEach(async (to, _, next) => {
 
   if (isLoggedIn && store.getters.userInfo.isEmpty) {
     await store.dispatch('fetchCurrentUser')
+    await store.dispatch('localeCore/getLocalesList')
   }
   if (!canNavigate(to)) {
     // Redirect to login if not logged in
