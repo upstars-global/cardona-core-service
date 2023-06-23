@@ -3,6 +3,8 @@ import i18n from '../../../libs/i18n'
 import { TableField } from '../../../@core/components/table-fields/model'
 import { IListSort } from '../../../@model'
 import { ProjectFilterTypes } from '@filterConfig'
+import { TranslateResult } from 'vue-i18n'
+import { ViewInfo } from '../../../@model/view'
 
 export enum SortDirection {
   asc = 'ASC',
@@ -50,6 +52,7 @@ export interface IBaseListConfig {
   readonly withExport?: boolean
   readonly withMultipleActions?: boolean
   readonly sidebar?: boolean
+  readonly sidebarCollapseMode?: boolean
   readonly isShowYou?: boolean
   readonly isShowUpdatePassword?: boolean
   readonly onePermissionKey?: string
@@ -88,6 +91,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withExport?: boolean
   readonly withMultipleActions?: boolean
   readonly sidebar?: boolean
+  readonly sidebarCollapseMode?: boolean
   readonly isShowYou?: boolean
   readonly isShowUpdatePassword?: boolean
   readonly onePermissionKey?: string
@@ -125,6 +129,7 @@ export class BaseListConfig implements IBaseListConfig {
     withExport,
     withMultipleActions,
     sidebar,
+    sidebarCollapseMode,
     isShowYou,
     isShowUpdatePassword,
     onePermissionKey,
@@ -161,6 +166,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.withExport = withExport
     this.withMultipleActions = withMultipleActions
     this.sidebar = sidebar
+    this.sidebarCollapseMode = sidebarCollapseMode
     this.isShowYou = isShowYou
     this.isShowUpdatePassword = isShowUpdatePassword
     this.onePermissionKey = onePermissionKey
@@ -217,4 +223,22 @@ export enum ExportFormat {
 export enum DownloadFormat {
   json = 'application/json',
   csv = 'text/csv',
+}
+
+export interface ISideBarCollapseItem {
+  readonly title: TranslateResult
+  readonly withBottomSeparator?: boolean
+  readonly views: Record<string, ViewInfo>
+}
+
+export class SideBarCollapseItem {
+  readonly title: TranslateResult
+  readonly withBottomSeparator?: boolean
+  readonly views: Record<string, ViewInfo>
+
+  constructor(data: ISideBarCollapseItem) {
+    this.title = data.title
+    this.withBottomSeparator = data?.withBottomSeparator
+    this.views = data.views
+  }
 }

@@ -9,6 +9,7 @@
       :can-update="canUpdate"
       :entity-name="entityName"
       :side-bar-model="SideBarModel"
+      :sidebar-collapse-mode="config.sidebarCollapseMode"
       @update="routerToUpdatePageId(selectedItem)"
       @remove="onClickRemove(selectedItem)"
     >

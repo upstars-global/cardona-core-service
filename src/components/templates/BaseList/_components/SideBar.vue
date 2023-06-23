@@ -40,6 +40,36 @@
                   <slot :name="`sidebar-value(${key})`" :item="item" />
                 </template>
               </view-generator>
+              <template
+                v-else-if="viewForm[key] instanceof SideBarCollapseItem && sidebarCollapseMode"
+              >
+                <app-collapse>
+                  <app-collapse-item :title="viewForm[key].title">
+                    <template #header>
+                      <p class="h6">{{ viewForm[key].title }}</p>
+                    </template>
+                    <div v-for="groupKey in Object.keys(viewForm[key].views)" :key="groupKey">
+                      <view-generator
+                        v-if="viewForm[key].views[groupKey] instanceof ViewInfo"
+                        :key="key"
+                        :value="viewForm[key].views[groupKey]"
+                        :key-name="groupKey"
+                        class="py-25"
+                        :class="`${groupKey}-view`"
+                      >
+                        <template
+                          v-if="checkSlotExistence(`sidebar-value(${groupKey})`)"
+                          :slot="`sidebar-value(${groupKey})`"
+                          slot-scope="{ item }"
+                        >
+                          <slot :name="`sidebar-value(${groupKey})`" :item="item" />
+                        </template>
+                      </view-generator>
+                    </div>
+                  </app-collapse-item>
+                </app-collapse>
+                <hr v-if="viewForm[key].withBottomSeparator" />
+              </template>
             </slot>
           </div>
         </template>
@@ -76,12 +106,17 @@ import { convertCamelCase } from '../../../../helpers'
 import { ref, watch } from 'vue'
 import ViewGenerator from '../../../../components/templates/ViewGenerator/index.vue'
 import { ViewInfo, ViewJustifyContent } from '../../../../@model/view'
+import AppCollapse from '../../../../@core/components/app-collapse/AppCollapse.vue'
+import AppCollapseItem from '../../../../@core/components/app-collapse/AppCollapseItem.vue'
+import { SideBarCollapseItem } from '../model'
 
 const emitAfterAnimationSidebar = 200
 
 export default {
   name: 'SideBar',
   components: {
+    AppCollapseItem,
+    AppCollapse,
     ViewGenerator,
     BSidebar,
   },
@@ -103,6 +138,10 @@ export default {
       required: false,
     },
     canRemove: {
+      type: Boolean,
+      required: false,
+    },
+    sidebarCollapseMode: {
       type: Boolean,
       required: false,
     },
@@ -143,8 +182,19 @@ export default {
       viewForm,
       ViewJustifyContent,
       ViewInfo,
+      SideBarCollapseItem,
       checkSlotExistence,
     }
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.collapse-default :deep(.card) {
+  border: none;
+  .card-header,
+  .card-body {
+    padding: 0;
+  }
+}
+</style>

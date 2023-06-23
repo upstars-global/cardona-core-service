@@ -4,7 +4,47 @@ import { FieldTranslationsData } from './translations'
 import { NumberBaseField, SelectBaseField, TextBaseField } from './baseField'
 import { FieldInfo, FieldType } from './field'
 import { getLocaleDateStringWithoutTimezone } from '../helpers/date'
+import { StatusWithVariant, ViewInfo, ViewType } from './view'
+import { SideBarCollapseItem } from '../components/templates/BaseList/model'
+import { TransactionType } from './playersTransactions'
+import { TranslateResult } from 'vue-i18n'
 
+export interface IDemoTypeItem {
+  id: string
+  name: string
+  position?: number
+}
+export interface IDemoListItem {
+  id: string
+  name: string
+  isActive: boolean
+  status: string
+  amount: number
+  currency: string
+  wagerValue: string
+  wagerLimit: string
+  date: string
+  newDate: string
+  email: string
+  period: {
+    dateFrom: string
+    dateTo: string
+  }
+  buttonName: string
+  login: string
+  localization: string
+  country: string
+  position: number
+  imagePath: string
+  tags: Array<IDemoTypeItem>
+  type: {
+    id: TransactionType
+    name: TranslateResult
+  }
+  gameId: string
+  state: boolean
+  comment: string
+}
 export interface IDemoFilter {
   readonly search?: string
   readonly createdFrom?: string
@@ -209,5 +249,130 @@ export class DemoForm {
     })
     this.seo = data?.seo
     this.fieldTranslations = data?.fieldTranslations
+  }
+}
+
+export class DemoSideBar {
+  readonly generalInfo: SideBarCollapseItem
+  readonly info: SideBarCollapseItem
+  readonly unuseble: SideBarCollapseItem
+
+  constructor(data?: IDemoListItem) {
+    this.generalInfo = new SideBarCollapseItem({
+      title: i18n.t('common.generalInformation'),
+      withBottomSeparator: true,
+      views: {
+        comment: new ViewInfo<number>({
+          type: ViewType.Comment,
+          value: data?.comment,
+          label: i18n.t('common.comment'),
+        }),
+        name: new ViewInfo<string>({
+          type: ViewType.Text,
+          value: data?.name,
+          label: i18n.t('common.name'),
+        }),
+        type: new ViewInfo<string>({
+          type: ViewType.TransactionType,
+          value: data?.type.id,
+          label: i18n.t('common.type'),
+        }),
+        date: new ViewInfo<string>({
+          type: ViewType.Date,
+          value: data?.date,
+          label: i18n.t('common.date'),
+        }),
+        id: new ViewInfo<string>({
+          type: ViewType.BadgeCopy,
+          value: data?.id,
+          label: i18n.t('common.id'),
+        }),
+      },
+    })
+    this.info = new SideBarCollapseItem({
+      title: i18n.t('common.mainInfo'),
+      withBottomSeparator: true,
+      views: {
+        isActive: new ViewInfo({
+          type: ViewType.Statement,
+          value: !!data?.isActive,
+          label: i18n.t('common.isActive'),
+          withSeparator: true,
+        }),
+        amount: new ViewInfo({
+          type: ViewType.SumAndCurrency,
+          value: { amount: data?.amount, currency: data?.currency },
+          label: i18n.t('common.sum'),
+        }),
+        id: new ViewInfo({
+          type: ViewType.Status,
+          value: data?.status,
+          label: i18n.t('common.status'),
+        }),
+        tags: new ViewInfo({
+          type: ViewType.Badges,
+          value: data?.tags,
+          withSearch: true,
+          label: i18n.t('common.tags', { count: data?.tags?.length }),
+        }),
+        email: new ViewInfo({
+          type: ViewType.Copy,
+          value: data?.email,
+          label: i18n.t('common.email'),
+          icon: 'AtSignIcon',
+        }),
+        newDate: new ViewInfo({
+          type: ViewType.DateWithSeconds,
+          value: data?.newDate,
+          label: i18n.t('common.dateOfCreation'),
+        }),
+        localization: new ViewInfo({
+          type: ViewType.Locale,
+          value: data?.localization,
+          label: i18n.t('common.locale._'),
+        }),
+        statusList: new ViewInfo({
+          type: ViewType.StatusWithDateHistory,
+          value: [
+            {
+              status: new StatusWithVariant('active', 'light-warning'),
+              updatedAt: data?.date,
+            },
+            {
+              status: new StatusWithVariant('expired', 'light-danger'),
+              updatedAt: data?.date,
+            },
+            {
+              status: new StatusWithVariant('new', 'light-secondary'),
+              updatedAt: data?.date,
+            },
+          ],
+          label: i18n.t('common.log'),
+        }),
+      },
+    })
+    this.unuseble = new SideBarCollapseItem({
+      title: i18n.t('common.additionalInfo'),
+      views: {
+        link: new ViewInfo({
+          type: ViewType.Link,
+          value: { route: { name: 'PermissionPage' }, title: 'BO-Permission' },
+          label: i18n.t('common.link'),
+        }),
+        objectToRows: new ViewInfo({
+          type: ViewType.ObjectToRows,
+          value: data?.period,
+          label: i18n.t('common.data'),
+        }),
+        statusWithDate: new ViewInfo({
+          type: ViewType.StatusWithDate,
+          value: {
+            status: new StatusWithVariant('active', 'light-warning'),
+            updatedAt: data?.date,
+          },
+          label: i18n.t('common.status'),
+        }),
+      },
+    })
   }
 }

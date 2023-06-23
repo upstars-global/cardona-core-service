@@ -9,6 +9,9 @@
         }"
       />
     </template>
+    <template #cell(type)="{ item }">
+      {{ item.type.name }}
+    </template>
 
     <template #cell(innerLink)="{ item }">
       <inner-blank-link :value="{ title: item.name, route: getUpdateRoute(item) }" size="xl" />
@@ -41,11 +44,12 @@ const listConfig = new BaseListConfig({
   withSettings: true,
   skeletonColumns: 10,
   responsive: true,
-  draggable: true,
   withCustomFetchList: true,
   withSearch: true,
   createFromCopy: true,
   withExport: true,
+  sidebar: true,
+  sidebarCollapseMode: true,
   filterList: [
     {
       type: FilterType.Status,
