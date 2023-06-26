@@ -1,6 +1,6 @@
 import ApiService from '../../services/api'
 import { ListData } from '../../@model'
-import { IRequestListPayload } from '../../@model/index'
+import { IRequestListPayload } from '../../@model'
 import { ExportFormat, IOptionsBaseFetch } from '../../components/templates/BaseList/model'
 import { convertLowerCaseFirstSymbol } from '../../helpers'
 import { ApiTypePrefix, productName } from '@productConfig'
@@ -126,7 +126,7 @@ export default {
             productId: rootGetters['productCore/productId'],
           },
         },
-        { withSuccessToast: true, formRef: payload.data.formRef }
+        { withSuccessToast: true, formRef: payload.data.formRef, entityName: payload.type }
       )
 
       return data
@@ -148,7 +148,7 @@ export default {
             project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
           },
         },
-        { withSuccessToast: true, formRef: payload.data.formRef }
+        { withSuccessToast: true, formRef: payload.data.formRef, entityName: payload.type }
       )
     },
 

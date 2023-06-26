@@ -28,13 +28,14 @@ class ApiService {
       withLoader = true,
       formRef = null,
       newAxiosInstance = false,
+      entityName = '',
     } = config
 
     const convertedType: Array<string> = payload.type
       .replace('App', '/api')
       .split('.')
       .map((word) => convertCamelCase(word, '-'))
-    const entity: string = convertedType[2]
+    const entity: string = entityName || convertedType[2]
     const url: string = convertedType.join('/')
 
     try {
