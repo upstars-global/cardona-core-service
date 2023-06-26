@@ -608,7 +608,9 @@ export default {
     const entityNamePermission = entityName.replace('-', '')
     const { permissionKey, permissionKeySeo, permissionKeyReport } = getPermissionKeys({
       permissionKey: props.config?.permissionKey,
-      permissionPrefix: props.config?.noPermissionPrefix ? undefined : permissionPrefix,
+      permissionPrefix: props.config?.noPermissionPrefix
+        ? undefined
+        : props.config?.customPermissionPrefix || permissionPrefix,
       entityNamePermission,
     })
 

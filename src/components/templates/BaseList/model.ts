@@ -65,6 +65,7 @@ export interface IBaseListConfig {
   readonly permissionKey?: string
   readonly customModuleName?: string
   readonly customApiPrefix?: string
+  readonly customPermissionPrefix?: string
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -103,6 +104,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly permissionKey?: string
   readonly customModuleName?: string
   readonly customApiPrefix?: string
+  readonly customPermissionPrefix?: string
 
   constructor({
     withSearch,
@@ -140,6 +142,7 @@ export class BaseListConfig implements IBaseListConfig {
     permissionKey,
     customModuleName,
     customApiPrefix,
+    customPermissionPrefix,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -176,6 +179,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.permissionKey = permissionKey
     this.customModuleName = customModuleName
     this.customApiPrefix = customApiPrefix
+    this.customPermissionPrefix = customPermissionPrefix
   }
 }
 
@@ -187,6 +191,7 @@ export interface IBaseSectionConfig {
   readonly customApiPrefix?: string
   readonly permissionKey?: string
   readonly loadingEndpointArr?: Array<string>
+  readonly customPermissionPrefix?: string
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig {
@@ -197,6 +202,8 @@ export class BaseSectionConfig implements IBaseSectionConfig {
   readonly customModuleName?: string
   readonly customApiPrefix?: string
   readonly loadingEndpointArr: Array<string>
+  readonly customPermissionPrefix?: string
+
   constructor(data: IBaseSectionConfig) {
     this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
@@ -205,6 +212,7 @@ export class BaseSectionConfig implements IBaseSectionConfig {
     this.customModuleName = data?.customModuleName
     this.customApiPrefix = data?.customApiPrefix
     this.loadingEndpointArr = data?.loadingEndpointArr || []
+    this.customPermissionPrefix = data?.customPermissionPrefix
   }
 }
 

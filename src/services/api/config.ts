@@ -49,6 +49,7 @@ export interface IApiServiceConfig {
   readonly withLoader?: boolean
   readonly formRef?: any
   readonly newAxiosInstance?: boolean
+  readonly entityName?: string
 }
 
 // Response error
