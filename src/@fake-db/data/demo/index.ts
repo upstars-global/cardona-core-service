@@ -116,6 +116,9 @@ const listData = [
     gameId: '622c39448e03b2dab20c8a78',
     state: false,
     comment: 'Some',
+    paymentsToday: '100',
+    paymentsWeek: '1100',
+    paymentsMonth: '11100',
   },
   {
     id: '632c39448e03b2dab20c8a79',
@@ -145,6 +148,9 @@ const listData = [
       id: TransactionType.Payout,
       name: i18n.t(`common.payout`),
     },
+    paymentsToday: '200',
+    paymentsWeek: '2200',
+    paymentsMonth: '22200',
   },
   {
     id: '632c39448e03b2dab20c8a75',
@@ -174,6 +180,9 @@ const listData = [
       id: TransactionType.Deposit,
       name: i18n.t(`common.deposit`),
     },
+    paymentsToday: '300',
+    paymentsWeek: '3300',
+    paymentsMonth: '33300',
   },
 ]
 

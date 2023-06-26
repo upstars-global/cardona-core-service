@@ -23,6 +23,7 @@ export enum ViewType {
   Comment = 'comment',
   TransactionType = 'transaction-type',
   ObjectToRows = 'object-to-rows',
+  SumPeriod = 'sum-period',
 }
 export enum ViewJustifyContent {
   Start = 'start',

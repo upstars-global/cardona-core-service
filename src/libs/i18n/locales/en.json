@@ -121,6 +121,7 @@
     "state": "State",
     "comment": "Comment",
     "isActive": "Is active",
+    "sumPeriod": "Sum period",
     "phone": {
       "_": "Phone",
       "list": "Phones"
@@ -142,6 +143,11 @@
   "component": {
     "tags": {
       "duplicateTag": "Duplicate tag"
+    },
+    "sumPeriod": {
+      "today": "Today: ",
+      "week": "Week: ",
+      "month": "Month: "
     }
   },
   "page": {

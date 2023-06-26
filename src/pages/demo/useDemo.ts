@@ -62,6 +62,10 @@ export const useDemoList = (): UseListType => {
       type: ListFieldType.Period,
     }),
     new TableField({
+      key: 'sumPeriod',
+      label: t('common.sumPeriod'),
+    }),
+    new TableField({
       key: 'imagePath',
       label: t('common.image'),
       type: ListFieldType.Image,
