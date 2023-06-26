@@ -45,6 +45,7 @@ import TransactionTypeView from './_components/TransactionTypeView.vue'
 import ObjectToRowsView from './_components/ObjectToRowsView.vue'
 import LocaleView from './_components/LocaleView.vue'
 import RegionView from './_components/RegionView.vue'
+import SumPeriodView from './_components/SumPeriodView.vue'
 
 export default defineComponent({
   name: 'ViewGenerator',
@@ -68,6 +69,7 @@ export default defineComponent({
     LocaleView,
     RegionView,
     CopyView,
+    SumPeriodView,
   },
 
   props: {

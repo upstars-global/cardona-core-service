@@ -18,6 +18,17 @@
       <inner-blank-link :value="{ title: item.name, route: getUpdateRoute(item) }" />
       <inner-blank-link :value="{ title: item.name, route: getUpdateRoute(item) }" size="sm" />
     </template>
+
+    <template #cell(sumPeriod)="{ item }">
+      <sum-period
+        :data="{
+          today: item.paymentsToday,
+          week: item.paymentsWeek,
+          month: item.paymentsMonth,
+          currency: item.currency,
+        }"
+      />
+    </template>
   </base-list>
 </template>
 
@@ -37,6 +48,7 @@ import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
 import { FilterType } from '../../../@model/filter'
 import { ProjectFilterTypes } from '@filterConfig'
 import InnerBlankLink from '../../../components/templates/_components/InnerBlankLink.vue'
+import SumPeriod from '../../../components/templates/_components/SumPeriod.vue'
 
 const { t } = useI18nUtils()
 
