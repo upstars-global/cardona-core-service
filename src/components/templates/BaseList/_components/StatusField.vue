@@ -58,6 +58,7 @@ enum StatusVariants {
   cancelled = 'light-danger',
   'erased_by_withdraw' = 'light-danger',
   deleting = 'light-danger',
+  Refund = 'light-danger',
   // TODO: Add status variant here
 }
 const value = computed(() => {
