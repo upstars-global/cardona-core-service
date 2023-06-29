@@ -38,6 +38,7 @@
     "description": "Description",
     "password": "Password",
     "id": "ID",
+    "partnerCode": "Partnercode",
     "notes": "Notes",
     "ok": "OK",
     "from": "from",

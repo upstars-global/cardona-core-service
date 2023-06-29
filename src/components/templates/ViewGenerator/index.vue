@@ -36,6 +36,7 @@ import StatementView from './_components/StatementView.vue'
 import LinkView from './_components/LinkView.vue'
 import InnerBlankLinkView from './_components/InnerBlankLinkView.vue'
 import BadgeCopyView from './_components/BadgeCopyView.vue'
+import BadgeShortCopyView from './_components/BadgeShortCopyView.vue'
 import CopyView from './_components/CopyView.vue'
 import DateView from './_components/DateView.vue'
 import DateWithSecondsView from './_components/DateWithSecondsView.vue'
@@ -60,6 +61,7 @@ export default defineComponent({
     LinkView,
     InnerBlankLinkView,
     BadgeCopyView,
+    BadgeShortCopyView,
     DateView,
     DateWithSecondsView,
     SumAndCurrencyView,

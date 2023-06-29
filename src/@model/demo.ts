@@ -16,6 +16,7 @@ export interface IDemoTypeItem {
 }
 export interface IDemoListItem {
   id: string
+  partnerCode: string
   name: string
   isActive: boolean
   status: string
@@ -286,6 +287,11 @@ export class DemoSideBar {
           type: ViewType.BadgeCopy,
           value: data?.id,
           label: i18n.t('common.id'),
+        }),
+        partnerCode: new ViewInfo<string>({
+          type: ViewType.BadgeShortCopy,
+          value: data?.partnerCode,
+          label: i18n.t('common.partnerCode'),
         }),
       },
     })

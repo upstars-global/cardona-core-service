@@ -58,6 +58,7 @@ export const tagsList: Array<IDemoTypeItem> = [
 const listData = [
   {
     id: '632c39448e03b2dab20c8a77',
+    partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
     isActive: true,
     status: 'new',
@@ -90,6 +91,7 @@ const listData = [
   },
   {
     id: '632c39448e03b2dab20c8a78',
+    partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
     isActive: false,
     amount: 1000,
@@ -122,6 +124,7 @@ const listData = [
   },
   {
     id: '632c39448e03b2dab20c8a79',
+    partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
     isActive: true,
     amount: 0,
@@ -154,6 +157,7 @@ const listData = [
   },
   {
     id: '632c39448e03b2dab20c8a75',
+    partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',
     isActive: false,
     status: 'delete',

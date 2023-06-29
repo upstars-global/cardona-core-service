@@ -5,14 +5,16 @@
     @click="copyToClipboard(value)"
   >
     <span v-if="isViewLabel">{{ label }}: </span>
-    {{ value }}
+    <span v-if="isShort">{{ valueShort }}</span>
+    <span v-else>{{ value }}</span>
     <feather-icon icon="CopyIcon" class="ml-25" />
   </b-badge>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { ComputedRef, computed, defineComponent } from 'vue'
 import { copyToClipboard } from '../helpers/clipboard'
+import { getShortString } from '../helpers/index'
 
 export default defineComponent({
   name: 'BadgeCopy',
@@ -36,11 +38,28 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+
+    isShort: {
+      type: Boolean,
+      default: false,
+    },
+
+    maxLengthForShort: {
+      type: Number,
+      default: 8,
+    },
   },
 
-  setup() {
+  setup(props) {
+    const valueShort: ComputedRef<string | number> = computed(() => {
+      return String(props.value).length > props.maxLengthForShort
+        ? getShortString(props.value)
+        : props.value
+    })
+
     return {
       copyToClipboard,
+      valueShort,
     }
   },
 })

@@ -102,3 +102,9 @@ export const getPermissionKeys = (config: {
   }
   return formatPermissionResponse(permissionPrefix + permissionKey)
 }
+
+export const getShortString = (text: string | Number): string => {
+  const startString = String(text).split('').slice(0, 3).join('')
+  const endString = String(text).split('').slice(-3).join('')
+  return `${startString}...${endString}`
+}
