@@ -5,6 +5,7 @@
     >
       <demo-form
         :demo-id="entityId"
+        :entity-id="entityId"
         :form="form"
         :can-update="canUpdate"
         :can-remove="canRemove"

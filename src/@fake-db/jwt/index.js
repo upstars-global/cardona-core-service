@@ -20,6 +20,10 @@ export const usersList = [
         target: 'demo-demo-report',
         access: 1,
       },
+      {
+        target: 'demo-demo-seo',
+        access: 4,
+      },
     ],
     projects: [],
     products: [],
@@ -50,6 +54,10 @@ export const usersList = [
       {
         target: 'demo-demo-report',
         access: 1,
+      },
+      {
+        target: 'demo-demo-seo',
+        access: 4,
       },
     ],
     ability: [

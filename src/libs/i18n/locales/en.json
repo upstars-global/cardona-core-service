@@ -344,7 +344,8 @@
     "delete": "Delete",
     "fullAccess": "Full access",
     "demo-demo": "Demo page",
-    "demo-demo-report": "Data export"
+    "demo-demo-report": "Data export",
+    "demo-demo-seo": "Data seo"
   },
   "action": {
     "create": "Create",
