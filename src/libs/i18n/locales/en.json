@@ -537,5 +537,14 @@
     "metaTitle": "Title",
     "metaDescription": "Description",
     "description": "Text"
+  },
+  "locale": {
+    "localization": "Localization",
+    "default": {
+      "metaTitle": "Title",
+      "metaDescription": "Description",
+      "description": "Text",
+      "text": "Text"
+    }
   }
 }
