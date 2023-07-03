@@ -78,6 +78,7 @@ const listData = [
     country: 'en',
     position: 1,
     imagePath: '/svc/img/i/ThorDevelop/banners/f16c86bc_4a13_4426_a278_c9de1a211e99_png',
+    // tags: [tagsList[0], tagsList[1], tagsList[2]],
     tags: [tagsList[0], tagsList[1], tagsList[2]],
     type: {
       id: TransactionType.Deposit,
@@ -216,6 +217,82 @@ const entityData = {
   textarea: 'Some text',
   textareaWithCounter: 'Some text',
   tags: ['some', 'tag', 'first'],
+  seo: {
+    metaTitle: 'Seo meta title',
+    metaDescription: 'Seo meta description',
+    description: 'Seo description',
+  },
+  fieldTranslations: {
+    text: {
+      en: { value: 'Some text', disabled: false },
+      en_AU: {
+        value: `  <h1>Welcome to Demo localize </h1>
+  <p>This is a paragraph of mock content.</p>
+  <ul>
+    <li>English (Australia) 1</li>
+    <li>English (Australia) 2</li>
+    <li>English (Australia) 3</li>
+  </ul>`,
+        disabled: undefined,
+      },
+      en_CA: {
+        value: '&nbsp;<span class="variable-box">{Badge variable}</span>&nbsp;',
+        disabled: false,
+      },
+      en_IN: { value: '', disabled: false },
+      en_NZ: { value: '', disabled: false },
+      es: { value: '', disabled: false },
+      fr: { value: '', disabled: false },
+      fr_CA: { value: '', disabled: false },
+      fr_FR: { value: '', disabled: false },
+      pt: { value: '', disabled: false },
+      pt_BR: { value: '', disabled: false },
+    },
+    metaTitle: {
+      en: { value: 'Seo meta title', disabled: false },
+      en_AU: { value: 'Mock data for en_AU', disabled: false },
+      en_CA: { value: 'Mock data for en_CA', disabled: false },
+      en_IN: { value: 'Mock data for en_IN', disabled: false },
+      en_NZ: { value: 'Mock data for en_NZ', disabled: false },
+      es: { value: 'Mock data for es', disabled: false },
+      fr: { value: 'Mock data for fr', disabled: false },
+      fr_CA: { value: 'Mock data for fr_CA', disabled: false },
+      fr_FR: { value: 'Mock data for fr_FR', disabled: false },
+      pt: { value: 'Mock data for pt', disabled: false },
+      pt_BR: { value: 'Mock data for pt_BR', disabled: false },
+    },
+    metaDescription: {
+      en: { value: 'Seo meta description', disabled: false },
+      en_AU: { value: 'Mock data for en_AU', disabled: false },
+      en_CA: { value: 'Mock data for en_CA', disabled: false },
+      en_IN: { value: 'Mock data for en_IN', disabled: false },
+      en_NZ: { value: 'Mock data for en_NZ', disabled: false },
+      es: { value: 'Mock data for es', disabled: false },
+      fr: { value: 'Mock data for fr', disabled: false },
+      fr_CA: { value: 'Mock data for fr_CA', disabled: false },
+      fr_FR: { value: 'Mock data for fr_FR', disabled: false },
+      pt: { value: 'Mock data for pt', disabled: false },
+      pt_BR: { value: 'Mock data for pt_BR', disabled: false },
+    },
+    description: {
+      en: { value: 'Seo description', disabled: false },
+      en_AU: { value: 'Mock data for en_AU', disabled: false },
+      en_CA: { value: 'Mock data for en_CA', disabled: false },
+      en_IN: { value: 'Mock data for en_IN', disabled: false },
+      en_NZ: { value: 'Mock data for en_NZ', disabled: false },
+      es: { value: 'Mock data for es', disabled: false },
+      fr: { value: 'Mock data for fr', disabled: false },
+      fr_CA: { value: 'Mock data for fr_CA', disabled: false },
+      fr_FR: { value: 'Mock data for fr_FR', disabled: false },
+      pt: { value: 'Mock data for pt', disabled: false },
+      pt_BR: { value: 'Mock data for pt_BR', disabled: false },
+    },
+  },
+}
+
+const projectsConfig = {
+  defaultCurrency: 'USD',
+  currencies: ['AUD', 'NZD', 'CAD', 'EUR', 'USD', 'INR', 'BRL'],
 }
 
 mock.onPost('/api/v2/demo/read').reply(() => [
@@ -228,6 +305,7 @@ mock.onPost('/api/v2/demo/read').reply(() => [
 mock.onPost('/api/v2/demo/create').reply(() => [200, { data: null }])
 mock.onPost('/api/v2/demo/update').reply(() => [200, { data: null }])
 mock.onPost('/api/v2/demo/delete').reply(() => [200, { data: null }])
+mock.onPost('/api/v2/projects/config/read').reply(() => [200, { data: projectsConfig }])
 
 // Options
 const options = [

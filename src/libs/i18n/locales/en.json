@@ -138,6 +138,13 @@
     "mode": {
       "dark": "Dark mode",
       "light": "Light mode"
+    },
+    "banners": {
+      "variableTitle": "Variable Setting",
+      "empty": "Empty"
+    },
+    "editor": {
+      "addedVariables": "Added variables"
     }
   },
   "component": {
