@@ -22,7 +22,7 @@ class ApiService {
       method = Method.POST,
       contentType = ContentType.JSON,
       withErrorToast = true,
-      withErrorDescriptionToast = false,
+      withErrorDescriptionToast = true,
       withErrorNotFound = true,
       withSuccessToast = false,
       withLoader = true,
