@@ -82,7 +82,6 @@ export default {
               id: rootGetters.selectedProject.id,
             },
           })
-          console.log(data)
           commit('UPDATE_CURRENCY', data)
         } catch (e) {}
       }
