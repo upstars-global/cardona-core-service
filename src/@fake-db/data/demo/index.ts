@@ -220,7 +220,13 @@ const entityData = {
   seo: {
     metaTitle: 'Seo meta title',
     metaDescription: 'Seo meta description',
-    description: 'Seo description',
+    description: `  <h1>Welcome to Demo seo data </h1>
+  <p>This is a paragraph of mock content.</p>
+  <ul>
+    <li>Seo text item 1</li>
+    <li>Seo text item 2</li>
+    <li>Seo text item 3</li>
+  </ul>`,
   },
   fieldTranslations: {
     metaTitle: {
@@ -261,19 +267,6 @@ const entityData = {
       pt: { value: '', disabled: false },
       pt_BR: { value: '', disabled: false },
     },
-    // metaDescription: {
-    //   en: { value: 'Seo meta description', disabled: false },
-    //   en_AU: { value: 'Mock data for en_AU', disabled: true },
-    //   en_CA: { value: 'Mock data for en_CA', disabled: false },
-    //   en_IN: { value: 'Mock data for en_IN', disabled: false },
-    //   en_NZ: { value: 'Mock data for en_NZ', disabled: false },
-    //   es: { value: 'Mock data for es', disabled: false },
-    //   fr: { value: 'Mock data for fr', disabled: false },
-    //   fr_CA: { value: 'Mock data for fr_CA', disabled: false },
-    //   fr_FR: { value: 'Mock data for fr_FR', disabled: false },
-    //   pt: { value: 'Mock data for pt', disabled: false },
-    //   pt_BR: { value: 'Mock data for pt_BR', disabled: false },
-    // },
     description: {
       en: { value: 'Seo description', disabled: false },
       en_AU: { value: 'Mock data for en_AU', disabled: false },
