@@ -45,9 +45,11 @@ router.beforeEach(async (to, _, next) => {
   const permissionLevel = to.meta.level || 1
 
   if (isLoggedIn && store.getters.userInfo.isEmpty) {
-    await store.dispatch('fetchCurrentUser')
-    await store.dispatch('localeCore/getLocalesList')
-    await store.dispatch('appConfigCore/fetchConfig')
+    await Promise.all([
+      store.dispatch('fetchCurrentUser'),
+      store.dispatch('localeCore/getLocalesList'),
+      store.dispatch('appConfigCore/fetchConfig'),
+    ])
   }
   if (!canNavigate(to)) {
     // Redirect to login if not logged in

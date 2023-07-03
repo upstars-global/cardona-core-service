@@ -22,7 +22,7 @@ export const usersList = [
       },
       {
         target: 'demo-demo-seo',
-        access: 4,
+        access: 3,
       },
     ],
     projects: [
@@ -111,7 +111,7 @@ export const usersList = [
       },
       {
         target: 'demo-demo-seo',
-        access: 4,
+        access: 3,
       },
     ],
     ability: [

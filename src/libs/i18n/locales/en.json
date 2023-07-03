@@ -351,8 +351,8 @@
     "delete": "Delete",
     "fullAccess": "Full access",
     "demo-demo": "Demo page",
-    "demo-demo-report": "Data export",
-    "demo-demo-seo": "Data seo"
+    "demo-demo-report": "Demo export",
+    "demo-demo-seo": "Demo seo"
   },
   "action": {
     "create": "Create",

@@ -78,7 +78,6 @@ const listData = [
     country: 'en',
     position: 1,
     imagePath: '/svc/img/i/ThorDevelop/banners/f16c86bc_4a13_4426_a278_c9de1a211e99_png',
-    // tags: [tagsList[0], tagsList[1], tagsList[2]],
     tags: [tagsList[0], tagsList[1], tagsList[2]],
     type: {
       id: TransactionType.Deposit,
