@@ -4,6 +4,7 @@ import { filterDemoList } from '../../helpers/filterDemoList'
 import { TransactionType } from '../../../@model/playersTransactions'
 import i18n from '../../../libs/i18n'
 import { IDemoTypeItem } from '../../../@model/demo'
+import { listImages } from '../compostela'
 
 export const tagsList: Array<IDemoTypeItem> = [
   {
@@ -58,6 +59,7 @@ export const tagsList: Array<IDemoTypeItem> = [
 const listData = [
   {
     id: '632c39448e03b2dab20c8a77',
+    partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
     isActive: true,
     status: 'new',
@@ -77,7 +79,7 @@ const listData = [
     localization: 'en',
     country: 'en',
     position: 1,
-    imagePath: '/svc/img/i/ThorDevelop/banners/f16c86bc_4a13_4426_a278_c9de1a211e99_png',
+    imagePath: listImages[0].publicPath,
     tags: [tagsList[0], tagsList[1], tagsList[2]],
     type: {
       id: TransactionType.Deposit,
@@ -90,6 +92,7 @@ const listData = [
   },
   {
     id: '632c39448e03b2dab20c8a78',
+    partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
     isActive: false,
     amount: 1000,
@@ -107,7 +110,7 @@ const listData = [
     buttonName: 'button name',
     login: 'Some',
     position: 4,
-    imagePath: '/svc/img/i/ThorDevelop/banners/5394d94a_63be_4e39_8d23_9269320c13c1_png',
+    imagePath: listImages[1].publicPath,
     tags: [tagsList[3], tagsList[4], tagsList[5]],
     type: {
       id: TransactionType.Deposit,
@@ -122,6 +125,7 @@ const listData = [
   },
   {
     id: '632c39448e03b2dab20c8a79',
+    partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
     isActive: true,
     amount: 0,
@@ -139,7 +143,7 @@ const listData = [
     buttonName: 'Test button name',
     login: 'cwilliams1956@game.com',
     position: 1,
-    imagePath: '/svc/img/i/ThorDevelop/banners/309f0a98_60dd_4b01_aed4_5dc811f5abd5_png',
+    imagePath: listImages[3].publicPath,
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -154,6 +158,7 @@ const listData = [
   },
   {
     id: '632c39448e03b2dab20c8a75',
+    partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',
     isActive: false,
     status: 'delete',
@@ -171,7 +176,7 @@ const listData = [
     buttonName: 'Some name',
     login: '',
     position: 55,
-    imagePath: '/svc/img/i/ThorDevelop/banners/f16c86bc_4a13_4426_a278_c9de1a211e99_png',
+    imagePath: listImages[4].publicPath,
     tags: [tagsList[1], tagsList[8], tagsList[9]],
     gameId: '622c39448e03b2dab20c8a75',
     state: true,
@@ -203,8 +208,10 @@ const entityData = {
   minute: 12,
   sumRange: [1000, 5000],
   percent: 25,
+  digits: 35,
   password: '111111',
   phone: '+380957777888',
+  email: 'test@test.com',
   check: true,
   radio: true,
   checkGroup: ['option3', 'option5'],
@@ -215,6 +222,8 @@ const entityData = {
   dateTime: '2023-06-18T05:55:00+00:00',
   textarea: 'Some text',
   textareaWithCounter: 'Some text',
+  credit: '4242 4242 4242 4242',
+  url: 'https://cardona-develop.upstr.to/alaro/',
   tags: ['some', 'tag', 'first'],
   seo: {
     metaTitle: 'Seo meta title',
@@ -285,6 +294,7 @@ const entityData = {
 const projectsConfig = {
   defaultCurrency: 'USD',
   currencies: ['AUD', 'NZD', 'CAD', 'EUR', 'USD', 'INR', 'BRL'],
+  image: listImages[0].publicPath,
 }
 
 mock.onPost('/api/v2/demo/read').reply(() => [
@@ -294,7 +304,29 @@ mock.onPost('/api/v2/demo/read').reply(() => [
   },
 ])
 
-mock.onPost('/api/v2/demo/create').reply(() => [200, { data: null }])
+mock.onPost('/api/v2/demo/create').reply(({ data }) => {
+  const error = {
+    type: 'VALIDATION',
+    description: 'Validation error',
+    validationErrors: new Array<{ field: string; code: string; template: string }>(),
+  }
+  const object = JSON.parse(data)
+  if (object.data.text === entityData.text) {
+    error.validationErrors.push({
+      field: 'text',
+      code: 'ALREADY_EXISTS',
+      template: 'This entry already exists in the collection',
+    })
+  }
+
+  return [
+    200,
+    {
+      data: error.validationErrors.length ? null : object.data,
+      error: error.validationErrors.length ? error : null,
+    },
+  ]
+})
 mock.onPost('/api/v2/demo/update').reply(() => [200, { data: null }])
 mock.onPost('/api/v2/demo/delete').reply(() => [200, { data: null }])
 mock.onPost('/api/v2/projects/config/read').reply(() => [200, { data: projectsConfig }])

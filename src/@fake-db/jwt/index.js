@@ -78,7 +78,6 @@ export const usersList = [
         ],
       },
     ],
-    products: [],
     ability: [
       {
         action: 'manage',

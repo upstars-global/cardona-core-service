@@ -3,10 +3,21 @@ const {
   compilerOptions: { paths },
 } = require('./tsconfig.json')
 
+const proxy_headers = {
+  'CF-Access-Client-Id': 'a88c3a6e984d3e87ac3639eaeb013164.access',
+  'CF-Access-Client-Secret': process.env.CF_SECRET,
+}
+
 module.exports = {
   publicPath: '/',
   devServer: {
-    proxy: 'https://cardona-develop.upstr.to',
+    proxy: {
+      '/api': {
+        changeOrigin: true,
+        target: 'https://cardona-develop.upstr.to',
+        headers: proxy_headers,
+      },
+    },
   },
   css: {
     loaderOptions: {

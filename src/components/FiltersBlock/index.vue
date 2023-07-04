@@ -109,7 +109,7 @@ import store from '../../store'
 import { useRouter } from '../../@core/utils/utils'
 import { setStorage } from '../../helpers/storage'
 import useToastService from '../../helpers/toasts'
-import { FieldInfo } from '../../@model/field'
+import { Filter } from '../../@model/filter'
 import FilterSelector from './_components/FilterSelector.vue'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 
@@ -125,7 +125,7 @@ export default defineComponent({
       default: '',
     },
     filters: {
-      type: Array as PropType<FieldInfo[]>,
+      type: Array as PropType<Filter[]>,
       required: true,
     },
     isOpen: {
@@ -148,14 +148,14 @@ export default defineComponent({
     const { name: pageName } = route.value
     const keyStorage = `${pageName}-${props.entityName}-list-filters`
 
-    const selectedFilters = ref<FieldInfo[]>([])
+    const selectedFilters = ref<Filter[]>([])
 
     const isSmallBlock: boolean = props.size === 'sm'
     const headerTag: string = isSmallBlock ? 'h5' : 'h4'
 
-    const onChange = (filter: FieldInfo) => selectedFilters.value.push(filter)
+    const onChange = (filter: Filter) => selectedFilters.value.push(filter)
 
-    const onRemoveFilter = ({ key }: FieldInfo) => {
+    const onRemoveFilter = ({ key }: Filter) => {
       selectedFilters.value = selectedFilters.value.filter((filter) => filter.key !== key)
 
       onApply()
@@ -193,7 +193,7 @@ export default defineComponent({
       if (store.getters['filtersCore/appliedListFilters'].length) {
         selectedFilters.value = store.getters['filtersCore/appliedListFilters']
       } else if (initFiltersStorage) {
-        selectedFilters.value = props.filters.filter(({ key }: FieldInfo) =>
+        selectedFilters.value = props.filters.filter(({ key }: Filter) =>
           initFiltersStorage?.includes(key)
         )
 
