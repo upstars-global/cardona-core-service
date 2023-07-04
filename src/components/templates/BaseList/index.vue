@@ -526,6 +526,8 @@ import CTable from '../../CTable/index.vue'
 import { useFilters } from '../../FiltersBlock/useFilters'
 import FiltersBlock from '../../FiltersBlock/index.vue'
 import { permissionPrefix } from '@productConfig'
+import { Filter, PayloadFilters } from '../../../@model/filter'
+import { BaseField, SelectBaseField } from '../../../@model/baseField'
 
 export default {
   name: 'BaseList',
@@ -712,7 +714,7 @@ export default {
 
     // Fetch list
     const getList = async () => {
-      const filter: object = setRequestFilters()
+      const filter = setRequestFilters()
       const sort = sortData.sortBy ? [new ListSort(sortData)] : undefined
       const { list, total } = await store.dispatch(fetchActionName, {
         type: entityName,
@@ -782,7 +784,7 @@ export default {
 
     // Export
     const onExportFormatSelected = async (format: string) => {
-      const filter: object = setRequestFilters()
+      const filter = setRequestFilters()
       const sort = sortData.sortBy ? [new ListSort(sortData)] : undefined
 
       const report: string = await store.dispatch(fetchReportActionName, {
@@ -810,7 +812,7 @@ export default {
 
     // Filters
     const isFiltersShown = ref(false)
-    const appliedFilters = computed(() => {
+    const appliedFilters = computed<Filter[]>(() => {
       const isSameEntity: boolean = entityName === store.getters['filtersCore/listEntityName']
 
       return isSameEntity ? store.getters['filtersCore/appliedListFilters'] : []
@@ -823,7 +825,7 @@ export default {
       props.config.filterList
     )
 
-    const setRequestFilters = (): object => {
+    const setRequestFilters = (): PayloadFilters => {
       if (!ListFilterModel) return {}
 
       let filters = new ListFilterModel(props.config?.staticFilters)
@@ -838,7 +840,11 @@ export default {
             ({ type }: FilterListItem) => type === filter.key
           )
 
-          if (filter.type === FieldType.Select) {
+          if (filter instanceof SelectBaseField) {
+            acc[key] = filter.transformField(trackBy)
+          } else if (filter instanceof BaseField) {
+            acc[key] = filter.transformField()
+          } else if (filter.type === FieldType.Select) {
             acc[key] = filter.value?.[trackBy]
           } else if (filter.type === FieldType.MultiSelect) {
             acc[key] = filter.value.map((item: object) => item[trackBy])

@@ -1,4 +1,4 @@
-import { FieldInfo } from '../../@model/field'
+import { Filter } from '../../@model/filter'
 
 export default {
   namespaced: true,
@@ -10,7 +10,7 @@ export default {
   getters: {
     listEntityName: ({ entityName }): string => entityName,
     listPath: ({ listPath }): string => listPath,
-    appliedListFilters: ({ listFilters }): Array<FieldInfo> => listFilters,
+    appliedListFilters: ({ listFilters }): Array<Filter> => listFilters,
   },
   mutations: {
     SET_LIST_ENTITY_NAME(state, entityName: string = '') {
@@ -21,7 +21,7 @@ export default {
       state.listPath = path
     },
 
-    SET_LIST_FILTERS(state, filters: Array<FieldInfo> = []) {
+    SET_LIST_FILTERS(state, filters: Array<Filter> = []) {
       state.listFilters = filters
     },
   },
