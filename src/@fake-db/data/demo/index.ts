@@ -4,6 +4,7 @@ import { filterDemoList } from '../../helpers/filterDemoList'
 import { TransactionType } from '../../../@model/playersTransactions'
 import i18n from '../../../libs/i18n'
 import { IDemoTypeItem } from '../../../@model/demo'
+import { listImages } from '../compostela'
 
 export const tagsList: Array<IDemoTypeItem> = [
   {
@@ -78,7 +79,7 @@ const listData = [
     localization: 'en',
     country: 'en',
     position: 1,
-    imagePath: '/svc/img/i/ThorDevelop/banners/f16c86bc_4a13_4426_a278_c9de1a211e99_png',
+    imagePath: listImages[0].publicPath,
     tags: [tagsList[0], tagsList[1], tagsList[2]],
     type: {
       id: TransactionType.Deposit,
@@ -109,7 +110,7 @@ const listData = [
     buttonName: 'button name',
     login: 'Some',
     position: 4,
-    imagePath: '/svc/img/i/ThorDevelop/banners/5394d94a_63be_4e39_8d23_9269320c13c1_png',
+    imagePath: listImages[1].publicPath,
     tags: [tagsList[3], tagsList[4], tagsList[5]],
     type: {
       id: TransactionType.Deposit,
@@ -142,7 +143,7 @@ const listData = [
     buttonName: 'Test button name',
     login: 'cwilliams1956@game.com',
     position: 1,
-    imagePath: '/svc/img/i/ThorDevelop/banners/309f0a98_60dd_4b01_aed4_5dc811f5abd5_png',
+    imagePath: listImages[3].publicPath,
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -175,7 +176,7 @@ const listData = [
     buttonName: 'Some name',
     login: '',
     position: 55,
-    imagePath: '/svc/img/i/ThorDevelop/banners/f16c86bc_4a13_4426_a278_c9de1a211e99_png',
+    imagePath: listImages[4].publicPath,
     tags: [tagsList[1], tagsList[8], tagsList[9]],
     gameId: '622c39448e03b2dab20c8a75',
     state: true,
@@ -220,6 +221,7 @@ const entityData = {
   textarea: 'Some text',
   textareaWithCounter: 'Some text',
   tags: ['some', 'tag', 'first'],
+  image: listImages[0].publicPath,
 }
 
 mock.onPost('/api/v2/demo/read').reply(() => [

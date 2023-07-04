@@ -97,9 +97,11 @@ export class DemoForm {
   readonly tags: FieldInfo
   readonly seo: SeoData
   public fieldTranslations: FieldTranslationsData
+  public image: string
 
   constructor(data) {
     this.id = data?.id
+    this.image = data?.image
     this.switch = new FieldInfo({
       type: FieldType.Switch,
       key: 'switch',

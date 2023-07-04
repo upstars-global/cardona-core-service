@@ -163,9 +163,21 @@
             </b-col>
           </b-row>
 
-          <b-row>
+          <b-row class="mb-2">
             <b-col cols="8">
               <field-generator v-model="formData.tags" :disabled="isDisabledField" />
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col cols="8">
+              <upload-image
+                v-model="formData.image"
+                type="banners"
+                size="md"
+                :text-btn="$t('uploadImg.selectImage')"
+                :path="`/${selectedProjectPublicName}/banners`"
+                :disabled="isDisabledField"
+              />
             </b-col>
           </b-row>
         </b-card-body>
@@ -189,6 +201,8 @@ import FieldGenerator from '../../../components/templates/FieldGenerator/index.v
 import SeoForm from '../../../components/templates/SeoForm/index.vue'
 import LocaleForm from '../../../components/templates/LocaleForm/index.vue'
 import BadgeCopy from '../../../components/BadgeCopy.vue'
+import UploadImage from '../../../components/UploadImage/index.vue'
+import store from '../../../store'
 
 type Props = {
   entityId?: string
@@ -205,6 +219,11 @@ const formData = ref<DemoForm>({} as DemoForm)
 watchEffect(() => {
   formData.value = props.form
 })
+
+const selectedProject = computed(() => store.getters.selectedProject)
+const selectedProjectPublicName = computed(
+  () => selectedProject.value?.publicName || store.getters.selectedProject?.title
+)
 
 const isUpdatePage = computed(() => !!props.entityId)
 const isDisabledTabs = computed(() =>

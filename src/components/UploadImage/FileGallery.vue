@@ -112,7 +112,12 @@ export default defineComponent({
       currentPage,
       updateTotal,
       onChangePagination,
-    } = usePagination({ defaultPerPageOptions, defaultPerPage: 25, isUseRouter: false })
+    } = usePagination({
+      defaultPerPageOptions,
+      defaultPerPage: 25,
+      isUseRouter: false,
+      storageKey: '',
+    })
     const paginated = ref({
       linkGen,
       perPageOptions,
