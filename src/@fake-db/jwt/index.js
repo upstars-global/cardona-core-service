@@ -21,7 +21,18 @@ export const usersList = [
         access: 1,
       },
     ],
-    projects: [],
+    projects: [
+      {
+        websiteUrl: '',
+        publicName: 'Demo',
+        locales: ['en'],
+        mainLocale: 'en',
+        id: 0,
+        name: 'Demo',
+        alias: 'demo',
+        iconPath: '',
+      },
+    ],
     products: [],
     ability: [
       {

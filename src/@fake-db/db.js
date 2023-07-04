@@ -34,5 +34,6 @@ import './data/demo'
 import './data/permissions'
 import './data/user'
 import './data/locale'
+import './data/compostela'
 
 mock.onAny().passThrough() // forwards the matched request over network
