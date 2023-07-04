@@ -203,8 +203,10 @@ const entityData = {
   minute: 12,
   sumRange: [1000, 5000],
   percent: 25,
+  digits: 35,
   password: '111111',
   phone: '+380957777888',
+  email: 'test@test.com',
   check: true,
   radio: true,
   checkGroup: ['option3', 'option5'],
@@ -215,6 +217,8 @@ const entityData = {
   dateTime: '2023-06-18T05:55:00+00:00',
   textarea: 'Some text',
   textareaWithCounter: 'Some text',
+  credit: '4242 4242 4242 4242',
+  url: 'https://cardona-develop.upstr.to/alaro/',
   tags: ['some', 'tag', 'first'],
 }
 
@@ -225,7 +229,29 @@ mock.onPost('/api/v2/demo/read').reply(() => [
   },
 ])
 
-mock.onPost('/api/v2/demo/create').reply(() => [200, { data: null }])
+mock.onPost('/api/v2/demo/create').reply(({ data }) => {
+  const error = {
+    type: 'VALIDATION',
+    description: 'Validation error',
+    validationErrors: new Array<{ field: string; code: string; template: string }>(),
+  }
+  const object = JSON.parse(data)
+  if (object.data.text === entityData.text) {
+    error.validationErrors.push({
+      field: 'text',
+      code: 'ALREADY_EXISTS',
+      template: 'This entry already exists in the collection',
+    })
+  }
+
+  return [
+    200,
+    {
+      data: error.validationErrors.length ? null : object.data,
+      error: error.validationErrors.length ? error : null,
+    },
+  ]
+})
 mock.onPost('/api/v2/demo/update').reply(() => [200, { data: null }])
 mock.onPost('/api/v2/demo/delete').reply(() => [200, { data: null }])
 
