@@ -46,7 +46,7 @@ export class SelectBaseField<T extends OptionsItem = OptionsItem>
     }
   }
 
-  transformField() {
-    return this.value?.id ?? this.value ?? ''
+  transformField(trackBy = 'id') {
+    return this.value?.[trackBy] ?? this.value ?? ''
   }
 }
