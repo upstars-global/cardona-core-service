@@ -8,6 +8,7 @@ import { StatusWithVariant, ViewInfo, ViewType } from './view'
 import { SideBarCollapseItem } from '../components/templates/BaseList/model'
 import { TransactionType } from './playersTransactions'
 import { TranslateResult } from 'vue-i18n'
+import { ValidationRule } from './validations'
 
 export interface IDemoTypeItem {
   id: string
@@ -78,10 +79,12 @@ export class DemoForm {
   readonly switch: FieldInfo
   readonly switchWithState: FieldInfo
   readonly text: TextBaseField
+  readonly email: TextBaseField
   readonly number: NumberBaseField
   readonly minute: FieldInfo
   readonly sumRange: FieldInfo
   readonly percent: FieldInfo
+  readonly digits: NumberBaseField
   readonly password: FieldInfo
   readonly phone: FieldInfo
   readonly check: FieldInfo
@@ -95,6 +98,7 @@ export class DemoForm {
   readonly textarea?: FieldInfo
   readonly textareaWithCounter: FieldInfo
   readonly tags: FieldInfo
+  readonly url: TextBaseField
   readonly seo: SeoData
   public fieldTranslations: FieldTranslationsData
   public image: string
@@ -112,25 +116,40 @@ export class DemoForm {
       key: 'text',
       value: data?.text,
       label: i18n.t('page.demo.textField'),
-      validationRules: 'required',
+      validationRules: ['required'],
       isLocalization: true,
     })
     this.number = new NumberBaseField({
       key: 'number',
       value: data?.number,
       label: i18n.t('page.demo.numberField'),
+      validationRules: ['required', 'min:3' as ValidationRule],
     })
     this.minute = new FieldInfo({
       type: FieldType.Minute,
       key: 'minute',
       value: data?.minute,
       label: i18n.t('page.demo.minuteField'),
+      validationRules: 'positive',
     })
     this.percent = new FieldInfo({
       type: FieldType.Percent,
       key: 'percent',
       value: data?.percent,
       label: i18n.t('page.demo.percentField'),
+      validationRules: 'required|length:2',
+    })
+    this.digits = new NumberBaseField({
+      key: 'digits',
+      value: data?.digits,
+      label: i18n.t('page.demo.numberField'),
+      validationRules: ['required', 'digits:4' as ValidationRule],
+    })
+    this.email = new TextBaseField({
+      key: 'email',
+      value: data?.email,
+      label: i18n.t('common.email'),
+      validationRules: ['required', 'email'],
     })
     this.sumRange = new FieldInfo({
       type: FieldType.SumRange,
@@ -143,12 +162,14 @@ export class DemoForm {
       key: 'phone',
       value: data?.phone,
       label: i18n.t('page.demo.phoneField'),
+      validationRules: 'required|phone',
     })
     this.password = new FieldInfo({
       type: FieldType.Password,
       key: 'password',
       value: data?.password,
       label: i18n.t('page.demo.passwordField'),
+      validationRules: 'required|password',
     })
     this.switchWithState = new FieldInfo({
       type: FieldType.SwitchWithState,
@@ -243,6 +264,12 @@ export class DemoForm {
       key: 'textareaWithCounter',
       label: i18n.t('page.demo.textareaWithCounterField'),
       maxLength: 45,
+    })
+    this.url = new TextBaseField({
+      value: data?.url,
+      key: 'url',
+      label: i18n.t('common.url'),
+      validationRules: 'url',
     })
     this.tags = new FieldInfo({
       type: FieldType.Tags,

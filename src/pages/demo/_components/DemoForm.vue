@@ -19,6 +19,9 @@
             <b-col cols="4">
               <field-generator v-model="formData.text" :disabled="isDisabledField" />
             </b-col>
+            <b-col cols="4">
+              <field-generator v-model="formData.email" :disabled="isDisabledField" />
+            </b-col>
 
             <b-col cols="4">
               <field-generator v-model="formData.number" :disabled="isDisabledField" />
@@ -32,6 +35,10 @@
 
             <b-col cols="4">
               <field-generator v-model="formData.percent" :disabled="isDisabledField" />
+            </b-col>
+
+            <b-col cols="4">
+              <field-generator v-model="formData.digits" :disabled="isDisabledField" />
             </b-col>
           </b-row>
 
@@ -154,6 +161,9 @@
 
         <b-card-body>
           <b-row class="mb-2">
+            <b-col cols="4">
+              <field-generator v-model="formData.url" :disabled="isDisabledField" />
+            </b-col>
             <b-col cols="4">
               <field-generator v-model="formData.phone" :disabled="isDisabledField" />
             </b-col>
