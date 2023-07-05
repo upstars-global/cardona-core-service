@@ -22,7 +22,7 @@ class ApiService {
       method = Method.POST,
       contentType = ContentType.JSON,
       withErrorToast = true,
-      withErrorDescriptionToast = true,
+      withErrorDescriptionToast = false,
       withErrorNotFound = true,
       withSuccessToast = false,
       withLoader = true,
@@ -126,7 +126,9 @@ class ApiService {
     } else if (withErrorDescriptionToast && error.description) {
       toastErrorMessageString(error.description)
     } else if (error.type) {
-      toastError(error.type)
+      toastError(error.type, {
+        defaultCode: error.description,
+      })
     } else if (error.isAxiosError) {
       toastError('axiosError')
     }
