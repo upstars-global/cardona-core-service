@@ -4,7 +4,7 @@ import { filterDemoList } from '../../helpers/filterDemoList'
 import { TransactionType } from '../../../@model/playersTransactions'
 import i18n from '../../../libs/i18n'
 import { IDemoTypeItem } from '../../../@model/demo'
-import { listImages } from '../compostela'
+import { listImages } from '../compostela/index'
 
 export const tagsList: Array<IDemoTypeItem> = [
   {
