@@ -2,10 +2,10 @@ import Vue from 'vue'
 import ToastificationContent from '../@core/components/toastification/ToastificationContent.vue'
 import i18n from '../libs/i18n'
 
-type ToastOptions = Record<string | 'defaultCode', string | null>
+type ToastOptions = Record<string | 'defaultCode', string>
 
 const defaultOptions: ToastOptions = {
-  defaultText: null,
+  defaultText: '',
   defaultCode: 'default',
 }
 
