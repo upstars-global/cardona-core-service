@@ -1,0 +1,1 @@
+{"version":3,"file":"productCore.js","sourceRoot":"","sources":["productCore.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,SAAS,EAAE,MAAM,gBAAgB,CAAA;AAE1C,eAAe;IACb,UAAU,EAAE,IAAI;IAChB,KAAK,EAAE;QACL,SAAS;KACV;IAED,OAAO,EAAE;QACP,SAAS,EAAE,CAAC,EAAE,SAAS,EAAE,EAAU,EAAE,CAAC,SAAS;KAChD;CACF,CAAA"}

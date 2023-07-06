@@ -49,5 +49,16 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "typedocOptions": {
+    "basePath": "./",
+    "entryPoints": [
+      "src/components/templates/BaseList/model.ts",
+      "src/components/templates/BaseSection/model.ts",
+      "src/components/FiltersBlock/filters.ts"
+    ],
+    "out": "public/docs",
+    "media": "public/docs",
+    "sourceLinkTemplate": "https://gitlab.upstr.to/backoffice/cardona-core-service/-/tree/master/{path}?at={gitRevision}#line={line}"
+  }
 }
