@@ -18,6 +18,7 @@ export enum FieldType {
   Minute = 'minute',
   Tags = 'tags',
   Radio = 'radio',
+  DateBtnOnly = 'date-btn-only',
   Date = 'date', // TODO: https://upstars.atlassian.net/browse/BAC-853
   DateRange = 'date-range',
   DateTime = 'date-time',
