@@ -30,44 +30,124 @@ export type FilterListItem = {
   readonly key: string
   readonly trackBy?: string
 }
+/**
+ * IBaseListConfig - Конфиг базового листа
+ *
+ * @remarks
+ * Все параметры которые принимает базовый лист
+ */
 
+/** Все параметры которые принимает базовый лист */
 export interface IBaseListConfig {
+  /** withSearch - Вкл/выкл поиск в листе */
   readonly withSearch?: boolean
+
+  /** withDeactivation - Вкл/выкл возможночть активировать/деактивировать элемента листа */
   readonly withDeactivation?: boolean
+
+  /** withSettings - Вкл/выкл настройки таблицы */
   readonly withSettings?: boolean
+
+  /** skeletonRows - Количество строк для skeleton таблицы (10 ст) */
   readonly skeletonRows?: number
+
+  /** skeletonColumns - Количество столбцов для skeleton таблицы (4 ст) */
   readonly skeletonColumns?: number
+
+  /** skeletonColumns - Текст когда лист пустой */
   readonly emptyText?: string
+
+  /** filterList - Масив <FilterListItem> фильтров для таблицы */
   readonly filterList?: Array<FilterListItem>
+
+  /** staticFilters - Статический фильтр например playerId. Всегда отправляеться в АПИ */
   readonly staticFilters?: Record<string, string>
+
+  /** staticSorts - Статический сортировка таблицы field: 'position', dir: SortDirection.asc, */
   readonly staticSorts?: IListSort
+
+  /** responsive - Вкл/выкл гибкую таблицу  */
   readonly responsive?: boolean
+
+  /** responsive - Установить режим выделения элементов 'multi'/ 'single'  */
   readonly selectMode?: string
+
+  /** selectable - Вкл/выкл режим выбора элементов */
   readonly selectable?: boolean
+
+  /** small - Вкл/выкл уменьшеный вид таблицы  */
   readonly small?: boolean
+
+  /** draggable - Вкл/выкл перетаскивание элементов  */
   readonly draggable?: boolean
+
+  /** defaultPerPage - Задать количество элементов на странице таблицы */
   readonly defaultPerPage?: number
+
+  /** withIndependentPagination - Установить количество элементов на странице таблицы */
   readonly withIndependentPagination?: boolean
+
+  /** searchPlaceholder - Текст placeholder для поиска */
   readonly searchPlaceholder?: string
+
+  /** selectable - Текст placeholder для поиска */
   readonly withExport?: boolean
+
+  /** withMultipleActions - Вкл/выкл действие с несколькими элементами */
   readonly withMultipleActions?: boolean
+
+  /** sidebar - Вкл/выкл sidebar для элемента */
   readonly sidebar?: boolean
+
+  /** sidebarCollapseMode - Вкл/выкл CollapseMode для sidebar */
   readonly sidebarCollapseMode?: boolean
+
+  /** isShowYou - Вкл/выкл подсветку админа в таблице юзеров (Ищет по id и помечает значком Вы) */
   readonly isShowYou?: boolean
+
+  /** isShowUpdatePassword - Вкл/выкл поле для изменения пароля */
   readonly isShowUpdatePassword?: boolean
+
+  /** onePermissionKey - Задает один доступ на все операции */
   readonly onePermissionKey?: string
+
+  /** withRemoveComment - Добавить/убрать поле коментария в модальном окне при удалении */
   readonly withRemoveComment?: boolean
+
+  /** withRemoveComment - Вкл/выкл модальное окно при удалении */
   readonly withRemoveModal?: boolean
+
+  /** createFromCopy - Вкл/выкл действие копирования элемента */
   readonly createFromCopy?: boolean
+
+  /** withCustomDrag - Вкл/выкл пользовательское действие на Drag and Drop (На событие @end можно повесить свой обработчик) */
   readonly withCustomDrag?: boolean
+
+  /** pagination - Вкл/выкл pagination в таблице */
   readonly pagination?: boolean
+
+  /** withCreateBtn - Вкл/выкл кнопку Создать элемент */
   readonly withCreateBtn?: boolean
+
+  /** withCustomFetchList - Вкл/выкл пользовательский Fetch для листа. Нужно создать модуль с сторе с названием раздела и там создать пользовательский FetchList */
   readonly withCustomFetchList?: boolean
+
+  /** withCustomDelete - Вкл/выкл пользовательский Delete для листа. Нужно создать модуль с сторе с названием раздела и там создать пользовательский Delete */
   readonly withCustomDelete?: boolean
+
+  /** noPermissionPrefix - Вкл/выкл префикс проекта (true) */
   readonly noPermissionPrefix?: boolean
+
+  /** permissionKey - Пользовательский доступ */
   readonly permissionKey?: string
+
+  /** customModuleName - Пользовательский имя модуля стор */
   readonly customModuleName?: string
+
+  /** customApiPrefix - Пользовательский апи префикс (App.V2.) */
   readonly customApiPrefix?: string
+
+  /** customPermissionPrefix - Пользовательский префикс к доступу */
   readonly customPermissionPrefix?: string
 }
 
@@ -188,16 +268,38 @@ export class BaseListConfig implements IBaseListConfig {
     this.customPermissionPrefix = customPermissionPrefix
   }
 }
+/**
+ * IBaseSectionConfig - Конфиг базовой секции
+ *
+ * @remarks
+ * Все параметры которые принимает базовая секция (Внутрення страница)
+ */
 
+/** Все параметры которые принимает базовая секция (Внутрення страница) */
 export interface IBaseSectionConfig {
+  /** onePermissionKey - Задает один доступ на все операции */
   readonly onePermissionKey?: string
-  readonly withCustomModuleName?: boolean
+
+  /** noPermissionPrefix - Вкл/выкл префикс проекта (true) */
   readonly noPermissionPrefix?: boolean
+
+  /** withCustomModuleName - Вкл/выкл пользовательское имя модуля стор */
+  readonly withCustomModuleName?: boolean
+
+  /** customModuleName - Пользовательское имя модуля стор */
   readonly customModuleName?: string
+
+  /** customApiPrefix - Пользовательский апи префикс (App.V2.) */
   readonly customApiPrefix?: string
-  readonly permissionKey?: string
-  readonly loadingEndpointArr?: Array<string>
+
+  /** customPermissionPrefix - Пользовательский префикс к доступу */
   readonly customPermissionPrefix?: string
+
+  /** permissionKey - Пользовательский доступ */
+  readonly permissionKey?: string
+
+  /** loadingEndpointArr - Масив url за загрузкой которых нужно следить и показывать прелодер */
+  readonly loadingEndpointArr?: Array<string>
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig {
