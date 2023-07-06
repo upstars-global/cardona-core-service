@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import i18n from '../../../../libs/i18n'
+import { BVariants, BSizes } from '../../../../@model/bootstrap'
 
 type Props = {
   value: string | Date
@@ -40,8 +41,8 @@ const modelValue = computed({
         right
         :locale="currentLocale"
         aria-controls="date-btn-only-input"
-        button-variant="primary"
-        size="sm"
+        :button-variant="BVariants.OutlinePrimary"
+        :size="BSizes.Sm"
       />
     </b-input-group-append>
   </b-input-group>
