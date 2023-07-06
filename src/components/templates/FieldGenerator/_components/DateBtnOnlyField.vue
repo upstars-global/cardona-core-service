@@ -29,7 +29,7 @@ const modelValue = computed({
       id="date-btn-only-input"
       v-model="modelValue"
       type="text"
-      placeholder="DD-MM-YYYY"
+      placeholder="YYYY-MM-DD"
       autocomplete="off"
       show-decade-nav
     />
