@@ -1,41 +1,25 @@
-<script lang="ts">
+<script setup lang="ts">
 import { computed } from 'vue'
-import { Russian as ru } from 'flatpickr/dist/l10n/ru.js'
 import i18n from '../../../../libs/i18n'
 
-export default {
-  name: 'DateBtnOnlyField',
-
-  props: {
-    value: {
-      type: [String, Date],
-      default: '',
-    },
-  },
-
-  setup(props, { emit }) {
-    const currentLocale: string = i18n.locale
-    const locales = {
-      ru: 'ru',
-      en: 'en-US',
-    }
-
-    const modelValue = computed({
-      get: () => props.value,
-      set: (value) => emit('input', value),
-    })
-
-    const onRemove = () => {
-      emit('input', '')
-    }
-
-    return {
-      currentLocale,
-      modelValue,
-      onRemove,
-    }
-  },
+type Props = {
+  value: string | Date
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  value: '',
+})
+
+const emit = defineEmits<{
+  (event: 'input', value: string | Date): void
+}>()
+
+const currentLocale: string = i18n.locale
+
+const modelValue = computed({
+  get: () => props.value,
+  set: (value) => emit('input', value),
+})
 </script>
 
 <template>
@@ -44,7 +28,7 @@ export default {
       id="date-btn-only-input"
       v-model="modelValue"
       type="text"
-      placeholder="YYYY-MM-DD"
+      placeholder="DD-MM-YYYY"
       autocomplete="off"
       show-decade-nav
     />
