@@ -311,13 +311,6 @@ const entityData = {
     },
   },
 }
-
-const projectsConfig = {
-  defaultCurrency: 'USD',
-  currencies: ['AUD', 'NZD', 'CAD', 'EUR', 'USD', 'INR', 'BRL'],
-  image: listImages[0].publicPath,
-}
-
 mock.onPost('/api/v2/demo/read').reply(() => [
   200,
   {
@@ -350,8 +343,6 @@ mock.onPost('/api/v2/demo/create').reply(({ data }) => {
 })
 mock.onPost('/api/v2/demo/update').reply(() => [200, { data: null }])
 mock.onPost('/api/v2/demo/delete').reply(() => [200, { data: null }])
-mock.onPost('/api/v2/projects/config/read').reply(() => [200, { data: projectsConfig }])
-
 // Options
 const options = [
   {
