@@ -28,7 +28,7 @@ const onClickLink = () => {
 
 <template>
   <div
-    class="d-flex align-items-center text-primary font-weight-bold"
+    class="d-flex align-items-center text-primary font-weight-bold cursor-pointer"
     :class="linkSizeClass"
     @click="onClickLink"
   >
