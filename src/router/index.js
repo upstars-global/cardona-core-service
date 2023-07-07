@@ -45,10 +45,10 @@ router.beforeEach(async (to, _, next) => {
   const permissionLevel = to.meta.level || 1
 
   if (isLoggedIn && store.getters.userInfo.isEmpty) {
+    await store.dispatch('fetchCurrentUser')
     await Promise.all([
-      await store.dispatch('fetchCurrentUser'),
-      await store.dispatch('localeCore/getLocalesList'),
-      await store.dispatch('appConfigCore/fetchConfig'),
+      store.dispatch('localeCore/getLocalesList'),
+      store.dispatch('appConfigCore/fetchConfig'),
     ])
   }
   if (!canNavigate(to)) {
