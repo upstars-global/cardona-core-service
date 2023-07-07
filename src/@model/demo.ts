@@ -95,6 +95,7 @@ export class DemoForm {
   readonly date: FieldInfo
   readonly dateRange: FieldInfo
   readonly dateTime: FieldInfo
+  readonly dateBtn: FieldInfo
   readonly textarea?: FieldInfo
   readonly textareaWithCounter: FieldInfo
   readonly tags: FieldInfo
@@ -239,6 +240,12 @@ export class DemoForm {
       key: 'dateTime',
       value: getLocaleDateStringWithoutTimezone(data?.dateTime),
       label: i18n.t('page.demo.dateTimeField'),
+    })
+    this.dateBtn = new FieldInfo({
+      type: FieldType.DateBtnOnly,
+      key: 'dateBtn',
+      value: data?.dateBtn,
+      label: i18n.t('page.demo.dateBtnField'),
     })
     this.select = new SelectBaseField({
       key: 'select',

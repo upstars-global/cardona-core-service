@@ -181,6 +181,7 @@
       "dateField": "Date field",
       "dateRangeField": "Date range field",
       "dateTimeField": "Date time field",
+      "dateBtnField": "Date btn only field",
       "selectField": "Select field",
       "multiSelectField": "Multi select field",
       "textareaField": "Textarea field",

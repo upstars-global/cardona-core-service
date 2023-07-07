@@ -14,6 +14,7 @@ type CModalProps = {
   cancelVariant?: BVariant
   cancelTitle?: string
   noCloseOnBackdrop?: boolean
+  lazy?: boolean
 }
 
 const props = withDefaults(defineProps<CModalProps>(), {
@@ -42,6 +43,7 @@ const onHidden = () => emit('hidden')
     :title="title"
     :size="size"
     centered
+    :lazy="lazy"
     body-class="p-2"
     :no-close-on-backdrop="noCloseOnBackdrop"
     :hide-footer="hideFooter"

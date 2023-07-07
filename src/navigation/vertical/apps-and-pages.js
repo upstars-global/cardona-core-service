@@ -13,6 +13,12 @@ export default [
     icon: 'BoxIcon',
   },
   {
+    title: 'Documentation',
+    href: '/docs',
+    target: '_blank',
+    icon: 'FileIcon',
+  },
+  {
     title: 'Email',
     route: 'apps-email',
     icon: 'MailIcon',

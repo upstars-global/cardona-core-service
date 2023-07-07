@@ -5,6 +5,7 @@ import i18n from '../libs/i18n'
 type ToastOptions = Record<string | 'defaultCode', string>
 
 const defaultOptions: ToastOptions = {
+  defaultText: '',
   defaultCode: 'default',
 }
 
@@ -27,6 +28,8 @@ export default function useToastService() {
   const toastError = (code, options: ToastOptions = defaultOptions) => {
     const message = i18n.te(`toast.error.${code}`)
       ? `toast.error.${code}`
+      : options?.defaultText
+      ? options.defaultText
       : `toast.error.${options.defaultCode}`
 
     Vue.$toast({
