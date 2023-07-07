@@ -311,6 +311,7 @@ const entityData = {
       pt_BR: { value: 'Mock data for pt_BR', disabled: false },
     },
   },
+  image: listImages[0].publicPath,
 }
 mock.onPost('/api/v2/demo/read').reply(() => [
   200,
