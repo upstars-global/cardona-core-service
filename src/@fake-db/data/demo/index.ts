@@ -236,6 +236,27 @@ const entityData = {
     <li>Seo text item 3</li>
   </ul>`,
   },
+  localisationParameters: {
+    'Demo locale params': {
+      AUD: '1',
+      NZD: '34',
+      CAD: '234',
+      EUR: '120033',
+      USD: '99',
+      INR: '2334',
+      BRL: '1234',
+    },
+    qweqwe: {
+      RUB: '666',
+      USD: '999',
+      AUD: '90000',
+      NZD: '3333777',
+      CAD: '',
+      EUR: '',
+      INR: '',
+      BRL: '',
+    },
+  },
   fieldTranslations: {
     metaTitle: {
       en: { value: 'Seo meta title', disabled: false },

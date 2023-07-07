@@ -46,9 +46,9 @@ router.beforeEach(async (to, _, next) => {
 
   if (isLoggedIn && store.getters.userInfo.isEmpty) {
     await Promise.all([
-      store.dispatch('fetchCurrentUser'),
-      store.dispatch('localeCore/getLocalesList'),
-      store.dispatch('appConfigCore/fetchConfig'),
+      await store.dispatch('fetchCurrentUser'),
+      await store.dispatch('localeCore/getLocalesList'),
+      await store.dispatch('appConfigCore/fetchConfig'),
     ])
   }
   if (!canNavigate(to)) {

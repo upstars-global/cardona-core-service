@@ -100,6 +100,7 @@ export class DemoForm {
   readonly tags: FieldInfo
   readonly url: TextBaseField
   readonly seo: SeoData
+  readonly localisationParameters: Record<string, Record<string, string>>
   public fieldTranslations: FieldTranslationsData
   public image: string
 
@@ -279,6 +280,7 @@ export class DemoForm {
     })
     this.seo = data?.seo
     this.fieldTranslations = data?.fieldTranslations
+    this.localisationParameters = data?.localisationParameters || {}
   }
 }
 
