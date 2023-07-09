@@ -14,3 +14,7 @@ import '../extensions'
 
 import { config } from '@vue/test-utils'
 config.mocks['$t'] = (key: string) => key
+config.mocks['t'] = (key: string) => key
+config.mocks['i18n'] = {
+  t: (key: string) => key,
+}
