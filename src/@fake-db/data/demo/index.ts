@@ -220,6 +220,7 @@ const entityData = {
   date: '2023-06-05T00:00:00+00:00',
   dateRange: '',
   dateTime: '2023-06-18T05:55:00+00:00',
+  dateBtn: '07-03-2022',
   textarea: 'Some text',
   textareaWithCounter: 'Some text',
   credit: '4242 4242 4242 4242',

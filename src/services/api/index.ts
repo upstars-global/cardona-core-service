@@ -126,7 +126,9 @@ class ApiService {
     } else if (withErrorDescriptionToast && error.description) {
       toastErrorMessageString(error.description)
     } else if (error.type) {
-      toastError(error.type)
+      toastError(error.type, {
+        defaultText: error.description,
+      })
     } else if (error.isAxiosError) {
       toastError('axiosError')
     }
