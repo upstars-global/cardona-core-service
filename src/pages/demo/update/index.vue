@@ -4,7 +4,7 @@
       #default="{ entityId, form, canUpdate, canRemove, canViewSeo, canUpdateSeo, onClickRemove }"
     >
       <demo-form
-        :demo-id="entityId"
+        :entity-id="entityId"
         :form="form"
         :can-update="canUpdate"
         :can-remove="canRemove"

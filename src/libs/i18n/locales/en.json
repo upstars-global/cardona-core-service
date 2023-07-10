@@ -139,6 +139,13 @@
     "mode": {
       "dark": "Dark mode",
       "light": "Light mode"
+    },
+    "banners": {
+      "variableTitle": "Variable Setting",
+      "empty": "Empty"
+    },
+    "editor": {
+      "addedVariables": "Added variables"
     }
   },
   "component": {
@@ -174,6 +181,7 @@
       "dateField": "Date field",
       "dateRangeField": "Date range field",
       "dateTimeField": "Date time field",
+      "dateBtnField": "Date btn only field",
       "selectField": "Select field",
       "multiSelectField": "Multi select field",
       "textareaField": "Textarea field",
@@ -347,7 +355,8 @@
     "delete": "Delete",
     "fullAccess": "Full access",
     "demo-demo": "Demo page",
-    "demo-demo-report": "Data export"
+    "demo-demo-report": "Demo export",
+    "demo-demo-seo": "Demo seo"
   },
   "action": {
     "create": "Create",
@@ -539,5 +548,14 @@
     "metaTitle": "Title",
     "metaDescription": "Description",
     "description": "Text"
+  },
+  "locale": {
+    "localization": "Localization",
+    "default": {
+      "metaTitle": "Title",
+      "metaDescription": "Description",
+      "description": "Text",
+      "text": "Text"
+    }
   }
 }

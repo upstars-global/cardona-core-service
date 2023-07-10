@@ -4,7 +4,7 @@ import { filterDemoList } from '../../helpers/filterDemoList'
 import { TransactionType } from '../../../@model/playersTransactions'
 import i18n from '../../../libs/i18n'
 import { IDemoTypeItem } from '../../../@model/demo'
-import { listImages } from '../compostela'
+import { listImages } from '../compostela/index'
 
 export const tagsList: Array<IDemoTypeItem> = [
   {
@@ -220,14 +220,99 @@ const entityData = {
   date: '2023-06-05T00:00:00+00:00',
   dateRange: '',
   dateTime: '2023-06-18T05:55:00+00:00',
+  dateBtn: '07-03-2022',
   textarea: 'Some text',
   textareaWithCounter: 'Some text',
   credit: '4242 4242 4242 4242',
   url: 'https://cardona-develop.upstr.to/alaro/',
   tags: ['some', 'tag', 'first'],
+  seo: {
+    metaTitle: 'Seo meta title',
+    metaDescription: 'Seo meta description',
+    description: `  <h1>Welcome to Demo seo data </h1>
+  <p>This is a paragraph of mock content.</p>
+  <ul>
+    <li>Seo text item 1</li>
+    <li>Seo text item 2</li>
+    <li>Seo text item 3</li>
+  </ul>`,
+  },
+  localisationParameters: {
+    'Demo locale params': {
+      AUD: '1',
+      NZD: '34',
+      CAD: '234',
+      EUR: '120033',
+      USD: '99',
+      INR: '2334',
+      BRL: '1234',
+    },
+    qweqwe: {
+      RUB: '666',
+      USD: '999',
+      AUD: '90000',
+      NZD: '3333777',
+      CAD: '',
+      EUR: '',
+      INR: '',
+      BRL: '',
+    },
+  },
+  fieldTranslations: {
+    metaTitle: {
+      en: { value: 'Seo meta title', disabled: false },
+      en_AU: { value: 'Mock data for en_AU', disabled: true },
+      en_CA: { value: 'Mock data for en_CA', disabled: false },
+      en_IN: { value: 'Mock data for en_IN', disabled: false },
+      en_NZ: { value: 'Mock data for en_NZ', disabled: false },
+      es: { value: 'Mock data for es', disabled: false },
+      fr: { value: 'Mock data for fr', disabled: false },
+      fr_CA: { value: 'Mock data for fr_CA', disabled: false },
+      fr_FR: { value: 'Mock data for fr_FR', disabled: false },
+      pt: { value: 'Mock data for pt', disabled: false },
+      pt_BR: { value: 'Mock data for pt_BR', disabled: false },
+    },
+    metaDescription: {
+      en: { value: 'Some text', disabled: false },
+      en_AU: {
+        value: `  <h1>Welcome to Demo localize </h1>
+  <p>This is a paragraph of mock content.</p>
+  <ul>
+    <li>English (Australia) 1</li>
+    <li>English (Australia) 2</li>
+    <li>English (Australia) 3</li>
+  </ul>`,
+        disabled: undefined,
+      },
+      en_CA: {
+        value: '&nbsp;<span class="variable-box">{Badge variable}</span>&nbsp;',
+        disabled: false,
+      },
+      en_IN: { value: '', disabled: false },
+      en_NZ: { value: '', disabled: false },
+      es: { value: '', disabled: false },
+      fr: { value: '', disabled: false },
+      fr_CA: { value: '', disabled: false },
+      fr_FR: { value: '', disabled: false },
+      pt: { value: '', disabled: false },
+      pt_BR: { value: '', disabled: false },
+    },
+    description: {
+      en: { value: 'Seo description', disabled: false },
+      en_AU: { value: 'Mock data for en_AU', disabled: false },
+      en_CA: { value: 'Mock data for en_CA', disabled: false },
+      en_IN: { value: 'Mock data for en_IN', disabled: false },
+      en_NZ: { value: 'Mock data for en_NZ', disabled: false },
+      es: { value: 'Mock data for es', disabled: false },
+      fr: { value: 'Mock data for fr', disabled: false },
+      fr_CA: { value: 'Mock data for fr_CA', disabled: false },
+      fr_FR: { value: 'Mock data for fr_FR', disabled: false },
+      pt: { value: 'Mock data for pt', disabled: false },
+      pt_BR: { value: 'Mock data for pt_BR', disabled: false },
+    },
+  },
   image: listImages[0].publicPath,
 }
-
 mock.onPost('/api/v2/demo/read').reply(() => [
   200,
   {
@@ -260,7 +345,6 @@ mock.onPost('/api/v2/demo/create').reply(({ data }) => {
 })
 mock.onPost('/api/v2/demo/update').reply(() => [200, { data: null }])
 mock.onPost('/api/v2/demo/delete').reply(() => [200, { data: null }])
-
 // Options
 const options = [
   {

@@ -86,10 +86,10 @@ export default {
     }
   },
   created() {
-    // data
-    this.$http.get('/analytics/data').then((response) => {
-      this.data = response.data
-    })
+    // !TODO UNUSED
+    // this.$http.get('/analytics/data').then((response) => {
+    //   this.data = response.data
+    // })
   },
   methods: {
     kFormatter,

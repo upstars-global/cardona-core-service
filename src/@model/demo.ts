@@ -95,11 +95,13 @@ export class DemoForm {
   readonly date: FieldInfo
   readonly dateRange: FieldInfo
   readonly dateTime: FieldInfo
+  readonly dateBtn: FieldInfo
   readonly textarea?: FieldInfo
   readonly textareaWithCounter: FieldInfo
   readonly tags: FieldInfo
   readonly url: TextBaseField
   readonly seo: SeoData
+  readonly localisationParameters: Record<string, Record<string, string>>
   public fieldTranslations: FieldTranslationsData
   public image: string
 
@@ -239,6 +241,12 @@ export class DemoForm {
       value: getLocaleDateStringWithoutTimezone(data?.dateTime),
       label: i18n.t('page.demo.dateTimeField'),
     })
+    this.dateBtn = new FieldInfo({
+      type: FieldType.DateBtnOnly,
+      key: 'dateBtn',
+      value: data?.dateBtn,
+      label: i18n.t('page.demo.dateBtnField'),
+    })
     this.select = new SelectBaseField({
       key: 'select',
       value: data?.select,
@@ -279,6 +287,7 @@ export class DemoForm {
     })
     this.seo = data?.seo
     this.fieldTranslations = data?.fieldTranslations
+    this.localisationParameters = data?.localisationParameters || {}
   }
 }
 
