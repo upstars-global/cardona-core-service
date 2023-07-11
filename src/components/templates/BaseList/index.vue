@@ -948,6 +948,7 @@ export default {
     } = usePagination({
       defaultPerPage: props.config.defaultPerPage,
       withIndependentPagination: props.config.withIndependentPagination,
+      isUseRouter: !props.config.withIndependentPagination,
       storageKey: perPageStorageKey,
     })
 
