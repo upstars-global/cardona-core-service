@@ -1,8 +1,10 @@
-import { mount } from '@vue/test-utils'
-import BaseList from '../../src/components/templates/BaseList/index.vue'
-import { BaseListConfig, UseListType } from '../../src/components/templates/BaseList/model'
+import { createLocalVue, mount } from '@vue/test-utils'
+import BaseSection from '../../src/components/templates/BaseSection/index.vue'
+import { PageType } from '../../src/components/templates/BaseSection/model'
+import { useDemoSection } from '../../src/pages/demo/useDemo'
+import VueRouter from 'vue-router'
 
-jest.mock('../../src/@core/utils/utils', () => ({
+/*jest.mock('../../src/@core/utils/utils', () => ({
   useRouter: jest.fn(() => {
     return {
       router: {
@@ -11,6 +13,9 @@ jest.mock('../../src/@core/utils/utils', () => ({
       route: {
         value: {
           name: 'name',
+          params: {
+            id: 'test',
+          },
         },
         matched: { isNotEmpty: true },
       },
@@ -41,45 +46,24 @@ jest.mock('../../src/use/pagination', () => ({
   usePagination: jest.fn(() => {
     return true
   }),
-}))
+}))*/
 
-const entityName = 'Demo'
-const config: BaseListConfig = new BaseListConfig({
-  withSettings: true,
-  skeletonColumns: 10,
-  responsive: true,
-  withCustomFetchList: true,
-  withSearch: true,
-  createFromCopy: true,
-  withExport: true,
-  sidebar: true,
-  sidebarCollapseMode: true,
-  filterList: [],
-})
-const useList = (): UseListType => {
-  const ListFilterModel = () => {}
-  const SideBarModel = () => {}
+const localVue = createLocalVue()
+localVue.use(VueRouter)
+const router = new VueRouter()
 
-  const fields = []
-
-  return {
-    entityName,
-    fields,
-    ListFilterModel,
-    SideBarModel,
-  }
-}
 describe('BaseList.vue', () => {
   it('BaseList', () => {
     const msg = 'new message'
-    const wrapper = mount(BaseList, {
+    const wrapper = mount(BaseSection, {
       propsData: {
-        config,
-        useList,
+        pageType: PageType.Create,
+        useEntity: useDemoSection,
       },
       mocks: {
         convertLowerCaseFirstSymbol: jest.fn(),
       },
+      router,
     })
     expect(wrapper.text()).toMatch(msg)
   })
