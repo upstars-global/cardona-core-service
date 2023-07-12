@@ -86,6 +86,6 @@ export default {
 .menu-title {
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: break-spaces;
+  white-space: nowrap;
 }
 </style>
