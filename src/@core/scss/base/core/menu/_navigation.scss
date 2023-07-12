@@ -17,7 +17,6 @@
   position: absolute;
   display: table-cell;
   height: 100%;
-  overflow: hidden;
 
   &.menu-light {
     @include menu-theme($body-color, $white);
