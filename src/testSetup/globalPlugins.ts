@@ -13,7 +13,8 @@ Vue.component(FeatherIcon.name, FeatherIcon)
 import '../extensions'
 
 import { config } from '@vue/test-utils'
-config.mocks['$t'] = (key: string) => key
+import i18n from '../libs/i18n'
+config.mocks['$t'] = (key: string) => i18n.t(key)
 config.mocks['t'] = (key: string) => key
 config.mocks['i18n'] = {
   t: (key: string) => key,
