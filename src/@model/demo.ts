@@ -295,6 +295,7 @@ export class DemoSideBar {
   readonly generalInfo: SideBarCollapseItem
   readonly info: SideBarCollapseItem
   readonly unuseble: SideBarCollapseItem
+  readonly additionalCollapse: SideBarCollapseItem
 
   constructor(data?: IDemoListItem) {
     this.generalInfo = new SideBarCollapseItem({
@@ -416,6 +417,13 @@ export class DemoSideBar {
           },
           label: i18n.t('common.status'),
         }),
+      },
+    })
+    this.additionalCollapse = new SideBarCollapseItem({
+      title: i18n.t('common.openedCollapseTitle'),
+      isVisibleByDefault: true,
+      views: {
+        item: new ViewInfo({}),
       },
     })
   }

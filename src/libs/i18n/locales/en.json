@@ -123,6 +123,7 @@
     "comment": "Comment",
     "isActive": "Is active",
     "sumPeriod": "Sum period",
+    "openedCollapseTitle": "Opened collapse title",
     "phone": {
       "_": "Phone",
       "list": "Phones"

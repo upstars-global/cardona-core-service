@@ -1,5 +1,8 @@
 <template>
   <base-list :use-list="useDemoList" :config="listConfig" class="demo-list">
+    <template #sidebar-collapse-row(item)>
+      <span><b>Example open collapse by body</b></span>
+    </template>
     <template #cell(winBack)="{ item }">
       <sum-and-currency
         :data="{

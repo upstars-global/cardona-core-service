@@ -339,16 +339,19 @@ export interface ISideBarCollapseItem {
   readonly title: TranslateResult
   readonly withBottomSeparator?: boolean
   readonly views: Record<string, ViewInfo>
+  readonly isVisibleByDefault?: boolean
 }
 
 export class SideBarCollapseItem {
   readonly title: TranslateResult
   readonly withBottomSeparator?: boolean
   readonly views: Record<string, ViewInfo>
+  readonly isVisibleByDefault?: boolean
 
   constructor(data: ISideBarCollapseItem) {
     this.title = data.title
     this.withBottomSeparator = data?.withBottomSeparator
     this.views = data.views
+    this.isVisibleByDefault = data?.isVisibleByDefault
   }
 }
