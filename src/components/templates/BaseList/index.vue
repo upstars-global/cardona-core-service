@@ -647,7 +647,10 @@ export default {
 
     const sidebarSlots = computed(() =>
       Object.keys(slots).filter(
-        (key) => key.includes('sidebar-row') || key.includes('sidebar-value')
+        (key) =>
+          key.includes('sidebar-row') ||
+          key.includes('sidebar-value') ||
+          key.includes('sidebar-collapse-row')
       )
     )
 

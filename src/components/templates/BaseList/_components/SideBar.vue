@@ -44,27 +44,32 @@
                 v-else-if="viewForm[key] instanceof SideBarCollapseItem && sidebarCollapseMode"
               >
                 <app-collapse>
-                  <app-collapse-item :title="viewForm[key].title">
+                  <app-collapse-item
+                    :title="viewForm[key].title"
+                    :is-visible="viewForm[key].isVisibleByDefault"
+                  >
                     <template #header>
                       <p class="h6">{{ viewForm[key].title }}</p>
                     </template>
                     <div v-for="groupKey in Object.keys(viewForm[key].views)" :key="groupKey">
-                      <view-generator
-                        v-if="viewForm[key].views[groupKey] instanceof ViewInfo"
-                        :key="key"
-                        :value="viewForm[key].views[groupKey]"
-                        :key-name="groupKey"
-                        class="py-25"
-                        :class="`${groupKey}-view`"
-                      >
-                        <template
-                          v-if="checkSlotExistence(`sidebar-value(${groupKey})`)"
-                          :slot="`sidebar-value(${groupKey})`"
-                          slot-scope="{ item }"
+                      <slot :name="`sidebar-collapse-row(${groupKey})`" :item="item">
+                        <view-generator
+                          v-if="viewForm[key].views[groupKey] instanceof ViewInfo"
+                          :key="key"
+                          :value="viewForm[key].views[groupKey]"
+                          :key-name="groupKey"
+                          class="py-25"
+                          :class="`${groupKey}-view`"
                         >
-                          <slot :name="`sidebar-value(${groupKey})`" :item="item" />
-                        </template>
-                      </view-generator>
+                          <template
+                            v-if="checkSlotExistence(`sidebar-value(${groupKey})`)"
+                            :slot="`sidebar-value(${groupKey})`"
+                            slot-scope="{ item }"
+                          >
+                            <slot :name="`sidebar-value(${groupKey})`" :item="item" />
+                          </template>
+                        </view-generator>
+                      </slot>
                     </div>
                   </app-collapse-item>
                 </app-collapse>
