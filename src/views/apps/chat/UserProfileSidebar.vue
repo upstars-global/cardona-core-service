@@ -143,9 +143,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#user-status-options ::v-deep {
-  .custom-radio {
-    margin-bottom: 1rem;
+.profile-sidebar-area {
+  :deep(#user-status-options) {
+    .custom-radio {
+      margin-bottom: 1rem;
+    }
   }
 }
 </style>

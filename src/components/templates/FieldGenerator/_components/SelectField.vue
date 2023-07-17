@@ -141,9 +141,10 @@ export default {
 @import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
 @import '../../../../assets/scss/style.scss';
 
-.select-field::v-deep {
+.select-field {
   &:not(.vs--single) {
-    .vs__dropdown-toggle {
+    :deep(.vs__dropdown-toggle) {
+      background-color: red;
       padding-left: 6px;
     }
 
@@ -162,8 +163,9 @@ export default {
   }
 }
 
-.select-sm::v-deep {
-  .vs__dropdown-toggle {
+.select-sm {
+  :deep(.vs__dropdown-toggle) {
+    background-color: red;
     padding-top: 1px;
     padding-bottom: 1px;
 

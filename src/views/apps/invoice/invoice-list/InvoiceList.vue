@@ -335,11 +335,11 @@ export default {
 .invoice-filter-select {
   min-width: 190px;
 
-  ::v-deep .vs__selected-options {
+  :deep .vs__selected-options {
     flex-wrap: nowrap;
   }
 
-  ::v-deep .vs__selected {
+  :deep .vs__selected {
     width: 100px;
   }
 }

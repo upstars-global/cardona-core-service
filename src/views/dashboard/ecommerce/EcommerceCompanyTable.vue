@@ -90,7 +90,7 @@ export default {
 @import '../../../@core/scss/base/bootstrap-extended/_include.scss';
 @import '../../../@core/scss/base/components/_variables-dark.scss';
 
-.card-company-table ::v-deep td .b-avatar.badge-light-company {
+.card-company-table td :deep(.b-avatar).badge-light-company {
   .dark-layout & {
     background: $theme-dark-body-bg !important;
   }

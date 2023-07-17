@@ -97,10 +97,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
 
-.select-field::v-deep {
+.select-field {
   &.error {
-    .vs__dropdown-toggle {
-      border-color: $red;
+    :deep(.vs__dropdown-toggle) {
+      border-color: $red !important;
+      background-color: red !important;
     }
   }
 
@@ -113,8 +114,9 @@ export default defineComponent({
   }
 }
 
-.select-sm::v-deep {
-  .vs__dropdown-toggle {
+.select-sm {
+  :deep(.vs__dropdown-toggle) {
+    background-color: red !important;
     height: 30px;
 
     .search-select-icon {

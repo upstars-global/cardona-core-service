@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div>
+  <div class="status-history--wrapper">
     <status-with-date-field
       v-for="(data, index) in item.value"
       :key="index"
@@ -20,17 +20,19 @@ const props = defineProps<{
 
 <style lang="scss" scoped>
 @import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
+.status-history--wrapper {
+  :deep(.status-history) {
+    background-color: red !important;
+    flex-direction: row;
+    font-weight: $font-weight-bolder;
 
-.status-history::v-deep {
-  flex-direction: row;
-  font-weight: $font-weight-bolder;
+    &:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
 
-  &:not(:last-child) {
-    margin-bottom: 0.5rem;
-  }
-
-  .badge {
-    margin-right: 0.5rem;
+    .badge {
+      margin-right: 0.5rem;
+    }
   }
 }
 </style>
