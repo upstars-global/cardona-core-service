@@ -97,7 +97,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
 
-.select-field {
+.select-field::v-deep {
   &.error {
     :deep(.vs__dropdown-toggle) {
       border-color: $red !important;

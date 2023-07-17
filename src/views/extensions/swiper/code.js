@@ -775,7 +775,8 @@ export default {
 
 <style lang="scss" scoped>
 .swiper {
-  :deep .swiper-wrapper {
+
+  ::v-deep .swiper-wrapper {
     flex-direction: row !important;
   }
   .swiper-slide {
