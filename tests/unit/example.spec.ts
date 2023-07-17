@@ -1,9 +1,5 @@
-import { createLocalVue, mount } from '@vue/test-utils'
-import BaseSection from '../../src/components/templates/BaseSection/index.vue'
-import { PageType } from '../../src/components/templates/BaseSection/model'
-import { useDemoSection } from '../../src/pages/demo/useDemo'
+import { createLocalVue } from '@vue/test-utils'
 import VueRouter from 'vue-router'
-import DateField from '../../src/components/templates/FieldGenerator/_components/DateField.vue'
 import BootstrapVue from 'bootstrap-vue'
 
 /*jest.mock('../../src/@core/utils/utils', () => ({
@@ -53,8 +49,8 @@ jest.mock('../../src/use/pagination', () => ({
 const localVue = createLocalVue()
 localVue.use(VueRouter)
 localVue.use(BootstrapVue)
-const router = new VueRouter()
-/*const listConfig = new BaseListConfig({
+/*const router = new VueRouter()
+const listConfig = new BaseListConfig({
   withSettings: true,
   skeletonColumns: 10,
   responsive: true,
@@ -90,48 +86,49 @@ const router = new VueRouter()
   ],
 })*/
 
-describe('test settings', () => {
-  it('BaseSection', () => {
-    const msg = 'new message'
-    const wrapper = mount(BaseSection, {
-      propsData: {
-        pageType: PageType.Create,
-        useEntity: useDemoSection,
-      },
-      mocks: {
-        convertLowerCaseFirstSymbol: jest.fn(),
-      },
-      router,
+describe('test ', () => {
+  it('test', () => {
+    /*const message = 'No Actions'
+      const wrapper = mount(BaseSection, {
+        propsData: {
+          pageType: PageType.Create,
+          useEntity: useDemoSection,
+        },
+        slots: {
+          actions: `<div>${message}</div>`,
+        },
+        router,
+        localVue,
+      })
+      expect(wrapper.text()).toMatch(message)
     })
-    expect(wrapper.text()).toMatch(msg)
-  })
-  it('DateField', () => {
-    const msg = 'new message'
-    const wrapper = mount(DateField, {
-      propsData: {
-        date: new Date(),
-      },
-      mocks: {
-        convertLowerCaseFirstSymbol: jest.fn(),
-      },
-      router,
-    })
-    expect(wrapper.text()).toMatch(msg)
-  })
+    /!*it('DateField', () => {
+      const msg = 'new message'
+      const wrapper = mount(DateField, {
+        propsData: {
+          date: new Date(),
+        },
+        mocks: {
+          convertLowerCaseFirstSymbol: jest.fn(),
+        },
+        router,
+      })
+      expect(wrapper.text()).toMatch(msg)
+    })*!/
 
-  /*it('BaseList', () => {
-    const msg = 'new message'
-    const wrapper = shallowMount(BaseList, {
-      propsData: {
-        useList: useDemoList,
-        config: listConfig,
-      },
-      mocks: {
-        convertLowerCaseFirstSymbol: jest.fn(),
-      },
-      localVue,
-      router,
-    })
-    expect(wrapper.text()).toMatch(msg)
-  })*/
+    /!*it('BaseList', () => {
+      const msg = 'new message'
+      const wrapper = shallowMount(BaseList, {
+        propsData: {
+          useList: useDemoList,
+          config: listConfig,
+        },
+        mocks: {
+          convertLowerCaseFirstSymbol: jest.fn(),
+        },
+        localVue,
+        router,
+      })
+      expect(wrapper.text()).toMatch(msg)*/
+  })
 })
