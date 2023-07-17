@@ -105,7 +105,7 @@
     <slot name="table-info" :selected-items="selectedItems" :total="total" />
 
     <!-- Table card -->
-    <b-card no-body>
+    <b-card no-body class="table-card-settings">
       <!-- Table actions -->
       <div
         v-if="config.withSettings && (!canUpdate || selectedItems.isEmpty)"
@@ -178,7 +178,6 @@
         :rows="config.skeletonRows"
         :columns="config.skeletonColumns"
       />
-
       <!-- Table -->
       <c-table
         v-show="!isLoadingList"
@@ -259,13 +258,11 @@
           />
 
           <date-field v-else-if="field.type === ListFieldType.Date" :key="index" :date="value" />
-
           <date-with-seconds-field
             v-else-if="field.type === ListFieldType.DateWithSeconds"
             :key="index"
             :date="value"
           />
-
           <statement-field
             v-else-if="field.type === ListFieldType.Statement"
             :key="index"
@@ -528,7 +525,6 @@ import FiltersBlock from '../../FiltersBlock/index.vue'
 import { permissionPrefix } from '@productConfig'
 import { Filter, PayloadFilters } from '../../../@model/filter'
 import { BaseField, SelectBaseField } from '../../../@model/baseField'
-
 export default {
   name: 'BaseList',
   components: {
@@ -1121,25 +1117,26 @@ export default {
   }
 }
 
-.table-settings::v-deep {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem 1.5rem;
+.table-card-settings {
+  :deep(.table-settings) {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1.5rem;
 
-  .per-page-selector {
-    min-width: 6rem;
-  }
+    .per-page-selector {
+      min-width: 6rem;
+    }
 
-  .btn-icon {
-    padding: 0;
+    .btn-icon {
+      padding: 0;
+    }
   }
 }
 
-.our-table::v-deep {
-  &.b-table-selectable {
+.our-table {
+  &:deep(.b-table-selectable) {
     border-radius: 5px;
     display: block;
-
     th {
       &:first-child {
         width: 5%;
@@ -1153,14 +1150,14 @@ export default {
   }
 }
 
-.pagination-nav::v-deep {
-  ul {
+.pagination-nav {
+  :deep(ul) {
     margin: 0;
   }
 }
 
-.base-list-small::v-deep {
-  .filters-row {
+.base-list-small {
+  :deep(.filters-row) {
     margin-bottom: 1rem;
   }
 

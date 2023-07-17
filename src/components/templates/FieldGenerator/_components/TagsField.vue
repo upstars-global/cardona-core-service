@@ -53,15 +53,15 @@ export default defineComponent({
 @import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
 @import '../../../../assets/scss/style.scss';
 
-.tags-field::v-deep {
-  .b-form-tag {
+.tags-field {
+  :deep(.b-form-tag) {
     background-color: $bg-light-purple;
     color: $purple;
     font-weight: $font-weight-bold;
     font-size: 0.9rem;
   }
 
-  .b-form-tags-button {
+  :deep(.b-form-tags-button) {
     display: none;
   }
 }

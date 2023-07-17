@@ -157,7 +157,7 @@ export default {
 @import '../../../@core/scss/base/components/variables-dark';
 
 .card {
-  ::v-deep .card-header {
+  :deep(.card-header) {
     .heading-elements {
       cursor: inherit;
       position: static;
@@ -180,7 +180,7 @@ export default {
 }
 
 .dark-layout {
-  .b-overlay-wrap ::v-deep .b-overlay {
+  :deep(.b-overlay-wrap) .b-overlay {
     // border: 10px solid red;
     .bg-white {
       background-color: $theme-dark-body-bg !important;

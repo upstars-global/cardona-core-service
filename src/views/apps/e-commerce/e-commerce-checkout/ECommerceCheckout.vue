@@ -91,8 +91,8 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.checkout-form-wizard ::v-deep {
-  .wizard-tab-content {
+.checkout-form-wizard {
+  :deep(.wizard-tab-content) {
     box-shadow: none !important;
     background: transparent !important;
     padding: 0;
