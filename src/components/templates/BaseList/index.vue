@@ -130,6 +130,7 @@
 
         <!-- Table field settings -->
         <div class="d-flex align-items-center justify-content-end">
+          <slot name="table-field-setting" />
           <table-fields v-model="selectedFields" :entity-name="entityName" :list="fields" />
         </div>
       </div>
