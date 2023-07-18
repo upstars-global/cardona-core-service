@@ -1,5 +1,8 @@
 <template>
   <base-list :use-list="useDemoList" :config="listConfig" class="demo-list">
+    <template #table-field-setting>
+      <feather-icon icon="BookIcon" size="21" class="mr-1" />
+    </template>
     <template #cell(winBack)="{ item }">
       <sum-and-currency
         :data="{
