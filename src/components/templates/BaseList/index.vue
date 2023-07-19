@@ -130,6 +130,7 @@
 
         <!-- Table field settings -->
         <div class="d-flex align-items-center justify-content-end">
+          <slot name="table-field-setting" />
           <table-fields v-model="selectedFields" :entity-name="entityName" :list="fields" />
         </div>
       </div>
@@ -948,6 +949,7 @@ export default {
     } = usePagination({
       defaultPerPage: props.config.defaultPerPage,
       withIndependentPagination: props.config.withIndependentPagination,
+      isUseRouter: !props.config.withIndependentPagination,
       storageKey: perPageStorageKey,
     })
 

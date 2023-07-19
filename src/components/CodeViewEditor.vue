@@ -66,10 +66,10 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../@core/scss/base/bootstrap-extended/_variables.scss';
 
-.code-view-editor::v-deep {
+.code-view-editor {
   &:not(&--edit-mode) {
     pointer-events: none;
     textarea {

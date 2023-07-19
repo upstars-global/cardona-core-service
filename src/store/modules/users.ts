@@ -1,6 +1,7 @@
 import ApiService from '../../services/api'
 import { ListData } from '../../@model'
 import { UserInfo } from '../../@model/user'
+import { productName } from '@productConfig'
 
 export default {
   namespaced: true,
@@ -26,7 +27,9 @@ export default {
 
     async updateUserPassword(_, payload) {
       await ApiService.request({
-        type: 'App.V2.Users.Password.Update',
+        type: `App.V2.${
+          productName.charAt(0).toUpperCase() + productName.slice(1)
+        }.Users.Password.Update`,
         data: {
           ...payload,
         },
