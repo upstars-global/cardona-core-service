@@ -244,7 +244,8 @@
     "success": {
       "default": "Operation successful",
       "passwordCopied": "Password copied",
-      "copied": "Copied"
+      "copied": "Copied",
+      "/mock/upload": "Successful upload file"
     },
     "error": {
       "default": "An error has occurred",
@@ -440,6 +441,12 @@
       "project": "Delete icon",
       "banners": "Image Removal"
     }
+  },
+  "uploadFile": {
+    "textBtn": "Select from device",
+    "dropFile": "Drag file here or upload from device",
+    "dragTextDrop": "Drop file",
+    "fileParams": "{accept}, maximum size {size} MB"
   },
   "filters": {
     "gameId": "Game ID",
