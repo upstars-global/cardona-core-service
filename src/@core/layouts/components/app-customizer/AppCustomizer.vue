@@ -275,7 +275,7 @@ export default {
     border-color: $theme-dark-border-color;
   }
 
-  #skin-radio-group ::v-deep .custom-control-inline {
+  #skin-radio-group :deep .custom-control-inline {
     margin-right: 0.7rem;
   }
 
@@ -287,7 +287,7 @@ export default {
       margin-bottom: 0;
     }
 
-    &::v-deep legend {
+    &:deep legend {
       font-weight: 500;
     }
   }

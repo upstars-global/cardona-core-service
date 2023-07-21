@@ -319,7 +319,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.item-view-radio-group ::v-deep {
+.item-view-radio-group :deep {
   .btn {
     display: flex;
     align-items: center;

@@ -290,12 +290,12 @@ export default {
 @import '../../../@core/scss/base/bootstrap-extended/_include.scss';
 
 .assignee-selector {
-  ::v-deep .vs__dropdown-toggle {
+  :deep .vs__dropdown-toggle {
     padding-left: 0;
   }
 }
 
-#quil-content ::v-deep {
+#quil-content :deep {
   > .ql-container {
     border-bottom: 0;
   }
