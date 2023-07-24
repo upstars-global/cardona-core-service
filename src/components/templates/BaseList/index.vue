@@ -838,7 +838,7 @@ export default {
           )
 
           if (filter instanceof SelectBaseField) {
-            acc[key] = filter.transformField(trackBy)
+            acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
           } else if (filter instanceof BaseField) {
             acc[key] = filter.transformField()
           } else if (filter.type === FieldType.Select) {
