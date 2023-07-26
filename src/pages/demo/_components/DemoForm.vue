@@ -194,6 +194,10 @@
                 :disabled="isDisabledField"
               />
             </b-col>
+
+            <b-col cols="8">
+              <upload-file size="md" :disabled="disabled" :on-submit-callback="mockUploadFile" />
+            </b-col>
           </b-row>
         </b-card-body>
       </b-card>
@@ -218,6 +222,9 @@ import LocaleForm from '../../../components/templates/LocaleForm/index.vue'
 import BadgeCopy from '../../../components/BadgeCopy.vue'
 import UploadImage from '../../../components/UploadImage/index.vue'
 import store from '../../../store'
+import UploadFile from '../../../components/UploadFile/index.vue'
+import useToastService from '../../../helpers/toasts'
+const { toastSuccess } = useToastService()
 
 type Props = {
   entityId?: string
@@ -246,4 +253,9 @@ const isDisabledTabs = computed(() =>
 )
 const isDisabledField = computed(() => isUpdatePage.value && !props.canUpdate)
 const isDisabledSeo = computed(() => isUpdatePage.value && !props.canUpdateSeo)
+
+const mockUploadFile = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 1000))
+  toastSuccess('/mock/upload')
+}
 </script>

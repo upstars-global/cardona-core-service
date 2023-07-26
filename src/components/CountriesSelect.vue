@@ -79,13 +79,13 @@ export default defineComponent({
       return selectedCountriesPlaceholders[countriesRadioModel.value]
     })
 
-      const hasCountryCode = (codeList: string[], countryCode: string): boolean => {
-        return codeList.some((code) => {
-            const [country] = code.split('-')
+    const hasCountryCode = (codeList: string[], countryCode: string): boolean => {
+      return codeList.some((code) => {
+        const [country] = code.split('-')
 
-            return country === countryCode
-        })
-      }
+        return country === countryCode
+      })
+    }
 
     onMounted(async () => {
       regions.value = await store.dispatch('regions/fetchRegionList')
@@ -97,13 +97,11 @@ export default defineComponent({
 
         if (formRestrictedCountries.length > regions.value.length / 2) {
           countriesRadioModel.value = 'allow'
-          selectedCountries.value = regions.value.filter(
-            ({ code }: RegionInfo) => {
-                const [country, region] = code.split('-')
+          selectedCountries.value = regions.value.filter(({ code }: RegionInfo) => {
+            const [country, region] = code.split('-')
 
-                return region ? !props.value.includes(code) : !hasCountryCode(props.value, country)
-            }
-          )
+            return region ? !props.value.includes(code) : !hasCountryCode(props.value, country)
+          })
         } else {
           countriesRadioModel.value = 'ban'
           selectedCountries.value = formRestrictedCountries
@@ -122,9 +120,7 @@ export default defineComponent({
     )
 
     watch([selectedCountries, countriesRadioModel], () => {
-      const bannedCountries = selectedCountries.value.map(
-        ({ code }: RegionInfo) => code
-      )
+      const bannedCountries = selectedCountries.value.map(({ code }: RegionInfo) => code)
 
       if (countriesRadioModel.value === 'ban') {
         emit('input', bannedCountries)
@@ -159,9 +155,9 @@ export default defineComponent({
 @import '../@core/scss/base/bootstrap-extended/_variables.scss';
 @import '../assets/scss/style.scss';
 
-.countries-select::v-deep {
+.countries-select {
   .vs__selected,
-  .vs__dropdown-option--selected {
+  :deep(.vs__dropdown-option--selected) {
     background-color: $bg-light-purple;
     color: $purple;
     font-weight: 500;

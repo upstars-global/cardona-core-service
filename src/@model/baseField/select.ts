@@ -6,6 +6,11 @@ import SelectField from '../../components/templates/FieldGenerator/_components/S
 
 type SelectValue = OptionsItem | string | number | null
 
+interface ITransformFieldOptions {
+  trackBy?: string
+  isStringDefaultValue?: boolean
+}
+
 export interface ISelectBaseField<T> extends IBaseField {
   readonly value?: T | SelectValue
   readonly options?: Array<T>
@@ -46,7 +51,10 @@ export class SelectBaseField<T extends OptionsItem = OptionsItem>
     }
   }
 
-  transformField(trackBy = 'id') {
-    return this.value?.[trackBy] ?? this.value ?? ''
+  transformField(options: ITransformFieldOptions = {}) {
+    const { trackBy = 'id', isStringDefaultValue = true } = options
+    const value = this.value?.[trackBy] ?? this.value
+
+    return value || !isStringDefaultValue ? value : ''
   }
 }

@@ -49,7 +49,7 @@ export default {
 @import '../../../@core/scss/base/components/_variables-dark.scss';
 
 .dark-layout {
-  div ::v-deep .card .card-body {
+  div :deep .card .card-body {
     .b-overlay {
       .bg-light {
         background-color: $theme-dark-body-bg !important;

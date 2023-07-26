@@ -272,9 +272,9 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-form ::v-deep {
+form {
   // Mail To vue-select style
-  .v-select {
+  :deep(.v-select) {
     .vs__dropdown-toggle {
       border: 0;
       box-shadow: none;
@@ -285,7 +285,7 @@ form ::v-deep {
   }
 
   // Quill Editor Style
-  .quill-editor {
+  :deep(.quill-editor) {
     .ql-container.ql-snow {
       border-bottom: 0 !important;
     }

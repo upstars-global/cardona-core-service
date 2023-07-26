@@ -233,8 +233,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.field-generator::v-deep {
-  label {
+.field-generator {
+  :deep(label) {
     margin-bottom: 0;
   }
 }
@@ -243,8 +243,8 @@ export default defineComponent({
   margin-left: 1.5rem;
 }
 
-.filters-block-small::v-deep {
-  .card {
+.filters-block-small {
+  :deep(.card) {
     margin-bottom: 1rem;
 
     .card-header {

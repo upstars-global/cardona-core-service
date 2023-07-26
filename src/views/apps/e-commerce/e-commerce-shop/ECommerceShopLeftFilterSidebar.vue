@@ -128,7 +128,7 @@ export default {
 .categories-radio-group,
 .brands-radio-group,
 .price-range-defined-radio-group {
-  ::v-deep > .custom-control {
+  :deep > .custom-control {
     margin-bottom: 0.75rem;
   }
 }

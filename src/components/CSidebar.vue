@@ -73,8 +73,8 @@ const onHidden = () => emit('hidden')
 <style lang="scss" scoped>
 @import '../@core/scss/base/bootstrap-extended/_variables.scss';
 
-.c-sidebar::v-deep {
-  .b-sidebar-header {
+.c-sidebar {
+  :deep(.b-sidebar-header) {
     background-color: $body-bg;
   }
 }

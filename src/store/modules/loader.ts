@@ -7,10 +7,11 @@ export default {
   getters: {
     isLoadingEndpoint:
       ({ loadingEndpoints }) =>
-      (url: string | Array<string>): boolean =>
-        Array.isArray(url)
-          ? url.some((url) => loadingEndpoints.includes(`/api/v2/${url}`))
-          : loadingEndpoints.includes(`/api/v2/${url}`),
+      (url: string | Array<string>): boolean => {
+        return Array.isArray(url)
+          ? url.some((url) => loadingEndpoints.some((loadingUrl) => loadingUrl.includes(url)))
+          : loadingEndpoints.some((loadingUrl) => loadingUrl.includes(url))
+      },
   },
 
   mutations: {

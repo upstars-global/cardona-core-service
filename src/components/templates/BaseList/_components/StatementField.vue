@@ -30,8 +30,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.custom-badge::v-deep {
-  &.badge {
+.custom-badge {
+  &:deep(.badge) {
     font-size: 0.9rem;
     font-weight: 600;
   }
