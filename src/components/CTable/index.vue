@@ -76,7 +76,7 @@ export default defineComponent({
         renderThead,
       } = this
       const h = this.$createElement
-      const hasRowClickHandler = hasListener(EVENT_NAME_ROW_CLICKED) || this.hasSelectableRowClick
+      const hasRowClickHandler = hasListener(EVENT_NAME_ROW_CLICKED) && !this.hasSelectableRowClick
       const $rows = []
       const $busy = renderBusy ? renderBusy() : null
 
