@@ -223,13 +223,13 @@ export default defineComponent({
       const formData =
         isUpdatePage && canCreateSeo && canUpdateSeo && !canUpdate
           ? {
-              id: form.value.id,
-              seo: form.value.seo,
-              fieldTranslations: form.value.fieldTranslations,
-              localisationParameters: form.value.localisationParameters,
-              restrictedCountries: form.value.restrictedCountries,
+              id: form.value?.id,
+              seo: form.value?.seo,
+              fieldTranslations: form.value?.fieldTranslations,
+              localisationParameters: form.value?.localisationParameters,
             }
           : form.value
+
       const transformedForm: any = transformFormData(formData)
 
       const data = await store.dispatch(actionName, {
