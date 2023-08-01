@@ -97,7 +97,7 @@ export default defineComponent({
     },
 
     useEntity: {
-      type: Function as PropType<() => UseEntityType<{}>>,
+      type: Function as PropType<() => UseEntityType<any>>,
       required: true,
     },
   },
@@ -214,21 +214,23 @@ export default defineComponent({
       return await refFormObserver.value.validate()
     }
 
+    const isUpdateSeoOnly = computed(
+      () => isUpdatePage && canCreateSeo && canUpdateSeo && !canUpdate
+    )
     // Handlers
     const onSubmit = async (isStay: boolean) => {
       if (!(await validate()) || isExistsEndpointsWithError.value) return
 
       const actionName: string = isCreatePage ? createActionName : updateActionName
 
-      const formData =
-        isUpdatePage && canCreateSeo && canUpdateSeo && !canUpdate
-          ? {
-              id: form.value?.id,
-              seo: form.value?.seo,
-              fieldTranslations: form.value?.fieldTranslations,
-              localisationParameters: form.value?.localisationParameters,
-            }
-          : form.value
+      const formData = isUpdateSeoOnly.value
+        ? {
+            id: form.value.id,
+            seo: form.value.seo,
+            fieldTranslations: form.value.fieldTranslations,
+            localisationParameters: form.value.localisationParameters,
+          }
+        : form.value
 
       const transformedForm: any = transformFormData(formData)
 
