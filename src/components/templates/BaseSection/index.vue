@@ -219,7 +219,18 @@ export default defineComponent({
       if (!(await validate()) || isExistsEndpointsWithError.value) return
 
       const actionName: string = isCreatePage ? createActionName : updateActionName
-      const transformedForm: any = transformFormData(form.value)
+
+      const formData =
+        isUpdatePage && canCreateSeo && canUpdateSeo && !canUpdate
+          ? {
+              id: form.value.id,
+              seo: form.value.seo,
+              fieldTranslations: form.value.fieldTranslations,
+              localisationParameters: form.value.localisationParameters,
+              restrictedCountries: form.value.restrictedCountries,
+            }
+          : form.value
+      const transformedForm: any = transformFormData(formData)
 
       const data = await store.dispatch(actionName, {
         type: entityName,
