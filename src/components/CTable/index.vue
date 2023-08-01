@@ -602,6 +602,11 @@ export default defineComponent({
 <style lang="scss">
 // Extended Style
 @import '../../@core/scss/base/core/colors/palette-variables.scss';
+
+.dropdown-menu {
+  z-index: 10000;
+}
+
 .item_tr {
   -webkit-transition: all 0.2s, border-color 0s;
   transition: all 0.2s, border-color 0s;
