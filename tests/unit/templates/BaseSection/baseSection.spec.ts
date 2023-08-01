@@ -5,6 +5,7 @@ import { useDemoSection } from '../../../../src/pages/demo/useDemo'
 import BaseSection from '../../../../src/components/templates/BaseSection/index.vue'
 import { PageType } from '../../../../src/components/templates/BaseSection/model'
 import flushPromises from 'flush-promises'
+import ApiService from '../../../../src/services/api'
 
 enableAutoDestroy(afterEach)
 
@@ -13,6 +14,14 @@ const demoUpdateComponentName = 'DemoUpdate'
 
 let localVue
 let router
+// @ts-ignore
+ApiService.request = jest.fn(() => {
+  return {
+    data: {
+      id: 'test-id',
+    },
+  }
+})
 
 describe('BaseSection', () => {
   describe('testing pageType props', () => {
