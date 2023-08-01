@@ -8,6 +8,7 @@ import { Permission, AllPermission, PermissionLevel } from '../../@model/permiss
 import ApiService from '../../services/api'
 import { productName } from '@productConfig'
 import { PermissionGroup } from '../../@model/enums/permissions'
+import { productsName } from '../../configs/productsName'
 
 export const fetchCurrentUser = async () => {
   const { data } = await ApiService.request({
@@ -57,7 +58,8 @@ export default {
     },
 
     selectedProduct: ({ selectedProduct }) => selectedProduct,
-    isNeocore: ({ selectedProduct }) => selectedProduct?.id.toString() === '1',
+    // @ts-ignore
+    isNeocore: () => productName === productsName.neocore,
 
     getSpecificProject:
       ({ userInfo }) =>
