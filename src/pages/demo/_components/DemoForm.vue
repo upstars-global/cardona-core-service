@@ -176,6 +176,14 @@
             <b-col cols="4">
               <field-generator v-model="formData.password" :disabled="isDisabledField" />
             </b-col>
+            <b-col cols="4" class="pt-2">
+              <field-generator
+                v-model="formData.passwordFieldWithGeneration"
+                :disabled="isDisabledField"
+                show-password
+                with-password-generator
+              />
+            </b-col>
           </b-row>
 
           <b-row class="mb-2">

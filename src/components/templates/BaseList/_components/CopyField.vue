@@ -8,11 +8,17 @@ const props = defineProps<{
 
 <template>
   <div v-if="value" class="text-break copy-field">
-    <span>
-      {{ value }}
-    </span>
+    <slot>
+      <span>
+        {{ value }}
+      </span>
+    </slot>
 
-    <feather-icon icon="CopyIcon" class="cursor-pointer ml-25" @click="copyToClipboard(value)" />
+    <feather-icon
+      icon="CopyIcon"
+      class="cursor-pointer ml-25"
+      @click.stop="copyToClipboard(value)"
+    />
   </div>
 </template>
 

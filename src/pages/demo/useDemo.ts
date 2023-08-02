@@ -28,6 +28,11 @@ export const useDemoList = (): UseListType => {
       type: ListFieldType.NameWithId,
     }),
     new TableField({
+      key: 'nameSlot',
+      label: t('common.name'),
+      type: ListFieldType.NameWithId,
+    }),
+    new TableField({
       key: 'innerLink',
       label: t('common.link'),
     }),
