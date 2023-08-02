@@ -249,7 +249,11 @@
             :item="item"
             :get-update-route="getUpdateRoute"
             :is-show-you="config.isShowYou"
-          />
+          >
+            <template>
+              <slot :name="`${field.key}-nameWithIdTitle`" :item="item" />
+            </template>
+          </name-with-id-field>
 
           <email-field
             v-else-if="field.type === ListFieldType.Email"
@@ -498,6 +502,7 @@ import {
   convertCamelCase,
   convertLowerCaseFirstSymbol,
   getPermissionKeys,
+  isNotEmptyNumber,
 } from '../../../helpers'
 import { parseDateRange } from '../../../helpers/filters'
 import SearchInput from './_components/SearchInput.vue'
@@ -526,6 +531,8 @@ import FiltersBlock from '../../FiltersBlock/index.vue'
 import { permissionPrefix } from '@productConfig'
 import { Filter, PayloadFilters } from '../../../@model/filter'
 import { BaseField, SelectBaseField } from '../../../@model/baseField'
+import { omit } from 'lodash'
+
 export default {
   name: 'BaseList',
   components: {
@@ -831,7 +838,7 @@ export default {
         filters = new ListFilterModel({ ...props.config?.staticFilters, search: searchQuery.value })
       }
 
-      filters = appliedFilters.value.reduce(
+      filters = appliedFilters.value?.reduce(
         (acc, filter) => {
           const { key, trackBy = 'name' }: FilterListItem = props.config?.filterList.find(
             ({ type }: FilterListItem) => type === filter.key
@@ -853,10 +860,14 @@ export default {
             acc[`${key}From`] = dateFrom
             acc[`${key}To`] = dateTo
           } else if (filter.type === FieldType.SumRange) {
-            if (filter.value) {
+            if (filter.value?.some(Boolean)) {
               const [sumFrom, sumTo]: Array<number> = filter.value
               acc[`${key}From`] = sumFrom
               acc[`${key}To`] = sumTo
+              const invalidKeys = [`${key}From`, `${key}To`].filter(
+                (key) => !isNotEmptyNumber(acc[key])
+              )
+              acc = omit(acc, invalidKeys)
             }
           } else {
             acc[key] = filter.value

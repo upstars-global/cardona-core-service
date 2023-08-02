@@ -9,12 +9,14 @@ type SumRangeFieldProps = {
   disabled: boolean
 }
 
+type NumberOrEmptyString = number | ''
+
 const props = withDefaults(defineProps<SumRangeFieldProps>(), {
   value: () => [],
 })
 
 const emit = defineEmits<{
-  (event: 'input', value: Array<number>): void
+  (event: 'input', value: Array<NumberOrEmptyString>): void
 }>()
 
 const sumFrom = computed({
@@ -27,8 +29,8 @@ const sumTo = computed({
   get: () => (props.value[1] ? props.value[1] / 100 : props.value[1]),
 })
 
-const getSumNumber = (sum) => {
-  if (!sum) return 0
+const getSumNumber = (sum: number): NumberOrEmptyString => {
+  if (!sum) return ''
 
   return Number(sum * 100)
 }
