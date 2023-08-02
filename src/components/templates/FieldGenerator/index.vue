@@ -31,6 +31,7 @@
           :is-switch="isSwitch"
           :placeholder="value.placeholder"
           :size="size"
+          v-bind="$attrs"
           @search="onSearch"
         />
 
