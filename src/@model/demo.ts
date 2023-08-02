@@ -86,6 +86,7 @@ export class DemoForm {
   readonly percent: FieldInfo
   readonly digits: NumberBaseField
   readonly password: FieldInfo
+  readonly passwordFieldWithGeneration: FieldInfo
   readonly phone: FieldInfo
   readonly check: FieldInfo
   readonly radio: FieldInfo
@@ -171,6 +172,13 @@ export class DemoForm {
       key: 'password',
       value: data?.password,
       label: i18n.t('page.demo.passwordField'),
+      validationRules: 'required|password',
+    })
+    this.passwordFieldWithGeneration = new FieldInfo({
+      type: FieldType.Password,
+      key: 'password',
+      value: data?.passwordWithGenerator,
+      label: i18n.t('page.demo.passwordFieldWithGeneration'),
       validationRules: 'required|password',
     })
     this.switchWithState = new FieldInfo({
