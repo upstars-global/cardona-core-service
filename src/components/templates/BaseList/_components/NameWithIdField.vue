@@ -1,18 +1,26 @@
 <template>
   <div class="white-space-nowrap">
-    <router-link v-if="isExistsRoute" :to="getUpdateRoute(item)" class="d-flex align-items-center">
-      {{ itemName }}
+    <slot>
+      <router-link
+        v-if="isExistsRoute"
+        :to="getUpdateRoute(item)"
+        class="d-flex align-items-center"
+      >
+        {{ itemName }}
 
-      <b-badge v-if="isYou" variant="light-info" class="font-weight-bold ml-25">
-        {{ $t('common.you') }}
-      </b-badge>
-    </router-link>
+        <b-badge v-if="isYou" variant="light-info" class="font-weight-bold ml-25">
+          {{ $t('common.you') }}
+        </b-badge>
+      </router-link>
 
-    <p v-else class="mb-0 text-primary">
-      {{ itemName }}
-    </p>
+      <p v-else class="mb-0 text-primary">
+        {{ itemName }}
+      </p>
+    </slot>
 
-    <small> ID {{ item.id }} </small>
+    <copy-field :value="item.id">
+      <small> ID {{ item.id }} </small>
+    </copy-field>
   </div>
 </template>
 
@@ -20,9 +28,11 @@
 import { computed, defineComponent } from 'vue'
 import store from '../../../../store'
 import { Location } from 'vue-router'
+import CopyField from './CopyField.vue'
 
 export default defineComponent({
   name: 'NameWithIdField',
+  components: { CopyField },
 
   props: {
     item: {

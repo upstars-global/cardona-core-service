@@ -249,7 +249,11 @@
             :item="item"
             :get-update-route="getUpdateRoute"
             :is-show-you="config.isShowYou"
-          />
+          >
+            <template>
+              <slot :name="`${field.key}-nameWithIdTitle`" :item="item" />
+            </template>
+          </name-with-id-field>
 
           <email-field
             v-else-if="field.type === ListFieldType.Email"
@@ -526,6 +530,7 @@ import FiltersBlock from '../../FiltersBlock/index.vue'
 import { permissionPrefix } from '@productConfig'
 import { Filter, PayloadFilters } from '../../../@model/filter'
 import { BaseField, SelectBaseField } from '../../../@model/baseField'
+
 export default {
   name: 'BaseList',
   components: {
