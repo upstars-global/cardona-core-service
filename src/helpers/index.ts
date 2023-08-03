@@ -3,7 +3,7 @@ import { FieldInfo } from '../@model/field'
 import { BaseField } from '../@model/baseField'
 import { OptionsItem } from '../@model'
 import { isObject } from '../@core/utils/utils'
-import { isNumber } from 'lodash'
+import {isNumber, isString} from 'lodash'
 
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
 
@@ -110,4 +110,5 @@ export const getShortString = (text: string | number): string => {
   return `${startString}...${endString}`
 }
 
-export const isNotEmptyNumber = (number: unknown): boolean => isNumber(number) && !isNaN(number)
+export const isNotEmptyNumber = (number: any): boolean => isNumber(number) && !isNaN(number)
+export const isEmptyString = (string: string): boolean => isString(string) && !string?.length

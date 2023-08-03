@@ -860,7 +860,7 @@ export default {
             acc[`${key}From`] = dateFrom
             acc[`${key}To`] = dateTo
           } else if (filter.type === FieldType.SumRange) {
-            if (filter.value?.some(Boolean)) {
+            if (filter.value?.some(isNotEmptyNumber)) {
               const [sumFrom, sumTo]: Array<number> = filter.value
               acc[`${key}From`] = sumFrom
               acc[`${key}To`] = sumTo
