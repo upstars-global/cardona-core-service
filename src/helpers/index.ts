@@ -3,7 +3,7 @@ import { FieldInfo } from '../@model/field'
 import { BaseField } from '../@model/baseField'
 import { OptionsItem } from '../@model'
 import { isObject } from '../@core/utils/utils'
-import {isNumber, isString} from 'lodash'
+import { isNumber, isString } from 'lodash'
 
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
 
