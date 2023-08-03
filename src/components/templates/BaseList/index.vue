@@ -838,7 +838,7 @@ export default {
         filters = new ListFilterModel({ ...props.config?.staticFilters, search: searchQuery.value })
       }
 
-      filters = appliedFilters.value?.reduce(
+      filters = appliedFilters.value.reduce(
         (acc, filter) => {
           const { key, trackBy = 'name' }: FilterListItem = props.config?.filterList.find(
             ({ type }: FilterListItem) => type === filter.key
