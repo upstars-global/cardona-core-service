@@ -2,8 +2,7 @@
 import { computed } from 'vue'
 import NumberField from './NumberField.vue'
 import { FieldInfo } from '../../../../@model/field'
-import { isNotEmptyNumber, isEmptyString } from '../../../../helpers'
-import { isString } from 'lodash'
+import { isEmptyString } from '../../../../helpers'
 
 type SumRangeFieldProps = {
   value: Array<number>

@@ -533,7 +533,6 @@ import { permissionPrefix } from '@productConfig'
 import { Filter, PayloadFilters } from '../../../@model/filter'
 import { BaseField, SelectBaseField } from '../../../@model/baseField'
 import { omit } from 'lodash'
-import {isEmptyString} from "cardona-core-service/src/helpers";
 
 export default {
   name: 'BaseList',
@@ -862,7 +861,7 @@ export default {
             acc[`${key}From`] = dateFrom
             acc[`${key}To`] = dateTo
           } else if (filter.type === FieldType.SumRange) {
-            if (filter.value?.some((value) => isNotEmptyNumber(value) && !isEmptyString(value) )) {
+            if (filter.value?.some((value) => isNotEmptyNumber(value) && !isEmptyString(value))) {
               const [sumFrom, sumTo]: Array<number> = filter.value
               acc[`${key}From`] = sumFrom
               acc[`${key}To`] = sumTo
