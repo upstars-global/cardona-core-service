@@ -503,7 +503,6 @@ import {
   convertLowerCaseFirstSymbol,
   getPermissionKeys,
   isNotEmptyNumber,
-  isEmpty,
 } from '../../../helpers'
 import { parseDateRange } from '../../../helpers/filters'
 import SearchInput from './_components/SearchInput.vue'
@@ -861,7 +860,7 @@ export default {
             acc[`${key}From`] = dateFrom
             acc[`${key}To`] = dateTo
           } else if (filter.type === FieldType.SumRange) {
-            if (filter.value?.some((value) => isNotEmptyNumber(value) && !isEmpty(value))) {
+            if (filter.value?.some((value) => isNotEmptyNumber(value) && !value.isEmpty())) {
               const [sumFrom, sumTo]: Array<number> = filter.value
               acc[`${key}From`] = sumFrom
               acc[`${key}To`] = sumTo
