@@ -22,15 +22,18 @@ const emit = defineEmits<{
 
 const getMultipleWith100 = (value: NumberOrEmptyString): NumberOrEmptyString =>
   isEmptyString(value) ? '' : value * 100
-const getDivideWith100 = (value: NumberOrEmptyString): NumberOrEmptyString => (isEmptyString(value) ? '' : value / 100)
+const getDivideWith100 = (value: NumberOrEmptyString): NumberOrEmptyString =>
+  isEmptyString(value) ? '' : value / 100
 
 const sumFrom = computed({
-  set: (newSumFrom) => emit('input', [getMultipleWith100(newSumFrom), getMultipleWith100(sumTo.value)]),
+  set: (newSumFrom) =>
+    emit('input', [getMultipleWith100(newSumFrom), getMultipleWith100(sumTo.value)]),
   get: () => (props.value[0] ? getDivideWith100(props.value[0]) : props.value[0]),
 })
 
 const sumTo = computed({
-  set: (newSumTo) => emit('input', [getMultipleWith100(sumFrom.value), getMultipleWith100(newSumTo)]),
+  set: (newSumTo) =>
+    emit('input', [getMultipleWith100(sumFrom.value), getMultipleWith100(newSumTo)]),
   get: () => (props.value[1] ? getDivideWith100(props.value[1]) : props.value[1]),
 })
 </script>
