@@ -111,4 +111,4 @@ export const getShortString = (text: string | number): string => {
 }
 
 export const isNotEmptyNumber = (number: any): boolean => isNumber(number) && !isNaN(number)
-export const isEmptyString = (string: string): boolean => isString(string) && !string?.length
+export const isEmpty = (string: string): boolean => isString(string) && !string?.length
