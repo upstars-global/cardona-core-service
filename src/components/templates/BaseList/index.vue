@@ -1112,6 +1112,11 @@ export default {
 <style lang="scss" scoped>
 .table-responsive {
   min-height: 198px;
+  :deep(th) {
+    .sr-only {
+      position: fixed;
+    }
+  }
 }
 
 .filters-row {
