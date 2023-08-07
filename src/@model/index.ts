@@ -55,3 +55,5 @@ export type OptionsItem = {
   readonly id: string
   readonly name: TranslateResult
 }
+
+export type Nullable<T> = T | null

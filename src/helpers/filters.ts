@@ -25,11 +25,15 @@ export const parseDateRange = (dateFilter: string): Array<string> => {
 
   return dateFilter.split(dateSeparators[i18n.locale]).map(transformDateToISO)
 }
-export const parseInputDateRange = (from: Date, to: Date): string => {
+export const parseInputDateRange = (from: Date, to: Date, locale = 'uk'): string => {
   const dateSeparators: { en: string; ru: string } = {
     en: 'to',
     ru: '—',
   }
 
-  return `${getLocaleDateString(from)} ${dateSeparators[i18n.locale]} ${getLocaleDateString(to)}`
+  return `
+    ${getLocaleDateString(from, locale)} 
+    ${dateSeparators[i18n.locale]} 
+    ${getLocaleDateString(to, locale)}
+    `
 }
