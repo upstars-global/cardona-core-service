@@ -50,6 +50,11 @@ export type StatusWithDateValue = {
   updatedAt: string | Date
 }
 
+export type StatusWithDateHistoryValue = {
+  title: string
+  date: string | Date
+}
+
 export interface IStatusWithVariant {
   status: string
   variant: string
