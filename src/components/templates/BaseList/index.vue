@@ -502,6 +502,8 @@ import {
   convertCamelCase,
   convertLowerCaseFirstSymbol,
   getPermissionKeys,
+  isNotEmptyNumber,
+  isEmptyString,
 } from '../../../helpers'
 import { parseDateRange } from '../../../helpers/filters'
 import SearchInput from './_components/SearchInput.vue'
@@ -530,6 +532,7 @@ import FiltersBlock from '../../FiltersBlock/index.vue'
 import { permissionPrefix } from '@productConfig'
 import { Filter, PayloadFilters } from '../../../@model/filter'
 import { BaseField, SelectBaseField } from '../../../@model/baseField'
+import { omit } from 'lodash'
 
 export default {
   name: 'BaseList',
@@ -858,10 +861,14 @@ export default {
             acc[`${key}From`] = dateFrom
             acc[`${key}To`] = dateTo
           } else if (filter.type === FieldType.SumRange) {
-            if (filter.value) {
+            if (filter.value?.some((value) => isNotEmptyNumber(value) && !isEmptyString(value))) {
               const [sumFrom, sumTo]: Array<number> = filter.value
               acc[`${key}From`] = sumFrom
               acc[`${key}To`] = sumTo
+              const invalidKeys = [`${key}From`, `${key}To`].filter(
+                (key) => !isNotEmptyNumber(acc[key])
+              )
+              acc = omit(acc, invalidKeys)
             }
           } else {
             acc[key] = filter.value

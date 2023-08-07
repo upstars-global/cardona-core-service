@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import NumberField from './NumberField.vue'
 import { FieldInfo } from '../../../../@model/field'
+import { isEmptyString } from '../../../../helpers'
 
 type SumRangeFieldProps = {
   value: Array<number>
@@ -9,29 +10,32 @@ type SumRangeFieldProps = {
   disabled: boolean
 }
 
+type NumberOrEmptyString = number | ''
+
 const props = withDefaults(defineProps<SumRangeFieldProps>(), {
   value: () => [],
 })
 
 const emit = defineEmits<{
-  (event: 'input', value: Array<number>): void
+  (event: 'input', value: Array<NumberOrEmptyString>): void
 }>()
 
+const getMultipleWith100 = (value: NumberOrEmptyString): NumberOrEmptyString =>
+  isEmptyString(value) ? '' : value * 100
+const getDivideWith100 = (value: NumberOrEmptyString): NumberOrEmptyString =>
+  isEmptyString(value) ? '' : value / 100
+
 const sumFrom = computed({
-  set: (newSumFrom) => emit('input', [getSumNumber(newSumFrom), sumTo.value * 100]),
-  get: () => (props.value[0] ? props.value[0] / 100 : props.value[0]),
+  set: (newSumFrom) =>
+    emit('input', [getMultipleWith100(newSumFrom), getMultipleWith100(sumTo.value)]),
+  get: () => (props.value[0] ? getDivideWith100(props.value[0]) : props.value[0]),
 })
 
 const sumTo = computed({
-  set: (newSumTo) => emit('input', [sumFrom.value * 100, getSumNumber(newSumTo)]),
-  get: () => (props.value[1] ? props.value[1] / 100 : props.value[1]),
+  set: (newSumTo) =>
+    emit('input', [getMultipleWith100(sumFrom.value), getMultipleWith100(newSumTo)]),
+  get: () => (props.value[1] ? getDivideWith100(props.value[1]) : props.value[1]),
 })
-
-const getSumNumber = (sum) => {
-  if (!sum) return 0
-
-  return Number(sum * 100)
-}
 </script>
 
 <template>
