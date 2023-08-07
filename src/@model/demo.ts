@@ -4,7 +4,7 @@ import { FieldTranslationsData } from './translations'
 import { NumberBaseField, SelectBaseField, TextBaseField } from './baseField'
 import { FieldInfo, FieldType } from './field'
 import { getLocaleDateStringWithoutTimezone } from '../helpers/date'
-import { StatusWithVariant, ViewInfo, ViewType } from './view'
+import { StatusWithDateHistoryValue, StatusWithVariant, ViewInfo, ViewType } from './view'
 import { SideBarCollapseItem } from '../components/templates/BaseList/model'
 import { TransactionType } from './playersTransactions'
 import { TranslateResult } from 'vue-i18n'
@@ -387,18 +387,18 @@ export class DemoSideBar {
           type: ViewType.StatusWithDateHistory,
           value: [
             {
-              status: new StatusWithVariant('active', 'light-warning'),
-              updatedAt: data?.date,
+              title: 'Erased by withdraw | ForceExpireCommand',
+              date: data?.date,
             },
             {
-              status: new StatusWithVariant('expired', 'light-danger'),
-              updatedAt: data?.date,
+              title: 'Waiting | promo_gift',
+              date: data?.date,
             },
             {
-              status: new StatusWithVariant('new', 'light-secondary'),
-              updatedAt: data?.date,
+              title: 'Received | promo_gift',
+              date: data?.date,
             },
-          ],
+          ] as StatusWithDateHistoryValue[],
           label: i18n.t('common.log'),
         }),
       },
