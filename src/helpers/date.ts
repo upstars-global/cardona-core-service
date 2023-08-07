@@ -47,3 +47,12 @@ export const convertDateToUTC = (date: Date): Date => {
     date.getUTCSeconds()
   )
 }
+
+export const sortListByDate = (list: Array<any>, key: string): Array<any> => {
+  if (!Array.isArray(list)) return []
+  return list.sort((next, prev) => {
+    const nextDate = new Date(key ? next[key] : next).getTime()
+    const prevDate = new Date(key ? prev[key] : prev).getTime()
+    return prevDate - nextDate
+  })
+}
