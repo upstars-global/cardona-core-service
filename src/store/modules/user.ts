@@ -45,6 +45,7 @@ export default {
     userInfo: ({ userInfo }) => userInfo,
 
     userProjects: ({ userInfo }) => userInfo.projects,
+    userProducts: ({ userInfo }) => userInfo.products,
 
     selectedProject: ({ selectedProject }, { userProjects }): ProjectInfoInput => {
       const defaultProject: ProjectInfoInput = userProjects[0]
