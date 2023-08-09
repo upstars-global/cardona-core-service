@@ -5,6 +5,7 @@ import { IListSort } from '../../../@model'
 import { ProjectFilterTypes } from '@filterConfig'
 import { TranslateResult } from 'vue-i18n'
 import { ViewInfo } from '../../../@model/view'
+import { BColors, BLightColors } from '../../../@model/bootstrap'
 
 export enum SortDirection {
   asc = 'ASC',
@@ -351,4 +352,8 @@ export class SideBarCollapseItem {
     this.withBottomSeparator = data?.withBottomSeparator
     this.views = data.views
   }
+}
+
+export interface BaseListItem {
+  rowVariant?: BColors | BLightColors
 }

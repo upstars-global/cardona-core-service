@@ -5,6 +5,7 @@ import { TransactionType } from '../../../@model/playersTransactions'
 import i18n from '../../../libs/i18n'
 import { IDemoTypeItem } from '../../../@model/demo'
 import { listImages } from '../compostela/index'
+import { BLightColors } from '../../../@model/bootstrap'
 
 export const tagsList: Array<IDemoTypeItem> = [
   {
@@ -122,6 +123,7 @@ const listData = [
     paymentsToday: '100',
     paymentsWeek: '1100',
     paymentsMonth: '11100',
+    rowVariant: BLightColors.LightDanger,
   },
   {
     id: '632c39448e03b2dab20c8a79',
@@ -155,6 +157,7 @@ const listData = [
     paymentsToday: '200',
     paymentsWeek: '2200',
     paymentsMonth: '22200',
+    rowVariant: BLightColors.LightInfo,
   },
   {
     id: '632c39448e03b2dab20c8a75',
@@ -188,6 +191,7 @@ const listData = [
     paymentsToday: '300',
     paymentsWeek: '3300',
     paymentsMonth: '33300',
+    rowVariant: BLightColors.LightWarning,
   },
 ]
 

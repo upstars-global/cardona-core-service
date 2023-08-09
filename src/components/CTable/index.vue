@@ -317,13 +317,12 @@ export default defineComponent({
         }
       }
       // >>> End Extended Functionality
-
       $rows.push(
         h(
           BTr,
           {
             class: classBTr,
-            props: { variant: item[FIELD_KEY_ROW_VARIANT] || null },
+            props: { variant: item.rowVariant },
             attrs: {
               id: rowId,
               ...userTrAttrs,
