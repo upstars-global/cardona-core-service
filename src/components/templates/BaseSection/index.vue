@@ -112,7 +112,8 @@ export default defineComponent({
     const isCreatePage: boolean = props.pageType === PageType.Create
     const isUpdatePage: boolean = props.pageType === PageType.Update
 
-    const { entityName, pageName, EntityFormClass, onSubmitCallback } = props.useEntity()
+    const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb } =
+      props.useEntity()
 
     const ListPageName: string = pageName ? `${pageName}List` : `${entityName}List`
     const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Update`
@@ -233,7 +234,7 @@ export default defineComponent({
         : form.value
 
       const transformedForm: any = transformFormData(formData)
-
+      if (onBeforeSubmitCb && !(await onBeforeSubmitCb(formData))) return
       const data = await store.dispatch(actionName, {
         type: entityName,
         data: {
