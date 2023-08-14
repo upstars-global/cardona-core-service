@@ -255,6 +255,18 @@
             </template>
           </name-with-id-field>
 
+          <name-with-short-id-field
+            v-else-if="field.type === ListFieldType.NameWithShortIdField"
+            :key="index"
+            :item="item"
+            :get-update-route="getUpdateRoute"
+            :is-show-you="config.isShowYou"
+          >
+            <template>
+              <slot :name="`${field.key}-nameWithIdTitle`" :item="item" />
+            </template>
+          </name-with-short-id-field>
+
           <email-field
             v-else-if="field.type === ListFieldType.Email"
             :key="index"
@@ -510,6 +522,7 @@ import SearchInput from './_components/SearchInput.vue'
 import StatusField from './_components/StatusField.vue'
 import PillStatusField from './_components/PillStatusField.vue'
 import NameWithIdField from './_components/NameWithIdField.vue'
+import NameWithShortIdField from './_components/NameWithShortIdField.vue'
 import EmailField from './_components/EmailField.vue'
 import DateField from './_components/DateField.vue'
 import DateWithSecondsField from './_components/DateWithSecondsField.vue'
@@ -553,6 +566,7 @@ export default {
     StatusField,
     PillStatusField,
     NameWithIdField,
+    NameWithShortIdField,
     EmailField,
     DateField,
     DateWithSecondsField,

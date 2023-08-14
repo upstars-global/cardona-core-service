@@ -27,7 +27,7 @@ export const useDemoList = (): UseListType => {
     new TableField({
       key: 'name',
       label: t('common.name'),
-      type: ListFieldType.NameWithId,
+      type: ListFieldType.NameWithShortIdField,
     }),
     new TableField({
       key: 'nameSlot',

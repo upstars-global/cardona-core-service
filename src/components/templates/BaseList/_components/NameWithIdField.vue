@@ -18,19 +18,19 @@
       </p>
     </slot>
 
-    <copy-field :value="item.id">
-      <small> ID {{ item.id }} </small>
+    <copy-field :value="itemId">
+      <small> ID {{ itemId }} </small>
     </copy-field>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed } from 'vue'
 import store from '../../../../store'
 import { Location } from 'vue-router'
 import CopyField from './CopyField.vue'
 
-export default defineComponent({
+export default {
   name: 'NameWithIdField',
   components: { CopyField },
 
@@ -64,11 +64,14 @@ export default defineComponent({
       () => props.item.name || props.item.userName || props.item.title
     )
 
+    const itemId = computed(() => props.item?.id)
+
     return {
       isYou,
+      itemId,
       isExistsRoute,
       itemName,
     }
   },
-})
+}
 </script>
