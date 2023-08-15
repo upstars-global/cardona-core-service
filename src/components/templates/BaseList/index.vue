@@ -110,9 +110,10 @@
       <div
         v-if="config.withSettings && (!canUpdate || selectedItems.isEmpty)"
         class="table-settings"
+        :class="config?.pagination ? 'justify-content-between' : 'justify-content-end'"
       >
         <!-- Table per page select -->
-        <div class="d-flex align-items-center justify-content-start">
+        <div v-if="config?.pagination" class="d-flex align-items-center justify-content-start">
           <span class="mr-1">
             {{ $t('common.show') }}
           </span>
@@ -1133,7 +1134,6 @@ export default {
 .table-card-settings {
   :deep(.table-settings) {
     display: flex;
-    justify-content: space-between;
     padding: 0.5rem 1.5rem;
 
     .per-page-selector {
