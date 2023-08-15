@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { convertUpperCaseFirstSymbol } from '../../../../helpers'
 import { computed } from 'vue'
+import { TranslateResult } from 'vue-i18n'
 
 interface IStatusWithVariantReplace {
   // copy of IStatusWithVariant
-  status: string
+  status: TranslateResult
   variant: string
 }
 
