@@ -56,7 +56,7 @@ export type StatusWithDateHistoryValue = {
 }
 
 export interface IStatusWithVariant {
-  status: string
+  status: TranslateResult
   variant: string
 }
 
