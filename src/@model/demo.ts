@@ -18,6 +18,7 @@ export interface IDemoTypeItem {
 }
 export interface IDemoListItem {
   id: string
+  shortId: string
   partnerCode: string
   name: string
   isActive: boolean
@@ -53,6 +54,7 @@ export class DemoListItem implements BaseListItem {
   id: string
   partnerCode: string
   name: string
+  nameWithShortId: string
   isActive: boolean
   status: string
   amount: number
@@ -86,6 +88,7 @@ export class DemoListItem implements BaseListItem {
     this.id = data.id
     this.partnerCode = data.partnerCode
     this.name = data.name
+    this.nameWithShortId = data.name
     this.isActive = data.isActive
     this.status = data.status
     this.amount = data.amount

@@ -257,7 +257,7 @@
           </name-with-id-field>
 
           <name-with-short-id-field
-            v-else-if="field.type === ListFieldType.NameWithShortIdField"
+            v-else-if="field.type === ListFieldType.NameWithShortId"
             :key="index"
             :item="item"
             :get-update-route="getUpdateRoute"
@@ -327,6 +327,12 @@
           />
 
           <copy-field v-else-if="field.type === ListFieldType.Copy" :key="index" :value="value" />
+
+          <copy-short-field
+            v-else-if="field.type === ListFieldType.CopyShort"
+            :key="index"
+            :value="value"
+          />
 
           <template v-else-if="field.type === ListFieldType.Percent"> {{ value }} % </template>
 
@@ -536,6 +542,7 @@ import CommentField from './_components/CommentField.vue'
 import ImageField from './_components/ImageField.vue'
 import DatePeriodField from './_components/DatePeriodField.vue'
 import CopyField from './_components/CopyField.vue'
+import CopyShortField from './_components/CopyShortField.vue'
 import SideBar from '../../../components/templates/BaseList/_components/SideBar.vue'
 import CModal from '../../../components/CModal.vue'
 import SumAndCurrency from '../../../components/SumAndCurrency.vue'
@@ -574,6 +581,7 @@ export default {
     StatementField,
     ButtonField,
     CopyField,
+    CopyShortField,
   },
 
   props: {

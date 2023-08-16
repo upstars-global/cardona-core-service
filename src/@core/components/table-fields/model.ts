@@ -26,7 +26,7 @@ export enum ListFieldType {
   Status = 'status',
   PillStatus = 'pill-status',
   NameWithId = 'name-with-id',
-  NameWithShortIdField = 'name-with-short-id',
+  NameWithShortId = 'name-with-short-id',
   Email = 'email',
   Date = 'date',
   DateWithSeconds = 'date-with-seconds',
@@ -41,6 +41,7 @@ export enum ListFieldType {
   Image = 'image',
   Period = 'period',
   Copy = 'copy',
+  CopyShort = 'copy-short',
 }
 export enum ListSize {
   SM = 'sm',

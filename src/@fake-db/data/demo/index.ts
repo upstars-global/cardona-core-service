@@ -60,8 +60,10 @@ export const tagsList: Array<IDemoTypeItem> = [
 const listData = [
   {
     id: '632c39448e03b2dab20c8a77',
+    shortId: '632c39448e03b2dab20c8a77',
     partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
+    nameWithShortId: 'Test',
     isActive: true,
     status: 'new',
     amount: 70000,
@@ -93,8 +95,10 @@ const listData = [
   },
   {
     id: '632c39448e03b2dab20c8a78',
+    shortId: '632c39448e03b2dab20c8a78',
     partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
+    nameWithShortId: 'Test1',
     isActive: false,
     amount: 1000,
     currency: 'USD',
@@ -127,8 +131,10 @@ const listData = [
   },
   {
     id: '632c39448e03b2dab20c8a79',
+    shortId: '632c39448e03b2dab20c8a79',
     partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
+    nameWithShortId: 'Test2',
     isActive: true,
     amount: 0,
     currency: 'EUR',
@@ -161,8 +167,10 @@ const listData = [
   },
   {
     id: '632c39448e03b2dab20c8a75',
+    shortId: '632c39448e03b2dab20c8a75',
     partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',
+    nameWithShortId: 'Test',
     isActive: false,
     status: 'delete',
     amount: 20000,
