@@ -1,18 +1,26 @@
-<script lang="ts">
+<script lang="ts" setup>
 import NameWithIdField from './NameWithIdField.vue'
-import { computed } from 'vue'
-import { getShortString } from '../../../../helpers'
 
-export default {
-  name: 'NameWithShortIdField',
-  extends: NameWithIdField,
-  setup(props) {
-    const itemId = computed(() => getShortString(props.item.id))
-
-    return {
-      ...NameWithIdField.setup(props),
-      itemId,
-    }
-  },
-}
+withDefaults(
+  defineProps<{
+    item: object
+    getUpdateRoute?: Function
+    isShowYou?: boolean
+  }>(),
+  {
+    getUpdateRoute: () => () => ({}),
+    isShowYou: false,
+  }
+)
 </script>
+
+<template>
+  <div>
+    <name-with-id-field
+      :item="item"
+      :get-update-route="getUpdateRoute"
+      :is-show-you="isShowYou"
+      is-short
+    />
+  </div>
+</template>

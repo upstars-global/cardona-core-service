@@ -1,6 +1,7 @@
 <script lang="ts">
 import { computed } from 'vue'
 import { copyToClipboard } from '../../../../helpers/clipboard'
+import { getShortString } from '../../../../helpers'
 
 export default {
   name: 'CopyField',
@@ -9,9 +10,13 @@ export default {
       type: String,
       required: true,
     },
+    isShort: {
+      type: Boolean,
+      default: false,
+    },
   },
-  setup(props: { value: string }) {
-    const labelValue = computed(() => props.value)
+  setup(props) {
+    const labelValue = computed(() => (props.isShort ? getShortString(props.value) : props.value))
 
     return {
       labelValue,
@@ -23,7 +28,7 @@ export default {
 
 <template>
   <div v-if="value" class="text-break copy-field">
-    <slot>
+    <slot :label="labelValue">
       <span>
         {{ labelValue }}
       </span>

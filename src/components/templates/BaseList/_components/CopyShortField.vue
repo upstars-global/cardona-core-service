@@ -1,18 +1,8 @@
-<script lang="ts">
+<script lang="ts" setup>
 import CopyField from './CopyField.vue'
-import { computed } from 'vue'
-import { getShortString } from '../../../../helpers'
 
-export default {
-  name: 'CopyShortField',
-  extends: CopyField,
-  setup(props) {
-    const labelValue = computed(() => getShortString(props.value))
-
-    return {
-      ...CopyField.setup(props),
-      labelValue,
-    }
-  },
-}
+defineProps<{ value: string }>()
 </script>
+<template>
+  <copy-field :value="value" is-short />
+</template>
