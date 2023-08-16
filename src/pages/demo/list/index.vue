@@ -12,6 +12,7 @@
         }"
       />
     </template>
+    <template #nameSlot-nameWithIdTitle="{ item }"> {{ item.name }}</template>
     <template #cell(type)="{ item }">
       {{ item.type.name }}
     </template>

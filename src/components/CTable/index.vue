@@ -76,7 +76,7 @@ export default defineComponent({
         renderThead,
       } = this
       const h = this.$createElement
-      const hasRowClickHandler = hasListener(EVENT_NAME_ROW_CLICKED) || this.hasSelectableRowClick
+      const hasRowClickHandler = hasListener(EVENT_NAME_ROW_CLICKED) && !this.hasSelectableRowClick
       const $rows = []
       const $busy = renderBusy ? renderBusy() : null
 
@@ -317,13 +317,12 @@ export default defineComponent({
         }
       }
       // >>> End Extended Functionality
-
       $rows.push(
         h(
           BTr,
           {
             class: classBTr,
-            props: { variant: item[FIELD_KEY_ROW_VARIANT] || null },
+            props: { variant: item.rowVariant },
             attrs: {
               id: rowId,
               ...userTrAttrs,

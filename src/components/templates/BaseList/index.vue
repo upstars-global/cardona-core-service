@@ -110,9 +110,10 @@
       <div
         v-if="config.withSettings && (!canUpdate || selectedItems.isEmpty)"
         class="table-settings"
+        :class="config?.pagination ? 'justify-content-between' : 'justify-content-end'"
       >
         <!-- Table per page select -->
-        <div class="d-flex align-items-center justify-content-start">
+        <div v-if="config?.pagination" class="d-flex align-items-center justify-content-start">
           <span class="mr-1">
             {{ $t('common.show') }}
           </span>
@@ -249,7 +250,11 @@
             :item="item"
             :get-update-route="getUpdateRoute"
             :is-show-you="config.isShowYou"
-          />
+          >
+            <template>
+              <slot :name="`${field.key}-nameWithIdTitle`" :item="item" />
+            </template>
+          </name-with-id-field>
 
           <email-field
             v-else-if="field.type === ListFieldType.Email"
@@ -498,6 +503,8 @@ import {
   convertCamelCase,
   convertLowerCaseFirstSymbol,
   getPermissionKeys,
+  isNotEmptyNumber,
+  isEmptyString,
 } from '../../../helpers'
 import { parseDateRange } from '../../../helpers/filters'
 import SearchInput from './_components/SearchInput.vue'
@@ -526,6 +533,8 @@ import FiltersBlock from '../../FiltersBlock/index.vue'
 import { permissionPrefix } from '@productConfig'
 import { Filter, PayloadFilters } from '../../../@model/filter'
 import { BaseField, SelectBaseField } from '../../../@model/baseField'
+import { omit } from 'lodash'
+
 export default {
   name: 'BaseList',
   components: {
@@ -853,10 +862,14 @@ export default {
             acc[`${key}From`] = dateFrom
             acc[`${key}To`] = dateTo
           } else if (filter.type === FieldType.SumRange) {
-            if (filter.value) {
+            if (filter.value?.some((value) => isNotEmptyNumber(value) && !isEmptyString(value))) {
               const [sumFrom, sumTo]: Array<number> = filter.value
               acc[`${key}From`] = sumFrom
               acc[`${key}To`] = sumTo
+              const invalidKeys = [`${key}From`, `${key}To`].filter(
+                (key) => !isNotEmptyNumber(acc[key])
+              )
+              acc = omit(acc, invalidKeys)
             }
           } else {
             acc[key] = filter.value
@@ -1121,7 +1134,6 @@ export default {
 .table-card-settings {
   :deep(.table-settings) {
     display: flex;
-    justify-content: space-between;
     padding: 0.5rem 1.5rem;
 
     .per-page-selector {

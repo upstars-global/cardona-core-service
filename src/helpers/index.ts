@@ -3,6 +3,7 @@ import { FieldInfo } from '../@model/field'
 import { BaseField } from '../@model/baseField'
 import { OptionsItem } from '../@model'
 import { isObject } from '../@core/utils/utils'
+import { isNumber, isString } from 'lodash'
 
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
 
@@ -103,8 +104,11 @@ export const getPermissionKeys = (config: {
   return formatPermissionResponse(permissionPrefix + permissionKey)
 }
 
-export const getShortString = (text: string | number): string => {
-  const startString = String(text).slice(0, 3)
-  const endString = String(text).slice(-3)
+export const getShortString = (text: string | number, letterCount = 4): string => {
+  const startString = String(text).slice(0, letterCount)
+  const endString = String(text).slice(-letterCount)
   return `${startString}...${endString}`
 }
+
+export const isNotEmptyNumber = (number: any): boolean => isNumber(number) && !isNaN(number)
+export const isEmptyString = (string: string): boolean => isString(string) && !string

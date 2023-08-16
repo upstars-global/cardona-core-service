@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ViewInfo } from '../../../../@model/view'
-import StatusWithDateField from '../../../../components/templates/BaseList/_components/StatusWithDateField.vue'
+import DateField from '../../BaseList/_components/DateField.vue'
 
 const props = defineProps<{
   item: ViewInfo
@@ -9,12 +9,10 @@ const props = defineProps<{
 
 <template>
   <div class="status-history--wrapper">
-    <status-with-date-field
-      v-for="(data, index) in item.value"
-      :key="index"
-      :item="data"
-      class="status-history justify-content-between"
-    />
+    <div v-for="(data, index) in item.value" :key="index">
+      <div class="font-weight-bolder mb-25">{{ data.title }}</div>
+      <date-field class="font-weight-light" :date="data.date" />
+    </div>
   </div>
 </template>
 

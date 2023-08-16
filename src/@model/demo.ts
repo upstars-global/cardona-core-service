@@ -4,11 +4,12 @@ import { FieldTranslationsData } from './translations'
 import { NumberBaseField, SelectBaseField, TextBaseField } from './baseField'
 import { FieldInfo, FieldType } from './field'
 import { getLocaleDateStringWithoutTimezone } from '../helpers/date'
-import { StatusWithVariant, ViewInfo, ViewType } from './view'
-import { SideBarCollapseItem } from '../components/templates/BaseList/model'
+import { StatusWithDateHistoryValue, StatusWithVariant, ViewInfo, ViewType } from './view'
+import { BaseListItem, SideBarCollapseItem } from '../components/templates/BaseList/model'
 import { TransactionType } from './playersTransactions'
 import { TranslateResult } from 'vue-i18n'
 import { ValidationRule } from './validations'
+import { BColors, BLightColors } from './bootstrap'
 
 export interface IDemoTypeItem {
   id: string
@@ -47,6 +48,69 @@ export interface IDemoListItem {
   state: boolean
   comment: string
 }
+
+export class DemoListItem implements BaseListItem {
+  id: string
+  partnerCode: string
+  name: string
+  isActive: boolean
+  status: string
+  amount: number
+  currency: string
+  wagerValue: string
+  wagerLimit: string
+  date: string
+  newDate: string
+  email: string
+  period: {
+    dateFrom: string
+    dateTo: string
+  }
+  buttonName: string
+  login: string
+  localization: string
+  country: string
+  position: number
+  imagePath: string
+  tags: Array<IDemoTypeItem>
+  type: {
+    id: TransactionType
+    name: TranslateResult
+  }
+  gameId: string
+  state: boolean
+  comment: string
+  rowVariant: BColors | BLightColors
+
+  constructor(data) {
+    this.id = data.id
+    this.partnerCode = data.partnerCode
+    this.name = data.name
+    this.isActive = data.isActive
+    this.status = data.status
+    this.amount = data.amount
+    this.currency = data.currency
+    this.wagerValue = data.wagerValue
+    this.wagerLimit = data.wagerLimit
+    this.date = data.date
+    this.newDate = data.newDate
+    this.email = data.email
+    this.period = data.period
+    this.buttonName = data.buttonName
+    this.login = data.login
+    this.localization = data.localization
+    this.country = data.country
+    this.position = data.position
+    this.imagePath = data.imagePath
+    this.tags = data.tags
+    this.type = data.type
+    this.gameId = data.gameId
+    this.state = data.state
+    this.comment = data.comment
+    this.rowVariant = data?.rowVariant
+  }
+}
+
 export interface IDemoFilter {
   readonly search?: string
   readonly createdFrom?: string
@@ -86,6 +150,7 @@ export class DemoForm {
   readonly percent: FieldInfo
   readonly digits: NumberBaseField
   readonly password: FieldInfo
+  readonly passwordFieldWithGeneration: FieldInfo
   readonly phone: FieldInfo
   readonly check: FieldInfo
   readonly radio: FieldInfo
@@ -171,6 +236,13 @@ export class DemoForm {
       key: 'password',
       value: data?.password,
       label: i18n.t('page.demo.passwordField'),
+      validationRules: 'required|password',
+    })
+    this.passwordFieldWithGeneration = new FieldInfo({
+      type: FieldType.Password,
+      key: 'password',
+      value: data?.passwordWithGenerator,
+      label: i18n.t('page.demo.passwordFieldWithGeneration'),
       validationRules: 'required|password',
     })
     this.switchWithState = new FieldInfo({
@@ -379,18 +451,18 @@ export class DemoSideBar {
           type: ViewType.StatusWithDateHistory,
           value: [
             {
-              status: new StatusWithVariant('active', 'light-warning'),
-              updatedAt: data?.date,
+              title: 'Erased by withdraw | ForceExpireCommand',
+              date: data?.date,
             },
             {
-              status: new StatusWithVariant('expired', 'light-danger'),
-              updatedAt: data?.date,
+              title: 'Waiting | promo_gift',
+              date: data?.date,
             },
             {
-              status: new StatusWithVariant('new', 'light-secondary'),
-              updatedAt: data?.date,
+              title: 'Received | promo_gift',
+              date: data?.date,
             },
-          ],
+          ] as StatusWithDateHistoryValue[],
           label: i18n.t('common.log'),
         }),
       },

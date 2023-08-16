@@ -5,6 +5,7 @@
     "logout": "Logout"
   },
   "common": {
+    "generatePassword": "Generate password",
     "segments": "Segments",
     "manager": "Manager",
     "you": "You",
@@ -174,6 +175,7 @@
       "sumRangeField": "Sum Range field",
       "percentField": "Percent field",
       "passwordField": "Password field",
+      "passwordFieldWithGeneration": "Password field with generation",
       "phoneField": "Phone field",
       "checkField": "Check field",
       "radioField": "Radio field",
@@ -392,7 +394,7 @@
     "creation": "Creating",
     "updating": "Updating",
     "deleting": "Deleting",
-    "reporting": "Export",
+    "reporting": "Reporting",
     "repeat": "Repeat",
     "send": "Send",
     "extend": "Extend",

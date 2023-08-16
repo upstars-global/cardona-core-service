@@ -4,8 +4,8 @@ export const getISOStringWithoutTimezone = (isoString: string): string => {
   return new Date(utcStringWithoutTimezone).toISOString()
 }
 
-export const getLocaleDateString = (date: Date): string => {
-  return date.toLocaleDateString(navigator.language, {
+export const getLocaleDateString = (date: Date, language = navigator.language): string => {
+  return date.toLocaleDateString(language, {
     hour: '2-digit',
     minute: '2-digit',
   })
@@ -25,8 +25,8 @@ export const getUTCISOString = (dateString: string): string => {
 }
 
 export const transformDateToISO = (dateString: string): string => {
-  const pattern: RegExp = /(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})/
-  const replaceValue: string = '$3-$2-$1-$4-$5'
+  const pattern = /(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})/
+  const replaceValue = '$3-$2-$1-$4-$5'
 
   const [year, month, day, hour, minute]: Array<number> = dateString
     .trim()
@@ -46,4 +46,13 @@ export const convertDateToUTC = (date: Date): Date => {
     date.getUTCMinutes(),
     date.getUTCSeconds()
   )
+}
+
+export const sortListByDate = (list: Array<any>, key: string): Array<any> => {
+  if (!Array.isArray(list)) return []
+  return list.sort((next, prev) => {
+    const nextDate = new Date(key ? next[key] : next).getTime()
+    const prevDate = new Date(key ? prev[key] : prev).getTime()
+    return prevDate - nextDate
+  })
 }
