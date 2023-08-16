@@ -80,7 +80,7 @@ interface IViewInfo {
 }
 
 //TODO: Delete T = {} All project https://upstars.atlassian.net/browse/BAC-1177
-export class ViewInfo<T = {}> {
+export class ViewInfo {
   readonly type?: ViewType
   readonly value: LinkViewValue | SumAndCurrencyViewValue | StatusWithDateValue | any
   readonly label?: TranslateResult

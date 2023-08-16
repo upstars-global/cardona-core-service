@@ -373,32 +373,32 @@ export class DemoSideBar {
       title: i18n.t('common.generalInformation'),
       withBottomSeparator: true,
       views: {
-        comment: new ViewInfo<number>({
+        comment: new ViewInfo({
           type: ViewType.Comment,
           value: data?.comment,
           label: i18n.t('common.comment'),
         }),
-        name: new ViewInfo<string>({
+        name: new ViewInfo({
           type: ViewType.Text,
           value: data?.name,
           label: i18n.t('common.name'),
         }),
-        type: new ViewInfo<string>({
+        type: new ViewInfo({
           type: ViewType.TransactionType,
           value: data?.type.id,
           label: i18n.t('common.type'),
         }),
-        date: new ViewInfo<string>({
+        date: new ViewInfo({
           type: ViewType.Date,
           value: data?.date,
           label: i18n.t('common.date'),
         }),
-        id: new ViewInfo<string>({
+        id: new ViewInfo({
           type: ViewType.BadgeCopy,
           value: data?.id,
           label: i18n.t('common.id'),
         }),
-        partnerCode: new ViewInfo<string>({
+        partnerCode: new ViewInfo({
           type: ViewType.BadgeShortCopy,
           value: data?.partnerCode,
           label: i18n.t('common.partnerCode'),
