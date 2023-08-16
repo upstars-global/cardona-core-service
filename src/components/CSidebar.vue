@@ -72,10 +72,20 @@ const onHidden = () => emit('hidden')
 
 <style lang="scss" scoped>
 @import '../@core/scss/base/bootstrap-extended/_variables.scss';
+@import '../@core/scss/base/components/_variables-dark.scss';
 
 .c-sidebar {
   :deep(.b-sidebar-header) {
     background-color: $body-bg;
+  }
+}
+
+body.dark-layout {
+  .c-sidebar {
+    :deep(.b-sidebar-header) {
+      background: $theme-dark-body-bg;
+      color: $white;
+    }
   }
 }
 </style>
