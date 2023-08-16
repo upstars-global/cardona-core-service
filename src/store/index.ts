@@ -18,6 +18,7 @@ import baseSectionErrors from './modules/baseSectionErrors'
 import tags from './modules/tags'
 import demo from './modules/demo'
 import permissions from './modules/permissions'
+import textEditor from './modules/textEditor'
 
 import ecommerceStoreModuleCore from '../views/apps/e-commerce/eCommerceStoreModule'
 import app from './app'
@@ -42,6 +43,7 @@ const store = new Vuex.Store({
     tags,
     demo,
     permissions,
+    textEditor,
     app,
     'app-ecommerce': ecommerceStoreModuleCore,
   },
