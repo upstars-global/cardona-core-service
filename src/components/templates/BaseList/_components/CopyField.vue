@@ -1,29 +1,16 @@
-<script lang="ts">
+<script lang="ts" setup>
 import { computed } from 'vue'
 import { copyToClipboard } from '../../../../helpers/clipboard'
 import { getShortString } from '../../../../helpers'
 
-export default {
-  name: 'CopyField',
-  props: {
-    value: {
-      type: String,
-      required: true,
-    },
-    isShort: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props) {
-    const labelValue = computed(() => (props.isShort ? getShortString(props.value) : props.value))
-
-    return {
-      labelValue,
-      copyToClipboard,
-    }
-  },
+interface Props {
+  value: string
+  isShort?: boolean
 }
+
+const props = defineProps<Props>()
+
+const labelValue = computed(() => (props.isShort ? getShortString(props.value) : props.value))
 </script>
 
 <template>

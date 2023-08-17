@@ -8,8 +8,7 @@ withDefaults(
     isShowYou?: boolean
   }>(),
   {
-    getUpdateRoute: () => () => ({}),
-    isShowYou: false,
+    getUpdateRoute: () => ({}),
   }
 )
 </script>

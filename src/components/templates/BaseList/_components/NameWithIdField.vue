@@ -18,20 +18,22 @@
       </p>
     </slot>
 
-    <component :is="currentComponent" v-slot="{ label }" :value="itemId">
-      <small> ID {{ label }} </small>
+    <component :is="currentComponent" :value="itemId">
+      <template #default="{ label }">
+        <small> ID {{ label }} </small>
+      </template>
     </component>
   </div>
 </template>
 
 <script lang="ts">
-import { computed } from 'vue'
+import { computed, defineComponent } from 'vue'
 import store from '../../../../store'
 import { Location } from 'vue-router'
 import CopyField from './CopyField.vue'
 import CopyShortField from './CopyShortField.vue'
 
-export default {
+export default defineComponent({
   name: 'NameWithIdField',
   components: { CopyField, CopyShortField },
 
@@ -81,5 +83,5 @@ export default {
       currentComponent,
     }
   },
-}
+})
 </script>
