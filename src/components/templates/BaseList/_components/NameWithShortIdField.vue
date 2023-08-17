@@ -8,18 +8,16 @@ withDefaults(
     isShowYou?: boolean
   }>(),
   {
-    getUpdateRoute: () => ({}),
+    getUpdateRoute: () => () => ({}),
   }
 )
 </script>
 
 <template>
-  <div>
-    <name-with-id-field
-      :item="item"
-      :get-update-route="getUpdateRoute"
-      :is-show-you="isShowYou"
-      is-short
-    />
-  </div>
+  <name-with-id-field
+    :item="item"
+    :get-update-route="getUpdateRoute"
+    :is-show-you="isShowYou"
+    is-short
+  />
 </template>
