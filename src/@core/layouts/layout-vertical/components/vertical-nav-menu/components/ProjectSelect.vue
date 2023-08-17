@@ -1,5 +1,5 @@
 <template>
-  <div class="project-select">
+  <div class="project-select" :class="{ 'cant-select': cantSelect }">
     <v-select
       v-model="selectProject"
       :dir="$store.getters['appConfigCore/dirOption']"
@@ -7,6 +7,7 @@
       label="publicName"
       :clearable="false"
       :searchable="false"
+      :no-drop="cantSelect"
     >
       <template #selected-option="{ publicName, title, alias, iconPath }">
         <div class="row align-items-center flex-nowrap overflow-hidden px-1">
@@ -47,7 +48,6 @@
 <script>
 import { computed } from 'vue'
 import store from '../../../../../../store'
-
 export default {
   name: 'ProjectSelect',
   props: {},
@@ -59,9 +59,11 @@ export default {
       },
     })
     const projects = computed(() => store.getters.userInfo.projects)
+    const cantSelect = computed(() => projects.value.length < 2)
     return {
       selectProject,
       projects,
+      cantSelect,
     }
   },
 }
@@ -103,6 +105,11 @@ export default {
       }
       .vs__selected {
         line-height: 0;
+      }
+    }
+    .cant-select {
+      .vs__open-indicator {
+        display: none;
       }
     }
   }
