@@ -28,12 +28,14 @@ const props = withDefaults(defineProps<CModalProps>(), {
 const emit = defineEmits<{
   (event: 'ok', hide: Function): void
   (event: 'hidden'): void
+  (event: 'show'): void
 }>()
 
 const refModal: any = ref(null)
 
 const onClickOk = () => emit('ok', refModal.value.hide)
 const onHidden = () => emit('hidden')
+const onShow = () => emit('show')
 </script>
 
 <template>
@@ -54,6 +56,7 @@ const onHidden = () => emit('hidden')
     :cancel-title="cancelTitle"
     @ok.prevent="onClickOk"
     @hidden="onHidden"
+    @show="onShow"
   >
     <template #default="{ hide }">
       <slot :hide="hide" />

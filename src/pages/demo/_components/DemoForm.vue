@@ -204,7 +204,12 @@
             </b-col>
 
             <b-col cols="8">
-              <upload-file size="md" :disabled="disabled" :on-submit-callback="mockUploadFile" />
+              <upload-file
+                size="md"
+                :disabled="disabled"
+                :on-submit-callback="mockUploadFile"
+                :max-size-file-mb="10"
+              />
             </b-col>
           </b-row>
         </b-card-body>

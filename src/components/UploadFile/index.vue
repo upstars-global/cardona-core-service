@@ -18,6 +18,7 @@ type Props = {
   accept?: string
   acceptTitle?: string
   onSubmitCallback?: (file: File) => void
+  maxSizeFileMb?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -26,9 +27,9 @@ const props = withDefaults(defineProps<Props>(), {
   dropPlaceholder: i18n.t('uploadFile.dragTextDrop') as string,
   accept: 'application/json',
   acceptTitle: 'JSON',
+  maxSizeFileMb: 10,
 })
 
-const maxSizeFileKB = 10485760 //10MB
 const kbsInMb = 1048576 //1MB
 const isLoad = ref(false)
 const { toastError } = useToastService()
@@ -47,11 +48,13 @@ watch(file, async (file: File) => {
   await onUploadFile(file)
 })
 
-const fileSizeFormatted = computed(() => (maxSizeFileKB / kbsInMb).toString())
+const maxSizeFileKB = computed(() => props.maxSizeFileMb * kbsInMb)
+
+const fileSizeFormatted = computed(() => (maxSizeFileKB.value / kbsInMb).toString())
 
 const onUploadFile = async (file: File) => {
   if (file) {
-    if (file.size > maxSizeFileKB) {
+    if (file.size > maxSizeFileKB.value) {
       clearFile()
 
       toastError('fileSizeError', { MB: fileSizeFormatted.value })
@@ -111,6 +114,6 @@ const onUploadFile = async (file: File) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../../assets/scss/components/upload';
 </style>
