@@ -1,17 +1,50 @@
-<script lang="ts">
-import TextField from './TextField.vue'
+<template>
+  <b-input-group
+    :append="appendText"
+    :prepend="field.prepend"
+    class="input-group-merge"
+    :class="{ error: errors.isNotEmpty }"
+  >
+    <b-form-input
+      v-model.trim="modelValue"
+      :placeholder="field.placeholder || field.label"
+      :state="errors.isNotEmpty ? false : null"
+      type="number"
+      :disabled="disabled"
+      autocomplete="off"
+      @keydown="onKeyDown"
+    />
+  </b-input-group>
+</template>
 
-export default {
-  name: 'NumberField',
-  extends: TextField,
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { NumberBaseField } from '../../../../@model/baseField'
 
-  setup(props, context) {
-    const inputType: string = 'number'
+const props = defineProps<{
+  value: string | number
+  field: NumberBaseField
+  errors: Array<string>
+  disabled: boolean
+}>()
+const emits = defineEmits<{
+  (event: 'input', string): void
+}>()
+const appendText = ref(props.field?.append)
 
-    return {
-      ...TextField.setup(props, context),
-      inputType,
-    }
+const modelValue = computed({
+  get: () => props.value,
+  set: (value) => {
+    emits('input', props.field.withPositiveNumbers ? value.toString().replace(/-/g, '') : value)
   },
+})
+
+const onKeyDown = (event) => {
+  if (props.field.withPositiveNumbers && event.key === '-') {
+    event.preventDefault()
+  }
+  if (event.key === 'e') {
+    event.preventDefault()
+  }
 }
 </script>
