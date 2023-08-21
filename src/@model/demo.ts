@@ -194,6 +194,7 @@ export class DemoForm {
       value: data?.number,
       label: i18n.t('page.demo.numberField'),
       validationRules: ['required', 'min:3' as ValidationRule],
+      withPositiveNumbers: true,
     })
     this.minute = new FieldInfo({
       type: FieldType.Minute,
