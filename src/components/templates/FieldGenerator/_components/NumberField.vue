@@ -6,7 +6,7 @@
     :class="{ error: errors.isNotEmpty }"
   >
     <b-form-input
-      v-model.trim="modelValue"
+      v-model.trim="value"
       :placeholder="field.placeholder || field.label"
       :state="errors.isNotEmpty ? false : null"
       type="number"
@@ -21,12 +21,14 @@
 import { computed, ref } from 'vue'
 import { NumberBaseField } from '../../../../@model/baseField'
 
-const props = defineProps<{
+type Props = {
   value: string | number
   field: NumberBaseField
-  errors: Array<string>
-  disabled: boolean
-}>()
+  errors?: Array<string>
+  disabled?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), { errors: () => [], value: '' })
 const emits = defineEmits<{
   (event: 'input', string): void
 }>()
