@@ -20,6 +20,9 @@
               <field-generator v-model="formData.text" :disabled="isDisabledField" />
             </b-col>
             <b-col cols="4">
+              <field-generator v-model="formData.textWithCb" :disabled="isDisabledField" />
+            </b-col>
+            <b-col cols="4">
               <field-generator v-model="formData.email" :disabled="isDisabledField" />
             </b-col>
 
