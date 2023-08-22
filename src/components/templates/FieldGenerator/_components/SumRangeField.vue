@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import NumberField from './NumberField.vue'
 import { FieldInfo } from '../../../../@model/field'
 import { isEmptyString } from '../../../../helpers'
+import { division, multiplication } from '../../../../helpers/math-operations'
 
 type SumRangeFieldProps = {
   value: Array<number>
@@ -21,9 +22,9 @@ const emit = defineEmits<{
 }>()
 
 const getMultipleWith100 = (value: NumberOrEmptyString): NumberOrEmptyString =>
-  isEmptyString(value) ? '' : value * 100
+  isEmptyString(value) ? '' : multiplication(value, 100)
 const getDivideWith100 = (value: NumberOrEmptyString): NumberOrEmptyString =>
-  isEmptyString(value) ? '' : value / 100
+  isEmptyString(value) ? '' : division(value, 100)
 
 const sumFrom = computed({
   set: (newSumFrom) =>
