@@ -13,6 +13,8 @@ export interface IBaseField {
   readonly permission?: PermissionType
   readonly isLocalization?: boolean
   readonly form?: object
+  readonly serialize?: (value: any) => any
+  readonly deserialize?: (value: any) => any
 }
 
 export abstract class BaseField implements IBaseField {
@@ -27,6 +29,8 @@ export abstract class BaseField implements IBaseField {
   readonly permission?: PermissionType
   readonly isLocalization?: boolean
   public form?: object
+  public serialize: (value: any) => any = (value) => value
+  public deserialize: (value: any) => any = (value) => value
 
   protected constructor(field: IBaseField) {
     this.key = field.key
@@ -40,14 +44,16 @@ export abstract class BaseField implements IBaseField {
     this.permission = field.permission
     this.isLocalization = field.isLocalization
     this.form = field.form
+    this.serialize = field.serialize || this.serialize
+    this.deserialize = field.deserialize || this.deserialize
   }
 
-  get value() {
-    return this._value
+  get value(): any {
+    return this.deserialize(this._value)
   }
 
-  set value(value) {
-    this._value = value
+  set value(value: any) {
+    this._value = this.serialize(value)
   }
 
   transformField() {
