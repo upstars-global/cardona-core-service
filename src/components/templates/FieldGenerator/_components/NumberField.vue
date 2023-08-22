@@ -6,7 +6,7 @@
     :class="{ error: errors.isNotEmpty }"
   >
     <b-form-input
-      v-model.trim="value"
+      v-model.trim="modelValue"
       :placeholder="field.placeholder || field.label"
       :state="errors.isNotEmpty ? false : null"
       type="number"
