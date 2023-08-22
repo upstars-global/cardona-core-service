@@ -19,5 +19,7 @@ withDefaults(
     :get-update-route="getUpdateRoute"
     :is-show-you="isShowYou"
     is-short
-  />
+  >
+    <slot></slot>
+  </name-with-id-field>
 </template>
