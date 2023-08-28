@@ -25,14 +25,19 @@ export const useDemoList = (): UseListType => {
       type: ListFieldType.Status,
     }),
     new TableField({
-      key: 'name',
-      label: t('common.name'),
-      type: ListFieldType.NameWithId,
+      key: 'shortId',
+      label: t('common.shortId'),
+      type: ListFieldType.CopyShort,
     }),
     new TableField({
       key: 'nameSlot',
       label: t('common.name'),
       type: ListFieldType.NameWithId,
+    }),
+    new TableField({
+      key: 'nameWithShortId',
+      label: t('common.nameWithShortId'),
+      type: ListFieldType.NameWithShortId,
     }),
     new TableField({
       key: 'innerLink',

@@ -18,9 +18,11 @@
       </p>
     </slot>
 
-    <copy-field :value="item.id">
-      <small> ID {{ item.id }} </small>
-    </copy-field>
+    <component :is="currentComponent" :value="itemId">
+      <template #default="{ label }">
+        <small> ID {{ label }} </small>
+      </template>
+    </component>
   </div>
 </template>
 
@@ -29,10 +31,11 @@ import { computed, defineComponent } from 'vue'
 import store from '../../../../store'
 import { Location } from 'vue-router'
 import CopyField from './CopyField.vue'
+import CopyShortField from './CopyShortField.vue'
 
 export default defineComponent({
   name: 'NameWithIdField',
-  components: { CopyField },
+  components: { CopyField, CopyShortField },
 
   props: {
     item: {
@@ -46,6 +49,11 @@ export default defineComponent({
     },
 
     isShowYou: {
+      type: Boolean,
+      default: false,
+    },
+
+    isShort: {
       type: Boolean,
       default: false,
     },
@@ -64,10 +72,15 @@ export default defineComponent({
       () => props.item.name || props.item.userName || props.item.title
     )
 
+    const itemId = computed(() => props.item?.id)
+
+    const currentComponent = computed(() => (props?.isShort ? 'copy-short-field' : 'copy-field'))
     return {
       isYou,
+      itemId,
       isExistsRoute,
       itemName,
+      currentComponent,
     }
   },
 })

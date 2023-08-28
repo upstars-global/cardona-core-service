@@ -1,16 +1,23 @@
-<script setup lang="ts">
+<script lang="ts" setup>
+import { computed } from 'vue'
 import { copyToClipboard } from '../../../../helpers/clipboard'
+import { getShortString } from '../../../../helpers'
 
-const props = defineProps<{
-  value?: string
-}>()
+interface Props {
+  value: string
+  isShort?: boolean
+}
+
+const props = defineProps<Props>()
+
+const labelValue = computed(() => (props.isShort ? getShortString(props.value) : props.value))
 </script>
 
 <template>
   <div v-if="value" class="text-break copy-field">
-    <slot>
+    <slot :label="labelValue">
       <span>
-        {{ value }}
+        {{ labelValue }}
       </span>
     </slot>
 
