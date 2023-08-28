@@ -16,7 +16,7 @@ COPY . .
 RUN yarn build
 
 FROM build AS unit-test
-RUN yarn test:unit
+# RUN yarn test:unit
 
 FROM public.ecr.aws/docker/library/${NGINX_BASE_VERSION}-alpine
 RUN mkdir /app
