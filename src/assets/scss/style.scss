@@ -23,6 +23,11 @@ $bg-light-grey: rgba(186, 191, 199, 0.12);
 
 .our-table {
   tr {
+    th,td {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
     th {
       vertical-align: middle;
     }
