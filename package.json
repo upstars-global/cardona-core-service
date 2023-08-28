@@ -34,6 +34,7 @@
     "countries-list": "^2.6.1",
     "decimal.js": "^10.4.3",
     "echarts": "4.8.0",
+    "flush-promises": "^1.0.2",
     "jsonwebtoken": "8.5.1",
     "leaflet": "1.6.0",
     "lodash": "^4.17.21",
