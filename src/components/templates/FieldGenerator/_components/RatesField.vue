@@ -17,6 +17,7 @@ import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
 import { NumberBaseField } from '../../../../@model/baseField'
 import FieldGenerator from '../../../../components/templates/FieldGenerator'
+import { division, multiplication } from '../../../../helpers/math-operations'
 
 type Rates = {
   readonly currency: string
@@ -60,7 +61,7 @@ watch(
       formRates.value = props.value.map((item: Rates) => {
         return new NumberBaseField({
           key: item.currency,
-          value: item.bet ? item.bet / 100 : 0,
+          value: item.bet ? division(item.bet, 100) : 0,
           label: item.currency,
           placeholder: '0.00',
           validationRules: 'required',
@@ -79,7 +80,7 @@ watch(
       'input',
       formRates.value.map((item) => ({
         currency: item.key,
-        bet: item.value ? item.value * 100 : 0,
+        bet: item.value ? multiplication(item.value, 100) : 0,
       }))
     )
   },

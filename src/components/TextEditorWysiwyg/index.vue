@@ -15,6 +15,7 @@
 
     <div
       v-if="Object.keys(variableTextBuffer).length"
+      :key="'block-text-edite-variable' + isUpdateVar"
       class="d-flex flex-wrap align-items-center block-text-edite-variable pt-1"
     >
       <span class="font-small-3 font-weight-bolder mr-1 mb-50">
@@ -35,12 +36,13 @@
 </template>
 
 <script lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { VBTooltip } from 'bootstrap-vue'
 import VariableModal from './VariableModal.vue'
 import 'vue-froala-wysiwyg'
 import FroalaEditor from 'froala-editor'
 import i18n from '../../libs/i18n'
+import store from '../../store'
 
 export default {
   name: 'TextEditorWysiwyg',
@@ -79,6 +81,18 @@ export default {
       set: (value) => emit('input', value),
     })
     const globalEditor = ref()
+    const isUpdateVar = computed(() => store.state.textEditor.isUpdateVar)
+
+    watch(
+      () => isUpdateVar.value,
+      () => {
+        if (isUpdateVar.value) {
+          findNoUseVarAndDelete()
+          store.dispatch('textEditor/setUpdateVar', false)
+        }
+      }
+    )
+
     let flagOneNoEmpty = true
     const variableTextBuffer = computed({
       get: () => {
@@ -104,6 +118,10 @@ export default {
     // Буффер для хранения всех переменных для текушего экземпляра редактора.
     // Нужен для востановления данных удаленных переменных которые вернули в текст
     const variableText = ref(Object.assign(variableTextBuffer.value))
+    watch(
+      () => variableText.value,
+      () => store.dispatch('textEditor/setUpdateVar', true)
+    )
     const variableKeySelect = ref('')
     const defaultObjLocalisationParameters = {}
     props.optionsVariable.forEach((item) => {
@@ -271,6 +289,7 @@ export default {
                 .replace('}}', '}</span>&nbsp;')
             )
             editor.selection.restore()
+            store.dispatch('textEditor/setUpdateVar', true)
           } else {
             updateVariableInContent(editor)
           }
@@ -306,6 +325,31 @@ export default {
       variableText.value = newVariableText.value
     }
 
+    const findNoUseVarAndDelete = () => {
+      if (!globalEditor.value) return
+      const regex = /<span class="variable-box">\{(.*?)\}<\/span>/g
+
+      const text = ref(globalEditor.value.html.get(true))
+      let match
+      let isUpdateCursor = false
+
+      while ((match = regex.exec(text.value)) !== null) {
+        if (globalEditor.value && !variableTextBuffer.value[match[1]]) {
+          isUpdateCursor = true
+          text.value = text.value
+            .replaceAll('<span class="variable-box">{' + match[1] + '}</span>', '')
+            .replaceAll('&nbsp;&nbsp;', '')
+        }
+      }
+
+      if (isUpdateCursor) {
+        globalEditor.value.html.set(text.value)
+        globalEditor.value.selection.restore()
+        globalEditor.value.selection.setAfter(globalEditor.value.selection.element())
+        globalEditor.value.selection.restore()
+      }
+    }
+
     const variableKeyUnselect = () => {
       variableKeySelect.value = ''
     }
@@ -334,12 +378,14 @@ export default {
       delete variableText.value[variableKeySelect.value]
       delete variableTextBuffer.value[variableKeySelect.value]
       variableKeySelect.value = ''
+      store.dispatch('textEditor/setUpdateVar', true)
     }
 
     return {
       content,
       config,
       variableTextBuffer,
+      isUpdateVar,
       variableKeyUnselect,
       setVariableKeySelect,
       variableKeySelect,

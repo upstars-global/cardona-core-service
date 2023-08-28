@@ -1,0 +1,15 @@
+@import '../../../@core/scss/base/core/colors/palette-variables';
+
+
+@each $color_name, $color in $colors {
+  @each $color_type, $color_value in $color {
+    @if $color_type== 'base' {
+      .table-light-#{$color_name} {
+        background-color: rgba($color_value, 0.12);
+      }
+      .table-light-#{$color_name}:hover {
+        background-color: rgba($color_value, 0.36) !important;
+      }
+    }
+  }
+}

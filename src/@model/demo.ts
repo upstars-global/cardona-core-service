@@ -143,6 +143,7 @@ export class DemoForm {
   readonly switch: FieldInfo
   readonly switchWithState: FieldInfo
   readonly text: TextBaseField
+  readonly textWithCb: TextBaseField
   readonly email: TextBaseField
   readonly number: NumberBaseField
   readonly minute: FieldInfo
@@ -186,11 +187,27 @@ export class DemoForm {
       validationRules: ['required'],
       isLocalization: true,
     })
+    this.textWithCb = new TextBaseField({
+      key: 'textWithCb',
+      value: data?.textWithCb,
+      label: i18n.t('page.demo.textFieldWithCb'),
+      validationRules: ['required'],
+      isLocalization: true,
+      serialize: (value: string) => {
+        if (value?.includes('demo:')) return value
+        return `demo:${value}`
+      },
+      deserialize: (value: string) => {
+        if (value?.includes('demo:')) return value
+        return value?.substring(5)
+      },
+    })
     this.number = new NumberBaseField({
       key: 'number',
       value: data?.number,
       label: i18n.t('page.demo.numberField'),
       validationRules: ['required', 'min:3' as ValidationRule],
+      withPositiveNumbers: true,
     })
     this.minute = new FieldInfo({
       type: FieldType.Minute,

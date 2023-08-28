@@ -6,19 +6,10 @@ PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
 @import '../../@core/scss/base/core/colors/palette-variables';
 @import '../../@core/scss/vue/libs/vue-select';
+@import '../scss/components/base-list';
 
 $bg-light-purple: rgba(115, 103, 240, 0.08);
 $bg-light-grey: rgba(186, 191, 199, 0.12);
-
-@each $color_name, $color in $colors {
-  @each $color_type, $color_value in $color {
-    @if $color_type== 'base' {
-    .table-light-#{$color_name} {
-          background-color: rgba($color_value, 0.12);
-      }
-    }
-  }
-}
 
 .form-required label:after {
   content: '*';

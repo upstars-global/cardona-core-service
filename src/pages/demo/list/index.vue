@@ -1,5 +1,5 @@
 <template>
-  <base-list :use-list="useDemoList" :config="listConfig" class="demo-list">
+  <base-list :use-list="useDemoList" :config="listConfig" class="demo-list mr-md-1 mr-sm-0">
     <template #table-field-setting>
       <feather-icon icon="BookIcon" size="21" class="mr-1" />
     </template>

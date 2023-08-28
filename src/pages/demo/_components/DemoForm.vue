@@ -20,6 +20,9 @@
               <field-generator v-model="formData.text" :disabled="isDisabledField" />
             </b-col>
             <b-col cols="4">
+              <field-generator v-model="formData.textWithCb" :disabled="isDisabledField" />
+            </b-col>
+            <b-col cols="4">
               <field-generator v-model="formData.email" :disabled="isDisabledField" />
             </b-col>
 
@@ -204,7 +207,12 @@
             </b-col>
 
             <b-col cols="8">
-              <upload-file size="md" :disabled="disabled" :on-submit-callback="mockUploadFile" />
+              <upload-file
+                size="md"
+                :disabled="disabled"
+                :on-submit-callback="mockUploadFile"
+                :max-size-file-mb="10"
+              />
             </b-col>
           </b-row>
         </b-card-body>

@@ -170,6 +170,7 @@
       "switchField": "Switch field",
       "switchWithStateField": "Switch with state field",
       "textField": "Text field",
+      "textFieldWithCb": "Text field with callback",
       "numberField": "Number field",
       "minuteField": "Minute field",
       "sumRangeField": "Sum Range field",
