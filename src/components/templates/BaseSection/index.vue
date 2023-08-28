@@ -17,11 +17,21 @@
       <slot v-if="pageType" name="actions" :form="form">
         <div class="d-flex align-items-center">
           <template v-if="isCreatePage">
-            <b-button class="mr-2" variant="primary" @click="onSubmit(false)">
+            <b-button
+              class="mr-2"
+              variant="primary"
+              data-testid="create-button"
+              @click="onSubmit(false)"
+            >
               {{ $t('action.createAndExit') }}
             </b-button>
 
-            <b-button class="mr-2" variant="outline-secondary" @click="onSubmit(true)">
+            <b-button
+              class="mr-2"
+              variant="outline-secondary"
+              data-testid="stay-button"
+              @click="onSubmit(true)"
+            >
               {{ $t('action.createAndStay') }}
             </b-button>
           </template>
@@ -30,6 +40,7 @@
             <b-button
               class="mr-2"
               variant="primary"
+              data-testid="save-button"
               :disabled="isLoadingPage || isDisableSubmitBtn || isExistsEndpointsWithError"
               @click="onSubmit(false)"
             >
@@ -37,7 +48,11 @@
             </b-button>
           </template>
 
-          <b-button variant="outline-secondary" @click.prevent="onClickCancel">
+          <b-button
+            variant="outline-secondary"
+            data-testid="cancel-button"
+            @click.prevent="onClickCancel"
+          >
             {{ $t('action.cancel') }}
           </b-button>
         </div>

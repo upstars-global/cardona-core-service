@@ -9,7 +9,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="d-flex flex-column width-content">
+  <div class="d-flex flex-column width-content currency-wrapper">
     <div>
       <span :key="data.amount" v-currency="data.amount" />
 
@@ -35,5 +35,12 @@ const props = defineProps<{
 <style lang="scss" scoped>
 .width-content {
   width: max-content;
+}
+
+.our-table {
+  .currency-wrapper {
+    margin-left: auto;
+    text-align: right;
+  }
 }
 </style>

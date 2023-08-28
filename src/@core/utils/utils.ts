@@ -39,7 +39,6 @@ export const useRouter = () => {
       state.route = r
     }
   )
-
   return { ...toRefs(state), router: vm.$router }
 }
 
