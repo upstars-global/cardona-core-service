@@ -7,5 +7,5 @@ const props = defineProps<{
 </script>
 
 <template>
-  <label class="mb-0">{{ item.value }}</label>
+  <span class="mb-0">{{ item.value }}</span>
 </template>
