@@ -14,6 +14,7 @@
 
 <script>
 import { BCard, BAvatar } from 'bootstrap-vue'
+import { IconsList } from '../../../@model/enums/icons'
 
 export default {
   components: {
@@ -22,7 +23,7 @@ export default {
   },
   props: {
     icon: {
-      type: String,
+      type: IconsList,
       required: true,
     },
     statistic: {

@@ -14,7 +14,7 @@
           >
             <template #search="{ attributes, events }">
               <div class="d-flex align-items-center search-select-icon">
-                <feather-icon icon="SearchIcon" />
+                <feather-icon :icon="IconsList.SearchIcon" />
               </div>
 
               <input class="vs__search" v-bind="attributes" v-on="events" />
@@ -42,7 +42,7 @@
           <b-input-group-append class="field-group-disabled" is-text>
             <feather-icon
               class="text-danger cursor-pointer"
-              icon="Trash2Icon"
+              :icon="IconsList.Trash2Icon"
               @click="onRemove(item.id)"
             />
           </b-input-group-append>
@@ -58,6 +58,7 @@ import vSelect from 'vue-select'
 import { ref, PropType, defineComponent, computed } from 'vue'
 import { UserInfo } from '../@model/user'
 import { debounce } from 'lodash'
+import { IconsList } from '../@model/enums/icons'
 
 export default defineComponent({
   name: 'GroupUserSearch',
@@ -123,6 +124,7 @@ export default defineComponent({
       fetchOptions,
       onChange,
       onRemove,
+      IconsList,
     }
   },
 })

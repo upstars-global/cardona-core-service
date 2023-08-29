@@ -3,17 +3,17 @@
     <ul class="list-inline mb-0">
       <li v-if="availableActions.includes('collapse')">
         <a data-action="collapse" :class="{ rotate: isCollapsed }" @click="$emit('collapse')">
-          <feather-icon icon="ChevronDownIcon" size="16" />
+          <feather-icon :icon="IconsList.ChevronDownIcon" size="16" />
         </a>
       </li>
       <li v-if="availableActions.includes('refresh')">
         <a data-action="reload" @click="$emit('refresh')">
-          <feather-icon icon="RotateCwIcon" size="14" />
+          <feather-icon :icon="IconsList.RotateCwIcon" size="14" />
         </a>
       </li>
       <li v-if="availableActions.includes('close')">
         <a data-action="close" @click="$emit('close')">
-          <feather-icon icon="XIcon" size="14" />
+          <feather-icon :icon="IconsList.XIcon" size="14" />
         </a>
       </li>
     </ul>
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { IconsList } from '../../../@model/enums/icons'
+
 export default {
   props: {
     isCollapsed: {
@@ -31,6 +33,11 @@ export default {
       type: Array,
       default: () => [],
     },
+  },
+  setup() {
+    return {
+      IconsList,
+    }
   },
 }
 </script>

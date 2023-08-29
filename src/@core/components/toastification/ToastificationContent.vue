@@ -18,7 +18,7 @@
           class="cursor-pointer toastification-close-icon ml-auto"
           @click="$emit('close-toast')"
         >
-          <feather-icon v-if="!hideClose" icon="XIcon" class="text-body" />
+          <feather-icon v-if="!hideClose" :icon="IconsList.XIcon" class="text-body" />
         </span>
       </div>
     </div>
@@ -27,6 +27,7 @@
 
 <script>
 import { BAvatar } from 'bootstrap-vue'
+import { IconsList } from '../../../@model/enums/icons'
 
 export default {
   components: {
@@ -38,7 +39,7 @@ export default {
       default: 'primary',
     },
     icon: {
-      type: String,
+      type: IconsList,
       default: null,
     },
     title: {
@@ -53,6 +54,11 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  setup() {
+    return {
+      IconsList,
+    }
   },
 }
 </script>

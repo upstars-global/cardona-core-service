@@ -17,7 +17,7 @@
       >
         <h5 class="mb-0">{{ $t(title) }}</h5>
 
-        <feather-icon class="ml-1 cursor-pointer" icon="XIcon" size="21" @click="hide" />
+        <feather-icon class="ml-1 cursor-pointer" :icon="IconsList.XIcon" size="21" @click="hide" />
       </div>
       <div class="p-1">
         <!--  ViewInfo   -->
@@ -109,6 +109,7 @@ import { ViewInfo, ViewJustifyContent } from '../../../../@model/view'
 import AppCollapse from '../../../../@core/components/app-collapse/AppCollapse.vue'
 import AppCollapseItem from '../../../../@core/components/app-collapse/AppCollapseItem.vue'
 import { SideBarCollapseItem } from '../model'
+import { IconsList } from '../../../../@model/enums/icons'
 
 const emitAfterAnimationSidebar = 200
 
@@ -184,6 +185,7 @@ export default {
       ViewInfo,
       SideBarCollapseItem,
       checkSlotExistence,
+      IconsList,
     }
   },
 }

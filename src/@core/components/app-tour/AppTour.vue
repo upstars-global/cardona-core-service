@@ -34,7 +34,7 @@
               @click="tour.stop"
             >
               <span class="mr-25 align-middle">Skip</span>
-              <feather-icon icon="XIcon" size="12" />
+              <feather-icon :icon="IconsList.XIcon" size="12" />
             </b-button>
 
             <!-- Previous Button -->
@@ -44,7 +44,7 @@
               variant="outline-primary mr-1"
               @click="tour.previousStep"
             >
-              <feather-icon icon="ChevronLeftIcon" size="12" />
+              <feather-icon :icon="IconsList.ChevronLeftIcon" size="12" />
               <span class="ml-25 align-middle">Previous</span>
             </b-button>
 
@@ -57,7 +57,7 @@
               @click="tour.nextStep"
             >
               <span class="mr-25 align-middle">Next</span>
-              <feather-icon icon="ChevronRightIcon" size="12" />
+              <feather-icon :icon="IconsList.ChevronRightIcon" size="12" />
             </b-button>
 
             <!-- Finish Button -->
@@ -69,7 +69,7 @@
               @click="tour.stop"
             >
               <span class="mr-25 align-middle">Finish</span>
-              <feather-icon icon="CheckCircleIcon" size="12" />
+              <feather-icon :icon="IconsList.CheckCircleIcon" size="12" />
             </b-button>
           </div>
         </v-step>
@@ -81,6 +81,7 @@
 
 <script>
 import { BButton } from 'bootstrap-vue'
+import { IconsList } from '../../../@model/enums/icons'
 
 export default {
   name: 'VxTour',
@@ -92,6 +93,11 @@ export default {
       required: true,
       type: Array,
     },
+  },
+  setup() {
+    return {
+      IconsList,
+    }
   },
 }
 </script>

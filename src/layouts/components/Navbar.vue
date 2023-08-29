@@ -4,7 +4,7 @@
     <ul class="nav navbar-nav d-xl-none">
       <li class="nav-item">
         <b-link class="nav-link" @click="toggleVerticalMenuActive">
-          <feather-icon icon="MenuIcon" size="21" />
+          <feather-icon :icon="IconsList.MenuIcon" size="21" />
         </b-link>
       </li>
     </ul>
@@ -46,7 +46,7 @@
             link-class="d-flex align-items-center"
             :to="{ name: 'UsersControlList' }"
           >
-            <feather-icon size="16" icon="CommandIcon" class="mr-50" />
+            <feather-icon size="16" :icon="IconsList.CommandIcon" class="mr-50" />
             <span> {{ $t('common.adminSection._') }}</span>
           </b-dropdown-item>
 
@@ -54,7 +54,7 @@
         </template>
 
         <b-dropdown-item link-class="d-flex align-items-center" @click="onClickLogout">
-          <feather-icon size="16" icon="LogOutIcon" class="mr-50" />
+          <feather-icon size="16" :icon="IconsList.LogOutIcon" class="mr-50" />
           <span>
             {{ $t('auth.logout') }}
           </span>
@@ -75,6 +75,7 @@ import {
 } from 'bootstrap-vue'
 import DarkToggler from '../../@core/layouts/components/app-navbar/components/DarkToggler.vue'
 import store from '../../store'
+import { IconsList } from '../../@model/enums/icons'
 
 export default {
   name: 'AppNavbar',
@@ -97,6 +98,9 @@ export default {
   },
 
   computed: {
+    IconsList() {
+      return IconsList
+    },
     userName() {
       return store.getters.userInfo?.userName || 'No name'
     },

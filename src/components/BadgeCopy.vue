@@ -6,7 +6,7 @@
   >
     <span v-if="isViewLabel">{{ label }}: </span>
     {{ valueShort }}
-    <feather-icon icon="CopyIcon" class="ml-25" />
+    <feather-icon :icon="IconsList.CopyIcon" class="ml-25" />
   </b-badge>
 </template>
 
@@ -14,6 +14,7 @@
 import { computed, defineComponent } from 'vue'
 import { copyToClipboard } from '../helpers/clipboard'
 import { getShortString } from '../helpers/index'
+import { IconsList } from '../@model/enums/icons'
 
 export default defineComponent({
   name: 'BadgeCopy',
@@ -59,6 +60,7 @@ export default defineComponent({
     return {
       copyToClipboard,
       valueShort,
+      IconsList,
     }
   },
 })

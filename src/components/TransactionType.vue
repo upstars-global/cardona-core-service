@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { IconsList } from '../@model/enums/icons'
 
 enum TransactionType {
   Payout = 'payout',
@@ -11,7 +12,7 @@ const props = defineProps<{
 }>()
 
 const iconName = computed(() =>
-  props.type === TransactionType.Payout ? 'ArrowUpRightIcon' : 'ArrowDownRightIcon'
+  props.type === TransactionType.Payout ? IconsList.ArrowUpRightIcon : IconsList.ArrowDownRightIcon
 )
 const textColorClass = computed(() =>
   props.type === TransactionType.Payout ? 'text-danger' : 'text-success'

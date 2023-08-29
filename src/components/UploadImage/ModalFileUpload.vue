@@ -32,7 +32,11 @@
               </template>
 
               <template v-else-if="!isLoad && !value">
-                <feather-icon icon="AlertCircleIcon" size="42" class="text-danger mb-75" />
+                <feather-icon
+                  :icon="IconsList.AlertCircleIcon"
+                  size="42"
+                  class="text-danger mb-75"
+                />
 
                 <span class="font-weight-bold text-danger mb-1">
                   {{ $t('uploadImg.loadError') }}
@@ -77,6 +81,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
 import FileGallery from '../UploadImage/FileGallery.vue'
+import { IconsList } from '../../@model/enums/icons'
 
 export default defineComponent({
   name: 'ModalFileUpload',
@@ -133,6 +138,7 @@ export default defineComponent({
       setPathFile,
       fileInner,
       hideModal,
+      IconsList,
     }
   },
 })

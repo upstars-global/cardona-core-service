@@ -35,7 +35,7 @@
       <b-col md="1" class="d-flex align-items-center">
         <feather-icon
           v-if="index || !required"
-          icon="Trash2Icon"
+          :icon="IconsList.Trash2Icon"
           class="text-danger cursor-pointer"
           :class="{ 'cursor-default': disabled }"
           @click="onRemove(index)"
@@ -49,7 +49,7 @@
       :disabled="disabled || isDisabled || isSelectItemNotEmpty"
       @click="onAdd"
     >
-      <feather-icon icon="PlusIcon" />
+      <feather-icon :icon="IconsList.PlusIcon" />
 
       <span class="text-nowrap">
         {{ $t('action.add') }}
@@ -63,6 +63,7 @@ import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { debounce } from 'lodash'
 import FieldGenerator from '../components/templates/FieldGenerator/index.vue'
 import { FieldInfo } from '../@model/field'
+import { IconsList } from '../@model/enums/icons'
 
 export default defineComponent({
   name: 'DynamicFieldList',
@@ -203,6 +204,7 @@ export default defineComponent({
       onRemove,
       isDisabled,
       isSelectItemNotEmpty,
+      IconsList,
     }
   },
 })
