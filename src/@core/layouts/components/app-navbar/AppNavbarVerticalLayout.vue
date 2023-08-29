@@ -4,7 +4,7 @@
     <ul class="nav navbar-nav d-xl-none">
       <li class="nav-item">
         <b-link class="nav-link" @click="toggleVerticalMenuActive">
-          <feather-icon icon="MenuIcon" size="21" />
+          <feather-icon :icon="IconsList.MenuIcon" size="21" />
         </b-link>
       </li>
     </ul>
@@ -35,6 +35,7 @@ import DarkToggler from './components/DarkToggler.vue'
 import CartDropdown from './components/CartDropdown.vue'
 import NotificationDropdown from './components/NotificationDropdown.vue'
 import UserDropdown from './components/UserDropdown.vue'
+import { IconsList } from '../../../../@model/enums/icons'
 
 export default {
   components: {
@@ -55,6 +56,11 @@ export default {
       type: Function,
       default: () => {},
     },
+  },
+  setup() {
+    return {
+      IconsList,
+    }
   },
 }
 </script>

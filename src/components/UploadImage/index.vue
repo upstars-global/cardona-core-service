@@ -16,10 +16,10 @@
         <div class="img-file" :style="{ backgroundImage: `url(${urlFile})` }" />
         <div class="hover-active-block justify-content-center align-items-center">
           <b-button v-b-modal.modalFileUpload variant="secondary" class="btn-icon mr-1" size="sm">
-            <feather-icon icon="UploadIcon" />
+            <feather-icon :icon="IconsList.UploadIcon" />
           </b-button>
           <b-button variant="danger" class="btn-icon" size="sm" @click="clearFileModal">
-            <feather-icon icon="Trash2Icon" />
+            <feather-icon :icon="IconsList.Trash2Icon" />
           </b-button>
         </div>
       </div>
@@ -72,6 +72,7 @@ import i18n from '../../libs/i18n'
 import useToastService from '../../helpers/toasts'
 import { useBvModal } from '../../helpers/bvModal'
 import store from '../../store'
+import { IconsList } from '../../@model/enums/icons'
 
 export default defineComponent({
   name: 'UploadImage',
@@ -212,6 +213,7 @@ export default defineComponent({
       isLoad,
       onUploadFile,
       onSetPath,
+      IconsList,
     }
   },
 })

@@ -8,6 +8,7 @@ export default {
 import store from '../store'
 import { CDropdownItems } from '../@model/cDropdownButton'
 import { BVariant, BVariants } from '../@model/bootstrap'
+import { IconsList } from '../@model/enums/icons'
 
 const props = withDefaults(
   defineProps<{
@@ -15,7 +16,7 @@ const props = withDefaults(
     label: string
     variant: BVariant
     size?: string
-    icon?: string
+    icon?: IconsList
   }>(),
   {
     size: 'md',

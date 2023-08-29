@@ -26,6 +26,7 @@
 import { BFormGroup, BFormInput, BInputGroupAppend, BInputGroup } from 'bootstrap-vue'
 import { togglePasswordVisibility } from '../../../@core/mixins/ui/forms'
 import { defineComponent } from 'vue'
+import { IconsList } from '../../../@model/enums/icons'
 
 export default defineComponent({
   components: {
@@ -56,7 +57,9 @@ export default defineComponent({
   setup() {},
   computed: {
     passwordToggleIcon() {
-      return (this as any).passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon'
+      return (this as any).passwordFieldType === 'password'
+        ? IconsList.EyeIcon
+        : IconsList.EyeOffIcon
     },
   },
 })

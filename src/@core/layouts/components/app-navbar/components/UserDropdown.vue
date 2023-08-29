@@ -19,19 +19,19 @@
         class="badge-minimal"
         badge-variant="success"
       >
-        <feather-icon v-if="!userData.fullName" icon="UserIcon" size="22" />
+        <feather-icon v-if="!userData.fullName" :icon="IconsList.UserIcon" size="22" />
       </b-avatar>
     </template>
 
     <b-dropdown-item link-class="d-flex align-items-center">
-      <feather-icon size="16" icon="UserIcon" class="mr-50" />
+      <feather-icon size="16" :icon="IconsList.UserIcon" class="mr-50" />
       <span>Profile</span>
     </b-dropdown-item>
 
     <b-dropdown-divider />
 
     <b-dropdown-item link-class="d-flex align-items-center" @click="logout">
-      <feather-icon size="16" icon="LogOutIcon" class="mr-50" />
+      <feather-icon size="16" :icon="IconsList.LogOutIcon" class="mr-50" />
       <span>
         {{ $t('auth.logout') }}
       </span>
@@ -43,6 +43,7 @@
 import { BNavItemDropdown, BDropdownItem, BDropdownDivider, BAvatar } from 'bootstrap-vue'
 import { initialAbility } from '../../../../../libs/acl/config'
 import { avatarText } from '../../../../../@core/utils/filter'
+import { IconsList } from '../../../../../@model/enums/icons'
 
 export default {
   components: {
@@ -56,6 +57,11 @@ export default {
       userData: JSON.parse(localStorage.getItem('userData')),
       avatarText,
     }
+  },
+  computed: {
+    IconsList() {
+      return IconsList
+    },
   },
   methods: {
     logout() {

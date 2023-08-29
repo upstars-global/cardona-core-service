@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { copyToClipboard } from '../../../../helpers/clipboard'
+import { IconsList } from '../../../../@model/enums/icons'
 import { getShortString } from '../../../../helpers'
 
 interface Props {
@@ -22,7 +23,7 @@ const labelValue = computed(() => (props.isShort ? getShortString(props.value) :
     </slot>
 
     <feather-icon
-      icon="CopyIcon"
+      :icon="IconsList.CopyIcon"
       class="cursor-pointer ml-25"
       @click.stop="copyToClipboard(value)"
     />

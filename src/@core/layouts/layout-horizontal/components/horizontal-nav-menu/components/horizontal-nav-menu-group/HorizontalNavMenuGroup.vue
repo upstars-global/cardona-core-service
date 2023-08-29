@@ -17,7 +17,7 @@
       :class="{ 'dropdown-toggle': item.children }"
       @click="() => updateGroupOpen(!isOpen)"
     >
-      <feather-icon :icon="item.icon || 'CircleIcon'" />
+      <feather-icon :icon="item.icon || IconsList.CircleIcon" />
       <span class="menu-title">{{ t(item.title) }}</span>
     </b-link>
     <ul ref="refChildDropdown" class="dropdown-menu">
@@ -42,9 +42,11 @@ import HorizontalNavMenuLink from '../horizontal-nav-menu-link/HorizontalNavMenu
 // Composition Function
 import useHorizontalNavMenuGroup from './useHorizontalNavMenuGroup'
 import mixinHorizontalNavMenuGroup from './mixinHorizontalNavMenuGroup'
+import { IconsList } from '../../../../../../../@model/enums/icons'
 
 export default {
   name: 'HorizontalNavMenuGroup',
+
   components: {
     HorizontalNavMenuLink,
     BLink,
@@ -83,6 +85,8 @@ export default {
 
       // i18n
       t,
+
+      IconsList,
     }
   },
 }

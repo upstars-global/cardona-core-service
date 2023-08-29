@@ -44,7 +44,7 @@
                 v-if="item.type === 'DIRECTORY'"
                 class="item-directory d-flex justify-content-center align-items-center"
               >
-                <feather-icon icon="FolderIcon" size="20" class="m-0" />
+                <feather-icon :icon="IconsList.FolderIcon" size="20" class="m-0" />
               </div>
               <div
                 v-else
@@ -93,11 +93,11 @@
             use-router
           >
             <template #prev-text>
-              <feather-icon icon="ChevronLeftIcon" size="18" />
+              <feather-icon :icon="IconsList.ChevronLeftIcon" size="18" />
             </template>
 
             <template #next-text>
-              <feather-icon icon="ChevronRightIcon" size="18" />
+              <feather-icon :icon="IconsList.ChevronRightIcon" size="18" />
             </template>
           </b-pagination-nav>
         </b-col>
@@ -110,6 +110,7 @@
 import { computed, defineComponent, ref } from 'vue'
 import { TableField } from '../../@core/components/table-fields/model'
 import { useUtils as useI18nUtils } from '../../@core/libs/i18n'
+import { IconsList } from '../../@model/enums/icons'
 
 export default defineComponent({
   name: 'ListView',
@@ -165,6 +166,7 @@ export default defineComponent({
       setPerPage,
       onRowClick,
       page,
+      IconsList,
     }
   },
 })

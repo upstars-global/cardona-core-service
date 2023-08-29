@@ -5,13 +5,14 @@
       :key="`skeleton-${n}`"
       class="item-file item-skeleton d-flex justify-content-center align-items-center"
     >
-      <feather-icon icon="ImageIcon" size="18" class="icon-no-file mb-0" />
+      <feather-icon :icon="IconsList.ImageIcon" size="18" class="icon-no-file mb-0" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { IconsList } from '../../@model/enums/icons'
 
 export default defineComponent({
   name: 'SkeletonGrid',
@@ -20,6 +21,11 @@ export default defineComponent({
       type: Number,
       default: 12,
     },
+  },
+  setup() {
+    return {
+      IconsList,
+    }
   },
 })
 </script>

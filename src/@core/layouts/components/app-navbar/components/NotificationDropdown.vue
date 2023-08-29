@@ -5,7 +5,7 @@
         badge="6"
         badge-classes="bg-danger"
         class="text-body"
-        icon="BellIcon"
+        :icon="IconsList.BellIcon"
         size="21"
       />
     </template>
@@ -87,6 +87,7 @@ import {
   BFormCheckbox,
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+import { IconsList } from '../../../../../@model/enums/icons'
 
 export default {
   components: {
@@ -128,19 +129,19 @@ export default {
         title: 'Server down',
         subtitle: 'USA Server is down due to hight CPU usage',
         type: 'light-danger',
-        icon: 'XIcon',
+        icon: IconsList.XIcon,
       },
       {
         title: 'Sales report generated',
         subtitle: 'Last month sales report generated',
         type: 'light-success',
-        icon: 'CheckIcon',
+        icon: IconsList.CheckIcon,
       },
       {
         title: 'High memory usage',
         subtitle: 'BLR Server using high memory',
         type: 'light-warning',
-        icon: 'AlertTriangleIcon',
+        icon: IconsList.AlertTriangleIcon,
       },
     ]
 
@@ -153,6 +154,7 @@ export default {
       notifications,
       systemNotifications,
       perfectScrollbarSettings,
+      IconsList,
     }
   },
 }

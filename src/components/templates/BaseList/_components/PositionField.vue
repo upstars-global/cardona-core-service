@@ -11,10 +11,10 @@
       />
     </div>
     <div class="cursor-pointer text-success mr-1" @click.stop="successNewPosition">
-      <feather-icon icon="CheckIcon" size="14" />
+      <feather-icon :icon="IconsList.CheckIcon" size="14" />
     </div>
     <div class="cursor-pointer text-danger" @click.stop="cancelNewPosition">
-      <feather-icon icon="XIcon" size="14" />
+      <feather-icon :icon="IconsList.XIcon" size="14" />
     </div>
   </div>
   <div
@@ -23,7 +23,7 @@
     :class="{ 'position-text-block': canUpdate }"
     @click="onOpenEdit"
   >
-    <feather-icon v-if="canUpdate" icon="EditIcon" class="mr-1" />
+    <feather-icon v-if="canUpdate" :icon="IconsList.EditIcon" class="mr-1" />
     <span>{{ position }}</span>
   </div>
 </template>
@@ -31,6 +31,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
 import { ListSize } from '../../../../@core/components/table-fields/model'
+import { IconsList } from '../../../../@model/enums/icons'
 
 export default defineComponent({
   name: 'PositionField',
@@ -76,6 +77,7 @@ export default defineComponent({
       cancelNewPosition,
 
       onOpenEdit,
+      IconsList,
     }
   },
 })

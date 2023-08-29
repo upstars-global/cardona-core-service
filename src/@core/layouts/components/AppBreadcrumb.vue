@@ -10,7 +10,7 @@
           <div class="breadcrumb-wrapper">
             <b-breadcrumb>
               <b-breadcrumb-item to="/">
-                <feather-icon icon="HomeIcon" size="16" class="align-text-top" />
+                <feather-icon :icon="IconsList.HomeIcon" size="16" class="align-text-top" />
               </b-breadcrumb-item>
               <b-breadcrumb-item
                 v-for="item in $route.meta.breadcrumb"
@@ -34,6 +34,7 @@
 
 <script>
 import { BBreadcrumb, BBreadcrumbItem, BRow, BCol } from 'bootstrap-vue'
+import { IconsList } from '../../../@model/enums/icons'
 
 export default {
   components: {
@@ -41,6 +42,11 @@ export default {
     BBreadcrumbItem,
     BRow,
     BCol,
+  },
+  setup() {
+    return {
+      IconsList,
+    }
   },
 }
 </script>

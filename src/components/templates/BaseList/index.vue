@@ -51,7 +51,7 @@
             :size="size"
             @click="isFiltersShown = !isFiltersShown"
           >
-            <feather-icon icon="FilterIcon" />
+            <feather-icon :icon="IconsList.FilterIcon" />
 
             <span v-if="!config.small" class="align-middle ml-50">
               {{ $t('common.filter._') }}
@@ -80,7 +80,7 @@
               :to="{ name: CreatePageName }"
               class="ml-1"
             >
-              <feather-icon icon="PlusIcon" class="mr-50" />
+              <feather-icon :icon="IconsList.PlusIcon" class="mr-50" />
 
               <span class="text-nowrap">
                 {{ $t('action.create') }}
@@ -351,7 +351,7 @@
           <b-dropdown class="d-flex" variant="link" no-caret toggle-class="p-0" right :data="item">
             <template #button-content>
               <b-button variant="flat-dark" class="btn-icon">
-                <feather-icon icon="MoreVerticalIcon" />
+                <feather-icon :icon="IconsList.MoreVerticalIcon" />
               </b-button>
             </template>
 
@@ -360,7 +360,7 @@
               @click="onClickToggleStatus(item)"
             >
               <feather-icon
-                :icon="item.isActive ? 'ToggleLeftIcon' : 'ToggleRightIcon'"
+                :icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
                 size="16"
               />
 
@@ -370,7 +370,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item :to="{ name: UpdatePageName, params: { id: item.id } }">
-              <feather-icon icon="EditIcon" size="16" />
+              <feather-icon :icon="IconsList.EditIcon" size="16" />
 
               <span class="align-middle ml-50">
                 {{ $t('action.edit') }}
@@ -381,7 +381,7 @@
               v-if="config.createFromCopy"
               :to="{ name: CreatePageName, params: { id: item.id } }"
             >
-              <feather-icon icon="CopyIcon" size="16" />
+              <feather-icon :icon="IconsList.CopyIcon" size="16" />
 
               <span class="align-middle ml-50">
                 {{ $t('action.makeCopy') }}
@@ -389,7 +389,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item v-if="canRemove" @click="onClickRemove(item)">
-              <feather-icon icon="Trash2Icon" size="16" class="text-danger" />
+              <feather-icon :icon="IconsList.Trash2Icon" size="16" class="text-danger" />
 
               <span class="text-danger align-middle ml-50">
                 {{ $t('action.remove') }}
@@ -410,7 +410,7 @@
               :to="{ name: CreatePageName }"
               class="mt-2"
             >
-              <feather-icon icon="PlusIcon" />
+              <feather-icon :icon="IconsList.PlusIcon" />
 
               <span class="text-nowrap">
                 {{ $t('action.create') }}
@@ -452,11 +452,11 @@
             use-router
           >
             <template #prev-text>
-              <feather-icon icon="ChevronLeftIcon" size="18" />
+              <feather-icon :icon="IconsList.ChevronLeftIcon" size="18" />
             </template>
 
             <template #next-text>
-              <feather-icon icon="ChevronRightIcon" size="18" />
+              <feather-icon :icon="IconsList.ChevronRightIcon" size="18" />
             </template>
           </b-pagination-nav>
         </b-col>
@@ -554,6 +554,7 @@ import { permissionPrefix } from '@productConfig'
 import { Filter, PayloadFilters } from '../../../@model/filter'
 import { BaseField, SelectBaseField } from '../../../@model/baseField'
 import { omit } from 'lodash'
+import { IconsList } from '../../../@model/enums/icons'
 
 export default {
   name: 'BaseList',
@@ -1134,6 +1135,8 @@ export default {
       onClickRow,
       onClickToggleStatus,
       onEditPosition,
+
+      IconsList,
     }
   },
 }

@@ -8,7 +8,7 @@
       <feather-icon
         v-if="withInfo && value.info"
         v-b-tooltip.hover.top="value.info"
-        icon="InfoIcon"
+        :icon="IconsList.InfoIcon"
         class="text-muted ml-25 align-text-top"
       />
     </template>
@@ -77,6 +77,7 @@ import SumRangeField from './_components/SumRangeField.vue'
 import PhoneField from './_components/PhoneField.vue'
 import PasswordField from './_components/PasswordField.vue'
 import RatesField from './_components/RatesField.vue'
+import { IconsList } from '../../../@model/enums/icons'
 
 export default defineComponent({
   name: 'FieldGenerator',
@@ -186,6 +187,7 @@ export default defineComponent({
       groupLabel,
       formGroupClasses,
       fieldModel,
+      IconsList,
       onSearch,
     }
   },

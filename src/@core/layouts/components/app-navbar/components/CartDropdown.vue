@@ -9,7 +9,7 @@
       <feather-icon
         :badge="$store.state['app-ecommerce'].cartItemsCount"
         class="text-body"
-        icon="ShoppingCartIcon"
+        :icon="IconsList.ShoppingCartIcon"
         size="21"
       />
     </template>
@@ -36,7 +36,7 @@
           <b-img :src="item.image" :alt="item.name" rounded width="62px" />
         </template>
         <feather-icon
-          icon="XIcon"
+          :icon="IconsList.XIcon"
           class="cart-item-remove cursor-pointer"
           @click.stop="removeItemFromCart(item.id)"
         />
@@ -83,6 +83,7 @@ import {
   BButton,
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+import { IconsList } from '../../../../../@model/enums/icons'
 
 export default {
   components: {
@@ -105,6 +106,9 @@ export default {
     }
   },
   computed: {
+    IconsList() {
+      return IconsList
+    },
     totalAmount() {
       let total = 0
       this.items.forEach((i) => {
