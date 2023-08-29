@@ -25,7 +25,7 @@
       class="btn-icon ml-1 border-primary"
       @click="setGeneratedPassword"
     >
-      <feather-icon icon="RefreshCcwIcon" />
+      <feather-icon :icon="IconsList.RefreshCcwIcon" />
     </b-button>
   </div>
 </template>
@@ -34,6 +34,7 @@
 import { computed, ref, watch } from 'vue'
 import { FieldInfo } from '../../../../@model/field'
 import generatePassword from '../../../../helpers/password-generator'
+import { IconsList } from '../../../../@model/enums/icons'
 
 type Props = {
   value: string
@@ -60,7 +61,7 @@ const modelValue = computed({
 
 const inputType = ref(props.showPassword ? 'text' : 'password')
 const passwordToggleIcon = computed(() => {
-  return inputType.value === 'password' ? 'EyeIcon' : 'EyeOffIcon'
+  return inputType.value === 'password' ? IconsList.EyeIcon : IconsList.EyeOffIcon
 })
 
 const togglePasswordVisibility = () => {

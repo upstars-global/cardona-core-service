@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import i18n from '../libs/i18n'
+import { IconsList } from '../@model/enums/icons'
 
 const props = withDefaults(
   defineProps<{
@@ -48,7 +49,7 @@ const onHidden = () => emit('hidden')
           {{ title }}
         </p>
 
-        <feather-icon class="ml-1 cursor-pointer" icon="XIcon" size="21" @click="hide" />
+        <feather-icon class="ml-1 cursor-pointer" :icon="IconsList.XIcon" size="21" @click="hide" />
       </div>
     </template>
 

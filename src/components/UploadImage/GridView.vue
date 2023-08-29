@@ -19,7 +19,7 @@
               class="item-directory d-flex justify-content-center align-items-center"
               @click="$emit('clickDirectory', '/' + file.path)"
             >
-              <feather-icon icon="FolderIcon" size="16" class="mr-1" />
+              <feather-icon :icon="IconsList.FolderIcon" size="16" class="mr-1" />
               {{ file.name }}
             </div>
             <div
@@ -40,11 +40,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 import { debounce } from 'lodash'
 import SkeletonGrid from '../UploadImage/SkeletonGrid.vue'
 import SkeletonGridItem from '../UploadImage/SkeletonGridItem.vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+import { IconsList } from '../../@model/enums/icons'
 
 export default defineComponent({
   name: 'GridView',
@@ -84,6 +85,7 @@ export default defineComponent({
     return {
       perfectScrollbarSettings,
       onScroll,
+      IconsList,
     }
   },
 })

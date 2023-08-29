@@ -1,7 +1,7 @@
 <template>
   <base-list :use-list="useDemoList" :config="listConfig" class="demo-list mr-md-1 mr-sm-0">
     <template #table-field-setting>
-      <feather-icon icon="BookIcon" size="21" class="mr-1" />
+      <feather-icon :icon="IconsList.BookIcon" size="21" class="mr-1" />
     </template>
     <template #cell(winBack)="{ item }">
       <sum-and-currency
@@ -53,6 +53,7 @@ import { FilterType } from '../../../@model/filter'
 import { ProjectFilterTypes } from '@filterConfig'
 import InnerBlankLink from '../../../components/templates/_components/InnerBlankLink.vue'
 import SumPeriod from '../../../components/templates/_components/SumPeriod.vue'
+import { IconsList } from '../../../@model/enums/icons'
 
 const { t } = useI18nUtils()
 

@@ -27,6 +27,7 @@ import { BCard, BCardBody, BAvatar } from 'bootstrap-vue'
 import VueApexCharts from 'vue-apexcharts'
 import { $themeColors } from '@themeConfig'
 import { lineChartOptions } from './chartOptions'
+import { IconsList } from '../../../@model/enums/icons'
 
 export default {
   components: {
@@ -37,7 +38,7 @@ export default {
   },
   props: {
     icon: {
-      type: String,
+      type: IconsList,
       required: true,
     },
     statistic: {

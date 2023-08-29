@@ -1,7 +1,7 @@
 <template>
   <b-input-group class="input-group-merge search">
     <b-input-group-prepend is-text>
-      <feather-icon icon="SearchIcon" />
+      <feather-icon :icon="IconsList.SearchIcon" />
     </b-input-group-prepend>
 
     <b-form-input
@@ -17,10 +17,10 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import i18n from '../../../../libs/i18n'
+import { IconsList } from '../../../../@model/enums/icons'
 
 export default defineComponent({
   name: 'SearchInput',
-
   props: {
     value: {
       type: String,
@@ -48,6 +48,7 @@ export default defineComponent({
 
     return {
       searchModel,
+      IconsList,
     }
   },
 })

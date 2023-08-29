@@ -3,7 +3,7 @@
     <!-- We have wrapper because ripple effect give position relative to this absolute positioned btn -->
     <!-- Hence due to that our btn get lost -->
     <b-button variant="primary" class="btn-icon" @click="scrollToTop">
-      <feather-icon icon="ArrowUpIcon" size="16" />
+      <feather-icon :icon="IconsList.ArrowUpIcon" size="16" />
     </b-button>
   </div>
 </template>
@@ -11,6 +11,7 @@
 <script>
 import { useWindowScroll } from '@vueuse/core'
 import { BButton } from 'bootstrap-vue'
+import { IconsList } from '../../../@model/enums/icons'
 
 export default {
   components: {
@@ -27,7 +28,7 @@ export default {
       })
     }
 
-    return { y, scrollToTop }
+    return { y, scrollToTop, IconsList }
   },
 }
 </script>

@@ -15,7 +15,12 @@
       />
     </b-nav-item>
     <b-nav-item-dropdown link-classes="bookmark-star" lazy @hidden="resetsearchQuery">
-      <feather-icon slot="button-content" icon="StarIcon" size="21" class="text-warning" />
+      <feather-icon
+        slot="button-content"
+        :icon="IconsList.StarIcon"
+        size="21"
+        class="text-warning"
+      />
 
       <!-- Dropdown Content -->
       <!-- eslint-disable-next-line prettier-vue/prettier -->
@@ -45,7 +50,7 @@
             <feather-icon :icon="suggestion.icon" class="mr-75" size="18" />
             <span class="align-middle">{{ suggestion.title }}</span>
             <feather-icon
-              icon="StarIcon"
+              :icon="IconsList.StarIcon"
               class="ml-auto"
               size="16"
               :class="{ 'text-warning': suggestion.isBookmarked }"
@@ -79,6 +84,7 @@ import { ref, watch } from 'vue'
 import router from '../../../../../router'
 import store from '../../../../../store'
 import searchAndBookmarkData from '../search-and-bookmark-data'
+import { IconsList } from '../../../../../@model/enums/icons'
 
 export default {
   name: 'NavbarBookmarks',
@@ -145,6 +151,7 @@ export default {
       searchQuery,
       resetsearchQuery,
       filteredData,
+      IconsList,
     }
   },
 }

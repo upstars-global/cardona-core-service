@@ -1,6 +1,7 @@
 <script lang="ts">
 import { computed } from 'vue'
 import SwitchField from './SwitchField.vue'
+import { IconsList } from '../../../../@model/enums/icons'
 
 export default {
   name: 'SwitchWithStateField',
@@ -12,13 +13,16 @@ export default {
       set: (value: boolean) => emit('input', value),
     })
 
-    const iconName = computed(() => (props.value ? 'CheckCircleIcon' : 'XCircleIcon'))
+    const iconName = computed(() =>
+      props.value ? IconsList.CheckCircleIcon : IconsList.XCircleIcon
+    )
     const iconVariant = computed(() => (props.value ? 'text-success' : 'text-danger'))
 
     return {
       modelValue,
       iconName,
       iconVariant,
+      IconsList,
     }
   },
 }
@@ -29,7 +33,7 @@ export default {
     <div class="d-flex align-items-center">
       <b-form-checkbox v-model="modelValue" switch :disabled="disabled">
         <span class="switch-icon-left">
-          <feather-icon icon="CheckIcon" />
+          <feather-icon :icon="IconsList.CheckIcon" />
         </span>
       </b-form-checkbox>
 

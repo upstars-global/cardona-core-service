@@ -2,14 +2,18 @@
   <b-dropdown class="d-flex" variant="link" no-caret toggle-class="p-0" right>
     <template #button-content>
       <b-button variant="flat-dark" class="btn-icon">
-        <feather-icon icon="SettingsIcon" size="21" />
+        <feather-icon :icon="IconsList.SettingsIcon" size="21" />
       </b-button>
     </template>
 
     <b-dropdown-item v-for="item in filledList" :key="item.key" @click="onToggleActive(item)">
       <div class="d-flex justify-content-between align-items-center">
         <span class="align-middle ml-50">{{ item.label }}</span>
-        <feather-icon v-if="selectedKeys.includes(item.key)" icon="CheckIcon" size="16" />
+        <feather-icon
+          v-if="selectedKeys.includes(item.key)"
+          :icon="IconsList.CheckIcon"
+          size="16"
+        />
       </div>
     </b-dropdown-item>
   </b-dropdown>
@@ -21,6 +25,7 @@ import { BButton, BDropdown, BDropdownItem } from 'bootstrap-vue'
 import { TableField } from './model'
 import { getListStorage, setStorage } from '../../../helpers/storage'
 import { useRouter } from '../../../@core/utils/utils'
+import { IconsList } from '../../../@model/enums/icons'
 
 export default defineComponent({
   components: {
@@ -87,6 +92,7 @@ export default defineComponent({
       // Data
       filledList,
       selectedKeys,
+      IconsList,
     }
   },
 })

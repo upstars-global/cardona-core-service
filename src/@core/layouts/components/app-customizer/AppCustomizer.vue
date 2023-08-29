@@ -5,7 +5,7 @@
       class="customizer-toggle d-flex align-items-center justify-content-center"
       @click="isCustomizerOpen = !isCustomizerOpen"
     >
-      <feather-icon icon="SettingsIcon" size="15" class="spinner" />
+      <feather-icon :icon="IconsList.SettingsIcon" size="15" class="spinner" />
     </b-link>
     <!-- /Toggler -->
 
@@ -16,7 +16,7 @@
         <small>Customize &amp; Preview in Real Time</small>
       </div>
       <feather-icon
-        icon="XIcon"
+        :icon="IconsList.XIcon"
         size="18"
         class="cursor-pointer"
         @click="isCustomizerOpen = !isCustomizerOpen"
@@ -147,6 +147,7 @@ import { BLink, BFormRadioGroup, BFormGroup, BFormCheckbox } from 'bootstrap-vue
 import vSelect from 'vue-select'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import useAppCustomizer from './useAppCustomizer'
+import { IconsList } from '../../../../@model/enums/icons'
 
 export default {
   components: {
@@ -258,6 +259,8 @@ export default {
 
       // Perfect Scrollbar
       perfectScrollbarSettings,
+
+      IconsList,
     }
   },
 }

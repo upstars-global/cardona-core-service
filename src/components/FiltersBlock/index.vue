@@ -42,7 +42,7 @@
                 :size="size"
                 @click="onRemoveFilter(filter)"
               >
-                <feather-icon icon="Trash2Icon" />
+                <feather-icon :icon="IconsList.Trash2Icon" />
               </b-button>
             </b-col>
           </b-row>
@@ -112,6 +112,7 @@ import useToastService from '../../helpers/toasts'
 import { Filter } from '../../@model/filter'
 import FilterSelector from './_components/FilterSelector.vue'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
+import { IconsList } from '../../@model/enums/icons'
 
 export default defineComponent({
   name: 'FiltersBlock',
@@ -227,6 +228,8 @@ export default defineComponent({
       onSaveByDefault,
       onClearAll,
       onApply,
+
+      IconsList,
     }
   },
 })

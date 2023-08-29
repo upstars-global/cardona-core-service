@@ -1,6 +1,7 @@
 import { Location } from 'vue-router'
 import { TranslateResult } from 'vue-i18n'
 import { PermissionType } from '@permissions'
+import { IconsList } from './enums/icons'
 
 export enum ViewType {
   Text = 'text',
@@ -73,7 +74,7 @@ interface IViewInfo {
   readonly value?: LinkViewValue | SumAndCurrencyViewValue | StatusWithDateValue | any
   readonly label?: TranslateResult
   readonly description?: TranslateResult
-  readonly icon?: string
+  readonly icon?: IconsList | ''
   readonly withSeparator?: boolean
   readonly permission?: PermissionType
   readonly withSearch?: boolean
@@ -85,7 +86,7 @@ export class ViewInfo<T = {}> {
   readonly value: LinkViewValue | SumAndCurrencyViewValue | StatusWithDateValue | any
   readonly label?: TranslateResult
   readonly description?: TranslateResult
-  readonly icon?: string
+  readonly icon?: IconsList | ''
   readonly withSeparator?: boolean
   readonly permission?: PermissionType
   readonly withSearch?: boolean

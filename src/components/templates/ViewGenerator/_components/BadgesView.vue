@@ -2,6 +2,7 @@
 import { ViewInfo } from '../../../../@model/view'
 import { computed, ref } from 'vue'
 import { useUtils as useI18nUtils } from '../../../../@core/libs/i18n'
+import { IconsList } from '../../../../@model/enums/icons'
 
 const { t } = useI18nUtils()
 const props = defineProps<{
@@ -31,7 +32,7 @@ const toggleLabel = computed(() => {
   return isCollapsedList.value ? t('common.showMore') : t('common.showLess')
 })
 const toggleIcon = computed(() => {
-  return isCollapsedList.value ? 'PlusSquareIcon' : 'MinusSquareIcon'
+  return isCollapsedList.value ? IconsList.PlusSquareIcon : IconsList.MinusSquareIcon
 })
 const isShowToggleButton = computed(() => {
   return filteredList.value.length > maxShowItem
@@ -43,7 +44,7 @@ const isShowToggleButton = computed(() => {
     <div v-if="item.withSearch" class="mb-50">
       <b-input-group size="sm" class="input-group-merge search-group">
         <b-input-group-prepend is-text>
-          <feather-icon icon="SearchIcon" />
+          <feather-icon :icon="IconsList.SearchIcon" />
         </b-input-group-prepend>
 
         <b-form-input v-model="localSearch" :placeholder="$t('placeholder.search._')" />

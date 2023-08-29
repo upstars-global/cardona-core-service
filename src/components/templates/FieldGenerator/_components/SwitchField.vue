@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import store from '../../../../store'
 import { FieldInfo } from '../../../../@model/field'
 import { BSize, BSizes } from '../../../../@model/bootstrap'
+import { IconsList } from '../../../../@model/enums/icons'
 
 type SwitchFieldProps = {
   value: boolean
@@ -34,7 +35,7 @@ const canUpdate = computed<boolean>(() =>
   <div class="d-flex align-items-center" :class="`size-${size}`">
     <b-form-checkbox v-model="modelValue" switch :disabled="disabled || !canUpdate">
       <span class="switch-icon-left">
-        <feather-icon icon="CheckIcon" />
+        <feather-icon :icon="IconsList.CheckIcon" />
       </span>
     </b-form-checkbox>
 

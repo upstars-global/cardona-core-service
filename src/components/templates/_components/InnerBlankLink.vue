@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useRouter } from '../../../@core/utils/utils'
 import { BSize, BSizes } from '../../../@model/bootstrap'
 import { LinkViewValue } from '../../../@model/view'
+import { IconsList } from '../../../@model/enums/icons'
 
 const { router } = useRouter()
 
@@ -36,7 +37,7 @@ const onClickLink = () => {
       {{ value.title }}
     </span>
 
-    <feather-icon icon="ExternalLinkIcon" class="mr-0" :size="iconSize" />
+    <feather-icon :icon="IconsList.ExternalLinkIcon" class="mr-0" :size="iconSize" />
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <b-dropdown variant="outline-secondary" :disabled="disabled">
     <template #button-content>
-      <feather-icon icon="UploadIcon" />
+      <feather-icon :icon="IconsList.UploadIcon" />
 
       <span class="ml-50">
         {{ $t('action.export') }}
@@ -19,6 +19,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { ExportFormat } from '../model'
+import { IconsList } from '../../../../@model/enums/icons'
 
 export default defineComponent({
   name: 'ExportFormatSelector',
@@ -34,7 +35,7 @@ export default defineComponent({
   setup(_, { emit }) {
     const onClick = (format: string) => emit('export-format-selected', format)
 
-    return { ExportFormat, onClick }
+    return { ExportFormat, onClick, IconsList }
   },
 })
 </script>

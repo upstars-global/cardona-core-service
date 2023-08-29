@@ -10,6 +10,7 @@ import { TransactionType } from './playersTransactions'
 import { TranslateResult } from 'vue-i18n'
 import { ValidationRule } from './validations'
 import { BColors, BLightColors } from './bootstrap'
+import { IconsList } from './enums/icons'
 
 export interface IDemoTypeItem {
   id: string
@@ -455,7 +456,7 @@ export class DemoSideBar {
           type: ViewType.Copy,
           value: data?.email,
           label: i18n.t('common.email'),
-          icon: 'AtSignIcon',
+          icon: IconsList.AtSignIcon,
         }),
         newDate: new ViewInfo({
           type: ViewType.DateWithSeconds,

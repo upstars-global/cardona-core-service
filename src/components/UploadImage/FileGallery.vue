@@ -2,7 +2,7 @@
   <div class="file-gallery">
     <b-breadcrumb v-if="!searchQuery" class="breadcrumb-chevron mb-1">
       <b-breadcrumb-item :active="items.length === 0" @click.prevent="goToCatalog('/')">
-        <feather-icon icon="FolderIcon" size="16" class="align-text-top" />
+        <feather-icon :icon="IconsList.FolderIcon" size="16" class="align-text-top" />
       </b-breadcrumb-item>
       <b-breadcrumb-item
         v-for="(item, index) in items"
@@ -17,7 +17,7 @@
     <div class="d-flex align-items-center mb-1">
       <b-input-group class="input-group-merge mr-1">
         <b-input-group-prepend is-text>
-          <feather-icon icon="SearchIcon" />
+          <feather-icon :icon="IconsList.SearchIcon" />
         </b-input-group-prepend>
         <b-form-input
           v-model="searchQuery"
@@ -33,7 +33,7 @@
           :class="{ active: type === 'grid' }"
           @click="setType('grid')"
         >
-          <feather-icon icon="GridIcon" />
+          <feather-icon :icon="IconsList.GridIcon" />
         </b-button>
         <b-button
           variant="outline-primary"
@@ -41,7 +41,7 @@
           :class="{ active: type === 'list' }"
           @click="setType('list')"
         >
-          <feather-icon icon="ListIcon" />
+          <feather-icon :icon="IconsList.ListIcon" />
         </b-button>
       </b-button-group>
     </div>
@@ -77,6 +77,7 @@ import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import usePagination from '../../use/pagination'
 import i18n from '../../libs/i18n'
 import store from '../../store'
+import { IconsList } from '../../@model/enums/icons'
 
 export default defineComponent({
   name: 'FileGallery',
@@ -262,6 +263,7 @@ export default defineComponent({
       currentPage,
       scrolledBottom,
       paginated,
+      IconsList,
     }
   },
 })
