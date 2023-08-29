@@ -28,7 +28,6 @@
           :field="value"
           :errors="errors"
           :disabled="disabled"
-          :is-switch="isSwitch"
           :placeholder="value.placeholder"
           :size="size"
           v-bind="$attrs"
@@ -130,11 +129,6 @@ export default defineComponent({
     },
 
     disabled: {
-      type: Boolean,
-      default: false,
-    },
-
-    isSwitch: {
       type: Boolean,
       default: false,
     },

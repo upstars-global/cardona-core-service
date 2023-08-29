@@ -1,5 +1,5 @@
 <template>
-  <b-form-checkbox v-model="modelValue" :switch="isSwitch" :disabled="disabled">
+  <b-form-checkbox v-model="modelValue" :disabled="disabled">
     {{ field.label }}
   </b-form-checkbox>
 </template>
@@ -23,11 +23,6 @@ export default defineComponent({
     },
 
     disabled: {
-      type: Boolean,
-      default: false,
-    },
-
-    isSwitch: {
       type: Boolean,
       default: false,
     },
