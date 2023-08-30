@@ -37,22 +37,22 @@ export class GroupsFilters implements GroupListFilter {
 }
 
 export class GroupsSideBarFields {
-  readonly id: ViewInfo<string>
-  readonly name: ViewInfo<string>
-  readonly users: ViewInfo<Array<String>>
+  readonly id: ViewInfo
+  readonly name: ViewInfo
+  readonly users: ViewInfo
 
   constructor(data?: GroupData) {
-    this.name = new ViewInfo<string>({
+    this.name = new ViewInfo({
       type: ViewType.Text,
       value: data?.name,
       label: i18n.t('common.groups._'),
     })
-    this.id = new ViewInfo<string>({
+    this.id = new ViewInfo({
       type: ViewType.BadgeCopy,
       value: data?.id,
       label: i18n.t('page.groupList.groupID'),
     })
-    this.users = new ViewInfo<Array<string>>({
+    this.users = new ViewInfo({
       type: ViewType.Badges,
       value: data?.users,
       withSearch: true,
