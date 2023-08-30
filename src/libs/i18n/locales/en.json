@@ -387,6 +387,8 @@
     "applyFilters": "Apply filters",
     "saveByDefault": "Save by default",
     "clearAll": "Clear all",
+    "showAll": "Show all",
+    "hideAll": "Hide all",
     "activate": "Activate",
     "deactivate": "Deactivate",
     "addEmail": "Add email",
