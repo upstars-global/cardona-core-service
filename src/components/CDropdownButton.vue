@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import store from '../store'
 import { CDropdownItems } from '../@model/cDropdownButton'
-import { BVariant, BVariants } from '../@model/bootstrap'
+import { BVariant } from '../@model/bootstrap'
 import { IconsList } from '../@model/enums/icons'
 
 const props = withDefaults(
@@ -20,7 +20,7 @@ const props = withDefaults(
   }>(),
   {
     size: 'md',
-    variant: BVariants.Primary,
+    variant: BVariant.Primary,
     icon: '',
   }
 )

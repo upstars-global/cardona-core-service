@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter } from '../../../@core/utils/utils'
-import { BSize, BSizes } from '../../../@model/bootstrap'
+import { BSize } from '../../../@model/bootstrap'
 import { LinkViewValue } from '../../../@model/view'
 import { IconsList } from '../../../@model/enums/icons'
 
@@ -13,12 +13,12 @@ const props = withDefaults(
     size?: BSize
   }>(),
   {
-    size: BSizes.Md,
+    size: BSize.Md,
   }
 )
 const linkSizeClass = computed(() => `size-${props.size}`)
 const iconSize = computed(() =>
-  props.size === BSizes.Xl ? '16' : props.size === BSizes.Sm ? '12' : '14'
+  props.size === BSize.Xl ? '16' : props.size === BSize.Sm ? '12' : '14'
 )
 const onClickLink = () => {
   const route = router.resolve(props.value.route!)

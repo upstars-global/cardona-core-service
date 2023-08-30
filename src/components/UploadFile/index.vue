@@ -6,7 +6,7 @@ export default {
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch } from 'vue'
 import useToastService from '../../helpers/toasts'
-import { BSize, BSizes } from '../../@model/bootstrap'
+import { BSize } from '../../@model/bootstrap'
 import i18n from '../../libs/i18n'
 
 type Props = {
@@ -22,7 +22,7 @@ type Props = {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: BSizes.Sm,
+  size: BSize.Sm,
   textBtn: i18n.t('uploadFile.textBtn') as string,
   dropPlaceholder: i18n.t('uploadFile.dragTextDrop') as string,
   accept: 'application/json',
