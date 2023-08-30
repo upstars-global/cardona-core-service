@@ -1,12 +1,10 @@
-export const BSizes = {
-  Xs: 'xs',
-  Sm: 'sm',
-  Md: 'md',
-  Lg: 'lg',
-  Xl: 'xl',
-} as const
-
-export type BSize = (typeof BSizes)[keyof typeof BSizes]
+export enum BSize {
+  Xs = 'xs',
+  Sm = 'sm',
+  Md = 'md',
+  Lg = 'lg',
+  Xl = 'xl',
+}
 
 export enum BColors {
   Primary = 'primary',
@@ -26,12 +24,15 @@ export enum BLightColors {
   LightInfo = `light-info`,
 }
 
-export const BVariants = {
-  ...BColors,
-  OutlinePrimary: `outline-${BColors.Primary}`,
-  OutlineSecondary: `outline-${BColors.Secondary}`,
-  OutlineSuccess: `outline-${BColors.Success}`,
-  OutlineDanger: `outline-${BColors.Danger}`,
-} as const
-
-export type BVariant = (typeof BVariants)[keyof typeof BVariants]
+export enum BVariant {
+  Primary = 'primary',
+  Secondary = 'secondary',
+  Success = 'success',
+  Warning = 'warning',
+  Danger = 'danger',
+  Info = 'info',
+  OutlinePrimary = `outline-primary`,
+  OutlineSecondary = `outline-secondary`,
+  OutlineSuccess = `outline-success`,
+  OutlineDanger = `outline-danger`,
+}

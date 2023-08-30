@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import store from '../../../../store'
 import { FieldInfo } from '../../../../@model/field'
-import { BSize, BSizes } from '../../../../@model/bootstrap'
+import { BSize } from '../../../../@model/bootstrap'
 import { IconsList } from '../../../../@model/enums/icons'
 
 type SwitchFieldProps = {
@@ -14,7 +14,7 @@ type SwitchFieldProps = {
 
 const props = withDefaults(defineProps<SwitchFieldProps>(), {
   value: false,
-  size: BSizes.Md,
+  size: BSize.Md,
 })
 
 const emit = defineEmits<{

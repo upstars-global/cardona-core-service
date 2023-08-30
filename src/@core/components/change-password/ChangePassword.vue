@@ -2,7 +2,7 @@
   <c-modal
     :id="ModalsId.ChangePassword"
     :title="$t('modal.changePassword.title')"
-    :size="BSizes.Md"
+    :size="BSize.Md"
     :ok-title="$t('action.save')"
     @ok="onSuccess"
     @hidden="clearForm"
@@ -29,7 +29,7 @@ import { useSection } from '../../../@model/changePassword'
 import store from '../../../store'
 import CModal from '../../../components/CModal.vue'
 import { ModalsId } from '../../../@model/modalsId'
-import { BSizes } from '../../../@model/bootstrap'
+import { BSize } from '../../../@model/bootstrap'
 
 const props = defineProps<{
   id: string | number
