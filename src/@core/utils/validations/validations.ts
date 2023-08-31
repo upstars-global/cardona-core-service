@@ -4,6 +4,7 @@ import {
   required as rule_required,
   email as rule_email,
   min as rule_min,
+  min_value as rule_min_value,
   confirmed as rule_confirmed,
   regex as rule_regex,
   between as rule_between,
@@ -44,6 +45,11 @@ export const email = extend('email', {
 export const min = extend('min', {
   ...rule_min,
   message: (_, values) => i18n.t('validations.min', values) as any,
+})
+
+export const minValue = extend('minValue', {
+  ...rule_min_value,
+  message: (_, values) => i18n.t('validations.min_value', values) as any,
 })
 
 export const confirmed = extend('confirmed', {
