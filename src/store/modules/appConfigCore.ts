@@ -29,6 +29,7 @@ export default {
     typeMenu: ({ layout }) => layout.menu.type,
     dirOption: ({ layout }) => (layout.isRTL ? 'rtl' : 'ltr'),
     allCurrencies: ({ currencies }) => currencies,
+    defaultCurrency: ({ defaultCurrency }) => defaultCurrency,
   },
   mutations: {
     TOGGLE_RTL(state) {
