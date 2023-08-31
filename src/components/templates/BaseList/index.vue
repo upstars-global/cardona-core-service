@@ -138,7 +138,7 @@
 
       <div
         v-else-if="config.withMultipleActions && selectedItems.isNotEmpty"
-        class="table-settings"
+        class="table-settings justify-content-between"
       >
         <span class="py-25">
           {{ $t('common.numberOfSelected', { number: selectedItems.length }) }}
