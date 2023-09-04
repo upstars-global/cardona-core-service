@@ -1,7 +1,7 @@
 import i18n from '../libs/i18n'
 import { SeoData } from './seo'
 import { FieldTranslationsData } from './translations'
-import { NumberBaseField, SelectBaseField, TextBaseField } from './baseField'
+import { NumberBaseField, SelectBaseField, TextBaseField, TimeBaseField } from './baseField'
 import { FieldInfo, FieldType } from './field'
 import { getLocaleDateStringWithoutTimezone } from '../helpers/date'
 import { StatusWithDateHistoryValue, StatusWithVariant, ViewInfo, ViewType } from './view'
@@ -165,6 +165,7 @@ export class DemoForm {
   readonly date: FieldInfo
   readonly dateRange: FieldInfo
   readonly dateTime: FieldInfo
+  readonly time: TimeBaseField
   readonly dateBtn: FieldInfo
   readonly textarea?: FieldInfo
   readonly textareaWithCounter: FieldInfo
@@ -333,6 +334,11 @@ export class DemoForm {
       key: 'dateTime',
       value: getLocaleDateStringWithoutTimezone(data?.dateTime),
       label: i18n.t('page.demo.dateTimeField'),
+    })
+    this.time = new TimeBaseField({
+      key: 'time',
+      value: data?.time,
+      label: i18n.t('page.demo.timeField'),
     })
     this.dateBtn = new FieldInfo({
       type: FieldType.DateBtnOnly,
