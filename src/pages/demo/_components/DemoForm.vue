@@ -136,6 +136,10 @@
             <b-col cols="4">
               <field-generator v-model="formData.dateBtn" :disabled="isDisabledField" />
             </b-col>
+
+            <b-col cols="4">
+              <field-generator v-model="formData.time" :disabled="isDisabledField" />
+            </b-col>
           </b-row>
         </b-card-body>
       </b-card>
