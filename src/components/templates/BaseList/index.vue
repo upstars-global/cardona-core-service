@@ -520,7 +520,6 @@ import {
   checkExistsPage,
   convertCamelCase,
   convertLowerCaseFirstSymbol,
-  getPermissionKeys,
   isNotEmptyNumber,
   isEmptyString,
 } from '../../../helpers'
@@ -550,11 +549,11 @@ import { IListSortData, ListSort } from '../../../@model'
 import CTable from '../../CTable/index.vue'
 import { useFilters } from '../../FiltersBlock/useFilters'
 import FiltersBlock from '../../FiltersBlock/index.vue'
-import { permissionPrefix } from '@productConfig'
 import { Filter, PayloadFilters } from '../../../@model/filter'
 import { BaseField, SelectBaseField } from '../../../@model/baseField'
 import { omit } from 'lodash'
 import { IconsList } from '../../../@model/enums/icons'
+import { basePermissions } from '../../../helpers/base-permissions'
 
 export default {
   name: 'BaseList',
@@ -637,33 +636,8 @@ export default {
     const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
 
     // Permissions
-    const entityNamePermission = entityName.replace('-', '')
-    const { permissionKey, permissionKeySeo, permissionKeyReport } = getPermissionKeys({
-      permissionKey: props.config?.permissionKey,
-      permissionPrefix: props.config?.noPermissionPrefix
-        ? undefined
-        : props.config?.customPermissionPrefix || permissionPrefix,
-      entityNamePermission,
-    })
-
-    const onePermission: boolean = store.getters.abilityCan(props.config?.onePermissionKey, 'view')
-
-    const canCreate: boolean = props.config?.onePermissionKey
-      ? onePermission
-      : store.getters.abilityCan(permissionKey, 'create')
-
-    const canUpdate: boolean = props.config?.onePermissionKey
-      ? onePermission
-      : store.getters.abilityCan(permissionKey, 'update')
-    const canUpdateSeo: boolean = props.config?.onePermissionKey
-      ? onePermission
-      : store.getters.abilityCan(permissionKeySeo, 'update')
-    const canRemove: boolean = props.config?.onePermissionKey
-      ? onePermission
-      : store.getters.abilityCan(permissionKey, 'delete')
-    const canExport: boolean = props.config?.onePermissionKey
-      ? onePermission
-      : store.getters.abilityCan(permissionKeyReport, 'view')
+    const { canCreate, canUpdate, canUpdateSeo, canRemove, canExport } =
+      basePermissions<IBaseListConfig>({ entityName, config: props.config })
 
     const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
 
