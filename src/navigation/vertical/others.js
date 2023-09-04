@@ -46,7 +46,7 @@ export default [
     icon: 'LifeBuoyIcon',
   },
   {
-    title: 'Documentation',
+    title: 'Documentation Pixi',
     href: 'https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/documentation',
     icon: 'FileTextIcon',
   },

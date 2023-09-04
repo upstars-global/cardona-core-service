@@ -43,7 +43,7 @@ export default [
     component: () => import('../../pages/demo/update'),
     meta: {
       title: 'demo.edit',
-      permission: 'demo-demo',
+      permissionGroup: 'demoPage',
       level: 'update',
       breadcrumb: [
         {
