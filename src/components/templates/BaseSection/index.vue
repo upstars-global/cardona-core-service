@@ -76,17 +76,12 @@ import { PageType, UseEntityType } from './model'
 import { ValidationObserver } from 'vee-validate'
 import formValidation from '../../../@core/comp-functions/forms/form-validation'
 import CardLoader from '../../../@core/components/card-loader/CardLoader.vue'
-import {
-  convertCamelCase,
-  convertLowerCaseFirstSymbol,
-  getPermissionKeys,
-  transformFormData,
-} from '../../../helpers'
+import { convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
 import { useBvModal } from '../../../helpers/bvModal'
 import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
 import { useRouter } from '../../../@core/utils/utils'
 import { BaseSectionConfig } from '../BaseList/model'
-import { permissionPrefix } from '@productConfig'
+import { basePermissions } from '../../../helpers/base-permissions'
 
 export default defineComponent({
   name: 'BaseSection',
@@ -144,32 +139,9 @@ export default defineComponent({
     const deleteActionName: string = `${moduleName}/deleteEntity`
 
     // Permissions
-    const entityNamePermission = entityName.replace('-', '')
-    const { permissionKey, permissionKeySeo } = getPermissionKeys({
-      permissionKey: props.config?.permissionKey,
-      permissionPrefix: props.config?.noPermissionPrefix
-        ? undefined
-        : props.config?.customPermissionPrefix || permissionPrefix,
-      entityNamePermission,
-    })
 
-    const onePermission: boolean = store.getters.abilityCan(props.config?.onePermissionKey, 'view')
-
-    const canUpdate: boolean = props.config?.onePermissionKey
-      ? onePermission
-      : store.getters.abilityCan(permissionKey, 'update')
-    const canRemove: boolean = props.config?.onePermissionKey
-      ? onePermission
-      : store.getters.abilityCan(permissionKey, 'delete')
-    const canViewSeo: boolean = props.config?.onePermissionKey
-      ? onePermission
-      : store.getters.abilityCan(permissionKeySeo, 'view')
-    const canCreateSeo: boolean = props.config?.onePermissionKey
-      ? onePermission
-      : store.getters.abilityCan(permissionKeySeo, 'create')
-    const canUpdateSeo: boolean = props.config?.onePermissionKey
-      ? onePermission
-      : store.getters.abilityCan(permissionKeySeo, 'update')
+    const { canCreateSeo, canUpdate, canUpdateSeo, canRemove, canViewSeo } =
+      basePermissions<BaseSectionConfig>({ entityName, config: props.config })
 
     const generateEntityUrl = () => {
       const indexSymbolNextDash = entityName.indexOf('-') + 1
