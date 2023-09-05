@@ -1,6 +1,6 @@
 import ApiService from '../../services/api'
 import { ListData } from '../../@model'
-import { UserInfo } from '../../@model/user'
+import { UserInfo } from '../../@model/users'
 import { productName } from '@productConfig'
 
 export default {
