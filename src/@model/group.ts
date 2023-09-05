@@ -1,5 +1,5 @@
 import { Permission } from '../@model/permission'
-import { UserSmallInfo } from '../@model/user'
+import { UserSmallInfo } from '../@model/users'
 import { IRequestListPayload, OptionsItem } from '../@model/index'
 import { ViewInfo, ViewType } from '../@model/view'
 import i18n from '../libs/i18n'

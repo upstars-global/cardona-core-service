@@ -1,25 +1,13 @@
 import { Permission } from './permission'
 import { ProjectInfo } from './project'
 import { OptionsItem } from '../@model/index'
+import { GroupData } from './group'
 
-export class GroupData {
-  readonly id?: string
-  readonly name: string
-  readonly users: UserSmallInfo[]
-  readonly permissions?: Permission[]
-
-  constructor(data) {
-    this.id = data.id
-    this.name = data.name
-    this.users = data.users.map((user) => new UserSmallInfo(user))
-    this.permissions = data.permissions
-  }
-}
 export enum UserStatus {
   active = 'active',
   inactive = 'inactive',
 }
-interface UserInfoInput {
+export interface IUserInfo {
   readonly id: number
   readonly firstName: string
   readonly lastName: string
@@ -35,27 +23,11 @@ interface UserInfoInput {
   readonly products: OptionsItem[]
   readonly permissions: Permission[]
   readonly isPermissionAllUsers?: boolean
+  readonly password?: string
+  readonly productIds?: number[]
 }
 
-export interface UserSmallInfoInput {
-  readonly id: number
-  readonly userName: string
-}
-
-interface UserListFilter {
-  readonly search: string
-  readonly groupIds?: number[]
-  readonly projectIds?: number[]
-  readonly isActive?: boolean
-}
-
-export interface UserListInput {
-  readonly page?: number
-  readonly perPage?: number
-  readonly filter?: UserListFilter
-}
-
-export class UserInfo implements UserInfoInput {
+export class UserInfo implements IUserInfo {
   readonly id: number
   readonly email: string
   readonly firstName: string
@@ -70,8 +42,10 @@ export class UserInfo implements UserInfoInput {
   readonly products: OptionsItem[]
   readonly permissions: Permission[]
   readonly isPermissionAllUsers?: boolean
+  readonly password: string
+  readonly productIds: number[]
 
-  constructor(data?: UserInfoInput) {
+  constructor(data?: IUserInfo) {
     this.id = Number(data?.id) || 0
     this.email = data?.email || ''
     this.firstName = data?.firstName || ''
@@ -86,6 +60,8 @@ export class UserInfo implements UserInfoInput {
     this.products = data?.products || []
     this.permissions = data?.permissions || []
     this.isPermissionAllUsers = data?.isPermissionAllUsers
+    this.password = data?.password || ''
+    this.productIds = data?.productIds || []
   }
 
   get fullName() {
@@ -109,11 +85,15 @@ export class UserInfo implements UserInfoInput {
   }
 }
 
+export interface IUserSmallInfo {
+  readonly id: number
+  readonly userName: string
+}
 export class UserSmallInfo {
   readonly id: number
   readonly name: string
 
-  constructor({ id, userName }: UserSmallInfoInput) {
+  constructor({ id, userName }: IUserSmallInfo) {
     this.id = Number(id)
     this.name = userName
   }

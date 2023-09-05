@@ -1,12 +1,8 @@
 import i18n from '../../libs/i18n'
-import { UserInfo } from '../../@model/user'
 import { GroupData } from '../../@model/group'
 import { ProjectInfo } from '../../@model/project'
 import { FieldInfo, FieldType } from '../../@model/field'
 import { OptionsItem } from '../../@model'
-import { GamesCategoriesListItem } from '../../@model/gamesCategories'
-import { TransactionType } from '../../@model/playersTransactions'
-import { typesOptions } from '../../@model/banners'
 import { FilterType } from '../../@model/filter'
 import { TextBaseField, SelectBaseField } from '../../@model/baseField'
 
@@ -48,22 +44,6 @@ const admin = new SelectBaseField({
   label: i18n.t('common.admin._'),
   placeholder: i18n.t('placeholder.filter.admin'),
   fetchOptionsActionName: 'users/fetchUsersList',
-})
-
-const transactionsType = new SelectBaseField({
-  key: FilterType.TransactionsType,
-  label: i18n.t('common.type'),
-  placeholder: i18n.t('placeholder.filter.type'),
-  options: [
-    {
-      id: TransactionType.Payout,
-      name: i18n.t(`common.payout`),
-    },
-    {
-      id: TransactionType.Deposit,
-      name: i18n.t(`common.deposit`),
-    },
-  ],
 })
 
 const action = new SelectBaseField({
@@ -177,23 +157,6 @@ const project = new FieldInfo<ProjectInfo>({
   label: i18n.t('common.project.list'),
   placeholder: i18n.t('placeholder.filter.project'),
   fetchOptionsActionName: 'projects/fetchProjectsList',
-})
-
-const bannerTypes = new FieldInfo<OptionsItem>({
-  type: FieldType.MultiSelect,
-  key: FilterType.BannerTypes,
-  label: i18n.t('common.type') as string,
-  placeholder: i18n.t('placeholder.filter.types') as string,
-  options: typesOptions,
-})
-
-// Games
-const gamesCategories = new FieldInfo<GamesCategoriesListItem>({
-  type: FieldType.MultiSelect,
-  key: FilterType.GamesCategories,
-  label: i18n.t('filters.gamesCategories'),
-  placeholder: i18n.t('placeholder.filter.gamesCategories'),
-  fetchOptionsActionName: 'gamesCategories/fetchGamesCategoriesList',
 })
 
 const gamesProducers = new FieldInfo({
@@ -380,7 +343,6 @@ export default {
   status,
   hidden,
   bannerStrategy,
-  bannerTypes,
   action,
   paymentSystem,
   entryId,
@@ -396,7 +358,6 @@ export default {
 
   // Games
   gamesType,
-  gamesCategories,
   gamesProducers,
   gamesRunners,
   gameForBonuses,
@@ -411,7 +372,6 @@ export default {
   dateRangeProcessing,
 
   // Transactions
-  transactionsType,
   transactionsStatuses,
   dateRangeActivated,
   dateRangeUsed,
