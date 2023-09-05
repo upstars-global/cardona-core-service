@@ -45,7 +45,12 @@
       @on-click-filter="isFiltersShown = !isFiltersShown"
       @on-export-format-selected="onExportFormatSelected"
     >
-      <slot name="left-search-btn" />
+      <template #right-search-btn>
+        <slot name="right-search-btn" />
+      </template>
+      <template #left-search-btn>
+        <slot name="left-search-btn" />
+      </template>
     </list-search>
 
     <!-- Filters -->
