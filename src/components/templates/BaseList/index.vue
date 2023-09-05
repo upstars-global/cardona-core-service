@@ -30,66 +30,23 @@
     />
 
     <!-- Search -->
-    <b-row class="filters-row">
-      <b-col>
-        <div class="d-flex align-items-center justify-content-end">
-          <slot name="left-search-btn" />
-
-          <search-input
-            v-if="config.withSearch"
-            v-model="searchQuery"
-            class="search"
-            :size="size"
-            :placeholder="config.searchPlaceholder"
-          />
-
-          <b-button
-            v-if="config.filterList.isNotEmpty"
-            variant="outline-secondary"
-            :class="{ 'btn-icon': config.small }"
-            class="d-flex align-items-center ml-1"
-            :size="size"
-            @click="isFiltersShown = !isFiltersShown"
-          >
-            <feather-icon :icon="IconsList.FilterIcon" />
-
-            <span v-if="!config.small" class="align-middle ml-50">
-              {{ $t('common.filter._') }}
-            </span>
-
-            <span v-if="selectedFilters.isNotEmpty" class="align-middle ml-50">
-              {{ selectedFilters.length }}
-            </span>
-          </b-button>
-
-          <export-format-selector
-            v-if="config.withExport && canExport"
-            :disabled="!total"
-            class="ml-1"
-            @export-format-selected="onExportFormatSelected"
-          />
-
-          <slot
-            name="right-search-btn"
-            :can-create="isShownCreateBtn"
-            :create-page-name="CreatePageName"
-          >
-            <b-button
-              v-if="isShownCreateBtn"
-              variant="primary"
-              :to="{ name: CreatePageName }"
-              class="ml-1"
-            >
-              <feather-icon :icon="IconsList.PlusIcon" class="mr-50" />
-
-              <span class="text-nowrap">
-                {{ $t('action.create') }}
-              </span>
-            </b-button>
-          </slot>
-        </div>
-      </b-col>
-    </b-row>
+    <list-search
+      v-model="searchQuery"
+      :right-search-btn="{
+        canCreate: isShownCreateBtn,
+        createPage: CreatePageName,
+      }"
+      :selected-filters="selectedFilters"
+      :export-selector="{
+        canShow: Boolean(config.withExport && canExport),
+        disable: !total,
+      }"
+      :config="config"
+      @on-click-filter="isFiltersShown = !isFiltersShown"
+      @on-export-format-selected="onExportFormatSelected"
+    >
+      <slot name="left-search-btn" />
+    </list-search>
 
     <!-- Filters -->
     <filters-block
@@ -135,44 +92,14 @@
           <table-fields v-model="selectedFields" :entity-name="entityName" :list="fields" />
         </div>
       </div>
-
-      <div
+      <multiple-actions
         v-else-if="config.withMultipleActions && selectedItems.isNotEmpty"
-        class="table-settings justify-content-between"
-      >
-        <span class="py-25">
-          {{ $t('common.numberOfSelected', { number: selectedItems.length }) }}
-        </span>
-
-        <div>
-          <b-button
-            variant="outline-secondary"
-            size="sm"
-            @click="onClickToggleStatusMultiple(true)"
-          >
-            {{ $t('action.activate') }}
-          </b-button>
-
-          <b-button
-            class="ml-1"
-            variant="outline-secondary"
-            size="sm"
-            @click="onClickToggleStatusMultiple(false)"
-          >
-            {{ $t('action.deactivate') }}
-          </b-button>
-
-          <b-button
-            v-if="canRemove"
-            class="ml-1"
-            variant="outline-danger"
-            size="sm"
-            @click="onClickDeleteMultiple"
-          >
-            {{ $t('action.remove') }}
-          </b-button>
-        </div>
-      </div>
+        :number-selected-items="selectedItems.length"
+        :can-remove="canRemove"
+        @on-activate="onClickToggleStatusMultiple(true)"
+        @on-deactivate="onClickToggleStatusMultiple(false)"
+        @on-remove="onClickDeleteMultiple"
+      />
 
       <!-- Table skeleton -->
       <b-skeleton-table
@@ -348,54 +275,16 @@
         </template>
 
         <template v-if="canUpdate || canUpdateSeo" #cell(actions)="{ item }">
-          <b-dropdown class="d-flex" variant="link" no-caret toggle-class="p-0" right :data="item">
-            <template #button-content>
-              <b-button variant="flat-dark" class="btn-icon">
-                <feather-icon :icon="IconsList.MoreVerticalIcon" />
-              </b-button>
-            </template>
-
-            <b-dropdown-item
-              v-if="canUpdate && config.withDeactivation"
-              @click="onClickToggleStatus(item)"
-            >
-              <feather-icon
-                :icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
-                size="16"
-              />
-
-              <span class="align-middle ml-50">
-                {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
-              </span>
-            </b-dropdown-item>
-
-            <b-dropdown-item :to="{ name: UpdatePageName, params: { id: item.id } }">
-              <feather-icon :icon="IconsList.EditIcon" size="16" />
-
-              <span class="align-middle ml-50">
-                {{ $t('action.edit') }}
-              </span>
-            </b-dropdown-item>
-
-            <b-dropdown-item
-              v-if="config.createFromCopy"
-              :to="{ name: CreatePageName, params: { id: item.id } }"
-            >
-              <feather-icon :icon="IconsList.CopyIcon" size="16" />
-
-              <span class="align-middle ml-50">
-                {{ $t('action.makeCopy') }}
-              </span>
-            </b-dropdown-item>
-
-            <b-dropdown-item v-if="canRemove" @click="onClickRemove(item)">
-              <feather-icon :icon="IconsList.Trash2Icon" size="16" class="text-danger" />
-
-              <span class="text-danger align-middle ml-50">
-                {{ $t('action.remove') }}
-              </span>
-            </b-dropdown-item>
-          </b-dropdown>
+          <item-actions
+            :item="item"
+            :create-page-name="CreatePageName"
+            :can-remove="canRemove"
+            :can-update="canUpdate"
+            :update-page-name="UpdatePageName"
+            :config="config"
+            @on-remove="onClickRemove"
+            @on-toggle-status="onClickToggleStatus"
+          />
         </template>
 
         <template #empty>
@@ -464,36 +353,14 @@
     </div>
 
     <!-- Remove modal -->
-
-    <!-- TODO: config.withRemoveModal - Delete and permission -->
-    <c-modal
+    <remove-modal
       v-if="canRemove || config.withRemoveModal"
-      :id="removeModalId"
-      :title="$t(`modal.remove${entityName}.title`)"
-      ok-variant="danger"
-      :ok-title="$t('action.remove')"
-      @ok="onClickModalOk"
-      @hidden="onCloseModal"
-    >
-      <span>
-        {{ $t(`modal.remove${entityName}.description`) }}
-      </span>
-
-      <b-form-group
-        v-if="config.withRemoveComment"
-        class="mt-1 mb-0"
-        label-for="removeComment"
-        :label="$t('common.comment._')"
-      >
-        <b-form-textarea
-          id="removeComment"
-          v-model.trim="commentToRemove"
-          no-resize
-          rows="3"
-          :placeholder="$t('common.comment._')"
-        />
-      </b-form-group>
-    </c-modal>
+      :config="config"
+      :entity-name="entityName"
+      :remove-modal-id="removeModalId"
+      @on-click-modal-ok="onClickModalOk"
+    />
+    <!-- TODO: config.withRemoveModal - Delete and permission -->
   </div>
 </template>
 
@@ -524,7 +391,6 @@ import {
   isEmptyString,
 } from '../../../helpers'
 import { parseDateRange } from '../../../helpers/filters'
-import SearchInput from './_components/SearchInput.vue'
 import StatusField from './_components/StatusField.vue'
 import PillStatusField from './_components/PillStatusField.vue'
 import NameWithIdField from './_components/NameWithIdField.vue'
@@ -534,7 +400,6 @@ import DateField from './_components/DateField.vue'
 import DateWithSecondsField from './_components/DateWithSecondsField.vue'
 import StatementField from './_components/StatementField.vue'
 import PositionField from './_components/PositionField.vue'
-import ExportFormatSelector from './_components/ExportFormatSelector.vue'
 import BadgesField from './_components/BadgesField.vue'
 import ButtonField from './_components/ButtonField.vue'
 import CommentField from './_components/CommentField.vue'
@@ -543,7 +408,6 @@ import DatePeriodField from './_components/DatePeriodField.vue'
 import CopyField from './_components/CopyField.vue'
 import CopyShortField from './_components/CopyShortField.vue'
 import SideBar from '../../../components/templates/BaseList/_components/SideBar.vue'
-import CModal from '../../../components/CModal.vue'
 import SumAndCurrency from '../../../components/SumAndCurrency.vue'
 import { IListSortData, ListSort } from '../../../@model'
 import CTable from '../../CTable/index.vue'
@@ -553,21 +417,24 @@ import { Filter, PayloadFilters } from '../../../@model/filter'
 import { BaseField, SelectBaseField } from '../../../@model/baseField'
 import { omit } from 'lodash'
 import { IconsList } from '../../../@model/enums/icons'
+import RemoveModal from './_components/RemoveModal.vue'
+import ListSearch from './_components/ListSearch.vue'
+import MultipleActions from './_components/MultipleActions.vue'
+import ItemActions from './_components/ItemActions.vue'
 import { basePermissions } from '../../../helpers/base-permissions'
 
 export default {
   name: 'BaseList',
   components: {
+    ItemActions,
+    MultipleActions,
     DatePeriodField,
     ImageField,
     CommentField,
     SumAndCurrency,
-    CModal,
     SideBar,
     BadgesField,
     PositionField,
-    ExportFormatSelector,
-    SearchInput,
     FiltersBlock,
     TableFields,
     CTable,
@@ -582,6 +449,8 @@ export default {
     ButtonField,
     CopyField,
     CopyShortField,
+    RemoveModal,
+    ListSearch,
   },
 
   props: {
@@ -992,7 +861,6 @@ export default {
 
     // Remove
     const removeModalId = 'list-item-remove-modal'
-    const commentToRemove = ref()
 
     const onClickRemove = (item) => {
       selectedItem.value = item
@@ -1003,20 +871,16 @@ export default {
       bvModal.show(removeModalId)
     }
 
-    const onClickModalOk = async (hide: Function) => {
+    const onClickModalOk = async ({ hide, commentToRemove }) => {
       await store.dispatch(deleteActionName, {
         type: entityName,
         id: selectedItem.value.id,
-        comment: commentToRemove.value,
+        comment: commentToRemove,
         customApiPrefix: props.config?.customApiPrefix,
       })
 
       hide()
       reFetchList()
-    }
-
-    const onCloseModal = () => {
-      commentToRemove.value = undefined
     }
 
     return {
@@ -1075,10 +939,8 @@ export default {
 
       // Remove
       removeModalId,
-      commentToRemove,
       onClickRemove,
       onClickModalOk,
-      onCloseModal,
 
       // Selectable
       indeterminate,
@@ -1119,15 +981,6 @@ export default {
 <style lang="scss" scoped>
 .table-responsive {
   min-height: 198px;
-}
-
-.filters-row {
-  margin-bottom: 2rem;
-
-  .search {
-    flex-basis: 0;
-    flex-grow: 1;
-  }
 }
 
 .table-card-settings {
