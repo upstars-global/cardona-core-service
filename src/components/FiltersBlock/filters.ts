@@ -5,6 +5,7 @@ import { FieldInfo, FieldType } from '../../@model/field'
 import { OptionsItem } from '../../@model'
 import { FilterType } from '../../@model/filter'
 import { TextBaseField, SelectBaseField } from '../../@model/baseField'
+import { TransactionType } from '../../@model/playersTransactions'
 
 // Options
 const stateOptions: Array<object> = [
@@ -34,6 +35,22 @@ const giftName = new TextBaseField({
 const gameId = new TextBaseField({
   key: FilterType.GameId,
   label: i18n.t('filters.gameId'),
+})
+
+const demoType = new SelectBaseField({
+  key: FilterType.DemoType,
+  label: i18n.t('common.type'),
+  placeholder: i18n.t('placeholder.filter.type'),
+  options: [
+    {
+      id: TransactionType.Payout,
+      name: i18n.t(`common.payout`),
+    },
+    {
+      id: TransactionType.Deposit,
+      name: i18n.t(`common.deposit`),
+    },
+  ],
 })
 
 // ---------------------------------------------------------------------------
@@ -355,6 +372,7 @@ export default {
   realSumRange,
   wagerLimitRange,
   balancesReasons,
+  demoType,
 
   // Games
   gamesType,

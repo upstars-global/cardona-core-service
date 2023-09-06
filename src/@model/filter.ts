@@ -52,6 +52,7 @@ export enum FilterType {
   BalancesReasons = 'balancesReasons',
   TagNames = 'tagNames',
   Segments = 'segments',
+  DemoType = 'demoType',
 }
 
 export class FilterID {
