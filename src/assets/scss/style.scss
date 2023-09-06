@@ -16,6 +16,10 @@ $bg-light-grey: rgba(186, 191, 199, 0.12);
   margin-left: 5px;
   color: $red;
 }
+.form-required .custom-checkbox label:after {
+  content: '';
+  margin-left: 0px;
+}
 
 .swap-btn .btn:last-child {
   order: -1;
