@@ -1,11 +1,14 @@
 <template>
-  <text-editor-wysiwyg
-    v-model.trim="modelValue"
-    :placeholder="field.label"
-    :disabled="disabled"
-    :options-variable="allCurrencies"
-    :localisation-parameters="localisationParameters"
-  />
+  <div>
+    <text-editor-wysiwyg
+      v-model.trim="modelValue"
+      :placeholder="field.label"
+      :disabled="disabled"
+      :options-variable="allCurrencies"
+      :localisation-parameters="localisationParameters"
+      @update-localisation-parameters="setUpdateLocalisationParameters"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -59,11 +62,15 @@ export default defineComponent({
       },
       { immediate: true, deep: true }
     )
+    const setUpdateLocalisationParameters = (parametres: any) => {
+      localisationParameters.value = parametres
+    }
 
     return {
       modelValue,
       allCurrencies,
       localisationParameters,
+      setUpdateLocalisationParameters,
     }
   },
 })
