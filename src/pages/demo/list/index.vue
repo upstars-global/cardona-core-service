@@ -77,13 +77,13 @@ const listConfig = new BaseListConfig({
       key: 'created',
     },
     {
-      type: ProjectFilterTypes.Tags,
-      key: 'tagsIds',
+      type: FilterType.DemoType,
+      key: 'type',
       trackBy: 'id',
     },
     {
-      type: FilterType.TransactionsType,
-      key: 'type',
+      type: ProjectFilterTypes.Tags,
+      key: 'tagsIds',
       trackBy: 'id',
     },
     {
