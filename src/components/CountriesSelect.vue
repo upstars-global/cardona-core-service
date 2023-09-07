@@ -25,8 +25,8 @@
         :disabled="disabled"
         :options="regionsOptions"
         :placeholder="selectedCountriesPlaceholder"
-        @input="onSelectCountry"
         class="countries-select"
+        @input="onSelectCountry"
       />
     </b-form-group>
   </div>
@@ -140,7 +140,9 @@ export default defineComponent({
       // }
     })
 
-    const typeCountriesByRadio = computed(() => countriesRadioModel.value === 'ban' ? 'restrictedCountries' : 'allowedCountries')
+    const typeCountriesByRadio = computed(() =>
+      countriesRadioModel.value === 'ban' ? 'restrictedCountries' : 'allowedCountries'
+    )
 
     const onSelectCountry = (value) => {
       const event = `update:${typeCountriesByRadio.value}`
