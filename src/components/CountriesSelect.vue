@@ -19,12 +19,13 @@
       class="mb-0"
     >
       <v-select
-        v-model="selectedCountries"
+        v-model="selectedCountriesByRadio[countriesRadioModel]"
         :dir="$store.getters['appConfigCore/dirOption']"
         multiple
         :disabled="disabled"
         :options="regionsOptions"
         :placeholder="selectedCountriesPlaceholder"
+        @input="onSelectCountry"
         class="countries-select"
       />
     </b-form-group>
@@ -120,24 +121,34 @@ export default defineComponent({
     )
 
     watch([selectedCountries, countriesRadioModel], () => {
-      const bannedCountries = selectedCountries.value.map(({ code }: RegionInfo) => code)
-
-      if (countriesRadioModel.value === 'ban') {
-        emit('input', bannedCountries)
-      } else {
-        const allowedCountries: Array<string> = regions.value
-          .map(({ code }: RegionInfo) => code)
-          .filter((code: string) => {
-            const [country, region] = code.split('-')
-
-            return region
-              ? !bannedCountries.includes(country) && !bannedCountries.includes(code)
-              : !hasCountryCode(bannedCountries, country)
-          })
-
-        emit('input', allowedCountries)
-      }
+      // const bannedCountries = selectedCountries.value.map(({ code }: RegionInfo) => code)
+      //
+      // if (countriesRadioModel.value === 'ban') {
+      //   emit('update:restrictedCountries', bannedCountries)
+      // } else {
+      //   const allowedCountries: Array<string> = regions.value
+      //       .map(({ code }: RegionInfo) => code)
+      //       .filter((code: string) => {
+      //         const [country, region] = code.split('-')
+      //
+      //         return region
+      //             ? !bannedCountries.includes(country) && !bannedCountries.includes(code)
+      //             : !hasCountryCode(bannedCountries, country)
+      //       })
+      //
+      //   emit('update:allowedCountries', allowedCountries)
+      // }
     })
+
+    const typeCountriesByRadio = computed(() => countriesRadioModel.value === 'ban' ? 'restrictedCountries' : 'allowedCountries')
+
+    const onSelectCountry = (value) => {
+      const event = `update:${typeCountriesByRadio.value}`
+      console.log(event)
+      emit(event, value)
+    }
+
+    const selectedCountriesByRadio = ref({ ban: [], allow: [] })
 
     return {
       countriesRadioModel,
@@ -146,6 +157,8 @@ export default defineComponent({
       countriesRadioLabel,
       selectedCountriesPlaceholder,
       regionsOptions,
+      onSelectCountry,
+      selectedCountriesByRadio,
     }
   },
 })
