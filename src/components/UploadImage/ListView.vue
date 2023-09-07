@@ -64,44 +64,7 @@
     </div>
 
     <div class="mx-2 mb-2">
-      <b-row>
-        <b-col
-          cols="12"
-          sm="6"
-          class="d-flex align-items-center justify-content-center justify-content-sm-start"
-        >
-          <span class="text-muted">
-            {{ $t('pagination.showing', dataMeta) }}
-          </span>
-        </b-col>
-
-        <b-col
-          cols="12"
-          sm="6"
-          class="d-flex align-items-center justify-content-center justify-content-sm-end"
-        >
-          <b-pagination-nav
-            v-if="paginated.numberOfPages"
-            v-model="page"
-            first-number
-            last-number
-            class="pagination-nav mb-0 mt-1 mt-sm-0"
-            prev-class="prev-item"
-            next-class="next-item"
-            :link-gen="paginated.linkGen"
-            :number-of-pages="paginated.numberOfPages"
-            use-router
-          >
-            <template #prev-text>
-              <feather-icon :icon="IconsList.ChevronLeftIcon" size="18" />
-            </template>
-
-            <template #next-text>
-              <feather-icon :icon="IconsList.ChevronRightIcon" size="18" />
-            </template>
-          </b-pagination-nav>
-        </b-col>
-      </b-row>
+      <list-pagination v-model="page" :data-meta="dataMeta" :pagination-config="paginated" />
     </div>
   </div>
 </template>
@@ -111,10 +74,11 @@ import { computed, defineComponent, ref } from 'vue'
 import { TableField } from '../../@core/components/table-fields/model'
 import { useUtils as useI18nUtils } from '../../@core/libs/i18n'
 import { IconsList } from '../../@model/enums/icons'
+import ListPagination from '../templates/BaseList/_components/ListPagination.vue'
 
 export default defineComponent({
   name: 'ListView',
-  components: {},
+  components: { ListPagination },
   props: {
     isLoad: {
       type: Boolean,
@@ -146,7 +110,7 @@ export default defineComponent({
     const dataMeta = props.paginated.setupDataMeta(refTable)
 
     const page = computed({
-      get: () => props.paginated.currentPage || 1,
+      get: () => props.paginated.currentPage.value || 1,
       set: (val) => props.paginated.setPage(val),
     })
     const setPerPage = (perPage) => {
