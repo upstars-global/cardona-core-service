@@ -35,20 +35,28 @@ export const transformFormData = (form): object => {
     } else {
       acc[key] = valueData
     }
-
     return acc
   }, {})
 }
 
-export const convertCamelCase = (string: string, separator: string): string =>
-  string[0].toLowerCase() +
-  string.slice(1).replace(/[A-Z]/g, (letter) => `${separator}${letter.toLowerCase()}`)
+export const convertCamelCase = (string: string, separator: string): string => {
+  if (string.isEmpty) return string
 
-export const convertLowerCaseFirstSymbol = (string: string): string =>
-  string[0].toLowerCase() + string.slice(1)
+  return (
+    string[0].toLowerCase() +
+    string.slice(1).replace(/[A-Z]/g, (letter) => `${separator}${letter.toLowerCase()}`)
+  )
+}
 
-export const convertUpperCaseFirstSymbol = (word: string): string =>
-  word[0].toUpperCase() + word.slice(1)
+export const convertLowerCaseFirstSymbol = (string: string): string => {
+  if (string.isEmpty) return string
+  return string[0].toLowerCase() + string.slice(1)
+}
+
+export const convertUpperCaseFirstSymbol = (word: string): string => {
+  if (word.isEmpty) return word
+  return word[0].toUpperCase() + word.slice(1)
+}
 
 export const checkExistsPage = (pageName: string): boolean => {
   const { router } = useRouter()
@@ -75,7 +83,7 @@ interface permissionKeys {
   permissionKeyReport: string
 }
 
-const formatPermissionResponse = (basePermission: string): permissionKeys => {
+export const formatPermissionResponse = (basePermission: string): permissionKeys => {
   return {
     permissionKey: basePermission,
     permissionKeySeo: basePermission + '-seo',

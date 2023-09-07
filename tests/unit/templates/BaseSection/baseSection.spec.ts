@@ -5,6 +5,8 @@ import { useDemoSection } from '../../../../src/pages/demo/useDemo'
 import BaseSection from '../../../../src/components/templates/BaseSection/index.vue'
 import { PageType } from '../../../../src/components/templates/BaseSection/model'
 import flushPromises from 'flush-promises'
+import { getPermissionKeys } from '../../../../src/helpers'
+import { permissionPrefix } from '@productConfig'
 import ApiService from '../../../../src/services/api'
 
 enableAutoDestroy(afterEach)
@@ -23,37 +25,45 @@ ApiService.request = jest.fn(() => {
   }
 })
 
+const createButtonSelector = '[data-testid=create-button]'
+const stayButtonSelector = '[data-testid=stay-button]'
+const saveButtonSelector = '[data-testid=save-button]'
+const cancelButtonSelector = '[data-testid=cancel-button]'
+// @ts-ignore
+ApiService.request = jest.fn(() => {
+  return {
+    data: {
+      id: 'test-id',
+    },
+  }
+})
 describe('BaseSection', () => {
+  beforeEach(() => {
+    localVue = createLocalVue()
+    localVue.use(VueRouter)
+    localVue.use(BootstrapVue)
+    router = new VueRouter({
+      mode: 'abstract',
+      base: process.env.BASE_URL,
+      routes: [
+        {
+          path: '/demo',
+          name: demoListComponentName,
+          component: {},
+        },
+        {
+          path: '/demo/update/:id',
+          name: demoUpdateComponentName,
+          component: {},
+        },
+      ],
+    })
+  })
+  afterEach(() => {
+    localVue = null
+    router = null
+  })
   describe('testing pageType props', () => {
-    beforeEach(() => {
-      localVue = createLocalVue()
-      localVue.use(VueRouter)
-      localVue.use(BootstrapVue)
-      router = new VueRouter({
-        mode: 'abstract',
-        base: process.env.BASE_URL,
-        routes: [
-          {
-            path: '/demo',
-            name: demoListComponentName,
-            component: {},
-          },
-          {
-            path: '/demo/update/:id',
-            name: demoUpdateComponentName,
-            component: {},
-          },
-        ],
-      })
-    })
-    afterEach(() => {
-      localVue = null
-      router = null
-    })
-    const createButtonSelector = '[data-testid=create-button]'
-    const stayButtonSelector = '[data-testid=stay-button]'
-    const saveButtonSelector = '[data-testid=save-button]'
-    const cancelButtonSelector = '[data-testid=cancel-button]'
     it('without set pageType', () => {
       const wrapper = mount(BaseSection, {
         propsData: {
@@ -139,6 +149,52 @@ describe('BaseSection', () => {
 
       await flushPromises()
       expect(wrapper.vm.$route.name).toMatch(demoUpdateComponentName)
+    })
+  })
+  describe('testing config settings', () => {
+    it('getPermissionKeys without config', () => {
+      expect(() => {
+        getPermissionKeys({})
+      }).toThrow(Error)
+    })
+    it('getPermissionKeys with default config', () => {
+      const permissionKeyExpect = 'demo-demo'
+      const permissionKeySeoExpect = 'demo-demo-seo'
+      const config = {
+        permissionKey: undefined,
+        permissionPrefix: permissionPrefix,
+        entityNamePermission: useDemoSection().entityName,
+      }
+      const { permissionKey, permissionKeySeo } = getPermissionKeys(config)
+
+      expect(permissionKey).toMatch(permissionKeyExpect)
+      expect(permissionKeySeo).toMatch(permissionKeySeoExpect)
+    })
+    it('getPermissionKeys with noPermissionPrefix: true', () => {
+      const permissionKeyExpect = 'demo'
+      const permissionKeySeoExpect = 'demo-seo'
+      const config = {
+        permissionKey: undefined,
+        permissionPrefix: permissionPrefix,
+        entityNamePermission: useDemoSection().entityName,
+      }
+      const { permissionKey, permissionKeySeo } = getPermissionKeys(config)
+
+      expect(permissionKey).toMatch(permissionKeyExpect)
+      expect(permissionKeySeo).toMatch(permissionKeySeoExpect)
+    })
+    it('getPermissionKeys with customPermissionPrefix: prefix', () => {
+      const permissionKeyExpect = 'prefix-demo'
+      const permissionKeySeoExpect = 'prefix-demo-seo'
+      const config = {
+        permissionKey: undefined,
+        permissionPrefix: 'prefix',
+        entityNamePermission: useDemoSection().entityName,
+      }
+      const { permissionKey, permissionKeySeo } = getPermissionKeys(config)
+
+      expect(permissionKey).toMatch(permissionKeyExpect)
+      expect(permissionKeySeo).toMatch(permissionKeySeoExpect)
     })
   })
 })
