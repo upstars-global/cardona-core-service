@@ -1,4 +1,4 @@
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, Ref, ComputedRef } from 'vue'
 import { useRouter } from '../@core/utils/utils'
 import { getStorage, setStorage } from '../helpers/storage'
 
@@ -11,7 +11,23 @@ type PaginationConfig = {
   storageKey: string
 }
 
-export default function usePagination(config: PaginationConfig = { storageKey: 'list-perPage' }) {
+export interface PaginationResult {
+  linkGen: (pageNum: number) => any | undefined
+  perPageOptions: Array<number>
+  perPage: Ref<number>
+  total: Ref<number>
+  setupDataMeta: (refTable: any) => ComputedRef<{ from: number; to: number; of: number }>
+  numberOfPages: Ref<number>
+  setPerPage: (value: number) => void
+  setPage: (page?: number, perPageProps?: any) => void
+  currentPage: Ref<number>
+  updateTotal: (value: number) => void
+  onChangePagination: (cb: Function) => void
+}
+
+export default function usePagination(
+  config: PaginationConfig = { storageKey: 'list-perPage' }
+): PaginationResult {
   const {
     defaultCurrentPage = 1,
     defaultPerPageOptions = [10, 25, 50, 100],

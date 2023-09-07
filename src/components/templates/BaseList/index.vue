@@ -316,45 +316,14 @@
     </b-card>
 
     <!-- Footer pagination -->
-    <div v-if="config?.pagination" class="mx-2">
-      <b-row>
-        <b-col
-          cols="12"
-          sm="6"
-          class="d-flex align-items-center justify-content-center justify-content-sm-start p-0"
-        >
-          <span class="text-muted">
-            {{ $t('pagination.showing', dataMeta) }}
-          </span>
-        </b-col>
-
-        <b-col
-          cols="12"
-          sm="6"
-          class="d-flex align-items-center justify-content-center justify-content-sm-end p-0"
-        >
-          <b-pagination-nav
-            v-if="numberOfPages"
-            v-model="currentPage"
-            first-number
-            last-number
-            class="pagination-nav mb-0 mt-1 mt-sm-0"
-            prev-class="prev-item"
-            next-class="next-item"
-            :link-gen="linkGenerator"
-            :number-of-pages="numberOfPages"
-            use-router
-          >
-            <template #prev-text>
-              <feather-icon :icon="IconsList.ChevronLeftIcon" size="18" />
-            </template>
-
-            <template #next-text>
-              <feather-icon :icon="IconsList.ChevronRightIcon" size="18" />
-            </template>
-          </b-pagination-nav>
-        </b-col>
-      </b-row>
+    <div class="mx-2">
+      <list-pagination
+        v-if="config?.pagination"
+        v-model="currentPage"
+        :link-gen="linkGenerator"
+        :pagination-config="paginationConfig"
+        :data-meta="dataMeta"
+      />
     </div>
 
     <!-- Remove modal -->
@@ -375,7 +344,7 @@ import store from '../../../store'
 import { useBvModal } from '../../../helpers/bvModal'
 import { getStorage, setStorage, removeStorageItem } from '../../../helpers/storage'
 import { useRouter } from '../../../@core/utils/utils'
-import usePagination from '../../../use/pagination'
+import usePagination, { PaginationResult } from '../../../use/pagination'
 import {
   BaseListConfig,
   DownloadFormat,
@@ -427,10 +396,12 @@ import ListSearch from './_components/ListSearch.vue'
 import MultipleActions from './_components/MultipleActions.vue'
 import ItemActions from './_components/ItemActions.vue'
 import { basePermissions } from '../../../helpers/base-permissions'
+import ListPagination from './_components/ListPagination.vue'
 
 export default {
   name: 'BaseList',
   components: {
+    ListPagination,
     ItemActions,
     MultipleActions,
     DatePeriodField,
@@ -814,7 +785,12 @@ export default {
 
     // Pagination
     const perPageStorageKey = `${currentPageName}-${entityName}-perPage`
-
+    const paginationConfig: PaginationResult = usePagination({
+      defaultPerPage: props.config.defaultPerPage,
+      withIndependentPagination: props.config.withIndependentPagination,
+      isUseRouter: !props.config.withIndependentPagination,
+      storageKey: perPageStorageKey,
+    })
     const {
       currentPage,
       perPage,
@@ -826,12 +802,7 @@ export default {
       linkGen,
       updateTotal,
       onChangePagination,
-    } = usePagination({
-      defaultPerPage: props.config.defaultPerPage,
-      withIndependentPagination: props.config.withIndependentPagination,
-      isUseRouter: !props.config.withIndependentPagination,
-      storageKey: perPageStorageKey,
-    })
+    } = paginationConfig
 
     const dataMeta = setupDataMeta(refListTable)
 
@@ -968,6 +939,7 @@ export default {
       perPage,
       perPageOptions,
       setPerPage,
+      paginationConfig,
 
       // Draggable
       onDragChanged,

@@ -101,25 +101,15 @@ export default defineComponent({
   setup(props, { emit }) {
     const defaultCountItem = 25
     const defaultPerPageOptions = [5, 10, 25, 50]
-    const {
-      linkGen,
-      perPageOptions,
-      perPage,
-      total,
-      setupDataMeta,
-      numberOfPages,
-      setPage,
-      setPerPage,
-      currentPage,
-      updateTotal,
-      onChangePagination,
-    } = usePagination({
+    const paginated = usePagination({
       defaultPerPageOptions,
       defaultPerPage: 25,
       isUseRouter: false,
       storageKey: '',
     })
-    const paginated = ref({
+
+    const {
+      currentPage,
       linkGen,
       perPageOptions,
       perPage,
@@ -130,7 +120,7 @@ export default defineComponent({
       setPerPage,
       updateTotal,
       onChangePagination,
-    })
+    } = paginated
 
     const url = ref(props.path)
     const type = ref('grid')
