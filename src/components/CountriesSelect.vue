@@ -45,7 +45,14 @@ export default defineComponent({
       type: Array as PropType<Array<string>>,
       default: () => [],
     },
-
+    allowedCountries: {
+      type: Array,
+      default: () => [],
+    },
+    restrictedCountries: {
+      type: Array,
+      default: () => [],
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -56,6 +63,18 @@ export default defineComponent({
     const countriesRadioModel = ref('')
     const selectedCountries = ref()
     const regions = ref<Array<RegionInfo>>([])
+    const selectedCountriesByRadio = ref({ ban: [], allow: [] })
+
+    console.log({ props })
+
+    // watch(props, () => {
+    //   if (selectedCountriesByRadio.value.ban.isEmpty) {
+    //     selectedCountriesByRadio.value.ban = props.restrictedCountries;
+    //   }
+    //   if (selectedCountriesByRadio.value.allow.isEmpty) {
+    //     selectedCountriesByRadio.value.allow = props.allowedCountries;
+    //   }
+    // }, { deep: true })
 
     const optionsRadioCountries = computed(() => [
       { text: i18n.t('component.countriesSelect.banInCountries'), value: 'ban' },
@@ -90,7 +109,17 @@ export default defineComponent({
 
     onMounted(async () => {
       regions.value = await store.dispatch('regions/fetchRegionList')
-
+      // const formRestrictedCountries: Array<RegionInfo> = regions.value.filter(
+      //     ({ code }: RegionInfo) => props.restrictedCountries?.includes(code)
+      // )
+      // selectedCountriesByRadio.value.ban = formRestrictedCountries
+      // console.log(selectedCountriesByRadio.value.ban)
+      selectedCountriesByRadio.value.ban = regions.value.filter(({ code }: RegionInfo) =>
+        props.restrictedCountries?.includes(code)
+      )
+      selectedCountriesByRadio.value.allow = regions.value.filter(({ code }: RegionInfo) =>
+        props.allowedCountries?.includes(code)
+      )
       if (props.value.isNotEmpty) {
         const formRestrictedCountries: Array<RegionInfo> = regions.value.filter(
           ({ code }: RegionInfo) => props.value?.includes(code)
@@ -120,7 +149,8 @@ export default defineComponent({
       )
     )
 
-    watch([selectedCountries, countriesRadioModel], () => {
+    watch([props.allowedCountries, props.restrictedCountries], () => {
+      console.log(props.allowedCountries, props.restrictedCountries)
       // const bannedCountries = selectedCountries.value.map(({ code }: RegionInfo) => code)
       //
       // if (countriesRadioModel.value === 'ban') {
@@ -146,11 +176,11 @@ export default defineComponent({
 
     const onSelectCountry = (value) => {
       const event = `update:${typeCountriesByRadio.value}`
-      console.log(event)
-      emit(event, value)
+      emit(
+        event,
+        value.map(({ code }) => code)
+      )
     }
-
-    const selectedCountriesByRadio = ref({ ban: [], allow: [] })
 
     return {
       countriesRadioModel,
