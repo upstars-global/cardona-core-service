@@ -33,10 +33,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, PropType, ref } from 'vue'
 import store from '../store'
 import i18n from '../libs/i18n'
 import { RegionInfo } from '../@model/regions'
+import { differenceBy } from 'lodash'
 
 export default defineComponent({
   name: 'CountriesSelect',
@@ -64,17 +65,6 @@ export default defineComponent({
     const selectedCountries = ref()
     const regions = ref<Array<RegionInfo>>([])
     const selectedCountriesByRadio = ref({ ban: [], allow: [] })
-
-    console.log({ props })
-
-    // watch(props, () => {
-    //   if (selectedCountriesByRadio.value.ban.isEmpty) {
-    //     selectedCountriesByRadio.value.ban = props.restrictedCountries;
-    //   }
-    //   if (selectedCountriesByRadio.value.allow.isEmpty) {
-    //     selectedCountriesByRadio.value.allow = props.allowedCountries;
-    //   }
-    // }, { deep: true })
 
     const optionsRadioCountries = computed(() => [
       { text: i18n.t('component.countriesSelect.banInCountries'), value: 'ban' },
@@ -120,55 +110,36 @@ export default defineComponent({
       selectedCountriesByRadio.value.allow = regions.value.filter(({ code }: RegionInfo) =>
         props.allowedCountries?.includes(code)
       )
-      if (props.value.isNotEmpty) {
-        const formRestrictedCountries: Array<RegionInfo> = regions.value.filter(
-          ({ code }: RegionInfo) => props.value?.includes(code)
-        )
-
-        if (formRestrictedCountries.length > regions.value.length / 2) {
-          countriesRadioModel.value = 'allow'
-          selectedCountries.value = regions.value.filter(({ code }: RegionInfo) => {
-            const [country, region] = code.split('-')
-
-            return region ? !props.value.includes(code) : !hasCountryCode(props.value, country)
-          })
-        } else {
-          countriesRadioModel.value = 'ban'
-          selectedCountries.value = formRestrictedCountries
-        }
-      } else {
-        countriesRadioModel.value = 'ban'
-        selectedCountries.value = []
-      }
-    })
-
-    const regionsOptions = computed(() =>
-      regions.value.filter(
-        ({ code }: RegionInfo) =>
-          !selectedCountries.value.some((region: RegionInfo) => region.code === code)
-      )
-    )
-
-    watch([props.allowedCountries, props.restrictedCountries], () => {
-      console.log(props.allowedCountries, props.restrictedCountries)
-      // const bannedCountries = selectedCountries.value.map(({ code }: RegionInfo) => code)
+      countriesRadioModel.value = 'ban'
+      // if (props.value.isNotEmpty) {
+      //   const formRestrictedCountries: Array<RegionInfo> = regions.value.filter(
+      //     ({ code }: RegionInfo) => props.value?.includes(code)
+      //   )
       //
-      // if (countriesRadioModel.value === 'ban') {
-      //   emit('update:restrictedCountries', bannedCountries)
+      //   if (formRestrictedCountries.length > regions.value.length / 2) {
+      //     countriesRadioModel.value = 'allow'
+      //     selectedCountries.value = regions.value.filter(({ code }: RegionInfo) => {
+      //       const [country, region] = code.split('-')
+      //
+      //       return region ? !props.value.includes(code) : !hasCountryCode(props.value, country)
+      //     })
+      //   } else {
+      //     countriesRadioModel.value = 'ban'
+      //     selectedCountries.value = formRestrictedCountries
+      //   }
       // } else {
-      //   const allowedCountries: Array<string> = regions.value
-      //       .map(({ code }: RegionInfo) => code)
-      //       .filter((code: string) => {
-      //         const [country, region] = code.split('-')
-      //
-      //         return region
-      //             ? !bannedCountries.includes(country) && !bannedCountries.includes(code)
-      //             : !hasCountryCode(bannedCountries, country)
-      //       })
-      //
-      //   emit('update:allowedCountries', allowedCountries)
+      //   countriesRadioModel.value = 'ban'
+      //   selectedCountries.value = []
       // }
     })
+
+    const allSelectedCountries = computed(() =>
+      Object.values(selectedCountriesByRadio.value).flat(1)
+    )
+
+    const regionsOptions = computed(() =>
+      differenceBy(regions.value, allSelectedCountries.value, 'code')
+    )
 
     const typeCountriesByRadio = computed(() =>
       countriesRadioModel.value === 'ban' ? 'restrictedCountries' : 'allowedCountries'
