@@ -213,7 +213,7 @@
             <b-col cols="8">
               <upload-file
                 size="md"
-                :disabled="disabled"
+                :disabled="isDisabledTabs"
                 :on-submit-callback="mockUploadFile"
                 :max-size-file-mb="10"
               />

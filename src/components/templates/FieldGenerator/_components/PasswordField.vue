@@ -8,6 +8,7 @@
         :type="inputType"
         name="login-password"
         :placeholder="field.placeholder"
+        :disabled="disabled"
       />
       <b-input-group-append is-text>
         <feather-icon
@@ -23,6 +24,7 @@
       v-b-tooltip.hover.bottom="$t('common.generatePassword')"
       variant="flat-primary"
       class="btn-icon ml-1 border-primary"
+      :disabled="disabled"
       @click="setGeneratedPassword"
     >
       <feather-icon :icon="IconsList.RefreshCcwIcon" />
@@ -31,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { FieldInfo } from '../../../../@model/field'
 import generatePassword from '../../../../helpers/password-generator'
 import { IconsList } from '../../../../@model/enums/icons'
