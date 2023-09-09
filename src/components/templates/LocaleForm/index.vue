@@ -182,9 +182,36 @@ export default defineComponent({
       }
     }
 
+    const cleanString = (inputString) => {
+      const regex = /&nbsp;<span class="variable-box">\{[^}]*\}<\/span>&nbsp;/g
+      const cleanedString = inputString.replace(regex, '')
+      return cleanedString
+    }
+
+    const cleanMetaTitle = (metaTitle) => {
+      const cleanedMetaTitle = {}
+
+      for (const key in metaTitle) {
+        if (metaTitle.hasOwnProperty(key)) {
+          const originalValue = metaTitle[key].value
+          const cleanedValue = cleanString(originalValue)
+
+          cleanedMetaTitle[key] = {
+            value: cleanedValue,
+            disabled: metaTitle[key].disabled,
+          }
+        }
+      }
+
+      return cleanedMetaTitle
+    }
+
     const updateLocalisationParameters = (variableText) => {
-      // TODO emit('input', form) - not work
       props!.value['localisationParameters'] = variableText
+      props!.value['fieldTranslations'] = {
+        ...fieldTranslations.value,
+        metaTitle: cleanMetaTitle(fieldTranslations.value.metaTitle),
+      }
     }
 
     return {
