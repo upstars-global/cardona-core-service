@@ -5,6 +5,7 @@
   "scripts": {
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit --no-cache",
+    "test:watch": "yarn jest --watch",
     "lint": "vue-cli-service lint",
     "dev": "vue-cli-service serve",
     "doc": "typedoc"
