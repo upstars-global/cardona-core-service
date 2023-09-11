@@ -182,13 +182,13 @@ export default defineComponent({
       }
     }
 
-    const cleanString = (inputString) => {
+    const cleanString = (inputString: string) => {
       const regex = /&nbsp;<span class="variable-box">\{[^}]*\}<\/span>/g
       const cleanedString = inputString.replaceAll(regex, '')
       return cleanedString
     }
 
-    const cleanMetaTitle = (metaTitle) => {
+    const cleanMetaTitle = (metaTitle: Record<string, { value: string; disabled: boolean }>) => {
       const cleanedMetaTitle = {}
 
       for (const key in metaTitle) {
@@ -206,7 +206,7 @@ export default defineComponent({
       return cleanedMetaTitle
     }
 
-    const updateLocalisationParameters = (variableText) => {
+    const updateLocalisationParameters = (variableText: Record<string, Record<string, string>>) => {
       props!.value['localisationParameters'] = variableText
       props!.value['fieldTranslations'].metaTitle = cleanMetaTitle(
         props!.value['fieldTranslations'].metaTitle
