@@ -16,7 +16,7 @@ import { defineComponent, PropType, computed, watch, ref } from 'vue'
 import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg/index.vue'
 import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
-import { LocaleVariable } from '@model/translations'
+import { LocaleVariable } from '../../../../@model/translations'
 
 export default defineComponent({
   name: 'RichTextField',

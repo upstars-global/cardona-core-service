@@ -72,7 +72,11 @@ import { computed, defineComponent, ref, watch } from 'vue'
 import TextEditorWysiwyg from '../../../components/TextEditorWysiwyg/index.vue'
 import store from '../../../store'
 import { SeoForm } from '../../../@model/seo'
-import { FieldTranslationsData, FieldTranslationsLocale } from '../../../@model/translations'
+import {
+  FieldTranslationsData,
+  FieldTranslationsLocale,
+  LocaleVariable,
+} from '../../../@model/translations'
 import CheckField from '../FieldGenerator/_components/CheckField.vue'
 
 export default defineComponent({
@@ -206,7 +210,7 @@ export default defineComponent({
       return cleanedMetaTitle
     }
 
-    const updateLocalisationParameters = (variableText: Record<string, Record<string, string>>) => {
+    const updateLocalisationParameters = (variableText: LocaleVariable) => {
       props!.value['localisationParameters'] = variableText
       props!.value['fieldTranslations'].metaTitle = cleanMetaTitle(
         props!.value['fieldTranslations'].metaTitle
