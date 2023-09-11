@@ -120,6 +120,7 @@ export default defineComponent({
     )
 
     watch([selectedCountries, countriesRadioModel], () => {
+      if (!selectedCountries.value) return
       const bannedCountries = selectedCountries.value.map(({ code }: RegionInfo) => code)
 
       if (countriesRadioModel.value === 'ban') {
