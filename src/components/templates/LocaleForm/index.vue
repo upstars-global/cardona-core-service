@@ -183,8 +183,8 @@ export default defineComponent({
     }
 
     const cleanString = (inputString) => {
-      const regex = /&nbsp;<span class="variable-box">\{[^}]*\}<\/span>&nbsp;/g
-      const cleanedString = inputString.replace(regex, '')
+      const regex = /&nbsp;<span class="variable-box">\{[^}]*\}<\/span>/g
+      const cleanedString = inputString.replaceAll(regex, '')
       return cleanedString
     }
 
@@ -208,10 +208,9 @@ export default defineComponent({
 
     const updateLocalisationParameters = (variableText) => {
       props!.value['localisationParameters'] = variableText
-      props!.value['fieldTranslations'] = {
-        ...fieldTranslations.value,
-        metaTitle: cleanMetaTitle(fieldTranslations.value.metaTitle),
-      }
+      props!.value['fieldTranslations'].metaTitle = cleanMetaTitle(
+        props!.value['fieldTranslations'].metaTitle
+      )
     }
 
     return {
