@@ -44,11 +44,12 @@ import i18n from '../../libs/i18n'
 import store from '../../store'
 import baseConfig from './config'
 import { TranslateResult } from 'vue-i18n'
+import { LocaleVariable } from '@model/translations'
 
 interface Props {
   value: string
   optionsVariable: Array<string>
-  localisationParameters: Record<string, Record<string, string>>
+  localisationParameters: LocaleVariable
   readonly placeholder?: TranslateResult
   disabled?: boolean
 }

@@ -72,7 +72,7 @@ import { computed, defineComponent, ref, watch } from 'vue'
 import TextEditorWysiwyg from '../../../components/TextEditorWysiwyg/index.vue'
 import store from '../../../store'
 import { SeoForm } from '../../../@model/seo'
-import { FieldTranslationsData } from '../../../@model/translations'
+import { FieldTranslationsData, FieldTranslationsLocale } from '../../../@model/translations'
 import CheckField from '../FieldGenerator/_components/CheckField.vue'
 
 export default defineComponent({
@@ -188,7 +188,7 @@ export default defineComponent({
       return cleanedString
     }
 
-    const cleanMetaTitle = (metaTitle: Record<string, { value: string; disabled: boolean }>) => {
+    const cleanMetaTitle = (metaTitle: FieldTranslationsLocale) => {
       const cleanedMetaTitle = {}
 
       for (const key in metaTitle) {

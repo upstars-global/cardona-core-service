@@ -16,6 +16,7 @@ import { defineComponent, PropType, computed, watch, ref } from 'vue'
 import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg/index.vue'
 import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
+import { LocaleVariable } from '@model/translations'
 
 export default defineComponent({
   name: 'RichTextField',
@@ -48,9 +49,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const localisationParameters = ref({})
     const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
-    const variableTextBuffer = computed(() => {
-      return store.state.textEditor.variableTextBuffer
-    })
     const modelValue = computed({
       get: () => props.value,
       set: (value) => emit('input', value),
@@ -60,30 +58,27 @@ export default defineComponent({
       () => props.field,
       () => {
         if (props.field?.form) {
-          localisationParameters.value = props!.field!.form!['localisationParameters']
+          localisationParameters.value = props.field.form['localisationParameters']
         }
       },
       { immediate: true, deep: true }
     )
 
-    const filterString = (inputString, filterObject) => {
+    const filterString = (inputString: string, localeVariables: LocaleVariable) => {
       const regex = /<span class="variable-box">\{([a-zA-Z]+)\}<\/span>/g
 
       const filteredString = inputString.replace(regex, (match, key) => {
-        if (filterObject.hasOwnProperty(key)) {
-          return match
-        }
+        if (localeVariables.hasOwnProperty(key)) return match
         return ''
       })
 
       return filteredString
     }
 
-    const setUpdateLocalisationParameters = (parametres: any) => {
-      localisationParameters.value = parametres
-      modelValue.value = filterString(modelValue.value, parametres)
-      localisationParameters.value = parametres
-      props!.field!.form!['localisationParameters'] = parametres
+    const setUpdateLocalisationParameters = (localeVariables: LocaleVariable) => {
+      localisationParameters.value = localeVariables
+      modelValue.value = filterString(modelValue.value, localeVariables)
+      props!.field!.form!['localisationParameters'] = localeVariables
     }
 
     return {
@@ -91,7 +86,6 @@ export default defineComponent({
       allCurrencies,
       localisationParameters,
       setUpdateLocalisationParameters,
-      variableTextBuffer,
     }
   },
 })
