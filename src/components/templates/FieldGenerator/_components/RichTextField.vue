@@ -19,6 +19,7 @@ import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
 import { LocaleVariable } from '../../../../@model/translations'
 import { difference } from 'lodash'
+import { getVariablesFromLocale } from '../../../../helpers/text-editor'
 
 export default defineComponent({
   name: 'RichTextField',
@@ -86,12 +87,6 @@ export default defineComponent({
     const onRemoveVariable = (localeVariables: string): void => {
       modelValue.value = filterString(modelValue.value, localeVariables)
       emit('input', filterString(modelValue.value, localeVariables))
-    }
-
-    const getVariablesFromLocale = (localeText: string): string[] => {
-      const regex = /\{([^}]+)\}/g
-      const matches = localeText.match(regex)
-      return (matches?.map((match) => match?.slice(1, -1)).filter(Boolean) || []) as string[]
     }
 
     const handleVariablesChange = () => {

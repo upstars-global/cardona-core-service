@@ -79,7 +79,11 @@ import {
   LocaleVariable,
 } from '../../../@model/translations'
 import CheckField from '../FieldGenerator/_components/CheckField.vue'
-import { difference } from 'lodash'
+import {
+  getExcessKeyVariable,
+  getVariablesFromAllLocaleText,
+  getVariablesFromLocale,
+} from '../../../helpers/text-editor'
 
 export default defineComponent({
   name: 'LocaleForm',
@@ -225,21 +229,11 @@ export default defineComponent({
       )
     }
 
-    const getVariablesFromLocale = (localeText: string): string[] => {
-      const regex = /\{([^}]+)\}/g
-      const matches = localeText.match(regex)
-      return (matches?.map((match) => match?.slice(1, -1)).filter(Boolean) || []) as string[]
-    }
-
     const handleVariablesChange = () => {
-      const allString =
-        Object.entries(props!.value['fieldTranslations']?.metaTitle || {})
-          .map(([_, value]: any) => value.value)
-          ?.join('') || ''
+      const allString = getVariablesFromAllLocaleText(props!.value['fieldTranslations']?.metaTitle)
       if (!allString) return
       const localeKeyInText = getVariablesFromLocale(allString)
-      const excessKeyVariable =
-        difference(localeKeyInText, Object.keys(variables.value)).at(0) || ''
+      const excessKeyVariable = getExcessKeyVariable(localeKeyInText, variables.value)
       props!.value['fieldTranslations'].metaTitle = cleanMetaTitle(
         props!.value['fieldTranslations'].metaTitle || {},
         excessKeyVariable || ''
