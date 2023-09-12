@@ -19,7 +19,7 @@ import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
 import { LocaleVariable } from '../../../../@model/translations'
 import { difference } from 'lodash'
-import { getVariablesFromLocale } from '../../../../helpers/text-editor'
+import { filterString, getVariablesFromLocale } from "../../../../helpers/text-editor";
 
 export default defineComponent({
   name: 'RichTextField',
@@ -68,24 +68,12 @@ export default defineComponent({
       { immediate: true, deep: true }
     )
 
-    const filterString = (inputString: string, localeVariables: string): string => {
-      const baseString = inputString
-      const res = baseString.replaceAll(
-        '<span class="variable-box">{' + localeVariables + '}</span>',
-        ''
-      )
-      const existOnlySpaces = !res.replaceAll('&nbsp;', '').trim().length
-      if (existOnlySpaces) return ''
-      return res
-    }
-
     const setUpdateLocalisationParameters = (localeVariables: LocaleVariable) => {
       localisationParameters.value = localeVariables
       props.field.form!['localisationParameters'] = localeVariables
     }
 
     const onRemoveVariable = (localeVariables: string): void => {
-      modelValue.value = filterString(modelValue.value, localeVariables)
       emit('input', filterString(modelValue.value, localeVariables))
     }
 

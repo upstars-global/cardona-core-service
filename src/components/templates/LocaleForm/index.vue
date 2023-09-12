@@ -80,6 +80,7 @@ import {
 } from '../../../@model/translations'
 import CheckField from '../FieldGenerator/_components/CheckField.vue'
 import {
+  filterString,
   getExcessKeyVariable,
   getVariablesFromAllLocaleText,
   getVariablesFromLocale,
@@ -197,16 +198,6 @@ export default defineComponent({
       const regex = /&nbsp;<span class="variable-box">\{[^}]*\}<\/span>/g
       const cleanedString = inputString.replaceAll(regex, '').replaceAll('&nbsp;&nbsp;', '')
       return cleanedString
-    }
-
-    const filterString = (inputString: string, localeVariables: string): string => {
-      const removedVariable = inputString.replaceAll(
-        '<span class="variable-box">{' + localeVariables + '}</span>',
-        ''
-      )
-      const existOnlySpaces = !removedVariable.replaceAll('&nbsp;', '').trim().length
-      if (existOnlySpaces) return ''
-      return removedVariable
     }
 
     const cleanMetaTitle = (metaTitle: FieldTranslationsLocale, variableText: string): any => {
