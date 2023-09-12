@@ -38,6 +38,7 @@
                 :data-at="`input-${item}-${local}`"
                 @update-localisation-parameters="updateLocalisationParameters"
                 @input="(val) => onInputLocalEditor(val, item, local)"
+                @remove-variable="onRemoveVariables"
               />
               <div
                 v-else
@@ -78,6 +79,7 @@ import {
   LocaleVariable,
 } from '../../../@model/translations'
 import CheckField from '../FieldGenerator/_components/CheckField.vue'
+import { difference } from 'lodash'
 
 export default defineComponent({
   name: 'LocaleForm',
@@ -109,6 +111,7 @@ export default defineComponent({
     const locales = computed(() => selectedProject.value?.locales || [])
     const allLocales = computed(() => store.getters['localeCore/allLocalesKeys'])
     const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
+    const variables = computed(() => store.state.textEditor.variableTextBuffer)
 
     const getDefaultFieldTranslations = (objForm) => {
       const _defaultFieldTranslations = {}
@@ -188,34 +191,64 @@ export default defineComponent({
 
     const cleanString = (inputString: string) => {
       const regex = /&nbsp;<span class="variable-box">\{[^}]*\}<\/span>/g
-      const cleanedString = inputString.replaceAll(regex, '')
+      const cleanedString = inputString.replaceAll(regex, '').replaceAll('&nbsp;&nbsp;', '')
       return cleanedString
     }
 
-    const cleanMetaTitle = (metaTitle: FieldTranslationsLocale) => {
-      const cleanedMetaTitle = {}
-
-      for (const key in metaTitle) {
-        if (metaTitle.hasOwnProperty(key)) {
-          const originalValue = metaTitle[key].value
-          const cleanedValue = cleanString(originalValue)
-
-          cleanedMetaTitle[key] = {
-            value: cleanedValue,
-            disabled: metaTitle[key].disabled,
-          }
-        }
-      }
-
-      return cleanedMetaTitle
+    const filterString = (inputString: string, localeVariables: string): string => {
+      const removedVariable = inputString.replaceAll(
+        '<span class="variable-box">{' + localeVariables + '}</span>',
+        ''
+      )
+      const existOnlySpaces = !removedVariable.replaceAll('&nbsp;', '').trim().length
+      if (existOnlySpaces) return ''
+      return removedVariable
     }
 
-    const updateLocalisationParameters = (variableText: LocaleVariable) => {
+    const cleanMetaTitle = (metaTitle: FieldTranslationsLocale, variableText: string): any => {
+      const metaTitlesInLists = Object.entries(metaTitle).map(([key, value]) => [
+        key,
+        { ...value, value: filterString(value.value, variableText) },
+      ])
+      return Object.fromEntries(metaTitlesInLists)
+    }
+
+    const updateLocalisationParameters = (variableText: LocaleVariable): void => {
       props!.value['localisationParameters'] = variableText
+    }
+
+    const onRemoveVariables = (variable: string): void => {
+      if (!variable) return
       props!.value['fieldTranslations'].metaTitle = cleanMetaTitle(
-        props!.value['fieldTranslations'].metaTitle
+        props!.value['fieldTranslations'].metaTitle || {},
+        variable || ''
       )
     }
+
+    const getVariablesFromLocale = (localeText: string): string[] => {
+      const regex = /\{([^}]+)\}/g
+      const matches = localeText.match(regex)
+      return (matches?.map((match) => match?.slice(1, -1)).filter(Boolean) || []) as string[]
+    }
+
+    const handleVariablesChange = () => {
+      const allString =
+        Object.entries(props!.value['fieldTranslations']?.metaTitle || {})
+          .map(([_, value]: any) => value.value)
+          ?.join('') || ''
+      if (!allString) return
+      const localeKeyInText = getVariablesFromLocale(allString)
+      const excessKeyVariable =
+        difference(localeKeyInText, Object.keys(variables.value)).at(0) || ''
+      props!.value['fieldTranslations'].metaTitle = cleanMetaTitle(
+        props!.value['fieldTranslations'].metaTitle || {},
+        excessKeyVariable || ''
+      )
+    }
+
+    const watchOptions = { immediate: true, deep: true }
+
+    watch(() => variables, handleVariablesChange, watchOptions)
 
     return {
       fieldTranslations,
@@ -228,6 +261,8 @@ export default defineComponent({
       updateLocalisationParameters,
       onInputLocalEditor,
       isMainLocale,
+      variables,
+      onRemoveVariables,
     }
   },
 })

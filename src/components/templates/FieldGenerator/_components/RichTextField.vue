@@ -7,6 +7,7 @@
       :options-variable="allCurrencies"
       :localisation-parameters="localisationParameters"
       @update-localisation-parameters="setUpdateLocalisationParameters"
+      @remove-variable="onRemoveVariable"
     />
   </div>
 </template>
@@ -17,6 +18,7 @@ import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg/index.vu
 import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
 import { LocaleVariable } from '../../../../@model/translations'
+import { difference } from 'lodash'
 
 export default defineComponent({
   name: 'RichTextField',
@@ -49,11 +51,12 @@ export default defineComponent({
   setup(props, { emit }) {
     const localisationParameters = ref({})
     const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
+    const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
+
     const modelValue = computed({
       get: () => props.value,
       set: (value) => emit('input', value),
     })
-
     watch(
       () => props.field,
       () => {
@@ -64,28 +67,50 @@ export default defineComponent({
       { immediate: true, deep: true }
     )
 
-    const filterString = (inputString: string, localeVariables: LocaleVariable) => {
-      const regex = /<span class="variable-box">\{([a-zA-Z]+)\}<\/span>/g
-
-      const filteredString = inputString.replace(regex, (match, key) => {
-        if (localeVariables.hasOwnProperty(key)) return match
-        return ''
-      })
-
-      return filteredString
+    const filterString = (inputString: string, localeVariables: string): string => {
+      const baseString = inputString
+      const res = baseString.replaceAll(
+        '<span class="variable-box">{' + localeVariables + '}</span>',
+        ''
+      )
+      const existOnlySpaces = !res.replaceAll('&nbsp;', '').trim().length
+      if (existOnlySpaces) return ''
+      return res
     }
 
     const setUpdateLocalisationParameters = (localeVariables: LocaleVariable) => {
       localisationParameters.value = localeVariables
-      modelValue.value = filterString(modelValue.value, localeVariables)
-      props!.field!.form!['localisationParameters'] = localeVariables
+      props.field.form!['localisationParameters'] = localeVariables
     }
+
+    const onRemoveVariable = (localeVariables: string): void => {
+      modelValue.value = filterString(modelValue.value, localeVariables)
+      emit('input', filterString(modelValue.value, localeVariables))
+    }
+
+    const getVariablesFromLocale = (localeText: string): string[] => {
+      const regex = /\{([^}]+)\}/g
+      const matches = localeText.match(regex)
+      return (matches?.map((match) => match?.slice(1, -1)).filter(Boolean) || []) as string[]
+    }
+
+    const handleVariablesChange = () => {
+      const localeKeyInText = getVariablesFromLocale(modelValue.value)
+      const excessKeyVariable: string =
+        difference(localeKeyInText, Object.keys(variableTextBufferStore.value)).at(0) || ''
+      onRemoveVariable(excessKeyVariable)
+    }
+
+    const watchOptions = { immediate: true, deep: true }
+
+    watch(() => variableTextBufferStore, handleVariablesChange, watchOptions)
 
     return {
       modelValue,
       allCurrencies,
       localisationParameters,
       setUpdateLocalisationParameters,
+      onRemoveVariable,
     }
   },
 })

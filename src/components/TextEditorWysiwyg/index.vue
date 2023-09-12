@@ -56,7 +56,8 @@ interface Props {
 
 interface Emits {
   (event: 'input', payload: string): void
-  (event: 'update-localisation-parameters', payload: any): void
+  (event: 'update-localisation-parameters', payload: LocaleVariable): void
+  (event: 'remove-variable', payload: string): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -266,6 +267,7 @@ const deleteVariableTextByKey = () => {
       .replaceAll('&nbsp;&nbsp;', '')
   )
   removeVariableValueByKey(variableKeySelect.value)
+  emit('remove-variable', variableKeySelect.value)
   variableKeySelect.value = ''
   store.dispatch('textEditor/setUpdateVar', true)
 }
