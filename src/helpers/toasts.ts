@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import ToastificationContent from '../@core/components/toastification/ToastificationContent.vue'
 import i18n from '../libs/i18n'
+import { IconsList } from '../@model/enums/icons'
 
 type ToastOptions = Record<string | 'defaultCode', string>
 
@@ -19,7 +20,7 @@ export default function useToastService() {
       component: ToastificationContent,
       props: {
         title: i18n.t(message, options),
-        icon: 'CheckCircleIcon',
+        icon: IconsList.CheckCircleIcon,
         variant: 'success',
       },
     })
@@ -36,7 +37,7 @@ export default function useToastService() {
       component: ToastificationContent,
       props: {
         title: i18n.t(message, options),
-        icon: 'AlertTriangleIcon',
+        icon: IconsList.AlertTriangleIcon,
         variant: 'danger',
       },
     })
@@ -50,7 +51,7 @@ export default function useToastService() {
       component: ToastificationContent,
       props: {
         title: newMessage,
-        icon: 'AlertTriangleIcon',
+        icon: IconsList.AlertTriangleIcon,
         variant: 'danger',
       },
     })

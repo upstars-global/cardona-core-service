@@ -222,22 +222,27 @@ export default defineComponent({
 
       const transformedForm: any = transformFormData(formData)
       if (onBeforeSubmitCb && !(await onBeforeSubmitCb(formData))) return
-      const data = await store.dispatch(actionName, {
-        type: entityName,
-        data: {
-          form: transformedForm,
-          formRef: refFormObserver.value,
-        },
-        customApiPrefix: props.config?.customApiPrefix,
-      })
 
-      if (isCreatePage) {
-        isStay
-          ? await router.push({ name: UpdatePageName, params: { id: String(data?.id) } })
-          : await router.push({ name: ListPageName })
+      try {
+        const data = await store.dispatch(actionName, {
+          type: entityName,
+          data: {
+            form: transformedForm,
+            formRef: refFormObserver.value,
+          },
+          customApiPrefix: props.config?.customApiPrefix,
+        })
+
+        if (isCreatePage) {
+          isStay && data
+            ? await router.push({ name: UpdatePageName, params: { id: String(data?.id) } })
+            : await router.push({ name: ListPageName })
+        }
+
+        if (onSubmitCallback) await onSubmitCallback(String(transformedForm?.id))
+      } catch {
+        return
       }
-
-      if (onSubmitCallback) await onSubmitCallback(String(transformedForm?.id))
     }
 
     const onClickCancel = () => router.push({ name: ListPageName })
