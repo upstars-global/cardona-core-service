@@ -13,24 +13,25 @@
       <froala v-model.trim="content" :tag="'textarea'" :config="config"></froala>
     </div>
 
-    <div
-      v-if="Object.keys(variableTextBuffer).length"
-      :key="'block-text-edite-variable' + isUpdateVar"
-      class="d-flex flex-wrap align-items-center block-text-edite-variable pt-1"
-    >
-      <span class="font-small-3 font-weight-bolder mr-1 mb-50">
-        {{ $t('common.editor.addedVariables') }}
-      </span>
-      <b-badge
-        v-for="key in Object.keys(variableTextBuffer)"
-        :key="key"
-        v-b-modal.variable-modal
-        variant="light-primary"
-        class="tag-variable mr-1 mb-50"
-        @click="setVariableKeySelect(key)"
+    <div :class="{ 'd-none': !Object.keys(variableTextBuffer).length }">
+      <div
+        :key="'block-text-edite-variable' + isUpdateVar"
+        class="d-flex flex-wrap align-items-center block-text-edite-variable pt-1"
       >
-        {{ `{${key}\}` }}
-      </b-badge>
+        <span class="font-small-3 font-weight-bolder mr-1 mb-50">
+          {{ $t('common.editor.addedVariables') }}
+        </span>
+        <b-badge
+          v-for="key in Object.keys(variableTextBuffer)"
+          :key="key"
+          v-b-modal.variable-modal
+          variant="light-primary"
+          class="tag-variable mr-1 mb-50"
+          @click="setVariableKeySelect(key)"
+        >
+          {{ `{${key}\}` }}
+        </b-badge>
+      </div>
     </div>
   </div>
 </template>
