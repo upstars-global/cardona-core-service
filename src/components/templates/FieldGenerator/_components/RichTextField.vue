@@ -19,7 +19,7 @@ import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
 import { LocaleVariable } from '../../../../@model/translations'
 import { difference } from 'lodash'
-import { filterString, getVariablesFromLocale } from "../../../../helpers/text-editor";
+import { filterString, getVariablesFromLocale } from '../../../../helpers/text-editor'
 
 export default defineComponent({
   name: 'RichTextField',
