@@ -25,11 +25,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, PropType } from 'vue'
 import { BAvatar } from 'bootstrap-vue'
 import { IconsList } from '../../../@model/enums/icons'
 
-export default {
+export default defineComponent({
   components: {
     BAvatar,
   },
@@ -39,7 +40,7 @@ export default {
       default: 'primary',
     },
     icon: {
-      type: IconsList,
+      type: String as PropType<IconsList>,
       default: null,
     },
     title: {
@@ -60,7 +61,7 @@ export default {
       IconsList,
     }
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>
