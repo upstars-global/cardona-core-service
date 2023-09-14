@@ -13,7 +13,7 @@
       <froala v-model.trim="content" :tag="'textarea'" :config="config"></froala>
     </div>
 
-    <div :class="{ 'd-none': !Object.keys(variableTextBuffer).isNotEmpty }">
+    <div :class="{ 'd-none': Object.keys(variableTextBuffer).isEmpty }">
       <div
         :key="'block-text-edite-variable' + isUpdateVar"
         class="d-flex flex-wrap align-items-center block-text-edite-variable pt-1"
