@@ -7,6 +7,7 @@
       :options-variable="allCurrencies"
       :localisation-parameters="localisationParameters"
       @update-localisation-parameters="setUpdateLocalisationParameters"
+      @remove-variable="onRemoveVariable"
     />
   </div>
 </template>
@@ -16,6 +17,9 @@ import { defineComponent, PropType, computed, watch, ref } from 'vue'
 import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg/index.vue'
 import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
+import { LocaleVariable } from '../../../../@model/translations'
+import { difference } from 'lodash'
+import { filterString, getVariablesFromLocale } from '../../../../helpers/text-editor'
 
 export default defineComponent({
   name: 'RichTextField',
@@ -48,11 +52,12 @@ export default defineComponent({
   setup(props, { emit }) {
     const localisationParameters = ref({})
     const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
+    const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
+
     const modelValue = computed({
       get: () => props.value,
       set: (value) => emit('input', value),
     })
-
     watch(
       () => props.field,
       () => {
@@ -62,15 +67,33 @@ export default defineComponent({
       },
       { immediate: true, deep: true }
     )
-    const setUpdateLocalisationParameters = (parametres: any) => {
-      localisationParameters.value = parametres
+
+    const setUpdateLocalisationParameters = (localeVariables: LocaleVariable) => {
+      localisationParameters.value = localeVariables
+      props.field.form!['localisationParameters'] = localeVariables
     }
+
+    const onRemoveVariable = (localeVariables: string): void => {
+      emit('input', filterString(modelValue.value, localeVariables))
+    }
+
+    const handleVariablesChange = () => {
+      const localeKeyInText = getVariablesFromLocale(modelValue.value)
+      const excessKeyVariable: string =
+        difference(localeKeyInText, Object.keys(variableTextBufferStore.value)).at(0) || ''
+      onRemoveVariable(excessKeyVariable)
+    }
+
+    const watchOptions = { immediate: true, deep: true }
+
+    watch(() => variableTextBufferStore, handleVariablesChange, watchOptions)
 
     return {
       modelValue,
       allCurrencies,
       localisationParameters,
       setUpdateLocalisationParameters,
+      onRemoveVariable,
     }
   },
 })

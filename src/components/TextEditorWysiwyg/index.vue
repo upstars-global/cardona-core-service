@@ -13,24 +13,25 @@
       <froala v-model.trim="content" :tag="'textarea'" :config="config"></froala>
     </div>
 
-    <div
-      v-if="Object.keys(variableTextBuffer).length"
-      :key="'block-text-edite-variable' + isUpdateVar"
-      class="d-flex flex-wrap align-items-center block-text-edite-variable pt-1"
-    >
-      <span class="font-small-3 font-weight-bolder mr-1 mb-50">
-        {{ $t('common.editor.addedVariables') }}
-      </span>
-      <b-badge
-        v-for="key in Object.keys(variableTextBuffer)"
-        :key="key"
-        v-b-modal.variable-modal
-        variant="light-primary"
-        class="tag-variable mr-1 mb-50"
-        @click="setVariableKeySelect(key)"
+    <div :class="{ 'd-none': Object.keys(variableTextBuffer).isEmpty }">
+      <div
+        :key="'block-text-edite-variable' + isUpdateVar"
+        class="d-flex flex-wrap align-items-center block-text-edite-variable pt-1"
       >
-        {{ `{${key}\}` }}
-      </b-badge>
+        <span class="font-small-3 font-weight-bolder mr-1 mb-50">
+          {{ $t('common.editor.addedVariables') }}
+        </span>
+        <b-badge
+          v-for="key in Object.keys(variableTextBuffer)"
+          :key="key"
+          v-b-modal.variable-modal
+          variant="light-primary"
+          class="tag-variable mr-1 mb-50"
+          @click="setVariableKeySelect(key)"
+        >
+          {{ `{${key}\}` }}
+        </b-badge>
+      </div>
     </div>
   </div>
 </template>
@@ -44,18 +45,20 @@ import i18n from '../../libs/i18n'
 import store from '../../store'
 import baseConfig from './config'
 import { TranslateResult } from 'vue-i18n'
+import { LocaleVariable } from '../../@model/translations'
 
 interface Props {
   value: string
   optionsVariable: Array<string>
-  localisationParameters: Record<string, Record<string, string>>
+  localisationParameters: LocaleVariable
   readonly placeholder?: TranslateResult
   disabled?: boolean
 }
 
 interface Emits {
   (event: 'input', payload: string): void
-  (event: 'update-localisation-parameters', payload: any): void
+  (event: 'update-localisation-parameters', payload: LocaleVariable): void
+  (event: 'remove-variable', payload: string): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -265,6 +268,7 @@ const deleteVariableTextByKey = () => {
       .replaceAll('&nbsp;&nbsp;', '')
   )
   removeVariableValueByKey(variableKeySelect.value)
+  emit('remove-variable', variableKeySelect.value)
   variableKeySelect.value = ''
   store.dispatch('textEditor/setUpdateVar', true)
 }
