@@ -548,6 +548,10 @@
     },
     "changePassword": {
       "title": "Set a new password"
+    },
+    "test": {
+      "title": "Test title",
+      "description": "Test description"
     }
   },
   "activityStatus" : {
