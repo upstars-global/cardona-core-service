@@ -83,7 +83,6 @@ jest.mock('../../../src/store', () => {
       abilityCan: jest.fn((key, action) => {
         const state = require('../../../src/store').state
         const permission = state.userInfo.permissions.find((p) => p.target === key)
-        console.log('!!!!', permission, permission.access, action)
         return permission && permission.access >= action
       }),
     },
