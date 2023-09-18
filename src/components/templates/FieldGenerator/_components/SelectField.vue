@@ -147,22 +147,16 @@ export default {
       padding-left: 6px;
     }
 
-    :deep(.vs__selected, .vs__dropdown-option--selected) {
+    .vs__selected,
+    .vs__dropdown-option--selected {
       background-color: $bg-light-purple;
       color: $purple;
-      font-weight: $font-weight-bold;
-    }
-
-    &.vs--disabled {
-      :deep(.vs__selected, .vs__dropdown-option--selected) {
-        color: $text-muted;
-        background-color: rgba($gray-700, 0.12);
-      }
+      font-weight: 500;
     }
   }
 
   &.error {
-    :deep(.vs__dropdown-toggle) {
+    .vs__dropdown-toggle {
       border-color: $red;
     }
   }
