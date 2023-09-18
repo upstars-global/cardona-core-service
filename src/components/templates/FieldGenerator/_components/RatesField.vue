@@ -1,7 +1,14 @@
 <template>
   <div v-if="allCurrencies.isNotEmpty" class="full-width">
-    <div class="font-small-4 font-weight-bolder">
+    <div class="d-flex align-items-center font-small-4 font-weight-bold">
       {{ field.label }}
+
+      <feather-icon
+        v-if="field.info"
+        v-b-tooltip.hover.top="field.info"
+        :icon="IconsList.InfoIcon"
+        class="text-muted ml-25 align-text-top"
+      />
     </div>
     <b-row v-if="formRates.length" class="flex-wrap mt-1">
       <b-col v-for="(currency, index) in allCurrencies" :key="currency" md="2" class="px-1 pb-1">
@@ -18,6 +25,7 @@ import store from '../../../../store'
 import { NumberBaseField } from '../../../../@model/baseField'
 import FieldGenerator from '../../../../components/templates/FieldGenerator'
 import { division, multiplication } from '../../../../helpers/math-operations'
+import { IconsList } from '../../../../@model/enums/icons'
 
 type Rates = {
   readonly currency: string
@@ -29,9 +37,11 @@ const props = withDefaults(
     value: Array<Rates>
     field: FieldInfo
     disabled?: boolean
+    append?: string
   }>(),
   {
     value: () => [] as Array<Rates>,
+    append: '',
   }
 )
 
@@ -50,6 +60,7 @@ const formRates = ref(
       label: item,
       placeholder: '0.00',
       validationRules: 'required',
+      append: props.append,
     })
   })
 )
@@ -65,6 +76,7 @@ watch(
           label: item.currency,
           placeholder: '0.00',
           validationRules: 'required',
+          append: props.append,
         })
       })
       isNotFilledFormRates.value = false
