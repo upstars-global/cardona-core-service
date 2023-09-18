@@ -3,7 +3,8 @@ type FieldTranslationsLocaleData = {
   disabled: boolean
 }
 
-type FieldTranslationsLocale = Record<string, FieldTranslationsLocaleData>
+export type FieldTranslationsLocale = Record<string, FieldTranslationsLocaleData>
+export type LocaleVariable = Record<string, Record<string, string>>
 
 export type FieldTranslationsData = {
   readonly name?: FieldTranslationsLocale
