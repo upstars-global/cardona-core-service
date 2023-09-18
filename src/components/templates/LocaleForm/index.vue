@@ -38,6 +38,7 @@
                 :data-at="`input-${item}-${local}`"
                 @update-localisation-parameters="updateLocalisationParameters"
                 @input="(val) => onInputLocalEditor(val, item, local)"
+                @remove-variable="onRemoveVariables"
               />
               <div
                 v-else
@@ -72,8 +73,18 @@ import { computed, defineComponent, ref, watch } from 'vue'
 import TextEditorWysiwyg from '../../../components/TextEditorWysiwyg/index.vue'
 import store from '../../../store'
 import { SeoForm } from '../../../@model/seo'
-import { FieldTranslationsData } from '../../../@model/translations'
+import {
+  FieldTranslationsData,
+  FieldTranslationsLocale,
+  LocaleVariable,
+} from '../../../@model/translations'
 import CheckField from '../FieldGenerator/_components/CheckField.vue'
+import {
+  filterString,
+  getExcessKeyVariable,
+  getVariablesFromAllLocaleText,
+  getVariablesFromLocale,
+} from '../../../helpers/text-editor'
 
 export default defineComponent({
   name: 'LocaleForm',
@@ -105,6 +116,7 @@ export default defineComponent({
     const locales = computed(() => selectedProject.value?.locales || [])
     const allLocales = computed(() => store.getters['localeCore/allLocalesKeys'])
     const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
+    const variables = computed(() => store.state.textEditor.variableTextBuffer)
 
     const getDefaultFieldTranslations = (objForm) => {
       const _defaultFieldTranslations = {}
@@ -182,10 +194,46 @@ export default defineComponent({
       }
     }
 
-    const updateLocalisationParameters = (variableText) => {
-      // TODO emit('input', form) - not work
+    const cleanString = (inputString: string) => {
+      const regex = /&nbsp;<span class="variable-box">\{[^}]*\}<\/span>/g
+      const cleanedString = inputString.replaceAll(regex, '').replaceAll('&nbsp;&nbsp;', '')
+      return cleanedString
+    }
+
+    const cleanMetaTitle = (metaTitle: FieldTranslationsLocale, variableText: string): any => {
+      const metaTitlesInLists = Object.entries(metaTitle).map(([key, value]) => [
+        key,
+        { ...value, value: filterString(value.value, variableText) },
+      ])
+      return Object.fromEntries(metaTitlesInLists)
+    }
+
+    const updateLocalisationParameters = (variableText: LocaleVariable): void => {
       props!.value['localisationParameters'] = variableText
     }
+
+    const onRemoveVariables = (variable: string): void => {
+      if (!variable) return
+      props!.value['fieldTranslations'].metaTitle = cleanMetaTitle(
+        props!.value['fieldTranslations'].metaTitle || {},
+        variable || ''
+      )
+    }
+
+    const handleVariablesChange = () => {
+      const allString = getVariablesFromAllLocaleText(props!.value['fieldTranslations']?.metaTitle)
+      if (!allString) return
+      const localeKeyInText = getVariablesFromLocale(allString)
+      const excessKeyVariable = getExcessKeyVariable(localeKeyInText, variables.value)
+      props!.value['fieldTranslations'].metaTitle = cleanMetaTitle(
+        props!.value['fieldTranslations'].metaTitle || {},
+        excessKeyVariable || ''
+      )
+    }
+
+    const watchOptions = { immediate: true, deep: true }
+
+    watch(() => variables, handleVariablesChange, watchOptions)
 
     return {
       fieldTranslations,
@@ -198,6 +246,8 @@ export default defineComponent({
       updateLocalisationParameters,
       onInputLocalEditor,
       isMainLocale,
+      variables,
+      onRemoveVariables,
     }
   },
 })
