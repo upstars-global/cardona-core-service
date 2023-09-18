@@ -5,6 +5,7 @@ import {
   email as rule_email,
   min as rule_min,
   min_value as rule_min_value,
+  max_value as rule_max_value,
   confirmed as rule_confirmed,
   regex as rule_regex,
   between as rule_between,
@@ -50,6 +51,11 @@ export const min = extend('min', {
 export const minValue = extend('minValue', {
   ...rule_min_value,
   message: (_, values) => i18n.t('validations.min_value', values) as any,
+})
+
+export const maxValue = extend('maxValue', {
+  ...rule_max_value,
+  message: (_, values) => i18n.t('validations.max_value', values) as any,
 })
 
 export const confirmed = extend('confirmed', {

@@ -50,3 +50,19 @@ const onKeyDown = (event) => {
   }
 }
 </script>
+
+
+<style lang="scss" scoped>
+@import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
+
+.input-group-text {
+  font-weight: $font-weight-bolder;
+}
+
+.error {
+  .input-group-text {
+    border-color: $red;
+  }
+}
+</style>
+
