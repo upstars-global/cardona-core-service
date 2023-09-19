@@ -103,8 +103,8 @@ export default defineComponent({
     const refTable: any = ref(null)
     const { t } = useI18nUtils()
     const columns = [
-      new TableField({ key: 'img', label: t('uploadImg.tableCol1Name') }),
-      new TableField({ key: 'url', label: t('uploadImg.tableCol2Name') }),
+      new TableField({ key: 'img', label: t('uploadImg.tableColImg') }),
+      new TableField({ key: 'url', label: t('uploadImg.tableColUrl') }),
     ]
     const selectedColumns = ref<TableField[]>([...columns])
     const dataMeta = props.paginated.setupDataMeta(refTable)
