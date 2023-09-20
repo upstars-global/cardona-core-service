@@ -83,6 +83,11 @@ export const useDemoList = (): UseListType => {
       type: ListFieldType.Image,
     }),
     new TableField({
+      key: 'imageFull',
+      label: t('common.image-with-full-view'),
+      type: ListFieldType.ImageFull,
+    }),
+    new TableField({
       type: ListFieldType.Priority,
       key: 'position',
       label: t('common.priority'),

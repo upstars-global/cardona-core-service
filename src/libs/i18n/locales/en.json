@@ -83,6 +83,7 @@
     "link": "Link",
     "displayPeriod": "Display period",
     "image": "Image",
+    "image-with-full-view": "Image with full view",
     "numberOfSelected": "{number} selected",
     "notification": "Notification",
     "notifications": "Notifications",

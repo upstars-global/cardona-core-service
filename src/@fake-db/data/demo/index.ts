@@ -83,6 +83,10 @@ const listData = [
     country: 'en',
     position: 1,
     imagePath: listImages[0].publicPath,
+    imageFull: {
+      imagePath: listImages[0].publicPath,
+      id: '632c39448e03b2dab20c8a77',
+    },
     tags: [tagsList[0], tagsList[1], tagsList[2]],
     type: {
       id: TransactionType.Deposit,
@@ -116,6 +120,10 @@ const listData = [
     login: 'Some',
     position: 4,
     imagePath: listImages[1].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
     tags: [tagsList[3], tagsList[4], tagsList[5]],
     type: {
       id: TransactionType.Deposit,
@@ -188,6 +196,10 @@ const listData = [
     login: '',
     position: 55,
     imagePath: listImages[4].publicPath,
+    imageFull: {
+      imagePath: listImages[4].publicPath,
+      id: '632c39448e03b2dab20c8a75',
+    },
     tags: [tagsList[1], tagsList[8], tagsList[9]],
     gameId: '622c39448e03b2dab20c8a75',
     state: true,

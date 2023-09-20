@@ -39,6 +39,7 @@ export enum ListFieldType {
   SumAndCurrency = 'sum-and-currency',
   Comment = 'comment',
   Image = 'image',
+  ImageFull = 'image-full',
   Period = 'period',
   Copy = 'copy',
   CopyShort = 'copy-short',
