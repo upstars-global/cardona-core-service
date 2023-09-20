@@ -12,6 +12,7 @@
       :sidebar-collapse-mode="config.sidebarCollapseMode"
       @update="routerToUpdatePageId(selectedItem)"
       @remove="onClickRemove(selectedItem)"
+      @hide="resetSelectedItem"
     >
       <template #sidebar-actions="{ form }">
         <slot name="sidebar-actions" :form="form" :item="selectedItem" />
@@ -128,6 +129,7 @@
         :draggable="config.draggable"
         :sort-by.sync="sortData.sortBy"
         :sort-desc.sync="sortData.sortDesc"
+        :tbody-tr-class="selectedRowClass"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"
@@ -396,7 +398,7 @@ import { useFilters } from '../../FiltersBlock/useFilters'
 import FiltersBlock from '../../FiltersBlock/index.vue'
 import { Filter, PayloadFilters } from '../../../@model/filter'
 import { BaseField, SelectBaseField } from '../../../@model/baseField'
-import { omit } from 'lodash'
+import { findIndex, omit } from 'lodash'
 import { IconsList } from '../../../@model/enums/icons'
 import RemoveModal from './_components/RemoveModal.vue'
 import ListSearch from './_components/ListSearch.vue'
@@ -506,6 +508,10 @@ export default {
         (key) => key.includes('sidebar-row') || key.includes('sidebar-value')
       )
     )
+
+    const resetSelectedItem = () => {
+      selectedItem.value = null
+    }
 
     const onClickRow = (data) => {
       if (props.config?.selectable) return
@@ -867,6 +873,22 @@ export default {
       reFetchList()
     }
 
+    const getIndexByItemFromList = (item) => findIndex(items.value || [], item)
+
+    const selectedItemIndex = computed(() => {
+      if (!selectedItem.value) return NaN
+      const itemIndex = getIndexByItemFromList(selectedItem.value)
+      return itemIndex > -1 ? itemIndex : NaN
+    })
+
+    const selectedRowClass = (rowItem) => {
+      const itemIndex = getIndexByItemFromList(rowItem)
+      if (![selectedItemIndex.value, itemIndex].some(isNotEmptyNumber)) return ''
+      return selectedItemIndex.value === itemIndex
+        ? `table-${rowItem?.rowVariant || 'default'}-bg`
+        : ''
+    }
+
     return {
       //SideBar
       SideBarModel,
@@ -888,6 +910,7 @@ export default {
       setSelectedItem,
       routerToUpdatePageId,
       sidebarSlots,
+      resetSelectedItem,
 
       // Search
       searchQuery,
@@ -958,6 +981,9 @@ export default {
       onEditPosition,
 
       IconsList,
+
+      selectedRowClass,
+      selectedItemIndex,
     }
   },
 }

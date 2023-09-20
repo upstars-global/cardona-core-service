@@ -1,5 +1,5 @@
 @import '../../../@core/scss/base/core/colors/palette-variables';
-
+@import '../../../@core/scss/base/bootstrap-extended/_variables';
 
 @each $color_name, $color in $colors {
   @each $color_type, $color_value in $color {
@@ -10,6 +10,13 @@
       .table-light-#{$color_name}:hover {
         background-color: rgba($color_value, 0.36) !important;
       }
+      .table-light-#{$color_name}-bg {
+        background-color: rgba($color_value, 0.36) !important;
+      }
     }
   }
+}
+
+.table-default-bg {
+  background-color: $table-hover-bg;
 }
