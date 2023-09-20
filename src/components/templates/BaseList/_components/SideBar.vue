@@ -9,6 +9,7 @@
     no-header
     right
     @change="(val) => $emit('update:sidebar-active', val)"
+    @hidden="$emit('hide')"
   >
     <template v-if="item" #default="{ hide }">
       <!-- Header -->
