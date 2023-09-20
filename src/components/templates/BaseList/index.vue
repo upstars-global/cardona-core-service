@@ -251,6 +251,12 @@
             :key="index"
             :image-path="value"
           />
+          <image-detail-field
+            v-else-if="field.type === ListFieldType.ImageFull"
+            :id="value.id"
+            :key="index"
+            :image-path="value.imagePath"
+          />
 
           <date-period-field
             v-else-if="field.type === ListFieldType.Period"
@@ -378,6 +384,7 @@ import BadgesField from './_components/BadgesField.vue'
 import ButtonField from './_components/ButtonField.vue'
 import CommentField from './_components/CommentField.vue'
 import ImageField from './_components/ImageField.vue'
+import ImageDetailField from './_components/ImageDetailField.vue'
 import DatePeriodField from './_components/DatePeriodField.vue'
 import CopyField from './_components/CopyField.vue'
 import CopyShortField from './_components/CopyShortField.vue'
@@ -406,6 +413,7 @@ export default {
     MultipleActions,
     DatePeriodField,
     ImageField,
+    ImageDetailField,
     CommentField,
     SumAndCurrency,
     SideBar,

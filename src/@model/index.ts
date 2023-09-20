@@ -57,3 +57,8 @@ export type OptionsItem = {
 }
 
 export type Nullable<T> = T | null
+
+export type Badge = {
+  name: string
+  id: string
+}
