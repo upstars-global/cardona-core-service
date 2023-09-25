@@ -1,6 +1,9 @@
 <template>
-  <div v-b-modal="modalId" class="d-flex justify-content-center align-items-center">
-    <image-field :image-path="imagePath" />
+  <div
+    v-b-modal="modalId"
+    class="d-flex justify-content-center align-items-center image-detail-field"
+  >
+    <image-field :image-path="previewImage" />
     <c-modal v-if="imagePath" :id="modalId" title="" :size="BSize.Xl" hide-footer>
       <div class="d-flex justify-content-center align-items-center">
         <img :src="imagePath" alt="full img" class="full-size-img" />
@@ -18,9 +21,14 @@ import CModal from '../../../../components/CModal.vue'
 const props = defineProps<{
   id: string
   imagePath: string
+  compressionForPreview?: number
 }>()
 
 const modalId = computed(() => `full-img-${props.id}`)
+const previewAdditionalParams = computed(() =>
+  props.compressionForPreview ? `?ar=${props.compressionForPreview}` : ''
+)
+const previewImage = computed(() => props.imagePath + previewAdditionalParams.value)
 </script>
 
 <style lang="scss" scoped>
