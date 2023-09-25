@@ -258,6 +258,7 @@
             :id="value.id"
             :key="index"
             :image-path="value.imagePath"
+            :compression-for-preview="value.compressionForPreview || 0"
           />
 
           <date-period-field
