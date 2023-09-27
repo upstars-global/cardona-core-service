@@ -5,8 +5,9 @@
       v-if="config.sidebar"
       :sidebar-active.sync="isSidebarShown"
       :item="selectedItem"
-      :can-remove="canRemove"
       :can-update="canUpdate"
+      :can-update-item="canUpdateItem(selectedItem)"
+      :can-remove-item="canRemoveItem(selectedItem)"
       :entity-name="entityName"
       :side-bar-model="SideBarModel"
       :sidebar-collapse-mode="config.sidebarCollapseMode"
@@ -16,6 +17,10 @@
     >
       <template #sidebar-actions="{ form }">
         <slot name="sidebar-actions" :form="form" :item="selectedItem" />
+      </template>
+
+      <template #sidebar-action-items="{ form }">
+        <slot name="sidebar-action-items" :form="form" :item="selectedItem" />
       </template>
 
       <template v-for="key in sidebarSlots" :slot="key" slot-scope="{ item }">
@@ -153,7 +158,6 @@
             :field="field"
             :item="item"
             :value="value"
-            :set-selected-item="setSelectedItem"
           />
 
           <status-field
@@ -292,13 +296,18 @@
           <item-actions
             :item="item"
             :create-page-name="CreatePageName"
-            :can-remove="canRemove"
             :can-update="canUpdate"
-            :update-page-name="UpdatePageName"
+            :can-update-item="canUpdateItem(item)"
+            :can-remove-item="canRemoveItem(item)"
             :config="config"
+            :get-update-route="getUpdateRoute"
             @on-remove="onClickRemove"
             @on-toggle-status="onClickToggleStatus"
-          />
+          >
+            <template #action-items>
+              <slot name="action-items" :item="item" />
+            </template>
+          </item-actions>
         </template>
 
         <template #empty>
@@ -337,13 +346,12 @@
 
     <!-- Remove modal -->
     <remove-modal
-      v-if="canRemove || config.withRemoveModal"
+      v-if="canRemove"
       :config="config"
       :entity-name="entityName"
       :remove-modal-id="removeModalId"
       @on-click-modal-ok="onClickModalOk"
     />
-    <!-- TODO: config.withRemoveModal - Delete and permission -->
   </div>
 </template>
 
@@ -467,6 +475,8 @@ export default {
       ListFilterModel,
       SideBarModel,
       pageName,
+      canUpdateCb,
+      canRemoveCb,
       beforeRemoveCallback,
       ListItemModel,
     } = props.useList()
@@ -497,12 +507,13 @@ export default {
 
     const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
 
+    const canUpdateItem = (item): boolean =>
+      canUpdateCb && item ? isExistsUpdatePage && canUpdateCb(item) : isExistsUpdatePage
+    const canRemoveItem = (item): boolean =>
+      canRemoveCb && item ? canRemove && canRemoveCb(item) : canRemove
     // Sidebar
     const isSidebarShown = ref(false)
     const selectedItem: any = ref(null)
-    const setSelectedItem = (item: any) => {
-      selectedItem.value = item
-    }
 
     const sidebarSlots = computed(() =>
       Object.keys(slots).filter(
@@ -904,11 +915,12 @@ export default {
       canUpdateSeo,
       canRemove,
       canExport,
+      canUpdateItem,
+      canRemoveItem,
 
       // Sidebar
       isSidebarShown,
       selectedItem,
-      setSelectedItem,
       routerToUpdatePageId,
       sidebarSlots,
       resetSelectedItem,
@@ -932,6 +944,7 @@ export default {
       // Table
       refListTable,
       isLoadingList,
+      isExistsUpdatePage,
       size,
       fields,
       ListFieldType,

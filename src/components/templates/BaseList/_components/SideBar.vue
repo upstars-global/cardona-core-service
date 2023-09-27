@@ -76,20 +76,22 @@
         </template>
 
         <slot name="sidebar-actions" :form="viewForm">
-          <div v-if="canUpdate" class="d-flex mt-2">
+          <div v-if="canUpdate" class="d-flex mt-2 sidebar-actions">
+            <slot name="sidebar-action-items" />
+
             <b-button
-              variant="outline-secondary"
-              size="sm"
-              class="mr-1"
+              v-if="canUpdateItem"
+              :variant="BVariant.OutlineSecondary"
+              :size="BSize.Sm"
               @click="action('update', hide)"
             >
               {{ $t('action.edit') }}
             </b-button>
 
             <b-button
-              v-if="canRemove"
-              variant="outline-danger"
-              size="sm"
+              v-if="canRemoveItem"
+              :variant="BVariant.OutlineDanger"
+              :size="BSize.Sm"
               @click="action('remove', hide)"
             >
               {{ $t('action.remove') }}
@@ -111,6 +113,7 @@ import AppCollapse from '../../../../@core/components/app-collapse/AppCollapse.v
 import AppCollapseItem from '../../../../@core/components/app-collapse/AppCollapseItem.vue'
 import { SideBarCollapseItem } from '../model'
 import { IconsList } from '../../../../@model/enums/icons'
+import { BVariant, BSize } from '../../../../@model/bootstrap'
 
 const emitAfterAnimationSidebar = 200
 
@@ -139,7 +142,11 @@ export default {
       type: Boolean,
       required: false,
     },
-    canRemove: {
+    canUpdateItem: {
+      type: Boolean,
+      required: false,
+    },
+    canRemoveItem: {
       type: Boolean,
       required: false,
     },
@@ -187,6 +194,8 @@ export default {
       SideBarCollapseItem,
       checkSlotExistence,
       IconsList,
+      BVariant,
+      BSize,
     }
   },
 }
@@ -198,6 +207,12 @@ export default {
   .card-header,
   .card-body {
     padding: 0;
+  }
+}
+
+.sidebar-actions {
+  :deep(.btn:not(:last-child)) {
+    margin-right: 1rem;
   }
 }
 </style>

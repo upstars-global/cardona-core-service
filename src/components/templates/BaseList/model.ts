@@ -16,13 +16,17 @@ export interface IOptionsBaseFetch {
   readonly customApiPrefix?: string
 }
 
+export type CanActionCb = (item: any) => boolean
+
 export type UseListType = {
   readonly entityName: string
   readonly pageName?: string
   readonly fields: Array<TableField>
   readonly ListFilterModel: Function
   readonly SideBarModel?: Function
+  readonly canUpdateCb?: CanActionCb
   readonly beforeRemoveCallback?: Function
+  readonly canRemoveCb?: CanActionCb
   readonly ListItemModel?: Function
 }
 
@@ -115,9 +119,6 @@ export interface IBaseListConfig {
   /** withRemoveComment - Добавить/убрать поле коментария в модальном окне при удалении */
   readonly withRemoveComment?: boolean
 
-  /** withRemoveComment - Вкл/выкл модальное окно при удалении */
-  readonly withRemoveModal?: boolean
-
   /** createFromCopy - Вкл/выкл действие копирования элемента */
   readonly createFromCopy?: boolean
 
@@ -178,7 +179,6 @@ export class BaseListConfig implements IBaseListConfig {
   readonly isShowUpdatePassword?: boolean
   readonly onePermissionKey?: string
   readonly withRemoveComment?: boolean
-  readonly withRemoveModal?: boolean
   readonly createFromCopy?: boolean
   readonly withCustomDrag?: boolean
   readonly pagination?: boolean
@@ -217,7 +217,6 @@ export class BaseListConfig implements IBaseListConfig {
     isShowUpdatePassword,
     onePermissionKey,
     withRemoveComment,
-    withRemoveModal,
     createFromCopy,
     withCustomDrag,
     pagination,
@@ -255,7 +254,6 @@ export class BaseListConfig implements IBaseListConfig {
     this.isShowUpdatePassword = isShowUpdatePassword
     this.onePermissionKey = onePermissionKey
     this.withRemoveComment = withRemoveComment
-    this.withRemoveModal = withRemoveModal
     this.withCustomDrag = withCustomDrag
     this.pagination = pagination ?? true
     this.createFromCopy = createFromCopy
