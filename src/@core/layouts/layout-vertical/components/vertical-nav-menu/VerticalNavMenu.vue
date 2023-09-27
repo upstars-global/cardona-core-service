@@ -105,6 +105,7 @@ import store from '../../../../../store'
 import ProductsSelect from '../../../../../@core/layouts/layout-vertical/components/vertical-nav-menu/components/ProductsSelect'
 import router from '../../../../../router'
 import i18n from '../../../../../libs/i18n'
+import { convertUpperCaseFirstSymbol } from '../../../../../helpers'
 
 export default {
   name: 'VerticalNavMenu',
@@ -169,8 +170,11 @@ export default {
       ]
     })
     const selectedProjectTitle = computed(() =>
-      isNeocore.value ? store.getters.selectedProject?.publicName : 'Alaro'
+      isNeocore.value
+        ? store.getters.selectedProject?.publicName
+        : convertUpperCaseFirstSymbol(store.getters.selectedProduct?.name)
     )
+
     const goBack = () => {
       window.history.length > 2 ? router.go(-1) : router.push('/')
     }
@@ -218,7 +222,7 @@ export default {
     margin-top: 2rem;
 
     &.no-collapsed {
-      padding: 0rem;
+      padding: 0;
     }
   }
 }
