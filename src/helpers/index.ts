@@ -35,6 +35,7 @@ export const transformFormData = (form): object => {
     } else {
       acc[key] = valueData
     }
+
     return acc
   }, {})
 }
@@ -54,7 +55,7 @@ export const convertLowerCaseFirstSymbol = (string: string): string => {
 }
 
 export const convertUpperCaseFirstSymbol = (word: string): string => {
-  if (word.isEmpty) return word
+  if (word.isEmpty) return ''
   return word[0].toUpperCase() + word.slice(1)
 }
 
