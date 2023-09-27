@@ -1,14 +1,17 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { IconsList } from '../../../../@model/enums/icons'
 import { IBaseListConfig } from '../model'
+import { Location } from 'vue-router'
 
 interface Props {
   item: any
-  updatePageName: string
   createPageName: string
   config: IBaseListConfig
   canUpdate: boolean
-  canRemove: boolean
+  canUpdateItem: boolean
+  getUpdateRoute: (item: { id: string }) => Location
+  canRemoveItem: boolean
 }
 
 interface Emits {
@@ -16,18 +19,28 @@ interface Emits {
   (event: 'on-remove', payload: any): void
 }
 
-defineProps<Props>()
-
+const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
+
+const isShowActions = computed(() => {
+  return [
+    props.config.withDeactivation,
+    props.canUpdateItem,
+    props.config.createFromCopy,
+    props.canRemoveItem,
+  ].some(Boolean)
+})
 </script>
 
 <template>
-  <b-dropdown class="d-flex" variant="link" no-caret toggle-class="p-0" right :data="item">
+  <b-dropdown v-if="isShowActions" class="d-flex" variant="link" no-caret toggle-class="p-0" right>
     <template #button-content>
       <b-button variant="flat-dark" class="btn-icon">
         <feather-icon :icon="IconsList.MoreVerticalIcon" />
       </b-button>
     </template>
+
+    <slot name="action-items" />
 
     <b-dropdown-item
       v-if="canUpdate && config.withDeactivation"
@@ -43,7 +56,7 @@ const emits = defineEmits<Emits>()
       </span>
     </b-dropdown-item>
 
-    <b-dropdown-item :to="{ name: updatePageName, params: { id: item.id } }">
+    <b-dropdown-item v-if="canUpdateItem" :to="getUpdateRoute(item)">
       <feather-icon :icon="IconsList.EditIcon" size="16" />
 
       <span class="align-middle ml-50">
@@ -62,7 +75,7 @@ const emits = defineEmits<Emits>()
       </span>
     </b-dropdown-item>
 
-    <b-dropdown-item v-if="canRemove" @click="emits('on-remove', item)">
+    <b-dropdown-item v-if="canRemoveItem" @click="emits('on-remove', item)">
       <feather-icon :icon="IconsList.Trash2Icon" size="16" class="text-danger" />
 
       <span class="text-danger align-middle ml-50">
