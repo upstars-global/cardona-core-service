@@ -1,5 +1,6 @@
 import mock from '../../@fake-db/mock'
 import jwt from 'jsonwebtoken'
+import { productId, productName } from '@productConfig'
 
 export const usersList = [
   {
@@ -25,7 +26,12 @@ export const usersList = [
         access: 3,
       },
     ],
-    products: [],
+    products: [
+      {
+        name: productName,
+        id: productId,
+      },
+    ],
     projects: [
       {
         id: 164,

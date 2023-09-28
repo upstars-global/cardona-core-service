@@ -55,7 +55,8 @@ export const convertLowerCaseFirstSymbol = (string: string): string => {
 }
 
 export const convertUpperCaseFirstSymbol = (word: string): string => {
-  if (word.isEmpty) return ''
+  if (!word) return ''
+
   return word[0].toUpperCase() + word.slice(1)
 }
 
