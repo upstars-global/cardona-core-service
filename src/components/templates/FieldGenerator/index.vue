@@ -1,5 +1,11 @@
 <template>
-  <b-form-group v-if="canView" class="mb-0" :class="formGroupClasses" :label-for="value.key">
+  <b-form-group
+    v-if="canView"
+    :id="`${value.key}-field`"
+    class="mb-0"
+    :class="formGroupClasses"
+    :label-for="value.key"
+  >
     <template #label>
       <span>
         {{ groupLabel }}

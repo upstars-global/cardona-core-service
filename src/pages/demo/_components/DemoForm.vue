@@ -1,6 +1,6 @@
 <template>
   <b-tabs nav-class="pb-1">
-    <b-tab active :title="$t('page.demo.fields')">
+    <b-tab id="mainTab" active :title="$t('page.demo.fields')">
       <b-card no-body>
         <b-card-header>
           <b-card-title>
@@ -225,11 +225,16 @@
       </b-card>
     </b-tab>
 
-    <b-tab v-if="formData" :title="$t('title.seo')" :disabled="isDisabledTabs">
+    <b-tab v-if="formData" id="seoTab" :title="$t('title.seo')" :disabled="isDisabledTabs">
       <seo-form v-model="formData" :disabled="isDisabledSeo" />
     </b-tab>
 
-    <b-tab v-if="formData" :title="$t('title.localization')" :disabled="isDisabledTabs">
+    <b-tab
+      v-if="formData"
+      id="localizationTab"
+      :title="$t('title.localization')"
+      :disabled="isDisabledTabs"
+    >
       <locale-form v-model="formData" :disabled="isDisabledSeo" />
     </b-tab>
   </b-tabs>

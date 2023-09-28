@@ -70,6 +70,7 @@ import {
   onBeforeMount,
   defineComponent,
   onBeforeUnmount,
+  nextTick,
 } from 'vue'
 import store from '../../../store'
 import { PageType, UseEntityType } from './model'
@@ -121,6 +122,9 @@ export default defineComponent({
     const entityId: string = route.value.params.id
     const isCreatePage: boolean = props.pageType === PageType.Create
     const isUpdatePage: boolean = props.pageType === PageType.Update
+
+    const tabNameError = ref('')
+    const fieldNameError = ref('')
 
     const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb } =
       props.useEntity()
@@ -199,7 +203,47 @@ export default defineComponent({
     }
     const { refFormObserver } = formValidation(resetForm)
     const validate = async () => {
-      return await refFormObserver.value.validate()
+      const isValid = await refFormObserver.value.validate()
+      const fieldsNotValid = Object.keys(refFormObserver.value.errors).filter(
+        (nameField) => refFormObserver.value.errors[nameField].isNotEmpty
+      )
+
+      if (fieldsNotValid[0]) {
+        setTabError(fieldsNotValid[0])
+      }
+      return isValid
+    }
+
+    const setTabError = (fieldName) => {
+      fieldNameError.value = fieldName
+      tabNameError.value = ''
+      if (form.value.hasOwnProperty(fieldName)) {
+        tabNameError.value = 'mainTab'
+      } else if (form.value.seo?.hasOwnProperty(fieldName)) {
+        tabNameError.value = 'seoTab'
+      } else if (form.value.fieldTranslations?.hasOwnProperty(fieldName)) {
+        tabNameError.value = 'localizationTab'
+      }
+
+      if (tabNameError.value) {
+        const tabElement: HTMLElement | null = document.querySelector(
+          `a[aria-controls=${tabNameError.value}]`
+        )
+        if (tabElement) tabElement.click()
+      }
+
+      if (fieldNameError.value) {
+        nextTick(() => {
+          console.log(fieldNameError.value)
+          const el: HTMLElement | null = document.getElementById(`${fieldNameError.value}-field`)
+          if (el) {
+            el.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            })
+          }
+        })
+      }
     }
 
     const isUpdateSeoOnly = computed(
@@ -240,7 +284,10 @@ export default defineComponent({
         }
 
         if (onSubmitCallback) await onSubmitCallback(String(transformedForm?.id))
-      } catch {
+      } catch (e) {
+        if (e?.['validationErrors']?.[0]) {
+          setTabError(e['validationErrors'][0]?.field)
+        }
         return
       }
     }
@@ -288,6 +335,8 @@ export default defineComponent({
       isExistsEndpointsWithError,
       refFormObserver,
       form,
+      tabNameError,
+      fieldNameError,
 
       // Permissions
       canUpdate,

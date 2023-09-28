@@ -1,5 +1,9 @@
 <template>
-  <div class="form-upload-file form-group mb-2" :class="{ 'form-required': isRequired, disabled }">
+  <div
+    id="imagePath-field"
+    class="form-upload-file form-group mb-2"
+    :class="{ 'form-required': isRequired, disabled }"
+  >
     <modal-file-upload
       ref="modalFileUpload"
       v-model="urlFile"
