@@ -1,6 +1,6 @@
 import type { TranslateResult } from 'vue-i18n'
-import type { IconsList } from './enums/icons'
 import type { PermissionType } from '@permissions'
+import type { IconsList } from './enums/icons'
 
 export enum ViewType {
   Text = 'text',
