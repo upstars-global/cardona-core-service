@@ -43,6 +43,15 @@
       ],
       "@validators": [
         "src/@core/utils/validators"
+      ],
+      "@productConfig": [
+        "src/configs/productConfig.ts"
+      ],
+      "@filterConfig": [
+        "src/@model/filterConfig.ts"
+      ],
+      "@permissions": [
+        "src/configs/permissions.ts"
       ]
     },
     "lib": [

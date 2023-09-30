@@ -79,6 +79,9 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@themeConfig': fileURLToPath(new URL('./themeConfig.ts', import.meta.url)),
+      '@productConfig': fileURLToPath(new URL('./src/configs/productConfig.ts', import.meta.url)),
+      '@filterConfig': fileURLToPath(new URL('./src/@model/filterConfig.ts', import.meta.url)),
+      '@permissions': fileURLToPath(new URL('./src/configs/permissions.ts', import.meta.url)),
       '@core': fileURLToPath(new URL('./src/@core', import.meta.url)),
       '@layouts': fileURLToPath(new URL('./src/@layouts', import.meta.url)),
       '@images': fileURLToPath(new URL('./src/assets/images/', import.meta.url)),

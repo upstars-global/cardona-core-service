@@ -13,6 +13,7 @@ import '@core/scss/template/index.scss'
 import '@styles/styles.scss'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
+import vuex from '@/store'
 
 loadFonts()
 
@@ -25,6 +26,7 @@ app.use(createPinia())
 app.use(router)
 app.use(layoutsPlugin)
 app.use(i18n)
+app.use(vuex)
 app.use(abilitiesPlugin, ability, {
   useGlobalProperties: true,
 })
