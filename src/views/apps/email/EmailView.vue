@@ -1,251 +1,334 @@
-<template>
-  <div class="email-app-details">
-    <!-- Email Header -->
-    <div class="email-detail-header">
-      <!-- Header: Left -->
-      <div class="email-header-left d-flex align-items-center">
-        <span class="go-back mr-1">
-          <feather-icon
-            :icon="$store.state.appConfigCore.isRTL ? 'ChevronRightIcon' : 'ChevronLeftIcon'"
-            size="20"
-            class="align-bottom"
-            @click="$emit('close-email-view')"
-          />
-        </span>
-        <h4 class="email-subject mb-0">
-          {{ emailViewData.subject }}
-        </h4>
-      </div>
+<script setup lang="ts">
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import type { Email } from '@/@fake-db/types'
+import type { MoveEmailToAction } from '@/views/apps/email/useEmail'
+import { useEmail } from '@/views/apps/email/useEmail'
+import { useEmailStore } from '@/views/apps/email/useEmailStore'
+import { formatDate } from '@core/utils/formatters'
 
-      <!-- Header: Right -->
-      <div class="email-header-right ml-2 pl-1">
-        <!-- Mark Starred -->
-        <feather-icon
-          icon="StarIcon"
-          size="17"
-          class="cursor-pointer"
-          :class="{ 'text-warning fill-current': emailViewData.isStarred }"
-          @click="$emit('toggle-email-starred')"
-        />
+interface Props {
+  email: Email | null
+  emailMeta: {
+    hasPreviousEmail: boolean
+    hasNextEmail: boolean
+  }
+}
 
-        <!-- Move email to folder -->
-        <b-dropdown variant="link" no-caret toggle-class="p-0" right class="ml-75">
-          <template #button-content>
-            <feather-icon icon="FolderIcon" size="17" />
-          </template>
+const props = defineProps<Props>()
 
-          <b-dropdown-item @click="$emit('move-email-to-folder', 'draft')">
-            <feather-icon icon="Edit2Icon" />
-            <span class="align-middle ml-50">Draft</span>
-          </b-dropdown-item>
+const emit = defineEmits<{
+  (e: 'refresh'): void
+  (e: 'navigated', direction: 'previous' | 'next'): void
+  (e: 'close'): void
+  (e: 'trash'): void
+  (e: 'unread'): void
+  (e: 'star'): void
+  (e: 'unstar'): void
+}>()
 
-          <b-dropdown-item @click="$emit('move-email-to-folder', 'spam')">
-            <feather-icon icon="InfoIcon" />
-            <span class="align-middle ml-50">Spam</span>
-          </b-dropdown-item>
+const store = useEmailStore()
 
-          <b-dropdown-item
-            v-show="$route.params.folder !== 'trash'"
-            @click="$emit('move-email-to-folder', 'trash')"
-          >
-            <feather-icon icon="TrashIcon" />
-            <span class="align-middle ml-50">Trash</span>
-          </b-dropdown-item>
-        </b-dropdown>
+const { labels, resolveLabelColor, emailMoveToFolderActions, shallShowMoveToActionFor, moveSelectedEmailTo } = useEmail()
 
-        <!-- Update Label -->
-        <b-dropdown variant="link" no-caret toggle-class="p-0" class="ml-75" right>
-          <template #button-content>
-            <feather-icon icon="TagIcon" size="17" class="align-middle text-body" />
-          </template>
-          <b-dropdown-item @click="$emit('update-email-label', 'personal')">
-            <span class="mr-50 bullet bullet-success bullet-sm" />
-            <span>Personal</span>
-          </b-dropdown-item>
-          <b-dropdown-item @click="$emit('update-email-label', 'company')">
-            <span class="mr-50 bullet bullet-primary bullet-sm" />
-            <span>Company</span>
-          </b-dropdown-item>
-          <b-dropdown-item @click="$emit('update-email-label', 'important')">
-            <span class="mr-50 bullet bullet-warning bullet-sm" />
-            <span>Important</span>
-          </b-dropdown-item>
-          <b-dropdown-item @click="$emit('update-email-label', 'private')">
-            <span class="mr-50 bullet bullet-danger bullet-sm" />
-            <span>Private</span>
-          </b-dropdown-item>
-        </b-dropdown>
+const handleMoveMailsTo = (action: MoveEmailToAction) => {
+  moveSelectedEmailTo(action, [(props.email as Email).id])
+  emit('refresh')
+  emit('close')
+}
 
-        <!-- Mark Un-Read -->
-        <feather-icon
-          icon="MailIcon"
-          class="ml-75 cursor-pointer"
-          size="17"
-          @click="$emit('mark-email-unread')"
-        />
+const updateMailLabel = (label: Email['labels'][number]) => {
+  store.updateEmailLabels([(props.email as Email).id], label)
 
-        <!-- Move to Trash -->
-        <feather-icon
-          v-show="$route.params.folder !== 'trash'"
-          icon="TrashIcon"
-          class="ml-75"
-          size="17"
-          @click="$emit('move-email-to-folder', 'trash')"
-        />
-
-        <!-- Show Previous Mail -->
-        <feather-icon
-          :icon="$store.state.appConfigCore.isRTL ? 'ChevronRightIcon' : 'ChevronLeftIcon'"
-          size="17"
-          class="ml-75 cursor-pointer"
-          :class="{ 'text-muted pointer-events-none': !opendedEmailMeta.hasPreviousEmail }"
-          @click="$emit('change-opened-email', 'previous')"
-        />
-
-        <!-- Show Next Mail -->
-        <feather-icon
-          :icon="$store.state.appConfigCore.isRTL ? 'ChevronLeftIcon' : 'ChevronRightIcon'"
-          size="17"
-          class="ml-75 cursor-pointer"
-          :class="{ 'text-muted pointer-events-none': !opendedEmailMeta.hasNextEmail }"
-          @click="$emit('change-opened-email', 'next')"
-        />
-      </div>
-    </div>
-
-    <!-- Email Details -->
-    <vue-perfect-scrollbar
-      :settings="perfectScrollbarSettings"
-      class="email-scroll-area scroll-area"
-    >
-      <!-- Label Row -->
-      <b-row>
-        <b-col cols="12">
-          <div class="email-label">
-            <b-badge
-              v-for="label in emailViewData.labels"
-              :key="label"
-              pill
-              class="text-capitalize mr-50"
-              :variant="`light-${resolveLabelColor(label)}`"
-            >
-              {{ label }}
-            </b-badge>
-          </div>
-        </b-col>
-      </b-row>
-
-      <!-- Action: Show Earlier Message -->
-      <b-row
-        v-if="!showWholeThread && emailViewData.replies && emailViewData.replies.length"
-        class="mb-1"
-      >
-        <b-col cols="12">
-          <b-link class="font-weight-bold" @click="showWholeThread = true">
-            View {{ emailViewData.replies.length }} Earlier Message{{
-              emailViewData.replies.length > 1 ? 's' : ''
-            }}
-          </b-link>
-        </b-col>
-      </b-row>
-
-      <!-- Earlier Email Messages -->
-      <template v-if="showWholeThread">
-        <b-row v-for="threadMail in emailViewData.replies.slice().reverse()" :key="threadMail.id">
-          <b-col cols="12">
-            <email-message-card :message="threadMail" />
-          </b-col>
-        </b-row>
-      </template>
-
-      <!-- Email Thread -->
-      <b-row>
-        <b-col cols="12">
-          <email-message-card :message="emailViewData" />
-        </b-col>
-      </b-row>
-
-      <!-- Email Actions: Reply or Forward -->
-      <b-row>
-        <b-col cols="12">
-          <b-card>
-            <div class="d-flex justify-content-between">
-              <h5 class="mb-0">
-                Click here to
-                <b-link>Reply</b-link>
-                or
-                <b-link>Forward</b-link>
-              </h5>
-            </div>
-          </b-card>
-        </b-col>
-      </b-row>
-    </vue-perfect-scrollbar>
-  </div>
-</template>
-
-<script>
-import { BDropdown, BDropdownItem, BRow, BCol, BBadge, BCard, BLink } from 'bootstrap-vue'
-import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import { ref, watch } from 'vue'
-import useEmail from './useEmail'
-import EmailMessageCard from './EmailMessageCard.vue'
-
-export default {
-  components: {
-    // BSV
-    BDropdown,
-    BDropdownItem,
-    BRow,
-    BCol,
-    BBadge,
-    BCard,
-    BLink,
-
-    // 3rd Party
-    VuePerfectScrollbar,
-
-    // SFC
-    EmailMessageCard,
-  },
-  props: {
-    emailViewData: {
-      type: Object,
-      required: true,
-    },
-    opendedEmailMeta: {
-      type: Object,
-      required: true,
-    },
-  },
-  setup(props) {
-    const { resolveLabelColor } = useEmail()
-
-    const perfectScrollbarSettings = {
-      maxScrollbarLength: 150,
-    }
-
-    const showWholeThread = ref(false)
-
-    watch(
-      () => props.emailViewData.id,
-      () => {
-        showWholeThread.value = false
-      }
-    )
-
-    return {
-      // UI
-      perfectScrollbarSettings,
-      showWholeThread,
-
-      // useEmail
-      resolveLabelColor,
-    }
-  },
+  emit('refresh')
 }
 </script>
 
-<style>
+<template>
+  <!-- ℹ️ calc(100% - 256px) => 265px is left sidebar width -->
+  <VNavigationDrawer
+    temporary
+    :model-value="!!props.email"
+    location="right"
+    :scrim="false"
+    floating
+    class="email-view"
+  >
+    <template v-if="props.email">
+      <!-- 👉 header -->
 
+      <div class="email-view-header d-flex align-center px-5 py-3">
+        <IconBtn
+          class="me-4"
+          @click="$emit('close')"
+        >
+          <VIcon
+            size="22"
+            icon="tabler-chevron-left"
+            class="flip-in-rtl"
+          />
+        </IconBtn>
+
+        <div class="d-flex align-center flex-wrap flex-grow-1 overflow-hidden gap-3">
+          <h2 class="text-body-1 font-weight-medium text-high-emphasis text-truncate">
+            {{ props.email.subject }}
+          </h2>
+
+          <div class="d-flex flex-wrap gap-1">
+            <VChip
+              v-for="label in props.email.labels"
+              :key="label"
+              :color="resolveLabelColor(label)"
+              density="default"
+              class="px-2 text-capitalize flex-shrink-0 me-2"
+              label
+            >
+              {{ label }}
+            </VChip>
+          </div>
+        </div>
+
+        <div>
+          <!-- Print Email -->
+          <IconBtn>
+            <VIcon icon="tabler-printer" />
+          </IconBtn>
+
+          <!-- Dots vertical -->
+          <MoreBtn
+            density="comfortable"
+            color="undefined"
+          />
+        </div>
+      </div>
+
+      <VDivider />
+
+      <!-- 👉 Action bar -->
+      <div class="email-view-action-bar d-flex align-center text-medium-emphasis px-5">
+        <!-- Trash -->
+        <IconBtn
+          v-show="!props.email.isDeleted"
+          @click="$emit('trash'); $emit('close')"
+        >
+          <VIcon icon="tabler-trash" />
+        </IconBtn>
+
+        <!-- Read/Unread -->
+        <IconBtn @click.stop="$emit('unread'); $emit('close')">
+          <VIcon icon="tabler-mail" />
+        </IconBtn>
+
+        <!-- Move to folder -->
+        <IconBtn>
+          <VIcon icon="tabler-folder" />
+          <VMenu activator="parent">
+            <VList density="compact">
+              <template
+                v-for="moveTo in emailMoveToFolderActions"
+                :key="moveTo.title"
+              >
+                <VListItem
+                  :class="shallShowMoveToActionFor(moveTo.action) ? 'd-flex' : 'd-none'"
+                  class="align-center"
+                  href="#"
+                  @click="handleMoveMailsTo(moveTo.action)"
+                >
+                  <template #prepend>
+                    <VIcon
+                      :icon="moveTo.icon"
+                      class="me-2"
+                      size="20"
+                    />
+                  </template>
+                  <VListItemTitle class="text-capitalize">
+                    {{ moveTo.action }}
+                  </VListItemTitle>
+                </VListItem>
+              </template>
+            </VList>
+          </VMenu>
+        </IconBtn>
+
+        <!-- Update labels -->
+        <IconBtn>
+          <VIcon icon="tabler-tag" />
+          <VMenu activator="parent">
+            <VList density="compact">
+              <VListItem
+                v-for="label in labels"
+                :key="label.title"
+                href="#"
+                @click.stop="updateMailLabel(label.title)"
+              >
+                <template #prepend>
+                  <VBadge
+                    inline
+                    :color="resolveLabelColor(label.title)"
+                    dot
+                  />
+                </template>
+                <VListItemTitle class="ms-2 text-capitalize">
+                  {{ label.title }}
+                </VListItemTitle>
+              </VListItem>
+            </VList>
+          </VMenu>
+        </IconBtn>
+
+        <VSpacer />
+
+        <div class="d-flex align-center">
+          <span>1-10 of 448</span>
+          <div class="d-flex align-center">
+            <IconBtn
+              :disabled="!props.emailMeta.hasPreviousEmail"
+              @click="$emit('navigated', 'previous')"
+            >
+              <VIcon
+                icon="tabler-chevron-left"
+                class="flip-in-rtl"
+              />
+            </IconBtn>
+
+            <IconBtn
+              :disabled="!props.emailMeta.hasNextEmail"
+              @click="$emit('navigated', 'next')"
+            >
+              <VIcon
+                icon="tabler-chevron-right"
+                class="flip-in-rtl"
+              />
+            </IconBtn>
+          </div>
+        </div>
+      </div>
+
+      <VDivider />
+
+      <!-- 👉 Mail Content -->
+      <PerfectScrollbar
+        tag="div"
+        class="mail-content-container flex-grow-1"
+        :options="{ wheelPropagation: false }"
+      >
+        <VCard class="mx-5 my-4">
+          <div class="d-flex align-start align-sm-center px-6 py-3">
+            <VAvatar
+              class="me-3"
+              size="32"
+            >
+              <VImg
+                :src="props.email.from.avatar"
+                :alt="props.email.from.name"
+              />
+            </VAvatar>
+
+            <div class="d-flex flex-wrap flex-grow-1 overflow-hidden">
+              <div class="text-truncate">
+                <span class="d-block text-high-emphasis font-weight-medium text-truncate">{{ props.email.from.name }}</span>
+                <span class="text-sm text-disabled">{{ props.email.from.email }}</span>
+              </div>
+
+              <VSpacer />
+
+              <div class="d-flex align-center">
+                <span class="me-2">{{ formatDate(props.email.time) }}</span>
+                <IconBtn v-show="props.email.attachments.length">
+                  <VIcon icon="tabler-paperclip" />
+                </IconBtn>
+
+                <!-- Star/Unstar -->
+                <IconBtn
+                  :color="props.email.isStarred ? 'warning' : 'default'"
+                  @click="props.email?.isStarred ? $emit('unstar') : $emit('star'); $emit('refresh')"
+                >
+                  <VIcon :icon="props.email.isStarred ? 'tabler-star-filled' : 'tabler-star' " />
+                </IconBtn>
+              </div>
+            </div>
+            <MoreBtn
+              class="align-self-sm-center"
+              density="comfortable"
+              color="undefined"
+            />
+          </div>
+
+          <VDivider />
+
+          <VCardText>
+            <!-- eslint-disable vue/no-v-html -->
+            <div
+              class="text-base"
+              v-html="props.email.message"
+            />
+            <!-- eslint-enable -->
+          </VCardText>
+
+          <template v-if="props.email.attachments.length">
+            <VDivider />
+
+            <VCardText class="d-flex flex-column gap-y-4 pt-4">
+              <span>2 Attachments</span>
+              <div
+                v-for="attachment in props.email.attachments"
+                :key="attachment.fileName"
+                class="d-flex align-center"
+              >
+                <VImg
+                  :src="attachment.thumbnail"
+                  :alt="attachment.fileName"
+                  aspect-ratio="1"
+                  max-height="24"
+                  max-width="24"
+                  class="me-2"
+                />
+                <span>{{ attachment.fileName }}</span>
+              </div>
+            </VCardText>
+          </template>
+        </VCard>
+
+        <!-- Reply or Forward -->
+        <VCard class="mx-5 mb-5">
+          <VCardText class="font-weight-medium text-high-emphasis">
+            <div class="text-base">
+              Click here to <span class="text-primary cursor-pointer">
+                Reply
+              </span> or <span class="text-primary cursor-pointer">
+                Forward
+              </span>
+            </div>
+          </VCardText>
+        </VCard>
+      </PerfectScrollbar>
+    </template>
+  </VNavigationDrawer>
+</template>
+
+<style lang="scss">
+.email-view {
+  inline-size: 100% !important;
+
+  @media only screen and (min-width: 1280px) {
+    inline-size: calc(100% - 256px) !important;
+  }
+
+  .v-navigation-drawer__content {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.email-view-action-bar {
+  min-block-size: 56px;
+}
+
+.mail-content-container {
+  background-color: rgb(var(--v-theme-background));
+
+  .mail-header {
+    margin-block: 12px;
+    margin-inline: 24px;
+  }
+}
 </style>

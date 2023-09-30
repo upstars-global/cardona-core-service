@@ -1,50 +1,33 @@
-import Vue from 'vue'
-import { ToastPlugin, ModalPlugin } from 'bootstrap-vue'
+/* eslint-disable import/order */
+import '@/@fake-db/db'
+import '@/@iconify/icons-bundle'
+import App from '@/App.vue'
+import ability from '@/plugins/casl/ability'
+import i18n from '@/plugins/i18n'
+import layoutsPlugin from '@/plugins/layouts'
+import vuetify from '@/plugins/vuetify'
+import { loadFonts } from '@/plugins/webfontloader'
+import router from '@/router'
+import { abilitiesPlugin } from '@casl/vue'
+import '@core/scss/template/index.scss'
+import '@styles/styles.scss'
+import { createPinia } from 'pinia'
+import { createApp } from 'vue'
 
-import router from './router'
-import store from './store'
-import App from './App.vue'
+loadFonts()
 
-import './libs/axios'
-import './libs/acl'
-import './libs/portal-vue'
-import './libs/clipboard'
-import './libs/toastification'
-import './libs/sweet-alerts'
-import './libs/vue-select'
-import './libs/tour'
-import './extensions'
-import './@core/directives/date'
-import './@core/directives/currency'
-import './libs/vee-validate'
-import './libs/bootstrap-vue'
-import './libs/froala'
-import i18n from './libs/i18n'
+// Create vue app
+const app = createApp(App)
 
-// Axios Mock Adapter
-import './@fake-db/db'
+// Use plugins
+app.use(vuetify)
+app.use(createPinia())
+app.use(router)
+app.use(layoutsPlugin)
+app.use(i18n)
+app.use(abilitiesPlugin, ability, {
+  useGlobalProperties: true,
+})
 
-// Global Components
-import './global-components'
-
-// 3rd party plugins
-import './libs/portal-vue'
-
-// BSV Plugin Registration
-Vue.use(ToastPlugin)
-Vue.use(ModalPlugin)
-
-// import core styles
-require('./@core/scss/core.scss')
-
-// import assets styles
-require('./assets/scss/style.scss')
-
-Vue.config.productionTip = false
-
-new Vue({
-  i18n,
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount('#app')
+// Mount vue app
+app.mount('#app')

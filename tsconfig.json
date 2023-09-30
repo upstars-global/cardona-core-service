@@ -1,36 +1,48 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "target": "esnext",
+    "useDefineForClassFields": true,
     "module": "esnext",
+    "moduleResolution": "node",
+    "isolatedModules": true,
     "strict": true,
     "jsx": "preserve",
-    "importHelpers": true,
-    "noImplicitAny": false,
-    "moduleResolution": "node",
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "experimentalDecorators": true,
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
     "sourceMap": true,
-    "baseUrl": ".",
-    "types": [
-      "webpack-env",
-      "jest"
-    ],
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "paths": {
+      "@/*": [
+        "src/*"
+      ],
       "@themeConfig": [
-        "./themeConfig"
+        "themeConfig.ts"
       ],
-      "@productConfig": [
-        "./src/configs/productConfig"
+      "@layouts/*": [
+        "src/@layouts/*"
       ],
-      "@filterConfig": [
-        "./src/@model/filterConfig"
+      "@layouts": [
+        "src/@layouts"
       ],
-      "@permissions": [
-        "./src/configs/permissions"
+      "@core/*": [
+        "src/@core/*"
+      ],
+      "@core": [
+        "src/@core"
+      ],
+      "@images/*": [
+        "src/assets/images/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@axios": [
+        "src/plugins/axios"
+      ],
+      "@validators": [
+        "src/@core/utils/validators"
       ]
     },
     "lib": [
@@ -38,27 +50,28 @@
       "dom",
       "dom.iterable",
       "scripthost"
+    ],
+    "skipLibCheck": true,
+    "types": [
+      "vite/client",
+      "vite-plugin-pages/client",
+      "vite-plugin-vue-layouts/client",
+      "unplugin-vue-define-options/macros-global"
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
+    "vite.config.*",
+    "env.d.ts",
+    "shims.d.ts",
+    "src/**/*",
     "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "themeConfig.ts",
+    "auto-imports.d.ts",
+    "components.d.ts"
   ],
   "exclude": [
-    "node_modules"
-  ],
-  "typedocOptions": {
-    "basePath": "./",
-    "entryPoints": [
-      "src/components/templates/BaseList/model.ts",
-      "src/components/templates/BaseSection/model.ts",
-      "src/components/FiltersBlock/filters.ts"
-    ],
-    "out": "public/docs",
-    "media": "public/docs",
-    "sourceLinkTemplate": "https://gitlab.upstr.to/backoffice/cardona-core-service/-/tree/master/{path}?at={gitRevision}#line={line}"
-  }
+    "dist",
+    "node_modules",
+    "src/@iconify/*"
+  ]
 }
