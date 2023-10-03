@@ -20,46 +20,65 @@
             class="row-item-field-translations"
             :class="{ 'order-first': isMainLocale(local) }"
           >
-            <b-col md="2">
-              <span v-if="isMainLocale(local)" class="font-small-3 font-weight-bolder mr-1">
+            <b-col v-if="isMainLocale(local)" class="locale-title" md="12">
+              <span class="font-small-3 font-weight-bolder mr-1">
                 {{ $t(`locale.${type}.${item}`) }}
               </span>
             </b-col>
-            <b-col md="3">
+            <b-col md="2" class="label-locale">
               <span>{{ allLocales[local] }}</span>
             </b-col>
 
-            <b-col md="7">
-              <text-editor-wysiwyg
-                v-if="item + local === selectEditeInput"
-                :value="fieldTranslations[item][local].value"
-                :options-variable="allCurrencies"
-                :localisation-parameters="value.localisationParameters"
-                :data-at="`input-${item}-${local}`"
-                @update-localisation-parameters="updateLocalisationParameters"
-                @input="(val) => onInputLocalEditor(val, item, local)"
-                @remove-variable="onRemoveVariables"
-              />
-              <div
-                v-else
-                class="input-text mb-50"
-                :class="{ disable: isMainLocale(local) || disabled }"
-                :data-at="`text-${item}-${local}`"
-                @click="onSelectEditeInput(item, local)"
-                v-html="
-                  fieldTranslations[item][local].value ||
-                  `<span class=\'span-empty\'>${$t('common.empty')}</span>`
-                "
-              />
-
-              <div class="d-flex justify-content-end">
-                <check-field
-                  v-if="!isMainLocale(local)"
-                  v-model="fieldTranslations[item][local].disabled"
-                  :field="{ label: $t('action.hide') }"
-                  class="d-flex align-items-center"
+            <b-col md="10" class="body-locale pl-0">
+              <div v-if="item + local === selectEditeInput">
+                <text-editor-wysiwyg
+                  :value="fieldTranslations[item][local].value"
+                  :options-variable="allCurrencies"
+                  :localisation-parameters="value.localisationParameters"
+                  :data-at="`input-${item}-${local}`"
+                  @update-localisation-parameters="updateLocalisationParameters"
+                  @input="(val) => onInputLocalEditor(val, item, local)"
+                  @remove-variable="onRemoveVariables"
                 />
+                <div class="d-flex justify-content-end" v-if="!isMainLocale(local)">
+                  <check-field
+                    v-model="fieldTranslations[item][local].disabled"
+                    :field="{ label: $t('action.hide') }"
+                    class="ml-auto"
+                  />
+                </div>
               </div>
+              <input-text-wrapper v-else :content="fieldTranslations[item][local].value">
+                <template #default="{ childrenStyle }">
+                  <div
+                    class="input-text"
+                    :class="{
+                      'mb-50': !isMainLocale(local),
+                      disable: isMainLocale(local) || disabled,
+                    }"
+                    :data-at="`text-${item}-${local}`"
+                    :style="childrenStyle"
+                    @click="onSelectEditeInput(item, local)"
+                    v-html="
+                      fieldTranslations[item][local].value ||
+                      `<span class=\'span-empty\'>${$t('common.empty')}</span>`
+                    "
+                  />
+                </template>
+                <template #footer="{ isShowButton }">
+                  <div
+                    class="hide-checkbox"
+                    :class="{ 'is-hide-checkbox': isShowButton && isMainLocale(local) }"
+                  >
+                    <check-field
+                      v-if="!isMainLocale(local)"
+                      v-model="fieldTranslations[item][local].disabled"
+                      :field="{ label: $t('action.hide') }"
+                      class="d-flex align-items-center"
+                    />
+                  </div>
+                </template>
+              </input-text-wrapper>
             </b-col>
           </b-row>
         </template>
@@ -71,6 +90,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
 import TextEditorWysiwyg from '../../../components/TextEditorWysiwyg/index.vue'
+import InputTextWrapper from './_components/InputTextWrapper.vue'
 import store from '../../../store'
 import { SeoForm } from '../../../@model/seo'
 import {
@@ -91,6 +111,7 @@ export default defineComponent({
   components: {
     CheckField,
     TextEditorWysiwyg,
+    InputTextWrapper,
   },
   props: {
     value: {
@@ -261,7 +282,7 @@ export default defineComponent({
     margin-bottom: 1.5rem;
 
     .row-item-field-translations {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
 
       .custom-control-label {
         font-size: $small-font-size;
@@ -297,6 +318,22 @@ export default defineComponent({
     .span-empty {
       color: $text-muted;
     }
+  }
+
+  .locale-title {
+    padding-bottom: 1.325rem;
+  }
+
+  .label-locale {
+    padding-top: 0.5rem;
+  }
+
+  .hide-checkbox {
+    display: flex;
+    align-items: center;
+  }
+  .is-hide-checkbox {
+    margin-top: 1.75rem;
   }
 }
 </style>
