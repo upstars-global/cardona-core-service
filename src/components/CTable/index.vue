@@ -46,6 +46,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    hoverable: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     isDragMode() {
@@ -321,7 +325,7 @@ export default defineComponent({
         h(
           BTr,
           {
-            class: classBTr,
+            class: `${classBTr} ${this.hoverable ? 'hover' : ''}`,
             props: { variant: item.rowVariant },
             attrs: {
               id: rowId,

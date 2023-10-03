@@ -7,7 +7,7 @@
       .table-light-#{$color_name} {
         background-color: rgba($color_value, 0.12);
       }
-      .table-light-#{$color_name}:hover {
+      .hover.table-light-#{$color_name}:hover {
         background-color: rgba($color_value, 0.36) !important;
       }
       .table-light-#{$color_name}-bg {
