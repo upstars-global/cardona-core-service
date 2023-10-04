@@ -240,7 +240,7 @@ const entityData = {
   radio: true,
   checkGroup: ['option3', 'option5'],
   select: 'option3',
-  multiSelect: ['option4'],
+  multiSelect: ['option4', 'option7'],
   date: '2023-06-05T00:00:00+00:00',
   dateRange: '',
   dateTime: '2023-06-18T05:55:00+00:00',
@@ -374,39 +374,39 @@ mock.onPost('/api/v2/demo/delete').reply(() => [200, { data: null }])
 const options = [
   {
     id: 'option1',
-    name: 'Option 1',
+    name: 'Label option 1',
   },
   {
     id: 'option2',
-    name: 'Option 2',
+    name: 'Label option 2',
   },
   {
     id: 'option3',
-    name: 'Option 3',
+    name: 'Label option 3',
   },
   {
     id: 'option4',
-    name: 'Option 4',
+    name: 'Label option 4',
   },
   {
     id: 'option5',
-    name: 'Option 5',
+    name: 'Label option 5',
   },
   {
     id: 'option6',
-    name: 'Option 6',
+    name: 'Label option 6',
   },
   {
     id: 'option7',
-    name: 'Option 7',
+    name: 'Label option 7',
   },
   {
     id: 'option8',
-    name: 'Option 8',
+    name: 'Label option 8',
   },
   {
     id: 'option9',
-    name: 'Option 9',
+    name: 'Label option 9',
   },
 ]
 
