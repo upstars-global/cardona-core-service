@@ -2,6 +2,7 @@
 import { PropType, computed } from 'vue'
 import SelectField from './SelectField.vue'
 import { FieldInfo } from '../../../../@model/field'
+import { OptionsItem } from '../../../../@model'
 
 export default {
   name: 'MultiSelectField',
@@ -22,11 +23,22 @@ export default {
   setup(props, context) {
     const isMultiple = true
 
+    const valueModel = computed<OptionsItem[]>({
+      get: () =>
+        props.value.map((item) =>
+          typeof item === 'string' || typeof item === 'number'
+            ? props.field.options?.find((option: OptionsItem) => option.id == item)
+            : item
+        ),
+
+      set: (item: OptionsItem[]) => context.emit('input', item),
+    })
+
     // Options
     const options = computed(() =>
       props.field.options
         ? props.field.options.filter((option: any) =>
-            props.value.every((item) => item.id !== option.id)
+            valueModel.value.every((item) => item.id !== option.id)
           )
         : []
     )
@@ -35,6 +47,7 @@ export default {
       ...SelectField.setup(props, context),
       isMultiple,
       options,
+      valueModel,
     }
   },
 }

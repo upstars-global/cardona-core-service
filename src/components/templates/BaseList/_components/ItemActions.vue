@@ -33,7 +33,14 @@ const isShowActions = computed(() => {
 </script>
 
 <template>
-  <b-dropdown v-if="isShowActions" class="d-flex" variant="link" no-caret toggle-class="p-0" right>
+  <b-dropdown
+    v-if="isShowActions"
+    class="dropdown-actions d-flex"
+    variant="link"
+    no-caret
+    toggle-class="p-0"
+    right
+  >
     <template #button-content>
       <b-button variant="flat-dark" class="btn-icon">
         <feather-icon :icon="IconsList.MoreVerticalIcon" />
@@ -46,20 +53,17 @@ const isShowActions = computed(() => {
       v-if="canUpdate && config.withDeactivation"
       @click="emits('on-toggle-status', item)"
     >
-      <feather-icon
-        :icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
-        size="16"
-      />
+      <feather-icon :icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon" />
 
-      <span class="align-middle ml-50">
+      <span>
         {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
       </span>
     </b-dropdown-item>
 
     <b-dropdown-item v-if="canUpdateItem" :to="getUpdateRoute(item)">
-      <feather-icon :icon="IconsList.EditIcon" size="16" />
+      <feather-icon :icon="IconsList.EditIcon" />
 
-      <span class="align-middle ml-50">
+      <span>
         {{ $t('action.edit') }}
       </span>
     </b-dropdown-item>
@@ -68,19 +72,32 @@ const isShowActions = computed(() => {
       v-if="config.createFromCopy"
       :to="{ name: createPageName, params: { id: item.id } }"
     >
-      <feather-icon :icon="IconsList.CopyIcon" size="16" />
+      <feather-icon :icon="IconsList.CopyIcon" />
 
-      <span class="align-middle ml-50">
+      <span>
         {{ $t('action.makeCopy') }}
       </span>
     </b-dropdown-item>
 
     <b-dropdown-item v-if="canRemoveItem" @click="emits('on-remove', item)">
-      <feather-icon :icon="IconsList.Trash2Icon" size="16" class="text-danger" />
+      <feather-icon :icon="IconsList.Trash2Icon" class="text-danger" />
 
-      <span class="text-danger align-middle ml-50">
+      <span class="text-danger">
         {{ $t('action.remove') }}
       </span>
     </b-dropdown-item>
   </b-dropdown>
 </template>
+
+<style lang="scss" scoped>
+.dropdown-actions {
+  :deep(.dropdown-item) {
+    display: flex;
+    align-items: center;
+
+    .feather {
+      margin-right: 0.5rem;
+    }
+  }
+}
+</style>

@@ -110,11 +110,7 @@ export class FieldInfo<T = {}> {
     if (this.type === FieldType.Select) {
       return this._value ? this.checkSelectValue(this._value) : null
     } else if (this.type === FieldType.MultiSelect) {
-      return Array.isArray(this._value)
-        ? this._value.map((item) => this.checkSelectValue(item))
-        : !!this._value
-        ? [this.checkSelectValue(this._value)]
-        : []
+      return Array.isArray(this._value) ? this._value : !!this._value ? [this._value] : []
     } else if (this.type === FieldType.Tags) {
       return this._value || []
     } else {
