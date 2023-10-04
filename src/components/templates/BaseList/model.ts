@@ -153,7 +153,7 @@ export interface IBaseListConfig {
   readonly customPermissionPrefix?: string
 
   /** hoverable - Вкл/выкл выдиление строки при навидении на нее курсора */
-  readonly hoverable?: boolean
+  readonly hover?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -193,7 +193,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly customModuleName?: string
   readonly customApiPrefix?: string
   readonly customPermissionPrefix?: string
-  readonly hoverable?: boolean
+  readonly hover: boolean
 
   constructor({
     withSearch,
@@ -232,7 +232,7 @@ export class BaseListConfig implements IBaseListConfig {
     customModuleName,
     customApiPrefix,
     customPermissionPrefix,
-    hoverable,
+    hover,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -270,7 +270,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.customModuleName = customModuleName
     this.customApiPrefix = customApiPrefix
     this.customPermissionPrefix = customPermissionPrefix
-    this.hoverable = hoverable ?? true
+    this.hover = hover ?? true
   }
 }
 /**

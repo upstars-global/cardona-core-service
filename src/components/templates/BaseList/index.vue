@@ -122,7 +122,7 @@
       <c-table
         v-show="!isLoadingList"
         ref="refListTable"
-        :hoverable="config.hoverable"
+        :hover="config.hover"
         show-empty
         :responsive="config.responsive"
         :select-mode="config.selectMode"

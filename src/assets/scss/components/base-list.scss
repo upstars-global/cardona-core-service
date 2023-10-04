@@ -7,12 +7,14 @@
       .table-light-#{$color_name} {
         background-color: rgba($color_value, 0.12);
       }
-      .hover.table-light-#{$color_name}:hover {
-        background-color: rgba($color_value, 0.36) !important;
-      }
       .table-light-#{$color_name}-bg {
         background-color: rgba($color_value, 0.36) !important;
       }
+        .is-hover-row.table-light-#{$color_name} {
+          &:hover {
+            background-color: rgba($color_value, 0.36) !important;
+          }
+        }
     }
   }
 }

@@ -46,7 +46,7 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    hoverable: {
+    hover: {
       type: Boolean,
       default: false,
     },
@@ -325,7 +325,7 @@ export default defineComponent({
         h(
           BTr,
           {
-            class: `${classBTr} ${this.hoverable ? 'hover' : ''}`,
+            class: `${classBTr} ${this.hover ? 'is-hover-row' : ''}`,
             props: { variant: item.rowVariant },
             attrs: {
               id: rowId,
