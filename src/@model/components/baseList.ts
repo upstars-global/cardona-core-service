@@ -1,10 +1,10 @@
 import type { TranslateResult } from 'vue-i18n'
+import type { ProjectFilterTypes } from '@filterConfig'
 import type { FilterType } from '../filter'
 import type { IListSort } from '../index'
 import type { ViewInfo } from '../view'
 import type { BColors, BLightColors } from '../bootstrap' // TODO
 import type { TableField } from './tableFields'
-import type { ProjectFilterTypes } from '@filterConfig'
 import i18n from '@/plugins/i18n'
 
 export enum SortDirection {
@@ -152,6 +152,7 @@ export interface IBaseListConfig {
 
   /** customPermissionPrefix - Пользовательский префикс к доступу */
   readonly customPermissionPrefix?: string
+  readonly hover: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -165,7 +166,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly staticFilters: Record<string, string>
   readonly staticSorts?: IListSort
   readonly responsive?: boolean
-  readonly selectMode?: string
+  readonly selectMode?: string // TODO: add enum 'single' | 'page' | 'all'
   readonly selectable?: boolean
   readonly small?: boolean
   readonly draggable?: boolean
@@ -192,6 +193,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly customModuleName?: string
   readonly customApiPrefix?: string
   readonly customPermissionPrefix?: string
+  readonly hover: boolean
 
   constructor({
     withSearch,
@@ -231,6 +233,7 @@ export class BaseListConfig implements IBaseListConfig {
     customModuleName,
     customApiPrefix,
     customPermissionPrefix,
+    hover,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -269,6 +272,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.customModuleName = customModuleName
     this.customApiPrefix = customApiPrefix
     this.customPermissionPrefix = customPermissionPrefix
+    this.hover = hover ?? true
   }
 }
 

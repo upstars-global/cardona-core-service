@@ -1,0 +1,23 @@
+@import "@core/scss/base/variables";
+
+$table-hover-bg: #f6f6f9 !default; // TODO: переместить
+
+@each $color_name, $color in $theme-colors-name {
+  @each $color_type, $color_value in $color {
+      .table-light-#{$color_name} {
+        background-color: rgba(var(--v-theme-#{$color_name}), 0.12)!important;
+      }
+      .is-hover-row.table-light-#{$color_name} {
+        &:hover {
+          background-color: rgba(var(--v-theme-#{$color_name}), 0.36) !important;
+        }
+      }
+      .table-light-#{$color_name}-bg {
+        background-color: rgba(var(--v-theme-#{$color_name}), 0.36) !important;
+      }
+  }
+}
+
+.table-default-bg {
+  background-color: $table-hover-bg;
+}

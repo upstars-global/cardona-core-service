@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { useTheme } from 'vuetify'
+import BaseList from '../../components/templates/BaseList/index.vue'
+import { BaseListConfig } from '../../@model/components/baseList'
+import { FilterType } from '../../@model/filter'
 import AnalyticsEarningReportsWeeklyOverview from '@/views/dashboards/analytics/AnalyticsEarningReportsWeeklyOverview.vue'
 import AnalyticsMonthlyCampaignState from '@/views/dashboards/analytics/AnalyticsMonthlyCampaignState.vue'
 import AnalyticsProjectTable from '@/views/dashboards/analytics/AnalyticsProjectTable.vue'
@@ -85,11 +88,47 @@ const statisticsVertical = {
     },
   },
 }
+
+const listConfig = new BaseListConfig({
+  withSettings: true,
+  selectable: true,
+  skeletonColumns: 10,
+  draggable: true,
+  withCustomFetchList: true,
+  withSearch: true,
+  createFromCopy: true,
+  withExport: true,
+  sidebar: true,
+  sidebarCollapseMode: true,
+  filterList: [
+    {
+      type: FilterType.Status,
+      key: 'isActive',
+    },
+    {
+      type: FilterType.DateRangeCreative,
+      key: 'created',
+    },
+    {
+      type: FilterType.DemoType,
+      key: 'type',
+      trackBy: 'id',
+    },
+    {
+      type: FilterType.GameId,
+      key: 'gameId',
+    },
+  ],
+})
 </script>
 
 <template>
   <VRow class="match-height">
     <!-- 👉 Website analytics -->
+    <VCol cols="12">
+      <BaseList :config="listConfig" />
+    </VCol>
+
     <VCol
       cols="12"
       md="6"
