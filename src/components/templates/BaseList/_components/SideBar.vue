@@ -202,17 +202,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.collapse-default :deep(.card) {
-  border: none;
-  .card-header,
-  .card-body {
-    padding: 0;
+.collapse-default {
+  :deep(.card) {
+    border: none;
+    .card-header,
+    .card-body {
+      padding: 0;
+    }
   }
 }
 
 .sidebar-actions {
-  :deep(.btn:not(:last-child)) {
-    margin-right: 1rem;
+  :deep(.btn) {
+    &:not(:last-child) {
+      margin-right: 1rem;
+    }
   }
 }
 </style>

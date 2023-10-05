@@ -68,6 +68,6 @@ export default {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import '../../../../@core/scss/vue/libs/vue-flatpicker.scss';
 </style>
