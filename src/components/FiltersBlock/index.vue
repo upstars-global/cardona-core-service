@@ -176,9 +176,13 @@ export default defineComponent({
       emit('apply')
     }
 
-    watch(selectedFilters, (filters) => {
-      emit('changeSelectedFilters', filters)
-    })
+    watch(
+      selectedFilters,
+      (filters) => {
+        emit('changeSelectedFilters', filters)
+      },
+      { deep: true }
+    )
 
     onMounted(() => {
       const initFiltersStorage = localStorage.getItem(keyStorage)
