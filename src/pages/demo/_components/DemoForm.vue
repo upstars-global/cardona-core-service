@@ -63,11 +63,17 @@
         </b-card-header>
 
         <b-card-body>
-          <b-row>
+          <b-row class="mb-2">
             <b-col cols="4">
               <field-generator v-model="formData.select" :disabled="isDisabledField" />
             </b-col>
 
+            <b-col cols="4">
+              <field-generator v-model="formData.nonClearableSelect" :disabled="isDisabledField" />
+            </b-col>
+          </b-row>
+
+          <b-row>
             <b-col cols="4">
               <field-generator v-model="formData.multiSelect" :disabled="isDisabledField" />
             </b-col>

@@ -239,6 +239,7 @@ const entityData = {
   check: true,
   radio: true,
   checkGroup: ['option3', 'option5'],
+  nonClearableSelect: 'option8',
   select: 'option3',
   multiSelect: ['option4', 'option7'],
   date: '2023-06-05T00:00:00+00:00',

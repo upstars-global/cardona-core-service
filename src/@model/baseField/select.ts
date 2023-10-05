@@ -16,6 +16,7 @@ export interface ISelectBaseField<T> extends IBaseField {
   readonly options?: Array<T>
   readonly fetchOptionsActionName?: string
   readonly staticFilters?: Record<string, string>
+  readonly clearable?: boolean
 }
 
 export class SelectBaseField<T extends OptionsItem = OptionsItem>
@@ -27,6 +28,7 @@ export class SelectBaseField<T extends OptionsItem = OptionsItem>
   public options?: Array<T>
   readonly fetchOptionsActionName?: string
   readonly staticFilters?: Record<string, string>
+  readonly clearable: boolean
 
   constructor(field: ISelectBaseField<T>) {
     super(field)
@@ -34,6 +36,7 @@ export class SelectBaseField<T extends OptionsItem = OptionsItem>
     this.options = field.options
     this.fetchOptionsActionName = field.fetchOptionsActionName
     this.staticFilters = field.staticFilters || {}
+    this.clearable = field.clearable ?? true
   }
 
   async fetchOptions(search = '') {

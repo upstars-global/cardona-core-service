@@ -160,6 +160,7 @@ export class DemoForm {
   readonly check: FieldInfo
   readonly radio: FieldInfo
   readonly checkGroup: FieldInfo
+  readonly nonClearableSelect: SelectBaseField
   readonly select: SelectBaseField
   readonly multiSelect: FieldInfo
   readonly date: FieldInfo
@@ -346,6 +347,13 @@ export class DemoForm {
       key: 'dateBtn',
       value: data?.dateBtn,
       label: i18n.t('page.demo.dateBtnField'),
+    })
+    this.nonClearableSelect = new SelectBaseField({
+      key: 'nonClearableSelect',
+      value: data?.nonClearableSelect,
+      label: i18n.t('page.demo.nonClearableSelectField'),
+      fetchOptionsActionName: 'demo/fetchOptions',
+      clearable: false,
     })
     this.select = new SelectBaseField({
       key: 'select',
