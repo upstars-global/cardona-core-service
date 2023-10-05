@@ -302,6 +302,7 @@ export default defineComponent({
         userTrClasses,
         selectableClasses,
         rowShowDetails ? 'b-table-has-details' : '',
+        { 'is-hover-row': this.hover },
       ]
 
       // >>> Start Extended Functionality
@@ -325,7 +326,7 @@ export default defineComponent({
         h(
           BTr,
           {
-            class: `${classBTr} ${this.hover ? 'is-hover-row' : ''}`,
+            class: classBTr,
             props: { variant: item.rowVariant },
             attrs: {
               id: rowId,
