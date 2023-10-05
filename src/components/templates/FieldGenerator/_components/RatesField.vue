@@ -61,6 +61,7 @@ const formRates = ref(
       placeholder: '0.00',
       validationRules: 'required',
       append: props.append,
+      withPositiveNumbers: true,
     })
   })
 )
@@ -77,6 +78,7 @@ watch(
           placeholder: '0.00',
           validationRules: 'required',
           append: props.append,
+          withPositiveNumbers: true,
         })
       })
       isNotFilledFormRates.value = false
