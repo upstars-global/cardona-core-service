@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useTheme } from 'vuetify'
 import BaseList from '../../components/templates/BaseList/index.vue'
-import { BaseListConfig } from '../../@model/components/baseList'
 import { FilterType } from '../../@model/filter'
+import { BaseListConfig } from '@/@model/templates/baseList'
 import AnalyticsEarningReportsWeeklyOverview from '@/views/dashboards/analytics/AnalyticsEarningReportsWeeklyOverview.vue'
 import AnalyticsMonthlyCampaignState from '@/views/dashboards/analytics/AnalyticsMonthlyCampaignState.vue'
 import AnalyticsProjectTable from '@/views/dashboards/analytics/AnalyticsProjectTable.vue'

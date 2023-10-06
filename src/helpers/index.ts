@@ -1,7 +1,7 @@
 import { isNumber, isString } from 'lodash'
 import { useRoute } from 'vue-router'
 import { FieldInfo } from '../@model/field'
-import { BaseField } from '../@model/baseField'
+import { BaseField } from '../@model/templates/baseField'
 import type { OptionsItem } from '../@model'
 import { isObject } from '@core/utils'
 

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import CTable from '../../CTable/index.vue'
-import type { IBaseListConfig } from '../../../@model/components/baseList'
-import type { TableField } from '../../../@model/components/tableFields'
-import { SortDirection } from '../../../@model/components/baseList'
-import { paginationMeta } from '@/@fake-db/utils'
-import type { Options } from '@core/types'
-import { ListSort } from '@/@model'
-import { getStorage } from '@/helpers/storage'
-import { VColors } from '@/@model/vuetify'
+import type { IBaseListConfig } from '../../../@model/templates/baseList'
+import type { TableField } from '../../../@model/templates/tableFields'
+import { SortDirection } from '../../../@model/templates/baseList'
+import { paginationMeta } from '../../../@fake-db/utils'
+import type { Options } from '../../../@core/types'
+import { ListSort } from '../../../@model'
+import { getStorage } from '../../../helpers/storage'
+import { VColors } from '../../../@model/vuetify'
 
 const props = defineProps<{
   config?: IBaseListConfig
@@ -24,10 +24,10 @@ const isSidebarShown = ref(false)
 const sortStorageKey = `${currentPageName}-${entityName}-sort`
 const sortFromStorage = getStorage(sortStorageKey, ListSort) as ListSort
 
-// const sortBy = sortFromStorage?.field || props.config.staticSorts?.field
+const sortBy = sortFromStorage?.field || props.config.staticSorts?.field
 const sortDir = sortFromStorage?.dir || props.config.staticSorts?.dir
 const sortDesc = !!sortDir && sortDir === SortDirection.asc
-const sortData = ref([{ key: 'isActive', order: sortDesc }])
+const sortData = ref([{ key: sortBy, order: sortDesc }])
 
 const options = ref<Options>({
   page: 1,
@@ -379,10 +379,6 @@ const items = ref([
   },
 ])
 
-const onDragChanged = event => {
-  console.log(event)
-}
-
 const onClickRow = data => {
   if (props.config?.selectable)
     return
@@ -409,7 +405,6 @@ const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
     :hover="config.hover"
     :selected-items="selectedItems"
     @row-clicked="onClickRow"
-    @end="onDragChanged"
   >
     <template
       v-for="(fieldItem) in selectedFields"
@@ -423,145 +418,6 @@ const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
         :item="item"
         :cell="cell"
       />
-
-      <!--
-        <StatusField
-        v-else-if="field.type === ListFieldType.Status"
-        :key="index"
-        :value="item[key]"
-        />
-
-        <SumAndCurrency
-        v-else-if="field.type === ListFieldType.SumAndCurrency"
-        :key="index"
-        :data="{
-        amount: item[key],
-        currency: item.currency,
-        remainder: item.remainder,
-        }"
-        />
-
-        <PillStatusField
-        v-else-if="field.type === ListFieldType.PillStatus"
-        :key="index"
-        :is-active="value"
-        />
-
-        <NameWithIdField
-        v-else-if="field.type === ListFieldType.NameWithId"
-        :key="index"
-        :item="item"
-        :get-update-route="getUpdateRoute"
-        :is-show-you="config.isShowYou"
-        >
-        <template>
-        <slot
-        :name="`${field.key}-nameWithIdTitle`"
-        :item="item"
-        />
-        </template>
-        </NameWithIdField>
-
-        <NameWithShortIdField
-        v-else-if="field.type === ListFieldType.NameWithShortId"
-        :key="index"
-        :item="item"
-        :get-update-route="getUpdateRoute"
-        :is-show-you="config.isShowYou"
-        >
-        <template>
-        <slot
-        :name="`${field.key}-nameWithIdTitle`"
-        :item="item"
-        />
-        </template>
-        </NameWithShortIdField>
-
-        <EmailField
-        v-else-if="field.type === ListFieldType.Email"
-        :key="index"
-        :item="item"
-        :get-update-route="getUpdateRoute"
-        />
-
-        <DateField
-        v-else-if="field.type === ListFieldType.Date"
-        :key="index"
-        :date="value"
-        />
-        <DateWithSecondsField
-        v-else-if="field.type === ListFieldType.DateWithSeconds"
-        :key="index"
-        :date="value"
-        />
-        <StatementField
-        v-else-if="field.type === ListFieldType.Statement"
-        :key="index"
-        :state="value"
-        />
-
-        <BadgesField
-        v-else-if="field.type === ListFieldType.Badges"
-        :key="index"
-        :list-badges="value"
-        />
-
-        <PositionField
-        v-else-if="field.type === ListFieldType.Priority"
-        :key="index"
-        :position="value"
-        :size="field.size"
-        :can-update="canUpdate || config.draggable"
-        @edit-position="(val) => onEditPosition(item, val)"
-        />
-
-        <ButtonField
-        v-else-if="field.type === ListFieldType.Button"
-        :key="index"
-        :btn-name="value"
-        />
-
-        <CommentField
-        v-else-if="field.type === ListFieldType.Comment"
-        :key="index"
-        :value="value"
-        />
-
-        <ImageField
-        v-else-if="field.type === ListFieldType.Image"
-        :key="index"
-        :image-path="value"
-        />
-        <ImageDetailField
-        v-else-if="field.type === ListFieldType.ImageFull"
-        :id="value.id"
-        :key="index"
-        :image-path="value.imagePath"
-        :compression-for-preview="value.compressionForPreview || 0"
-        />
-
-        <DatePeriodField
-        v-else-if="field.type === ListFieldType.Period"
-        :key="index"
-        :period="value"
-        />
-
-        <CopyField
-        v-else-if="field.type === ListFieldType.Copy"
-        :key="index"
-        :value="value"
-        />
-
-        <CopyShortField
-        v-else-if="field.type === ListFieldType.CopyShort"
-        :key="index"
-        :value="value"
-        />
-
-        <template v-else-if="field.type === ListFieldType.Percent">
-        {{ value }} %
-        </template>
-      -->
 
       <template v-else>
         {{ cell }}

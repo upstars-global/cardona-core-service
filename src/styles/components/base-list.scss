@@ -1,7 +1,5 @@
 @import "@core/scss/base/variables";
 
-$table-hover-bg: #f6f6f9 !default; // TODO: переместить
-
 @each $color_name, $color in $theme-colors-name {
   @each $color_type, $color_value in $color {
       .table-light-#{$color_name} {
@@ -19,5 +17,5 @@ $table-hover-bg: #f6f6f9 !default; // TODO: переместить
 }
 
 .table-default-bg {
-  background-color: $table-hover-bg;
+  background-color: rgb(var(--v-theme-surface));
 }

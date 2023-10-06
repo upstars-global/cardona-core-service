@@ -1,5 +1,5 @@
 import type { TranslateResult } from 'vue-i18n'
-import { SortDirection } from './components/baseList'
+import { SortDirection } from '../@model/templates/baseList'
 
 export interface PaginationData {
   readonly pageNumber: number

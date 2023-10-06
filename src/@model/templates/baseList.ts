@@ -1,11 +1,12 @@
 import type { TranslateResult } from 'vue-i18n'
-import type { ProjectFilterTypes } from '@filterConfig'
 import type { FilterType } from '../filter'
 import type { IListSort } from '../index'
 import type { ViewInfo } from '../view'
-import type { BColors, BLightColors } from '../bootstrap' // TODO
+import type { BColors, BLightColors } from '../bootstrap' // TODO remove
 import type { TableField } from './tableFields'
+import type { ProjectFilterTypes } from '@filterConfig'
 import i18n from '@/plugins/i18n'
+import { SelectMode } from '@/@model/enums/selectMode'
 
 export enum SortDirection {
   asc = 'ASC',
@@ -73,7 +74,7 @@ export interface IBaseListConfig {
   readonly responsive?: boolean
 
   /** responsive - Установить режим выделения элементов 'multi'/ 'single'  */
-  readonly selectMode?: string
+  readonly selectMode?: SelectMode
 
   /** selectable - Вкл/выкл режим выбора элементов */
   readonly selectable?: boolean
@@ -152,7 +153,10 @@ export interface IBaseListConfig {
 
   /** customPermissionPrefix - Пользовательский префикс к доступу */
   readonly customPermissionPrefix?: string
-  readonly hover: boolean
+
+  /** hoverable - Вкл/выкл выдиление строки при навидении на нее курсора */
+  readonly hover?: boolean
+
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -166,7 +170,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly staticFilters: Record<string, string>
   readonly staticSorts?: IListSort
   readonly responsive?: boolean
-  readonly selectMode?: string // TODO: add enum 'single' | 'page' | 'all'
+  readonly selectMode?: SelectMode
   readonly selectable?: boolean
   readonly small?: boolean
   readonly draggable?: boolean
@@ -245,7 +249,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.staticFilters = staticFilters || {}
     this.staticSorts = staticSorts
     this.responsive = responsive
-    this.selectMode = selectMode
+    this.selectMode = selectMode || SelectMode.All
     this.selectable = selectable
     this.small = small
     this.draggable = draggable

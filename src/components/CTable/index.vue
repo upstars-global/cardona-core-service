@@ -1,38 +1,42 @@
 <script setup lang="ts">
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { VueDraggableNext } from 'vue-draggable-next'
-import type { TableField } from '../../@model/components/tableFields'
+import type { TableField } from '../../@model/templates/tableFields'
+import type { SortItem } from '../../@core/types'
+import type { SelectMode } from '../../@model/enums/selectMode'
 
 const props = defineProps<{
-  fields: TableField[unknown]
-  rows: Array<unknown>
+  fields: TableField[]
+  rows: Array<Record<string, unknown>>
   class?: string
   hover?: boolean
   showEmpty?: boolean
-  selectMode?: boolean
+  selectMode?: SelectMode
   selectable?: boolean
   small?: boolean
   draggable?: boolean
-  sortData?: { key: string; order?: boolean | 'asc' | 'desc' }[] // TODO: create model
+  sortData?: SortItem[]
   tbodyTrClass?: string
 }>()
 
-const emits = defineEmits('rowSelected', 'rowClicked', 'end', 'update:sortData')
+const emits = defineEmits<{
+  (e: 'rowSelected', items: Array<Record<string, unknown>>): void
+  (e: 'rowClicked', item: Record<string, unknown>): void
+  (e: 'end', data: Record<string, unknown>): void
+  (e: 'update:sortData', event: SortItem[]): void
+}>()
 
 const tableWrapperComponent = ref(props.draggable ? VueDraggableNext : 'tbody')
 
-const compareClasses = item => {
-  const rowVariant = item.rowVariant ? `table-light-${item.rowVariant}` : ''
-  const isHover = props.hover ? 'is-hover-row' : ''
-
-  return [rowVariant, isHover]
+const compareClasses = (item: Record<string, unknown>): Record<string, boolean> => {
+  return { [`table-light-${item.rowVariant}`]: !!item.rowVariant, 'is-hover-row': props.hover }
 }
 
-const onSelectRow = items => {
+const onSelectRow = (items: Array<Record<string, unknown>>) => {
   emits('rowSelected', items)
 }
 
-const onRowClicked = item => {
+const onRowClicked = (item: Record<string, unknown>) => {
   emits('rowClicked', item)
 }
 
@@ -40,8 +44,8 @@ const onUpdateSortData = event => {
   emits('update:sortData', event)
 }
 
-const onDragEnd = data => {
-  emits('end', data)
+const onDragEnd = (event: { moved: object }) => {
+  emits('end', event.moved)
 }
 </script>
 
@@ -111,7 +115,7 @@ const onDragEnd = data => {
   .c-table__cell {
     background-color: transparent;
   }
-  .v-data-table-header__content {
+  :deep(.v-data-table-header__content) {
     white-space: nowrap;
   }
 }
