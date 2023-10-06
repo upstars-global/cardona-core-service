@@ -1,4 +1,4 @@
-ARG NODE_BASE_VERSION="node:14.20.1"
+ARG NODE_BASE_VERSION="node:16.19.0"
 ARG NGINX_BASE_VERSION="nginx:1.18"
 
 FROM public.ecr.aws/docker/library/${NODE_BASE_VERSION} AS install

@@ -21,6 +21,13 @@ const emits = defineEmits('rowSelected', 'rowClicked', 'end', 'update:sortData')
 
 const tableWrapperComponent = ref(props.draggable ? VueDraggableNext : 'tbody')
 
+const compareClasses = item => {
+  const rowVariant = item.rowVariant ? `table-light-${item.rowVariant}` : ''
+  const isHover = props.hover ? 'is-hover-row' : ''
+
+  return [rowVariant, isHover]
+}
+
 const onSelectRow = items => {
   emits('rowSelected', items)
 }
@@ -62,7 +69,7 @@ const onDragEnd = data => {
           v-for="(item, index) in items"
           :key="`c-table-row_${index}`"
           class="c-table__row table-default-bg"
-          :class="[`table-light-${item.raw.rowVariant}`, { 'is-hover-row': hover }]"
+          :class="compareClasses(item.raw)"
           @click="onRowClicked"
         >
           <td
@@ -96,7 +103,7 @@ const onDragEnd = data => {
   </VDataTable>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .v-data-table.c-table {
   .c-table__row {
     cursor: pointer;
