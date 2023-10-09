@@ -20,10 +20,10 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits<{
-  (e: 'rowSelected', items: Array<Record<string, unknown>>): void
-  (e: 'rowClicked', item: Record<string, unknown>): void
-  (e: 'end', data: Record<string, unknown>): void
-  (e: 'update:sortData', event: SortItem[]): void
+  rowSelected: [items: Array<Record<string, unknown>>]
+  rowClicked: [item: Record<string, unknown>]
+  end: [data: Record<string, unknown>]
+  'update:sortData': [event: SortItem[]]
 }>()
 
 const tableWrapperComponent = ref(props.draggable ? VueDraggableNext : 'tbody')
