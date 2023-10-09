@@ -880,8 +880,8 @@ export default {
         comment: commentToRemove,
         customApiPrefix: props.config?.customApiPrefix,
       })
-
       hide()
+      isSidebarShown.value = false
       reFetchList()
     }
 
