@@ -92,7 +92,7 @@
               v-if="canRemoveItem"
               :variant="BVariant.OutlineDanger"
               :size="BSize.Sm"
-              @click="action('remove', hide)"
+              @click="action('remove')"
             >
               {{ $t('action.remove') }}
             </b-button>
@@ -166,8 +166,8 @@ export default {
   setup(props, { emit, slots }) {
     const viewForm = ref(new props.sideBarModel(props.item))
 
-    const action = (name: string, hide: Function) => {
-      hide()
+    const action = (name: string, hide?: Function) => {
+      hide && hide()
 
       setTimeout(() => {
         emit(name)
