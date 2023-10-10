@@ -1,28 +1,28 @@
 <template>
-  <div class="white-space-nowrap">
-    <slot>
-      <router-link
-        v-if="isExistsRoute"
-        :to="getUpdateRoute(item)"
-        class="d-flex align-items-center"
-      >
-        {{ itemName }}
+  <div class="name-with-id-field white-space-nowrap">
+    <div class="name-with-id-field__name">
+      <slot>
+        <router-link
+          v-if="isExistsRoute"
+          :to="getUpdateRoute(item)"
+          class="d-flex align-items-center"
+        >
+          {{ itemName }}
 
-        <b-badge v-if="isYou" variant="light-info" class="font-weight-bold ml-25">
-          {{ $t('common.you') }}
-        </b-badge>
-      </router-link>
+          <b-badge v-if="isYou" variant="light-info" class="font-weight-bold ml-25">
+            {{ $t('common.you') }}
+          </b-badge>
+        </router-link>
 
-      <p v-else class="mb-0 text-primary">
-        {{ itemName }}
-      </p>
-    </slot>
+        <p v-else class="mb-0 text-primary">
+          {{ itemName }}
+        </p>
+      </slot>
+    </div>
 
-    <component :is="currentComponent" :value="itemId">
-      <template #default="{ label }">
-        <small> ID {{ label }} </small>
-      </template>
-    </component>
+    <span class="d-flex small">
+      <span class="mr-25">ID</span><component :is="currentComponent" :value="itemId"> </component
+    ></span>
   </div>
 </template>
 
@@ -85,3 +85,11 @@ export default defineComponent({
   },
 })
 </script>
+<style lang="scss" scoped>
+.name-with-id-field {
+  margin-bottom: 1px;
+  &__name {
+    padding-bottom: 2px;
+  }
+}
+</style>
