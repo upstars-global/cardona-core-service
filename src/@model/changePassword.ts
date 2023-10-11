@@ -1,6 +1,6 @@
 import { FieldInfo, FieldType } from '../@model/field'
 import i18n from '../plugins/i18n'
-import type { UseEntityType } from './components/baseSection'
+import type { UseEntityType } from '../@model/templates/baseSection'
 
 export class ChangePassword {
   readonly password?: FieldInfo<string>

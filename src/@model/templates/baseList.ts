@@ -2,10 +2,11 @@ import type { TranslateResult } from 'vue-i18n'
 import type { FilterType } from '../filter'
 import type { IListSort } from '../index'
 import type { ViewInfo } from '../view'
-import type { BColors, BLightColors } from '../bootstrap' // TODO
+import type { BColors, BLightColors } from '../bootstrap' // TODO remove
 import type { TableField } from './tableFields'
 import type { ProjectFilterTypes } from '@filterConfig'
 import i18n from '@/plugins/i18n'
+import { SelectMode } from '@/@model/enums/selectMode'
 
 export enum SortDirection {
   asc = 'ASC',
@@ -73,7 +74,7 @@ export interface IBaseListConfig {
   readonly responsive?: boolean
 
   /** responsive - Установить режим выделения элементов 'multi'/ 'single'  */
-  readonly selectMode?: string
+  readonly selectMode?: SelectMode
 
   /** selectable - Вкл/выкл режим выбора элементов */
   readonly selectable?: boolean
@@ -152,6 +153,10 @@ export interface IBaseListConfig {
 
   /** customPermissionPrefix - Пользовательский префикс к доступу */
   readonly customPermissionPrefix?: string
+
+  /** hoverable - Вкл/выкл выдиление строки при навидении на нее курсора */
+  readonly hover?: boolean
+
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -165,7 +170,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly staticFilters: Record<string, string>
   readonly staticSorts?: IListSort
   readonly responsive?: boolean
-  readonly selectMode?: string
+  readonly selectMode?: SelectMode
   readonly selectable?: boolean
   readonly small?: boolean
   readonly draggable?: boolean
@@ -192,6 +197,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly customModuleName?: string
   readonly customApiPrefix?: string
   readonly customPermissionPrefix?: string
+  readonly hover: boolean
 
   constructor({
     withSearch,
@@ -231,6 +237,7 @@ export class BaseListConfig implements IBaseListConfig {
     customModuleName,
     customApiPrefix,
     customPermissionPrefix,
+    hover,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -242,7 +249,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.staticFilters = staticFilters || {}
     this.staticSorts = staticSorts
     this.responsive = responsive
-    this.selectMode = selectMode
+    this.selectMode = selectMode || SelectMode.All
     this.selectable = selectable
     this.small = small
     this.draggable = draggable
@@ -269,6 +276,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.customModuleName = customModuleName
     this.customApiPrefix = customApiPrefix
     this.customPermissionPrefix = customPermissionPrefix
+    this.hover = hover ?? true
   }
 }
 

@@ -1,5 +1,5 @@
 import type { Component } from 'vue'
-import store from '../../store'
+import store from '../../../store'
 import type { OptionsItem } from '../../@model'
 import type { IBaseField } from './base'
 import { BaseField } from './base'
