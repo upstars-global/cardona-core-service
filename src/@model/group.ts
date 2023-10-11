@@ -4,6 +4,7 @@ import { IRequestListPayload, OptionsItem } from '../@model/index'
 import { ViewInfo, ViewType } from '../@model/view'
 import i18n from '../libs/i18n'
 import { FieldInfo, FieldType } from '../@model/field'
+import { TextBaseField } from '../@model/baseField'
 import store from '../store'
 
 export class GroupData {
@@ -64,7 +65,7 @@ export class GroupsSideBarFields {
 //Form
 export class GroupForm {
   readonly id?: string
-  readonly name?: FieldInfo<string>
+  readonly name: TextBaseField
   readonly userIds: FieldInfo<OptionsItem>
   readonly productId: string
   permissions?: Permission[]
@@ -73,12 +74,11 @@ export class GroupForm {
     const users = data?.users.map((user) => new UserSmallInfo(user))
     this.id = data?.id
     this.productId = store.getters['productCore/productId']
-    this.name = new FieldInfo<string>({
-      type: FieldType.Text,
+    this.name = new TextBaseField({
       key: 'name',
-      value: data?.name || '',
-      label: String(i18n.t('common.groups.name')),
-      placeholder: String(i18n.t('common.groups.name')),
+      value: data?.name,
+      label: i18n.t('common.groups.name'),
+      placeholder: i18n.t('common.groups.name'),
       validationRules: 'required',
     })
     this.userIds = new FieldInfo<OptionsItem>({

@@ -3,15 +3,12 @@ import { OptionsItem } from './index'
 import { TranslateResult } from 'vue-i18n'
 
 export enum FieldType {
-  Text = 'text',
   Password = 'password',
-  Number = 'number',
   Textarea = 'textarea',
   TextareaWithCounter = 'textarea-with-counter',
   RichText = 'rich-text',
   Check = 'check',
   CheckGroup = 'check-group',
-  Select = 'select',
   MultiSelect = 'multi-select',
   DummySelect = 'dummy-select',
   Percent = 'percent',
@@ -107,9 +104,7 @@ export class FieldInfo<T = {}> {
   }
 
   get value() {
-    if (this.type === FieldType.Select) {
-      return this._value ? this.checkSelectValue(this._value) : null
-    } else if (this.type === FieldType.MultiSelect) {
+    if (this.type === FieldType.MultiSelect) {
       return Array.isArray(this._value) ? this._value : !!this._value ? [this._value] : []
     } else if (this.type === FieldType.Tags) {
       return this._value || []

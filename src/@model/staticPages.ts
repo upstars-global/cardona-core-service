@@ -1,7 +1,7 @@
 import { SeoData } from '../@model/seo'
 import { FieldInfo, FieldType } from '../@model/field'
 import i18n from '../libs/i18n'
-import { IRequestListPayload } from '../@model/index'
+import { NumberBaseField, TextBaseField } from '../@model/baseField'
 import { FieldTranslationsData } from '../@model/translations'
 
 export type StaticPagesData = {
@@ -29,12 +29,12 @@ export interface IGameItemInfo {
 
 export class StaticPagesForm {
   readonly id?: string
-  readonly name: FieldInfo<string>
-  readonly buttonName: FieldInfo<string>
-  readonly slug: FieldInfo<string>
+  readonly name: TextBaseField
+  readonly buttonName: TextBaseField
+  readonly slug: TextBaseField
   readonly isActive: boolean
   readonly isHidden: FieldInfo<boolean>
-  readonly position: FieldInfo<number>
+  readonly position: NumberBaseField
   readonly imagePath?: string
   readonly localisationParameters?: Object
   readonly seo?: SeoData
@@ -44,19 +44,17 @@ export class StaticPagesForm {
   constructor(data?: StaticPagesData) {
     this.id = data?.id
     this.isActive = data?.isActive || false
-    this.name = new FieldInfo<string>({
-      type: FieldType.Text,
+    this.name = new TextBaseField({
       key: 'name',
-      value: data?.name || '',
-      label: String(i18n.t('common.staticPages.name')),
+      value: data?.name,
+      label: i18n.t('common.staticPages.name'),
       validationRules: 'required',
       isLocalization: true,
     })
-    this.buttonName = new FieldInfo<string>({
-      type: FieldType.Text,
+    this.buttonName = new TextBaseField({
       key: 'buttonName',
-      value: data?.buttonName || '',
-      label: String(i18n.t('common.staticPages.buttonName')),
+      value: data?.buttonName,
+      label: i18n.t('common.staticPages.buttonName'),
       isLocalization: true,
     })
     this.isHidden = new FieldInfo<boolean>({
@@ -66,18 +64,16 @@ export class StaticPagesForm {
       label: String(i18n.t('common.staticPages.isHidden')),
       description: String(i18n.t('common.staticPages.isHiddenDescription')),
     })
-    this.slug = new FieldInfo<string>({
-      type: FieldType.Text,
+    this.slug = new TextBaseField({
       key: 'slug',
-      value: data?.slug || '',
-      label: String(i18n.t('common.slug')),
+      value: data?.slug,
+      label: i18n.t('common.slug'),
       validationRules: 'required',
     })
-    this.position = new FieldInfo<number>({
-      type: FieldType.Number,
+    this.position = new NumberBaseField({
       key: 'position',
       value: data?.position || 1,
-      label: String(i18n.t('common.order')),
+      label: i18n.t('common.order'),
       validationRules: 'required',
     })
     this.seo = data?.seo

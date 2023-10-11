@@ -73,6 +73,7 @@ export default defineComponent({
     watch(
       () => props.value,
       () => {
+        // @ts-ignore
         form.value = new SeoForm(props.value['seo'])
         if (form.value.description) {
           form.value.description.form = props.value
