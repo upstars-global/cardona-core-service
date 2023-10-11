@@ -18,7 +18,13 @@ export const transformFormData = (form): object => {
         : valueData.value?.id ?? valueData.value ?? ''
     } else if (Array.isArray(valueData) && typeof valueData[0] !== 'string') {
       acc[key] = valueData
-        .map((item) => (item instanceof FieldInfo ? item.value : transformFormData(item)))
+        .map((item) =>
+          item instanceof FieldInfo
+            ? item.value
+            : item instanceof BaseField
+            ? item.transformField()
+            : transformFormData(item)
+        )
         .filter((item) => !!item)
     } else if (isObject(valueData)) {
       const valueDataInner = JSON.parse(JSON.stringify(valueData))

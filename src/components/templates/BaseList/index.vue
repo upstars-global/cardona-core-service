@@ -718,8 +718,6 @@ export default {
             acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
           } else if (filter instanceof BaseField) {
             acc[key] = filter.transformField()
-          } else if (filter.type === FieldType.Select) {
-            acc[key] = filter.value?.[trackBy]
           } else if (filter.type === FieldType.MultiSelect) {
             acc[key] = filter.value.map((item: object) => item[trackBy])
           } else if (filter.type === FieldType.DateRange) {

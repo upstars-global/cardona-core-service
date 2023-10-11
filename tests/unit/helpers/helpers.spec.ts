@@ -5,6 +5,7 @@ import {
   transformFormData,
 } from '../../../src/helpers'
 import { FieldInfo, FieldType } from '../../../src/@model/field'
+import { TextBaseField } from '../../../src/@model/baseField'
 import { getLocaleDateStringWithoutTimezone } from '../../../src/helpers/date'
 import { DemoForm } from '../../../src/@model/demo'
 
@@ -135,14 +136,12 @@ describe('helpers', () => {
     })
     it('should transform form data with BaseField correctly', () => {
       const form = {
-        field1: new FieldInfo({
-          type: FieldType.Text,
+        field1: new TextBaseField({
           label: '',
           key: 'value1',
           value: 'asdasd',
         }),
-        field2: new FieldInfo({
-          type: FieldType.Text,
+        field2: new TextBaseField({
           label: '',
           key: 'value1',
           value: 'asdasd',
@@ -158,8 +157,7 @@ describe('helpers', () => {
     })
     it('should transform form data with FieldInfo correctly', () => {
       const form = {
-        field1: new FieldInfo({
-          type: FieldType.Text,
+        field1: new TextBaseField({
           label: '',
           key: 'value1',
           value: 'asdasd',
@@ -182,28 +180,24 @@ describe('helpers', () => {
     it('should transform form data with nested objects correctly', () => {
       const form = {
         field1: {
-          subField1: new FieldInfo({
-            type: FieldType.Text,
+          subField1: new TextBaseField({
             label: '',
             key: 'value1',
             value: 'subValue1',
           }),
-          subField2: new FieldInfo({
-            type: FieldType.Text,
+          subField2: new TextBaseField({
             label: '',
             key: 'value2',
             value: 'subValue2',
           }),
         },
         field2: {
-          subField3: new FieldInfo({
-            type: FieldType.Text,
+          subField3: new TextBaseField({
             label: '',
             key: 'value3',
             value: 'subValue3',
           }),
-          subField4: new FieldInfo({
-            type: FieldType.Text,
+          subField4: new TextBaseField({
             label: '',
             key: 'value4',
             value: 'subValue4',

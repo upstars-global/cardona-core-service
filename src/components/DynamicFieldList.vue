@@ -1,16 +1,19 @@
 <template>
   <div>
     <b-row v-if="templateField">
-      <b-col v-if="templateField instanceof FieldInfo">
+      <b-col v-if="isBaseField(templateField)">
         <label>{{ templateField?.label }}</label>
       </b-col>
+
       <b-col v-for="(item, index) in Object.values(templateField)" v-else :key="index">
         <label v-if="!(index > 0 && !rows.length)">{{ item?.label }}</label>
       </b-col>
+
       <b-col md="1"></b-col>
     </b-row>
+
     <b-row v-for="(row, index) in rows" :key="index" class="mb-1">
-      <b-col v-if="row instanceof FieldInfo">
+      <b-col v-if="isBaseField(row)">
         <field-generator
           v-model="rows[index]"
           :options="filteredOptions"
@@ -64,6 +67,9 @@ import { debounce } from 'lodash'
 import FieldGenerator from '../components/templates/FieldGenerator/index.vue'
 import { FieldInfo } from '../@model/field'
 import { IconsList } from '../@model/enums/icons'
+import { BaseField, getInstanceClass, SelectBaseField } from '../@model/baseField'
+
+type DynamicField = FieldInfo | BaseField | Record<string, FieldInfo | BaseField>
 
 export default defineComponent({
   name: 'DynamicFieldList',
@@ -73,7 +79,7 @@ export default defineComponent({
 
   props: {
     value: {
-      type: Array as PropType<FieldInfo[] | Record<string, FieldInfo>[]>,
+      type: Array as PropType<DynamicField[]>,
       default: () => [],
     },
 
@@ -106,18 +112,16 @@ export default defineComponent({
       if (
         props.value?.[0] &&
         Object.values(props.value[0])?.[0] &&
-        Object.values(props.value[0])?.[0] instanceof FieldInfo
+        isBaseField(Object.values(props.value[0])?.[0])
       ) {
-        return (
-          Object.values(props.value[0])[0].type.includes('select') && !filteredOptions.value.length
-        )
+        return isSelect(Object.values(props.value[0])[0]) && !filteredOptions.value.length
       }
       return false
     })
 
     const isDisabled = computed(() => {
-      return props.value?.some((row: FieldInfo | Record<string, FieldInfo>): boolean => {
-        if (row instanceof FieldInfo) {
+      return props.value?.some((row: DynamicField): boolean => {
+        if (isBaseField(row)) {
           return !row.value
         } else {
           return !Object.values(row)?.[0].value
@@ -125,15 +129,20 @@ export default defineComponent({
       })
     })
 
+    const isBaseField = (field: object): boolean =>
+      field instanceof FieldInfo || field instanceof BaseField
+    const isSelect = (field: object): boolean =>
+      field instanceof SelectBaseField || field?.type?.includes('select')
+
     // Options
     const filteredOptions = computed<Array<any>>(() => {
       const selectedIds: Array<string> = rows.value
-        .map((row: object) => {
-          if (row instanceof FieldInfo) {
-            return row.type.includes('select') && row.value?.id
+        .map((row: DynamicField) => {
+          if (isSelect(row)) {
+            return row.value.id
           } else {
-            const selectField: FieldInfo | undefined = Object.values(row).find((field: FieldInfo) =>
-              field.type.includes('select')
+            const selectField = Object.values(row).find((field: FieldInfo | BaseField) =>
+              isSelect(field)
             )
 
             return selectField?.value?.id
@@ -149,13 +158,11 @@ export default defineComponent({
     // Search
     const selectField: any = ref()
 
-    const fetcStarSelect = async (rows) => {
-      const [row]: Array<FieldInfo> = rows
+    const fetchStartSelect = async (rows) => {
+      const [row]: Array<FieldInfo | BaseField> = rows
 
       if (row) {
-        const selectFieldItem: FieldInfo | undefined = Object.values(row).find(
-          (field: FieldInfo) => field?.fetchOptionsActionName
-        )
+        const selectFieldItem = Object.values(row).find((field) => field?.fetchOptionsActionName)
 
         if (selectFieldItem) {
           selectField.value = selectFieldItem
@@ -165,28 +172,42 @@ export default defineComponent({
       }
     }
     onMounted(async () => {
-      await fetcStarSelect([props.templateField])
+      await fetchStartSelect([props.templateField])
     })
 
-    const fetchSelectOptions = debounce(async (search: string = '') => {
+    const fetchSelectOptions = debounce(async (search = '') => {
       await selectField.value.fetchOptions(search)
     }, 250)
 
     // Handlers
     const onAdd = async () => {
       let [itemTemplate]: any = [props.templateField]
+      const fieldClass = getInstanceClass(rows.value[0])
 
       if (rows.value[0] instanceof FieldInfo) {
         itemTemplate = new FieldInfo({
           ...itemTemplate,
           value: undefined,
         })
+      } else if (fieldClass) {
+        itemTemplate = new fieldClass({
+          ...itemTemplate,
+          value: undefined,
+        })
       } else {
         for (let key in itemTemplate) {
-          itemTemplate[key] = new FieldInfo({
+          const templateData = {
             ...itemTemplate[key],
             value: undefined,
-          })
+          }
+
+          if (itemTemplate[key] instanceof FieldInfo) {
+            itemTemplate[key] = new FieldInfo(templateData)
+          } else {
+            const fieldClass = getInstanceClass(itemTemplate[key])
+
+            itemTemplate[key] = fieldClass && new fieldClass(templateData)
+          }
         }
       }
 
@@ -196,6 +217,7 @@ export default defineComponent({
     const onRemove = (index: number) => !props.disabled && rows.value.splice(index, 1)
 
     return {
+      isBaseField,
       FieldInfo,
       rows,
       filteredOptions,
