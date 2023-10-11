@@ -27,6 +27,8 @@ module.exports = {
   ],
   ignorePatterns: ['src/@iconify/*.js', 'node_modules', 'dist', '*.d.ts'],
   rules: {
+    'no-mixed-operators': 'off',
+    'vue/require-explicit-emits': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
 
@@ -231,6 +233,7 @@ module.exports = {
       // Ignore files
       '\.eslintrc\.js',
     ],
+
   },
   settings: {
     'import/resolver': {
