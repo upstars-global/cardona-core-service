@@ -197,7 +197,8 @@
       "textareaWithCounterField": "Textarea with counter field",
       "tagsField": "Tags field",
       "credit": "Credit card",
-      "onlyPositiveNumbers": "Only positive numbers"
+      "onlyPositiveNumbers": "Only positive numbers",
+      "rates": "Rates"
     },
     "groupFragment": {
       "demoPage": "Demo page access",
