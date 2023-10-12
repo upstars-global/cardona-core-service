@@ -150,9 +150,9 @@ export class DemoForm {
   readonly textWithCb: TextBaseField
   readonly email: TextBaseField
   readonly number: NumberBaseField
-  readonly minute: FieldInfo
+  readonly minute: NumberBaseField
   readonly sumRange: FieldInfo
-  readonly percent: FieldInfo
+  readonly percent: NumberBaseField
   readonly digits: NumberBaseField
   readonly password: FieldInfo
   readonly passwordFieldWithGeneration: FieldInfo
@@ -216,19 +216,19 @@ export class DemoForm {
       withPositiveNumbers: true,
       info: i18n.t('page.demo.onlyPositiveNumbers'),
     })
-    this.minute = new FieldInfo({
-      type: FieldType.Minute,
+    this.minute = new NumberBaseField({
       key: 'minute',
       value: data?.minute,
       label: i18n.t('page.demo.minuteField'),
       validationRules: 'positive',
+      append: 'min',
     })
-    this.percent = new FieldInfo({
-      type: FieldType.Percent,
+    this.percent = new NumberBaseField({
       key: 'percent',
       value: data?.percent,
       label: i18n.t('page.demo.percentField'),
-      validationRules: 'required|length:2',
+      validationRules: ['required', 'length:2' as ValidationRule],
+      append: '%',
     })
     this.digits = new NumberBaseField({
       key: 'digits',

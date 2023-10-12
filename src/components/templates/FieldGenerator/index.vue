@@ -58,16 +58,11 @@ import { defineComponent, PropType, computed } from 'vue'
 import store from '../../../store'
 import { FieldInfo, FieldType } from '../../../@model/field'
 import { BaseField } from '../../../@model/baseField'
-import TextField from './_components/TextField.vue'
-import NumberField from './_components/NumberField.vue'
-import PercentField from './_components/PercentField.vue'
-import MinuteField from './_components/MinuteField.vue'
 import TextareaField from './_components/TextareaField.vue'
 import TextareaWithCounterField from './_components/TextareaWithCounterField.vue'
 import RichTextField from './_components/RichTextField.vue'
 import CheckField from './_components/CheckField.vue'
 import CheckGroupField from './_components/CheckGroupField.vue'
-import SelectField from './_components/SelectField.vue'
 import MultiSelectField from './_components/MultiSelectField.vue'
 import DummySelectField from './_components/DummySelectField.vue'
 import TagsField from './_components/TagsField.vue'
@@ -87,17 +82,12 @@ import { IconsList } from '../../../@model/enums/icons'
 export default defineComponent({
   name: 'FieldGenerator',
   components: {
-    TextField,
     PasswordField,
-    NumberField,
-    PercentField,
-    MinuteField,
     TextareaField,
     TextareaWithCounterField,
     RichTextField,
     CheckField,
     CheckGroupField,
-    SelectField,
     MultiSelectField,
     DummySelectField,
     TagsField,

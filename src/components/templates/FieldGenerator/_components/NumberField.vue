@@ -56,7 +56,7 @@ const onKeyDown = (event) => {
 @import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
 
 .input-group-text {
-  font-weight: $font-weight-bolder;
+  font-weight: $font-weight-bold;
 }
 
 .error {

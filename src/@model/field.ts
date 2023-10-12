@@ -11,8 +11,6 @@ export enum FieldType {
   CheckGroup = 'check-group',
   MultiSelect = 'multi-select',
   DummySelect = 'dummy-select',
-  Percent = 'percent',
-  Minute = 'minute',
   Tags = 'tags',
   Radio = 'radio',
   DateBtnOnly = 'date-btn-only',
