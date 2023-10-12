@@ -22,6 +22,7 @@ export enum FieldType {
   SumRange = 'sum-range',
   Phone = 'phone',
   Rates = 'rates',
+  UsersListField = 'users-list',
 }
 
 export interface IFieldInfo {

@@ -62,3 +62,5 @@ export type Badge = {
   name: string
   id: string
 }
+
+export type NumberOrString = number | string

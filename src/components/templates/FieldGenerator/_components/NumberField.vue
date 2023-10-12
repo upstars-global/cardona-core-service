@@ -20,9 +20,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { NumberBaseField } from '../../../../@model/baseField'
+import { NumberOrString } from '../../../../@model'
 
 type Props = {
-  value: string | number
+  value: NumberOrString
   field: NumberBaseField
   errors?: Array<string>
   disabled?: boolean
@@ -34,18 +35,33 @@ const emits = defineEmits<{
 }>()
 const appendText = ref(props.field?.append)
 
+const getPositiveNumbers = (value: NumberOrString): NumberOrString =>
+  props.field.withPositiveNumbers ? value.toString().replace(/-/g, '') : value
+
+const getIntegerNumbers = (value: NumberOrString): NumberOrString =>
+  props.field.isIntegerNumbers ? value.toString().replace(/[,.]/g, '') : value
+
+const getMappedValue = (value: NumberOrString): NumberOrString =>
+  [getPositiveNumbers, getIntegerNumbers].reduce(
+    (updatedValue, mappedMethod) => mappedMethod(updatedValue),
+    value
+  )
+
 const modelValue = computed({
   get: () => props.value,
   set: (value) => {
-    emits('input', props.field.withPositiveNumbers ? value.toString().replace(/-/g, '') : value)
+    emits('input', getMappedValue(value))
   },
 })
 
+const disabledKeys = computed(() => [
+  'e',
+  props.field.isIntegerNumbers && '.',
+  props.field.withPositiveNumbers && '-',
+])
+
 const onKeyDown = (event) => {
-  if (props.field.withPositiveNumbers && event.key === '-') {
-    event.preventDefault()
-  }
-  if (event.key === 'e') {
+  if (disabledKeys.value.some((key) => key === event.key)) {
     event.preventDefault()
   }
 }
@@ -57,6 +73,18 @@ const onKeyDown = (event) => {
 
 .input-group-text {
   font-weight: $font-weight-bold;
+}
+.input-group-merge {
+  :deep(.input-group-append) {
+    .input-group-text {
+      font-weight: $font-weight-normal;
+    }
+  }
+  :deep(.input-group-prepend) {
+    .input-group-text {
+      font-weight: $font-weight-normal;
+    }
+  }
 }
 
 .error {

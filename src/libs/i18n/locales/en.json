@@ -177,6 +177,7 @@
       "textFieldWithCb": "Text field with callback",
       "numberField": "Number field",
       "minuteField": "Minute field",
+      "minutesRangeField": "Minutes range field",
       "sumRangeField": "Sum Range field",
       "percentField": "Percent field",
       "passwordField": "Password field",
@@ -278,6 +279,10 @@
     "inactive": "Inactive"
   },
   "placeholder": {
+    "minutesRange": {
+      "from": "from",
+      "to": "to"
+    },
     "select": "Select",
     "login": "Enter your login",
     "newPassword": "New password",

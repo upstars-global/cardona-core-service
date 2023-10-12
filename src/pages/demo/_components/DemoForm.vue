@@ -43,6 +43,10 @@
             </b-col>
 
             <b-col cols="4">
+              <field-generator v-model="formData.minutesRange" :disabled="isDisabledField" />
+            </b-col>
+
+            <b-col cols="4">
               <field-generator v-model="formData.percent" :disabled="isDisabledField" />
             </b-col>
           </b-row>

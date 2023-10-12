@@ -230,6 +230,7 @@ const entityData = {
   text: 'Some text',
   number: 99,
   minute: 12,
+  minutesRange: { from: 12, to: 34 },
   sumRange: [1000, 5000],
   percent: 25,
   digits: 35,

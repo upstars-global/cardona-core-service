@@ -11,6 +11,7 @@ import { TranslateResult } from 'vue-i18n'
 import { ValidationRule } from './validations'
 import { BColors, BLightColors } from './bootstrap'
 import { IconsList } from './enums/icons'
+import { NumberRangeBaseField } from './baseField/number-range'
 
 export interface IDemoTypeItem {
   id: string
@@ -151,6 +152,7 @@ export class DemoForm {
   readonly email: TextBaseField
   readonly number: NumberBaseField
   readonly minute: NumberBaseField
+  readonly minutesRange: NumberRangeBaseField
   readonly sumRange: FieldInfo
   readonly percent: NumberBaseField
   readonly digits: NumberBaseField
@@ -222,6 +224,16 @@ export class DemoForm {
       label: i18n.t('page.demo.minuteField'),
       validationRules: 'positive',
       append: 'min',
+      withPositiveNumbers: true,
+      isIntegerNumbers: true,
+    })
+    this.minutesRange = new NumberRangeBaseField({
+      value: data?.minutesRange,
+      withPositiveNumbers: true,
+      isIntegerNumbers: true,
+      append: 'min',
+      key: 'minutesRange',
+      label: i18n.t('page.demo.minutesRangeField'),
     })
     this.percent = new NumberBaseField({
       key: 'percent',
