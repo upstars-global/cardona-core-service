@@ -234,7 +234,6 @@ export default defineComponent({
 
       if (fieldNameError.value) {
         nextTick(() => {
-          console.log(fieldNameError.value)
           const el: HTMLElement | null = document.getElementById(`${fieldNameError.value}-field`)
           if (el) {
             el.scrollIntoView({
