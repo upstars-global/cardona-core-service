@@ -64,3 +64,15 @@ export type Badge = {
 }
 
 export type NumberOrString = number | string
+
+export interface ValidationError {
+  code: string
+  field: string
+  params: Array<unknown> | Record<string, string>
+  template: string
+}
+export interface IRequestError {
+  description: string
+  type: string
+  validationErrors?: Array<ValidationError>
+}
