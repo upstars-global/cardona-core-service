@@ -51,9 +51,18 @@
             </b-col>
           </b-row>
 
-          <b-row>
+          <b-row class="mb-2">
             <b-col cols="4">
               <field-generator v-model="formData.sumRange" :disabled="isDisabledField" />
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col cols="5">
+              <field-generator
+                v-model="formData.rates"
+                :disabled="isDisabledField"
+                :with-label="false"
+              />
             </b-col>
           </b-row>
         </b-card-body>
