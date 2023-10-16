@@ -160,6 +160,16 @@
       "today": "Today: ",
       "week": "Week: ",
       "month": "Month: "
+    },
+    "conditions": {
+      "placeholder": "Click below to insert a var/function",
+      "availableVariables": "Available variables",
+      "ltp": "Life time profit(usd)",
+      "playerId": "Player id",
+      "partnerId": "Partner id",
+      "approvedPayoutsCount": "Payouts count approved and processing or already paid",
+      "adc(LastMonth)": "Calculate average daily check for last “N” months",
+      "partnerIdMatch(needle)": "Match partner id"
     }
   },
   "page": {
@@ -193,6 +203,7 @@
       "selectField": "Select field",
       "nonClearableSelectField": "Non clearable select field",
       "multiSelectField": "Multi select field",
+      "conditionsField": "Conditions field",
       "textareaField": "Textarea field",
       "textareaWithCounterField": "Textarea with counter field",
       "tagsField": "Tags field",
