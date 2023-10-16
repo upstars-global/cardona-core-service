@@ -215,8 +215,11 @@
           </b-row>
 
           <b-row class="mb-2">
-            <b-col cols="8">
+            <b-col cols="8" class="mb-2">
               <field-generator v-model="formData.tags" :disabled="isDisabledField" />
+            </b-col>
+            <b-col cols="8">
+              <field-generator v-model="formData.usersList" :disabled="isDisabledField" />
             </b-col>
           </b-row>
           <b-row>
