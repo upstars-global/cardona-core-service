@@ -1,7 +1,13 @@
 import i18n from '../libs/i18n'
 import { SeoData } from './seo'
 import { FieldTranslationsData } from './translations'
-import { NumberBaseField, SelectBaseField, TextBaseField, TimeBaseField } from './baseField'
+import {
+  NumberBaseField,
+  SelectBaseField,
+  TextBaseField,
+  TimeBaseField,
+  UsersListBaseField,
+} from './baseField'
 import { FieldInfo, FieldType } from './field'
 import { getLocaleDateStringWithoutTimezone } from '../helpers/date'
 import { StatusWithDateHistoryValue, StatusWithVariant, ViewInfo, ViewType } from './view'
@@ -179,6 +185,7 @@ export class DemoForm {
   readonly localisationParameters: Record<string, Record<string, string>>
   public fieldTranslations: FieldTranslationsData
   public image: string
+  public usersList: UsersListBaseField
 
   constructor(data) {
     this.id = data?.id
@@ -415,6 +422,11 @@ export class DemoForm {
     this.seo = data?.seo
     this.fieldTranslations = data?.fieldTranslations
     this.localisationParameters = data?.localisationParameters || {}
+    this.usersList = new UsersListBaseField({
+      key: 'users-list',
+      label: i18n.t('page.demo.usersList'),
+      value: data?.usersList,
+    })
   }
 }
 
