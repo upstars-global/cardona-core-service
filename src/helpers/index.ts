@@ -128,3 +128,17 @@ export const getShortString = (text: string | number, letterCount = 4): string =
 
 export const isNotEmptyNumber = (number: any): boolean => isNumber(number) && !isNaN(number)
 export const isEmptyString = (string: string): boolean => isString(string) && !string
+
+export const getFileValue = (file: File): Promise<any> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.onload = function (e) {
+      resolve(e.target?.result)
+    }
+
+    reader.onerror = function (error) {
+      reject(error)
+    }
+    reader.readAsText(file)
+  })

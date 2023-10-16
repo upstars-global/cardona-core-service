@@ -273,6 +273,7 @@ const entityData = {
     <li>Seo text item 3</li>
   </ul>`,
   },
+  usersList: ['user1', 'user2', 'user3'],
   localisationParameters: {
     'Demo locale params': {
       AUD: '1',
