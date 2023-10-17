@@ -262,6 +262,7 @@ const entityData = {
   credit: '4242 4242 4242 4242',
   url: 'https://cardona-develop.upstr.to/alaro/',
   tags: ['some', 'tag', 'first'],
+  conditions: 'ltp partnerIdMatch(needle)',
   seo: {
     metaTitle: 'Seo meta title',
     metaDescription: 'Seo meta description',
@@ -423,3 +424,15 @@ const options = [
 ]
 
 mock.onPost('/api/v2/options/list').reply(() => [200, { data: options }])
+
+// Conditions
+const conditions = [
+  'ltp',
+  'playerId',
+  'partnerId',
+  'approvedPayoutsCount',
+  'adc(LastMonth)',
+  'partnerIdMatch(needle)',
+]
+
+mock.onPost('/api/v2/conditions/list').reply(() => [200, { data: conditions }])

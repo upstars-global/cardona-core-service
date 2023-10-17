@@ -19,6 +19,7 @@ import tags from './modules/tags'
 import demo from './modules/demo'
 import permissions from './modules/permissions'
 import textEditor from './modules/textEditor'
+import conditions from './modules/conditions'
 
 import ecommerceStoreModuleCore from '../views/apps/e-commerce/eCommerceStoreModule'
 import app from './app'
@@ -46,6 +47,7 @@ const store = new Vuex.Store({
     textEditor,
     app,
     'app-ecommerce': ecommerceStoreModuleCore,
+    conditions,
   },
   strict: Boolean(process.env.DEV),
 })

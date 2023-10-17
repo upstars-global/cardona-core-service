@@ -242,6 +242,14 @@
                 :max-size-file-mb="10"
               />
             </b-col>
+
+            <b-col cols="6">
+              <field-generator
+                v-model="formData.conditions"
+                :disabled="isDisabledField"
+                :with-label="false"
+              />
+            </b-col>
           </b-row>
         </b-card-body>
       </b-card>

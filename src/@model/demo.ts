@@ -6,6 +6,7 @@ import {
   SelectBaseField,
   TextBaseField,
   TimeBaseField,
+  ConditionsBaseField,
   UsersListBaseField,
 } from './baseField'
 import { FieldInfo, FieldType } from './field'
@@ -185,6 +186,7 @@ export class DemoForm {
   readonly localisationParameters: Record<string, Record<string, string>>
   public fieldTranslations: FieldTranslationsData
   public image: string
+  readonly conditions: ConditionsBaseField
   public usersList: UsersListBaseField
 
   constructor(data) {
@@ -418,6 +420,14 @@ export class DemoForm {
       value: data?.tags,
       key: 'tags',
       label: i18n.t('page.demo.tagsField'),
+    })
+    this.conditions = new ConditionsBaseField({
+      value: data?.conditions,
+      key: 'conditions',
+      label: i18n.t('page.demo.conditionsField'),
+      placeholder: i18n.t('component.conditions.placeholder'),
+      validationRules: 'required',
+      fetchOptionsActionName: 'conditions/fetchConditions',
     })
     this.seo = data?.seo
     this.fieldTranslations = data?.fieldTranslations

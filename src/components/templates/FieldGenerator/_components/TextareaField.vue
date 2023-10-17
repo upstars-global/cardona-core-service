@@ -2,7 +2,7 @@
   <div>
     <b-form-textarea
       v-model.trim="modelValue"
-      :placeholder="field.label"
+      :placeholder="field.placeholder || field.label"
       :state="errors.isNotEmpty ? false : null"
       no-resize
       rows="4"
