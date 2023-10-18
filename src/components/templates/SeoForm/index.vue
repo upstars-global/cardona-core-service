@@ -75,9 +75,12 @@ export default defineComponent({
       () => {
         // @ts-ignore
         form.value = new SeoForm(props.value['seo'])
-        if (form.value.description) {
-          form.value.description.form = props.value
-        }
+
+        Object.keys(form.value).forEach((key) => {
+          if (form.value?.[key].hasOwnProperty('form')) {
+            form.value[key].form = props.value
+          }
+        })
       },
       { immediate: true, deep: true }
     )
