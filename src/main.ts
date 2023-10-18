@@ -1,6 +1,7 @@
 /* eslint-disable import/order */
 import '@/@fake-db/db'
 import '@/@iconify/icons-bundle'
+import './extensions'
 import App from '@/App.vue'
 import ability from '@/plugins/casl/ability'
 import i18n from '@/plugins/i18n'
@@ -14,6 +15,7 @@ import '@styles/styles.scss'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import vuex from '@/store'
+import { initDirectives } from '@/directives'
 
 loadFonts()
 
@@ -30,6 +32,7 @@ app.use(vuex)
 app.use(abilitiesPlugin, ability, {
   useGlobalProperties: true,
 })
+initDirectives(app)
 
 // Mount vue app
 app.mount('#app')

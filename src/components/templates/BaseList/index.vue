@@ -14,10 +14,29 @@ const props = defineProps<{
   useList?: unknown
 }>()
 
-const entityName = 'demo'
+const emits = defineEmits<{
+  (e: 'rowClicked', item: Record<string, unknown>): void
+}>()
+
+const {
+  entityName,
+
+  // fields,
+
+  /* ListFilterModel, */
+  SideBarModel,
+
+  /* pageName,
+  canUpdateCb,
+  canRemoveCb,
+  beforeRemoveCallback,
+  ListItemModel, */
+} = props.useList()
+
 const currentPageName = 'demo'
 
 const slots = useSlots()
+const selectedItem = ref(null)
 const selectedItems = ref([])
 const isSidebarShown = ref(false)
 
@@ -383,17 +402,30 @@ const onClickRow = data => {
   if (props.config?.selectable)
     return
 
-  if (props.config?.sidebar) {
+  if (props.config?.sidebar)
     isSidebarShown.value = true
-    selectedItem.value = data
-  }
-  emit('row-clicked', data)
+
+  selectedItem.value = data
+
+  emits('rowClicked', data)
+}
+
+const resetSelectedItem = () => {
+  selectedItem.value = null
 }
 
 const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
 </script>
 
 <template>
+  <SideBar
+    v-model:sidebar-active="isSidebarShown"
+    :item="selectedItem"
+    :entity-name="entityName"
+    :side-bar-model="SideBarModel"
+    :sidebar-collapse-mode="config?.sidebarCollapseMode"
+    @update:model-value="resetSelectedItem"
+  />
   <CTable
     v-model:sort-data="sortData"
     :fields="fields"

@@ -12,6 +12,7 @@ import AnalyticsSourceVisits from '@/views/dashboards/analytics/AnalyticsSourceV
 import AnalyticsSupportTracker from '@/views/dashboards/analytics/AnalyticsSupportTracker.vue'
 import AnalyticsTotalEarning from '@/views/dashboards/analytics/AnalyticsTotalEarning.vue'
 import AnalyticsWebsiteAnalytics from '@/views/dashboards/analytics/AnalyticsWebsiteAnalytics.vue'
+import { useDemoList } from '@/pages/dashboards/useDemo'
 
 const vuetifyTheme = useTheme()
 const currentTheme = vuetifyTheme.current.value.colors
@@ -91,7 +92,7 @@ const statisticsVertical = {
 
 const listConfig = new BaseListConfig({
   withSettings: true,
-  selectable: true,
+  selectable: false,
   skeletonColumns: 10,
   draggable: true,
   withCustomFetchList: true,
@@ -126,7 +127,10 @@ const listConfig = new BaseListConfig({
   <VRow class="match-height">
     <!-- 👉 Website analytics -->
     <VCol cols="12">
-      <BaseList :config="listConfig" />
+      <BaseList
+        :config="listConfig"
+        :use-list="useDemoList"
+      />
     </VCol>
 
     <VCol

@@ -20,10 +20,10 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits<{
-  rowSelected: [items: Array<Record<string, unknown>>]
-  rowClicked: [item: Record<string, unknown>]
-  end: [data: Record<string, unknown>]
-  'update:sortData': [event: SortItem[]]
+  (e: 'rowSelected', items: Array<Record<string, unknown>>): void
+  (e: 'rowClicked', item: Record<string, unknown>): void
+  (e: 'end', data: Record<string, unknown>): void
+  (e: 'update:sortData', event: SortItem[]): void
 }>()
 
 const tableWrapperComponent = ref(props.draggable ? VueDraggableNext : 'tbody')
@@ -74,7 +74,7 @@ const onDragEnd = (event: { moved: object }) => {
           :key="`c-table-row_${index}`"
           class="c-table__row table-default-bg"
           :class="compareClasses(item.raw)"
-          @click="onRowClicked"
+          @click="onRowClicked(item.raw)"
         >
           <td
             v-if="props.selectable"

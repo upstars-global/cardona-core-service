@@ -123,9 +123,17 @@ module.exports = {
 
     // Thanks: https://stackoverflow.com/a/63961972/10796681
     'no-shadow': 'off',
-    '@typescript-eslint/no-shadow': ['error'],
+    '@typescript-eslint/no-shadow': ['off'],
 
     '@typescript-eslint/consistent-type-imports': 'error',
+    '@typescript-eslint/ban-types': ['error',
+      {
+        types: {
+          Function: false,
+        },
+        extendDefaults: true,
+      }],
+    'new-cap': ['error', { newIsCap: false }],
 
     // Plugin: eslint-plugin-promise
     'promise/always-return': 'off',
