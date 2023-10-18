@@ -1,7 +1,7 @@
 import { useRouter } from '../@core/utils/utils'
 import { FieldInfo } from '../@model/field'
 import { BaseField } from '../@model/baseField'
-import { OptionsItem } from '../@model'
+import { NumberOrString, OptionsItem } from '../@model'
 import { isObject } from '../@core/utils/utils'
 import { isNumber, isString } from 'lodash'
 
@@ -142,3 +142,14 @@ export const getFileValue = (file: File): Promise<any> =>
     }
     reader.readAsText(file)
   })
+
+export const toPositiveNumbers = (value: NumberOrString): string =>
+  value.toString().replace(/-/g, '')
+
+export const toIntegerNumbers = (value: NumberOrString): string =>
+  value.toString().replace(/[,.]/g, '')
+
+export const getMappedValueByManyMethods = <T = NumberOrString>(
+  value: T,
+  mappedMethods: Array<Function>
+): T => mappedMethods.reduce((updatedValue, mappedMethod) => mappedMethod(updatedValue), value)

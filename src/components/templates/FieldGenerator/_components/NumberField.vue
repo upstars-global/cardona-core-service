@@ -21,6 +21,7 @@
 import { computed, ref } from 'vue'
 import { NumberBaseField } from '../../../../@model/baseField'
 import { NumberOrString } from '../../../../@model'
+import { toIntegerNumbers, toPositiveNumbers } from '../../../../helpers'
 
 type Props = {
   value: NumberOrString
@@ -36,10 +37,10 @@ const emits = defineEmits<{
 const appendText = ref(props.field?.append)
 
 const getPositiveNumbers = (value: NumberOrString): NumberOrString =>
-  props.field.withPositiveNumbers ? value.toString().replace(/-/g, '') : value
+  props.field.withPositiveNumbers ? toPositiveNumbers(value) : value
 
 const getIntegerNumbers = (value: NumberOrString): NumberOrString =>
-  props.field.isIntegerNumbers ? value.toString().replace(/[,.]/g, '') : value
+  props.field.isIntegerNumbers ? toIntegerNumbers(value) : value
 
 const getMappedValue = (value: NumberOrString): NumberOrString =>
   [getPositiveNumbers, getIntegerNumbers].reduce(

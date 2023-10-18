@@ -6,6 +6,8 @@
         :size="size"
         type="number"
         autofocus
+        :formatter="formatterInput"
+        @keydown="onKeyDown"
         @keyup.enter="successNewPosition"
         @keyup.esc="cancelNewPosition"
       />
@@ -29,9 +31,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue'
+import { computed, defineComponent, PropType, ref } from 'vue'
 import { ListSize } from '../../../../@core/components/table-fields/model'
 import { IconsList } from '../../../../@model/enums/icons'
+import { NumberOrString } from '../../../../@model'
+import {
+  getMappedValueByManyMethods,
+  toPositiveNumbers,
+  toIntegerNumbers,
+} from '../../../../helpers'
 
 export default defineComponent({
   name: 'PositionField',
@@ -61,13 +69,35 @@ export default defineComponent({
     }
 
     const successNewPosition = () => {
-      emit('edit-position', numberPositionComputed.value)
+      emit('edit-position', numberPositionComputed.value || props.position)
       openEdit.value = false
     }
     const cancelNewPosition = () => {
       numberPositionComputed.value = props.position
       openEdit.value = false
     }
+
+    const disabledKeys = computed(() => [
+      'e',
+      '.',
+      '-',
+      numberPositionComputed.value.toString().isEmpty && '0',
+    ])
+
+    const onKeyDown = (event) => {
+      if (disabledKeys.value.some((key) => key === event.key)) {
+        event.preventDefault()
+      }
+    }
+
+    const getNumberMoreThenZero = (value: NumberOrString): NumberOrString =>
+      +value != 0 ? value : ''
+    const formatterInput = (value: NumberOrString): NumberOrString =>
+      getMappedValueByManyMethods(value, [
+        toPositiveNumbers,
+        toIntegerNumbers,
+        getNumberMoreThenZero,
+      ])
 
     return {
       openEdit,
@@ -78,6 +108,8 @@ export default defineComponent({
 
       onOpenEdit,
       IconsList,
+      onKeyDown,
+      formatterInput,
     }
   },
 })
