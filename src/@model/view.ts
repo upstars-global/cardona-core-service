@@ -1,30 +1,50 @@
 import type { TranslateResult } from 'vue-i18n'
-import type { PermissionType } from '@permissions'
+import TextView from '../components/templates/ViewGenerator/_components/TextView.vue'
+import BadgesView from '../components/templates/ViewGenerator/_components/BadgesView.vue'
+import BadgeView from '../components/templates/ViewGenerator/_components/BadgeView.vue'
+import StatusView from '../components/templates/ViewGenerator/_components/StatusView.vue'
+import StatusWithDateView from '../components/templates/ViewGenerator/_components/StatusWithDateView.vue'
+import StatusWithDateHistoryView from '../components/templates/ViewGenerator/_components/StatusWithDateHistoryView.vue'
+import StatementView from '../components/templates/ViewGenerator/_components/StatementView.vue'
+import LinkView from '../components/templates/ViewGenerator/_components/LinkView.vue'
+import InnerBlankLinkView from '../components/templates/ViewGenerator/_components/InnerBlankLinkView.vue'
+import BadgeCopyView from '../components/templates/ViewGenerator/_components/BadgeCopyView.vue'
+import BadgeShortCopyView from '../components/templates/ViewGenerator/_components/BadgeShortCopyView.vue'
+import CopyView from '../components/templates/ViewGenerator/_components/CopyView.vue'
+import DateView from '../components/templates/ViewGenerator/_components/DateView.vue'
+import DateWithSecondsView from '../components/templates/ViewGenerator/_components/DateWithSecondsView.vue'
+import SumAndCurrencyView from '../components/templates/ViewGenerator/_components/SumAndCurrencyView.vue'
+import CommentView from '../components/templates/ViewGenerator/_components/CommentView.vue'
+import TransactionTypeView from '../components/templates/ViewGenerator/_components/TransactionTypeView.vue'
+import ObjectToRowsView from '../components/templates/ViewGenerator/_components/ObjectToRowsView.vue'
+import LocaleView from '../components/templates/ViewGenerator/_components/LocaleView.vue'
+import RegionView from '../components/templates/ViewGenerator/_components/RegionView.vue'
+import SumPeriodView from '../components/templates/ViewGenerator/_components/SumPeriodView.vue'
 import type { IconsList } from './enums/icons'
+import type { PermissionType } from '@permissions'
 
 export enum ViewType {
-  Text = 'text',
-  Locale = 'locale',
-  Region = 'region',
-  Textarea = 'textarea',
-  Link = 'link',
-  InnerBlankLink = 'inner-blank-link',
-  Badges = 'badges',
-  Badge = 'badge',
-  Status = 'status',
-  Statement = 'statement',
-  Date = 'date',
-  DateWithSeconds = 'date-with-seconds',
-  BadgeCopy = 'badge-copy',
-  BadgeShortCopy = 'badge-short-copy',
-  Copy = 'copy',
-  SumAndCurrency = 'sum-and-currency',
-  StatusWithDate = 'status-with-date',
-  StatusWithDateHistory = 'status-with-date-history',
-  Comment = 'comment',
-  TransactionType = 'transaction-type',
-  ObjectToRows = 'object-to-rows',
-  SumPeriod = 'sum-period',
+  Text = TextView,
+  Locale = LocaleView,
+  Region = RegionView,
+  Link = LinkView,
+  InnerBlankLink = InnerBlankLinkView,
+  Badges = BadgesView,
+  Badge = BadgeView,
+  Status = StatusView,
+  Statement = StatementView,
+  Date = DateView,
+  DateWithSeconds = DateWithSecondsView,
+  BadgeCopy = BadgeCopyView,
+  BadgeShortCopy = BadgeShortCopyView,
+  Copy = CopyView,
+  SumAndCurrency = SumAndCurrencyView,
+  StatusWithDate = StatusWithDateView,
+  StatusWithDateHistory = StatusWithDateHistoryView,
+  Comment = CommentView,
+  TransactionType = TransactionTypeView,
+  ObjectToRows = ObjectToRowsView,
+  SumPeriod = SumPeriodView,
 }
 export enum ViewJustifyContent {
   Start = 'start',

@@ -279,7 +279,7 @@ export enum IconsList {
   XCircleIcon = 'XCircleIcon',
   XOctagonIcon = 'XOctagonIcon',
   XSquareIcon = 'XSquareIcon',
-  XIcon = 'XIcon',
+  XIcon = 'tabler-x',
   YoutubeIcon = 'YoutubeIcon',
   ZapOffIcon = 'ZapOffIcon',
   ZapIcon = 'ZapIcon',
