@@ -163,6 +163,7 @@ export default defineComponent({
         if (props.value instanceof BaseField) {
           // eslint-disable-next-line vue/no-mutating-props
           props.value.value = value
+          emit('input', props.value)
         } else {
           emit('input', new FieldInfo<any>({ ...props.value, value }))
         }
