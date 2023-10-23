@@ -1,14 +1,14 @@
 import { Permission } from '../@model/permission'
-import { UserSmallInfo } from '../@model/users'
+import { UserInfo, UserSmallInfo } from '../@model/users'
 import { IRequestListPayload, OptionsItem } from '../@model/index'
 import { ViewInfo, ViewType } from '../@model/view'
 import i18n from '../libs/i18n'
 import { FieldInfo, FieldType } from '../@model/field'
-import { TextBaseField } from '../@model/baseField'
+import { MultiSelectBaseField, TextBaseField } from '../@model/baseField'
 import store from '../store'
 
 export class GroupData {
-  readonly id?: string
+  readonly id: string
   readonly name: string
   readonly users: UserSmallInfo[]
   readonly permissions?: Permission[]
@@ -66,7 +66,7 @@ export class GroupsSideBarFields {
 export class GroupForm {
   readonly id?: string
   readonly name: TextBaseField
-  readonly userIds: FieldInfo<OptionsItem>
+  readonly userIds: MultiSelectBaseField
   readonly productId: string
   permissions?: Permission[]
 
@@ -81,12 +81,11 @@ export class GroupForm {
       placeholder: i18n.t('common.groups.name'),
       validationRules: 'required',
     })
-    this.userIds = new FieldInfo<OptionsItem>({
-      type: FieldType.MultiSelect,
+    this.userIds = new MultiSelectBaseField<UserInfo>({
       key: 'users',
-      value: users || [],
-      label: String(i18n.t('common.groups.adminAdd')),
-      placeholder: String(i18n.t('placeholder.filter.admin')),
+      value: users,
+      label: i18n.t('common.groups.adminAdd'),
+      placeholder: i18n.t('placeholder.filter.admin'),
       fetchOptionsActionName: 'users/fetchUsersList',
     })
     this.permissions = data?.permissions || []

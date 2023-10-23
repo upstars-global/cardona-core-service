@@ -63,7 +63,6 @@ import TextareaWithCounterField from './_components/TextareaWithCounterField.vue
 import RichTextField from './_components/RichTextField.vue'
 import CheckField from './_components/CheckField.vue'
 import CheckGroupField from './_components/CheckGroupField.vue'
-import MultiSelectField from './_components/MultiSelectField.vue'
 import DummySelectField from './_components/DummySelectField.vue'
 import TagsField from './_components/TagsField.vue'
 import RadioField from './_components/RadioField.vue'
@@ -88,7 +87,6 @@ export default defineComponent({
     RichTextField,
     CheckField,
     CheckGroupField,
-    MultiSelectField,
     DummySelectField,
     TagsField,
     RadioField,

@@ -406,7 +406,7 @@ import CTable from '../../CTable/index.vue'
 import { useFilters } from '../../FiltersBlock/useFilters'
 import FiltersBlock from '../../FiltersBlock/index.vue'
 import { Filter, PayloadFilters } from '../../../@model/filter'
-import { BaseField, SelectBaseField } from '../../../@model/baseField'
+import { BaseField, SelectBaseField, MultiSelectBaseField } from '../../../@model/baseField'
 import { findIndex, omit } from 'lodash'
 import { IconsList } from '../../../@model/enums/icons'
 import RemoveModal from './_components/RemoveModal.vue'
@@ -716,10 +716,10 @@ export default {
 
           if (filter instanceof SelectBaseField) {
             acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
+          } else if (filter instanceof MultiSelectBaseField) {
+            acc[key] = filter.transformField({ trackBy })
           } else if (filter instanceof BaseField) {
             acc[key] = filter.transformField()
-          } else if (filter.type === FieldType.MultiSelect) {
-            acc[key] = filter.value.map((item: object) => item[trackBy])
           } else if (filter.type === FieldType.DateRange) {
             if (!filter.value || typeof filter.value !== 'string') return acc
 
