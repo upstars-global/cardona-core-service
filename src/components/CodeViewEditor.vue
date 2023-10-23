@@ -69,6 +69,11 @@ export default defineComponent({
 <style lang="scss">
 @import '../@core/scss/base/bootstrap-extended/_variables.scss';
 
+$code-color-black: #000;
+$code-color-red: #9c251d;
+$code-color-blue: #1d1b93;
+$code-color-green: #2f6447;
+
 .code-view-editor {
   &:not(&--edit-mode) {
     pointer-events: none;
@@ -78,23 +83,38 @@ export default defineComponent({
   }
 
   .fr-wrapper {
-    background-color: $input-disabled-bg;
-    border-radius: 0.5rem;
-    border: 1px solid $custom-control-border-color !important;
-
-    .fr-view {
-      color: $body-color;
+    .CodeMirror {
+      color: $code-color-black;
+    }
+    .CodeMirror-gutters {
+      background-color: initial;
+      white-space: nowrap;
     }
 
-    .CodeMirror {
-      background-color: $input-disabled-bg;
-      border-radius: 0.5rem;
+    .cm-atom {
+      color: $code-color-blue;
+    }
+    .cm-string.cm-property {
+      color: $code-color-red;
+      line-height: 20px;
+    }
+    .cm-number {
+      color: $code-color-green;
+    }
+    .CodeMirror-gutters {
+      border-style: none;
     }
   }
 
   .fr-toolbar,
   .fr-second-toolbar {
     display: none !important;
+  }
+  .fr-box.fr-basic.fr-top .fr-wrapper {
+    border-style: none;
+  }
+  .CodeMirror-gutters {
+    padding-right: 0.875rem;
   }
 }
 </style>
