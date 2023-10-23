@@ -52,7 +52,7 @@ export class ListData<T> {
 }
 
 export type OptionsItem = {
-  readonly id: string
+  readonly id: string | number
   readonly name: TranslateResult
 }
 

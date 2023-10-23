@@ -1,60 +1,32 @@
 import { Component } from 'vue'
-import store from '../../store'
-import { BaseField, IBaseField } from './base'
+import { IASelectBaseField, ASelectBaseField, SelectValue, ITransformFieldOptions } from './base'
 import { OptionsItem } from '../../@model'
 import SelectField from '../../components/templates/FieldGenerator/_components/SelectField.vue'
 
-type SelectValue = OptionsItem | string | number | null
-
-interface ITransformFieldOptions {
-  trackBy?: string
+interface ISelectTransformFieldOptions extends ITransformFieldOptions {
   isStringDefaultValue?: boolean
 }
 
-export interface ISelectBaseField<T> extends IBaseField {
-  readonly value?: T | SelectValue
-  readonly options?: Array<T>
-  readonly fetchOptionsActionName?: string
-  readonly staticFilters?: Record<string, string>
+export interface ISelectBaseField<T> extends IASelectBaseField<T> {
+  readonly value?: T | SelectValue | null
   readonly clearable?: boolean
 }
 
 export class SelectBaseField<T extends OptionsItem = OptionsItem>
-  extends BaseField
+  extends ASelectBaseField<T>
   implements ISelectBaseField<T>
 {
   readonly component: Component = SelectField
-  protected _value?: T | SelectValue
-  public options?: Array<T>
-  readonly fetchOptionsActionName?: string
-  readonly staticFilters?: Record<string, string>
+  protected _value?: T | SelectValue | null
   readonly clearable: boolean
 
   constructor(field: ISelectBaseField<T>) {
     super(field)
     this._value = field.value
-    this.options = field.options
-    this.fetchOptionsActionName = field.fetchOptionsActionName
-    this.staticFilters = field.staticFilters || {}
     this.clearable = field.clearable ?? true
   }
 
-  async fetchOptions(search = '') {
-    if (this.fetchOptionsActionName) {
-      const { list } = await store.dispatch(this.fetchOptionsActionName, {
-        perPage: 50,
-        filter: {
-          search,
-          ...this.staticFilters,
-        },
-      })
-      this.options = list.map((option: string | T): OptionsItem | T =>
-        typeof option === 'string' ? { id: option, name: option } : option
-      )
-    }
-  }
-
-  transformField(options: ITransformFieldOptions = {}) {
+  transformField(options: ISelectTransformFieldOptions = {}) {
     const { trackBy = 'id', isStringDefaultValue = true } = options
     const value = this.value?.[trackBy] ?? this.value
 

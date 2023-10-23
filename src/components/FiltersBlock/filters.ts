@@ -2,9 +2,8 @@ import i18n from '../../libs/i18n'
 import { GroupData } from '../../@model/group'
 import { ProjectInfo } from '../../@model/project'
 import { FieldInfo, FieldType } from '../../@model/field'
-import { OptionsItem } from '../../@model'
 import { FilterType } from '../../@model/filter'
-import { TextBaseField, SelectBaseField } from '../../@model/baseField'
+import { TextBaseField, SelectBaseField, MultiSelectBaseField } from '../../@model/baseField'
 import { TransactionType } from '../../@model/playersTransactions'
 
 // Options
@@ -160,59 +159,52 @@ const bettingHistoryEventType = new SelectBaseField({
 
 // ---------------------------------------------------------------------------
 // TODO: MultiSelect
-const group = new FieldInfo<GroupData>({
-  type: FieldType.MultiSelect,
+const group = new MultiSelectBaseField<GroupData>({
   key: FilterType.Group,
   label: i18n.t('common.groups.list'),
   placeholder: i18n.t('placeholder.filter.group'),
   fetchOptionsActionName: 'groups/fetchGroupsList',
 })
 
-const project = new FieldInfo<ProjectInfo>({
-  type: FieldType.MultiSelect,
+const project = new MultiSelectBaseField<ProjectInfo>({
   key: FilterType.Project,
   label: i18n.t('common.project.list'),
   placeholder: i18n.t('placeholder.filter.project'),
   fetchOptionsActionName: 'projects/fetchProjectsList',
 })
 
-const gamesProducers = new FieldInfo({
-  type: FieldType.MultiSelect,
+const gamesProducers = new MultiSelectBaseField({
   key: FilterType.GamesProducers,
   label: i18n.t('filters.gamesProducers'),
   placeholder: i18n.t('placeholder.filter.gamesProducers'),
   fetchOptionsActionName: 'gamesProducers/fetchGamesProducersList',
 })
 
-const transactionsStatuses = new FieldInfo<OptionsItem>({
-  type: FieldType.MultiSelect,
+const transactionsStatuses = new MultiSelectBaseField({
   key: FilterType.TransactionsStatuses,
   label: i18n.t('common.status'),
   placeholder: i18n.t('placeholder.filter.status'),
   fetchOptionsActionName: 'playersTransactions/fetchTransactionsStatuses',
 })
 
-const balancesReasons = new FieldInfo<OptionsItem>({
-  type: FieldType.MultiSelect,
+const balancesReasons = new MultiSelectBaseField({
   key: FilterType.BalancesReasons,
   label: i18n.t('common.reason'),
   placeholder: i18n.t('placeholder.filter.reason'),
   fetchOptionsActionName: 'balance/fetchBalancesReasonsList',
 })
 
-const tagNames = new FieldInfo<OptionsItem>({
-  type: FieldType.MultiSelect,
+const tagNames = new MultiSelectBaseField({
   key: 'tagNames',
-  label: i18n.t('common.tags') as string,
-  placeholder: i18n.t('common.tags') as string,
+  label: i18n.t('common.tags'),
+  placeholder: i18n.t('common.tags'),
   fetchOptionsActionName: 'tags/fetchTags',
 })
 
-const segments = new FieldInfo<OptionsItem>({
-  type: FieldType.MultiSelect,
+const segments = new MultiSelectBaseField({
   key: FilterType.Segments,
-  label: i18n.t('common.segments') as string,
-  placeholder: i18n.t('common.segments') as string,
+  label: i18n.t('common.segments'),
+  placeholder: i18n.t('common.segments'),
   fetchOptionsActionName: 'segments/fetchList',
 })
 

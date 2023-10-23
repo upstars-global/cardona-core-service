@@ -1,7 +1,9 @@
+import store from '../../store'
 import { Component } from 'vue'
 import { TranslateResult } from 'vue-i18n'
 import { ValidationRule } from '../validations'
 import { PermissionType } from '@permissions'
+import { OptionsItem } from '../../@model'
 
 export interface IBaseField {
   readonly key: string
@@ -58,5 +60,49 @@ export abstract class BaseField implements IBaseField {
 
   transformField() {
     return this._value
+  }
+}
+
+// Abstract select
+export type SelectValue = OptionsItem | string | number
+
+export interface ITransformFieldOptions {
+  trackBy?: string
+}
+
+export interface IASelectBaseField<T> extends IBaseField {
+  readonly options?: Array<T>
+  readonly fetchOptionsActionName?: string
+  readonly staticFilters?: Record<string, string>
+}
+
+export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
+  extends BaseField
+  implements IASelectBaseField<T>
+{
+  public options?: Array<T>
+  readonly fetchOptionsActionName?: string
+  readonly staticFilters: Record<string, string>
+
+  protected constructor(field: IASelectBaseField<T>) {
+    super(field)
+    this.options = field.options
+    this.fetchOptionsActionName = field.fetchOptionsActionName
+    this.staticFilters = field.staticFilters || {}
+  }
+
+  async fetchOptions(search = '') {
+    if (this.fetchOptionsActionName) {
+      const { list } = await store.dispatch(this.fetchOptionsActionName, {
+        perPage: 50,
+        filter: {
+          search,
+          ...this.staticFilters,
+        },
+      })
+      this.options = list.map((option: string | T): OptionsItem | T =>
+        typeof option === 'string' ? { id: option, name: option } : option
+      )
+    }
   }
 }

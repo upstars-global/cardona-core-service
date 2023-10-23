@@ -2,6 +2,7 @@ import i18n from '../libs/i18n'
 import { SeoData } from './seo'
 import { FieldTranslationsData } from './translations'
 import {
+  MultiSelectBaseField,
   NumberBaseField,
   SelectBaseField,
   TextBaseField,
@@ -172,7 +173,7 @@ export class DemoForm {
   readonly checkGroup: FieldInfo
   readonly nonClearableSelect: SelectBaseField
   readonly select: SelectBaseField
-  readonly multiSelect: FieldInfo
+  readonly multiSelect: MultiSelectBaseField
   readonly date: FieldInfo
   readonly dateRange: FieldInfo
   readonly dateTime: FieldInfo
@@ -389,8 +390,7 @@ export class DemoForm {
       label: i18n.t('page.demo.selectField'),
       fetchOptionsActionName: 'demo/fetchOptions',
     })
-    this.multiSelect = new FieldInfo({
-      type: FieldType.MultiSelect,
+    this.multiSelect = new MultiSelectBaseField({
       key: 'multiSelect',
       value: data?.multiSelect,
       label: i18n.t('page.demo.multiSelectField'),

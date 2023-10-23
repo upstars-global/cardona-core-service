@@ -47,7 +47,6 @@ export default {
   emits: ['input'],
 
   setup(props, { emit }) {
-    const isMultiple = false
     const isLoading = ref(false)
 
     const valueModel = computed<OptionsItem>({
@@ -100,7 +99,6 @@ export default {
     }, 250)
 
     return {
-      isMultiple,
       isLoading,
       selectClasses,
       valueModel,
@@ -118,7 +116,6 @@ export default {
     :dir="$store.getters['appConfig/dirOption']"
     label="name"
     :loading="isLoading"
-    :multiple="isMultiple"
     :options="options"
     class="select-field"
     :class="selectClasses"
@@ -140,28 +137,8 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
-@import '../../../../assets/scss/style.scss';
 
 .select-field {
-  &:not(.vs--single) {
-    :deep(.vs__dropdown-toggle) {
-      padding-left: 6px;
-    }
-
-    :deep(.vs__selected, .vs__dropdown-option--selected) {
-      background-color: $bg-light-purple;
-      color: $purple;
-      font-weight: $font-weight-bold;
-    }
-
-    &.vs--disabled {
-      :deep(.vs__selected, .vs__dropdown-option--selected) {
-        color: $text-muted;
-        background-color: rgba($gray-700, 0.12);
-      }
-    }
-  }
-
   &.error {
     :deep(.vs__dropdown-toggle) {
       border-color: $red;
@@ -187,17 +164,11 @@ export default {
     }
 
     .vs__selected {
-      margin-top: 2px;
+      margin-top: 0;
     }
 
     .vs__actions {
       padding-top: 2px;
-    }
-  }
-
-  &.vs--single {
-    .vs__selected {
-      margin-top: 0;
     }
   }
 }

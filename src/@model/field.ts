@@ -4,24 +4,23 @@ import { TranslateResult } from 'vue-i18n'
 
 export enum FieldType {
   Password = 'password',
-  Textarea = 'textarea',
-  TextareaWithCounter = 'textarea-with-counter',
+  Textarea = 'textarea', // TODO: https://upstars.atlassian.net/browse/BAC-1985
+  TextareaWithCounter = 'textarea-with-counter', // TODO: https://upstars.atlassian.net/browse/BAC-1985
   RichText = 'rich-text',
-  Check = 'check',
+  Check = 'check', // TODO: https://upstars.atlassian.net/browse/BAC-1983
   CheckGroup = 'check-group',
-  MultiSelect = 'multi-select',
   DummySelect = 'dummy-select',
   Tags = 'tags',
-  Radio = 'radio',
+  Radio = 'radio', // TODO: https://upstars.atlassian.net/browse/BAC-1984
   DateBtnOnly = 'date-btn-only',
-  Date = 'date', // TODO: https://upstars.atlassian.net/browse/BAC-853
-  DateRange = 'date-range',
-  DateTime = 'date-time',
-  Switch = 'switch',
-  SwitchWithState = 'switch-with-state',
+  Date = 'date', // TODO: https://upstars.atlassian.net/browse/BAC-1961
+  DateRange = 'date-range', // TODO: https://upstars.atlassian.net/browse/BAC-1961
+  DateTime = 'date-time', // TODO: https://upstars.atlassian.net/browse/BAC-1961
+  Switch = 'switch', // TODO: https://upstars.atlassian.net/browse/BAC-1962
+  SwitchWithState = 'switch-with-state', // TODO: https://upstars.atlassian.net/browse/BAC-1962
   SumRange = 'sum-range',
   Phone = 'phone',
-  Rates = 'rates',
+  Rates = 'rates', // TODO: https://upstars.atlassian.net/browse/BAC-1860
 }
 
 export interface IFieldInfo {
@@ -102,9 +101,7 @@ export class FieldInfo<T = {}> {
   }
 
   get value() {
-    if (this.type === FieldType.MultiSelect) {
-      return Array.isArray(this._value) ? this._value : !!this._value ? [this._value] : []
-    } else if (this.type === FieldType.Tags) {
+    if (this.type === FieldType.Tags) {
       return this._value || []
     } else {
       return this._value
