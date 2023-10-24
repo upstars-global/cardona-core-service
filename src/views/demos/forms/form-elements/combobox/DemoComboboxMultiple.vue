@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { IconsList } from '@/@model/enums/icons'
+
 const selectedItem = ref(['Vuetify', 'Programming'])
 const items = ['Programming', 'Design', 'Vue', 'Vuetify']
 </script>
@@ -8,7 +10,6 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
     <VCol cols="12">
       <AppCombobox
         v-model="selectedItem"
-        :items="items"
         label="Select a favorite activity or create a new one"
         multiple
       />
@@ -43,16 +44,8 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
       >
         <template #selection="{ item }">
           <VChip>
-            <VAvatar
-              start
-              color="primary"
-            >
-              <span
-                style="margin-top: 1px;"
-                class="text-xs"
-              >{{ String(item.title).charAt(0).toUpperCase() }}</span>
-            </VAvatar>
             {{ item.title }}
+            <VIcon :icon="IconsList.XIcon" />
           </VChip>
         </template>
       </AppCombobox>

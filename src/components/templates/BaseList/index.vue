@@ -1,13 +1,22 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+import { findIndex, omit } from 'lodash'
 import CTable from '../../CTable/index.vue'
-import type { IBaseListConfig } from '../../../@model/templates/baseList'
-import type { TableField } from '../../../@model/templates/tableFields'
-import { SortDirection } from '../../../@model/templates/baseList'
-import { paginationMeta } from '../../../@fake-db/utils'
-import type { Options } from '../../../@core/types'
-import { ListSort } from '../../../@model'
-import { getStorage } from '../../../helpers/storage'
+import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
 import { VColors } from '../../../@model/vuetify'
+import { DownloadFormat, SortDirection } from '../../../@model/templates/baseList'
+import type { Filter } from '../../../@model/filter'
+import { getStorage, removeStorageItem, setStorage } from '@/helpers/storage'
+import { ListSort } from '@/@model'
+import { useFilters } from '@/components/FiltersBlock/useFilters'
+import { BaseField, SelectBaseField } from '@/@model/templates/baseField'
+import { FieldType } from '@/@model/field'
+import { convertLowerCaseFirstSymbol, isEmptyString, isNotEmptyNumber } from '@/helpers'
+import type { PaginationResult } from '@/use/pagination'
+import usePagination from '@/use/pagination'
+import type { TableField } from '@/@model/templates/tableFields'
+import { parseDateRange } from '@/helpers/filters'
 
 const props = defineProps<{
   config?: IBaseListConfig
@@ -18,178 +27,99 @@ const emits = defineEmits<{
   (e: 'rowClicked', item: Record<string, unknown>): void
 }>()
 
+const slots = useSlots()
+
+const store = useStore()
+
+// const router = useRouter()
+const route = useRoute()
+const searchQuery = ref('')
+const currentPageName = route.name
+
 const {
   entityName,
 
-  // fields,
+  fields,
 
-  /* ListFilterModel, */
+  ListFilterModel,
   SideBarModel,
 
-  /* pageName,
-  canUpdateCb,
-  canRemoveCb,
-  beforeRemoveCallback,
-  ListItemModel, */
+  pageName,
+
+  /* canUpdateCb,
+ canRemoveCb,
+ beforeRemoveCallback, */
+  ListItemModel,
 } = props.useList()
 
-const currentPageName = 'demo'
+// Pages
+const CreatePageName = pageName ? `${pageName}Create` : `${entityName}Create`
 
-const slots = useSlots()
-const selectedItem = ref(null)
-const selectedItems = ref([])
+// const UpdatePageName = pageName ? `${pageName}Update` : `${entityName}Update`
+
+/* const isExistsCreatePage = checkExistsPage(CreatePageName)
+const isExistsUpdatePage = checkExistsPage(UpdatePageName) */
+
+// Action names
+const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
+
+const fetchActionName: string = props.config?.withCustomFetchList
+  ? `${moduleName}/fetch${entityName}List`
+  : 'baseStoreCore/fetchEntityList'
+
+const fetchReportActionName = 'baseStoreCore/fetchReport'
+const updateActionName = 'baseStoreCore/updateEntity'
+
+/* const deleteActionName = props.config?.withCustomDelete
+  ? `${moduleName}/deleteEntity`
+  : 'baseStoreCore/deleteEntity'
+
+const multipleUpdateActionName = 'baseStoreCore/multipleUpdateEntity'
+const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity' */
+
+// Permissions
+/* const { canCreate, canUpdate, canUpdateSeo, canRemove, canExport }
+    = basePermissions<IBaseListConfig>({ entityName, config: props.config })
+
+const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
+
+const canUpdateItem = (item): boolean =>
+  canUpdateCb && item ? isExistsUpdatePage && canUpdateCb(item) : isExistsUpdatePage
+
+const canRemoveItem = (item): boolean =>
+  canRemoveCb && item ? canRemove && canRemoveCb(item) : canRemove */
+
+// Sidebar
 const isSidebarShown = ref(false)
+const selectedItem: any = ref(null)
 
-const sortStorageKey = `${currentPageName}-${entityName}-sort`
-const sortFromStorage = getStorage(sortStorageKey, ListSort) as ListSort
+const sidebarSlots = computed(() =>
+  Object.keys(slots).filter(
+    key => key.includes('sidebar-row') || key.includes('sidebar-value'),
+  ),
+)
 
-const sortBy = sortFromStorage?.field || props.config.staticSorts?.field
-const sortDir = sortFromStorage?.dir || props.config.staticSorts?.dir
-const sortDesc = !!sortDir && sortDir === SortDirection.asc
-const sortData = ref([{ key: sortBy, order: sortDesc }])
+const resetSelectedItem = () => {
+  selectedItem.value = null
+}
 
-const options = ref<Options>({
-  page: 1,
-  itemsPerPage: 2,
-  sortBy: [],
-  groupBy: [],
-  search: undefined,
-})
+const onClickRow = data => {
+  if (props.config?.selectable)
+    return
 
-const fields = ref([
-  {
-    key: 'isActive',
-    title: 'Status',
-    type: 'pill-status',
-    size: 'md',
-    sortable: true,
-    removable: true,
-  },
-  {
-    key: 'status',
-    title: 'Status',
-    type: 'status',
-    size: 'md',
-    sortable: true,
-  },
-  {
-    key: 'shortId',
-    title: 'short ID',
-    type: 'copy-short',
-    size: 'md',
-  },
-  {
-    key: 'nameSlot',
-    title: 'Name',
-    type: 'name-with-id',
-    size: 'md',
-  },
-  {
-    key: 'nameWithShortId',
-    title: 'Name with shortId',
-    type: 'name-with-short-id',
-    size: 'md',
-  },
-  {
-    key: 'innerLink',
-    title: 'Link',
-    size: 'md',
-  },
-  {
-    key: 'buttonName',
-    title: 'Button',
-    type: 'button',
-    size: 'md',
-  },
-  {
-    key: 'tags',
-    title: 'Tags',
-    type: 'badges',
-    size: 'md',
-  },
-  {
-    key: 'login',
-    title: 'Login',
-    type: 'copy',
-    size: 'md',
-  },
-  {
-    key: 'date',
-    title: 'Date',
-    type: 'date',
-    size: 'md',
-  },
-  {
-    key: 'newDate',
-    title: 'Created',
-    type: 'date-with-seconds',
-    size: 'md',
-  },
-  {
-    key: 'period',
-    title: 'Display period',
-    type: 'period',
-    size: 'md',
-  },
-  {
-    key: 'sumPeriod',
-    title: 'Sum period',
-    size: 'md',
-  },
-  {
-    key: 'imagePath',
-    title: 'Image',
-    type: 'image',
-    size: 'md',
-  },
-  {
-    key: 'position',
-    title: 'Priority',
-    type: 'priority',
-    size: 'md',
-  },
-  {
-    key: 'state',
-    title: 'State',
-    type: 'statement',
-    size: 'md',
-  },
-  {
-    key: 'amount',
-    title: 'Sum',
-    type: 'sum-and-currency',
-    size: 'md',
-  },
-  {
-    key: 'winBack',
-    title: 'Sum',
-    type: 'sum-and-currency',
-    size: 'md',
-  },
-  {
-    key: 'comment',
-    title: 'Comment',
-    type: 'comment',
-    size: 'md',
-  },
-  {
-    key: 'gameId',
-    title: 'Game ID',
-    size: 'md',
-  },
-  {
-    key: 'type',
-    title: 'Type',
-    size: 'md',
-  },
-  {
-    key: 'actions',
-    title: '',
-    size: 'md',
-  },
-])
+  if (props.config?.sidebar) {
+    isSidebarShown.value = true
+    selectedItem.value = data
+  }
+  emits('rowClicked', data)
+}
 
-const selectedFields = ref<TableField[]>([...fields.value])
+/* const routerToUpdatePageId = item => {
+  router.push(getUpdateRoute(item))
+} */
+
+// Table
+// const refListTable = ref(null)
 
 const items = ref([
   {
@@ -398,23 +328,392 @@ const items = ref([
   },
 ])
 
-const onClickRow = data => {
-  if (props.config?.selectable)
+watch(
+  () => items.value,
+  () => {
+    selectedItem.value = items.value.find((item: any) => item?.id === selectedItem.value?.id)
+  },
+  { deep: true },
+)
+
+const selectedFields = ref<TableField[]>([...fields])
+
+/* const isLoadingList = computed(() => {
+  const indexSymbolNextDash = entityName.indexOf('-') + 1
+  const entityNameForLoad = entityName.replace(
+      entityName[indexSymbolNextDash],
+      entityName[indexSymbolNextDash].toLowerCase()
+  )
+
+  const entityUrl: string = convertCamelCase(entityNameForLoad, '/')
+  return store.getters.isLoadingEndpoint([
+    `${entityUrl}/list`,
+    `${entityUrl}/update`,
+    `${entityUrl}/delete`,
+  ])
+})
+
+const size = props.config?.small ? 'sm' : 'md' */ // TODO: refactor sizes
+
+// Sort
+const sortStorageKey = `${currentPageName}-${entityName}-sort`
+const sortFromStorage = getStorage(sortStorageKey, ListSort) as ListSort
+
+const sortBy = sortFromStorage?.field || props.config.staticSorts?.field
+const sortDir = sortFromStorage?.dir || props.config.staticSorts?.dir
+const sortDesc = !!sortDir && sortDir === SortDirection.asc
+const sortData = ref([{ key: sortBy, order: sortDesc }])
+
+watch(sortData, newSortData => {
+  newSortData.sortBy
+    ? setStorage(sortStorageKey, newSortData)
+    : removeStorageItem(sortStorageKey)
+})
+
+// Pagination
+const perPageStorageKey = `${currentPageName}-${entityName}-perPage`
+
+const paginationConfig: PaginationResult = usePagination({
+  defaultPerPage: props.config.defaultPerPage,
+  withIndependentPagination: props.config.withIndependentPagination,
+  isUseRouter: !props.config.withIndependentPagination,
+  storageKey: perPageStorageKey,
+})
+
+const {
+  currentPage,
+  perPage,
+
+  /* perPageOptions,
+  numberOfPages, */
+  total,
+
+  /* setPerPage,
+  setupDataMeta,
+  linkGen, */
+  updateTotal,
+  onChangePagination,
+} = paginationConfig
+
+// const dataMeta = setupDataMeta(refListTable)
+
+/* const linkGenerator = (page: number) => {
+  if (props.config?.withIndependentPagination)
     return
 
-  if (props.config?.sidebar)
-    isSidebarShown.value = true
+  return linkGen(page)
+} */
 
-  selectedItem.value = data
+// Fetch list
+const getList = async () => {
+  const filter = setRequestFilters()
+  const sort = sortData.sortBy ? [new ListSort(sortData)] : undefined
 
-  emits('rowClicked', data)
+  const { list, total } = await store.dispatch(fetchActionName, {
+    type: entityName,
+    data: {
+      perPage: perPage.value,
+      page: currentPage.value,
+      filter,
+      sort,
+    },
+    options: {
+      listItemModel: ListItemModel,
+      customApiPrefix: props.config?.customApiPrefix,
+    },
+  })
+
+  items.value = list
+
+  updateTotal(total)
+
+  return list
 }
 
-const resetSelectedItem = () => {
-  selectedItem.value = null
-}
+const reFetchList = () => getList()
+
+onChangePagination(reFetchList)
 
 const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
+
+/*
+const getUpdateRoute = ({ id }): Location => {
+  return isExistsUpdatePage && (canUpdate || canUpdateSeo)
+      ? { name: UpdatePageName, params: { id } }
+      : {}
+}
+
+const onClickToggleStatus = async ({ id, isActive }) => {
+  await store.dispatch(updateActionName, {
+    type: entityName,
+    data: { form: { id, isActive: !isActive } },
+    customApiPrefix: props.config?.customApiPrefix,
+  })
+
+  reFetchList()
+}
+
+const onUpdateItem = async (item) => {
+  const response = await store.dispatch(updateActionName, {
+    type: entityName,
+    data: { form: item },
+    customApiPrefix: props.config?.customApiPrefix,
+  })
+
+  reFetchList()
+
+  return response
+}
+
+const onEditPosition = async ({ id }: { id: string }, position: number) => {
+  await store.dispatch(updateActionName, {
+    type: entityName,
+    data: { form: { id, position } },
+    customApiPrefix: props.config?.customApiPrefix,
+  })
+
+  reFetchList()
+} */
+
+// Search
+/* watch(searchQuery, reFetchList) */
+
+// Export
+
+const setRequestFilters = () => {
+  if (!ListFilterModel)
+    return {}
+
+  let filters = new ListFilterModel(props.config?.staticFilters)
+
+  if (searchQuery.value)
+    filters = new ListFilterModel({ ...props.config?.staticFilters, search: searchQuery.value })
+
+  filters = appliedFilters.value.reduce(
+    (acc, filter) => {
+      const { key, trackBy = 'name' }: FilterListItem = props.config?.filterList.find(
+        ({ type }: FilterListItem) => type === filter.key,
+      )
+
+      if (filter instanceof SelectBaseField) {
+        acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
+      }
+      else if (filter instanceof BaseField) {
+        acc[key] = filter.transformField()
+      }
+      else if (filter.type === FieldType.Select) {
+        acc[key] = filter.value?.[trackBy]
+      }
+      else if (filter.type === FieldType.MultiSelect) {
+        acc[key] = filter.value.map((item: object) => item[trackBy])
+      }
+      else if (filter.type === FieldType.DateRange) {
+        if (!filter.value || typeof filter.value !== 'string')
+          return acc
+
+        const [dateFrom, dateTo]: Array<string> = parseDateRange(filter.value)
+
+        acc[`${key}From`] = dateFrom
+        acc[`${key}To`] = dateTo
+      }
+      else if (filter.type === FieldType.SumRange) {
+        if (filter.value?.some(value => isNotEmptyNumber(value) && !isEmptyString(value))) {
+          const [sumFrom, sumTo]: Array<number> = filter.value
+
+          acc[`${key}From`] = sumFrom
+          acc[`${key}To`] = sumTo
+
+          const invalidKeys = [`${key}From`, `${key}To`].filter(
+            key => !isNotEmptyNumber(acc[key]),
+          )
+
+          acc = omit(acc, invalidKeys)
+        }
+      }
+      else {
+        acc[key] = filter.value
+      }
+
+      return acc
+    },
+    new ListFilterModel({
+      ...props.config?.staticFilters,
+      ...filters,
+    }),
+  )
+
+  return filters
+}
+
+const onExportFormatSelected = async (format: string) => {
+  const filter = setRequestFilters()
+  const sort = sortData.sortBy ? [new ListSort(sortData)] : undefined
+
+  const report: string = await store.dispatch(fetchReportActionName, {
+    type: entityName,
+    data: {
+      filter: {
+        ...filter,
+        format,
+      },
+      perPage: total.value,
+      sort,
+    },
+    customApiPrefix: props.config?.customApiPrefix,
+  })
+
+  const fakeLink: HTMLElement = document.createElement('a')
+
+  fakeLink.setAttribute(
+    'href',
+    `data:${DownloadFormat[format]};charset=utf-8,${encodeURIComponent(report)}`,
+  )
+  fakeLink.setAttribute('target', '_blank')
+  fakeLink.setAttribute('download', `${entityName}Report`)
+  fakeLink.click()
+}
+
+// Filters
+const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
+  props.config.filterList,
+)
+
+const isFiltersShown = ref(false)
+
+const appliedFilters = computed<Filter[]>(() => {
+  const isSameEntity: boolean = entityName === store.getters['filtersCore/listEntityName']
+
+  return isSameEntity ? store.getters['filtersCore/appliedListFilters'] : []
+})
+
+onMounted(() => {
+  isFiltersShown.value = selectedFilters && selectedFilters.value.isNotEmpty
+})
+
+// Selectable
+const selectedItems = ref([])
+
+/* const allSelected = ref(false)
+const indeterminate = ref(false) */
+
+/* watch(selectedItems, newItems => {
+  if (newItems.isEmpty) {
+    indeterminate.value = false
+    allSelected.value = false
+  }
+  else if (newItems.length === items.value.length) {
+    indeterminate.value = false
+    allSelected.value = true
+  }
+  else {
+    indeterminate.value = true
+    allSelected.value = false
+  }
+})
+
+const onRowSelected = items => (selectedItems.value = items)
+
+const onChangeSelected = (state: boolean, index: number) =>
+  state ? refListTable.value.selectRow(index) : refListTable.value.unselectRow(index)
+
+const toggleAll = (state: boolean) =>
+  state ? refListTable.value.selectAllRows() : refListTable.value.clearSelected() */
+
+// Multiple actions
+/* const onClickToggleStatusMultiple = async (isActive: boolean) => {
+  const data: Array<{ id: string; isActive: boolean }> = selectedItems.value.map(
+      ({ id }: { id: string }) => ({
+        id,
+        isActive,
+      })
+  )
+
+  await store.dispatch(multipleUpdateActionName, {
+    type: entityName,
+    data,
+  })
+
+  reFetchList()
+}
+
+const onClickDeleteMultiple = async () => {
+  const ids: Array<string> = selectedItems.value.map(({ id }) => id)
+
+  await store.dispatch(multipleDeleteActionName, {
+    type: entityName,
+    ids,
+    customApiPrefix: props.config?.customApiPrefix,
+  })
+
+  reFetchList()
+} */
+
+// Draggable
+const onDragChanged = async e => {
+  if (!e)
+    return
+
+  const localItems: Array<any> = items.value
+  const id = localItems[e.oldIndex].id
+  const position: number = localItems[e.newIndex].position!
+
+  if (!props.config?.withCustomDrag) {
+    await store.dispatch(updateActionName, {
+      type: entityName,
+      data: { form: { id, position } },
+      customApiPrefix: props.config?.customApiPrefix,
+    })
+
+    reFetchList()
+  }
+
+  emit('end', { itemId: id, newIndex: e.newIndex, oldIndex: e.oldIndex })
+}
+
+// Remove
+const removeModalId = 'list-item-remove-modal'
+
+const onClickRemove = item => {
+  selectedItem.value = item
+  if (beforeRemoveCallback) {
+    const isAllowedRemove = beforeRemoveCallback(item)
+    if (!isAllowedRemove)
+      return
+  }
+  bvModal.show(removeModalId)
+}
+
+/* const onClickModalOk = async ({ hide, commentToRemove }) => {
+  await store.dispatch(deleteActionName, {
+    type: entityName,
+    id: selectedItem.value.id,
+    comment: commentToRemove,
+    customApiPrefix: props.config?.customApiPrefix,
+  })
+
+  hide()
+  reFetchList()
+} */
+
+const getIndexByItemFromList = item => findIndex(items.value || [], item)
+
+const selectedItemIndex = computed(() => {
+  if (!selectedItem.value)
+    return NaN
+  const itemIndex = getIndexByItemFromList(selectedItem.value)
+
+  return itemIndex > -1 ? itemIndex : NaN
+})
+
+const selectedRowClass = rowItem => {
+  const itemIndex = getIndexByItemFromList(rowItem)
+  if (![selectedItemIndex.value, itemIndex].some(isNotEmptyNumber))
+    return ''
+
+  return selectedItemIndex.value === itemIndex
+    ? `table-${rowItem?.rowVariant || 'default'}-bg`
+    : ''
+}
 </script>
 
 <template>
@@ -424,8 +723,69 @@ const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
     :entity-name="entityName"
     :side-bar-model="SideBarModel"
     :sidebar-collapse-mode="config?.sidebarCollapseMode"
+    @remove="onClickRemove(selectedItem)"
+    @hide="resetSelectedItem"
     @update:model-value="resetSelectedItem"
+  >
+    <template #sidebar-actions="{ form }">
+      <slot
+        name="sidebar-actions"
+        :form="form"
+        :item="selectedItem"
+      />
+    </template>
+
+    <template #sidebar-action-items="{ form }">
+      <slot
+        name="sidebar-action-items"
+        :form="form"
+        :item="selectedItem"
+      />
+    </template>
+
+    <template
+      v-for="key in sidebarSlots"
+      #[key]="{ item }"
+    >
+      <slot
+        :name="key"
+        :item="item"
+      />
+    </template>
+  </SideBar>
+
+  <ListSearch
+    v-model="searchQuery"
+    :right-search-btn="{
+      canCreate: isShownCreateBtn,
+      createPage: CreatePageName,
+    }"
+    :selected-filters="selectedFilters"
+    :export-selector="{
+      canShow: Boolean(config.withExport && canExport),
+      disable: !total,
+    }"
+    :config="config"
+    @on-click-filter="isFiltersShown = !isFiltersShown"
+    @on-export-format-selected="onExportFormatSelected"
+  >
+    <template #right-search-btn>
+      <slot name="right-search-btn" />
+    </template>
+    <template #left-search-btn>
+      <slot name="left-search-btn" />
+    </template>
+  </ListSearch>
+
+  <FiltersBlock
+    v-if="config.filterList.isNotEmpty"
+    :is-open="config.filterList.isNotEmpty && isFiltersShown"
+    :entity-name="entityName"
+    :filters="filters"
+    @apply="reFetchList"
+    @change-selected-filters="onChangeSelectedFilters"
   />
+
   <CTable
     v-model:sort-data="sortData"
     :fields="fields"
@@ -436,6 +796,9 @@ const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
     :draggable="config.draggable"
     :hover="config.hover"
     :selected-items="selectedItems"
+    :tbody-tr-class="selectedRowClass"
+    @end="onDragChanged"
+    @row-selected="onRowSelected"
     @row-clicked="onClickRow"
   >
     <template
@@ -456,16 +819,27 @@ const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
       </template>
     </template>
   </CTable>
-  <div class="d-flex align-center justify-center justify-sm-space-between flex-wrap gap-3 pa-5 pt-3">
+  <!--
+    <div class="d-flex align-center justify-center justify-sm-space-between flex-wrap gap-3 pa-5 pt-3">
     <p class="text-sm text-disabled mb-0">
-      {{ paginationMeta(options, items.length) }}
+    {{ paginationMeta(options, items.length) }}
     </p>
 
     <VPagination
-      v-model="options.page"
-      :total-visible="Math.ceil(items.length / options.itemsPerPage)"
-      :length="Math.ceil(items.length / options.itemsPerPage)"
-      rounded="circle"
+    v-model="options.page"
+    :total-visible="Math.ceil(items.length / options.itemsPerPage)"
+    :length="Math.ceil(items.length / options.itemsPerPage)"
+    rounded="circle"
+    />
+    </div>
+  -->
+  <div class="mx-2">
+    <ListPagination
+      v-if="config?.pagination"
+      v-model="currentPage"
+      :link-gen="linkGenerator"
+      :pagination-config="paginationConfig"
+      :data-meta="dataMeta"
     />
   </div>
 </template>

@@ -19,7 +19,7 @@ const { router } = useRouter()
 const linkSizeClass = computed(() => `size-${props.size}`)
 
 const iconSize = computed(() =>
-  props.size === BSize.Xl ? '16' : props.size === BSize.Sm ? '12' : '14',
+  props.size === BSize.Xl ? '16' : props.size === BSize.Sm ? '12' : '14', // TODO: refactor sizes
 )
 
 const onClickLink = () => {

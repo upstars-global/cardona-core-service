@@ -29,7 +29,7 @@ const emits = defineEmits<{
 const tableWrapperComponent = ref(props.draggable ? VueDraggableNext : 'tbody')
 
 const compareClasses = (item: Record<string, unknown>): Record<string, boolean> => {
-  return { [`table-light-${item.rowVariant}`]: !!item.rowVariant, 'is-hover-row': props.hover }
+  return { [`table-light-${item.rowVariant}`]: !!item.rowVariant, 'is-hover-row': props.hover } // TODO: refactor variant/color
 }
 
 const onSelectRow = (items: Array<Record<string, unknown>>) => {

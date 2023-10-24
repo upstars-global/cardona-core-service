@@ -141,14 +141,6 @@ export type TeamsTab = {
   avatarGroup: ProfileAvatarGroup[]
 }
 
-export type ProfileTab = {
-  teams: ProfileTeams[]
-  about: ProfileTabCommon[]
-  contacts: ProfileTabCommon[]
-  overview: ProfileTabCommon[]
-  teamsTech: ProfileTeamsTech[]
-  connections: ProfileConnections[]
-}
 
 // SECTION
 // 👉 JWT
@@ -271,7 +263,7 @@ export interface EmailAttachment {
   fileName: string
   thumbnail: any
   url: string
-  size: string
+  size: string // TODO: refactor sizes
 }
 
 /*
@@ -419,7 +411,7 @@ export type Permission = {
 
 export type Data = {
   responsive_id: string,
-  id: number, 
+  id: number,
   avatar: string,
   full_name: string,
   post: string,
@@ -428,7 +420,7 @@ export type Data = {
   start_date: date,
   salary: number,
   age: string | number,
-  experience: string, 
+  experience: string,
   status: number,
 }
 
