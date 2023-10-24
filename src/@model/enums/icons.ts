@@ -109,7 +109,7 @@ export enum IconsList {
   FileTextIcon = 'FileTextIcon',
   FileIcon = 'FileIcon',
   FilmIcon = 'FilmIcon',
-  FilterIcon = 'FilterIcon',
+  FilterIcon = 'tabler-adjustments-search',
   FlagIcon = 'FlagIcon',
   FolderMinusIcon = 'FolderMinusIcon',
   FolderPlusIcon = 'FolderPlusIcon',

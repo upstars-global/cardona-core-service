@@ -4,14 +4,14 @@ import store from '../../../store'
 import type { ViewInfo, ViewJustifyContent } from '../../../@model/view'
 
 const props = defineProps<{
-  value: ViewInfo
+  modelValue: ViewInfo
   keyName?: string
   justifyContent?: ViewJustifyContent
   cols?: number
 }>()
 
 const canView = computed<boolean>(() =>
-  props.value.permission ? store.getters.abilityCan(props.value.permission, 'view') : true,
+  props.modelValue.permission ? store.getters.abilityCan(props.modelValue.permission, 'view') : true,
 )
 
 const justifyClass = computed(() => `justify-content-${props.justifyContent}`)
@@ -32,7 +32,7 @@ const valueColsCount = computed(() => 12 - props.cols)
           />
         </div>
 
-        <label class="mb-0">{{ value.label }}</label>
+        <label class="mb-0">{{ modelValue.label }}</label>
       </VCol>
       <VCol
         :cols="valueColsCount"

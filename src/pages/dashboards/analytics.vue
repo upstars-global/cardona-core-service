@@ -103,21 +103,8 @@ const listConfig = new BaseListConfig({
   sidebarCollapseMode: true,
   filterList: [
     {
-      type: FilterType.Status,
-      key: 'isActive',
-    },
-    {
-      type: FilterType.DateRangeCreative,
-      key: 'created',
-    },
-    {
-      type: FilterType.DemoType,
-      key: 'type',
-      trackBy: 'id',
-    },
-    {
-      type: FilterType.GameId,
-      key: 'gameId',
+      type: FilterType.EntryId,
+      key: 'entityId',
     },
   ],
 })

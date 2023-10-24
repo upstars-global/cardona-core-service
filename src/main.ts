@@ -12,10 +12,12 @@ import router from '@/router'
 import { abilitiesPlugin } from '@casl/vue'
 import '@core/scss/template/index.scss'
 import '@styles/styles.scss'
+import 'vue-select/dist/vue-select.css'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import vuex from '@/store'
 import { initDirectives } from '@/directives'
+import vSelect from 'vue-select'
 
 loadFonts()
 
@@ -33,6 +35,7 @@ app.use(abilitiesPlugin, ability, {
   useGlobalProperties: true,
 })
 initDirectives(app)
+app.component('VueSelect', vSelect)
 
 // Mount vue app
 app.mount('#app')

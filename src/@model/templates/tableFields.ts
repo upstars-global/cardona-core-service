@@ -1,6 +1,6 @@
 interface TableFieldInput {
   readonly key: string
-  readonly label: string
+  readonly title: string
   readonly sortable?: boolean | null
   readonly type?: ListFieldType
   readonly size?: ListSize
@@ -8,14 +8,14 @@ interface TableFieldInput {
 
 export class TableField implements TableFieldInput {
   readonly key: string
-  readonly label: string
+  readonly title: string
   readonly sortable?: boolean | null
   readonly type?: ListFieldType
   readonly size?: ListSize
 
   constructor(data: TableFieldInput) {
     this.key = data.key
-    this.label = data.label
+    this.title = data.title
     this.sortable = data?.sortable
     this.type = data?.type
     this.size = data?.size || ListSize.MD
