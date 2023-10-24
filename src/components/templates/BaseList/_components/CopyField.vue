@@ -3,9 +3,10 @@ import { computed } from 'vue'
 import { copyToClipboard } from '../../../../helpers/clipboard'
 import { IconsList } from '../../../../@model/enums/icons'
 import { getShortString } from '../../../../helpers'
+import { NumberOrString } from '../../../../@model'
 
 interface Props {
-  value: string
+  value: NumberOrString
   isShort?: boolean
 }
 
