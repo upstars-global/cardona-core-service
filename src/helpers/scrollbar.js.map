@@ -1,1 +1,0 @@
-{"version":3,"file":"scrollbar.js","sourceRoot":"","sources":["scrollbar.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,MAAM,cAAc,GAAG,CAAC,QAAgB,EAAQ,EAAE;IACvD,MAAM,QAAQ,GAAuB,QAAQ,CAAC,aAAa,CAAC,QAAQ,CAAC,CAAA;IAErE,IAAI,QAAQ;QAAE,QAAQ,CAAC,SAAS,GAAG,QAAQ,CAAC,YAAY,CAAA;AAC1D,CAAC,CAAA"}
