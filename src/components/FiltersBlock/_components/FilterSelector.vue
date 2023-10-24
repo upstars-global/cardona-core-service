@@ -19,6 +19,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { FieldInfo } from '../../../@model/field'
+import { getInstanceClass } from '../../../@model/baseField'
 
 export default defineComponent({
   name: 'FilterSelector',
@@ -40,7 +41,17 @@ export default defineComponent({
   setup(props, { emit }) {
     const isSmallSize: boolean = props.size === 'sm'
 
-    const onChange = (filter: FieldInfo) => emit('selectedFiltersChanged', filter)
+    const onChange = (filter) => {
+      if (filter instanceof FieldInfo) {
+        filter = new FieldInfo(filter)
+      } else {
+        const fieldClass = getInstanceClass(filter)
+
+        filter = fieldClass && new fieldClass(filter)
+      }
+
+      emit('selectedFiltersChanged', filter)
+    }
 
     return { isSmallSize, onChange }
   },

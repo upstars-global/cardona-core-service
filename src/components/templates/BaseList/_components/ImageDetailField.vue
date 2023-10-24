@@ -19,8 +19,8 @@ import ImageField from '../_components/ImageField.vue'
 import CModal from '../../../../components/CModal.vue'
 
 const props = defineProps<{
-  id: string
-  imagePath: string
+  id?: string
+  imagePath?: string
   compressionForPreview?: number
 }>()
 
