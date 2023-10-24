@@ -21,11 +21,17 @@ const EXCLUDED_DIRECTORIES = [
   '@fake-db',
 ]
 
-const EXCLUDED_CONFIG_JS_FILES = ['jest', 'vue', 'style', 'postcss', 'babel', '.eslint'].map(
-  (fileName) => `${fileName}.config.js`
-)
+const EXCLUDED_CONFIG_JS_FILES = [
+  'jest',
+  'vue',
+  'style',
+  'postcss',
+  'babel',
+  '.eslint',
+  'stylelint',
+].map((fileName) => `${fileName}.config.js`)
 
-const EXCLUDED_FILES = ['clear-excess-js-files.js']
+const EXCLUDED_FILES = ['clear-excess-js-files.js', '.eslintrc.js']
 
 const EXCLUDED_PATHS_FROM_TS_CONFIG = tsConfigJSON.typedocOptions.entryPoints.map((path) =>
   path.replace('.ts', '.js')
