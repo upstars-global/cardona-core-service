@@ -41,7 +41,6 @@ const EXCLUDED_FILE_PATHS = [
   ...EXCLUDED_CONFIG_JS_FILES,
   ...EXCLUDED_PATHS_FROM_TS_CONFIG,
   'src/router/index.js',
-  'src/router/index.js',
   'src/store/app/index.js',
   'src/store/app-config-core/index.js',
   'src/navigation/vertical/index.js',
