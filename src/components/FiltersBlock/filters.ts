@@ -4,7 +4,7 @@ import { ProjectInfo } from '../../@model/project'
 import { FieldInfo, FieldType } from '../../@model/field'
 import { FilterType } from '../../@model/filter'
 import { TextBaseField, SelectBaseField, MultiSelectBaseField } from '../../@model/baseField'
-import { TransactionType } from '../../@model/playersTransactions'
+import { TransactionType } from '../../@model/enums/playersTransactions'
 
 // Options
 const stateOptions: Array<object> = [
