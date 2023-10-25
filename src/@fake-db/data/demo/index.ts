@@ -1,7 +1,7 @@
 import mock from '../../mock'
 import { PaginationData } from '../../../@model'
 import { filterDemoList } from '../../helpers/filterDemoList'
-import { TransactionType } from '../../../@model/playersTransactions'
+import { TransactionType } from '../../../@model/enums/playersTransactions'
 import i18n from '../../../libs/i18n'
 import { IDemoTypeItem } from '../../../@model/demo'
 import { listImages } from '../compostela/index'
