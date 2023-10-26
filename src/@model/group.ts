@@ -3,7 +3,6 @@ import { UserInfo, UserSmallInfo } from '../@model/users'
 import { IRequestListPayload, OptionsItem } from '../@model/index'
 import { ViewInfo, ViewType } from '../@model/view'
 import i18n from '../libs/i18n'
-import { FieldInfo, FieldType } from '../@model/field'
 import { MultiSelectBaseField, TextBaseField } from '../@model/baseField'
 import store from '../store'
 
@@ -21,7 +20,7 @@ export class GroupData {
   }
 }
 
-interface GroupListFilter {
+export interface GroupListFilter {
   search: string
 }
 

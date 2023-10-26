@@ -31,6 +31,9 @@
       ],
       "@permissions": [
         "./src/configs/permissions"
+      ],
+      "@/*": [
+        "src/*"
       ]
     },
     "lib": [
