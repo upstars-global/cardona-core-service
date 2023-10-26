@@ -10,9 +10,11 @@ import {
 import store from '../../store'
 import { v4 as uuidv4 } from 'uuid'
 import useToastService from '../../helpers/toasts'
-import router from '../../router'
+import router from '@/router'
 import i18n from '../../libs/i18n'
 import { convertCamelCase } from '../../helpers'
+import { setStorage } from '../../helpers/storage'
+import { storageKeys } from '../../configs/storage'
 
 const { toastSuccess, toastError, toastErrorMessageString } = useToastService()
 
@@ -72,6 +74,10 @@ class ApiService {
 
       if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type)) {
         store.dispatch('authCore/clearAuth')
+
+        const { pathname } = location
+
+        setStorage(storageKeys.path, pathname)
 
         if (!isLoginPage) router.push({ name: 'Login' })
       }
