@@ -57,3 +57,22 @@ export interface OptionsItem {
 }
 
 export type Nullable<T> = T | null
+
+export interface Badge {
+  name: string
+  id: string
+}
+
+export type NumberOrString = number | string
+
+export interface ValidationError {
+  code: string
+  field: string
+  params: Array<unknown> | Record<string, string>
+  template: string
+}
+export interface IRequestError {
+  description: string
+  type: string
+  validationErrors?: Array<ValidationError>
+}

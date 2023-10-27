@@ -4,7 +4,6 @@ import { useStore } from 'vuex'
 import { findIndex, omit } from 'lodash'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
-import { VColors } from '../../../@model/vuetify'
 import { DownloadFormat, SortDirection } from '../../../@model/templates/baseList'
 import type { Filter } from '../../../@model/filter'
 import { getStorage, removeStorageItem, setStorage } from '@/helpers/storage'
@@ -12,11 +11,17 @@ import { ListSort } from '@/@model'
 import { useFilters } from '@/components/FiltersBlock/useFilters'
 import { BaseField, SelectBaseField } from '@/@model/templates/baseField'
 import { FieldType } from '@/@model/field'
-import { convertLowerCaseFirstSymbol, isEmptyString, isNotEmptyNumber } from '@/helpers'
+import { checkExistsPage, convertLowerCaseFirstSymbol, isEmptyString, isNotEmptyNumber } from '@/helpers'
 import type { PaginationResult } from '@/use/pagination'
 import usePagination from '@/use/pagination'
 import type { TableField } from '@/@model/templates/tableFields'
 import { parseDateRange } from '@/helpers/filters'
+import { ListFieldType } from '@/@model/templates/tableFields'
+import { listImages } from '@/@fake-db/data/compostela'
+import { tagsList } from '@/@fake-db/data/demo'
+import { TransactionType } from '@/@model/enums/playersTransactions'
+import { BLightColors } from '@/@model/bootstrap'
+import { basePermissions } from '@/helpers/base-permissions'
 
 const props = defineProps<{
   config?: IBaseListConfig
@@ -54,11 +59,10 @@ const {
 
 // Pages
 const CreatePageName = pageName ? `${pageName}Create` : `${entityName}Create`
+const UpdatePageName = pageName ? `${pageName}Update` : `${entityName}Update`
 
-// const UpdatePageName = pageName ? `${pageName}Update` : `${entityName}Update`
-
-/* const isExistsCreatePage = checkExistsPage(CreatePageName)
-const isExistsUpdatePage = checkExistsPage(UpdatePageName) */
+/* const isExistsCreatePage = checkExistsPage(CreatePageName) */
+const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 
 // Action names
 const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
@@ -78,10 +82,10 @@ const multipleUpdateActionName = 'baseStoreCore/multipleUpdateEntity'
 const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity' */
 
 // Permissions
-/* const { canCreate, canUpdate, canUpdateSeo, canRemove, canExport }
+const { /* canCreate, */ canUpdate, canUpdateSeo, /* canRemove, */ canExport }
     = basePermissions<IBaseListConfig>({ entityName, config: props.config })
 
-const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
+/* const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
 
 const canUpdateItem = (item): boolean =>
   canUpdateCb && item ? isExistsUpdatePage && canUpdateCb(item) : isExistsUpdatePage
@@ -114,12 +118,14 @@ const onClickRow = data => {
   emits('rowClicked', data)
 }
 
+const { t } = useI18n()
+
 /* const routerToUpdatePageId = item => {
   router.push(getUpdateRoute(item))
 } */
 
 // Table
-// const refListTable = ref(null)
+const refListTable = ref(null)
 
 const items = ref([
   {
@@ -146,32 +152,20 @@ const items = ref([
     localization: 'en',
     country: 'en',
     position: 1,
-    imagePath: '/demo-images/1.png',
-    tags: [
-      {
-        id: '638f1a4c9bb32010930bf230',
-        name: 'test',
-        position: 3,
-      },
-      {
-        id: '638f1a4c9bb32010930bf231',
-        name: 'test 1',
-        position: 23,
-      },
-      {
-        id: '638f1a4c9bb32010930bf232',
-        name: 'test 2',
-        position: 5,
-      },
-    ],
+    imagePath: listImages[0].publicPath,
+    imageFull: {
+      imagePath: listImages[0].publicPath,
+      id: '632c39448e03b2dab20c8a77',
+    },
+    tags: [tagsList[0], tagsList[1], tagsList[2]],
     type: {
-      id: 'deposit',
-      name: 'Deposit',
+      id: TransactionType.Deposit,
+      name: t('common.deposit'),
     },
     gameId: '622c39448e03b2dab20c8a77',
     state: true,
-    comment: 'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
-    rowVariant: VColors.Primary,
+    comment:
+        'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
   },
   {
     id: '632c39448e03b2dab20c8a78',
@@ -195,26 +189,15 @@ const items = ref([
     buttonName: 'button name',
     login: 'Some',
     position: 4,
-    imagePath: '/demo-images/2.png',
-    tags: [
-      {
-        id: '638f1a4c9bb32010930bf233',
-        name: 'test 3',
-      },
-      {
-        id: '638f1a4c9bb32010930bf234',
-        name: 'test 4',
-        position: 3,
-      },
-      {
-        id: '638f1a4c9bb32010930bf235',
-        name: 'test 5',
-        position: 23,
-      },
-    ],
+    imagePath: listImages[1].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
+    tags: [tagsList[3], tagsList[4], tagsList[5]],
     type: {
-      id: 'deposit',
-      name: 'Deposit',
+      id: TransactionType.Deposit,
+      name: t('common.deposit'),
     },
     gameId: '622c39448e03b2dab20c8a78',
     state: false,
@@ -222,7 +205,7 @@ const items = ref([
     paymentsToday: '100',
     paymentsWeek: '1100',
     paymentsMonth: '11100',
-    rowVariant: VColors.Info,
+    rowVariant: BLightColors.LightDanger,
   },
   {
     id: '632c39448e03b2dab20c8a79',
@@ -246,35 +229,19 @@ const items = ref([
     buttonName: 'Test button name',
     login: 'cwilliams1956@game.com',
     position: 1,
-    imagePath: '/demo-images/4.png',
-    tags: [
-      {
-        id: '638f1a4c9bb32010930bf231',
-        name: 'test 1',
-        position: 23,
-      },
-      {
-        id: '638f1a4c9bb32010930bf236',
-        name: 'test 6',
-        position: 3,
-      },
-      {
-        id: '638f1a4c9bb32010930bf235',
-        name: 'test 5',
-        position: 23,
-      },
-    ],
+    imagePath: listImages[3].publicPath,
+    tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
     comment: '',
     type: {
-      id: 'payout',
-      name: 'Payout',
+      id: TransactionType.Payout,
+      name: t('common.payout'),
     },
     paymentsToday: '200',
     paymentsWeek: '2200',
     paymentsMonth: '22200',
-    rowVariant: 'light-info',
+    rowVariant: BLightColors.LightInfo,
   },
   {
     id: '632c39448e03b2dab20c8a75',
@@ -298,33 +265,23 @@ const items = ref([
     buttonName: 'Some name',
     login: '',
     position: 55,
-    imagePath: '/demo-images/5.png',
-    tags: [
-      {
-        id: '638f1a4c9bb32010930bf231',
-        name: 'test 1',
-        position: 23,
-      },
-      {
-        id: '638f1a4c9bb32010930bf238',
-        name: 'test 8',
-      },
-      {
-        id: '638f1a4c9bb32010930bf239',
-        name: 'test 9',
-      },
-    ],
+    imagePath: listImages[4].publicPath,
+    imageFull: {
+      imagePath: listImages[4].publicPath,
+      id: '632c39448e03b2dab20c8a75',
+    },
+    tags: [tagsList[1], tagsList[8], tagsList[9]],
     gameId: '622c39448e03b2dab20c8a75',
     state: true,
     comment: 'Some commmmmmmmmmmmmmment',
     type: {
-      id: 'deposit',
-      name: 'Deposit',
+      id: TransactionType.Deposit,
+      name: t('common.deposit'),
     },
     paymentsToday: '300',
     paymentsWeek: '3300',
     paymentsMonth: '33300',
-    rowVariant: 'light-warning',
+    rowVariant: BLightColors.LightWarning,
   },
 ])
 
@@ -388,21 +345,21 @@ const {
   numberOfPages, */
   total,
 
-  /* setPerPage,
+  /* setPerPage, */
   setupDataMeta,
-  linkGen, */
+  linkGen,
   updateTotal,
   onChangePagination,
 } = paginationConfig
 
-// const dataMeta = setupDataMeta(refListTable)
+const dataMeta = setupDataMeta(refListTable)
 
-/* const linkGenerator = (page: number) => {
+const linkGenerator = (page: number) => {
   if (props.config?.withIndependentPagination)
     return
 
   return linkGen(page)
-} */
+}
 
 // Fetch list
 const getList = async () => {
@@ -436,14 +393,13 @@ onChangePagination(reFetchList)
 
 const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
 
-/*
 const getUpdateRoute = ({ id }): Location => {
   return isExistsUpdatePage && (canUpdate || canUpdateSeo)
-      ? { name: UpdatePageName, params: { id } }
-      : {}
+    ? { name: UpdatePageName, params: { id } }
+    : {}
 }
 
-const onClickToggleStatus = async ({ id, isActive }) => {
+/* const onClickToggleStatus = async ({ id, isActive }) => {
   await store.dispatch(updateActionName, {
     type: entityName,
     data: { form: { id, isActive: !isActive } },
@@ -464,7 +420,7 @@ const onUpdateItem = async (item) => {
 
   return response
 }
-
+*/
 const onEditPosition = async ({ id }: { id: string }, position: number) => {
   await store.dispatch(updateActionName, {
     type: entityName,
@@ -472,8 +428,8 @@ const onEditPosition = async ({ id }: { id: string }, position: number) => {
     customApiPrefix: props.config?.customApiPrefix,
   })
 
-  reFetchList()
-} */
+  await reFetchList()
+}
 
 // Search
 /* watch(searchQuery, reFetchList) */
@@ -802,7 +758,7 @@ const selectedRowClass = rowItem => {
     @row-clicked="onClickRow"
   >
     <template
-      v-for="(fieldItem) in selectedFields"
+      v-for="(fieldItem, index) in selectedFields"
       :key="`base-list_cell-${fieldItem.key}`"
       #[`cell(${fieldItem.key})`]="{ field, item, cell }"
     >
@@ -810,9 +766,161 @@ const selectedRowClass = rowItem => {
         v-if="checkSlotExistence(`cell(${fieldItem.key})`)"
         :name="`cell(${fieldItem.key})`"
         :field="field"
-        :item="item"
+        :item="item.raw"
         :cell="cell"
       />
+      <StatusField
+        v-else-if="field.type === ListFieldType.Status"
+        :key="`${index}_${field.type}`"
+        :value="cell"
+      />
+
+      <SumAndCurrency
+        v-else-if="field.type === ListFieldType.SumAndCurrency"
+        :key="`${index}_${field.type}`"
+        :data="{
+          amount: cell,
+          currency: item.raw.currency,
+          remainder: item.raw.remainder,
+        }"
+      />
+
+      <PillStatusField
+        v-else-if="field.type === ListFieldType.PillStatus"
+        :key="`${index}_${field.type}`"
+        :is-active="cell"
+      />
+
+      <NameWithIdField
+        v-else-if="field.type === ListFieldType.NameWithId"
+        :key="`${index}_${field.type}`"
+        :item="item.raw"
+        :get-update-route="getUpdateRoute"
+        :is-show-you="config.isShowYou"
+      >
+        <slot
+          :name="`${field.key}-nameWithIdTitle`"
+          :item="item.raw"
+        />
+      </NameWithIdField>
+
+      <NameWithShortIdField
+        v-else-if="field.type === ListFieldType.NameWithShortId"
+        :key="`${index}_${field.type}`"
+        :item="item.raw"
+        :get-update-route="getUpdateRoute"
+        :is-show-you="config.isShowYou"
+      >
+        <slot
+          :name="`${field.key}-nameWithIdTitle`"
+          :item="item.raw"
+        />
+      </NameWithShortIdField>
+
+      <EmailField
+        v-else-if="field.type === ListFieldType.Email"
+        :key="`${index}_${field.type}`"
+        :item="item"
+        :get-update-route="getUpdateRoute"
+      />
+
+      <DateField
+        v-else-if="field.type === ListFieldType.Date"
+        :key="`${index}_${field.type}`"
+        :date="cell"
+      />
+
+      <DateWithSecondsField
+        v-else-if="field.type === ListFieldType.DateWithSeconds"
+        :key="`${index}_${field.type}`"
+        :date="cell"
+      />
+
+      <StatementField
+        v-else-if="field.type === ListFieldType.Statement"
+        :key="`${index}_${field.type}`"
+        :state="cell"
+      />
+
+      <BadgesField
+        v-else-if="field.type === ListFieldType.Badges"
+        :key="`${index}_${field.type}`"
+        :list-badges="cell"
+      />
+
+      <PositionField
+        v-else-if="field.type === ListFieldType.Priority"
+        :key="`${index}_${field.type}`"
+        :position="cell"
+        :size="field.size"
+        :can-update="canUpdate || config.draggable"
+        @edit-position="(val) => onEditPosition(item, val)"
+      />
+
+      <ButtonField
+        v-else-if="field.type === ListFieldType.Button"
+        :key="`${index}_${field.type}`"
+        :btn-name="cell"
+      />
+
+      <CommentField
+        v-else-if="field.type === ListFieldType.Comment"
+        :key="`${index}_${field.type}`"
+        :value="cell"
+      />
+
+      <ImageField
+        v-else-if="field.type === ListFieldType.Image"
+        :key="`${index}_${field.type}`"
+        :image-path="cell"
+      />
+
+      <ImageDetailField
+        v-else-if="field.type === ListFieldType.ImageFull"
+        :id="item.raw.id"
+        :key="`${index}_${field.type}`"
+        :image-path="item.raw[field.key]?.imagePath"
+        :compression-for-preview="item.raw[field.key]?.compressionForPreview || 0"
+      />
+
+      <DatePeriodField
+        v-else-if="field.type === ListFieldType.Period"
+        :key="`${index}_${field.type}`"
+        :period="cell"
+      />
+
+      <CopyField
+        v-else-if="field.type === ListFieldType.Copy"
+        :key="`${index}_${field.type}`"
+        :value="cell"
+      />
+
+      <CopyShortField
+        v-else-if="field.type === ListFieldType.CopyShort"
+        :key="`${index}_${field.type}`"
+        :value="cell"
+      />
+
+      <template v-else-if="field.type === ListFieldType.Percent">
+        {{ cell }} %
+      </template>
+
+      <ItemActions
+        v-else-if="field.key === 'actions'"
+        :item="item"
+        :create-page-name="CreatePageName"
+        :can-update="canUpdate"
+        :config="config"
+        :get-update-route="getUpdateRoute"
+        @on-remove="onClickRemove"
+      >
+        <template #action-items>
+          <slot
+            name="action-items"
+            :item="item"
+          />
+        </template>
+      </ItemActions>
 
       <template v-else>
         {{ cell }}

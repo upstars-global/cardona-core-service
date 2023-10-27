@@ -1,5 +1,5 @@
 import { isNumber, isString } from 'lodash'
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { FieldInfo } from '../@model/field'
 import { BaseField } from '../@model/templates/baseField'
 import type { OptionsItem } from '../@model'
@@ -20,7 +20,13 @@ export const transformFormData = (form): object => {
     }
     else if (Array.isArray(valueData) && typeof valueData[0] !== 'string') {
       acc[key] = valueData
-        .map(item => (item instanceof FieldInfo ? item.value : transformFormData(item)))
+        .map(item =>
+          item instanceof FieldInfo
+            ? item.value
+            : item instanceof BaseField
+              ? item.transformField()
+              : transformFormData(item),
+        )
         .filter(item => !!item)
     }
     else if (isObject(valueData)) {
@@ -52,7 +58,7 @@ export const convertCamelCase = (string: string, separator: string): string => {
 
   return (
     string[0].toLowerCase()
-    + string.slice(1).replace(/[A-Z]/g, letter => `${separator}${letter.toLowerCase()}`)
+      + string.slice(1).replace(/[A-Z]/g, letter => `${separator}${letter.toLowerCase()}`)
   )
 }
 
@@ -64,17 +70,22 @@ export const convertLowerCaseFirstSymbol = (string: string): string => {
 }
 
 export const convertUpperCaseFirstSymbol = (word: string): string => {
-  if (word.isEmpty)
-    return word
+  if (!word)
+    return ''
 
   return word[0].toUpperCase() + word.slice(1)
 }
 
 export const checkExistsPage = (pageName: string): boolean => {
-  const route = useRoute()
+  try {
+    const router = useRouter()
+    const route = router.resolve({ name: pageName })
 
-  // TODO return route.matched.isNotEmpty
-  return true
+    return route.matched.isNotEmpty
+  }
+  catch (e) {
+    return false
+  }
 }
 
 export const convertDictionaryToOptions = (
@@ -131,3 +142,28 @@ export const getShortString = (text: string | number, letterCount = 4): string =
 
 export const isNotEmptyNumber = (number: any): boolean => isNumber(number) && !isNaN(number)
 export const isEmptyString = (string: string): boolean => isString(string) && !string
+
+export const getFileValue = (file: File): Promise<any> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.onload = function (e) {
+      resolve(e.target?.result)
+    }
+
+    reader.onerror = function (error) {
+      reject(error)
+    }
+    reader.readAsText(file)
+  })
+
+export const toPositiveNumbers = (value: NumberOrString): string =>
+  value.toString().replace(/-/g, '')
+
+export const toIntegerNumbers = (value: NumberOrString): string =>
+  value.toString().replace(/[,.]/g, '')
+
+export const getMappedValueByManyMethods = <T = NumberOrString>(
+  value: T,
+  mappedMethods: Array<Function>,
+): T => mappedMethods.reduce((updatedValue, mappedMethod) => mappedMethod(updatedValue), value)

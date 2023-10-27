@@ -1,21 +1,19 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 const props = defineProps<{
-  state: boolean
+  state?: boolean
 }>()
 
 const { t } = useI18n()
-const badgeVariant = computed(() => (props.state ? 'success' : 'error'))
+const badgeVariant = computed(() => (props.state ? 'light-success' : 'light-danger'))
 const badgeLabel = computed(() => (props.state ? t('common.yes') : t('common.no')))
 </script>
 
 <template>
   <VChip
     class="custom-badge"
-    label
-    :color="badgeVariant"
+    :variant="badgeVariant"
   >
     {{ badgeLabel }}
   </VChip>
