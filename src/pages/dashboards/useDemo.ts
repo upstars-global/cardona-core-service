@@ -117,7 +117,7 @@ export const useDemoList = (): UseListType => {
       key: 'type',
       title: i18n.global.t('common.type'),
     }),
-    new TableField({ key: 'actions', title: '' }),
+    new TableField({ key: 'actions', title: 'actions' }),
   ]
 
   return {

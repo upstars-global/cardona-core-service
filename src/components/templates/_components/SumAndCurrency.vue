@@ -46,10 +46,8 @@ defineProps<{
   width: max-content;
 }
 
-.our-table {
-  .currency-wrapper {
-    margin-left: auto;
-    text-align: right;
-  }
+.currency-wrapper {
+  margin-left: auto;
+  text-align: right;
 }
 </style>

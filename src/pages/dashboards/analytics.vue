@@ -108,6 +108,8 @@ const listConfig = new BaseListConfig({
     },
   ],
 })
+
+const getUpdateRoute = ({ id }): Location => ({ name: 'DemoUpdate', params: { id } })
 </script>
 
 <template>
@@ -117,7 +119,43 @@ const listConfig = new BaseListConfig({
       <BaseList
         :config="listConfig"
         :use-list="useDemoList"
-      />
+      >
+        <template #cell(innerLink)="{ item }">
+          <InnerBlankLink
+            :value="{ title: item.name, route: getUpdateRoute(item) }"
+            size="xl"
+          />
+          <InnerBlankLink :value="{ title: item.name, route: getUpdateRoute(item) }" />
+          <InnerBlankLink
+            :value="{ title: item.name, route: getUpdateRoute(item) }"
+            size="sm"
+          />
+        </template>
+        <template #cell(sumPeriod)="{ item }">
+          <SumPeriod
+            :data="{
+              today: item.paymentsToday,
+              week: item.paymentsWeek,
+              month: item.paymentsMonth,
+              currency: item.currency,
+            }"
+          />
+        </template>
+
+        <template #cell(winBack)="{ item }">
+          <SumAndCurrency
+            :data="{
+              amount: item.wagerValue,
+              currency: item?.currency,
+              remainder: item.wagerLimit,
+            }"
+          />
+        </template>
+
+        <template #cell(type)="{ item }">
+          {{ item.type.name }}
+        </template>
+      </BaseList>
     </VCol>
 
     <VCol

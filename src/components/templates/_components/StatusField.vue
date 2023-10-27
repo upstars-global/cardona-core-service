@@ -17,49 +17,49 @@ const props = defineProps<{
 enum StatusVariants {
 
   // Secondary
-  initial = 'light-secondary',
-  New = 'light-secondary',
-  new = 'light-secondary',
-  waiting = 'light-secondary',
-  received = 'light-secondary',
-  updating = 'light-secondary',
+  initial = 'secondary',
+  New = 'secondary',
+  new = 'secondary',
+  waiting = 'secondary',
+  received = 'secondary',
+  updating = 'secondary',
 
   // Success
-  active = 'light-success',
-  activated = 'light-success',
-  finished = 'light-success',
-  approved = 'light-success',
-  read = 'light-success',
-  Confirmed = 'light-success',
-  wager = 'light-success',
-  'wager_done' = 'light-success',
-  creation = 'light-success',
+  active = 'success',
+  activated = 'success',
+  finished = 'success',
+  approved = 'success',
+  read = 'success',
+  Confirmed = 'success',
+  wager = 'success',
+  'wager_done' = 'success',
+  creation = 'success',
 
   // Warning
-  inactive = 'light-warning',
-  'in progress' = 'light-warning',
-  pending = 'light-warning',
-  're-check' = 'light-warning',
-  Processing = 'light-warning',
-  Waiting = 'light-warning',
-  'wait_activation' = 'light-warning',
-  processing = 'light-warning',
-  used = 'light-warning',
+  inactive = 'warning',
+  'in progress' = 'warning',
+  pending = 'warning',
+  're-check' = 'warning',
+  Processing = 'warning',
+  Waiting = 'warning',
+  'wait_activation' = 'warning',
+  processing = 'warning',
+  used = 'warning',
 
   // Danger
-  delete = 'light-danger',
-  expired = 'light-danger',
-  rejected = 'light-danger',
-  Canceled = 'light-danger',
-  Error = 'light-danger',
-  'Canceled by user' = 'light-danger',
-  'Marbella cancel processing' = 'light-danger',
-  removed = 'light-danger',
-  canceled = 'light-danger',
-  lost = 'light-danger',
-  cancelled = 'light-danger',
-  'erased_by_withdraw' = 'light-danger',
-  deleting = 'light-danger',
+  delete = 'error',
+  expired = 'error',
+  rejected = 'error',
+  Canceled = 'error',
+  Error = 'error',
+  'Canceled by user' = 'error',
+  'Marbella cancel processing' = 'error',
+  removed = 'error',
+  canceled = 'error',
+  lost = 'error',
+  cancelled = 'error',
+  'erased_by_withdraw' = 'error',
+  deleting = 'error',
 
   // TODO: Add status variant here
 }
@@ -76,7 +76,10 @@ const variantName = computed(() => {
 </script>
 
 <template>
-  <VChip :variant="variantName">
+  <VChip
+    label
+    :color="variantName"
+  >
     {{ value }}
   </VChip>
 </template>
