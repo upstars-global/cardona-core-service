@@ -35,7 +35,7 @@ const emits = defineEmits<Emits>()
         class="ml-1"
         variant="outline-danger"
         size="sm"
-        @click="emits('on-deactivate')"
+        @click="emits('on-remove')"
       >
         {{ $t('action.remove') }}
       </b-button>
