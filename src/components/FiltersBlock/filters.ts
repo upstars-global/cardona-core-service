@@ -113,6 +113,13 @@ const gamesRunners = new SelectBaseField({
   fetchOptionsActionName: 'games/fetchGamesRunners',
 })
 
+const gamesCategories = new SelectBaseField({
+  key: FilterType.GamesRunners,
+  label: i18n.t('filters.gamesCategories'),
+  placeholder: i18n.t('placeholder.filter.gamesCategories'),
+  fetchOptionsActionName: 'gamesCategories/fetchGamesCategoriesList',
+})
+
 // Gifts
 const giftsStatus = new SelectBaseField({
   key: FilterType.GiftsStatus,
@@ -370,6 +377,7 @@ export default {
   gamesType,
   gamesProducers,
   gamesRunners,
+  gamesCategories,
   gameForBonuses,
   availableWithBonuses,
 

@@ -16,6 +16,7 @@ export enum FilterType {
   EntryId = 'entryId',
   EntityType = 'entityType',
   GamesType = 'gamesType',
+  GamesCategories = 'gamesCategories',
   GamesProducers = 'gamesProducers',
   GamesRunners = 'gamesRunners',
   GameForBonuses = 'gameForBonuses',
