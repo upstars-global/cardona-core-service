@@ -9,6 +9,7 @@ import {
   TimeBaseField,
   ConditionsBaseField,
   UsersListBaseField,
+  SwitchBaseField,
 } from './baseField'
 import { FieldInfo, FieldType } from './field'
 import { getLocaleDateStringWithoutTimezone } from '../helpers/date'
@@ -153,8 +154,8 @@ export class DemoFilter {
 }
 export class DemoForm {
   readonly id?: string
-  readonly switch: FieldInfo
-  readonly switchWithState: FieldInfo
+  readonly switch: SwitchBaseField
+  readonly switchWithState: SwitchBaseField
   readonly text: TextBaseField
   readonly textWithCb: TextBaseField
   readonly email: TextBaseField
@@ -193,8 +194,7 @@ export class DemoForm {
   constructor(data) {
     this.id = data?.id
     this.image = data?.image
-    this.switch = new FieldInfo({
-      type: FieldType.Switch,
+    this.switch = new SwitchBaseField({
       key: 'switch',
       value: data?.switch,
       label: i18n.t('page.demo.switchField'),
@@ -298,11 +298,11 @@ export class DemoForm {
       label: i18n.t('page.demo.passwordFieldWithGeneration'),
       validationRules: 'required|password',
     })
-    this.switchWithState = new FieldInfo({
-      type: FieldType.SwitchWithState,
+    this.switchWithState = new SwitchBaseField({
       key: 'switchWithState',
       value: data?.switchWithState,
       label: i18n.t('page.demo.switchWithStateField'),
+      withState: true,
     })
     this.check = new FieldInfo({
       type: FieldType.Check,

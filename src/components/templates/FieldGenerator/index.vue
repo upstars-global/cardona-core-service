@@ -57,7 +57,7 @@
 import { defineComponent, PropType, computed } from 'vue'
 import store from '../../../store'
 import { FieldInfo, FieldType } from '../../../@model/field'
-import { BaseField } from '../../../@model/baseField'
+import { BaseField, SwitchBaseField } from '../../../@model/baseField'
 import TextareaField from './_components/TextareaField.vue'
 import TextareaWithCounterField from './_components/TextareaWithCounterField.vue'
 import RichTextField from './_components/RichTextField.vue'
@@ -71,7 +71,6 @@ import DateField from './_components/DateField.vue'
 import DateRangeField from './_components/DateRangeField.vue'
 import DateTimeField from './_components/DateTimeField.vue'
 import SwitchField from './_components/SwitchField.vue'
-import SwitchWithStateField from './_components/SwitchWithStateField.vue'
 import SumRangeField from './_components/SumRangeField.vue'
 import PhoneField from './_components/PhoneField.vue'
 import PasswordField from './_components/PasswordField.vue'
@@ -95,7 +94,6 @@ export default defineComponent({
     DateRangeField,
     DateTimeField,
     SwitchField,
-    SwitchWithStateField,
     SumRangeField,
     PhoneField,
     RatesField,
@@ -139,13 +137,10 @@ export default defineComponent({
     const canView = computed<boolean>(() =>
       props.value.permission ? store.getters.abilityCan(props.value.permission, 'view') : true
     )
-    const checkFields: Array<string> = [
-      FieldType.Check,
-      FieldType.Switch,
-      FieldType.SwitchWithState,
-    ]
     const isCheckType = computed(
-      () => props.value instanceof FieldInfo && checkFields.includes(props.value.type)
+      () =>
+        props.value instanceof SwitchBaseField ||
+        (props.value instanceof FieldInfo && props.value.type === FieldType.Check)
     )
     const groupLabel = computed(() =>
       props.withLabel && !isCheckType.value ? props.value.label : ''
