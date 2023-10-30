@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import store from '../../../../store'
-import { FieldInfo } from '../../../../@model/field'
+import { SwitchBaseField } from '../../../../@model/baseField'
 import { BSize } from '../../../../@model/bootstrap'
 import { IconsList } from '../../../../@model/enums/icons'
 
 type SwitchFieldProps = {
   value: boolean
-  field: FieldInfo
+  field: SwitchBaseField
   disabled?: boolean
   size?: BSize
 }
@@ -29,19 +29,26 @@ const modelValue = computed({
 const canUpdate = computed<boolean>(() =>
   props.field.permission ? store.getters.abilityCan(props.field.permission, 'update') : true
 )
+
+const iconName = computed(() => (props.value ? IconsList.CheckCircleIcon : IconsList.XCircleIcon))
+const iconVariant = computed(() => (props.value ? 'text-success' : 'text-danger'))
 </script>
 
 <template>
-  <div class="d-flex align-items-center" :class="`size-${size}`">
-    <b-form-checkbox v-model="modelValue" switch :disabled="disabled || !canUpdate">
-      <span class="switch-icon-left">
-        <feather-icon :icon="IconsList.CheckIcon" />
-      </span>
-    </b-form-checkbox>
+  <div class="d-flex align-items-center justify-content-between" :class="`size-${size}`">
+    <div class="d-flex align-items-center">
+      <b-form-checkbox v-model="modelValue" switch :disabled="disabled || !canUpdate">
+        <span class="switch-icon-left">
+          <feather-icon :icon="IconsList.CheckIcon" />
+        </span>
+      </b-form-checkbox>
 
-    <span class="switch-label">
-      {{ field.label }}
-    </span>
+      <span class="switch-label">
+        {{ field.label }}
+      </span>
+    </div>
+
+    <feather-icon v-if="field.withState" :icon="iconName" :class="iconVariant" />
   </div>
 </template>
 

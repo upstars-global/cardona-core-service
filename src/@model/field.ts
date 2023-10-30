@@ -16,8 +16,6 @@ export enum FieldType {
   Date = 'date', // TODO: https://upstars.atlassian.net/browse/BAC-1961
   DateRange = 'date-range', // TODO: https://upstars.atlassian.net/browse/BAC-1961
   DateTime = 'date-time', // TODO: https://upstars.atlassian.net/browse/BAC-1961
-  Switch = 'switch', // TODO: https://upstars.atlassian.net/browse/BAC-1962
-  SwitchWithState = 'switch-with-state', // TODO: https://upstars.atlassian.net/browse/BAC-1962
   SumRange = 'sum-range',
   Phone = 'phone',
   Rates = 'rates', // TODO: https://upstars.atlassian.net/browse/BAC-1860
