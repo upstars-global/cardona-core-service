@@ -40,7 +40,6 @@ const props = defineProps<{
 .our-table {
   .currency-wrapper {
     margin-left: auto;
-    text-align: right;
   }
 }
 </style>
