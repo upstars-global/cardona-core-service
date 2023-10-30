@@ -1,1 +1,0 @@
-{"version":3,"file":"useSettings.js","sourceRoot":"","sources":["useSettings.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,SAAS,EAAE,MAAM,oBAAoB,CAAA;AAE9C,MAAM,UAAU,GAAG,YAAY,CAAA;AAE/B,MAAM,CAAC,MAAM,UAAU,GAAG,GAA6B,EAAE;IACvD,MAAM,eAAe,GAAG,SAAS,CAAA;IAEjC,OAAO;QACL,UAAU;QACV,eAAe;KAChB,CAAA;AACH,CAAC,CAAA"}
