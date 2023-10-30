@@ -163,7 +163,13 @@ export default defineComponent({
         // field key (as field keys could be duplicated)
         // TODO: Although we do prevent duplicate field keys...
         //   So we could change this to: `row-${rowIndex}-cell-${key}`
-        class: [field.class ? field.class : '', this.getTdValues(item, key, field.tdClass, '')],
+        class: [
+          field.class ? field.class : '',
+          this.getTdValues(item, key, field.tdClass, ''),
+          {
+            [`text-${field.align}`]: field.align,
+          },
+        ],
         props: {},
         attrs: {
           'aria-colindex': String(colIndex + 1),
@@ -486,7 +492,13 @@ export default defineComponent({
         const sortLabel = isSortable ? this.sortTheadThLabel(key, field, isFoot) : null
 
         const data = {
-          class: [this.fieldClasses(field), sortClass],
+          class: [
+            this.fieldClasses(field),
+            sortClass,
+            {
+              [`text-${field.align}`]: field.align,
+            },
+          ],
           props: { variant, stickyColumn },
           style: field.thStyle || {},
           attrs: {

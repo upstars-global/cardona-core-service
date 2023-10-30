@@ -1,4 +1,4 @@
-import { ListFieldType, TableField } from '../../@core/components/table-fields/model'
+import { AlignType, ListFieldType, TableField } from '../../@core/components/table-fields/model'
 import { useUtils as useI18nUtils } from '../../@core/libs/i18n'
 import { UseListType } from '../../components/templates/BaseList/model'
 import { UseEntityType } from '../../components/templates/BaseSection/model'
@@ -101,11 +101,13 @@ export const useDemoList = (): UseListType => {
       type: ListFieldType.SumAndCurrency,
       key: 'amount',
       label: t('common.sum'),
+      align: AlignType.Right,
     }),
     new TableField({
       type: ListFieldType.SumAndCurrency,
       key: 'winBack',
       label: t('common.sum'),
+      align: AlignType.Right,
     }),
     new TableField({
       type: ListFieldType.Comment,
