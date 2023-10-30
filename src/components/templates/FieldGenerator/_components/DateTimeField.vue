@@ -70,4 +70,8 @@ export default {
 
 <style lang="scss">
 @import '../../../../@core/scss/vue/libs/vue-flatpicker.scss';
+
+.form-control[readonly].flatpickr-input {
+  background-color: inherit;
+}
 </style>

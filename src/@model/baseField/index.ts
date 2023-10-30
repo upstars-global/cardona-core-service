@@ -6,9 +6,11 @@ import { MultiSelectBaseField } from './multi-select'
 import { TimeBaseField } from './time'
 import { ConditionsBaseField } from './conditions'
 import { UsersListBaseField } from './users-list'
+import { SwitchBaseField } from './switch'
 
 export const getInstanceClass = (instance: object) => {
   const fields = [
+    SwitchBaseField,
     UsersListBaseField,
     ConditionsBaseField,
     TimeBaseField,
@@ -30,4 +32,5 @@ export {
   TimeBaseField,
   ConditionsBaseField,
   UsersListBaseField,
+  SwitchBaseField,
 }
