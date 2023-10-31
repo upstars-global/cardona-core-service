@@ -10,7 +10,7 @@
       @delete-key="deleteVariableTextByKey"
     />
     <div class="editor-wrap" :class="{ disabled }">
-      <froala v-model.trim="content" :tag="'textarea'" :config="config"></froala>
+      <froala v-if="showEditor" v-model.trim="content" :tag="'textarea'" :config="config"></froala>
     </div>
 
     <div :class="{ 'd-none': Object.keys(variableTextBuffer).isEmpty }">
@@ -80,6 +80,11 @@ const content = computed({
 const globalEditor = ref()
 const isUpdateVar = computed(() => store.state.textEditor.isUpdateVar)
 const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
+
+const showEditor = ref(false)
+setTimeout(() => {
+  showEditor.value = true
+})
 
 const setVariableTextBuffer = (params) => {
   store.dispatch('textEditor/setVariableTextBuffer', params)
