@@ -12,7 +12,6 @@ import {
   SwitchBaseField,
 } from './baseField'
 import { FieldInfo, FieldType } from './field'
-import { getLocaleDateStringWithoutTimezone } from '../helpers/date'
 import { StatusWithDateHistoryValue, StatusWithVariant, ViewInfo, ViewType } from './view'
 import { BaseListItem, SideBarCollapseItem } from '../components/templates/BaseList/model'
 import { TransactionType } from './enums/playersTransactions'
@@ -351,7 +350,7 @@ export class DemoForm {
     this.date = new FieldInfo({
       type: FieldType.Date,
       key: 'date',
-      value: getLocaleDateStringWithoutTimezone(data?.date),
+      value: data?.date,
       label: i18n.t('page.demo.dateField'),
     })
     this.dateRange = new FieldInfo({
@@ -363,7 +362,7 @@ export class DemoForm {
     this.dateTime = new FieldInfo({
       type: FieldType.DateTime,
       key: 'dateTime',
-      value: getLocaleDateStringWithoutTimezone(data?.dateTime),
+      value: data?.dateTime,
       label: i18n.t('page.demo.dateTimeField'),
     })
     this.time = new TimeBaseField({
