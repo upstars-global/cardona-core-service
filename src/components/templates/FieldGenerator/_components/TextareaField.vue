@@ -5,47 +5,41 @@
       :placeholder="field.placeholder || field.label"
       :state="errors.isNotEmpty ? false : null"
       no-resize
-      rows="4"
+      :rows="field.rows"
       :disabled="disabled"
+      :maxlength="field.maxLength"
     />
+
+    <small v-if="field.counter" class="textarea-counter-value float-right">
+      <span class="char-count">{{ enteredValueLength }}</span> / {{ field.maxLength }}
+    </small>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType, computed } from 'vue'
-import { FieldInfo } from '../../../../@model/field'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { TextareaBaseField } from '../../../../@model/baseField'
 
-export default defineComponent({
-  name: 'TextareaField',
-  props: {
-    value: {
-      type: String,
-      default: '',
-    },
+type TextareaFieldProps = {
+  value?: string
+  field: TextareaBaseField
+  disabled?: boolean
+  errors?: string[]
+}
 
-    field: {
-      type: Object as PropType<FieldInfo>,
-      required: true,
-    },
-
-    errors: {
-      type: Array as PropType<Array<string>>,
-      default: () => [],
-    },
-
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  setup(props, { emit }) {
-    const modelValue = computed({
-      get: () => props.value,
-      set: (value) => emit('input', value),
-    })
-
-    return { modelValue }
-  },
+const props = withDefaults(defineProps<TextareaFieldProps>(), {
+  value: '',
+  errors: () => [],
 })
+
+const emit = defineEmits<{
+  (event: 'input', value: string): void
+}>()
+
+const modelValue = computed({
+  get: () => props.value,
+  set: (value) => emit('input', value),
+})
+
+const enteredValueLength = computed(() => (modelValue.value ? modelValue.value.length : 0))
 </script>
