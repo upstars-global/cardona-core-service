@@ -1,24 +1,18 @@
 import { Component } from 'vue'
-import { TranslateResult } from 'vue-i18n'
-import { BaseField, IBaseField } from './base'
+import { ATextBaseField, IATextBaseField } from './base'
 import TextField from '../../components/templates/FieldGenerator/_components/TextField.vue'
+import { NumberOrString } from '../index'
 
-export interface ITextBaseField extends IBaseField {
-  readonly value?: string | number
-  readonly prepend?: TranslateResult
-  readonly append?: TranslateResult
+export interface ITextBaseField extends IATextBaseField {
+  readonly value?: NumberOrString
 }
 
-export class TextBaseField extends BaseField implements ITextBaseField {
+export class TextBaseField extends ATextBaseField implements ITextBaseField {
   readonly component: Component = TextField
   protected _value?: string | number
-  readonly prepend?: TranslateResult
-  readonly append?: TranslateResult
 
   constructor(field: ITextBaseField) {
     super(field)
     this._value = field.value
-    this.prepend = field.prepend
-    this.append = field.append
   }
 }

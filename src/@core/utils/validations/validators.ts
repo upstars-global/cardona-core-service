@@ -1,3 +1,5 @@
+import { NumberOrString } from '../../../@model/index'
+
 export const validatorPositive = (value) => {
   if (value >= 0) {
     return true
@@ -36,4 +38,15 @@ export const validatorPhone = (value: string): boolean => {
   const phoneWithoutPlus: string = value.replace('+', '')
 
   return regExp.test(phoneWithoutPlus)
+}
+
+export const validatorObject = (value: Record<string, NumberOrString>): boolean => {
+  if (value === null || value === undefined) return false
+  return Object.values(value).every(Boolean)
+}
+
+export const validatorRange = (value: Record<string, NumberOrString>, args): boolean => {
+  const [keyMin, keyMax] = args as Array<NumberOrString>
+  if (!validatorObject(value)) return false
+  return +value[keyMin] <= +value[keyMax]
 }

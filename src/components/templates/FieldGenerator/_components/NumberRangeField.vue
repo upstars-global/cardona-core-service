@@ -2,6 +2,7 @@
   <div class="number-base-field d-flex align-items-center">
     <number-field
       v-model="numberRangeValue.from"
+      :class="inputClass"
       :field="{ ...field, placeholder: placeHolderRange.from }"
     />
 
@@ -9,6 +10,7 @@
 
     <number-field
       v-model="numberRangeValue.to"
+      :class="inputClass"
       :field="{ ...field, placeholder: placeHolderRange.to }"
     />
   </div>
@@ -38,6 +40,8 @@ const props = withDefaults(defineProps<Props>(), {
   value: () => ({ from: '', to: '' }),
 })
 
+const inputClass = computed(() => ({ 'border-danger rounded': props.errors?.isNotEmpty }))
+
 const emits = defineEmits<{
   (event: 'input', payload: NumberRangeValue): void
 }>()
@@ -56,16 +60,11 @@ const placeHolderRange = computed(() => ({
 }))
 </script>
 
+
 <style lang="scss" scoped>
 @import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
 
 .input-group-text {
   font-weight: $font-weight-bolder;
-}
-
-.error {
-  .input-group-text {
-    border-color: $red;
-  }
 }
 </style>

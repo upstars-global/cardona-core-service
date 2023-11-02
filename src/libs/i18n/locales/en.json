@@ -169,7 +169,8 @@
       "partnerId": "Partner id",
       "approvedPayoutsCount": "Payouts count approved and processing or already paid",
       "adc(LastMonth)": "Calculate average daily check for last “N” months",
-      "partnerIdMatch(needle)": "Match partner id"
+      "partnerIdMatch(needle)": "Match partner id",
+      "adc(lastNMonths)": "Calculate average daily check for last N months"
     }
   },
   "page": {
@@ -258,6 +259,8 @@
     "regex": "The {_field_} field format is invalid",
     "required_if": "The {_field_} field is required",
     "required": "The {_field_} field is required",
+    "required_object": "The {_field_} field is required",
+    "range": "The {_field_} value \"{labelTo}\" should be greater than or equal {valueFrom}",
     "size": "The {_field_} field size must be less than {size}KB",
     "double": "The {_field_} field must be a valid decimal",
     "password": "Your {_field_} must contain at least one uppercase, one lowercase, one special character, one digit and be at least 8 characters",
@@ -286,7 +289,7 @@
       "fileSizeError": "File is larger than {MB} MB",
       "upload_path_IN_USE": "An image with the same name or path already exists in the gallery",
       "axiosError": "Data loading error",
-      "invalidTypeFile": "Is invalid type file"
+      "invalidTypeFile": "The format of the file is invalid"
     }
   },
   "userStatuses": {

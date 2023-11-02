@@ -1,10 +1,22 @@
 import NumberRangeField from '../../components/templates/FieldGenerator/_components/NumberRangeField.vue'
-import { INumberBaseField, NumberBaseField } from './number'
+import { IANumberBaseField, ANumberBaseField } from './base'
+import { NumberOrString } from '../index'
 
-export class NumberRangeBaseField extends NumberBaseField {
+type NumberRangeBaseValue = {
+  from: NumberOrString
+  to: NumberOrString
+}
+
+export interface INumberRangeBaseField extends IANumberBaseField {
+  value?: NumberRangeBaseValue
+}
+
+export class NumberRangeBaseField extends ANumberBaseField implements INumberRangeBaseField {
   readonly component = NumberRangeField
+  protected _value?: NumberRangeBaseValue
 
-  constructor(field: INumberBaseField) {
+  constructor(field: INumberRangeBaseField) {
     super(field)
+    this._value = field.value
   }
 }

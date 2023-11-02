@@ -26,6 +26,8 @@ import {
   validatorPassword,
   validatorCreditCard,
   validatorPhone,
+  validatorObject,
+  validatorRange,
 } from './validators'
 
 // ////////////////////////////////////////////////////////
@@ -102,6 +104,22 @@ export const password = extend('password', {
 export const url = extend('url', {
   validate: validatorUrlValidator,
   message: 'URL is invalid',
+})
+
+export const required_object = extend('required_object', {
+  validate: validatorObject,
+  message: (_, values) => i18n.t('validations.required_object', values) as any,
+})
+
+export const range = extend('range', {
+  validate: validatorRange,
+  message: (_, { _field_, _value_, ...otherFields }) => {
+    return i18n.t('validations.range', {
+      _field_,
+      labelTo: otherFields[1],
+      valueFrom: _value_.from,
+    }) as any
+  },
 })
 
 configure(
