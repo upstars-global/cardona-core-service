@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onBeforeMount } from 'vue'
-import { ConditionsBaseField, TextareaBaseField } from '../../../../@model/baseField'
+import { ConditionsBaseField } from '../../../../@model/baseField'
 import FieldGenerator from '../../../../components/templates/FieldGenerator'
+import { FieldInfo, FieldType } from '../../../../@model/field'
 
 const props = withDefaults(
   defineProps<{
@@ -22,7 +23,8 @@ const emit = defineEmits<{
 
 const modelValue = computed({
   get: () => {
-    return new TextareaBaseField({
+    return new FieldInfo({
+      type: FieldType.Textarea,
       value: props.value,
       key: props.field.key,
       label: props.field.label,

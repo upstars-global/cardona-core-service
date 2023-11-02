@@ -6,7 +6,6 @@ import {
   NumberBaseField,
   SelectBaseField,
   TextBaseField,
-  TextareaBaseField,
   TimeBaseField,
   ConditionsBaseField,
   UsersListBaseField,
@@ -180,8 +179,8 @@ export class DemoForm {
   readonly dateTime: FieldInfo
   readonly time: TimeBaseField
   readonly dateBtn: FieldInfo
-  readonly textarea?: TextareaBaseField
-  readonly textareaWithCounter: TextareaBaseField
+  readonly textarea?: FieldInfo
+  readonly textareaWithCounter: FieldInfo
   readonly tags: FieldInfo
   readonly url: TextBaseField
   readonly seo: SeoData
@@ -397,18 +396,18 @@ export class DemoForm {
       label: i18n.t('page.demo.multiSelectField'),
       fetchOptionsActionName: 'demo/fetchOptions',
     })
-    this.textarea = new TextareaBaseField({
+    this.textarea = new FieldInfo({
+      type: FieldType.Textarea,
       value: data?.textarea,
       key: 'textarea',
       label: i18n.t('page.demo.textareaField'),
     })
-    this.textareaWithCounter = new TextareaBaseField({
+    this.textareaWithCounter = new FieldInfo({
+      type: FieldType.TextareaWithCounter,
       value: data?.textareaWithCounter,
       key: 'textareaWithCounter',
       label: i18n.t('page.demo.textareaWithCounterField'),
       maxLength: 45,
-      rows: 3,
-      counter: true,
     })
     this.url = new TextBaseField({
       value: data?.url,
