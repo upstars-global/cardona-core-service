@@ -1,5 +1,5 @@
 import { FieldInfo, FieldType } from '../@model/field'
-import { TextBaseField } from '../@model/baseField'
+import { TextBaseField, TextareaBaseField } from '../@model/baseField'
 import i18n from '../libs/i18n'
 
 export interface SeoData {
@@ -10,7 +10,7 @@ export interface SeoData {
 
 export class SeoForm {
   readonly metaTitle: TextBaseField
-  readonly metaDescription: FieldInfo<string>
+  readonly metaDescription: TextareaBaseField
   readonly description: FieldInfo<string>
 
   constructor(data?: SeoData) {
@@ -20,11 +20,10 @@ export class SeoForm {
       label: i18n.t('seo.metaTitle'),
       isLocalization: true,
     })
-    this.metaDescription = new FieldInfo<string>({
-      type: FieldType.Textarea,
+    this.metaDescription = new TextareaBaseField({
       key: 'metaDescription',
-      value: data?.metaDescription || '',
-      label: String(i18n.t('seo.metaDescription')),
+      value: data?.metaDescription,
+      label: i18n.t('seo.metaDescription'),
       isLocalization: true,
     })
     this.description = new FieldInfo<string>({

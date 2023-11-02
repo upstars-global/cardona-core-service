@@ -4,8 +4,6 @@ import { TranslateResult } from 'vue-i18n'
 
 export enum FieldType {
   Password = 'password',
-  Textarea = 'textarea', // TODO: https://upstars.atlassian.net/browse/BAC-1985
-  TextareaWithCounter = 'textarea-with-counter', // TODO: https://upstars.atlassian.net/browse/BAC-1985
   RichText = 'rich-text',
   Check = 'check', // TODO: https://upstars.atlassian.net/browse/BAC-1983
   CheckGroup = 'check-group',
