@@ -106,3 +106,37 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
     }
   }
 }
+
+// Abstract text input
+export interface IATextBaseField extends IBaseField {
+  readonly prepend?: TranslateResult
+  readonly append?: TranslateResult
+}
+
+export abstract class ATextBaseField extends BaseField implements IATextBaseField {
+  readonly prepend?: TranslateResult
+  readonly append?: TranslateResult
+
+  protected constructor(field: IATextBaseField) {
+    super(field)
+    this.prepend = field.prepend
+    this.append = field.append
+  }
+}
+
+// Abstract number input
+export interface IANumberBaseField extends IATextBaseField {
+  readonly withPositiveNumbers?: boolean
+  readonly isIntegerNumbers?: boolean
+}
+
+export abstract class ANumberBaseField extends ATextBaseField implements IANumberBaseField {
+  readonly withPositiveNumbers?: boolean
+  readonly isIntegerNumbers?: boolean
+
+  protected constructor(field: IANumberBaseField) {
+    super(field)
+    this.withPositiveNumbers = field.withPositiveNumbers
+    this.isIntegerNumbers = field.isIntegerNumbers
+  }
+}

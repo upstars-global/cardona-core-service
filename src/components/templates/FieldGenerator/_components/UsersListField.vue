@@ -29,12 +29,21 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<Emits>()
 
 const isNotEmptyString = (text: string): boolean => !!text.trim()
+const getTrimStartEnd = (playerId: string) => playerId.trimEnd().trimStart()
+
 const onGetPropsValue = (): string => {
-  return props.value.filter(isNotEmptyString).join(',')
+  return props.value.filter(isNotEmptyString).map(getTrimStartEnd).join(',')
 }
 
+const fromStringIdsToArray = (value: string): ModelValue =>
+  value
+    .replaceAll('\n', ',')
+    .split(',')
+    .filter(isNotEmptyString)
+    .map((playerId) => playerId.trimEnd().trimStart())
+
 const onSetPropsValue = (value: string): void => {
-  emits('input', value.replaceAll('\n', ',\n').split(','))
+  emits('input', fromStringIdsToArray(value))
 }
 
 const value = computed({
@@ -43,22 +52,16 @@ const value = computed({
 })
 
 const cvsFileType = 'text/csv'
-const getUsersListFromFile = (fileValue: string): Array<string> =>
-  fileValue
-    .toString()
-    .replaceAll('\r', '')
-    .replaceAll('\n', ',\n')
-    .split(',')
-    .filter(isNotEmptyString)
 
 const onInputFile = async (inputFile: File) => {
-  if (cvsFileType !== inputFile.type) {
+  if (!inputFile) return
+  if (cvsFileType !== inputFile?.type) {
     toastError('invalidTypeFile')
     return
   }
 
   const uploadValue: string = await getFileValue(inputFile)
-  emits('input', getUsersListFromFile(uploadValue))
+  emits('input', fromStringIdsToArray(uploadValue.toString()))
 }
 
 const inputFileRef = ref()
@@ -70,7 +73,7 @@ const openInputFileDialog = () => {
 <template>
   <div>
     <textarea-field v-model="value" :field="field" :errors="errors" :disabled="disabled" />
-    <div class="d-flex justify-content-end pt-50">
+    <div class="float-right d-flex justify-content-end pt-50">
       <b-form-file
         id="csv-file-input"
         ref="inputFileRef"

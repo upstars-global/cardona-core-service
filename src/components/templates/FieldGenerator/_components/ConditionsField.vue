@@ -49,11 +49,11 @@ const onClickVariable = (variable: string) => emit('input', `${modelValue.value.
     <field-generator v-model="modelValue" class="mb-50" :disabled="disabled" />
 
     <b-row class="small" :class="{ 'pointer-events-none': disabled }">
-      <b-col cols="3" class="font-weight-bolder">
+      <b-col cols="3" class="font-weight-bolder text-nowrap">
         {{ $t('component.conditions.availableVariables') }}:
       </b-col>
 
-      <b-col cols="9" class="font-weight-bold">
+      <b-col cols="9" class="font-weight-bold pl-2">
         <span
           v-for="(variable, index) in availableVariables"
           :key="index"

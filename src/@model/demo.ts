@@ -244,6 +244,7 @@ export class DemoForm {
       append: 'min',
       key: 'minutesRange',
       label: i18n.t('page.demo.minutesRangeField'),
+      validationRules: ['required_object', 'range:from,to' as ValidationRule],
     })
     this.percent = new NumberBaseField({
       key: 'percent',
