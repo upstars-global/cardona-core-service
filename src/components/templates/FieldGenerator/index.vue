@@ -65,9 +65,6 @@ import DummySelectField from './_components/DummySelectField.vue'
 import TagsField from './_components/TagsField.vue'
 import RadioField from './_components/RadioField.vue'
 import DateBtnOnlyField from './_components/DateBtnOnlyField.vue'
-import DateField from './_components/DateField.vue'
-import DateRangeField from './_components/DateRangeField.vue'
-import DateTimeField from './_components/DateTimeField.vue'
 import SwitchField from './_components/SwitchField.vue'
 import SumRangeField from './_components/SumRangeField.vue'
 import PhoneField from './_components/PhoneField.vue'
@@ -86,9 +83,6 @@ export default defineComponent({
     TagsField,
     RadioField,
     DateBtnOnlyField,
-    DateField,
-    DateRangeField,
-    DateTimeField,
     SwitchField,
     SumRangeField,
     PhoneField,

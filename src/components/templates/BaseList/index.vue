@@ -406,7 +406,12 @@ import CTable from '../../CTable/index.vue'
 import { useFilters } from '../../FiltersBlock/useFilters'
 import FiltersBlock from '../../FiltersBlock/index.vue'
 import { Filter, PayloadFilters } from '../../../@model/filter'
-import { BaseField, SelectBaseField, MultiSelectBaseField } from '../../../@model/baseField'
+import {
+  BaseField,
+  SelectBaseField,
+  MultiSelectBaseField,
+  DateBaseField,
+} from '../../../@model/baseField'
 import { findIndex, omit } from 'lodash'
 import { IconsList } from '../../../@model/enums/icons'
 import RemoveModal from './_components/RemoveModal.vue'
@@ -718,15 +723,15 @@ export default {
             acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
           } else if (filter instanceof MultiSelectBaseField) {
             acc[key] = filter.transformField({ trackBy })
-          } else if (filter instanceof BaseField) {
-            acc[key] = filter.transformField()
-          } else if (filter.type === FieldType.DateRange) {
+          } else if (filter instanceof DateBaseField) {
             if (!filter.value || typeof filter.value !== 'string') return acc
 
             const [dateFrom, dateTo]: Array<string> = parseDateRange(filter.value)
 
             acc[`${key}From`] = dateFrom
             acc[`${key}To`] = dateTo
+          } else if (filter instanceof BaseField) {
+            acc[key] = filter.transformField()
           } else if (filter.type === FieldType.SumRange) {
             if (filter.value?.some((value) => isNotEmptyNumber(value) && !isEmptyString(value))) {
               const [sumFrom, sumTo]: Array<number> = filter.value

@@ -11,9 +11,6 @@ export enum FieldType {
   Tags = 'tags',
   Radio = 'radio', // TODO: https://upstars.atlassian.net/browse/BAC-1984
   DateBtnOnly = 'date-btn-only',
-  Date = 'date', // TODO: https://upstars.atlassian.net/browse/BAC-1961
-  DateRange = 'date-range', // TODO: https://upstars.atlassian.net/browse/BAC-1961
-  DateTime = 'date-time', // TODO: https://upstars.atlassian.net/browse/BAC-1961
   SumRange = 'sum-range',
   Phone = 'phone',
   Rates = 'rates', // TODO: https://upstars.atlassian.net/browse/BAC-1860

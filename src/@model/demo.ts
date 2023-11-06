@@ -11,6 +11,7 @@ import {
   ConditionsBaseField,
   UsersListBaseField,
   SwitchBaseField,
+  DateBaseField,
 } from './baseField'
 import { FieldInfo, FieldType } from './field'
 import { StatusWithDateHistoryValue, StatusWithVariant, ViewInfo, ViewType } from './view'
@@ -175,9 +176,10 @@ export class DemoForm {
   readonly nonClearableSelect: SelectBaseField
   readonly select: SelectBaseField
   readonly multiSelect: MultiSelectBaseField
-  readonly date: FieldInfo
-  readonly dateRange: FieldInfo
-  readonly dateTime: FieldInfo
+  readonly date: DateBaseField
+  readonly dateRange: DateBaseField
+  readonly dateTimeRange: DateBaseField
+  readonly dateTime: DateBaseField
   readonly time: TimeBaseField
   readonly dateBtn: FieldInfo
   readonly textarea?: TextareaBaseField
@@ -349,23 +351,29 @@ export class DemoForm {
         { text: i18n.t('common.no'), value: false },
       ],
     })
-    this.date = new FieldInfo({
-      type: FieldType.Date,
+    this.date = new DateBaseField({
       key: 'date',
       value: data?.date,
       label: i18n.t('page.demo.dateField'),
     })
-    this.dateRange = new FieldInfo({
-      type: FieldType.DateRange,
+    this.dateRange = new DateBaseField({
       key: 'dateRange',
       value: data?.dateRange,
       label: i18n.t('page.demo.dateRangeField'),
+      isRangeMode: true,
     })
-    this.dateTime = new FieldInfo({
-      type: FieldType.DateTime,
+    this.dateTimeRange = new DateBaseField({
+      key: 'dateTimeRange',
+      value: data?.dateTimeRange,
+      label: i18n.t('page.demo.dateTimeRangeField'),
+      isRangeMode: true,
+      withTime: true,
+    })
+    this.dateTime = new DateBaseField({
       key: 'dateTime',
       value: data?.dateTime,
       label: i18n.t('page.demo.dateTimeField'),
+      withTime: true,
     })
     this.time = new TimeBaseField({
       key: 'time',
