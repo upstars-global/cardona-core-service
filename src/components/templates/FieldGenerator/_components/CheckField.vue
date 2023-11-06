@@ -4,37 +4,26 @@
   </b-form-checkbox>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed, PropType } from 'vue'
-import { FieldInfo } from '../../../../@model/field'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { CheckBaseField } from '../../../../@model/baseField'
 
-export default defineComponent({
-  name: 'CheckField',
+type CheckFieldProps = {
+  value: boolean
+  field: CheckBaseField
+  disabled?: boolean
+}
 
-  props: {
-    value: {
-      type: Boolean,
-      default: false,
-    },
+const props = withDefaults(defineProps<CheckFieldProps>(), {
+  value: false,
+})
 
-    field: {
-      type: Object as PropType<FieldInfo>,
-      required: true,
-    },
+const emit = defineEmits<{
+  (event: 'input', value: boolean): void
+}>()
 
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  setup(props, { emit }) {
-    const modelValue = computed({
-      get: () => props.value,
-      set: (value) => emit('input', value),
-    })
-
-    return { modelValue }
-  },
+const modelValue = computed({
+  get: () => props.value,
+  set: (value) => emit('input', value),
 })
 </script>
