@@ -199,6 +199,7 @@
       "checkGroupField": "Check group field",
       "dateField": "Date field",
       "dateRangeField": "Date range field",
+      "dateTimeRangeField": "Date time range field",
       "dateTimeField": "Date time field",
       "dateBtnField": "Date btn only field",
       "selectField": "Select field",

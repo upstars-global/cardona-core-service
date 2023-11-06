@@ -3,7 +3,12 @@ import { GroupData } from '../../@model/group'
 import { ProjectInfo } from '../../@model/project'
 import { FieldInfo, FieldType } from '../../@model/field'
 import { FilterType } from '../../@model/filter'
-import { TextBaseField, SelectBaseField, MultiSelectBaseField } from '../../@model/baseField'
+import {
+  TextBaseField,
+  SelectBaseField,
+  MultiSelectBaseField,
+  DateBaseField,
+} from '../../@model/baseField'
 import { TransactionType } from '../../@model/enums/playersTransactions'
 
 // Options
@@ -210,58 +215,67 @@ const segments = new MultiSelectBaseField({
 
 // ---------------------------------------------------------------------------
 // TODO: Date
-const date = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const date = new DateBaseField({
   key: FilterType.Date,
   label: i18n.t('common.date'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeCreative = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeCreative = new DateBaseField({
   key: FilterType.DateRangeCreative,
   label: i18n.t('filters.dateRangeCreative'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeUpdate = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeUpdate = new DateBaseField({
   key: FilterType.DateRangeUpdate,
   label: i18n.t('filters.dateRangeUpdate'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeIssued = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeIssued = new DateBaseField({
   key: FilterType.DateRangeIssued,
   label: i18n.t('filters.dateRangeIssued'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeExpired = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeExpired = new DateBaseField({
   key: FilterType.DateRangeExpired,
   label: i18n.t('filters.dateRangeExpired'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeProcessing = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeProcessing = new DateBaseField({
   key: FilterType.DateRangeProcessing,
   label: i18n.t('filters.dateRangeProcessing'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeActivated = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeActivated = new DateBaseField({
   key: FilterType.DateRangeActivated,
   label: i18n.t('filters.dateRangeActivated'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeUsed = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeUsed = new DateBaseField({
   key: FilterType.DateRangeUsed,
   label: i18n.t('filters.dateRangeUsed'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const bettingDateCreative = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const bettingDateCreative = new DateBaseField({
   key: FilterType.BettingDateCreative,
   label: i18n.t('filters.bettingDateCreative'),
+  isRangeMode: true,
+  withTime: true,
 })
 
 // ---------------------------------------------------------------------------

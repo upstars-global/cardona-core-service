@@ -8,9 +8,11 @@ import { TimeBaseField } from './time'
 import { ConditionsBaseField } from './conditions'
 import { UsersListBaseField } from './users-list'
 import { SwitchBaseField } from './switch'
+import { DateBaseField } from './date'
 
 export const getInstanceClass = (instance: object) => {
   const fields = [
+    DateBaseField,
     SwitchBaseField,
     UsersListBaseField,
     ConditionsBaseField,
@@ -36,4 +38,5 @@ export {
   ConditionsBaseField,
   UsersListBaseField,
   SwitchBaseField,
+  DateBaseField,
 }

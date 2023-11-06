@@ -148,11 +148,18 @@
             <b-col cols="4">
               <field-generator v-model="formData.dateTime" :disabled="isDisabledField" />
             </b-col>
+          </b-row>
 
+          <b-row class="mt-1">
             <b-col cols="4">
               <field-generator v-model="formData.dateRange" :disabled="isDisabledField" />
             </b-col>
+
+            <b-col cols="4">
+              <field-generator v-model="formData.dateTimeRange" :disabled="isDisabledField" />
+            </b-col>
           </b-row>
+
           <b-row class="mt-1">
             <b-col cols="4">
               <field-generator v-model="formData.dateBtn" :disabled="isDisabledField" />
