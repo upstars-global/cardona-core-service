@@ -29,7 +29,9 @@ export const transformFormData = (form): object => {
     } else if (isObject(valueData)) {
       const valueDataInner = JSON.parse(JSON.stringify(valueData))
       Object.keys(valueData).forEach((keyInner) => {
-        if (valueData[keyInner] instanceof FieldInfo) {
+        if (valueData[keyInner] instanceof BaseField) {
+          valueDataInner[keyInner] = valueData[keyInner].transformField()
+        } else if (valueData[keyInner] instanceof FieldInfo) {
           valueDataInner[keyInner] = Array.isArray(valueData[keyInner].value)
             ? valueData[keyInner].value.map((item) => item.id || item)
             : valueData[keyInner].value?.id ?? valueData[keyInner].value ?? ''

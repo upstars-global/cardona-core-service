@@ -11,6 +11,7 @@ import {
   ConditionsBaseField,
   UsersListBaseField,
   SwitchBaseField,
+  CheckBaseField,
   DateBaseField,
 } from './baseField'
 import { FieldInfo, FieldType } from './field'
@@ -170,7 +171,7 @@ export class DemoForm {
   readonly password: FieldInfo
   readonly passwordFieldWithGeneration: FieldInfo
   readonly phone: FieldInfo
-  readonly check: FieldInfo
+  readonly check: CheckBaseField
   readonly radio: FieldInfo
   readonly checkGroup: FieldInfo
   readonly nonClearableSelect: SelectBaseField
@@ -307,8 +308,7 @@ export class DemoForm {
       label: i18n.t('page.demo.switchWithStateField'),
       withState: true,
     })
-    this.check = new FieldInfo({
-      type: FieldType.Check,
+    this.check = new CheckBaseField({
       key: 'check',
       value: data?.check,
       label: i18n.t('page.demo.checkField'),

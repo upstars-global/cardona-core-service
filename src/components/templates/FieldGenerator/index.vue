@@ -56,10 +56,9 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
 import store from '../../../store'
-import { FieldInfo, FieldType } from '../../../@model/field'
-import { BaseField, SwitchBaseField } from '../../../@model/baseField'
+import { FieldInfo } from '../../../@model/field'
+import { BaseField, SwitchBaseField, CheckBaseField } from '../../../@model/baseField'
 import RichTextField from './_components/RichTextField.vue'
-import CheckField from './_components/CheckField.vue'
 import CheckGroupField from './_components/CheckGroupField.vue'
 import DummySelectField from './_components/DummySelectField.vue'
 import TagsField from './_components/TagsField.vue'
@@ -77,7 +76,6 @@ export default defineComponent({
   components: {
     PasswordField,
     RichTextField,
-    CheckField,
     CheckGroupField,
     DummySelectField,
     TagsField,
@@ -128,9 +126,7 @@ export default defineComponent({
       props.value.permission ? store.getters.abilityCan(props.value.permission, 'view') : true
     )
     const isCheckType = computed(
-      () =>
-        props.value instanceof SwitchBaseField ||
-        (props.value instanceof FieldInfo && props.value.type === FieldType.Check)
+      () => props.value instanceof SwitchBaseField || props.value instanceof CheckBaseField
     )
     const groupLabel = computed(() =>
       props.withLabel && !isCheckType.value ? props.value.label : ''
