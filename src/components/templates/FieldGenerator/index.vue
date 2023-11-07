@@ -62,7 +62,6 @@ import RichTextField from './_components/RichTextField.vue'
 import CheckGroupField from './_components/CheckGroupField.vue'
 import DummySelectField from './_components/DummySelectField.vue'
 import TagsField from './_components/TagsField.vue'
-import RadioField from './_components/RadioField.vue'
 import DateBtnOnlyField from './_components/DateBtnOnlyField.vue'
 import SwitchField from './_components/SwitchField.vue'
 import SumRangeField from './_components/SumRangeField.vue'
@@ -79,7 +78,6 @@ export default defineComponent({
     CheckGroupField,
     DummySelectField,
     TagsField,
-    RadioField,
     DateBtnOnlyField,
     SwitchField,
     SumRangeField,

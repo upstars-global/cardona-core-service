@@ -11,6 +11,7 @@ import {
   ConditionsBaseField,
   UsersListBaseField,
   SwitchBaseField,
+  RadioBaseField,
   CheckBaseField,
   DateBaseField,
 } from './baseField'
@@ -172,7 +173,7 @@ export class DemoForm {
   readonly passwordFieldWithGeneration: FieldInfo
   readonly phone: FieldInfo
   readonly check: CheckBaseField
-  readonly radio: FieldInfo
+  readonly radio: RadioBaseField
   readonly checkGroup: FieldInfo
   readonly nonClearableSelect: SelectBaseField
   readonly select: SelectBaseField
@@ -341,8 +342,7 @@ export class DemoForm {
         },
       ],
     })
-    this.radio = new FieldInfo({
-      type: FieldType.Radio,
+    this.radio = new RadioBaseField({
       key: 'radio',
       value: true,
       label: i18n.t('page.demo.radioField'),

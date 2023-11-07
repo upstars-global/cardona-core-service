@@ -8,11 +8,13 @@ import {
   SelectBaseField,
   MultiSelectBaseField,
   DateBaseField,
+  RadioBaseField,
 } from '../../@model/baseField'
 import { TransactionType } from '../../@model/enums/playersTransactions'
+import { RadioOption } from '../../@model/baseField/radio'
 
 // Options
-const stateOptions: Array<object> = [
+const stateOptions: RadioOption[] = [
   { text: i18n.t('common.yes'), value: true },
   { text: i18n.t('common.no'), value: false },
 ]
@@ -280,16 +282,14 @@ const bettingDateCreative = new DateBaseField({
 
 // ---------------------------------------------------------------------------
 // TODO: Radio
-const bettingHistoryIsBonus = new FieldInfo<boolean>({
-  type: FieldType.Radio,
+const bettingHistoryIsBonus = new RadioBaseField({
   key: FilterType.BettingHistoryIsBonus,
   label: i18n.t('filters.bettingHistoryIsBonus'),
   value: true,
   options: stateOptions,
 })
 
-const status = new FieldInfo<boolean>({
-  type: FieldType.Radio,
+const status = new RadioBaseField({
   key: FilterType.Status,
   label: i18n.t('common.activity'),
   value: true,
@@ -299,24 +299,21 @@ const status = new FieldInfo<boolean>({
   ],
 })
 
-const hidden = new FieldInfo<boolean>({
-  type: FieldType.Radio,
+const hidden = new RadioBaseField({
   key: FilterType.Hidden,
   label: i18n.t('filters.hidden'),
   value: true,
   options: stateOptions,
 })
 
-const gameForBonuses = new FieldInfo<boolean>({
-  type: FieldType.Radio,
+const gameForBonuses = new RadioBaseField({
   key: FilterType.GameForBonuses,
   label: i18n.t('filters.gameForBonuses'),
   value: true,
   options: stateOptions,
 })
 
-const availableWithBonuses = new FieldInfo<boolean>({
-  type: FieldType.Radio,
+const availableWithBonuses = new RadioBaseField({
   key: FilterType.AvailableWithBonuses,
   label: i18n.t('filters.availableWithBonuses'),
   value: true,
