@@ -8,7 +8,6 @@ export enum FieldType {
   CheckGroup = 'check-group',
   DummySelect = 'dummy-select',
   Tags = 'tags',
-  Radio = 'radio', // TODO: https://upstars.atlassian.net/browse/BAC-1984
   DateBtnOnly = 'date-btn-only',
   SumRange = 'sum-range',
   Phone = 'phone',

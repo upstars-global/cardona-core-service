@@ -10,9 +10,10 @@ import { UsersListBaseField } from './users-list'
 import { SwitchBaseField } from './switch'
 import { CheckBaseField } from './check'
 import { DateBaseField } from './date'
-
+import { RadioBaseField } from './radio'
 export const getInstanceClass = (instance: object) => {
   const fields = [
+    RadioBaseField,
     CheckBaseField,
     DateBaseField,
     SwitchBaseField,
@@ -40,6 +41,7 @@ export {
   ConditionsBaseField,
   UsersListBaseField,
   SwitchBaseField,
+  RadioBaseField,
   DateBaseField,
   CheckBaseField,
 }

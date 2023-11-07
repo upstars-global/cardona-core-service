@@ -1,34 +1,27 @@
 <template>
-  <b-form-radio-group v-model="modelValue" :options="field.options" />
+  <b-form-radio-group v-model="modelValue" :options="field.options" :disabled="disabled" />
 </template>
 
-<script lang="ts">
-import { defineComponent, computed, PropType } from 'vue'
-import { FieldInfo } from '../../../../@model/field'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { RadioBaseField } from '../../../../@model/baseField'
 
-export default defineComponent({
-  name: 'RadioField',
-  props: {
-    value: {
-      type: [String, Boolean],
-      default: false,
-    },
+type RadioFieldProps = {
+  value?: string | boolean
+  field: RadioBaseField
+  disabled?: boolean
+}
 
-    field: {
-      type: Object as PropType<FieldInfo>,
-      required: true,
-    },
-  },
+const props = withDefaults(defineProps<RadioFieldProps>(), {
+  value: '',
+})
 
-  setup(props, { emit }) {
-    const modelValue = computed({
-      get: () => props.value,
-      set: (value) => emit('input', value),
-    })
+const emit = defineEmits<{
+  (event: 'input', value: string | boolean): void
+}>()
 
-    return {
-      modelValue,
-    }
-  },
+const modelValue = computed({
+  get: () => props.value,
+  set: (value) => emit('input', value),
 })
 </script>
