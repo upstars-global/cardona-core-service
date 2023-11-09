@@ -47,6 +47,9 @@ export default defineComponent({
           editor.value.html.set(JSON.stringify(props.value, null, '\t'))
           editor.value.codeView.toggle()
         },
+        'html.get': function (html) {
+          return html.replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&')
+        },
       },
     }
 
