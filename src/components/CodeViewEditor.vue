@@ -44,7 +44,7 @@ export default defineComponent({
         initialized() {
           editor.value = this
 
-          editor.value.html.set(JSON.stringify(props.value, null, 2))
+          editor.value.html.set(JSON.stringify(props.value, null, '\t'))
           editor.value.codeView.toggle()
         },
         'html.get': function (html) {
@@ -53,7 +53,7 @@ export default defineComponent({
       },
     }
 
-    const code = ref(JSON.stringify(props.value, null, 2))
+    const code = ref(JSON.stringify(props.value, null, '\t'))
     const apply = () => {
       editor.value.codeView.toggle()
       editor.value.codeView.toggle()
