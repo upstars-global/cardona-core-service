@@ -312,10 +312,11 @@
 
         <template #empty>
           <div class="d-flex flex-column justify-content-center align-items-center p-1">
-            <div>
-              {{ config.emptyText }}
-            </div>
-
+            <slot name="empty">
+              <div>
+                {{ config.emptyText }}
+              </div>
+            </slot>
             <b-button
               v-if="isShownCreateBtn"
               variant="primary"
