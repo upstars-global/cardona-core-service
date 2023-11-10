@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { useTheme } from 'vuetify'
-import BaseList from '../../components/templates/BaseList/index.vue'
-import { FilterType } from '../../@model/filter'
-import { BaseListConfig } from '@/@model/templates/baseList'
 import AnalyticsEarningReportsWeeklyOverview from '@/views/dashboards/analytics/AnalyticsEarningReportsWeeklyOverview.vue'
 import AnalyticsMonthlyCampaignState from '@/views/dashboards/analytics/AnalyticsMonthlyCampaignState.vue'
 import AnalyticsProjectTable from '@/views/dashboards/analytics/AnalyticsProjectTable.vue'
@@ -12,7 +9,6 @@ import AnalyticsSourceVisits from '@/views/dashboards/analytics/AnalyticsSourceV
 import AnalyticsSupportTracker from '@/views/dashboards/analytics/AnalyticsSupportTracker.vue'
 import AnalyticsTotalEarning from '@/views/dashboards/analytics/AnalyticsTotalEarning.vue'
 import AnalyticsWebsiteAnalytics from '@/views/dashboards/analytics/AnalyticsWebsiteAnalytics.vue'
-import { useDemoList } from '@/pages/dashboards/useDemo'
 
 const vuetifyTheme = useTheme()
 const currentTheme = vuetifyTheme.current.value.colors
@@ -89,74 +85,11 @@ const statisticsVertical = {
     },
   },
 }
-
-const listConfig = new BaseListConfig({
-  withSettings: true,
-  selectable: false,
-  skeletonColumns: 10,
-  draggable: true,
-  withCustomFetchList: true,
-  withSearch: true,
-  createFromCopy: true,
-  withExport: true,
-  sidebar: true,
-  sidebarCollapseMode: true,
-  filterList: [
-    {
-      type: FilterType.EntryId,
-      key: 'entityId',
-    },
-  ],
-})
-
-const getUpdateRoute = ({ id }): Location => ({ name: 'DemoUpdate', params: { id } })
 </script>
 
 <template>
   <VRow class="match-height">
     <!-- 👉 Website analytics -->
-    <VCol cols="12">
-      <BaseList
-        :config="listConfig"
-        :use-list="useDemoList"
-      >
-        <template #cell(innerLink)="{ item }">
-          <InnerBlankLink
-            :value="{ title: item.name, route: getUpdateRoute(item) }"
-            size="xl"
-          />
-          <InnerBlankLink :value="{ title: item.name, route: getUpdateRoute(item) }" />
-          <InnerBlankLink
-            :value="{ title: item.name, route: getUpdateRoute(item) }"
-            size="sm"
-          />
-        </template>
-        <template #cell(sumPeriod)="{ item }">
-          <SumPeriod
-            :data="{
-              today: item.paymentsToday,
-              week: item.paymentsWeek,
-              month: item.paymentsMonth,
-              currency: item.currency,
-            }"
-          />
-        </template>
-
-        <template #cell(winBack)="{ item }">
-          <SumAndCurrency
-            :data="{
-              amount: item.wagerValue,
-              currency: item?.currency,
-              remainder: item.wagerLimit,
-            }"
-          />
-        </template>
-
-        <template #cell(type)="{ item }">
-          {{ item.type.name }}
-        </template>
-      </BaseList>
-    </VCol>
 
     <VCol
       cols="12"

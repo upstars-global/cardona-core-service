@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineEmits, defineProps, ref, withDefaults } from 'vue'
+import { computed, ref, withDefaults } from 'vue'
 import { IconsList } from '../../../../../@model/enums/icons'
 import {
   getMappedValueByManyMethods,

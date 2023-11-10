@@ -4,6 +4,9 @@ import { VueDraggableNext } from 'vue-draggable-next'
 import type { TableField } from '../../@model/templates/tableFields'
 import type { SortItem } from '../../@core/types'
 import type { SelectMode } from '../../@model/enums/selectMode'
+import { AlignType } from '../../@model/templates/tableFields'
+import { IconsList } from '@/@model/enums/icons'
+import { SortDirection } from '@/@model/templates/baseList'
 
 const props = defineProps<{
   fields: TableField[]
@@ -16,7 +19,8 @@ const props = defineProps<{
   small?: boolean
   draggable?: boolean
   sortData?: SortItem[]
-  tbodyTrClass?: string
+  itemsPerPage: number
+  isLoadingList: boolean
 }>()
 
 const emits = defineEmits<{
@@ -28,8 +32,12 @@ const emits = defineEmits<{
 
 const tableWrapperComponent = ref(props.draggable ? VueDraggableNext : 'tbody')
 
-const compareClasses = (item: Record<string, unknown>): Record<string, boolean> => {
-  return { [`table-light-${item.rowVariant}`]: !!item.rowVariant, 'is-hover-row': props.hover } // TODO: refactor variant/color
+const compareClasses = (item: Record<string, unknown>, isSelected: boolean): Record<string, boolean> => {
+  return {
+    [`table-light-${item.rowVariant}`]: !!item.rowVariant,
+    'c-table__row--selected': isSelected,
+    'is-hover-row': props.hover,
+  }
 }
 
 const onSelectRow = (items: Array<Record<string, unknown>>) => {
@@ -40,13 +48,17 @@ const onRowClicked = (item: Record<string, unknown>) => {
   emits('rowClicked', item)
 }
 
-const onUpdateSortData = event => {
+const onUpdateSortData = (event: any) => {
   emits('update:sortData', event)
 }
 
 const onDragEnd = (event: { moved: object }) => {
   emits('end', event.moved)
 }
+
+const cellClasses = computed(() => props.small ? 'py-2 px-3' : 'py-3 px-4')
+const maxSkeletonRows = 25
+const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
 </script>
 
 <template>
@@ -58,12 +70,93 @@ const onDragEnd = (event: { moved: object }) => {
     :sort-by="sortData"
     return-object
     class="c-table"
+    :items-per-page="itemsPerPage"
+    :density="small ? 'compact' : 'comfortable'"
     @update:sort-by="onUpdateSortData"
     @update:model-value="onSelectRow"
   >
+    <template #headers="{ columns, isSorted, sortBy, someSelected, allSelected, selectAll, toggleSort }">
+      <th
+        v-if="props.selectable"
+        class="c-table__header-cell"
+        :class="cellClasses"
+        data-c-field="selectable"
+      >
+        <VCheckbox
+          :model-value="allSelected"
+          :indeterminate="someSelected"
+          :disabled="isLoadingList"
+          @update:model-value="selectAll($event)"
+        />
+      </th>
+      <template
+        v-for="(column, index) in columns"
+        :key="`c-table-cell_${index}_${column.key}`"
+      >
+        <th
+          v-if="column.key !== 'data-table-select'"
+          class="c-table__header-cell whitespace-no-wrap text-left cursor-pointer"
+          :class="cellClasses"
+          :data-c-field="column.key"
+          @click="toggleSort(column)"
+        >
+          <div
+            class="d-flex align-center"
+            :class="{
+              'justify-end': column.align === AlignType.Right,
+              'justify-center': column.align === AlignType.Center,
+              'gap-2': column.align,
+              'justify-space-between': !column.align,
+            }"
+          >
+            {{ column.title }}
+
+            <div
+              v-if="isSorted(column)"
+              class="c-table__header-cell-icon-wrapper"
+            >
+              <VIcon
+                :icon="IconsList.ChevronUpIcon"
+                class="d-block c-table__header-cell-icon"
+                :class="{ 'c-table__header-cell-icon--active': sortBy[0].order === SortDirection.desc || sortBy[0].order === false }"
+              />
+              <VIcon
+                :icon="IconsList.ChevronDownIcon"
+                class="d-block c-table__header-cell-icon"
+                :class="{ 'c-table__header-cell-icon--active': sortBy[0].order === SortDirection.asc || sortBy[0].order === true }"
+              />
+            </div>
+          </div>
+        </th>
+      </template>
+    </template>
     <template #tbody="{ items, select, isSelected }">
+      <template v-if="isLoadingList">
+        <tr
+          v-for="index in skeletonRows"
+          :key="`skeleton-row_${index}`"
+        >
+          <td
+            v-if="props.selectable"
+            class="c-table__cell"
+            :class="cellClasses"
+            data-c-field="selectable"
+          >
+            <VSkeletonLoader type="text" />
+          </td>
+          <td
+            v-for="(_, cellIndex) in fields"
+            :key="`skeleton-cell_${index}_${cellIndex}`"
+            class="c-table__cell"
+            :class="cellClasses"
+          >
+            <VSkeletonLoader type="text" />
+          </td>
+        </tr>
+      </template>
       <Component
         :is="tableWrapperComponent"
+        v-else
         class="dragArea list-group w-full"
         :list="items"
         tag="tbody"
@@ -73,12 +166,14 @@ const onDragEnd = (event: { moved: object }) => {
           v-for="(item, index) in items"
           :key="`c-table-row_${index}`"
           class="c-table__row table-default-bg"
-          :class="compareClasses(item.raw)"
+          :class="compareClasses(item.raw, isSelected([item]))"
           @click="onRowClicked(item.raw)"
         >
           <td
             v-if="props.selectable"
             class="c-table__cell"
+            :class="cellClasses"
+            data-c-field="selectable"
           >
             <VCheckbox
               :model-value="isSelected([item])"
@@ -88,7 +183,9 @@ const onDragEnd = (event: { moved: object }) => {
           <td
             v-for="field in fields"
             :key="`c-table-cell_${index}_${field.key}`"
-            class="c-table__cell"
+            class="c-table__cell whitespace-no-wrap"
+            :class="cellClasses"
+            :data-c-field="field.key"
           >
             <slot
               :name="`cell(${field.key})`"
@@ -109,12 +206,46 @@ const onDragEnd = (event: { moved: object }) => {
 
 <style scoped lang="scss">
 .v-data-table.c-table {
+  border-radius: 0;
+
+  .c-table__header-cell {
+    background: rgba(var(--v-theme-grey-800), 0.08);
+  }
+
+  .c-table__header-cell-icon-wrapper {
+    position: relative;
+    width: 1rem;
+    height: 1rem;
+  }
+  .c-table__header-cell-icon {
+    opacity: 0.5;
+    width: 0.5rem;
+    height: 0.5rem;
+
+    &--active {
+      opacity: 1;
+    }
+  }
   .c-table__row {
     cursor: pointer;
+    &--selected,
+    &:hover {
+      background: rgba(var(--v-theme-secondary), 0.08);
+    }
   }
   .c-table__cell {
     background-color: transparent;
+    cursor: pointer;
+    &[data-c-field='selectable'] {
+      min-width: 4.25rem;
+    }
   }
+  :deep(.v-skeleton-loader__text) {
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0.25rem;
+  }
+
   :deep(.v-data-table-header__content) {
     white-space: nowrap;
   }

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { FieldInfo } from '../../../@model/field'
 import type { Filter } from '../../../@model/filter'
+import { VColors, VVariants } from '@/@model/vuetify'
+import { IconsList } from '@/@model/enums/icons'
 
 const props = defineProps<{
   filters: FieldInfo[]
@@ -17,16 +19,14 @@ const onChange = (filter: FieldInfo) => emits('selectedFiltersChanged', filter)
 </script>
 
 <template>
-  <!--        TODO: refactor variant/color -->
-  <VMenu
-    variant="outline-secondary"
-    :disabled="filters.isEmpty"
-  >
+  <VMenu :disabled="filters.isEmpty">
     <template #activator="{ props }">
       <VBtn
-        color="primary"
+        :variant="VVariants.Outlined"
+        :color="VColors.Secondary"
         dark
         v-bind="props"
+        :append-icon="IconsList.ChevronDownIcon"
       >
         {{ $t('action.selectEntity') }}
       </VBtn>

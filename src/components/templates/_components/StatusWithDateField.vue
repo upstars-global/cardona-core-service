@@ -10,16 +10,27 @@ defineProps<{
 
 <template>
   <div class="status-with-date">
-    <StatusField :value="item.status" />
+    <StatusField
+      :value="item.status"
+      class="mb-1"
+    />
 
-    <DateField :date="item.updatedAt" />
+    <DateField
+      :date="item.updatedAt"
+      class="date-field"
+    />
   </div>
 </template>
 
 <style lang="scss" scoped>
+@import "src/styles/styles";
+
 .status-with-date {
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: start;
+  .date-field {
+    opacity: $opacity-text;
+  }
 }
 </style>

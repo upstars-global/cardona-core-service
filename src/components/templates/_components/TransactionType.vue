@@ -32,10 +32,9 @@ const textColorClass = computed(() =>
     <span class="mr-25">
       {{ text }}
     </span>
-
-    <FeatherIcon
+    <VIcon
       :icon="iconName"
-      size="12"
+      size="16"
     />
   </div>
 </template>

@@ -3,6 +3,7 @@ import i18n from '../plugins/i18n'
 import { getLocaleDateStringWithoutTimezone } from '../helpers/date'
 import { SideBarCollapseItem } from '../@model/templates/baseList'
 import type { BaseListItem } from '../@model/templates/baseList'
+import { VColors } from '../@model/vuetify'
 import type { SeoData } from './seo'
 import type { FieldTranslationsData } from './translations'
 import { NumberBaseField, SelectBaseField, TextBaseField, TimeBaseField } from './templates/baseField'
@@ -12,7 +13,6 @@ import { StatusWithVariant, ViewInfo, ViewType } from './view'
 import type { TransactionType } from './enums/playersTransactions'
 import type { ValidationRule } from './validations'
 import type { BColors, BLightColors } from './bootstrap'
-import { IconsList } from './enums/icons'
 
 export interface IDemoTypeItem {
   id: string
@@ -399,7 +399,6 @@ export class DemoForm {
     this.localisationParameters = data?.localisationParameters || {}
   }
 }
-
 export class DemoSideBar {
   readonly generalInfo: SideBarCollapseItem
   readonly info: SideBarCollapseItem
@@ -469,10 +468,9 @@ export class DemoSideBar {
           label: i18n.global.t('common.tags', { count: data?.tags?.length }),
         }),
         email: new ViewInfo({
-          type: ViewType.Copy,
+          type: ViewType.Text,
           value: data?.email,
           label: i18n.global.t('common.email'),
-          icon: IconsList.AtSignIcon,
         }),
         newDate: new ViewInfo({
           type: ViewType.DateWithSeconds,
@@ -520,7 +518,7 @@ export class DemoSideBar {
         statusWithDate: new ViewInfo({
           type: ViewType.StatusWithDate,
           value: {
-            status: new StatusWithVariant('active', 'light-warning'),
+            status: new StatusWithVariant('active', VColors.Success),
             updatedAt: data?.date,
           },
           label: i18n.global.t('common.status'),

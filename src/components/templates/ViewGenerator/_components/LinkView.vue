@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import store from '../../../../store'
 import type { ViewInfo } from '../../../../@model/view'
+import { VColors } from '../../../../@model/vuetify'
 
 const props = defineProps<{
   item: ViewInfo
@@ -17,7 +18,7 @@ const canUpdate = computed<boolean>(() =>
     v-b-modal="item.value.modalId"
     :to="item.value.route"
     :disabled="!canUpdate"
-    :class="{ 'text-muted': !canUpdate }"
+    :class="[`text-${VColors.Primary}`, { 'text-muted': !canUpdate }]"
   >
     {{ item.value.title }}
   </BLink>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import type { IBaseListConfig } from '../../../../../@model/templates/baseList'
 import { IconsList } from '@/@model/enums/icons'
+import { VColors, VSizes, VVariants } from '@/@model/vuetify'
 
 interface Props {
   item: any
@@ -10,7 +12,7 @@ interface Props {
   canUpdate: boolean
   canUpdateItem: boolean
   getUpdateRoute: (item: { id: string }) => Location
-  canRemoveItem: boolean
+  canRemoveItem?: boolean
 }
 
 interface Emits {
@@ -18,24 +20,43 @@ interface Emits {
   (event: 'on-remove', payload: any): void
 }
 
-const prop = defineProps<Props>()
+const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
+
+const router = useRouter()
 
 const isShowActions = computed(() => {
   return [
-    prop.config.withDeactivation,
-    prop.canUpdateItem,
-    prop.config.createFromCopy,
-    prop.canRemoveItem,
+    props.config.withDeactivation,
+    props.canUpdateItem,
+    props.config.createFromCopy,
+    props.canRemoveItem,
   ].some(Boolean)
 })
+
+const onUpdateItem = () => {
+  router.push(props.getUpdateRoute(props.item))
+}
+
+const onCreateCopy = () => {
+  router.push({ name: props.createPageName, params: { id: props.item.id } })
+}
 </script>
 
 <template>
   <VMenu v-if="isShowActions">
     <template #activator="{ props }">
-      <VBtn v-bind="props">
-        <VIcon :icon="IconsList.MoreVerticalIcon" />
+      <VBtn
+        v-bind="props"
+        icon
+        :color="VColors.Secondary"
+        :variant="VVariants.Text"
+        :size="VSizes.Small"
+      >
+        <VIcon
+          :icon="IconsList.MoreVerticalIcon"
+          color="grey-600"
+        />
       </VBtn>
     </template>
 
@@ -44,19 +65,18 @@ const isShowActions = computed(() => {
     <VList>
       <VListItem
         v-if="canUpdate && config.withDeactivation"
+        :prepend-icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
         @click="emits('on-toggle-status', item)"
       >
-        <template #prepend>
-          <VIcon :icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon" />
-        </template>
         <VListItemTitle>
           {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
         </VListItemTitle>
       </VListItem>
-      <VListItem v-if="canUpdateItem">
-        <template #prepend>
-          <VIcon :icon="IconsList.EditIcon" />
-        </template>
+      <VListItem
+        v-if="canUpdateItem"
+        :prepend-icon="IconsList.EditIcon"
+        @click="onUpdateItem"
+      >
         <VListItemTitle>
           {{ $t('action.edit') }}
         </VListItemTitle>
@@ -72,10 +92,11 @@ const isShowActions = computed(() => {
           {{ $t('action.remove') }}
         </VListItemTitle>
       </VListItem>
-      <VListItem v-if="config.createFromCopy">
-        <template #prepend>
-          <VIcon :icon="IconsList.CopyIcon" />
-        </template>
+      <VListItem
+        v-if="config.createFromCopy"
+        :prepend-icon="IconsList.CopyIcon"
+        @click="onCreateCopy"
+      >
         <VListItemTitle>
           {{ $t('action.makeCopy') }}
         </VListItemTitle>

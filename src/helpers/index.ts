@@ -79,9 +79,10 @@ export const convertUpperCaseFirstSymbol = (word: string): string => {
 export const checkExistsPage = (pageName: string): boolean => {
   try {
     const router = useRouter()
-    const route = router.resolve({ name: pageName })
 
-    return route.matched.isNotEmpty
+    const routes = router.getRoutes()
+
+    return !!routes.find(item => item.name === pageName)
   }
   catch (e) {
     return false

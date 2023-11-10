@@ -1,0 +1,53 @@
+.v-application.v-layout {
+  .v-application__wrap {
+    .side-bar {
+      min-width: 28.125rem;
+      width: 100%;
+      .content-sidebar-header {
+        h5 {
+          font-weight: 600;
+        }
+      }
+      .v-expansion-panels {
+        .v-expansion-panel {
+          &--active {
+            .v-expansion-panel-text__wrapper {
+              padding-top: 1rem;
+            }
+          }
+          &-title {
+            padding-left: 0;
+            padding-right: 0;
+            font-weight: 600;
+            font-size: 1rem;
+            .v-expansion-panel-title__icon {
+              .v-icon {
+                font-size: 1rem;
+              }
+            }
+          }
+          &-text__wrapper {
+            padding: 1rem 0;
+            hr {
+              margin: 1rem 0;
+            }
+            .v-row {
+              margin-top: 0;
+              margin-bottom: 0;
+            }
+          }
+          .v-expansion-panel__shadow {
+            box-shadow: none;
+          }
+          &:not(.v-expansion-panels--variant-accordion).v-expansion-panel--active {
+            .v-expansion-panel__shadow {
+              box-shadow: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+

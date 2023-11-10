@@ -13,7 +13,6 @@ const props = withDefaults(defineProps<{
   maxLengthForShort?: number
 }>(), {
   label: 'ID',
-  variant: 'light-secondary',
   isViewLabel: true,
   maxLengthForShort: 8,
 })
@@ -27,7 +26,8 @@ const valueShort = computed(() => {
 
 <template>
   <VChip
-    :variant="variant"
+    :color="variant"
+    label
     class="cursor-pointer overflow-hidden copy-badge"
     @click="copyToClipboard(value)"
   >

@@ -18,7 +18,7 @@ export interface IBaseField {
 }
 
 export abstract class BaseField implements IBaseField {
-  protected abstract component: Component
+  abstract component: Component
   protected abstract _value?: any
   readonly key: string
   readonly label: TranslateResult

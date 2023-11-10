@@ -1,0 +1,12 @@
+.v-btn {
+  .v-btn--size-default {
+    transform: scale(1);
+    --v-btn-size: 15px;
+    --v-btn-height: 2.5rem;
+  }
+  .v-btn--size-small {
+    transform: scale(1);
+    --v-btn-size: 14px;
+    --v-btn-height: 2rem;
+  }
+}

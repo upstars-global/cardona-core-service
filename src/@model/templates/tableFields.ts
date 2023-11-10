@@ -4,6 +4,7 @@ interface TableFieldInput {
   readonly sortable?: boolean | null
   readonly type?: ListFieldType
   readonly size?: ListSize
+  readonly align?: AlignType
 }
 
 export class TableField implements TableFieldInput {
@@ -12,6 +13,7 @@ export class TableField implements TableFieldInput {
   readonly sortable?: boolean | null
   readonly type?: ListFieldType
   readonly size?: ListSize
+  readonly align?: AlignType
 
   constructor(data: TableFieldInput) {
     this.key = data.key
@@ -19,6 +21,7 @@ export class TableField implements TableFieldInput {
     this.sortable = data?.sortable
     this.type = data?.type
     this.size = data?.size || ListSize.MD
+    this.align = data?.align
   }
 }
 
@@ -47,4 +50,10 @@ export enum ListFieldType {
 export enum ListSize {
   SM = 'sm',
   MD = 'md',
+}
+
+export enum AlignType {
+  Left = 'left',
+  Center = 'center',
+  Right = 'right',
 }

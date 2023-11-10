@@ -8,6 +8,7 @@ import type { Filter } from '../../@model/filter'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 import { IconsList } from '../../@model/enums/icons'
 import FilterSelector from './_components/FilterSelector.vue'
+import { VColors, VVariants } from '@/@model/vuetify'
 
 const props = defineProps<{
   entityName: string
@@ -77,7 +78,7 @@ onMounted(() => {
       initFiltersStorage?.includes(key),
     )
 
-    emit('changeSelectedFilters', selectedFilters.value)
+    emits('changeSelectedFilters', selectedFilters.value)
   }
 })
 
@@ -97,143 +98,140 @@ const listNotSelected = computed(() => {
 </script>
 
 <template>
-  <VCol
-    class="p-0"
-    :class="{ 'filters-block-small': isSmallBlock }"
-  >
-    <VCard
-      v-if="isOpen"
-      no-body
+  <VRow no-gutters>
+    <VCol
+      class="p-0"
+      :class="{ 'filters-block-small': isSmallBlock }"
     >
-      <VCardItem>
-        <Component
-          :is="headerTag"
-          class="mb-0"
-        >
-          {{ $t('common.filter.filtrate') }}
-        </Component>
-      </VCardItem>
-
-      <hr class="m-0">
-
-      <VCardText>
-        <VCol class="pl-0 pr-0">
-          <VRow>
-            <VCol
-              cols="12"
-              md="3"
-              class="mb-md-0 mb-2"
-            >
-              <FilterSelector
-                :filters="listNotSelected"
-                :size="size"
-                @selected-filters-changed="onChange"
-              />
-            </VCol>
-          </VRow>
-
-          <VRow
-            v-for="(filter, key) in selectedFilters"
-            :key="key"
-            class="mt-2"
+      <VCard
+        v-if="isOpen"
+        no-body
+      >
+        <VCardItem>
+          <Component
+            :is="headerTag"
+            class="mb-0"
           >
-            <VCol
-              md="3"
-              class="d-flex align-items-center"
-            >
-              <p
-                class="font-weight-bolder mb-0"
-                :class="{ 'font-small-3': isSmallBlock }"
-              >
-                {{ filter.label }}
-              </p>
-            </VCol>
+            {{ $t('common.filter.filtrate') }}
+          </Component>
+        </VCardItem>
 
-            <VCol
-              md="9"
-              class="d-flex align-items-center"
-            >
-              <FieldGenerator
-                v-model="selectedFilters[key]"
-                :with-label="false"
-                :size="size"
-                class="field-generator mr-1 w-100"
-              />
-              <!--        TODO: refactor variant/color -->
-              <VBtn
-                variant="outline-danger"
-                class="btn-icon"
-                :size="size"
-                @click="onRemoveFilter(filter)"
+        <VCardText>
+          <VCol class="pl-0 pr-0">
+            <VRow no-gutters>
+              <VCol
+                cols="12"
+                md="3"
+                class="mb-md-0 mb-2"
               >
-                <VIcon :icon="IconsList.Trash2Icon" />
-              </VBtn>
-            </VCol>
-          </VRow>
-        </VCol>
-      </VCardText>
+                <FilterSelector
+                  :filters="listNotSelected"
+                  :size="size"
+                  @selected-filters-changed="onChange"
+                />
+              </VCol>
+            </VRow>
 
-      <VCardActions>
-        <div class="d-flex justify-content-between">
-          <div>
-            <!--        TODO: refactor variant/color -->
+            <VRow
+              v-for="(filter, key) in selectedFilters"
+              :key="key"
+              class="mt-2"
+            >
+              <VCol
+                md="3"
+                class="d-flex align-items-center"
+              >
+                <p
+                  class="font-weight-bolder mb-0"
+                  :class="{ 'font-small-3': isSmallBlock }"
+                >
+                  {{ filter.label }}
+                </p>
+              </VCol>
+
+              <VCol
+                md="9"
+                class="d-flex align-items-center"
+              >
+                <FieldGenerator
+                  v-model="selectedFilters[key]"
+                  :with-label="false"
+                  :size="size"
+                  class="field-generator mr-1 w-100"
+                />
+                <VBtn
+                  :variant="VVariants.Outlined"
+                  :color="VColors.Error"
+                  class="btn-icon"
+                  :size="size"
+                  @click="onRemoveFilter(filter)"
+                >
+                  <VIcon :icon="IconsList.Trash2Icon" />
+                </VBtn>
+              </VCol>
+            </VRow>
+          </VCol>
+        </VCardText>
+
+        <hr>
+        <VCardActions class="px-5 py-4">
+          <div class="d-flex w-100 gap-4">
             <VBtn
-              variant="success"
-              :size="size"
+              :color="VColors.Success"
+              :variant="VVariants.Elevated"
+              class="ml-0 px-4"
               @click="onApply"
             >
               {{ isSmallBlock ? $t('action.apply') : $t('action.applyFilters') }}
             </VBtn>
-            <!--        TODO: refactor variant/color -->
             <VBtn
-              variant="outline-secondary"
-              :size="size"
-              class="save-btn"
+              :color="VColors.Secondary"
+              :variant="VVariants.Outlined"
+              class="ml-0 px-4"
               @click="onSaveByDefault"
             >
               {{ $t('action.saveByDefault') }}
             </VBtn>
-          </div>
 
-          <div>
-            <!--        TODO: refactor variant/color -->
             <VBtn
-              variant="outline-danger"
-              class="white-space-nowrap"
+              :color="VColors.Error"
+              :variant="VVariants.Outlined"
+              class="white-space-nowrap ml-auto px-4"
               :size="size"
               @click="onClearAll"
             >
               {{ $t('action.clearAll') }}
             </VBtn>
           </div>
-        </div>
-      </VCardActions>
-    </VCard>
+        </VCardActions>
+      </VCard>
 
-    <div
-      v-else-if="selectedFilters.length"
-      class="d-flex flex-wrap align-items-center pb-1"
-    >
-      <span class="font-small-3 font-weight-bold text-body-heading mr-1 mb-50">
-        {{ $t('common.filter.appliedFilters') }}
-      </span>
-      <VChip
-        v-for="filter in selectedFilters"
-        :key="filter.key"
-        class="mr-1 mb-50"
-        variant="light-secondary"
+      <div
+        v-else-if="selectedFilters.length"
+        class="d-flex flex-wrap align-items-center pb-1"
       >
-        {{ filter.label }}
-
-        <span
-          v-if="Array.isArray(filter.value) && filter.value.length && filter.type !== 'sum-range'"
-          class="ml-20"
-        >
-          ({{ filter.value.length }})
+        <span class="font-small-3 font-weight-bold text-body-heading mr-1 mb-50">
+          {{ $t('common.filter.appliedFilters') }}
         </span>
-      </VChip>
-    </div>
-  </VCol>
+        <VChip
+          v-for="filter in selectedFilters"
+          :key="filter.key"
+          class="mr-1 mb-50"
+          label
+          :color="VColors.Secondary"
+        >
+          {{ filter.label }}
+
+          <span
+            v-if="Array.isArray(filter.value) && filter.value.length && filter.type !== 'sum-range'"
+            class="ml-20"
+          >
+            ({{ filter.value.length }})
+          </span>
+        </VChip>
+      </div>
+    </VCol>
+  </VRow>
 </template>
 
 <style lang="scss" scoped>

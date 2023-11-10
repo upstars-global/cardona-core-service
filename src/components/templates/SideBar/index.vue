@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { hide } from '@floating-ui/dom'
 import ViewGenerator from '../../../components/templates/ViewGenerator/index.vue'
 import { ViewInfo } from '../../../@model/view'
 import { IconsList } from '../../../@model/enums/icons'
-import { BSize, BVariant } from '../../../@model/bootstrap'
 import { convertCamelCase } from '../../../helpers'
 import { SideBarCollapseItem } from '@/@model/templates/baseList'
+import { VColors, VSizes, VVariants } from '@/@model/vuetify'
 
 const props = defineProps<{
   item: object
@@ -20,6 +21,8 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   (e: 'update:sidebarActive', value: boolean): void
+  (e: 'update'): void
+  (e: 'remove'): void
 }>()
 
 const slots = useSlots()
@@ -32,7 +35,7 @@ const action = (name: string, hide: Function) => {
   hide && hide()
 
   setTimeout(() => {
-    emit(name)
+    emits(name)
   }, emitAfterAnimationSidebar)
 }
 
@@ -62,11 +65,10 @@ const onHide = () => {
     @update:model-value="onHide"
   >
     <!-- Header -->
-    <div class="content-sidebar-header d-flex justify-space-between align-center  px-5 py-3">
+    <div class="content-sidebar-header d-flex justify-space-between align-center px-5 py-3 bg-light px-2">
       <h5 class="mb-0 text-h5">
         {{ $t(title) }}
       </h5>
-
       <VIcon
         class="ml-1 cursor-pointer"
         :icon="IconsList.XIcon"
@@ -74,7 +76,7 @@ const onHide = () => {
         @click="onHide"
       />
     </div>
-    <div class="p-1">
+    <div class="p-1 bg-light px-4">
       <!--  ViewInfo   -->
       <template v-if="Object.keys(viewForm).isNotEmpty">
         <div
@@ -89,7 +91,7 @@ const onHide = () => {
             <ViewGenerator
               v-if="viewForm[key] instanceof ViewInfo"
               :key="key"
-              :value="viewForm[key]"
+              :model-value="viewForm[key]"
               :key-name="key"
               class="py-25"
               :class="`${key}-view`"
@@ -105,35 +107,37 @@ const onHide = () => {
               </template>
             </ViewGenerator>
             <template v-else-if="viewForm[key] instanceof SideBarCollapseItem && sidebarCollapseMode">
-              <VExpansionPanels multiple>
-                <VExpansionPanel :title="viewForm[key].title">
-                  <VExpansionPanelText>
-                    <div
-                      v-for="groupKey in Object.keys(viewForm[key].views)"
-                      :key="groupKey"
-                    >
-                      <ViewGenerator
-                        v-if="viewForm[key].views[groupKey] instanceof ViewInfo"
-                        :key="key"
-                        :value="viewForm[key].views[groupKey]"
-                        :key-name="groupKey"
-                        class="py-25"
-                        :class="`${groupKey}-view`"
+              <div>
+                <VExpansionPanels multiple>
+                  <VExpansionPanel :title="viewForm[key].title">
+                    <VExpansionPanelText>
+                      <div
+                        v-for="groupKey in Object.keys(viewForm[key].views)"
+                        :key="groupKey"
                       >
-                        <template
-                          v-if="checkSlotExistence(`sidebar-value(${groupKey})`)"
-                          #[`sidebar-value(${key})`]="{ item }"
+                        <ViewGenerator
+                          v-if="viewForm[key].views[groupKey] instanceof ViewInfo"
+                          :key="key"
+                          :model-value="viewForm[key].views[groupKey]"
+                          :key-name="groupKey"
+                          class="py-25"
+                          :class="`${groupKey}-view`"
                         >
-                          <slot
-                            :name="`sidebar-value(${groupKey})`"
-                            :item="item"
-                          />
-                        </template>
-                      </ViewGenerator>
-                    </div>
-                  </VExpansionPanelText>
-                </VExpansionPanel>
-              </VExpansionPanels>
+                          <template
+                            v-if="checkSlotExistence(`sidebar-value(${groupKey})`)"
+                            #[`sidebar-value(${key})`]="{ item }"
+                          >
+                            <slot
+                              :name="`sidebar-value(${groupKey})`"
+                              :item="item"
+                            />
+                          </template>
+                        </ViewGenerator>
+                      </div>
+                    </VExpansionPanelText>
+                  </VExpansionPanel>
+                </VExpansionPanels>
+              </div>
 
               <hr v-if="viewForm[key].withBottomSeparator">
             </template>
@@ -147,14 +151,15 @@ const onHide = () => {
       >
         <div
           v-if="canUpdate"
-          class="d-flex mt-2 sidebar-actions"
+          class="d-flex py-4 sidebar-actions"
         >
           <slot name="sidebar-action-items" />
 
           <VBtn
             v-if="canUpdateItem"
-            :variant="BVariant.OutlineSecondary"
-            :size="BSize.Sm"
+            :variant="VVariants.Outlined"
+            :color="VColors.Secondary"
+            :size="VSizes.Small"
             @click="action('update', hide)"
           >
             {{ $t('action.edit') }}
@@ -162,8 +167,9 @@ const onHide = () => {
 
           <VBtn
             v-if="canRemoveItem"
-            :variant="BVariant.OutlineDanger"
-            :size="BSize.Sm"
+            :variant="VVariants.Outlined"
+            :color="VColors.Error"
+            :size="VSizes.Small"
             @click="action('remove', hide)"
           >
             {{ $t('action.remove') }}
@@ -179,6 +185,14 @@ const onHide = () => {
   min-width: 35rem;
   .content-sidebar-header {
     background: rgb(var(--v-theme-background));
+  }
+}
+
+.sidebar-actions {
+  :deep(.v-btn) {
+    &:not(:last-child) {
+      margin-right: 1rem;
+    }
   }
 }
 </style>

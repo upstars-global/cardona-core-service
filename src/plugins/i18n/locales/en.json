@@ -533,6 +533,7 @@
     "edit": "Edit",
     "makeCopy": "Make a copy",
     "save": "Save",
+    "delete": "Delete",
     "remove": "Remove",
     "delete": "Delete",
     "removeAll": "Remove all ({total})",
