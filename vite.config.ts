@@ -26,6 +26,7 @@ export default defineConfig({
     }),
     Pages({
       dirs: ['./src/pages'],
+      exclude: ['**/demo'],
 
       // ℹ️ We need three routes using single routes so we will ignore generating route for this SFC file
       onRoutesGenerated: routes => [

@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { isUserLoggedIn } from './utils'
 import routes from '~pages'
 import { canNavigate } from '@layouts/plugins/casl'
+import store from '@/store'
+import sectionRouterGenerator from '@/helpers/router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,12 +33,66 @@ const router = createRouter({
       path: '/pages/account-settings',
       redirect: () => ({ name: 'pages-account-settings-tab', params: { tab: 'account' } }),
     },
-    ...setupLayouts(routes),
+
+    /* {
+      path: '/demo/create',
+      name: 'DemoCreate',
+      component: () => import('../pages/demo/create/index.vue'),
+      meta: {
+        title: 'demo.create',
+        permission: 'demo-demo',
+        level: 'create',
+        breadcrumb: [
+          {
+            to: { name: 'DemoList' },
+            text: 'demo.list',
+          },
+          {
+            text: 'demo.create',
+            active: true,
+          },
+        ],
+      },
+    }, */
+    {
+      path: '/demo/update/:id',
+      name: 'DemoUpdate',
+      component: () => import('../pages/demo/update/index.vue'),
+      meta: {
+        title: 'demo.edit',
+        permissionGroup: 'demoPage',
+        level: 'update',
+        breadcrumb: [
+          {
+            to: { name: 'DemoList' },
+            text: 'demo.list',
+          },
+          {
+            text: 'demo.edit',
+            active: true,
+          },
+        ],
+      },
+    },
+
+    ...setupLayouts([
+      ...routes,
+
+      /* {
+        path: '/demo',
+        name: 'DemoList',
+        component: () => import('../pages/demo/list/index.vue'),
+      }, */
+      ...sectionRouterGenerator([
+        { name: 'demo' },
+      ]),
+    ]),
   ],
+
 })
 
 // Docs: https://router.vuejs.org/guide/advanced/navigation-guards.html#global-before-guards
-router.beforeEach(to => {
+router.beforeEach(async to => {
   const isLoggedIn = isUserLoggedIn()
 
   /*
@@ -60,6 +116,13 @@ router.beforeEach(to => {
   return next()
 
   */
+  if (isLoggedIn && store.getters.userInfo.isEmpty) {
+    await store.dispatch('fetchCurrentUser')
+    await Promise.all([
+      store.dispatch('localeCore/getLocalesList'),
+      store.dispatch('appConfigCore/fetchConfig'),
+    ])
+  }
 
   if (canNavigate(to)) {
     if (to.meta.redirectIfLoggedIn && isLoggedIn)

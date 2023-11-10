@@ -1,5 +1,11 @@
 export default [
   { heading: 'Apps & Pages' },
+
+   {
+    title: 'Demo',
+    icon: { icon: 'tabler-box' },
+    to: 'DemoList',
+  },
   {
     title: 'Email',
     icon: { icon: 'tabler-mail' },

@@ -5,7 +5,7 @@ import type { TextBaseField } from '../../../../@model/templates/baseField'
 const props = defineProps<{
   modelValue: string | number
   field: TextBaseField
-  errors: Array<string>
+  errors?: Array<string>
   disabled: boolean
 }>()
 

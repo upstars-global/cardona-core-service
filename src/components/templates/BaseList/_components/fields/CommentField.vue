@@ -5,11 +5,17 @@ defineProps<{
 </script>
 
 <template>
-  <div
-    v-b-tooltip.hover.top="value"
-    class="comment-text"
-  >
+  <div class="comment-text">
     {{ value ? value : '-' }}
+
+    <VTooltip
+      activator="parent"
+      location="bottom"
+    >
+      <div class="comment-text__tooltip">
+        {{ value }}
+      </div>
+    </VTooltip>
   </div>
 </template>
 
@@ -19,5 +25,9 @@ defineProps<{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  &__tooltip {
+    width: 15rem;
+  }
 }
 </style>

@@ -9,8 +9,8 @@ import i18n from '@/plugins/i18n'
 import { SelectMode } from '@/@model/enums/selectMode'
 
 export enum SortDirection {
-  asc = 'ASC',
-  desc = 'DESC',
+  asc = 'asc',
+  desc = 'desc',
 }
 export interface IOptionsBaseFetch {
   readonly listItemModel?: { new (item: unknown): unknown }
@@ -51,12 +51,6 @@ export interface IBaseListConfig {
 
   /** withSettings - Вкл/выкл настройки таблицы */
   readonly withSettings?: boolean
-
-  /** skeletonRows - Количество строк для skeleton таблицы (10 ст) */
-  readonly skeletonRows?: number
-
-  /** skeletonColumns - Количество столбцов для skeleton таблицы (4 ст) */
-  readonly skeletonColumns?: number
 
   /** skeletonColumns - Текст когда лист пустой */
   readonly emptyText?: string
@@ -203,8 +197,6 @@ export class BaseListConfig implements IBaseListConfig {
     withSearch,
     withDeactivation,
     withSettings,
-    skeletonRows,
-    skeletonColumns,
     emptyText,
     filterList,
     staticFilters,
@@ -242,8 +234,6 @@ export class BaseListConfig implements IBaseListConfig {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
     this.withSettings = withSettings
-    this.skeletonRows = skeletonRows || 10
-    this.skeletonColumns = skeletonColumns || 4
     this.emptyText = emptyText || i18n.global.t('emptyState.list')
     this.filterList = filterList || []
     this.staticFilters = staticFilters || {}

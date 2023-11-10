@@ -10,16 +10,19 @@ interface Props {
 }
 
 interface Emits {
-  (event: 'input', payload: number): void
+  (e: 'update:modelValue', payload: number): void
 }
-
 const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
+
+const total = computed(() => {
+  return Math.ceil(+props.paginationConfig.total.value / props.paginationConfig.perPage.value) || 0
+})
 
 const currentPage = computed({
   get: () => props.modelValue,
   set: value => {
-    emits('input', value)
+    emits('update:modelValue', value)
   },
 })
 
@@ -27,27 +30,28 @@ const numberOfPages = computed(() => props.paginationConfig.numberOfPages.value)
 </script>
 
 <template>
-  <VRow>
+  <VRow class="align-center">
     <VCol
       cols="12"
       sm="6"
       class="d-flex align-items-center justify-content-center justify-content-sm-start p-0"
     >
       <span class="text-muted">
-        {{ $t('pagination.showing') }}
+        {{ $t('pagination.showing', dataMeta) }}
       </span>
     </VCol>
 
     <VCol
       cols="12"
       sm="6"
-      class="d-flex align-items-center justify-content-center justify-content-sm-end p-0"
+      class="d-flex align-items-center justify-content-center px-0 py-0"
     >
       <VPagination
         v-model="currentPage"
+        :length="total"
         :total-visible="numberOfPages"
-        :length="paginationConfig.total"
         rounded="circle"
+        class="ml-auto"
       />
     </vcol>
   </VRow>

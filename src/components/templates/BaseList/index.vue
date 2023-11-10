@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { inject } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { findIndex, omit } from 'lodash'
@@ -6,32 +7,39 @@ import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
 import { DownloadFormat, SortDirection } from '../../../@model/templates/baseList'
 import type { Filter } from '../../../@model/filter'
+import RemoveModal from '../../../components/templates/BaseList/_components/fields/RemoveModal.vue'
+import MultipleActions from './_components/MultipleActions.vue'
 import { getStorage, removeStorageItem, setStorage } from '@/helpers/storage'
 import { ListSort } from '@/@model'
 import { useFilters } from '@/components/FiltersBlock/useFilters'
 import { BaseField, SelectBaseField } from '@/@model/templates/baseField'
 import { FieldType } from '@/@model/field'
-import { checkExistsPage, convertLowerCaseFirstSymbol, isEmptyString, isNotEmptyNumber } from '@/helpers'
+import {
+  checkExistsPage,
+  convertCamelCase,
+  convertLowerCaseFirstSymbol,
+  isEmptyString,
+  isNotEmptyNumber,
+} from '@/helpers'
 import type { PaginationResult } from '@/use/pagination'
 import usePagination from '@/use/pagination'
 import type { TableField } from '@/@model/templates/tableFields'
 import { parseDateRange } from '@/helpers/filters'
 import { ListFieldType } from '@/@model/templates/tableFields'
-import { listImages } from '@/@fake-db/data/compostela'
-import { tagsList } from '@/@fake-db/data/demo'
-import { TransactionType } from '@/@model/enums/playersTransactions'
-import { BLightColors } from '@/@model/bootstrap'
 import { basePermissions } from '@/helpers/base-permissions'
+import type { SortItem } from '@core/types'
+import { IconsList } from '@/@model/enums/icons'
 
 const props = defineProps<{
-  config?: IBaseListConfig
-  useList?: unknown
+  config: IBaseListConfig
+  useList: unknown
 }>()
 
 const emits = defineEmits<{
   (e: 'rowClicked', item: Record<string, unknown>): void
 }>()
 
+const modal = inject('modal')
 const slots = useSlots()
 
 const store = useStore()
@@ -39,21 +47,17 @@ const store = useStore()
 // const router = useRouter()
 const route = useRoute()
 const searchQuery = ref('')
-const currentPageName = route.name
+const currentPageName = route.name?.toString()
 
 const {
   entityName,
-
   fields,
-
   ListFilterModel,
   SideBarModel,
-
   pageName,
-
-  /* canUpdateCb,
- canRemoveCb,
- beforeRemoveCallback, */
+  canUpdateCb,
+  canRemoveCb,
+  beforeRemoveCallback,
   ListItemModel,
 } = props.useList()
 
@@ -61,7 +65,7 @@ const {
 const CreatePageName = pageName ? `${pageName}Create` : `${entityName}Create`
 const UpdatePageName = pageName ? `${pageName}Update` : `${entityName}Update`
 
-/* const isExistsCreatePage = checkExistsPage(CreatePageName) */
+const isExistsCreatePage = checkExistsPage(CreatePageName)
 const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 
 // Action names
@@ -74,24 +78,24 @@ const fetchActionName: string = props.config?.withCustomFetchList
 const fetchReportActionName = 'baseStoreCore/fetchReport'
 const updateActionName = 'baseStoreCore/updateEntity'
 
-/* const deleteActionName = props.config?.withCustomDelete
+const deleteActionName = props.config?.withCustomDelete
   ? `${moduleName}/deleteEntity`
   : 'baseStoreCore/deleteEntity'
 
 const multipleUpdateActionName = 'baseStoreCore/multipleUpdateEntity'
-const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity' */
+const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
 
 // Permissions
-const { /* canCreate, */ canUpdate, canUpdateSeo, /* canRemove, */ canExport }
+const { canCreate, canUpdate, canUpdateSeo, canRemove, canExport }
     = basePermissions<IBaseListConfig>({ entityName, config: props.config })
 
-/* const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
+const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
 
 const canUpdateItem = (item): boolean =>
   canUpdateCb && item ? isExistsUpdatePage && canUpdateCb(item) : isExistsUpdatePage
 
 const canRemoveItem = (item): boolean =>
-  canRemoveCb && item ? canRemove && canRemoveCb(item) : canRemove */
+  canRemoveCb && item ? canRemove && canRemoveCb(item) : canRemove
 
 // Sidebar
 const isSidebarShown = ref(false)
@@ -118,172 +122,12 @@ const onClickRow = data => {
   emits('rowClicked', data)
 }
 
-const { t } = useI18n()
-
 /* const routerToUpdatePageId = item => {
   router.push(getUpdateRoute(item))
 } */
 
 // Table
-const refListTable = ref(null)
-
-const items = ref([
-  {
-    id: '632c39448e03b2dab20c8a77',
-    shortId: '632c39448e03b2dab20c8a77',
-    partnerCode: '123632c39448e03b2dab20c8a77',
-    name: 'Test',
-    nameWithShortId: 'Test',
-    isActive: true,
-    status: 'new',
-    amount: 70000,
-    currency: 'EUR',
-    wagerValue: '4000',
-    wagerLimit: '300',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-11-31T10:00:00+00:00',
-    email: 'test@test.com',
-    period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
-      dateTo: '2024-04-26T20:59:00+00:00',
-    },
-    buttonName: 'Test button name',
-    login: 'My login',
-    localization: 'en',
-    country: 'en',
-    position: 1,
-    imagePath: listImages[0].publicPath,
-    imageFull: {
-      imagePath: listImages[0].publicPath,
-      id: '632c39448e03b2dab20c8a77',
-    },
-    tags: [tagsList[0], tagsList[1], tagsList[2]],
-    type: {
-      id: TransactionType.Deposit,
-      name: t('common.deposit'),
-    },
-    gameId: '622c39448e03b2dab20c8a77',
-    state: true,
-    comment:
-        'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
-  },
-  {
-    id: '632c39448e03b2dab20c8a78',
-    shortId: '632c39448e03b2dab20c8a78',
-    partnerCode: '883632c39448e03b2dab20c8a78',
-    name: 'Test1',
-    nameWithShortId: 'Test1',
-    isActive: false,
-    amount: 1000,
-    currency: 'USD',
-    wagerValue: '77000',
-    wagerLimit: '3200',
-    status: 'active',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-10-31T10:00:00+00:00',
-    period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
-      dateTo: '2024-04-26T20:59:00+00:00',
-    },
-    email: 'test@test.com',
-    buttonName: 'button name',
-    login: 'Some',
-    position: 4,
-    imagePath: listImages[1].publicPath,
-    imageFull: {
-      imagePath: listImages[1].publicPath,
-      id: '632c39448e03b2dab20c8a78',
-    },
-    tags: [tagsList[3], tagsList[4], tagsList[5]],
-    type: {
-      id: TransactionType.Deposit,
-      name: t('common.deposit'),
-    },
-    gameId: '622c39448e03b2dab20c8a78',
-    state: false,
-    comment: 'Some',
-    paymentsToday: '100',
-    paymentsWeek: '1100',
-    paymentsMonth: '11100',
-    rowVariant: BLightColors.LightDanger,
-  },
-  {
-    id: '632c39448e03b2dab20c8a79',
-    shortId: '632c39448e03b2dab20c8a79',
-    partnerCode: '783632c39448e03b2dab20c8a78',
-    name: 'Test2',
-    nameWithShortId: 'Test2',
-    isActive: true,
-    amount: 0,
-    currency: 'EUR',
-    wagerValue: '0',
-    wagerLimit: '0',
-    status: 'inactive',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-09-31T10:00:00+00:00',
-    period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
-      dateTo: '2024-04-26T20:59:00+00:00',
-    },
-    email: 'test@test.com',
-    buttonName: 'Test button name',
-    login: 'cwilliams1956@game.com',
-    position: 1,
-    imagePath: listImages[3].publicPath,
-    tags: [tagsList[1], tagsList[6], tagsList[5]],
-    gameId: '622c39448e03b2dab20c8a79',
-    state: true,
-    comment: '',
-    type: {
-      id: TransactionType.Payout,
-      name: t('common.payout'),
-    },
-    paymentsToday: '200',
-    paymentsWeek: '2200',
-    paymentsMonth: '22200',
-    rowVariant: BLightColors.LightInfo,
-  },
-  {
-    id: '632c39448e03b2dab20c8a75',
-    shortId: '632c39448e03b2dab20c8a75',
-    partnerCode: '8a632c39448e03b2dab20c8a75',
-    name: 'Test',
-    nameWithShortId: 'Test',
-    isActive: false,
-    status: 'delete',
-    amount: 20000,
-    currency: 'USD',
-    wagerValue: '40200',
-    wagerLimit: '30990',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-12-31T10:00:00+00:00',
-    period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
-      dateTo: '2024-04-26T20:59:00+00:00',
-    },
-    email: 'test@test.com',
-    buttonName: 'Some name',
-    login: '',
-    position: 55,
-    imagePath: listImages[4].publicPath,
-    imageFull: {
-      imagePath: listImages[4].publicPath,
-      id: '632c39448e03b2dab20c8a75',
-    },
-    tags: [tagsList[1], tagsList[8], tagsList[9]],
-    gameId: '622c39448e03b2dab20c8a75',
-    state: true,
-    comment: 'Some commmmmmmmmmmmmmment',
-    type: {
-      id: TransactionType.Deposit,
-      name: t('common.deposit'),
-    },
-    paymentsToday: '300',
-    paymentsWeek: '3300',
-    paymentsMonth: '33300',
-    rowVariant: BLightColors.LightWarning,
-  },
-])
+const items = ref([])
 
 watch(
   () => items.value,
@@ -295,14 +139,16 @@ watch(
 
 const selectedFields = ref<TableField[]>([...fields])
 
-/* const isLoadingList = computed(() => {
+const isLoadingList = computed(() => {
   const indexSymbolNextDash = entityName.indexOf('-') + 1
+
   const entityNameForLoad = entityName.replace(
-      entityName[indexSymbolNextDash],
-      entityName[indexSymbolNextDash].toLowerCase()
+    entityName[indexSymbolNextDash],
+    entityName[indexSymbolNextDash].toLowerCase(),
   )
 
   const entityUrl: string = convertCamelCase(entityNameForLoad, '/')
+
   return store.getters.isLoadingEndpoint([
     `${entityUrl}/list`,
     `${entityUrl}/update`,
@@ -310,21 +156,23 @@ const selectedFields = ref<TableField[]>([...fields])
   ])
 })
 
+/*
 const size = props.config?.small ? 'sm' : 'md' */ // TODO: refactor sizes
 
 // Sort
 const sortStorageKey = `${currentPageName}-${entityName}-sort`
 const sortFromStorage = getStorage(sortStorageKey, ListSort) as ListSort
 
-const sortBy = sortFromStorage?.field || props.config.staticSorts?.field
-const sortDir = sortFromStorage?.dir || props.config.staticSorts?.dir
+const sortBy = sortFromStorage?.key || props.config.staticSorts?.key
+const sortDir = sortFromStorage?.order || props.config.staticSorts?.order
 const sortDesc = !!sortDir && sortDir === SortDirection.asc
-const sortData = ref([{ key: sortBy, order: sortDesc }])
+const sortData = ref([{ key: sortBy, order: sortDesc }] as SortItem[])
 
-watch(sortData, newSortData => {
-  newSortData.sortBy
+watch(() => sortData.value, async ([newSortData]) => {
+  newSortData
     ? setStorage(sortStorageKey, newSortData)
     : removeStorageItem(sortStorageKey)
+  await getList()
 })
 
 // Pagination
@@ -340,19 +188,17 @@ const paginationConfig: PaginationResult = usePagination({
 const {
   currentPage,
   perPage,
-
-  /* perPageOptions,
-  numberOfPages, */
+  perPageOptions,
   total,
-
-  /* setPerPage, */
+  setPerPage,
+  setPage,
   setupDataMeta,
   linkGen,
   updateTotal,
   onChangePagination,
 } = paginationConfig
 
-const dataMeta = setupDataMeta(refListTable)
+const dataMeta = computed(() => setupDataMeta(items.value.length))
 
 const linkGenerator = (page: number) => {
   if (props.config?.withIndependentPagination)
@@ -361,10 +207,14 @@ const linkGenerator = (page: number) => {
   return linkGen(page)
 }
 
+watch(() => perPage.value, () => {
+  getList()
+})
+
 // Fetch list
 const getList = async () => {
   const filter = setRequestFilters()
-  const sort = sortData.sortBy ? [new ListSort(sortData)] : undefined
+  const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
 
   const { list, total } = await store.dispatch(fetchActionName, {
     type: entityName,
@@ -399,7 +249,7 @@ const getUpdateRoute = ({ id }): Location => {
     : {}
 }
 
-/* const onClickToggleStatus = async ({ id, isActive }) => {
+const onClickToggleStatus = async ({ id, isActive }) => {
   await store.dispatch(updateActionName, {
     type: entityName,
     data: { form: { id, isActive: !isActive } },
@@ -409,7 +259,7 @@ const getUpdateRoute = ({ id }): Location => {
   reFetchList()
 }
 
-const onUpdateItem = async (item) => {
+/* const onUpdateItem = async item => {
   const response = await store.dispatch(updateActionName, {
     type: entityName,
     data: { form: item },
@@ -419,8 +269,8 @@ const onUpdateItem = async (item) => {
   reFetchList()
 
   return response
-}
-*/
+} */
+
 const onEditPosition = async ({ id }: { id: string }, position: number) => {
   await store.dispatch(updateActionName, {
     type: entityName,
@@ -531,7 +381,7 @@ const onExportFormatSelected = async (format: string) => {
 
 // Filters
 const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
-  props.config.filterList,
+  props.config?.filterList,
 )
 
 const isFiltersShown = ref(false)
@@ -549,10 +399,10 @@ onMounted(() => {
 // Selectable
 const selectedItems = ref([])
 
-/* const allSelected = ref(false)
-const indeterminate = ref(false) */
+const allSelected = ref(false)
+const indeterminate = ref(false)
 
-/* watch(selectedItems, newItems => {
+watch(selectedItems, newItems => {
   if (newItems.isEmpty) {
     indeterminate.value = false
     allSelected.value = false
@@ -569,19 +419,19 @@ const indeterminate = ref(false) */
 
 const onRowSelected = items => (selectedItems.value = items)
 
-const onChangeSelected = (state: boolean, index: number) =>
+/* const onChangeSelected = (state: boolean, index: number) =>
   state ? refListTable.value.selectRow(index) : refListTable.value.unselectRow(index)
 
 const toggleAll = (state: boolean) =>
   state ? refListTable.value.selectAllRows() : refListTable.value.clearSelected() */
 
 // Multiple actions
-/* const onClickToggleStatusMultiple = async (isActive: boolean) => {
+const onClickToggleStatusMultiple = async (isActive: boolean) => {
   const data: Array<{ id: string; isActive: boolean }> = selectedItems.value.map(
-      ({ id }: { id: string }) => ({
-        id,
-        isActive,
-      })
+    ({ id }: { id: string }) => ({
+      id,
+      isActive,
+    }),
   )
 
   await store.dispatch(multipleUpdateActionName, {
@@ -602,7 +452,7 @@ const onClickDeleteMultiple = async () => {
   })
 
   reFetchList()
-} */
+}
 
 // Draggable
 const onDragChanged = async e => {
@@ -623,7 +473,7 @@ const onDragChanged = async e => {
     reFetchList()
   }
 
-  emit('end', { itemId: id, newIndex: e.newIndex, oldIndex: e.oldIndex })
+  emits('end', { itemId: id, newIndex: e.newIndex, oldIndex: e.oldIndex })
 }
 
 // Remove
@@ -636,10 +486,10 @@ const onClickRemove = item => {
     if (!isAllowedRemove)
       return
   }
-  bvModal.show(removeModalId)
+  modal.showModal(removeModalId)
 }
 
-/* const onClickModalOk = async ({ hide, commentToRemove }) => {
+const onClickModalOk = async ({ hide, commentToRemove }) => {
   await store.dispatch(deleteActionName, {
     type: entityName,
     id: selectedItem.value.id,
@@ -649,7 +499,7 @@ const onClickRemove = item => {
 
   hide()
   reFetchList()
-} */
+}
 
 const getIndexByItemFromList = item => findIndex(items.value || [], item)
 
@@ -661,293 +511,359 @@ const selectedItemIndex = computed(() => {
   return itemIndex > -1 ? itemIndex : NaN
 })
 
-const selectedRowClass = rowItem => {
-  const itemIndex = getIndexByItemFromList(rowItem)
-  if (![selectedItemIndex.value, itemIndex].some(isNotEmptyNumber))
-    return ''
-
-  return selectedItemIndex.value === itemIndex
-    ? `table-${rowItem?.rowVariant || 'default'}-bg`
-    : ''
-}
+onBeforeMount(async () => {
+  await getList()
+})
 </script>
 
 <template>
-  <SideBar
-    v-model:sidebar-active="isSidebarShown"
-    :item="selectedItem"
-    :entity-name="entityName"
-    :side-bar-model="SideBarModel"
-    :sidebar-collapse-mode="config?.sidebarCollapseMode"
-    @remove="onClickRemove(selectedItem)"
-    @hide="resetSelectedItem"
-    @update:model-value="resetSelectedItem"
-  >
-    <template #sidebar-actions="{ form }">
-      <slot
-        name="sidebar-actions"
-        :form="form"
-        :item="selectedItem"
-      />
-    </template>
-
-    <template #sidebar-action-items="{ form }">
-      <slot
-        name="sidebar-action-items"
-        :form="form"
-        :item="selectedItem"
-      />
-    </template>
-
-    <template
-      v-for="key in sidebarSlots"
-      #[key]="{ item }"
+  <div class="d-flex flex-column gap-5">
+    <RemoveModal
+      :config="config"
+      :remove-modal-id="removeModalId"
+      :entity-name="entityName"
+      @on-click-modal-ok="onClickModalOk"
+    />
+    <SideBar
+      v-model:sidebar-active="isSidebarShown"
+      :item="selectedItem"
+      :entity-name="entityName"
+      :side-bar-model="SideBarModel"
+      :can-update="canUpdate"
+      :can-update-item="canUpdateItem(selectedItem)"
+      :can-remove-item="canRemoveItem(selectedItem)"
+      :sidebar-collapse-mode="config?.sidebarCollapseMode"
+      @remove="onClickRemove(selectedItem)"
+      @hide="resetSelectedItem"
+      @update:model-value="resetSelectedItem"
     >
-      <slot
-        :name="key"
-        :item="item"
-      />
-    </template>
-  </SideBar>
-
-  <ListSearch
-    v-model="searchQuery"
-    :right-search-btn="{
-      canCreate: isShownCreateBtn,
-      createPage: CreatePageName,
-    }"
-    :selected-filters="selectedFilters"
-    :export-selector="{
-      canShow: Boolean(config.withExport && canExport),
-      disable: !total,
-    }"
-    :config="config"
-    @on-click-filter="isFiltersShown = !isFiltersShown"
-    @on-export-format-selected="onExportFormatSelected"
-  >
-    <template #right-search-btn>
-      <slot name="right-search-btn" />
-    </template>
-    <template #left-search-btn>
-      <slot name="left-search-btn" />
-    </template>
-  </ListSearch>
-
-  <FiltersBlock
-    v-if="config.filterList.isNotEmpty"
-    :is-open="config.filterList.isNotEmpty && isFiltersShown"
-    :entity-name="entityName"
-    :filters="filters"
-    @apply="reFetchList"
-    @change-selected-filters="onChangeSelectedFilters"
-  />
-
-  <CTable
-    v-model:sort-data="sortData"
-    :fields="fields"
-    :rows="items"
-    :select-mode="config.selectMode"
-    :selectable="config.selectable"
-    :small="config.small"
-    :draggable="config.draggable"
-    :hover="config.hover"
-    :selected-items="selectedItems"
-    :tbody-tr-class="selectedRowClass"
-    @end="onDragChanged"
-    @row-selected="onRowSelected"
-    @row-clicked="onClickRow"
-  >
-    <template
-      v-for="(fieldItem, index) in selectedFields"
-      :key="`base-list_cell-${fieldItem.key}`"
-      #[`cell(${fieldItem.key})`]="{ field, item, cell }"
-    >
-      <slot
-        v-if="checkSlotExistence(`cell(${fieldItem.key})`)"
-        :name="`cell(${fieldItem.key})`"
-        :field="field"
-        :item="item.raw"
-        :cell="cell"
-      />
-      <StatusField
-        v-else-if="field.type === ListFieldType.Status"
-        :key="`${index}_${field.type}`"
-        :value="cell"
-      />
-
-      <SumAndCurrency
-        v-else-if="field.type === ListFieldType.SumAndCurrency"
-        :key="`${index}_${field.type}`"
-        :data="{
-          amount: cell,
-          currency: item.raw.currency,
-          remainder: item.raw.remainder,
-        }"
-      />
-
-      <PillStatusField
-        v-else-if="field.type === ListFieldType.PillStatus"
-        :key="`${index}_${field.type}`"
-        :is-active="cell"
-      />
-
-      <NameWithIdField
-        v-else-if="field.type === ListFieldType.NameWithId"
-        :key="`${index}_${field.type}`"
-        :item="item.raw"
-        :get-update-route="getUpdateRoute"
-        :is-show-you="config.isShowYou"
-      >
+      <template #sidebar-actions="{ form }">
         <slot
-          :name="`${field.key}-nameWithIdTitle`"
-          :item="item.raw"
+          name="sidebar-actions"
+          :form="form"
+          :item="selectedItem"
         />
-      </NameWithIdField>
-
-      <NameWithShortIdField
-        v-else-if="field.type === ListFieldType.NameWithShortId"
-        :key="`${index}_${field.type}`"
-        :item="item.raw"
-        :get-update-route="getUpdateRoute"
-        :is-show-you="config.isShowYou"
-      >
-        <slot
-          :name="`${field.key}-nameWithIdTitle`"
-          :item="item.raw"
-        />
-      </NameWithShortIdField>
-
-      <EmailField
-        v-else-if="field.type === ListFieldType.Email"
-        :key="`${index}_${field.type}`"
-        :item="item"
-        :get-update-route="getUpdateRoute"
-      />
-
-      <DateField
-        v-else-if="field.type === ListFieldType.Date"
-        :key="`${index}_${field.type}`"
-        :date="cell"
-      />
-
-      <DateWithSecondsField
-        v-else-if="field.type === ListFieldType.DateWithSeconds"
-        :key="`${index}_${field.type}`"
-        :date="cell"
-      />
-
-      <StatementField
-        v-else-if="field.type === ListFieldType.Statement"
-        :key="`${index}_${field.type}`"
-        :state="cell"
-      />
-
-      <BadgesField
-        v-else-if="field.type === ListFieldType.Badges"
-        :key="`${index}_${field.type}`"
-        :list-badges="cell"
-      />
-
-      <PositionField
-        v-else-if="field.type === ListFieldType.Priority"
-        :key="`${index}_${field.type}`"
-        :position="cell"
-        :size="field.size"
-        :can-update="canUpdate || config.draggable"
-        @edit-position="(val) => onEditPosition(item, val)"
-      />
-
-      <ButtonField
-        v-else-if="field.type === ListFieldType.Button"
-        :key="`${index}_${field.type}`"
-        :btn-name="cell"
-      />
-
-      <CommentField
-        v-else-if="field.type === ListFieldType.Comment"
-        :key="`${index}_${field.type}`"
-        :value="cell"
-      />
-
-      <ImageField
-        v-else-if="field.type === ListFieldType.Image"
-        :key="`${index}_${field.type}`"
-        :image-path="cell"
-      />
-
-      <ImageDetailField
-        v-else-if="field.type === ListFieldType.ImageFull"
-        :id="item.raw.id"
-        :key="`${index}_${field.type}`"
-        :image-path="item.raw[field.key]?.imagePath"
-        :compression-for-preview="item.raw[field.key]?.compressionForPreview || 0"
-      />
-
-      <DatePeriodField
-        v-else-if="field.type === ListFieldType.Period"
-        :key="`${index}_${field.type}`"
-        :period="cell"
-      />
-
-      <CopyField
-        v-else-if="field.type === ListFieldType.Copy"
-        :key="`${index}_${field.type}`"
-        :value="cell"
-      />
-
-      <CopyShortField
-        v-else-if="field.type === ListFieldType.CopyShort"
-        :key="`${index}_${field.type}`"
-        :value="cell"
-      />
-
-      <template v-else-if="field.type === ListFieldType.Percent">
-        {{ cell }} %
       </template>
 
-      <ItemActions
-        v-else-if="field.key === 'actions'"
-        :item="item"
-        :create-page-name="CreatePageName"
-        :can-update="canUpdate"
-        :config="config"
-        :get-update-route="getUpdateRoute"
-        @on-remove="onClickRemove"
+      <template #sidebar-action-items="{ form }">
+        <slot
+          name="sidebar-action-items"
+          :form="form"
+          :item="selectedItem"
+        />
+      </template>
+
+      <template
+        v-for="key in sidebarSlots"
+        #[key]="{ item }"
       >
-        <template #action-items>
-          <slot
-            name="action-items"
-            :item="item"
+        <slot
+          :name="key"
+          :item="item"
+        />
+      </template>
+    </SideBar>
+
+    <ListSearch
+      v-model="searchQuery"
+      :right-search-btn="{
+        canCreate: isShownCreateBtn,
+        createPage: CreatePageName,
+      }"
+      :selected-filters="selectedFilters"
+      :export-selector="{
+        canShow: Boolean(config.withExport && canExport),
+        disable: !total,
+      }"
+      :config="config"
+      @on-click-filter="isFiltersShown = !isFiltersShown"
+      @on-export-format-selected="onExportFormatSelected"
+    >
+      <template #right-search-btn>
+        <slot name="right-search-btn" />
+      </template>
+      <template #left-search-btn>
+        <slot name="left-search-btn" />
+      </template>
+    </ListSearch>
+
+    <FiltersBlock
+      v-if="config.filterList?.isNotEmpty && isFiltersShown"
+      :is-open="config.filterList?.isNotEmpty && isFiltersShown"
+      :entity-name="entityName"
+      :filters="filters"
+      @apply="reFetchList"
+      @change-selected-filters="onChangeSelectedFilters"
+    />
+
+    <VCard class="table-card-settings">
+      <div
+        v-if="config.withSettings && (!canUpdate || selectedItems.isEmpty)"
+        class="table-settings align-center"
+        :class="config?.pagination ? 'justify-space-between' : 'justify-end'"
+      >
+        <!-- Table per page select -->
+        <div
+          v-if="config?.pagination"
+          class="d-flex gap-3 align-center justify-content-start"
+        >
+          <span>
+            {{ $t('common.show') }}
+          </span>
+
+          <VueSelect
+            :model-value="perPage"
+            :options="perPageOptions"
+            class="per-page-selector d-inline-block"
+            :dir="store.getters['appConfigCore/dirOption']"
+            :searchable="false"
+            :clearable="false"
+            @update:model-value="setPerPage"
+          >
+            <template #open-indicator="{ attributes }">
+              <VIcon
+                v-bind="attributes"
+                :icon="IconsList.ChevronDownIcon"
+              />
+            </template>
+          </VueSelect>
+        </div>
+
+        <!-- Table field settings -->
+        <div class="d-flex align-items-center justify-content-end">
+          <slot name="table-field-setting" />
+          <TableFields
+            v-model="selectedFields"
+            :entity-name="entityName"
+            :list="fields"
           />
+        </div>
+      </div>
+      <MultipleActions
+        v-else-if="config.withMultipleActions && selectedItems.isNotEmpty"
+        :number-selected-items="selectedItems.length"
+        :can-remove="canRemove"
+        @on-activate="onClickToggleStatusMultiple(true)"
+        @on-deactivate="onClickToggleStatusMultiple(false)"
+        @on-remove="onClickDeleteMultiple"
+      />
+
+      <CTable
+        v-model:sort-data="sortData"
+        :is-loading-list="isLoadingList"
+        :fields="selectedFields"
+        :rows="items"
+        :select-mode="config.selectMode"
+        :selectable="config.selectable"
+        :small="config.small"
+        :draggable="config.draggable"
+        :hover="config.hover"
+        :selected-items="selectedItems"
+        :items-per-page="perPage"
+        @end="onDragChanged"
+        @row-selected="onRowSelected"
+        @row-clicked="onClickRow"
+      >
+        <template
+          v-for="(fieldItem, index) in selectedFields"
+          :key="`base-list_cell-${fieldItem.key}`"
+          #[`cell(${fieldItem.key})`]="{ field, item, cell }"
+        >
+          <slot
+            v-if="checkSlotExistence(`cell(${fieldItem.key})`)"
+            :name="`cell(${fieldItem.key})`"
+            :field="field"
+            :item="item.raw"
+            :cell="cell"
+          />
+          <StatusField
+            v-else-if="field.type === ListFieldType.Status"
+            :key="`${index}_${field.type}`"
+            :value="cell"
+          />
+
+          <SumAndCurrency
+            v-else-if="field.type === ListFieldType.SumAndCurrency"
+            :key="`${index}_${field.type}`"
+            :data="{
+              amount: cell,
+              currency: item.raw.currency,
+              remainder: item.raw.remainder,
+            }"
+          />
+
+          <PillStatusField
+            v-else-if="field.type === ListFieldType.PillStatus"
+            :key="`${index}_${field.type}`"
+            :is-active="cell"
+          />
+
+          <NameWithIdField
+            v-else-if="field.type === ListFieldType.NameWithId"
+            :key="`${index}_${field.type}`"
+            :item="item.raw"
+            :get-update-route="getUpdateRoute"
+            :is-show-you="config.isShowYou"
+          >
+            <slot
+              :name="`${field.key}-nameWithIdTitle`"
+              :item="item.raw"
+            />
+          </NameWithIdField>
+
+          <NameWithShortIdField
+            v-else-if="field.type === ListFieldType.NameWithShortId"
+            :key="`${index}_${field.type}`"
+            :item="item.raw"
+            :get-update-route="getUpdateRoute"
+            :is-show-you="config.isShowYou"
+          >
+            <slot
+              :name="`${field.key}-nameWithIdTitle`"
+              :item="item.raw"
+            />
+          </NameWithShortIdField>
+
+          <EmailField
+            v-else-if="field.type === ListFieldType.Email"
+            :key="`${index}_${field.type}`"
+            :item="item"
+            :get-update-route="getUpdateRoute"
+          />
+
+          <DateField
+            v-else-if="field.type === ListFieldType.Date"
+            :key="`${index}_${field.type}`"
+            :date="cell"
+          />
+
+          <DateWithSecondsField
+            v-else-if="field.type === ListFieldType.DateWithSeconds"
+            :key="`${index}_${field.type}`"
+            :date="cell"
+          />
+
+          <StatementField
+            v-else-if="field.type === ListFieldType.Statement"
+            :key="`${index}_${field.type}`"
+            :state="cell"
+          />
+
+          <BadgesField
+            v-else-if="field.type === ListFieldType.Badges"
+            :key="`${index}_${field.type}`"
+            :list-badges="cell"
+          />
+
+          <PositionField
+            v-else-if="field.type === ListFieldType.Priority"
+            :key="`${index}_${field.type}`"
+            :position="cell"
+            :size="field.size"
+            :can-update="canUpdate || config.draggable"
+            @edit-position="(val) => onEditPosition(item, val)"
+          />
+
+          <ButtonField
+            v-else-if="field.type === ListFieldType.Button"
+            :key="`${index}_${field.type}`"
+            :btn-name="cell"
+          />
+
+          <CommentField
+            v-else-if="field.type === ListFieldType.Comment"
+            :key="`${index}_${field.type}`"
+            :value="cell"
+          />
+
+          <ImageField
+            v-else-if="field.type === ListFieldType.Image"
+            :key="`${index}_${field.type}`"
+            :image-path="cell"
+          />
+
+          <ImageDetailField
+            v-else-if="field.type === ListFieldType.ImageFull"
+            :id="item.raw.id"
+            :key="`${index}_${field.type}`"
+            :image-path="item.raw[field.key]?.imagePath"
+            :compression-for-preview="item.raw[field.key]?.compressionForPreview || 0"
+          />
+
+          <DatePeriodField
+            v-else-if="field.type === ListFieldType.Period"
+            :key="`${index}_${field.type}`"
+            :period="cell"
+          />
+
+          <CopyField
+            v-else-if="field.type === ListFieldType.Copy"
+            :key="`${index}_${field.type}`"
+            :value="cell"
+          />
+
+          <CopyShortField
+            v-else-if="field.type === ListFieldType.CopyShort"
+            :key="`${index}_${field.type}`"
+            :value="cell"
+          />
+
+          <template v-else-if="field.type === ListFieldType.Percent">
+            {{ cell }} %
+          </template>
+
+          <ItemActions
+            v-else-if="field.key === 'actions'"
+            :item="item.raw"
+            :create-page-name="CreatePageName"
+            :can-update="canUpdate"
+            :can-update-item="canUpdateItem(item.raw)"
+            :can-remove-item="canRemoveItem(item.raw)"
+            :config="config"
+            :get-update-route="getUpdateRoute"
+            @on-remove="onClickRemove"
+            @on-toggle-status="onClickToggleStatus"
+          >
+            <template #action-items>
+              <slot
+                name="action-items"
+                :item="item"
+              />
+            </template>
+          </ItemActions>
+
+          <template v-else>
+            {{ cell }}
+          </template>
         </template>
-      </ItemActions>
-
-      <template v-else>
-        {{ cell }}
-      </template>
-    </template>
-  </CTable>
-  <!--
-    <div class="d-flex align-center justify-center justify-sm-space-between flex-wrap gap-3 pa-5 pt-3">
-    <p class="text-sm text-disabled mb-0">
-    {{ paginationMeta(options, items.length) }}
-    </p>
-
-    <VPagination
-    v-model="options.page"
-    :total-visible="Math.ceil(items.length / options.itemsPerPage)"
-    :length="Math.ceil(items.length / options.itemsPerPage)"
-    rounded="circle"
-    />
+      </CTable>
+    </VCard>
+    <div class="mx-2">
+      <ListPagination
+        v-if="items.length && config?.pagination"
+        :model-value="currentPage"
+        :link-gen="linkGenerator"
+        :pagination-config="paginationConfig"
+        :data-meta="dataMeta"
+        @update:model-value="setPage"
+      />
     </div>
-  -->
-  <div class="mx-2">
-    <ListPagination
-      v-if="config?.pagination"
-      v-model="currentPage"
-      :link-gen="linkGenerator"
-      :pagination-config="paginationConfig"
-      :data-meta="dataMeta"
-    />
   </div>
 </template>
+
+<style lang="scss" scoped>
+.table-card-settings {
+  :deep(.table-settings) {
+    display: flex;
+    padding: 0.5rem 1.5rem;
+
+    .per-page-selector {
+      min-width: 6rem;
+    }
+
+    .btn-icon {
+      padding: 0;
+    }
+  }
+}
+</style>

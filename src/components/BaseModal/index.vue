@@ -1,28 +1,56 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { IconsList } from '@/@model/enums/icons'
+import { inject, onBeforeUnmount, onMounted, ref } from 'vue'
+import type { TranslateResult } from 'vue-i18n'
+import { IconsList } from '../../@model/enums/icons'
 
-const props = defineProps<{
-  modalKey: string
-  title?: string
+interface Props {
+  id: string
+  title?: string | TranslateResult
   state?: boolean
-}>()
+}
 
-const store = useStore()
+interface Emits {
+  (event: 'show'): void
+  (event: 'hide'): void
+}
 
-const isOpenModal = computed(() => props.state !== undefined ? props.state : store.getters['modalsCore/getState'](props.modalKey))
+const props = withDefaults(defineProps<Props>(), { title: '' })
 
-const onCloseModal = event => {
-  store.dispatch('modalsCore/setModalState', { modalKey: props.modalKey, data: false })
+const emits = defineEmits<Emits>()
+
+const modal = inject('modal')
+
+const showModal = ref(false)
+
+const show = () => {
+  showModal.value = true
+  emits('show')
+}
+
+const hide = () => {
+  showModal.value = false
+  emits('hide')
+}
+
+onMounted(() => {
+  modal.registerModal(props.id, { show, hide, showModal })
+})
+
+onBeforeUnmount(() => {
+  modal.unregisterModal(props.id)
+})
+
+const onHide = (value: boolean) => {
+  if (!value)
+    emits('hide')
 }
 </script>
 
 <template>
   <VDialog
-    :model-value="isOpenModal"
+    v-model="showModal"
     width="auto"
-    @update:model-value="onCloseModal"
+    @update:modelValue="onHide"
   >
     <template #default>
       <VCard class="modal-card">
@@ -30,40 +58,17 @@ const onCloseModal = event => {
           <p class="mb-0">
             {{ title }}
           </p>
-
           <VBtn
             color="white"
             size="30"
             class="modal-header__close"
-            @click="onCloseModal"
+            @click="hide"
           >
             <VIcon :icon="IconsList.XIcon" />
           </VBtn>
         </div>
-        <slot name="modal-body" />
+        <slot :action="{ show, hide }" />
       </VCard>
     </template>
   </VDialog>
 </template>
-
-<style lang="scss" scoped>
-.modal-card {
-  overflow: visible!important;
-}
-.modal-header {
-  position: relative;
-  height: 3rem;
-  border-radius: 0.375rem 0.375rem 0 0;
-
-  &__close {
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: translate(8px,-2px);
-
-    &:hover {
-      transform: translate(5px,3px);
-    }
-  }
-}
-</style>

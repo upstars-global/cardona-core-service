@@ -8,5 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <SumAndCurrency :data="item.value" />
+ <div>
+   <SumAndCurrency :data="item.value" />
+ </div>
 </template>

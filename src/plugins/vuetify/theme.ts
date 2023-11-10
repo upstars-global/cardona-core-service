@@ -1,4 +1,5 @@
 import type { VuetifyOptions } from 'vuetify'
+
 import { resolveVuetifyTheme } from '@core/utils/vuetify'
 import { themeConfig } from '@themeConfig'
 
@@ -23,7 +24,7 @@ const theme: VuetifyOptions['theme'] = {
         'error': '#EA5455',
         'background': '#F8F7FA',
         'on-background': '#2F2B3D',
-        'on-surface': '#2F2B3D',
+        'on-surface': '#4B465C',
         'grey-50': '#FAFAFA',
         'grey-100': '#F5F5F5',
         'grey-200': '#EEEEEE',
@@ -34,6 +35,7 @@ const theme: VuetifyOptions['theme'] = {
         'grey-700': '#616161',
         'grey-800': '#424242',
         'grey-900': '#212121',
+        'white': '#ffffff',
         'perfect-scrollbar-thumb': '#DBDADE',
         'skin-bordered-background': '#fff',
         'skin-bordered-surface': '#fff',
@@ -53,8 +55,8 @@ const theme: VuetifyOptions['theme'] = {
         'disabled-opacity': 0.42,
         'border-color': '#2F2B3D',
         'border-opacity': 0.16,
-        'high-emphasis-opacity': 0.78,
-        'medium-emphasis-opacity': 0.68,
+        'high-emphasis-opacity': 1,
+        'medium-emphasis-opacity': 1,
         'switch-opacity': 0.2,
         'switch-disabled-track-opacity': 0.3,
         'switch-disabled-thumb-opacity': 0.4,
@@ -81,7 +83,7 @@ const theme: VuetifyOptions['theme'] = {
         'background': '#25293C',
         'on-background': '#D0D4F1',
         'surface': '#2F3349',
-        'on-surface': '#D0D4F1',
+        'on-surface': '#4B465C',
         'grey-50': '#26293A',
         'grey-100': '#2F3349',
         'grey-200': '#26293A',
@@ -110,8 +112,8 @@ const theme: VuetifyOptions['theme'] = {
         'disabled-opacity': 0.42,
         'border-color': '#D0D4F1',
         'border-opacity': 0.16,
-        'high-emphasis-opacity': 0.78,
-        'medium-emphasis-opacity': 0.68,
+        'high-emphasis-opacity': 1,
+        'medium-emphasis-opacity': 1,
         'switch-opacity': 0.4,
         'switch-disabled-track-opacity': 0.4,
         'switch-disabled-thumb-opacity': 0.8,

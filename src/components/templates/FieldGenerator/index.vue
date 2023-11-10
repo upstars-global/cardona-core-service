@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { FieldInfo, FieldType } from '../../../@model/field'
 import { BaseField } from '../../../@model/templates/baseField'
 import { IconsList } from '../../../@model/enums/icons'
+import store from "@/store";
 
-const props = defineProps<{
-  modelValue: FieldInfo | BaseField
-  options?: Array<any>
-  withLabel?: boolean
-  withInfo?: boolean
-  disabled?: boolean
-  size?: string // TODO: refactor sizes
-}>()
+const props = withDefaults(defineProps<{
+          modelValue: FieldInfo | BaseField
+          options?: Array<any>
+          withLabel?: boolean
+          withInfo?: boolean
+          disabled?: boolean
+          size?: string // TODO: refactor sizes
+        }>(),
+        {
+          withLabel: true,
+          withInfo: true,
+        })
+
 
 const emits = defineEmits<{
   (e: 'search', search: string): void
@@ -48,9 +54,11 @@ const fieldModel = computed({
       // eslint-disable-next-line vue/no-mutating-props
       props.modelValue.value = value
     }
-    else { emits('update:modelValue', new FieldInfo<any>({ ...props.value, value })) }
+    else { emits('update:modelValue', new FieldInfo<any>({ ...props.modelValue, value })) }
   },
 })
+
+const localValue = shallowRef(props.modelValue instanceof BaseField ? props.modelValue.component : `${props.modelValue.type}-field`)
 
 const onSearch = (search: string) => emits('search', search)
 </script>
@@ -70,7 +78,7 @@ const onSearch = (search: string) => emits('search', search)
         {{ groupLabel }}
       </span>
       <VIcon
-        v-if="withInfo && value.info"
+        v-if="withInfo && modelValue.info"
         :icon="IconsList.InfoIcon"
         class="text-muted ml-25 align-text-top"
       />
@@ -78,7 +86,7 @@ const onSearch = (search: string) => emits('search', search)
 
     <div>
       <Component
-        :is="modelValue.component || `${modelValue.type}-field`"
+        :is="localValue"
         :id="modelValue.key"
         v-model="fieldModel"
         :options="options"

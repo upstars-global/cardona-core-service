@@ -1,26 +1,29 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { BSize } from '../../../@model/bootstrap'
+import { useRouter } from 'vue-router'
 import type { LinkViewValue } from '../../../@model/view'
 import { IconsList } from '../../../@model/enums/icons'
+import { VSizes } from '@/@model/vuetify'
 
 const props = withDefaults(
   defineProps<{
     value: LinkViewValue
-    size?: BSize
+    size?: VSizes
   }>(),
   {
-    size: BSize.Md,
+    size: VSizes.Medium,
   },
 )
 
-const { router } = useRouter()
+const router = useRouter()
 
-const linkSizeClass = computed(() => `size-${props.size}`)
-
-const iconSize = computed(() =>
-  props.size === BSize.Xl ? '16' : props.size === BSize.Sm ? '12' : '14', // TODO: refactor sizes
-)
+const linkSizeClass = computed(() => {
+  switch (props.size) {
+    case VSizes.Large: return 'text-h4'
+    case VSizes.Small: return 'text-subtitle-1'
+    default: return ''
+  }
+})
 
 const onClickLink = () => {
   const route = router.resolve(props.value.route!)
@@ -31,7 +34,7 @@ const onClickLink = () => {
 
 <template>
   <div
-    class="d-flex align-items-center text-primary font-weight-bold cursor-pointer"
+    class="d-flex align-center text-primary font-weight-bold cursor-pointer"
     :class="linkSizeClass"
     @click="onClickLink"
   >
@@ -41,8 +44,7 @@ const onClickLink = () => {
 
     <VIcon
       :icon="IconsList.ExternalLinkIcon"
-      class="mr-0"
-      :size="iconSize"
+      :size="size"
     />
   </div>
 </template>

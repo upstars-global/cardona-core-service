@@ -6,6 +6,11 @@ import './pages/datatable'
 import './pages/faq'
 import './pages/help-center'
 import './pages/profile'
+import './user'
+import './locale'
+import './demo/project-config'
+import './demo'
+import './compostela'
 
 // Apps
 import './apps/calendar'

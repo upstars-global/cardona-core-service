@@ -22,7 +22,7 @@ export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfi
         {
           path: entityUrl,
           name: `${entityName}List`,
-          component: () => import(`@/pages/${importSTR}/list`),
+          component: () => import(`@/pages/${importSTR}/list/index.vue`),
           meta: {
             title: `${sectionConfig.name}.list`,
             permission,
@@ -37,7 +37,7 @@ export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfi
         {
           path: `${entityUrl}/create`,
           name: `${entityName}Create`,
-          component: () => import(`@/pages/${importSTR}/create`),
+          component: () => import(`@/pages/${importSTR}/create/index.vue`),
           meta: {
             title: `${sectionConfig.name}.create`,
             permission,
@@ -57,7 +57,7 @@ export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfi
         {
           path: `${entityUrl}/update/:id`,
           name: `${entityName}Update`,
-          component: () => import(`@/pages/${importSTR}/update`),
+          component: () => import(`@/pages/${importSTR}/update/index.vue`),
           meta: {
             title: `${sectionConfig.name}.edit`,
             permissionGroup: sectionConfig.isPermissionGroup ? sectionConfig.name : undefined,

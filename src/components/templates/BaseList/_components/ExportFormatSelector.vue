@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ExportFormat } from '../../../../@model/templates/baseList'
+import { IconsList } from '../../../../@model/enums/icons'
+import { VColors, VVariants } from '../../../../@model/vuetify'
 
 defineProps<{
   disabled: boolean
@@ -13,31 +15,15 @@ const onClick = (format: string) => emits('exportFormatSelected', format)
 </script>
 
 <template>
-  <!--
-    <b-dropdown variant="outline-secondary" :disabled="disabled">
-    <template #button-content>
-    <feather-icon :icon="IconsList.UploadIcon" />
-
-    <span class="ml-50">
-    {{ $t('action.export') }}
-    </span>
-    </template>
-
-    <template #default>
-    <b-dropdown-item v-for="(value, key) in ExportFormat" :key="value" @click="onClick(value)">
-    {{ key }}
-    </b-dropdown-item>
-    </template>
-    </b-dropdown>
-  -->
   <VMenu>
     <template #activator="{ props }">
-      <!-- TODO: refactor variant/color -->
       <VBtn
-        color="primary"
+        :variant="VVariants.Outlined"
+        :color="VColors.Secondary"
         v-bind="props"
+        :prepend-icon="IconsList.UploadIcon"
       >
-        Activator slot
+        {{ $t('action.export') }}
       </VBtn>
     </template>
     <VList>

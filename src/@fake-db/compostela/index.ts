@@ -1,5 +1,5 @@
-import mock from '../../mock'
-import { PaginationData } from '../../../@model'
+import mock from '../mock'
+import type { PaginationData } from '../../../@model'
 
 // List
 export const listImages = [
@@ -41,6 +41,7 @@ export const listImages = [
 ]
 
 const pagination: PaginationData = { pageNumber: 1, perPage: 10, total: 4 }
+
 mock.onPost('api/v2/compostela/structure/list').reply(({}) => {
   return [200, { data: listImages, pagination }]
 })

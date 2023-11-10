@@ -5,6 +5,7 @@ import type { Filter } from '../../../../@model/filter'
 import { BSize } from '../../../../@model/bootstrap'
 import type { IBaseListConfig } from '../../../../@model/templates/baseList'
 import AppTextField from '../../../../@core/components/app-form-elements/AppTextField.vue'
+import { VColors, VVariants } from '../../../../@model/vuetify'
 
 interface Props {
   config: IBaseListConfig
@@ -21,9 +22,9 @@ interface Props {
 }
 
 interface Emits {
-  (event: 'input', payload: string): void
-  (event: 'on-click-filter'): void
-  (event: 'on-export-format-selected', payload: string): void
+  (e: 'update:modelValue', payload: string): void
+  (e: 'onClickFilter'): void
+  (e: 'onExportFormatSelected', payload: string): void
 }
 
 const props = defineProps<Props>()
@@ -41,31 +42,35 @@ const onExportFormatSelected = (format: string) => {
 
 const searchQuery = computed({
   get: () => props.modelValue,
-  set: value => emits('input', value),
+  set: value => emits('update:modelValue', value),
 })
 </script>
 
 <template>
-  <VRow class="filters-row">
+  <VRow no-gutters>
     <VCol>
-      <div class="d-flex align-items-center justify-content-end">
+      <div class="d-flex gap-4 align-items-center justify-content-end">
         <slot name="left-search-btn" />
 
         <AppTextField
           v-if="config.withSearch"
           v-model="searchQuery"
-          class="search mr-3"
+          :prepend-inner-icon="IconsList.SearchIcon"
           :placeholder="config.searchPlaceholder"
+          :bg-color="VColors.White"
+          class="search"
         />
 
         <VBtn
           v-if="config.filterList?.isNotEmpty"
           :prepend-icon="IconsList.FilterIcon"
+          :variant="VVariants.Outlined"
+          :color="VColors.Secondary"
           @click="onFilterButtonClick"
         >
           <span
             v-if="!config.small"
-            class="align-middle "
+            class="align-middle"
           >
             {{ $t('common.filter._') }}
           </span>
@@ -81,7 +86,6 @@ const searchQuery = computed({
         <ExportFormatSelector
           v-if="exportSelector.canShow"
           :disabled="exportSelector.disable"
-          class="ml-1"
           @export-format-selected="onExportFormatSelected"
         />
 
@@ -93,13 +97,9 @@ const searchQuery = computed({
           <VBtn
             v-if="rightSearchBtn.canCreate"
             :to="{ name: rightSearchBtn.createPage }"
-            class="ml-1"
+            :prepend-icon="IconsList.PlusIcon"
+            :color="VColors.Primary"
           >
-            <VIcon
-              :icon="IconsList.PlusIcon"
-              class="mr-50"
-            />
-
             <span class="text-nowrap">
               {{ $t('action.create') }}
             </span>
@@ -109,9 +109,3 @@ const searchQuery = computed({
     </VCol>
   </VRow>
 </template>
-
-<style scoped lang="scss">
-.filters-row {
-  margin-bottom: 2rem;
-}
-</style>

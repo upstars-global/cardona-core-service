@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ViewInfo } from '../../../../@model/view'
 import { IconsList } from '../../../../@model/enums/icons'
+import { VSizes, VVariants } from '../../../../@model/vuetify'
 
 const props = defineProps<{
   item: ViewInfo
@@ -40,7 +41,7 @@ const toggleIcon = computed(() => {
 })
 
 const isShowToggleButton = computed(() => {
-  return filteredList.value.length > maxShowItem
+  return filteredList.value?.length > maxShowItem
 })
 </script>
 
@@ -48,39 +49,44 @@ const isShowToggleButton = computed(() => {
   <div class="full-width">
     <div
       v-if="item.withSearch"
-      class="mb-50"
+      class="mb-50 input-field mb-2"
     >
       <VTextField
         v-model="localSearch"
         :prepend-inner-icon="IconsList.SearchIcon"
         :placeholder="$t('placeholder.search._')"
-        variant="outlined"
+        :variant="VVariants.Outlined"
       />
     </div>
     <Transition
       name="fade"
       mode="out-in"
     >
-      <div :key="itemsList.length">
+      <div
+        v-if="itemsList && Array.isArray(itemsList)"
+        :key="itemsList.length"
+      >
         <VChip
           v-for="(itemArr, key) in itemsList"
           :key="key"
-          variant="light-secondary"
-          class="mr-50 mb-50"
+          label
+          :variant="VVariants.Tonal"
+          :size="VSizes.XSmall"
+          class="mr-2 font-weight-bold"
         >
           {{ itemArr.name }}
         </VChip>
         <VChip
           v-if="isShowToggleButton"
-          variant="light-primary"
-          size="sm"
+          :variant="VVariants.Tonal"
+          :size="VSizes.XSmall"
           class="cursor-pointer"
           @click="onToggleShowList"
         >
           {{ toggleLabel }}
           <VIcon
             :icon="toggleIcon"
-            class="mr-50"
+            class="mr-2"
           />
         </VChip>
       </div>

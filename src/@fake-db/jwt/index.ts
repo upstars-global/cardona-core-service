@@ -3,6 +3,7 @@ import type { User, UserOut } from '@/@fake-db/types.d'
 import { genId } from '@/@fake-db/utils'
 import avatar1 from '@images/avatars/avatar-1.png'
 import avatar2 from '@images/avatars/avatar-2.png'
+import { productId, productName } from '@productConfig'
 
 // TODO: Use jsonwebtoken pkg
 // ℹ️ Created from https://jwt.io/ using HS256 algorithm
@@ -23,7 +24,7 @@ const userTokens = [
 // ❗ These two secrets shall be in .env file and not in any other file
 // const jwtSecret = 'dd5f3089-40c3-403d-af14-d0c228b05cb4'
 
-const database: User[] = [
+export const database: User[] = [
   {
     id: 1,
     fullName: 'John Doe',
@@ -39,6 +40,90 @@ const database: User[] = [
         subject: 'all',
       },
     ],
+    permissions: [
+      {
+        target: 'demo-demo',
+        access: 4,
+      },
+      {
+        target: 'demo-demo-report',
+        access: 1,
+      },
+      {
+        target: 'demo-demo-seo',
+        access: 3,
+      },
+    ],
+    products: [
+      {
+        name: productName,
+        id: productId,
+      },
+    ],
+    projects: [
+      {
+        id: 164,
+        name: 'ThorDevelop',
+        publicName: 'ThorDevelop',
+        alias: 'thor_develop',
+        websiteUrl: 'https://rc.thor-develop.upstr.to',
+        integrations: { valencia: true, marbella: true },
+        iconPath: '/svc/img/i/shared/projects/chromevnztIDiq_png',
+        originProject: {
+          integrations: { valencia: true, marbella: true },
+          websiteUrl: 'https://rc.thor-develop.upstr.to',
+          publicName: 'ThorDevelop',
+          locales: [
+            'en',
+            'en_AU',
+            'en_CA',
+            'en_IN',
+            'en_NZ',
+            'es',
+            'fr',
+            'fr_CA',
+            'fr_FR',
+            'pt',
+            'pt_BR',
+          ],
+          mainLocale: 'en',
+          icon: {
+            path: null,
+            compostelaPath: '/svc/img/i/shared/projects/chromevnztIDiq_png',
+            publicPath: '/svc/img/i/shared/projects/chromevnztIDiq_png',
+          },
+          id: 164,
+          name: 'ThorDevelop',
+          alias: 'thor_develop',
+          iconPath: '/svc/img/i/shared/projects/chromevnztIDiq_png',
+        },
+        mainLocale: 'en',
+        locales: [
+          'en',
+          'en_AU',
+          'en_CA',
+          'en_IN',
+          'en_NZ',
+          'es',
+          'fr',
+          'fr_CA',
+          'fr_FR',
+          'pt',
+          'pt_BR',
+        ],
+      },
+    ],
+    ability: [
+      {
+        action: 'manage',
+        subject: 'all',
+      },
+    ],
+    extras: {
+      eCommerceCartItemsCount: 5,
+    },
+    defaultCurrency: 'USD',
+    currencies: ['AUD', 'NZD', 'CAD', 'EUR', 'INR', 'USD', 'BRL'],
   },
   {
     id: 2,
@@ -57,6 +142,20 @@ const database: User[] = [
       {
         action: 'read',
         subject: 'AclDemo',
+      },
+    ],
+    permissions: [
+      {
+        target: 'demo-demo',
+        access: 4,
+      },
+      {
+        target: 'demo-demo-report',
+        access: 1,
+      },
+      {
+        target: 'demo-demo-seo',
+        access: 3,
       },
     ],
   },

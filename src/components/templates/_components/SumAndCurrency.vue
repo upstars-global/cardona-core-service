@@ -9,14 +9,14 @@ defineProps<{
 </script>
 
 <template>
-  <div class="d-flex flex-column width-content currency-wrapper">
+  <div class="d-flex flex-column width-content currency-wrapper justify-start">
     <div>
       <span
         :key="data.amount"
         v-currency="data.amount"
       />
 
-      <span>
+      <span class="pl-1">
         {{ data.currency }}
       </span>
     </div>
@@ -33,7 +33,6 @@ defineProps<{
         :key="data.remainder"
         v-currency="data.remainder"
       />
-
       <span>
         {{ data.currency }}
       </span>

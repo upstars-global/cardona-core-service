@@ -1,6 +1,7 @@
-import type { UseListType } from '../../components/templates/BaseList/model'
-import { DemoFilter, DemoListItem, DemoSideBar } from '../../@model/demo'
-import { ListFieldType, TableField } from '../../@model/templates/tableFields'
+import { DemoFilter, DemoForm, DemoListItem, DemoSideBar } from '../../@model/demo'
+import { AlignType, ListFieldType, TableField } from '../../@model/templates/tableFields'
+import type { UseEntityType } from '../../@model/templates/baseSection'
+import type { UseListType } from '../../@model/templates/baseList'
 import i18n from '@/plugins/i18n'
 
 const entityName = 'Demo'
@@ -98,11 +99,13 @@ export const useDemoList = (): UseListType => {
       type: ListFieldType.SumAndCurrency,
       key: 'amount',
       title: i18n.global.t('common.sum'),
+      align: AlignType.Right,
     }),
     new TableField({
       type: ListFieldType.SumAndCurrency,
       key: 'winBack',
       title: i18n.global.t('common.sum'),
+      align: AlignType.Right,
     }),
     new TableField({
       type: ListFieldType.Comment,
@@ -117,7 +120,7 @@ export const useDemoList = (): UseListType => {
       key: 'type',
       title: i18n.global.t('common.type'),
     }),
-    new TableField({ key: 'actions', title: 'actions' }),
+    new TableField({ key: 'actions', title: '' }),
   ]
 
   return {
@@ -126,5 +129,14 @@ export const useDemoList = (): UseListType => {
     fields,
     ListFilterModel,
     SideBarModel,
+  }
+}
+
+export const useDemoSection = (): UseEntityType<DemoForm> => {
+  const EntityFormClass = DemoForm
+
+  return {
+    entityName,
+    EntityFormClass,
   }
 }

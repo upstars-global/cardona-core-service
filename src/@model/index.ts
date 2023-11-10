@@ -15,8 +15,8 @@ export interface IRequestListPayload<T = any> {
 }
 
 export interface IListSort {
-  readonly field: string
-  readonly dir: SortDirection
+  readonly key: string
+  readonly order: SortDirection
 }
 
 export interface IListSortData {
@@ -25,12 +25,12 @@ export interface IListSortData {
 }
 
 export class ListSort implements IListSort {
-  readonly field: string
-  readonly dir: SortDirection
+  readonly key: string
+  readonly order: SortDirection
 
-  constructor({ sortBy, sortDesc }: IListSortData) {
-    this.field = sortBy
-    this.dir = sortDesc ? SortDirection.asc : SortDirection.desc
+  constructor({ key, order }: IListSort) {
+    this.key = key
+    this.order = order ? SortDirection.asc : SortDirection.desc
   }
 }
 

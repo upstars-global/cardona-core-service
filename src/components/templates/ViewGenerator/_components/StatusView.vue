@@ -8,5 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <StatusField :value="item.value" />
+  <div>
+    <StatusField :value="item.value" />
+  </div>
 </template>

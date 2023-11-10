@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { VForm } from 'vuetify/components/VForm'
+import { useStore } from 'vuex'
 import type { LoginResponse } from '@/@fake-db/types'
 import { useAppAbility } from '@/plugins/casl/useAppAbility'
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
@@ -23,6 +24,7 @@ const isPasswordVisible = ref(false)
 
 const route = useRoute()
 const router = useRouter()
+const store = useStore()
 
 const ability = useAppAbility()
 
@@ -38,7 +40,7 @@ const rememberMe = ref(false)
 
 const login = () => {
   axios.post<LoginResponse>('/auth/login', { email: email.value, password: password.value })
-    .then(r => {
+    .then(async r => {
       const { accessToken, userData, userAbilities } = r.data
 
       localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
@@ -48,6 +50,7 @@ const login = () => {
       localStorage.setItem('accessToken', JSON.stringify(accessToken))
 
       // Redirect to `to` query if exist or redirect to index route
+      await store.dispatch('fetchCurrentUser')
       router.replace(route.query.to ? String(route.query.to) : '/')
     })
     .catch(e => {

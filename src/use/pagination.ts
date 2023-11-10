@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref } from 'vue'
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getStorage, setStorage } from '../helpers/storage'
 
@@ -58,22 +58,19 @@ export default function usePagination(
 
   const perPage = ref(Number(perPageValue))
 
-  const setupDataMeta = (refTable: any) =>
-    computed(() => {
-      const localItemsCount: number = refTable.value ? refTable.value.localItems.length : 0
-
-      return {
-        from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
-        to: perPage.value * (currentPage.value - 1) + localItemsCount,
-        of: total.value,
-      }
-    })
+  const setupDataMeta = (localItemsCount: number) => {
+    return {
+      from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
+      to: perPage.value * (currentPage.value - 1) + localItemsCount,
+      of: total.value,
+    }
+  }
 
   const setPerPage = (value: number) => {
     if (isUseRouter) {
       router.push({
         query: {
-          ...route.value.query,
+          ...route.query,
           perPage: value,
         },
       } as any)
@@ -90,7 +87,7 @@ export default function usePagination(
     if (isUseRouter) {
       router.push({
         query: {
-          ...route.value.query,
+          ...route.query,
           page,
           perPage: perPageProps || perPage.value,
         },
@@ -110,15 +107,15 @@ export default function usePagination(
     return {
       query: {
         perPage: perPage.value,
-        ...route.value.query,
+        ...route.query,
         page: pageNum,
       },
     }
   }
 
   watch([route], () => {
-    currentPage.value = Number(route.value.query.page) || 1
-    perPage.value = Number(route.value.query.perPage) || defaultPerPage
+    currentPage.value = Number(route.query.page) || 1
+    perPage.value = Number(route.query.perPage) || defaultPerPage
   })
 
   const onChangePagination = (cb: Function) => {
@@ -142,7 +139,7 @@ export default function usePagination(
       if (isUseRouter) {
         router.push({
           query: {
-            ...route.value.query,
+            ...route.query,
             perPage: perPage.value,
             page: numberOfPages.value,
           },

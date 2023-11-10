@@ -1,6 +1,6 @@
 import i18n from '../plugins/i18n'
-import { tagsList } from '../@fake-db/data/demo'
 import { FieldInfo, FieldType } from './field'
+import { tagsList } from '@/@fake-db/demo/demoListData'
 
 export enum ProjectFilterTypes {
   Tags = 'tags',
