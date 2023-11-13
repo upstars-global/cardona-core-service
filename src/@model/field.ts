@@ -4,7 +4,6 @@ import { TranslateResult } from 'vue-i18n'
 
 export enum FieldType {
   Password = 'password', // TODO: https://upstars.atlassian.net/browse/BAC-2050
-  RichText = 'rich-text', // TODO: https://upstars.atlassian.net/browse/BAC-2051
   CheckGroup = 'check-group', // TODO: https://upstars.atlassian.net/browse/BAC-2052
   DummySelect = 'dummy-select', // TODO: https://upstars.atlassian.net/browse/BAC-2061
   Tags = 'tags', // TODO: https://upstars.atlassian.net/browse/BAC-2054
