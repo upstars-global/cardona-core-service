@@ -24,7 +24,7 @@
         multiple
         :disabled="disabled"
         :options="regionsOptions"
-        :placeholder="selectedCountriesPlaceholder"
+        :placeholder="$t('component.countriesSelect.allowAll')"
         class="countries-select"
       />
     </b-form-group>
@@ -68,15 +68,6 @@ export default defineComponent({
       }
 
       return radioLabels[countriesRadioModel.value]
-    })
-
-    const selectedCountriesPlaceholder = computed(() => {
-      const selectedCountriesPlaceholders = {
-        allow: i18n.t('component.countriesSelect.banAll'),
-        ban: i18n.t('component.countriesSelect.allowAll'),
-      }
-
-      return selectedCountriesPlaceholders[countriesRadioModel.value]
     })
 
     const hasCountryCode = (codeList: string[], countryCode: string): boolean => {
@@ -123,7 +114,7 @@ export default defineComponent({
       if (!selectedCountries.value) return
       const bannedCountries = selectedCountries.value.map(({ code }: RegionInfo) => code)
 
-      if (countriesRadioModel.value === 'ban') {
+      if (countriesRadioModel.value === 'ban' || bannedCountries.isEmpty) {
         emit('input', bannedCountries)
       } else {
         const allowedCountries: Array<string> = regions.value
@@ -145,7 +136,6 @@ export default defineComponent({
       selectedCountries,
       optionsRadioCountries,
       countriesRadioLabel,
-      selectedCountriesPlaceholder,
       regionsOptions,
     }
   },
