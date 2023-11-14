@@ -33,6 +33,20 @@
         }"
       />
     </template>
+    <template #cell(settings)="{ item }">
+      <div class="d-flex">
+        <btn-icon disabled :icon="IconsList.ClockIcon" :value="!!buttonState[item.id]" />
+        <btn-icon
+          class="ml-50"
+          :value="!!buttonState[item.id]"
+          :icon="IconsList.ClockIcon"
+          :tooltip-text="
+            Boolean(buttonState[item.id]) ? $t('common.isActive') : $t('common.unActive')
+          "
+          @click="setButtonState(item.id)"
+        />
+      </div>
+    </template>
   </base-list>
 </template>
 
@@ -43,6 +57,7 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import BaseList from '../../../components/templates/BaseList/index.vue'
 import SumAndCurrency from '../../../components/SumAndCurrency.vue'
 import { BaseListConfig } from '../../../components/templates/BaseList/model'
@@ -53,6 +68,7 @@ import { FilterType } from '../../../@model/filter'
 import { ProjectFilterTypes } from '@filterConfig'
 import InnerBlankLink from '../../../components/templates/_components/InnerBlankLink.vue'
 import SumPeriod from '../../../components/templates/_components/SumPeriod.vue'
+import BtnIcon from '../../../components/BtnIcon.vue'
 import { IconsList } from '../../../@model/enums/icons'
 
 const { t } = useI18nUtils()
@@ -94,6 +110,14 @@ const listConfig = new BaseListConfig({
 })
 
 const getUpdateRoute = ({ id }): Location => ({ name: 'DemoUpdate', params: { id } })
+
+const buttonState = ref({})
+const setButtonState = (key: string): void => {
+  buttonState.value = {
+    ...buttonState.value,
+    [key]: !buttonState.value[key] || false,
+  }
+}
 </script>
 
 <style lang="scss" scoped>

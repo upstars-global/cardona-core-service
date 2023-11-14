@@ -1,0 +1,15 @@
+export enum TooltipPlacement {
+  Top = 'top',
+  Bottom = 'bottom',
+  Left = 'left',
+  Right = 'right',
+  Auto = 'auto',
+  TopLeft = 'topleft',
+  TopRight = 'topright',
+  BottomLeft = 'bottomleft',
+  BottomRight = 'bottomright',
+  LeftTop = 'lefttop',
+  LeftBottom = 'leftbottom',
+  RightTop = 'righttop',
+  RightBottom = 'rightbottom',
+}
