@@ -126,7 +126,9 @@
     "state": "State",
     "comment": "Comment",
     "isActive": "Is active",
+    "unActive": "Un active",
     "sumPeriod": "Sum period",
+    "settings": "Settings",
     "phone": {
       "_": "Phone",
       "list": "Phones"

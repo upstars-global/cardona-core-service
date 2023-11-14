@@ -123,6 +123,7 @@ export const useDemoList = (): UseListType => {
       label: t('common.type'),
     }),
     new TableField({ key: 'actions', label: '' }),
+    new TableField({ key: 'settings', label: t('common.settings') }),
   ]
 
   return {
