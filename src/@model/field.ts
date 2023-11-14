@@ -3,14 +3,13 @@ import { OptionsItem } from './index'
 import { TranslateResult } from 'vue-i18n'
 
 export enum FieldType {
-  Password = 'password',
-  RichText = 'rich-text',
-  CheckGroup = 'check-group',
-  DummySelect = 'dummy-select',
-  Tags = 'tags',
-  DateBtnOnly = 'date-btn-only',
-  SumRange = 'sum-range',
-  Phone = 'phone',
+  Password = 'password', // TODO: https://upstars.atlassian.net/browse/BAC-2050
+  CheckGroup = 'check-group', // TODO: https://upstars.atlassian.net/browse/BAC-2052
+  DummySelect = 'dummy-select', // TODO: https://upstars.atlassian.net/browse/BAC-2061
+  Tags = 'tags', // TODO: https://upstars.atlassian.net/browse/BAC-2054
+  DateBtnOnly = 'date-btn-only', // TODO: https://upstars.atlassian.net/browse/BAC-2055
+  SumRange = 'sum-range', // TODO: https://upstars.atlassian.net/browse/BAC-2060
+  Phone = 'phone', // TODO: https://upstars.atlassian.net/browse/BAC-2053
   Rates = 'rates', // TODO: https://upstars.atlassian.net/browse/BAC-1860
 }
 

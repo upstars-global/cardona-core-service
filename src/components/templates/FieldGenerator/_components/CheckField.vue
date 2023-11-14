@@ -9,7 +9,7 @@ import { computed } from 'vue'
 import { CheckBaseField } from '../../../../@model/baseField'
 
 type CheckFieldProps = {
-  value: boolean
+  value?: boolean
   field: CheckBaseField
   disabled?: boolean
 }

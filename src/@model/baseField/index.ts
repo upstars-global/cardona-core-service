@@ -11,8 +11,11 @@ import { SwitchBaseField } from './switch'
 import { CheckBaseField } from './check'
 import { DateBaseField } from './date'
 import { RadioBaseField } from './radio'
+import { RichTextBaseField } from './rich-text'
+
 export const getInstanceClass = (instance: object) => {
   const fields = [
+    RichTextBaseField,
     RadioBaseField,
     CheckBaseField,
     DateBaseField,
@@ -44,4 +47,5 @@ export {
   RadioBaseField,
   DateBaseField,
   CheckBaseField,
+  RichTextBaseField,
 }
