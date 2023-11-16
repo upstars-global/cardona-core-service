@@ -2,11 +2,13 @@
 import { computed, ref, watch } from 'vue'
 import 'vue-froala-wysiwyg'
 import type { TranslateResult } from 'vue-i18n'
-import { useI18n } from 'vue-i18n'
 import store from '../../store'
 import type { LocaleVariable } from '../../@model/translations'
+import { VColors } from '../../@model/vuetify'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
+import { IconsList } from '@/@model/enums/icons'
+import i18n from '@/plugins/i18n'
 
 interface Props {
   value: string
@@ -26,19 +28,17 @@ const props = withDefaults(defineProps<Props>(), {
   value: '',
   optionsVariable: () => [],
   localisationParameters: () => ({}),
-  placeholder: t('common.description') as string,
   disabled: false,
+  placeholder: i18n.global.t('common.description') as string
 })
 
 const emit = defineEmits<Emits>()
 
-const { t } = useI18n()
-
-const directives = { 'b-tooltip': VBTooltip }
+const modal = inject('modal')
 
 const content = computed({
   get: () => props.value,
-  set: value => emit('input', value),
+  set: value => emit('input', value)
 })
 
 const globalEditor = ref()
@@ -75,7 +75,7 @@ const variableTextBuffer = computed({
   },
   set: val => {
     store.dispatch('textEditor/setVariableTextBuffer', val)
-  },
+  }
 })
 
 watch(
@@ -84,8 +84,8 @@ watch(
     emit('update-localisation-parameters', variableTextBuffer.value)
   },
   {
-    deep: true,
-  },
+    deep: true
+  }
 )
 
 watch(
@@ -93,7 +93,7 @@ watch(
   async () => {
     setVariableTextBuffer(props.localisationParameters)
   },
-  { deep: true, immediate: true },
+  { deep: true, immediate: true }
 )
 
 const variableKeySelect = ref('')
@@ -147,7 +147,7 @@ const config = {
             .replace(' {{', '{{')
             .replace('}} ', '}}')
             .replace('{{', '&nbsp;<span class="variable-box">{')
-            .replace('}}', '}</span>&nbsp;'),
+            .replace('}}', '}</span>&nbsp;')
         )
         editor.selection.restore()
         store.dispatch('textEditor/setUpdateVar', true)
@@ -162,9 +162,9 @@ const config = {
       editor.selection.restore()
 
       emit('input', contentChanged)
-    },
+    }
   },
-  ...baseConfig,
+  ...baseConfig
 }
 
 const newVariableText = ref({})
@@ -219,10 +219,11 @@ const variableKeyUnselect = () => {
   variableKeySelect.value = ''
 }
 
-const setVariableKeySelect = key => {
+const setVariableKeySelect = (key: string) => {
   // Установить ключь для работы с конкретной переменной
   // Данный ключь будет использоваться в модальном окне
   variableKeySelect.value = key
+  modal.showModal('variable-modal')
 }
 
 const updateVariableTextByKey = val => {
@@ -242,7 +243,7 @@ const deleteVariableTextByKey = () => {
     globalEditor.value.html
       .get(true) // Параметр true нужен для возвращения HTML вместе с положением каретки текста
       .replaceAll(`<span class="variable-box">{${variableKeySelect.value}}</span>`, '')
-      .replaceAll('&nbsp;&nbsp;', ''),
+      .replaceAll('&nbsp;&nbsp;', '')
   )
   removeVariableValueByKey(variableKeySelect.value)
   emit('remove-variable', variableKeySelect.value)
@@ -279,96 +280,19 @@ const deleteVariableTextByKey = () => {
         class="d-flex flex-wrap align-items-center block-text-edite-variable pt-1"
       >
         <span class="font-small-3 font-weight-bolder mr-1 mb-50">
-          {{ $t('common.editor.addedVariables') }}
+          <small><b>{{ $t('common.editor.addedVariables') }}:</b></small>
         </span>
-        <!--        TODO: refactor variant/color -->
-        <BBadge
+        <VChip
           v-for="key in Object.keys(variableTextBuffer)"
           :key="key"
-          v-b-modal.variable-modal
-          variant="light-primary"
+          label
+          :color="VColors.Primary"
           class="tag-variable mr-1 mb-50"
           @click="setVariableKeySelect(key)"
         >
-          {{ `{${key}\}` }}
-        </BBadge>
+          <span class="pr-1">{{ `{${key}\}` }} </span><VIcon :icon="IconsList.XIcon" />
+        </VChip>
       </div>
     </div>
   </div>
 </template>
-
-<style lang="scss">
-@import '../../@core/scss/base/bootstrap-extended/_include';
-@import '../../@core/scss/base/components/include';
-
-.dark-layout {
-  .block-text-edite {
-    .fr-toolbar,
-    .fr-element,
-    .fr-second-toolbar {
-      background: $theme-dark-input-bg;
-      color: $theme-dark-body-color;
-    }
-    .fr-toolbar,
-    .fr-popup,
-    .fr-modal {
-      .fr-command.fr-btn {
-        color: $theme-dark-body-color;
-        svg path {
-          fill: $theme-dark-body-color;
-        }
-      }
-    }
-    .fr-desktop .fr-command:hover:not(.fr-table-cell),
-    .fr-desktop .fr-command:focus:not(.fr-table-cell),
-    .fr-desktop .fr-command.fr-btn-hover:not(.fr-table-cell),
-    .fr-desktop .fr-command.fr-expanded:not(.fr-table-cell) {
-      background: $theme-dark-table-header-bg;
-    }
-  }
-}
-
-.block-text-edite {
-  .fr-qi-helper a.fr-btn.fr-floating-btn {
-    padding: 10px 10px 10px 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .fr-element {
-    color: $body-color;
-  }
-  .variable-box {
-    display: inline-block;
-    background: rgba(108, 117, 125, 0.12);
-    color: $body-color;
-    padding: 1px 0.285rem;
-  }
-  .block-text-edite-variable {
-    .tag-variable {
-      cursor: pointer;
-
-      &:hover {
-        background: rgba(115, 103, 240, 0.08);
-        color: $purple;
-      }
-    }
-  }
-}
-
-.bordered-layout {
-  .editor-wrap {
-    &.disabled {
-      .fr-toolbar,
-      .fr-wrapper,
-      .fr-second-toolbar {
-        background-color: $input-disabled-bg;
-
-        .fr-view {
-          color: $body-color;
-        }
-      }
-    }
-  }
-}
-</style>

@@ -2,29 +2,35 @@
 import { computed, ref, watch } from 'vue'
 import { difference } from 'lodash'
 import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg/index.vue'
-import type { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
 import type { LocaleVariable } from '../../../../@model/translations'
 import { filterString, getVariablesFromLocale } from '../../../../helpers/text-editor'
+import type { RichTextBaseField } from '../../../..//@model/templates/baseField'
 
-const props = defineProps<{
-  modelValue: string
-  field: FieldInfo
-  errors?: Array<string>
+interface RichTextProps {
+  value?: string
+  field: RichTextBaseField
   disabled?: boolean
-}>()
+  errors?: string[]
+}
 
-const emits = defineEmits<{
-  (e: 'update:modelValue', value: string): void
+const props = withDefaults(defineProps<RichTextProps>(), {
+  value: '',
+  errors: () => [],
+})
+
+const emit = defineEmits<{
+  (event: 'input', value: string): void
 }>()
 
 const localisationParameters = ref({})
 const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
 const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
+const watchOptions = { immediate: true, deep: true }
 
-const localModelValue = computed({
-  get: () => props.modelValue,
-  set: value => emits('update:modelValue', value),
+const modelValue = computed({
+  get: () => props.value,
+  set: value => emit('input', value),
 })
 
 watch(
@@ -33,42 +39,40 @@ watch(
     if (props.field?.form)
       localisationParameters.value = props.field.form.localisationParameters
   },
-  { immediate: true, deep: true },
+  watchOptions,
 )
 
-const setUpdateLocalisationParameters = (localeVariables: LocaleVariable) => {
+const setUpdateLocalisationParameters = (localeVariables: LocaleVariable = {}) => {
   localisationParameters.value = localeVariables
-  props.field.form!.localisationParameters = localeVariables
+
+  // FIX WHEN INCLUDE SEO AND LOCALIZATION
+  // props.field.form!.localisationParameters = localeVariables
 }
 
 const onRemoveVariable = (localeVariables: string): void => {
-  emits('update:modelValue', filterString(localModelValue.value, localeVariables))
+  emit('input', filterString(modelValue.value, localeVariables))
 }
 
 const handleVariablesChange = () => {
-  const localeKeyInText = getVariablesFromLocale(localModelValue.value)
+  const localeKeyInText = getVariablesFromLocale(modelValue.value)
 
   const excessKeyVariable: string
-      = difference(localeKeyInText, Object.keys(variableTextBufferStore.value)).at(0) || ''
+    = difference(localeKeyInText, Object.keys(variableTextBufferStore.value)).at(0) || ''
 
   onRemoveVariable(excessKeyVariable)
 }
-
-const watchOptions = { immediate: true, deep: true }
 
 watch(() => variableTextBufferStore, handleVariablesChange, watchOptions)
 </script>
 
 <template>
-  <div>
-    <TextEditorWysiwyg
-      v-model.trim="localModelValue"
-      :placeholder="field.label"
-      :disabled="disabled"
-      :options-variable="allCurrencies"
-      :localisation-parameters="localisationParameters"
-      @update-localisation-parameters="setUpdateLocalisationParameters"
-      @remove-variable="onRemoveVariable"
-    />
-  </div>
+  <TextEditorWysiwyg
+    v-model.trim="modelValue"
+    :placeholder="field.label"
+    :disabled="disabled"
+    :options-variable="allCurrencies"
+    :localisation-parameters="localisationParameters"
+    @update-localisation-parameters="setUpdateLocalisationParameters"
+    @remove-variable="onRemoveVariable"
+  />
 </template>

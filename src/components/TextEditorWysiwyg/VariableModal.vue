@@ -1,133 +1,125 @@
-<script lang="ts">
-import { defineComponent, nextTick, ref, watch } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { VColors, VVariants } from '../../@model/vuetify'
 
-export default defineComponent({
-  name: 'VariableModal',
-  props: {
-    value: {
-      type: Object,
-      default: () => {},
-    },
-    keyVar: {
-      type: String,
-      default: '',
-    },
-  },
-  emits: ['update-value', 'close-modal', 'delete-key'],
-  setup(props, { emit }) {
-    const modalShow: any = ref(false)
-    const refModal: any = ref(null)
-    const formModal = ref(props.value)
+type Value = Record<string, unknown>
+interface Props {
+  value: Value
+  keyVar: string
+}
 
-    const closed = () => {
-      nextTick(() => {
-        refModal.value?.hide()
-      })
-    }
+interface Emits {
+  (event: 'update-value', payload: Value): void
+  (event: 'close-modal'): void
+  (event: 'delete-key'): void
+}
 
-    watch(modalShow, val => {
-      if (!val)
-        emit('close-modal')
-    })
+const props = defineProps<Props>()
+const emit = defineEmits<Emits>()
+const id = 'variable-modal'
+const formModal = ref(props.value)
+const modal = inject('modal')
 
-    const save = () => {
-      emit('update-value', formModal.value)
-      nextTick(() => {
-        refModal.value?.hide()
-      })
-    }
+const closed = () => {
+  modal.hideModal(id)
+}
 
-    const deleteForm = () => {
-      emit('delete-key')
-      nextTick(() => {
-        refModal.value?.hide()
-      })
-    }
+const onHideModal = () => {
+  emit('close-modal')
+}
 
-    return {
-      formModal,
-      refModal,
-      modalShow,
-      closed,
-      save,
-      deleteForm,
-    }
-  },
-})
+const save = () => {
+  emit('update-value', formModal.value)
+  modal.hideModal(id)
+}
+
+const deleteForm = () => {
+  emit('delete-key')
+  modal.hideModal(id)
+}
 </script>
 
 <!-- TODO: refactor sizes -->
 <template>
-  <BModal
-    id="variable-modal"
-    ref="refModal"
-    v-model="modalShow"
+  <BaseModal
+    :id="id"
     :title="$t('common.banners.variableTitle')"
     size="md"
     centered
     hide-footer
+    @hide="onHideModal"
   >
-    <BRow>
-      <div class="col-4">
-        <!--        TODO: refactor variant/color -->
-        <BBadge
-          class="variable-box"
-          variant="light-secondary"
-        >
-          {{ `{${  keyVar  }}` }}
-        </BBadge>
-      </div>
-      <div class="col-8">
-        <BRow
-          v-for="itemKey in Object.keys(formModal)"
-          :key="itemKey"
-          class="flex-nowrap align-items-center justify-content-end mb-1"
-        >
-          <div class="col-2 font-small-3">
-            {{ itemKey }}
-          </div>
-          <div class="col-10">
-            <BFormInput
-              v-model="formModal[itemKey]"
-              :placeholder="$t('common.banners.empty')"
-            />
-          </div>
-        </BRow>
-      </div>
-    </BRow>
+    <VCard
+      class="w-100 pa-4"
+      style="min-width: 31.25rem"
+    >
+      <VRow class="w-100">
+        <VCol class="col-4">
+          <VChip
+            label
+            class="variable-box"
+            :color="VColors.Secondary"
+          >
+            {{ `{ ${keyVar} }` }}
+          </VChip>
+        </VCol>
+        <VCol cols="8">
+          <VRow
+            v-for="itemKey in Object.keys(formModal)"
+            :key="itemKey"
+            class="flex-nowrap align-items-center justify-content-end mb-1"
+          >
+            <VCol class="font-small-3">
+              {{ itemKey }}
+            </VCol>
+            <VCol cols="10">
+              <AppTextField
+                v-model="formModal[itemKey]"
+                :placeholder="$t('common.banners.empty')"
+              />
+            </VCol>
+          </VRow>
+        </VCol>
+      </VRow>
 
-    <footer class="modal-footer row-footer justify-content-between px-0">
-      <button
-        type="button"
-        class="btn btn-outline-danger m-0"
-        @click="deleteForm"
-      >
-        {{ $t('action.remove') }}
-      </button>
-      <div>
-        <button
-          type="button"
-          class="btn btn-outline-secondary mr-1"
-          @click="closed"
-        >
-          {{ $t('action.cancel_2') }}
-        </button>
-        <button
-          type="button"
-          class="btn btn-primary"
-          @click="save"
-        >
-          <div class="d-flex justify-content-center align-items-center">
-            <span>{{ $t('action.save') }}</span>
-          </div>
-        </button>
-      </div>
-    </footer>
-  </BModal>
+      <footer class="d-flex align-center justify-space-between">
+        <div>
+          <VBtn
+            type="button"
+            :variant="VVariants.Outlined"
+            :color="VColors.Error"
+            class="m-0"
+            @click="deleteForm"
+          >
+            {{ $t('action.remove') }}
+          </VBtn>
+        </div>
+        <div>
+          <VBtn
+            type="button"
+            :variant="VVariants.Outlined"
+            :color="VColors.Secondary"
+            class="mr-2"
+            @click="closed"
+          >
+            {{ $t('action.cancel_2') }}
+          </VBtn>
+          <VBtn
+            type="button"
+            :color="VColors.Primary"
+            @click="save"
+          >
+            <div class="d-flex justify-content-center align-items-center">
+              <span>{{ $t('action.save') }}</span>
+            </div>
+          </VBtn>
+        </div>
+      </footer>
+    </VCard>
+  </BaseModal>
 </template>
 
 <style lang="scss" scoped>
-@import '../../@core/scss/base/core/colors/palette-variables.scss';
 .variable-box {
   margin-top: 0.571rem;
 }

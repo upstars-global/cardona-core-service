@@ -12,7 +12,7 @@ export interface IBaseField {
   readonly validationRules?: ValidationRule | Array<ValidationRule>
   readonly permission?: PermissionType
   readonly isLocalization?: boolean
-  readonly form?: object
+  readonly form?: object | null
   readonly serialize?: (value: any) => any
   readonly deserialize?: (value: any) => any
 }
@@ -28,7 +28,7 @@ export abstract class BaseField implements IBaseField {
   readonly validationRules?: ValidationRule // TODO: Expand for cases by type 'required|password'
   readonly permission?: PermissionType
   readonly isLocalization?: boolean
-  public form?: object
+  public form?: object | null
   public serialize: (value: any) => any = value => value
   public deserialize: (value: any) => any = value => value
 

@@ -19,6 +19,7 @@ import vuex from '@/store'
 import { initDirectives } from '@/directives'
 import vSelect from 'vue-select'
 import ModalPlugin from './plugins/modal'
+import VueFroala from './libs/froala'
 
 loadFonts()
 
@@ -26,6 +27,7 @@ loadFonts()
 const app = createApp(App)
 
 // Use plugins
+app.use(VueFroala)
 app.use(vuetify)
 app.use(createPinia())
 app.use(router)
