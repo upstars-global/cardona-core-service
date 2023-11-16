@@ -283,6 +283,7 @@
     "comment": "Comment",
     "isActive": "Is active",
     "sumPeriod": "Sum period",
+    "richText": "Rich text",
     "phone": {
       "_": "Phone",
       "list": "Phones"
@@ -533,7 +534,6 @@
     "edit": "Edit",
     "makeCopy": "Make a copy",
     "save": "Save",
-    "delete": "Delete",
     "remove": "Remove",
     "delete": "Delete",
     "removeAll": "Remove all ({total})",

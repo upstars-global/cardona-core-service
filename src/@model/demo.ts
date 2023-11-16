@@ -6,7 +6,13 @@ import type { BaseListItem } from '../@model/templates/baseList'
 import { VColors } from '../@model/vuetify'
 import type { SeoData } from './seo'
 import type { FieldTranslationsData } from './translations'
-import { NumberBaseField, SelectBaseField, TextBaseField, TimeBaseField } from './templates/baseField'
+import {
+  NumberBaseField,
+  RichTextBaseField,
+  SelectBaseField,
+  TextBaseField,
+  TimeBaseField,
+} from './templates/baseField'
 import { FieldInfo, FieldType } from './field'
 import type { StatusWithDateHistoryValue } from './view'
 import { StatusWithVariant, ViewInfo, ViewType } from './view'
@@ -52,6 +58,7 @@ export interface IDemoListItem {
   state: boolean
   comment: string
   rowVariant: BColors | BLightColors
+  callbackData: Record<string, unknown>
 }
 
 export class DemoListItem implements BaseListItem {
@@ -153,6 +160,7 @@ export class DemoForm {
   readonly switchWithState: FieldInfo
   readonly text: TextBaseField
   readonly textWithCb: TextBaseField
+  readonly richText: RichTextBaseField
   readonly email: TextBaseField
   readonly number: NumberBaseField
   readonly minute: FieldInfo
@@ -196,6 +204,11 @@ export class DemoForm {
       label: i18n.global.t('page.demo.textField'),
       validationRules: ['required'],
       isLocalization: true,
+    })
+    this.richText = new RichTextBaseField({
+      key: 'richText',
+      value: data?.text,
+      label: i18n.global.t('common.richText'),
     })
     this.textWithCb = new TextBaseField({
       key: 'textWithCb',
@@ -403,6 +416,7 @@ export class DemoSideBar {
   readonly generalInfo: SideBarCollapseItem
   readonly info: SideBarCollapseItem
   readonly unuseble: SideBarCollapseItem
+  readonly callbackData?: Record<string, unknown>
 
   constructor(data?: IDemoListItem) {
     this.generalInfo = new SideBarCollapseItem({
@@ -505,6 +519,7 @@ export class DemoSideBar {
     this.unuseble = new SideBarCollapseItem({
       title: i18n.global.t('common.additionalInfo'),
       views: {
+        callbackData: data?.callbackData,
         link: new ViewInfo({
           type: ViewType.Link,
           value: { route: { name: 'PermissionPage' }, title: 'BO-Permission' },
@@ -525,5 +540,6 @@ export class DemoSideBar {
         }),
       },
     })
+    this.callbackData = data?.callbackData
   }
 }

@@ -106,5 +106,24 @@ const getUpdateRoute = ({ id }): _RouteLocationBase => ({ name: 'DemoUpdate', pa
         }"
       />
     </template>
+    <template #sidebar-row(callbackData)="{ item }">
+      <template v-if="item">
+        <h6 class="mb-1">
+          {{ $t('common.callback') }}
+        </h6>
+        <CodeViewEditor :value="item" />
+      </template>
+    </template>
   </BaseList>
 </template>
+
+ <style scoped lang="scss">
+  :deep(.code-view-editor) {
+    .CodeMirror-linenumber {
+      display: none;
+    }
+    .CodeMirror-gutters {
+      display: none;
+    }
+  }
+ </style>

@@ -50,7 +50,7 @@ module.exports = {
     'indent': ['error', 2],
 
     // Enforce trailing comma (Already present in TypeScript)
-    'comma-dangle': ['error', 'always-multiline'],
+    'comma-dangle': ['error', 'never'],
 
     // Enforce consistent spacing inside braces of object (Already present in TypeScript)
     'object-curly-spacing': ['error', 'always'],
@@ -146,7 +146,7 @@ module.exports = {
     'vue/block-tag-newline': 'error',
     'vue/component-api-style': 'error',
     'vue/component-name-in-template-casing': ['error', 'PascalCase', { registeredComponentsOnly: false }],
-    'vue/custom-event-name-casing': ['error', 'camelCase', {
+    'vue/custom-event-name-casing': ['error', 'kebab-case', {
       ignores: [
         '/^(click):[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?/',
       ],
