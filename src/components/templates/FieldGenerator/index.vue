@@ -58,7 +58,6 @@ import { defineComponent, PropType, computed } from 'vue'
 import store from '../../../store'
 import { FieldInfo } from '../../../@model/field'
 import { BaseField, SwitchBaseField, CheckBaseField } from '../../../@model/baseField'
-import CheckGroupField from './_components/CheckGroupField.vue'
 import DummySelectField from './_components/DummySelectField.vue'
 import TagsField from './_components/TagsField.vue'
 import DateBtnOnlyField from './_components/DateBtnOnlyField.vue'
@@ -73,7 +72,6 @@ export default defineComponent({
   name: 'FieldGenerator',
   components: {
     PasswordField,
-    CheckGroupField,
     DummySelectField,
     TagsField,
     DateBtnOnlyField,

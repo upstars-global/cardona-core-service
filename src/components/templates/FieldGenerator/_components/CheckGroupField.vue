@@ -14,37 +14,26 @@
   </b-form-group>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed, PropType } from 'vue'
-import { FieldInfo } from '../../../../@model/field'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { CheckGroupBaseField } from '../../../../@model/baseField'
 
-export default defineComponent({
-  name: 'CheckGroupField',
+type CheckGroupFieldProps = {
+  value?: string[]
+  field: CheckGroupBaseField
+  disabled?: boolean
+}
 
-  props: {
-    value: {
-      type: Array,
-      default: () => [],
-    },
+const props = withDefaults(defineProps<CheckGroupFieldProps>(), {
+  value: () => [],
+})
 
-    field: {
-      type: Object as PropType<FieldInfo>,
-      required: true,
-    },
+const emit = defineEmits<{
+  (event: 'input', value: string[]): void
+}>()
 
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  setup(props, { emit }) {
-    const modelValue = computed({
-      get: () => props.value,
-      set: (value) => emit('input', value),
-    })
-
-    return { modelValue }
-  },
+const modelValue = computed({
+  get: () => props.value,
+  set: (value) => emit('input', value),
 })
 </script>
