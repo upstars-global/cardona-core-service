@@ -14,6 +14,7 @@ import {
   RadioBaseField,
   CheckBaseField,
   DateBaseField,
+  CheckGroupBaseField,
 } from './baseField'
 import { FieldInfo, FieldType } from './field'
 import { StatusWithDateHistoryValue, StatusWithVariant, ViewInfo, ViewType } from './view'
@@ -174,7 +175,7 @@ export class DemoForm {
   readonly phone: FieldInfo
   readonly check: CheckBaseField
   readonly radio: RadioBaseField
-  readonly checkGroup: FieldInfo
+  readonly checkGroup: CheckGroupBaseField
   readonly nonClearableSelect: SelectBaseField
   readonly select: SelectBaseField
   readonly multiSelect: MultiSelectBaseField
@@ -314,8 +315,7 @@ export class DemoForm {
       value: data?.check,
       label: i18n.t('page.demo.checkField'),
     })
-    this.checkGroup = new FieldInfo({
-      type: FieldType.CheckGroup,
+    this.checkGroup = new CheckGroupBaseField({
       key: 'checkGroup',
       value: data?.checkGroup,
       label: i18n.t('page.demo.checkGroupField'),
@@ -327,10 +327,12 @@ export class DemoForm {
         {
           id: 'option2',
           name: 'Option 2',
+          disabled: true,
         },
         {
           id: 'option3',
           name: 'Option 3',
+          disabled: true,
         },
         {
           id: 'option4',

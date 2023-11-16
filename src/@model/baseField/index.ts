@@ -9,6 +9,7 @@ import { ConditionsBaseField } from './conditions'
 import { UsersListBaseField } from './users-list'
 import { SwitchBaseField } from './switch'
 import { CheckBaseField } from './check'
+import { CheckGroupBaseField } from './check-group'
 import { DateBaseField } from './date'
 import { RadioBaseField } from './radio'
 import { RichTextBaseField } from './rich-text'
@@ -17,6 +18,7 @@ export const getInstanceClass = (instance: object) => {
   const fields = [
     RichTextBaseField,
     RadioBaseField,
+    CheckGroupBaseField,
     CheckBaseField,
     DateBaseField,
     SwitchBaseField,
@@ -48,4 +50,5 @@ export {
   DateBaseField,
   CheckBaseField,
   RichTextBaseField,
+  CheckGroupBaseField,
 }
