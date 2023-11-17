@@ -2,7 +2,7 @@ import type { Permission } from '../@model/permission'
 import { UserSmallInfo } from '../@model/users'
 import type { IRequestListPayload, OptionsItem } from '../@model/index'
 import { ViewInfo, ViewType } from '../@model/view'
-import i18n from '../plugins/i18n'
+import { t } from '../plugins/i18n'
 import { FieldInfo, FieldType } from '../@model/field'
 import store from '../store'
 
@@ -45,18 +45,18 @@ export class GroupsSideBarFields {
     this.name = new ViewInfo({
       type: ViewType.Text,
       value: data?.name,
-      label: i18n.global.t('common.groups._'),
+      label: t('common.groups._'),
     })
     this.id = new ViewInfo({
       type: ViewType.BadgeCopy,
       value: data?.id,
-      label: i18n.global.t('page.groupList.groupID'),
+      label: t('page.groupList.groupID'),
     })
     this.users = new ViewInfo({
       type: ViewType.Badges,
       value: data?.users,
       withSearch: true,
-      label: i18n.global.t('common.admin.fullListCount', { count: data?.users?.length }),
+      label: t('common.admin.fullListCount', { count: data?.users?.length }),
     })
   }
 }
@@ -78,16 +78,16 @@ export class GroupForm {
       type: FieldType.Text,
       key: 'name',
       value: data?.name || '',
-      label: i18n.global.t('common.groups.name'),
-      placeholder: i18n.global.t('common.groups.name'),
+      label: t('common.groups.name'),
+      placeholder: t('common.groups.name'),
       validationRules: 'required',
     })
     this.userIds = new FieldInfo<OptionsItem>({
       type: FieldType.MultiSelect,
       key: 'users',
       value: users || [],
-      label: i18n.global.t('common.groups.adminAdd'),
-      placeholder: i18n.global.t('placeholder.filter.admin'),
+      label: t('common.groups.adminAdd'),
+      placeholder: t('placeholder.filter.admin'),
       fetchOptionsActionName: 'users/fetchUsersList',
     })
     this.permissions = data?.permissions || []

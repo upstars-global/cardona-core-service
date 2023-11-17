@@ -1,5 +1,5 @@
 import { FieldInfo, FieldType } from '../@model/field'
-import i18n from '../plugins/i18n'
+import { t } from '../plugins/i18n'
 
 export interface SeoData {
   readonly metaTitle?: string
@@ -17,21 +17,21 @@ export class SeoForm {
       type: FieldType.Text,
       key: 'metaTitle',
       value: data?.metaTitle || '',
-      label: i18n.global.t('seo.metaTitle'),
+      label: t('seo.metaTitle'),
       isLocalization: true,
     })
     this.metaDescription = new FieldInfo<string>({
       type: FieldType.Textarea,
       key: 'metaDescription',
       value: data?.metaDescription || '',
-      label: i18n.global.t('seo.metaDescription'),
+      label: t('seo.metaDescription'),
       isLocalization: true,
     })
     this.description = new FieldInfo<string>({
       type: FieldType.RichText,
       key: 'description',
       value: data?.description || '',
-      label: i18n.global.t('seo.description'),
+      label: t('seo.description'),
       form: null,
       isLocalization: true,
     })

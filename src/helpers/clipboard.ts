@@ -1,6 +1,6 @@
 import { useClipboard } from '@vueuse/core'
 import type { TranslateResult } from 'vue-i18n'
-import i18n from '../plugins/i18n'
+import { t } from '../plugins/i18n'
 
 interface ICopyToClipboardConfig {
   readonly withToast?: boolean
@@ -9,7 +9,7 @@ interface ICopyToClipboardConfig {
 
 export const copyToClipboard = (value: string, config: ICopyToClipboardConfig = {}) => {
   const { copy } = useClipboard()
-  const { withToast = true, title = i18n.global.t('toast.success.copied') } = config
+  const { withToast = true, title = t('toast.success.copied') } = config
 
   copy(value)
 

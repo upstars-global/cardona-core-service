@@ -15,7 +15,7 @@ import {
     regex,
     required
 } from '@vee-validate/rules';
-import i18n from "../plugins/i18n";
+import { t } from "../plugins/i18n";
 import {NumberOrString} from "../@model/index";
 import {FieldValidationMetaInfo} from "@vee-validate/i18n";
 
@@ -101,6 +101,6 @@ export interface IValidationConfig {
 }
 (function () {configure({
     generateMessage: (ctx: FieldValidationMetaInfo) => {
-        return i18n.global.t(`validations.${ctx.rule?.name}`, {'_field_': ctx.label});
+        return t(`validations.${ctx.rule?.name}`, {'_field_': ctx.label});
     },
 })})()

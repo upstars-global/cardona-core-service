@@ -4,7 +4,7 @@ import type { AxiosError, AxiosInstance, AxiosRequestConfig } from '../../plugin
 import store from '../../store'
 import useToastService from '../../helpers/toasts'
 import router from '../../router'
-import i18n from '../../plugins/i18n'
+import { t } from '../../plugins/i18n'
 import { convertCamelCase } from '../../helpers'
 import {
   ContentType,
@@ -132,7 +132,7 @@ class ApiService {
         const localizationKey = `${entity}_${field}_${code}`
 
         formRef?.setErrors({
-          [field]: i18n.global.t(`validations.${localizationKey}`),
+          [field]: t(`validations.${localizationKey}`),
         })
 
         toastError(localizationKey, { field, defaultCode: 'field_ALREADY_EXISTS' })
