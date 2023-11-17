@@ -1,8 +1,9 @@
 import type { Component } from 'vue'
 import store from '../../../store'
-import type { OptionsItem } from '../../@model'
 import type { IBaseField } from './base'
 import { BaseField } from './base'
+import SelectField from "../../../components/templates/FieldGenerator/_components/SelectField.vue";
+import {OptionsItem} from "../../index";
 
 type SelectValue = OptionsItem | string | number | null
 
@@ -21,7 +22,7 @@ export interface ISelectBaseField<T> extends IBaseField {
 export class SelectBaseField<T extends OptionsItem = OptionsItem>
   extends BaseField
   implements ISelectBaseField<T> {
-  readonly component: Component = {}
+  readonly component: Component = SelectField
   protected _value?: T | SelectValue
   public options?: Array<T>
   readonly fetchOptionsActionName?: string

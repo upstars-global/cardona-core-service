@@ -1,6 +1,7 @@
 import type { TranslateResult } from 'vue-i18n'
 import store from '../store'
 import type { OptionsItem } from './index'
+import {IValidationConfig} from "../@model/validations";
 
 export enum FieldType {
   Text = 'text',
@@ -37,7 +38,7 @@ export interface IFieldInfo {
   readonly options?: Array<any>
   readonly fetchOptionsActionName?: string
   readonly staticFilters?: Record<string, string>
-  readonly validationRules?: string
+  readonly validationRules?: IValidationConfig
   form?: object | null
   readonly isLocalization?: boolean
   readonly placeholder?: TranslateResult
@@ -58,7 +59,7 @@ export class FieldInfo<T = {}> {
   readonly fetchOptionsActionName?: string
   readonly staticFilters?: Record<string, string>
   public form?: object | null
-  readonly validationRules?: string
+  readonly validationRules?: IValidationConfig
   readonly isLocalization?: boolean
   readonly placeholder?: TranslateResult
   readonly description?: TranslateResult

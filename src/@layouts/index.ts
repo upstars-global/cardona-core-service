@@ -3,7 +3,7 @@ import { useDynamicVhCssProperty } from './composable/useDynamicVhCssProperty'
 import { config } from './config'
 import { ContentWidth } from './enums'
 import type { UserConfig } from './types'
-import { useLayouts } from '@layouts'
+import {useLayouts} from './composable/useLayouts'
 
 const { _setAppDir } = useLayouts()
 
@@ -60,4 +60,4 @@ export const createLayouts = (userConfig: UserConfig): Plugin => {
 export const injectionKeyIsVerticalNavHovered: InjectionKey<Ref<boolean>> = Symbol('isVerticalNavHovered')
 
 export * from './components'
-export { useLayouts } from './composable/useLayouts'
+export {useLayouts}

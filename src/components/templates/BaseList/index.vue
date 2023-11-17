@@ -9,11 +9,11 @@ import { DownloadFormat, SortDirection } from '../../../@model/templates/baseLis
 import type { Filter } from '../../../@model/filter'
 import RemoveModal from '../../../components/templates/BaseList/_components/fields/RemoveModal.vue'
 import MultipleActions from './_components/MultipleActions.vue'
-import { getStorage, removeStorageItem, setStorage } from '@/helpers/storage'
-import { ListSort } from '@/@model'
-import { useFilters } from '@/components/FiltersBlock/useFilters'
-import { BaseField, SelectBaseField } from '@/@model/templates/baseField'
-import { FieldType } from '@/@model/field'
+import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
+import { ListSort } from '../../../@model'
+import { useFilters } from '../../../components/FiltersBlock/useFilters'
+import {BaseField, SelectBaseField} from '../../../@model/templates/baseField'
+import { FieldType } from '../../../@model/field'
 import {
   checkExistsPage,
   convertCamelCase,
@@ -21,14 +21,14 @@ import {
   isEmptyString,
   isNotEmptyNumber,
 } from '@/helpers'
-import type { PaginationResult } from '@/use/pagination'
-import usePagination from '@/use/pagination'
-import type { TableField } from '@/@model/templates/tableFields'
-import { parseDateRange } from '@/helpers/filters'
-import { ListFieldType } from '@/@model/templates/tableFields'
-import { basePermissions } from '@/helpers/base-permissions'
-import type { SortItem } from '@core/types'
-import { IconsList } from '@/@model/enums/icons'
+import type { PaginationResult } from '../../../use/pagination'
+import usePagination from '../../../use/pagination'
+import type { TableField } from '../../../@model/templates/tableFields'
+import { parseDateRange } from '../../../helpers/filters'
+import { ListFieldType } from '../../../@model/templates/tableFields'
+import { basePermissions } from '../../../helpers/base-permissions'
+import type { SortItem } from '../../../@core/types'
+import { IconsList } from '../../../@model/enums/icons'
 
 const props = defineProps<{
   config: IBaseListConfig

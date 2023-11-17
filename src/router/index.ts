@@ -34,55 +34,9 @@ const router = createRouter({
       redirect: () => ({ name: 'pages-account-settings-tab', params: { tab: 'account' } }),
     },
 
-    /* {
-      path: '/demo/create',
-      name: 'DemoCreate',
-      component: () => import('../pages/demo/create/index.vue'),
-      meta: {
-        title: 'demo.create',
-        permission: 'demo-demo',
-        level: 'create',
-        breadcrumb: [
-          {
-            to: { name: 'DemoList' },
-            text: 'demo.list',
-          },
-          {
-            text: 'demo.create',
-            active: true,
-          },
-        ],
-      },
-    }, */
-    {
-      path: '/demo/update/:id',
-      name: 'DemoUpdate',
-      component: () => import('../pages/demo/update/index.vue'),
-      meta: {
-        title: 'demo.edit',
-        permissionGroup: 'demoPage',
-        level: 'update',
-        breadcrumb: [
-          {
-            to: { name: 'DemoList' },
-            text: 'demo.list',
-          },
-          {
-            text: 'demo.edit',
-            active: true,
-          },
-        ],
-      },
-    },
-
     ...setupLayouts([
       ...routes,
 
-      /* {
-        path: '/demo',
-        name: 'DemoList',
-        component: () => import('../pages/demo/list/index.vue'),
-      }, */
       ...sectionRouterGenerator([
         { name: 'demo' },
       ]),

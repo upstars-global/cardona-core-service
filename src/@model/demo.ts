@@ -17,7 +17,6 @@ import { FieldInfo, FieldType } from './field'
 import type { StatusWithDateHistoryValue } from './view'
 import { StatusWithVariant, ViewInfo, ViewType } from './view'
 import type { TransactionType } from './enums/playersTransactions'
-import type { ValidationRule } from './validations'
 import type { BColors, BLightColors } from './bootstrap'
 
 export interface IDemoTypeItem {
@@ -202,7 +201,7 @@ export class DemoForm {
       key: 'text',
       value: data?.text,
       label: i18n.global.t('page.demo.textField'),
-      validationRules: ['required'],
+      validationRules: {required: true},
       isLocalization: true,
     })
     this.richText = new RichTextBaseField({
@@ -214,7 +213,7 @@ export class DemoForm {
       key: 'textWithCb',
       value: data?.textWithCb,
       label: i18n.global.t('page.demo.textFieldWithCb'),
-      validationRules: ['required'],
+      validationRules: {required: true},
       isLocalization: true,
       serialize: (value: string) => {
         if (value?.includes('demo:'))
@@ -233,7 +232,7 @@ export class DemoForm {
       key: 'number',
       value: data?.number,
       label: i18n.global.t('page.demo.numberField'),
-      validationRules: ['required', 'min:3' as ValidationRule],
+      validationRules: { required: true, min:3 },
       withPositiveNumbers: true,
       info: i18n.global.t('page.demo.onlyPositiveNumbers'),
     })
@@ -242,26 +241,26 @@ export class DemoForm {
       key: 'minute',
       value: data?.minute,
       label: i18n.global.t('page.demo.minuteField'),
-      validationRules: 'positive',
+      validationRules: {positive: true},
     })
     this.percent = new FieldInfo({
       type: FieldType.Percent,
       key: 'percent',
       value: data?.percent,
       label: i18n.global.t('page.demo.percentField'),
-      validationRules: 'required|length:2',
+      validationRules: {required: true, length: 2}
     })
     this.digits = new NumberBaseField({
       key: 'digits',
       value: data?.digits,
       label: i18n.global.t('page.demo.numberField'),
-      validationRules: ['required', 'digits:4' as ValidationRule],
+      validationRules: {required: true, digits:4},
     })
     this.email = new TextBaseField({
       key: 'email',
       value: data?.email,
       label: i18n.global.t('common.email'),
-      validationRules: ['required', 'email'],
+      validationRules: {required: true, email:true},
     })
     this.sumRange = new FieldInfo({
       type: FieldType.SumRange,
@@ -274,21 +273,21 @@ export class DemoForm {
       key: 'phone',
       value: data?.phone,
       label: i18n.global.t('page.demo.phoneField'),
-      validationRules: 'required|phone',
+      validationRules: {required: true, phone: true}
     })
     this.password = new FieldInfo({
       type: FieldType.Password,
       key: 'password',
       value: data?.password,
       label: i18n.global.t('page.demo.passwordField'),
-      validationRules: 'required|password',
+      validationRules: {required: true, password: true}
     })
     this.passwordFieldWithGeneration = new FieldInfo({
       type: FieldType.Password,
       key: 'password',
       value: data?.passwordWithGenerator,
       label: i18n.global.t('page.demo.passwordFieldWithGeneration'),
-      validationRules: 'required|password',
+      validationRules: {required: true, password: true}
     })
     this.switchWithState = new FieldInfo({
       type: FieldType.SwitchWithState,
@@ -374,6 +373,7 @@ export class DemoForm {
       value: data?.select,
       label: i18n.global.t('page.demo.selectField'),
       fetchOptionsActionName: 'demo/fetchOptions',
+      validationRules: {required: true}
     })
     this.multiSelect = new FieldInfo({
       type: FieldType.MultiSelect,
@@ -399,7 +399,7 @@ export class DemoForm {
       value: data?.url,
       key: 'url',
       label: i18n.global.t('common.url'),
-      validationRules: 'url',
+      validationRules: {url: true},
     })
     this.tags = new FieldInfo({
       type: FieldType.Tags,

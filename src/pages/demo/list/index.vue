@@ -20,6 +20,7 @@ const listConfig = new BaseListConfig({
   sidebar: true,
   sidebarCollapseMode: true,
   withDeactivation: true,
+  selectable: true,
   searchPlaceholder: t('placeholder.search._'),
   staticSorts: {
     key: 'shortId',

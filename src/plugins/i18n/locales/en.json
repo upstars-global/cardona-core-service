@@ -402,7 +402,12 @@
     "size": "The {_field_} field size must be less than {size}KB",
     "double": "The {_field_} field must be a valid decimal",
     "password": "Your {_field_} must contain at least one uppercase, one lowercase, one special character, one digit and be at least 8 characters",
+    "url": "URL is invalid",
+    "positive": "Please enter positive number!",
     "phone": "Phone can contain only numbers and one plus",
+    "required_object": "The {_field_} field is required",
+    "range": "The {_field_} value \"{labelTo}\" should be greater than or equal {valueFrom}",
+    "credit": "It is not valid credit card!",
     "Demo_text_ALREADY_EXISTS": "This entry already exists in the collection"
   },
   "toast": {
