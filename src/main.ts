@@ -1,8 +1,9 @@
 /* eslint-disable import/order */
 import '@/@fake-db/db'
 
-// import '@/@iconify/icons-bundle.ts'
+import '@/@iconify/icons-bundle.js'
 import './extensions'
+import "./@model/validations";
 import App from '@/App.vue'
 import ability from '@/plugins/casl/ability'
 import i18n from '@/plugins/i18n'
@@ -25,7 +26,6 @@ loadFonts()
 
 // Create vue app
 const app = createApp(App)
-
 // Use plugins
 app.use(VueFroala)
 app.use(vuetify)

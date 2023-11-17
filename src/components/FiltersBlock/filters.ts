@@ -4,9 +4,8 @@ import type { ProjectInfo } from '../../@model/project'
 import { FieldInfo, FieldType } from '../../@model/field'
 import type { OptionsItem } from '../../@model'
 import { FilterType } from '../../@model/filter'
-import { SelectBaseField, TextBaseField } from '../../@model/templates/baseField'
+import {SelectBaseField, TextBaseField} from '../../@model/templates/baseField'
 import { TransactionType } from '../../@model/enums/playersTransactions'
-
 // Options
 const stateOptions: Array<object> = [
   { text: i18n.global.t('common.yes'), value: true },

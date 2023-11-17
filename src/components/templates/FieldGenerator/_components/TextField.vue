@@ -5,7 +5,7 @@ import type { TextBaseField } from '../../../../@model/templates/baseField'
 const props = defineProps<{
   modelValue: string | number
   field: TextBaseField
-  errors?: Array<string>
+  errors?: boolean
   disabled: boolean
 }>()
 
@@ -31,6 +31,7 @@ const localModelValue = computed({
     :type="inputType"
     :disabled="disabled"
     :suffix="appendText"
+    :error="errors"
     autocomplete="off"
   />
 </template>

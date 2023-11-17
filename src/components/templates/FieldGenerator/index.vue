@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
+import { computed } from 'vue'
 import { FieldInfo, FieldType } from '../../../@model/field'
 import { BaseField } from '../../../@model/templates/baseField'
-import { IconsList } from '../../../@model/enums/icons'
 import store from "@/store";
+import { Field } from 'vee-validate';
+import {IconsList} from "../../../@model/enums/icons";
 
 const props = withDefaults(defineProps<{
           modelValue: FieldInfo | BaseField
@@ -44,7 +45,7 @@ const groupLabel = computed(() =>
 
 const formGroupClasses = computed(() => ({
   'form-required':
-      props.withLabel && props.modelValue?.validationRules?.includes('required') && groupLabel.value,
+      props.withLabel && props.modelValue?.validationRules?.required && groupLabel.value,
 }))
 
 const fieldModel = computed({
@@ -58,7 +59,7 @@ const fieldModel = computed({
   },
 })
 
-const localValue = shallowRef(props.modelValue instanceof BaseField ? props.modelValue.component : `${props.modelValue.type}-field`)
+const localValue = computed(() => { return props.modelValue instanceof BaseField ? props.modelValue.component : `${props.modelValue.type}-field`})
 
 const onSearch = (search: string) => emits('search', search)
 </script>
@@ -67,12 +68,12 @@ const onSearch = (search: string) => emits('search', search)
   <div
     v-if="canView"
     :id="`${modelValue.key}-field`"
-    class="mb-0"
+    class="mb-0 field-generator pb-4"
     :class="formGroupClasses"
   >
     <VLabel
       :for="modelValue.key"
-      class="mb-1 text-body-2 text-high-emphasis"
+      class="mb-1 field-generator-label text-body-2 text-high-emphasis"
     >
       <span>
         {{ groupLabel }}
@@ -84,24 +85,41 @@ const onSearch = (search: string) => emits('search', search)
       />
     </VLabel>
 
-    <div>
-      <Component
-        :is="localValue"
-        :id="modelValue.key"
-        v-model="fieldModel"
-        :options="options"
-        :field="modelValue"
-        :disabled="disabled"
-        :placeholder="modelValue.placeholder"
-        :size="size"
-        v-bind="$attrs"
-        @search="onSearch"
-      />
-    </div>
+    <Field
+        :name="modelValue.key"
+        :label="modelValue.label"
+        :rules="modelValue.validationRules"
+        :validate-on-blur="false"
+        :validate-on-change="false"
+    >
+      <template #default="{ field, errorMessage }">
+        <Component
+            :is="localValue"
+            :id="modelValue.key"
+            v-model="fieldModel"
+            :options="options"
+            :field="modelValue"
+            :disabled="disabled"
+            :placeholder="modelValue.placeholder"
+            :size="size"
+            v-bind="{...$attrs, ...field}"
+            :errors="!!errorMessage"
+            @search="onSearch"
+        />
+        <span class="text-caption text-error position-absolute mt-1">{{errorMessage}}</span>
+      </template>
+    </Field>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.field-generator {
+  .form-required &-label:after {
+    content: "*";
+    color: rgb(var(--v-theme-error));
+    margin-left: 0.25rem;
+  }
+}
 .check-description {
   font-size: 0.75rem;
   padding-left: 1.8rem;

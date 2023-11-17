@@ -22,9 +22,9 @@ const isLoading = ref(false)
 
 const valueModel = computed<OptionsItem>({
   get: () =>
-    typeof props.value === 'string' || typeof props.value === 'number'
-      ? props.field.options?.find((option: OptionsItem) => option.id === props.value)
-      : props.value,
+    typeof props.modelValue === 'string' || typeof props.modelValue === 'number'
+      ? props.field.options?.find((option: OptionsItem) => option.id === props.modelValue)
+      : props.modelValue,
   set: (item: object) => emits('update:modelValue', item),
 })
 
@@ -73,10 +73,10 @@ const onSearch = debounce(async (search: string, loading: Function) => {
 </script>
 
 <template>
-  <VueSelect
+<!--  TODO: add  :dir="$store.getters['appConfig/dirOption']"-->
+    <VueSelect
     v-model="valueModel"
     :placeholder="placeholder"
-    :dir="$store.getters['appConfig/dirOption']"
     label="name"
     :loading="isLoading"
     :multiple="isMultiple"

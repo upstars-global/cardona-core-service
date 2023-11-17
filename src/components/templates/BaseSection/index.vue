@@ -7,6 +7,7 @@ import {basePermissions} from '../../../helpers/base-permissions'
 import {PageType} from '../../../@model/templates/baseSection'
 import {BaseSectionConfig} from '../../../@model/templates/baseList'
 import {VColors, VVariants} from '@/@model/vuetify'
+import { Form} from 'vee-validate';
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean
@@ -108,7 +109,6 @@ if (props.withReadAction && entityId) {
 
 const validate = async () => {
   const { valid } = await formRef.value.validate()
-
   /*const fieldsNotValid = Object.keys(refFormObserver.value.errors).filter(
     nameField => refFormObserver.value.errors[nameField].isNotEmpty,
   )*/ //
@@ -239,66 +239,68 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <VForm ref="formRef" @submit.prevent>
-    <slot
-      :entity-id="entityId"
-      :form="form"
-      :can-update="canUpdate"
-      :can-remove="canRemove"
-      :can-view-seo="canViewSeo"
-      :can-create-seo="canCreateSeo"
-      :can-update-seo="canUpdateSeo"
-      :on-click-remove="onClickRemove"
-    />
+  <Form ref="formRef" @submit.prevent >
+    <template #default="{validate}">
+      <slot
+        :entity-id="entityId"
+        :form="form"
+        :can-update="canUpdate"
+        :can-remove="canRemove"
+        :can-view-seo="canViewSeo"
+        :can-create-seo="canCreateSeo"
+        :can-update-seo="canUpdateSeo"
+        :on-click-remove="onClickRemove"
+      />
 
-    <slot
-      v-if="pageType"
-      name="actions"
-      :form="form"
-    >
-      <div class="d-flex align-items-center mt-5">
-        <template v-if="isCreatePage">
-          <VBtn
-            class="mr-2"
-            :color="VColors.Primary"
-            data-testid="create-button"
-            @click="onSubmit(false)"
-          >
-            {{ $t('action.createAndExit') }}
-          </VBtn>
+      <slot
+        v-if="pageType"
+        name="actions"
+        :form="form"
+      >
+        <div class="d-flex align-items-center mt-5">
+          <template v-if="isCreatePage">
+            <VBtn
+              class="mr-2"
+              :color="VColors.Primary"
+              data-testid="create-button"
+              @click="validate()"
+            >
+              {{ $t('action.createAndExit') }}
+            </VBtn>
+
+            <VBtn
+              class="mr-2"
+              :variant="VVariants.Outlined"
+              :color="VColors.Secondary"
+              data-testid="stay-button"
+              @click="onSubmit(true)"
+            >
+              {{ $t('action.createAndStay') }}
+            </VBtn>
+          </template>
+
+          <template v-if="isUpdatePage">
+            <VBtn
+              class="mr-2"
+              :color="VColors.Primary"
+              data-testid="save-button"
+              :disabled="isDisableSubmit"
+              @click="onSubmit(false)"
+            >
+              {{ $t('action.save') }}
+            </VBtn>
+          </template>
 
           <VBtn
-            class="mr-2"
             :variant="VVariants.Outlined"
-            :color="VColors.Secondary"
-            data-testid="stay-button"
-            @click="onSubmit(true)"
+            :color="VColors.Error"
+            data-testid="cancel-button"
+            @click.prevent="onClickCancel"
           >
-            {{ $t('action.createAndStay') }}
+            {{ $t('action.cancel') }}
           </VBtn>
-        </template>
-
-        <template v-if="isUpdatePage">
-          <VBtn
-            class="mr-2"
-            :color="VColors.Primary"
-            data-testid="save-button"
-            :disabled="isDisableSubmit"
-            @click="onSubmit(false)"
-          >
-            {{ $t('action.save') }}
-          </VBtn>
-        </template>
-
-        <VBtn
-          :variant="VVariants.Outlined"
-          :color="VColors.Error"
-          data-testid="cancel-button"
-          @click.prevent="onClickCancel"
-        >
-          {{ $t('action.cancel') }}
-        </VBtn>
-      </div>
-    </slot>
-  </VForm>
+        </div>
+      </slot>
+    </template>
+  </Form>
 </template>

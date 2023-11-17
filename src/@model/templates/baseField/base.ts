@@ -1,7 +1,7 @@
 import type { Component } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
-import type { ValidationRule } from '../validations'
 import type { PermissionType } from '@permissions'
+import {IValidationConfig} from "../../../@model/validations";
 
 export interface IBaseField {
   readonly key: string
@@ -9,7 +9,7 @@ export interface IBaseField {
   readonly placeholder?: TranslateResult
   readonly description?: TranslateResult
   readonly info?: TranslateResult
-  readonly validationRules?: ValidationRule | Array<ValidationRule>
+  readonly validationRules?: IValidationConfig
   readonly permission?: PermissionType
   readonly isLocalization?: boolean
   readonly form?: object | null
@@ -25,7 +25,7 @@ export abstract class BaseField implements IBaseField {
   readonly placeholder?: TranslateResult
   readonly description?: TranslateResult
   readonly info?: TranslateResult
-  readonly validationRules?: ValidationRule // TODO: Expand for cases by type 'required|password'
+  readonly validationRules?: IValidationConfig
   readonly permission?: PermissionType
   readonly isLocalization?: boolean
   public form?: object | null
@@ -36,9 +36,7 @@ export abstract class BaseField implements IBaseField {
     this.key = field.key
     this.label = field.label
     this.placeholder = field.placeholder
-    this.validationRules = Array.isArray(field.validationRules)
-      ? (field.validationRules.join('|') as ValidationRule)
-      : field.validationRules
+    this.validationRules = field.validationRules
     this.description = field.description
     this.info = field.info
     this.permission = field.permission
