@@ -522,7 +522,7 @@ export class DemoSideBar {
         callbackData: data?.callbackData,
         link: new ViewInfo({
           type: ViewType.Link,
-          value: { route: { name: 'PermissionPage' }, title: 'BO-Permission' },
+          value: { route: { name: 'PermissionPage' }, title: 'Permission' },
           label: i18n.global.t('common.link'),
         }),
         objectToRows: new ViewInfo({

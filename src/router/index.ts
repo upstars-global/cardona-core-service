@@ -36,6 +36,11 @@ const router = createRouter({
 
     ...setupLayouts([
       ...routes,
+      {
+        path: '/permission/:id',
+        name: 'PermissionPage',
+        component: () => import('../pages/permission/form/index.vue'),
+      },
 
       ...sectionRouterGenerator([
         { name: 'demo' },

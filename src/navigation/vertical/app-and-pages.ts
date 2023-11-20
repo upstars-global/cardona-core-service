@@ -1,10 +1,15 @@
 export default [
   { heading: 'Apps & Pages' },
 
-   {
+  {
     title: 'Demo',
     icon: { icon: 'tabler-box' },
     to: 'DemoList',
+  },
+  {
+    title: 'Permission',
+    to: { name: 'PermissionPage', params: { id: 'demo' } },
+    icon: { icon: 'tabler-box' },
   },
   {
     title: 'Email',

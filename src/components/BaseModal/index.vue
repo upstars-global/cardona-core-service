@@ -54,8 +54,16 @@ const onHide = (value: boolean) => {
   >
     <template #default>
       <VCard class="modal-card">
-        <div class="modal-header px-2 d-flex align-end justify-space-between">
-          <p class="mb-0">
+        <div
+          class="modal-header with-absolute px-2 d-flex align-end justify-space-between"
+          :class="{
+            'without-header-title': !title,
+          }"
+        >
+          <p
+            v-if="title"
+            class="mb-0"
+          >
             {{ title }}
           </p>
           <VBtn
@@ -72,3 +80,18 @@ const onHide = (value: boolean) => {
     </template>
   </VDialog>
 </template>
+
+<style scoped lang="scss">
+.without-header-title {
+  position: absolute;
+  right: 0;
+}
+.modal-header {
+  .modal-header__close {
+    margin-top: .5rem;
+  &:hover {
+    transform: translate(-3px, 5px);
+  }
+}
+}
+</style>
