@@ -19,7 +19,7 @@
       </b-input-group-append>
     </b-input-group>
     <b-button
-      v-if="withPasswordGenerator"
+      v-if="field.withPasswordGenerator"
       id="generator-password"
       v-b-tooltip.hover.bottom="$t('common.generatePassword')"
       variant="flat-primary"
@@ -34,17 +34,15 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { FieldInfo } from '../../../../@model/field'
+import { PasswordBaseField } from '../../../../@model/baseField/password'
 import generatePassword from '../../../../helpers/password-generator'
 import { IconsList } from '../../../../@model/enums/icons'
 
 type Props = {
   value: string
-  field: FieldInfo
+  field: PasswordBaseField
   errors: Array<string>
   disabled?: boolean
-  withPasswordGenerator?: boolean
-  showPassword?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -61,7 +59,7 @@ const modelValue = computed({
   set: (value) => emit('input', value),
 })
 
-const inputType = ref(props.showPassword ? 'text' : 'password')
+const inputType = ref(props.field.showPassword ? 'text' : 'password')
 const passwordToggleIcon = computed(() => {
   return inputType.value === 'password' ? IconsList.EyeIcon : IconsList.EyeOffIcon
 })

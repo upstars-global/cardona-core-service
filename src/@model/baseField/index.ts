@@ -2,6 +2,7 @@ import { BaseField } from './base'
 import { TextBaseField } from './text'
 import { NumberBaseField } from './number'
 import { TextareaBaseField } from './textarea'
+import { PasswordBaseField } from './password'
 import { SelectBaseField } from './select'
 import { MultiSelectBaseField } from './multi-select'
 import { TimeBaseField } from './time'
@@ -27,6 +28,7 @@ export const getInstanceClass = (instance: object) => {
     TimeBaseField,
     SelectBaseField,
     MultiSelectBaseField,
+    PasswordBaseField,
     TextareaBaseField,
     NumberBaseField,
     TextBaseField,
@@ -40,6 +42,7 @@ export {
   TextBaseField,
   NumberBaseField,
   TextareaBaseField,
+  PasswordBaseField,
   SelectBaseField,
   MultiSelectBaseField,
   TimeBaseField,

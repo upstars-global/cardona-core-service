@@ -1,25 +1,25 @@
-import { FieldInfo, FieldType } from '../@model/field'
+import { PasswordBaseField } from '../@model/baseField'
 import i18n from '../libs/i18n'
 import { UseEntityType } from '../components/templates/BaseSection/model'
+import { ValidationRule } from '../@model/validations'
 
 export class ChangePassword {
-  readonly password?: FieldInfo<string>
-  readonly repeatPassword: FieldInfo<string>
+  readonly password: PasswordBaseField
+  readonly repeatPassword: PasswordBaseField
 
   constructor() {
-    this.password = new FieldInfo<string>({
-      type: FieldType.Password,
+    this.password = new PasswordBaseField({
       key: 'password',
-      value: '',
       label: i18n.t('placeholder.newPassword'),
-      validationRules: 'required|password',
+      validationRules: ['required', 'password'],
+      withPasswordGenerator: true,
+      showPassword: true,
     })
-    this.repeatPassword = new FieldInfo<string>({
-      type: FieldType.Password,
+    this.repeatPassword = new PasswordBaseField({
       key: 'repeatPassword',
-      value: '',
       label: i18n.t('placeholder.repeatPassword'),
-      validationRules: 'required|confirmed:password',
+      validationRules: ['required', 'confirmed:password' as ValidationRule],
+      showPassword: true,
     })
   }
 }

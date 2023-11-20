@@ -7,6 +7,7 @@ import {
   SelectBaseField,
   TextBaseField,
   TextareaBaseField,
+  PasswordBaseField,
   TimeBaseField,
   ConditionsBaseField,
   UsersListBaseField,
@@ -170,8 +171,8 @@ export class DemoForm {
   readonly rates: FieldInfo
   readonly percent: NumberBaseField
   readonly digits: NumberBaseField
-  readonly password: FieldInfo
-  readonly passwordFieldWithGeneration: FieldInfo
+  readonly password: PasswordBaseField
+  readonly passwordFieldWithGeneration: PasswordBaseField
   readonly phone: FieldInfo
   readonly check: CheckBaseField
   readonly radio: RadioBaseField
@@ -290,19 +291,19 @@ export class DemoForm {
       label: i18n.t('page.demo.phoneField'),
       validationRules: 'required|phone',
     })
-    this.password = new FieldInfo({
-      type: FieldType.Password,
+    this.password = new PasswordBaseField({
       key: 'password',
       value: data?.password,
       label: i18n.t('page.demo.passwordField'),
-      validationRules: 'required|password',
+      validationRules: ['required', 'password'],
     })
-    this.passwordFieldWithGeneration = new FieldInfo({
-      type: FieldType.Password,
+    this.passwordFieldWithGeneration = new PasswordBaseField({
       key: 'password',
       value: data?.passwordWithGenerator,
       label: i18n.t('page.demo.passwordFieldWithGeneration'),
-      validationRules: 'required|password',
+      validationRules: ['required', 'password'],
+      showPassword: true,
+      withPasswordGenerator: true,
     })
     this.switchWithState = new SwitchBaseField({
       key: 'switchWithState',
