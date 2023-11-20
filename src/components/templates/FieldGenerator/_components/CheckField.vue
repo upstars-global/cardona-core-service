@@ -1,5 +1,5 @@
 <template>
-  <b-form-checkbox v-model="modelValue" :disabled="disabled">
+  <b-form-checkbox v-model="modelValue" :disabled="disabled" :data-test-state="`${modelValue}`">
     {{ field.label }}
   </b-form-checkbox>
 </template>
