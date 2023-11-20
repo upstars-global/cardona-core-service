@@ -215,8 +215,6 @@
               <field-generator
                 v-model="formData.passwordFieldWithGeneration"
                 :disabled="isDisabledField"
-                show-password
-                with-password-generator
               />
             </b-col>
           </b-row>

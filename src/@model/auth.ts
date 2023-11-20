@@ -1,6 +1,5 @@
-import { FieldInfo, FieldType } from '../@model/field'
 import i18n from '../libs/i18n'
-import { TextBaseField } from '../@model/baseField'
+import { TextBaseField, PasswordBaseField } from '../@model/baseField'
 
 export interface ILoginData {
   login: string
@@ -9,7 +8,7 @@ export interface ILoginData {
 
 export class LoginForm {
   readonly login: TextBaseField
-  readonly password: FieldInfo<string>
+  readonly password: PasswordBaseField
 
   constructor() {
     this.login = new TextBaseField({
@@ -19,10 +18,8 @@ export class LoginForm {
       validationRules: 'required',
     })
 
-    this.password = new FieldInfo({
-      type: FieldType.Password,
+    this.password = new PasswordBaseField({
       key: 'password',
-      value: '',
       label: i18n.t('common.password'),
       placeholder: i18n.t('placeholder.password'),
       validationRules: 'required',

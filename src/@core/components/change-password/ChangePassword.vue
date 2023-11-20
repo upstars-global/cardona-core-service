@@ -9,13 +9,8 @@
   >
     <base-section ref="formRef" :use-entity="useSection" :with-read-action="false">
       <template #default="{ form }">
-        <field-generator
-          v-model="form.password"
-          with-password-generator
-          show-password
-          class="mb-2"
-        />
-        <field-generator v-model="form.repeatPassword" show-password class="mb-2 pr-4" />
+        <field-generator v-model="form.password" class="mb-2" />
+        <field-generator v-model="form.repeatPassword" class="mb-2 pr-4" />
       </template>
     </base-section>
   </c-modal>
