@@ -37,7 +37,12 @@ const iconVariant = computed(() => (props.value ? 'text-success' : 'text-danger'
 <template>
   <div class="d-flex align-items-center justify-content-between" :class="`size-${size}`">
     <div class="d-flex align-items-center">
-      <b-form-checkbox v-model="modelValue" switch :disabled="disabled || !canUpdate">
+      <b-form-checkbox
+        v-model="modelValue"
+        switch
+        :disabled="disabled || !canUpdate"
+        :data-test-state="`${modelValue}`"
+      >
         <span class="switch-icon-left">
           <feather-icon :icon="IconsList.CheckIcon" />
         </span>
