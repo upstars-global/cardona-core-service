@@ -154,7 +154,8 @@ const setTabError = (fieldName:string) => {
 const isUpdateSeoOnly = computed(
   () => isUpdatePage && canCreateSeo && canUpdateSeo && !canUpdate,
 )
-const isDisableSubmit = computed(() => isLoadingPage || isDisableSubmitBtn || isExistsEndpointsWithError)
+
+const isDisableSubmit = computed(() => [isLoadingPage.value, isDisableSubmitBtn.value, isExistsEndpointsWithError.value].some(Boolean))
 
 // Handlers
 const onSubmit = async (isStay: boolean) => {
