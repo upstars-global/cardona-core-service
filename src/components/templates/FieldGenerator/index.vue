@@ -63,7 +63,6 @@ import TagsField from './_components/TagsField.vue'
 import DateBtnOnlyField from './_components/DateBtnOnlyField.vue'
 import SwitchField from './_components/SwitchField.vue'
 import SumRangeField from './_components/SumRangeField.vue'
-import RatesField from './_components/RatesField.vue'
 import { IconsList } from '../../../@model/enums/icons'
 
 export default defineComponent({
@@ -74,7 +73,6 @@ export default defineComponent({
     DateBtnOnlyField,
     SwitchField,
     SumRangeField,
-    RatesField,
   },
 
   props: {

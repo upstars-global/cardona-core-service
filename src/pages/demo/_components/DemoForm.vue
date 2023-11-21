@@ -57,7 +57,7 @@
             </b-col>
           </b-row>
           <b-row>
-            <b-col cols="5">
+            <b-col>
               <field-generator
                 v-model="formData.rates"
                 :disabled="isDisabledField"

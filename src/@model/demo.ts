@@ -3,6 +3,7 @@ import { SeoData } from './seo'
 import { FieldTranslationsData } from './translations'
 import {
   MultiSelectBaseField,
+  RatesBaseField,
   NumberBaseField,
   SelectBaseField,
   TextBaseField,
@@ -169,7 +170,7 @@ export class DemoForm {
   readonly minute: NumberBaseField
   readonly minutesRange: NumberRangeBaseField
   readonly sumRange: FieldInfo
-  readonly rates: FieldInfo
+  readonly rates: RatesBaseField
   readonly percent: NumberBaseField
   readonly digits: NumberBaseField
   readonly password: PasswordBaseField
@@ -279,11 +280,13 @@ export class DemoForm {
       value: data?.sumRange,
       label: i18n.t('page.demo.sumRangeField'),
     })
-    this.rates = new FieldInfo({
-      type: FieldType.Rates,
+    this.rates = new RatesBaseField({
       key: 'rates',
-      value: data?.rates || [],
+      value: data?.rates,
       label: i18n.t('page.demo.rates'),
+      placeholder: '0.00',
+      trackBy: 'bet',
+      validationRules: ['required'],
     })
     this.phone = new PhoneBaseField({
       key: 'phone',
