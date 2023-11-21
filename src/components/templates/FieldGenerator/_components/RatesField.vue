@@ -20,67 +20,40 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { FieldInfo } from '../../../../@model/field'
 import store from '../../../../store'
-import { NumberBaseField } from '../../../../@model/baseField'
+import { RatesBaseField, NumberBaseField } from '../../../../@model/baseField'
+import { RatesValueItem } from '../../../../@model/baseField/rates'
 import FieldGenerator from '../../../../components/templates/FieldGenerator'
-import { division, multiplication } from '../../../../helpers/math-operations'
 import { IconsList } from '../../../../@model/enums/icons'
-
-type Rates = {
-  readonly currency: string
-  readonly bet: number | null
-}
 
 const props = withDefaults(
   defineProps<{
-    value: Array<Rates>
-    field: FieldInfo
+    value: Array<RatesValueItem>
+    field: RatesBaseField
     disabled?: boolean
     append?: string
   }>(),
   {
-    value: () => [] as Array<Rates>,
+    value: () => [],
     append: '',
   }
 )
 
 const emit = defineEmits<{
-  (event: 'input', value: Array<Rates>): void
+  (event: 'input', value: Array<RatesValueItem>): void
 }>()
 
 const isNotFilledFormRates = ref(true)
-const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
+const allCurrencies = computed<string[]>(() => store.getters['appConfigCore/allCurrencies'])
 
-const formRates = ref(
-  allCurrencies.value.map((item) => {
-    return new NumberBaseField({
-      key: item,
-      value: 0,
-      label: item,
-      placeholder: '0.00',
-      validationRules: 'required',
-      append: props.append,
-      withPositiveNumbers: true,
-    })
-  })
-)
+const formRates = ref<NumberBaseField[]>(setRates())
 
 watch(
   () => props.value,
   () => {
-    if (isNotFilledFormRates.value && props?.value.some((item: Rates) => item.bet)) {
-      formRates.value = props.value.map((item: Rates) => {
-        return new NumberBaseField({
-          key: item.currency,
-          value: item.bet ? division(item.bet, 100) : 0,
-          label: item.currency,
-          placeholder: '0.00',
-          validationRules: 'required',
-          append: props.append,
-          withPositiveNumbers: true,
-        })
-      })
+    if (isNotFilledFormRates.value && props?.value.some((item: RatesValueItem) => item.value)) {
+      formRates.value = setRates()
+
       isNotFilledFormRates.value = false
     }
   },
@@ -92,12 +65,27 @@ watch(
   () => {
     emit(
       'input',
-      formRates.value.map((item) => ({
+      formRates.value.map((item: NumberBaseField) => ({
         currency: item.key,
-        bet: item.value ? multiplication(item.value, 100) : 0,
+        value: item.value,
       }))
     )
   },
   { deep: true, immediate: true }
 )
+
+function setRates(): NumberBaseField[] {
+  return allCurrencies.value.map(
+    (currency) =>
+      new NumberBaseField({
+        key: currency,
+        value: props.value.find((item) => item.currency === currency)?.value ?? 0,
+        label: currency,
+        placeholder: props.field.placeholder,
+        validationRules: props.field.validationRules,
+        append: props.append,
+        withPositiveNumbers: true,
+      })
+  )
+}
 </script>

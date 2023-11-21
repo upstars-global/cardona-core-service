@@ -7,7 +7,6 @@ export enum FieldType {
   Tags = 'tags', // TODO: https://upstars.atlassian.net/browse/BAC-2054
   DateBtnOnly = 'date-btn-only', // TODO: https://upstars.atlassian.net/browse/BAC-2055
   SumRange = 'sum-range', // TODO: https://upstars.atlassian.net/browse/BAC-2060
-  Rates = 'rates', // TODO: https://upstars.atlassian.net/browse/BAC-1860
 }
 
 export interface IFieldInfo {
