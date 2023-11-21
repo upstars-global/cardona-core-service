@@ -19,12 +19,14 @@ const appendText = ref(props.field?.append)
 const localModelValue = computed({
   get: () => props.modelValue,
   set: value => {
+    console.log('!!!', value);
     emits('update:modelValue', value)
   },
 })
 </script>
 
 <template>
+  {{ localModelValue }}
   <AppTextField
     v-model.trim="localModelValue"
     :placeholder="field.placeholder || field.label"

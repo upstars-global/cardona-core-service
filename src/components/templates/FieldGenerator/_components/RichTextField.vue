@@ -8,19 +8,19 @@ import { filterString, getVariablesFromLocale } from '../../../../helpers/text-e
 import type { RichTextBaseField } from '../../../..//@model/templates/baseField'
 
 interface RichTextProps {
-  value?: string
+  modelValue?: string
   field: RichTextBaseField
   disabled?: boolean
   errors?: string[]
 }
 
 const props = withDefaults(defineProps<RichTextProps>(), {
-  value: '',
+  modelValue: '',
   errors: () => [],
 })
 
 const emit = defineEmits<{
-  (event: 'input', value: string): void
+  (event: 'update:modelValue', value: string): void
 }>()
 
 const localisationParameters = ref({})
@@ -28,9 +28,9 @@ const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'
 const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
 const watchOptions = { immediate: true, deep: true }
 
-const modelValue = computed({
-  get: () => props.value,
-  set: value => emit('input', value),
+const localModelValue = computed({
+  get: () => props.modelValue,
+  set: value => emit('update:modelValue', value),
 })
 
 watch(
@@ -50,11 +50,11 @@ const setUpdateLocalisationParameters = (localeVariables: LocaleVariable = {}) =
 }
 
 const onRemoveVariable = (localeVariables: string): void => {
-  emit('input', filterString(modelValue.value, localeVariables))
+  emit('update:modelValue', filterString(props.modelValue?.value, localeVariables))
 }
 
 const handleVariablesChange = () => {
-  const localeKeyInText = getVariablesFromLocale(modelValue.value)
+  const localeKeyInText = getVariablesFromLocale(props.modelValue || '')
 
   const excessKeyVariable: string
     = difference(localeKeyInText, Object.keys(variableTextBufferStore.value)).at(0) || ''
@@ -67,7 +67,7 @@ watch(() => variableTextBufferStore, handleVariablesChange, watchOptions)
 
 <template>
   <TextEditorWysiwyg
-    v-model.trim="modelValue"
+    v-model.trim="localModelValue"
     :placeholder="field.label"
     :disabled="disabled"
     :options-variable="allCurrencies"

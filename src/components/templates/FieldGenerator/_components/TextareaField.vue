@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { FieldInfo } from '../../../../@model/field'
+import type { TextareaBaseField } from '@/@model/templates/baseField'
 
 const props = defineProps<{
   modelValue: string
-  field: FieldInfo
+  value: string
+  field: TextareaBaseField
   errors: Array<string>
   disabled: boolean
 }>()
@@ -22,10 +23,11 @@ const localModelValue = computed({
   set: value => emits('update:modelValue', value),
 })
 
-const rules = [(v: string) => v.length <= maxChars.value || `Max ${maxChars.value} characters`]
+const rules = [(v: string) => v?.length <= maxChars.value || `Max ${maxChars.value} characters`]
 </script>
 
 <template>
+  {{ value }}
   <AppTextarea
     v-model="localModelValue"
     :placeholder="field.label"
@@ -33,7 +35,7 @@ const rules = [(v: string) => v.length <= maxChars.value || `Max ${maxChars.valu
     no-resize
     rows="3"
     :counter="field.counter"
-    :rules="[...rules, ...field.validationRules]"
+    :rules="[...rules, field.validationRules]"
     :disabled="disabled"
     :maxlength="maxChars"
   />
