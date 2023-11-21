@@ -9,6 +9,7 @@ import {
   TextareaBaseField,
   PasswordBaseField,
   TimeBaseField,
+  PhoneBaseField,
   ConditionsBaseField,
   UsersListBaseField,
   SwitchBaseField,
@@ -173,7 +174,7 @@ export class DemoForm {
   readonly digits: NumberBaseField
   readonly password: PasswordBaseField
   readonly passwordFieldWithGeneration: PasswordBaseField
-  readonly phone: FieldInfo
+  readonly phone: PhoneBaseField
   readonly check: CheckBaseField
   readonly radio: RadioBaseField
   readonly checkGroup: CheckGroupBaseField
@@ -284,12 +285,11 @@ export class DemoForm {
       value: data?.rates || [],
       label: i18n.t('page.demo.rates'),
     })
-    this.phone = new FieldInfo({
-      type: FieldType.Phone,
+    this.phone = new PhoneBaseField({
       key: 'phone',
       value: data?.phone,
       label: i18n.t('page.demo.phoneField'),
-      validationRules: 'required|phone',
+      validationRules: ['required', 'phone'],
     })
     this.password = new PasswordBaseField({
       key: 'password',

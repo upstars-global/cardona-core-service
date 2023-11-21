@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { FieldInfo } from '../../../../@model/field'
+import { PhoneBaseField } from '../../../../@model/baseField'
 import { allPhoneCodesWithFlags } from '../../../../helpers/countries'
 import Cleave from 'vue-cleave-component'
 
 type PhoneFieldProps = {
   value: string
-  field: FieldInfo
+  field: PhoneBaseField
   disabled?: boolean
 }
 

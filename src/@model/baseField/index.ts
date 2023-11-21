@@ -6,6 +6,7 @@ import { PasswordBaseField } from './password'
 import { SelectBaseField } from './select'
 import { MultiSelectBaseField } from './multi-select'
 import { TimeBaseField } from './time'
+import { PhoneBaseField } from './phone'
 import { ConditionsBaseField } from './conditions'
 import { UsersListBaseField } from './users-list'
 import { SwitchBaseField } from './switch'
@@ -26,6 +27,7 @@ export const getInstanceClass = (instance: object) => {
     UsersListBaseField,
     ConditionsBaseField,
     TimeBaseField,
+    PhoneBaseField,
     SelectBaseField,
     MultiSelectBaseField,
     PasswordBaseField,
@@ -46,6 +48,7 @@ export {
   SelectBaseField,
   MultiSelectBaseField,
   TimeBaseField,
+  PhoneBaseField,
   ConditionsBaseField,
   UsersListBaseField,
   SwitchBaseField,
