@@ -9,7 +9,7 @@ export interface ITextBaseField extends IATextBaseField {
 
 export class TextBaseField extends ATextBaseField implements ITextBaseField {
   readonly component: Component = TextField
-  protected _value?: string | number
+  protected _value?: NumberOrString
 
   constructor(field: ITextBaseField) {
     super(field)
