@@ -4,8 +4,7 @@ import {
   getPermissionKeys,
   transformFormData,
 } from '../../../src/helpers'
-import { FieldInfo, FieldType } from '../../../src/@model/field'
-import { TextBaseField } from '../../../src/@model/baseField'
+import { TextBaseField, TagsBaseField } from '../../../src/@model/baseField'
 import { getLocaleDateStringWithoutTimezone } from '../../../src/helpers/date'
 import { DemoForm } from '../../../src/@model/demo'
 
@@ -162,8 +161,7 @@ describe('helpers', () => {
           key: 'value1',
           value: 'asdasd',
         }),
-        field2: new FieldInfo({
-          type: FieldType.Tags,
+        field2: new TagsBaseField({
           label: '',
           key: 'value1',
           value: ['asdasd', 'asdasd', '2123123'],

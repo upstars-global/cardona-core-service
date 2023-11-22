@@ -4,7 +4,6 @@ import { TranslateResult } from 'vue-i18n'
 
 export enum FieldType {
   DummySelect = 'dummy-select', // TODO: https://upstars.atlassian.net/browse/BAC-2061
-  Tags = 'tags', // TODO: https://upstars.atlassian.net/browse/BAC-2054
   DateBtnOnly = 'date-btn-only', // TODO: https://upstars.atlassian.net/browse/BAC-2055
   SumRange = 'sum-range', // TODO: https://upstars.atlassian.net/browse/BAC-2060
 }
@@ -87,11 +86,7 @@ export class FieldInfo<T = {}> {
   }
 
   get value() {
-    if (this.type === FieldType.Tags) {
-      return this._value || []
-    } else {
-      return this._value
-    }
+    return this._value
   }
 
   checkSelectValue(value: string | OptionsItem): OptionsItem {
