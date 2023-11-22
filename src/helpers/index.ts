@@ -123,6 +123,7 @@ export const getPermissionKeys = (config: {
 }
 
 export const getShortString = (text: string | number, letterCount = 4): string => {
+  if (letterCount * 2 >= text.toString().length) return text.toString()
   const startString = String(text).slice(0, letterCount)
   const endString = String(text).slice(-letterCount)
   return `${startString}...${endString}`
