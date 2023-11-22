@@ -16,9 +16,11 @@ import { CheckGroupBaseField } from './check-group'
 import { DateBaseField } from './date'
 import { RadioBaseField } from './radio'
 import { RichTextBaseField } from './rich-text'
+import { TagsBaseField } from './tags'
 
 export const getInstanceClass = (instance: object) => {
   const fields = [
+    TagsBaseField,
     RichTextBaseField,
     RadioBaseField,
     CheckGroupBaseField,
@@ -60,4 +62,5 @@ export {
   CheckBaseField,
   RichTextBaseField,
   CheckGroupBaseField,
+  TagsBaseField,
 }

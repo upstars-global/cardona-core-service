@@ -18,6 +18,7 @@ import {
   CheckBaseField,
   DateBaseField,
   CheckGroupBaseField,
+  TagsBaseField,
 } from './baseField'
 import { FieldInfo, FieldType } from './field'
 import { StatusWithDateHistoryValue, StatusWithVariant, ViewInfo, ViewType } from './view'
@@ -190,7 +191,7 @@ export class DemoForm {
   readonly dateBtn: FieldInfo
   readonly textarea?: TextareaBaseField
   readonly textareaWithCounter: TextareaBaseField
-  readonly tags: FieldInfo
+  readonly tags: TagsBaseField
   readonly url: TextBaseField
   readonly seo: SeoData
   readonly localisationParameters: Record<string, Record<string, string>>
@@ -430,8 +431,7 @@ export class DemoForm {
       label: i18n.t('common.url'),
       validationRules: 'url',
     })
-    this.tags = new FieldInfo({
-      type: FieldType.Tags,
+    this.tags = new TagsBaseField({
       value: data?.tags,
       key: 'tags',
       label: i18n.t('page.demo.tagsField'),
