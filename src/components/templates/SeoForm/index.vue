@@ -5,31 +5,31 @@ import { SeoForm } from '../../../@model/seo'
 import FieldGenerator from '../../../components/templates/FieldGenerator/index.vue'
 
 const props = defineProps<{
-  value: any
+  modelValue: any
   disabled: boolean
 }>()
 
 const form = ref<SeoForm>({} as SeoForm)
 
 watch(
-  () => props.value,
+  () => props.modelValue,
   () => {
     // @ts-expect-error
-    form.value = new SeoForm(props?.value)
+    form.value = new SeoForm(props?.modelValue)
 
-    Object.keys(form.value).forEach(key => {
-      if (form.value?.[key].hasOwnProperty('form'))
-        form.value[key].form = props.value
-    })
+    // Object.keys(form.value).forEach(key => {
+    //   if (form.value?.[key].hasOwnProperty('form'))
+    //     form.value[key].form = props.modelValue
+    // })
   },
   { immediate: true, deep: true },
     )
 
 const onInput = val => {
   if (val?.form?.localisationParameters)
-    props!.value.localisationParameters = val.form.localisationParameters
+    props!.modelValue.localisationParameters = val.form.localisationParameters
 
-  props!.value.seo = transformFormData(form.value)
+  props!.modelValue.seo = transformFormData(form.value)
 }
 </script>
 

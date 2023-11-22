@@ -49,7 +49,7 @@ const mockUploadFile = async () => {
   // toastSuccess('/mock/upload')
 }
 
-const currentTab = ref('main')
+const currentTab = ref('seo')
 </script>
 
 <template>
@@ -67,7 +67,7 @@ const currentTab = ref('main')
       {{ $t('common.localization') }}
     </VTab>
   </VTabs>
-  <VWindow v-model="currentTab">
+  <VWindow v-model="currentTab" eager>
     <VWindowItem value="main">
       <VCard>
         <template #title>
@@ -105,14 +105,15 @@ const currentTab = ref('main')
         </template>
       </VCard>
     </VWindowItem>
-    <VWindowItem value="seo">
+    <VWindowItem value="seo" eager>
       <SeoForm
-        :value="formData.seo"
+        v-model="formData.seo"
         :disabled="false"
       />
     </VWindowItem>
     <VWindowItem value="localization">
       <LocaleForm
+        v-if="false"
         :value="formData"
         :disabled="false"
       />
