@@ -99,7 +99,7 @@ const listData = [
   },
   {
     id: '632c39448e03b2dab20c8a78',
-    shortId: '632c39448e03b2dab20c8a78',
+    shortId: '12345678',
     partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
     nameWithShortId: 'Test1',
