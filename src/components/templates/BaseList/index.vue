@@ -292,7 +292,7 @@
           </div>
         </template>
 
-        <template v-if="canUpdate || canUpdateSeo" #cell(actions)="{ item }">
+        <template v-if="showActions" #cell(actions)="{ item }">
           <item-actions
             :item="item"
             :create-page-name="CreatePageName"
@@ -513,8 +513,16 @@ export default {
 
     const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
 
-    const canUpdateItem = (item): boolean =>
-      canUpdateCb && item ? isExistsUpdatePage && canUpdateCb(item) : isExistsUpdatePage
+    const canUpdateItem = (item): boolean => {
+      if (!canUpdate) return false
+      return canUpdate && canUpdateCb && item
+        ? isExistsUpdatePage && canUpdateCb(item)
+        : isExistsUpdatePage
+    }
+
+    const showActions = computed(() =>
+      [(config.createFromCopy && canUpdate) || canUpdateSeo].every(Boolean)
+    )
     const canRemoveItem = (item): boolean =>
       canRemoveCb && item ? canRemove && canRemoveCb(item) : canRemove
     // Sidebar
