@@ -929,6 +929,7 @@ export default {
       canExport,
       canUpdateItem,
       canRemoveItem,
+      showActions,
 
       // Sidebar
       isSidebarShown,
