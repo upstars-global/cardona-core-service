@@ -521,7 +521,7 @@ export default {
     }
 
     const showActions = computed(() =>
-      [(config.createFromCopy && canUpdate) || canUpdateSeo].every(Boolean)
+      [(props.config.createFromCopy && canUpdate) || canUpdateSeo].every(Boolean)
     )
     const canRemoveItem = (item): boolean =>
       canRemoveCb && item ? canRemove && canRemoveCb(item) : canRemove
