@@ -61,6 +61,7 @@ const listData = [
   {
     id: '632c39448e03b2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
+    phoneList: [],
     partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
     nameWithShortId: 'Test',

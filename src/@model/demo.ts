@@ -19,6 +19,7 @@ import {
   DateBaseField,
   CheckGroupBaseField,
   TagsBaseField,
+  PhonesListBaseField,
 } from './baseField'
 import { FieldInfo, FieldType } from './field'
 import { StatusWithDateHistoryValue, StatusWithVariant, ViewInfo, ViewType } from './view'
@@ -199,6 +200,7 @@ export class DemoForm {
   public image: string
   readonly conditions: ConditionsBaseField
   public usersList: UsersListBaseField
+  public phoneList: PhonesListBaseField
 
   constructor(data) {
     this.id = data?.id
@@ -294,6 +296,11 @@ export class DemoForm {
       value: data?.phone,
       label: i18n.t('page.demo.phoneField'),
       validationRules: ['required', 'phone'],
+    })
+    this.phoneList = new PhonesListBaseField({
+      key: 'phoneList',
+      value: data?.phoneList,
+      label: i18n.t('page.demo.phoneList'),
     })
     this.password = new PasswordBaseField({
       key: 'password',

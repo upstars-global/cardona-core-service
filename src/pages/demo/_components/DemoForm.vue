@@ -226,6 +226,9 @@
             <b-col cols="8">
               <field-generator v-model="formData.usersList" :disabled="isDisabledField" />
             </b-col>
+            <b-col cols="8">
+              <field-generator v-model="formData.phoneList" :disabled="isDisabledField" />
+            </b-col>
           </b-row>
           <b-row>
             <b-col cols="8">
