@@ -2,20 +2,42 @@
 import { computed, Ref, ref } from 'vue'
 import store from '../../../../store'
 import { IconsList } from '../../../../@model/enums/icons'
-import { IPhonesListValue } from '../../../../@model/baseField/phones-list'
+import { IPhonesListValue, PhonesListBaseField } from "../../../../@model/baseField/phones-list";
 import PhoneField from '../../../../components/templates/FieldGenerator/_components/PhoneField.vue'
 import SelectField from '../../../../components/templates/FieldGenerator/_components/SelectField.vue'
 
+interface Props {
+  value: IPhonesListValue
+  field: PhonesListBaseField
+  errors?: Array<string>
+  disabled?: boolean
+}
+
+interface Emits {
+  (event: 'input', value: IPhonesListValue)
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  value: () => [],
+})
+const emits = defineEmits<Emits>()
+
 const countries = computed(() => store.getters['localeCore/countries'])
+
+const dataList = computed({
+  get: () => props.value,
+  set: (value) => emits('input', value),
+})
 
 const itemsData: Ref<IPhonesListValue> = ref([{ phone: '+380', country: 'Ukraine' }])
 
 const addItem = () => {
-  itemsData.value = [...itemsData.value, { phone: '+', country: '' }]
+  emits('input', [...(props.value || []), { phone: '+', country: '' }])
 }
 
 const removeItem = (index: number) => {
-  itemsData.value = itemsData.value.filter((_, itemIndex) => itemIndex !== index)
+  const updatedLst = props.value?.filter((_, itemIndex) => itemIndex !== index) || []
+  emits('input', updatedLst)
 }
 </script>
 
@@ -23,7 +45,7 @@ const removeItem = (index: number) => {
   <div>
     <div>Phone list</div>
     <div class="items">
-      <b-row v-for="(data, key) in itemsData" :key="key" class="items__field">
+      <b-row v-for="(data, key) in dataList" :key="key" class="items__field">
         <b-col><phone-field v-model="data.phone" :field="{}" /></b-col>
         <b-col><select-field v-model="data.country" :field="{ options: countries }" /></b-col>
         <b-col
