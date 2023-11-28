@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import type { FaqCategory } from '@/@fake-db/types'
-import axios from '@axios'
+import type { FaqCategory } from '@db/pages/faq/types'
+
 import sittingGirlWithLaptop from '@images/illustrations/sitting-girl-with-laptop.png'
 
 const faqSearchQuery = ref('')
 
 const faqs = ref<FaqCategory[]>([])
 
-const fetchFaqs = () => {
-  return axios.get('/pages/faqs', {
-    params: {
+const fetchFaqs = async () => {
+  const data = await $api('/pages/faq', {
+    query: {
       q: faqSearchQuery.value,
     },
-  }).then(response => {
-    faqs.value = response.data
-  }).catch(error => {
-    console.error(error)
-  })
+  }).catch(err => console.log(err))
+
+  faqs.value = data
 }
 
 const activeTab = ref('Payment')
@@ -165,9 +163,9 @@ const contactUs = [
         QUESTION?
       </VChip>
 
-      <h5 class="text-h5 mb-2">
+      <h4 class="text-h4 mb-2">
         You still have a question?
-      </h5>
+      </h4>
       <p>
         If you can't find question in our FAQ, you can contact us. We'll answer you shortly!
       </p>
@@ -189,15 +187,18 @@ const contactUs = [
                 rounded
                 color="primary"
                 variant="tonal"
-                class="me-3"
+                size="38"
               >
-                <VIcon :icon="contact.icon" />
+                <VIcon
+                  :icon="contact.icon"
+                  size="28"
+                />
               </VAvatar>
             </VCardText>
             <VCardText>
-              <h6 class="text-h6 mb-2">
+              <h4 class="text-h4 mb-2">
                 {{ contact.via }}
-              </h6>
+              </h4>
               <span>{{ contact.tagLine }}</span>
             </VCardText>
           </VCard>

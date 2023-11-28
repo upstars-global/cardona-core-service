@@ -181,20 +181,22 @@ import * as demoCode from '@/views/demos/forms/form-elements/textfield/demoCodeT
       </AppCardCode>
     </VCol>
 
-    <VCol
+    <!--
+      <VCol
       cols="12"
       md="6"
-    >
-      <!-- 👉 Label Slot -->
-      <AppCardCode
-        title="Label Slot"
-        :code="demoCode.labelSlot"
       >
-        <p>Text field label can be defined in <code>label</code> slot - that will allow to use HTML content.</p>
+      // 👉 Label Slot
+      <AppCardCode
+      title="Label Slot"
+      :code="demoCode.labelSlot"
+      >
+      <p>Text field label can be defined in <code>label</code> slot - that will allow to use HTML content.</p>
 
-        <DemoTextfieldLabelSlot />
+      <DemoTextfieldLabelSlot />
       </AppCardCode>
-    </VCol>
+      </VCol>
+    -->
 
     <VCol
       cols="12"
@@ -211,19 +213,21 @@ import * as demoCode from '@/views/demos/forms/form-elements/textfield/demoCodeT
       </AppCardCode>
     </VCol>
 
-    <VCol
+    <!--
+      <VCol
       cols="12"
       md="6"
-    >
-      <!-- 👉 Icon slots -->
-      <AppCardCode
-        title="Icon slots"
-        :code="demoCode.iconSlots"
       >
-        <p>Instead of using <code>prepend</code>/<code>append</code>/<code>append-inner</code> icons you can use slots to extend input's functionality.</p>
+      // 👉 Icon slots
+      <AppCardCode
+      title="Icon slots"
+      :code="demoCode.iconSlots"
+      >
+      <p>Instead of using <code>prepend</code>/<code>append</code>/<code>append-inner</code> icons you can use slots to extend input's functionality.</p>
 
-        <DemoTextfieldIconSlots />
+      <DemoTextfieldIconSlots />
       </AppCardCode>
-    </VCol>
+      </VCol>
+    -->
   </VRow>
 </template>

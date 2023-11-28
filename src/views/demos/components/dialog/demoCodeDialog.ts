@@ -108,6 +108,7 @@ const interest = ref<string[]>([])
             <AppTextField
               v-model="firstName"
               label="First Name"
+              placeholder="John"
             />
           </VCol>
           <VCol
@@ -118,6 +119,7 @@ const interest = ref<string[]>([])
             <AppTextField
               v-model="middleName"
               label="Middle Name"
+              placeholder="peter"
             />
           </VCol>
           <VCol
@@ -129,19 +131,23 @@ const interest = ref<string[]>([])
               v-model="lastName"
               label="Last Name"
               persistent-hint
+              placeholder="Doe"
             />
           </VCol>
           <VCol cols="12">
             <AppTextField
               v-model="email"
               label="Email"
+              placeholder="johndoe@email.com"
             />
           </VCol>
           <VCol cols="12">
             <AppTextField
               v-model="password"
               label="Password"
+              autocomplete="on"
               type="password"
+              placeholder="············"
             />
           </VCol>
           <VCol
@@ -152,6 +158,7 @@ const interest = ref<string[]>([])
               v-model="age"
               label="Age"
               type="number"
+              placeholder="18"
             />
           </VCol>
           <VCol
@@ -161,6 +168,7 @@ const interest = ref<string[]>([])
             <AppTextField
               v-model="interest"
               label="Interests"
+              placeholder="Sports, Music, Movies"
             />
           </VCol>
         </VRow>
@@ -220,6 +228,7 @@ const interest = ref([])
             <AppTextField
               v-model="firstName"
               label="First Name"
+              placeholder="John"
             />
           </VCol>
           <VCol
@@ -230,6 +239,7 @@ const interest = ref([])
             <AppTextField
               v-model="middleName"
               label="Middle Name"
+              placeholder="peter"
             />
           </VCol>
           <VCol
@@ -241,19 +251,23 @@ const interest = ref([])
               v-model="lastName"
               label="Last Name"
               persistent-hint
+              placeholder="Doe"
             />
           </VCol>
           <VCol cols="12">
             <AppTextField
               v-model="email"
               label="Email"
+              placeholder="johndoe@email.com"
             />
           </VCol>
           <VCol cols="12">
             <AppTextField
               v-model="password"
               label="Password"
+              autocomplete="on"
               type="password"
+              placeholder="············"
             />
           </VCol>
           <VCol
@@ -264,6 +278,7 @@ const interest = ref([])
               v-model="age"
               label="Age"
               type="number"
+              placeholder="18"
             />
           </VCol>
           <VCol
@@ -273,6 +288,7 @@ const interest = ref([])
             <AppTextField
               v-model="interest"
               label="Interests"
+              placeholder="Sports, Music, Movies"
             />
           </VCol>
         </VRow>
@@ -365,6 +381,7 @@ const isDialogVisible = ref(false)
       <VList
         lines="two"
         select-strategy="classic"
+        class="full-screen-dialog-list"
       >
         <VListSubheader>General</VListSubheader>
 
@@ -421,6 +438,17 @@ const isDialogVisible = ref(false)
 .dialog-bottom-transition-enter-active,
 .dialog-bottom-transition-leave-active {
   transition: transform 0.2s ease-in-out;
+}
+
+.full-screen-dialog-list{
+  .v-list-item[tabindex="-2"].v-list-item--active{
+    .v-list-item-action{
+      .v-icon{
+        color: #fff;
+      }
+    }
+  }
+
 }
 </style>
 `,
@@ -492,6 +520,7 @@ const isDialogVisible = ref(false)
       <VList
         lines="two"
         select-strategy="classic"
+        class="full-screen-dialog-list"
       >
         <VListSubheader>General</VListSubheader>
 
@@ -549,6 +578,17 @@ const isDialogVisible = ref(false)
 .dialog-bottom-transition-leave-active {
   transition: transform 0.2s ease-in-out;
 }
+
+.full-screen-dialog-list{
+  .v-list-item[tabindex="-2"].v-list-item--active{
+    .v-list-item-action{
+      .v-icon{
+        color: #fff;
+      }
+    }
+  }
+
+}
 </style>
 `,
 }
@@ -589,7 +629,9 @@ watch(isDialogVisible, value => {
         Please stand by
         <VProgressLinear
           indeterminate
-          class="mb-0"
+          color="white"
+          :height="8"
+          class="mb-0 mt-4"
         />
       </VCardText>
     </VCard>
@@ -630,7 +672,9 @@ watch(isDialogVisible, value => {
         Please stand by
         <VProgressLinear
           indeterminate
-          class="mb-0"
+          color="white"
+          :height="8"
+          class="mb-0 mt-4"
         />
       </VCardText>
     </VCard>
@@ -984,6 +1028,7 @@ const isDialogVisible = ref(false)
     v-model="isDialogVisible"
     scrollable
     max-width="350"
+    content-class="scrollable-dialog"
   >
     <!-- Dialog Activator -->
     <template #activator="{ props }">
@@ -1034,6 +1079,12 @@ const isDialogVisible = ref(false)
     </VCard>
   </VDialog>
 </template>
+
+<style lang="scss">
+.scrollable-dialog{
+  overflow: visible !important;
+}
+</style>
 `,
   js: `<script setup>
 const countryList = [
@@ -1112,6 +1163,7 @@ const isDialogVisible = ref(false)
     v-model="isDialogVisible"
     scrollable
     max-width="350"
+    content-class="scrollable-dialog"
   >
     <!-- Dialog Activator -->
     <template #activator="{ props }">
@@ -1162,5 +1214,11 @@ const isDialogVisible = ref(false)
     </VCard>
   </VDialog>
 </template>
+
+<style lang="scss">
+.scrollable-dialog{
+  overflow: visible !important;
+}
+</style>
 `,
 }

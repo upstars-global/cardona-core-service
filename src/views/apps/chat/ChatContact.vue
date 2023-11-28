@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import type { ChatContact, ChatContactWithChat } from '@/@fake-db/types'
 import { useChat } from '@/views/apps/chat/useChat'
 import { useChatStore } from '@/views/apps/chat/useChatStore'
-import { avatarText, formatDateToMonthShort } from '@core/utils/formatters'
+import type { ChatContact, ChatContactWithChat } from '@db/apps/chat/types'
 
 interface Props {
   isChatContact?: boolean
@@ -97,8 +96,8 @@ const isChatContactActive = computed(() => {
     --v-theme-on-background: #fff;
 
     .v-avatar {
+      border: 2px solid #fff;
       background: #fff;
-      outline: 2px solid #fff;
     }
   }
 

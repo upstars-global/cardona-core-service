@@ -57,7 +57,7 @@ const dialogModelValueUpdate = (val: boolean) => {
     <VCard class="pa-5 pa-sm-8">
       <!-- 👉 Title -->
       <VCardItem class="text-center">
-        <VCardTitle class="text-h5 font-weight-medium mb-3">
+        <VCardTitle class="text-h3 font-weight-medium mb-3">
           {{ props.cardDetails.name ? 'Edit Card' : 'Add New Card' }}
         </VCardTitle>
         <p class="mb-0">
@@ -73,6 +73,7 @@ const dialogModelValueUpdate = (val: boolean) => {
               <AppTextField
                 v-model="cardDetails.number"
                 label="Card Number"
+                placeholder="1234 1234 1234 1234"
                 type="number"
               />
             </VCol>
@@ -85,6 +86,7 @@ const dialogModelValueUpdate = (val: boolean) => {
               <AppTextField
                 v-model="cardDetails.name"
                 label="Name"
+                placeholder="John Doe"
               />
             </VCol>
 
@@ -95,7 +97,8 @@ const dialogModelValueUpdate = (val: boolean) => {
             >
               <AppTextField
                 v-model="cardDetails.expiry"
-                label="Expiry"
+                label="Expiry Date"
+                placeholder="MM/YY"
               />
             </VCol>
 
@@ -107,7 +110,8 @@ const dialogModelValueUpdate = (val: boolean) => {
               <AppTextField
                 v-model="cardDetails.cvv"
                 type="number"
-                label="CVV"
+                label="CVV Code"
+                placeholder="123"
               />
             </VCol>
 

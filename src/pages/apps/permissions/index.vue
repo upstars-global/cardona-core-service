@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { VDataTableServer } from 'vuetify/labs/VDataTable'
-import type { Permission } from '@/@fake-db/types'
-import { paginationMeta } from '@/@fake-db/utils'
-import axios from '@axios'
-import type { Options } from '@core/types'
+import { paginationMeta } from '@api-utils/paginationMeta'
 
 // 👉 headers
 const headers = [
@@ -13,24 +10,25 @@ const headers = [
   { title: 'Actions', key: 'actions', sortable: false },
 ]
 
-const permissions = ref<Permission[]>([])
 const search = ref('')
-const totalPermissions = ref(0)
 
-const options = ref<Options>({
-  page: 1,
-  itemsPerPage: 10,
-  sortBy: [],
-  groupBy: [],
-  search: undefined,
-})
+// Data table options
+const itemsPerPage = ref(10)
+const page = ref(1)
+const sortBy = ref()
+const orderBy = ref()
+
+// Update data table options
+const updateOptions = (options: any) => {
+  page.value = options.page
+  sortBy.value = options.sortBy[0]?.key
+  orderBy.value = options.sortBy[0]?.order
+}
 
 const isPermissionDialogVisible = ref(false)
 const isAddPermissionDialogVisible = ref(false)
 const permissionName = ref('')
-const totalPages = ref(1)
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const colors: any = {
   'support': { color: 'info', text: 'Support' },
   'users': { color: 'success', text: 'Users' },
@@ -39,24 +37,18 @@ const colors: any = {
   'restricted-user': { color: 'error', text: 'Restricted User' },
 }
 
-const fetchPermissions = () => {
-  axios.get('/apps/permissions/data', {
-    params: {
-      q: search.value,
-      options: options.value,
-    },
-  }).then(response => {
-    permissions.value = response.data.permissions
-    totalPermissions.value = response.data.totalPermissions
-    totalPages.value = response.data.totalPages
-  }).catch(error => {
-    console.log(error)
-  })
-}
+const { data: permissionsData } = await useApi<any>(createUrl('/apps/permissions', {
+  query: {
+    q: search,
+    itemsPerPage,
+    page,
+    sortBy,
+    orderBy,
+  },
+}))
 
-onMounted(fetchPermissions)
-
-watchEffect(fetchPermissions)
+const permissions = computed(() => permissionsData.value.permissions)
+const totalPermissions = computed(() => permissionsData.value.totalPermissions)
 
 const editPermission = (name: string) => {
   isPermissionDialogVisible.value = true
@@ -71,7 +63,7 @@ const editPermission = (name: string) => {
         Permissions List
       </h5>
       <p class="mb-0">
-        Each category (Basic, Professional, and Business) includes the four predefined roles shown below.
+        Each category (Basic, Professional, and Business) includes the four predefined roles shown below. {{ totalPermissions }}
       </p>
     </VCol>
 
@@ -79,7 +71,7 @@ const editPermission = (name: string) => {
       <VCard>
         <VCardText class="d-flex align-center justify-space-between flex-wrap gap-4">
           <AppSelect
-            :model-value="options.itemsPerPage"
+            :model-value="itemsPerPage"
             :items="[
               { value: 10, title: '10' },
               { value: 25, title: '25' },
@@ -87,8 +79,8 @@ const editPermission = (name: string) => {
               { value: 100, title: '100' },
               { value: -1, title: 'All' },
             ]"
-            style="width: 5rem;"
-            @update:model-value="options.itemsPerPage = parseInt($event, 10)"
+            style="inline-size: 5rem;"
+            @update:model-value="itemsPerPage = parseInt($event, 10)"
           />
 
           <div class="d-flex align-center gap-4 flex-wrap">
@@ -96,7 +88,7 @@ const editPermission = (name: string) => {
               v-model="search"
               placeholder="Search"
               density="compact"
-              style="width: 12.5rem;"
+              style="inline-size: 12.5rem;"
             />
             <VBtn
               density="default"
@@ -110,20 +102,24 @@ const editPermission = (name: string) => {
         <VDivider />
 
         <VDataTableServer
-          v-model:items-per-page="options.itemsPerPage"
-          v-model:page="options.page"
+          v-model:items-per-page="itemsPerPage"
+          v-model:page="page"
           :items-length="totalPermissions"
+          :items-per-page-options="[
+            { value: 5, title: '5' },
+            { value: 10, title: '10' },
+            { value: -1, title: '$vuetify.dataFooter.itemsPerPageAll' },
+          ]"
           :headers="headers"
           :items="permissions"
-          class="text-medium-emphasis text-no-wrap"
-          @update:options="options = $event"
+          class="text-no-wrap"
+          @update:options="updateOptions"
         >
           <!-- Assigned To -->
           <template #item.assignedTo="{ item }">
-            <!-- {{ item.raw.assignedTo }} -->
             <div class="d-flex gap-2">
               <VChip
-                v-for="text in item.raw.assignedTo"
+                v-for="text in item.assignedTo"
                 :key="text"
                 label
                 :color="colors[text].color"
@@ -139,18 +135,41 @@ const editPermission = (name: string) => {
 
             <div class="d-flex align-center justify-space-between flex-wrap gap-3 pa-5 pt-3">
               <p class="text-sm text-medium-emphasis mb-0">
-                {{ paginationMeta(options, totalPermissions) }}
+                {{ paginationMeta({ page, itemsPerPage }, totalPermissions) }}
               </p>
 
               <VPagination
-                v-model="options.page"
-                :length="totalPages"
-              />
+                v-model="page"
+                :length="Math.ceil(totalPermissions / itemsPerPage)"
+                :total-visible="$vuetify.display.xs ? 1 : Math.min(Math.ceil(totalPermissions / itemsPerPage), 5)"
+              >
+                <template #prev="slotProps">
+                  <VBtn
+                    variant="tonal"
+                    color="default"
+                    v-bind="slotProps"
+                    :icon="false"
+                  >
+                    Previous
+                  </VBtn>
+                </template>
+
+                <template #next="slotProps">
+                  <VBtn
+                    variant="tonal"
+                    color="default"
+                    v-bind="slotProps"
+                    :icon="false"
+                  >
+                    Next
+                  </VBtn>
+                </template>
+              </VPagination>
             </div>
           </template>
 
           <template #item.createdDate="{ item }">
-            <span>{{ item.raw.createdDate }}</span>
+            <span>{{ item.createdDate }}</span>
           </template>
 
           <!-- Actions -->
@@ -160,7 +179,7 @@ const editPermission = (name: string) => {
               size="small"
               color="medium-emphasis"
               variant="text"
-              @click="editPermission(item.raw.name)"
+              @click="editPermission(item.name)"
             >
               <VIcon
                 size="22"

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import {computed, nextTick, onBeforeMount, onBeforeUnmount, ref,} from 'vue'
-import {useRoute, useRouter} from 'vue-router'
+import { computed, nextTick, onBeforeMount, onBeforeUnmount, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { Form } from 'vee-validate'
 import store from '../../../store'
-import {convertCamelCase, convertLowerCaseFirstSymbol, transformFormData} from '../../../helpers'
-import {basePermissions} from '../../../helpers/base-permissions'
-import {PageType} from '../../../@model/templates/baseSection'
-import {BaseSectionConfig} from '../../../@model/templates/baseList'
-import {VColors, VVariants} from '@/@model/vuetify'
-import { Form} from 'vee-validate';
+import { convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
+import { basePermissions } from '../../../helpers/base-permissions'
+import { PageType } from '../../../@model/templates/baseSection'
+import { BaseSectionConfig } from '../../../@model/templates/baseList'
+import { VColors, VVariants } from '@/@model/vuetify'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean
@@ -15,12 +15,12 @@ const props = withDefaults(defineProps<{
   pageType?: PageType
   useEntity: Function
 }>(),
-    {
-        useEntity: undefined,
-        withReadAction: true,
-        config: () => new BaseSectionConfig({}),
-        pageType: PageType.Create
-    }
+{
+  useEntity: undefined,
+  withReadAction: true,
+  config: () => new BaseSectionConfig({}),
+  pageType: PageType.Create,
+},
 )
 
 const route = useRoute()
@@ -109,17 +109,18 @@ if (props.withReadAction && entityId) {
 
 const validate = async () => {
   const { valid } = await formRef.value.validate()
-  /*const fieldsNotValid = Object.keys(refFormObserver.value.errors).filter(
-    nameField => refFormObserver.value.errors[nameField].isNotEmpty,
-  )*/ //
 
-  /*if (fieldsNotValid[0])
-    setTabError(fieldsNotValid[0])*/ // TODO: доработать в таске https://upstars.atlassian.net/browse/ALARO-1864
+  /* const fieldsNotValid = Object.keys(refFormObserver.value.errors).filter(
+    nameField => refFormObserver.value.errors[nameField].isNotEmpty,
+  ) */ //
+
+  /* if (fieldsNotValid[0])
+    setTabError(fieldsNotValid[0]) */ // TODO: доработать в таске https://upstars.atlassian.net/browse/ALARO-1864
 
   return valid
 }
 
-const setTabError = (fieldName:string) => {
+const setTabError = (fieldName: string) => {
   fieldNameError.value = fieldName
   tabNameError.value = ''
   if (form.value.hasOwnProperty(fieldName))
@@ -240,8 +241,11 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <Form ref="formRef" @submit.prevent >
-    <template #default="{validate}">
+  <Form
+    ref="formRef"
+    @submit.prevent
+  >
+    <template #default="{ validate }">
       <slot
         :entity-id="entityId"
         :form="form"
@@ -264,7 +268,7 @@ onBeforeUnmount(() => {
               class="mr-2"
               :color="VColors.Primary"
               data-testid="create-button"
-              @click="validate()"
+              @click="validate"
             >
               {{ $t('action.createAndExit') }}
             </VBtn>

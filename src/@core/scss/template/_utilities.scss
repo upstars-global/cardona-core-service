@@ -18,3 +18,9 @@
     line-height: 1.25rem;
   }
 }
+
+// ℹ️ Temporary solution as v-spacer style is not getting applied in build version. will remove this after release.
+// VSpacer
+.v-spacer{
+  flex-grow: 1;
+}

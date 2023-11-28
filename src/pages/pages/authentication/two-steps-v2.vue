@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { VOtpInput } from 'vuetify/labs/VOtpInput'
+
 import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
 import authV2ForgotPasswordIllustrationDark from '@images/pages/auth-v2-two-step-illustration-dark.png'
 import authV2ForgotPasswordIllustrationLight from '@images/pages/auth-v2-two-step-illustration-light.png'
@@ -7,12 +9,31 @@ import authV2MaskLight from '@images/pages/misc-mask-light.png'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
+definePage({
+  meta: {
+    layout: 'blank',
+  },
+})
+
 const authThemeImg = useGenerateImageVariant(
   authV2ForgotPasswordIllustrationLight,
   authV2ForgotPasswordIllustrationDark,
 )
 
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
+
+const router = useRouter()
+const otp = ref('')
+const isOtpInserted = ref(false)
+
+const onFinish = () => {
+  isOtpInserted.value = true
+
+  setTimeout(() => {
+    isOtpInserted.value = false
+    router.push('/')
+  }, 2000)
+}
 </script>
 
 <template>
@@ -56,9 +77,9 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
             class="mb-6"
           />
 
-          <h5 class="text-h5 mb-1">
+          <h4 class="text-h4 mb-1">
             Two Step Verification 💬
-          </h5>
+          </h4>
           <p class="mb-2">
             We sent a verification code to your mobile. Enter the code from the mobile in the field below.
           </p>
@@ -72,13 +93,21 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
             <VRow>
               <!-- email -->
               <VCol cols="12">
-                <AppOtpInput />
+                <VOtpInput
+                  v-model="otp"
+                  :disabled="isOtpInserted"
+                  type="number"
+                  class="pa-0"
+                  @finish="onFinish"
+                />
               </VCol>
 
               <!-- reset password -->
               <VCol cols="12">
                 <VBtn
                   block
+                  :loading="isOtpInserted"
+                  :disabled="isOtpInserted"
                   type="submit"
                 >
                   Verify my account
@@ -103,8 +132,3 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
 <style lang="scss">
 @use "@core/scss/template/pages/page-auth.scss";
 </style>
-
-<route lang="yaml">
-meta:
-  layout: blank
-</route>

@@ -8,6 +8,12 @@ import authV2ResetPasswordIllustrationLight from '@images/pages/auth-v2-reset-pa
 import authV2MaskDark from '@images/pages/misc-mask-dark.png'
 import authV2MaskLight from '@images/pages/misc-mask-light.png'
 
+definePage({
+  meta: {
+    layout: 'blank',
+  },
+})
+
 const form = ref({
   newPassword: '',
   confirmPassword: '',
@@ -64,9 +70,9 @@ const isConfirmPasswordVisible = ref(false)
             class="mb-6"
           />
 
-          <h5 class="text-h5 mb-1">
+          <h4 class="text-h4 mb-1">
             Reset Password 🔒
-          </h5>
+          </h4>
           <p class="mb-0">
             for <span class="font-weight-bold">john.doe@email.com</span>
           </p>
@@ -81,6 +87,7 @@ const isConfirmPasswordVisible = ref(false)
                   v-model="form.newPassword"
                   autofocus
                   label="New Password"
+                  placeholder="············"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
@@ -92,6 +99,7 @@ const isConfirmPasswordVisible = ref(false)
                 <AppTextField
                   v-model="form.confirmPassword"
                   label="Confirm Password"
+                  placeholder="············"
                   :type="isConfirmPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isConfirmPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isConfirmPasswordVisible = !isConfirmPasswordVisible"
@@ -132,8 +140,3 @@ const isConfirmPasswordVisible = ref(false)
 <style lang="scss">
 @use "@core/scss/template/pages/page-auth.scss";
 </style>
-
-<route lang="yaml">
-meta:
-  layout: blank
-</route>

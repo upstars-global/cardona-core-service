@@ -7,5 +7,6 @@ const items = ['Foo', 'Bar', 'Fizz', 'Buzz']
     :items="items"
     label="Density"
     density="compact"
+    placeholder="Select Item"
   />
 </template>

@@ -74,6 +74,7 @@ watch(formData, () => {
           v-model="formData.discount"
           type="number"
           label="Discount"
+          placeholder="10%"
           hint="Enter the discount percentage. 10 = 10%"
           persistent-hint
         />
@@ -87,6 +88,7 @@ watch(formData, () => {
           v-model="formData.region"
           label="Region"
           :items="['Asia', 'Europe', 'Africa', 'Australia', 'North America', 'South America']"
+          placeholder="Select Region"
           hint="Select applicable regions for the deal."
           persistent-hint
         />

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { VDataTable } from 'vuetify/labs/VDataTable'
 import { VueDraggableNext } from 'vue-draggable-next'
+import { VDataTable } from 'vuetify/labs/VDataTable'
+import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import type { TableField } from '../../@model/templates/tableFields'
 import type { SortItem } from '../../@core/types'
 import type { SelectMode } from '../../@model/enums/selectMode'
@@ -176,8 +177,8 @@ const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxS
             data-c-field="selectable"
           >
             <VCheckbox
-              :model-value="isSelected([item])"
-              @update:model-value="select([item], $event)"
+              :model-value="isSelected([item.raw])"
+              @update:model-value="select([item.raw], $event)"
             />
           </td>
           <td

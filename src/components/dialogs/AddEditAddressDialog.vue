@@ -80,7 +80,7 @@ const addressTypes = [
     >
       <!-- 👉 Title -->
       <VCardItem>
-        <VCardTitle class="text-h4 text-center">
+        <VCardTitle class="text-h3 text-center">
           {{ props.billingAddress.address ? 'Edit' : 'Add New' }} Address
         </VCardTitle>
       </VCardItem>
@@ -116,6 +116,7 @@ const addressTypes = [
               <AppTextField
                 v-model="billingAddress.companyName"
                 label="Company Name"
+                placeholder="Pixinvent"
               />
             </VCol>
 
@@ -127,6 +128,7 @@ const addressTypes = [
               <AppTextField
                 v-model="billingAddress.billingEmail"
                 label="Email"
+                placeholder="john@emaill.com"
               />
             </VCol>
 
@@ -138,6 +140,7 @@ const addressTypes = [
               <AppTextField
                 v-model="billingAddress.taxID"
                 label="Tax ID"
+                placeholder="123 345 32"
               />
             </VCol>
 
@@ -149,6 +152,7 @@ const addressTypes = [
               <AppTextField
                 v-model="billingAddress.vatNumber"
                 label="VAT Number"
+                placeholder="123 12 1223"
               />
             </VCol>
 
@@ -158,6 +162,7 @@ const addressTypes = [
                 v-model="billingAddress.address"
                 rows="2"
                 label="Billing Address"
+                placeholder="1, Pixinvent Street, USA"
               />
             </VCol>
 
@@ -169,6 +174,7 @@ const addressTypes = [
               <AppTextField
                 v-model="billingAddress.contact"
                 label="Contact"
+                placeholder="+1 23 456 7890"
               />
             </VCol>
 
@@ -180,6 +186,7 @@ const addressTypes = [
               <AppTextField
                 v-model="billingAddress.country"
                 label="Country"
+                placeholder="USA"
               />
             </VCol>
 
@@ -191,6 +198,7 @@ const addressTypes = [
               <AppTextField
                 v-model="billingAddress.state"
                 label="State"
+                placeholder="New York"
               />
             </VCol>
 
@@ -202,6 +210,7 @@ const addressTypes = [
               <AppTextField
                 v-model="billingAddress.zipCode"
                 label="Zip Code"
+                placeholder="123123"
                 type="number"
               />
             </VCol>

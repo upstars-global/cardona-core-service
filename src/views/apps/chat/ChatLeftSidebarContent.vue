@@ -1,23 +1,24 @@
 <script lang="ts" setup>
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useChat } from './useChat'
-import type { ChatContact as TypeChatContact } from '@/@fake-db/types'
 import ChatContact from '@/views/apps/chat/ChatContact.vue'
 import { useChatStore } from '@/views/apps/chat/useChatStore'
+import type { ChatContact as TypeChatContact } from '@db/apps/chat/types'
 
 const props = defineProps<{
   search: string
   isDrawerOpen: boolean
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   (e: 'openChatOfContact', id: TypeChatContact['id']): void
   (e: 'showUserProfile'): void
   (e: 'close'): void
+  (e: 'update:search', value: string): void
 }>()
 
 const { resolveAvatarBadgeVariant } = useChat()
-const search = useVModel(props, 'search')
+const search = useVModel(props, 'search', emit)
 
 const store = useChatStore()
 </script>
@@ -48,7 +49,7 @@ const store = useChatStore()
       </VAvatar>
     </VBadge>
 
-    <AppTextField
+    <VTextField
       v-model="search"
       placeholder="Search..."
       class="ms-4 me-1 chat-list-search"
@@ -59,7 +60,7 @@ const store = useChatStore()
           icon="tabler-search"
         />
       </template>
-    </AppTextField>
+    </VTextField>
 
     <IconBtn
       v-if="$vuetify.display.smAndDown"
@@ -78,7 +79,7 @@ const store = useChatStore()
     class="d-flex flex-column gap-y-1 chat-contacts-list px-3 list-none"
     :options="{ wheelPropagation: false }"
   >
-    <li>
+    <li class="list-none">
       <span class="chat-contact-header d-block text-primary text-xl font-weight-medium">Chats</span>
     </li>
 
@@ -94,8 +95,7 @@ const store = useChatStore()
       v-show="!store.chatsContacts.length"
       class="no-chat-items-text text-disabled"
     >No chats found</span>
-
-    <li>
+    <li class="list-none">
       <span class="chat-contact-header d-block text-primary text-xl font-weight-medium">Contacts</span>
     </li>
 

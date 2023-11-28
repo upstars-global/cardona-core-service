@@ -19,7 +19,13 @@ const shortcuts = [
     to: { name: 'apps-user-list' },
   },
   {
-    icon: 'tabler-layout',
+    icon: 'tabler-lock',
+    title: 'Role Management',
+    subtitle: 'Permission',
+    to: { name: 'apps-roles' },
+  },
+  {
+    icon: 'tabler-layout-dashboard',
     title: 'Dashboard',
     subtitle: 'Dashboard Analytics',
     to: { name: 'dashboards-analytics' },
@@ -30,12 +36,7 @@ const shortcuts = [
     subtitle: 'Account Settings',
     to: { name: 'pages-account-settings-tab', params: { tab: 'account' } },
   },
-  {
-    icon: 'tabler-help',
-    title: 'Help Center',
-    subtitle: 'FAQs & Articles',
-    to: { name: 'pages-help-center' },
-  },
+
 ]
 </script>
 

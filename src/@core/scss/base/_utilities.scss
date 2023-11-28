@@ -53,8 +53,23 @@ $card-spacer-content: 16px;
   color: #fff !important;
 }
 
+.text-white-variant {
+  color: rgba(211, 212, 220);
+}
+
+.text-link{
+  &:not(:hover){
+    color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity))
+  }
+}
+
 .bg-var-theme-background {
   background-color: rgba(var(--v-theme-on-background), 0.08) !important;
+}
+
+.bg-global-primary {
+  background-color: rgb(var(--v-global-theme-primary)) !important;
+  color: rgb(var(--v-theme-on-primary)) !important;
 }
 
 // [/^bg-light-(\w+)$/, ([, w]) => ({ backgroundColor: `rgba(var(--v-theme-${w}), var(--v-activated-opacity))` })],
@@ -71,6 +86,14 @@ $card-spacer-content: 16px;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   text-overflow: ellipsis;
+}
+
+.custom-badge {
+  .v-badge__badge {
+    border-radius: 6px !important;
+    block-size: 12px !important;
+    inline-size: 12px !important;
+  }
 }
 
 .leading-normal {
@@ -126,29 +149,6 @@ $card-spacer-content: 16px;
           color: rgb(var(--v-theme-#{$color-name})) !important;
         }
       }
-    }
-  }
-}
-
-// 👉 Pagination small-select dropdown for table
-// TODO: remove this class after vuetify datatable implememtation
-
-.per-page-select {
-  margin-block: auto;
-
-  .v-field__input {
-    align-items: center;
-    padding: 2px;
-    font-size: 14px;
-  }
-
-  .v-field__append-inner {
-    align-items: center;
-    padding: 0;
-    margin-inline-start: -2.5rem;
-
-    .v-icon {
-      margin-inline-start: 0 !important;
     }
   }
 }

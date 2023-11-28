@@ -9,5 +9,6 @@ const rules = [(v: string) => v.length <= 25 || 'Max 25 characters']
     label="Validation"
     :rules="rules"
     rows="2"
+    placeholder="Placeholder Text"
   />
 </template>

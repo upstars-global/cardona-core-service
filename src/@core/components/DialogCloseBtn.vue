@@ -6,7 +6,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   icon: 'tabler-x',
-  iconSize: '22',
+  iconSize: '20',
 })
 </script>
 

@@ -31,6 +31,7 @@ const people = [
     :items="people"
     item-title="name"
     item-value="name"
+    placeholder="Select User"
     label="Select"
   >
     <template #chip="{ props, item }">

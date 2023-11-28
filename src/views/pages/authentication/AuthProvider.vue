@@ -7,14 +7,17 @@ const authProviders = [
   {
     icon: 'fa-facebook',
     color: '#4267b2',
+    colorInDark: '#4267b2',
   },
   {
     icon: 'fa-google',
     color: '#dd4b39',
+    colorInDark: '#db4437',
   },
   {
     icon: 'fa-twitter',
     color: '#1da1f2',
+    colorInDark: '#1da1f2',
   },
 ]
 </script>

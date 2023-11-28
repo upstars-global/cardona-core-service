@@ -1,21 +1,20 @@
 <script setup lang="ts">
 import { VDataTable } from 'vuetify/labs/VDataTable'
-import { avatarText } from '@/@core/utils/formatters'
-import type { Data } from '@/@fake-db/types'
 import data from '@/views/demos/forms/tables/data-table/datatable'
+import type { Data } from '@db/pages/datatable/types'
 
 const editDialog = ref(false)
 const deleteDialog = ref(false)
 
 const defaultItem = ref<Data>({
-  responsive_id: '',
+  responsiveId: '',
   id: -1,
   avatar: '',
-  full_name: '',
+  fullName: '',
   post: '',
   email: '',
   city: '',
-  start_date: '',
+  startDate: '',
   salary: -1,
   age: '',
   experience: '',
@@ -37,9 +36,9 @@ const selectedOptions = [
 
 // headers
 const headers = [
-  { title: 'NAME', key: 'full_name' },
+  { title: 'NAME', key: 'fullName' },
   { title: 'EMAIL', key: 'email' },
-  { title: 'DATE', key: 'start_date' },
+  { title: 'DATE', key: 'startDate' },
   { title: 'SALARY', key: 'salary' },
   { title: 'AGE', key: 'age' },
   { title: 'STATUS', key: 'status' },
@@ -112,25 +111,25 @@ onMounted(() => {
     :items-per-page="5"
   >
     <!-- full name -->
-    <template #item.full_name="{ item }">
+    <template #item.fullName="{ item }">
       <div class="d-flex align-center">
         <!-- avatar -->
         <VAvatar
           size="32"
-          :color="item.raw.avatar ? '' : 'primary'"
-          :class="item.raw.avatar ? '' : 'v-avatar-light-bg primary--text'"
-          :variant="!item.raw.avatar ? 'tonal' : undefined"
+          :color="item.avatar ? '' : 'primary'"
+          :class="item.avatar ? '' : 'v-avatar-light-bg primary--text'"
+          :variant="!item.avatar ? 'tonal' : undefined"
         >
           <VImg
-            v-if="item.raw.avatar"
-            :src="item.raw.avatar"
+            v-if="item.avatar"
+            :src="item.avatar"
           />
-          <span v-else>{{ avatarText(item.raw.full_name) }}</span>
+          <span v-else>{{ avatarText(item.fullName) }}</span>
         </VAvatar>
 
         <div class="d-flex flex-column ms-3">
-          <span class="d-block font-weight-medium text--primary text-truncate">{{ item.raw.full_name }}</span>
-          <small>{{ item.raw.post }}</small>
+          <span class="d-block font-weight-medium text-high-emphasis text-truncate">{{ item.fullName }}</span>
+          <small>{{ item.post }}</small>
         </div>
       </div>
     </template>
@@ -138,10 +137,10 @@ onMounted(() => {
     <!-- status -->
     <template #item.status="{ item }">
       <VChip
-        :color="resolveStatusVariant(item.raw.status).color"
+        :color="resolveStatusVariant(item.status).color"
         size="small"
       >
-        {{ resolveStatusVariant(item.raw.status).text }}
+        {{ resolveStatusVariant(item.status).text }}
       </VChip>
     </template>
 
@@ -149,10 +148,10 @@ onMounted(() => {
     <template #item.actions="{ item }">
       <div class="d-flex gap-1">
         <IconBtn @click="editItem(item.raw)">
-          <VIcon icon="mdi-pencil-outline" />
+          <VIcon icon="tabler-edit" />
         </IconBtn>
         <IconBtn @click="deleteItem(item.raw)">
-          <VIcon icon="mdi-delete-outline" />
+          <VIcon icon="tabler-trash" />
         </IconBtn>
       </div>
     </template>
@@ -169,17 +168,17 @@ onMounted(() => {
       </VCardTitle>
 
       <VCardText>
-        {{ editedItem?.full_name }}
+        {{ editedItem?.fullName }}
         <VContainer>
           <VRow>
-            <!-- full_name -->
+            <!-- fullName -->
             <VCol
               cols="12"
               sm="6"
               md="4"
             >
               <VTextField
-                v-model="editedItem.full_name"
+                v-model="editedItem.fullName"
                 label="User name"
               />
             </VCol>
@@ -230,7 +229,7 @@ onMounted(() => {
               md="4"
             >
               <VTextField
-                v-model="editedItem.start_date"
+                v-model="editedItem.startDate"
                 label="Date"
               />
             </VCol>
@@ -241,7 +240,7 @@ onMounted(() => {
               sm="6"
               md="4"
             >
-              <VSelect
+              <AppSelect
                 v-model="editedItem.status"
                 :items="selectedOptions"
                 item-title="text"

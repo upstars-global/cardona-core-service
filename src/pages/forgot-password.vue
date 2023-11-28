@@ -13,6 +13,13 @@ const email = ref('')
 const authThemeImg = useGenerateImageVariant(authV2ForgotPasswordIllustrationLight, authV2ForgotPasswordIllustrationDark)
 
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
+
+definePage({
+  meta: {
+    layout: 'blank',
+    unauthenticatedOnly: true,
+  },
+})
 </script>
 
 <template>
@@ -55,9 +62,9 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
             :nodes="themeConfig.app.logo"
             class="mb-6"
           />
-          <h5 class="text-h5 mb-1">
+          <h4 class="text-h4 mb-1">
             Forgot Password? 🔒
-          </h5>
+          </h4>
           <p class="mb-0">
             Enter your email and we'll send you instructions to reset your password
           </p>
@@ -73,6 +80,7 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
                   autofocus
                   label="Email"
                   type="email"
+                  placeholder="johndoe@email.com"
                 />
               </VCol>
 
@@ -110,11 +118,3 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
 <style lang="scss">
 @use "@core/scss/template/pages/page-auth.scss";
 </style>
-
-<route lang="yaml">
-meta:
-  layout: blank
-  action: read
-  subject: Auth
-  redirectIfLoggedIn: true
-</route>

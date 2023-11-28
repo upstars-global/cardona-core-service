@@ -7,6 +7,7 @@
       <VTextarea
         label="Default"
         rows="2"
+        placeholder="Placeholder Text"
       />
     </VCol>
 
@@ -16,6 +17,7 @@
     >
       <VTextarea
         label="Solo"
+        placeholder="Placeholder Text"
         rows="2"
         variant="solo"
       />
@@ -28,6 +30,7 @@
       <VTextarea
         label="Filled"
         rows="2"
+        placeholder="Placeholder Text"
         variant="filled"
       />
     </VCol>
@@ -39,6 +42,7 @@
       <VTextarea
         label="Outlined"
         rows="2"
+        placeholder="Placeholder Text"
         variant="outlined"
       />
     </VCol>
@@ -50,6 +54,7 @@
       <VTextarea
         label="Underlined"
         rows="2"
+        placeholder="Placeholder Text"
         variant="underlined"
       />
     </VCol>
@@ -61,6 +66,7 @@
       <VTextarea
         label="Plain"
         rows="2"
+        placeholder="Placeholder Text"
         variant="plain"
       />
     </VCol>

@@ -1,19 +1,6 @@
 <script lang="ts" setup>
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { VForm } from 'vuetify/components/VForm'
-import {
-  alphaDashValidator,
-  alphaValidator,
-  betweenValidator,
-  confirmedValidator,
-  emailValidator,
-  integerValidator,
-  lengthValidator,
-  passwordValidator,
-  regexValidator,
-  requiredValidator,
-  urlValidator,
-} from '@validators'
 
 const requiredField = ref('')
 const numberBetween10to20 = ref('')

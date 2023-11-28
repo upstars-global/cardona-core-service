@@ -18,6 +18,22 @@ export default [
         to: 'dashboards-crm',
         icon: { icon: 'tabler-3d-cube-sphere' },
       },
+      {
+        title: 'Ecommerce',
+        to: 'dashboards-ecommerce',
+        icon: { icon: 'tabler-shopping-cart' },
+      },
+      {
+        title: 'Academy',
+        to: 'dashboards-academy',
+        icon: { icon: 'tabler-book' },
+      },
+      {
+        title: 'Logistics',
+        to: 'dashboards-logistics',
+        icon: { icon: 'tabler-truck' },
+      },
     ],
   },
+
 ]

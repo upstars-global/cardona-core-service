@@ -7,6 +7,7 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
     label="States"
     :items="items"
     multiple
+    placeholder="Select State"
     clearable
   />
 </template>

@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
-import type { TranslateResult } from 'vue-i18n'
 import { VExpansionPanel } from 'vuetify/components'
+import type { TranslateResult } from 'vue-i18n'
+import { useI18n } from 'vue-i18n'
 import type { PermissionUpdatableTable } from '../../../@model/permission'
-
-import i18n from '../../../plugins/i18n'
 
 interface Props {
   title: TranslateResult
@@ -20,15 +19,16 @@ interface Emits {
 const props = defineProps<Props>()
 
 const emit = defineEmits<Emits>()
+const i18n = useI18n()
 
 const panel = ref(0)
 
 const tableColumns = computed(() => [
-  { key: 'target', label: i18n.global.t('permission.access') },
-  { key: '1', label: i18n.global.t('permission.show') },
-  { key: '2', label: i18n.global.t('permission.add') },
-  { key: '3', label: i18n.global.t('permission.edit') },
-  { key: '4', label: i18n.global.t('permission.delete') },
+  { key: 'target', label: i18n.t('permission.access') },
+  { key: '1', label: i18n.t('permission.show') },
+  { key: '2', label: i18n.t('permission.add') },
+  { key: '3', label: i18n.t('permission.edit') },
+  { key: '4', label: i18n.t('permission.delete') },
 ])
 
 const tableItems = computed(
@@ -290,7 +290,7 @@ const onChangeCheckboxTable = (
 
 .group-fragment-setting-table {
   .header-table {
-    background-color: #F3F2F7;
+    background-color: #F3F2F7; /*TODO: replace to variable */
   }
 }
 

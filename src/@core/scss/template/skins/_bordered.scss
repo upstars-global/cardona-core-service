@@ -33,4 +33,34 @@ $header: ".layout-navbar";
   .layout-vertical-nav {
     box-shadow: none;
   }
+
+  .v-expansion-panels.expansion-panels-width-border {
+    .v-expansion-panel__shadow {
+      box-shadow: none !important;
+    }
+
+    .v-expansion-panel {
+      border: none !important;
+
+      &:not(:last-child) {
+        margin-block-end: -1px;
+      }
+
+      &::after {
+        content: '';
+      }
+    }
+  }
+
+  // select remove box shadow
+  .v-select__content,
+  .v-combobox__content,
+  .v-autocomplete__content {
+    box-shadow: none;
+  } 
+
+  .flatpickr-calendar{
+    border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+    box-shadow: none;
+  }
 }

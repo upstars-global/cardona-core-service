@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const currentTab = ref(0)
+const currentTab = ref('item1')
 const tabItemText = 'hortbread chocolate bar marshmallow bear claw tiramisu chocolate cookie wafer.'
 </script>
 
@@ -9,7 +9,6 @@ const tabItemText = 'hortbread chocolate bar marshmallow bear claw tiramisu choc
       <VTab
         v-for="i in 10"
         :key="i"
-        :value="i"
       >
         Item {{ i }}
       </VTab>
@@ -20,7 +19,7 @@ const tabItemText = 'hortbread chocolate bar marshmallow bear claw tiramisu choc
         <VWindowItem
           v-for="i in 10"
           :key="i"
-          :value="i"
+          :value="`item${i}`"
         >
           {{ tabItemText }}
         </VWindowItem>

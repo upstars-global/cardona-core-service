@@ -1,25 +1,24 @@
 <script setup lang="ts">
 import { VDataTable } from 'vuetify/labs/VDataTable'
-import type { ProjectsAnalytics } from '@/@fake-db/types'
-import { paginationMeta } from '@/@fake-db/utils'
-import { useProjectStore } from '@/views/dashboards/analytics/useProjectStore'
-import type { Options } from '@core/types'
-import { avatarText } from '@core/utils/formatters'
+import type { ProjectAnalytics } from '@/plugins/fake-api/handlers/dashboard/type'
+import { paginationMeta } from '@api-utils/paginationMeta'
 
-// 👉 Store
-const projectStore = useProjectStore()
+import { avatarText } from '@core/utils/formatters'
 
 const searchQuery = ref('')
 
-const options = ref<Options>({
-  page: 1,
-  itemsPerPage: 10,
-  sortBy: [],
-  groupBy: [],
-  search: undefined,
-})
+// Data table options
+const itemsPerPage = ref(5)
+const page = ref(1)
+const sortBy = ref()
+const orderBy = ref()
 
-const projects = ref<ProjectsAnalytics[]>([])
+// Update data table options
+const updateOptions = (options: any) => {
+  page.value = options.page
+  sortBy.value = options.sortBy[0]?.key
+  orderBy.value = options.sortBy[0]?.order
+}
 
 // 👉 headers
 const headers = [
@@ -31,13 +30,10 @@ const headers = [
 ]
 
 // 👉 Fetch Projects
-onMounted(() => {
-  projectStore.fetchProjects().then(response => {
-    projects.value = response.data
-  }).catch(error => {
-    console.log(error)
-  })
-})
+
+const { data: projectsData } = await useApi<ProjectAnalytics[]>('/dashboard/analytics/projects')
+
+const projects = computed(() => projectsData.value)
 </script>
 
 <template>
@@ -59,38 +55,41 @@ onMounted(() => {
 
     <!-- SECTION Table -->
     <VDataTable
-      v-model:page="options.page"
+      v-model:page="page"
       :items-per-page="5"
       show-select
+      fixed-footer
+      height="360"
       :search="searchQuery"
       :headers="headers"
       :items="projects"
+      item-value="name"
       class="text-no-wrap"
-      @update:options="options = $event"
+      @update:options="updateOptions"
     >
       <!-- 👉 Name -->
       <template #item.name="{ item }">
         <div class="d-flex align-center gap-3 py-2">
           <VAvatar
-            :variant="!item.raw.logo.length ? 'tonal' : undefined"
-            :color="!item.raw.logo.length ? 'primary' : undefined"
+            :variant="!item.logo.length ? 'tonal' : undefined"
+            :color="!item.logo.length ? 'primary' : undefined"
             size="38"
           >
             <VImg
-              v-if="item.raw.logo.length"
-              :src="item.raw.logo"
+              v-if="item.logo.length"
+              :src="item.logo"
             />
             <span
               v-else
               class="font-weight-medium"
-            >{{ avatarText(item.raw.name) }}</span>
+            >{{ avatarText(item.name) }}</span>
           </VAvatar>
 
           <div>
             <p class="font-weight-medium mb-0">
-              {{ item.raw.name }}
+              {{ item.name }}
             </p>
-            <span class="text-disabled text-sm">{{ item.raw.date }}</span>
+            <span class="text-disabled text-sm">{{ item.date }}</span>
           </div>
         </div>
       </template>
@@ -99,7 +98,7 @@ onMounted(() => {
       <template #item.team="{ item }">
         <div class="v-avatar-group">
           <VAvatar
-            v-for="(avatar, index) in item.raw.team"
+            v-for="(avatar, index) in item.team"
             :key="index"
             :size="30"
             :image="avatar"
@@ -115,14 +114,14 @@ onMounted(() => {
         >
           <div class="flex-grow-1">
             <VProgressLinear
-              :model-value="item.raw.status"
+              :model-value="item.status"
               color="primary"
               height="8"
               rounded
               rounded-bar
             />
           </div>
-          <span>{{ item.raw.status }}%</span>
+          <span>{{ item.status }}%</span>
         </div>
       </template>
 
@@ -137,15 +136,15 @@ onMounted(() => {
       <template #bottom>
         <VDivider />
 
-        <div class="d-flex align-center justify-center justify-sm-space-between flex-wrap gap-3 pa-5 pt-3">
+        <div class="d-flex align-center justify-center justify-sm-space-between flex-wrap gap-3 pa-4">
           <p class="text-sm text-disabled mb-0">
-            {{ paginationMeta(options, projects.length) }}
+            {{ paginationMeta({ page, itemsPerPage }, projects.length) }}
           </p>
 
           <VPagination
-            v-model="options.page"
-            :total-visible="Math.ceil(projects.length / options.itemsPerPage)"
-            :length="Math.ceil(projects.length / options.itemsPerPage)"
+            v-model="page"
+            :total-visible="Math.ceil(projects.length / itemsPerPage)"
+            :length="Math.ceil(projects.length / itemsPerPage)"
           >
             <template #next="slotProps">
               <VBtn

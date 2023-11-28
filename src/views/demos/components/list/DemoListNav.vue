@@ -21,10 +21,7 @@ const items = [
       :value="item.value"
     >
       <template #prepend>
-        <VIcon
-          :icon="item.prependIcon"
-          class="me-3"
-        />
+        <VIcon :icon="item.prependIcon" />
       </template>
 
       <VListItemTitle>

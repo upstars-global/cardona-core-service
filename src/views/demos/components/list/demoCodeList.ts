@@ -4,6 +4,7 @@ export const actionAndItemGroup = {
     lines="three"
     density="compact"
     select-strategy="classic"
+    class="action-item-group-list"
   >
     <VListSubheader>General</VListSubheader>
 
@@ -59,6 +60,7 @@ export const actionAndItemGroup = {
     lines="three"
     density="compact"
     select-strategy="classic"
+    class="action-item-group-list"
   >
     <VListSubheader>General</VListSubheader>
 
@@ -226,10 +228,7 @@ const items = [
       :value="item.value"
     >
       <template #prepend>
-        <VIcon
-          :icon="item.prependIcon"
-          class="me-3"
-        />
+        <VIcon :icon="item.prependIcon" />
       </template>
 
       <VListItemTitle>
@@ -290,10 +289,7 @@ const items = [
       :value="item.value"
     >
       <template #prepend>
-        <VIcon
-          :icon="item.prependIcon"
-          class="me-3"
-        />
+        <VIcon :icon="item.prependIcon" />
       </template>
 
       <VListItemTitle>

@@ -53,8 +53,6 @@ const valueColsCount = computed(() => 12 - props.cols)
 </template>
 
 <style lang="scss" scoped>
-@import "src/styles/components/sidebar";
-
 .wrapper-label {
   width: 38.5rem;
 }

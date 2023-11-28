@@ -67,6 +67,7 @@ watch(formData, () => {
           v-model="formData.availableFrom"
           label="Available From"
           type="date"
+          placeholder="Select Date"
           format="YYYY-MM-DD"
         />
       </VCol>

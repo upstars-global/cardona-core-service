@@ -13,7 +13,6 @@ const tabItemText = 'hortbread chocolate bar marshmallow bear claw tiramisu choc
       <VTab
         v-for="item in items"
         :key="item"
-        :value="item"
       >
         {{ item }}
       </VTab>

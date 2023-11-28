@@ -13,7 +13,7 @@ import pumaShoes from '@images/pages/puma-shoes.jpeg'
         align="start"
         truncate-line="both"
         density="compact"
-        class="v-timeline-density-compact v-timeline-icon-only"
+        class="v-timeline-icon-only"
       >
         <!-- SECTION Flight -->
         <VTimelineItem>
@@ -102,7 +102,7 @@ import pumaShoes from '@images/pages/puma-shoes.jpeg'
 
                   <div>
                     <h6 class="text-sm font-weight-medium">Rebecca Godman</h6>
-                    <span class="text-xs">Javascript Developer</span>
+                    <span class="text-xs">JavaScript Developer</span>
                   </div>
                 </span>
 

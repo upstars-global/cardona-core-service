@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import VueApexCharts from 'vue3-apexcharts'
 import { useTheme } from 'vuetify'
 import { hexToRgb } from '@layouts/utils'
 
@@ -100,7 +99,7 @@ const chartConfigs = computed(() => {
           labels: {
             offsetX: -15,
             formatter(val: number) {
-              return `${parseInt(String(val / 1))}k`
+              return `${Number.parseInt(String(val / 1))}k`
             },
             style: {
               fontSize: '13px',
@@ -240,7 +239,7 @@ const chartConfigs = computed(() => {
           labels: {
             offsetX: -15,
             formatter(val: number) {
-              return `${parseInt(String(val / 1))}k`
+              return `${Number.parseInt(String(val / 1))}k`
             },
             style: {
               fontSize: '13px',
@@ -379,7 +378,7 @@ const chartConfigs = computed(() => {
           labels: {
             offsetX: -15,
             formatter(val: number) {
-              return `${parseInt(String(val / 1))}k`
+              return `${Number.parseInt(String(val / 1))}k`
             },
             style: {
               fontSize: '13px',
@@ -518,7 +517,7 @@ const chartConfigs = computed(() => {
           labels: {
             offsetX: -15,
             formatter(val: number) {
-              return `${parseInt(String(val / 1))}k`
+              return `${Number.parseInt(String(val / 1))}k`
             },
             style: {
               fontSize: '13px',

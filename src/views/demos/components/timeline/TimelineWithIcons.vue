@@ -109,7 +109,7 @@ const serverSwitch = ref(false)
                   />
                   <div class="d-flex flex-column">
                     <h6 class="text-sm font-weight-medium">Rebecca Godman</h6>
-                    <span class="text-xs">Javascript Developer</span>
+                    <span class="text-xs">JavaScript Developer</span>
                   </div>
                 </span>
 
@@ -264,47 +264,49 @@ const serverSwitch = ref(false)
 
               <!-- 👉 Content -->
               <table class="text-sm w-100 mt-3">
-                <tr>
-                  <td class="d-flex align-center pb-2">
-                    <VIcon
-                      icon="tabler-world"
-                      class="me-1"
-                    />
-                    <span>IP Address</span>
-                  </td>
+                <tbody>
+                  <tr>
+                    <td class="d-flex align-center pb-2">
+                      <VIcon
+                        icon="tabler-world"
+                        class="me-1"
+                      />
+                      <span>IP Address</span>
+                    </td>
 
-                  <td class="text-right">
-                    192.654.8.566
-                  </td>
-                </tr>
+                    <td class="text-right">
+                      192.654.8.566
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td class="d-flex align-center pb-2">
-                    <VIcon
-                      icon="tabler-cpu"
-                      class="me-1"
-                    />
-                    <span>CPU</span>
-                  </td>
+                  <tr>
+                    <td class="d-flex align-center pb-2">
+                      <VIcon
+                        icon="tabler-cpu"
+                        class="me-1"
+                      />
+                      <span>CPU</span>
+                    </td>
 
-                  <td class="text-right">
-                    4 Cores
-                  </td>
-                </tr>
+                    <td class="text-right">
+                      4 Cores
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td class="d-flex align-center pb-2">
-                    <VIcon
-                      icon="tabler-cpu-2"
-                      class="me-1"
-                    />
-                    <span>Memory</span>
-                  </td>
+                  <tr>
+                    <td class="d-flex align-center pb-2">
+                      <VIcon
+                        icon="tabler-cpu-2"
+                        class="me-1"
+                      />
+                      <span>Memory</span>
+                    </td>
 
-                  <td class="text-right">
-                    2 GB
-                  </td>
-                </tr>
+                    <td class="text-right">
+                      2 GB
+                    </td>
+                  </tr>
+                </tbody>
               </table>
 
               <VDivider class="my-3" />

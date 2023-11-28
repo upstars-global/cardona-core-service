@@ -4,36 +4,23 @@ import type { HorizontalNavItems } from '@layouts/types'
 
 // ℹ️ Using import from `@layouts` causing build to hangup
 // import { useLayouts } from '@layouts'
-import { useLayouts } from '@layouts/composable/useLayouts'
+import { useLayoutConfigStore } from '@layouts/stores/config'
 
 defineProps<{
   navItems: HorizontalNavItems
 }>()
 
-const { y: windowScrollY } = useWindowScroll()
-const { width: windowWidth } = useWindowSize()
-
-const router = useRouter()
-const shallShowPageLoading = ref(false)
-
-router.beforeEach(() => {
-  shallShowPageLoading.value = true
-})
-router.afterEach(() => {
-  shallShowPageLoading.value = false
-})
-
-const { _layoutClasses: layoutClasses, isNavbarBlurEnabled } = useLayouts()
+const configStore = useLayoutConfigStore()
 </script>
 
 <template>
   <div
     class="layout-wrapper"
-    :class="layoutClasses(windowWidth, windowScrollY)"
+    :class="configStore._layoutClasses"
   >
     <div
       class="layout-navbar-and-nav-container"
-      :class="isNavbarBlurEnabled && 'header-blur'"
+      :class="configStore.isNavbarBlurEnabled && 'header-blur'"
     >
       <!-- 👉 Navbar -->
       <div class="layout-navbar">
@@ -50,17 +37,7 @@ const { _layoutClasses: layoutClasses, isNavbarBlurEnabled } = useLayouts()
     </div>
 
     <main class="layout-page-content">
-      <template v-if="$slots['content-loading']">
-        <template v-if="shallShowPageLoading">
-          <slot name="content-loading" />
-        </template>
-        <template v-else>
-          <slot />
-        </template>
-      </template>
-      <template v-else>
-        <slot />
-      </template>
+      <slot />
     </main>
 
     <!-- 👉 Footer -->
@@ -84,7 +61,7 @@ const { _layoutClasses: layoutClasses, isNavbarBlurEnabled } = useLayouts()
 
     // // TODO(v2): Check why we need height in vertical nav & min-height in horizontal nav
     // min-height: 100%;
-    min-block-size: calc(var(--vh, 1vh) * 100);
+    min-block-size: 100dvh;
 
     .layout-navbar-and-nav-container {
       z-index: 1;
@@ -114,7 +91,7 @@ const { _layoutClasses: layoutClasses, isNavbarBlurEnabled } = useLayouts()
 
     // 👉   Content height fixed
     &.layout-content-height-fixed {
-      max-block-size: calc(var(--vh) * 100);
+      max-block-size: 100dvh;
 
       .layout-page-content {
         overflow: hidden;

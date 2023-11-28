@@ -1,6 +1,6 @@
 import type { SeoData } from '../@model/seo'
 import { FieldInfo, FieldType } from '../@model/field'
-import i18n from '../plugins/i18n'
+import { i18n } from '../plugins/i18n'
 import type { FieldTranslationsData } from '../@model/translations'
 
 export interface StaticPagesData {
@@ -47,7 +47,7 @@ export class StaticPagesForm {
       type: FieldType.Text,
       key: 'name',
       value: data?.name || '',
-      label: i18n.global.t('common.staticPages.name'),
+      label: i18n.t('common.staticPages.name'),
       validationRules: 'required',
       isLocalization: true,
     })
@@ -55,28 +55,28 @@ export class StaticPagesForm {
       type: FieldType.Text,
       key: 'buttonName',
       value: data?.buttonName || '',
-      label: i18n.global.t('common.staticPages.buttonName'),
+      label: i18n.t('common.staticPages.buttonName'),
       isLocalization: true,
     })
     this.isHidden = new FieldInfo<boolean>({
       type: FieldType.Check,
       key: 'isHidden',
       value: data?.isHidden || false,
-      label: i18n.global.t('common.staticPages.isHidden'),
-      description: i18n.global.t('common.staticPages.isHiddenDescription'),
+      label: i18n.t('common.staticPages.isHidden'),
+      description: i18n.t('common.staticPages.isHiddenDescription'),
     })
     this.slug = new FieldInfo<string>({
       type: FieldType.Text,
       key: 'slug',
       value: data?.slug || '',
-      label: i18n.global.t('common.slug'),
+      label: i18n.t('common.slug'),
       validationRules: 'required',
     })
     this.position = new FieldInfo<number>({
       type: FieldType.Number,
       key: 'position',
       value: data?.position || 1,
-      label: i18n.global.t('common.order'),
+      label: i18n.t('common.order'),
       validationRules: 'required',
     })
     this.seo = data?.seo

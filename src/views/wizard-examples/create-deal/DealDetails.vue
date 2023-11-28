@@ -35,6 +35,7 @@ watch(formData, () => {
         <AppTextField
           v-model="formData.title"
           label="Deal Title"
+          placeholder="Black Friday Sale, 50% off on all products"
         />
       </VCol>
 
@@ -45,6 +46,7 @@ watch(formData, () => {
         <AppTextField
           v-model="formData.code"
           label="Deal Code"
+          placeholder="BLACKFRIDAY50"
         />
       </VCol>
 
@@ -55,6 +57,7 @@ watch(formData, () => {
         <AppTextarea
           v-model="formData.description"
           label="Deal Description"
+          placeholder="Write something about this deal"
           rows="4"
           auto-grow
         />
@@ -71,6 +74,7 @@ watch(formData, () => {
               multiple
               chips
               label="Offered Items"
+              placeholder="Select Offered Items"
               :items="offeredItems"
             />
           </VCol>
@@ -79,6 +83,7 @@ watch(formData, () => {
             <AppSelect
               v-model="formData.cartCondition"
               label="Cart Condition"
+              placeholder="Select Cart Condition"
               :items="['Cart must contain all selected Downloads', 'Cart needs one or more of the selected Downloads']"
             />
           </VCol>
@@ -92,6 +97,7 @@ watch(formData, () => {
         <AppDateTimePicker
           v-model="formData.dealDuration"
           label="Deal Duration"
+          placeholder="Select Date"
           :config="{ mode: 'range' }"
         />
       </VCol>

@@ -26,6 +26,7 @@ watch(formData, () => {
         <AppSelect
           v-model="formData.userType"
           label="User Type"
+          placeholder="Select User Type"
           :items="['All', 'Registered', 'Unregistered', 'Prime Member']"
         />
       </VCol>
@@ -37,6 +38,7 @@ watch(formData, () => {
         <AppTextField
           v-model="formData.maxUsers"
           label="Max Users"
+          placeholder="1000"
           type="number"
         />
       </VCol>
@@ -48,6 +50,7 @@ watch(formData, () => {
         <AppTextField
           v-model="formData.cartAmount"
           label="Minimum Cart Amount"
+          placeholder="$199"
           type="number"
         />
       </VCol>
@@ -59,6 +62,7 @@ watch(formData, () => {
         <AppTextField
           v-model="formData.promotionFree"
           label="Promotion Fee"
+          placeholder="$4.99"
           type="number"
         />
       </VCol>
@@ -70,6 +74,7 @@ watch(formData, () => {
         <AppSelect
           v-model="formData.paymentMethod"
           label="Payment Method"
+          placeholder="Select Payment Method"
           :items="['Any', 'Credit Card', 'Net Banking', 'Wallet']"
         />
       </VCol>
@@ -81,6 +86,7 @@ watch(formData, () => {
         <AppSelect
           v-model="formData.dealStatus"
           label="Deal Status"
+          placeholder="Select Deal Status"
           :items="['Active', 'Inactive', 'Suspended', 'Abandoned']"
         />
       </VCol>

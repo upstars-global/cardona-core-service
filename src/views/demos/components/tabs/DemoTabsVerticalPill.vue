@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const currentTab = ref(0)
+const currentTab = ref('window-1')
 </script>
 
 <template>
@@ -39,7 +39,7 @@ const currentTab = ref(0)
     <VCard>
       <VCardText>
         <VWindow v-model="currentTab">
-          <VWindowItem>
+          <VWindowItem value="window-1">
             <p>
               Sed aliquam ultrices mauris. Donec posuere vulputate arcu. Morbi ac felis. Etiam feugiat lorem non metus. Sed a libero.
             </p>
@@ -49,13 +49,13 @@ const currentTab = ref(0)
             </p>
           </VWindowItem>
 
-          <VWindowItem>
+          <VWindowItem value="window-2">
             <p class="mb-0">
               Morbi nec metus. Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus, vitae iaculis lacus elit id tortor. Sed mollis, eros et ultrices tempus, mauris ipsum aliquam libero, non adipiscing dolor urna a orci. Curabitur ligula sapien, tincidunt non, euismod vitae, posuere imperdiet, leo. Nunc sed turpis.
             </p>
           </VWindowItem>
 
-          <VWindowItem>
+          <VWindowItem value="window-3">
             <p class="mb-0">
               Fusce a quam. Phasellus nec sem in justo pellentesque facilisis. Nam eget dui. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. In dui magna, posuere eget, vestibulum et, tempor auctor, justo.
             </p>

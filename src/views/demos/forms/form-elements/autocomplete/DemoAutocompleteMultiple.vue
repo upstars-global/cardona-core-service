@@ -6,6 +6,7 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
   <AppAutocomplete
     label="States"
     :items="items"
+    placeholder="Select State"
     multiple
     eager
   />

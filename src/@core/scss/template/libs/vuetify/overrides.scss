@@ -1,0 +1,6 @@
+body {
+  // We reduced this margin to get 40px input height
+  .v-input--density-compact {
+    --v-input-chips-margin-bottom: 1px;
+  }
+}

@@ -16,6 +16,7 @@ watch(selectedList, value => {
     :items="items"
     hide-selected
     :hide-no-data="false"
+    placeholder="deployment"
     hint="Maximum of 5 tags"
     label="Add some tags"
     multiple

@@ -88,6 +88,7 @@ watch(search, query => {
     v-model:search="search"
     :loading="loading"
     :items="items"
+    placeholder="Search for a state"
     label="What state are you from?"
     variant="underlined"
     :menu-props="{ maxHeight: '200px' }"

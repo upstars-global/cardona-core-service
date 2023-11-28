@@ -15,7 +15,7 @@ const values = ref<typeof items[number][]>([])
         <AppTextField
           v-model="username"
           label="Username"
-          placeholder="Username"
+          placeholder="Johndoe"
         />
       </VCol>
 
@@ -25,7 +25,7 @@ const values = ref<typeof items[number][]>([])
           v-model="email"
           label="Email"
           type="email"
-          placeholder="Email"
+          placeholder="johndoe@email.com"
         />
       </VCol>
 
@@ -34,9 +34,10 @@ const values = ref<typeof items[number][]>([])
         <AppTextField
           v-model="password"
           label="Password"
+          autocomplete="on"
           type="password"
           persistent-hint
-          placeholder="Password"
+          placeholder="············"
           hint="Your password must be 8-20 characters long."
         />
       </VCol>
@@ -49,6 +50,7 @@ const values = ref<typeof items[number][]>([])
           chips
           multiple
           label="Autocomplete"
+          placeholder="Select"
         />
       </VCol>
 

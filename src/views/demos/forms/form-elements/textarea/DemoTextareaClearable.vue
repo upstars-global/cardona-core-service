@@ -8,5 +8,6 @@ const textareaValue = ref('This is clearable text.')
     clearable
     clear-icon="tabler-circle-x"
     label="Text"
+    placeholder="Placeholder Text"
   />
 </template>

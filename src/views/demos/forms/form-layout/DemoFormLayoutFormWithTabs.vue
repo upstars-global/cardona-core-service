@@ -51,6 +51,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="firstName"
                   label="First name"
+                  placeholder="John"
                 />
               </VCol>
 
@@ -61,6 +62,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="lastName"
                   label="Last name"
+                  placeholder="Doe"
                 />
               </VCol>
 
@@ -72,6 +74,7 @@ const isCPasswordVisible = ref(false)
                   v-model="country"
                   :items="countryList"
                   label="Country"
+                  placeholder="Select Country"
                 />
               </VCol>
 
@@ -86,16 +89,17 @@ const isCPasswordVisible = ref(false)
                   chips
                   clearable
                   label="Language"
+                  placeholder="Select Language"
                 />
               </VCol>
               <VCol
                 cols="12"
                 md="6"
               >
-                <AppTextField
+                <AppDateTimePicker
                   v-model="birthDate"
                   label="Birth Date"
-                  placeholder="YYYY-MM-DD"
+                  placeholder="Select Birth Date"
                 />
               </VCol>
               <VCol
@@ -106,6 +110,7 @@ const isCPasswordVisible = ref(false)
                   v-model="phoneNo"
                   type="number"
                   label="Phone No."
+                  placeholder="+1 123 456 7890"
                 />
               </VCol>
             </VRow>
@@ -122,6 +127,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="username"
                   label="Username"
+                  placeholder="Johndoe"
                 />
               </VCol>
 
@@ -133,6 +139,7 @@ const isCPasswordVisible = ref(false)
                   v-model="email"
                   label="Email"
                   suffix="@example.com"
+                  placeholder="johndoe@email.com"
                 />
               </VCol>
 
@@ -143,8 +150,9 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="password"
                   label="Password"
+                  placeholder="············"
                   :type="isPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isPasswordVisible ? 'tabler-eye' : 'tabler-eye-off'"
+                  :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
               </VCol>
@@ -156,8 +164,9 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="cPassword"
                   label="Confirm Password"
+                  placeholder="············"
                   :type="isCPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isCPasswordVisible ? 'tabler-eye' : 'tabler-eye-off'"
+                  :append-inner-icon="isCPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isCPasswordVisible = !isCPasswordVisible"
                 />
               </VCol>
@@ -175,6 +184,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="twitterLink"
                   label="Twitter"
+                  placeholder="https://twitter.com/username"
                 />
               </VCol>
               <VCol
@@ -184,6 +194,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="facebookLink"
                   label="Facebook"
+                  placeholder="https://facebook.com/username"
                 />
               </VCol>
               <VCol
@@ -193,6 +204,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="googlePlusLink"
                   label="Google+"
+                  placeholder="https://plus.google.com/username"
                 />
               </VCol>
               <VCol
@@ -202,6 +214,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="linkedInLink"
                   label="LinkedIn"
+                  placeholder="https://linkedin.com/username"
                 />
               </VCol>
               <VCol
@@ -211,6 +224,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="instagramLink"
                   label="Instagram"
+                  placeholder="https://instagram.com/username"
                 />
               </VCol>
               <VCol
@@ -220,6 +234,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="quoraLink"
                   label="Quora"
+                  placeholder="https://quora.com/username"
                 />
               </VCol>
             </VRow>

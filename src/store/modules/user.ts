@@ -1,5 +1,4 @@
 import { productName } from '@productConfig'
-import router from '../../router'
 import { setStorage } from '../../helpers/storage'
 import { storageKeys } from '../../configs/storage'
 import type { ProjectInfoInput } from '../../@model/project'
@@ -141,7 +140,7 @@ export default {
 
     setSelectedProject({ getters, commit }, project: ProjectInfoInput) {
       const { selectedProject } = getters
-      const { currentRoute } = router
+      const { currentRoute } = {} // router
 
       const changingProjectRouteName: string | undefined
         = currentRoute.meta.changingProjectRouteName
@@ -154,13 +153,13 @@ export default {
 
       if (!isSameProject) {
         if (changingProjectRouteName) {
-          router.push({
+          /* router.push({
             name: changingProjectRouteName,
             params: { ...currentRoute.params, project: project.alias },
-          })
+          }) */
         }
         else if (currentRoute.matched?.[0]?.path.includes(':project')) {
-          router.push({ params: { ...currentRoute.params, project: project.alias } })
+          // router.push({ params: { ...currentRoute.params, project: project.alias } })
         }
       }
     },

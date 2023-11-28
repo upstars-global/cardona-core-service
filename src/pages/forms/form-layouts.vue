@@ -17,6 +17,7 @@ import * as demoCode from '@/views/demos/forms/form-layout/demoCodeFormLayout'
           <DemoFormLayoutHorizontalForm />
         </AppCardCode>
       </VCol>
+
       <VCol
         cols="12"
         md="6"
@@ -29,6 +30,7 @@ import * as demoCode from '@/views/demos/forms/form-layout/demoCodeFormLayout'
           <DemoFormLayoutHorizontalFormWithIcons />
         </AppCardCode>
       </VCol>
+
       <VCol
         cols="12"
         md="6"
@@ -41,6 +43,7 @@ import * as demoCode from '@/views/demos/forms/form-layout/demoCodeFormLayout'
           <DemoFormLayoutVerticalForm />
         </AppCardCode>
       </VCol>
+
       <VCol
         cols="12"
         md="6"
@@ -53,6 +56,7 @@ import * as demoCode from '@/views/demos/forms/form-layout/demoCodeFormLayout'
           <DemoFormLayoutVerticalFormWithIcons />
         </AppCardCode>
       </VCol>
+
       <VCol cols="12">
         <!-- 👉 Multiple Column -->
         <AppCardCode
@@ -63,6 +67,7 @@ import * as demoCode from '@/views/demos/forms/form-layout/demoCodeFormLayout'
         </AppCardCode>
       </VCol>
     </VRow>
+
     <VRow class="match-height my-3">
       <VCol
         cols="12"
@@ -89,6 +94,7 @@ import * as demoCode from '@/views/demos/forms/form-layout/demoCodeFormLayout'
         </AppCardCode>
       </VCol>
     </VRow>
+
     <VRow>
       <VCol cols="12">
         <!-- 👉 Form with Tabs -->
@@ -100,12 +106,23 @@ import * as demoCode from '@/views/demos/forms/form-layout/demoCodeFormLayout'
           <DemoFormLayoutFormWithTabs />
         </AppCardCode>
       </VCol>
+
       <VCol cols="12">
         <!-- 👉 Collapsible Section -->
         <h4 class="text-h6 font-weight-medium mb-5">
           Collapsible Section
         </h4>
+
         <DemoFormLayoutCollapsible />
+      </VCol>
+
+      <VCol cols="12">
+        <!-- 👉 Collapsible Section -->
+        <h4 class="text-h6 font-weight-medium mb-5">
+          Sticky Section
+        </h4>
+
+        <DemoFormLayoutSticky />
       </VCol>
     </VRow>
   </div>

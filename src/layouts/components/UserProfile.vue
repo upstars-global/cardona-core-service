@@ -1,29 +1,28 @@
 <script setup lang="ts">
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import { initialAbility } from '@/plugins/casl/ability'
-import { useAppAbility } from '@/plugins/casl/useAppAbility'
 
 const router = useRouter()
-const ability = useAppAbility()
-const userData = JSON.parse(localStorage.getItem('userData') || 'null')
+const ability = useAbility()
 
-const logout = () => {
-  // Remove "userData" from localStorage
-  localStorage.removeItem('userData')
+// TODO: Get type from backend
+const userData = useCookie<any>('userData')
 
-  // Remove "accessToken" from localStorage
-  localStorage.removeItem('accessToken')
+const logout = async () => {
+  // Remove "accessToken" from cookie
+  useCookie('accessToken').value = null
+
+  // Remove "userData" from cookie
+  userData.value = null
 
   // Redirect to login page
-  router.push('/login')
-    .then(() => {
-      // ℹ️ We had to remove abilities in then block because if we don't nav menu items mutation is visible while redirecting user to login page
-      // Remove "userAbilities" from localStorage
-      localStorage.removeItem('userAbilities')
+  await router.push('/login')
 
-      // Reset ability to initial ability
-      ability.update(initialAbility)
-    })
+  // ℹ️ We had to remove abilities in then block because if we don't nav menu items mutation is visible while redirecting user to login page
+  // Remove "userAbilities" from cookie
+  useCookie('userAbilityRules').value = null
+
+  // Reset ability to initial ability
+  ability.update([])
 }
 
 const userProfileList = [
@@ -32,9 +31,8 @@ const userProfileList = [
   { type: 'navItem', icon: 'tabler-settings', title: 'Settings', to: { name: 'pages-account-settings-tab', params: { tab: 'account' } } },
   { type: 'navItem', icon: 'tabler-credit-card', title: 'Billing', to: { name: 'pages-account-settings-tab', params: { tab: 'billing-plans' } }, badgeProps: { color: 'error', content: '3' } },
   { type: 'divider' },
-  { type: 'navItem', icon: 'tabler-lifebuoy', title: 'Help', to: { name: 'pages-help-center' } },
   { type: 'navItem', icon: 'tabler-currency-dollar', title: 'Pricing', to: { name: 'pages-pricing' } },
-  { type: 'navItem', icon: 'tabler-help', title: 'FAQ', to: { name: 'pages-faq' } },
+  { type: 'navItem', icon: 'tabler-help-circle', title: 'FAQ', to: { name: 'pages-faq' } },
   { type: 'divider' },
   { type: 'navItem', icon: 'tabler-logout', title: 'Logout', onClick: logout },
 ]
@@ -42,6 +40,7 @@ const userProfileList = [
 
 <template>
   <VBadge
+    v-if="userData"
     dot
     bordered
     location="bottom right"

@@ -418,8 +418,8 @@ const isMenuVisible = ref(false)
 
 export const inSelects = {
   ts: `<script lang="ts" setup>
-const chips = ref(['Programming', 'Playing video games', 'Sleeping'])
-const items = ref(['Streaming', 'Eating', 'Programming', 'Playing video games', 'Sleeping'])
+const chips = ref(['Programming', 'Playing games', 'Sleeping'])
+const items = ref(['Streaming', 'Eating', 'Programming', 'Playing games', 'Sleeping'])
 </script>
 
 <template>
@@ -439,7 +439,7 @@ const items = ref(['Streaming', 'Eating', 'Programming', 'Playing video games', 
   js: `<script setup>
 const chips = ref([
   'Programming',
-  'Playing video games',
+  'Playing games',
   'Sleeping',
 ])
 
@@ -447,7 +447,7 @@ const items = ref([
   'Streaming',
   'Eating',
   'Programming',
-  'Playing video games',
+  'Playing games',
   'Sleeping',
 ])
 </script>

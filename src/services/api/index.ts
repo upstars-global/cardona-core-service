@@ -1,11 +1,10 @@
 import { v4 as uuidv4 } from 'uuid'
-import axiosIns from '../../plugins/axios'
-import type { AxiosError, AxiosInstance, AxiosRequestConfig } from '../../plugins/axios'
+import type { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 import store from '../../store'
 import useToastService from '../../helpers/toasts'
-import router from '../../router'
-import i18n from '../../plugins/i18n'
 import { convertCamelCase } from '../../helpers'
+import axiosIns from './axios'
 import {
   ContentType,
   Method,
@@ -16,7 +15,6 @@ import type {
   IResponseError,
   IValidationError,
 } from './config'
-import axios from '@axios'
 
 const { toastSuccess, toastError, toastErrorMessageString } = useToastService()
 
@@ -54,12 +52,12 @@ class ApiService {
       }
 
       const body: FormData | any
-        = contentType === ContentType.FormData && payload.formData
-          ? this.createFormData(payload.formData)
-          : JSON.stringify({
-            ...payload,
-            requestId: uuidv4(),
-          })
+          = contentType === ContentType.FormData && payload.formData
+            ? this.createFormData(payload.formData)
+            : JSON.stringify({
+              ...payload,
+              requestId: uuidv4(),
+            })
 
       const { data }: any = await axiosInstance({
         url,
@@ -77,16 +75,15 @@ class ApiService {
       return data
     }
     catch (error: any) {
-      const isLoginPage: boolean = router.currentRoute.value.name === 'Login'
+      // const isLoginPage: boolean = router.currentRoute.value.name === 'Login'
 
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', 'TOKEN_INVALID']
 
-      if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type)) {
+      if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type))
         store.dispatch('authCore/clearAuth')
 
-        if (!isLoginPage)
-          router.push({ name: 'Login' })
-      }
+      /* if (!isLoginPage)
+          router.push({ name: 'Login' }) */
 
       store.dispatch('addErrorUrl', url)
 
@@ -131,9 +128,9 @@ class ApiService {
       error.validationErrors.forEach(({ code, field }: IValidationError) => {
         const localizationKey = `${entity}_${field}_${code}`
 
-        formRef?.setErrors({
+        /* formRef?.setErrors({
           [field]: i18n.global.t(`validations.${localizationKey}`),
-        })
+        }) */
 
         toastError(localizationKey, { field, defaultCode: 'field_ALREADY_EXISTS' })
       })

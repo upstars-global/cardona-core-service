@@ -17,17 +17,17 @@ const dialogVisibleUpdate = (val: boolean) => {
 
 const referAndEarnSteps = [
   {
-    icon: 'tabler-send',
+    icon: 'custom-paper',
     title: 'Send Invitation 👍🏻',
     subtitle: 'Send your referral link to your friend',
   },
   {
-    icon: 'tabler-rocket',
+    icon: 'custom-keyboard',
     title: 'Registration 😎',
     subtitle: 'Let them register to our services',
   },
   {
-    icon: 'tabler-keyboard',
+    icon: 'custom-rocket',
     title: 'Free Trial  🎉',
     subtitle: 'Your friend will get 30 days free trial',
   },
@@ -45,9 +45,9 @@ const referAndEarnSteps = [
 
     <VCard class="refer-and-earn-dialog">
       <VCardText class="px-5 px-sm-16 pt-16 pb-10">
-        <h5 class="text-h5 text-center mb-3">
+        <h3 class="text-h3 text-center mb-3">
           Refer & Earn
-        </h5>
+        </h3>
         <p class="text-sm-body-1 text-center">
           Invite your friend to vuexy, if they sign up, you and your friend will get 30 days free trial
         </p>
@@ -66,25 +66,23 @@ const referAndEarnSteps = [
               rounded
             >
               <VIcon
-                size="40"
+                size="50"
                 :icon="step.icon"
               />
             </VAvatar>
 
-            <h6 class="text-lg mt-4 mb-2">
+            <h5 class="text-h5 mt-4 mb-2">
               {{ step.title }}
-            </h6>
-            <span class="text-base">{{ step.subtitle }}</span>
+            </h5>
+            <span>{{ step.subtitle }}</span>
           </VCol>
         </VRow>
-      </VCardText>
 
-      <VDivider />
+        <VDivider class="my-10" />
 
-      <VCardText class="px-5 px-sm-16 pt-10 pb-16">
-        <h6 class="text-lg mb-4">
+        <h5 class="text-h5 mb-4">
           Invite your friends
-        </h6>
+        </h5>
 
         <p class="mb-1 text-sm">
           Enter your friend's email address and invite them to join Vuexy 😍
@@ -103,15 +101,15 @@ const referAndEarnSteps = [
           </VBtn>
         </VForm>
 
-        <h6 class="text-h6 mb-4 mt-7">
+        <h5 class="text-h5 mb-4 mt-7">
           Share the referral link
-        </h6>
+        </h5>
 
         <p class="mb-1 text-sm">
           You can also copy and send it or share it on your social media. 🚀
         </p>
         <VForm
-          class="d-flex align-center flex-wrap gap-3"
+          class="d-flex align-center flex-wrap gap-4"
           @submit.prevent="() => {}"
         >
           <AppTextField

@@ -2,7 +2,6 @@
 import FullCalendar from '@fullcalendar/vue3'
 import { blankEvent, useCalendar } from '@/views/apps/calendar/useCalendar'
 import { useCalendarStore } from '@/views/apps/calendar/useCalendarStore'
-import { useResponsiveLeftSidebar } from '@core/composable/useResponsiveSidebar'
 
 // Components
 import CalendarEventHandler from '@/views/apps/calendar/CalendarEventHandler.vue'
@@ -41,7 +40,6 @@ const checkAll = computed({
       store.selectedCalendars = []
   },
 })
-
 // !SECTION
 </script>
 

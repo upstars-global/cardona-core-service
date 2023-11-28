@@ -89,9 +89,9 @@ const onHide = (value: boolean) => {
 .modal-header {
   .modal-header__close {
     margin-top: .5rem;
-  &:hover {
-    transform: translate(-3px, 5px);
+    &:hover {
+      transform: translate(-3px, 5px);
+    }
   }
-}
 }
 </style>

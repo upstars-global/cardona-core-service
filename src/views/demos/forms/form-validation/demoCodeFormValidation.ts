@@ -2,7 +2,6 @@ export const simpleFormValidation = {
   ts: `<script lang="ts" setup>
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { VForm } from 'vuetify/components/VForm'
-import { emailValidator, requiredValidator } from '@validators'
 
 const firstName = ref('')
 const email = ref('')
@@ -23,6 +22,7 @@ const refForm = ref<VForm>()
         <AppTextField
           v-model="firstName"
           label="First Name"
+          placeholder="John"
           :rules="[requiredValidator]"
         />
       </VCol>
@@ -34,6 +34,7 @@ const refForm = ref<VForm>()
         <AppTextField
           v-model="email"
           label="Email"
+          placeholder="john@email.com"
           :rules="[requiredValidator, emailValidator]"
         />
       </VCol>
@@ -51,11 +52,6 @@ const refForm = ref<VForm>()
 </template>
 `,
   js: `<script setup>
-import {
-  emailValidator,
-  requiredValidator,
-} from '@validators'
-
 const firstName = ref('')
 const email = ref('')
 const refForm = ref()
@@ -74,6 +70,7 @@ const refForm = ref()
         <AppTextField
           v-model="firstName"
           label="First Name"
+          placeholder="John"
           :rules="[requiredValidator]"
         />
       </VCol>
@@ -85,6 +82,7 @@ const refForm = ref()
         <AppTextField
           v-model="email"
           label="Email"
+          placeholder="john@email.com"
           :rules="[requiredValidator, emailValidator]"
         />
       </VCol>
@@ -107,13 +105,14 @@ export const validatingMultipleRules = {
   ts: `<script lang="ts" setup>
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { VForm } from 'vuetify/components/VForm'
-import { confirmedValidator, emailValidator, passwordValidator, requiredValidator } from '@validators'
 
 const name = ref('')
 const email = ref('')
 const refForm = ref<VForm>()
 const password = ref('')
 const confirmPassword = ref('')
+const isPasswordVisible = ref(false)
+const isConfirmPasswordVisible = ref(false)
 </script>
 
 <template>
@@ -152,11 +151,12 @@ const confirmPassword = ref('')
       >
         <AppTextField
           v-model="password"
-          type="password"
-          placeholder="Your Password"
-          persistent-placeholder
+          :type="isPasswordVisible ? 'text' : 'password'"
+          :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
+          placeholder="Enter Password"
           :rules="[requiredValidator, passwordValidator]"
           autocomplete="on"
+          @click:append-inner="isPasswordVisible = !isPasswordVisible"
         />
       </VCol>
 
@@ -166,11 +166,13 @@ const confirmPassword = ref('')
       >
         <AppTextField
           v-model="confirmPassword"
-          type="password"
+          :type="isConfirmPasswordVisible ? 'text' : 'password'"
           placeholder="Confirm Password"
           persistent-placeholder
+          :append-inner-icon="confirmPassword ? 'tabler-eye-off' : 'tabler-eye'"
           :rules="[requiredValidator, confirmedValidator(confirmPassword, password)]"
           autocomplete="on"
+          @click:append-inner="isConfirmPasswordVisible = !isConfirmPasswordVisible"
         />
       </VCol>
 
@@ -187,18 +189,13 @@ const confirmPassword = ref('')
 </template>
 `,
   js: `<script setup>
-import {
-  confirmedValidator,
-  emailValidator,
-  passwordValidator,
-  requiredValidator,
-} from '@validators'
-
 const name = ref('')
 const email = ref('')
 const refForm = ref()
 const password = ref('')
 const confirmPassword = ref('')
+const isPasswordVisible = ref(false)
+const isConfirmPasswordVisible = ref(false)
 </script>
 
 <template>
@@ -237,11 +234,12 @@ const confirmPassword = ref('')
       >
         <AppTextField
           v-model="password"
-          type="password"
-          placeholder="Your Password"
-          persistent-placeholder
+          :type="isPasswordVisible ? 'text' : 'password'"
+          :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
+          placeholder="Enter Password"
           :rules="[requiredValidator, passwordValidator]"
           autocomplete="on"
+          @click:append-inner="isPasswordVisible = !isPasswordVisible"
         />
       </VCol>
 
@@ -251,11 +249,13 @@ const confirmPassword = ref('')
       >
         <AppTextField
           v-model="confirmPassword"
-          type="password"
+          :type="isConfirmPasswordVisible ? 'text' : 'password'"
           placeholder="Confirm Password"
           persistent-placeholder
+          :append-inner-icon="confirmPassword ? 'tabler-eye-off' : 'tabler-eye'"
           :rules="[requiredValidator, confirmedValidator(confirmPassword, password)]"
           autocomplete="on"
+          @click:append-inner="isConfirmPasswordVisible = !isConfirmPasswordVisible"
         />
       </VCol>
 
@@ -277,19 +277,6 @@ export const validationTypes = {
   ts: `<script lang="ts" setup>
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { VForm } from 'vuetify/components/VForm'
-import {
-  alphaDashValidator,
-  alphaValidator,
-  betweenValidator,
-  confirmedValidator,
-  emailValidator,
-  integerValidator,
-  lengthValidator,
-  passwordValidator,
-  regexValidator,
-  requiredValidator,
-  urlValidator,
-} from '@validators'
 
 const requiredField = ref('')
 const numberBetween10to20 = ref('')
@@ -473,20 +460,6 @@ const refForm = ref<VForm>()
 </template>
 `,
   js: `<script setup>
-import {
-  alphaDashValidator,
-  alphaValidator,
-  betweenValidator,
-  confirmedValidator,
-  emailValidator,
-  integerValidator,
-  lengthValidator,
-  passwordValidator,
-  regexValidator,
-  requiredValidator,
-  urlValidator,
-} from '@validators'
-
 const requiredField = ref('')
 const numberBetween10to20 = ref('')
 const onlyConsistNumber = ref('')

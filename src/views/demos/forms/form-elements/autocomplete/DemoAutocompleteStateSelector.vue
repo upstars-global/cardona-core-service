@@ -69,6 +69,7 @@ const states = [
   <AppAutocomplete
     v-model="selectedState"
     :hint="!isEditing ? 'Click the icon to edit' : 'Click the icon to save'"
+    placeholder="Select Your State"
     :items="states"
     :readonly="!isEditing"
     :label="`State — ${isEditing ? 'Editable' : 'Readonly'}`"

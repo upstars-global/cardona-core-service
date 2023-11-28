@@ -30,11 +30,19 @@ $alert-prepend-icon-font-size: 1.125rem !important;
 .v-alert {
   font-weight: 500;
 
+  &.v-alert--density-comfortable{
+    padding-inline: 14px;
+  }
+
   &:not(.v-alert--prominent) .v-alert__prepend {
+    block-size: 1.625rem !important;
+    inline-size: 1.625rem !important;
+
     .v-icon {
-      block-size: 1.625rem !important;
-      font-size: 1.625rem !important;
-      inline-size: 1.625rem !important;
+      margin: auto;
+      block-size: 1.125rem !important;
+      font-size: 1.125rem !important;
+      inline-size: 1.125rem !important;
     }
   }
 
@@ -58,19 +66,20 @@ $alert-prepend-icon-font-size: 1.125rem !important;
 
   &:not(.v-alert--prominent) {
     .v-alert__prepend {
-      .v-icon {
-        padding: 0.275rem;
-        border-radius: 0.375rem;
-        background-color: rgb(var(--v-theme-surface));
-      }
+      border-radius: 0.375rem;
     }
 
     &.v-alert--variant-flat,
     &.v-alert--variant-elevated {
       .v-alert__prepend {
-        .v-icon {
-          background-color: #fff;
-        }
+        background-color: #fff;
+      }
+    }
+
+    &.v-alert--variant-tonal{
+      .v-alert__prepend {
+        z-index: 1;
+        background-color: rgb(var(--v-theme-surface));
       }
     }
   }
@@ -101,9 +110,12 @@ $alert-prepend-icon-font-size: 1.125rem !important;
       &:not(.v-alert--prominent) {
         &.text-#{$color-name},
         &.bg-#{$color-name} {
-          .v-alert__prepend .v-icon {
+          .v-alert__prepend { 
             background-color: rgb(var(--v-theme-#{$color-name}));
-            color: rgb(var(--v-theme-on-#{$color-name})) !important;
+
+            .v-icon {
+              color: rgb(var(--v-theme-on-#{$color-name})) !important;
+            }
           }
         }
       }
@@ -123,7 +135,7 @@ $btn-hover-overlay-opacity: (
   0.24: (tonal),
 );
 
-.v-btn {
+body .v-btn {
   transform: scale(1.001);
 
   // ℹ️ This is necessary because as we have darker overlay on hover for elevated variant, button text doesn't get dimmed
@@ -252,27 +264,21 @@ $btn-hover-overlay-opacity: (
 .v-checkbox-btn {
   &.v-selection-control--dirty {
     .v-selection-control__input {
-      .v-icon.iconify--custom {
+      .v-icon.custom-checkbox-checked {
         // ℹ️ Using filter: drop-shadow() instead of box-shadow because box-shadow creates white background for SVG
-        // @include mixins.elevation(2);
-        filter: drop-shadow(map.get(vuetify.$shadow-key-umbra, 2));
+        filter: drop-shadow(map.get(vuetify.$shadow-key-umbra, 2));        
       }
     }
   }
 
-  /* stylelint-disable-next-line no-descending-specificity */
-  .v-selection-control__input {
-    /* stylelint-disable-next-line no-descending-specificity */
-    .v-icon.iconify--custom {
-      block-size: 1.125rem !important;
-      font-size: 1.125rem !important;
-      inline-size: 1.125rem !important;
-    }
+
+  .v-icon--size-default{
+    font-size: calc(var(--v-icon-size-multiplier) * 1.5rem) !important;
   }
 }
 
 // 👉 Dialog
-.v-dialog {
+body .v-dialog {
   // dialog custom close btn
   .v-dialog-close-btn {
     border-radius: 0.375rem;
@@ -298,7 +304,7 @@ $btn-hover-overlay-opacity: (
 }
 
 // 👉 Expansion panels
-.v-application.v-layout .v-application__wrap .v-expansion-panels {
+body .v-layout .v-application__wrap .v-expansion-panels {
   // custom style for expansion panels
   &.expansion-panels-width-border {
     border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
@@ -387,9 +393,23 @@ $btn-hover-overlay-opacity: (
   }
 }
 
-// 👉 Field
-.v-field__input {
-  opacity: 1 !important;
+.v-field {
+  &.v-field--variant-solo, 
+  &.v-field--variant-filled {
+    --v-field-padding-top: 7px !important;
+
+    color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  }
+}
+
+.v-textarea {
+  textarea {
+    opacity: 0 !important;
+  }
+
+  & .v-field--active textarea {
+    opacity: 1 !important;
+  }
 }
 
 // 👉 Label
@@ -415,6 +435,14 @@ $btn-hover-overlay-opacity: (
     transition: none;
   }
 
+  &.v-list-item--active{
+    .v-selection-control.v-selection-control--dirty.v-checkbox-btn{
+      .v-icon{
+        color: #fff;
+      }
+    }
+  }
+
   /* stylelint-disable-next-line no-descending-specificity */
   &.v-list-item--density-comfortable .v-icon {
     font-size: 1.25rem;
@@ -432,14 +460,14 @@ $btn-hover-overlay-opacity: (
 
   &.v-list-item--active:not(.v-list-group__header) {
     background-color: rgb(var(--v-theme-primary));
-    color: rgb(var(--v-theme-on-primary));
+    color: rgb(var(--v-theme-on-primary)) !important;
 
     .v-list-item-subtitle {
       color: rgb(var(--v-theme-on-primary));
     }
   }
 
-  &[tabindex="0"]:not(.v-list-item--active) {
+  &[tabindex="-2"]:not(.v-list-item--active) {
     &:hover,
     &:focus-visible {
       color: rgb(var(--v-theme-primary));
@@ -542,18 +570,9 @@ $btn-hover-overlay-opacity: (
 // 👉 Radio
 .v-radio,
 .v-radio-btn {
-  .v-selection-control__input {
-    .iconify--custom {
-      border-radius: 5rem;
-      block-size: 1.125rem !important;
-      font-size: 1.125rem !important;
-      inline-size: 1.125rem !important;
-    }
-  }
-
   &.v-selection-control--dirty {
     .v-selection-control__input {
-      .iconify--custom {
+      .custom-radio-checked {
         @include mixins.elevation(2);
       }
     }
@@ -568,10 +587,14 @@ $btn-hover-overlay-opacity: (
 .v-radio,
 .v-checkbox-btn {
   &:not(.v-selection-control--dirty) {
-    .v-selection-control__input > svg {
+    .v-selection-control__input > .v-icon {
       color: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));
     }
   }
+}
+
+.v-input.v-radio-group > .v-input__control > .v-label{
+  margin-inline-start: 0;
 }
 
 // 👉 Rating
@@ -622,6 +645,7 @@ $btn-hover-overlay-opacity: (
       background: rgba(var(--v-theme-on-surface), var(--v-switch-opacity));
       block-size: 0.75rem;
       inline-size: 0.75rem;
+      transform: scale(1);
     }
   }
 
@@ -725,6 +749,20 @@ $btn-hover-overlay-opacity: (
   }
 }
 
+// 👉 Datatable
+
+.v-data-table{
+  table{
+    tbody{
+      .v-data-table-group-header-row{
+        td{
+          background-color: rgb(var(--v-theme-surface));
+        }
+      }
+    }
+  }
+}
+
 // 👉 Tabs
 // v-tab with pill support
 .v-tabs {
@@ -747,8 +785,13 @@ $btn-hover-overlay-opacity: (
 
   /* stylelint-disable-next-line no-descending-specificity */
   .v-btn {
+    color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
     font-weight: 400;
     transform: none !important;
+
+    &:hover{
+      color: rgb(var(--v-theme-primary))
+    }
 
     &.v-btn--stacked {
       /* stylelint-disable-next-line no-descending-specificity */
@@ -812,13 +855,9 @@ $btn-hover-overlay-opacity: (
   &.v-timeline-icon-only {
     .v-timeline-divider__dot {
       .v-timeline-divider__inner-dot {
-        background: none;
+        background: rgb(var(--v-theme-background));
         box-shadow: none;
 
-        /* stylelint-disable-next-line no-descending-specificity */
-        .v-icon {
-          background: rgb(var(--v-theme-background));
-        }
       }
     }
   }
@@ -829,9 +868,7 @@ $btn-hover-overlay-opacity: (
       .v-timeline-divider__dot {
         .v-timeline-divider__inner-dot {
           /* stylelint-disable-next-line no-descending-specificity */
-          .v-icon {
-            background: rgb(var(--v-theme-surface));
-          }
+          background: rgb(var(--v-theme-surface));
         }
       }
     }
@@ -853,7 +890,7 @@ $btn-hover-overlay-opacity: (
 
 // 👉 TextField, Select, AutoComplete, ComboBox, Textarea
 // ℹ️ We added .v-application to increase the specificity of the selector
-.v-application {
+body {
   .app-text-field,
   .app-select,
   .app-autocomplete,
@@ -976,20 +1013,6 @@ $btn-hover-overlay-opacity: (
   @include style-selectable-component("select");
   @include style-selectable-component("combobox");
 
-  .v-input--density-compact {
-    .v-field__clearable,
-    .v-field__append-inner {
-      svg {
-        block-size: 0.8em;
-        inline-size: 0.8em;
-        margin-block-start: 0.15em;
-
-        // transform: scale(0.75);
-        // transform-origin: center;
-      }
-    }
-  }
-
   // AutoComplete
   @at-root {
     .app-autocomplete__content {
@@ -1029,4 +1052,23 @@ $btn-hover-overlay-opacity: (
 // Hide resizer
 ::-webkit-resizer {
   background: transparent;
+}
+
+
+// otp input
+.v-otp-input {
+  justify-content:unset !important;
+
+  .v-otp-input__content{
+    max-inline-size: 100% ;
+
+    .v-field.v-field--focused {
+      .v-field__outline{
+        .v-field__outline__start,
+        .v-field__outline__end{
+          border-color: rgb(var(--v-theme-primary)) !important;
+        }
+      }
+    }
+  }
 }

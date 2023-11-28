@@ -22,7 +22,7 @@ const radioContent: CustomInputContent[] = [
   },
 ]
 
-const selectedRadio = ref('basic')
+const selectedRadio = ref('starter')
 </script>
 
 <template>

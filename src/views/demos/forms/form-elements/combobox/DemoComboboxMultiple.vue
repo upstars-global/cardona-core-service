@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { IconsList } from '@/@model/enums/icons'
-
 const selectedItem = ref(['Vuetify', 'Programming'])
 const items = ['Programming', 'Design', 'Vue', 'Vuetify']
 </script>
@@ -10,6 +8,8 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
     <VCol cols="12">
       <AppCombobox
         v-model="selectedItem"
+        :items="items"
+        placeholder="deployment"
         label="Select a favorite activity or create a new one"
         multiple
       />
@@ -19,6 +19,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
       <AppCombobox
         v-model="selectedItem"
         :items="items"
+        placeholder="deployment"
         label="I use chips"
         multiple
         chips
@@ -28,6 +29,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
     <VCol cols="12">
       <AppCombobox
         v-model="selectedItem"
+        placeholder="deployment"
         label="I'm readonly"
         chips
         multiple
@@ -39,13 +41,22 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
       <AppCombobox
         v-model="selectedItem"
         :items="items"
+        placeholder="deployment"
         label="I use selection slot"
         multiple
       >
         <template #selection="{ item }">
-          <VChip>
+          <VChip class="mt-1">
+            <template #prepend>
+              <VAvatar
+                start
+                color="primary"
+              >
+                {{ String(item.title).charAt(0).toUpperCase() }}
+              </VAvatar>
+            </template>
+
             {{ item.title }}
-            <VIcon :icon="IconsList.XIcon" />
           </VChip>
         </template>
       </AppCombobox>

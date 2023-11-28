@@ -283,7 +283,7 @@ const inlineRadio = ref('radio-1')
 
 export const labelSlot = {
   ts: `<script lang="ts" setup>
-const radios = ref('Duckduckgo')
+const radios = ref('DuckDuckGo')
 </script>
 
 <template>
@@ -302,11 +302,11 @@ const radios = ref('Duckduckgo')
       </template>
     </VRadio>
 
-    <VRadio value="Duckduckgo">
+    <VRadio value="DuckDuckGo">
       <template #label>
         <div>
           Definitely <span class="text-primary">
-            Duckduckgo
+            DuckDuckGo
           </span>
         </div>
       </template>
@@ -315,7 +315,7 @@ const radios = ref('Duckduckgo')
 </template>
 `,
   js: `<script setup>
-const radios = ref('Duckduckgo')
+const radios = ref('DuckDuckGo')
 </script>
 
 <template>
@@ -334,11 +334,11 @@ const radios = ref('Duckduckgo')
       </template>
     </VRadio>
 
-    <VRadio value="Duckduckgo">
+    <VRadio value="DuckDuckGo">
       <template #label>
         <div>
           Definitely <span class="text-primary">
-            Duckduckgo
+            DuckDuckGo
           </span>
         </div>
       </template>

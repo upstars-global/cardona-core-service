@@ -3,7 +3,6 @@ import { useRouter } from 'vue-router'
 import { FieldInfo } from '../@model/field'
 import { BaseField } from '../@model/templates/baseField'
 import type { OptionsItem } from '../@model'
-import { isObject } from '@core/utils'
 
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
 

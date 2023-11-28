@@ -6,6 +6,7 @@ const date = ref('')
   <AppDateTimePicker
     v-model="date"
     label="Inline"
+    placeholder="Select Date"
     :config="{ inline: true }"
   />
 </template>

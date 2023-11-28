@@ -3,6 +3,7 @@ interface UserData {
   id: number | null
   fullName: string
   company: string
+  username: string
   role: string
   country: string
   contact: string
@@ -82,7 +83,7 @@ const dialogModelValueUpdate = (val: boolean) => {
 
     <VCard class="pa-sm-8 pa-5">
       <VCardItem class="text-center">
-        <VCardTitle class="text-h5 mb-3">
+        <VCardTitle class="text-h3 mb-3">
           Edit User Information
         </VCardTitle>
         <p class="mb-0">
@@ -103,8 +104,9 @@ const dialogModelValueUpdate = (val: boolean) => {
               md="6"
             >
               <AppTextField
-                v-model="userData.fullName.split(' ')[0]"
-                label="first Name"
+                v-model="userData.fullName"
+                label="Full Name"
+                placeholder="John Doe"
               />
             </VCol>
 
@@ -114,8 +116,9 @@ const dialogModelValueUpdate = (val: boolean) => {
               md="6"
             >
               <AppTextField
-                v-model="userData.fullName.split(' ')[1]"
-                label="Last Name"
+                v-model="userData.username"
+                label="Username"
+                placeholder="johndoe"
               />
             </VCol>
 
@@ -127,6 +130,7 @@ const dialogModelValueUpdate = (val: boolean) => {
               <AppTextField
                 v-model="userData.email"
                 label="Billing Email"
+                placeholder="johndoe@email.com"
               />
             </VCol>
 
@@ -138,6 +142,7 @@ const dialogModelValueUpdate = (val: boolean) => {
               <AppTextField
                 v-model="userData.status"
                 label="Status"
+                placeholder="Active"
               />
             </VCol>
 
@@ -149,6 +154,7 @@ const dialogModelValueUpdate = (val: boolean) => {
               <AppTextField
                 v-model="userData.taxId"
                 label="Tax Id"
+                placeholder="123456789"
               />
             </VCol>
 
@@ -160,6 +166,7 @@ const dialogModelValueUpdate = (val: boolean) => {
               <AppTextField
                 v-model="userData.contact"
                 label="Contact"
+                placeholder="+1 9876543210"
               />
             </VCol>
 
@@ -173,6 +180,7 @@ const dialogModelValueUpdate = (val: boolean) => {
                 chips
                 multiple
                 label="Language"
+                placeholder="English"
               />
             </VCol>
 
@@ -184,6 +192,7 @@ const dialogModelValueUpdate = (val: boolean) => {
               <AppTextField
                 v-model="userData.country"
                 label="Country"
+                placeholder="United States"
               />
             </VCol>
 

@@ -30,7 +30,7 @@ const checkbox = ref(false)
             <AppTextField
               id="firstName"
               v-model="firstName"
-              placeholder="First Name"
+              placeholder="John"
               persistent-placeholder
             />
           </VCol>
@@ -58,7 +58,7 @@ const checkbox = ref(false)
             <AppTextField
               id="email"
               v-model="email"
-              placeholder="Email"
+              placeholder="johndoe@email.com"
               persistent-placeholder
             />
           </VCol>
@@ -87,7 +87,7 @@ const checkbox = ref(false)
               id="mobile"
               v-model="mobile"
               type="number"
-              placeholder="Number"
+              placeholder="+1 123 456 7890"
               persistent-placeholder
             />
           </VCol>
@@ -115,8 +115,9 @@ const checkbox = ref(false)
             <AppTextField
               id="password"
               v-model="password"
+              autocomplete="on"
               type="password"
-              placeholder="Password"
+              placeholder="············"
               persistent-placeholder
             />
           </VCol>

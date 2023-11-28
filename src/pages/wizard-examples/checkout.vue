@@ -85,7 +85,7 @@ const currentStep = ref(0)
         v-model:current-step="currentStep"
         class="checkout-stepper"
         :items="checkoutSteps"
-        :direction="$vuetify.display.smAndUp ? 'horizontal' : 'vertical'"
+        :direction="$vuetify.display.mdAndUp ? 'horizontal' : 'vertical'"
       />
     </VCardText>
 

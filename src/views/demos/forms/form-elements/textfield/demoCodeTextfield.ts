@@ -1,10 +1,16 @@
 export const basic = {
   ts: `<template>
-  <AppTextField label="Regular" />
+  <AppTextField
+    label="Regular"
+    placeholder="Placeholder Text"
+  />
 </template>
 `,
   js: `<template>
-  <AppTextField label="Regular" />
+  <AppTextField
+    label="Regular"
+    placeholder="Placeholder Text"
+  />
 </template>
 `,
 }
@@ -12,6 +18,7 @@ export const basic = {
 export const clearable = {
   ts: `<template>
   <AppTextField
+    placeholder="Placeholder Text"
     label="Regular"
     clearable
   />
@@ -19,6 +26,7 @@ export const clearable = {
 `,
   js: `<template>
   <AppTextField
+    placeholder="Placeholder Text"
     label="Regular"
     clearable
   />
@@ -40,6 +48,7 @@ const rules = [(v: string) => v.length <= 25 || 'Max 25 characters']
         v-model="title"
         :rules="rules"
         counter="25"
+        placeholder="Placeholder Text"
         hint="This field uses counter prop"
         label="Regular"
       />
@@ -51,6 +60,7 @@ const rules = [(v: string) => v.length <= 25 || 'Max 25 characters']
         :rules="rules"
         counter
         maxlength="25"
+        placeholder="Placeholder Text"
         hint="This field uses maxlength attribute"
         label="Limit exceeded"
       />
@@ -71,6 +81,7 @@ const rules = [v => v.length <= 25 || 'Max 25 characters']
         v-model="title"
         :rules="rules"
         counter="25"
+        placeholder="Placeholder Text"
         hint="This field uses counter prop"
         label="Regular"
       />
@@ -82,6 +93,7 @@ const rules = [v => v.length <= 25 || 'Max 25 characters']
         :rules="rules"
         counter
         maxlength="25"
+        placeholder="Placeholder Text"
         hint="This field uses maxlength attribute"
         label="Limit exceeded"
       />
@@ -96,6 +108,7 @@ export const customColors = {
   <AppTextField
     color="success"
     label="First name"
+    placeholder="Placeholder Text"
   />
 </template>
 `,
@@ -103,6 +116,7 @@ export const customColors = {
   <AppTextField
     color="success"
     label="First name"
+    placeholder="Placeholder Text"
   />
 </template>
 `,
@@ -113,6 +127,7 @@ export const density = {
   <AppTextField
     label="Compact"
     density="compact"
+    placeholder="Placeholder Text"
   />
 </template>
 `,
@@ -120,6 +135,7 @@ export const density = {
   <AppTextField
     label="Compact"
     density="compact"
+    placeholder="Placeholder Text"
   />
 </template>
 `,
@@ -156,6 +172,7 @@ const sendMessage = () => {
     type="text"
     label="Message"
     color="primary"
+    placeholder="Hey!!"
     clear-icon="tabler-circle-x"
     :append-icon="message ? $vuetify.locale.isRtl ? 'tabler-arrow-big-left-lines' : 'tabler-arrow-big-right-lines' : 'tabler-microphone'"
     :append-inner-icon="marker ? 'tabler-map-pin' : 'tabler-map-pin-off'"
@@ -195,6 +212,7 @@ const sendMessage = () => {
     type="text"
     label="Message"
     color="primary"
+    placeholder="Hey!!"
     clear-icon="tabler-circle-x"
     :append-icon="message ? $vuetify.locale.isRtl ? 'tabler-arrow-big-left-lines' : 'tabler-arrow-big-right-lines' : 'tabler-microphone'"
     :append-inner-icon="marker ? 'tabler-map-pin' : 'tabler-map-pin-off'"
@@ -207,7 +225,7 @@ const sendMessage = () => {
 }
 
 export const iconSlots = {
-  ts: `<script lang="ts" setup>
+  ts: `<script setup lang="ts">
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
@@ -230,6 +248,7 @@ const clickMe = () => {
     v-model="message"
     clearable
     label="Message"
+    placeholder="Hey!!"
     type="text"
     class="textfield-demo-icon-slot"
   >
@@ -252,6 +271,7 @@ const clickMe = () => {
         <VProgressCircular
           v-if="loading"
           color="info"
+          class="mt-1"
           indeterminate
         />
 
@@ -266,10 +286,14 @@ const clickMe = () => {
     <!-- Append -->
     <template #append>
       <VBtn
+        :height="$vuetify.display.mdAndUp ? 40 : 50"
         :icon="$vuetify.display.smAndDown"
         @click="clickMe"
       >
-        <VIcon icon="tabler-viewfinder" />
+        <VIcon
+          icon="tabler-viewfinder"
+          size="22"
+        />
         <span
           v-if="$vuetify.display.mdAndUp"
           class="ms-3"
@@ -327,6 +351,7 @@ const clickMe = () => {
     v-model="message"
     clearable
     label="Message"
+    placeholder="Hey!!"
     type="text"
     class="textfield-demo-icon-slot"
   >
@@ -349,6 +374,7 @@ const clickMe = () => {
         <VProgressCircular
           v-if="loading"
           color="info"
+          class="mt-1"
           indeterminate
         />
 
@@ -363,10 +389,14 @@ const clickMe = () => {
     <!-- Append -->
     <template #append>
       <VBtn
+        :height="$vuetify.display.mdAndUp ? 40 : 50"
         :icon="$vuetify.display.smAndDown"
         @click="clickMe"
       >
-        <VIcon icon="tabler-viewfinder" />
+        <VIcon
+          icon="tabler-viewfinder"
+          size="22"
+        />
         <span
           v-if="$vuetify.display.mdAndUp"
           class="ms-3"
@@ -411,6 +441,7 @@ export const icons = {
       <AppTextField
         label="Prepend"
         prepend-icon="tabler-map-pin"
+        placeholder="Placeholder Text"
       />
     </VCol>
 
@@ -418,6 +449,7 @@ export const icons = {
       <AppTextField
         label="Prepend Inner"
         prepend-inner-icon="tabler-map-pin"
+        placeholder="Placeholder Text"
       />
     </VCol>
 
@@ -425,6 +457,7 @@ export const icons = {
       <AppTextField
         label="Append"
         append-icon="tabler-map-pin"
+        placeholder="Placeholder Text"
       />
     </VCol>
 
@@ -432,6 +465,7 @@ export const icons = {
       <AppTextField
         label="Append Inner"
         append-inner-icon="tabler-map-pin"
+        placeholder="Placeholder Text"
       />
     </VCol>
   </VRow>
@@ -443,6 +477,7 @@ export const icons = {
       <AppTextField
         label="Prepend"
         prepend-icon="tabler-map-pin"
+        placeholder="Placeholder Text"
       />
     </VCol>
 
@@ -450,6 +485,7 @@ export const icons = {
       <AppTextField
         label="Prepend Inner"
         prepend-inner-icon="tabler-map-pin"
+        placeholder="Placeholder Text"
       />
     </VCol>
 
@@ -457,6 +493,7 @@ export const icons = {
       <AppTextField
         label="Append"
         append-icon="tabler-map-pin"
+        placeholder="Placeholder Text"
       />
     </VCol>
 
@@ -464,6 +501,7 @@ export const icons = {
       <AppTextField
         label="Append Inner"
         append-inner-icon="tabler-map-pin"
+        placeholder="Placeholder Text"
       />
     </VCol>
   </VRow>
@@ -519,6 +557,7 @@ const rules = {
         name="input-10-1"
         label="Normal with hint text"
         hint="At least 8 characters"
+        placeholder="············"
         counter
         @click:append-inner="show1 = !show1"
       />
@@ -530,10 +569,11 @@ const rules = {
     >
       <AppTextField
         v-model="confirmPassword"
-        :append-inner-icon="show2 ? 'tabler-eye-off' : 'tabler-eye' "
         :rules="[rules.required, rules.min]"
+        :append-inner-icon="show2 ? 'tabler-eye-off' : 'tabler-eye' "
         :type="show2 ? 'text' : 'password'"
         name="input-10-2"
+        placeholder="············"
         label="Visible"
         hint="At least 8 characters"
         @click:append-inner="show2 = !show2"
@@ -568,6 +608,7 @@ const rules = {
         name="input-10-1"
         label="Normal with hint text"
         hint="At least 8 characters"
+        placeholder="············"
         counter
         @click:append-inner="show1 = !show1"
       />
@@ -579,10 +620,11 @@ const rules = {
     >
       <AppTextField
         v-model="confirmPassword"
-        :append-inner-icon="show2 ? 'tabler-eye-off' : 'tabler-eye' "
         :rules="[rules.required, rules.min]"
+        :append-inner-icon="show2 ? 'tabler-eye-off' : 'tabler-eye' "
         :type="show2 ? 'text' : 'password'"
         name="input-10-2"
+        placeholder="············"
         label="Visible"
         hint="At least 8 characters"
         @click:append-inner="show2 = !show2"
@@ -609,6 +651,7 @@ const time = ref('04:56')
         label="Amount"
         prefix="$"
         type="number"
+        placeholder="10.05"
       />
     </VCol>
 
@@ -618,6 +661,7 @@ const time = ref('04:56')
         label="Weight"
         suffix="lbs"
         type="number"
+        placeholder="28.02"
       />
     </VCol>
 
@@ -626,6 +670,7 @@ const time = ref('04:56')
         v-model="email"
         label="Email address"
         suffix="@gmail.com"
+        placeholder="example"
       />
     </VCol>
 
@@ -635,6 +680,7 @@ const time = ref('04:56')
         label="Label Text"
         type="time"
         suffix="PST"
+        placeholder="04:56"
       />
     </VCol>
   </VRow>
@@ -655,6 +701,7 @@ const time = ref('04:56')
         label="Amount"
         prefix="$"
         type="number"
+        placeholder="10.05"
       />
     </VCol>
 
@@ -664,6 +711,7 @@ const time = ref('04:56')
         label="Weight"
         suffix="lbs"
         type="number"
+        placeholder="28.02"
       />
     </VCol>
 
@@ -672,6 +720,7 @@ const time = ref('04:56')
         v-model="email"
         label="Email address"
         suffix="@gmail.com"
+        placeholder="example"
       />
     </VCol>
 
@@ -681,6 +730,7 @@ const time = ref('04:56')
         label="Label Text"
         type="time"
         suffix="PST"
+        placeholder="04:56"
       />
     </VCol>
   </VRow>
@@ -692,6 +742,7 @@ export const singleLine = {
   ts: `<template>
   <AppTextField
     label="Regular"
+    placeholder="Placeholder Text"
     single-line
   />
 </template>
@@ -699,6 +750,7 @@ export const singleLine = {
   js: `<template>
   <AppTextField
     label="Regular"
+    placeholder="Placeholder Text"
     single-line
   />
 </template>
@@ -711,12 +763,14 @@ export const state = {
     <VCol>
       <AppTextField
         label="Disabled"
+        placeholder="Placeholder Text"
         disabled
       />
     </VCol>
 
     <VCol cols="12">
       <AppTextField
+        placeholder="Placeholder Text"
         label="Readonly"
         readonly
       />
@@ -729,12 +783,14 @@ export const state = {
     <VCol>
       <AppTextField
         label="Disabled"
+        placeholder="Placeholder Text"
         disabled
       />
     </VCol>
 
     <VCol cols="12">
       <AppTextField
+        placeholder="Placeholder Text"
         label="Readonly"
         readonly
       />
@@ -746,8 +802,6 @@ export const state = {
 
 export const validation = {
   ts: `<script lang="ts" setup>
-import { emailValidator, requiredValidator } from '@validators'
-
 const email = ref('')
 </script>
 
@@ -756,17 +810,13 @@ const email = ref('')
     <AppTextField
       v-model="email"
       :rules="[requiredValidator, emailValidator]"
+      placeholder="johnedoe@email.com"
       label="E-mail"
     />
   </VForm>
 </template>
 `,
   js: `<script setup>
-import {
-  emailValidator,
-  requiredValidator,
-} from '@validators'
-
 const email = ref('')
 </script>
 
@@ -775,6 +825,7 @@ const email = ref('')
     <AppTextField
       v-model="email"
       :rules="[requiredValidator, emailValidator]"
+      placeholder="johnedoe@email.com"
       label="E-mail"
     />
   </VForm>
@@ -789,7 +840,10 @@ export const variant = {
       cols="12"
       md="6"
     >
-      <VTextField label="Outlined" />
+      <VTextField
+        label="Outlined"
+        variant="outlined"
+      />
     </VCol>
 
     <VCol
@@ -840,7 +894,10 @@ export const variant = {
       cols="12"
       md="6"
     >
-      <VTextField label="Outlined" />
+      <VTextField
+        label="Outlined"
+        variant="outlined"
+      />
     </VCol>
 
     <VCol

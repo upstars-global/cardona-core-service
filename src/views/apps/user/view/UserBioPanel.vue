@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { avatarText, kFormatter } from '@core/utils/formatters'
-
 interface Props {
   userData: {
     id: number
@@ -101,44 +99,50 @@ const resolveUserRoleVariant = (role: string) => {
           </VChip>
         </VCardText>
 
-        <VCardText class="d-flex justify-center flex-wrap mt-3">
-          <!-- 👉 Done task -->
-          <div class="d-flex align-center me-8">
-            <VAvatar
-              :size="38"
-              rounded
-              color="primary"
-              variant="tonal"
-              class="me-3"
-            >
-              <VIcon icon="tabler-checkbox" />
-            </VAvatar>
-
-            <div>
-              <h6 class="text-h6">
-                {{ kFormatter(props.userData.taskDone) }}
-              </h6>
-              <span class="text-sm">Task Done</span>
+        <VCardText>
+          <div class="d-flex justify-center flex-wrap gap-5">
+            <!-- 👉 Done task -->
+            <div class="d-flex align-center me-8">
+              <VAvatar
+                :size="38"
+                rounded
+                color="primary"
+                variant="tonal"
+                class="me-3"
+              >
+                <VIcon
+                  icon="tabler-checkbox"
+                  size="28"
+                />
+              </VAvatar>
+              <div>
+                <div class="text-body-1 font-weight-medium">
+                  {{ kFormatter(props.userData.taskDone) }}
+                </div>
+                <span class="text-sm">Task Done</span>
+              </div>
             </div>
-          </div>
 
-          <!-- 👉 Done Project -->
-          <div class="d-flex align-center me-4">
-            <VAvatar
-              :size="38"
-              rounded
-              color="primary"
-              variant="tonal"
-              class="me-3"
-            >
-              <VIcon icon="tabler-briefcase" />
-            </VAvatar>
-
-            <div>
-              <h6 class="text-h6">
-                {{ kFormatter(props.userData.projectDone) }}
-              </h6>
-              <span class="text-sm">Project Done</span>
+            <!-- 👉 Done Project -->
+            <div class="d-flex align-center me-4">
+              <VAvatar
+                :size="38"
+                rounded
+                color="primary"
+                variant="tonal"
+                class="me-3"
+              >
+                <VIcon
+                  icon="tabler-briefcase"
+                  size="28"
+                />
+              </VAvatar>
+              <div>
+                <div class="font-weight-medium">
+                  {{ kFormatter(props.userData.projectDone) }}
+                </div>
+                <span class="text-sm">Project Done</span>
+              </div>
             </div>
           </div>
         </VCardText>
@@ -279,9 +283,9 @@ const resolveUserRoleVariant = (role: string) => {
           <!-- 👉 Current Price  -->
           <div class="d-flex align-center">
             <sup class="text-primary text-sm font-weight-regular">$</sup>
-            <h3 class="text-h3 text-primary">
+            <h1 class="text-h1 text-primary">
               99
-            </h3>
+            </h1>
             <sub class="mt-3"><h6 class="text-sm font-weight-regular text-disabled">/ month</h6></sub>
           </div>
         </VCardText>
