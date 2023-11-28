@@ -65,6 +65,11 @@ export type Badge = {
 
 export type NumberOrString = number | string
 
+export type NumberRangeBaseValue = {
+  from: NumberOrString
+  to: NumberOrString
+}
+
 export interface ValidationError {
   code: string
   field: string

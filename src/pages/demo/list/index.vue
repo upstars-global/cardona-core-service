@@ -1,5 +1,15 @@
 <template>
   <base-list :use-list="useDemoList" :config="listConfig" class="demo-list mr-md-1 mr-sm-0">
+    <template #cell(editableField)="{ item }">
+      <edit-field-wrapper :value="item.editableField">
+        <template #default="{ value }">
+          <div>{{ value.from }} - {{ value.to }}</div>
+        </template>
+        <template #input="{ inputValue, updateValue }">
+          <number-range-field :value="inputValue" @input="updateValue" />
+        </template>
+      </edit-field-wrapper>
+    </template>
     <template #table-field-setting>
       <feather-icon :icon="IconsList.BookIcon" size="21" class="mr-1" />
     </template>
@@ -68,8 +78,10 @@ import { FilterType } from '../../../@model/filter'
 import { ProjectFilterTypes } from '@filterConfig'
 import InnerBlankLink from '../../../components/templates/_components/InnerBlankLink.vue'
 import SumPeriod from '../../../components/templates/_components/SumPeriod.vue'
+import EditFieldWrapper from '../../../components/templates/BaseList/_components/EditFieldWrapper.vue'
 import BtnIcon from '../../../components/BtnIcon.vue'
 import { IconsList } from '../../../@model/enums/icons'
+import NumberRangeField from '../../../components/templates/FieldGenerator/_components/NumberRangeField.vue'
 
 const { t } = useI18nUtils()
 
@@ -129,6 +141,17 @@ const setButtonState = (key: string): void => {
       th[data-c-field='isActive'] {
         width: 5%;
         max-width: 10%;
+      }
+      th[data-c-field='editableField'] {
+        div {
+          min-width: 14rem;
+        }
+      }
+    }
+    td[data-c-field='editableField'] {
+      .editable-wrapper {
+        display: flex;
+        justify-content: start;
       }
     }
   }
