@@ -301,6 +301,7 @@ export class DemoForm {
       key: 'phoneList',
       value: data?.phoneList,
       label: i18n.t('page.demo.phoneList'),
+      validationRules: ['phone_and_domain_list'],
     })
     this.password = new PasswordBaseField({
       key: 'password',

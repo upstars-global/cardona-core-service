@@ -50,3 +50,8 @@ export const validatorRange = (value: Record<string, NumberOrString>, args): boo
   if (!validatorObject(value)) return false
   return +value[keyMin] <= +value[keyMax]
 }
+
+export const validatorListPhoneAndDomain = (value: any) => {
+  if (!value.length) return true
+  return value.every(({ phone, country }) => validatorPhone(phone) && country)
+}

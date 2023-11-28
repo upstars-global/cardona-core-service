@@ -28,6 +28,7 @@ import {
   validatorPhone,
   validatorObject,
   validatorRange,
+  validatorListPhoneAndDomain,
 } from './validators'
 
 // ////////////////////////////////////////////////////////
@@ -120,6 +121,11 @@ export const range = extend('range', {
       valueFrom: _value_.from,
     }) as any
   },
+})
+
+export const phone_and_domain_list = extend('phone_and_domain_list', {
+  validate: validatorListPhoneAndDomain,
+  message: 'Invalid list',
 })
 
 configure(

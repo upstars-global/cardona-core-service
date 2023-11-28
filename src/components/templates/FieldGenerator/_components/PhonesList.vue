@@ -2,7 +2,7 @@
 import { computed, Ref, ref } from 'vue'
 import store from '../../../../store'
 import { IconsList } from '../../../../@model/enums/icons'
-import { IPhonesListValue, PhonesListBaseField } from "../../../../@model/baseField/phones-list";
+import { IPhonesListValue, PhonesListBaseField } from '../../../../@model/baseField/phones-list'
 import PhoneField from '../../../../components/templates/FieldGenerator/_components/PhoneField.vue'
 import SelectField from '../../../../components/templates/FieldGenerator/_components/SelectField.vue'
 
