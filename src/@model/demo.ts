@@ -29,6 +29,7 @@ import { ValidationRule } from './validations'
 import { BColors, BLightColors } from './bootstrap'
 import { IconsList } from './enums/icons'
 import { NumberRangeBaseField } from './baseField/number-range'
+import { NumberRangeBaseValue } from '../@model/index'
 
 export interface IDemoTypeItem {
   id: string
@@ -102,6 +103,7 @@ export class DemoListItem implements BaseListItem {
   state: boolean
   comment: string
   rowVariant: BColors | BLightColors
+  editableField: NumberRangeBaseValue
 
   constructor(data) {
     this.id = data.id
@@ -130,6 +132,7 @@ export class DemoListItem implements BaseListItem {
     this.state = data.state
     this.comment = data.comment
     this.rowVariant = data?.rowVariant
+    this.editableField = data?.editableField
   }
 }
 
