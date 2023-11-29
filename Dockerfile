@@ -7,12 +7,12 @@ FROM public.ecr.aws/docker/library/${NODE_BASE_VERSION} AS install
 WORKDIR /app
 COPY package.json .
 COPY yarn.lock .
-
+COPY . .
 RUN yarn install
 
 FROM install AS build
 WORKDIR /app
-COPY . .
+
 
 RUN yarn build
 
