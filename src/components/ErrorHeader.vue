@@ -1,8 +1,8 @@
 <script setup lang="ts">
 interface Props {
-  errorCode?: string
-  errorTitle?: string
-  errorDescription?: string
+  statusCode?: string | number
+  title?: string
+  description?: string
 }
 
 const props = defineProps<Props>()
@@ -12,19 +12,22 @@ const props = defineProps<Props>()
   <div class="text-center">
     <!-- 👉 Title and subtitle -->
     <h1
-      v-if="props.errorCode"
+      v-if="props.statusCode"
       class="text-h1 font-weight-medium"
     >
-      {{ props.errorCode }}
+      {{ props.statusCode }}
     </h1>
     <h4
-      v-if="props.errorTitle"
+      v-if="props.title"
       class="text-h4 font-weight-medium mb-3"
     >
-      {{ props.errorTitle }}
+      {{ props.title }}
     </h4>
-    <p v-if="props.errorDescription">
-      {{ props.errorDescription }}
+    <p
+      v-if="props.description"
+      style="max-inline-size: 50vw;"
+    >
+      {{ props.description }}
     </p>
   </div>
 </template>

@@ -14,6 +14,14 @@ export default {
       color: undefined,
     },
   },
+  VAvatar: {
+    // ℹ️ Remove after next release
+    variant: 'flat',
+  },
+
+  // VImg: {
+  //   eager: true,
+  // },
   VBadge: {
     // set v-badge default color to primary
     color: 'primary',
@@ -76,8 +84,8 @@ export default {
   },
   VSelect: {
     variant: 'outlined',
-    density: 'compact',
     color: 'primary',
+    density: 'compact',
     hideDetails: 'auto',
     VChip: {
       color: 'primary',
@@ -106,7 +114,7 @@ export default {
     height: 12,
     roundedBar: true,
     rounded: true,
-    bgColor: 'rgb(var(--v-theme-on-surface))',
+    color: 'primary',
   },
   VSlider: {
     // set v-slider default color to primary

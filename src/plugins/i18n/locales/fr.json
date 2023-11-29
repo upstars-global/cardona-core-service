@@ -12,6 +12,7 @@
   "Card Action": "Action de la carte",
   "Components": "Composants",
   "Alert": "Alerte",
+  "Close Alert": "Fermer l'alerte",
   "Avatar": "Avatar",
   "Badge": "Badge",
   "Button": "Bouton",
@@ -31,6 +32,7 @@
   "Textarea": "Textarea",
   "Rating": "Évaluation",
   "File Input": "Entrée de fichier",
+  "Otp Input": "Entrée Otp",
   "Form Layout": "Disposition du formulaire",
   "Form Validation": "Validation de formulaire",
   "Charts": "Graphiques",
@@ -130,9 +132,57 @@
   "Apps": "Applications",
   "Misc": "Divers",
   "Wizard Pages": "Pages de l'assistant",
+  "Form Wizard": "Assistant de formulaire",
+  "Numbered": "Numéroté",
   "3": "3",
+  "ecommerce": "commerce électronique",
+  "Ecommerce": "Commerce électronique",
+  "Product": "Produit",
+  "Category": "Catégorie",
+  "Order": "Ordre",
+  "Details": "Détails",
+  "Customer": "Client",
+  "Manage Review": "Gérer la revue",
+  "Referrals": "Références",
+  "Settings": "Paramètres",
+  "Course Details": "Détails du cours",
+  "My Course": "Mon cours",
+  "Overview": "Aperçu",
+  "Academy": "Académie",
+  "Logistics": "Logistique",
+  "Dashboard": "Tableau de bord",
+  "Fleet": "Flotte",
+  "Editors": "Éditeurs",
+  "Front Pages": "Pages frontales",
+  "Landing": "d'atterrissage",
+  "checkout": "Check-out",
+  "Payment": "Paiement",
+  "Swiper": "Swiper",
+  "5": "5",
+  "10": "10",
+  "20": "20",
+  "25": "25",
+  "50": "50",
+  "100": "100",
   "$vuetify": {
     "badge": "Badge",
+    "noDataText": "Pas de données disponibles",
+    "close": "Fermer",
+    "open": "Ouvert",
+    "carousel": {
+      "ariaLabel": {
+        "delimiter": "délimiteur"
+      }
+    },
+    "dataFooter": {
+      "itemsPerPageText": "Objets par page:",
+      "itemsPerPageAll": "Tout",
+      "pageText": "{0}-{1} of {2}",
+      "firstPage": "Première page",
+      "prevPage": "Page précédente",
+      "nextPage": "Page suivante",
+      "lastPage": "Dernière page"
+    },
     "pagination": {
       "ariaLabel": {
         "root": "racine",
@@ -145,7 +195,8 @@
     "input": {
       "clear": "dégager",
       "appendAction": "ajouter une action",
-      "prependAction": "préfixer l'action"
+      "prependAction": "préfixer l'action",
+      "otp": "otp"
     },
     "fileInput": {
       "counterSize": "Taille du compteur"

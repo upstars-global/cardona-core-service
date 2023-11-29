@@ -28,6 +28,7 @@ const sendMessage = () => {
     type="text"
     label="Message"
     color="primary"
+    placeholder="Hey!!"
     clear-icon="tabler-circle-x"
     :append-icon="message ? $vuetify.locale.isRtl ? 'tabler-arrow-big-left-lines' : 'tabler-arrow-big-right-lines' : 'tabler-microphone'"
     :append-inner-icon="marker ? 'tabler-map-pin' : 'tabler-map-pin-off'"

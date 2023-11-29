@@ -1,7 +1,7 @@
 @use "@core/scss/base/mixins";
 @use "@styles/variables/_vuetify.scss";
 
-.v-application .fc {
+body .fc {
   --fc-today-bg-color: rgba(var(--v-theme-on-surface), 0.04);
   --fc-border-color: rgba(var(--v-border-color), var(--v-border-opacity));
   --fc-neutral-bg-color: rgb(var(--v-theme-background));
@@ -28,7 +28,13 @@
   }
 
   .fc-event-time {
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
+    font-weight: 500 !important;
+  }
+
+  .fc-event-title {
+    font-size: 0.75rem;
+    font-weight: 500 !important;
   }
 
   .fc-timegrid-event {
@@ -61,9 +67,10 @@
     block-size: 3rem;
   }
 
-  // Removed double border on left in list view
+  // Removed double border in list view
   .fc-list {
-    border-inline-start: none;
+    border-block-end: none;
+    border-inline: none;
     font-size: 0.8125rem;
 
     .fc-list-day-cushion.fc-cell-shaded {
@@ -270,7 +277,9 @@
   // ℹ️ Workaround of https://github.com/fullcalendar/fullcalendar/issues/6407
   .fc-col-header,
   .fc-daygrid-body,
-  .fc-scrollgrid-sync-table {
+  .fc-scrollgrid-sync-table,
+  .fc-timegrid-body,
+  .fc-timegrid-body table {
     inline-size: 100% !important;
   }
 }
@@ -281,9 +290,9 @@
 }
 
 // Remove day view, day bg
-.fc .fc-daygrid-day.fc-day-today {
-  background: transparent;
-}
+// .fc .fc-daygrid-day.fc-day-today {
+//   background: transparent;
+// }
 
 .fc-timegrid .fc-timegrid-slots .fc-timegrid-slot {
   background: rgb(var(--v-theme-surface));

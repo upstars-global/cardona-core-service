@@ -307,7 +307,10 @@ const isInputEnabled = ref(false)
       sm="11"
       cols="10"
     >
-      <AppTextField label="Include files" />
+      <AppTextField
+        label="Include files"
+        placeholder="Placeholder Text"
+      />
     </VCol>
   </VRow>
 
@@ -327,6 +330,7 @@ const isInputEnabled = ref(false)
       <AppTextField
         :disabled="!isInputEnabled"
         label="I only work if you check the box"
+        placeholder="Placeholder Text"
       />
     </VCol>
   </VRow>
@@ -351,7 +355,10 @@ const isInputEnabled = ref(false)
       sm="11"
       cols="10"
     >
-      <AppTextField label="Include files" />
+      <AppTextField
+        label="Include files"
+        placeholder="Placeholder Text"
+      />
     </VCol>
   </VRow>
 
@@ -371,6 +378,7 @@ const isInputEnabled = ref(false)
       <AppTextField
         :disabled="!isInputEnabled"
         label="I only work if you check the box"
+        placeholder="Placeholder Text"
       />
     </VCol>
   </VRow>

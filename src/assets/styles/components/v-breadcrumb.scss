@@ -1,0 +1,20 @@
+.breadcrumb-wrapper {
+  .v-breadcrumbs-item {
+    padding-left: 0;
+    padding-right: 0;
+    &:not(&--active) {
+      color: rgb(var(--v-theme-primary));
+    }
+    &--active {
+      opacity: 1;
+    }
+
+    &--link:hover {
+      text-decoration: none;
+    }
+
+    .v-icon {
+      margin: 0;
+    }
+  }
+}

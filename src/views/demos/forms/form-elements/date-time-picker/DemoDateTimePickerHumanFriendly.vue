@@ -6,6 +6,7 @@ const date = ref('')
   <AppDateTimePicker
     v-model="date"
     label="Human Friendly"
+    placeholder="Select date"
     :config="{ dateFormat: 'F j, Y' }"
   />
 </template>

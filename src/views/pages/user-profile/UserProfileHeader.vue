@@ -1,16 +1,17 @@
 <script lang="ts" setup>
-import type { ProfileHeader } from '@/@fake-db/types'
-import axios from '@axios'
+import type { ProfileHeader } from '@db/pages/profile/types'
 
 const profileHeaderData = ref<ProfileHeader>()
 
-const fetchHeaderData = () => {
-  axios.get('/pages/profile-header').then(response => {
-    profileHeaderData.value = response.data
-  })
-}
+const { data, error } = await useApi<ProfileHeader>('/pages/profile/header')
 
-fetchHeaderData()
+if (error.value) {
+  console.log(error.value)
+}
+else {
+  if (data.value)
+    profileHeaderData.value = data.value
+}
 </script>
 
 <template>
@@ -33,12 +34,12 @@ fetchHeaderData()
       </div>
 
       <div class="user-profile-info w-100 mt-16 pt-6 pt-sm-0 mt-sm-0">
-        <h6 class="text-h6 text-center text-sm-start font-weight-medium mb-3">
+        <h5 class="text-h5 text-center text-sm-start font-weight-medium mb-3">
           {{ profileHeaderData?.fullName }}
-        </h6>
+        </h5>
 
         <div class="d-flex align-center justify-center justify-sm-space-between flex-wrap gap-4">
-          <div class="d-flex flex-wrap justify-center justify-sm-start flex-grow-1 gap-2">
+          <div class="d-flex flex-wrap justify-center justify-sm-start flex-grow-1 gap-4">
             <span class="d-flex">
               <VIcon
                 size="20"
@@ -50,22 +51,22 @@ fetchHeaderData()
               </span>
             </span>
 
-            <span class="d-flex align-center">
+            <span class="d-flex">
               <VIcon
                 size="20"
                 icon="tabler-map-pin"
-                class="me-2"
+                class="me-1"
               />
               <span class="text-body-1">
                 {{ profileHeaderData?.location }}
               </span>
             </span>
 
-            <span class="d-flex align-center">
+            <span class="d-flex">
               <VIcon
                 size="20"
                 icon="tabler-calendar"
-                class="me-2"
+                class="me-1"
               />
               <span class="text-body-1">
                 {{ profileHeaderData?.joiningDate }}

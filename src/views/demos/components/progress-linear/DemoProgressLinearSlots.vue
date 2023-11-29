@@ -18,7 +18,7 @@ const power = ref(78)
       height="20"
     >
       <template #default="{ value }">
-        <strong>{{ Math.ceil(value) }}%</strong>
+        <span>{{ Math.ceil(value) }}%</span>
       </template>
     </VProgressLinear>
 
@@ -27,7 +27,7 @@ const power = ref(78)
       height="20"
       color="primary"
     >
-      <strong>{{ Math.ceil(knowledge) }}%</strong>
+      <span>{{ Math.ceil(knowledge) }}%</span>
     </VProgressLinear>
   </div>
 </template>

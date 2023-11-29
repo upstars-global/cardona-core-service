@@ -4,6 +4,7 @@
       <AppTextField
         label="Prepend"
         prepend-icon="tabler-map-pin"
+        placeholder="Placeholder Text"
       />
     </VCol>
 
@@ -11,6 +12,7 @@
       <AppTextField
         label="Prepend Inner"
         prepend-inner-icon="tabler-map-pin"
+        placeholder="Placeholder Text"
       />
     </VCol>
 
@@ -18,6 +20,7 @@
       <AppTextField
         label="Append"
         append-icon="tabler-map-pin"
+        placeholder="Placeholder Text"
       />
     </VCol>
 
@@ -25,6 +28,7 @@
       <AppTextField
         label="Append Inner"
         append-inner-icon="tabler-map-pin"
+        placeholder="Placeholder Text"
       />
     </VCol>
   </VRow>

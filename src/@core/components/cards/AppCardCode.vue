@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
-import type { Ref } from 'vue'
 import Prism from 'vue-prism-component'
+
+type CodeLanguages = 'ts' | 'js'
 
 interface Props {
   title: string
@@ -11,17 +12,17 @@ interface Props {
   noPadding?: boolean
 }
 
-interface CodeProp {
-  ts: string
-  js: string
-}
+type CodeProp = Record<CodeLanguages, string>
 
 const props = withDefaults(defineProps<Props>(), {
   codeLanguage: 'markup',
   noPadding: false,
 })
 
-const preferredCodeLanguage = useStorage('preferredCodeLanguage', 'ts') as unknown as Ref<keyof CodeProp>
+const preferredCodeLanguage = useCookie<CodeLanguages>('preferredCodeLanguage', {
+  default: () => 'ts',
+  maxAge: COOKIE_MAX_AGE_1_YEAR,
+})
 
 const isCodeShown = ref(false)
 
@@ -63,23 +64,20 @@ const { copy, copied } = useClipboard({ source: computed(() => props.code[prefer
               density="compact"
             >
               <VBtn
-                size="x-small"
                 value="ts"
                 :color="preferredCodeLanguage === 'ts' ? 'primary' : 'default'"
               >
                 <VIcon
-                  size="x-large"
                   icon="custom-typescript"
                   :color="preferredCodeLanguage === 'ts' ? 'primary' : 'secondary'"
                 />
               </VBtn>
+
               <VBtn
-                size="x-small"
                 value="js"
                 :color="preferredCodeLanguage === 'js' ? 'primary' : 'default'"
               >
                 <VIcon
-                  size="x-large"
                   icon="custom-javascript"
                   :color="preferredCodeLanguage === 'js' ? 'primary' : 'secondary'"
                 />

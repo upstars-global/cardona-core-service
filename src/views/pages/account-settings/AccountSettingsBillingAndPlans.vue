@@ -29,7 +29,7 @@ const creditCards: CardDetails[] = [
     isPrimary: true,
     type: 'visa',
     cvv: '456',
-    image: visa,
+    image: mastercard,
   },
   {
     name: 'Mildred Wagner',
@@ -38,7 +38,7 @@ const creditCards: CardDetails[] = [
     isPrimary: false,
     type: 'mastercard',
     cvv: '123',
-    image: mastercard,
+    image: visa,
   },
 ]
 
@@ -222,6 +222,7 @@ const resetPaymentForm = () => {
                         <AppTextField
                           v-model="cardNumber"
                           label="Card Number"
+                          placeholder="1234 1234 1234 1234"
                           type="number"
                         />
                       </VCol>
@@ -234,6 +235,7 @@ const resetPaymentForm = () => {
                         <AppTextField
                           v-model="cardName"
                           label="Name"
+                          placeholder="John Doe"
                         />
                       </VCol>
 
@@ -245,6 +247,7 @@ const resetPaymentForm = () => {
                         <AppTextField
                           v-model="cardExpiryDate"
                           label="Expiry Date"
+                          placeholder="MM/YY"
                         />
                       </VCol>
 
@@ -257,6 +260,7 @@ const resetPaymentForm = () => {
                           v-model="cardCvv"
                           type="number"
                           label="CVV Code"
+                          placeholder="123"
                         />
                       </VCol>
 
@@ -300,7 +304,7 @@ const resetPaymentForm = () => {
                     v-for="card in creditCards"
                     :key="card.name"
                     flat
-                    variant="tonal"
+                    color="rgba(var(--v-theme-on-surface),0.04)"
                   >
                     <VCardText class="d-flex flex-sm-row flex-column pa-4">
                       <div class="text-no-wrap">
@@ -309,7 +313,7 @@ const resetPaymentForm = () => {
                           width="46"
                         />
                         <h4 class="my-3 text-body-1">
-                          <span class="me-2">
+                          <span class="me-3">
                             {{ card.name }}
                           </span>
                           <VChip
@@ -321,7 +325,9 @@ const resetPaymentForm = () => {
                             Primary
                           </VChip>
                         </h4>
-                        <span class="text-base">**** **** **** {{ card.number.substring(card.number.length - 4) }}</span>
+                        <div class="text-body-1">
+                          **** **** **** {{ card.number.substring(card.number.length - 4) }}
+                        </div>
                       </div>
 
                       <VSpacer />
@@ -341,7 +347,7 @@ const resetPaymentForm = () => {
                             Delete
                           </VBtn>
                         </div>
-                        <span class="text-sm mt-sm-auto mb-sm-0 my-5 order-sm-1 order-0">Card expires at {{ card.expiry }}</span>
+                        <span class="text-body-2 mt-sm-auto mb-sm-0 my-5 order-sm-1 order-0">Card expires at {{ card.expiry }}</span>
                       </div>
                     </VCardText>
                   </VCard>
@@ -387,7 +393,10 @@ const resetPaymentForm = () => {
                 cols="12"
                 md="6"
               >
-                <AppTextField label="Company Name" />
+                <AppTextField
+                  label="Company Name"
+                  placeholder="Pixinvent"
+                />
               </VCol>
 
               <!-- 👉 Billing Email -->
@@ -395,7 +404,10 @@ const resetPaymentForm = () => {
                 cols="12"
                 md="6"
               >
-                <AppTextField label="Billing Email" />
+                <AppTextField
+                  label="Billing Email"
+                  placeholder="pixinvent@email.com"
+                />
               </VCol>
 
               <!-- 👉 Tax ID -->
@@ -403,7 +415,10 @@ const resetPaymentForm = () => {
                 cols="12"
                 md="6"
               >
-                <AppTextField label="Tax ID" />
+                <AppTextField
+                  label="Tax ID"
+                  placeholder="123 123 1233"
+                />
               </VCol>
 
               <!-- 👉 Vat Number -->
@@ -411,7 +426,10 @@ const resetPaymentForm = () => {
                 cols="12"
                 md="6"
               >
-                <AppTextField label="VAT Number" />
+                <AppTextField
+                  label="VAT Number"
+                  placeholder="121212"
+                />
               </VCol>
 
               <!-- 👉 Mobile -->
@@ -424,6 +442,7 @@ const resetPaymentForm = () => {
                   label="Phone Number"
                   type="number"
                   prefix="US (+1)"
+                  placeholder="+1 123 456 7890"
                 />
               </VCol>
 
@@ -435,12 +454,16 @@ const resetPaymentForm = () => {
                 <AppSelect
                   label="Country"
                   :items="countryList"
+                  placeholder="Select Country"
                 />
               </VCol>
 
               <!-- 👉 Billing Address -->
               <VCol cols="12">
-                <AppTextField label="Billing Address" />
+                <AppTextField
+                  label="Billing Address"
+                  placeholder="1234 Main St"
+                />
               </VCol>
 
               <!-- 👉 State -->
@@ -448,7 +471,10 @@ const resetPaymentForm = () => {
                 cols="12"
                 md="6"
               >
-                <AppTextField label="State" />
+                <AppTextField
+                  label="State"
+                  placeholder="New York"
+                />
               </VCol>
 
               <!-- 👉 Zip Code -->
@@ -459,6 +485,7 @@ const resetPaymentForm = () => {
                 <AppTextField
                   label="Zip Code"
                   type="number"
+                  placeholder="100006"
                 />
               </VCol>
 

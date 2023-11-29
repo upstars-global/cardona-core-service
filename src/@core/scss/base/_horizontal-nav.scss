@@ -18,8 +18,7 @@
   .nav-group {
     // 👉 Disabled nav items
     &.disabled {
-      opacity: var(--v-disabled-opacity);
-      pointer-events: none;
+      @extend %horizontal-nav-disabled;
     }
 
     // Set width of inner nav group and link
@@ -157,7 +156,7 @@
     }
 
     .nav-group-arrow {
-      font-size: 1.375rem;
+      font-size: variables.$horizontal-nav-group-arrow-icon-size;
 
       /*
         ℹ️ ml-auto won't matter in top level group (because we haven't specified fixed width for top level groups)

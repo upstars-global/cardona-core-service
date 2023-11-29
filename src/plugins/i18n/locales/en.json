@@ -11,6 +11,7 @@
   "Widgets": "Widgets",
   "Components": "Components",
   "Alert": "Alert",
+  "Close Alert": "Close Alert",
   "Avatar": "Avatar",
   "Badge": "Badge",
   "Button": "Button",
@@ -30,6 +31,7 @@
   "Textarea": "Textarea",
   "Rating": "Rating",
   "File Input": "File Input",
+  "Otp Input": "Otp Input",
   "Form Layout": "Form Layout",
   "Form Validation": "Form Validation",
   "Charts": "Charts",
@@ -128,9 +130,57 @@
   "Apps": "Apps",
   "Misc": "Misc",
   "Wizard Pages": "Wizard Pages",
+  "Form Wizard": "Form Wizard",
+  "Numbered": "Numbered",
   "3": "3",
+  "ecommerce": "ecommerce",
+  "Ecommerce": "Ecommerce",
+  "Editors": "Editors",
+  "Front Pages": "Front Pages",
+  "Landing": "Landing",
+  "checkout": "checkout",
+  "Payment": "Payment",
+  "Swiper": "Swiper",
+  "Product": "Product",
+  "Category": "Category",
+  "Order": "Order",
+  "Details": "Details",
+  "Customer": "Customer",
+  "Manage Review": "Manage Review",
+  "Referrals": "Referrals",
+  "Settings": "Settings",
+  "Overview": "Overview",
+  "My Course": "My Course",
+  "Course Details": "Course Details",
+  "Academy": "Academy",
+  "Logistics": "Logistics",
+  "Dashboard": "Dashboard",
+  "Fleet": "Fleet",
+  "5": "5",
+  "10": "10",
+  "20": "20",
+  "25": "25",
+  "50": "50",
+  "100": "100",
   "$vuetify": {
     "badge": "Badge",
+    "noDataText": "No data available",
+    "close": "Close",
+    "open": "open",
+    "carousel": {
+      "ariaLabel": {
+        "delimiter": "delimiter"
+      }
+    },
+    "dataFooter": {
+      "itemsPerPageText": "Items per page:",
+      "itemsPerPageAll": "All",
+      "pageText": "{0}-{1} of {2}",
+      "firstPage": "First Page",
+      "prevPage": "Previous Page",
+      "nextPage": "Next Page",
+      "lastPage": "Last Page"
+    },
     "pagination": {
       "ariaLabel": {
         "root": "root",
@@ -144,7 +194,8 @@
       "clear": "clear",
       "appendAction": "appendAction",
       "prependAction": "prependAction",
-      "counterSize": "counterSize"
+      "counterSize": "counterSize",
+      "otp": "otp"
     },
     "fileInput": {
       "counterSize": "counterSize"
@@ -155,6 +206,7 @@
       }
     }
   },
+
   "auth": {
     "login": "Login",
     "forgotPassword": "Forgot password?",

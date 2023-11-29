@@ -9,6 +9,7 @@ const date = ref('')
   <AppDateTimePicker
     v-model="date"
     label="Disabled Range"
+    placeholder="Select date"
     :config="{ dateFormat: 'Y-m-d', disable: [{ from: `${currentYear}-${currentMonth}-20`, to: `${currentYear}-${currentMonth}-25` }] }"
   />
 </template>

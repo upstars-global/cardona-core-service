@@ -113,20 +113,22 @@ import * as demoCode from '@/views/demos/forms/form-elements/autocomplete/demoCo
       </AppCardCode>
     </VCol>
 
-    <VCol
+    <!--
+      <VCol
       cols="12"
       md="6"
-    >
-      <!-- 👉 With slots -->
-      <AppCardCode
-        title="Slots"
-        :code="demoCode.slots"
       >
-        <p>With the power of slots, you can customize the visual output of the select. In this example we add a profile picture for both the chips and list items using their props. </p>
+      // 👉 With slots
+      <AppCardCode
+      title="Slots"
+      :code="demoCode.slots"
+      >
+      <p>With the power of slots, you can customize the visual output of the select. In this example we add a profile picture for both the chips and list items using their props. </p>
 
-        <DemoAutocompleteSlots />
+      <DemoAutocompleteSlots />
       </AppCardCode>
-    </VCol>
+      </VCol>
+    -->
 
     <VCol
       cols="12"
@@ -143,20 +145,22 @@ import * as demoCode from '@/views/demos/forms/form-elements/autocomplete/demoCo
       </AppCardCode>
     </VCol>
 
-    <VCol
+    <!--
+      <VCol
       cols="12"
       md="6"
-    >
-      <!-- 👉 State Selector -->
-      <AppCardCode
-        title="State Selector"
-        :code="demoCode.stateSelector"
       >
-        <p>Using a combination of v-autocomplete slots and transitions, you can create a stylish toggle able autocomplete field such as below state selector.</p>
+      // 👉 State Selector
+      <AppCardCode
+      title="State Selector"
+      :code="demoCode.stateSelector"
+      >
+      <p>Using a combination of v-autocomplete slots and transitions, you can create a stylish toggle able autocomplete field such as below state selector.</p>
 
-        <DemoAutocompleteStateSelector />
+      <DemoAutocompleteStateSelector />
       </AppCardCode>
-    </VCol>
+      </VCol>
+    -->
 
     <VCol
       cols="12"

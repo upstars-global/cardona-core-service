@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import UserInvoiceTable from './UserInvoiceTable.vue'
-import { paginationMeta } from '@/@fake-db/utils'
+import { paginationMeta } from '@api-utils/paginationMeta'
 
 // Images
 import avatar2 from '@images/avatars/avatar-2.png'
@@ -105,7 +105,7 @@ const resolveUserProgressVariant = (progress: number) => {
         <VCardText>
           <div class="d-flex">
             <AppSelect
-              :model-value="options.itemsPerPage"
+              v-model="options.itemsPerPage"
               :items="[
                 { value: 5, title: '5' },
                 { value: 10, title: '10' },
@@ -113,11 +113,13 @@ const resolveUserProgressVariant = (progress: number) => {
                 { value: 100, title: '100' },
                 { value: -1, title: 'All' },
               ]"
-              style="width: 6.25rem;"
-              @update:model-value="options.itemsPerPage = parseInt($event, 10)"
+              style="inline-size: 6.25rem;"
             />
             <div class="flex-grow-1" />
-            <AppTextField v-model="search" />
+            <AppTextField
+              v-model="search"
+              placeholder="Search..."
+            />
           </div>
         </VCardText>
         <VDivider />
@@ -126,10 +128,10 @@ const resolveUserProgressVariant = (progress: number) => {
         <!-- SECTION Datatable -->
         <VDataTable
           v-model:page="options.page"
+          v-model:items-per-page="options.itemsPerPage"
           :headers="projectTableHeaders"
           :items="projects"
           :search="search"
-          :items-per-page="options.itemsPerPage"
           @update:options="options = $event"
         >
           <!-- projects -->
@@ -138,14 +140,14 @@ const resolveUserProgressVariant = (progress: number) => {
               <VAvatar
                 :size="34"
                 class="me-3"
-                :image="item.raw.logo"
+                :image="item.logo"
               />
               <div>
-                <p class="font-weight-medium mb-0">
-                  {{ item.raw.name }}
-                </p>
+                <div class="font-weight-medium mb-0 text-no-wrap">
+                  {{ item.name }}
+                </div>
                 <p class="text-xs text-medium-emphasis mb-0">
-                  {{ item.raw.project }}
+                  {{ item.project }}
                 </p>
               </div>
             </div>
@@ -153,12 +155,12 @@ const resolveUserProgressVariant = (progress: number) => {
 
           <!-- Progress -->
           <template #item.progress="{ item }">
-            <span>{{ item.raw.progress }}%</span>
+            <span>{{ item.progress }}%</span>
             <VProgressLinear
               :height="6"
-              :model-value="item.raw.progress"
+              :model-value="item.progress"
               rounded
-              :color="resolveUserProgressVariant(item.raw.progress)"
+              :color="resolveUserProgressVariant(item.progress)"
             />
           </template>
 

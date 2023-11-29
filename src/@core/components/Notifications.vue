@@ -1,12 +1,10 @@
 <script lang="ts" setup>
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import { avatarText } from '@core/utils/formatters'
 import type { Notification } from '@layouts/types'
 
 interface Props {
   notifications: Notification[]
   badgeProps?: unknown
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   location?: any
 }
 interface Emit {
@@ -122,7 +120,9 @@ const totalUnseenNotifications = computed(() => {
                   </VListItemAction>
                 </template>
 
-                <VListItemTitle>{{ notification.title }}</VListItemTitle>
+                <VListItemTitle class="font-weight-medium">
+                  {{ notification.title }}
+                </VListItemTitle>
                 <VListItemSubtitle>{{ notification.subtitle }}</VListItemSubtitle>
                 <span class="text-xs text-disabled">{{ notification.time }}</span>
 
@@ -204,6 +204,17 @@ const totalUnseenNotifications = computed(() => {
   .v-list-item {
     border-radius: 0 !important;
     margin: 0 !important;
+
+    &[tabindex="-2"]:not(.v-list-item--active) {
+      &:hover,
+      &:focus-visible {
+        color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+
+        .v-list-item-subtitle {
+          color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+        }
+      }
+    }
   }
 }
 

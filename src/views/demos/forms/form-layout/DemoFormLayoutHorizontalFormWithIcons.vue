@@ -31,7 +31,7 @@ const checkbox = ref(false)
               id="firstNameHorizontalIcons"
               v-model="firstName"
               prepend-inner-icon="tabler-user"
-              placeholder="First Name"
+              placeholder="John"
               persistent-placeholder
             />
           </VCol>
@@ -60,7 +60,7 @@ const checkbox = ref(false)
               id="emailHorizontalIcons"
               v-model="email"
               prepend-inner-icon="tabler-mail"
-              placeholder="Email"
+              placeholder="johndoe@email.com"
               persistent-placeholder
             />
           </VCol>
@@ -90,7 +90,7 @@ const checkbox = ref(false)
               v-model="mobile"
               type="number"
               prepend-inner-icon="tabler-device-mobile"
-              placeholder="Number"
+              placeholder="+1 123 456 7890"
               persistent-placeholder
             />
           </VCol>
@@ -119,8 +119,9 @@ const checkbox = ref(false)
               id="passwordHorizontalIcons"
               v-model="password"
               prepend-inner-icon="tabler-lock"
+              autocomplete="on"
               type="password"
-              placeholder="Password"
+              placeholder="············"
               persistent-placeholder
             />
           </VCol>

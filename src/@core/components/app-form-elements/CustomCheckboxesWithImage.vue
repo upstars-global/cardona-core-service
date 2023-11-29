@@ -3,7 +3,7 @@ import type { GridColumn } from '@core/types'
 
 interface Props {
   selectedCheckbox: string[]
-  checkboxContent: { bgImage: string; value: string }[]
+  checkboxContent: { bgImage: string; value: string; label?: string }[]
   gridColumn?: GridColumn
 }
 
@@ -14,18 +14,14 @@ interface Emit {
 const props = defineProps<Props>()
 const emit = defineEmits<Emit>()
 
-const selectedOption = ref(structuredClone(toRaw(props.selectedCheckbox)))
-
-watch(selectedOption, () => {
-  emit('update:selectedCheckbox', selectedOption.value)
-})
+const updateSelectedOption = (value: string[] | boolean) => {
+  if (typeof value !== 'boolean')
+    emit('update:selectedCheckbox', value)
+}
 </script>
 
 <template>
-  <VRow
-    v-if="props.checkboxContent && selectedOption"
-    v-model="selectedOption"
-  >
+  <VRow v-if="props.checkboxContent && props.selectedCheckbox">
     <VCol
       v-for="item in props.checkboxContent"
       :key="item.value"
@@ -33,12 +29,14 @@ watch(selectedOption, () => {
     >
       <VLabel
         class="custom-input custom-checkbox rounded cursor-pointer w-100"
-        :class="selectedOption.includes(item.value) ? 'active' : ''"
+        :class="props.selectedCheckbox.includes(item.value) ? 'active' : ''"
       >
         <div>
           <VCheckbox
-            v-model="selectedOption"
+            :id="`custom-checkbox-with-img-${item.value}`"
+            :model-value="props.selectedCheckbox"
             :value="item.value"
+            @update:model-value="updateSelectedOption"
           />
         </div>
         <img
@@ -46,6 +44,19 @@ watch(selectedOption, () => {
           alt="bg-img"
           class="custom-checkbox-image"
         >
+      </VLabel>
+
+      <VLabel
+        v-if="item.label || $slots.label"
+        :for="`custom-checkbox-with-img-${item.value}`"
+        class="cursor-pointer"
+      >
+        <slot
+          name="label"
+          :label="item.label"
+        >
+          {{ item.label }}
+        </slot>
       </VLabel>
     </VCol>
   </VRow>
@@ -55,8 +66,6 @@ watch(selectedOption, () => {
 .custom-checkbox {
   position: relative;
   padding: 0;
-  border-width: 2px;
-  transition: all 0.5s;
 
   .custom-checkbox-image {
     block-size: 100%;
@@ -69,6 +78,10 @@ watch(selectedOption, () => {
     inset-block-start: 0;
     inset-inline-end: 0;
     visibility: hidden;
+  }
+
+  &.active {
+    border-width: 2px;
   }
 
   &:hover,

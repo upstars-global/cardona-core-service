@@ -3,12 +3,11 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import type { Ref } from 'vue'
 import type { Event, NewEvent } from './types'
-import { useThemeConfig } from '@core/composable/useThemeConfig'
+import { useConfigStore } from '@core/stores/config'
 import { useCalendarStore } from '@/views/apps/calendar/useCalendarStore'
 
-export const blankEvent = {
+export const blankEvent: Event | NewEvent = {
   title: '',
   start: '',
   end: '',
@@ -27,8 +26,7 @@ export const blankEvent = {
 }
 
 export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarActive: Ref<boolean>, isLeftSidebarOpen: Ref<boolean>) => {
-  // 👉 themeConfig
-  const { isAppRtl } = useThemeConfig()
+  const configStore = useConfigStore()
 
   // 👉 Store
   const store = useCalendarStore()
@@ -74,6 +72,10 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
     }
   }
 
+  // @ts-expect-error for nuxt workaround
+  if (typeof process !== 'undefined' && process.server)
+    store.fetchEvents()
+
   // 👉 Fetch events
   const fetchEvents: EventSourceFunc = (info, successCallback) => {
   // If there's no info => Don't make useless API call
@@ -82,7 +84,7 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
 
     store.fetchEvents()
       .then(r => {
-        successCallback(r.data.map((e: Event) => ({
+        successCallback(r.map((e: Event) => ({
           ...e,
 
           // Convert string representation of date to Date object
@@ -100,7 +102,7 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
 
   // 👉 Update event in calendar [UI]
   const updateEventInCalendar = (updatedEventData: Event, propsToUpdate: (keyof Event)[], extendedPropsToUpdate: (keyof Event['extendedProps'])[]) => {
-    const existingEvent = calendarApi.value?.getEventById(updatedEventData.id)
+    const existingEvent = calendarApi.value?.getEventById(String(updatedEventData.id))
 
     if (!existingEvent) {
       console.warn('Can\'t found event in calendar to update')
@@ -160,8 +162,9 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
         const propsToUpdate = ['id', 'title', 'url'] as (keyof Event)[]
         const extendedPropsToUpdate = ['calendar', 'guests', 'location', 'description'] as (keyof Event['extendedProps'])[]
 
-        updateEventInCalendar(r.data.event, propsToUpdate, extendedPropsToUpdate)
+        updateEventInCalendar(r, propsToUpdate, extendedPropsToUpdate)
       })
+    refetchEvents()
   }
 
   // 👉 Remove event
@@ -276,9 +279,13 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
     calendarApi.value?.gotoDate(new Date(currentDate))
   }
 
-  watch(isAppRtl, val => {
-    calendarApi.value?.setOption('direction', val ? 'rtl' : 'ltr')
-  }, { immediate: true })
+  watch(
+    () => configStore.isAppRTL,
+    val => {
+      calendarApi.value?.setOption('direction', val ? 'rtl' : 'ltr')
+    },
+    { immediate: true },
+  )
 
   return {
     refCalendar,

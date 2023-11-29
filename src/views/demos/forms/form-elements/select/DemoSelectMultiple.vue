@@ -27,5 +27,6 @@ const states = [
     label="Select"
     multiple
     persistent-hint
+    placeholder="Select State"
   />
 </template>

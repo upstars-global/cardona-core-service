@@ -406,15 +406,17 @@ export const icons = {
     </VAlert>
 
     <VAlert
-      color="secondary"
+      color="primary"
       icon="tabler-device-desktop-analytics"
+      variant="tonal"
     >
       Phasellus blandit leo ut odio. Morbi mattis ullamcorper velit.
     </VAlert>
 
     <VAlert
-      color="success"
+      color="primary"
       icon="tabler-brand-vue"
+      variant="outlined"
     >
       Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
     </VAlert>
@@ -431,15 +433,17 @@ export const icons = {
     </VAlert>
 
     <VAlert
-      color="secondary"
+      color="primary"
       icon="tabler-device-desktop-analytics"
+      variant="tonal"
     >
       Phasellus blandit leo ut odio. Morbi mattis ullamcorper velit.
     </VAlert>
 
     <VAlert
-      color="success"
+      color="primary"
       icon="tabler-brand-vue"
+      variant="outlined"
     >
       Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
     </VAlert>

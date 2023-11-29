@@ -4,7 +4,10 @@
       cols="12"
       md="6"
     >
-      <VTextField label="Outlined" />
+      <VTextField
+        label="Outlined"
+        variant="outlined"
+      />
     </VCol>
 
     <VCol

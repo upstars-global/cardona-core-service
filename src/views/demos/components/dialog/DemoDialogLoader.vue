@@ -33,7 +33,9 @@ watch(isDialogVisible, value => {
         Please stand by
         <VProgressLinear
           indeterminate
-          class="mb-0"
+          color="white"
+          :height="8"
+          class="mb-0 mt-4"
         />
       </VCardText>
     </VCard>

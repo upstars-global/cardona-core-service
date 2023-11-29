@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { emailValidator, requiredValidator } from '@validators'
-
 const email = ref('')
 </script>
 
@@ -9,6 +7,7 @@ const email = ref('')
     <AppTextField
       v-model="email"
       :rules="[requiredValidator, emailValidator]"
+      placeholder="johnedoe@email.com"
       label="E-mail"
     />
   </VForm>

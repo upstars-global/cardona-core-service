@@ -23,5 +23,6 @@ function customFilter(item: string, queryText: string, itemText: { title: string
     :custom-filter="customFilter"
     item-title="name"
     item-value="abbr"
+    placeholder="Select State"
   />
 </template>

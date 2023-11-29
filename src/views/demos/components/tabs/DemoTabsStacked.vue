@@ -10,7 +10,7 @@ const tabItemText = 'Biscuit cheesecake gingerbread oat cake tiramisu. Marzipan 
       grow
       stacked
     >
-      <VTab value="tab-1">
+      <VTab>
         <VIcon
           icon="tabler-phone"
           class="mb-2"
@@ -18,7 +18,7 @@ const tabItemText = 'Biscuit cheesecake gingerbread oat cake tiramisu. Marzipan 
         <span>Recent</span>
       </VTab>
 
-      <VTab value="tab-2">
+      <VTab>
         <VIcon
           icon="tabler-heart"
           class="mb-2"
@@ -26,7 +26,7 @@ const tabItemText = 'Biscuit cheesecake gingerbread oat cake tiramisu. Marzipan 
         <span>Favorites</span>
       </VTab>
 
-      <VTab value="tab-3">
+      <VTab>
         <VIcon
           icon="tabler-user"
           class="mb-2"

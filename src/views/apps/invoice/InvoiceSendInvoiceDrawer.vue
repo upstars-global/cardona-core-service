@@ -70,7 +70,8 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
               <VCol cols="12">
                 <AppTextField
                   v-model="emailFrom"
-                  label="Form"
+                  label="From"
+                  placeholder="sender@email.com"
                 />
               </VCol>
 
@@ -78,6 +79,7 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
                 <AppTextField
                   v-model="emailTo"
                   label="To"
+                  placeholder="receiver@email.com"
                 />
               </VCol>
 
@@ -85,6 +87,7 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
                 <AppTextField
                   v-model="invoiceSubject"
                   label="Subject"
+                  placeholder="Invoice of purchased Admin Templates"
                 />
               </VCol>
 
@@ -93,6 +96,7 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
                   v-model="paymentMessage"
                   rows="10"
                   label="Message"
+                  placeholder="Thank you for your business, always a pleasure to work with you!"
                 />
               </VCol>
 

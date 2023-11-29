@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import VueApexCharts from 'vue3-apexcharts'
 import { useTheme } from 'vuetify'
 import { getCandlestickChartConfig } from '@core/libs/apex-chart/apexCharConfig'
 

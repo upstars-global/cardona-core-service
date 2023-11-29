@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { PropType } from 'vue'
-import { useLayouts } from '@layouts'
 import { VerticalNav } from '@layouts/components'
+import { useLayoutConfigStore } from '@layouts/stores/config'
 import type { VerticalNavItems } from '@layouts/types'
 
 export default defineComponent({
@@ -11,14 +11,13 @@ export default defineComponent({
       required: true,
     },
     verticalNavAttrs: {
-      type: Object as PropType<Record<string, unknown>>,
+      type: Object as PropType<Record<string, null>>,
       default: () => ({}),
     },
   },
   setup(props, { slots }) {
-    const { y: windowScrollY } = useWindowScroll()
     const { width: windowWidth } = useWindowSize()
-    const { _layoutClasses: layoutClasses, isLessThanOverlayNavBreakpoint, isNavbarBlurEnabled } = useLayouts()
+    const configStore = useLayoutConfigStore()
 
     const isOverlayNavActive = ref(false)
     const isLayoutOverlayVisible = ref(false)
@@ -39,13 +38,10 @@ export default defineComponent({
     // })
 
     // ℹ️ Hide overlay if user open overlay nav in <md and increase the window width without closing overlay nav
-    watch(windowWidth, value => {
-      if (!isLessThanOverlayNavBreakpoint.value(value) && isLayoutOverlayVisible.value)
+    watch(windowWidth, () => {
+      if (!configStore.isLessThanOverlayNavBreakpoint && isLayoutOverlayVisible.value)
         isLayoutOverlayVisible.value = false
     })
-
-    const router = useRouter()
-    const shallShowPageLoading = ref(false)
 
     return () => {
       const verticalNavAttrs = toRef(props, 'verticalNavAttrs')
@@ -65,7 +61,7 @@ export default defineComponent({
       // 👉 Navbar
       const navbar = h(
         'header',
-        { class: ['layout-navbar', { 'navbar-blur': isNavbarBlurEnabled.value }] },
+        { class: ['layout-navbar', { 'navbar-blur': configStore.isNavbarBlurEnabled }] },
         [
           h(
             'div',
@@ -78,26 +74,10 @@ export default defineComponent({
       )
 
       // 👉 Content area
-      let mainChildren = slots.default?.()
-
-      // 💡 Only show loading and attach `beforeEach` & `afterEach` hooks if `content-loading` slot is used
-      if (slots['content-loading']) {
-        router.beforeEach(() => {
-          console.info('setting to true')
-          shallShowPageLoading.value = true
-        })
-        router.afterEach(() => {
-          console.info('setting to false')
-          shallShowPageLoading.value = false
-        })
-
-        mainChildren = shallShowPageLoading.value ? slots['content-loading']?.() : slots.default?.()
-      }
-
       const main = h(
         'main',
         { class: 'layout-page-content' },
-        h('div', { class: 'page-content-container' }, mainChildren),
+        h('div', { class: 'page-content-container' }, slots.default?.()),
       )
 
       // 👉 Footer
@@ -124,7 +104,7 @@ export default defineComponent({
 
       return h(
         'div',
-        { class: ['layout-wrapper', ...layoutClasses.value(windowWidth.value, windowScrollY.value)] },
+        { class: ['layout-wrapper', ...configStore._layoutClasses] },
         [
           verticalNavWrapper ? h(verticalNavWrapper, verticalNavWrapperProps, { default: () => verticalNav }) : verticalNav,
           h(
@@ -157,9 +137,13 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    min-block-size: calc(var(--vh, 1vh) * 100);
+    min-block-size: 100dvh;
     transition: padding-inline-start 0.2s ease-in-out;
     will-change: padding-inline-start;
+
+    @media screen and (min-width: 1280px) {
+      padding-inline-start: variables.$layout-vertical-nav-width;
+    }
   }
 
   .layout-navbar {
@@ -215,10 +199,6 @@ export default defineComponent({
     }
   }
 
-  &:not(.layout-overlay-nav) .layout-content-wrapper {
-    padding-inline-start: variables.$layout-vertical-nav-width;
-  }
-
   // Adjust right column pl when vertical nav is collapsed
   &.layout-vertical-nav-collapsed .layout-content-wrapper {
     padding-inline-start: variables.$layout-vertical-nav-collapsed-width;
@@ -227,7 +207,7 @@ export default defineComponent({
   // 👉 Content height fixed
   &.layout-content-height-fixed {
     .layout-content-wrapper {
-      max-block-size: calc(var(--vh) * 100);
+      max-block-size: 100dvh;
     }
 
     .layout-page-content {

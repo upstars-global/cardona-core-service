@@ -1,5 +1,4 @@
 import type { Event, NewEvent } from './types'
-import axios from '@axios'
 
 export const useCalendarStore = defineStore('calendar', {
   // arrow function recommended for full type inference
@@ -30,16 +29,33 @@ export const useCalendarStore = defineStore('calendar', {
   }),
   actions: {
     async fetchEvents() {
-      return axios.get('/apps/calendar/events', { params: { calendars: this.selectedCalendars.join(',') } })
+      const { data, error } = await useApi<any>(createUrl('/apps/calendar', {
+        query: {
+          calendars: this.selectedCalendars,
+        },
+      }))
+
+      if (error.value)
+        return error.value
+
+      return data.value
     },
     async addEvent(event: NewEvent) {
-      return axios.post('/apps/calendar/events', { event })
+      await $api('/apps/calendar', {
+        method: 'POST',
+        body: event,
+      })
     },
     async updateEvent(event: Event) {
-      return axios.post(`/apps/calendar/events/${event.id}`, { event })
+      return await $api(`/apps/calendar/${event.id}`, {
+        method: 'PUT',
+        body: event,
+      })
     },
     async removeEvent(eventId: string) {
-      return axios.delete(`/apps/calendar/events/${eventId}`)
+      return await $api(`/apps/calendar/${eventId}`, {
+        method: 'DELETE',
+      })
     },
 
   },

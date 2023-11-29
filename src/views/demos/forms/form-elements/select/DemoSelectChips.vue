@@ -7,8 +7,10 @@ const selected = ref(['foo', 'bar', 'fizz', 'buzz'])
   <AppSelect
     v-model="selected"
     :items="items"
+    placeholder="Select Item"
     label="Chips"
     chips
     multiple
+    closable-chips
   />
 </template>

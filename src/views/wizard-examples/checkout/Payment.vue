@@ -59,10 +59,16 @@ watch(() => prop.currentStep, updateCartData)
         class="mb-4"
       >
         <template #prepend>
-          <VIcon
-            icon="tabler-bookmarks"
+          <VAvatar
             size="34"
-          />
+            color="#fff"
+            rounded
+          >
+            <VIcon
+              icon="tabler-bookmarks"
+              size="22"
+            />
+          </VAvatar>
         </template>
         <VAlertTitle class="text-success mb-3">
           Bank Offers
@@ -92,16 +98,18 @@ watch(() => prop.currentStep, updateCartData)
       <VWindow
         v-model="selectedPaymentMethod"
         class="mt-5"
-        style="max-width: 600px;"
+        style="max-inline-size: 600px;"
+        :touch="false"
       >
         <VWindowItem value="card">
           <VForm class="mt-3">
-            <VRow>
+            <VRow class="ma-0 pa-n2">
               <VCol cols="12">
                 <AppTextField
                   v-model="cardFormData.cardNumber"
                   type="number"
                   label="Card Number"
+                  placeholder="1234 5678 9012 3456"
                 />
               </VCol>
 
@@ -112,6 +120,7 @@ watch(() => prop.currentStep, updateCartData)
                 <AppTextField
                   v-model="cardFormData.cardName"
                   label="Name"
+                  placeholder="John Doe"
                 />
               </VCol>
 
@@ -122,6 +131,7 @@ watch(() => prop.currentStep, updateCartData)
                 <AppTextField
                   v-model="cardFormData.cardExpiry"
                   label="Expiry"
+                  placeholder="MM/YY"
                 />
               </VCol>
 
@@ -132,6 +142,7 @@ watch(() => prop.currentStep, updateCartData)
                 <AppTextField
                   v-model="cardFormData.cardCvv"
                   label="CVV"
+                  placeholder="123"
                   type="number"
                 >
                   <template #append-inner>
@@ -177,7 +188,7 @@ watch(() => prop.currentStep, updateCartData)
         </VWindowItem>
 
         <VWindowItem value="cash-on-delivery">
-          <p class="text-base text-high-emphasis">
+          <p class="text-base text-high-emphasis my-6">
             Cash on Delivery is a type of payment method where the recipient make payment for the order at the time of delivery rather than in advance.
           </p>
 
@@ -187,15 +198,16 @@ watch(() => prop.currentStep, updateCartData)
         </VWindowItem>
 
         <VWindowItem value="gift-card">
-          <h6 class="text-base font-weight-medium mb-4">
+          <h6 class="text-base font-weight-medium my-6">
             Enter Gift Card Details
           </h6>
           <VForm>
-            <VRow>
+            <VRow class="ma-0">
               <VCol cols="12">
                 <AppTextField
                   v-model="giftCardFormData.giftCardNumber"
                   label="Gift Card Number"
+                  placeholder="1234 5678 9012 3456"
                 />
               </VCol>
 
@@ -203,6 +215,7 @@ watch(() => prop.currentStep, updateCartData)
                 <AppTextField
                   v-model="giftCardFormData.giftCardPin"
                   label="Gift Card Pin"
+                  placeholder="1234"
                 />
               </VCol>
 

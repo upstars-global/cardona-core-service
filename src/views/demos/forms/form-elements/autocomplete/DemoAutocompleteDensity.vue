@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const select = ref(['Florida'])
+const select = ref('Florida')
 const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']
 </script>
 
@@ -8,6 +8,7 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
     v-model="select"
     label="States"
     density="compact"
+    placeholder="Select State"
     :items="items"
   />
 </template>

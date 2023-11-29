@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import VueApexCharts from 'vue3-apexcharts'
 import { useTheme } from 'vuetify'
 import { hexToRgb } from '@layouts/utils'
 
@@ -41,7 +40,7 @@ const chartOptions = computed(() => {
     dataLabels: {
       enabled: false,
       formatter(val: string) {
-        return `${parseInt(val)}%`
+        return `${Number.parseInt(val)}%`
       },
     },
     legend: {
@@ -77,7 +76,7 @@ const chartOptions = computed(() => {
               fontWeight: 600,
               offsetY: -15,
               formatter(val: string) {
-                return `${parseInt(val)}%`
+                return `${Number.parseInt(val)}%`
               },
             },
             name: {

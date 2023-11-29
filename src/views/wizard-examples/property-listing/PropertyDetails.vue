@@ -52,6 +52,7 @@ watch(formData, () => {
         <AppSelect
           v-model="formData.propertyType"
           label="Property type"
+          placeholder="Select Property Type"
           :items="['Residential', 'Commercial']"
         />
       </VCol>
@@ -77,6 +78,7 @@ watch(formData, () => {
         <AppSelect
           v-model="formData.country"
           label="Country"
+          placeholder="Select country"
           :items="['India', 'UK', 'USA', 'AUS', 'Germany']"
         />
       </VCol>
@@ -122,6 +124,7 @@ watch(formData, () => {
         <AppTextarea
           v-model="formData.address"
           label="Address"
+          placeholder="112, 1st Cross, 1st Stage, 1st Phase, BTM Layout, Bangalore - 560068"
           rows="2"
         />
       </VCol>

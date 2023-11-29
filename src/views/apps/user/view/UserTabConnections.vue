@@ -25,7 +25,7 @@ const connectedAccounts = ref([
   },
   {
     img: github,
-    title: 'Github',
+    title: 'GitHub',
     text: 'Manage your Git repositories',
     connected: true,
   },
@@ -52,13 +52,13 @@ const socialAccounts = ref([
   {
     img: twitter,
     title: 'Twitter',
-    link: 'https://twitter.com/theme_selection',
-    username: '@Theme_Selection',
+    link: 'https://twitter.com/pixinvents',
+    username: '@Pixinvent',
     connected: true,
   },
   {
     img: linkedin,
-    title: 'Linkedin',
+    title: 'LinkedIn',
     link: 'https://www.linkedin.com/company/pixinvent',
     username: '@Pixinvent',
     connected: true,

@@ -23,16 +23,20 @@ const value = ref(['Sandra Adams'])
     item-title="name"
     item-value="name"
     label="Select Item"
+    placeholder="Select Item"
     multiple
     clearable
     clear-icon="tabler-x"
   >
     <template #selection="{ item }">
       <VChip>
-        <VAvatar
-          start
-          :image="item.raw.avatar"
-        />
+        <template #prepend>
+          <VAvatar
+            start
+            :image="item.raw.avatar"
+          />
+        </template>
+
         <span>{{ item.title }}</span>
       </VChip>
     </template>

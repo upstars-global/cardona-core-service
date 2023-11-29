@@ -29,6 +29,7 @@ const isDialogVisible = ref(false)
     v-model="isDialogVisible"
     scrollable
     max-width="350"
+    content-class="scrollable-dialog"
   >
     <!-- Dialog Activator -->
     <template #activator="{ props }">
@@ -79,3 +80,9 @@ const isDialogVisible = ref(false)
     </VCard>
   </VDialog>
 </template>
+
+<style lang="scss">
+.scrollable-dialog{
+  overflow: visible !important;
+}
+</style>

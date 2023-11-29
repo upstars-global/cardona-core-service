@@ -21,5 +21,6 @@ const items = [
     persistent-hint
     return-object
     single-line
+    placeholder="Select State"
   />
 </template>

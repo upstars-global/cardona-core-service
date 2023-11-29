@@ -1,15 +1,16 @@
-import i18n from '../../plugins/i18n'
+import { i18n } from '../../plugins/i18n'
 import type { GroupData } from '../../@model/group'
 import type { ProjectInfo } from '../../@model/project'
 import { FieldInfo, FieldType } from '../../@model/field'
 import type { OptionsItem } from '../../@model'
 import { FilterType } from '../../@model/filter'
-import {SelectBaseField, TextBaseField} from '../../@model/templates/baseField'
+import { SelectBaseField, TextBaseField } from '../../@model/templates/baseField'
 import { TransactionType } from '../../@model/enums/playersTransactions'
+
 // Options
 const stateOptions: Array<object> = [
-  { text: i18n.global.t('common.yes'), value: true },
-  { text: i18n.global.t('common.no'), value: false },
+  { text: i18n.t('common.yes'), value: true },
+  { text: i18n.t('common.no'), value: false },
 ]
 
 // Filters
@@ -17,41 +18,41 @@ const stateOptions: Array<object> = [
 // TODO: Text input
 const entryId = new TextBaseField({
   key: FilterType.EntryId,
-  label: i18n.global.t('filters.entryId'),
+  label: i18n.t('filters.entryId'),
 })
 
 const paymentSystem = new TextBaseField({
   key: FilterType.PaymentSystem,
-  label: i18n.global.t('filters.paymentSystem'),
+  label: i18n.t('filters.paymentSystem'),
 })
 
 const giftId = new TextBaseField({
   key: FilterType.GiftId,
-  label: i18n.global.t('filters.giftId'),
+  label: i18n.t('filters.giftId'),
 })
 
 const giftName = new TextBaseField({
   key: FilterType.GiftName,
-  label: i18n.global.t('filters.giftName'),
+  label: i18n.t('filters.giftName'),
 })
 
 const gameId = new TextBaseField({
   key: FilterType.GameId,
-  label: i18n.global.t('filters.gameId'),
+  label: i18n.t('filters.gameId'),
 })
 
 const demoType = new SelectBaseField({
   key: FilterType.DemoType,
-  label: i18n.global.t('common.type'),
-  placeholder: i18n.global.t('placeholder.filter.type'),
+  label: i18n.t('common.type'),
+  placeholder: i18n.t('placeholder.filter.type'),
   options: [
     {
       id: TransactionType.Payout,
-      name: i18n.global.t('common.payout'),
+      name: i18n.t('common.payout'),
     },
     {
       id: TransactionType.Deposit,
-      name: i18n.global.t('common.deposit'),
+      name: i18n.t('common.deposit'),
     },
   ],
 })
@@ -61,103 +62,103 @@ const demoType = new SelectBaseField({
 // const admin = new SelectBaseField<UserInfo>({ // TODO: Uncomment after fix user model
 const admin = new SelectBaseField({
   key: FilterType.Admin,
-  label: i18n.global.t('common.admin._'),
-  placeholder: i18n.global.t('placeholder.filter.admin'),
+  label: i18n.t('common.admin._'),
+  placeholder: i18n.t('placeholder.filter.admin'),
   fetchOptionsActionName: 'users/fetchUsersList',
 })
 
 const action = new SelectBaseField({
   key: FilterType.Action,
-  label: i18n.global.t('page.logging.action'),
-  placeholder: i18n.global.t('placeholder.filter.action'),
+  label: i18n.t('page.logging.action'),
+  placeholder: i18n.t('placeholder.filter.action'),
   fetchOptionsActionName: 'logging/fetchLogActions',
 })
 
 const bannerStrategy = new SelectBaseField({
   key: FilterType.BannerStrategy,
-  label: i18n.global.t('common.show'),
-  placeholder: i18n.global.t('placeholder.filter.bannerStrategy'),
+  label: i18n.t('common.show'),
+  placeholder: i18n.t('placeholder.filter.bannerStrategy'),
   fetchOptionsActionName: 'banner/fetchBannersStrategy',
 })
 
 const entityType = new SelectBaseField({
   key: FilterType.EntityType,
-  label: i18n.global.t('common.entity'),
-  placeholder: i18n.global.t('placeholder.filter.entityType'),
+  label: i18n.t('common.entity'),
+  placeholder: i18n.t('placeholder.filter.entityType'),
   fetchOptionsActionName: 'logging/fetchLogEntityList',
 })
 
 // Bonuses
 const bonusStatus = new SelectBaseField({
   key: FilterType.BonusStatus,
-  label: i18n.global.t('common.bonuses.status'),
-  placeholder: i18n.global.t('common.bonuses.status'),
+  label: i18n.t('common.bonuses.status'),
+  placeholder: i18n.t('common.bonuses.status'),
   fetchOptionsActionName: 'bonuses/fetchBonusesStatusList',
 })
 
 const bonusType = new SelectBaseField({
   key: FilterType.BonusType,
-  label: i18n.global.t('common.bonuses.type'),
-  placeholder: i18n.global.t('common.bonuses.type'),
+  label: i18n.t('common.bonuses.type'),
+  placeholder: i18n.t('common.bonuses.type'),
   fetchOptionsActionName: 'bonuses/fetchBonusesTypeList',
 })
 
 // Games
 const gamesType = new SelectBaseField({
   key: FilterType.GamesType,
-  label: i18n.global.t('filters.gameType'),
-  placeholder: i18n.global.t('placeholder.filter.gamesType'),
+  label: i18n.t('filters.gameType'),
+  placeholder: i18n.t('placeholder.filter.gamesType'),
   fetchOptionsActionName: 'games/fetchGamesTypes',
 })
 
 const gamesRunners = new SelectBaseField({
   key: FilterType.GamesRunners,
-  label: i18n.global.t('filters.runner'),
-  placeholder: i18n.global.t('placeholder.filter.gamesRunners'),
+  label: i18n.t('filters.runner'),
+  placeholder: i18n.t('placeholder.filter.gamesRunners'),
   fetchOptionsActionName: 'games/fetchGamesRunners',
 })
 
 // Gifts
 const giftsStatus = new SelectBaseField({
   key: FilterType.GiftsStatus,
-  label: i18n.global.t('common.gifts.status'),
-  placeholder: i18n.global.t('common.gifts.status'),
+  label: i18n.t('common.gifts.status'),
+  placeholder: i18n.t('common.gifts.status'),
   fetchOptionsActionName: 'gifts/fetchGiftsStatusList',
 })
 
 const giftsType = new SelectBaseField({
   key: FilterType.GiftsType,
-  label: i18n.global.t('common.gifts.type'),
-  placeholder: i18n.global.t('common.gifts.type'),
+  label: i18n.t('common.gifts.type'),
+  placeholder: i18n.t('common.gifts.type'),
   fetchOptionsActionName: 'gifts/fetchGiftsTypeList',
 })
 
 // Betting history
 const bettingHistoryStatus = new SelectBaseField({
   key: FilterType.BettingHistoryStatus,
-  label: i18n.global.t('common.betting.status'),
-  placeholder: i18n.global.t('common.betting.status'),
+  label: i18n.t('common.betting.status'),
+  placeholder: i18n.t('common.betting.status'),
   fetchOptionsActionName: 'betting/fetchBettingHistoryStatusList',
 })
 
 const bettingHistoryType = new SelectBaseField({
   key: FilterType.BettingHistoryType,
-  label: i18n.global.t('common.betting.type'),
-  placeholder: i18n.global.t('common.betting.type'),
+  label: i18n.t('common.betting.type'),
+  placeholder: i18n.t('common.betting.type'),
   fetchOptionsActionName: 'betting/fetchBettingHistoryTypeList',
 })
 
 const bettingHistoryBonusType = new SelectBaseField({
   key: FilterType.BettingHistoryBonusType,
-  label: i18n.global.t('common.betting.bonusType'),
-  placeholder: i18n.global.t('common.betting.bonusType'),
+  label: i18n.t('common.betting.bonusType'),
+  placeholder: i18n.t('common.betting.bonusType'),
   fetchOptionsActionName: 'betting/fetchBettingHistoryBonusTypeList',
 })
 
 const bettingHistoryEventType = new SelectBaseField({
   key: FilterType.BettingHistoryEventType,
-  label: i18n.global.t('common.betting.eventType'),
-  placeholder: i18n.global.t('common.betting.eventType'),
+  label: i18n.t('common.betting.eventType'),
+  placeholder: i18n.t('common.betting.eventType'),
   fetchOptionsActionName: 'betting/fetchBettingHistoryEventTypeList',
 })
 
@@ -166,56 +167,56 @@ const bettingHistoryEventType = new SelectBaseField({
 const group = new FieldInfo<GroupData>({
   type: FieldType.MultiSelect,
   key: FilterType.Group,
-  label: i18n.global.t('common.groups.list'),
-  placeholder: i18n.global.t('placeholder.filter.group'),
+  label: i18n.t('common.groups.list'),
+  placeholder: i18n.t('placeholder.filter.group'),
   fetchOptionsActionName: 'groups/fetchGroupsList',
 })
 
 const project = new FieldInfo<ProjectInfo>({
   type: FieldType.MultiSelect,
   key: FilterType.Project,
-  label: i18n.global.t('common.project.list'),
-  placeholder: i18n.global.t('placeholder.filter.project'),
+  label: i18n.t('common.project.list'),
+  placeholder: i18n.t('placeholder.filter.project'),
   fetchOptionsActionName: 'projects/fetchProjectsList',
 })
 
 const gamesProducers = new FieldInfo({
   type: FieldType.MultiSelect,
   key: FilterType.GamesProducers,
-  label: i18n.global.t('filters.gamesProducers'),
-  placeholder: i18n.global.t('placeholder.filter.gamesProducers'),
+  label: i18n.t('filters.gamesProducers'),
+  placeholder: i18n.t('placeholder.filter.gamesProducers'),
   fetchOptionsActionName: 'gamesProducers/fetchGamesProducersList',
 })
 
 const transactionsStatuses = new FieldInfo<OptionsItem>({
   type: FieldType.MultiSelect,
   key: FilterType.TransactionsStatuses,
-  label: i18n.global.t('common.status'),
-  placeholder: i18n.global.t('placeholder.filter.status'),
+  label: i18n.t('common.status'),
+  placeholder: i18n.t('placeholder.filter.status'),
   fetchOptionsActionName: 'playersTransactions/fetchTransactionsStatuses',
 })
 
 const balancesReasons = new FieldInfo<OptionsItem>({
   type: FieldType.MultiSelect,
   key: FilterType.BalancesReasons,
-  label: i18n.global.t('common.reason'),
-  placeholder: i18n.global.t('placeholder.filter.reason'),
+  label: i18n.t('common.reason'),
+  placeholder: i18n.t('placeholder.filter.reason'),
   fetchOptionsActionName: 'balance/fetchBalancesReasonsList',
 })
 
 const tagNames = new FieldInfo<OptionsItem>({
   type: FieldType.MultiSelect,
   key: 'tagNames',
-  label: i18n.global.t('common.tags') as string,
-  placeholder: i18n.global.t('common.tags') as string,
+  label: i18n.t('common.tags') as string,
+  placeholder: i18n.t('common.tags') as string,
   fetchOptionsActionName: 'tags/fetchTags',
 })
 
 const segments = new FieldInfo<OptionsItem>({
   type: FieldType.MultiSelect,
   key: FilterType.Segments,
-  label: i18n.global.t('common.segments') as string,
-  placeholder: i18n.global.t('common.segments') as string,
+  label: i18n.t('common.segments') as string,
+  placeholder: i18n.t('common.segments') as string,
   fetchOptionsActionName: 'segments/fetchList',
 })
 
@@ -224,55 +225,55 @@ const segments = new FieldInfo<OptionsItem>({
 const date = new FieldInfo<string>({
   type: FieldType.DateRange,
   key: FilterType.Date,
-  label: i18n.global.t('common.date'),
+  label: i18n.t('common.date'),
 })
 
 const dateRangeCreative = new FieldInfo<string>({
   type: FieldType.DateRange,
   key: FilterType.DateRangeCreative,
-  label: i18n.global.t('filters.dateRangeCreative'),
+  label: i18n.t('filters.dateRangeCreative'),
 })
 
 const dateRangeUpdate = new FieldInfo<string>({
   type: FieldType.DateRange,
   key: FilterType.DateRangeUpdate,
-  label: i18n.global.t('filters.dateRangeUpdate'),
+  label: i18n.t('filters.dateRangeUpdate'),
 })
 
 const dateRangeIssued = new FieldInfo<string>({
   type: FieldType.DateRange,
   key: FilterType.DateRangeIssued,
-  label: i18n.global.t('filters.dateRangeIssued'),
+  label: i18n.t('filters.dateRangeIssued'),
 })
 
 const dateRangeExpired = new FieldInfo<string>({
   type: FieldType.DateRange,
   key: FilterType.DateRangeExpired,
-  label: i18n.global.t('filters.dateRangeExpired'),
+  label: i18n.t('filters.dateRangeExpired'),
 })
 
 const dateRangeProcessing = new FieldInfo<string>({
   type: FieldType.DateRange,
   key: FilterType.DateRangeProcessing,
-  label: i18n.global.t('filters.dateRangeProcessing'),
+  label: i18n.t('filters.dateRangeProcessing'),
 })
 
 const dateRangeActivated = new FieldInfo<string>({
   type: FieldType.DateRange,
   key: FilterType.DateRangeActivated,
-  label: i18n.global.t('filters.dateRangeActivated'),
+  label: i18n.t('filters.dateRangeActivated'),
 })
 
 const dateRangeUsed = new FieldInfo<string>({
   type: FieldType.DateRange,
   key: FilterType.DateRangeUsed,
-  label: i18n.global.t('filters.dateRangeUsed'),
+  label: i18n.t('filters.dateRangeUsed'),
 })
 
 const bettingDateCreative = new FieldInfo<string>({
   type: FieldType.DateRange,
   key: FilterType.BettingDateCreative,
-  label: i18n.global.t('filters.bettingDateCreative'),
+  label: i18n.t('filters.bettingDateCreative'),
 })
 
 // ---------------------------------------------------------------------------
@@ -280,7 +281,7 @@ const bettingDateCreative = new FieldInfo<string>({
 const bettingHistoryIsBonus = new FieldInfo<boolean>({
   type: FieldType.Radio,
   key: FilterType.BettingHistoryIsBonus,
-  label: i18n.global.t('filters.bettingHistoryIsBonus'),
+  label: i18n.t('filters.bettingHistoryIsBonus'),
   value: true,
   options: stateOptions,
 })
@@ -288,18 +289,18 @@ const bettingHistoryIsBonus = new FieldInfo<boolean>({
 const status = new FieldInfo<boolean>({
   type: FieldType.Radio,
   key: FilterType.Status,
-  label: i18n.global.t('common.activity'),
+  label: i18n.t('common.activity'),
   value: true,
   options: [
-    { text: i18n.global.t('userStatuses.active'), value: true },
-    { text: i18n.global.t('userStatuses.inactive'), value: false },
+    { text: i18n.t('userStatuses.active'), value: true },
+    { text: i18n.t('userStatuses.inactive'), value: false },
   ],
 })
 
 const hidden = new FieldInfo<boolean>({
   type: FieldType.Radio,
   key: FilterType.Hidden,
-  label: i18n.global.t('filters.hidden'),
+  label: i18n.t('filters.hidden'),
   value: true,
   options: stateOptions,
 })
@@ -307,7 +308,7 @@ const hidden = new FieldInfo<boolean>({
 const gameForBonuses = new FieldInfo<boolean>({
   type: FieldType.Radio,
   key: FilterType.GameForBonuses,
-  label: i18n.global.t('filters.gameForBonuses'),
+  label: i18n.t('filters.gameForBonuses'),
   value: true,
   options: stateOptions,
 })
@@ -315,7 +316,7 @@ const gameForBonuses = new FieldInfo<boolean>({
 const availableWithBonuses = new FieldInfo<boolean>({
   type: FieldType.Radio,
   key: FilterType.AvailableWithBonuses,
-  label: i18n.global.t('filters.availableWithBonuses'),
+  label: i18n.t('filters.availableWithBonuses'),
   value: true,
   options: stateOptions,
 })
@@ -325,31 +326,31 @@ const availableWithBonuses = new FieldInfo<boolean>({
 const sumRange = new FieldInfo({
   type: FieldType.SumRange,
   key: FilterType.SumRange,
-  label: i18n.global.t('common.sum'),
+  label: i18n.t('common.sum'),
 })
 
 const initialSumRange = new FieldInfo({
   type: FieldType.SumRange,
   key: FilterType.InitialSumRange,
-  label: i18n.global.t('filters.initialSumRange'),
+  label: i18n.t('filters.initialSumRange'),
 })
 
 const winBackSumRange = new FieldInfo({
   type: FieldType.SumRange,
   key: FilterType.WinBackSumRange,
-  label: i18n.global.t('filters.winBackSumRange'),
+  label: i18n.t('filters.winBackSumRange'),
 })
 
 const realSumRange = new FieldInfo({
   type: FieldType.SumRange,
   key: FilterType.RealSumRange,
-  label: i18n.global.t('filters.realSumRange'),
+  label: i18n.t('filters.realSumRange'),
 })
 
 const wagerLimitRange = new FieldInfo({
   type: FieldType.SumRange,
   key: FilterType.WagerLimitRange,
-  label: i18n.global.t('filters.wagerLimitRange'),
+  label: i18n.t('filters.wagerLimitRange'),
 })
 
 export default {

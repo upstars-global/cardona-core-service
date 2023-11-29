@@ -9,6 +9,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
     :items="items"
     label="Combobox"
     multiple
+    placeholder="deployment"
     clearable
   />
 </template>

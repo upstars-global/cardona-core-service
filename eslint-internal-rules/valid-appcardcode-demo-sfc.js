@@ -59,8 +59,8 @@ module.exports = {
     return utils.defineTemplateBodyVisitor(context, {
       /** @param {VElement} node */
       'VElement[name=\'appcardcode\']': function (node) {
-        const prop_title = utils.getAttribute(node, 'title')
-        const titleValue = prop_title.value.value
+        const propTitle = utils.getAttribute(node, 'title')
+        const titleValue = propTitle.value.value
 
         const pascalCaseTitle = toPascalCase(titleValue)
 

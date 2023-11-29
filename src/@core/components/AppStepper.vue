@@ -14,6 +14,7 @@ interface Props {
   direction?: Direction
   iconSize?: string | number
   isActiveStepValid?: boolean
+  align?: 'start' | 'center' | 'end'
 }
 
 interface Emit {
@@ -25,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   direction: 'horizontal',
   iconSize: 52,
   isActiveStepValid: undefined,
+  align: 'center',
 })
 
 const emit = defineEmits<Emit>()
@@ -68,6 +70,7 @@ watchEffect(() => {
     class="app-stepper"
     show-arrows
     :direction="props.direction"
+    :class="`app-stepper-${props.align}`"
   >
     <VSlideGroupItem
       v-for="(item, index) in props.items"
@@ -123,18 +126,24 @@ watchEffect(() => {
 
         <!-- SECTION stepper step without icon -->
         <template v-else>
-          <div class="d-flex align-center gap-x-2">
+          <div class="d-flex align-center gap-x-4">
             <div class="d-flex align-center gap-2">
-              <div
-                class="d-flex align-center justify-center"
-                style="block-size: 24px; inline-size: 24px;"
-              >
+              <div class="d-flex align-center justify-center">
                 <!-- 👉 custom circle icon -->
                 <template v-if="index >= currentStep">
-                  <div
+                  <VBtn
                     v-if="(!isValidationEnabled || props.isActiveStepValid || index !== currentStep)"
-                    class="stepper-step-indicator"
-                  />
+                    size="40"
+                    :variant="index === currentStep ? 'elevated' : 'tonal'"
+                    :color="index === currentStep ? 'primary' : 'default'"
+                  >
+                    <h5
+                      class="text-h5"
+                      :style="index === currentStep ? { color: '#fff' } : ''"
+                    >
+                      {{ index + 1 }}
+                    </h5>
+                  </VBtn>
 
                   <VIcon
                     v-else
@@ -146,39 +155,47 @@ watchEffect(() => {
 
                 <!-- 👉 step completed icon -->
 
-                <VIcon
+                <VBtn
                   v-else
-                  icon="custom-check-circle"
-                  class="stepper-step-icon"
-                  size="24"
-                />
+                  class="stepper-icon"
+                  variant="tonal"
+                  color="primary"
+                  size="40"
+                >
+                  <h5
+                    class="text-h5"
+                    style="color: rgb(var(--v-theme-primary))"
+                  >
+                    {{ index + 1 }}
+                  </h5>
+                </VBtn>
               </div>
-
-              <!-- 👉 Step Number -->
-              <h4 class="text-h4 step-number">
-                {{ (index + 1).toString().padStart(2, '0') }}
-              </h4>
             </div>
 
             <!-- 👉 title and subtitle -->
-            <div style="line-height: 0;">
-              <h6 class="text-sm font-weight-medium step-title">
+            <div class="d-flex flex-column justify-center">
+              <div class="step-title font-weight-medium">
                 {{ item.title }}
-              </h6>
+              </div>
 
-              <span
+              <div
                 v-if="item.subtitle"
-                class="text-xs step-subtitle"
+                class="step-subtitle text-sm text-disabled"
               >
                 {{ item.subtitle }}
-              </span>
+              </div>
             </div>
 
-            <!-- 👉 stepper step line -->
+            <!-- 👉 stepper step icon -->
             <div
               v-if="isHorizontalAndNotLastStep(index)"
               class="stepper-step-line"
-            />
+            >
+              <VIcon
+                icon="tabler-chevron-right"
+                size="24"
+              />
+            </div>
           </div>
         </template>
         <!-- !SECTION  -->
@@ -246,23 +263,14 @@ watchEffect(() => {
 
   // 👉 stepper step with icon and  default
   .v-slide-group__content {
-    justify-content: center;
     row-gap: 1.5rem;
 
     .stepper-step-indicator {
-      border: 0.3125rem solid rgb(var(--v-theme-primary));
-      border-radius: 50%;
-      background-color: rgb(var(--v-theme-surface));
-      block-size: 1.25rem;
-      inline-size: 1.25rem;
+      block-size: 3rem;
       opacity: var(--v-activated-opacity);
     }
 
     .stepper-step-line {
-      border-radius: 0.1875rem;
-      background-color: rgb(var(--v-theme-primary));
-      block-size: 0.1875rem;
-      inline-size: 3.75rem;
       opacity: var(--v-activated-opacity);
     }
 
@@ -299,6 +307,26 @@ watchEffect(() => {
       .step-subtitle {
         color: rgb(var(--v-theme-error)) !important;
       }
+    }
+
+  }
+
+  // 👉 stepper alignment
+  &.app-stepper-center {
+    .v-slide-group__content {
+      justify-content: center;
+    }
+  }
+
+  &.app-stepper-start {
+    .v-slide-group__content {
+      justify-content: start;
+    }
+  }
+
+  &.app-stepper-end {
+    .v-slide-group__content {
+      justify-content: end;
     }
   }
 }

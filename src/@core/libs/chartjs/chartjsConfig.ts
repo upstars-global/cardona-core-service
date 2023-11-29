@@ -369,5 +369,4 @@ export const getLineAreaChartConfig = (themeColors: ThemeInstance['themes']['val
     },
   }
 }
-
 // !SECTION

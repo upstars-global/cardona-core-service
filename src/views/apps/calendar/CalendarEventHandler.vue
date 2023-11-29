@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Options } from 'flatpickr'
+import type { Options } from 'flatpickr/dist/types/options'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { VForm } from 'vuetify/components/VForm'
 
@@ -11,8 +11,6 @@ import avatar3 from '@images/avatars/avatar-3.png'
 import avatar5 from '@images/avatars/avatar-5.png'
 import avatar6 from '@images/avatars/avatar-6.png'
 import avatar7 from '@images/avatars/avatar-7.png'
-
-import { requiredValidator, urlValidator } from '@validators'
 
 const props = defineProps<Props>()
 
@@ -33,7 +31,7 @@ const store = useCalendarStore()
 const refForm = ref<VForm>()
 
 // 👉 Event
-const event = ref<Event | NewEvent>(JSON.parse(JSON.stringify(props.event)))
+const event = ref<Event>(JSON.parse(JSON.stringify(props.event)))
 
 const resetEvent = () => {
   event.value = JSON.parse(JSON.stringify(props.event))
@@ -45,7 +43,7 @@ const resetEvent = () => {
 watch(() => props.isDrawerOpen, resetEvent)
 
 const removeEvent = () => {
-  emit('removeEvent', event.value.id)
+  emit('removeEvent', String((event.value as Event).id))
 
   // Close drawer
   emit('update:isDrawerOpen', false)
@@ -153,6 +151,7 @@ const dialogModelValueUpdate = (val: boolean) => {
                 <AppTextField
                   v-model="event.title"
                   label="Title"
+                  placeholder="Meeting with Jane"
                   :rules="[requiredValidator]"
                 />
               </VCol>
@@ -162,6 +161,7 @@ const dialogModelValueUpdate = (val: boolean) => {
                 <AppSelect
                   v-model="event.extendedProps.calendar"
                   label="Label"
+                  placeholder="Select Event Label"
                   :rules="[requiredValidator]"
                   :items="store.availableCalendars"
                   :item-title="item => item.label"
@@ -192,6 +192,7 @@ const dialogModelValueUpdate = (val: boolean) => {
                   v-model="event.start"
                   :rules="[requiredValidator]"
                   label="Start date"
+                  placeholder="Select Date"
                   :config="startDateTimePickerConfig"
                 />
               </VCol>
@@ -203,6 +204,7 @@ const dialogModelValueUpdate = (val: boolean) => {
                   v-model="event.end"
                   :rules="[requiredValidator]"
                   label="End date"
+                  placeholder="Select End Date"
                   :config="endDateTimePickerConfig"
                 />
               </VCol>
@@ -220,6 +222,7 @@ const dialogModelValueUpdate = (val: boolean) => {
                 <AppTextField
                   v-model="event.url"
                   label="Event URL"
+                  placeholder="https://event.com/meeting"
                   :rules="[urlValidator]"
                   type="url"
                 />
@@ -230,6 +233,7 @@ const dialogModelValueUpdate = (val: boolean) => {
                 <AppSelect
                   v-model="event.extendedProps.guests"
                   label="Guests"
+                  placeholder="Select guests"
                   :items="guestsOptions"
                   :item-title="item => item.name"
                   :item-value="item => item.name"
@@ -244,6 +248,7 @@ const dialogModelValueUpdate = (val: boolean) => {
                 <AppTextField
                   v-model="event.extendedProps.location"
                   label="Location"
+                  placeholder="Meeting room"
                 />
               </VCol>
 
@@ -252,6 +257,7 @@ const dialogModelValueUpdate = (val: boolean) => {
                 <AppTextarea
                   v-model="event.extendedProps.description"
                   label="Description"
+                  placeholder="Meeting description"
                 />
               </VCol>
 
@@ -264,7 +270,7 @@ const dialogModelValueUpdate = (val: boolean) => {
                   Submit
                 </VBtn>
                 <VBtn
-                  variant="tonal"
+                  variant="outlined"
                   color="secondary"
                   @click="onCancel"
                 >

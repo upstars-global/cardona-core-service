@@ -1,5 +1,6 @@
 @use "@core/scss/base/mixins";
 @use "@layouts/styles/placeholders";
+@use "@layouts/styles/mixins" as layoutMixins;
 @use "@configured-variables" as variables;
 
 // 👉 Avatar group
@@ -64,6 +65,17 @@
   }
 }
 
+// 👉 Datatable
+.v-data-table-footer__pagination {
+  @include layoutMixins.rtl {
+    .v-btn {
+      .v-icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+
 // Dialog responsive width
 .v-dialog {
   // dialog custom close btn
@@ -71,8 +83,8 @@
     position: absolute;
     z-index: 1;
     color: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity)) !important;
-    inset-block-start: 0.9375rem;
-    inset-inline-end: 0.9375rem;
+    inset-block-start: 0.5rem;
+    inset-inline-end: 0.5rem;
 
     .v-btn__overlay {
       display: none;
@@ -145,4 +157,16 @@
       justify-self: stretch !important;
     }
   }
+}
+
+// 👉 Switch
+.v-switch .v-selection-control:not(.v-selection-control--dirty) .v-switch__thumb {
+  color: #fff !important;
+}
+
+// 👉 Textarea
+.v-textarea .v-field__input {
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
 }

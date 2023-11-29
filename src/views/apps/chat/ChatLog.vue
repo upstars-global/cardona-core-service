@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import type { ChatOut } from '@/@fake-db/types'
 import { useChatStore } from '@/views/apps/chat/useChatStore'
-import { formatDate } from '@core/utils/formatters'
+import type { ChatOut } from '@db/apps/chat/types'
 
 const store = useChatStore()
 
@@ -30,9 +29,7 @@ const msgGroups = computed(() => {
 
   const _msgGroups: MessageGroup[] = []
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   if (store.activeChat!.chat) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     messages = store.activeChat!.chat.messages
 
     let msgSenderId = messages[0].senderId

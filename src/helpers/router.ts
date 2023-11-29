@@ -28,7 +28,7 @@ export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfi
             permission,
             breadcrumb: [
               {
-                text: `${sectionConfig.name}.list`,
+                title: `${sectionConfig.name}.list`,
                 active: true,
               },
             ],
@@ -45,10 +45,10 @@ export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfi
             breadcrumb: [
               {
                 to: { name: `${entityName}List` },
-                text: `${sectionConfig.name}.list`,
+                title: `${sectionConfig.name}.list`,
               },
               {
-                text: `${sectionConfig.name}.create`,
+                title: `${sectionConfig.name}.create`,
                 active: true,
               },
             ],
@@ -66,10 +66,10 @@ export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfi
             breadcrumb: [
               {
                 to: { name: `${entityName}List` },
-                text: `${sectionConfig.name}.list`,
+                title: `${sectionConfig.name}.list`,
               },
               {
-                text: `${sectionConfig.name}.edit`,
+                title: `${sectionConfig.name}.edit`,
                 active: true,
               },
             ],

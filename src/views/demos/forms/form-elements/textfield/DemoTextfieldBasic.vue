@@ -1,3 +1,6 @@
 <template>
-  <AppTextField label="Regular" />
+  <AppTextField
+    label="Regular"
+    placeholder="Placeholder Text"
+  />
 </template>

@@ -16,7 +16,6 @@ const tabContent = 'Although cards can support multiple actions, UI controls, an
           <VTab
             v-for="item in tabItems"
             :key="item"
-            :value="item"
           >
             {{ item }}
           </VTab>
@@ -57,7 +56,6 @@ const tabContent = 'Although cards can support multiple actions, UI controls, an
           <VTab
             v-for="item in tabItems"
             :key="item"
-            :value="item"
           >
             {{ item }}
           </VTab>

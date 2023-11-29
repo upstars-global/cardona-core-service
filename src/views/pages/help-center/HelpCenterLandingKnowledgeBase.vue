@@ -1,82 +1,85 @@
 <script setup lang="ts">
-import type {
-  HelpCenterCategoriesType,
-} from '@/@fake-db/types'
+import type { HelpCenterAllCategoryArticles } from '@db/pages/help-center/types'
 
 interface Props {
-  categories: HelpCenterCategoriesType[]
+  categories: HelpCenterAllCategoryArticles[]
 }
 
 const props = defineProps<Props>()
-
-const totalArticles = (category: HelpCenterCategoriesType) => {
-  return category.subCategories.map(subCategory => subCategory.articles.length).reduce((partialSum, a) => partialSum + a, 0)
-}
 </script>
 
 <template>
   <VRow>
     <VCol
+      v-for="article in props.categories"
+      :key="article.title"
       cols="12"
-      lg="10"
-      class="mx-auto mb-8"
+      sm="6"
+      lg="4"
     >
-      <VRow>
-        <VCol
-          v-for="article in props.categories"
-          :key="article.title"
-          cols="12"
-          sm="6"
-          md="4"
-        >
-          <VCard>
-            <template #title>
-              <span class="text-h5">
-                {{ article.title }}
-              </span>
-            </template>
-            <template #prepend>
-              <VAvatar
-                :icon="article.icon"
-                rounded
-                :color="article.avatarColor"
-                variant="tonal"
+      <VCard :title="article.title">
+        <template #prepend>
+          <VAvatar
+            rounded
+            color="primary"
+            variant="tonal"
+          >
+            <VIcon
+              :icon="article.icon"
+              size="20"
+            />
+          </VAvatar>
+        </template>
+
+        <VCardText>
+          <VList class="card-list">
+            <VListItem
+              v-for="(item, index) in article.articles"
+              :key="index"
+              class="text-disabled"
+              :append-icon="$vuetify.locale.isRtl ? 'tabler-chevron-left' : 'tabler-chevron-right'"
+            >
+              <RouterLink
+                :to="{
+                  name: 'front-pages-help-center-article-title',
+                  params: {
+                    title: 'how-to-add-product-in-cart',
+                  },
+                }"
+                class="text-high-emphasis"
+              >
+                {{ item.title }}
+              </RouterLink>
+            </VListItem>
+          </VList>
+
+          <div class="mt-4">
+            <RouterLink
+              :to="{
+                name: 'front-pages-help-center-article-title',
+                params: {
+                  title: 'how-to-add-product-in-cart',
+                },
+              }"
+              class="text-base font-weight-medium"
+            >
+              See All Articles
+
+              <VIcon
+                :icon=" $vuetify.locale.isRtl ? 'tabler-arrow-left' : 'tabler-arrow-right'"
+                size="20"
+                class="ms-1"
               />
-            </template>
-
-            <VCardText>
-              <ul class="ps-6">
-                <li
-                  v-for="item in article.subCategories"
-                  :key="item.title"
-                  class="text-primary mb-2"
-                >
-                  <RouterLink
-                    :to="{
-                      name: 'pages-help-center-category-subcategory',
-                      params: { category: article.slug, subcategory: item.slug },
-                    }"
-                  >
-                    {{ item.title }}
-                  </RouterLink>
-                </li>
-              </ul>
-
-              <div class="mt-4">
-                <RouterLink
-                  :to="{
-                    name: 'pages-help-center-category-subcategory',
-                    params: { category: article.slug, subcategory: article.subCategories[0].slug },
-                  }"
-                  class="text-base font-weight-medium"
-                >
-                  {{ totalArticles(article) }} articles
-                </RouterLink>
-              </div>
-            </VCardText>
-          </VCard>
-        </VCol>
-      </VRow>
+            </RouterLink>
+          </div>
+        </VCardText>
+      </VCard>
     </VCol>
   </VRow>
 </template>
+
+<style lang="scss">
+.card-list {
+  --v-card-list-gap: 0.5rem;
+}
+</style>

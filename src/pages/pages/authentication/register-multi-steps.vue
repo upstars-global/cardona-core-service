@@ -10,6 +10,12 @@ import registerMultistepBgLight from '@images/pages/register-multistep-bg-light.
 
 const registerMultistepBg = useGenerateImageVariant(registerMultistepBgLight, registerMultistepBgDark)
 
+definePage({
+  meta: {
+    layout: 'blank',
+  },
+})
+
 const currentStep = ref(0)
 const isPasswordVisible = ref(false)
 const isConfirmPasswordVisible = ref(false)
@@ -122,7 +128,7 @@ const onSubmit = () => {
         <VWindow
           v-model="currentStep"
           class="disable-tab-transition"
-          style="max-width: 681px;"
+          style="max-inline-size: 681px;"
         >
           <VForm>
             <VWindowItem>
@@ -141,6 +147,7 @@ const onSubmit = () => {
                   <AppTextField
                     v-model="form.username"
                     label="Username"
+                    placeholder="Johndoe"
                   />
                 </VCol>
 
@@ -151,6 +158,7 @@ const onSubmit = () => {
                   <AppTextField
                     v-model="form.email"
                     label="Email"
+                    placeholder="johndoe@email.com"
                   />
                 </VCol>
 
@@ -161,6 +169,7 @@ const onSubmit = () => {
                   <AppTextField
                     v-model="form.password"
                     label="Password"
+                    placeholder="············"
                     :type="isPasswordVisible ? 'text' : 'password'"
                     :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                     @click:append-inner="isPasswordVisible = !isPasswordVisible"
@@ -174,6 +183,7 @@ const onSubmit = () => {
                   <AppTextField
                     v-model="form.confirmPassword"
                     label="Confirm Password"
+                    placeholder="············"
                     :type="isConfirmPasswordVisible ? 'text' : 'password'"
                     :append-inner-icon="isConfirmPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                     @click:append-inner="isConfirmPasswordVisible = !isConfirmPasswordVisible"
@@ -184,6 +194,7 @@ const onSubmit = () => {
                   <AppTextField
                     v-model="form.link"
                     label="Profile Link"
+                    placeholder="https://profile.com/johndoe"
                     type="url"
                   />
                 </VCol>
@@ -206,6 +217,7 @@ const onSubmit = () => {
                   <AppTextField
                     v-model="form.firstName"
                     label="First Name"
+                    placeholder="John"
                   />
                 </VCol>
 
@@ -216,6 +228,7 @@ const onSubmit = () => {
                   <AppTextField
                     v-model="form.lastName"
                     label="Last Name"
+                    placeholder="Doe"
                   />
                 </VCol>
 
@@ -227,6 +240,7 @@ const onSubmit = () => {
                     v-model="form.mobile"
                     type="number"
                     label="Mobile"
+                    placeholder="+1 123 456 7890"
                   />
                 </VCol>
 
@@ -238,6 +252,7 @@ const onSubmit = () => {
                     v-model="form.pincode"
                     type="number"
                     label="Pincode"
+                    placeholder="123456"
                   />
                 </VCol>
 
@@ -245,6 +260,7 @@ const onSubmit = () => {
                   <AppTextField
                     v-model="form.address"
                     label="Address"
+                    placeholder="1234 Main St, New York, NY 10001, USA"
                   />
                 </VCol>
 
@@ -252,6 +268,7 @@ const onSubmit = () => {
                   <AppTextField
                     v-model="form.landmark"
                     label="Landmark"
+                    placeholder="Near Central Park"
                   />
                 </VCol>
 
@@ -262,6 +279,7 @@ const onSubmit = () => {
                   <AppTextField
                     v-model="form.city"
                     label="City"
+                    placeholder="New York"
                   />
                 </VCol>
 
@@ -272,6 +290,7 @@ const onSubmit = () => {
                   <AppSelect
                     v-model="form.state"
                     label="State"
+                    placeholder="Select State"
                     :items="['New York', 'California', 'Florida', 'Washington', 'Texas']"
                   />
                 </VCol>
@@ -324,6 +343,7 @@ const onSubmit = () => {
                     v-model="form.cardNumber"
                     type="number"
                     label="Card Number"
+                    placeholder="1234 1234 1234 1234"
                   />
                 </VCol>
 
@@ -334,6 +354,7 @@ const onSubmit = () => {
                   <AppTextField
                     v-model="form.cardName"
                     label="Name on Card"
+                    placeholder="John Doe"
                   />
                 </VCol>
 
@@ -344,6 +365,7 @@ const onSubmit = () => {
                   <AppTextField
                     v-model="form.expiryDate"
                     label="Expiry"
+                    placeholder="MM/YY"
                   />
                 </VCol>
 
@@ -355,6 +377,7 @@ const onSubmit = () => {
                     v-model="form.cvv"
                     type="number"
                     label="CVV"
+                    placeholder="123"
                   />
                 </VCol>
               </VRow>
@@ -362,7 +385,7 @@ const onSubmit = () => {
           </VForm>
         </VWindow>
 
-        <div class="d-flex justify-space-between mt-8">
+        <div class="d-flex flex-wrap justify-sm-space-between justify-center gap-x-4 gap-y-2 mt-8">
           <VBtn
             color="secondary"
             :disabled="currentStep === 0"
@@ -416,8 +439,3 @@ const onSubmit = () => {
   inset-block-end: 0;
 }
 </style>
-
-<route lang="yaml">
-meta:
-  layout: blank
-</route>

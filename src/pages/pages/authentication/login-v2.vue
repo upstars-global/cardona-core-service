@@ -10,6 +10,12 @@ import authV2MaskLight from '@images/pages/misc-mask-light.png'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
+definePage({
+  meta: {
+    layout: 'blank',
+  },
+})
+
 const form = ref({
   email: '',
   password: '',
@@ -68,9 +74,9 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
             :nodes="themeConfig.app.logo"
             class="mb-6"
           />
-          <h5 class="text-h5 mb-1">
+          <h4 class="text-h4 mb-1">
             Welcome to <span class="text-capitalize">{{ themeConfig.app.title }}</span>! 👋🏻
-          </h5>
+          </h4>
           <p class="mb-0">
             Please sign-in to your account and start the adventure
           </p>
@@ -85,6 +91,7 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
                   autofocus
                   label="Email"
                   type="email"
+                  placeholder="johndoe@email.com"
                 />
               </VCol>
 
@@ -93,6 +100,7 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
                 <AppTextField
                   v-model="form.password"
                   label="Password"
+                  placeholder="············"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
@@ -160,8 +168,3 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
 <style lang="scss">
 @use "@core/scss/template/pages/page-auth.scss";
 </style>
-
-<route lang="yaml">
-meta:
-  layout: blank
-</route>

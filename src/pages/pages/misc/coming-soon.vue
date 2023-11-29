@@ -4,6 +4,12 @@ import miscComingSoon from '@images/pages/misc-coming-soon.png'
 import miscMaskDark from '@images/pages/misc-mask-dark.png'
 import miscMaskLight from '@images/pages/misc-mask-light.png'
 
+definePage({
+  meta: {
+    layout: 'blank',
+  },
+})
+
 const email = ref('')
 
 const authThemeMask = useGenerateImageVariant(miscMaskLight, miscMaskDark)
@@ -14,29 +20,31 @@ const authThemeMask = useGenerateImageVariant(miscMaskLight, miscMaskDark)
     <div>
       <!-- 👉 Title and subtitle -->
       <div class="text-center mb-4">
-        <h4 class="text-h4 font-weight-medium mb-1">
+        <h2 class="text-h2 font-weight-medium mb-1">
           We are launching soon 🚀
-        </h4>
-        <p>Our website is opening soon. Please register to get notified when it's ready!</p>
+        </h2>
+        <p class="mb-6">
+          Our website is opening soon. Please register to get notified when it's ready!
+        </p>
       </div>
 
       <!-- 👉 Email input -->
       <VForm @submit.prevent="() => {}">
-        <AppTextField
+        <VTextField
           v-model="email"
           autofocus
-          placeholder="Enter your email"
+          placeholder="Enter email"
           class="misc-email-input"
         >
           <template #append>
             <VBtn
               type="submit"
-              class="mt-n2"
+              height="40"
             >
               Notify
             </VBtn>
           </template>
-        </AppTextField>
+        </VTextField>
       </VForm>
     </div>
 
@@ -66,8 +74,3 @@ const authThemeMask = useGenerateImageVariant(miscMaskLight, miscMaskDark)
   min-inline-size: 12.5rem;
 }
 </style>
-
-<route lang="yaml">
-meta:
-  layout: blank
-</route>

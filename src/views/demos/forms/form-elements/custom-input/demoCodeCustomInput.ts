@@ -17,7 +17,7 @@ const checkboxContent: CustomInputContent[] = [
   },
 ]
 
-const selectedCheckbox = ref(['basic'])
+const selectedCheckbox = ref(['discount'])
 </script>
 
 <template>
@@ -44,7 +44,7 @@ const checkboxContent = [
   },
 ]
 
-const selectedCheckbox = ref(['basic'])
+const selectedCheckbox = ref(['discount'])
 </script>
 
 <template>
@@ -82,7 +82,7 @@ const checkboxContent: CustomInputContent[] = [
   },
 ]
 
-const selectedCheckbox = ref(['basic'])
+const selectedCheckbox = ref(['backup'])
 </script>
 
 <template>
@@ -124,7 +124,7 @@ const checkboxContent = [
   },
 ]
 
-const selectedCheckbox = ref(['basic'])
+const selectedCheckbox = ref(['backup'])
 </script>
 
 <template>
@@ -286,7 +286,7 @@ const radioContent: CustomInputContent[] = [
   },
 ]
 
-const selectedRadio = ref('basic')
+const selectedRadio = ref('starter')
 </script>
 
 <template>
@@ -328,7 +328,7 @@ const radioContent = [
   },
 ]
 
-const selectedRadio = ref('basic')
+const selectedRadio = ref('starter')
 </script>
 
 <template>

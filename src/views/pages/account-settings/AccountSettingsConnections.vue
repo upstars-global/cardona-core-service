@@ -147,13 +147,12 @@ const socialAccounts = ref([
                 </VAvatar>
               </template>
 
-              <VListItemSubtitle
-                v-if="item.links?.link"
-                tag="a"
-                :href="item.links?.link"
-                style="opacity: 1;"
-              >
-                {{ item.links?.username }}
+              <VListItemSubtitle v-if="item.links?.link">
+                <a
+                  :href="item.links.link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >{{ item.links?.username }}</a>
               </VListItemSubtitle>
 
               <VListItemSubtitle

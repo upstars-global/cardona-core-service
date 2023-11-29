@@ -4,7 +4,8 @@
         "stylelint-config-idiomatic-order"
     ],
     "plugins": [
-        "stylelint-use-logical-spec"
+        "stylelint-use-logical-spec",
+        "stylelint-codeguide"
     ],
     "overrides": [
         {
@@ -21,15 +22,24 @@
         }
     ],
     "rules": {
-        "max-line-length": [
+        "codeguide/max-line-length": [
             120,
             {
                 "ignore": "comments"
             }
         ],
+        "codeguide/indentation": 2,
         "liberty/use-logical-spec": true,
         "selector-class-pattern": null,
         "color-function-notation": null,
-        "number-max-precision": null
+        "annotation-no-unknown": [
+            true,
+            {
+                "ignoreAnnotations": [
+                    "default"
+                ]
+            }
+        ],
+        "media-feature-range-notation": null
     }
 }

@@ -3,6 +3,8 @@ defineEmits<{
   (e: 'close'): void
 }>()
 
+const content = ref('')
+
 const to = ref('')
 const subject = ref('')
 const message = ref('')
@@ -14,7 +16,11 @@ const resetValues = () => {
 </script>
 
 <template>
-  <VCard class="email-compose-dialog">
+  <VCard
+    class="email-compose-dialog"
+    elevation="24"
+    max-width="30vw"
+  >
     <VCardItem class="py-3 px-5">
       <div class="d-flex align-center">
         <span class="font-weight-medium">Compose Mail</span>
@@ -34,10 +40,9 @@ const resetValues = () => {
     </VCardItem>
 
     <div class="pe-5">
-      <AppTextField
+      <VTextField
         v-model="to"
         density="compact"
-        class="elevation-0"
       >
         <template #prepend-inner>
           <div class="text-sm text-disabled">
@@ -47,12 +52,12 @@ const resetValues = () => {
         <template #append>
           <span class="cursor-pointer text-primary">Cc | Bcc</span>
         </template>
-      </AppTextField>
+      </VTextField>
     </div>
 
     <VDivider />
 
-    <AppTextField
+    <VTextField
       v-model="subject"
       density="compact"
     >
@@ -61,14 +66,12 @@ const resetValues = () => {
           Subject:
         </div>
       </template>
-    </AppTextField>
+    </VTextField>
 
     <VDivider />
 
-    <VTextarea
-      v-model="message"
-      placeholder="Message"
-    />
+    <!-- 👉 Tiptap Editor  -->
+    <TiptapEditor v-model="content" />
 
     <VDivider />
 
@@ -171,6 +174,26 @@ const resetValues = () => {
     .v-field--focused {
       box-shadow: none !important;
     }
+  }
+}
+
+.ProseMirror{
+  p{
+    margin-block-end: 0;
+  }
+
+  padding: 0.5rem;
+
+  p.is-editor-empty:first-child::before {
+    block-size: 0;
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: inline-start;
+    pointer-events: none;
+  }
+
+  &-focused{
+    outline: none
   }
 }
 </style>

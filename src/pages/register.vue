@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { VForm } from 'vuetify/components/VForm'
-import type { RegisterResponse } from '@/@fake-db/types'
+
+import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
+import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
+import { themeConfig } from '@themeConfig'
+
 import authV2RegisterIllustrationBorderedDark from '@images/pages/auth-v2-register-illustration-bordered-dark.png'
 import authV2RegisterIllustrationBorderedLight from '@images/pages/auth-v2-register-illustration-bordered-light.png'
 import authV2RegisterIllustrationDark from '@images/pages/auth-v2-register-illustration-dark.png'
@@ -8,79 +12,28 @@ import authV2RegisterIllustrationLight from '@images/pages/auth-v2-register-illu
 import authV2MaskDark from '@images/pages/misc-mask-dark.png'
 import authV2MaskLight from '@images/pages/misc-mask-light.png'
 
-import { useAppAbility } from '@/plugins/casl/useAppAbility'
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
-import axios from '@axios'
-import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
-import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
-import { themeConfig } from '@themeConfig'
-import { alphaDashValidator, emailValidator, requiredValidator } from '@validators'
-
-const refVForm = ref<VForm>()
-const username = ref('johnDoe')
-const email = ref('john@example.com')
-const password = ref('john@VUEXY#123')
-const privacyPolicies = ref(true)
-
-// Router
-const route = useRoute()
-const router = useRouter()
-
-// Ability
-const ability = useAppAbility()
-
-// Form Errors
-const errors = ref<Record<string, string | undefined>>({
-  email: undefined,
-  password: undefined,
-})
-
-const register = () => {
-  axios.post<RegisterResponse>('/auth/register', {
-    username: username.value,
-    email: email.value,
-    password: password.value,
-  })
-    .then(r => {
-      const { accessToken, userData, userAbilities } = r.data
-
-      localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
-      ability.update(userAbilities)
-
-      localStorage.setItem('userData', JSON.stringify(userData))
-      localStorage.setItem('accessToken', JSON.stringify(accessToken))
-
-      // Redirect to `to` query if exist or redirect to index route
-      router.replace(route.query.to ? String(route.query.to) : '/')
-
-      return null
-    })
-    .catch(e => {
-      const { errors: formErrors } = e.response.data
-
-      errors.value = formErrors
-      console.error(e.response.data)
-    })
-}
-
-const imageVariant = useGenerateImageVariant(
-  authV2RegisterIllustrationLight,
-  authV2RegisterIllustrationDark, authV2RegisterIllustrationBorderedLight,
-  authV2RegisterIllustrationBorderedDark,
-  true,
-)
+const imageVariant = useGenerateImageVariant(authV2RegisterIllustrationLight,
+  authV2RegisterIllustrationDark,
+  authV2RegisterIllustrationBorderedLight,
+  authV2RegisterIllustrationBorderedDark, true)
 
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
 
-const isPasswordVisible = ref(false)
+definePage({
+  meta: {
+    layout: 'blank',
+    unauthenticatedOnly: true,
+  },
+})
 
-const onSubmit = () => {
-  refVForm.value?.validate()
-    .then(({ valid: isValid }) => {
-      if (isValid)
-        register()
-    })
-}
+const form = ref({
+  username: '',
+  email: '',
+  password: '',
+  privacyPolicies: false,
+})
+
+const isPasswordVisible = ref(false)
 </script>
 
 <template>
@@ -89,8 +42,8 @@ const onSubmit = () => {
     class="auth-wrapper bg-surface"
   >
     <VCol
-      lg="8"
-      class="d-none d-lg-flex"
+      md="8"
+      class="d-none d-md-flex"
     >
       <div class="position-relative bg-background rounded-lg w-100 ma-8 me-0">
         <div class="d-flex align-center justify-center w-100 h-100">
@@ -110,8 +63,9 @@ const onSubmit = () => {
 
     <VCol
       cols="12"
-      lg="4"
-      class="d-flex align-center justify-center"
+      md="4"
+      class="auth-card-v2 d-flex align-center justify-center"
+      style="background-color: rgb(var(--v-theme-surface));"
     >
       <VCard
         flat
@@ -132,37 +86,37 @@ const onSubmit = () => {
         </VCardText>
 
         <VCardText>
-          <VForm
-            ref="refVForm"
-            @submit.prevent="onSubmit"
-          >
+          <VForm @submit.prevent="() => {}">
             <VRow>
               <!-- Username -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="username"
+                  v-model="form.username"
+                  :rules="[requiredValidator]"
                   autofocus
-                  :rules="[requiredValidator, alphaDashValidator]"
                   label="Username"
+                  placeholder="Johndoe"
                 />
               </VCol>
 
               <!-- email -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="email"
+                  v-model="form.email"
                   :rules="[requiredValidator, emailValidator]"
                   label="Email"
                   type="email"
+                  placeholder="johndoe@email.com"
                 />
               </VCol>
 
               <!-- password -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="password"
+                  v-model="form.password"
                   :rules="[requiredValidator]"
                   label="Password"
+                  placeholder="············"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
@@ -171,20 +125,19 @@ const onSubmit = () => {
                 <div class="d-flex align-center mt-2 mb-4">
                   <VCheckbox
                     id="privacy-policy"
-                    v-model="privacyPolicies"
-                    :rules="[requiredValidator]"
+                    v-model="form.privacyPolicies"
                     inline
+                  />
+                  <VLabel
+                    for="privacy-policy"
+                    style="opacity: 1;"
                   >
-                    <template #label>
-                      <span class="me-1">
-                        I agree to
-                        <a
-                          href="javascript:void(0)"
-                          class="text-primary"
-                        >privacy policy & terms</a>
-                      </span>
-                    </template>
-                  </VCheckbox>
+                    <span class="me-1">I agree to</span>
+                    <a
+                      href="javascript:void(0)"
+                      class="text-primary"
+                    >privacy policy & terms</a>
+                  </VLabel>
                 </div>
 
                 <VBtn
@@ -236,11 +189,3 @@ const onSubmit = () => {
 <style lang="scss">
 @use "@core/scss/template/pages/page-auth.scss";
 </style>
-
-<route lang="yaml">
-meta:
-  layout: blank
-  action: read
-  subject: Auth
-  redirectIfLoggedIn: true
-</route>

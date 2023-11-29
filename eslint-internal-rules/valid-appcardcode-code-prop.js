@@ -32,18 +32,18 @@ module.exports = {
     return utils.defineTemplateBodyVisitor(context, {
       /** @param {VElement} node */
       'VElement[name=\'appcardcode\']': function (node) {
-        const prop_title = utils.getAttribute(node, 'title')
-        const prop_code = utils.getDirective(node, 'bind', 'code')
+        const propTitle = utils.getAttribute(node, 'title')
+        const propCode = utils.getDirective(node, 'bind', 'code')
 
-        const titleValue = prop_title.value.value
-        const demoCodeProperty = prop_code.value.expression.property.name
+        const titleValue = propTitle.value.value
+        const demoCodeProperty = propCode.value.expression.property.name
 
         const camelCasedTitle = toCamelCase(titleValue)
 
         if (camelCasedTitle !== demoCodeProperty) {
           context.report({
             node,
-            loc: prop_code.value.expression.property.loc,
+            loc: propCode.value.expression.property.loc,
             message: `Expected 'code' prop value to match the camelcase value of title prop value. Expected: '${camelCasedTitle}', Actual: '${demoCodeProperty}'`,
           })
         }

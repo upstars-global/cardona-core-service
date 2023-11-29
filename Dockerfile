@@ -1,4 +1,4 @@
-ARG NODE_BASE_VERSION="node:16.19.0"
+ARG NODE_BASE_VERSION="node:20.10.0"
 ARG NGINX_BASE_VERSION="nginx:1.18"
 
 FROM public.ecr.aws/docker/library/${NODE_BASE_VERSION} AS install
@@ -7,13 +7,12 @@ FROM public.ecr.aws/docker/library/${NODE_BASE_VERSION} AS install
 WORKDIR /app
 COPY package.json .
 COPY yarn.lock .
-COPY src/@iconify src/@iconify
-
+COPY . .
 RUN yarn install
 
 FROM install AS build
 WORKDIR /app
-COPY . .
+
 
 RUN yarn build
 

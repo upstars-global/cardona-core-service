@@ -2,9 +2,10 @@
 import type { Component } from 'vue'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { VNodeRenderer } from './VNodeRenderer'
-import { injectionKeyIsVerticalNavHovered, useLayouts } from '@layouts'
+import { layoutConfig } from '@layouts'
 import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
-import { config } from '@layouts/config'
+import { useLayoutConfigStore } from '@layouts/stores/config'
+import { injectionKeyIsVerticalNavHovered } from '@layouts/symbols'
 import type { NavGroup, NavLink, NavSectionTitle, VerticalNavItems } from '@layouts/types'
 
 interface Props {
@@ -20,17 +21,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const refNav = ref()
 
-const { width: windowWidth } = useWindowSize()
-
 const isHovered = useElementHover(refNav)
 
 provide(injectionKeyIsVerticalNavHovered, isHovered)
 
-const { isVerticalNavCollapsed: isCollapsed, isLessThanOverlayNavBreakpoint, isVerticalNavMini, isAppRtl } = useLayouts()
+const configStore = useLayoutConfigStore()
 
-const hideTitleAndIcon = isVerticalNavMini(windowWidth, isHovered)
-
-const resolveNavItemComponent = (item: NavLink | NavSectionTitle | NavGroup) => {
+const resolveNavItemComponent = (item: NavLink | NavSectionTitle | NavGroup): unknown => {
   if ('heading' in item)
     return VerticalNavSectionTitle
   if ('children' in item)
@@ -55,6 +52,8 @@ const updateIsVerticalNavScrolled = (val: boolean) => isVerticalNavScrolled.valu
 const handleNavScroll = (evt: Event) => {
   isVerticalNavScrolled.value = (evt.target as HTMLElement).scrollTop > 0
 }
+
+const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
 </script>
 
 <template>
@@ -64,7 +63,7 @@ const handleNavScroll = (evt: Event) => {
     class="layout-vertical-nav"
     :class="[
       {
-        'overlay-nav': isLessThanOverlayNavBreakpoint(windowWidth),
+        'overlay-nav': configStore.isLessThanOverlayNavBreakpoint,
         'hovered': isHovered,
         'visible': isOverlayNavActive,
         'scrolled': isVerticalNavScrolled,
@@ -76,45 +75,43 @@ const handleNavScroll = (evt: Event) => {
       <slot name="nav-header">
         <RouterLink
           to="/"
-          class="app-logo d-flex align-center gap-x-3 app-title-wrapper"
+          class="app-logo app-title-wrapper"
         >
-          <VNodeRenderer :nodes="config.app.logo" />
+          <VNodeRenderer :nodes="layoutConfig.app.logo" />
 
           <Transition name="vertical-nav-app-title">
             <h1
               v-show="!hideTitleAndIcon"
-              class="app-title font-weight-bold text-capitalize leading-normal text-xl"
+              class="app-logo-title leading-normal"
             >
-              {{ config.app.title }}
+              {{ layoutConfig.app.title }}
             </h1>
           </Transition>
         </RouterLink>
         <!-- 👉 Vertical nav actions -->
         <!-- Show toggle collapsible in >md and close button in <md -->
-        <template v-if="!isLessThanOverlayNavBreakpoint(windowWidth)">
-          <Component
-            :is="config.app.iconRenderer || 'div'"
-            v-show="isCollapsed && !hideTitleAndIcon"
-            class="header-action"
-            v-bind="config.icons.verticalNavUnPinned"
-            @click="isCollapsed = !isCollapsed"
-          />
-          <Component
-            :is="config.app.iconRenderer || 'div'"
-            v-show="!isCollapsed && !hideTitleAndIcon"
-            class="header-action"
-            v-bind="config.icons.verticalNavPinned"
-            @click="isCollapsed = !isCollapsed"
-          />
-        </template>
-        <template v-else>
-          <Component
-            :is="config.app.iconRenderer || 'div'"
-            class="header-action"
-            v-bind="config.icons.close"
-            @click="toggleIsOverlayNavActive(false)"
-          />
-        </template>
+        <Component
+          :is="layoutConfig.app.iconRenderer || 'div'"
+          v-show="configStore.isVerticalNavCollapsed"
+          class="header-action d-none nav-unpin"
+          :class="configStore.isVerticalNavCollapsed && 'd-lg-block'"
+          v-bind="layoutConfig.icons.verticalNavUnPinned"
+          @click="configStore.isVerticalNavCollapsed = !configStore.isVerticalNavCollapsed"
+        />
+        <Component
+          :is="layoutConfig.app.iconRenderer || 'div'"
+          v-show="!configStore.isVerticalNavCollapsed"
+          class="header-action d-none nav-pin"
+          :class="!configStore.isVerticalNavCollapsed && 'd-lg-block'"
+          v-bind="layoutConfig.icons.verticalNavPinned"
+          @click="configStore.isVerticalNavCollapsed = !configStore.isVerticalNavCollapsed"
+        />
+        <Component
+          :is="layoutConfig.app.iconRenderer || 'div'"
+          class="header-action d-lg-none"
+          v-bind="layoutConfig.icons.close"
+          @click="toggleIsOverlayNavActive(false)"
+        />
       </slot>
     </div>
     <slot name="before-nav-items">
@@ -125,7 +122,7 @@ const handleNavScroll = (evt: Event) => {
       :update-is-vertical-nav-scrolled="updateIsVerticalNavScrolled"
     >
       <PerfectScrollbar
-        :key="isAppRtl"
+        :key="configStore.isAppRTL"
         tag="ul"
         class="nav-items"
         :options="{ wheelPropagation: false }"
@@ -142,6 +139,21 @@ const handleNavScroll = (evt: Event) => {
   </Component>
 </template>
 
+<style lang="scss" scoped>
+.app-logo {
+  display: flex;
+  align-items: center;
+  column-gap: 0.75rem;
+
+  .app-logo-title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.75rem;
+    text-transform: capitalize;
+  }
+}
+</style>
+
 <style lang="scss">
 @use "@configured-variables" as variables;
 @use "@layouts/styles/mixins";
@@ -156,7 +168,7 @@ const handleNavScroll = (evt: Event) => {
   inline-size: variables.$layout-vertical-nav-width;
   inset-block-start: 0;
   inset-inline-start: 0;
-  transition: transform 0.25s ease-in-out, inline-size 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+  transition: inline-size 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
   will-change: transform, inline-size;
 
   .nav-header {
@@ -165,6 +177,15 @@ const handleNavScroll = (evt: Event) => {
 
     .header-action {
       cursor: pointer;
+
+      @at-root {
+        #{variables.$selector-vertical-nav-mini} .nav-header .header-action {
+          &.nav-pin,
+          &.nav-unpin {
+            display: none !important;
+          }
+        }
+      }
     }
   }
 
@@ -195,9 +216,11 @@ const handleNavScroll = (evt: Event) => {
       inline-size: variables.$layout-vertical-nav-collapsed-width;
     }
   }
+}
 
-  // 👉 Overlay nav
-  &.overlay-nav {
+// Small screen vertical nav transition
+@media (max-width:1279px) {
+  .layout-vertical-nav {
     &:not(.visible) {
       transform: translateX(-#{variables.$layout-vertical-nav-width});
 
@@ -205,6 +228,8 @@ const handleNavScroll = (evt: Event) => {
         transform: translateX(variables.$layout-vertical-nav-width);
       }
     }
+
+    transition: transform 0.25s ease-in-out;
   }
 }
 </style>

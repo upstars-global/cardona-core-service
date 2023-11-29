@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import VueApexCharts from 'vue3-apexcharts'
 import { useTheme } from 'vuetify'
 import { hexToRgb } from '@layouts/utils'
 
@@ -100,7 +99,7 @@ const chartConfigs = computed(() => {
           labels: {
             offsetX: -15,
             formatter(val: number) {
-              return `${parseInt(val / 1)}k`
+              return `${Number.parseInt(val / 1)}k`
             },
             style: {
               fontSize: '13px',
@@ -240,7 +239,7 @@ const chartConfigs = computed(() => {
           labels: {
             offsetX: -15,
             formatter(val: number) {
-              return `${parseInt(val / 1)}k`
+              return `${Number.parseInt(val / 1)}k`
             },
             style: {
               fontSize: '13px',
@@ -379,7 +378,7 @@ const chartConfigs = computed(() => {
           labels: {
             offsetX: -15,
             formatter(val: unknown) {
-              return `${parseInt(val / 1)}k`
+              return `${Number.parseInt(val / 1)}k`
             },
             style: {
               fontSize: '13px',
@@ -518,7 +517,7 @@ const chartConfigs = computed(() => {
           labels: {
             offsetX: -15,
             formatter(val: number) {
-              return `${parseInt(val / 1)}k`
+              return `${Number.parseInt(val / 1)}k`
             },
             style: {
               fontSize: '13px',
@@ -608,7 +607,7 @@ const moreList = [
           :value="index"
         >
           <div
-            style=" width: 110px;height: 94px;"
+            style="block-size: 94px; inline-size: 110px;"
             :style="isSelected ? 'border-color:rgb(var(--v-theme-primary)) !important' : ''"
             :class="isSelected ? 'border' : 'border border-dashed'"
             class="d-flex flex-column justify-center align-center cursor-pointer rounded px-5 py-2 me-6"
@@ -632,7 +631,7 @@ const moreList = [
         <!-- 👉 slider more -->
         <VSlideGroupItem>
           <div
-            style=" width: 110px;height: 94px;"
+            style="block-size: 94px; inline-size: 110px;"
             class="d-flex flex-column justify-center align-center rounded me-6 border border-dashed"
           >
             <VAvatar

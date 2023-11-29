@@ -40,16 +40,21 @@ const paymentMethods = [
       <VExpansionPanelTitle>Delivery Address</VExpansionPanelTitle>
 
       <VExpansionPanelText>
-        <VForm @submit.prevent="() => {}">
+        <VForm
+          class="pt-4 pb-2"
+          @submit.prevent="() => {}"
+        >
           <VRow>
             <!-- 👉 Full Name -->
             <VCol
               cols="12"
               md="6"
             >
-              <AppTextField label="Full Name" />
+              <AppTextField
+                label="Full Name"
+                placeholder="John Doe"
+              />
             </VCol>
-
             <!-- 👉 Phone No -->
             <VCol
               cols="12"
@@ -58,17 +63,17 @@ const paymentMethods = [
               <AppTextField
                 label="Phone No"
                 type="number"
+                placeholder="+1 123 456 7890"
               />
             </VCol>
-
             <!-- 👉 Address -->
             <VCol cols="12">
               <AppTextarea
                 label="Address"
+                placeholder="1234 Main St, New York, NY 10001, USA"
                 rows="3"
               />
             </VCol>
-
             <!-- 👉 Pincode -->
             <VCol
               cols="12"
@@ -76,26 +81,30 @@ const paymentMethods = [
             >
               <AppTextField
                 label="Pincode"
+                placeholder="123456"
                 type="number"
               />
             </VCol>
-
             <!-- 👉 Landmark -->
             <VCol
               cols="12"
               md="6"
             >
-              <AppTextField label="Landmark" />
+              <AppTextField
+                label="Landmark"
+                placeholder="Near City Mall"
+              />
             </VCol>
-
             <!-- 👉 City -->
             <VCol
               cols="12"
               md="6"
             >
-              <AppTextField label="City" />
+              <AppTextField
+                label="City"
+                placeholder="New York"
+              />
             </VCol>
-
             <!-- 👉 State -->
             <VCol
               cols="12"
@@ -104,9 +113,9 @@ const paymentMethods = [
               <AppSelect
                 :items="stateList"
                 label="State"
+                placeholder="Select State"
               />
             </VCol>
-
             <!-- 👉 Address Type  -->
             <VCol cols="12">
               <VLabel class="mb-3">
@@ -142,7 +151,7 @@ const paymentMethods = [
         <!-- 👉 Radio Group -->
         <VRadioGroup
           v-model="deliveryOption"
-          class="delivery-options"
+          class="delivery-options pt-4 pb-2"
         >
           <div
             class="delivery-option d-flex rounded-t"
@@ -225,7 +234,7 @@ const paymentMethods = [
             md="6"
             cols="12"
           >
-            <VForm>
+            <VForm class="pt-4 pb-2">
               <!-- 👉 Payment Method -->
               <div>
                 <VRadioGroup
@@ -253,9 +262,10 @@ const paymentMethods = [
               <VRow v-show="paymentMethod === 'credit-debit-card'">
                 <!-- 👉 Card Number -->
                 <VCol cols="12">
-                  <AppTextField
+                  <VTextField
                     label="Card Number"
                     type="number"
+                    placeholder="1234 5678 9012 3456"
                   />
                 </VCol>
 
@@ -264,7 +274,10 @@ const paymentMethods = [
                   cols="12"
                   md="6"
                 >
-                  <AppTextField label="Name" />
+                  <VTextField
+                    label="Name"
+                    placeholder="john doe"
+                  />
                 </VCol>
 
                 <!-- 👉 Expire Date -->
@@ -272,7 +285,10 @@ const paymentMethods = [
                   cols="6"
                   md="3"
                 >
-                  <AppTextField label="Expiry" />
+                  <VTextField
+                    label="Expiry Date"
+                    placeholder="MM/YY"
+                  />
                 </VCol>
 
                 <!-- 👉 CVV Code -->
@@ -280,10 +296,11 @@ const paymentMethods = [
                   cols="6"
                   md="3"
                 >
-                  <AppTextField
-                    label="CVV"
+                  <VTextField
+                    label="CVV Code"
                     type="number"
                     max="3"
+                    placeholder="123"
                   />
                 </VCol>
               </VRow>
@@ -311,6 +328,8 @@ const paymentMethods = [
 
 <style lang="scss">
 .delivery-options {
+  cursor: pointer;
+
   .v-selection-control-group {
     inline-size: 100%;
   }
@@ -367,16 +386,21 @@ const paymentMethods = [
       <VExpansionPanelTitle>Delivery Address</VExpansionPanelTitle>
 
       <VExpansionPanelText>
-        <VForm @submit.prevent="() => {}">
+        <VForm
+          class="pt-4 pb-2"
+          @submit.prevent="() => {}"
+        >
           <VRow>
             <!-- 👉 Full Name -->
             <VCol
               cols="12"
               md="6"
             >
-              <AppTextField label="Full Name" />
+              <AppTextField
+                label="Full Name"
+                placeholder="John Doe"
+              />
             </VCol>
-
             <!-- 👉 Phone No -->
             <VCol
               cols="12"
@@ -385,17 +409,17 @@ const paymentMethods = [
               <AppTextField
                 label="Phone No"
                 type="number"
+                placeholder="+1 123 456 7890"
               />
             </VCol>
-
             <!-- 👉 Address -->
             <VCol cols="12">
               <AppTextarea
                 label="Address"
+                placeholder="1234 Main St, New York, NY 10001, USA"
                 rows="3"
               />
             </VCol>
-
             <!-- 👉 Pincode -->
             <VCol
               cols="12"
@@ -403,26 +427,30 @@ const paymentMethods = [
             >
               <AppTextField
                 label="Pincode"
+                placeholder="123456"
                 type="number"
               />
             </VCol>
-
             <!-- 👉 Landmark -->
             <VCol
               cols="12"
               md="6"
             >
-              <AppTextField label="Landmark" />
+              <AppTextField
+                label="Landmark"
+                placeholder="Near City Mall"
+              />
             </VCol>
-
             <!-- 👉 City -->
             <VCol
               cols="12"
               md="6"
             >
-              <AppTextField label="City" />
+              <AppTextField
+                label="City"
+                placeholder="New York"
+              />
             </VCol>
-
             <!-- 👉 State -->
             <VCol
               cols="12"
@@ -431,9 +459,9 @@ const paymentMethods = [
               <AppSelect
                 :items="stateList"
                 label="State"
+                placeholder="Select State"
               />
             </VCol>
-
             <!-- 👉 Address Type  -->
             <VCol cols="12">
               <VLabel class="mb-3">
@@ -469,7 +497,7 @@ const paymentMethods = [
         <!-- 👉 Radio Group -->
         <VRadioGroup
           v-model="deliveryOption"
-          class="delivery-options"
+          class="delivery-options pt-4 pb-2"
         >
           <div
             class="delivery-option d-flex rounded-t"
@@ -552,7 +580,7 @@ const paymentMethods = [
             md="6"
             cols="12"
           >
-            <VForm>
+            <VForm class="pt-4 pb-2">
               <!-- 👉 Payment Method -->
               <div>
                 <VRadioGroup
@@ -580,9 +608,10 @@ const paymentMethods = [
               <VRow v-show="paymentMethod === 'credit-debit-card'">
                 <!-- 👉 Card Number -->
                 <VCol cols="12">
-                  <AppTextField
+                  <VTextField
                     label="Card Number"
                     type="number"
+                    placeholder="1234 5678 9012 3456"
                   />
                 </VCol>
 
@@ -591,7 +620,10 @@ const paymentMethods = [
                   cols="12"
                   md="6"
                 >
-                  <AppTextField label="Name" />
+                  <VTextField
+                    label="Name"
+                    placeholder="john doe"
+                  />
                 </VCol>
 
                 <!-- 👉 Expire Date -->
@@ -599,7 +631,10 @@ const paymentMethods = [
                   cols="6"
                   md="3"
                 >
-                  <AppTextField label="Expiry" />
+                  <VTextField
+                    label="Expiry Date"
+                    placeholder="MM/YY"
+                  />
                 </VCol>
 
                 <!-- 👉 CVV Code -->
@@ -607,10 +642,11 @@ const paymentMethods = [
                   cols="6"
                   md="3"
                 >
-                  <AppTextField
-                    label="CVV"
+                  <VTextField
+                    label="CVV Code"
                     type="number"
                     max="3"
+                    placeholder="123"
                   />
                 </VCol>
               </VRow>
@@ -638,6 +674,8 @@ const paymentMethods = [
 
 <style lang="scss">
 .delivery-options {
+  cursor: pointer;
+
   .v-selection-control-group {
     inline-size: 100%;
   }
@@ -673,7 +711,7 @@ const values = ref<typeof items[number][]>([])
         <AppTextField
           v-model="username"
           label="Username"
-          placeholder="Username"
+          placeholder="Johndoe"
         />
       </VCol>
 
@@ -683,7 +721,7 @@ const values = ref<typeof items[number][]>([])
           v-model="email"
           label="Email"
           type="email"
-          placeholder="Email"
+          placeholder="johndoe@email.com"
         />
       </VCol>
 
@@ -692,9 +730,10 @@ const values = ref<typeof items[number][]>([])
         <AppTextField
           v-model="password"
           label="Password"
+          autocomplete="on"
           type="password"
           persistent-hint
-          placeholder="Password"
+          placeholder="············"
           hint="Your password must be 8-20 characters long."
         />
       </VCol>
@@ -707,6 +746,7 @@ const values = ref<typeof items[number][]>([])
           chips
           multiple
           label="Autocomplete"
+          placeholder="Select"
         />
       </VCol>
 
@@ -763,7 +803,7 @@ const values = ref([])
         <AppTextField
           v-model="username"
           label="Username"
-          placeholder="Username"
+          placeholder="Johndoe"
         />
       </VCol>
 
@@ -773,7 +813,7 @@ const values = ref([])
           v-model="email"
           label="Email"
           type="email"
-          placeholder="Email"
+          placeholder="johndoe@email.com"
         />
       </VCol>
 
@@ -782,9 +822,10 @@ const values = ref([])
         <AppTextField
           v-model="password"
           label="Password"
+          autocomplete="on"
           type="password"
           persistent-hint
-          placeholder="Password"
+          placeholder="············"
           hint="Your password must be 8-20 characters long."
         />
       </VCol>
@@ -797,6 +838,7 @@ const values = ref([])
           chips
           multiple
           label="Autocomplete"
+          placeholder="Select"
         />
       </VCol>
 
@@ -831,11 +873,719 @@ const values = ref([])
 `,
 }
 
+export const formSticky = {
+  ts: `<script setup lang="ts">
+import type { CustomInputContent } from '@core/types'
+
+const radioContent: CustomInputContent[] = [
+  {
+    title: 'Standard',
+    desc: 'Delivery in 3-5 days.',
+    value: 'standard',
+    icon: 'tabler-briefcase',
+  },
+  {
+    title: 'Express',
+    desc: 'Delivery within 2 days.',
+    value: 'express',
+    icon: 'tabler-rocket',
+  },
+  {
+    title: 'Overnight',
+    desc: 'Delivery within a days.',
+    value: 'overnight',
+    icon: 'tabler-crown',
+  },
+]
+
+const promoCodeList = [
+  {
+    code: 'TAKEITALL',
+    desc: 'Apply this code to get 15% discount on orders above 20$.',
+  },
+  {
+    code: 'FESTIVE10',
+    desc: 'Apply this code to get 10% discount on all orders.',
+  },
+  {
+    code: 'MYSTERYDEAL',
+    desc: 'Apply this code to get discount between 10% - 50%.',
+  },
+]
+
+const formData = ref({
+  fullName: '',
+  email: '',
+  contactNumber: null,
+  altContactNumber: null,
+  address: '',
+  pincode: null,
+  Landmark: '',
+  city: '',
+  state: '',
+  defaultAddress: false,
+  addressType: 'home',
+  deliveryType: 'standard',
+  promoCode: '',
+  paymentMethod: 'card',
+  cardNumber: null,
+  cardName: '',
+  cardExDate: '',
+  cardCvv: '',
+})
+</script>
+
+<template>
+  <VCard class="overflow-visible">
+    <div class="w-100 sticky-header">
+      <div class=" d-flex align-center gap-4 flex-wrap bg-background pa-6">
+        <VCardTitle>Sticky Action Bar</VCardTitle>
+        <VSpacer />
+        <div>
+          <VBtn
+            variant="tonal"
+            class="me-5"
+          >
+            Back
+          </VBtn>
+          <VBtn>Place Order</VBtn>
+        </div>
+      </div>
+    </div>
+
+    <VCardText>
+      <VRow>
+        <VCol
+          md="8"
+          cols="12"
+          class="mx-auto"
+        >
+          <VForm>
+            <h2 class="text-lg font-weight-medium mb-6">
+              1. Delivery Address
+            </h2>
+            <VRow>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.fullName"
+                  label="Full Name"
+                  placeholder="John Doe"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.email"
+                  label="Email"
+                  placeholder="john.doe"
+                  suffix="@example.com"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.contactNumber"
+                  label="Contact Number"
+                  placeholder="658 123 4567"
+                  type="number"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.altContactNumber"
+                  label="Alternate Number"
+                  placeholder="658 123 4567"
+                  type="number"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <VTextarea
+                  v-model="formData.address"
+                  label="Address"
+                  placeholder="1456, Mall Road"
+                  rows="2"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.pincode"
+                  label="Pincode"
+                  placeholder="658468"
+                  type="number"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.Landmark"
+                  label="Landmark"
+                  placeholder="Nr. Wall Street"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.city"
+                  label="City"
+                  placeholder="Jackson"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppSelect
+                  v-model="formData.state"
+                  label="State"
+                  placeholder="California"
+                  :items="['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida']"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <VCheckbox
+                  v-model="formData.defaultAddress"
+                  label="Use this as default delivery address"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <p class="text-high-emphasis text-base mb-1">
+                  Address Type
+                </p>
+                <VRadioGroup
+                  v-model="formData.addressType"
+                  inline
+                >
+                  <VRadio
+                    label="Home (All day delivery)"
+                    value="home"
+                  />
+                  <VRadio
+                    label="Office (Delivery between 10 AM - 5 PM)"
+                    value="work"
+                  />
+                </VRadioGroup>
+              </VCol>
+            </VRow>
+
+            <VDivider class="my-4" />
+
+            <h2 class="text-lg font-weight-medium mb-6">
+              2. Delivery Type
+            </h2>
+
+            <CustomRadiosWithIcon
+              v-model:selected-radio="formData.deliveryType"
+              :radio-content="radioContent"
+              :grid-column="{ sm: '4', cols: '12' }"
+            />
+
+            <VDivider class="my-4" />
+
+            <h2 class="text-lg font-weight-medium mb-6">
+              3. Apply Promo code
+            </h2>
+
+            <div class="d-flex align-center gap-4">
+              <VTextField
+                v-model="formData.promoCode"
+                density="compact"
+                placeholder="TAKEITALL"
+              />
+              <VBtn>Apply</VBtn>
+            </div>
+
+            <div class="d-flex align-center gap-2 my-4">
+              <VDivider style="border-style: dashed;" />
+              <span>OR</span>
+              <VDivider style="border-style: dashed;" />
+            </div>
+
+            <VList
+              class="border rounded py-0"
+              lines="two"
+            >
+              <VListItem
+                v-for="(item, index) in promoCodeList"
+                :key="item.code"
+                :title="item.code"
+                :subtitle="item.desc"
+                :class="index !== 0 ? 'border-t' : ''"
+              >
+                <template #append>
+                  <VBtn variant="outlined">
+                    Apply
+                  </VBtn>
+                </template>
+              </VListItem>
+            </VList>
+
+            <VDivider class="my-4" />
+
+            <h2 class="text-lg font-weight-medium mb-6">
+              4. Payment Method
+            </h2>
+
+            <VRadioGroup
+              v-model="formData.paymentMethod"
+              inline
+              class="mb-4"
+            >
+              <VRadio
+                value="card"
+                label="Credit/Debit/ATM Card"
+              />
+              <VRadio
+                value="cash-on-delivery"
+                label="Cash On Delivery"
+              />
+            </VRadioGroup>
+
+            <VRow v-show="formData.paymentMethod === 'card'">
+              <VCol cols="12">
+                <VTextField
+                  label="Card Number"
+                  placeholder="1356 3215 6548 7898"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  label="Name"
+                  placeholder="John Doe"
+                />
+              </VCol>
+
+              <VCol
+                cols="6"
+                md="3"
+              >
+                <VTextField
+                  label="Exp. Date"
+                  placeholder="MM/YY"
+                />
+              </VCol>
+              <VCol
+                cols="6"
+                md="3"
+              >
+                <VTextField
+                  label="CVV Code"
+                  placeholder="654"
+                />
+              </VCol>
+            </VRow>
+
+            <div v-show="formData.paymentMethod === 'cash-on-delivery'">
+              <p>
+                Cash on delivery is a mode of payment where you make the payment after the goods/services are received.
+              </p>
+              <p>You can pay cash or make the payment via debit/credit card directly to the delivery person.</p>
+            </div>
+          </VForm>
+        </VCol>
+      </VRow>
+    </VCardText>
+  </VCard>
+</template>
+
+<style lang="scss" scoped>
+.sticky-header {
+  position: sticky;
+  z-index: 9;
+  inset-block-end: 0;
+  inset-block-start: 4rem;
+  transition: all 0.3s ease-in-out;
+}
+</style>
+`,
+  js: `<script setup>
+const radioContent = [
+  {
+    title: 'Standard',
+    desc: 'Delivery in 3-5 days.',
+    value: 'standard',
+    icon: 'tabler-briefcase',
+  },
+  {
+    title: 'Express',
+    desc: 'Delivery within 2 days.',
+    value: 'express',
+    icon: 'tabler-rocket',
+  },
+  {
+    title: 'Overnight',
+    desc: 'Delivery within a days.',
+    value: 'overnight',
+    icon: 'tabler-crown',
+  },
+]
+
+const promoCodeList = [
+  {
+    code: 'TAKEITALL',
+    desc: 'Apply this code to get 15% discount on orders above 20$.',
+  },
+  {
+    code: 'FESTIVE10',
+    desc: 'Apply this code to get 10% discount on all orders.',
+  },
+  {
+    code: 'MYSTERYDEAL',
+    desc: 'Apply this code to get discount between 10% - 50%.',
+  },
+]
+
+const formData = ref({
+  fullName: '',
+  email: '',
+  contactNumber: null,
+  altContactNumber: null,
+  address: '',
+  pincode: null,
+  Landmark: '',
+  city: '',
+  state: '',
+  defaultAddress: false,
+  addressType: 'home',
+  deliveryType: 'standard',
+  promoCode: '',
+  paymentMethod: 'card',
+  cardNumber: null,
+  cardName: '',
+  cardExDate: '',
+  cardCvv: '',
+})
+</script>
+
+<template>
+  <VCard class="overflow-visible">
+    <div class="w-100 sticky-header">
+      <div class=" d-flex align-center gap-4 flex-wrap bg-background pa-6">
+        <VCardTitle>Sticky Action Bar</VCardTitle>
+        <VSpacer />
+        <div>
+          <VBtn
+            variant="tonal"
+            class="me-5"
+          >
+            Back
+          </VBtn>
+          <VBtn>Place Order</VBtn>
+        </div>
+      </div>
+    </div>
+
+    <VCardText>
+      <VRow>
+        <VCol
+          md="8"
+          cols="12"
+          class="mx-auto"
+        >
+          <VForm>
+            <h2 class="text-lg font-weight-medium mb-6">
+              1. Delivery Address
+            </h2>
+            <VRow>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.fullName"
+                  label="Full Name"
+                  placeholder="John Doe"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.email"
+                  label="Email"
+                  placeholder="john.doe"
+                  suffix="@example.com"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.contactNumber"
+                  label="Contact Number"
+                  placeholder="658 123 4567"
+                  type="number"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.altContactNumber"
+                  label="Alternate Number"
+                  placeholder="658 123 4567"
+                  type="number"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <VTextarea
+                  v-model="formData.address"
+                  label="Address"
+                  placeholder="1456, Mall Road"
+                  rows="2"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.pincode"
+                  label="Pincode"
+                  placeholder="658468"
+                  type="number"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.Landmark"
+                  label="Landmark"
+                  placeholder="Nr. Wall Street"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  v-model="formData.city"
+                  label="City"
+                  placeholder="Jackson"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppSelect
+                  v-model="formData.state"
+                  label="State"
+                  placeholder="California"
+                  :items="['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida']"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <VCheckbox
+                  v-model="formData.defaultAddress"
+                  label="Use this as default delivery address"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <p class="text-high-emphasis text-base mb-1">
+                  Address Type
+                </p>
+                <VRadioGroup
+                  v-model="formData.addressType"
+                  inline
+                >
+                  <VRadio
+                    label="Home (All day delivery)"
+                    value="home"
+                  />
+                  <VRadio
+                    label="Office (Delivery between 10 AM - 5 PM)"
+                    value="work"
+                  />
+                </VRadioGroup>
+              </VCol>
+            </VRow>
+
+            <VDivider class="my-4" />
+
+            <h2 class="text-lg font-weight-medium mb-6">
+              2. Delivery Type
+            </h2>
+
+            <CustomRadiosWithIcon
+              v-model:selected-radio="formData.deliveryType"
+              :radio-content="radioContent"
+              :grid-column="{ sm: '4', cols: '12' }"
+            />
+
+            <VDivider class="my-4" />
+
+            <h2 class="text-lg font-weight-medium mb-6">
+              3. Apply Promo code
+            </h2>
+
+            <div class="d-flex align-center gap-4">
+              <VTextField
+                v-model="formData.promoCode"
+                density="compact"
+                placeholder="TAKEITALL"
+              />
+              <VBtn>Apply</VBtn>
+            </div>
+
+            <div class="d-flex align-center gap-2 my-4">
+              <VDivider style="border-style: dashed;" />
+              <span>OR</span>
+              <VDivider style="border-style: dashed;" />
+            </div>
+
+            <VList
+              class="border rounded py-0"
+              lines="two"
+            >
+              <VListItem
+                v-for="(item, index) in promoCodeList"
+                :key="item.code"
+                :title="item.code"
+                :subtitle="item.desc"
+                :class="index !== 0 ? 'border-t' : ''"
+              >
+                <template #append>
+                  <VBtn variant="outlined">
+                    Apply
+                  </VBtn>
+                </template>
+              </VListItem>
+            </VList>
+
+            <VDivider class="my-4" />
+
+            <h2 class="text-lg font-weight-medium mb-6">
+              4. Payment Method
+            </h2>
+
+            <VRadioGroup
+              v-model="formData.paymentMethod"
+              inline
+              class="mb-4"
+            >
+              <VRadio
+                value="card"
+                label="Credit/Debit/ATM Card"
+              />
+              <VRadio
+                value="cash-on-delivery"
+                label="Cash On Delivery"
+              />
+            </VRadioGroup>
+
+            <VRow v-show="formData.paymentMethod === 'card'">
+              <VCol cols="12">
+                <VTextField
+                  label="Card Number"
+                  placeholder="1356 3215 6548 7898"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <VTextField
+                  label="Name"
+                  placeholder="John Doe"
+                />
+              </VCol>
+
+              <VCol
+                cols="6"
+                md="3"
+              >
+                <VTextField
+                  label="Exp. Date"
+                  placeholder="MM/YY"
+                />
+              </VCol>
+              <VCol
+                cols="6"
+                md="3"
+              >
+                <VTextField
+                  label="CVV Code"
+                  placeholder="654"
+                />
+              </VCol>
+            </VRow>
+
+            <div v-show="formData.paymentMethod === 'cash-on-delivery'">
+              <p>
+                Cash on delivery is a mode of payment where you make the payment after the goods/services are received.
+              </p>
+              <p>You can pay cash or make the payment via debit/credit card directly to the delivery person.</p>
+            </div>
+          </VForm>
+        </VCol>
+      </VRow>
+    </VCardText>
+  </VCard>
+</template>
+
+<style lang="scss" scoped>
+.sticky-header {
+  position: sticky;
+  z-index: 9;
+  inset-block-end: 0;
+  inset-block-start: 4rem;
+  transition: all 0.3s ease-in-out;
+}
+</style>
+`,
+}
+
 export const formValidation = {
   ts: `<script lang="ts" setup>
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { VForm } from 'vuetify/components/VForm'
-import { emailValidator, requiredValidator } from '@validators'
 
 const name = ref('')
 const email = ref('')
@@ -856,6 +1606,7 @@ const form = ref<VForm>()
           v-model="name"
           :rules="[requiredValidator]"
           label="Name"
+          placeholder="John Doe"
           required
         />
       </VCol>
@@ -865,6 +1616,7 @@ const form = ref<VForm>()
           v-model="email"
           :rules="[emailValidator, requiredValidator]"
           label="E-mail"
+          placeholder="johndoe@email.com"
           required
         />
       </VCol>
@@ -874,6 +1626,7 @@ const form = ref<VForm>()
           v-model="select"
           :items="items"
           :rules="[requiredValidator]"
+          placeholder="Select an Item"
           label="Item"
           name="select"
           require
@@ -919,11 +1672,6 @@ const form = ref<VForm>()
 </template>
 `,
   js: `<script setup>
-import {
-  emailValidator,
-  requiredValidator,
-} from '@validators'
-
 const name = ref('')
 const email = ref('')
 
@@ -950,6 +1698,7 @@ const form = ref()
           v-model="name"
           :rules="[requiredValidator]"
           label="Name"
+          placeholder="John Doe"
           required
         />
       </VCol>
@@ -959,6 +1708,7 @@ const form = ref()
           v-model="email"
           :rules="[emailValidator, requiredValidator]"
           label="E-mail"
+          placeholder="johndoe@email.com"
           required
         />
       </VCol>
@@ -968,6 +1718,7 @@ const form = ref()
           v-model="select"
           :items="items"
           :rules="[requiredValidator]"
+          placeholder="Select an Item"
           label="Item"
           name="select"
           require
@@ -1068,6 +1819,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="firstName"
                   label="First name"
+                  placeholder="John"
                 />
               </VCol>
 
@@ -1078,6 +1830,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="lastName"
                   label="Last name"
+                  placeholder="Doe"
                 />
               </VCol>
 
@@ -1089,6 +1842,7 @@ const isCPasswordVisible = ref(false)
                   v-model="country"
                   :items="countryList"
                   label="Country"
+                  placeholder="Select Country"
                 />
               </VCol>
 
@@ -1103,16 +1857,17 @@ const isCPasswordVisible = ref(false)
                   chips
                   clearable
                   label="Language"
+                  placeholder="Select Language"
                 />
               </VCol>
               <VCol
                 cols="12"
                 md="6"
               >
-                <AppTextField
+                <AppDateTimePicker
                   v-model="birthDate"
                   label="Birth Date"
-                  placeholder="YYYY-MM-DD"
+                  placeholder="Select Birth Date"
                 />
               </VCol>
               <VCol
@@ -1123,6 +1878,7 @@ const isCPasswordVisible = ref(false)
                   v-model="phoneNo"
                   type="number"
                   label="Phone No."
+                  placeholder="+1 123 456 7890"
                 />
               </VCol>
             </VRow>
@@ -1139,6 +1895,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="username"
                   label="Username"
+                  placeholder="Johndoe"
                 />
               </VCol>
 
@@ -1150,6 +1907,7 @@ const isCPasswordVisible = ref(false)
                   v-model="email"
                   label="Email"
                   suffix="@example.com"
+                  placeholder="johndoe@email.com"
                 />
               </VCol>
 
@@ -1160,8 +1918,9 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="password"
                   label="Password"
+                  placeholder="············"
                   :type="isPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isPasswordVisible ? 'tabler-eye' : 'tabler-eye-off'"
+                  :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
               </VCol>
@@ -1173,8 +1932,9 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="cPassword"
                   label="Confirm Password"
+                  placeholder="············"
                   :type="isCPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isCPasswordVisible ? 'tabler-eye' : 'tabler-eye-off'"
+                  :append-inner-icon="isCPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isCPasswordVisible = !isCPasswordVisible"
                 />
               </VCol>
@@ -1192,6 +1952,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="twitterLink"
                   label="Twitter"
+                  placeholder="https://twitter.com/username"
                 />
               </VCol>
               <VCol
@@ -1201,6 +1962,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="facebookLink"
                   label="Facebook"
+                  placeholder="https://facebook.com/username"
                 />
               </VCol>
               <VCol
@@ -1210,6 +1972,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="googlePlusLink"
                   label="Google+"
+                  placeholder="https://plus.google.com/username"
                 />
               </VCol>
               <VCol
@@ -1219,6 +1982,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="linkedInLink"
                   label="LinkedIn"
+                  placeholder="https://linkedin.com/username"
                 />
               </VCol>
               <VCol
@@ -1228,6 +1992,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="instagramLink"
                   label="Instagram"
+                  placeholder="https://instagram.com/username"
                 />
               </VCol>
               <VCol
@@ -1237,6 +2002,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="quoraLink"
                   label="Quora"
+                  placeholder="https://quora.com/username"
                 />
               </VCol>
             </VRow>
@@ -1332,6 +2098,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="firstName"
                   label="First name"
+                  placeholder="John"
                 />
               </VCol>
 
@@ -1342,6 +2109,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="lastName"
                   label="Last name"
+                  placeholder="Doe"
                 />
               </VCol>
 
@@ -1353,6 +2121,7 @@ const isCPasswordVisible = ref(false)
                   v-model="country"
                   :items="countryList"
                   label="Country"
+                  placeholder="Select Country"
                 />
               </VCol>
 
@@ -1367,16 +2136,17 @@ const isCPasswordVisible = ref(false)
                   chips
                   clearable
                   label="Language"
+                  placeholder="Select Language"
                 />
               </VCol>
               <VCol
                 cols="12"
                 md="6"
               >
-                <AppTextField
+                <AppDateTimePicker
                   v-model="birthDate"
                   label="Birth Date"
-                  placeholder="YYYY-MM-DD"
+                  placeholder="Select Birth Date"
                 />
               </VCol>
               <VCol
@@ -1387,6 +2157,7 @@ const isCPasswordVisible = ref(false)
                   v-model="phoneNo"
                   type="number"
                   label="Phone No."
+                  placeholder="+1 123 456 7890"
                 />
               </VCol>
             </VRow>
@@ -1403,6 +2174,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="username"
                   label="Username"
+                  placeholder="Johndoe"
                 />
               </VCol>
 
@@ -1414,6 +2186,7 @@ const isCPasswordVisible = ref(false)
                   v-model="email"
                   label="Email"
                   suffix="@example.com"
+                  placeholder="johndoe@email.com"
                 />
               </VCol>
 
@@ -1424,8 +2197,9 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="password"
                   label="Password"
+                  placeholder="············"
                   :type="isPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isPasswordVisible ? 'tabler-eye' : 'tabler-eye-off'"
+                  :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
               </VCol>
@@ -1437,8 +2211,9 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="cPassword"
                   label="Confirm Password"
+                  placeholder="············"
                   :type="isCPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isCPasswordVisible ? 'tabler-eye' : 'tabler-eye-off'"
+                  :append-inner-icon="isCPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isCPasswordVisible = !isCPasswordVisible"
                 />
               </VCol>
@@ -1456,6 +2231,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="twitterLink"
                   label="Twitter"
+                  placeholder="https://twitter.com/username"
                 />
               </VCol>
               <VCol
@@ -1465,6 +2241,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="facebookLink"
                   label="Facebook"
+                  placeholder="https://facebook.com/username"
                 />
               </VCol>
               <VCol
@@ -1474,6 +2251,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="googlePlusLink"
                   label="Google+"
+                  placeholder="https://plus.google.com/username"
                 />
               </VCol>
               <VCol
@@ -1483,6 +2261,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="linkedInLink"
                   label="LinkedIn"
+                  placeholder="https://linkedin.com/username"
                 />
               </VCol>
               <VCol
@@ -1492,6 +2271,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="instagramLink"
                   label="Instagram"
+                  placeholder="https://instagram.com/username"
                 />
               </VCol>
               <VCol
@@ -1501,6 +2281,7 @@ const isCPasswordVisible = ref(false)
                 <AppTextField
                   v-model="quoraLink"
                   label="Quora"
+                  placeholder="https://quora.com/username"
                 />
               </VCol>
             </VRow>
@@ -1558,7 +2339,7 @@ const checkbox = ref(false)
             <AppTextField
               id="firstName"
               v-model="firstName"
-              placeholder="First Name"
+              placeholder="John"
               persistent-placeholder
             />
           </VCol>
@@ -1586,7 +2367,7 @@ const checkbox = ref(false)
             <AppTextField
               id="email"
               v-model="email"
-              placeholder="Email"
+              placeholder="johndoe@email.com"
               persistent-placeholder
             />
           </VCol>
@@ -1615,7 +2396,7 @@ const checkbox = ref(false)
               id="mobile"
               v-model="mobile"
               type="number"
-              placeholder="Number"
+              placeholder="+1 123 456 7890"
               persistent-placeholder
             />
           </VCol>
@@ -1643,8 +2424,9 @@ const checkbox = ref(false)
             <AppTextField
               id="password"
               v-model="password"
+              autocomplete="on"
               type="password"
-              placeholder="Password"
+              placeholder="············"
               persistent-placeholder
             />
           </VCol>
@@ -1717,7 +2499,7 @@ const checkbox = ref(false)
             <AppTextField
               id="firstName"
               v-model="firstName"
-              placeholder="First Name"
+              placeholder="John"
               persistent-placeholder
             />
           </VCol>
@@ -1745,7 +2527,7 @@ const checkbox = ref(false)
             <AppTextField
               id="email"
               v-model="email"
-              placeholder="Email"
+              placeholder="johndoe@email.com"
               persistent-placeholder
             />
           </VCol>
@@ -1774,7 +2556,7 @@ const checkbox = ref(false)
               id="mobile"
               v-model="mobile"
               type="number"
-              placeholder="Number"
+              placeholder="+1 123 456 7890"
               persistent-placeholder
             />
           </VCol>
@@ -1802,8 +2584,9 @@ const checkbox = ref(false)
             <AppTextField
               id="password"
               v-model="password"
+              autocomplete="on"
               type="password"
-              placeholder="Password"
+              placeholder="············"
               persistent-placeholder
             />
           </VCol>
@@ -1880,7 +2663,7 @@ const checkbox = ref(false)
               id="firstNameHorizontalIcons"
               v-model="firstName"
               prepend-inner-icon="tabler-user"
-              placeholder="First Name"
+              placeholder="John"
               persistent-placeholder
             />
           </VCol>
@@ -1909,7 +2692,7 @@ const checkbox = ref(false)
               id="emailHorizontalIcons"
               v-model="email"
               prepend-inner-icon="tabler-mail"
-              placeholder="Email"
+              placeholder="johndoe@email.com"
               persistent-placeholder
             />
           </VCol>
@@ -1939,7 +2722,7 @@ const checkbox = ref(false)
               v-model="mobile"
               type="number"
               prepend-inner-icon="tabler-device-mobile"
-              placeholder="Number"
+              placeholder="+1 123 456 7890"
               persistent-placeholder
             />
           </VCol>
@@ -1968,8 +2751,9 @@ const checkbox = ref(false)
               id="passwordHorizontalIcons"
               v-model="password"
               prepend-inner-icon="tabler-lock"
+              autocomplete="on"
               type="password"
-              placeholder="Password"
+              placeholder="············"
               persistent-placeholder
             />
           </VCol>
@@ -2043,7 +2827,7 @@ const checkbox = ref(false)
               id="firstNameHorizontalIcons"
               v-model="firstName"
               prepend-inner-icon="tabler-user"
-              placeholder="First Name"
+              placeholder="John"
               persistent-placeholder
             />
           </VCol>
@@ -2072,7 +2856,7 @@ const checkbox = ref(false)
               id="emailHorizontalIcons"
               v-model="email"
               prepend-inner-icon="tabler-mail"
-              placeholder="Email"
+              placeholder="johndoe@email.com"
               persistent-placeholder
             />
           </VCol>
@@ -2102,7 +2886,7 @@ const checkbox = ref(false)
               v-model="mobile"
               type="number"
               prepend-inner-icon="tabler-device-mobile"
-              placeholder="Number"
+              placeholder="+1 123 456 7890"
               persistent-placeholder
             />
           </VCol>
@@ -2131,8 +2915,9 @@ const checkbox = ref(false)
               id="passwordHorizontalIcons"
               v-model="password"
               prepend-inner-icon="tabler-lock"
+              autocomplete="on"
               type="password"
-              placeholder="Password"
+              placeholder="············"
               persistent-placeholder
             />
           </VCol>
@@ -2197,7 +2982,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="firstName"
           label="First Name"
-          placeholder="First Name"
+          placeholder="John"
         />
       </VCol>
 
@@ -2209,7 +2994,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="lastName"
           label="Last Name"
-          placeholder="Last Name"
+          placeholder="Doe"
         />
       </VCol>
 
@@ -2221,7 +3006,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="email"
           label="Email"
-          placeholder="Email"
+          placeholder="johndoe@email.com"
         />
       </VCol>
 
@@ -2233,7 +3018,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="city"
           label="City"
-          placeholder="City"
+          placeholder="New York"
         />
       </VCol>
 
@@ -2245,7 +3030,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="country"
           label="Country"
-          placeholder="Country"
+          placeholder="United States"
         />
       </VCol>
 
@@ -2257,7 +3042,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="company"
           label="Company"
-          placeholder="Company"
+          placeholder="Pixinvent"
         />
       </VCol>
 
@@ -2310,7 +3095,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="firstName"
           label="First Name"
-          placeholder="First Name"
+          placeholder="John"
         />
       </VCol>
 
@@ -2322,7 +3107,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="lastName"
           label="Last Name"
-          placeholder="Last Name"
+          placeholder="Doe"
         />
       </VCol>
 
@@ -2334,7 +3119,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="email"
           label="Email"
-          placeholder="Email"
+          placeholder="johndoe@email.com"
         />
       </VCol>
 
@@ -2346,7 +3131,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="city"
           label="City"
-          placeholder="City"
+          placeholder="New York"
         />
       </VCol>
 
@@ -2358,7 +3143,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="country"
           label="Country"
-          placeholder="Country"
+          placeholder="United States"
         />
       </VCol>
 
@@ -2370,7 +3155,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="company"
           label="Company"
-          placeholder="Company"
+          placeholder="Pixinvent"
         />
       </VCol>
 
@@ -2404,6 +3189,724 @@ const checkbox = ref(false)
 `,
 }
 
+export const sticky = {
+  ts: `<script setup lang="ts">
+import type { CustomInputContent } from '@core/types'
+
+const radioContent: CustomInputContent[] = [
+  {
+    title: 'Standard',
+    desc: 'Delivery in 3-5 days.',
+    value: 'standard',
+    icon: { icon: 'tabler-briefcase-2', size: '32' },
+  },
+  {
+    title: 'Express',
+    desc: 'Delivery within 2 days.',
+    value: 'express',
+    icon: { icon: 'tabler-rocket', size: '32' },
+  },
+  {
+    title: 'Overnight',
+    desc: 'Delivery within a days.',
+    value: 'overnight',
+    icon: { icon: 'tabler-crown', size: '32' },
+  },
+]
+
+const promoCodeList = [
+  {
+    code: 'TAKEITALL',
+    desc: 'Apply this code to get 15% discount on orders above 20$.',
+  },
+  {
+    code: 'FESTIVE10',
+    desc: 'Apply this code to get 10% discount on all orders.',
+  },
+  {
+    code: 'MYSTERYDEAL',
+    desc: 'Apply this code to get discount between 10% - 50%.',
+  },
+]
+
+const formData = ref({
+  fullName: '',
+  email: '',
+  contactNumber: null,
+  altContactNumber: null,
+  address: '',
+  pincode: null,
+  Landmark: '',
+  city: '',
+  state: null,
+  defaultAddress: false,
+  addressType: 'home',
+  deliveryType: 'overnight',
+  promoCode: '',
+  paymentMethod: 'card',
+  cardNumber: null,
+  cardName: '',
+  cardExDate: '',
+  cardCvv: '',
+})
+</script>
+
+<template>
+  <VCard class="overflow-visible">
+    <div class="w-100 sticky-header">
+      <div class=" d-flex align-center gap-4 flex-wrap bg-background pa-6">
+        <VCardTitle>Sticky Action Bar</VCardTitle>
+        <VSpacer />
+        <div>
+          <VBtn
+            variant="tonal"
+            class="me-5"
+          >
+            Back
+          </VBtn>
+          <VBtn>Place Order</VBtn>
+        </div>
+      </div>
+    </div>
+
+    <VCardText>
+      <VRow>
+        <VCol
+          md="8"
+          cols="12"
+          class="mx-auto"
+        >
+          <VForm>
+            <h2 class="text-lg font-weight-medium mb-6">
+              1. Delivery Address
+            </h2>
+            <VRow>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.fullName"
+                  label="Full Name"
+                  placeholder="John Doe"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.email"
+                  label="Email"
+                  placeholder="john.doe"
+                  suffix="@example.com"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.contactNumber"
+                  label="Contact Number"
+                  placeholder="658 123 4567"
+                  type="number"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.altContactNumber"
+                  label="Alternate Number"
+                  placeholder="658 123 4567"
+                  type="number"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <AppTextarea
+                  v-model="formData.address"
+                  label="Address"
+                  placeholder="1456, Mall Road"
+                  rows="2"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.pincode"
+                  label="Pincode"
+                  placeholder="658468"
+                  type="number"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.Landmark"
+                  label="Landmark"
+                  placeholder="Nr. Wall Street"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.city"
+                  label="City"
+                  placeholder="Jackson"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppSelect
+                  v-model="formData.state"
+                  label="State"
+                  placeholder="Select State"
+                  :items="['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida']"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <VCheckbox
+                  v-model="formData.defaultAddress"
+                  label="Use this as default delivery address"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <p class="text-high-emphasis text-base mb-1">
+                  Address Type
+                </p>
+                <VRadioGroup
+                  v-model="formData.addressType"
+                  inline
+                >
+                  <VRadio
+                    label="Home (All day delivery)"
+                    value="home"
+                  />
+                  <VRadio
+                    label="Office (Delivery between 10 AM - 5 PM)"
+                    value="work"
+                  />
+                </VRadioGroup>
+              </VCol>
+            </VRow>
+
+            <VDivider class="my-4" />
+
+            <h2 class="text-lg font-weight-medium mb-6">
+              2. Delivery Type
+            </h2>
+
+            <CustomRadiosWithIcon
+              v-model:selected-radio="formData.deliveryType"
+              :radio-content="radioContent"
+              :grid-column="{ sm: '4', cols: '12' }"
+            />
+
+            <VDivider class="my-4" />
+
+            <h2 class="text-lg font-weight-medium mb-6">
+              3. Apply Promo code
+            </h2>
+
+            <div class="d-flex align-center gap-4">
+              <AppTextField
+                v-model="formData.promoCode"
+                density="compact"
+                placeholder="TAKEITALL"
+              />
+              <VBtn>Apply</VBtn>
+            </div>
+
+            <div class="d-flex align-center gap-2 my-4">
+              <VDivider style="border-style: dashed;" />
+              <span>OR</span>
+              <VDivider style="border-style: dashed;" />
+            </div>
+
+            <VList
+              class="border rounded py-0"
+              lines="two"
+            >
+              <VListItem
+                v-for="(item, index) in promoCodeList"
+                :key="item.code"
+                :title="item.code"
+                :subtitle="item.desc"
+                :class="index !== 0 ? 'border-t' : ''"
+              >
+                <template #append>
+                  <VBtn variant="tonal">
+                    Apply
+                  </VBtn>
+                </template>
+              </VListItem>
+            </VList>
+
+            <VDivider class="my-4" />
+
+            <h2 class="text-lg font-weight-medium mb-6">
+              4. Payment Method
+            </h2>
+
+            <VRadioGroup
+              v-model="formData.paymentMethod"
+              inline
+              class="mb-4"
+            >
+              <VRadio
+                value="card"
+                label="Credit/Debit/ATM Card"
+              />
+              <VRadio
+                value="cash-on-delivery"
+                label="Cash On Delivery"
+              />
+            </VRadioGroup>
+
+            <VRow v-show="formData.paymentMethod === 'card'">
+              <VCol cols="12">
+                <AppTextField
+                  label="Card Number"
+                  placeholder="1356 3215 6548 7898"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  label="Name"
+                  placeholder="John Doe"
+                />
+              </VCol>
+
+              <VCol
+                cols="6"
+                md="3"
+              >
+                <AppTextField
+                  label="Exp. Date"
+                  placeholder="MM/YY"
+                />
+              </VCol>
+              <VCol
+                cols="6"
+                md="3"
+              >
+                <AppTextField
+                  label="CVV Code"
+                  placeholder="654"
+                />
+              </VCol>
+            </VRow>
+
+            <div v-show="formData.paymentMethod === 'cash-on-delivery'">
+              <p>
+                Cash on delivery is a mode of payment where you make the payment after the goods/services are received.
+              </p>
+              <p>You can pay cash or make the payment via debit/credit card directly to the delivery person.</p>
+            </div>
+          </VForm>
+        </VCol>
+      </VRow>
+    </VCardText>
+  </VCard>
+</template>
+
+<style lang="scss" scoped>
+.sticky-header {
+  position: sticky;
+  z-index: 9;
+  inset-block-end: 0;
+  inset-block-start: 4rem;
+  transition: all 0.3s ease-in-out;
+}
+</style>
+`,
+  js: `<script setup>
+const radioContent = [
+  {
+    title: 'Standard',
+    desc: 'Delivery in 3-5 days.',
+    value: 'standard',
+    icon: {
+      icon: 'tabler-briefcase-2',
+      size: '32',
+    },
+  },
+  {
+    title: 'Express',
+    desc: 'Delivery within 2 days.',
+    value: 'express',
+    icon: {
+      icon: 'tabler-rocket',
+      size: '32',
+    },
+  },
+  {
+    title: 'Overnight',
+    desc: 'Delivery within a days.',
+    value: 'overnight',
+    icon: {
+      icon: 'tabler-crown',
+      size: '32',
+    },
+  },
+]
+
+const promoCodeList = [
+  {
+    code: 'TAKEITALL',
+    desc: 'Apply this code to get 15% discount on orders above 20$.',
+  },
+  {
+    code: 'FESTIVE10',
+    desc: 'Apply this code to get 10% discount on all orders.',
+  },
+  {
+    code: 'MYSTERYDEAL',
+    desc: 'Apply this code to get discount between 10% - 50%.',
+  },
+]
+
+const formData = ref({
+  fullName: '',
+  email: '',
+  contactNumber: null,
+  altContactNumber: null,
+  address: '',
+  pincode: null,
+  Landmark: '',
+  city: '',
+  state: null,
+  defaultAddress: false,
+  addressType: 'home',
+  deliveryType: 'overnight',
+  promoCode: '',
+  paymentMethod: 'card',
+  cardNumber: null,
+  cardName: '',
+  cardExDate: '',
+  cardCvv: '',
+})
+</script>
+
+<template>
+  <VCard class="overflow-visible">
+    <div class="w-100 sticky-header">
+      <div class=" d-flex align-center gap-4 flex-wrap bg-background pa-6">
+        <VCardTitle>Sticky Action Bar</VCardTitle>
+        <VSpacer />
+        <div>
+          <VBtn
+            variant="tonal"
+            class="me-5"
+          >
+            Back
+          </VBtn>
+          <VBtn>Place Order</VBtn>
+        </div>
+      </div>
+    </div>
+
+    <VCardText>
+      <VRow>
+        <VCol
+          md="8"
+          cols="12"
+          class="mx-auto"
+        >
+          <VForm>
+            <h2 class="text-lg font-weight-medium mb-6">
+              1. Delivery Address
+            </h2>
+            <VRow>
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.fullName"
+                  label="Full Name"
+                  placeholder="John Doe"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.email"
+                  label="Email"
+                  placeholder="john.doe"
+                  suffix="@example.com"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.contactNumber"
+                  label="Contact Number"
+                  placeholder="658 123 4567"
+                  type="number"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.altContactNumber"
+                  label="Alternate Number"
+                  placeholder="658 123 4567"
+                  type="number"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <AppTextarea
+                  v-model="formData.address"
+                  label="Address"
+                  placeholder="1456, Mall Road"
+                  rows="2"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.pincode"
+                  label="Pincode"
+                  placeholder="658468"
+                  type="number"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.Landmark"
+                  label="Landmark"
+                  placeholder="Nr. Wall Street"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  v-model="formData.city"
+                  label="City"
+                  placeholder="Jackson"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppSelect
+                  v-model="formData.state"
+                  label="State"
+                  placeholder="Select State"
+                  :items="['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida']"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <VCheckbox
+                  v-model="formData.defaultAddress"
+                  label="Use this as default delivery address"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <p class="text-high-emphasis text-base mb-1">
+                  Address Type
+                </p>
+                <VRadioGroup
+                  v-model="formData.addressType"
+                  inline
+                >
+                  <VRadio
+                    label="Home (All day delivery)"
+                    value="home"
+                  />
+                  <VRadio
+                    label="Office (Delivery between 10 AM - 5 PM)"
+                    value="work"
+                  />
+                </VRadioGroup>
+              </VCol>
+            </VRow>
+
+            <VDivider class="my-4" />
+
+            <h2 class="text-lg font-weight-medium mb-6">
+              2. Delivery Type
+            </h2>
+
+            <CustomRadiosWithIcon
+              v-model:selected-radio="formData.deliveryType"
+              :radio-content="radioContent"
+              :grid-column="{ sm: '4', cols: '12' }"
+            />
+
+            <VDivider class="my-4" />
+
+            <h2 class="text-lg font-weight-medium mb-6">
+              3. Apply Promo code
+            </h2>
+
+            <div class="d-flex align-center gap-4">
+              <AppTextField
+                v-model="formData.promoCode"
+                density="compact"
+                placeholder="TAKEITALL"
+              />
+              <VBtn>Apply</VBtn>
+            </div>
+
+            <div class="d-flex align-center gap-2 my-4">
+              <VDivider style="border-style: dashed;" />
+              <span>OR</span>
+              <VDivider style="border-style: dashed;" />
+            </div>
+
+            <VList
+              class="border rounded py-0"
+              lines="two"
+            >
+              <VListItem
+                v-for="(item, index) in promoCodeList"
+                :key="item.code"
+                :title="item.code"
+                :subtitle="item.desc"
+                :class="index !== 0 ? 'border-t' : ''"
+              >
+                <template #append>
+                  <VBtn variant="tonal">
+                    Apply
+                  </VBtn>
+                </template>
+              </VListItem>
+            </VList>
+
+            <VDivider class="my-4" />
+
+            <h2 class="text-lg font-weight-medium mb-6">
+              4. Payment Method
+            </h2>
+
+            <VRadioGroup
+              v-model="formData.paymentMethod"
+              inline
+              class="mb-4"
+            >
+              <VRadio
+                value="card"
+                label="Credit/Debit/ATM Card"
+              />
+              <VRadio
+                value="cash-on-delivery"
+                label="Cash On Delivery"
+              />
+            </VRadioGroup>
+
+            <VRow v-show="formData.paymentMethod === 'card'">
+              <VCol cols="12">
+                <AppTextField
+                  label="Card Number"
+                  placeholder="1356 3215 6548 7898"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <AppTextField
+                  label="Name"
+                  placeholder="John Doe"
+                />
+              </VCol>
+
+              <VCol
+                cols="6"
+                md="3"
+              >
+                <AppTextField
+                  label="Exp. Date"
+                  placeholder="MM/YY"
+                />
+              </VCol>
+              <VCol
+                cols="6"
+                md="3"
+              >
+                <AppTextField
+                  label="CVV Code"
+                  placeholder="654"
+                />
+              </VCol>
+            </VRow>
+
+            <div v-show="formData.paymentMethod === 'cash-on-delivery'">
+              <p>
+                Cash on delivery is a mode of payment where you make the payment after the goods/services are received.
+              </p>
+              <p>You can pay cash or make the payment via debit/credit card directly to the delivery person.</p>
+            </div>
+          </VForm>
+        </VCol>
+      </VRow>
+    </VCardText>
+  </VCard>
+</template>
+
+<style lang="scss" scoped>
+.sticky-header {
+  position: sticky;
+  z-index: 9;
+  inset-block-end: 0;
+  inset-block-start: 4rem;
+  transition: all 0.3s ease-in-out;
+}
+</style>
+`,
+}
+
 export const verticalForm = {
   ts: `<script lang="ts" setup>
 const firstName = ref('')
@@ -2420,7 +3923,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="firstName"
           label="First Name"
-          placeholder="First Name"
+          placeholder="John"
         />
       </VCol>
 
@@ -2429,7 +3932,7 @@ const checkbox = ref(false)
           v-model="email"
           label="Email"
           type="email"
-          placeholder="Email"
+          placeholder="johndoe@example.com"
         />
       </VCol>
 
@@ -2437,8 +3940,8 @@ const checkbox = ref(false)
         <AppTextField
           v-model="mobile"
           label="Mobile"
+          placeholder="+1 123 456 7890"
           type="number"
-          placeholder="Number"
         />
       </VCol>
 
@@ -2446,8 +3949,9 @@ const checkbox = ref(false)
         <AppTextField
           v-model="password"
           label="Password"
+          autocomplete="on"
           type="password"
-          placeholder="Password"
+          placeholder="············"
         />
       </VCol>
 
@@ -2493,7 +3997,7 @@ const checkbox = ref(false)
         <AppTextField
           v-model="firstName"
           label="First Name"
-          placeholder="First Name"
+          placeholder="John"
         />
       </VCol>
 
@@ -2502,7 +4006,7 @@ const checkbox = ref(false)
           v-model="email"
           label="Email"
           type="email"
-          placeholder="Email"
+          placeholder="johndoe@example.com"
         />
       </VCol>
 
@@ -2510,8 +4014,8 @@ const checkbox = ref(false)
         <AppTextField
           v-model="mobile"
           label="Mobile"
+          placeholder="+1 123 456 7890"
           type="number"
-          placeholder="Number"
         />
       </VCol>
 
@@ -2519,8 +4023,9 @@ const checkbox = ref(false)
         <AppTextField
           v-model="password"
           label="Password"
+          autocomplete="on"
           type="password"
-          placeholder="Password"
+          placeholder="············"
         />
       </VCol>
 
@@ -2570,7 +4075,7 @@ const checkbox = ref(false)
           v-model="firstName"
           prepend-inner-icon="tabler-user"
           label="First Name"
-          placeholder="First Name"
+          placeholder="John"
         />
       </VCol>
 
@@ -2580,7 +4085,7 @@ const checkbox = ref(false)
           prepend-inner-icon="tabler-mail"
           label="Email"
           type="email"
-          placeholder="Email"
+          placeholder="johndoe@example.com"
         />
       </VCol>
 
@@ -2589,8 +4094,8 @@ const checkbox = ref(false)
           v-model="mobile"
           prepend-inner-icon="tabler-device-mobile"
           label="Mobile"
+          placeholder="+1 123 456 7890"
           type="number"
-          placeholder="Number"
         />
       </VCol>
 
@@ -2599,8 +4104,9 @@ const checkbox = ref(false)
           v-model="password"
           prepend-inner-icon="tabler-lock"
           label="Password"
+          autocomplete="on"
           type="password"
-          placeholder="Password"
+          placeholder="············"
         />
       </VCol>
 
@@ -2647,7 +4153,7 @@ const checkbox = ref(false)
           v-model="firstName"
           prepend-inner-icon="tabler-user"
           label="First Name"
-          placeholder="First Name"
+          placeholder="John"
         />
       </VCol>
 
@@ -2657,7 +4163,7 @@ const checkbox = ref(false)
           prepend-inner-icon="tabler-mail"
           label="Email"
           type="email"
-          placeholder="Email"
+          placeholder="johndoe@example.com"
         />
       </VCol>
 
@@ -2666,8 +4172,8 @@ const checkbox = ref(false)
           v-model="mobile"
           prepend-inner-icon="tabler-device-mobile"
           label="Mobile"
+          placeholder="+1 123 456 7890"
           type="number"
-          placeholder="Number"
         />
       </VCol>
 
@@ -2676,8 +4182,9 @@ const checkbox = ref(false)
           v-model="password"
           prepend-inner-icon="tabler-lock"
           label="Password"
+          autocomplete="on"
           type="password"
-          placeholder="Password"
+          placeholder="············"
         />
       </VCol>
 

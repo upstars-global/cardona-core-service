@@ -7,6 +7,12 @@ import authV2MaskLight from '@images/pages/misc-mask-light.png'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
+definePage({
+  meta: {
+    layout: 'blank',
+  },
+})
+
 const email = ref('')
 
 const authThemeImg = useGenerateImageVariant(
@@ -57,9 +63,9 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
             :nodes="themeConfig.app.logo"
             class="mb-6"
           />
-          <h5 class="text-h5 mb-1">
+          <h4 class="text-h4 mb-1">
             Forgot Password? 🔒
-          </h5>
+          </h4>
           <p class="mb-0">
             Enter your email and we'll send you instructions to reset your password
           </p>
@@ -74,6 +80,7 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
                   v-model="email"
                   autofocus
                   label="Email"
+                  placeholder="johndoe@email.com"
                   type="email"
                 />
               </VCol>
@@ -112,8 +119,3 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
 <style lang="scss">
 @use "@core/scss/template/pages/page-auth.scss";
 </style>
-
-<route lang="yaml">
-meta:
-  layout: blank
-</route>

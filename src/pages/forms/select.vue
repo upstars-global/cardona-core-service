@@ -121,19 +121,21 @@ import * as demoCode from '@/views/demos/forms/form-elements/select/demoCodeSele
       </AppCardCode>
     </VCol>
 
-    <VCol
+    <!--
+      <VCol
       cols="12"
       md="6"
-    >
-      <!-- 👉 Selection slot -->
-      <AppCardCode
-        title="Selection slot"
-        :code="demoCode.selectionSlot"
       >
-        <p>The <code>selection</code> slot can be used to customize the way selected values are shown in the input.</p>
+      // 👉 Selection slot
+      <AppCardCode
+      title="Selection slot"
+      :code="demoCode.selectionSlot"
+      >
+      <p>The <code>selection</code> slot can be used to customize the way selected values are shown in the input.</p>
 
-        <DemoSelectSelectionSlot />
+      <DemoSelectSelectionSlot />
       </AppCardCode>
-    </VCol>
+      </VCol>
+    -->
   </VRow>
 </template>

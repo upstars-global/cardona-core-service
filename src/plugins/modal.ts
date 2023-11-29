@@ -14,9 +14,8 @@ interface IModalPlugin {
 }
 
 export const modalPluginKey: InjectionKey<IModalPlugin> = 'modal'
-
-export default {
-  install: (app: App) => {
+export default function (app: App) {
+  const modal = (app: App) => {
     const modals: Record<string, IModalInstance> = {}
 
     const showModal = (modalKey: string) => {
@@ -52,5 +51,7 @@ export default {
       registerModal,
       unregisterModal,
     })
-  },
+  }
+
+  app.use(modal)
 }

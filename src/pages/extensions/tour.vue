@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
 import { useShepherd } from 'vue-shepherd'
 
 const route = useRoute()
 
 // 👉 Hotkey
+// eslint-disable-next-line camelcase
 const { ctrl_k, meta_k } = useMagicKeys()
 
 // 👉 Tour initialization
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let tour: any = null
 
 // 👉 watch command palette and route change
-watch([ctrl_k, meta_k, () => route.path], () => {
+/* eslint-disable camelcase */
+watch([
+  ctrl_k,
+  meta_k,
+  () => route.path,
+], () => {
   if (tour.isActive())
     tour.cancel()
 })
+/* eslint-enable */
 
 onMounted(() => {
   const navbar = document.querySelector('.layout-navbar')

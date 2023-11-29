@@ -4,6 +4,12 @@ import authV1TopShape from '@images/svg/auth-v1-top-shape.svg?raw'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
+definePage({
+  meta: {
+    layout: 'blank',
+  },
+})
+
 const form = ref({
   email: '',
 })
@@ -36,15 +42,15 @@ const form = ref({
             </div>
           </template>
 
-          <VCardTitle class="font-weight-bold text-capitalize text-h5 py-1">
+          <VCardTitle class="font-weight-bold text-capitalize text-h3 py-1">
             {{ themeConfig.app.title }}
           </VCardTitle>
         </VCardItem>
 
         <VCardText class="pt-2">
-          <h5 class="text-h5 mb-1">
+          <h4 class="text-h4 mb-1">
             Forgot Password? 🔒
-          </h5>
+          </h4>
           <p class="mb-0">
             Enter your email and we'll send you instructions to reset your password
           </p>
@@ -60,6 +66,7 @@ const form = ref({
                   autofocus
                   label="Email"
                   type="email"
+                  placeholder="johndoe@email.com"
                 />
               </VCol>
 
@@ -97,8 +104,3 @@ const form = ref({
 <style lang="scss">
 @use "@core/scss/template/pages/page-auth.scss";
 </style>
-
-<route lang="yaml">
-meta:
-  layout: blank
-</route>

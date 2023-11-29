@@ -3,6 +3,12 @@ import authV1BottomShape from '@images/svg/auth-v1-bottom-shape.svg?raw'
 import authV1TopShape from '@images/svg/auth-v1-top-shape.svg?raw'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
+
+definePage({
+  meta: {
+    layout: 'blank',
+  },
+})
 </script>
 
 <template>
@@ -32,15 +38,15 @@ import { themeConfig } from '@themeConfig'
             </div>
           </template>
 
-          <VCardTitle class="font-weight-bold text-capitalize text-h5 py-1">
+          <VCardTitle class="font-weight-bold text-capitalize text-h3 py-1">
             {{ themeConfig.app.title }}
           </VCardTitle>
         </VCardItem>
 
         <VCardText class="pt-2">
-          <h5 class="text-h5 mb-1">
+          <h4 class="text-h4 mb-1">
             Verify your email ✉️
-          </h5>
+          </h4>
           <p>
             Account activation link sent to your email address: hello@example.com Please follow the link inside to continue.
           </p>
@@ -65,8 +71,3 @@ import { themeConfig } from '@themeConfig'
 <style lang="scss">
 @use "@core/scss/template/pages/page-auth.scss";
 </style>
-
-<route lang="yaml">
-meta:
-  layout: blank
-</route>
