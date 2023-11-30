@@ -2,9 +2,11 @@
 import { computed } from 'vue'
 import i18n from '../../../../libs/i18n'
 import { BVariant, BSize } from '../../../../@model/bootstrap'
+import { FormDateBaseField } from '../../../../@model/baseField'
 
 type Props = {
   value: string | Date
+  field: FormDateBaseField
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,7 +31,7 @@ const modelValue = computed({
       id="date-btn-only-input"
       v-model="modelValue"
       type="text"
-      placeholder="YYYY-MM-DD"
+      :placeholder="field.placeholder"
       autocomplete="off"
       show-decade-nav
     />
@@ -37,7 +39,7 @@ const modelValue = computed({
       <b-form-datepicker
         v-model="modelValue"
         show-decade-nav
-        button-only
+        :button-only="field.buttonOnly"
         right
         :locale="currentLocale"
         aria-controls="date-btn-only-input"

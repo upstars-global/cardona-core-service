@@ -4,7 +4,7 @@ import flatPickr from 'vue-flatpickr-component'
 import en from 'flatpickr/dist/l10n/default.js'
 import { Russian as ru } from 'flatpickr/dist/l10n/ru.js'
 import i18n from '../../../../libs/i18n'
-import { DateBaseField } from '@/@model/baseField'
+import { DateBaseField } from '../../../../@model/baseField'
 
 const props = withDefaults(
   defineProps<{
