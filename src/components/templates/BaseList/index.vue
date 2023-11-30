@@ -382,7 +382,6 @@ import {
   isNotEmptyNumber,
   isEmptyString,
 } from '../../../helpers'
-import { parseDateRange } from '../../../helpers/filters'
 import StatusField from './_components/StatusField.vue'
 import PillStatusField from './_components/PillStatusField.vue'
 import NameWithIdField from './_components/NameWithIdField.vue'
@@ -725,12 +724,11 @@ export default {
           } else if (filter instanceof MultiSelectBaseField) {
             acc[key] = filter.transformField({ trackBy })
           } else if (filter instanceof DateBaseField) {
-            if (!filter.value || typeof filter.value !== 'string') return acc
+            const date = filter.transformField(key)
 
-            const [dateFrom, dateTo]: Array<string> = parseDateRange(filter.value)
-
-            acc[`${key}From`] = dateFrom
-            acc[`${key}To`] = dateTo
+            if (!date) return acc
+            else if (typeof date === 'string') acc[key] = date
+            else acc = { ...acc, ...date }
           } else if (filter instanceof BaseField) {
             acc[key] = filter.transformField()
           } else if (filter.type === FieldType.SumRange) {
