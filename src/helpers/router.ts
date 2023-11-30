@@ -7,8 +7,8 @@ export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfi
 
   sectionConfigs.forEach((sectionConfig: RouterConfig) => {
     let importSTR = sectionConfig.isConvertName
-      ? convertCamelCase(sectionConfig.name, '/')
-      : sectionConfig.name
+        ? convertCamelCase(sectionConfig.name, '/')
+        : sectionConfig.name
 
     if (sectionConfig.sectionName)
       importSTR = `${sectionConfig.sectionName}/${importSTR}`
@@ -18,64 +18,64 @@ export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfi
     const permission = `${permissionPrefix}-${convertCamelCase(sectionConfig.name, '-')}`
 
     arrRouters.push(
-      ...[
-        {
-          path: entityUrl,
-          name: `${entityName}List`,
-          component: () => import(`@/pages/${importSTR}/list/index.vue`),
-          meta: {
-            title: `${sectionConfig.name}.list`,
-            permission,
-            breadcrumb: [
-              {
-                title: `${sectionConfig.name}.list`,
-                active: true,
-              },
-            ],
+        ...[
+          {
+            path: entityUrl,
+            name: `${entityName}List`,
+            component: () => import(`@/pages/${importSTR}/list/index.vue`),
+            meta: {
+              title: `${sectionConfig.name}.list`,
+              permission,
+              breadcrumb: [
+                {
+                  title: `${sectionConfig.name}.list`,
+                  active: true,
+                },
+              ],
+            },
           },
-        },
-        {
-          path: `${entityUrl}/create`,
-          name: `${entityName}Create`,
-          component: () => import(`@/pages/${importSTR}/create/index.vue`),
-          meta: {
-            title: `${sectionConfig.name}.create`,
-            permission,
-            level: 'create',
-            breadcrumb: [
-              {
-                to: { name: `${entityName}List` },
-                title: `${sectionConfig.name}.list`,
-              },
-              {
-                title: `${sectionConfig.name}.create`,
-                active: true,
-              },
-            ],
+          {
+            path: `${entityUrl}/create`,
+            name: `${entityName}Create`,
+            component: () => import(`@/pages/${importSTR}/create/index.vue`),
+            meta: {
+              title: `${sectionConfig.name}.create`,
+              permission,
+              level: 'create',
+              breadcrumb: [
+                {
+                  to: { name: `${entityName}List` },
+                  title: `${sectionConfig.name}.list`,
+                },
+                {
+                  title: `${sectionConfig.name}.create`,
+                  active: true,
+                },
+              ],
+            },
           },
-        },
-        {
-          path: `${entityUrl}/update/:id`,
-          name: `${entityName}Update`,
-          component: () => import(`@/pages/${importSTR}/update/index.vue`),
-          meta: {
-            title: `${sectionConfig.name}.edit`,
-            permissionGroup: sectionConfig.isPermissionGroup ? sectionConfig.name : undefined,
-            permission: !sectionConfig.isPermissionGroup ? permission : undefined,
-            level: 'update',
-            breadcrumb: [
-              {
-                to: { name: `${entityName}List` },
-                title: `${sectionConfig.name}.list`,
-              },
-              {
-                title: `${sectionConfig.name}.edit`,
-                active: true,
-              },
-            ],
+          {
+            path: `${entityUrl}/update/:id`,
+            name: `${entityName}Update`,
+            component: () => import(`@/pages/${importSTR}/update/index.vue`),
+            meta: {
+              title: `${sectionConfig.name}.edit`,
+              permissionGroup: sectionConfig.isPermissionGroup ? sectionConfig.name : undefined,
+              permission: !sectionConfig.isPermissionGroup ? permission : undefined,
+              level: 'update',
+              breadcrumb: [
+                {
+                  to: { name: `${entityName}List` },
+                  title: `${sectionConfig.name}.list`,
+                },
+                {
+                  title: `${sectionConfig.name}.edit`,
+                  active: true,
+                },
+              ],
+            },
           },
-        },
-      ],
+        ],
     )
   })
 
