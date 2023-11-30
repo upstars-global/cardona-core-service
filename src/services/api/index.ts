@@ -31,6 +31,7 @@ class ApiService {
       formRef = null,
       newAxiosInstance = false,
       entityName = '',
+      rejectError = true,
     } = config
 
     const convertedType: Array<string> = payload.type
@@ -89,7 +90,7 @@ class ApiService {
         if (withErrorToast) this.showError(error, entity, formRef, withErrorDescriptionToast)
       }
 
-      return Promise.reject(error)
+      return rejectError ? Promise.reject(error) : undefined
     } finally {
       store.dispatch('loaderOff', url)
     }
