@@ -30,6 +30,7 @@ import { BColors, BLightColors } from './bootstrap'
 import { IconsList } from './enums/icons'
 import { NumberRangeBaseField } from './baseField/number-range'
 import { NumberRangeBaseValue } from '../@model/index'
+import { BaseDatePeriod } from './date'
 
 export interface IDemoTypeItem {
   id: string
@@ -368,13 +369,13 @@ export class DemoForm {
     })
     this.dateRange = new DateBaseField({
       key: 'dateRange',
-      value: data?.dateRange,
+      value: new BaseDatePeriod(data?.dateRangeFrom, data?.dateRangeTo),
       label: i18n.t('page.demo.dateRangeField'),
       isRangeMode: true,
     })
     this.dateTimeRange = new DateBaseField({
       key: 'dateTimeRange',
-      value: data?.dateTimeRange,
+      value: new BaseDatePeriod(data?.dateTimeRangeFrom, data?.dateTimeRangeTo),
       label: i18n.t('page.demo.dateTimeRangeField'),
       isRangeMode: true,
       withTime: true,
