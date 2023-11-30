@@ -17,6 +17,7 @@ import {
   RadioBaseField,
   CheckBaseField,
   DateBaseField,
+  FormDateBaseField,
   CheckGroupBaseField,
   TagsBaseField,
 } from './baseField'
@@ -192,7 +193,7 @@ export class DemoForm {
   readonly dateTimeRange: DateBaseField
   readonly dateTime: DateBaseField
   readonly time: TimeBaseField
-  readonly dateBtn: FieldInfo
+  readonly dateBtn: FormDateBaseField
   readonly textarea?: TextareaBaseField
   readonly textareaWithCounter: TextareaBaseField
   readonly tags: TagsBaseField
@@ -391,11 +392,11 @@ export class DemoForm {
       value: data?.time,
       label: i18n.t('page.demo.timeField'),
     })
-    this.dateBtn = new FieldInfo({
-      type: FieldType.DateBtnOnly,
+    this.dateBtn = new FormDateBaseField({
       key: 'dateBtn',
       value: data?.dateBtn,
       label: i18n.t('page.demo.dateBtnField'),
+      buttonOnly: true,
     })
     this.nonClearableSelect = new SelectBaseField({
       key: 'nonClearableSelect',
