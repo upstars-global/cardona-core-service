@@ -18,7 +18,6 @@ import { FormDateBaseField } from './formDate'
 import { RadioBaseField } from './radio'
 import { RichTextBaseField } from './rich-text'
 import { TagsBaseField } from './tags'
-import { PhonesListBaseField } from './phones-list'
 
 export const getInstanceClass = (instance: object) => {
   const fields = [
@@ -41,7 +40,6 @@ export const getInstanceClass = (instance: object) => {
     TextareaBaseField,
     NumberBaseField,
     TextBaseField,
-    PhonesListBaseField,
   ]
 
   return fields.find((field) => instance instanceof field)
@@ -67,6 +65,5 @@ export {
   CheckBaseField,
   RichTextBaseField,
   CheckGroupBaseField,
-  PhonesListBaseField,
   TagsBaseField,
 }

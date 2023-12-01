@@ -20,7 +20,6 @@ import {
   FormDateBaseField,
   CheckGroupBaseField,
   TagsBaseField,
-  PhonesListBaseField,
 } from './baseField'
 import { FieldInfo, FieldType } from './field'
 import { StatusWithDateHistoryValue, StatusWithVariant, ViewInfo, ViewType } from './view'
@@ -205,7 +204,7 @@ export class DemoForm {
   public image: string
   readonly conditions: ConditionsBaseField
   public usersList: UsersListBaseField
-  public phoneList: PhonesListBaseField
+  public phoneList: Array<any>
 
   constructor(data) {
     this.id = data?.id
@@ -302,12 +301,7 @@ export class DemoForm {
       label: i18n.t('page.demo.phoneField'),
       validationRules: ['required', 'phone'],
     })
-    this.phoneList = new PhonesListBaseField({
-      key: 'phoneList',
-      value: data?.phoneList,
-      label: i18n.t('page.demo.phoneList'),
-      validationRules: ['phone_and_domain_list'],
-    })
+    this.phoneList = data?.phoneList?.map(createPhoneDomainFieldItem) || []
     this.password = new PasswordBaseField({
       key: 'password',
       value: data?.password,
@@ -597,3 +591,17 @@ export class DemoSideBar {
     })
   }
 }
+
+export const createPhoneDomainFieldItem = (item?) => ({
+  phone: new PhoneBaseField({
+    key: 'id',
+    value: item,
+    label: i18n.t('phone'),
+    validationRules: 'required',
+  }),
+  domain: new SelectBaseField({
+    key: 'domain',
+    value: item,
+    label: i18n.t('domain'),
+  }),
+})
