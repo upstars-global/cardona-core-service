@@ -33,6 +33,15 @@ import { NumberRangeBaseField } from './baseField/number-range'
 import { NumberRangeBaseValue } from '../@model/index'
 import { BaseDatePeriod } from './date'
 
+interface PhoneAndCountry {
+  phone: string
+  country: string
+}
+
+interface PhoneAndCountryFieldListItem {
+  phone: PhoneBaseField
+  country: SelectBaseField
+}
 export interface IDemoTypeItem {
   id: string
   name: string
@@ -204,7 +213,7 @@ export class DemoForm {
   public image: string
   readonly conditions: ConditionsBaseField
   public usersList: UsersListBaseField
-  public phoneList: Array<any>
+  public phoneList: Array<PhoneAndCountryFieldListItem>
 
   constructor(data) {
     this.id = data?.id
@@ -592,16 +601,22 @@ export class DemoSideBar {
   }
 }
 
-export const createPhoneDomainFieldItem = (item?) => ({
+export const createPhoneDomainFieldItem = (item: PhoneAndCountry) => ({
   phone: new PhoneBaseField({
     key: 'id',
-    value: item,
-    label: i18n.t('phone'),
-    validationRules: 'required',
+    value: item?.phone || '',
+    label: i18n.t('common.phone._'),
+    validationRules: ['required', 'phone'],
   }),
   domain: new SelectBaseField({
-    key: 'domain',
-    value: item,
-    label: i18n.t('domain'),
+    key: 'country',
+    value: item?.country || '',
+    label: i18n.t('common.country'),
+    options: [
+      { id: 1, name: 'Ukraine' },
+      { id: 2, name: 'Poland' },
+      { id: 3, name: 'Latvia' },
+    ],
+    validationRules: ['required'],
   }),
 })

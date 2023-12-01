@@ -231,6 +231,9 @@
               <dynamic-field-list
                 v-model="formData.phoneList"
                 :template-field="createPhoneDomainFieldItem()"
+                show-even-label
+                allow-add-with-empty
+                :disabled="isDisabledField"
               />
             </b-col>
           </b-row>
@@ -293,7 +296,7 @@ import UploadImage from '../../../components/UploadImage/index.vue'
 import store from '../../../store'
 import UploadFile from '../../../components/UploadFile/index.vue'
 import useToastService from '../../../helpers/toasts'
-import DynamicFieldList from '@/components/DynamicFieldList.vue'
+import DynamicFieldList from '../../../components/DynamicFieldList.vue'
 const { toastSuccess } = useToastService()
 
 type Props = {

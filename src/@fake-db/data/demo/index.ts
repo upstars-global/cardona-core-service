@@ -61,7 +61,6 @@ const listData = [
   {
     id: '632c39448e03b2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
-    phoneList: [],
     partnerCode: '123632c39448e03b2dab20c8a77',
     editableField: { from: '12', to: '23' },
     name: 'Test',
@@ -230,6 +229,7 @@ mock.onPost('/api/v2/demo/list').reply(({ data }) => {
 // CRUD
 const entityData = {
   id: '2',
+  phoneList: [{ phone: '1234567890', country: '1' }],
   switch: true,
   switchWithState: true,
   text: 'Some text',
