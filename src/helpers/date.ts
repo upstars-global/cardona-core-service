@@ -1,10 +1,12 @@
-export const getISOStringWithoutTimezone = (isoString: string): string => {
+export const getISOStringWithoutTimezone = (isoString: string | Date): string => {
+  if (!isoString) return ''
+
   const utcStringWithoutTimezone: string = new Date(isoString).toUTCString().replace('GMT', '')
 
   return new Date(utcStringWithoutTimezone).toISOString()
 }
 
-export const getLocaleDateString = (date: Date, language = navigator.language): string => {
+export const getLocaleDateString = (date: Date, language = 'uk'): string => {
   return date.toLocaleDateString(language, {
     hour: '2-digit',
     minute: '2-digit',
@@ -18,7 +20,7 @@ export const getLocaleDateStringWithoutTimezone = (isoString: string): string =>
   return getLocaleDateString(date)
 }
 
-export const getUTCISOString = (dateString: string): string => {
+export const getUTCISOString = (dateString: string | Date): string => {
   const localeDateString: string = getLocaleDateString(new Date(dateString))
 
   return transformDateToISO(localeDateString)

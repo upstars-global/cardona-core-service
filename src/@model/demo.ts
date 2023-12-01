@@ -17,6 +17,7 @@ import {
   RadioBaseField,
   CheckBaseField,
   DateBaseField,
+  FormDateBaseField,
   CheckGroupBaseField,
   TagsBaseField,
   PhonesListBaseField,
@@ -30,6 +31,8 @@ import { ValidationRule } from './validations'
 import { BColors, BLightColors } from './bootstrap'
 import { IconsList } from './enums/icons'
 import { NumberRangeBaseField } from './baseField/number-range'
+import { NumberRangeBaseValue } from '../@model/index'
+import { BaseDatePeriod } from './date'
 
 export interface IDemoTypeItem {
   id: string
@@ -103,6 +106,7 @@ export class DemoListItem implements BaseListItem {
   state: boolean
   comment: string
   rowVariant: BColors | BLightColors
+  editableField: NumberRangeBaseValue
 
   constructor(data) {
     this.id = data.id
@@ -131,6 +135,7 @@ export class DemoListItem implements BaseListItem {
     this.state = data.state
     this.comment = data.comment
     this.rowVariant = data?.rowVariant
+    this.editableField = data?.editableField
   }
 }
 
@@ -189,7 +194,7 @@ export class DemoForm {
   readonly dateTimeRange: DateBaseField
   readonly dateTime: DateBaseField
   readonly time: TimeBaseField
-  readonly dateBtn: FieldInfo
+  readonly dateBtn: FormDateBaseField
   readonly textarea?: TextareaBaseField
   readonly textareaWithCounter: TextareaBaseField
   readonly tags: TagsBaseField
@@ -373,13 +378,13 @@ export class DemoForm {
     })
     this.dateRange = new DateBaseField({
       key: 'dateRange',
-      value: data?.dateRange,
+      value: new BaseDatePeriod(data?.dateRangeFrom, data?.dateRangeTo),
       label: i18n.t('page.demo.dateRangeField'),
       isRangeMode: true,
     })
     this.dateTimeRange = new DateBaseField({
       key: 'dateTimeRange',
-      value: data?.dateTimeRange,
+      value: new BaseDatePeriod(data?.dateTimeRangeFrom, data?.dateTimeRangeTo),
       label: i18n.t('page.demo.dateTimeRangeField'),
       isRangeMode: true,
       withTime: true,
@@ -395,11 +400,11 @@ export class DemoForm {
       value: data?.time,
       label: i18n.t('page.demo.timeField'),
     })
-    this.dateBtn = new FieldInfo({
-      type: FieldType.DateBtnOnly,
+    this.dateBtn = new FormDateBaseField({
       key: 'dateBtn',
       value: data?.dateBtn,
       label: i18n.t('page.demo.dateBtnField'),
+      buttonOnly: true,
     })
     this.nonClearableSelect = new SelectBaseField({
       key: 'nonClearableSelect',

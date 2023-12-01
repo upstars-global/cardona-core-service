@@ -4,7 +4,6 @@ import { TranslateResult } from 'vue-i18n'
 
 export enum FieldType {
   DummySelect = 'dummy-select', // TODO: https://upstars.atlassian.net/browse/BAC-2061
-  DateBtnOnly = 'date-btn-only', // TODO: https://upstars.atlassian.net/browse/BAC-2055
   SumRange = 'sum-range', // TODO: https://upstars.atlassian.net/browse/BAC-2060
 }
 

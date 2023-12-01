@@ -4,7 +4,7 @@ import flatPickr from 'vue-flatpickr-component'
 import en from 'flatpickr/dist/l10n/default.js'
 import { Russian as ru } from 'flatpickr/dist/l10n/ru.js'
 import i18n from '../../../../libs/i18n'
-import { DateBaseField } from '@/@model/baseField'
+import { DateBaseField } from '../../../../@model/baseField'
 
 const props = withDefaults(
   defineProps<{
@@ -27,7 +27,9 @@ const locales = {
 }
 
 const flatPickrConfig = computed(() => ({
-  dateFormat: props.field.withTime ? 'd.m.Y, H:i' : 'd.m.Y',
+  dateFormat: 'Z',
+  altInput: true,
+  altFormat: props.field.withTime ? 'd.m.Y, H:i' : 'd.m.Y',
   locale: locales[currentLocale],
   enableTime: props.field.withTime,
   time_24hr: true,

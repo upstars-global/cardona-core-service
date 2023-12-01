@@ -30,7 +30,7 @@ interface NumberRangeValue {
 
 type Props = {
   value: NumberRangeValue
-  field: NumberBaseField
+  field?: NumberBaseField
   errors?: Array<string>
   disabled?: boolean
 }
@@ -38,6 +38,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   errors: () => [],
   value: () => ({ from: '', to: '' }),
+  field: () => ({}),
 })
 
 const inputClass = computed(() => ({ 'border-danger rounded': props.errors?.isNotEmpty }))
