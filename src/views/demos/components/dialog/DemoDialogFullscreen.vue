@@ -66,6 +66,7 @@ const isDialogVisible = ref(false)
       <VList
         lines="two"
         select-strategy="classic"
+        class="full-screen-dialog-list"
       >
         <VListSubheader>General</VListSubheader>
 
@@ -122,5 +123,16 @@ const isDialogVisible = ref(false)
 .dialog-bottom-transition-enter-active,
 .dialog-bottom-transition-leave-active {
   transition: transform 0.2s ease-in-out;
+}
+
+.full-screen-dialog-list{
+  .v-list-item[tabindex="-2"].v-list-item--active{
+    .v-list-item-action{
+      .v-icon{
+        color: #fff;
+      }
+    }
+  }
+
 }
 </style>

@@ -10,13 +10,16 @@ import { VInput, makeVInputProps } from 'vuetify/lib/components/VInput/VInput'
 
 // @ts-expect-error There won't be declaration file for it
 import { filterInputAttrs } from 'vuetify/lib/util/helpers'
+import { useConfigStore } from '@core/stores/config'
 
-import { useThemeConfig } from '@core/composable/useThemeConfig'
+// inherit Attribute make false
+defineOptions({
+  inheritAttrs: false,
+})
 
 const props = defineProps({
   autofocus: Boolean,
   counter: [Boolean, Number, String] as PropType<true | number | string>,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   counterValue: Function as PropType<(value: any) => number>,
   prefix: String,
   placeholder: String,
@@ -48,16 +51,11 @@ interface Emit {
   (e: 'click:clear', el: MouseEvent): void
 }
 
-// inherit Attribute make false
-defineOptions({
-  inheritAttrs: false,
-})
-
+const configStore = useConfigStore()
 const attrs = useAttrs()
 
 const [rootAttrs, compAttrs] = filterInputAttrs(attrs)
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const [{ modelValue: _, ...inputProps }] = VInput.filterProps(props)
 const [fieldProps] = filterFieldProps(props)
 
@@ -83,7 +81,6 @@ const onClear = (el: MouseEvent) => {
   })
 }
 
-const { theme } = useThemeConfig()
 const vuetifyTheme = useTheme()
 
 const vuetifyThemesName = Object.keys(vuetifyTheme.themes.value)
@@ -100,7 +97,7 @@ const updateThemeClassInCalendar = () => {
   refFlatPicker.value.fp.calendarContainer.classList.add(`v-theme--${vuetifyTheme.global.name.value}`)
 }
 
-watch(theme, updateThemeClassInCalendar)
+watch(() => configStore.theme, updateThemeClassInCalendar)
 
 onMounted(() => {
   updateThemeClassInCalendar()
@@ -139,7 +136,7 @@ const elementId = computed(() => {
       class="position-relative v-text-field"
       :style="props.style"
     >
-      <template #default="{ id, isDirty, isValid, isDisabled }">
+      <template #default="{ id, isDirty, isValid, isDisabled, isReadonly }">
         <!-- v-field -->
         <VField
           v-bind="{ ...fieldProps, label: undefined }"
@@ -158,10 +155,10 @@ const elementId = computed(() => {
               <FlatPickr
                 v-if="!isInlinePicker"
                 v-bind="compAttrs"
-                :id="elementId"
                 ref="refFlatPicker"
                 :model-value="modelValue"
                 :placeholder="props.placeholder"
+                :readonly="isReadonly.value"
                 class="flat-picker-custom-style"
                 :disabled="isReadonly.value"
                 @on-open="isCalendarOpen = true"
@@ -174,6 +171,7 @@ const elementId = computed(() => {
                 v-if="isInlinePicker"
                 :value="modelValue"
                 :placeholder="props.placeholder"
+                :readonly="isReadonly.value"
                 class="flat-picker-custom-style"
                 type="text"
               >
@@ -220,12 +218,21 @@ input[altinputclass="inlinePicker"] {
   display: none;
 }
 
+.flatpickr-time input.flatpickr-hour {
+  font-weight: 400;
+}
+
 .flatpickr-calendar {
+  @include mixins.elevation(6);
+
   background-color: rgb(var(--v-theme-surface));
   inline-size: 16.625rem;
   margin-block-start: 0.1875rem;
 
-  @include mixins.elevation(4);
+  .flatpickr-day:focus{
+    border-color: rgba(var(--v-border-color),var(--v-border-opacity));
+    background:  rgba(var(--v-border-color),var(--v-border-opacity));
+  }
 
   .flatpickr-rContainer {
     .flatpickr-weekdays {
@@ -413,7 +420,6 @@ input[altinputclass="inlinePicker"] {
 .flatpickr-input ~ .form-control[readonly],
 .flatpickr-human-friendly[readonly] {
   background-color: inherit;
-  opacity: 1 !important;
 }
 
 // week sections

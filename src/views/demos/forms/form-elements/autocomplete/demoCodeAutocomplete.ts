@@ -89,6 +89,7 @@ watch(search, query => {
     v-model:search="search"
     :loading="loading"
     :items="items"
+    placeholder="Search for a state"
     label="What state are you from?"
     variant="underlined"
     :menu-props="{ maxHeight: '200px' }"
@@ -185,6 +186,7 @@ watch(search, query => {
     v-model:search="search"
     :loading="loading"
     :items="items"
+    placeholder="Search for a state"
     label="What state are you from?"
     variant="underlined"
     :menu-props="{ maxHeight: '200px' }"
@@ -202,6 +204,7 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
   <AppAutocomplete
     label="States"
     :items="items"
+    placeholder="Select State"
   />
 </template>
 `,
@@ -220,6 +223,7 @@ const items = [
   <AppAutocomplete
     label="States"
     :items="items"
+    placeholder="Select State"
   />
 </template>
 `,
@@ -234,8 +238,10 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
   <AppAutocomplete
     label="States"
     :items="items"
+    placeholder="Select State"
     chips
     multiple
+    closable-chips
   />
 </template>
 `,
@@ -254,8 +260,10 @@ const items = [
   <AppAutocomplete
     label="States"
     :items="items"
+    placeholder="Select State"
     chips
     multiple
+    closable-chips
   />
 </template>
 `,
@@ -271,6 +279,7 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
     label="States"
     :items="items"
     multiple
+    placeholder="Select State"
     clearable
   />
 </template>
@@ -291,6 +300,7 @@ const items = [
     label="States"
     :items="items"
     multiple
+    placeholder="Select State"
     clearable
   />
 </template>
@@ -323,6 +333,7 @@ function customFilter(item: string, queryText: string, itemText: { title: string
     :custom-filter="customFilter"
     item-title="name"
     item-value="abbr"
+    placeholder="Select State"
   />
 </template>
 `,
@@ -371,6 +382,7 @@ function customFilter(item, queryText, itemText) {
     :custom-filter="customFilter"
     item-title="name"
     item-value="abbr"
+    placeholder="Select State"
   />
 </template>
 `,
@@ -378,7 +390,7 @@ function customFilter(item, queryText, itemText) {
 
 export const density = {
   ts: `<script setup lang="ts">
-const select = ref(['Florida'])
+const select = ref('Florida')
 const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']
 </script>
 
@@ -387,12 +399,13 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
     v-model="select"
     label="States"
     density="compact"
+    placeholder="Select State"
     :items="items"
   />
 </template>
 `,
   js: `<script setup>
-const select = ref(['Florida'])
+const select = ref('Florida')
 
 const items = [
   'California',
@@ -409,6 +422,7 @@ const items = [
     v-model="select"
     label="States"
     density="compact"
+    placeholder="Select State"
     :items="items"
   />
 </template>
@@ -424,6 +438,7 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
   <AppAutocomplete
     label="States"
     :items="items"
+    placeholder="Select State"
     multiple
     eager
   />
@@ -444,6 +459,7 @@ const items = [
   <AppAutocomplete
     label="States"
     :items="items"
+    placeholder="Select State"
     multiple
     eager
   />
@@ -485,6 +501,7 @@ const people = [
     :items="people"
     item-title="name"
     item-value="name"
+    placeholder="Select User"
     label="Select"
   >
     <template #chip="{ props, item }">
@@ -574,6 +591,7 @@ const people = [
     :items="people"
     item-title="name"
     item-value="name"
+    placeholder="Select User"
     label="Select"
   >
     <template #chip="{ props, item }">
@@ -669,6 +687,7 @@ const states = [
   <AppAutocomplete
     v-model="selectedState"
     :hint="!isEditing ? 'Click the icon to edit' : 'Click the icon to save'"
+    placeholder="Select Your State"
     :items="states"
     :readonly="!isEditing"
     :label="\`State — \${isEditing ? 'Editable' : 'Readonly'}\`"
@@ -760,6 +779,7 @@ const states = [
   <AppAutocomplete
     v-model="selectedState"
     :hint="!isEditing ? 'Click the icon to edit' : 'Click the icon to save'"
+    placeholder="Select Your State"
     :items="states"
     :readonly="!isEditing"
     :label="\`State — \${isEditing ? 'Editable' : 'Readonly'}\`"
@@ -794,6 +814,7 @@ const nameRules = [(v: string) => !!v.length || 'Select at least one option.']
     v-model="values"
     :items="items"
     :rules="nameRules"
+    placeholder="Select Option"
     multiple
   />
 </template>
@@ -815,6 +836,7 @@ const nameRules = [v => !!v.length || 'Select at least one option.']
     v-model="values"
     :items="items"
     :rules="nameRules"
+    placeholder="Select Option"
     multiple
   />
 </template>
@@ -837,7 +859,7 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
         variant="solo"
         label="solo"
         :items="items"
-        eager
+        placeholder="Select State"
       />
     </VCol>
 
@@ -849,6 +871,7 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
       <VAutocomplete
         variant="outlined"
         label="outlined"
+        placeholder="Select State"
         :items="items"
       />
     </VCol>
@@ -861,6 +884,7 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
       <VAutocomplete
         variant="underlined"
         label="underlined"
+        placeholder="Select State"
         :items="items"
       />
     </VCol>
@@ -873,6 +897,7 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
       <VAutocomplete
         variant="filled"
         label="filled"
+        placeholder="Select State"
         :items="items"
       />
     </VCol>
@@ -885,6 +910,7 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
       <VAutocomplete
         variant="plain"
         label="plain"
+        placeholder="Select State"
         :items="items"
       />
     </VCol>
@@ -913,7 +939,7 @@ const items = [
         variant="solo"
         label="solo"
         :items="items"
-        eager
+        placeholder="Select State"
       />
     </VCol>
 
@@ -925,6 +951,7 @@ const items = [
       <VAutocomplete
         variant="outlined"
         label="outlined"
+        placeholder="Select State"
         :items="items"
       />
     </VCol>
@@ -937,6 +964,7 @@ const items = [
       <VAutocomplete
         variant="underlined"
         label="underlined"
+        placeholder="Select State"
         :items="items"
       />
     </VCol>
@@ -949,6 +977,7 @@ const items = [
       <VAutocomplete
         variant="filled"
         label="filled"
+        placeholder="Select State"
         :items="items"
       />
     </VCol>
@@ -961,6 +990,7 @@ const items = [
       <VAutocomplete
         variant="plain"
         label="plain"
+        placeholder="Select State"
         :items="items"
       />
     </VCol>

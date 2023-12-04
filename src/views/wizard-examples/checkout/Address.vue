@@ -1,4 +1,3 @@
-<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import type { CheckoutData } from './types'
 
@@ -15,6 +14,7 @@ const props = defineProps<Props>()
 const emit = defineEmits<Emit>()
 
 const checkoutAddressDataLocal = ref(props.checkoutData)
+const isEditAddressDialogVisible = ref(false)
 
 const deliveryOptions = [
   {
@@ -123,6 +123,7 @@ watch(() => props.currentStep, updateAddressData)
       <VBtn
         variant="tonal"
         class="mt-5 mb-8"
+        @click="isEditAddressDialogVisible = !isEditAddressDialogVisible"
       >
         Add New Address
       </VBtn>
@@ -252,4 +253,5 @@ watch(() => props.currentStep, updateAddressData)
       </VBtn>
     </VCol>
   </VRow>
+  <AddEditAddressDialog v-model:isDialogVisible="isEditAddressDialogVisible" />
 </template>

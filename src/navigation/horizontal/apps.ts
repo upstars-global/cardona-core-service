@@ -4,6 +4,57 @@ export default [
     icon: { icon: 'tabler-layout-grid-add' },
     children: [
       {
+        title: 'Ecommerce',
+        icon: { icon: 'tabler-shopping-cart-plus' },
+        children: [
+          {
+            title: 'Product',
+            children: [
+              { title: 'List', to: 'apps-ecommerce-product-list' },
+              { title: 'Add', to: 'apps-ecommerce-product-add' },
+              { title: 'Category', to: 'apps-ecommerce-product-category-list' },
+            ],
+          },
+          {
+            title: 'Order',
+            children: [
+              { title: 'List', to: 'apps-ecommerce-order-list' },
+              { title: 'Details', to: { name: 'apps-ecommerce-order-details-id', params: { id: '9042' } } },
+            ],
+          },
+          {
+            title: 'Customer',
+            children: [
+              {
+                title: 'List',
+                to: 'apps-ecommerce-customer-list',
+              },
+            ],
+          },
+          {
+            title: 'Settings',
+            to: 'apps-ecommerce-settings',
+          },
+        ],
+      },
+      {
+        title: 'Academy',
+        icon: { icon: 'tabler-book' },
+        children: [
+          { title: 'Dashboard', to: 'apps-academy-dashboard' },
+          { title: 'My Course', to: 'apps-academy-my-course' },
+          { title: 'Course Details', to: 'apps-academy-course-details' },
+        ],
+      },
+      {
+        title: 'Logistics',
+        icon: { icon: 'tabler-truck' },
+        children: [
+          { title: 'Dashboard', to: 'apps-logistics-dashboard' },
+          { title: 'Fleet', to: 'apps-logistics-fleet' },
+        ],
+      },
+      {
         title: 'Email',
         icon: { icon: 'tabler-mail' },
         to: 'apps-email',

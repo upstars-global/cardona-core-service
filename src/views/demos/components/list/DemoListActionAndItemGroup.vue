@@ -3,6 +3,7 @@
     lines="three"
     density="compact"
     select-strategy="classic"
+    class="action-item-group-list"
   >
     <VListSubheader>General</VListSubheader>
 

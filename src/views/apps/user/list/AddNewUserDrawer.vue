@@ -3,8 +3,7 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { VForm } from 'vuetify/components/VForm'
 
-import type { UserProperties } from '@/@fake-db/types'
-import { emailValidator, requiredValidator } from '@validators'
+import type { UserProperties } from '@db/apps/users/types'
 
 interface Emit {
   (e: 'update:isDrawerOpen', value: boolean): void
@@ -21,9 +20,10 @@ const emit = defineEmits<Emit>()
 const isFormValid = ref(false)
 const refForm = ref<VForm>()
 const fullName = ref('')
+const userName = ref('')
 const email = ref('')
 const company = ref('')
-const country = ref('')
+const country = ref()
 const contact = ref('')
 const role = ref()
 const plan = ref()
@@ -100,6 +100,17 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
                   v-model="fullName"
                   :rules="[requiredValidator]"
                   label="Full Name"
+                  placeholder="John Doe"
+                />
+              </VCol>
+
+              <!-- 👉 Username -->
+              <VCol cols="12">
+                <AppTextField
+                  v-model="userName"
+                  :rules="[requiredValidator]"
+                  label="Username"
+                  placeholder="Johndoe"
                 />
               </VCol>
 
@@ -109,6 +120,7 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
                   v-model="email"
                   :rules="[requiredValidator, emailValidator]"
                   label="Email"
+                  placeholder="johndoe@email.com"
                 />
               </VCol>
 
@@ -118,15 +130,18 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
                   v-model="company"
                   :rules="[requiredValidator]"
                   label="Company"
+                  placeholder="PixInvent"
                 />
               </VCol>
 
               <!-- 👉 Country -->
               <VCol cols="12">
-                <AppTextField
+                <AppSelect
                   v-model="country"
+                  label="Select Country"
+                  placeholder="Select Country"
                   :rules="[requiredValidator]"
-                  label="Country"
+                  :items="['USA', 'UK', 'India', 'Australia']"
                 />
               </VCol>
 
@@ -137,6 +152,7 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
                   type="number"
                   :rules="[requiredValidator]"
                   label="Contact"
+                  placeholder="+1-541-754-3010"
                 />
               </VCol>
 
@@ -145,6 +161,7 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
                 <AppSelect
                   v-model="role"
                   label="Select Role"
+                  placeholder="Select Role"
                   :rules="[requiredValidator]"
                   :items="['Admin', 'Author', 'Editor', 'Maintainer', 'Subscriber']"
                 />
@@ -155,6 +172,7 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
                 <AppSelect
                   v-model="plan"
                   label="Select Plan"
+                  placeholder="Select Plan"
                   :rules="[requiredValidator]"
                   :items="['Basic', 'Company', 'Enterprise', 'Team']"
                 />
@@ -165,6 +183,7 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
                 <AppSelect
                   v-model="status"
                   label="Select Status"
+                  placeholder="Select Status"
                   :rules="[requiredValidator]"
                   :items="[{ title: 'Active', value: 'active' }, { title: 'Inactive', value: 'inactive' }, { title: 'Pending', value: 'pending' }]"
                 />
@@ -180,7 +199,7 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
                 </VBtn>
                 <VBtn
                   type="reset"
-                  variant="tonal"
+                  variant="outlined"
                   color="secondary"
                   @click="closeNavigationDrawer"
                 >

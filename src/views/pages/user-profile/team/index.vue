@@ -1,20 +1,18 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import type { TeamsTab } from '@/@fake-db/types'
-import axios from '@axios'
+import type { TeamsTab } from '@db/pages/profile/types'
 
-const router = useRoute()
+const router = useRoute('pages-user-profile-tab')
 const teamData = ref<TeamsTab[]>([])
 
-const fetchTeamData = () => {
+const fetchTeamData = async () => {
   if (router.params.tab === 'teams') {
-    axios.get('/pages/profile', {
-      params: {
+    const data = await $api('/pages/profile', {
+      query: {
         tab: router.params.tab,
       },
-    }).then(response => {
-      teamData.value = response.data
-    })
+    }).catch(err => console.log(err))
+
+    teamData.value = data
   }
 }
 

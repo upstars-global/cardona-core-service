@@ -4,9 +4,9 @@ import data from '@/views/demos/forms/tables/data-table/datatable'
 
 const headers = [
   { title: 'ID', sortable: false, key: 'id' },
-  { title: 'NAME', key: 'full_name' },
+  { title: 'NAME', key: 'fullName' },
   { title: 'EMAIL', key: 'email' },
-  { title: 'DATE', key: 'start_date' },
+  { title: 'DATE', key: 'startDate' },
   { title: 'EXPERIENCE', key: 'experience' },
   { title: 'AGE', key: 'age' },
 ]

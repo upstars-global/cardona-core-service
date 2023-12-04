@@ -96,9 +96,9 @@ const membersList: Member[] = [
 
     <VCard class="share-project-dialog pa-5 pa-sm-8">
       <VCardText>
-        <h5 class="text-h5 text-center mb-3">
+        <h3 class="text-h3 text-center mb-3">
           Share Project
-        </h5>
+        </h3>
         <p class="text-sm-body-1 text-center mb-6">
           Share project with a team members
         </p>
@@ -125,9 +125,9 @@ const membersList: Member[] = [
           </template>
         </AppAutocomplete>
 
-        <h6 class="text-h6 mb-4 mt-8">
+        <h4 class="text-h4 mb-4 mt-8">
           8 Members
-        </h6>
+        </h4>
 
         <VList class="card-list">
           <VListItem
@@ -138,11 +138,11 @@ const membersList: Member[] = [
               <VAvatar :image="member.avatar" />
             </template>
 
-            <VListItemTitle class="text-sm">
-              {{ member.name }}
+            <VListItemTitle>
+              <span class="font-weight-medium">{{ member.name }}</span>
             </VListItemTitle>
             <VListItemSubtitle>
-              {{ member.email }}
+              <span class="text-disabled font-weight-medium text-body-1">{{ member.email }}</span>
             </VListItemSubtitle>
 
             <template #append>
@@ -171,12 +171,13 @@ const membersList: Member[] = [
         </VList>
 
         <div class="d-flex align-center justify-space-between flex-wrap gap-3 mt-6">
-          <h6 class="text-sm font-weight-medium d-flex align-start">
+          <h6 class="text-h6 font-weight-medium d-flex align-start">
             <VIcon
               icon="tabler-users"
               class="me-2"
+              size="20"
             />
-            <span>Public to Master - ThemeSelection</span>
+            <div>Public to Master - ThemeSelection</div>
           </h6>
 
           <VBtn class="text-capitalize">

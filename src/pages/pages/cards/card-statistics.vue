@@ -14,6 +14,7 @@ import CardStatisticsSalesOverview from '@/views/pages/cards/card-statistics/Car
 import CardStatisticsSessionsBarWithGapCharts from '@/views/pages/cards/card-statistics/CardStatisticsSessionsBarWithGapCharts.vue'
 import CardStatisticsTotalProfitLineCharts from '@/views/pages/cards/card-statistics/CardStatisticsTotalProfitLineCharts.vue'
 import CardStatisticsTransactions from '@/views/pages/cards/card-statistics/CardStatisticsTransactions.vue'
+import CardStatisticsVehicleCharts from '@/views/pages/cards/card-statistics/CardStatisticsVehicleCharts.vue'
 
 const vuetifyTheme = useTheme()
 const currentTheme = vuetifyTheme.current.value.colors
@@ -446,6 +447,11 @@ const simpleStatisticsDemoCards = [
       lg="2"
     >
       <CardStatisticsImpressionLineCharts />
+    </VCol>
+
+    <!-- 👉 Card Statistics Vehicles Charts -->
+    <VCol cols="12">
+      <CardStatisticsVehicleCharts />
     </VCol>
 
     <!-- 👉 Horizontal Cards -->

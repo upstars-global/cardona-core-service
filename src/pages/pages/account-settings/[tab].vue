@@ -1,14 +1,16 @@
 <script lang="ts" setup>
-import { useRoute } from 'vue-router'
 import AccountSettingsAccount from '@/views/pages/account-settings/AccountSettingsAccount.vue'
 import AccountSettingsBillingAndPlans from '@/views/pages/account-settings/AccountSettingsBillingAndPlans.vue'
 import AccountSettingsConnections from '@/views/pages/account-settings/AccountSettingsConnections.vue'
 import AccountSettingsNotification from '@/views/pages/account-settings/AccountSettingsNotification.vue'
 import AccountSettingsSecurity from '@/views/pages/account-settings/AccountSettingsSecurity.vue'
 
-const route = useRoute()
+const route = useRoute('pages-account-settings-tab')
 
-const activeTab = ref(route.params.tab)
+const activeTab = computed({
+  get: () => route.params.tab,
+  set: () => route.params.tab,
+})
 
 // tabs
 const tabs = [
@@ -18,6 +20,12 @@ const tabs = [
   { title: 'Notifications', icon: 'tabler-bell', tab: 'notification' },
   { title: 'Connections', icon: 'tabler-link', tab: 'connection' },
 ]
+
+definePage({
+  meta: {
+    navActiveLink: 'pages-account-settings-tab',
+  },
+})
 </script>
 
 <template>
@@ -73,8 +81,3 @@ const tabs = [
     </VWindow>
   </div>
 </template>
-
-<route lang="yaml">
-meta:
-  navActiveLink: pages-account-settings-tab
-</route>

@@ -83,9 +83,11 @@ watch(totalPrice, () => {
         cols="12"
         md="6"
       >
-        <span class="text-base">
-          Item
-        </span>
+        <h6 class="text-sm font-weight-medium">
+          <span class="text-base">
+            Item
+          </span>
+        </h6>
       </VCol>
 
       <VCol
@@ -135,6 +137,7 @@ watch(totalPrice, () => {
             item-title="title"
             item-value="title"
             label="Select Item"
+            placeholder="Select Item"
             class="mb-3"
           />
 
@@ -142,7 +145,7 @@ watch(totalPrice, () => {
             v-model="localProductData.description"
             rows="2"
             label="Description"
-            placeholder="Description"
+            placeholder="Item description"
           />
         </VCol>
 
@@ -155,6 +158,7 @@ watch(totalPrice, () => {
             v-model="localProductData.cost"
             type="number"
             label="Cost"
+            placeholder="100"
           />
 
           <div class="text-body-2 text-no-wrap mt-4">

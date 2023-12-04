@@ -6,25 +6,15 @@ import { themeConfig } from '@themeConfig'
 import InvoiceAddPaymentDrawer from '@/views/apps/invoice/InvoiceAddPaymentDrawer.vue'
 import InvoiceSendInvoiceDrawer from '@/views/apps/invoice/InvoiceSendInvoiceDrawer.vue'
 
-// Store
-import { useInvoiceStore } from '@/views/apps/invoice/useInvoiceStore'
+const route = useRoute('apps-invoice-preview-id')
 
-const invoiceListStore = useInvoiceStore()
-
-const route = useRoute()
-
-const invoiceData = ref()
-const paymentDetails = ref()
 const isAddPaymentSidebarVisible = ref(false)
 const isSendPaymentSidebarVisible = ref(false)
 
-// 👉 fetchInvoice
-invoiceListStore.fetchInvoice(Number(route.params.id)).then(response => {
-  invoiceData.value = response.data.invoice
-  paymentDetails.value = response.data.paymentDetails
-}).catch(error => {
-  console.log(error)
-})
+const { data: invoiceData } = await useApi<any>(`/apps/invoice/${Number(route.params.id)}`)
+
+const invoice = invoiceData.value.invoice
+const paymentDetails = invoiceData.value.paymentDetails
 
 // 👉 Invoice Description
 // ℹ️ Your real data will contain this information
@@ -102,19 +92,19 @@ const printInvoice = () => {
             <div class="mt-4 ma-sm-4">
               <!-- 👉 Invoice ID -->
               <h6 class="font-weight-medium text-h4">
-                Invoice #{{ invoiceData.id }}
+                Invoice #{{ invoice.id }}
               </h6>
 
               <!-- 👉 Issue Date -->
               <p class="my-3">
                 <span>Date Issued: </span>
-                <span class="font-weight-medium">{{ invoiceData.issuedDate }}</span>
+                <span>{{ new Date(invoice.issuedDate).toLocaleDateString('en-GB') }}</span>
               </p>
 
               <!-- 👉 Due Date -->
               <p class="mb-0">
                 <span>Due Date: </span>
-                <span class="font-weight-medium">{{ invoiceData.dueDate }}</span>
+                <span>{{ new Date(invoice.dueDate).toLocaleDateString('en-GB') }}</span>
               </p>
             </div>
           </VCardText>
@@ -129,19 +119,19 @@ const printInvoice = () => {
                 Invoice To:
               </h6>
               <p class="mb-1">
-                {{ invoiceData.client.name }}
+                {{ invoice.client.name }}
               </p>
               <p class="mb-1">
-                {{ invoiceData.client.company }}
+                {{ invoice.client.company }}
               </p>
               <p class="mb-1">
-                {{ invoiceData.client.address }}, {{ invoiceData.client.country }}
+                {{ invoice.client.address }}, {{ invoice.client.country }}
               </p>
               <p class="mb-1">
-                {{ invoiceData.client.contact }}
+                {{ invoice.client.contact }}
               </p>
               <p class="mb-0">
-                {{ invoiceData.client.companyEmail }}
+                {{ invoice.client.companyEmail }}
               </p>
             </div>
 
@@ -150,48 +140,50 @@ const printInvoice = () => {
                 Bill To:
               </h6>
               <table>
-                <tr>
-                  <td class="pe-6 pb-1">
-                    Total Due:
-                  </td>
-                  <td class="pb-1">
-                    <span class="font-weight-medium">
-                      {{ paymentDetails.totalDue }}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="pe-6 pb-1">
-                    Bank Name:
-                  </td>
-                  <td class="pb-1">
-                    {{ paymentDetails.bankName }}
-                  </td>
-                </tr>
-                <tr>
-                  <td class="pe-6 pb-1">
-                    Country:
-                  </td>
-                  <td class="pb-1">
-                    {{ paymentDetails.country }}
-                  </td>
-                </tr>
-                <tr>
-                  <td class="pe-6 pb-1">
-                    IBAN:
-                  </td>
-                  <td class="pb-1">
-                    {{ paymentDetails.iban }}
-                  </td>
-                </tr>
-                <tr>
-                  <td class="pe-6 pb-1">
-                    SWIFT Code:
-                  </td>
-                  <td class="pb-1">
-                    {{ paymentDetails.swiftCode }}
-                  </td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td class="pe-6 pb-1">
+                      Total Due:
+                    </td>
+                    <td class="pb-1">
+                      <span class="font-weight-medium">
+                        {{ paymentDetails.totalDue }}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pe-6 pb-1">
+                      Bank Name:
+                    </td>
+                    <td class="pb-1">
+                      {{ paymentDetails.bankName }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pe-6 pb-1">
+                      Country:
+                    </td>
+                    <td class="pb-1">
+                      {{ paymentDetails.country }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pe-6 pb-1">
+                      IBAN:
+                    </td>
+                    <td class="pb-1">
+                      {{ paymentDetails.iban }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pe-6 pb-1">
+                      SWIFT Code:
+                    </td>
+                    <td class="pb-1">
+                      {{ paymentDetails.swiftCode }}
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </VCardText>
@@ -269,39 +261,41 @@ const printInvoice = () => {
 
             <div class="my-2 mx-sm-4">
               <table>
-                <tr>
-                  <td class="text-end">
-                    <div class="me-5">
-                      <p class="mb-2">
-                        Subtotal:
-                      </p>
-                      <p class="mb-2">
-                        Discount:
-                      </p>
-                      <p class="mb-2">
-                        Tax:
-                      </p>
-                      <p class="mb-2">
-                        Total:
-                      </p>
-                    </div>
-                  </td>
+                <tbody>
+                  <tr>
+                    <td class="text-end">
+                      <div class="me-5">
+                        <p class="mb-2">
+                          Subtotal:
+                        </p>
+                        <p class="mb-2">
+                          Discount:
+                        </p>
+                        <p class="mb-2">
+                          Tax:
+                        </p>
+                        <p class="mb-2">
+                          Total:
+                        </p>
+                      </div>
+                    </td>
 
-                  <td class="font-weight-medium text-high-emphasis">
-                    <p class="mb-2">
-                      $154.25
-                    </p>
-                    <p class="mb-2">
-                      $00.00
-                    </p>
-                    <p class="mb-2">
-                      $50.00
-                    </p>
-                    <p class="mb-2">
-                      $204.25
-                    </p>
-                  </td>
-                </tr>
+                    <td class="font-weight-medium text-high-emphasis">
+                      <p class="mb-2">
+                        $154.25
+                      </p>
+                      <p class="mb-2">
+                        $00.00
+                      </p>
+                      <p class="mb-2">
+                        $50.00
+                      </p>
+                      <p class="mb-2">
+                        $204.25
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </VCardText>
@@ -392,7 +386,12 @@ const printInvoice = () => {
 }
 
 @media print {
-  .v-application {
+  .v-theme--dark {
+    --v-theme-surface: 255, 255, 255;
+    --v-theme-on-surface: 94, 86, 105;
+  }
+
+  body {
     background: none !important;
   }
 
@@ -428,6 +427,10 @@ const printInvoice = () => {
 
   .layout-content-wrapper {
     padding-inline-start: 0 !important;
+  }
+
+  .v-table__wrapper {
+    overflow: hidden !important;
   }
 }
 </style>

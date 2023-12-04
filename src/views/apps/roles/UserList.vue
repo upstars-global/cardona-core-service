@@ -1,57 +1,54 @@
 <script setup lang="ts">
 import { VDataTableServer } from 'vuetify/labs/VDataTable'
-import type { UserProperties } from '@/@fake-db/types'
-import { paginationMeta } from '@/@fake-db/utils'
+
 import AddNewUserDrawer from '@/views/apps/user/list/AddNewUserDrawer.vue'
-import { useUserListStore } from '@/views/apps/user/useUserListStore'
-import type { Options } from '@core/types'
-import { avatarText } from '@core/utils/formatters'
+import { paginationMeta } from '@api-utils/paginationMeta'
+import type { UserProperties } from '@db/apps/users/types'
 
 // 👉 Store
-const userListStore = useUserListStore()
 const searchQuery = ref('')
 const selectedRole = ref()
 const selectedPlan = ref()
 const selectedStatus = ref()
-const totalUsers = ref(0)
-const users = ref<UserProperties[]>([])
 
-const options = ref<Options>({
-  page: 1,
-  itemsPerPage: 10,
-  sortBy: [],
-  groupBy: [],
-  search: undefined,
-})
+// Data table options
+const itemsPerPage = ref(10)
+const page = ref(1)
+const sortBy = ref()
+const orderBy = ref()
 
+// Update data table options
+const updateOptions = (options: any) => {
+  page.value = options.page
+  sortBy.value = options.sortBy[0]?.key
+  orderBy.value = options.sortBy[0]?.order
+}
+
+// Headers
 const headers = [
   { title: 'User', key: 'user' },
   { title: 'Role', key: 'role' },
   { title: 'Plan', key: 'plan' },
-  { title: 'Billing', key: 'billing' },
   { title: 'Status', key: 'status' },
   { title: 'Actions', key: 'actions', sortable: false },
 ]
 
 // 👉 Fetching users
+const { data: usersData, execute: fetchUsers } = await useApi<any>(createUrl('/apps/users', {
+  query: {
+    q: searchQuery,
+    status: selectedStatus,
+    plan: selectedPlan,
+    role: selectedRole,
+    itemsPerPage,
+    page,
+    sortBy,
+    orderBy,
+  },
+}))
 
-const fetchUsers = () => {
-  userListStore.fetchUsers({
-    q: searchQuery.value,
-    status: selectedStatus.value,
-    plan: selectedPlan.value,
-    role: selectedRole.value,
-    options: options.value,
-  }).then(response => {
-    users.value = response.data.users
-    totalUsers.value = response.data.totalUsers
-    options.value.page = response.data.page
-  }).catch(error => {
-    console.error(error)
-  })
-}
-
-watchEffect(fetchUsers)
+const users = computed(() => usersData.value.users)
+const totalUsers = computed(() => usersData.value.totalUsers)
 
 // 👉 search filters
 const roles = [
@@ -94,18 +91,24 @@ const resolveUserStatusVariant = (stat: string) => {
 const isAddNewUserDrawerVisible = ref(false)
 
 // 👉 Add new user
-const addNewUser = (userData: UserProperties) => {
-  userListStore.addUser(userData)
+const addNewUser = async (userData: UserProperties) => {
+  await $api('/apps/users', {
+    method: 'POST',
+    body: userData,
+  })
 
   // refetch User
   fetchUsers()
 }
 
 // 👉 Delete user
-const deleteUser = (id: number) => {
-  userListStore.deleteUser(id)
+const deleteUser = async (id: number) => {
+  await $api(`/apps/users/${id}`, {
+    method: 'DELETE',
+  })
 
   // refetch User
+  // TODO: Make this async
   fetchUsers()
 }
 </script>
@@ -115,7 +118,7 @@ const deleteUser = (id: number) => {
     <VCard>
       <VCardText class="d-flex flex-wrap gap-4">
         <AppSelect
-          :model-value="options.itemsPerPage"
+          :model-value="itemsPerPage"
           :items="[
             { value: 10, title: '10' },
             { value: 25, title: '25' },
@@ -123,8 +126,8 @@ const deleteUser = (id: number) => {
             { value: 100, title: '100' },
             { value: -1, title: 'All' },
           ]"
-          style="width: 5rem;"
-          @update:model-value="options.itemsPerPage = parseInt($event, 10)"
+          style="inline-size: 5rem;"
+          @update:model-value="itemsPerPage = parseInt($event, 10)"
         />
 
         <VSpacer />
@@ -135,18 +138,18 @@ const deleteUser = (id: number) => {
             v-model="searchQuery"
             placeholder="Search User"
             density="compact"
-            style="width: 12.5rem;"
+            style="inline-size: 12.5rem;"
           />
 
           <!-- 👉 Add user button -->
-          <VSelect
+          <AppSelect
             v-model="selectedRole"
-            label="Select Role"
+            placeholder="Select Role"
             :items="roles"
             density="compact"
             clearable
             clear-icon="tabler-x"
-            style="width: 10rem;"
+            style="inline-size: 10rem;"
           />
         </div>
       </VCardText>
@@ -155,39 +158,45 @@ const deleteUser = (id: number) => {
 
       <!-- SECTION datatable -->
       <VDataTableServer
-        v-model:items-per-page="options.itemsPerPage"
-        v-model:page="options.page"
+        v-model:items-per-page="itemsPerPage"
+        v-model:page="page"
+        :items-per-page-options="[
+          { value: 10, title: '10' },
+          { value: 20, title: '20' },
+          { value: 50, title: '50' },
+          { value: -1, title: '$vuetify.dataFooter.itemsPerPageAll' },
+        ]"
         :items="users"
         :items-length="totalUsers"
         :headers="headers"
         class="text-no-wrap"
-        @update:options="options = $event"
+        @update:options="updateOptions"
       >
         <!-- User -->
         <template #item.user="{ item }">
           <div class="d-flex align-center">
             <VAvatar
               size="38"
-              :variant="!item.raw.avatar ? 'tonal' : undefined"
-              :color="!item.raw.avatar ? resolveUserRoleVariant(item.raw.role).color : undefined"
+              :variant="!item.avatar ? 'tonal' : undefined"
+              :color="!item.avatar ? resolveUserRoleVariant(item.role).color : undefined"
               class="me-3"
             >
               <VImg
-                v-if="item.raw.avatar"
-                :src="item.raw.avatar"
+                v-if="item.avatar"
+                :src="item.avatar"
               />
-              <span v-else>{{ avatarText(item.raw.fullName) }}</span>
+              <span v-else>{{ avatarText(item.fullName) }}</span>
             </VAvatar>
             <div class="d-flex flex-column">
               <h6 class="text-body-1 font-weight-medium">
                 <RouterLink
-                  :to="{ name: 'apps-user-view-id', params: { id: item.raw.id } }"
+                  :to="{ name: 'apps-user-view-id', params: { id: item.id } }"
                   class="user-list-name"
                 >
-                  {{ item.raw.fullName }}
+                  {{ item.fullName }}
                 </RouterLink>
               </h6>
-              <span class="text-sm text-disabled">{{ item.raw.email }}</span>
+              <span class="text-sm text-disabled">{{ item.email }}</span>
             </div>
           </div>
         </template>
@@ -198,20 +207,20 @@ const deleteUser = (id: number) => {
             <VAvatar
               size="30"
               variant="tonal"
-              :color="resolveUserRoleVariant(item.raw.role).color"
+              :color="resolveUserRoleVariant(item.role).color"
             >
               <VIcon
                 size="20"
-                :icon="resolveUserRoleVariant(item.raw.role).icon"
+                :icon="resolveUserRoleVariant(item.role).icon"
               />
             </VAvatar>
-            <span class="text-capitalize">{{ item.raw.role }}</span>
+            <span class="text-capitalize">{{ item.role }}</span>
           </div>
         </template>
 
         <!-- Plan -->
         <template #item.plan="{ item }">
-          <span class="text-capitalize font-weight-medium">{{ item.raw.currentPlan }}</span>
+          <span class="text-capitalize font-weight-medium">{{ item.currentPlan }}</span>
         </template>
 
         <!-- Status -->
@@ -220,9 +229,9 @@ const deleteUser = (id: number) => {
             label
             size="small"
             class="text-capitalize"
-            :color="resolveUserStatusVariant(item.raw.status)"
+            :color="resolveUserStatusVariant(item.status)"
           >
-            {{ item.raw.status }}
+            {{ item.status }}
           </VChip>
         </template>
 
@@ -231,13 +240,13 @@ const deleteUser = (id: number) => {
 
           <div class="d-flex align-center justify-sm-space-between justify-center flex-wrap gap-3 pa-5 pt-3">
             <p class="text-sm text-disabled mb-0">
-              {{ paginationMeta(options, totalUsers) }}
+              {{ paginationMeta({ page, itemsPerPage }, totalUsers) }}
             </p>
 
             <VPagination
-              v-model="options.page"
-              :length="Math.ceil(totalUsers / options.itemsPerPage)"
-              :total-visible="$vuetify.display.xs ? 1 : Math.ceil(totalUsers / options.itemsPerPage)"
+              v-model="page"
+              :length="Math.ceil(totalUsers / itemsPerPage)"
+              :total-visible="$vuetify.display.xs ? 1 : Math.ceil(totalUsers / itemsPerPage)"
             >
               <template #prev="slotProps">
                 <VBtn
@@ -269,7 +278,7 @@ const deleteUser = (id: number) => {
           <IconBtn>
             <VIcon icon="tabler-edit" />
           </IconBtn>
-          <IconBtn @click="deleteUser(item.raw.id)">
+          <IconBtn @click="deleteUser(item.id)">
             <VIcon icon="tabler-trash" />
           </IconBtn>
 
@@ -286,7 +295,7 @@ const deleteUser = (id: number) => {
 
             <VMenu activator="parent">
               <VList>
-                <VListItem :to="{ name: 'apps-user-view-id', params: { id: item.raw.id } }">
+                <VListItem :to="{ name: 'apps-user-view-id', params: { id: item.id } }">
                   <VListItemTitle>View</VListItemTitle>
                 </VListItem>
                 <VListItem link>

@@ -1,10 +1,10 @@
 <template>
-  <div class="bg-var-theme-background py-12">
+  <div class="py-12">
     <VCardText class="text-center py-6">
-      <h5 class="text-h3 text-center mb-6">
+      <h5 class="text-h3 text-center">
         Still need help?
       </h5>
-      <p>
+      <p class="my-4">
         Our specialists are always happy to help. Contact us during standard business hours or email us
         <br>
         24/7 and we'll get back to you.

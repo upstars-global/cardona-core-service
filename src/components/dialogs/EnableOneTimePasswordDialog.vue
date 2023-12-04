@@ -56,8 +56,8 @@ const dialogModelValueUpdate = (val: boolean) => {
             v-model="phoneNumber"
             name="mobile"
             label="Phone Number"
+            placeholder="+1 123 456 7890"
             type="number"
-            placeholder="202 555 0111"
             class="mb-5"
           />
 

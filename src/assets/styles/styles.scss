@@ -1,0 +1,56 @@
+// Write your overrides
+
+@import "./variables/custom-variables";
+
+@import "./components/base-list";
+@import "./components/v-btn";
+@import "./components/v-input";
+@import "./components/vue-select";
+@import "./components/v-breadcrumb";
+@import "./components/sidebar";
+
+
+.font-weight-semi-bold {
+  font-weight: 600;
+}
+
+.v-icon--size-default {
+  font-size: 1rem;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+}
+
+.full-width {
+  width: 100%;
+}
+
+.input-field {
+  .v-input--density-compact {
+    height: initial;
+  }
+  .v-input__control {
+    .v-field__field {
+      height: 2rem;
+      min-height: 2rem;
+    }
+  }
+  .v-text-field {
+    input.v-field__input {
+      height: 2rem;
+      min-height: 2rem;
+    }
+  }
+}
+
+.layout-wrapper.layout-nav-type-vertical {
+  .layout-navbar {
+    .navbar-content-container {
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+    }
+  }
+}

@@ -34,7 +34,7 @@ const notifications = ref<Notification[]>([
   {
     id: 4,
     img: paypal,
-    title: 'Paypal',
+    title: 'PayPal',
     subtitle: 'Received Payment',
     time: '25 May',
     isSeen: false,

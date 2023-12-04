@@ -27,7 +27,7 @@ defineProps<{
 </template>
 
 <style lang="scss" scoped>
-@import "src/styles/styles";
+@import "src/assets/styles/variables/custom-variables";
 
   .status-history--wrapper {
     &__item {

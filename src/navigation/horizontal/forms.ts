@@ -24,6 +24,10 @@ export default [
             to: 'forms-date-time-picker',
           },
           {
+            title: 'Editors',
+            to: 'forms-editors',
+          },
+          {
             title: 'File Input',
             to: 'forms-file-input',
           },
@@ -66,6 +70,14 @@ export default [
         title: 'Form Layouts',
         icon: { icon: 'tabler-circle-check' },
         to: 'forms-form-layouts',
+      },
+      {
+        title: 'Form Wizard',
+        icon: { icon: 'tabler-align-center' },
+        children: [
+          { title: 'Numbered', to: 'forms-form-wizard-numbered' },
+          { title: 'Icons', to: 'forms-form-wizard-icons' },
+        ],
       },
       {
         title: 'Form Validation',

@@ -1,20 +1,18 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import type { ConnectionsTab } from '@/@fake-db/types'
-import axios from '@axios'
+import type { ConnectionsTab } from '@db/pages/profile/types'
 
-const router = useRoute()
+const router = useRoute('pages-user-profile-tab')
 const connectionData = ref<ConnectionsTab[]>([])
 
-const fetchProjectData = () => {
+const fetchProjectData = async () => {
   if (router.params.tab === 'connections') {
-    axios.get('/pages/profile', {
-      params: {
+    const data = await $api('/pages/profile', {
+      query: {
         tab: router.params.tab,
       },
-    }).then(response => {
-      connectionData.value = response.data
-    })
+    }).catch(err => console.log(err))
+
+    connectionData.value = data
   }
 }
 
@@ -44,18 +42,22 @@ watch(router, fetchProjectData, { immediate: true })
         </div>
 
         <VCardItem>
-          <VCardTitle class="d-flex flex-column align-center justify-center">
+          <VCardTitle class="d-flex flex-column align-center justify-center gap-y-5">
             <VAvatar
               size="100"
               :image="data.avatar"
             />
 
-            <p class="mt-4 mb-0">
-              {{ data.name }}
-            </p>
-            <span class="text-body-1">{{ data.designation }}</span>
+            <div class="text-center">
+              <h4 class="text-h4">
+                {{ data.name }}
+              </h4>
+              <h6 class="text-h6">
+                {{ data.designation }}
+              </h6>
+            </div>
 
-            <div class="d-flex align-center flex-wrap gap-2 mt-2">
+            <div class="d-flex align-center flex-wrap gap-2">
               <VChip
                 v-for="chip in data.chips"
                 :key="chip.title"
@@ -72,21 +74,21 @@ watch(router, fetchProjectData, { immediate: true })
         <VCardText>
           <div class="d-flex justify-space-around">
             <div class="text-center">
-              <h6 class="text-h6">
+              <h4 class="text-h4">
                 {{ data.projects }}
-              </h6>
+              </h4>
               <span class="text-body-1">Projects</span>
             </div>
             <div class="text-center">
-              <h6 class="text-h6">
+              <h4 class="text-h4">
                 {{ data.tasks }}
-              </h6>
+              </h4>
               <span class="text-body-1">Tasks</span>
             </div>
             <div class="text-center">
-              <h6 class="text-h6">
+              <h4 class="text-h4">
                 {{ data.connections }}
-              </h6>
+              </h4>
               <span class="text-body-1">Connections</span>
             </div>
           </div>
@@ -103,7 +105,10 @@ watch(router, fetchProjectData, { immediate: true })
               variant="tonal"
               class="rounded"
             >
-              <VIcon icon="tabler-mail" />
+              <VIcon
+                icon="tabler-mail"
+                color="secondary"
+              />
             </IconBtn>
           </div>
         </VCardText>

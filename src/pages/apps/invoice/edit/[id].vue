@@ -4,43 +4,46 @@ import InvoiceEditable from '@/views/apps/invoice/InvoiceEditable.vue'
 import InvoiceSendInvoiceDrawer from '@/views/apps/invoice/InvoiceSendInvoiceDrawer.vue'
 
 // Type: Invoice data
-import type { InvoiceData } from '@/views/apps/invoice/types'
-
-// Store
-import { useInvoiceStore } from '@/views/apps/invoice/useInvoiceStore'
-
-const invoiceListStore = useInvoiceStore()
-const route = useRoute()
+import type { InvoiceData, PurchasedProduct } from '@/views/apps/invoice/types'
 
 const invoiceData = ref<InvoiceData>()
+const route = useRoute('apps-invoice-edit-id')
 
 // 👉 fetchInvoice
-invoiceListStore.fetchInvoice(Number(route.params.id)).then(response => {
-  invoiceData.value = {
-    invoice: response.data.invoice,
-    paymentDetails: response.data.paymentDetails,
 
-    /*
+const { data: invoiceDetails } = await useApi<any>(`/apps/invoice/${route.params.id}`)
+
+invoiceData.value = {
+  invoice: invoiceDetails.value.invoice,
+  paymentDetails: invoiceDetails.value.paymentDetails,
+
+  /*
       We are adding some extra data in response for data purpose
       Your response will contain this extra data
       Purpose is to make it more API friendly and less static as possible
     */
-    purchasedProducts: [
-      {
-        title: 'App Design',
-        cost: 24,
-        qty: 2,
-        description: 'Designed UI kit & app pages.',
-      },
-    ],
-    note: 'It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance projects. Thank You!',
-    paymentMethod: 'Bank Account',
-    salesperson: 'Tom Cook',
-    thanksNote: 'Thanks for your business',
-  }
-}).catch(error => {
-  console.log(error)
-})
+
+  purchasedProducts: [
+    {
+      title: 'App Design',
+      cost: 24,
+      qty: 2,
+      description: 'Designed UI kit & app pages.',
+    },
+  ],
+  note: 'It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance projects. Thank You!',
+  paymentMethod: 'Bank Account',
+  salesperson: 'Tom Cook',
+  thanksNote: 'Thanks for your business',
+}
+
+const addProduct = (value: PurchasedProduct) => {
+  invoiceData.value?.purchasedProducts.push(value)
+}
+
+const removeProduct = (id: number) => {
+  invoiceData.value?.purchasedProducts.splice(id, 1)
+}
 
 const isSendSidebarActive = ref(false)
 const isAddPaymentSidebarActive = ref(false)
@@ -53,13 +56,17 @@ const paymentMethods = ['Bank Account', 'PayPal', 'UPI Transfer']
 
 <template>
   <VRow>
-    <!-- 👉 InvoiceEditable   -->
+    <!-- 👉 InvoiceEditable -->
     <VCol
-      v-if="invoiceData?.invoice"
       cols="12"
       md="9"
     >
-      <InvoiceEditable :data="invoiceData" />
+      <InvoiceEditable
+        v-if="invoiceData?.invoice"
+        :data="invoiceData"
+        @push="addProduct"
+        @remove="removeProduct"
+      />
     </VCol>
 
     <!-- 👉 Right Column: Invoice Action -->

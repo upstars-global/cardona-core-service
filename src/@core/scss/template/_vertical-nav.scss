@@ -13,9 +13,7 @@
         }
       }
 
-      .header-action {
-        margin-inline-end: -0.85rem;
-      }
+     
     }
 
     // 👉 Nav group & Link
@@ -24,6 +22,10 @@
       // shadow cut issue fix
       margin-block-end: -0.5rem;
       padding-block-end: 0.5rem;
+
+      a {
+        outline: none;
+      }
     }
 
     // 👉 Nav group active

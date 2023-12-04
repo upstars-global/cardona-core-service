@@ -1,5 +1,5 @@
 import type { TranslateResult } from 'vue-i18n'
-import i18n from '../plugins/i18n'
+import { i18n } from '../plugins/i18n'
 import { getLocaleDateStringWithoutTimezone } from '../helpers/date'
 import { SideBarCollapseItem } from '../@model/templates/baseList'
 import type { BaseListItem } from '../@model/templates/baseList'
@@ -195,25 +195,25 @@ export class DemoForm {
       type: FieldType.Switch,
       key: 'switch',
       value: data?.switch,
-      label: i18n.global.t('page.demo.switchField'),
+      label: i18n.t('page.demo.switchField'),
     })
     this.text = new TextBaseField({
       key: 'text',
       value: data?.text,
-      label: i18n.global.t('page.demo.textField'),
-      validationRules: {required: true},
+      label: i18n.t('page.demo.textField'),
+      validationRules: { required: true },
       isLocalization: true,
     })
     this.richText = new RichTextBaseField({
       key: 'richText',
       value: data?.text,
-      label: i18n.global.t('common.richText'),
+      label: i18n.t('common.richText'),
     })
     this.textWithCb = new TextBaseField({
       key: 'textWithCb',
       value: data?.textWithCb,
-      label: i18n.global.t('page.demo.textFieldWithCb'),
-      validationRules: {required: true},
+      label: i18n.t('page.demo.textFieldWithCb'),
+      validationRules: { required: true },
       isLocalization: true,
       serialize: (value: string) => {
         if (value?.includes('demo:'))
@@ -231,81 +231,81 @@ export class DemoForm {
     this.number = new NumberBaseField({
       key: 'number',
       value: data?.number,
-      label: i18n.global.t('page.demo.numberField'),
-      validationRules: { required: true, min:3 },
+      label: i18n.t('page.demo.numberField'),
+      validationRules: { required: true, min: 3 },
       withPositiveNumbers: true,
-      info: i18n.global.t('page.demo.onlyPositiveNumbers'),
+      info: i18n.t('page.demo.onlyPositiveNumbers'),
     })
     this.minute = new FieldInfo({
       type: FieldType.Minute,
       key: 'minute',
       value: data?.minute,
-      label: i18n.global.t('page.demo.minuteField'),
-      validationRules: {positive: true},
+      label: i18n.t('page.demo.minuteField'),
+      validationRules: { positive: true },
     })
     this.percent = new FieldInfo({
       type: FieldType.Percent,
       key: 'percent',
       value: data?.percent,
-      label: i18n.global.t('page.demo.percentField'),
-      validationRules: {required: true, length: 2}
+      label: i18n.t('page.demo.percentField'),
+      validationRules: { required: true, length: 2 },
     })
     this.digits = new NumberBaseField({
       key: 'digits',
       value: data?.digits,
-      label: i18n.global.t('page.demo.numberField'),
-      validationRules: {required: true, digits:4},
+      label: i18n.t('page.demo.numberField'),
+      validationRules: { required: true, digits: 4 },
     })
     this.email = new TextBaseField({
       key: 'email',
       value: data?.email,
-      label: i18n.global.t('common.email'),
-      validationRules: {required: true, email:true},
+      label: i18n.t('common.email'),
+      validationRules: { required: true, email: true },
     })
     this.sumRange = new FieldInfo({
       type: FieldType.SumRange,
       key: 'sumRange',
       value: data?.sumRange,
-      label: i18n.global.t('page.demo.sumRangeField'),
+      label: i18n.t('page.demo.sumRangeField'),
     })
     this.phone = new FieldInfo({
       type: FieldType.Phone,
       key: 'phone',
       value: data?.phone,
-      label: i18n.global.t('page.demo.phoneField'),
-      validationRules: {required: true, phone: true}
+      label: i18n.t('page.demo.phoneField'),
+      validationRules: { required: true, phone: true },
     })
     this.password = new FieldInfo({
       type: FieldType.Password,
       key: 'password',
       value: data?.password,
-      label: i18n.global.t('page.demo.passwordField'),
-      validationRules: {required: true, password: true}
+      label: i18n.t('page.demo.passwordField'),
+      validationRules: { required: true, password: true },
     })
     this.passwordFieldWithGeneration = new FieldInfo({
       type: FieldType.Password,
       key: 'password',
       value: data?.passwordWithGenerator,
-      label: i18n.global.t('page.demo.passwordFieldWithGeneration'),
-      validationRules: {required: true, password: true}
+      label: i18n.t('page.demo.passwordFieldWithGeneration'),
+      validationRules: { required: true, password: true },
     })
     this.switchWithState = new FieldInfo({
       type: FieldType.SwitchWithState,
       key: 'switchWithState',
       value: data?.switchWithState,
-      label: i18n.global.t('page.demo.switchWithStateField'),
+      label: i18n.t('page.demo.switchWithStateField'),
     })
     this.check = new FieldInfo({
       type: FieldType.Check,
       key: 'check',
       value: data?.check,
-      label: i18n.global.t('page.demo.checkField'),
+      label: i18n.t('page.demo.checkField'),
     })
     this.checkGroup = new FieldInfo({
       type: FieldType.CheckGroup,
       key: 'checkGroup',
       value: data?.checkGroup,
-      label: i18n.global.t('page.demo.checkGroupField'),
+      label: i18n.t('page.demo.checkGroupField'),
       options: [
         {
           id: 'option1',
@@ -333,79 +333,79 @@ export class DemoForm {
       type: FieldType.Radio,
       key: 'radio',
       value: true,
-      label: i18n.global.t('page.demo.radioField'),
+      label: i18n.t('page.demo.radioField'),
       options: [
-        { text: i18n.global.t('common.yes'), value: true },
-        { text: i18n.global.t('common.no'), value: false },
+        { text: i18n.t('common.yes'), value: true },
+        { text: i18n.t('common.no'), value: false },
       ],
     })
     this.date = new FieldInfo({
       type: FieldType.Date,
       key: 'date',
       value: getLocaleDateStringWithoutTimezone(data?.date),
-      label: i18n.global.t('page.demo.dateField'),
+      label: i18n.t('page.demo.dateField'),
     })
     this.dateRange = new FieldInfo({
       type: FieldType.DateRange,
       key: 'dateRange',
       value: data?.dateRange,
-      label: i18n.global.t('page.demo.dateRangeField'),
+      label: i18n.t('page.demo.dateRangeField'),
     })
     this.dateTime = new FieldInfo({
       type: FieldType.DateTime,
       key: 'dateTime',
       value: getLocaleDateStringWithoutTimezone(data?.dateTime),
-      label: i18n.global.t('page.demo.dateTimeField'),
+      label: i18n.t('page.demo.dateTimeField'),
     })
     this.time = new TimeBaseField({
       key: 'time',
       value: data?.time,
-      label: i18n.global.t('page.demo.timeField'),
+      label: i18n.t('page.demo.timeField'),
     })
     this.dateBtn = new FieldInfo({
       type: FieldType.DateBtnOnly,
       key: 'dateBtn',
       value: data?.dateBtn,
-      label: i18n.global.t('page.demo.dateBtnField'),
+      label: i18n.t('page.demo.dateBtnField'),
     })
     this.select = new SelectBaseField({
       key: 'select',
       value: data?.select,
-      label: i18n.global.t('page.demo.selectField'),
+      label: i18n.t('page.demo.selectField'),
       fetchOptionsActionName: 'demo/fetchOptions',
-      validationRules: {required: true}
+      validationRules: { required: true },
     })
     this.multiSelect = new FieldInfo({
       type: FieldType.MultiSelect,
       key: 'multiSelect',
       value: data?.multiSelect,
-      label: i18n.global.t('page.demo.multiSelectField'),
+      label: i18n.t('page.demo.multiSelectField'),
       fetchOptionsActionName: 'demo/fetchOptions',
     })
     this.textarea = new FieldInfo({
       type: FieldType.Textarea,
       value: data?.textarea,
       key: 'textarea',
-      label: i18n.global.t('page.demo.textareaField'),
+      label: i18n.t('page.demo.textareaField'),
     })
     this.textareaWithCounter = new FieldInfo({
       type: FieldType.TextareaWithCounter,
       value: data?.textareaWithCounter,
       key: 'textareaWithCounter',
-      label: i18n.global.t('page.demo.textareaWithCounterField'),
+      label: i18n.t('page.demo.textareaWithCounterField'),
       maxLength: 45,
     })
     this.url = new TextBaseField({
       value: data?.url,
       key: 'url',
-      label: i18n.global.t('common.url'),
-      validationRules: {url: true},
+      label: i18n.t('common.url'),
+      validationRules: { url: true },
     })
     this.tags = new FieldInfo({
       type: FieldType.Tags,
       value: data?.tags,
       key: 'tags',
-      label: i18n.global.t('page.demo.tagsField'),
+      label: i18n.t('page.demo.tagsField'),
     })
     this.seo = data?.seo
     this.fieldTranslations = data?.fieldTranslations
@@ -420,81 +420,81 @@ export class DemoSideBar {
 
   constructor(data?: IDemoListItem) {
     this.generalInfo = new SideBarCollapseItem({
-      title: i18n.global.t('common.generalInformation'),
+      title: i18n.t('common.generalInformation'),
       withBottomSeparator: true,
       views: {
         comment: new ViewInfo({
           type: ViewType.Comment,
           value: data?.comment,
-          label: i18n.global.t('common.comment'),
+          label: i18n.t('common.comment'),
         }),
         name: new ViewInfo({
           type: ViewType.Text,
           value: data?.name,
-          label: i18n.global.t('common.name'),
+          label: i18n.t('common.name'),
         }),
         type: new ViewInfo({
           type: ViewType.TransactionType,
           value: data?.type.id,
-          label: i18n.global.t('common.type'),
+          label: i18n.t('common.type'),
         }),
         date: new ViewInfo({
           type: ViewType.Date,
           value: data?.date,
-          label: i18n.global.t('common.date'),
+          label: i18n.t('common.date'),
         }),
         id: new ViewInfo({
           type: ViewType.BadgeCopy,
           value: data?.id,
-          label: i18n.global.t('common.id'),
+          label: i18n.t('common.id'),
         }),
         partnerCode: new ViewInfo({
           type: ViewType.BadgeShortCopy,
           value: data?.partnerCode,
-          label: i18n.global.t('common.partnerCode'),
+          label: i18n.t('common.partnerCode'),
         }),
       },
     })
     this.info = new SideBarCollapseItem({
-      title: i18n.global.t('common.mainInfo'),
+      title: i18n.t('common.mainInfo'),
       withBottomSeparator: true,
       views: {
         isActive: new ViewInfo({
           type: ViewType.Statement,
           value: !!data?.isActive,
-          label: i18n.global.t('common.isActive'),
+          label: i18n.t('common.isActive'),
           withSeparator: true,
         }),
         amount: new ViewInfo({
           type: ViewType.SumAndCurrency,
           value: { amount: data?.amount, currency: data?.currency },
-          label: i18n.global.t('common.sum'),
+          label: i18n.t('common.sum'),
         }),
         id: new ViewInfo({
           type: ViewType.Status,
           value: data?.status,
-          label: i18n.global.t('common.status'),
+          label: i18n.t('common.status'),
         }),
         tags: new ViewInfo({
           type: ViewType.Badges,
           value: data?.tags,
           withSearch: true,
-          label: i18n.global.t('common.tags', { count: data?.tags?.length }),
+          label: i18n.t('common.tags', { count: data?.tags?.length }),
         }),
         email: new ViewInfo({
           type: ViewType.Text,
           value: data?.email,
-          label: i18n.global.t('common.email'),
+          label: i18n.t('common.email'),
         }),
         newDate: new ViewInfo({
           type: ViewType.DateWithSeconds,
           value: data?.newDate,
-          label: i18n.global.t('common.dateOfCreation'),
+          label: i18n.t('common.dateOfCreation'),
         }),
         localization: new ViewInfo({
           type: ViewType.Locale,
           value: data?.localization,
-          label: i18n.global.t('common.locale._'),
+          label: i18n.t('common.locale._'),
         }),
         statusList: new ViewInfo({
           type: ViewType.StatusWithDateHistory,
@@ -512,23 +512,23 @@ export class DemoSideBar {
               date: data?.date,
             },
           ] as StatusWithDateHistoryValue[],
-          label: i18n.global.t('common.log'),
+          label: i18n.t('common.log'),
         }),
       },
     })
     this.unuseble = new SideBarCollapseItem({
-      title: i18n.global.t('common.additionalInfo'),
+      title: i18n.t('common.additionalInfo'),
       views: {
         callbackData: data?.callbackData,
         link: new ViewInfo({
           type: ViewType.Link,
-          value: { route: { name: 'PermissionPage' }, title: 'BO-Permission' },
-          label: i18n.global.t('common.link'),
+          value: { route: { name: 'PermissionPage' }, title: 'Permission' },
+          label: i18n.t('common.link'),
         }),
         objectToRows: new ViewInfo({
           type: ViewType.ObjectToRows,
           value: data?.period,
-          label: i18n.global.t('common.data'),
+          label: i18n.t('common.data'),
         }),
         statusWithDate: new ViewInfo({
           type: ViewType.StatusWithDate,
@@ -536,7 +536,7 @@ export class DemoSideBar {
             status: new StatusWithVariant('active', VColors.Success),
             updatedAt: data?.date,
           },
-          label: i18n.global.t('common.status'),
+          label: i18n.t('common.status'),
         }),
       },
     })

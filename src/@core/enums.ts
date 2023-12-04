@@ -3,13 +3,19 @@ export const Skins = {
   Bordered: 'bordered',
 } as const
 
-export const RouteTransitions = {
-  Fade: 'app-transition-fade',
-  None: 'none',
+export const Theme = {
+  Light: 'light',
+  Dark: 'dark',
+  System: 'system',
+} as const
 
-  // 'Zoom Fade': 'app-transition-zoom-fade',
-  // 'Fade Bottom': 'app-transition-fade-bottom',
-  // 'Slide Fade': 'app-transition-slide-fade',
-  // 'Zoom out': 'app-transition-zoom-out',
+export const Layout = {
+  Vertical: 'vertical',
+  Horizontal: 'horizontal',
+  Collapsed: 'collapsed',
+} as const
 
+export const Direction = {
+  Ltr: 'ltr',
+  Rtl: 'rtl',
 } as const

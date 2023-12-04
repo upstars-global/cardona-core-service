@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { VDataTable } from 'vuetify/labs/VDataTable'
-import { paginationMeta } from '@/@fake-db/utils'
+import { paginationMeta } from '@api-utils/paginationMeta'
 
 import figma from '@images/icons/project-icons/figma.png'
 import html5 from '@images/icons/project-icons/html5.png'
@@ -12,7 +12,7 @@ import xamarin from '@images/icons/project-icons/xamarin.png'
 
 // Project Table Header
 const projectTableHeaders = [
-  { title: 'PROJECT', key: 'name' },
+  { title: 'Name', key: 'name' },
   { title: 'LEADER', key: 'leader' },
   { title: 'PROGRESS', key: 'progress' },
   { title: 'Action', key: 'Action', sortable: false },
@@ -102,18 +102,17 @@ const moreList = [
 
 <template>
   <VCard>
-    <VCardItem>
-      <VCardTitle> Project List</VCardTitle>
-      <VSpacer />
-      <template #append>
-        <div style="inline-size: 272px;">
-          <AppTextField
-            v-model="search"
-            placeholder="Search"
-          />
-        </div>
-      </template>
-    </VCardItem>
+    <VCardText class="d-flex justify-space-between align-center flex-wrap gap-4">
+      <h5 class="text-h5">
+        Project List
+      </h5>
+      <div style="inline-size: 272px;">
+        <AppTextField
+          v-model="search"
+          placeholder="Search"
+        />
+      </div>
+    </VCardText>
 
     <VDivider />
     <!-- 👉 User Project List Table -->
@@ -123,25 +122,32 @@ const moreList = [
       v-model:page="options.page"
       :headers="projectTableHeaders"
       :items-per-page="options.itemsPerPage"
+      item-value="project"
       :items="projects"
       hide-default-footer
       :search="search"
+      show-select
+      class="text-no-wrap"
       @update:options="options = $event"
     >
       <!-- projects -->
       <template #item.name="{ item }">
-        <div class="d-flex">
+        <div class="d-flex align-center">
           <VAvatar
-            :size="34"
+            :size="38"
             class="me-3"
-            :image="item.raw.logo"
-          />
+          >
+            <VImg
+              :src="item.logo"
+              size="28"
+            />
+          </VAvatar>
           <div>
             <p class="font-weight-medium mb-0">
-              {{ item.raw.name }}
+              {{ item.name }}
             </p>
-            <p class="text-xs text-medium-emphasis mb-0">
-              {{ item.raw.project }}
+            <p class="text-sm text-disabled mb-0">
+              {{ item.project }}
             </p>
           </div>
         </div>
@@ -153,12 +159,12 @@ const moreList = [
           <div class="flex-grow-1">
             <VProgressLinear
               :height="6"
-              :model-value="item.raw.progress"
+              :model-value="item.progress"
               rounded
-              :color="resolveUserProgressVariant(item.raw.progress)"
+              :color="resolveUserProgressVariant(item.progress)"
             />
           </div>
-          <span>{{ item.raw.progress }}%</span>
+          <span>{{ item.progress }}%</span>
         </div>
       </template>
 
@@ -208,45 +214,6 @@ const moreList = [
           </VPagination>
         </div>
       </template>
-      <!--
-        <template #bottom>
-        <VDivider />
-
-        <div class="d-flex align-center justify-space-between flex-wrap gap-3 pa-5 pt-3">
-        <p class="text-sm text-disabled mb-0">
-        {{ paginationMeta(options, projects.length) }}
-        </p>
-
-        <VPagination
-        v-model="options.page"
-        :total-visible="Math.ceil(projects.length / 5)"
-        :length="Math.ceil(projects.length / 5)"
-        >
-        <template #next="slotProps">
-        <VBtn
-        v-bind="slotProps"
-        :icon="false"
-        variant="tonal"
-        color="default"
-        >
-        Next
-        </VBtn>
-        </template>
-
-        <template #prev="slotProps">
-        <VBtn
-        v-bind="slotProps"
-        :icon="false"
-        variant="tonal"
-        color="default"
-        >
-        Previous
-        </VBtn>
-        </template>
-        </VPagination>
-        </div>
-        </template>
-      -->
     </VDataTable>
     <!-- !SECTION -->
   </VCard>

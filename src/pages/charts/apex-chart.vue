@@ -26,7 +26,8 @@ import ApexChartStocksPrices from '@/views/charts/apex-chart/ApexChartStocksPric
                 model-value="2022-06-09"
                 prepend-inner-icon="tabler-calendar"
                 density="compact"
-                :config="{ position: 'auto right' }"
+                placeholder="Select Date"
+                :config="$vuetify.display.smAndDown ? { position: 'auto center' } : { position: 'auto right' }"
               />
             </div>
           </template>
@@ -50,7 +51,8 @@ import ApexChartStocksPrices from '@/views/charts/apex-chart/ApexChartStocksPric
                 model-value="2022-06-09"
                 prepend-inner-icon="tabler-calendar"
                 density="compact"
-                :config="{ position: 'auto right' }"
+                placeholder="Select Date"
+                :config="$vuetify.display.smAndDown ? { position: 'auto center' } : { position: 'auto right' }"
               />
             </div>
           </template>
@@ -137,7 +139,8 @@ import ApexChartStocksPrices from '@/views/charts/apex-chart/ApexChartStocksPric
                 model-value="2022-06-09"
                 prepend-inner-icon="tabler-calendar"
                 density="compact"
-                :config="{ position: 'auto right' }"
+                placeholder="Select Date"
+                :config="$vuetify.display.smAndDown ? { position: 'auto center' } : { position: 'auto right' }"
               />
             </div>
           </template>
@@ -165,7 +168,8 @@ import ApexChartStocksPrices from '@/views/charts/apex-chart/ApexChartStocksPric
                 model-value="2022-06-09"
                 prepend-inner-icon="tabler-calendar"
                 density="compact"
-                :config="{ position: 'auto right' }"
+                placeholder="Select Date"
+                :config="$vuetify.display.smAndDown ? { position: 'auto center' } : { position: 'auto right' }"
               />
             </div>
           </template>

@@ -22,7 +22,7 @@ const checkboxContent: CustomInputContent[] = [
   },
 ]
 
-const selectedCheckbox = ref(['basic'])
+const selectedCheckbox = ref(['backup'])
 </script>
 
 <template>

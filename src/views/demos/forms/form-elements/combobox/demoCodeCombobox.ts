@@ -8,6 +8,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
   <AppCombobox
     v-model="selectedItem"
     :items="items"
+    placeholder="deployment"
   />
 </template>
 `,
@@ -26,6 +27,7 @@ const items = [
   <AppCombobox
     v-model="selectedItem"
     :items="items"
+    placeholder="deployment"
   />
 </template>
 `,
@@ -43,6 +45,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
     :items="items"
     label="Combobox"
     multiple
+    placeholder="deployment"
     clearable
   />
 </template>
@@ -67,6 +70,7 @@ const items = [
     :items="items"
     label="Combobox"
     multiple
+    placeholder="deployment"
     clearable
   />
 </template>
@@ -85,6 +89,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
     :items="items"
     label="Combobox"
     density="compact"
+    placeholder="deployment"
     multiple
   />
 </template>
@@ -109,6 +114,7 @@ const items = [
     :items="items"
     label="Combobox"
     density="compact"
+    placeholder="deployment"
     multiple
   />
 </template>
@@ -127,6 +133,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
       <AppCombobox
         v-model="selectedItem"
         :items="items"
+        placeholder="deployment"
         label="Select a favorite activity or create a new one"
         multiple
       />
@@ -136,6 +143,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
       <AppCombobox
         v-model="selectedItem"
         :items="items"
+        placeholder="deployment"
         label="I use chips"
         multiple
         chips
@@ -145,6 +153,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
     <VCol cols="12">
       <AppCombobox
         v-model="selectedItem"
+        placeholder="deployment"
         label="I'm readonly"
         chips
         multiple
@@ -156,20 +165,21 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
       <AppCombobox
         v-model="selectedItem"
         :items="items"
+        placeholder="deployment"
         label="I use selection slot"
         multiple
       >
         <template #selection="{ item }">
-          <VChip>
-            <VAvatar
-              start
-              color="primary"
-            >
-              <span
-                style="margin-top: 1px;"
-                class="text-xs"
-              >{{ String(item.title).charAt(0).toUpperCase() }}</span>
-            </VAvatar>
+          <VChip class="mt-1">
+            <template #prepend>
+              <VAvatar
+                start
+                color="primary"
+              >
+                {{ String(item.title).charAt(0).toUpperCase() }}
+              </VAvatar>
+            </template>
+
             {{ item.title }}
           </VChip>
         </template>
@@ -198,6 +208,7 @@ const items = [
       <AppCombobox
         v-model="selectedItem"
         :items="items"
+        placeholder="deployment"
         label="Select a favorite activity or create a new one"
         multiple
       />
@@ -207,6 +218,7 @@ const items = [
       <AppCombobox
         v-model="selectedItem"
         :items="items"
+        placeholder="deployment"
         label="I use chips"
         multiple
         chips
@@ -216,6 +228,7 @@ const items = [
     <VCol cols="12">
       <AppCombobox
         v-model="selectedItem"
+        placeholder="deployment"
         label="I'm readonly"
         chips
         multiple
@@ -227,20 +240,21 @@ const items = [
       <AppCombobox
         v-model="selectedItem"
         :items="items"
+        placeholder="deployment"
         label="I use selection slot"
         multiple
       >
         <template #selection="{ item }">
-          <VChip>
-            <VAvatar
-              start
-              color="primary"
-            >
-              <span
-                style="margin-top: 1px;"
-                class="text-xs"
-              >{{ String(item.title).charAt(0).toUpperCase() }}</span>
-            </VAvatar>
+          <VChip class="mt-1">
+            <template #prepend>
+              <VAvatar
+                start
+                color="primary"
+              >
+                {{ String(item.title).charAt(0).toUpperCase() }}
+              </VAvatar>
+            </template>
+
             {{ item.title }}
           </VChip>
         </template>
@@ -270,6 +284,7 @@ watch(selectedList, value => {
     :items="items"
     hide-selected
     :hide-no-data="false"
+    placeholder="deployment"
     hint="Maximum of 5 tags"
     label="Add some tags"
     multiple
@@ -309,6 +324,7 @@ watch(selectedList, value => {
     :items="items"
     hide-selected
     :hide-no-data="false"
+    placeholder="deployment"
     hint="Maximum of 5 tags"
     label="Add some tags"
     multiple
@@ -339,6 +355,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
         v-model="selectedItem"
         :items="items"
         multiple
+        placeholder="deployment"
         variant="solo"
         label="solo"
       />
@@ -348,6 +365,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
         v-model="selectedItem"
         multiple
         :items="items"
+        placeholder="deployment"
         variant="outlined"
         label="Outlined"
       />
@@ -357,6 +375,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
         v-model="selectedItem"
         multiple
         :items="items"
+        placeholder="deployment"
         variant="underlined"
         label="Underlined"
       />
@@ -366,6 +385,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
         v-model="selectedItem"
         multiple
         :items="items"
+        placeholder="deployment"
         variant="filled"
         label="Filled"
       />
@@ -376,6 +396,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
         multiple
         :items="items"
         variant="plain"
+        placeholder="deployment"
         label="Plain"
       />
     </VCol>
@@ -400,6 +421,7 @@ const items = [
         v-model="selectedItem"
         :items="items"
         multiple
+        placeholder="deployment"
         variant="solo"
         label="solo"
       />
@@ -409,6 +431,7 @@ const items = [
         v-model="selectedItem"
         multiple
         :items="items"
+        placeholder="deployment"
         variant="outlined"
         label="Outlined"
       />
@@ -418,6 +441,7 @@ const items = [
         v-model="selectedItem"
         multiple
         :items="items"
+        placeholder="deployment"
         variant="underlined"
         label="Underlined"
       />
@@ -427,6 +451,7 @@ const items = [
         v-model="selectedItem"
         multiple
         :items="items"
+        placeholder="deployment"
         variant="filled"
         label="Filled"
       />
@@ -437,6 +462,7 @@ const items = [
         multiple
         :items="items"
         variant="plain"
+        placeholder="deployment"
         label="Plain"
       />
     </VCol>

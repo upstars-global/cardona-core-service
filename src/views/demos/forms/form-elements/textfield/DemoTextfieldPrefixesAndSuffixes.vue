@@ -13,6 +13,7 @@ const time = ref('04:56')
         label="Amount"
         prefix="$"
         type="number"
+        placeholder="10.05"
       />
     </VCol>
 
@@ -22,6 +23,7 @@ const time = ref('04:56')
         label="Weight"
         suffix="lbs"
         type="number"
+        placeholder="28.02"
       />
     </VCol>
 
@@ -30,6 +32,7 @@ const time = ref('04:56')
         v-model="email"
         label="Email address"
         suffix="@gmail.com"
+        placeholder="example"
       />
     </VCol>
 
@@ -39,6 +42,7 @@ const time = ref('04:56')
         label="Label Text"
         type="time"
         suffix="PST"
+        placeholder="04:56"
       />
     </VCol>
   </VRow>

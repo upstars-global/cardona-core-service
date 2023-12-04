@@ -48,4 +48,23 @@ $header: ".layout-navbar";
   .layout-vertical-nav {
     border-inline-end: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
   }
+
+  // Expansion Panels
+  .v-expansion-panels:not(.customized-panels) {
+    .v-expansion-panel__shadow {
+      box-shadow: none !important;
+    }
+
+    .v-expansion-panel {
+      border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+
+      &:not(:last-child) {
+        margin-block-end: -1px;
+      }
+
+      &::after {
+        content: none;
+      }
+    }
+  }
 }

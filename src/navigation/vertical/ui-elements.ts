@@ -45,9 +45,10 @@ export default [
   },
   {
     title: 'Extensions',
-    icon: { icon: 'mdi-cube-outline' },
+    icon: { icon: 'tabler-box' },
     children: [
       { title: 'Tour', to: 'extensions-tour' },
+      { title: 'Swiper', to: 'extensions-swiper' },
     ],
   },
 ]

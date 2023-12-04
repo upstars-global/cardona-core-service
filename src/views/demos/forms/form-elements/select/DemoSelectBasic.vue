@@ -6,5 +6,6 @@ const items = ['Foo', 'Bar', 'Fizz', 'Buzz']
   <AppSelect
     :items="items"
     label="Standard"
+    placeholder="Select Item"
   />
 </template>

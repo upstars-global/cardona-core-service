@@ -1,8 +1,7 @@
-import type { IconProps } from '@iconify/vue'
-import { Icon } from '@iconify/vue'
-import type { IconAliases, IconSet } from 'vuetify'
+import type { IconAliases } from 'vuetify'
 
 const aliases: IconAliases = {
+  calendar: 'tabler-calendar',
   collapse: 'tabler-chevron-up',
   complete: 'tabler-check',
   cancel: 'tabler-x',
@@ -15,17 +14,17 @@ const aliases: IconAliases = {
   error: 'tabler-x',
   prev: 'tabler-chevron-left',
   next: 'tabler-chevron-right',
-  checkboxOn: 'custom-checked-checkbox',
-  checkboxOff: 'custom-unchecked-checkbox',
-  checkboxIndeterminate: 'custom-indeterminate-checkbox',
+  checkboxOn: 'custom-checkbox-checked',
+  checkboxOff: 'custom-checkbox-unchecked',
+  checkboxIndeterminate: 'custom-checkbox-indeterminate',
   delimiter: 'tabler-circle',
   sort: 'tabler-arrow-up',
   expand: 'tabler-chevron-down',
   menu: 'tabler-menu-2',
   subgroup: 'tabler-caret-down',
   dropdown: 'tabler-chevron-down',
-  radioOn: 'custom-checked-radio',
-  radioOff: 'custom-unchecked-radio',
+  radioOn: 'custom-radio-checked',
+  radioOff: 'custom-radio-unchecked',
   edit: 'tabler-pencil',
   ratingEmpty: 'custom-star-empty',
   ratingFull: 'custom-star-fill',
@@ -42,8 +41,18 @@ const aliases: IconAliases = {
 }
 
 export const iconify = {
-  component: (props: IconProps) => h(Icon, props),
-} as IconSet
+  component: (props: any) => h(
+    props.tag,
+    {
+      ...props,
+      class: [props.class, props.icon],
+
+      // Remove used props from DOM rendering
+      tag: undefined,
+      icon: undefined,
+    },
+  ),
+}
 
 export const icons = {
   defaultSet: 'iconify',

@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { VDataTable } from 'vuetify/labs/VDataTable'
-import { avatarText } from '@/@core/utils/formatters'
-import type { Data } from '@/@fake-db/types'
 import data from '@/views/demos/forms/tables/data-table/datatable'
+import type { Data } from '@db/pages/datatable/types'
 
 const userList = ref<Data[]>([])
 const options = ref({ page: 1, itemsPerPage: 5, sortBy: [''], sortDesc: [false] })
 
 // headers
 const headers = [
-  { title: 'NAME', key: 'full_name' },
+  { title: 'NAME', key: 'fullName' },
   { title: 'EMAIL', key: 'email' },
-  { title: 'DATE', key: 'start_date' },
+  { title: 'DATE', key: 'startDate' },
   { title: 'SALARY', key: 'salary' },
   { title: 'AGE', key: 'age' },
   { title: 'STATUS', key: 'status' },
@@ -41,70 +40,61 @@ onMounted(() => {
     :items="userList"
     :items-per-page="options.itemsPerPage"
     :page="options.page"
-    @update:options="options = $event"
+    :options="options"
   >
     <!-- full name -->
-    <template #item.full_name="{ item }">
+    <template #item.fullName="{ item }">
       <div class="d-flex align-center">
         <VAvatar
           size="32"
-          :color="item.raw.avatar ? '' : 'primary'"
-          :class="item.raw.avatar ? '' : 'v-avatar-light-bg primary--text'"
-          :variant="!item.raw.avatar ? 'tonal' : undefined"
+          :color="item.avatar ? '' : 'primary'"
+          :class="item.avatar ? '' : 'v-avatar-light-bg primary--text'"
+          :variant="!item.avatar ? 'tonal' : undefined"
         >
           <VImg
-            v-if="item.raw.avatar"
-            :src="item.raw.avatar"
+            v-if="item.avatar"
+            :src="item.avatar"
           />
-          <span v-else>{{ avatarText(item.raw.full_name) }}</span>
+          <span v-else>{{ avatarText(item.fullName) }}</span>
         </VAvatar>
         <div class="d-flex flex-column ms-3">
-          <span class="d-block font-weight-medium text--primary text-truncate">{{ item.raw.full_name }}</span>
-          <small>{{ item.raw.post }}</small>
+          <span class="d-block font-weight-medium text-high-emphasis text-truncate">{{ item.fullName }}</span>
+          <small>{{ item.post }}</small>
         </div>
       </div>
     </template>
 
+    <!-- status -->
     <template #item.status="{ item }">
       <VChip
-        :color="resolveStatusVariant(item.raw.status).color"
+        :color="resolveStatusVariant(item.status).color"
         class="font-weight-medium"
         size="small"
       >
-        {{ resolveStatusVariant(item.raw.status).text }}
+        {{ resolveStatusVariant(item.status).text }}
       </VChip>
     </template>
 
     <template #bottom>
       <VCardText class="pt-2">
-        <VRow>
-          <VCol
-            lg="2"
-            cols="3"
-          >
-            <VTextField
-              v-model="options.itemsPerPage"
-              label="Rows per page:"
-              type="number"
-              min="-1"
-              max="15"
-              hide-details
-              variant="underlined"
-            />
-          </VCol>
+        <div class="d-flex flex-wrap justify-center justify-sm-space-between gap-y-2 mt-2">
+          <VTextField
+            v-model="options.itemsPerPage"
+            label="Rows per page:"
+            type="number"
+            min="-1"
+            max="15"
+            hide-details
+            variant="underlined"
+            style="max-inline-size: 8rem;min-inline-size: 5rem;"
+          />
 
-          <VCol
-            lg="10"
-            cols="9"
-            class="d-flex justify-end"
-          >
-            <VPagination
-              v-model="options.page"
-              total-visible="5"
-              :length="Math.ceil(userList.length / options.itemsPerPage)"
-            />
-          </VCol>
-        </VRow>
+          <VPagination
+            v-model="options.page"
+            :total-visible="$vuetify.display.smAndDown ? 3 : 5"
+            :length="Math.ceil(userList.length / options.itemsPerPage)"
+          />
+        </div>
       </VCardText>
     </template>
   </VDataTable>

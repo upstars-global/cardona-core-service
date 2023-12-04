@@ -74,7 +74,8 @@ const resetAuthCode = () => {
             v-model="authCode"
             name="auth-code"
             label="Enter Authentication Code"
-            class="my-4"
+            placeholder="123 456"
+            class="mb-4"
           />
 
           <div class="d-flex justify-end flex-wrap gap-3">

@@ -39,16 +39,21 @@ const paymentMethods = [
       <VExpansionPanelTitle>Delivery Address</VExpansionPanelTitle>
 
       <VExpansionPanelText>
-        <VForm @submit.prevent="() => {}">
+        <VForm
+          class="pt-4 pb-2"
+          @submit.prevent="() => {}"
+        >
           <VRow>
             <!-- 👉 Full Name -->
             <VCol
               cols="12"
               md="6"
             >
-              <AppTextField label="Full Name" />
+              <AppTextField
+                label="Full Name"
+                placeholder="John Doe"
+              />
             </VCol>
-
             <!-- 👉 Phone No -->
             <VCol
               cols="12"
@@ -57,17 +62,17 @@ const paymentMethods = [
               <AppTextField
                 label="Phone No"
                 type="number"
+                placeholder="+1 123 456 7890"
               />
             </VCol>
-
             <!-- 👉 Address -->
             <VCol cols="12">
               <AppTextarea
                 label="Address"
+                placeholder="1234 Main St, New York, NY 10001, USA"
                 rows="3"
               />
             </VCol>
-
             <!-- 👉 Pincode -->
             <VCol
               cols="12"
@@ -75,26 +80,30 @@ const paymentMethods = [
             >
               <AppTextField
                 label="Pincode"
+                placeholder="123456"
                 type="number"
               />
             </VCol>
-
             <!-- 👉 Landmark -->
             <VCol
               cols="12"
               md="6"
             >
-              <AppTextField label="Landmark" />
+              <AppTextField
+                label="Landmark"
+                placeholder="Near City Mall"
+              />
             </VCol>
-
             <!-- 👉 City -->
             <VCol
               cols="12"
               md="6"
             >
-              <AppTextField label="City" />
+              <AppTextField
+                label="City"
+                placeholder="New York"
+              />
             </VCol>
-
             <!-- 👉 State -->
             <VCol
               cols="12"
@@ -103,9 +112,9 @@ const paymentMethods = [
               <AppSelect
                 :items="stateList"
                 label="State"
+                placeholder="Select State"
               />
             </VCol>
-
             <!-- 👉 Address Type  -->
             <VCol cols="12">
               <VLabel class="mb-3">
@@ -141,7 +150,7 @@ const paymentMethods = [
         <!-- 👉 Radio Group -->
         <VRadioGroup
           v-model="deliveryOption"
-          class="delivery-options"
+          class="delivery-options pt-4 pb-2"
         >
           <div
             class="delivery-option d-flex rounded-t"
@@ -224,7 +233,7 @@ const paymentMethods = [
             md="6"
             cols="12"
           >
-            <VForm>
+            <VForm class="pt-4 pb-2">
               <!-- 👉 Payment Method -->
               <div>
                 <VRadioGroup
@@ -252,9 +261,10 @@ const paymentMethods = [
               <VRow v-show="paymentMethod === 'credit-debit-card'">
                 <!-- 👉 Card Number -->
                 <VCol cols="12">
-                  <AppTextField
+                  <VTextField
                     label="Card Number"
                     type="number"
+                    placeholder="1234 5678 9012 3456"
                   />
                 </VCol>
 
@@ -263,7 +273,10 @@ const paymentMethods = [
                   cols="12"
                   md="6"
                 >
-                  <AppTextField label="Name" />
+                  <VTextField
+                    label="Name"
+                    placeholder="john doe"
+                  />
                 </VCol>
 
                 <!-- 👉 Expire Date -->
@@ -271,7 +284,10 @@ const paymentMethods = [
                   cols="6"
                   md="3"
                 >
-                  <AppTextField label="Expiry" />
+                  <VTextField
+                    label="Expiry Date"
+                    placeholder="MM/YY"
+                  />
                 </VCol>
 
                 <!-- 👉 CVV Code -->
@@ -279,10 +295,11 @@ const paymentMethods = [
                   cols="6"
                   md="3"
                 >
-                  <AppTextField
-                    label="CVV"
+                  <VTextField
+                    label="CVV Code"
                     type="number"
                     max="3"
+                    placeholder="123"
                   />
                 </VCol>
               </VRow>
@@ -310,6 +327,8 @@ const paymentMethods = [
 
 <style lang="scss">
 .delivery-options {
+  cursor: pointer;
+
   .v-selection-control-group {
     inline-size: 100%;
   }

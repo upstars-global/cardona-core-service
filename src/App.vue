@@ -1,24 +1,26 @@
 <script setup lang="ts">
 import { useTheme } from 'vuetify'
+import BuyNow from '@core/components/BuyNow.vue'
 import ScrollToTop from '@core/components/ScrollToTop.vue'
-import { useThemeConfig } from '@core/composable/useThemeConfig'
+import initCore from '@core/initCore'
+import { initConfigStore, useConfigStore } from '@core/stores/config'
 import { hexToRgb } from '@layouts/utils'
-
-const { syncInitialLoaderTheme, syncVuetifyThemeWithTheme: syncConfigThemeWithVuetifyTheme, isAppRtl, handleSkinChanges } = useThemeConfig()
 
 const { global } = useTheme()
 
 // ℹ️ Sync current theme with initial loader theme
-syncInitialLoaderTheme()
-syncConfigThemeWithVuetifyTheme()
-handleSkinChanges()
+initCore()
+initConfigStore()
+
+const configStore = useConfigStore()
 </script>
 
 <template>
-  <VLocaleProvider :rtl="isAppRtl">
+  <VLocaleProvider :rtl="configStore.isAppRTL">
     <!-- ℹ️ This is required to set the background color of active nav link based on currently active global theme's primary -->
     <VApp :style="`--v-global-theme-primary: ${hexToRgb(global.current.value.colors.primary)}`">
       <RouterView />
+      <BuyNow />
       <ScrollToTop />
     </VApp>
   </VLocaleProvider>

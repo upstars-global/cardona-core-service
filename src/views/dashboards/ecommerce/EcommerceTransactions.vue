@@ -19,7 +19,7 @@ const transitions = [
   {
     avatarIcon: 'tabler-brand-paypal',
     avatarColor: 'error',
-    title: 'Paypal',
+    title: 'PayPal',
     subtitle: 'Client Payment',
     stats: '+$268',
     profit: true,
@@ -43,7 +43,7 @@ const transitions = [
   {
     avatarIcon: 'tabler-brand-paypal',
     avatarColor: 'error',
-    title: 'Paypal',
+    title: 'PayPal',
     subtitle: 'Client Payment',
     stats: '+$126',
     profit: true,

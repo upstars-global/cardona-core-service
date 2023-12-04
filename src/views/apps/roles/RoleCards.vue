@@ -274,7 +274,6 @@ const editPermission = (value: RoleDetails) => {
       <VCard
         class="h-100"
         :ripple="false"
-        @click="isAddRoleDialogVisible = true"
       >
         <VRow
           no-gutters
@@ -291,12 +290,11 @@ const editPermission = (value: RoleDetails) => {
           </VCol>
 
           <VCol cols="7">
-            <VCardText
-              class="d-flex flex-column align-end justify-end gap-2 h-100"
-              style="text-align: end;"
-            >
-              <VBtn>Add New Role</VBtn>
-              <span>Add role, if it doesn't exist.</span>
+            <VCardText class="d-flex flex-column align-end justify-end gap-2 h-100">
+              <VBtn @click="isAddRoleDialogVisible = true">
+                Add Role
+              </VBtn>
+              <span class="text-end">Add role, if it doesn't exist.</span>
             </VCardText>
           </VCol>
         </VRow>

@@ -14,18 +14,14 @@ interface Emit {
 const props = defineProps<Props>()
 const emit = defineEmits<Emit>()
 
-const selectedOption = ref(structuredClone(toRaw(props.selectedCheckbox)))
-
-watch(selectedOption, () => {
-  emit('update:selectedCheckbox', selectedOption.value)
-})
+const updateSelectedOption = (value: string[] | boolean) => {
+  if (typeof value !== 'boolean')
+    emit('update:selectedCheckbox', value)
+}
 </script>
 
 <template>
-  <VRow
-    v-if="props.checkboxContent && selectedOption"
-    v-model="selectedOption"
-  >
+  <VRow v-if="props.checkboxContent && props.selectedCheckbox">
     <VCol
       v-for="item in props.checkboxContent"
       :key="item.title"
@@ -33,7 +29,7 @@ watch(selectedOption, () => {
     >
       <VLabel
         class="custom-input custom-checkbox-icon rounded cursor-pointer"
-        :class="selectedOption.includes(item.value) ? 'active' : ''"
+        :class="props.selectedCheckbox.includes(item.value) ? 'active' : ''"
       >
         <slot :item="item">
           <div class="d-flex flex-column align-center text-center gap-2">
@@ -52,8 +48,9 @@ watch(selectedOption, () => {
         </slot>
         <div>
           <VCheckbox
-            v-model="selectedOption"
+            :model-value="props.selectedCheckbox"
             :value="item.value"
+            @update:model-value="updateSelectedOption"
           />
         </div>
       </VLabel>

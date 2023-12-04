@@ -1,4 +1,4 @@
-import i18n from '../plugins/i18n'
+import { i18n } from '../plugins/i18n'
 import { getLocaleDateString, transformDateToISO } from '../helpers/date'
 
 export const formatPhone = (phone: string) => {
@@ -27,7 +27,7 @@ export const parseDateRange = (dateFilter: string): Array<string> => {
     ru: '—',
   }
 
-  return dateFilter.split(dateSeparators[i18n.global.locale]).map(transformDateToISO) // TODO проверить
+  return dateFilter.split(dateSeparators[i18n.locale]).map(transformDateToISO) // TODO проверить
 }
 export const parseInputDateRange = (from: Date, to: Date, locale = 'uk'): string => {
   const dateSeparators: { en: string; ru: string } = {
@@ -37,7 +37,7 @@ export const parseInputDateRange = (from: Date, to: Date, locale = 'uk'): string
 
   return `
     ${getLocaleDateString(from, locale)} 
-    ${dateSeparators[i18n.global.locale]} 
+    ${dateSeparators[i18n.locale]} 
     ${getLocaleDateString(to, locale)}
     `
 }

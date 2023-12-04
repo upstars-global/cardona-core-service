@@ -7,6 +7,7 @@ const items = ['Foo', 'Bar', 'Fizz', 'Buzz']
   <AppSelect
     :items="items"
     label="Standard"
+    placeholder="Select Item"
   />
 </template>
 `,
@@ -23,6 +24,7 @@ const items = [
   <AppSelect
     :items="items"
     label="Standard"
+    placeholder="Select Item"
   />
 </template>
 `,
@@ -38,9 +40,11 @@ const selected = ref(['foo', 'bar', 'fizz', 'buzz'])
   <AppSelect
     v-model="selected"
     :items="items"
+    placeholder="Select Item"
     label="Chips"
     chips
     multiple
+    closable-chips
   />
 </template>
 `,
@@ -64,9 +68,11 @@ const selected = ref([
   <AppSelect
     v-model="selected"
     :items="items"
+    placeholder="Select Item"
     label="Chips"
     chips
     multiple
+    closable-chips
   />
 </template>
 `,
@@ -96,6 +102,7 @@ const items = [
     persistent-hint
     return-object
     single-line
+    placeholder="Select State"
   />
 </template>
 `,
@@ -140,6 +147,7 @@ const items = [
     persistent-hint
     return-object
     single-line
+    placeholder="Select State"
   />
 </template>
 `,
@@ -155,6 +163,7 @@ const items = ['Foo', 'Bar', 'Fizz', 'Buzz']
     :items="items"
     label="Density"
     density="compact"
+    placeholder="Select Item"
   />
 </template>
 `,
@@ -172,6 +181,7 @@ const items = [
     :items="items"
     label="Density"
     density="compact"
+    placeholder="Select Item"
   />
 </template>
 `,
@@ -210,6 +220,7 @@ const states = [
         prepend-icon="tabler-map"
         single-line
         variant="filled"
+        placeholder="Select State"
       />
     </VCol>
 
@@ -221,6 +232,7 @@ const states = [
         label="Select"
         single-line
         variant="filled"
+        placeholder="Select State"
       />
     </VCol>
   </VRow>
@@ -258,6 +270,7 @@ const states = [
         prepend-icon="tabler-map"
         single-line
         variant="filled"
+        placeholder="Select State"
       />
     </VCol>
 
@@ -269,6 +282,7 @@ const states = [
         label="Select"
         single-line
         variant="filled"
+        placeholder="Select State"
       />
     </VCol>
   </VRow>
@@ -286,6 +300,7 @@ const items = ['Foo', 'Bar', 'Fizz', 'Buzz']
     :items="items"
     :menu-props="{ transition: 'scroll-y-transition' }"
     label="Label"
+    placeholder="Select Item"
   />
 </template>
 `,
@@ -303,6 +318,7 @@ const items = [
     :items="items"
     :menu-props="{ transition: 'scroll-y-transition' }"
     label="Label"
+    placeholder="Select Item"
   />
 </template>
 `,
@@ -338,6 +354,7 @@ const states = [
     label="Select"
     multiple
     persistent-hint
+    placeholder="Select State"
   />
 </template>
 `,
@@ -370,6 +387,7 @@ const states = [
     label="Select"
     multiple
     persistent-hint
+    placeholder="Select State"
   />
 </template>
 `,
@@ -401,16 +419,20 @@ const value = ref(['Sandra Adams'])
     item-title="name"
     item-value="name"
     label="Select Item"
+    placeholder="Select Item"
     multiple
     clearable
     clear-icon="tabler-x"
   >
     <template #selection="{ item }">
       <VChip>
-        <VAvatar
-          start
-          :image="item.raw.avatar"
-        />
+        <template #prepend>
+          <VAvatar
+            start
+            :image="item.raw.avatar"
+          />
+        </template>
+
         <span>{{ item.title }}</span>
       </VChip>
     </template>
@@ -457,16 +479,20 @@ const value = ref(['Sandra Adams'])
     item-title="name"
     item-value="name"
     label="Select Item"
+    placeholder="Select Item"
     multiple
     clearable
     clear-icon="tabler-x"
   >
     <template #selection="{ item }">
       <VChip>
-        <VAvatar
-          start
-          :image="item.raw.avatar"
-        />
+        <template #prepend>
+          <VAvatar
+            start
+            :image="item.raw.avatar"
+          />
+        </template>
+
         <span>{{ item.title }}</span>
       </VChip>
     </template>
@@ -489,6 +515,7 @@ const items = ['Foo', 'Bar', 'Fizz', 'Buzz']
       <VSelect
         :items="items"
         label="Outlined"
+        placeholder="Select Item"
       />
     </VCol>
     <VCol
@@ -498,6 +525,7 @@ const items = ['Foo', 'Bar', 'Fizz', 'Buzz']
       <VSelect
         :items="items"
         label="Filled"
+        placeholder="Select Item"
         variant="filled"
       />
     </VCol>
@@ -509,6 +537,7 @@ const items = ['Foo', 'Bar', 'Fizz', 'Buzz']
       <VSelect
         :items="items"
         label="Solo"
+        placeholder="Select Item"
         variant="solo"
       />
     </VCol>
@@ -520,6 +549,7 @@ const items = ['Foo', 'Bar', 'Fizz', 'Buzz']
       <VSelect
         :items="items"
         label="Plain"
+        placeholder="Select Item"
         variant="plain"
       />
     </VCol>
@@ -532,7 +562,7 @@ const items = ['Foo', 'Bar', 'Fizz', 'Buzz']
         :items="items"
         label="Underlined"
         variant="underlined"
-        density="default"
+        placeholder="Select Item"
       />
     </VCol>
   </VRow>
@@ -556,6 +586,7 @@ const items = [
       <VSelect
         :items="items"
         label="Outlined"
+        placeholder="Select Item"
       />
     </VCol>
     <VCol
@@ -565,6 +596,7 @@ const items = [
       <VSelect
         :items="items"
         label="Filled"
+        placeholder="Select Item"
         variant="filled"
       />
     </VCol>
@@ -576,6 +608,7 @@ const items = [
       <VSelect
         :items="items"
         label="Solo"
+        placeholder="Select Item"
         variant="solo"
       />
     </VCol>
@@ -587,6 +620,7 @@ const items = [
       <VSelect
         :items="items"
         label="Plain"
+        placeholder="Select Item"
         variant="plain"
       />
     </VCol>
@@ -599,7 +633,7 @@ const items = [
         :items="items"
         label="Underlined"
         variant="underlined"
-        density="default"
+        placeholder="Select Item"
       />
     </VCol>
   </VRow>

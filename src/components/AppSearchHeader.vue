@@ -7,11 +7,11 @@ interface Props {
   customClass?: string
 }
 
-const props = defineProps<Props>()
-
 defineOptions({
   inheritAttrs: false,
 })
+
+const props = defineProps<Props>()
 </script>
 
 <template>
@@ -23,12 +23,12 @@ defineOptions({
     :style="`background: url(${AppSearchHeaderBg});`"
   >
     <VCardText>
-      <h5 class="text-h3 font-weight-medium">
+      <h3 class="text-h3 font-weight-medium">
         {{ props.title }}
-      </h5>
+      </h3>
 
       <!-- 👉 Search Input -->
-      <AppTextField
+      <VTextField
         v-bind="$attrs"
         placeholder="Search a question..."
         class="search-header-input mx-auto my-3"
@@ -40,7 +40,7 @@ defineOptions({
             size="23"
           />
         </template>
-      </AppTextField>
+      </VTextField>
 
       <p class="mb-0">
         {{ props.subtitle }}
@@ -57,7 +57,6 @@ defineOptions({
 
 // search input
 .search-header-input {
-  border-radius: 0.25rem !important;
   border-radius: 0.375rem !important;
   background-color: rgb(var(--v-theme-surface));
   max-inline-size: 40.125rem !important;

@@ -7,5 +7,6 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
   <AppCombobox
     v-model="selectedItem"
     :items="items"
+    placeholder="deployment"
   />
 </template>

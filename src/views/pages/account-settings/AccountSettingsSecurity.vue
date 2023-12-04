@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { VDataTable } from 'vuetify/labs/VDataTable'
+import laptopGirl from '@images/illustrations/laptop-girl.png'
 
 const isCurrentPasswordVisible = ref(false)
 const isNewPasswordVisible = ref(false)
@@ -65,7 +66,7 @@ const recentDevices = [
     deviceIcon: { icon: 'tabler-brand-android', color: 'success' },
   },
   {
-    browser: 'Chrome on MacOS',
+    browser: 'Chrome on macOS',
     device: 'Apple iMac',
     location: 'New York, NY',
     recentActivity: '28 Apr 2022, 18:20',
@@ -109,6 +110,8 @@ const isOneTimePasswordDialogVisible = ref(false)
                   :type="isCurrentPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isCurrentPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   label="Current Password"
+                  autocomplete="on"
+                  placeholder="············"
                   @click:append-inner="isCurrentPasswordVisible = !isCurrentPasswordVisible"
                 />
               </VCol>
@@ -126,6 +129,8 @@ const isOneTimePasswordDialogVisible = ref(false)
                   :type="isNewPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isNewPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   label="New Password"
+                  autocomplete="on"
+                  placeholder="············"
                   @click:append-inner="isNewPasswordVisible = !isNewPasswordVisible"
                 />
               </VCol>
@@ -140,6 +145,8 @@ const isOneTimePasswordDialogVisible = ref(false)
                   :type="isConfirmPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isConfirmPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   label="Confirm New Password"
+                  autocomplete="on"
+                  placeholder="············"
                   @click:append-inner="isConfirmPasswordVisible = !isConfirmPasswordVisible"
                 />
               </VCol>
@@ -230,13 +237,17 @@ const isOneTimePasswordDialogVisible = ref(false)
                   <VCol cols="12">
                     <AppSelect
                       label="Choose the API key type you want to create"
+                      placeholder="Select API key type"
                       :items="['Full Control', 'Modify', 'Read & Execute', 'List Folder Contents', 'Read Only', 'Read & Write']"
                     />
                   </VCol>
 
                   <!-- 👉 Name the API Key -->
                   <VCol cols="12">
-                    <AppTextField label="Name the API key" />
+                    <AppTextField
+                      label="Name the API key"
+                      placeholder="Name the API key"
+                    />
                   </VCol>
 
                   <!-- 👉 Create Key Button -->
@@ -287,8 +298,8 @@ const isOneTimePasswordDialogVisible = ref(false)
             v-for="serverKey in serverKeys"
             :key="serverKey.key"
             flat
-            variant="tonal"
             class="pa-4"
+            color="rgba(var(--v-theme-on-surface),0.04)"
           >
             <MoreBtn
               :menu-list="[
@@ -299,34 +310,34 @@ const isOneTimePasswordDialogVisible = ref(false)
               class="position-absolute server-close-btn"
             />
 
-            <div class="d-flex align-center flex-wrap mb-3">
-              <h6 class="text-h6 me-3">
-                {{ serverKey.name }}
-              </h6>
-
-              <VChip
-                label
-                color="primary"
-                size="small"
-              >
-                {{ serverKey.permission }}
-              </VChip>
-            </div>
-
-            <div class="d-flex align-center text-base font-weight-medium mb-2">
-              <h6 class="text-base me-3">
-                {{ serverKey.key }}
-              </h6>
-
-              <div class="cursor-pointer">
-                <VIcon
-                  icon="tabler-copy"
-                  class="text-disabled"
-                />
+            <div class="d-flex flex-column gap-y-4">
+              <div class="d-flex align-center flex-wrap">
+                <h4 class="text-h4 me-4">
+                  {{ serverKey.name }}
+                </h4>
+                <VChip
+                  label
+                  color="primary"
+                  size="small"
+                >
+                  {{ serverKey.permission }}
+                </VChip>
+              </div>
+              <div class="d-flex align-center text-base font-weight-medium">
+                <h6 class="text-h6 me-3">
+                  {{ serverKey.key }}
+                </h6>
+                <div class="cursor-pointer">
+                  <VIcon
+                    icon="tabler-copy"
+                    class="text-disabled"
+                  />
+                </div>
+              </div>
+              <div class="text-disabled">
+                Created on {{ serverKey.createdOn }}
               </div>
             </div>
-
-            <span>Created on {{ serverKey.createdOn }}</span>
           </VCard>
         </VCardText>
       </VCard>
@@ -341,16 +352,17 @@ const isOneTimePasswordDialogVisible = ref(false)
           :headers="recentDevicesHeaders"
           :items="recentDevices"
           hide-default-footer
+          class="text-no-wrap"
         >
           <template #item.browser="{ item }">
             <div class="d-flex">
               <VIcon
                 start
-                :icon="item.raw.deviceIcon.icon"
-                :color="item.raw.deviceIcon.color"
+                :icon="item.deviceIcon.icon"
+                :color="item.deviceIcon.color"
               />
               <span>
-                {{ item.raw.browser }}
+                {{ item.browser }}
               </span>
             </div>
           </template>

@@ -60,7 +60,7 @@ const openSelectedMethodDialog = () => {
 
     <VCard class="pa-5 pa-sm-8">
       <VCardItem class="text-center">
-        <VCardTitle class="text-h5 mb-3">
+        <VCardTitle class="text-h3 mb-3">
           Select Authentication Method
         </VCardTitle>
         <VCardSubtitle>
@@ -84,7 +84,7 @@ const openSelectedMethodDialog = () => {
             rounded
             :value="item.method"
             class="py-5 px-6 my-6"
-            :class="selectedMethod[0] === item.method && 'bg-light-primary text-primary'"
+            :class="selectedMethod[0] === item.method && 'text-primary'"
           >
             <template #prepend>
               <VIcon
@@ -137,10 +137,11 @@ const openSelectedMethodDialog = () => {
     padding-inline: 30px !important;
   }
 
-  .v-list-item--active {
+  .v-list-item--active:not(.v-list-group__header) {
     background-color: transparent !important;
+    color: rgb(var(--v-theme-primary)) !important;
 
-    .v-list-item__overlay {
+    .v-list-item__overlay{
       opacity: 0;
     }
   }

@@ -20,8 +20,6 @@ const checkoutCartDataLocal = ref(props.checkoutData)
 // remove item from cart
 const removeItem = (item: CartItem) => {
   checkoutCartDataLocal.value.cartItems = checkoutCartDataLocal.value.cartItems.filter(i => i.id !== item.id)
-
-  console.log(checkoutCartDataLocal.value.cartItems)
 }
 
 //  cart total
@@ -47,7 +45,7 @@ watch(() => props.currentStep, updateCartData)
   <VRow v-if="checkoutCartDataLocal">
     <VCol
       cols="12"
-      md="8"
+      lg="8"
     >
       <!-- 👉 Offers alert -->
       <VAlert
@@ -55,10 +53,16 @@ watch(() => props.currentStep, updateCartData)
         variant="tonal"
       >
         <template #prepend>
-          <VIcon
+          <VAvatar
+            color="#fff"
+            rounded
             size="34"
-            icon="tabler-bookmarks"
-          />
+          >
+            <VIcon
+              size="22"
+              icon="tabler-bookmarks"
+            />
+          </VAvatar>
         </template>
 
         <VAlertTitle class="text-success mb-3">
@@ -106,7 +110,7 @@ watch(() => props.currentStep, updateCartData)
 
             <div
               class="d-flex w-100"
-              :class="$vuetify.display.width <= 700 ? 'flex-column' : 'flex-row'"
+              :class="(($vuetify.display.width <= 1280 && $vuetify.display.width >= 960) || $vuetify.display.width <= 700) ? 'flex-column' : 'flex-row'"
             >
               <div>
                 <h6 class="text-base font-weight-regular mb-4">
@@ -136,7 +140,7 @@ watch(() => props.currentStep, updateCartData)
                 <AppTextField
                   v-model="item.quantity"
                   type="number"
-                  style="width: 7.5rem;"
+                  style="inline-size: 7.5rem;"
                   density="compact"
                 />
               </div>
@@ -145,7 +149,7 @@ watch(() => props.currentStep, updateCartData)
 
               <div
                 class="d-flex flex-column justify-space-between mt-5"
-                :class="$vuetify.display.width <= 700 ? 'text-start' : 'text-end'"
+                :class="(($vuetify.display.width <= 1280 && $vuetify.display.width >= 960) || $vuetify.display.width <= 700) ? 'text-start' : 'text-end'"
               >
                 <p class="text-base mt-4">
                   <span class="text-primary">${{ item.price }}</span>
@@ -154,7 +158,10 @@ watch(() => props.currentStep, updateCartData)
                 </p>
 
                 <div>
-                  <VBtn variant="tonal">
+                  <VBtn
+                    variant="tonal"
+                    height="28"
+                  >
                     move to wishlist
                   </VBtn>
                 </div>
@@ -176,7 +183,7 @@ watch(() => props.currentStep, updateCartData)
 
     <VCol
       cols="12"
-      md="4"
+      lg="4"
     >
       <VCard
         flat

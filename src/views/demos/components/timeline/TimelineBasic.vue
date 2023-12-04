@@ -89,7 +89,7 @@ import pumaShoes from '@images/pages/puma-shoes.jpeg'
                 <p class="text-sm font-weight-medium text-high-emphasis mb-0">
                   Rebecca Godman
                 </p>
-                <span class="text-xs">Javascript Developer</span>
+                <span class="text-xs">JavaScript Developer</span>
               </div>
             </div>
 

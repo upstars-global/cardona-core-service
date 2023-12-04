@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
@@ -21,6 +21,7 @@ const clickMe = () => {
     v-model="message"
     clearable
     label="Message"
+    placeholder="Hey!!"
     type="text"
     class="textfield-demo-icon-slot"
   >
@@ -43,6 +44,7 @@ const clickMe = () => {
         <VProgressCircular
           v-if="loading"
           color="info"
+          class="mt-1"
           indeterminate
         />
 
@@ -57,10 +59,14 @@ const clickMe = () => {
     <!-- Append -->
     <template #append>
       <VBtn
+        :height="$vuetify.display.mdAndUp ? 40 : 50"
         :icon="$vuetify.display.smAndDown"
         @click="clickMe"
       >
-        <VIcon icon="tabler-viewfinder" />
+        <VIcon
+          icon="tabler-viewfinder"
+          size="22"
+        />
         <span
           v-if="$vuetify.display.mdAndUp"
           class="ms-3"

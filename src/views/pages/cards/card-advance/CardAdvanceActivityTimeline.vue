@@ -87,13 +87,15 @@ const moreList = [
           </div>
 
           <!-- 👉 Content -->
-          <p class="mb-1">
-            <span class="app-timeline-text me-2">Sent by Mollie Dixon</span>
+          <div class="d-flex align-center">
+            <p class="mb-1 app-timeline-text me-2">
+              Sent by Mollie Dixon
+            </p>
             <VAvatar
               :image="avatar2"
               size="20"
             />
-          </p>
+          </div>
           <div class="d-flex align-center">
             <a
               href="#"

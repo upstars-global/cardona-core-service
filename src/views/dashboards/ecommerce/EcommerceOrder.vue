@@ -130,7 +130,6 @@ const moreList = [
       <VTab
         v-for="order in orders"
         :key="order.tabName"
-        :value="order.tabName"
       >
         {{ order.tabName }}
       </VTab>

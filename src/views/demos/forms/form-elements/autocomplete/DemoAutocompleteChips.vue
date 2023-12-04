@@ -6,7 +6,9 @@ const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming
   <AppAutocomplete
     label="States"
     :items="items"
+    placeholder="Select State"
     chips
     multiple
+    closable-chips
   />
 </template>

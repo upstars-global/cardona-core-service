@@ -126,7 +126,7 @@ const websiteAnalytics = [
                     label
                     variant="flat"
                     size="default"
-                    color="#685ED8"
+                    color="rgba(var(--v-theme-on-surface), 0.12)"
                     class="font-weight-medium text-white rounded me-2"
                   >
                     {{ d.number }}

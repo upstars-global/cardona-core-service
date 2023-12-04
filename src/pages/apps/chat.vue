@@ -1,16 +1,20 @@
 <script lang="ts" setup>
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useDisplay, useTheme } from 'vuetify'
-import type { ChatContact as TypeChatContact } from '@/@fake-db/types'
-import vuetifyInitialThemes from '@/plugins/vuetify/theme'
+import { themes } from '@/plugins/vuetify/theme'
 import ChatActiveChatUserProfileSidebarContent from '@/views/apps/chat/ChatActiveChatUserProfileSidebarContent.vue'
 import ChatLeftSidebarContent from '@/views/apps/chat/ChatLeftSidebarContent.vue'
 import ChatLog from '@/views/apps/chat/ChatLog.vue'
 import ChatUserProfileSidebarContent from '@/views/apps/chat/ChatUserProfileSidebarContent.vue'
 import { useChat } from '@/views/apps/chat/useChat'
 import { useChatStore } from '@/views/apps/chat/useChatStore'
-import { useResponsiveLeftSidebar } from '@core/composable/useResponsiveSidebar'
-import { avatarText } from '@core/utils/formatters'
+import type { ChatContact as TypeChatContact } from '@db/apps/chat/types'
+
+definePage({
+  meta: {
+    layoutWrapperClasses: 'layout-content-height-fixed',
+  },
+})
 
 // composables
 const vuetifyDisplays = useDisplay()
@@ -101,14 +105,7 @@ const moreList = [
 
 const { name } = useTheme()
 
-const chatContentContainerBg = computed(() => {
-  let color = 'transparent'
-
-  if (vuetifyInitialThemes)
-    color = vuetifyInitialThemes.themes?.[name.value].colors?.background as string
-
-  return color
-})
+const chatContentContainerBg = computed(() => themes[name.value].colors?.background || 'transparent')
 </script>
 
 <template>
@@ -316,11 +313,6 @@ const chatContentContainerBg = computed(() => {
     </VMain>
   </VLayout>
 </template>
-
-<route lang="yaml">
-meta:
-  layoutWrapperClasses: layout-content-height-fixed
-</route>
 
 <style lang="scss">
 @use "@styles/variables/_vuetify.scss";

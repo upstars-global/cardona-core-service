@@ -12,6 +12,7 @@
   "Actions": "أجراءات",
   "Components": "عناصر",
   "Alert": "انذار",
+  "Close Alert": "أغلق التنبيه",
   "Avatar": "الصورة الرمزية",
   "Badge": "شارة",
   "Button": "زر",
@@ -31,6 +32,7 @@
   "Textarea": "تيكستاريا",
   "Rating": "تقييم",
   "File Input": "إدخال الملف",
+  "Otp Input": "إدخال أوتب",
   "Form Layout": "تخطيط النموذج",
   "Form Validation": "التحقق من صحة النموذج",
   "Charts": "الرسوم البيانية",
@@ -124,13 +126,62 @@
   "Simple Table": "جدول بسيط",
   "Tables": "الجداول",
   "DataTable": "جدول البيانات",
+  "Data Table": "جدول البيانات",
   "Apps": "التطبيقات",
   "Misc": "متفرقات",
   "Wizard Pages": "صفحات المعالج",
   "eCommerce": "التجارة الإلكترونية",
+  "Form Wizard": "معالج النموذج",
+  "Numbered": "مرقم",
+  "ecommerce": "التجارة الإلكترونية",
+  "Ecommerce": "التجارة الإلكترونية",
+  "Product": "المنتج",
+  "Category": "الفئة",
+  "Order": "طلب",
+  "Details": "تفاصيل",
+  "Customer": "الزبون",
+  "Manage Review": "إدارة المراجعة",
+  "Referrals": "الإحالات",
+  "Settings": "الإعدادات",
+  "Course Details": "تفاصيل الدورة التدريبية",
+  "My Course": "دورتي",
+  "Overview": "نظرة عامة",
+  "Academy": "أكاديمية",
+  "Logistics": "الخدمات اللوجستية",
+  "Dashboard": "لوحة القيادة",
+  "Fleet": "الأسطول",
+  "Editors": "المحررين",
+  "Front Pages": "الصفحات الأمامية",
+  "Landing": "المقصودة",
+  "checkout": "الدفع",
+  "Payment": "دفع",
+  "Swiper": "المنزلق",
   "3": "3",
+  "5": "5",
+  "10": "10",
+  "20": "20",
+  "25": "25",
+  "50": "50",
+  "100": "100",
   "$vuetify": {
     "badge": "شارة",
+    "noDataText": "لا تتوافر بيانات",
+    "close": "قريب",
+    "open": "افتح",
+    "carousel": {
+      "ariaLabel": {
+        "delimiter": "تحديد"
+      }
+    },
+    "dataFooter": {
+      "itemsPerPageText": "مواد لكل صفحة:",
+      "itemsPerPageAll": "الجميع",
+      "pageText": "{0} - {1} من {2}",
+      "firstPage": "الصفحة الأولى",
+      "prevPage": "الصفحة السابقة",
+      "nextPage": "الصفحة التالية",
+      "lastPage": "آخر صفحة"
+    },
     "pagination": {
       "ariaLabel": {
         "root": "جذر",
@@ -143,7 +194,8 @@
     "input": {
       "clear": "صافي",
       "appendAction": "إلحاق الإجراء",
-      "prependAction": "قبل العمل"
+      "prependAction": "قبل العمل",
+      "otp": "أوتب"
     },
     "fileInput": {
       "counterSize": "حجم العداد"

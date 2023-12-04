@@ -6,6 +6,7 @@ const dateRange = ref('')
   <AppDateTimePicker
     v-model="dateRange"
     label="Range"
+    placeholder="Select date"
     :config="{ mode: 'range' }"
   />
 </template>

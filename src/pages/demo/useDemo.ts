@@ -2,123 +2,122 @@ import { DemoFilter, DemoForm, DemoListItem, DemoSideBar } from '../../@model/de
 import { AlignType, ListFieldType, TableField } from '../../@model/templates/tableFields'
 import type { UseEntityType } from '../../@model/templates/baseSection'
 import type { UseListType } from '../../@model/templates/baseList'
-import i18n from '@/plugins/i18n'
 
 const entityName = 'Demo'
-
 export const useDemoList = (): UseListType => {
   const ListFilterModel = DemoFilter
   const SideBarModel = DemoSideBar
   const ListItemModel = DemoListItem
+  const i18n = useI18n()
 
   const fields = [
     new TableField({
       key: 'isActive',
-      title: i18n.global.t('common.status'),
+      title: i18n.t('common.status'),
       type: ListFieldType.PillStatus,
     }),
     new TableField({
       key: 'status',
-      title: i18n.global.t('common.status'),
+      title: i18n.t('common.status'),
       type: ListFieldType.Status,
     }),
     new TableField({
       key: 'shortId',
-      title: i18n.global.t('common.shortId'),
+      title: i18n.t('common.shortId'),
       type: ListFieldType.CopyShort,
     }),
     new TableField({
       key: 'nameSlot',
-      title: i18n.global.t('common.name'),
+      title: i18n.t('common.name'),
       type: ListFieldType.NameWithId,
     }),
     new TableField({
       key: 'nameWithShortId',
-      title: i18n.global.t('common.nameWithShortId'),
+      title: i18n.t('common.nameWithShortId'),
       type: ListFieldType.NameWithShortId,
     }),
     new TableField({
       key: 'innerLink',
-      title: i18n.global.t('common.link'),
+      title: i18n.t('common.link'),
     }),
     new TableField({
       key: 'buttonName',
-      title: i18n.global.t('common.btn'),
+      title: i18n.t('common.btn'),
       type: ListFieldType.Button,
     }),
     new TableField({
       key: 'tags',
-      title: i18n.global.t('common.tags'),
+      title: i18n.t('common.tags'),
       type: ListFieldType.Badges,
     }),
     new TableField({
       key: 'login',
-      title: i18n.global.t('auth.login'),
+      title: i18n.t('auth.login'),
       type: ListFieldType.Copy,
     }),
     new TableField({
       key: 'date',
-      title: i18n.global.t('common.date'),
+      title: i18n.t('common.date'),
       type: ListFieldType.Date,
     }),
     new TableField({
       key: 'newDate',
-      title: i18n.global.t('common.created'),
+      title: i18n.t('common.created'),
       type: ListFieldType.DateWithSeconds,
     }),
     new TableField({
       key: 'period',
-      title: i18n.global.t('common.displayPeriod'),
+      title: i18n.t('common.displayPeriod'),
       type: ListFieldType.Period,
     }),
     new TableField({
       key: 'sumPeriod',
-      title: i18n.global.t('common.sumPeriod'),
+      title: i18n.t('common.sumPeriod'),
     }),
     new TableField({
       key: 'imagePath',
-      title: i18n.global.t('common.image'),
+      title: i18n.t('common.image'),
       type: ListFieldType.Image,
     }),
     new TableField({
       key: 'imageFull',
-      title: i18n.global.t('common.image-with-full-view'),
+      title: i18n.t('common.image-with-full-view'),
       type: ListFieldType.ImageFull,
     }),
     new TableField({
       type: ListFieldType.Priority,
       key: 'position',
-      title: i18n.global.t('common.priority'),
+      title: i18n.t('common.priority'),
     }),
     new TableField({
       type: ListFieldType.Statement,
       key: 'state',
-      title: i18n.global.t('common.state'),
+      title: i18n.t('common.state'),
     }),
     new TableField({
       type: ListFieldType.SumAndCurrency,
       key: 'amount',
-      title: i18n.global.t('common.sum'),
+      title: i18n.t('common.sum'),
       align: AlignType.Right,
     }),
     new TableField({
       type: ListFieldType.SumAndCurrency,
       key: 'winBack',
-      title: i18n.global.t('common.sum'),
+      title: i18n.t('common.sum'),
       align: AlignType.Right,
     }),
     new TableField({
       type: ListFieldType.Comment,
       key: 'comment',
-      title: i18n.global.t('common.comment'),
+      title: i18n.t('common.comment'),
     }),
     new TableField({
       key: 'gameId',
-      title: i18n.global.t('filters.gameId'),
+      title: i18n.t('filters.gameId'),
     }),
     new TableField({
       key: 'type',
-      title: i18n.global.t('common.type'),
+      title: i18n.t('common.type'),
     }),
     new TableField({ key: 'actions', title: '' }),
   ]

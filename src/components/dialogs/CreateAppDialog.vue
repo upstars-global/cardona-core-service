@@ -160,9 +160,9 @@ const onSubmit = () => {
     />
     <VCard class="create-app-dialog">
       <VCardText class="pa-5 pa-sm-10">
-        <h5 class="text-h5 text-center mb-2">
+        <h3 class="text-h3 text-center mb-2">
           Create App
-        </h5>
+        </h3>
         <p class="text-sm text-center mb-8">
           Provide data with this form to create your app.
         </p>
@@ -270,7 +270,10 @@ const onSubmit = () => {
 
               <!-- 👉 Database Engine -->
               <VWindowItem>
-                <AppTextField label="Database Name" />
+                <AppTextField
+                  label="Database Name"
+                  placeholder="userDB"
+                />
 
                 <h6 class="text-h6 my-4">
                   Select Database Engine
@@ -318,6 +321,7 @@ const onSubmit = () => {
                       <AppTextField
                         v-model="createAppData.cardNumber"
                         label="Card Number"
+                        placeholder="1234 1234 1234 1234"
                         type="number"
                       />
                     </VCol>
@@ -329,6 +333,7 @@ const onSubmit = () => {
                       <AppTextField
                         v-model="createAppData.cardName"
                         label="Name on Card"
+                        placeholder="John Doe"
                       />
                     </VCol>
 
@@ -339,6 +344,7 @@ const onSubmit = () => {
                       <AppTextField
                         v-model="createAppData.cardExpiry"
                         label="Expiry"
+                        placeholder="MM/YY"
                       />
                     </VCol>
 
@@ -349,6 +355,7 @@ const onSubmit = () => {
                       <AppTextField
                         v-model="createAppData.cardCvv"
                         label="CVV"
+                        placeholder="123"
                       />
                     </VCol>
 

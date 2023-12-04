@@ -9,6 +9,7 @@ const nameRules = [(v: string) => !!v.length || 'Select at least one option.']
     v-model="values"
     :items="items"
     :rules="nameRules"
+    placeholder="Select Option"
     multiple
   />
 </template>

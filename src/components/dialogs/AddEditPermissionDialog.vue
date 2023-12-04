@@ -14,20 +14,20 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emit>()
 
-const permissionName = ref('')
+const currentPermissionName = ref('')
 
 const onReset = () => {
   emit('update:isDialogVisible', false)
-  permissionName.value = ''
+  currentPermissionName.value = ''
 }
 
 const onSubmit = () => {
   emit('update:isDialogVisible', false)
-  emit('update:permissionName', permissionName.value)
+  emit('update:permissionName', currentPermissionName.value)
 }
 
 watch(props, () => {
-  permissionName.value = props.permissionName
+  currentPermissionName.value = props.permissionName
 })
 </script>
 
@@ -66,7 +66,7 @@ watch(props, () => {
           <!-- 👉 Role name -->
           <div class="d-flex align-end gap-3 mb-3">
             <AppTextField
-              v-model="permissionName"
+              v-model="currentPermissionName"
               density="compact"
               label="Permission Name"
               placeholder="Enter Permission Name"

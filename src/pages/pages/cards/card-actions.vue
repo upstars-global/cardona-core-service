@@ -11,6 +11,12 @@ const tableData = [
   },
 ]
 
+const isLoading = ref(true)
+
+setTimeout(() => {
+  isLoading.value = false
+}, 3000)
+
 const refetchData = (hideOverlay: () => void) => {
   setTimeout(hideOverlay, 3000)
 }
@@ -59,6 +65,23 @@ const refetchData = (hideOverlay: () => void) => {
               </tr>
             </tbody>
           </VTable>
+        </VCardText>
+      </AppCardActions>
+    </VCol>
+
+    <VCol
+      cols="12"
+      md="6"
+    >
+      <!-- 👉 Initial Load -->
+      <AppCardActions
+        v-model:loading="isLoading"
+        title="Initial Load"
+        no-actions
+      >
+        <VCardText>
+          <p>You can specifically add Initial Load action using <code>loading</code> prop</p>
+          <span>Refresh the page to see it again in action.</span>
         </VCardText>
       </AppCardActions>
     </VCol>

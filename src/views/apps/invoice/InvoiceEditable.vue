@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import InvoiceProductEdit from './InvoiceProductEdit.vue'
-import type { InvoiceData } from './types'
-import { useInvoiceStore } from './useInvoiceStore'
-import type { Client } from '@/@fake-db/types'
+import type { InvoiceData, PurchasedProduct } from './types'
+import type { Client } from '@db/apps/invoice/types'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
@@ -12,22 +11,34 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const invoiceListStore = useInvoiceStore()
+const emit = defineEmits<{
+  (e: 'push', value: PurchasedProduct): void
+  (e: 'remove', id: number): void
+}>()
+
+const invoice = ref(props.data.invoice)
+const salesperson = ref(props.data.salesperson)
+const thanksNote = ref(props.data.thanksNote)
+const note = ref(props.data.note)
 
 // 👉 Clients
 const clients = ref<Client[]>([])
 
 // 👉 fetchClients
-invoiceListStore.fetchClients().then(response => {
-  clients.value = response.data
-}).catch(err => {
-  console.log(err)
-})
+const fetchClients = async () => {
+  const { data, error } = await useApi<any>('/apps/invoice/clients')
+
+  if (error.value)
+    console.log(error.value)
+  else
+    clients.value = data.value
+}
+
+fetchClients()
 
 // 👉 Add item function
 const addItem = () => {
-  // eslint-disable-next-line vue/no-mutating-props
-  props.data.purchasedProducts.push({
+  emit('push', {
     title: 'App Design',
     cost: 24,
     qty: 1,
@@ -37,15 +48,14 @@ const addItem = () => {
 
 // 👉 Remove Product edit section
 const removeProduct = (id: number) => {
-  // eslint-disable-next-line vue/no-mutating-props
-  props.data.purchasedProducts.splice(id, 1)
+  emit('remove', id)
 }
 </script>
 
 <template>
   <VCard>
     <!-- SECTION Header -->
-    <!--  eslint-disable vue/no-mutating-props -->
+
     <VCardText class="d-flex flex-wrap justify-space-between gap-y-5 flex-column flex-sm-row">
       <!-- 👉 Left Content -->
       <div class="ma-sm-4">
@@ -85,7 +95,7 @@ const removeProduct = (id: number) => {
 
           <span>
             <AppTextField
-              v-model="props.data.invoice.id"
+              v-model="invoice.id"
               disabled
               prefix="#"
               density="compact"
@@ -95,7 +105,7 @@ const removeProduct = (id: number) => {
         </h6>
 
         <!-- 👉 Issue Date -->
-        <p class="d-flex align-center justify-sm-end mb-3">
+        <div class="d-flex align-center justify-sm-end mb-3">
           <span
             class="me-3"
             style="inline-size: 6rem;"
@@ -103,16 +113,16 @@ const removeProduct = (id: number) => {
 
           <span style="inline-size: 9.5rem;">
             <AppDateTimePicker
-              v-model="props.data.invoice.issuedDate"
+              v-model="invoice.issuedDate"
               density="compact"
               placeholder="YYYY-MM-DD"
               :config="{ position: 'auto right' }"
             />
           </span>
-        </p>
+        </div>
 
         <!-- 👉 Due Date -->
-        <p class="d-flex align-center justify-sm-end mb-0">
+        <div class="d-flex align-center justify-sm-end mb-0">
           <span
             class="me-3"
             style="inline-size: 6rem;"
@@ -120,13 +130,13 @@ const removeProduct = (id: number) => {
 
           <span style="min-inline-size: 9.5rem;">
             <AppDateTimePicker
-              v-model="props.data.invoice.dueDate"
+              v-model="invoice.dueDate"
               density="compact"
               placeholder="YYYY-MM-DD"
               :config="{ position: 'auto right' }"
             />
           </span>
-        </p>
+        </div>
       </div>
     </VCardText>
     <!-- !SECTION -->
@@ -143,32 +153,32 @@ const removeProduct = (id: number) => {
         </h6>
 
         <AppSelect
-          v-model="props.data.invoice.client"
+          v-model="invoice.client"
           :items="clients"
           item-title="name"
           item-value="name"
-          placeholder="Select Customer"
+          placeholder="Select Client"
           return-object
           class="mb-6"
           density="compact"
         />
         <p class="mb-1">
-          {{ props.data.invoice.client.name }}
+          {{ invoice.client.name }}
         </p>
         <p class="mb-1">
-          {{ props.data.invoice.client.company }}
+          {{ invoice.client.company }}
         </p>
         <p
-          v-if="props.data.invoice.client.address"
+          v-if="invoice.client.address"
           class="mb-1"
         >
-          {{ props.data.invoice.client.address }}, {{ props.data.invoice.client.country }}
+          {{ invoice.client.address }}, {{ invoice.client.country }}
         </p>
         <p class="mb-1">
-          {{ props.data.invoice.client.contact }}
+          {{ invoice.client.contact }}
         </p>
         <p class="mb-0">
-          {{ props.data.invoice.client.companyEmail }}
+          {{ invoice.client.companyEmail }}
         </p>
       </div>
 
@@ -261,53 +271,69 @@ const removeProduct = (id: number) => {
             Salesperson:
           </h6>
           <AppTextField
-            v-model="props.data.salesperson"
+            v-model="salesperson"
             style="inline-size: 10rem;"
             placeholder="John Doe"
           />
         </div>
 
         <AppTextField
-          v-model="props.data.thanksNote"
+          v-model="thanksNote"
           placeholder="Message"
         />
       </div>
 
-      <div class="my-4 mx-sm-4">
-        <table>
-          <tr>
-            <td class="text-end">
-              <div class="me-5">
-                <p class="mb-2">
-                  Subtotal:
-                </p>
-                <p class="mb-2">
-                  Discount:
-                </p>
-                <p class="mb-2">
-                  Tax:
-                </p>
-                <p class="mb-2">
-                  Total:
-                </p>
-              </div>
-            </td>
+      <div class="mx-sm-4 my-4">
+        <table class="w-100">
+          <tbody>
+            <tr>
+              <td class="pe-16">
+                Subtotal:
+              </td>
+              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">
+                <h6 class="text-sm">
+                  $1800
+                </h6>
+              </td>
+            </tr>
+            <tr>
+              <td class="pe-16">
+                Discount:
+              </td>
+              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">
+                <h6 class="text-sm">
+                  $28
+                </h6>
+              </td>
+            </tr>
+            <tr>
+              <td class="pe-16">
+                Tax:
+              </td>
+              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">
+                <h6 class="text-sm">
+                  21%
+                </h6>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-            <td class="font-weight-medium text-high-emphasis">
-              <p class="mb-2">
-                $154.25
-              </p>
-              <p class="mb-2">
-                $00.00
-              </p>
-              <p class="mb-2">
-                $50.00
-              </p>
-              <p class="mb-2">
-                $204.25
-              </p>
-            </td>
-          </tr>
+        <VDivider class="mt-4 mb-3" />
+
+        <table class="w-100">
+          <tbody>
+            <tr>
+              <td class="pe-16">
+                Total:
+              </td>
+              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">
+                <h6 class="text-sm">
+                  $1690
+                </h6>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </VCardText>
@@ -319,8 +345,8 @@ const removeProduct = (id: number) => {
         Note:
       </p>
       <AppTextarea
-        v-model="props.data.note"
-        placeholder="Note"
+        v-model="note"
+        placeholder="Write note here..."
         :rows="2"
       />
     </VCardText>

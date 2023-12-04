@@ -66,6 +66,7 @@ watch(formData, () => {
         <AppSelect
           v-model="formData.maintenancePeriod"
           label="Maintenance Period"
+          placeholder="Select Maintenance Period"
           :items="['Monthly', 'Quarterly', 'Half Yearly', 'Yearly']"
         />
       </VCol>

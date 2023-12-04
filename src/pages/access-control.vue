@@ -1,3 +1,12 @@
+<script setup lang="ts">
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'AclDemo',
+  },
+})
+</script>
+
 <template>
   <VRow>
     <VCol
@@ -12,7 +21,7 @@
       </VCard>
     </VCol>
     <VCol
-      v-if="$can('read', 'Admin')"
+      v-if="$can('read', 'all')"
       cols="12"
       md="6"
     >
@@ -25,9 +34,3 @@
     </VCol>
   </VRow>
 </template>
-
-<route lang="yaml">
-meta:
-  action: read
-  subject: AclDemo
-</route>

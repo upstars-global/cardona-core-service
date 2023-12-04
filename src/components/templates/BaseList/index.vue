@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { inject } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { findIndex, omit } from 'lodash'
@@ -8,19 +7,11 @@ import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/
 import { DownloadFormat, SortDirection } from '../../../@model/templates/baseList'
 import type { Filter } from '../../../@model/filter'
 import RemoveModal from '../../../components/templates/BaseList/_components/fields/RemoveModal.vue'
-import MultipleActions from './_components/MultipleActions.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
 import { ListSort } from '../../../@model'
 import { useFilters } from '../../../components/FiltersBlock/useFilters'
-import {BaseField, SelectBaseField} from '../../../@model/templates/baseField'
+import { BaseField, SelectBaseField } from '../../../@model/templates/baseField'
 import { FieldType } from '../../../@model/field'
-import {
-  checkExistsPage,
-  convertCamelCase,
-  convertLowerCaseFirstSymbol,
-  isEmptyString,
-  isNotEmptyNumber,
-} from '@/helpers'
 import type { PaginationResult } from '../../../use/pagination'
 import usePagination from '../../../use/pagination'
 import type { TableField } from '../../../@model/templates/tableFields'
@@ -29,6 +20,14 @@ import { ListFieldType } from '../../../@model/templates/tableFields'
 import { basePermissions } from '../../../helpers/base-permissions'
 import type { SortItem } from '../../../@core/types'
 import { IconsList } from '../../../@model/enums/icons'
+import MultipleActions from './_components/MultipleActions.vue'
+import {
+  checkExistsPage,
+  convertCamelCase,
+  convertLowerCaseFirstSymbol,
+  isEmptyString,
+  isNotEmptyNumber,
+} from '@/helpers'
 
 const props = defineProps<{
   config: IBaseListConfig
@@ -44,7 +43,7 @@ const slots = useSlots()
 
 const store = useStore()
 
-// const router = useRouter()
+const router = useRouter()
 const route = useRoute()
 const searchQuery = ref('')
 const currentPageName = route.name?.toString()
@@ -486,6 +485,7 @@ const onClickRemove = item => {
     if (!isAllowedRemove)
       return
   }
+
   modal.showModal(removeModalId)
 }
 
@@ -505,10 +505,10 @@ const getIndexByItemFromList = item => findIndex(items.value || [], item)
 
 const selectedItemIndex = computed(() => {
   if (!selectedItem.value)
-    return NaN
+    return Number.NaN
   const itemIndex = getIndexByItemFromList(selectedItem.value)
 
-  return itemIndex > -1 ? itemIndex : NaN
+  return itemIndex > -1 ? itemIndex : Number.NaN
 })
 
 onBeforeMount(async () => {

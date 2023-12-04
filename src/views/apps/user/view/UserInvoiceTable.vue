@@ -1,27 +1,22 @@
 <script setup lang="ts">
 import { VDataTableServer } from 'vuetify/labs/VDataTable'
-import type { Invoice } from '@/@fake-db/types'
-import { paginationMeta } from '@/@fake-db/utils'
-import { useInvoiceStore } from '@/views/apps/invoice/useInvoiceStore'
-import type { Options } from '@core/types'
-
-// 👉 Store
-const invoiceListStore = useInvoiceStore()
+import { paginationMeta } from '@api-utils/paginationMeta'
 
 const searchQuery = ref('')
-const dateRange = ref('')
 const selectedStatus = ref()
-const totalPage = ref(1)
-const totalInvoices = ref(0)
-const invoices = ref<Invoice[]>([])
 
-const options = ref<Options>({
-  page: 1,
-  itemsPerPage: 10,
-  sortBy: [],
-  groupBy: [],
-  search: undefined,
-})
+// Data table options
+const itemsPerPage = ref(10)
+const page = ref(1)
+const sortBy = ref()
+const orderBy = ref()
+
+// Update data table options
+const updateOptions = (options: any) => {
+  page.value = options.page
+  sortBy.value = options.sortBy[0]?.key
+  orderBy.value = options.sortBy[0]?.order
+}
 
 const isLoading = ref(false)
 
@@ -31,30 +26,34 @@ const headers = [
   { title: 'Trending', key: 'trending', sortable: false },
   { title: 'Total', key: 'total' },
   { title: 'Date', key: 'date' },
-  { title: 'Actions', key: 'actions', sortable: false, width: '3rem' },
+  { title: 'Balance', key: 'balance' },
+  { title: 'Actions', key: 'actions', sortable: false },
 ]
 
 // 👉 Fetch Invoices
-const fetchInvoices = (query: string, currentStatus: string, firstDate: string, lastDate: string, option: object) => {
-  isLoading.value = true
-  invoiceListStore.fetchInvoices(
-    {
-      q: query,
-      status: currentStatus,
-      startDate: firstDate,
-      endDate: lastDate,
-      options: option,
-    },
-  ).then(response => {
-    invoices.value = response.data.invoices
-    totalPage.value = response.data.totalPage
-    totalInvoices.value = response.data.totalInvoices
-    options.value.page = response.data.page
-  }).catch(error => {
-    console.log(error)
-  })
+const { data: invoiceData, execute: fetchInvoices } = await useApi<any>(createUrl('/apps/invoice', {
+  query: {
+    q: searchQuery,
+    status: selectedStatus,
+    itemsPerPage,
+    page,
+    sortBy,
+    orderBy,
+  },
+}))
 
-  isLoading.value = false
+const invoices = computed(() => invoiceData.value?.invoices)
+const totalInvoices = computed(() => invoiceData.value?.totalInvoices)
+
+// 👉 Invoice balance variant resolver
+const resolveInvoiceBalanceVariant = (balance: string | number, total: number) => {
+  if (balance === total)
+    return { status: 'Unpaid', chip: { color: 'error' } }
+
+  if (balance === 0)
+    return { status: 'Paid', chip: { color: 'success' } }
+
+  return { status: balance, chip: { variant: 'text' } }
 }
 
 // 👉 Invoice status variant resolver
@@ -89,34 +88,12 @@ const computedMoreList = computed(() => {
 })
 
 // 👉 Delete Invoice
-const deleteInvoice = (id: number) => {
-  invoiceListStore.deleteInvoice(id)
-    .then(() => {
-      fetchInvoices(
-        searchQuery.value,
-        selectedStatus.value,
-        dateRange.value?.split('to')[0],
-        dateRange.value?.split('to')[1],
-        options.value,
-      )
-    })
-    .catch(error => {
-      console.log(error)
-    })
+// 👉 Delete Invoice
+const deleteInvoice = async (id: number) => {
+  await $api(`/apps/invoice/${id}`, { method: 'DELETE' })
+
+  fetchInvoices()
 }
-
-// 👉 watch for data table options like itemsPerPage,page,searchQuery,sortBy etc...
-watchEffect(() => {
-  const [start, end] = dateRange.value ? dateRange.value.split('to') : ''
-
-  fetchInvoices(
-    searchQuery.value,
-    selectedStatus.value,
-    start,
-    end,
-    options.value,
-  )
-})
 </script>
 
 <template>
@@ -126,7 +103,7 @@ watchEffect(() => {
         <!-- 👉 Actions  -->
         <div class="me-3 d-flex gap-3">
           <AppSelect
-            :model-value="options.itemsPerPage"
+            :model-value="itemsPerPage"
             :items="[
               { value: 10, title: '10' },
               { value: 25, title: '25' },
@@ -134,8 +111,8 @@ watchEffect(() => {
               { value: 100, title: '100' },
               { value: -1, title: 'All' },
             ]"
-            style="width: 6.25rem;"
-            @update:model-value="options.itemsPerPage = parseInt($event, 10)"
+            style="inline-size: 6.25rem;"
+            @update:model-value="itemsPerPage = parseInt($event, 10)"
           />
         </div>
 
@@ -144,8 +121,10 @@ watchEffect(() => {
         <div class="d-flex align-center flex-wrap gap-4">
           <!-- 👉 Export invoice -->
           <VBtn
-            prepend-icon="tabler-plus"
-            :to="{ name: 'apps-invoice-add' }"
+            prepend-icon="tabler-screen-share"
+            append-icon="tabler-chevron-down"
+            variant="tonal"
+            color="secondary"
           >
             Export
           </VBtn>
@@ -156,14 +135,14 @@ watchEffect(() => {
 
       <!-- SECTION Datatable -->
       <VDataTableServer
-        v-model:items-per-page="options.itemsPerPage"
-        v-model:page="options.page"
+        v-model:items-per-page="itemsPerPage"
+        v-model:page="page"
         :loading="isLoading"
         :items-length="totalInvoices"
         :headers="headers"
         :items="invoices"
-        class="text-no-wrap"
-        @update:options="options = $event"
+        class="text-no-wrap rounded-0"
+        @update:options="updateOptions"
       >
         <!-- Trending Header -->
         <template #column.trending>
@@ -175,8 +154,8 @@ watchEffect(() => {
 
         <!-- id -->
         <template #item.id="{ item }">
-          <RouterLink :to="{ name: 'apps-invoice-preview-id', params: { id: item.value } }">
-            #{{ item.raw.id }}
+          <RouterLink :to="{ name: 'apps-invoice-preview-id', params: { id: item.id } }">
+            #{{ item.id }}
           </RouterLink>
         </template>
 
@@ -187,49 +166,67 @@ watchEffect(() => {
               <VAvatar
                 :size="30"
                 v-bind="props"
-                :color="resolveInvoiceStatusVariantAndIcon(item.raw.invoiceStatus).variant"
+                :color="resolveInvoiceStatusVariantAndIcon(item.invoiceStatus).variant"
                 variant="tonal"
               >
                 <VIcon
                   :size="20"
-                  :icon="resolveInvoiceStatusVariantAndIcon(item.raw.invoiceStatus).icon"
+                  :icon="resolveInvoiceStatusVariantAndIcon(item.invoiceStatus).icon"
                 />
               </VAvatar>
             </template>
             <p class="mb-0">
-              {{ item.raw.invoiceStatus }}
+              {{ item.invoiceStatus }}
             </p>
             <p class="mb-0">
-              Balance: {{ item.raw.balance }}
+              Balance: {{ item.balance }}
             </p>
             <p class="mb-0">
-              Due date: {{ item.raw.dueDate }}
+              Due date: {{ item.dueDate }}
             </p>
           </VTooltip>
         </template>
 
         <!-- Total -->
         <template #item.total="{ item }">
-          ${{ item.raw.total }}
+          ${{ item.total }}
         </template>
 
         <!-- issued Date -->
         <template #item.date="{ item }">
-          {{ item.raw.issuedDate }}
+          {{ item.issuedDate }}
+        </template>
+
+        <!-- Balance -->
+        <template #item.balance="{ item }">
+          <div>
+            <VChip
+              v-if="typeof ((resolveInvoiceBalanceVariant(item.balance, item.total)).status) === 'string'"
+              :color="resolveInvoiceBalanceVariant(item.balance, item.total).chip.color"
+            >
+              {{ (resolveInvoiceBalanceVariant(item.balance, item.total)).status }}
+            </VChip>
+            <span
+              v-else
+              class="text-high-emphasis"
+            >
+              {{ Number((resolveInvoiceBalanceVariant(item.balance, item.total)).status) > 0 ? `$${(resolveInvoiceBalanceVariant(item.balance, item.total)).status}` : `-$${Math.abs(Number((resolveInvoiceBalanceVariant(item.balance, item.total)).status))}` }}
+            </span>
+          </div>
         </template>
 
         <!-- Actions -->
         <template #item.actions="{ item }">
-          <IconBtn @click="deleteInvoice(item.raw.id)">
+          <IconBtn @click="deleteInvoice(item.id)">
             <VIcon icon="tabler-trash" />
           </IconBtn>
 
-          <IconBtn :to="{ name: 'apps-invoice-preview-id', params: { id: item.raw.id } }">
+          <IconBtn :to="{ name: 'apps-invoice-preview-id', params: { id: item.id } }">
             <VIcon icon="tabler-eye" />
           </IconBtn>
 
           <MoreBtn
-            :menu-list="computedMoreList(item.raw.id)"
+            :menu-list="computedMoreList(item.id)"
             color="undefined"
             item-props
           />
@@ -238,13 +235,13 @@ watchEffect(() => {
           <VDivider />
           <div class="d-flex align-center justify-sm-space-between justify-center flex-wrap gap-3 pa-5 pt-3">
             <p class="text-sm text-disabled mb-0">
-              {{ paginationMeta(options, totalInvoices) }}
+              {{ paginationMeta({ page, itemsPerPage }, totalInvoices) }}
             </p>
 
             <VPagination
-              v-model="options.page"
-              :length="Math.ceil(totalInvoices / options.itemsPerPage)"
-              :total-visible="$vuetify.display.xs ? 1 : Math.ceil(totalInvoices / options.itemsPerPage)"
+              v-model="page"
+              :length="Math.ceil(totalInvoices / itemsPerPage)"
+              :total-visible="$vuetify.display.xs ? 1 : Math.ceil(totalInvoices / itemsPerPage)"
             >
               <template #prev="slotProps">
                 <VBtn

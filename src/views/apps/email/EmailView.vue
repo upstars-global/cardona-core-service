@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import type { Email } from '@/@fake-db/types'
 import type { MoveEmailToAction } from '@/views/apps/email/useEmail'
 import { useEmail } from '@/views/apps/email/useEmail'
-import { useEmailStore } from '@/views/apps/email/useEmailStore'
-import { formatDate } from '@core/utils/formatters'
+import type { Email } from '@db/apps/email/types'
 
 interface Props {
   email: Email | null
@@ -22,11 +20,12 @@ const emit = defineEmits<{
   (e: 'close'): void
   (e: 'trash'): void
   (e: 'unread'): void
+  (e: 'read'): void
   (e: 'star'): void
   (e: 'unstar'): void
 }>()
 
-const store = useEmailStore()
+const { updateEmailLabels } = useEmail()
 
 const { labels, resolveLabelColor, emailMoveToFolderActions, shallShowMoveToActionFor, moveSelectedEmailTo } = useEmail()
 
@@ -36,8 +35,8 @@ const handleMoveMailsTo = (action: MoveEmailToAction) => {
   emit('close')
 }
 
-const updateMailLabel = (label: Email['labels'][number]) => {
-  store.updateEmailLabels([(props.email as Email).id], label)
+const updateMailLabel = async (label: Email['labels'][number]) => {
+  await updateEmailLabels([(props.email as Email).id], label)
 
   emit('refresh')
 }
@@ -111,16 +110,35 @@ const updateMailLabel = (label: Email['labels'][number]) => {
           @click="$emit('trash'); $emit('close')"
         >
           <VIcon icon="tabler-trash" />
+          <VTooltip
+            activator="parent"
+            location="top"
+          >
+            Delete Mail
+          </VTooltip>
         </IconBtn>
 
         <!-- Read/Unread -->
         <IconBtn @click.stop="$emit('unread'); $emit('close')">
           <VIcon icon="tabler-mail" />
+          <VTooltip
+            activator="parent"
+            location="top"
+          >
+            Mark as Unread
+          </VTooltip>
         </IconBtn>
 
         <!-- Move to folder -->
         <IconBtn>
           <VIcon icon="tabler-folder" />
+          <VTooltip
+            activator="parent"
+            location="top"
+          >
+            Move to
+          </VTooltip>
+
           <VMenu activator="parent">
             <VList density="compact">
               <template
@@ -152,6 +170,13 @@ const updateMailLabel = (label: Email['labels'][number]) => {
         <!-- Update labels -->
         <IconBtn>
           <VIcon icon="tabler-tag" />
+          <VTooltip
+            activator="parent"
+            location="top"
+          >
+            Label
+          </VTooltip>
+
           <VMenu activator="parent">
             <VList density="compact">
               <VListItem

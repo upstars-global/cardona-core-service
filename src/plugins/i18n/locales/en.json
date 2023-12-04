@@ -11,6 +11,7 @@
   "Widgets": "Widgets",
   "Components": "Components",
   "Alert": "Alert",
+  "Close Alert": "Close Alert",
   "Avatar": "Avatar",
   "Badge": "Badge",
   "Button": "Button",
@@ -30,6 +31,7 @@
   "Textarea": "Textarea",
   "Rating": "Rating",
   "File Input": "File Input",
+  "Otp Input": "Otp Input",
   "Form Layout": "Form Layout",
   "Form Validation": "Form Validation",
   "Charts": "Charts",
@@ -128,9 +130,57 @@
   "Apps": "Apps",
   "Misc": "Misc",
   "Wizard Pages": "Wizard Pages",
+  "Form Wizard": "Form Wizard",
+  "Numbered": "Numbered",
   "3": "3",
+  "ecommerce": "ecommerce",
+  "Ecommerce": "Ecommerce",
+  "Editors": "Editors",
+  "Front Pages": "Front Pages",
+  "Landing": "Landing",
+  "checkout": "checkout",
+  "Payment": "Payment",
+  "Swiper": "Swiper",
+  "Product": "Product",
+  "Category": "Category",
+  "Order": "Order",
+  "Details": "Details",
+  "Customer": "Customer",
+  "Manage Review": "Manage Review",
+  "Referrals": "Referrals",
+  "Settings": "Settings",
+  "Overview": "Overview",
+  "My Course": "My Course",
+  "Course Details": "Course Details",
+  "Academy": "Academy",
+  "Logistics": "Logistics",
+  "Dashboard": "Dashboard",
+  "Fleet": "Fleet",
+  "5": "5",
+  "10": "10",
+  "20": "20",
+  "25": "25",
+  "50": "50",
+  "100": "100",
   "$vuetify": {
     "badge": "Badge",
+    "noDataText": "No data available",
+    "close": "Close",
+    "open": "open",
+    "carousel": {
+      "ariaLabel": {
+        "delimiter": "delimiter"
+      }
+    },
+    "dataFooter": {
+      "itemsPerPageText": "Items per page:",
+      "itemsPerPageAll": "All",
+      "pageText": "{0}-{1} of {2}",
+      "firstPage": "First Page",
+      "prevPage": "Previous Page",
+      "nextPage": "Next Page",
+      "lastPage": "Last Page"
+    },
     "pagination": {
       "ariaLabel": {
         "root": "root",
@@ -144,7 +194,8 @@
       "clear": "clear",
       "appendAction": "appendAction",
       "prependAction": "prependAction",
-      "counterSize": "counterSize"
+      "counterSize": "counterSize",
+      "otp": "otp"
     },
     "fileInput": {
       "counterSize": "counterSize"
@@ -153,8 +204,10 @@
       "ariaLabel": {
         "item": "item"
       }
-    }
+    },
+    "loading": "loading"
   },
+
   "auth": {
     "login": "Login",
     "forgotPassword": "Forgot password?",
@@ -282,8 +335,10 @@
     "state": "State",
     "comment": "Comment",
     "isActive": "Is active",
+    "unActive": "Un active",
     "sumPeriod": "Sum period",
-    "richText": "Rich text",
+    "settings": "Settings",
+    "editableField": "Editable field",
     "phone": {
       "_": "Phone",
       "list": "Phones"
@@ -317,6 +372,17 @@
       "today": "Today: ",
       "week": "Week: ",
       "month": "Month: "
+    },
+    "conditions": {
+      "placeholder": "Click below to insert a var/function",
+      "availableVariables": "Available variables",
+      "ltp": "Life time profit(usd)",
+      "playerId": "Player id",
+      "partnerId": "Partner id",
+      "approvedPayoutsCount": "Payouts count approved and processing or already paid",
+      "adc(LastMonth)": "Calculate average daily check for last “N” months",
+      "partnerIdMatch(needle)": "Match partner id",
+      "adc(lastNMonths)": "Calculate average daily check for last N months"
     }
   },
   "page": {
@@ -334,6 +400,7 @@
       "textFieldWithCb": "Text field with callback",
       "numberField": "Number field",
       "minuteField": "Minute field",
+      "minutesRangeField": "Minutes range field",
       "sumRangeField": "Sum Range field",
       "percentField": "Percent field",
       "passwordField": "Password field",
@@ -344,15 +411,21 @@
       "checkGroupField": "Check group field",
       "dateField": "Date field",
       "dateRangeField": "Date range field",
+      "dateTimeRangeField": "Date time range field",
       "dateTimeField": "Date time field",
       "dateBtnField": "Date btn only field",
       "selectField": "Select field",
+      "nonClearableSelectField": "Non clearable select field",
       "multiSelectField": "Multi select field",
+      "conditionsField": "Conditions field",
       "textareaField": "Textarea field",
       "textareaWithCounterField": "Textarea with counter field",
       "tagsField": "Tags field",
       "credit": "Credit card",
-      "onlyPositiveNumbers": "Only positive numbers"
+      "onlyPositiveNumbers": "Only positive numbers",
+      "rates": "Rates",
+      "usersList": "Users list",
+      "uploadCSV": "Upload CSV"
     },
     "groupFragment": {
       "demoPage": "Demo page access",
@@ -399,15 +472,12 @@
     "regex": "The {_field_} field format is invalid",
     "required_if": "The {_field_} field is required",
     "required": "The {_field_} field is required",
+    "required_object": "The {_field_} field is required",
+    "range": "The {_field_} value \"{labelTo}\" should be greater than or equal {valueFrom}",
     "size": "The {_field_} field size must be less than {size}KB",
     "double": "The {_field_} field must be a valid decimal",
     "password": "Your {_field_} must contain at least one uppercase, one lowercase, one special character, one digit and be at least 8 characters",
-    "url": "URL is invalid",
-    "positive": "Please enter positive number!",
     "phone": "Phone can contain only numbers and one plus",
-    "required_object": "The {_field_} field is required",
-    "range": "The {_field_} value \"{labelTo}\" should be greater than or equal {valueFrom}",
-    "credit": "It is not valid credit card!",
     "Demo_text_ALREADY_EXISTS": "This entry already exists in the collection"
   },
   "toast": {
@@ -431,7 +501,8 @@
       "loadFile": "Loading error",
       "fileSizeError": "File is larger than {MB} MB",
       "upload_path_IN_USE": "An image with the same name or path already exists in the gallery",
-      "axiosError": "Data loading error"
+      "axiosError": "Data loading error",
+      "invalidTypeFile": "The format of the file is invalid"
     }
   },
   "userStatuses": {
@@ -439,6 +510,10 @@
     "inactive": "Inactive"
   },
   "placeholder": {
+    "minutesRange": {
+      "from": "from",
+      "to": "to"
+    },
     "select": "Select",
     "login": "Enter your login",
     "newPassword": "New password",

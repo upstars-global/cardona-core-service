@@ -46,6 +46,14 @@ export default [
           { title: 'Tooltip', to: 'components-tooltip' },
         ],
       },
+      {
+        title: 'Extensions',
+        icon: { icon: 'tabler-box' },
+        children: [
+          { title: 'Tour', to: 'extensions-tour' },
+          { title: 'Swiper', to: 'extensions-swiper' },
+        ],
+      },
     ],
   },
 ]

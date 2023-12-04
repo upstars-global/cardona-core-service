@@ -11,6 +11,7 @@ const rules = [(v: string) => v.length <= 25 || 'Max 25 characters']
         v-model="title"
         :rules="rules"
         counter="25"
+        placeholder="Placeholder Text"
         hint="This field uses counter prop"
         label="Regular"
       />
@@ -22,6 +23,7 @@ const rules = [(v: string) => v.length <= 25 || 'Max 25 characters']
         :rules="rules"
         counter
         maxlength="25"
+        placeholder="Placeholder Text"
         hint="This field uses maxlength attribute"
         label="Limit exceeded"
       />

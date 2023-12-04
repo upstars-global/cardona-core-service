@@ -40,7 +40,7 @@ const recentDevices = [
     activity: '14, July 2021 15:15',
   },
   {
-    browser: 'Chrome on MacOS',
+    browser: 'Chrome on macOS',
     icon: 'tabler-brand-apple',
     color: 'secondary',
     device: 'Apple iMac',
@@ -91,6 +91,7 @@ const recentDevices = [
               >
                 <AppTextField
                   label="New Password"
+                  placeholder="············"
                   :type="isNewPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isNewPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isNewPasswordVisible = !isNewPasswordVisible"
@@ -102,6 +103,7 @@ const recentDevices = [
               >
                 <AppTextField
                   label="Confirm Password"
+                  placeholder="············"
                   :type="isConfirmPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isConfirmPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isConfirmPasswordVisible = !isConfirmPasswordVisible"
@@ -133,25 +135,28 @@ const recentDevices = [
               SMS
             </h4>
 
-            <AppTextField
+            <VTextField
+              variant="underlined"
               :model-value="smsVerificationNumber"
-              readonly
             >
               <template #append-inner>
-                <div class="d-flex align-center gap-2">
+                <IconBtn
+                  size="small"
+                  variant="text"
+                >
                   <VIcon
                     icon="tabler-edit"
-                    size="22"
                     @click="isTwoFactorDialogOpen = true"
                   />
-
-                  <VIcon
-                    size="22"
-                    icon="tabler-trash"
-                  />
-                </div>
+                </IconBtn>
+                <IconBtn
+                  size="small"
+                  variant="text"
+                >
+                  <VIcon icon="tabler-trash" />
+                </IconBtn>
               </template>
-            </AppTextField>
+            </VTextField>
           </div>
 
           <p class="mb-0 mt-4">
@@ -173,16 +178,17 @@ const recentDevices = [
           :items="recentDevices"
           :headers="recentDeviceHeader"
           hide-default-footer
+          class="text-no-wrap"
         >
           <template #item.browser="{ item }">
             <div class="d-flex">
               <VIcon
-                :icon="item.raw.icon"
-                :color="item.raw.color"
+                :icon="item.icon"
+                :color="item.color"
                 :size="22"
                 class="me-3"
               />
-              {{ item.raw.browser }}
+              {{ item.browser }}
             </div>
           </template>
           <!-- TODO Refactor this after vuetify provides proper solution for removing default footer -->

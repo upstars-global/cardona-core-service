@@ -8,7 +8,7 @@ import { VColors } from '../../@model/vuetify'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import { IconsList } from '@/@model/enums/icons'
-import i18n from '@/plugins/i18n'
+// import { getI18n } from '@/plugins/i18n'
 
 interface Props {
   value: string
@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   optionsVariable: () => [],
   localisationParameters: () => ({}),
   disabled: false,
-  placeholder: i18n.global.t('common.description') as string
+  placeholder: '' //getI18n.t('common.description') as string
 })
 
 const emit = defineEmits<Emits>()

@@ -5,6 +5,13 @@ import miscMaskLight from '@images/pages/misc-mask-light.png'
 import miscUnderMaintenance from '@images/pages/misc-under-maintenance.png'
 
 const authThemeMask = useGenerateImageVariant(miscMaskLight, miscMaskDark)
+
+definePage({
+  meta: {
+    layout: 'blank',
+    public: false,
+  },
+})
 </script>
 
 <template>
@@ -41,8 +48,3 @@ const authThemeMask = useGenerateImageVariant(miscMaskLight, miscMaskDark)
 <style lang="scss">
 @use "@core/scss/template/pages/misc.scss";
 </style>
-
-<route lang="yaml">
-meta:
-  layout: blank
-</route>

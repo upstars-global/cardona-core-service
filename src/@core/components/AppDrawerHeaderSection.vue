@@ -11,15 +11,20 @@ defineEmits<Emit>()
 </script>
 
 <template>
-  <div class="px-5 py-3 d-flex align-center">
-    <h3 class="font-weight-medium text-xl">
+  <div class="pa-6 d-flex align-center">
+    <h5 class="text-h5">
       {{ props.title }}
-    </h3>
+    </h5>
     <VSpacer />
 
     <slot name="beforeClose" />
 
-    <IconBtn @click="$emit('cancel')">
+    <IconBtn
+      variant="tonal"
+      class="rounded"
+      size="32"
+      @click="$emit('cancel')"
+    >
       <VIcon
         size="18"
         icon="tabler-x"
