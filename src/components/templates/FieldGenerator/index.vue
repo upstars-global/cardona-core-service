@@ -59,8 +59,6 @@ import store from '../../../store'
 import { FieldInfo } from '../../../@model/field'
 import { BaseField, SwitchBaseField, CheckBaseField } from '../../../@model/baseField'
 import DummySelectField from './_components/DummySelectField.vue'
-import DateBtnOnlyField from './_components/DateBtnOnlyField.vue'
-import SwitchField from './_components/SwitchField.vue'
 import SumRangeField from './_components/SumRangeField.vue'
 import { IconsList } from '../../../@model/enums/icons'
 
@@ -68,8 +66,6 @@ export default defineComponent({
   name: 'FieldGenerator',
   components: {
     DummySelectField,
-    DateBtnOnlyField,
-    SwitchField,
     SumRangeField,
   },
 

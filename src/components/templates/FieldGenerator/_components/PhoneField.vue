@@ -8,10 +8,12 @@ type PhoneFieldProps = {
   value: string
   field: PhoneBaseField
   disabled?: boolean
+  errors?: string[]
 }
 
 const props = withDefaults(defineProps<PhoneFieldProps>(), {
   value: '',
+  errors: () => [],
 })
 
 const emit = defineEmits<{
@@ -53,7 +55,7 @@ const phoneFlag = computed(() => {
       v-model="modelValue"
       type="text"
       class="form-control"
-      :class="{ 'pl-3': phoneFlag }"
+      :class="{ 'pl-3': phoneFlag, error: errors.isNotEmpty }"
       :placeholder="$t('common.phone._')"
       :disabled="disabled"
       :options="cleaveOptions"
@@ -62,6 +64,8 @@ const phoneFlag = computed(() => {
 </template>
 
 <style scoped lang="scss">
+@import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
+
 .flag {
   display: inline-block;
   font-size: 2rem;
@@ -69,5 +73,9 @@ const phoneFlag = computed(() => {
   top: 9px;
   left: 9px;
   margin: 0;
+}
+
+.error {
+  border-color: $red;
 }
 </style>
