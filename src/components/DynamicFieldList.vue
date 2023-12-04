@@ -240,7 +240,7 @@ export default defineComponent({
       ].some(Boolean)
     )
 
-    const isRequired = (item: unknown) => item?.validationRules?.isNotEmpty
+    const isRequired = (item: BaseField) => item?.validationRules?.isNotEmpty
 
     return {
       isBaseField,
