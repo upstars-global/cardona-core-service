@@ -25,7 +25,7 @@ const emits = defineEmits<Emits>()
 
 const isShowActions = computed(() => {
   return [
-    props.config.withDeactivation,
+    props.canUpdate && props.config.withDeactivation,
     props.canUpdateItem,
     props.canCreateFromCopy,
     props.canRemoveItem,
