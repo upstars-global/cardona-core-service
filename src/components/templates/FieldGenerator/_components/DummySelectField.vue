@@ -1,72 +1,45 @@
-<script lang="ts">
-import { defineComponent, PropType, computed } from 'vue'
-import vSelect from 'vue-select'
+<script setup lang="ts">
+import { computed } from 'vue'
 import i18n from '../../../../libs/i18n'
+import { OptionsItem } from '../../../../@model'
+import { BSize } from '../../../../@model/bootstrap'
 
-export default defineComponent({
-  name: 'DummySelectField',
-  components: {
-    vSelect,
-  },
+type DummySelectProps = {
+  value?: OptionsItem | null
+  options: OptionsItem[]
+  errors?: string[]
+  disabled?: boolean
+  size?: BSize
+  placeholder?: string
+}
 
-  props: {
-    value: {
-      type: Object,
-      default: () => {},
-    },
-
-    options: {
-      type: Array,
-      default: () => [],
-    },
-
-    errors: {
-      type: Array as PropType<Array<string>>,
-      default: () => [],
-    },
-
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-
-    size: {
-      type: String,
-      default: 'md',
-    },
-
-    placeholder: {
-      type: String,
-      default: () => i18n.t('placeholder.choose._'),
-    },
-  },
-
-  emits: ['input', 'search'],
-
-  setup(props, { emit }) {
-    const selectClasses = computed(() => {
-      const size: string = `select-${props.size}`
-      const classes: object = {
-        error: props.errors?.isNotEmpty,
-      }
-
-      return [size, classes]
-    })
-
-    const valueModel = computed({
-      get: () => props.value,
-      set: (item: object) => emit('input', item),
-    })
-
-    const onSearch = (search: string) => emit('search', search)
-
-    return {
-      selectClasses,
-      valueModel,
-      onSearch,
-    }
-  },
+const props = withDefaults(defineProps<DummySelectProps>(), {
+  value: null,
+  errors: () => [],
+  size: BSize.Md,
+  placeholder: i18n.t('placeholder.choose._') as string,
 })
+
+const emits = defineEmits<{
+  (event: 'input', item: OptionsItem | null): void
+  (event: 'search', search: string): void
+}>()
+
+const selectClasses = computed(() => {
+  const size = `select-${props.size}`
+  const classes = {
+    error: props.errors?.isNotEmpty,
+  }
+
+  return [size, classes]
+})
+
+const valueModel = computed<OptionsItem | null>({
+  get: () => props.value,
+  set: (item) => emits('input', item),
+})
+
+const onSearch = (search: string) => emits('search', search)
 </script>
 
 <template>
