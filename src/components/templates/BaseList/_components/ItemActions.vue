@@ -12,6 +12,7 @@ interface Props {
   canUpdateItem: boolean
   getUpdateRoute: (item: { id: string }) => Location
   canRemoveItem: boolean
+  canCreateFromCopy: boolean
 }
 
 interface Emits {
@@ -26,7 +27,7 @@ const isShowActions = computed(() => {
   return [
     props.config.withDeactivation,
     props.canUpdateItem,
-    props.config.createFromCopy,
+    props.canCreateFromCopy,
     props.canRemoveItem,
   ].some(Boolean)
 })
@@ -69,7 +70,7 @@ const isShowActions = computed(() => {
     </b-dropdown-item>
 
     <b-dropdown-item
-      v-if="config.createFromCopy"
+      v-if="config.createFromCopy && canCreateFromCopy"
       :to="{ name: createPageName, params: { id: item.id } }"
     >
       <feather-icon :icon="IconsList.CopyIcon" />

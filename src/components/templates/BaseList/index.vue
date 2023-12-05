@@ -299,6 +299,7 @@
             :can-update="canUpdate"
             :can-update-item="canUpdateItem(item)"
             :can-remove-item="canRemoveItem(item)"
+            :can-create-from-copy="canCreate"
             :config="config"
             :get-update-route="getUpdateRoute"
             @on-remove="onClickRemove"
@@ -922,6 +923,7 @@ export default {
 
       // Permissions
       canUpdate,
+      canCreate,
       canUpdateSeo,
       canRemove,
       canExport,
