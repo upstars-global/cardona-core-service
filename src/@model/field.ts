@@ -3,7 +3,6 @@ import { OptionsItem } from './index'
 import { TranslateResult } from 'vue-i18n'
 
 export enum FieldType {
-  DummySelect = 'dummy-select', // TODO: https://upstars.atlassian.net/browse/BAC-2061
   SumRange = 'sum-range', // TODO: https://upstars.atlassian.net/browse/BAC-2060
 }
 
