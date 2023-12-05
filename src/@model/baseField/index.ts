@@ -4,6 +4,7 @@ import { NumberBaseField } from './number'
 import { TextareaBaseField } from './textarea'
 import { PasswordBaseField } from './password'
 import { SelectBaseField } from './select'
+import { DummySelectBaseField } from './dummySelect'
 import { MultiSelectBaseField } from './multi-select'
 import { RatesBaseField } from './rates'
 import { TimeBaseField } from './time'
@@ -20,6 +21,10 @@ import { RichTextBaseField } from './rich-text'
 import { TagsBaseField } from './tags'
 
 export const getInstanceClass = (instance: object) => {
+  // TODO: The order in the method is important, since some classes inherit from each other
+  // For example, DummySelectBaseField is inherited from SelectBaseField
+  // and the check dummySelectInstance instanceof SelectBaseField will return true
+
   const fields = [
     TagsBaseField,
     RichTextBaseField,
@@ -33,6 +38,7 @@ export const getInstanceClass = (instance: object) => {
     ConditionsBaseField,
     TimeBaseField,
     PhoneBaseField,
+    DummySelectBaseField,
     SelectBaseField,
     MultiSelectBaseField,
     RatesBaseField,
@@ -51,6 +57,7 @@ export {
   NumberBaseField,
   TextareaBaseField,
   PasswordBaseField,
+  DummySelectBaseField,
   SelectBaseField,
   MultiSelectBaseField,
   RatesBaseField,
