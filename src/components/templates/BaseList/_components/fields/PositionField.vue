@@ -72,6 +72,7 @@ const formatterInput = (value: NumberOrString): NumberOrString =>
   <div
     v-if="openEdit"
     class="d-flex justify-content-center align-center"
+    @click.stop
   >
     <div
       style="min-width: 4rem"
@@ -83,6 +84,7 @@ const formatterInput = (value: NumberOrString): NumberOrString =>
         type="number"
         autofocus
         :formatter="formatterInput"
+        class="priority-input"
         @keydown="onKeyDown"
         @keyup.enter="successNewPosition"
         @keyup.esc="cancelNewPosition"
@@ -125,3 +127,9 @@ const formatterInput = (value: NumberOrString): NumberOrString =>
     <span>{{ position }}</span>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.priority-input {
+  min-width: 5rem;
+}
+</style>

@@ -9,7 +9,7 @@ import { SideBarCollapseItem } from '@/@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '@/@model/vuetify'
 
 const props = defineProps<{
-  item: object
+  item?: object
   sidebarActive: boolean
   canUpdate?: boolean
   canUpdateItem?: boolean
@@ -29,7 +29,7 @@ const slots = useSlots()
 
 const emitAfterAnimationSidebar = 200
 
-const viewForm = ref(new props.sideBarModel(props.item))
+const viewForm = ref(props.item ? new props.sideBarModel(props.item) : null)
 
 const action = (name: string, hide: Function) => {
   hide && hide()
@@ -76,7 +76,7 @@ const onHide = () => {
         @click="onHide"
       />
     </div>
-    <div class="p-1 bg-light px-4">
+    <div class="p-1 bg-light px-4" v-if="viewForm">
       <!--  ViewInfo   -->
       <template v-if="Object.keys(viewForm).isNotEmpty">
         <div

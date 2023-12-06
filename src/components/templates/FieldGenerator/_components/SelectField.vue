@@ -1,17 +1,25 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { debounce } from 'lodash'
-import type { FieldInfo } from '../../../../@model/field'
-import type { OptionsItem } from '../../../../@model'
+import type {OptionsItem} from '../../../../@model';
+import {IconsList} from "../../../../@model/enums/icons";
+import {SelectBaseField} from "../../../../@model/templates/baseField";
+import {i18n} from "@/plugins/i18n";
 
-const props = defineProps<{
-  modelValue: object | string | number
-  field: FieldInfo
-  errors: string[]
-  disabled: boolean
-  size: string // TODO: refactor sizes
-  placeholder: string
-}>()
+const props = withDefaults(
+    defineProps<{
+      modelValue: OptionsItem | string | number
+      field: SelectBaseField
+      errors?: boolean
+      disabled?: boolean
+      size: string // TODO: refactor sizes
+      placeholder?: string
+    }>(),
+    {
+      modelValue: '',
+      size: '',
+      placeholder: i18n.t('placeholder.choose._') as string
+    })
 
 const emits = defineEmits<{
   (e: 'update:modelValue', value: string | number): void
@@ -73,27 +81,35 @@ const onSearch = debounce(async (search: string, loading: Function) => {
 </script>
 
 <template>
-<!--  TODO: add  :dir="$store.getters['appConfig/dirOption']"-->
+  <div>
     <VueSelect
-    v-model="valueModel"
-    :placeholder="placeholder"
-    label="name"
-    :loading="isLoading"
-    :multiple="isMultiple"
-    :options="options"
-    class="select-field"
-    :class="selectClasses"
-    :disabled="disabled"
-    @search="onSearch"
-  >
-    <template #no-options="{ loading, search }">
-      <div v-if="!search && !loading">
-        {{ $t('common.enterSomething') }}
-      </div>
+        v-model="valueModel"
+        :placeholder="placeholder || $t('placeholder.choose._')"
+        label="name"
+        :loading="isLoading"
+        :multiple="isMultiple"
+        :options="options"
+        class="select-field"
+        :class="selectClasses"
+        :disabled="disabled"
+        @search="onSearch"
+    >
+      <template #no-options="{ loading, search }">
+        <div v-if="!search && !loading">
+          {{ $t('common.enterSomething') }}
+        </div>
 
-      <div v-else>
-        {{ $t('common.nothingFound') }}
-      </div>
-    </template>
-  </VueSelect>
+        <div v-else>
+          {{ $t('common.nothingFound') }}
+        </div>
+      </template>
+
+      <template #open-indicator="{ attributes }">
+        <VIcon
+            v-bind="attributes"
+            :icon="IconsList.ChevronDownIcon"
+        />
+      </template>
+    </VueSelect>
+  </div>
 </template>

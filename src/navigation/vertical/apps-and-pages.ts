@@ -1,12 +1,12 @@
 export default [
   { heading: 'Apps & Pages' },
   {
-    title: 'Demo',
+    title: 'page.demo._',
     icon: { icon: 'tabler-box' },
     to: 'DemoList',
   },
   {
-    title: 'Permission',
+    title: 'page.groupFragment.demoPage',
     to: { name: 'PermissionPage', params: { id: 'demo' } },
     icon: { icon: 'tabler-box' },
   },

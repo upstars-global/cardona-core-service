@@ -81,16 +81,23 @@ const onHide = (value: boolean) => {
   </VDialog>
 </template>
 
-<style scoped lang="scss">
-.without-header-title {
-  position: absolute;
-  right: 0;
+<style lang="scss" scoped>
+.modal-card {
+  overflow: visible !important;
 }
 .modal-header {
-  .modal-header__close {
-    margin-top: .5rem;
+  position: relative;
+  height: 3rem;
+  border-radius: 0.375rem 0.375rem 0 0;
+
+  &__close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(8px,-2px);
+
     &:hover {
-      transform: translate(-3px, 5px);
+      transform: translate(5px,3px);
     }
   }
 }

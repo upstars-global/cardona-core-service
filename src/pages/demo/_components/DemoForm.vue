@@ -67,7 +67,6 @@ const mockUploadFile = async () => {
                 v-model="formData.text"
                 :disabled="isDisabledField"
               />
-              <FieldGenerator v-model="formData.text" :disabled="isDisabledField" />
             </VCol>
 
           </VRow>

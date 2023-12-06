@@ -111,9 +111,6 @@ const resetSelectedItem = () => {
 }
 
 const onClickRow = data => {
-  if (props.config?.selectable)
-    return
-
   if (props.config?.sidebar) {
     isSidebarShown.value = true
     selectedItem.value = data
@@ -443,7 +440,6 @@ const onClickToggleStatusMultiple = async (isActive: boolean) => {
 
 const onClickDeleteMultiple = async () => {
   const ids: Array<string> = selectedItems.value.map(({ id }) => id)
-
   await store.dispatch(multipleDeleteActionName, {
     type: entityName,
     ids,
@@ -675,6 +671,7 @@ onBeforeMount(async () => {
             :field="field"
             :item="item.raw"
             :cell="cell"
+            @click.stop
           />
           <StatusField
             v-else-if="field.type === ListFieldType.Status"
