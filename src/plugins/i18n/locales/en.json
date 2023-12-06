@@ -362,6 +362,73 @@
     },
     "editor": {
       "addedVariables": "Added variables"
+    },
+    "admin" : {
+      "_": "Admin",
+      "list" : "Admins",
+      "full": "Administrator",
+      "fullListCount": "Administrators ({count})",
+      "fullList": "Administrators",
+      "group": "Administrators group",
+      "add": "Add administrator"
+    },
+    "bonuses": {
+      "_": "Bonuses",
+      "status": "Status",
+      "name": "Bonus name",
+      "giftName": "Gift",
+      "type": "Type",
+      "sum": "Sum",
+      "wagering": "Wagering",
+      "accrueBonus": "Accrue bonus",
+      "cancelBonus": "Cancel bonus",
+      "amountAtWagering": "Amount at the time of wagering",
+      "transferredToReal": "Transferred to Real",
+      "winLimit": "Win limit",
+      "valueInPercentage": "Value in percentage",
+      "initiator": "Initiator",
+      "transferToReal": "Transfer to real"
+    },
+    "gifts": {
+      "_": "Gifts",
+      "status": "Status",
+      "name": "Name",
+      "templateName": "Template name",
+      "type": "Type",
+      "accrue": "Accrue a gift"
+    },
+    "betting":{
+      "searchPlaceholder": "Search by id and bonus id",
+      "id": "Coupon ID",
+      "new": "New",
+      "won": "Won",
+      "lost": "Lost",
+      "cashout": "Cash Out",
+      "cashback": "Cash Back",
+      "express_bonus": "Express Bonus",
+      "bore_draw_money_back": "Bore Draw Money Back",
+      "ultra_cache_back": "Ultra Cash Back",
+      "multy_bet_of_the_day": "Multy Bet Of The Day",
+      "status": "Status",
+      "type": "Type",
+      "bonusType": "Bonus type",
+      "eventType": "Event type"
+    },
+    "project": {
+      "_": "Project",
+      "list": "Projects",
+      "listCount": "Projects ({count})",
+      "name": "Project name",
+      "publicName": "Project public name",
+      "searchPlaceholder": "Search by title, id and alias"
+    },
+    "groups": {
+      "_": "Group",
+      "list": "Groups",
+      "listCount": "Groups ({count})",
+      "name": "Group name",
+      "adminAdd": "Add an admin to a group",
+      "searchPlaceholder": "Search by name and id"
     }
   },
   "component": {
@@ -387,6 +454,7 @@
   },
   "page": {
     "demo": {
+      "_": "Demo",
       "fields": "Fields",
       "input": "Input",
       "check": "Check",
@@ -431,6 +499,15 @@
       "demoPage": "Demo page access",
       "accessControl": "Access control",
       "groupSettings": "Group settings"
+    },
+    "logging": {
+      "logId": "Log ID {id}",
+      "action": "Action",
+      "entry": "Entry",
+      "entityId": "Entity ID",
+      "prop": "Properties",
+      "oldProp": "Old properties",
+      "newProp": "New properties"
     }
   },
   "title": {

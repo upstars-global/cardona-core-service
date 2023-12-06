@@ -2,7 +2,6 @@ import { listImages } from '@/@fake-db/compostela'
 import { TransactionType } from '@/@model/enums/playersTransactions'
 import type { IDemoTypeItem } from '@/@model/demo'
 import { VColors } from '@/@model/vuetify'
-import { getLocaleDateString } from '@/helpers/date'
 
 export const entityData = {
   id: '2',
@@ -271,6 +270,10 @@ export const listData = [
     login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: listImages[3].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -300,8 +303,8 @@ export const listData = [
     date: '2022-12-31T10:00:00+00:00',
     newDate: '2022-12-31T10:00:00+00:00',
     period: {
-      dateFrom: getLocaleDateString(new Date('2022-12-31T10:00:00+00:00')),
-      dateTo: getLocaleDateString(new Date('2024-04-26T20:59:00+00:00')),
+      dateFrom: '2022-12-31T10:00:00+00:00',
+      dateTo: '2024-04-26T20:59:00+00:00',
     },
     callbackData: {
       id: 1,
@@ -349,7 +352,7 @@ export const listData = [
     rowVariant: VColors.Warning,
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '132c39448e03b2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
     partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
@@ -387,7 +390,7 @@ export const listData = [
             'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
   },
   {
-    id: '632c39448e03b2dab20c8a78',
+    id: '132c39448e03b2dab20c8a78',
     shortId: '632c39448e03b2dab20c8a78',
     partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
@@ -427,7 +430,7 @@ export const listData = [
     rowVariant: VColors.Error,
   },
   {
-    id: '632c39448e03b2dab20c8a79',
+    id: '132c39448e03b2dab20c8a79',
     shortId: '632c39448e03b2dab20c8a79',
     partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
@@ -449,6 +452,10 @@ export const listData = [
     login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: listImages[3].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -463,7 +470,7 @@ export const listData = [
     rowVariant: VColors.Info,
   },
   {
-    id: '632c39448e03b2dab20c8a75',
+    id: '132c39448e03b2dab20c8a75',
     shortId: '632c39448e03b2dab20c8a75',
     partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',
@@ -503,7 +510,7 @@ export const listData = [
     rowVariant: VColors.Warning,
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '132c39448e03e2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
     partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
@@ -541,7 +548,7 @@ export const listData = [
             'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
   },
   {
-    id: '632c39448e03b2dab20c8a78',
+    id: '232c39448e03b2dab20c8a78',
     shortId: '632c39448e03b2dab20c8a78',
     partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
@@ -581,7 +588,7 @@ export const listData = [
     rowVariant: VColors.Error,
   },
   {
-    id: '632c39448e03b2dab20c8a79',
+    id: '232c39448e03b2dab20c8a79',
     shortId: '632c39448e03b2dab20c8a79',
     partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
@@ -603,6 +610,10 @@ export const listData = [
     login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: listImages[3].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -617,7 +628,7 @@ export const listData = [
     rowVariant: VColors.Info,
   },
   {
-    id: '632c39448e03b2dab20c8a75',
+    id: '232c39448e03b2dab20c8a75',
     shortId: '632c39448e03b2dab20c8a75',
     partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',
@@ -657,7 +668,7 @@ export const listData = [
     rowVariant: VColors.Warning,
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '232c39448e03b2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
     partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
@@ -695,7 +706,7 @@ export const listData = [
             'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
   },
   {
-    id: '632c39448e03b2dab20c8a78',
+    id: '332c39448e03b2dab20c8a78',
     shortId: '632c39448e03b2dab20c8a78',
     partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
@@ -735,7 +746,7 @@ export const listData = [
     rowVariant: VColors.Error,
   },
   {
-    id: '632c39448e03b2dab20c8a79',
+    id: '332c39448e03b2dab20c8a79',
     shortId: '632c39448e03b2dab20c8a79',
     partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
@@ -757,6 +768,10 @@ export const listData = [
     login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: listImages[3].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -771,7 +786,7 @@ export const listData = [
     rowVariant: VColors.Info,
   },
   {
-    id: '632c39448e03b2dab20c8a75',
+    id: '332c39448e03b2dab20c8a75',
     shortId: '632c39448e03b2dab20c8a75',
     partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',
@@ -811,7 +826,7 @@ export const listData = [
     rowVariant: VColors.Warning,
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '332c39448e03b2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
     partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
@@ -849,7 +864,7 @@ export const listData = [
             'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
   },
   {
-    id: '632c39448e03b2dab20c8a78',
+    id: '432c39448e03b2dab20c8a78',
     shortId: '632c39448e03b2dab20c8a78',
     partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
@@ -889,7 +904,7 @@ export const listData = [
     rowVariant: VColors.Error,
   },
   {
-    id: '632c39448e03b2dab20c8a79',
+    id: '432c39448e03b2dab20c8a79',
     shortId: '632c39448e03b2dab20c8a79',
     partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
@@ -911,6 +926,10 @@ export const listData = [
     login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: listImages[3].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -925,7 +944,7 @@ export const listData = [
     rowVariant: VColors.Info,
   },
   {
-    id: '632c39448e03b2dab20c8a75',
+    id: '432c39448e03b2dab20c8a75',
     shortId: '632c39448e03b2dab20c8a75',
     partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',
@@ -965,7 +984,7 @@ export const listData = [
     rowVariant: VColors.Warning,
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '432c39448e03b2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
     partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
@@ -1003,7 +1022,7 @@ export const listData = [
             'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
   },
   {
-    id: '632c39448e03b2dab20c8a78',
+    id: '532c39448e03b2dab20c8a78',
     shortId: '632c39448e03b2dab20c8a78',
     partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
@@ -1043,7 +1062,7 @@ export const listData = [
     rowVariant: VColors.Error,
   },
   {
-    id: '632c39448e03b2dab20c8a79',
+    id: '532c39448e03b2dab20c8a79',
     shortId: '632c39448e03b2dab20c8a79',
     partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
@@ -1065,6 +1084,10 @@ export const listData = [
     login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: listImages[3].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -1079,7 +1102,7 @@ export const listData = [
     rowVariant: VColors.Info,
   },
   {
-    id: '632c39448e03b2dab20c8a75',
+    id: '532c39448e03b2dab20c8a75',
     shortId: '632c39448e03b2dab20c8a75',
     partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',
@@ -1119,7 +1142,7 @@ export const listData = [
     rowVariant: VColors.Warning,
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '532c39448e03b2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
     partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
@@ -1157,7 +1180,7 @@ export const listData = [
             'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
   },
   {
-    id: '632c39448e03b2dab20c8a78',
+    id: '732c39448e03b2dab20c8a78',
     shortId: '632c39448e03b2dab20c8a78',
     partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
@@ -1197,7 +1220,7 @@ export const listData = [
     rowVariant: VColors.Error,
   },
   {
-    id: '632c39448e03b2dab20c8a79',
+    id: '732c39448e03b2dab20c8a79',
     shortId: '632c39448e03b2dab20c8a79',
     partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
@@ -1219,6 +1242,10 @@ export const listData = [
     login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: listImages[3].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -1233,7 +1260,7 @@ export const listData = [
     rowVariant: VColors.Info,
   },
   {
-    id: '632c39448e03b2dab20c8a75',
+    id: '732c39448e03b2dab20c8a75',
     shortId: '632c39448e03b2dab20c8a75',
     partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',
@@ -1273,7 +1300,7 @@ export const listData = [
     rowVariant: VColors.Warning,
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '732c39448e03b2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
     partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
@@ -1311,7 +1338,7 @@ export const listData = [
             'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
   },
   {
-    id: '632c39448e03b2dab20c8a78',
+    id: '832c39448e03b2dab20c8a78',
     shortId: '632c39448e03b2dab20c8a78',
     partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
@@ -1351,7 +1378,7 @@ export const listData = [
     rowVariant: VColors.Error,
   },
   {
-    id: '632c39448e03b2dab20c8a79',
+    id: '832c39448e03b2dab20c8a79',
     shortId: '632c39448e03b2dab20c8a79',
     partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
@@ -1373,6 +1400,10 @@ export const listData = [
     login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: listImages[3].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -1387,7 +1418,7 @@ export const listData = [
     rowVariant: VColors.Info,
   },
   {
-    id: '632c39448e03b2dab20c8a75',
+    id: '832c39448e03b2dab20c8a75',
     shortId: '632c39448e03b2dab20c8a75',
     partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',
@@ -1427,7 +1458,7 @@ export const listData = [
     rowVariant: VColors.Warning,
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '832c39448e03b2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
     partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
@@ -1465,7 +1496,7 @@ export const listData = [
             'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
   },
   {
-    id: '632c39448e03b2dab20c8a78',
+    id: '932c39448e03b2dab20c8a78',
     shortId: '632c39448e03b2dab20c8a78',
     partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
@@ -1505,7 +1536,7 @@ export const listData = [
     rowVariant: VColors.Error,
   },
   {
-    id: '632c39448e03b2dab20c8a79',
+    id: '932c39448e03b2dab20c8a79',
     shortId: '632c39448e03b2dab20c8a79',
     partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
@@ -1527,6 +1558,10 @@ export const listData = [
     login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: listImages[3].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -1541,7 +1576,7 @@ export const listData = [
     rowVariant: VColors.Info,
   },
   {
-    id: '632c39448e03b2dab20c8a75',
+    id: '932c39448e03b2dab20c8a75',
     shortId: '632c39448e03b2dab20c8a75',
     partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',
@@ -1581,7 +1616,7 @@ export const listData = [
     rowVariant: VColors.Warning,
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '932c39448e03b2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
     partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
@@ -1619,7 +1654,7 @@ export const listData = [
             'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
   },
   {
-    id: '632c39448e03b2dab20c8a78',
+    id: '032c39448e03b2dab20c8a78',
     shortId: '632c39448e03b2dab20c8a78',
     partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
@@ -1659,7 +1694,7 @@ export const listData = [
     rowVariant: VColors.Error,
   },
   {
-    id: '632c39448e03b2dab20c8a79',
+    id: '032c39448e03b2dab20c8a79',
     shortId: '632c39448e03b2dab20c8a79',
     partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
@@ -1681,6 +1716,10 @@ export const listData = [
     login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: listImages[3].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -1695,7 +1734,7 @@ export const listData = [
     rowVariant: VColors.Info,
   },
   {
-    id: '632c39448e03b2dab20c8a75',
+    id: '032c39448e03b2dab20c8a75',
     shortId: '632c39448e03b2dab20c8a75',
     partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',
@@ -1735,7 +1774,7 @@ export const listData = [
     rowVariant: VColors.Warning,
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '032c39448e03b2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
     partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
@@ -1773,7 +1812,7 @@ export const listData = [
             'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
   },
   {
-    id: '632c39448e03b2dab20c8a78',
+    id: '612c39448e03b2dab20c8a78',
     shortId: '632c39448e03b2dab20c8a78',
     partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
@@ -1813,7 +1852,7 @@ export const listData = [
     rowVariant: VColors.Error,
   },
   {
-    id: '632c39448e03b2dab20c8a79',
+    id: '612c39448e03b2dab20c8a79',
     shortId: '632c39448e03b2dab20c8a79',
     partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
@@ -1835,6 +1874,10 @@ export const listData = [
     login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: listImages[3].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -1849,7 +1892,7 @@ export const listData = [
     rowVariant: VColors.Info,
   },
   {
-    id: '632c39448e03b2dab20c8a75',
+    id: '612c39448e03b2dab20c8a75',
     shortId: '632c39448e03b2dab20c8a75',
     partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',
@@ -1889,7 +1932,7 @@ export const listData = [
     rowVariant: VColors.Warning,
   },
   {
-    id: '632c39448e03b2dab20c8a77',
+    id: '612c39448e03b2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
     partnerCode: '123632c39448e03b2dab20c8a77',
     name: 'Test',
@@ -1927,7 +1970,7 @@ export const listData = [
             'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
   },
   {
-    id: '632c39448e03b2dab20c8a78',
+    id: '622c39448e03b2dab20c8a78',
     shortId: '632c39448e03b2dab20c8a78',
     partnerCode: '883632c39448e03b2dab20c8a78',
     name: 'Test1',
@@ -1967,7 +2010,7 @@ export const listData = [
     rowVariant: VColors.Error,
   },
   {
-    id: '632c39448e03b2dab20c8a79',
+    id: '622c39448e03b2dab20c8a79',
     shortId: '632c39448e03b2dab20c8a79',
     partnerCode: '783632c39448e03b2dab20c8a78',
     name: 'Test2',
@@ -1989,6 +2032,10 @@ export const listData = [
     login: 'cwilliams1956@game.com',
     position: 1,
     imagePath: listImages[3].publicPath,
+    imageFull: {
+      imagePath: listImages[1].publicPath,
+      id: '632c39448e03b2dab20c8a78',
+    },
     tags: [tagsList[1], tagsList[6], tagsList[5]],
     gameId: '622c39448e03b2dab20c8a79',
     state: true,
@@ -2003,7 +2050,7 @@ export const listData = [
     rowVariant: VColors.Info,
   },
   {
-    id: '632c39448e03b2dab20c8a75',
+    id: '622c39448e03b2dab20c8a75',
     shortId: '632c39448e03b2dab20c8a75',
     partnerCode: '8a632c39448e03b2dab20c8a75',
     name: 'Test',

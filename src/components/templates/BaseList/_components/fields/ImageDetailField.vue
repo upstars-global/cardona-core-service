@@ -16,7 +16,7 @@ const previewImage = computed(() => props.imagePath + previewAdditionalParams.va
 </script>
 
 <template>
-  <div class="d-flex justify-content-center align-items-center image-detail-field">
+  <div class="d-flex justify-content-center align-items-center image-detail-field" v-if="imagePath">
     <ImageField
       :image-path="previewImage"
       @click.stop="$modal.showModal(`${id}-image-detail`)"

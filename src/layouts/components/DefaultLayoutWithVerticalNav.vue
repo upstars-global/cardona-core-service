@@ -35,13 +35,19 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
 
     <!-- 👉 Pages -->
     <RouterView v-slot="{ Component }">
-      <Suspense
-        :timeout="0"
-        @fallback="isFallbackStateActive = true"
-        @resolve="isFallbackStateActive = false"
-      >
-        <Component :is="Component" />
-      </Suspense>
+      <template v-if="Component">
+        <transition name="zoom-fade" mode="out-in">
+          <keep-alive>
+            <Suspense
+                :timeout="0"
+                @fallback="isFallbackStateActive = true"
+                @resolve="isFallbackStateActive = false"
+            >
+              <Component :is="Component" />
+            </Suspense>
+          </keep-alive>
+        </transition>
+      </template>
     </RouterView>
 
     <!-- 👉 Footer -->

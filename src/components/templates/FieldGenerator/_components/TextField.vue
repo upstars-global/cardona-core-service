@@ -2,12 +2,17 @@
 import { computed, ref } from 'vue'
 import type { TextBaseField } from '../../../../@model/templates/baseField'
 
-const props = defineProps<{
-  modelValue: string | number
-  field: TextBaseField
-  errors?: boolean
-  disabled: boolean
-}>()
+const props = withDefaults(
+    defineProps<{
+      modelValue: string | number
+      field: TextBaseField
+      errors?: boolean
+      disabled: boolean
+    }>(),
+    {
+      modelValue: ''
+    })
+
 
 const emits = defineEmits<{
   (e: 'update:modelValue', value: string | number): void
@@ -15,7 +20,6 @@ const emits = defineEmits<{
 
 const inputType = 'text'
 const appendText = ref(props.field?.append)
-
 const localModelValue = computed({
   get: () => props.modelValue,
   set: value => {

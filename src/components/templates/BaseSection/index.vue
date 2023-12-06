@@ -7,7 +7,7 @@ import { convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from
 import { basePermissions } from '../../../helpers/base-permissions'
 import { PageType } from '../../../@model/templates/baseSection'
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
-import { VColors, VVariants } from '@/@model/vuetify'
+import { VColors, VVariants } from '../../../@model/vuetify'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean

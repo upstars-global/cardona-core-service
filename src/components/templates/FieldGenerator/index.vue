@@ -59,9 +59,10 @@ const fieldModel = computed({
   },
 })
 
-const localValue = computed(() => { return props.modelValue instanceof BaseField ? props.modelValue.component : `${props.modelValue.type}-field`})
+ const localValue = computed(() => { return props.modelValue instanceof BaseField ? props.modelValue.component : `${props.modelValue.type}-field`})
 
 const onSearch = (search: string) => emits('search', search)
+
 </script>
 
 <template>
@@ -91,17 +92,20 @@ const onSearch = (search: string) => emits('search', search)
         :rules="modelValue.validationRules"
         :validate-on-blur="false"
         :validate-on-change="false"
+        :validate-on-input="false"
+        v-model="fieldModel"
     >
-      <template #default="{ field, errorMessage }">
+      <template #default="{ field, componentField, errorMessage }">
         <Component
             :is="localValue"
             :id="modelValue.key"
-            v-model="fieldModel"
+            :model-value="componentField.modelValue"
             :options="options"
             :field="modelValue"
             :disabled="disabled"
             :placeholder="modelValue.placeholder"
             :size="size"
+            :on-input="field.onInput"
             v-bind="{...$attrs, ...field}"
             :errors="!!errorMessage"
             @search="onSearch"

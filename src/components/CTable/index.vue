@@ -31,8 +31,8 @@ const emits = defineEmits<{
   (e: 'update:sortData', event: SortItem[]): void
 }>()
 
+const cTable = ref({})
 const tableWrapperComponent = ref(props.draggable ? VueDraggableNext : 'tbody')
-
 const compareClasses = (item: Record<string, unknown>, isSelected: boolean): Record<string, boolean> => {
   return {
     [`table-light-${item.rowVariant}`]: !!item.rowVariant,
@@ -60,23 +60,25 @@ const onDragEnd = (event: { moved: object }) => {
 const cellClasses = computed(() => props.small ? 'py-2 px-3' : 'py-3 px-4')
 const maxSkeletonRows = 25
 const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
+
 </script>
 
 <template>
   <VDataTable
-    :show-select="selectable"
-    :select-strategy="selectMode"
-    :headers="fields"
-    :items="rows"
-    :sort-by="sortData"
-    return-object
-    class="c-table"
-    :items-per-page="itemsPerPage"
-    :density="small ? 'compact' : 'comfortable'"
-    @update:sort-by="onUpdateSortData"
-    @update:model-value="onSelectRow"
+      :show-select="selectable"
+      :select-strategy="selectMode"
+      :headers="fields"
+      :items="rows"
+      :sort-by="sortData"
+      return-object
+      class="c-table"
+      ref="cTable"
+      :items-per-page="itemsPerPage"
+      :density="small ? 'compact' : 'comfortable'"
+      @update:sort-by="onUpdateSortData"
+      @update:model-value="onSelectRow"
   >
-    <template #headers="{ columns, isSorted, sortBy, someSelected, allSelected, selectAll, toggleSort }">
+    <template #headers="{ columns, isSorted, sortBy, someSelected, allSelected, selectAll }">
       <th
         v-if="props.selectable"
         class="c-table__header-cell"
@@ -85,9 +87,9 @@ const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxS
       >
         <VCheckbox
           :model-value="allSelected"
-          :indeterminate="someSelected"
+          :indeterminate="allSelected ? false : someSelected"
           :disabled="isLoadingList"
-          @update:model-value="selectAll($event)"
+          @update:model-value="selectAll"
         />
       </th>
       <template
@@ -131,7 +133,7 @@ const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxS
         </th>
       </template>
     </template>
-    <template #tbody="{ items, select, isSelected }">
+    <template #tbody="{ items, select, toggleSelect, isSelected }">
       <template v-if="isLoadingList">
         <tr
           v-for="index in skeletonRows"
@@ -177,8 +179,9 @@ const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxS
             data-c-field="selectable"
           >
             <VCheckbox
-              :model-value="isSelected([item.raw])"
-              @update:model-value="select([item.raw], $event)"
+              :model-value="isSelected([item])"
+              @update:model-value="select([item], $event)"
+              @click.stop
             />
           </td>
           <td

@@ -239,7 +239,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.staticFilters = staticFilters || {}
     this.staticSorts = staticSorts
     this.responsive = responsive
-    this.selectMode = selectMode || SelectMode.All
+    this.selectMode = selectMode || SelectMode.Page
     this.selectable = selectable
     this.small = small
     this.draggable = draggable

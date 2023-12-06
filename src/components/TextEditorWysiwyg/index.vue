@@ -7,38 +7,37 @@ import type { LocaleVariable } from '../../@model/translations'
 import { VColors } from '../../@model/vuetify'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
-import { IconsList } from '@/@model/enums/icons'
-// import { getI18n } from '@/plugins/i18n'
+import { IconsList } from '../../@model/enums/icons'
 
 interface Props {
-  value: string
+  modelValue: string
   optionsVariable: Array<string>
   localisationParameters: LocaleVariable
   readonly placeholder?: TranslateResult
   disabled?: boolean
+  onInput: Function
 }
 
 interface Emits {
-  (event: 'input', payload: string): void
+  (event: 'update:modelValue', payload: string): void
   (event: 'update-localisation-parameters', payload: LocaleVariable): void
   (event: 'remove-variable', payload: string): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  value: '',
+  modelValue: '',
   optionsVariable: () => [],
   localisationParameters: () => ({}),
   disabled: false,
   placeholder: '' //getI18n.t('common.description') as string
 })
-
 const emit = defineEmits<Emits>()
 
 const modal = inject('modal')
 
 const content = computed({
-  get: () => props.value,
-  set: value => emit('input', value)
+  get: () => props.modelValue,
+  set: value => emit('update:modelValue', value)
 })
 
 const globalEditor = ref()
@@ -161,7 +160,7 @@ const config = {
       editor.html.set(editor.html.get(true).replace(/id="isPasted"/g, ''))
       editor.selection.restore()
 
-      emit('input', contentChanged)
+      emit('update:modelValue', contentChanged)
     }
   },
   ...baseConfig
@@ -268,9 +267,9 @@ const deleteVariableTextByKey = () => {
       :class="{ disabled }"
     >
       <Froala
-        v-model.trim="content"
-        tag="textarea"
-        :config="config"
+          v-model:value.trim="content"
+          tag="textarea"
+          :config="config"
       />
     </div>
 

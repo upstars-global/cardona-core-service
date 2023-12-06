@@ -5,22 +5,22 @@ import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg/index.vu
 import store from '../../../../store'
 import type { LocaleVariable } from '../../../../@model/translations'
 import { filterString, getVariablesFromLocale } from '../../../../helpers/text-editor'
-import type { RichTextBaseField } from '../../../..//@model/templates/baseField'
+import type { RichTextBaseField } from '../../../../@model/templates/baseField'
 
 interface RichTextProps {
-  value?: string
+  modelValue: string | number
   field: RichTextBaseField
   disabled?: boolean
-  errors?: string[]
+  errors?: boolean
+  onInput: Function
 }
 
 const props = withDefaults(defineProps<RichTextProps>(), {
-  value: '',
-  errors: () => [],
+  modelValue: '',
 })
 
 const emit = defineEmits<{
-  (event: 'input', value: string): void
+  (e: 'update:modelValue', value: string | number): void
 }>()
 
 const localisationParameters = ref({})
@@ -28,9 +28,9 @@ const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'
 const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
 const watchOptions = { immediate: true, deep: true }
 
-const modelValue = computed({
-  get: () => props.value,
-  set: value => emit('input', value),
+const localModelValue = computed({
+  get: () => props.modelValue,
+  set: value => emit('update:modelValue', value),
 })
 
 watch(
@@ -50,11 +50,11 @@ const setUpdateLocalisationParameters = (localeVariables: LocaleVariable = {}) =
 }
 
 const onRemoveVariable = (localeVariables: string): void => {
-  emit('input', filterString(modelValue.value, localeVariables))
+  emit('update:modelValue', filterString(localModelValue.value, localeVariables))
 }
 
 const handleVariablesChange = () => {
-  const localeKeyInText = getVariablesFromLocale(modelValue.value)
+  const localeKeyInText = getVariablesFromLocale(localModelValue.value)
 
   const excessKeyVariable: string
     = difference(localeKeyInText, Object.keys(variableTextBufferStore.value)).at(0) || ''
@@ -67,11 +67,12 @@ watch(() => variableTextBufferStore, handleVariablesChange, watchOptions)
 
 <template>
   <TextEditorWysiwyg
-    v-model.trim="modelValue"
+    v-model.trim="localModelValue"
     :placeholder="field.label"
     :disabled="disabled"
     :options-variable="allCurrencies"
     :localisation-parameters="localisationParameters"
+    :on-input="onInput"
     @update-localisation-parameters="setUpdateLocalisationParameters"
     @remove-variable="onRemoveVariable"
   />
