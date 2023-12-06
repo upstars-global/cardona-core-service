@@ -51,7 +51,7 @@ export const validatorRange = (value: Record<string, NumberOrString>, args): boo
   return +value[keyMin] <= +value[keyMax]
 }
 
-export const validatorListPhoneAndDomain = (value: any) => {
+export const validatorListPhoneAndDomain = (value: Array<unknown>) => {
   if (!value.length) return true
   return value.every(({ phone, country }) => validatorPhone(phone) && country)
 }
