@@ -58,14 +58,11 @@ import { defineComponent, PropType, computed } from 'vue'
 import store from '../../../store'
 import { FieldInfo } from '../../../@model/field'
 import { BaseField, SwitchBaseField, CheckBaseField } from '../../../@model/baseField'
-import SumRangeField from './_components/SumRangeField.vue'
 import { IconsList } from '../../../@model/enums/icons'
 
 export default defineComponent({
   name: 'FieldGenerator',
-  components: {
-    SumRangeField,
-  },
+  components: {},
 
   props: {
     value: {

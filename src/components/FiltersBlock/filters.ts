@@ -1,7 +1,6 @@
 import i18n from '../../libs/i18n'
 import { GroupData } from '../../@model/group'
 import { ProjectInfo } from '../../@model/project'
-import { FieldInfo, FieldType } from '../../@model/field'
 import { FilterType } from '../../@model/filter'
 import {
   TextBaseField,
@@ -9,6 +8,7 @@ import {
   MultiSelectBaseField,
   DateBaseField,
   RadioBaseField,
+  NumberRangeBaseField,
 } from '../../@model/baseField'
 import { TransactionType } from '../../@model/enums/playersTransactions'
 import { RadioOption } from '../../@model/baseField/radio'
@@ -322,32 +322,27 @@ const availableWithBonuses = new RadioBaseField({
 
 // ---------------------------------------------------------------------------
 // TODO: Sum range
-const sumRange = new FieldInfo({
-  type: FieldType.SumRange,
+const sumRange = new NumberRangeBaseField({
   key: FilterType.SumRange,
   label: i18n.t('common.sum'),
 })
 
-const initialSumRange = new FieldInfo({
-  type: FieldType.SumRange,
+const initialSumRange = new NumberRangeBaseField({
   key: FilterType.InitialSumRange,
   label: i18n.t('filters.initialSumRange'),
 })
 
-const winBackSumRange = new FieldInfo({
-  type: FieldType.SumRange,
+const winBackSumRange = new NumberRangeBaseField({
   key: FilterType.WinBackSumRange,
   label: i18n.t('filters.winBackSumRange'),
 })
 
-const realSumRange = new FieldInfo({
-  type: FieldType.SumRange,
+const realSumRange = new NumberRangeBaseField({
   key: FilterType.RealSumRange,
   label: i18n.t('filters.realSumRange'),
 })
 
-const wagerLimitRange = new FieldInfo({
-  type: FieldType.SumRange,
+const wagerLimitRange = new NumberRangeBaseField({
   key: FilterType.WagerLimitRange,
   label: i18n.t('filters.wagerLimitRange'),
 })

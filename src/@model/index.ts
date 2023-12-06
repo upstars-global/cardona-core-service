@@ -62,12 +62,11 @@ export type Badge = {
   name: string
   id: string
 }
-
+// Number range
 export type NumberOrString = number | string
 
-export type NumberRangeBaseValue = {
-  from: NumberOrString
-  to: NumberOrString
+export class NumberRangeBaseValue {
+  constructor(readonly from: NumberOrString, readonly to: NumberOrString) {}
 }
 
 export interface ValidationError {

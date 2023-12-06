@@ -20,8 +20,8 @@ import {
   FormDateBaseField,
   CheckGroupBaseField,
   TagsBaseField,
+  NumberRangeBaseField,
 } from './baseField'
-import { FieldInfo, FieldType } from './field'
 import { StatusWithDateHistoryValue, StatusWithVariant, ViewInfo, ViewType } from './view'
 import { BaseListItem, SideBarCollapseItem } from '../components/templates/BaseList/model'
 import { TransactionType } from './enums/playersTransactions'
@@ -29,7 +29,6 @@ import { TranslateResult } from 'vue-i18n'
 import { ValidationRule } from './validations'
 import { BColors, BLightColors } from './bootstrap'
 import { IconsList } from './enums/icons'
-import { NumberRangeBaseField } from './baseField/number-range'
 import { NumberRangeBaseValue } from '../@model/index'
 import { BaseDatePeriod } from './date'
 
@@ -175,7 +174,7 @@ export class DemoForm {
   readonly number: NumberBaseField
   readonly minute: NumberBaseField
   readonly minutesRange: NumberRangeBaseField
-  readonly sumRange: FieldInfo
+  readonly sumRange: NumberRangeBaseField
   readonly rates: RatesBaseField
   readonly percent: NumberBaseField
   readonly digits: NumberBaseField
@@ -260,6 +259,7 @@ export class DemoForm {
       key: 'minutesRange',
       label: i18n.t('page.demo.minutesRangeField'),
       validationRules: ['required_object', 'range:from,to' as ValidationRule],
+      isCurrency: false,
     })
     this.percent = new NumberBaseField({
       key: 'percent',
@@ -280,8 +280,7 @@ export class DemoForm {
       label: i18n.t('common.email'),
       validationRules: ['required', 'email'],
     })
-    this.sumRange = new FieldInfo({
-      type: FieldType.SumRange,
+    this.sumRange = new NumberRangeBaseField({
       key: 'sumRange',
       value: data?.sumRange,
       label: i18n.t('page.demo.sumRangeField'),

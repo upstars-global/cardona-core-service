@@ -236,7 +236,7 @@ const entityData = {
   number: 999,
   minute: 12,
   minutesRange: { from: 12, to: 34 },
-  sumRange: [1000, 5000],
+  sumRange: { from: 100, to: 500 },
   rates: [
     { currency: 'AUD', bet: 100 },
     { currency: 'NZD', bet: 200 },
