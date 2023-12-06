@@ -125,7 +125,7 @@ export const range = extend('range', {
 
 export const phone_and_domain_list = extend('phone_and_domain_list', {
   validate: validatorListPhoneAndDomain,
-  message: i18n.t('validations.invalidList'),
+  message: i18n.t('validations.invalidList') as any,
 })
 
 configure(
