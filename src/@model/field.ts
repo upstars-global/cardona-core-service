@@ -2,9 +2,7 @@ import store from '../store'
 import { OptionsItem } from './index'
 import { TranslateResult } from 'vue-i18n'
 
-export enum FieldType {
-  SumRange = 'sum-range', // TODO: https://upstars.atlassian.net/browse/BAC-2060
-}
+export enum FieldType {}
 
 export interface IFieldInfo {
   readonly type: FieldType

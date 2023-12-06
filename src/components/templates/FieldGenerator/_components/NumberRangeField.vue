@@ -4,6 +4,7 @@
       v-model="numberRangeValue.from"
       :class="inputClass"
       :field="{ ...field, placeholder: placeHolderRange.from }"
+      :disabled="disabled"
     />
 
     <span class="mx-1"> – </span>
@@ -12,6 +13,7 @@
       v-model="numberRangeValue.to"
       :class="inputClass"
       :field="{ ...field, placeholder: placeHolderRange.to }"
+      :disabled="disabled"
     />
   </div>
 </template>
@@ -38,7 +40,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   errors: () => [],
   value: () => ({ from: '', to: '' }),
-  field: () => ({}),
+  field: () => ({} as NumberBaseField),
 })
 
 const inputClass = computed(() => ({ 'border-danger rounded': props.errors?.isNotEmpty }))

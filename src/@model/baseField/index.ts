@@ -1,6 +1,7 @@
 import { BaseField } from './base'
 import { TextBaseField } from './text'
 import { NumberBaseField } from './number'
+import { NumberRangeBaseField } from './number-range'
 import { TextareaBaseField } from './textarea'
 import { PasswordBaseField } from './password'
 import { SelectBaseField } from './select'
@@ -44,6 +45,7 @@ export const getInstanceClass = (instance: object) => {
     RatesBaseField,
     PasswordBaseField,
     TextareaBaseField,
+    NumberRangeBaseField,
     NumberBaseField,
     TextBaseField,
   ]
@@ -55,6 +57,7 @@ export {
   BaseField,
   TextBaseField,
   NumberBaseField,
+  NumberRangeBaseField,
   TextareaBaseField,
   PasswordBaseField,
   DummySelectBaseField,
