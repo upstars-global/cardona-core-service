@@ -292,13 +292,14 @@
           </div>
         </template>
 
-        <template v-if="canUpdate || canUpdateSeo" #cell(actions)="{ item }">
+        <template v-if="showActions" #cell(actions)="{ item }">
           <item-actions
             :item="item"
             :create-page-name="CreatePageName"
             :can-update="canUpdate"
             :can-update-item="canUpdateItem(item)"
             :can-remove-item="canRemoveItem(item)"
+            :can-create="canCreate"
             :config="config"
             :get-update-route="getUpdateRoute"
             @on-remove="onClickRemove"
@@ -512,8 +513,16 @@ export default {
 
     const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
 
-    const canUpdateItem = (item): boolean =>
-      canUpdateCb && item ? isExistsUpdatePage && canUpdateCb(item) : isExistsUpdatePage
+    const canUpdateItem = (item): boolean => {
+      if (!canUpdate) return false
+      return canUpdate && canUpdateCb && item
+        ? isExistsUpdatePage && canUpdateCb(item)
+        : isExistsUpdatePage
+    }
+
+    const showActions = computed(() =>
+      [props.config.createFromCopy, canUpdate, canUpdateSeo].some(Boolean)
+    )
     const canRemoveItem = (item): boolean =>
       canRemoveCb && item ? canRemove && canRemoveCb(item) : canRemove
     // Sidebar
@@ -914,11 +923,13 @@ export default {
 
       // Permissions
       canUpdate,
+      canCreate,
       canUpdateSeo,
       canRemove,
       canExport,
       canUpdateItem,
       canRemoveItem,
+      showActions,
 
       // Sidebar
       isSidebarShown,
