@@ -31,7 +31,7 @@
           />
         </b-col>
 
-        <b-col md="1" class="d-flex align-items-center justify-content-start pl-50">
+        <b-col md="1" class="d-flex align-items-center justify-content-start pl-50 pt-2">
           <feather-icon
             v-if="rowIndex || !required"
             :icon="IconsList.Trash2Icon"
@@ -235,7 +235,8 @@ export default defineComponent({
     const isRequired = (item: BaseField) => item?.validationRules?.includes('required')
 
     const labelForList = computed(() => {
-      if (isBaseField(props?.templateField)) return props?.templateField?.label || ''
+      if (props?.templateField && isBaseField(props?.templateField))
+        return props?.templateField?.label || ''
       return props?.labelOfList || ''
     })
 
