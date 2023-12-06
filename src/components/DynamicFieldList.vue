@@ -1,9 +1,16 @@
 <template>
   <div>
-    <b-row v-if="labelForList">
-      <b-col>
-        <label>{{ labelForList }}</label>
+    <b-row v-if="templateField">
+      <b-col v-if="isBaseField(templateField)">
+        <label>{{ templateField?.label }}</label>
       </b-col>
+
+      <b-col v-for="(item, index) in Object.values(templateField)" v-else :key="index">
+        <template v-if="!rows.length">
+          <label v-show="!index">{{ item?.label }}</label>
+        </template>
+      </b-col>
+
       <b-col md="1"></b-col>
     </b-row>
 
@@ -13,7 +20,7 @@
           <field-generator
             v-model="rows[rowIndex]"
             :options="filteredOptions"
-            :with-label="rowIndex < 1 || showEvenLabel"
+            :with-label="rows.length"
             :with-info="false"
             :disabled="disabled"
             @search="fetchSelectOptions"
@@ -24,14 +31,14 @@
           <field-generator
             v-model="rows[rowIndex][key]"
             :options="filteredOptions"
-            :with-label="rowIndex < 1 || showEvenLabel"
+            :with-label="rows.length"
             :with-info="false"
             :disabled="disabled"
             @search="fetchSelectOptions"
           />
         </b-col>
 
-        <b-col md="1" class="d-flex align-items-center justify-content-start pl-50 pt-2">
+        <b-col md="1" class="d-flex align-items-center justify-content-start pl-50">
           <feather-icon
             v-if="rowIndex || !required"
             :icon="IconsList.Trash2Icon"
@@ -101,10 +108,6 @@ export default defineComponent({
     allowAddWithEmpty: {
       type: Boolean,
       default: false,
-    },
-    labelOfList: {
-      type: String,
-      default: '',
     },
   },
 
@@ -232,14 +235,6 @@ export default defineComponent({
       ].some(Boolean)
     )
 
-    const isRequired = (item: BaseField) => item?.validationRules?.includes('required')
-
-    const labelForList = computed(() => {
-      if (props?.templateField && isBaseField(props?.templateField))
-        return props?.templateField?.label || ''
-      return props?.labelOfList || ''
-    })
-
     return {
       isBaseField,
       FieldInfo,
@@ -252,8 +247,6 @@ export default defineComponent({
       isSelectItemNotEmpty,
       IconsList,
       disableAddFiled,
-      isRequired,
-      labelForList,
     }
   },
 })
