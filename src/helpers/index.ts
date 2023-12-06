@@ -1,6 +1,6 @@
 import { useRouter } from '../@core/utils/utils'
 import { FieldInfo } from '../@model/field'
-import { BaseField, DateBaseField } from '../@model/baseField'
+import { BaseField, DateBaseField, NumberRangeBaseField } from '../@model/baseField'
 import { NumberOrString, OptionsItem } from '../@model'
 import { isObject } from '../@core/utils/utils'
 import { isNumber, isString } from 'lodash'
@@ -9,11 +9,11 @@ export const isNullOrUndefinedValue = (value: any): boolean => value === null ||
 
 export const transformFormData = (form): object => {
   return Object.entries(form).reduce((acc, [key, valueData]: [string, any]) => {
-    if (valueData instanceof DateBaseField) {
-      const dateValue = valueData.transformField()
+    if (valueData instanceof DateBaseField || valueData instanceof NumberRangeBaseField) {
+      const transformedValue = valueData.transformField()
 
-      if (typeof dateValue === 'string') acc[key] = dateValue
-      else acc = { ...acc, ...dateValue }
+      if (typeof transformedValue === 'string') acc[key] = transformedValue
+      else acc = { ...acc, ...transformedValue }
     } else if (valueData instanceof BaseField) {
       acc[key] = valueData.transformField()
     } else if (valueData instanceof FieldInfo) {

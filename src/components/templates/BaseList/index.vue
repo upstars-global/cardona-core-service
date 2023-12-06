@@ -373,14 +373,12 @@ import {
 } from './model'
 import { Location } from 'vue-router'
 import { TableField, ListFieldType } from '../../../@core/components/table-fields/model'
-import { FieldType } from '../../../@model/field'
 import TableFields from '../../../@core/components/table-fields/TableFields.vue'
 import {
   checkExistsPage,
   convertCamelCase,
   convertLowerCaseFirstSymbol,
   isNotEmptyNumber,
-  isEmptyString,
 } from '../../../helpers'
 import StatusField from './_components/StatusField.vue'
 import PillStatusField from './_components/PillStatusField.vue'
@@ -411,6 +409,7 @@ import {
   SelectBaseField,
   MultiSelectBaseField,
   DateBaseField,
+  NumberRangeBaseField,
 } from '../../../@model/baseField'
 import { findIndex, omit } from 'lodash'
 import { IconsList } from '../../../@model/enums/icons'
@@ -723,24 +722,14 @@ export default {
             acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
           } else if (filter instanceof MultiSelectBaseField) {
             acc[key] = filter.transformField({ trackBy })
-          } else if (filter instanceof DateBaseField) {
-            const date = filter.transformField(key)
+          } else if (filter instanceof DateBaseField || filter instanceof NumberRangeBaseField) {
+            const transformedFilterValue = filter.transformField(key)
 
-            if (!date) return acc
-            else if (typeof date === 'string') acc[key] = date
-            else acc = { ...acc, ...date }
+            if (!transformedFilterValue) return acc
+            else if (typeof transformedFilterValue === 'string') acc[key] = transformedFilterValue
+            else acc = { ...acc, ...transformedFilterValue }
           } else if (filter instanceof BaseField) {
             acc[key] = filter.transformField()
-          } else if (filter.type === FieldType.SumRange) {
-            if (filter.value?.some((value) => isNotEmptyNumber(value) && !isEmptyString(value))) {
-              const [sumFrom, sumTo]: Array<number> = filter.value
-              acc[`${key}From`] = sumFrom
-              acc[`${key}To`] = sumTo
-              const invalidKeys = [`${key}From`, `${key}To`].filter(
-                (key) => !isNotEmptyNumber(acc[key])
-              )
-              acc = omit(acc, invalidKeys)
-            }
           } else {
             acc[key] = filter.value
           }
