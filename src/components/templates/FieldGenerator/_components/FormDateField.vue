@@ -7,10 +7,12 @@ import { FormDateBaseField } from '../../../../@model/baseField'
 type Props = {
   value: string | Date
   field: FormDateBaseField
+  errors?: string[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
   value: '',
+  errors: () => [],
 })
 
 const emit = defineEmits<{
@@ -34,6 +36,7 @@ const modelValue = computed({
       :placeholder="field.placeholder"
       autocomplete="off"
       show-decade-nav
+      :class="{ error: errors.isNotEmpty }"
     />
     <b-input-group-append>
       <b-form-datepicker
@@ -49,3 +52,11 @@ const modelValue = computed({
     </b-input-group-append>
   </b-input-group>
 </template>
+
+<style lang="scss" scoped>
+@import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
+
+.error {
+  border-color: $red;
+}
+</style>

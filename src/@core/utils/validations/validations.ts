@@ -29,6 +29,7 @@ import {
   validatorObject,
   validatorRange,
   validatorListPhoneAndDomain,
+  validatorDateISO8601,
 } from './validators'
 
 // ////////////////////////////////////////////////////////
@@ -126,6 +127,11 @@ export const range = extend('range', {
 export const phone_and_domain_list = extend('phone_and_domain_list', {
   validate: validatorListPhoneAndDomain,
   message: i18n.t('validations.invalidList') as any,
+})
+
+export const date_YYYY_MM_DD = extend('date_YYYY_MM_DD', {
+  validate: validatorDateISO8601,
+  message: (_, values) => i18n.t('validations.dateISO8601', values) as any,
 })
 
 configure(

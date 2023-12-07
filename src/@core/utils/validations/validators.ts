@@ -57,3 +57,9 @@ export const validatorListPhoneAndDomain = (
   if (!value.length) return true
   return value.every(({ phone, country }) => validatorPhone(phone) && country)
 }
+
+export const validatorDateISO8601 = (dateString: string): boolean => {
+  const dateRegExp = /^\d{4}-\d{2}-\d{2}$/
+
+  return dateRegExp.test(dateString)
+}
