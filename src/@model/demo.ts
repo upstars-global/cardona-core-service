@@ -32,7 +32,7 @@ import { IconsList } from './enums/icons'
 import { NumberRangeBaseValue } from '../@model/index'
 import { BaseDatePeriod } from './date'
 
-interface PhoneAndCountry {
+export interface PhoneAndCountry {
   phone: string
   country: string
 }

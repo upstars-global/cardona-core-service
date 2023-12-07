@@ -1,4 +1,5 @@
 import { NumberOrString } from '../../../@model/index'
+import { PhoneAndCountry } from '../../../@model/demo'
 
 export const validatorPositive = (value) => {
   if (value >= 0) {
@@ -51,9 +52,7 @@ export const validatorRange = (value: Record<string, NumberOrString>, args): boo
   return +value[keyMin] <= +value[keyMax]
 }
 
-export const validatorListPhoneAndDomain = (
-  value: Array<{ phone: string; country: string }>
-): boolean => {
+export const validatorListPhoneAndDomain = (value: Array<PhoneAndCountry>): boolean => {
   if (!value.length) return true
   return value.every(({ phone, country }) => validatorPhone(phone) && country)
 }
