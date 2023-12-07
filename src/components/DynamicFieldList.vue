@@ -20,7 +20,6 @@
           <field-generator
             v-model="rows[rowIndex]"
             :options="filteredOptions"
-            :with-label="rows.length"
             :with-info="false"
             :disabled="disabled"
             @search="fetchSelectOptions"
@@ -31,9 +30,8 @@
           <field-generator
             v-model="rows[rowIndex][key]"
             :options="filteredOptions"
-            :with-label="rows.length"
-            :with-info="false"
             :disabled="disabled"
+            :with-info="false"
             @search="fetchSelectOptions"
           />
         </b-col>
