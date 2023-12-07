@@ -35,7 +35,6 @@ const flatPickrConfig = computed(() => ({
   time_24hr: true,
   defaultHour: 0,
   minuteIncrement: 1,
-  static: true,
 }))
 
 const modelValue = computed({
