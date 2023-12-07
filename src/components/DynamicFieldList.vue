@@ -36,7 +36,7 @@
           />
         </b-col>
 
-        <b-col md="1" class="d-flex align-items-center justify-content-start pl-50">
+        <b-col md="1" class="d-flex justify-content-start pl-50 remove-field__wrapper">
           <feather-icon
             v-if="rowIndex || !required"
             :icon="IconsList.Trash2Icon"
@@ -249,5 +249,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 .filed-list__item {
   margin-bottom: 1.125rem;
+}
+
+.remove-field__wrapper {
+  padding-top: 2.25rem;
 }
 </style>
