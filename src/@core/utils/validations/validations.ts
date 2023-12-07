@@ -28,6 +28,7 @@ import {
   validatorPhone,
   validatorObject,
   validatorRange,
+  validatorDateISO8601,
 } from './validators'
 
 // ////////////////////////////////////////////////////////
@@ -120,6 +121,11 @@ export const range = extend('range', {
       valueFrom: _value_.from,
     }) as any
   },
+})
+
+export const date_YYYY_MM_DD = extend('date_YYYY_MM_DD', {
+  validate: validatorDateISO8601,
+  message: (_, values) => i18n.t('validations.dateISO8601', values) as any,
 })
 
 configure(
