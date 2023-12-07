@@ -99,10 +99,6 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    showEvenLabel: {
-      type: Boolean,
-      default: false,
-    },
     allowAddWithEmpty: {
       type: Boolean,
       default: false,
