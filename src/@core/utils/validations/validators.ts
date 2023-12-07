@@ -50,3 +50,9 @@ export const validatorRange = (value: Record<string, NumberOrString>, args): boo
   if (!validatorObject(value)) return false
   return +value[keyMin] <= +value[keyMax]
 }
+
+export const validatorDateISO8601 = (dateString: string): boolean => {
+  const dateRegExp = /^\d{4}-\d{2}-\d{2}$/
+
+  return dateRegExp.test(dateString)
+}
