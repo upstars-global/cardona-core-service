@@ -6,57 +6,58 @@
       </b-col>
 
       <b-col v-for="(item, index) in Object.values(templateField)" v-else :key="index">
-        <label v-if="!(index > 0 && !rows.length)">{{ item?.label }}</label>
+        <template v-if="!rows.length">
+          <label v-show="!index">{{ item?.label }}</label>
+        </template>
       </b-col>
 
       <b-col md="1"></b-col>
     </b-row>
 
-    <b-row v-for="(row, index) in rows" :key="index" class="mb-1">
-      <b-col v-if="isBaseField(row)">
-        <field-generator
-          v-model="rows[index]"
-          :options="filteredOptions"
-          :with-label="false"
-          :with-info="false"
-          :disabled="disabled"
-          @search="fetchSelectOptions"
-        />
-      </b-col>
+    <div v-for="(row, rowIndex) in rows" :key="rowIndex" class="filed-list__item">
+      <b-row>
+        <b-col v-if="isBaseField(row)">
+          <field-generator
+            v-model="rows[rowIndex]"
+            :options="filteredOptions"
+            :with-info="false"
+            :disabled="disabled"
+            @search="fetchSelectOptions"
+          />
+        </b-col>
 
-      <b-col v-for="(fieldInfo, key, idx) in row" v-else :key="idx">
-        <field-generator
-          v-model="rows[index][key]"
-          :options="filteredOptions"
-          :with-label="false"
-          :with-info="false"
-          :disabled="disabled"
-          @search="fetchSelectOptions"
-        />
-      </b-col>
+        <b-col v-for="(fieldInfo, key, idx) in row" v-else :key="idx">
+          <field-generator
+            v-model="rows[rowIndex][key]"
+            :options="filteredOptions"
+            :disabled="disabled"
+            :with-info="false"
+            @search="fetchSelectOptions"
+          />
+        </b-col>
 
-      <b-col md="1" class="d-flex align-items-center">
-        <feather-icon
-          v-if="index || !required"
-          :icon="IconsList.Trash2Icon"
-          class="text-danger cursor-pointer"
-          :class="{ 'cursor-default': disabled }"
-          @click="onRemove(index)"
-        />
-      </b-col>
-    </b-row>
+        <b-col md="1" class="d-flex justify-content-start pl-50 remove-field__wrapper">
+          <feather-icon
+            v-if="rowIndex || !required"
+            :icon="IconsList.Trash2Icon"
+            class="text-danger cursor-pointer"
+            :class="{ 'cursor-default': disabled }"
+            @click="onRemove(rowIndex)"
+          />
+        </b-col>
+      </b-row>
+    </div>
 
     <b-button
       size="sm"
       variant="outline-secondary"
-      :disabled="disabled || isDisabled || isSelectItemNotEmpty"
+      class="mt-50"
+      :disabled="disableAddFiled"
       @click="onAdd"
     >
       <feather-icon :icon="IconsList.PlusIcon" />
 
-      <span class="text-nowrap">
-        {{ $t('action.add') }}
-      </span>
+      <span class="text-nowrap"> {{ $t('action.add') }} </span>
     </b-button>
   </div>
 </template>
@@ -65,6 +66,7 @@
 import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { debounce } from 'lodash'
 import FieldGenerator from '../components/templates/FieldGenerator/index.vue'
+import { NumberOrString } from '../@model'
 import { FieldInfo } from '../@model/field'
 import { IconsList } from '../@model/enums/icons'
 import { BaseField, getInstanceClass, SelectBaseField } from '../@model/baseField'
@@ -94,6 +96,10 @@ export default defineComponent({
     },
 
     required: {
+      type: Boolean,
+      default: false,
+    },
+    allowAddWithEmpty: {
       type: Boolean,
       default: false,
     },
@@ -131,8 +137,7 @@ export default defineComponent({
 
     const isBaseField = (field: object): boolean =>
       field instanceof FieldInfo || field instanceof BaseField
-    const isSelect = (field: object): boolean =>
-      field instanceof SelectBaseField || field?.type?.includes('select')
+    const isSelect = (field: object): boolean => field instanceof SelectBaseField
 
     // Options
     const filteredOptions = computed<Array<any>>(() => {
@@ -214,7 +219,15 @@ export default defineComponent({
       rows.value.push(itemTemplate)
     }
 
-    const onRemove = (index: number) => !props.disabled && rows.value.splice(index, 1)
+    const onRemove = (index: NumberOrString) => !props.disabled && rows.value.splice(index, 1)
+
+    const disableAddFiled = computed(() =>
+      [
+        props.disabled,
+        !props.allowAddWithEmpty && isDisabled.value,
+        isSelectItemNotEmpty.value,
+      ].some(Boolean)
+    )
 
     return {
       isBaseField,
@@ -227,7 +240,18 @@ export default defineComponent({
       isDisabled,
       isSelectItemNotEmpty,
       IconsList,
+      disableAddFiled,
     }
   },
 })
 </script>
+
+<style lang="scss" scoped>
+.filed-list__item {
+  margin-bottom: 1.125rem;
+}
+
+.remove-field__wrapper {
+  padding-top: 2.25rem;
+}
+</style>

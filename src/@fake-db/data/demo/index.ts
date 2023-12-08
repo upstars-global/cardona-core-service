@@ -229,6 +229,7 @@ mock.onPost('/api/v2/demo/list').reply(({ data }) => {
 // CRUD
 const entityData = {
   id: '2',
+  phoneList: [{ phone: '1234567890', country: '1' }],
   switch: true,
   switchWithState: true,
   text: 'Some text',
