@@ -32,6 +32,15 @@ import { IconsList } from './enums/icons'
 import { NumberRangeBaseValue } from '../@model/index'
 import { BaseDatePeriod } from './date'
 
+export interface PhoneAndCountry {
+  phone: string
+  country: string
+}
+
+interface PhoneAndCountryFieldListItem {
+  phone: PhoneBaseField
+  country: SelectBaseField
+}
 export interface IDemoTypeItem {
   id: string
   name: string
@@ -203,6 +212,7 @@ export class DemoForm {
   public image: string
   readonly conditions: ConditionsBaseField
   public usersList: UsersListBaseField
+  public phoneList: Array<PhoneAndCountryFieldListItem>
 
   constructor(data) {
     this.id = data?.id
@@ -299,6 +309,7 @@ export class DemoForm {
       label: i18n.t('page.demo.phoneField'),
       validationRules: ['required', 'phone'],
     })
+    this.phoneList = data?.phoneList?.map(createPhoneDomainFieldItem) || []
     this.password = new PasswordBaseField({
       key: 'password',
       value: data?.password,
@@ -588,3 +599,23 @@ export class DemoSideBar {
     })
   }
 }
+
+export const createPhoneDomainFieldItem = (item: PhoneAndCountry) => ({
+  phone: new PhoneBaseField({
+    key: 'id',
+    value: item?.phone || '',
+    label: i18n.t('common.phone._'),
+    validationRules: ['required', 'phone'],
+  }),
+  domain: new SelectBaseField({
+    key: 'country',
+    value: item?.country || '',
+    label: i18n.t('common.country'),
+    options: [
+      { id: 1, name: 'Ukraine' },
+      { id: 2, name: 'Poland' },
+      { id: 3, name: 'Latvia' },
+    ],
+    validationRules: ['required'],
+  }),
+})

@@ -226,6 +226,15 @@
             <b-col cols="8">
               <field-generator v-model="formData.usersList" :disabled="isDisabledField" />
             </b-col>
+            <b-col cols="8">
+              <dynamic-field-list
+                v-model="formData.phoneList"
+                :template-field="createPhoneDomainFieldItem()"
+                show-even-label
+                allow-add-with-empty
+                :disabled="isDisabledField"
+              />
+            </b-col>
           </b-row>
           <b-row>
             <b-col cols="8">
@@ -277,7 +286,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watchEffect } from 'vue'
-import { DemoForm } from '../../../@model/demo'
+import { createPhoneDomainFieldItem, DemoForm } from '../../../@model/demo'
 import FieldGenerator from '../../../components/templates/FieldGenerator/index.vue'
 import SeoForm from '../../../components/templates/SeoForm/index.vue'
 import LocaleForm from '../../../components/templates/LocaleForm/index.vue'
@@ -286,6 +295,7 @@ import UploadImage from '../../../components/UploadImage/index.vue'
 import store from '../../../store'
 import UploadFile from '../../../components/UploadFile/index.vue'
 import useToastService from '../../../helpers/toasts'
+import DynamicFieldList from '../../../components/DynamicFieldList.vue'
 const { toastSuccess } = useToastService()
 
 type Props = {

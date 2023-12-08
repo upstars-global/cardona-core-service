@@ -11,6 +11,10 @@ export default {
     allLocalesKeys: ({ allLocales }) => allLocales,
     allLocalesOptions: ({ allLocales }: Record<string, string>) =>
       Object.entries(allLocales).map(([code, name]): LocaleOption => new LocaleOption(code, name)),
+    countries: ({ allLocales }) =>
+      Object.entries(allLocales)
+        .filter(([key]) => !key.includes('_'))
+        .map(([id, name]) => ({ id, name })),
   },
 
   mutations: {

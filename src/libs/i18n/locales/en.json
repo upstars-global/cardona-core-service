@@ -269,6 +269,7 @@
     "double": "The {_field_} field must be a valid decimal",
     "password": "Your {_field_} must contain at least one uppercase, one lowercase, one special character, one digit and be at least 8 characters",
     "phone": "Phone can contain only numbers and one plus",
+    "invalidList": "Incorrect field of list",
     "Demo_text_ALREADY_EXISTS": "This entry already exists in the collection",
     "dateISO8601": "The entered value has an invalid format date. The format should be YYYY-MM-DD"
   },
