@@ -1,4 +1,3 @@
-import { FieldInfo, FieldType } from './field'
 import i18n from '../libs/i18n'
 import { tagsList } from '../@fake-db/data/demo'
 import { MultiSelectBaseField } from './baseField'

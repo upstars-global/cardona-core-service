@@ -4,13 +4,13 @@ import SearchInput from './SearchInput.vue'
 import ExportFormatSelector from './ExportFormatSelector.vue'
 import { IconsList } from '../../../../@model/enums/icons'
 import { IBaseListConfig } from '../model'
-import { Filter } from '../../../../@model/filter'
+import { BaseField } from '../../../../@model/baseField'
 import { BSize } from '../../../../@model/bootstrap'
 
 interface Props {
   config: IBaseListConfig
   value: string
-  selectedFilters: Array<Filter>
+  selectedFilters: Array<BaseField>
   exportSelector: {
     canShow: boolean
     disable: boolean

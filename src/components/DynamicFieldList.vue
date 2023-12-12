@@ -67,11 +67,10 @@ import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { debounce } from 'lodash'
 import FieldGenerator from '../components/templates/FieldGenerator/index.vue'
 import { NumberOrString } from '../@model'
-import { FieldInfo } from '../@model/field'
 import { IconsList } from '../@model/enums/icons'
 import { BaseField, getInstanceClass, SelectBaseField } from '../@model/baseField'
 
-type DynamicField = FieldInfo | BaseField | Record<string, FieldInfo | BaseField>
+type DynamicField = BaseField | Record<string, BaseField>
 
 export default defineComponent({
   name: 'DynamicFieldList',
@@ -135,8 +134,7 @@ export default defineComponent({
       })
     })
 
-    const isBaseField = (field: object): boolean =>
-      field instanceof FieldInfo || field instanceof BaseField
+    const isBaseField = (field: object): boolean => field instanceof BaseField
     const isSelect = (field: object): boolean => field instanceof SelectBaseField
 
     // Options
@@ -146,9 +144,7 @@ export default defineComponent({
           if (isSelect(row)) {
             return row.value.id
           } else {
-            const selectField = Object.values(row).find((field: FieldInfo | BaseField) =>
-              isSelect(field)
-            )
+            const selectField = Object.values(row).find((field: BaseField) => isSelect(field))
 
             return selectField?.value?.id
           }
@@ -164,7 +160,7 @@ export default defineComponent({
     const selectField: any = ref()
 
     const fetchStartSelect = async (rows) => {
-      const [row]: Array<FieldInfo | BaseField> = rows
+      const [row]: Array<BaseField> = rows
 
       if (row) {
         const selectFieldItem = Object.values(row).find((field) => field?.fetchOptionsActionName)
@@ -189,12 +185,7 @@ export default defineComponent({
       let [itemTemplate]: any = [props.templateField]
       const fieldClass = getInstanceClass(rows.value[0])
 
-      if (rows.value[0] instanceof FieldInfo) {
-        itemTemplate = new FieldInfo({
-          ...itemTemplate,
-          value: undefined,
-        })
-      } else if (fieldClass) {
+      if (fieldClass) {
         itemTemplate = new fieldClass({
           ...itemTemplate,
           value: undefined,
@@ -206,13 +197,9 @@ export default defineComponent({
             value: undefined,
           }
 
-          if (itemTemplate[key] instanceof FieldInfo) {
-            itemTemplate[key] = new FieldInfo(templateData)
-          } else {
-            const fieldClass = getInstanceClass(itemTemplate[key])
+          const fieldClass = getInstanceClass(itemTemplate[key])
 
-            itemTemplate[key] = fieldClass && new fieldClass(templateData)
-          }
+          itemTemplate[key] = fieldClass && new fieldClass(templateData)
         }
       }
 
@@ -231,7 +218,6 @@ export default defineComponent({
 
     return {
       isBaseField,
-      FieldInfo,
       rows,
       filteredOptions,
       fetchSelectOptions,

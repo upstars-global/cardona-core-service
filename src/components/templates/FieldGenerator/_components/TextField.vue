@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { computed, PropType, ref } from 'vue'
-import { FieldInfo } from '../../../../@model/field'
+import { TextBaseField } from '../../../../@model/baseField'
 
 export default {
   name: 'TextField',
@@ -29,7 +29,7 @@ export default {
     },
 
     field: {
-      type: Object as PropType<FieldInfo>,
+      type: Object as PropType<TextBaseField>,
       required: true,
     },
 
