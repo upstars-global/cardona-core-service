@@ -298,6 +298,7 @@
             :create-page-name="CreatePageName"
             :can-update="canUpdate"
             :can-update-item="canUpdateItem(item)"
+            :can-update-seo="canUpdateSeo"
             :can-remove-item="canRemoveItem(item)"
             :can-create="canCreate"
             :config="config"
@@ -513,14 +514,11 @@ export default {
     const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
 
     const canUpdateItem = (item): boolean => {
-      if (!canUpdate) return false
-      return canUpdate && canUpdateCb && item
-        ? isExistsUpdatePage && canUpdateCb(item)
-        : isExistsUpdatePage
+      return canUpdateCb && item ? isExistsUpdatePage && canUpdateCb(item) : isExistsUpdatePage
     }
 
     const showActions = computed(() =>
-      [props.config.createFromCopy, canUpdate, canUpdateSeo].some(Boolean)
+      [canUpdate, canUpdateSeo, canCreate, canRemove].some(Boolean)
     )
     const canRemoveItem = (item): boolean =>
       canRemoveCb && item ? canRemove && canRemoveCb(item) : canRemove
