@@ -1,7 +1,3 @@
-import { FieldInfo } from './field'
-import { BaseField } from './baseField'
-
-export type Filter = FieldInfo | BaseField
 export type PayloadFilters = Record<string, string | string[] | boolean>
 
 export enum FilterType {

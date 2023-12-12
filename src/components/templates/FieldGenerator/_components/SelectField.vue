@@ -3,7 +3,7 @@ import { PropType, ref, computed, watch } from 'vue'
 import { debounce } from 'lodash'
 import vSelect from 'vue-select'
 import i18n from '../../../../libs/i18n'
-import { FieldInfo } from '../../../../@model/field'
+import { SelectBaseField } from '../../../../@model/baseField'
 import { OptionsItem } from '../../../../@model'
 
 export default {
@@ -19,7 +19,7 @@ export default {
     },
 
     field: {
-      type: Object as PropType<FieldInfo>,
+      type: Object as PropType<SelectBaseField>,
       required: true,
     },
 

@@ -109,7 +109,7 @@ import store from '../../store'
 import { useRouter } from '../../@core/utils/utils'
 import { setStorage } from '../../helpers/storage'
 import useToastService from '../../helpers/toasts'
-import { Filter } from '../../@model/filter'
+import { BaseField } from '../../@model/baseField'
 import FilterSelector from './_components/FilterSelector.vue'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 import { IconsList } from '../../@model/enums/icons'
@@ -126,7 +126,7 @@ export default defineComponent({
       default: '',
     },
     filters: {
-      type: Array as PropType<Filter[]>,
+      type: Array as PropType<BaseField[]>,
       required: true,
     },
     isOpen: {
@@ -149,14 +149,14 @@ export default defineComponent({
     const { name: pageName } = route.value
     const keyStorage = `${pageName}-${props.entityName}-list-filters`
 
-    const selectedFilters = ref<Filter[]>([])
+    const selectedFilters = ref<BaseField[]>([])
 
     const isSmallBlock: boolean = props.size === 'sm'
     const headerTag: string = isSmallBlock ? 'h5' : 'h4'
 
-    const onChange = (filter: Filter) => selectedFilters.value.push(filter)
+    const onChange = (filter: BaseField) => selectedFilters.value.push(filter)
 
-    const onRemoveFilter = ({ key }: Filter) => {
+    const onRemoveFilter = ({ key }: BaseField) => {
       selectedFilters.value = selectedFilters.value.filter((filter) => filter.key !== key)
 
       onApply()
@@ -198,7 +198,7 @@ export default defineComponent({
       if (store.getters['filtersCore/appliedListFilters'].length) {
         selectedFilters.value = store.getters['filtersCore/appliedListFilters']
       } else if (initFiltersStorage) {
-        selectedFilters.value = props.filters.filter(({ key }: Filter) =>
+        selectedFilters.value = props.filters.filter(({ key }: BaseField) =>
           initFiltersStorage?.includes(key)
         )
 

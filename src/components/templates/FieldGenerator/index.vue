@@ -27,7 +27,7 @@
         :rules="value.validationRules"
       >
         <component
-          :is="value.component || `${value.type}-field`"
+          :is="value.component"
           :id="value.key"
           v-model="fieldModel"
           :options="options"
@@ -56,17 +56,15 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
 import store from '../../../store'
-import { FieldInfo } from '../../../@model/field'
 import { BaseField, SwitchBaseField, CheckBaseField } from '../../../@model/baseField'
 import { IconsList } from '../../../@model/enums/icons'
 
 export default defineComponent({
   name: 'FieldGenerator',
-  components: {},
 
   props: {
     value: {
-      type: Object as PropType<FieldInfo | BaseField>,
+      type: Object as PropType<BaseField>,
       required: true,
     },
 
@@ -116,13 +114,8 @@ export default defineComponent({
     const fieldModel = computed({
       get: () => props.value.value,
       set: (value) => {
-        if (props.value instanceof BaseField) {
-          // eslint-disable-next-line vue/no-mutating-props
-          props.value.value = value
-          emit('input', props.value)
-        } else {
-          emit('input', new FieldInfo<any>({ ...props.value, value }))
-        }
+        props.value.value = value
+        emit('input', props.value)
       },
     })
 

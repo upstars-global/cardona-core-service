@@ -404,7 +404,7 @@ import { IListSortData, ListSort } from '../../../@model'
 import CTable from '../../CTable/index.vue'
 import { useFilters } from '../../FiltersBlock/useFilters'
 import FiltersBlock from '../../FiltersBlock/index.vue'
-import { Filter, PayloadFilters } from '../../../@model/filter'
+import { PayloadFilters } from '../../../@model/filter'
 import {
   BaseField,
   SelectBaseField,
@@ -699,7 +699,7 @@ export default {
 
     // Filters
     const isFiltersShown = ref(false)
-    const appliedFilters = computed<Filter[]>(() => {
+    const appliedFilters = computed<BaseField[]>(() => {
       const isSameEntity: boolean = entityName === store.getters['filtersCore/listEntityName']
 
       return isSameEntity ? store.getters['filtersCore/appliedListFilters'] : []
@@ -739,8 +739,6 @@ export default {
             else acc = { ...acc, ...transformedFilterValue }
           } else if (filter instanceof BaseField) {
             acc[key] = filter.transformField()
-          } else {
-            acc[key] = filter.value
           }
 
           return acc

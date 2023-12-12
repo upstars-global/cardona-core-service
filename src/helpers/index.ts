@@ -1,5 +1,4 @@
 import { useRouter } from '../@core/utils/utils'
-import { FieldInfo } from '../@model/field'
 import { BaseField, DateBaseField, NumberRangeBaseField } from '../@model/baseField'
 import { NumberOrString, OptionsItem } from '../@model'
 import { isObject } from '../@core/utils/utils'
@@ -16,19 +15,10 @@ export const transformFormData = (form): object => {
       else acc = { ...acc, ...transformedValue }
     } else if (valueData instanceof BaseField) {
       acc[key] = valueData.transformField()
-    } else if (valueData instanceof FieldInfo) {
-      // TODO: Delete after migration to BaseField
-      acc[key] = Array.isArray(valueData.value)
-        ? valueData.value.map((item) => item.id || item)
-        : valueData.value?.id ?? valueData.value ?? ''
     } else if (Array.isArray(valueData) && typeof valueData[0] !== 'string') {
       acc[key] = valueData
         .map((item) =>
-          item instanceof FieldInfo
-            ? item.value
-            : item instanceof BaseField
-            ? item.transformField()
-            : transformFormData(item)
+          item instanceof BaseField ? item.transformField() : transformFormData(item)
         )
         .filter((item) => !!item)
     } else if (isObject(valueData)) {
@@ -36,10 +26,6 @@ export const transformFormData = (form): object => {
       Object.keys(valueData).forEach((keyInner) => {
         if (valueData[keyInner] instanceof BaseField) {
           valueDataInner[keyInner] = valueData[keyInner].transformField()
-        } else if (valueData[keyInner] instanceof FieldInfo) {
-          valueDataInner[keyInner] = Array.isArray(valueData[keyInner].value)
-            ? valueData[keyInner].value.map((item) => item.id || item)
-            : valueData[keyInner].value?.id ?? valueData[keyInner].value ?? ''
         } else {
           valueDataInner[keyInner] = valueData[keyInner]
         }
