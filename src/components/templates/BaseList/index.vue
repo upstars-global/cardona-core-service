@@ -158,6 +158,7 @@
             :field="field"
             :item="item"
             :value="value"
+            :get-update-route="getUpdateRoute"
           />
 
           <status-field
