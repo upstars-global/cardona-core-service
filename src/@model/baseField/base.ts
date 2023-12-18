@@ -7,6 +7,7 @@ import { OptionsItem } from '../../@model'
 
 export interface IBaseField {
   readonly key: string
+  readonly id?: string
   readonly label: TranslateResult
   readonly placeholder?: TranslateResult
   readonly description?: TranslateResult
@@ -23,6 +24,7 @@ export abstract class BaseField implements IBaseField {
   protected abstract component: Component
   protected abstract _value?: any
   readonly key: string
+  readonly id: string
   readonly label: TranslateResult
   readonly placeholder?: TranslateResult
   readonly description?: TranslateResult
@@ -38,6 +40,7 @@ export abstract class BaseField implements IBaseField {
     this.key = field.key
     this.label = field.label
     this.placeholder = field.placeholder
+    this.id = field.id ?? field.key
     this.validationRules = Array.isArray(field.validationRules)
       ? (field.validationRules.join('|') as ValidationRule)
       : field.validationRules

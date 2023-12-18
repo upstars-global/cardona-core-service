@@ -1,10 +1,10 @@
 <template>
   <b-form-group
     v-if="canView"
-    :id="`${value.key}-field`"
+    :id="`${value.id}-field`"
     class="mb-0"
     :class="formGroupClasses"
-    :label-for="value.key"
+    :label-for="value.id"
   >
     <template #label>
       <span>
@@ -23,12 +23,12 @@
       <validation-provider
         v-slot="{ errors }"
         :name="value.label"
-        :vid="value.key"
+        :vid="value.id"
         :rules="value.validationRules"
       >
         <component
           :is="value.component"
-          :id="value.key"
+          :id="value.id"
           v-model="fieldModel"
           :options="options"
           :field="value"
