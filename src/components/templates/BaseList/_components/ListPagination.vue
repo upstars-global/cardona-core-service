@@ -34,7 +34,7 @@ const numberOfPages = computed(() => props.paginationConfig.numberOfPages.value)
     <VCol
       cols="12"
       sm="6"
-      class="d-flex align-items-center justify-content-center justify-content-sm-start p-0"
+      class="d-flex align-center justify-content-center justify-content-sm-start p-0"
     >
       <span class="text-muted">
         {{ $t('pagination.showing', dataMeta) }}
@@ -44,7 +44,7 @@ const numberOfPages = computed(() => props.paginationConfig.numberOfPages.value)
     <VCol
       cols="12"
       sm="6"
-      class="d-flex align-items-center justify-content-center px-0 py-0"
+      class="d-flex align-center justify-content-center px-0 py-0"
     >
       <VPagination
         v-model="currentPage"

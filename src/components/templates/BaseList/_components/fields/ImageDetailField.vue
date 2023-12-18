@@ -16,13 +16,13 @@ const previewImage = computed(() => props.imagePath + previewAdditionalParams.va
 </script>
 
 <template>
-  <div class="d-flex justify-content-center align-items-center image-detail-field" v-if="imagePath">
+  <div class="d-flex justify-content-center align-center image-detail-field" v-if="imagePath">
     <ImageField
       :image-path="previewImage"
       @click.stop="$modal.showModal(`${id}-image-detail`)"
     />
     <BaseModal :id="`${id}-image-detail`">
-      <div class="d-flex justify-content-center align-items-center">
+      <div class="d-flex justify-content-center align-center">
         <img
           :src="imagePath"
           alt="full img"

@@ -1,10 +1,10 @@
 import type { Permission } from '../@model/permission'
-import { UserSmallInfo } from '../@model/users'
-import type { IRequestListPayload, OptionsItem } from '../@model/index'
+import {UserInfo, UserSmallInfo} from '../@model/users'
+import type { IRequestListPayload } from '../@model/index'
 import { ViewInfo, ViewType } from '../@model/view'
 import { i18n } from '../plugins/i18n'
-import { FieldInfo, FieldType } from '../@model/field'
 import store from '../store'
+import {MultiSelectBaseField, TextBaseField} from "../@model/templates/baseField";
 
 export class GroupData {
   readonly id?: string
@@ -64,32 +64,29 @@ export class GroupsSideBarFields {
 // Form
 export class GroupForm {
   readonly id?: string
-  readonly name?: FieldInfo<string>
-  readonly userIds: FieldInfo<OptionsItem>
+  readonly name: TextBaseField
+  readonly userIds: MultiSelectBaseField
   readonly productId: string
   permissions?: Permission[]
 
   constructor(data?: any) {
-    const users = data?.users.map(user => new UserSmallInfo(user))
-
+    const users = data?.users.map((user) => new UserSmallInfo(user))
     this.id = data?.id
     this.productId = store.getters['productCore/productId']
-    this.name = new FieldInfo<string>({
-      type: FieldType.Text,
+    this.name = new TextBaseField({
       key: 'name',
-      value: data?.name || '',
+      value: data?.name,
       label: i18n.t('common.groups.name'),
       placeholder: i18n.t('common.groups.name'),
       validationRules: 'required',
     })
-    this.userIds = new FieldInfo<OptionsItem>({
-      type: FieldType.MultiSelect,
+    this.userIds = new MultiSelectBaseField<UserInfo>({
       key: 'users',
-      value: users || [],
+      value: users,
       label: i18n.t('common.groups.adminAdd'),
       placeholder: i18n.t('placeholder.filter.admin'),
       fetchOptionsActionName: 'users/fetchUsersList',
-    })
+    });
     this.permissions = data?.permissions || []
   }
 }

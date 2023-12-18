@@ -49,7 +49,7 @@ const searchQuery = computed({
 <template>
   <VRow no-gutters>
     <VCol>
-      <div class="d-flex gap-4 align-items-center justify-content-end">
+      <div class="d-flex gap-4 align-center justify-content-end">
         <slot name="left-search-btn" />
 
         <AppTextField

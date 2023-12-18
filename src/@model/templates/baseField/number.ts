@@ -1,15 +1,17 @@
-import type { ITextBaseField } from './text'
-import { TextBaseField } from './text'
+import { ANumberBaseField, IANumberBaseField } from './base'
+import { NumberOrString } from '../../index'
+import NumberField from "@/components/templates/FieldGenerator/_components/NumberField.vue";
 
-export interface INumberBaseField extends ITextBaseField {
-  readonly withPositiveNumbers?: boolean
+export interface INumberBaseField extends IANumberBaseField {
+  readonly value?: NumberOrString
 }
-export class NumberBaseField extends TextBaseField implements INumberBaseField {
-  readonly component = {}
-  readonly withPositiveNumbers?: boolean
+
+export class NumberBaseField extends ANumberBaseField implements INumberBaseField {
+  readonly component = NumberField
+  protected _value?: NumberOrString
 
   constructor(field: INumberBaseField) {
     super(field)
-    this.withPositiveNumbers = field.withPositiveNumbers
+    this._value = field.value
   }
 }

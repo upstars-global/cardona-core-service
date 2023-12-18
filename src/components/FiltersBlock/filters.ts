@@ -1,14 +1,19 @@
 import { i18n } from '../../plugins/i18n'
 import type { GroupData } from '../../@model/group'
 import type { ProjectInfo } from '../../@model/project'
-import { FieldInfo, FieldType } from '../../@model/field'
-import type { OptionsItem } from '../../@model'
 import { FilterType } from '../../@model/filter'
-import { SelectBaseField, TextBaseField } from '../../@model/templates/baseField'
+import {
+  DateBaseField,
+  MultiSelectBaseField, NumberRangeBaseField,
+  RadioBaseField,
+  SelectBaseField,
+  TextBaseField
+} from '../../@model/templates/baseField'
 import { TransactionType } from '../../@model/enums/playersTransactions'
+import {RadioOption} from "@/@model/templates/baseField/radio";
 
 // Options
-const stateOptions: Array<object> = [
+const stateOptions: RadioOption[] = [
   { text: i18n.t('common.yes'), value: true },
   { text: i18n.t('common.no'), value: false },
 ]
@@ -164,130 +169,130 @@ const bettingHistoryEventType = new SelectBaseField({
 
 // ---------------------------------------------------------------------------
 // TODO: MultiSelect
-const group = new FieldInfo<GroupData>({
-  type: FieldType.MultiSelect,
+const group = new MultiSelectBaseField<GroupData>({
   key: FilterType.Group,
   label: i18n.t('common.groups.list'),
   placeholder: i18n.t('placeholder.filter.group'),
   fetchOptionsActionName: 'groups/fetchGroupsList',
 })
 
-const project = new FieldInfo<ProjectInfo>({
-  type: FieldType.MultiSelect,
+const project = new MultiSelectBaseField<ProjectInfo>({
   key: FilterType.Project,
   label: i18n.t('common.project.list'),
   placeholder: i18n.t('placeholder.filter.project'),
   fetchOptionsActionName: 'projects/fetchProjectsList',
 })
 
-const gamesProducers = new FieldInfo({
-  type: FieldType.MultiSelect,
+const gamesProducers = new MultiSelectBaseField({
   key: FilterType.GamesProducers,
   label: i18n.t('filters.gamesProducers'),
   placeholder: i18n.t('placeholder.filter.gamesProducers'),
   fetchOptionsActionName: 'gamesProducers/fetchGamesProducersList',
 })
 
-const transactionsStatuses = new FieldInfo<OptionsItem>({
-  type: FieldType.MultiSelect,
+const transactionsStatuses = new MultiSelectBaseField({
   key: FilterType.TransactionsStatuses,
   label: i18n.t('common.status'),
   placeholder: i18n.t('placeholder.filter.status'),
   fetchOptionsActionName: 'playersTransactions/fetchTransactionsStatuses',
 })
 
-const balancesReasons = new FieldInfo<OptionsItem>({
-  type: FieldType.MultiSelect,
+const balancesReasons = new MultiSelectBaseField({
   key: FilterType.BalancesReasons,
   label: i18n.t('common.reason'),
   placeholder: i18n.t('placeholder.filter.reason'),
   fetchOptionsActionName: 'balance/fetchBalancesReasonsList',
 })
 
-const tagNames = new FieldInfo<OptionsItem>({
-  type: FieldType.MultiSelect,
+const tagNames = new MultiSelectBaseField({
   key: 'tagNames',
-  label: i18n.t('common.tags') as string,
-  placeholder: i18n.t('common.tags') as string,
+  label: i18n.t('common.tags'),
+  placeholder: i18n.t('common.tags'),
   fetchOptionsActionName: 'tags/fetchTags',
 })
 
-const segments = new FieldInfo<OptionsItem>({
-  type: FieldType.MultiSelect,
+const segments = new MultiSelectBaseField({
   key: FilterType.Segments,
-  label: i18n.t('common.segments') as string,
-  placeholder: i18n.t('common.segments') as string,
+  label: i18n.t('common.segments'),
+  placeholder: i18n.t('common.segments'),
   fetchOptionsActionName: 'segments/fetchList',
 })
 
 // ---------------------------------------------------------------------------
 // TODO: Date
-const date = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const date = new DateBaseField({
   key: FilterType.Date,
   label: i18n.t('common.date'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeCreative = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeCreative = new DateBaseField({
   key: FilterType.DateRangeCreative,
   label: i18n.t('filters.dateRangeCreative'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeUpdate = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeUpdate = new DateBaseField({
   key: FilterType.DateRangeUpdate,
   label: i18n.t('filters.dateRangeUpdate'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeIssued = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeIssued = new DateBaseField({
   key: FilterType.DateRangeIssued,
   label: i18n.t('filters.dateRangeIssued'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeExpired = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeExpired = new DateBaseField({
   key: FilterType.DateRangeExpired,
   label: i18n.t('filters.dateRangeExpired'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeProcessing = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeProcessing = new DateBaseField({
   key: FilterType.DateRangeProcessing,
   label: i18n.t('filters.dateRangeProcessing'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeActivated = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeActivated = new DateBaseField({
   key: FilterType.DateRangeActivated,
   label: i18n.t('filters.dateRangeActivated'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const dateRangeUsed = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const dateRangeUsed = new DateBaseField({
   key: FilterType.DateRangeUsed,
   label: i18n.t('filters.dateRangeUsed'),
+  isRangeMode: true,
+  withTime: true,
 })
 
-const bettingDateCreative = new FieldInfo<string>({
-  type: FieldType.DateRange,
+const bettingDateCreative = new DateBaseField({
   key: FilterType.BettingDateCreative,
   label: i18n.t('filters.bettingDateCreative'),
+  isRangeMode: true,
+  withTime: true,
 })
 
 // ---------------------------------------------------------------------------
 // TODO: Radio
-const bettingHistoryIsBonus = new FieldInfo<boolean>({
-  type: FieldType.Radio,
+const bettingHistoryIsBonus = new RadioBaseField({
   key: FilterType.BettingHistoryIsBonus,
   label: i18n.t('filters.bettingHistoryIsBonus'),
   value: true,
   options: stateOptions,
 })
 
-const status = new FieldInfo<boolean>({
-  type: FieldType.Radio,
+const status = new RadioBaseField({
   key: FilterType.Status,
   label: i18n.t('common.activity'),
   value: true,
@@ -297,24 +302,21 @@ const status = new FieldInfo<boolean>({
   ],
 })
 
-const hidden = new FieldInfo<boolean>({
-  type: FieldType.Radio,
+const hidden = new RadioBaseField({
   key: FilterType.Hidden,
   label: i18n.t('filters.hidden'),
   value: true,
   options: stateOptions,
 })
 
-const gameForBonuses = new FieldInfo<boolean>({
-  type: FieldType.Radio,
+const gameForBonuses = new RadioBaseField({
   key: FilterType.GameForBonuses,
   label: i18n.t('filters.gameForBonuses'),
   value: true,
   options: stateOptions,
 })
 
-const availableWithBonuses = new FieldInfo<boolean>({
-  type: FieldType.Radio,
+const availableWithBonuses = new RadioBaseField({
   key: FilterType.AvailableWithBonuses,
   label: i18n.t('filters.availableWithBonuses'),
   value: true,
@@ -323,32 +325,27 @@ const availableWithBonuses = new FieldInfo<boolean>({
 
 // ---------------------------------------------------------------------------
 // TODO: Sum range
-const sumRange = new FieldInfo({
-  type: FieldType.SumRange,
+const sumRange = new NumberRangeBaseField({
   key: FilterType.SumRange,
   label: i18n.t('common.sum'),
 })
 
-const initialSumRange = new FieldInfo({
-  type: FieldType.SumRange,
+const initialSumRange = new NumberRangeBaseField({
   key: FilterType.InitialSumRange,
   label: i18n.t('filters.initialSumRange'),
 })
 
-const winBackSumRange = new FieldInfo({
-  type: FieldType.SumRange,
+const winBackSumRange = new NumberRangeBaseField({
   key: FilterType.WinBackSumRange,
   label: i18n.t('filters.winBackSumRange'),
 })
 
-const realSumRange = new FieldInfo({
-  type: FieldType.SumRange,
+const realSumRange = new NumberRangeBaseField({
   key: FilterType.RealSumRange,
   label: i18n.t('filters.realSumRange'),
 })
 
-const wagerLimitRange = new FieldInfo({
-  type: FieldType.SumRange,
+const wagerLimitRange = new NumberRangeBaseField({
   key: FilterType.WagerLimitRange,
   label: i18n.t('filters.wagerLimitRange'),
 })

@@ -1,45 +1,63 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { NumberBaseField } from '../../../../@model/templates/baseField'
+import {NumberOrString} from "@/@model";
+import {toIntegerNumbers, toPositiveNumbers} from "@/helpers";
 
 interface Props {
-  value: string | number
+  modelValue: NumberOrString
   field: NumberBaseField
   errors?: Array<string>
   disabled?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), { errors: () => [], value: '' })
+const props = withDefaults(defineProps<Props>(), { errors: () => [], modelValue: '' })
 
 const emits = defineEmits<{
-  (e: 'update:modelValue', string: string | number): void
+  (e: 'update:modelValue', string: NumberOrString): void
 }>()
+const attrs = useAttrs()
+const getPositiveNumbers = (value: NumberOrString): NumberOrString =>
+    props.field.withPositiveNumbers ? toPositiveNumbers(value) : value
 
-const modelValue = computed({
-  get: () => props.value,
-  set: value => {
-    emits('input', props.field.withPositiveNumbers ? value.toString().replace(/-/g, '') : value)
+const getIntegerNumbers = (value: NumberOrString): NumberOrString =>
+    props.field.isIntegerNumbers ? toIntegerNumbers(value) : value
+
+const getMappedValue = (value: NumberOrString): NumberOrString =>
+    [getPositiveNumbers, getIntegerNumbers].reduce(
+        (updatedValue, mappedMethod) => mappedMethod(updatedValue),
+        value
+    )
+
+const localValue = computed({
+  get: () => props.modelValue,
+  set: (value) => {
+    emits('update:modelValue', getMappedValue(value))
   },
 })
 
-const onKeyDown = event => {
-  if (props.field.withPositiveNumbers && event.key === '-')
-    event.preventDefault()
+const disabledKeys = computed(() => [
+  'e',
+  props.field.isIntegerNumbers && '.',
+  props.field.withPositiveNumbers && '-',
+])
 
-  if (event.key === 'e')
+const onKeyDown = (event) => {
+  if (disabledKeys.value.some((key) => key === event.key)) {
     event.preventDefault()
+  }
 }
 </script>
 
 <template>
   <AppTextField
-    v-model.trim="modelValue"
-    :placeholder="field.placeholder || field.label"
-    :state="errors.isNotEmpty ? false : null"
-    type="number"
-    :disabled="disabled"
-    autocomplete="off"
-    :suffix="field?.append"
-    @keydown="onKeyDown"
+      v-model.trim="localValue"
+      :placeholder="field.placeholder || field.label"
+      :state="errors.isNotEmpty ? false : null"
+      type="number"
+      :disabled="disabled"
+      autocomplete="off"
+      :suffix="field?.append"
+      @keydown="onKeyDown"
   />
 </template>

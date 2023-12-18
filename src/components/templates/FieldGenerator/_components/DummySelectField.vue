@@ -28,8 +28,8 @@ const selectClasses = computed(() => {
 })
 
 const valueModel = computed({
-  get: () => props.value,
-  set: (item: object) => emit('input', item),
+  get: () => props.modelValue,
+  set: (item: object) => emit('update:modelValue', item),
 })
 
 const onSearch = (search: string) => emits('search', search)

@@ -1,13 +1,13 @@
-import type { Component } from 'vue'
-import type { IBaseField } from './base'
-import { BaseField } from './base'
+import { Component } from 'vue'
+import { BaseField, IBaseField } from './base'
+import TimeField from '@/components/templates/FieldGenerator/_components/TimeField.vue'
 
 export interface ITimeBaseField extends IBaseField {
   readonly value?: string
 }
 
 export class TimeBaseField extends BaseField implements ITimeBaseField {
-  readonly component: Component = {}
+  readonly component: Component = TimeField
   protected _value?: string
 
   constructor(field: ITimeBaseField) {

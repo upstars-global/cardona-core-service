@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { FieldInfo } from '../../../../@model/field'
+import {TextareaBaseField} from "../../../../@model/templates/baseField";
 
-const props = defineProps<{
-  modelValue: string
-  field: FieldInfo
-  errors: Array<string>
-  disabled: boolean
+type TextareaFieldProps = {
+  modelValue?: string
+  field: TextareaBaseField
+  disabled?: boolean
+  errors?: string[]
+}
+
+const props = withDefaults(defineProps<TextareaFieldProps>(), {
+  modelValue: '',
+  errors: () => [],
+})
+
+const emit = defineEmits<{
+  (event: 'update:modelValue', value: string): void
 }>()
-
-const emits = defineEmits<{
-  (e: 'update:modelValue', value: string): void
-}>()
-
-const maxCharsDefault = 100
-
-const maxChars = computed(() => props.field?.maxLength || maxCharsDefault)
 
 const localModelValue = computed({
   get: () => props.modelValue,
-  set: value => emits('update:modelValue', value),
+  set: (value) => emit('update:modelValue', value),
 })
 
-const rules = [(v: string) => v.length <= maxChars.value || `Max ${maxChars.value} characters`]
 </script>
 
 <template>
@@ -31,10 +31,9 @@ const rules = [(v: string) => v.length <= maxChars.value || `Max ${maxChars.valu
     :placeholder="field.label"
     :state="errors.isNotEmpty ? false : null"
     no-resize
-    rows="3"
-    :counter="field.counter"
-    :rules="[...rules, ...field.validationRules]"
+    :counter="field.maxLength"
+    :rules="field.validationRules"
     :disabled="disabled"
-    :maxlength="maxChars"
+    persistent-counter
   />
 </template>

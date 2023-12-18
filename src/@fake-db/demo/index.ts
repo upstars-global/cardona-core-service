@@ -92,3 +92,15 @@ const options = [
 ]
 
 mock.onPost('/api/v2/options/list').reply(() => [200, { data: options }])
+
+
+const conditions = [
+  'ltp',
+  'playerId',
+  'partnerId',
+  'approvedPayoutsCount',
+  'adc(LastMonth)',
+  'partnerIdMatch(needle)',
+]
+
+mock.onPost('/api/v2/conditions/list').reply(() => [200, { data: conditions }])

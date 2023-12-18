@@ -112,6 +112,7 @@ const elementId = computed(() => {
 
   return _elementIdToken ? `app-picker-field-${_elementIdToken}-${Math.random().toString(36).slice(2, 7)}` : undefined
 })
+defineExpose({ refFlatPicker })
 </script>
 
 <template>
@@ -147,6 +148,7 @@ const elementId = computed(() => {
           :dirty="isDirty.value || props.dirty"
           :error="isValid.value === false"
           :disabled="isDisabled.value"
+          @click:append-inner="emit('click:control', $event)"
           @click:clear="onClear"
         >
           <template #default="{ props: vFieldProps }">

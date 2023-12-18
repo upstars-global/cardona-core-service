@@ -1,21 +1,25 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { findIndex, omit } from 'lodash'
+import { findIndex } from 'lodash'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
 import { DownloadFormat, SortDirection } from '../../../@model/templates/baseList'
-import type { Filter } from '../../../@model/filter'
+import type {Filter, PayloadFilters} from '../../../@model/filter'
 import RemoveModal from '../../../components/templates/BaseList/_components/fields/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
 import { ListSort } from '../../../@model'
 import { useFilters } from '../../../components/FiltersBlock/useFilters'
-import { BaseField, SelectBaseField } from '../../../@model/templates/baseField'
-import { FieldType } from '../../../@model/field'
+import {
+  BaseField,
+  DateBaseField,
+  MultiSelectBaseField,
+  NumberRangeBaseField,
+  SelectBaseField
+} from '../../../@model/templates/baseField'
 import type { PaginationResult } from '../../../use/pagination'
 import usePagination from '../../../use/pagination'
 import type { TableField } from '../../../@model/templates/tableFields'
-import { parseDateRange } from '../../../helpers/filters'
 import { ListFieldType } from '../../../@model/templates/tableFields'
 import { basePermissions } from '../../../helpers/base-permissions'
 import type { SortItem } from '../../../@core/types'
@@ -25,8 +29,6 @@ import {
   checkExistsPage,
   convertCamelCase,
   convertLowerCaseFirstSymbol,
-  isEmptyString,
-  isNotEmptyNumber,
 } from '@/helpers'
 
 const props = defineProps<{
@@ -282,66 +284,41 @@ const onEditPosition = async ({ id }: { id: string }, position: number) => {
 
 // Export
 
-const setRequestFilters = () => {
-  if (!ListFilterModel)
-    return {}
+const setRequestFilters = (): PayloadFilters => {
+  if (!ListFilterModel) return {}
 
   let filters = new ListFilterModel(props.config?.staticFilters)
 
-  if (searchQuery.value)
+  if (searchQuery.value) {
     filters = new ListFilterModel({ ...props.config?.staticFilters, search: searchQuery.value })
+  }
 
   filters = appliedFilters.value.reduce(
-    (acc, filter) => {
-      const { key, trackBy = 'name' }: FilterListItem = props.config?.filterList.find(
-        ({ type }: FilterListItem) => type === filter.key,
-      )
+      (acc, filter) => {
+        const { key, trackBy = 'name' }: FilterListItem = props.config?.filterList.find(
+            ({ type }: FilterListItem) => type === filter.key
+        )
 
-      if (filter instanceof SelectBaseField) {
-        acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
-      }
-      else if (filter instanceof BaseField) {
-        acc[key] = filter.transformField()
-      }
-      else if (filter.type === FieldType.Select) {
-        acc[key] = filter.value?.[trackBy]
-      }
-      else if (filter.type === FieldType.MultiSelect) {
-        acc[key] = filter.value.map((item: object) => item[trackBy])
-      }
-      else if (filter.type === FieldType.DateRange) {
-        if (!filter.value || typeof filter.value !== 'string')
-          return acc
+        if (filter instanceof SelectBaseField) {
+          acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
+        } else if (filter instanceof MultiSelectBaseField) {
+          acc[key] = filter.transformField({ trackBy })
+        } else if (filter instanceof DateBaseField || filter instanceof NumberRangeBaseField) {
+          const transformedFilterValue = filter.transformField(key)
 
-        const [dateFrom, dateTo]: Array<string> = parseDateRange(filter.value)
-
-        acc[`${key}From`] = dateFrom
-        acc[`${key}To`] = dateTo
-      }
-      else if (filter.type === FieldType.SumRange) {
-        if (filter.value?.some(value => isNotEmptyNumber(value) && !isEmptyString(value))) {
-          const [sumFrom, sumTo]: Array<number> = filter.value
-
-          acc[`${key}From`] = sumFrom
-          acc[`${key}To`] = sumTo
-
-          const invalidKeys = [`${key}From`, `${key}To`].filter(
-            key => !isNotEmptyNumber(acc[key]),
-          )
-
-          acc = omit(acc, invalidKeys)
+          if (!transformedFilterValue) return acc
+          else if (typeof transformedFilterValue === 'string') acc[key] = transformedFilterValue
+          else acc = { ...acc, ...transformedFilterValue }
+        } else if (filter instanceof BaseField) {
+          acc[key] = filter.transformField()
         }
-      }
-      else {
-        acc[key] = filter.value
-      }
 
-      return acc
-    },
-    new ListFilterModel({
-      ...props.config?.staticFilters,
-      ...filters,
-    }),
+        return acc
+      },
+      new ListFilterModel({
+        ...props.config?.staticFilters,
+        ...filters,
+      })
   )
 
   return filters
@@ -626,7 +603,7 @@ onBeforeMount(async () => {
         </div>
 
         <!-- Table field settings -->
-        <div class="d-flex align-items-center justify-content-end">
+        <div class="d-flex align-center justify-content-end">
           <slot name="table-field-setting" />
           <TableFields
             v-model="selectedFields"

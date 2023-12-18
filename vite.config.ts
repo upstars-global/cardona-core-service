@@ -102,7 +102,6 @@ export default defineConfig({
       'apexcharts': fileURLToPath(new URL('node_modules/apexcharts-clevision', import.meta.url)),
       '@db': fileURLToPath(new URL('./src/plugins/fake-api/handlers/', import.meta.url)),
       '@api-utils': fileURLToPath(new URL('./src/plugins/fake-api/utils/', import.meta.url)),
-
       '@axios': fileURLToPath(new URL('./src/services/api/axios.ts', import.meta.url)),
       '@productConfig': fileURLToPath(new URL('./src/configs/productConfig.ts', import.meta.url)),
       '@filterConfig': fileURLToPath(new URL('./src/@model/filterConfig.ts', import.meta.url)),

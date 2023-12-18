@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import store from '../../../../store'
-import type { FieldInfo } from '../../../../@model/field'
-import { BSize } from '../../../../@model/bootstrap'
+import {IconsList} from "@/@model/enums/icons";
+import {SwitchBaseField} from "@/@model/templates/baseField";
+import {VSizes} from "../../../../@model/vuetify";
 
 interface SwitchFieldProps {
   modelValue: boolean
-  field: FieldInfo
+  field: SwitchBaseField
   disabled?: boolean
-  size?: BSize // TODO: refactor sizes
+  size?: VSizes
 }
 
 const props = withDefaults(defineProps<SwitchFieldProps>(), {
-  value: false,
-  size: BSize.Md,
+  modelValue: false,
+  size: VSizes.Medium,
 })
 
 const emits = defineEmits<{
@@ -28,11 +29,15 @@ const localModelValue = computed({
 const canUpdate = computed<boolean>(() =>
   props.field.permission ? store.getters.abilityCan(props.field.permission, 'update') : true,
 )
+
+
+const iconName = computed(() => (props.modelValue ? IconsList.CheckCircleIcon : IconsList.XCircleIcon));
+const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-error'))
 </script>
 
 <template>
   <div
-    class="d-flex align-items-center"
+    class="d-flex align-center gap-3"
     :class="`size-${size}`"
   >
     <VSwitch
@@ -43,5 +48,7 @@ const canUpdate = computed<boolean>(() =>
     <span class="switch-label">
       {{ field.label }}
     </span>
+
+    <v-icon class="ml-auto" v-if="field.withState" :icon="iconName" :class="iconVariant" />
   </div>
 </template>

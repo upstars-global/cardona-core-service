@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { FieldInfo } from '../../../../@model/field'
+import {CheckBaseField} from "@/@model/templates/baseField";
 
 const props = defineProps<{
   modelValue: boolean
-  field: FieldInfo
+  field: CheckBaseField
   disabled: boolean
 }>()
 

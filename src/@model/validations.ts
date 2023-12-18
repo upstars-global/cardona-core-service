@@ -77,7 +77,6 @@ const validatorRange = (value: Record<string, NumberOrString>, args: []): boolea
   const [keyMin, keyMax] = args as Array<NumberOrString>
   if (!validatorObject(value))
     return false
-
   return +value[keyMin] <= +value[keyMax]
 }
 
@@ -95,7 +94,7 @@ export interface IValidationConfig {
   min?: number
   min_value?: number
   max_value?: number
-  confirmed?: boolean
+  confirmed?: string
   regex?: RegExp
   between?: { min: number; max: number }
   alpha?: boolean
@@ -109,8 +108,8 @@ export interface IValidationConfig {
   creditCard?: boolean
   password?: boolean
   url?: boolean
-  required_object?: Record<string, NumberOrString>
-  range?: boolean
+  required_object?: boolean
+  range?: Array<string>
 }
 (function () {
   configure({

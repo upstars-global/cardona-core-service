@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { FieldInfo } from '../../../../@model/field'
 import generatePassword from '../../../../helpers/password-generator'
 import { IconsList } from '../../../../@model/enums/icons'
+import {PasswordBaseField} from "../../../../@model/templates/baseField";
+import {VVariants} from "@/@model/vuetify";
 
 interface Props {
   modelValue: string
-  field: FieldInfo
+  field: PasswordBaseField
   errors: Array<string>
   disabled?: boolean
-  withPasswordGenerator?: boolean
   showPassword?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  value: '',
+  modelValue: '',
   errors: () => [],
 })
 
@@ -24,13 +24,13 @@ const emits = defineEmits<{
 
 const localModelValue = computed({
   get: () => props.modelValue,
-  set: value => emit('update:modelValue', value),
+  set: value => emits('update:modelValue', value),
 })
 
 const inputType = ref(props.showPassword ? 'text' : 'password')
 
 const passwordToggleIcon = computed(() => {
-  return inputType.value === 'password' ? IconsList.EyeIcon : IconsList.EyeOffIcon
+  return inputType.value === 'password' ? IconsList.EyeOffIcon : IconsList.EyeIcon
 })
 
 const togglePasswordVisibility = () => {
@@ -43,7 +43,7 @@ const setGeneratedPassword = () => {
 </script>
 
 <template>
-  <div class="d-flex">
+  <div class="d-flex gap-2">
     <AppTextField
       :id="field.key"
       v-model.trim="localModelValue"
@@ -54,15 +54,16 @@ const setGeneratedPassword = () => {
       :append-inner-icon="passwordToggleIcon"
       name="login-password"
       @click:append-inner="togglePasswordVisibility"
+    />
+    <VBtn
+        v-if="field.withPasswordGenerator"
+        id="generator-password"
+        :disabled="disabled"
+        :variant="VVariants.Outlined"
+        size="38"
+        @click="setGeneratedPassword"
     >
-      <template #append>
-        <VBtn
-          v-if="withPasswordGenerator"
-          id="generator-password"
-          :disabled="disabled"
-          @click="setGeneratedPassword"
-        />
-      </template>
-    </AppTextField>
+      <v-icon :icon="IconsList.RefreshCcwIcon"/>
+    </VBtn>
   </div>
 </template>
