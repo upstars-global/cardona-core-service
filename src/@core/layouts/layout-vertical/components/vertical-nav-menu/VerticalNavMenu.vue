@@ -17,11 +17,11 @@
           <!-- Logo & Text -->
           <li class="nav-item mr-1 full-width">
             <products-select v-if="isMenuTypeMain" :is-collapsed-menu="isCollapsedMenu" />
-            <b-link v-else class="navbar-brand" to="/">
+            <div v-else class="navbar-brand cursor-pointer" @click="onClickOnBrandLogo">
               <span class="brand-logo text-primary">
                 {{ adminName }}
               </span>
-            </b-link>
+            </div>
           </li>
 
           <!-- Toggler Button -->
@@ -103,7 +103,7 @@ import useVerticalNavMenu from './useVerticalNavMenu'
 import ProjectSelect from './components/ProjectSelect'
 import store from '../../../../../store'
 import ProductsSelect from '../../../../../@core/layouts/layout-vertical/components/vertical-nav-menu/components/ProductsSelect'
-import router from '../../../../../router'
+import { useRouter } from '../../../../../@core/utils/utils'
 import i18n from '../../../../../libs/i18n'
 import { convertUpperCaseFirstSymbol } from '../../../../../helpers'
 
@@ -127,6 +127,7 @@ export default {
     },
   },
   setup(props) {
+    const { router, route } = useRouter()
     const {
       isMouseHovered,
       isVerticalMenuCollapsed,
@@ -175,11 +176,27 @@ export default {
         : convertUpperCaseFirstSymbol(store.getters.selectedProduct?.name)
     )
 
-    const goBack = () => {
-      window.history.length > 2 ? router.go(-1) : router.push('/')
+    const goBack = async () => {
+      try {
+        await router.push({ name: 'Dashboard' })
+      } catch {}
+    }
+
+    const routeName = computed(() => route.value.name)
+
+    const onClickOnBrandLogo = async () => {
+      const pageName =
+        routeName.value === 'UsersControlList' || routeName.value.includes('UsersControl')
+          ? 'UsersControlList'
+          : 'Dashboard'
+      try {
+        return await router.push({ name: pageName })
+      } catch {}
     }
 
     return {
+      routeName,
+      onClickOnBrandLogo,
       navMenuItems,
       perfectScrollbarSettings,
       isVerticalMenuCollapsed,
