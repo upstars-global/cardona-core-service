@@ -139,7 +139,7 @@ const listNotSelected = computed(() => {
             >
               <VCol
                 md="3"
-                class="d-flex align-items-center"
+                class="d-flex align-center"
               >
                 <p
                   class="font-weight-bolder mb-0"
@@ -151,7 +151,7 @@ const listNotSelected = computed(() => {
 
               <VCol
                 md="9"
-                class="d-flex align-items-center"
+                class="d-flex align-center"
               >
                 <FieldGenerator
                   v-model="selectedFilters[key]"
@@ -208,7 +208,7 @@ const listNotSelected = computed(() => {
 
       <div
         v-else-if="selectedFilters.length"
-        class="d-flex flex-wrap align-items-center pb-1"
+        class="d-flex flex-wrap align-center pb-1"
       >
         <span class="font-small-3 font-weight-bold text-body-heading mr-1 mb-50">
           {{ $t('common.filter.appliedFilters') }}

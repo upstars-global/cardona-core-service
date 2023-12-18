@@ -276,7 +276,7 @@ const deleteVariableTextByKey = () => {
     <div :class="{ 'd-none': Object.keys(variableTextBuffer).isEmpty }">
       <div
         :key="`block-text-edite-variable${isUpdateVar}`"
-        class="d-flex flex-wrap align-items-center block-text-edite-variable pt-1"
+        class="d-flex flex-wrap align-center block-text-edite-variable pt-1"
       >
         <span class="font-small-3 font-weight-bolder mr-1 mb-50">
           <small><b>{{ $t('common.editor.addedVariables') }}:</b></small>

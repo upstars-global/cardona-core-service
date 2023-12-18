@@ -50,6 +50,10 @@ const listConfig = new BaseListConfig({
       type: FilterType.GameId,
       key: 'gameId',
     },
+    {
+      type: FilterType.SumRange,
+      key: 'sumRange',
+    },
   ],
 })
 

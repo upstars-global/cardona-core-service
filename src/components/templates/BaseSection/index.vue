@@ -262,7 +262,7 @@ onBeforeUnmount(() => {
         name="actions"
         :form="form"
       >
-        <div class="d-flex align-items-center mt-5">
+        <div class="d-flex align-center mt-5">
           <template v-if="isCreatePage">
             <VBtn
               class="mr-2"

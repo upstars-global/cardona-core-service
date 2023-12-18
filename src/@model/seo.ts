@@ -1,5 +1,5 @@
-import { FieldInfo, FieldType } from '../@model/field'
 import { i18n } from '../plugins/i18n'
+import {RichTextBaseField, TextareaBaseField, TextBaseField} from "@/@model/templates/baseField";
 
 export interface SeoData {
   readonly metaTitle?: string
@@ -8,29 +8,26 @@ export interface SeoData {
 }
 
 export class SeoForm {
-  readonly metaTitle: FieldInfo<string>
-  readonly metaDescription: FieldInfo<string>
-  readonly description: FieldInfo<string>
+  readonly metaTitle: TextBaseField
+  readonly metaDescription: TextareaBaseField
+  readonly description: RichTextBaseField
 
   constructor(data?: SeoData) {
-    this.metaTitle = new FieldInfo<string>({
-      type: FieldType.Text,
+    this.metaTitle = new TextBaseField({
       key: 'metaTitle',
       value: data?.metaTitle || '',
       label: i18n.t('seo.metaTitle'),
       isLocalization: true,
     })
-    this.metaDescription = new FieldInfo<string>({
-      type: FieldType.Textarea,
+    this.metaDescription = new TextareaBaseField({
       key: 'metaDescription',
-      value: data?.metaDescription || '',
+      value: data?.metaDescription,
       label: i18n.t('seo.metaDescription'),
       isLocalization: true,
     })
-    this.description = new FieldInfo<string>({
-      type: FieldType.RichText,
+    this.description = new RichTextBaseField({
       key: 'description',
-      value: data?.description || '',
+      value: data?.description,
       label: i18n.t('seo.description'),
       form: null,
       isLocalization: true,

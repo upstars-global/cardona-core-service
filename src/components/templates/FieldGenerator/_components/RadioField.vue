@@ -1,10 +1,10 @@
-<script lang="ts">
+<script lang="ts" setup>
 import { computed } from 'vue'
-import type { FieldInfo } from '../../../../@model/field'
+import {RadioBaseField} from "@/@model/templates/baseField";
 
 const props = defineProps<{
   modelValue: string | boolean
-  field: FieldInfo
+  field: RadioBaseField
 }>()
 
 const emits = defineEmits<{
@@ -18,7 +18,10 @@ const localModelValue = computed({
 </script>
 
 <template>
-  <VRadioGroup v-model="localModelValue">
+  <VRadioGroup
+      v-model="localModelValue"
+      inline
+  >
     <VRadio
       v-for="(option, index) in field.options"
       :key="`radio_${index}`"

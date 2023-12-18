@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import type { FieldInfo } from '../../../@model/field'
-import type { Filter } from '../../../@model/filter'
-import { VColors, VVariants } from '@/@model/vuetify'
+import {VColors, VSizes, VVariants} from '@/@model/vuetify'
 import { IconsList } from '@/@model/enums/icons'
+import {BaseField} from "@/@model/templates/baseField";
 
 const props = defineProps<{
-  filters: FieldInfo[]
-  size: string // TODO: refactor sizes
+  filters: BaseField[]
+  size: VSizes
 }>()
 
 const emits = defineEmits<{
-  (e: 'selectedFiltersChanged', filters: Filter[]): void
+  (e: 'selectedFiltersChanged', filters: BaseField): void
 }>()
 
-const isSmallSize: boolean = props.size === 'sm' // TODO: refactor sizes
+const isSmallSize: boolean = props.size === VSizes.Small
 
-const onChange = (filter: FieldInfo) => emits('selectedFiltersChanged', filter)
+const onChange = (filter: BaseField) => emits('selectedFiltersChanged', filter)
 </script>
 
 <template>

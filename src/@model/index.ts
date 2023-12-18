@@ -1,5 +1,5 @@
-import type { TranslateResult } from 'vue-i18n'
-import { SortDirection } from '../@model/templates/baseList'
+import { TranslateResult } from 'vue-i18n'
+import {SortDirection} from "@/@model/templates/baseList";
 
 export interface PaginationData {
   readonly pageNumber: number
@@ -15,8 +15,8 @@ export interface IRequestListPayload<T = any> {
 }
 
 export interface IListSort {
-  readonly key: string
-  readonly order: SortDirection
+  readonly field: string
+  readonly dir: SortDirection
 }
 
 export interface IListSortData {
@@ -25,12 +25,12 @@ export interface IListSortData {
 }
 
 export class ListSort implements IListSort {
-  readonly key: string
-  readonly order: SortDirection
+  readonly field: string
+  readonly dir: SortDirection
 
-  constructor({ key, order }: IListSort) {
-    this.key = key
-    this.order = order ? SortDirection.asc : SortDirection.desc
+  constructor({ sortBy, sortDesc }: IListSortData) {
+    this.field = sortBy
+    this.dir = sortDesc ? SortDirection.asc : SortDirection.desc
   }
 }
 
@@ -41,29 +41,33 @@ export class ListData<T> {
   readonly list: Array<T>
 
   constructor(
-    { data, pagination }: { data: Array<any>; pagination?: PaginationData },
-    TCreator?: { new (item: any): T },
+      { data, pagination }: { data: Array<any>; pagination?: PaginationData },
+      TCreator?: { new (item: any): T }
   ) {
     this.total = pagination?.total
     this.perPage = pagination?.perPage
     this.pageNumber = pagination?.pageNumber
-    this.list = data.map(item => (TCreator ? new TCreator(item) : (item as T)))
+    this.list = data.map((item) => (TCreator ? new TCreator(item) : (item as T)))
   }
 }
 
-export interface OptionsItem {
-  readonly id: string
+export type OptionsItem = {
+  readonly id: string | number
   readonly name: TranslateResult
 }
 
 export type Nullable<T> = T | null
 
-export interface Badge {
+export type Badge = {
   name: string
   id: string
 }
-
+// Number range
 export type NumberOrString = number | string
+
+export class NumberRangeBaseValue {
+  constructor(readonly from: NumberOrString, readonly to: NumberOrString) {}
+}
 
 export interface ValidationError {
   code: string

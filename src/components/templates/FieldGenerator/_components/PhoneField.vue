@@ -1,39 +1,40 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import Cleave from 'vue-cleave-component'
-import type { FieldInfo } from '../../../../@model/field'
 import { allPhoneCodesWithFlags } from '../../../../helpers/countries'
+import {VVariants} from "@/@model/vuetify";
+import {PhoneBaseField} from "../../../../@model/templates/baseField";
 
 interface PhoneFieldProps {
-  value: string
-  field: FieldInfo
+  modelValue: string
+  field: PhoneBaseField
   disabled?: boolean
 }
 
 const props = withDefaults(defineProps<PhoneFieldProps>(), {
-  value: '',
+  modelValue: '',
 })
 
 const emit = defineEmits<{
-  (event: 'input', value: string): void
+  (event: 'update:modelValue', value: string): void
 }>()
 
 const cleaveOptions = {
   blocks: [2, 3, 3, 2, 4],
 }
 
-const modelValue = computed({
-  get: (): string => props.value,
+const localModelValue = computed({
+  get: (): string => props.modelValue,
   set: (value: string) => {
-    const phoneWithPlus: string = modelValue.value[0] !== '+' ? `+${value}` : value
+    const phoneWithPlus: string = localModelValue.value[0] !== '+' ? `+${value}` : value
 
-    emit('input', phoneWithPlus)
+    emit('update:modelValue', phoneWithPlus)
   },
 })
 
 const phoneFlag = computed(() => {
   const cleanPhoneNumber: string
-    = modelValue.value[0] === '+' ? modelValue.value.slice(1) : modelValue.value
+    = localModelValue.value[0] === '+' ? localModelValue.value.slice(1) : localModelValue.value
 
   const phoneData = allPhoneCodesWithFlags.find(
     ({ phone }) => cleanPhoneNumber.indexOf(phone) === 0,
@@ -41,23 +42,39 @@ const phoneFlag = computed(() => {
 
   return phoneData?.flag
 })
+
+const isFocused = ref(false)
+const onFocus = () => {
+  isFocused.value = true
+}
+const onBlur = () => {
+  isFocused.value = false
+}
 </script>
 
 <template>
-  <div class="d-flex justify-content-between align-items-center position-relative">
+  <div class="position-relative d-flex justify-content-between align-center position-relative">
     <p class="flag">
       {{ phoneFlag }}
     </p>
-
-    <Cleave
-      v-model="modelValue"
-      type="text"
-      class="form-control"
-      :class="{ 'pl-3': phoneFlag }"
-      :placeholder="$t('common.phone._')"
-      :disabled="disabled"
-      :options="cleaveOptions"
-    />
+    <VField
+        :variant="VVariants.Outlined"
+        :focused="isFocused"
+        :active="isFocused"
+        :color="isFocused ? 'primary' : 'grey'"
+        class="v-input"
+    >
+      <Cleave
+          v-model="localModelValue"
+          type="text"
+          class="v-field__input py-2 phone-input"
+          :placeholder="$t('common.phone._')"
+          :disabled="disabled"
+          :options="cleaveOptions"
+          @focus="onFocus"
+          @blur="onBlur"
+      />
+    </VField>
   </div>
 </template>
 
@@ -66,8 +83,13 @@ const phoneFlag = computed(() => {
   display: inline-block;
   font-size: 2rem;
   position: absolute;
-  top: 9px;
+  top: 50%;
+  transform: translateY(-50%);
   left: 9px;
   margin: 0;
+  line-height: 1.5rem;
+}
+.phone-input {
+  padding-left: 2.7rem;
 }
 </style>

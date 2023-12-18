@@ -1,5 +1,9 @@
-export const dateFormat = (date: Date, options?: Intl.DateTimeFormatOptions): string => {
-  return date.toLocaleDateString(navigator.language, { ...options, timeZone: 'UTC' })
+export const dateFormat = (
+    date: Date,
+    options?: Intl.DateTimeFormatOptions,
+    locales = 'uk'
+): string => {
+  return date.toLocaleDateString(locales, { ...options, timeZone: 'UTC' })
 }
 
 export const dayDate = (date: Date): string => {

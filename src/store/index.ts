@@ -18,6 +18,7 @@ import tags from './modules/tags'
 import demo from './modules/demo'
 import permissions from './modules/permissions'
 import textEditor from './modules/textEditor'
+import conditions from './modules/conditions'
 
 // TODO import ecommerceStoreModuleCore from '../views/apps/e-commerce/eCommerceStoreModule'
 import app from './app'
@@ -41,6 +42,7 @@ const store = createStore({
     demo,
     permissions,
     textEditor,
+    conditions,
     app,
 
     // TODO 'app-ecommerce': ecommerceStoreModuleCore,

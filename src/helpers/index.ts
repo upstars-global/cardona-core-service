@@ -1,49 +1,36 @@
 import { isNumber, isString } from 'lodash'
 import { useRouter } from 'vue-router'
-import { FieldInfo } from '../@model/field'
-import { BaseField } from '../@model/templates/baseField'
-import type { OptionsItem } from '../@model'
+import {BaseField, DateBaseField, NumberRangeBaseField} from '../@model/templates/baseField'
+import type {NumberOrString, OptionsItem} from '../@model'
 
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
 
 export const transformFormData = (form): object => {
   return Object.entries(form).reduce((acc, [key, valueData]: [string, any]) => {
-    if (valueData instanceof BaseField) {
-      acc[key] = valueData.transformField()
-    }
-    else if (valueData instanceof FieldInfo) {
-      // TODO: Delete after migration to BaseField
-      acc[key] = Array.isArray(valueData.value)
-        ? valueData.value.map(item => item.id || item)
-        : valueData.value?.id ?? valueData.value ?? ''
-    }
-    else if (Array.isArray(valueData) && typeof valueData[0] !== 'string') {
-      acc[key] = valueData
-        .map(item =>
-          item instanceof FieldInfo
-            ? item.value
-            : item instanceof BaseField
-              ? item.transformField()
-              : transformFormData(item),
-        )
-        .filter(item => !!item)
-    }
-    else if (isObject(valueData)) {
-      const valueDataInner = JSON.parse(JSON.stringify(valueData))
+    if (valueData instanceof DateBaseField || valueData instanceof NumberRangeBaseField) {
+      const transformedValue = valueData.transformField()
 
-      Object.keys(valueData).forEach(keyInner => {
-        if (valueData[keyInner] instanceof FieldInfo) {
-          valueDataInner[keyInner] = Array.isArray(valueData[keyInner].value)
-            ? valueData[keyInner].value.map(item => item.id || item)
-            : valueData[keyInner].value?.id ?? valueData[keyInner].value ?? ''
-        }
-        else {
+      if (typeof transformedValue === 'string') acc[key] = transformedValue
+      else acc = { ...acc, ...transformedValue }
+    } else if (valueData instanceof BaseField) {
+      acc[key] = valueData.transformField()
+    } else if (Array.isArray(valueData) && typeof valueData[0] !== 'string') {
+      acc[key] = valueData
+          .map((item) =>
+              item instanceof BaseField ? item.transformField() : transformFormData(item)
+          )
+          .filter((item) => !!item)
+    } else if (isObject(valueData)) {
+      const valueDataInner = JSON.parse(JSON.stringify(valueData))
+      Object.keys(valueData).forEach((keyInner) => {
+        if (valueData[keyInner] instanceof BaseField) {
+          valueDataInner[keyInner] = valueData[keyInner].transformField()
+        } else {
           valueDataInner[keyInner] = valueData[keyInner]
         }
       })
       acc[key] = valueDataInner
-    }
-    else {
+    } else {
       acc[key] = valueData
     }
 

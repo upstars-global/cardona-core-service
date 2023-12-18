@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { FieldInfo } from '../../../../@model/field'
-import { IconsList } from '../../../../@model/enums/icons'
+import {TagsBaseField} from "@/@model/templates/baseField";
 
 const props = defineProps<{
   modelValue: Array<string>
-  field: FieldInfo
-  errors: Array<string>
+  field: TagsBaseField
+  errors: boolean
   disabled: boolean
 }>()
 
@@ -18,29 +17,22 @@ const localModelValue = computed({
   get: () => props.modelValue,
   set: value => emits('update:modelValue', value),
 })
-
-const currentValue = ref('')
-const isDuplicateValue = computed(() => localModelValue.value.includes(localModelValue))
-
-const onAddValue = () => {
-  if (isDuplicateValue.value)
-    return
-
-  localModelValue.value.push(currentValue.value)
-  currentValue.value = ''
+const onDelete = (index: number) => {
+  localModelValue.value = localModelValue.value.toSpliced(index, 1)
 }
 </script>
 
 <template>
   <AppCombobox
-    v-model="currentValue"
+    v-model="localModelValue"
     multiple
-    @keydown.enter="onAddValue"
   >
-    <template #selection="{ item }">
-      <VChip>
+    <template #selection="{ item, index }">
+      <VChip
+          closable
+          @click:close="onDelete(index)"
+      >
         {{ item.title }}
-        <VIcon :icon="IconsList.XIcon" />
       </VChip>
     </template>
   </AppCombobox>

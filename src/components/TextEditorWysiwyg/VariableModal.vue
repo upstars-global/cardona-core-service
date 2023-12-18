@@ -67,7 +67,7 @@ const deleteForm = () => {
           <VRow
             v-for="itemKey in Object.keys(formModal)"
             :key="itemKey"
-            class="flex-nowrap align-items-center justify-content-end mb-1"
+            class="flex-nowrap align-center justify-content-end mb-1"
           >
             <VCol class="font-small-3">
               {{ itemKey }}
@@ -109,7 +109,7 @@ const deleteForm = () => {
             :color="VColors.Primary"
             @click="save"
           >
-            <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex justify-content-center align-center">
               <span>{{ $t('action.save') }}</span>
             </div>
           </VBtn>

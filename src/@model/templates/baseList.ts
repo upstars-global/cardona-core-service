@@ -5,7 +5,6 @@ import type { ViewInfo } from '../view'
 import type { BColors, BLightColors } from '../bootstrap' // TODO remove
 import type { TableField } from './tableFields'
 import type { ProjectFilterTypes } from '@filterConfig'
-// import i18n from '@/plugins/i18n'
 import { SelectMode } from '@/@model/enums/selectMode'
 
 export enum SortDirection {
