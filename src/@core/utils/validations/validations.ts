@@ -30,6 +30,8 @@ import {
   validatorRange,
   validatorListPhoneAndDomain,
   validatorDateISO8601,
+  rangeDateRequired,
+  dateRangeDifferent,
 } from './validators'
 
 // ////////////////////////////////////////////////////////
@@ -132,6 +134,16 @@ export const phone_and_domain_list = extend('phone_and_domain_list', {
 export const date_YYYY_MM_DD = extend('date_YYYY_MM_DD', {
   validate: validatorDateISO8601,
   message: (_, values) => i18n.t('validations.dateISO8601', values) as any,
+})
+
+export const range_date_required = extend('range_date_required', {
+  validate: rangeDateRequired,
+  message: i18n.t('validations.dateRange') as any,
+})
+
+export const range_date_different = extend('range_date_different', {
+  validate: dateRangeDifferent,
+  message: i18n.t('validations.dateRangeDifferent') as any,
 })
 
 configure(

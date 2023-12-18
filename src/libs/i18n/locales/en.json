@@ -271,7 +271,9 @@
     "phone": "Phone can contain only numbers and one plus",
     "invalidList": "Incorrect field of list",
     "Demo_text_ALREADY_EXISTS": "This entry already exists in the collection",
-    "dateISO8601": "The entered value has an invalid format date. The format should be YYYY-MM-DD"
+    "dateISO8601": "The entered value has an invalid format date. The format should be YYYY-MM-DD",
+    "dateRange": "The valid period field is required",
+    "dateRangeDifferent": "The invalid period field, date from and to should be different"
   },
   "toast": {
     "success": {

@@ -62,3 +62,15 @@ export const validatorDateISO8601 = (dateString: string): boolean => {
 
   return dateRegExp.test(dateString)
 }
+
+export const rangeDateRequired = (dateDiapason: string, args): boolean => {
+  const [separator = 'to'] = args as Array<string>
+  const dates = dateDiapason.split(separator).map((date) => date.trim())
+  return dates.every(Boolean)
+}
+
+export const dateRangeDifferent = (dateDiapason: string, args): boolean => {
+  const [separator = 'to'] = args as Array<string>
+  const [from, to] = dateDiapason.split(separator).map((date) => date.trim())
+  return from !== to
+}
