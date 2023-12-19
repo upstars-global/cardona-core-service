@@ -1,0 +1,26 @@
+@mixin scroll-bar-theme($color) {
+  .main-menu-content{
+    &::-webkit-scrollbar {
+      background-color: $color;
+      border-style: none;
+      width: 13px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: $color;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #babac0;
+      border-radius: 16px;
+      border: 3px solid $color;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #a0a0a5;
+    }
+
+    &::-webkit-scrollbar-button {
+      display: none;
+    }
+  }
+}
