@@ -45,7 +45,7 @@ export function basePermissions<T>({ entityName, config }: PermissionsParams<T>)
   const getPermission = (key: string, action: PermissionLevel): boolean =>
     onePermissionKey
       ? store.getters.abilityCan(onePermissionKey, PermissionLevel.view)
-      : store.getters.abilityCan(key, action)
+      : store.getters.abilityCan(key, action) || false
 
   return {
     canCreate: getPermission(permissionKey, PermissionLevel.create),
