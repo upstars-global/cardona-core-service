@@ -16,15 +16,15 @@ export const getExcessKeyVariable = (
 
 export const getVariablesFromAllLocaleText = (metaTitle: FieldTranslationsLocale) =>
   Object.entries(metaTitle || {})
-    .map(([_, value]: any) => value.value)
+    ?.map(([_, value]: any) => value.value)
     ?.join('') || ''
 export const filterString = (inputString: string, localeVariables: string): string => {
-  const removedVariable = inputString.replaceAll(
+  const removedVariable = inputString?.replaceAll(
     `<span class="variable-box">{${localeVariables}}</span>`,
     '',
   )
 
-  const existOnlySpaces = !removedVariable.replaceAll('&nbsp;', '').trim().length
+  const existOnlySpaces = !removedVariable?.replaceAll('&nbsp;', '').trim().length
   if (existOnlySpaces)
     return ''
 

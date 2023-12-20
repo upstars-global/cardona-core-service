@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import {TagsBaseField} from "@/@model/templates/baseField";
+import {TagsBaseField} from "../../../../@model/templates/baseField";
 
 const props = defineProps<{
   modelValue: Array<string>

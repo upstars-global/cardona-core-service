@@ -8,7 +8,7 @@ export interface ITagsBaseField extends IBaseField {
 
 export class TagsBaseField extends BaseField implements ITagsBaseField {
   readonly component: Component = TagsField
-  protected _value?: string[]
+  protected _value?: string[] = []
 
   constructor(field: ITagsBaseField) {
     super(field)

@@ -27,7 +27,7 @@ export class DateBaseField extends BaseField implements IDateBaseField {
 
   constructor(field: IDateBaseField) {
     super(field)
-    this.separator = field.separator ?? dateSeparators[i18n.locale]
+    this.separator = field.separator ?? dateSeparators[i18n.locale.value]
     this._value = field.value && this.getISODateValue(field.value)
     this.isRangeMode = field.isRangeMode
     this.isStartDateNow = field.isStartDateNow

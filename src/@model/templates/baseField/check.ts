@@ -8,7 +8,7 @@ export interface ICheckBaseField extends IBaseField {
 
 export class CheckBaseField extends BaseField implements ICheckBaseField {
   readonly component: Component = CheckField
-  protected _value?: boolean
+  protected _value?: boolean = false
 
   constructor(field: ICheckBaseField) {
     super(field)

@@ -1,7 +1,7 @@
 import { Component } from 'vue'
 import { TranslateResult } from 'vue-i18n'
 import { PermissionType } from '@permissions'
-import store from "@/store";
+import store from "../../../store";
 import {IValidationConfig} from "@/@model/validations";
 import {OptionsItem} from "../../../@model";
 

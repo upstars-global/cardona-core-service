@@ -1,6 +1,6 @@
 import { Component } from 'vue'
 import { BaseField, IBaseField } from './base'
-import TextareaField from '@/components/templates/FieldGenerator/_components/TextareaField.vue'
+import TextareaField from "../../../components/templates/FieldGenerator/_components/TextareaField.vue";
 
 export interface ITextareaBaseField extends IBaseField {
   readonly value?: string

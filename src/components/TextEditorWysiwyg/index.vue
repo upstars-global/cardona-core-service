@@ -218,11 +218,12 @@ const variableKeyUnselect = () => {
   variableKeySelect.value = ''
 }
 
+const modalId = 'variable-modal'
 const setVariableKeySelect = (key: string) => {
-  // Установить ключь для работы с конкретной переменной
-  // Данный ключь будет использоваться в модальном окне
   variableKeySelect.value = key
-  modal.showModal('variable-modal')
+  nextTick(() => {
+    modal.showModal(modalId)
+  })
 }
 
 const updateVariableTextByKey = val => {
@@ -235,7 +236,6 @@ const updateVariableTextByKey = val => {
 }
 
 const deleteVariableTextByKey = () => {
-  // Удаляем только с масива переменных но оставляем в буффере для возвращения заполненных данных
   if (!globalEditor.value)
     return
   globalEditor.value.html.set(
@@ -254,10 +254,10 @@ const deleteVariableTextByKey = () => {
 <template>
   <div class="block-text-edite">
     <VariableModal
-      v-if="variableKeySelect"
       :key="variableKeySelect"
       :value="variableTextBuffer[variableKeySelect]"
       :key-var="variableKeySelect"
+      :modal-id="modalId"
       @update-value="updateVariableTextByKey"
       @close-modal="variableKeyUnselect"
       @delete-key="deleteVariableTextByKey"
@@ -285,11 +285,13 @@ const deleteVariableTextByKey = () => {
           v-for="key in Object.keys(variableTextBuffer)"
           :key="key"
           label
+          closable
           :color="VColors.Primary"
           class="tag-variable mr-1 mb-50"
           @click="setVariableKeySelect(key)"
+          @click:close="deleteVariableTextByKey(key)"
         >
-          <span class="pr-1">{{ `{${key}\}` }} </span><VIcon :icon="IconsList.XIcon" />
+          <span class="pr-1">{{ `{${key}\}` }} </span>
         </VChip>
       </div>
     </div>

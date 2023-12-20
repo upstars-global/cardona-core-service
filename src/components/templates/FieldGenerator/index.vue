@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {BaseField, CheckBaseField, SwitchBaseField} from '../../../@model/templates/baseField'
-import store from "@/store";
+import store from "../../../store";
 import { Field } from 'vee-validate';
 import {IconsList} from "../../../@model/enums/icons";
 

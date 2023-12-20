@@ -9,7 +9,7 @@ import {i18n} from "@/plugins/i18n";
 type MultiselectProps = {
   modelValue: OptionsItem[] | string[] | number[]
   field: MultiSelectBaseField
-  errors?: string[]
+  errors?: boolean
   disabled?: boolean
   size?: BSize
   placeholder?: string
@@ -17,7 +17,6 @@ type MultiselectProps = {
 
 const props = withDefaults(defineProps<MultiselectProps>(), {
   modelValue: () => [],
-  errors: () => [],
   size: BSize.Md,
   placeholder: i18n.t('placeholder.choose._') as string,
 })
