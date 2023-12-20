@@ -381,7 +381,9 @@ import {
   checkExistsPage,
   convertCamelCase,
   convertLowerCaseFirstSymbol,
+  isEmptyString,
   isNotEmptyNumber,
+  isNullOrUndefinedValue,
 } from '../../../helpers'
 import StatusField from './_components/StatusField.vue'
 import PillStatusField from './_components/PillStatusField.vue'
@@ -747,6 +749,13 @@ export default {
           ...filters,
         })
       )
+
+      for (const key in filters) {
+        const isEmptyValue = isNullOrUndefinedValue(filters[key]) || isEmptyString(filters[key])
+        const isEmptyArray = Array.isArray(filters[key]) && filters[key].isEmpty
+
+        if (isEmptyValue || isEmptyArray) delete filters[key]
+      }
 
       return filters
     }
