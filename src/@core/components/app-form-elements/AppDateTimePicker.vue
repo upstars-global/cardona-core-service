@@ -117,7 +117,6 @@ defineExpose({ refFlatPicker })
 
 <template>
   <div class="app-picker-field">
-    <!-- v-input -->
     <VLabel
       v-if="fieldProps.label"
       class="mb-1 text-body-2 text-high-emphasis"
@@ -138,7 +137,6 @@ defineExpose({ refFlatPicker })
       :style="props.style"
     >
       <template #default="{ id, isDirty, isValid, isDisabled, isReadonly }">
-        <!-- v-field -->
         <VField
           v-bind="{ ...fieldProps, label: undefined }"
           :id="id.value"
@@ -183,7 +181,6 @@ defineExpose({ refFlatPicker })
       </template>
     </VInput>
 
-    <!-- flat picker for inline props -->
     <FlatPickr
       v-if="isInlinePicker"
       v-bind="compAttrs"
@@ -197,7 +194,6 @@ defineExpose({ refFlatPicker })
 </template>
 
 <style lang="scss">
-/* stylelint-disable no-descending-specificity */
 @use "flatpickr/dist/flatpickr.css";
 @use "@core/scss/base/mixins";
 

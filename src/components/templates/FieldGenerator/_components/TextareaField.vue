@@ -6,12 +6,11 @@ type TextareaFieldProps = {
   modelValue?: string
   field: TextareaBaseField
   disabled?: boolean
-  errors?: string[]
+  errors?: boolean
 }
 
 const props = withDefaults(defineProps<TextareaFieldProps>(), {
   modelValue: '',
-  errors: () => [],
 })
 
 const emit = defineEmits<{
@@ -29,10 +28,9 @@ const localModelValue = computed({
   <AppTextarea
     v-model="localModelValue"
     :placeholder="field.label"
-    :state="errors.isNotEmpty ? false : null"
+    :state="errors ? false : null"
     no-resize
     :counter="field.maxLength"
-    :rules="field.validationRules"
     :disabled="disabled"
     persistent-counter
   />

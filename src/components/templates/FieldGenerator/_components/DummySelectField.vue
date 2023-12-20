@@ -4,7 +4,7 @@ import { computed } from 'vue'
 const props = defineProps<{
   modelValue: object
   options: Array<any>
-  errors: Array<string>
+  errors: boolean
   size: string // TODO: refactor sizes
   placeholder: string
   disabled: boolean

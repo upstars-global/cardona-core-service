@@ -19,6 +19,8 @@ import { StatusWithVariant, ViewInfo, ViewType } from './view'
 import type { TransactionType } from './enums/playersTransactions'
 import type { BColors, BLightColors } from './bootstrap'
 import { BaseDatePeriod } from './date'
+import {SeoForm} from "./seo";
+import {getTranslationForm, TranslationForm} from "./translations";
 
 
 export interface PhoneAndCountry {
@@ -197,9 +199,9 @@ export class DemoForm {
   readonly textareaWithCounter: TextareaBaseField
   readonly tags: TagsBaseField
   readonly url: TextBaseField
-  readonly seo: SeoData
+  readonly seo: SeoForm
   readonly localisationParameters: Record<string, Record<string, string>>
-  public fieldTranslations: FieldTranslationsData
+  public fieldTranslations: TranslationForm
   public image: string
   readonly conditions: ConditionsBaseField
   public usersList: UsersListBaseField
@@ -450,14 +452,14 @@ export class DemoForm {
       validationRules: {required: true},
       fetchOptionsActionName: 'conditions/fetchConditions',
     })
-    this.seo = data?.seo
-    this.fieldTranslations = data?.fieldTranslations
-    this.localisationParameters = data?.localisationParameters || {}
     this.usersList = new UsersListBaseField({
       key: 'users-list',
       label: i18n.t('page.demo.usersList'),
       value: data?.usersList,
     })
+    this.localisationParameters = data?.localisationParameters || {}
+    this.seo = new SeoForm(data?.seo)
+    this.fieldTranslations = getTranslationForm(this, data)
   }
 }
 export class DemoSideBar {

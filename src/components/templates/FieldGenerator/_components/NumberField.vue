@@ -7,11 +7,11 @@ import {toIntegerNumbers, toPositiveNumbers} from "@/helpers";
 interface Props {
   modelValue: NumberOrString
   field: NumberBaseField
-  errors?: Array<string>
+  errors?: boolean
   disabled?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), { errors: () => [], modelValue: '' })
+const props = withDefaults(defineProps<Props>(), { modelValue: '' })
 
 const emits = defineEmits<{
   (e: 'update:modelValue', string: NumberOrString): void
@@ -53,7 +53,7 @@ const onKeyDown = (event) => {
   <AppTextField
       v-model.trim="localValue"
       :placeholder="field.placeholder || field.label"
-      :state="errors.isNotEmpty ? false : null"
+      :state="errors ? false : null"
       type="number"
       :disabled="disabled"
       autocomplete="off"

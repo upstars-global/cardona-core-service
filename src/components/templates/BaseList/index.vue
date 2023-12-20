@@ -28,8 +28,8 @@ import MultipleActions from './_components/MultipleActions.vue'
 import {
   checkExistsPage,
   convertCamelCase,
-  convertLowerCaseFirstSymbol,
-} from '@/helpers'
+  convertLowerCaseFirstSymbol, isEmptyString, isNullOrUndefinedValue,
+} from '../../../helpers'
 
 const props = defineProps<{
   config: IBaseListConfig
@@ -321,6 +321,12 @@ const setRequestFilters = (): PayloadFilters => {
       })
   )
 
+  for (const key in filters) {
+    const isEmptyValue = isNullOrUndefinedValue(filters[key]) || isEmptyString(filters[key])
+    const isEmptyArray = Array.isArray(filters[key]) && filters[key].isEmpty
+
+    if (isEmptyValue || isEmptyArray) delete filters[key]
+  }
   return filters
 }
 
@@ -648,6 +654,7 @@ onBeforeMount(async () => {
             :field="field"
             :item="item.raw"
             :cell="cell"
+            :get-update-route="getUpdateRoute"
             @click.stop
           />
           <StatusField

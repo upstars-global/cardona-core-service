@@ -4,6 +4,7 @@ import { VColors, VVariants } from '../../@model/vuetify'
 
 type Value = Record<string, unknown>
 interface Props {
+  modalId: string
   value: Value
   keyVar: string
 }
@@ -16,12 +17,11 @@ interface Emits {
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
-const id = 'variable-modal'
 const formModal = ref(props.value)
 const modal = inject('modal')
 
 const closed = () => {
-  modal.hideModal(id)
+  modal.hideModal(props.modalId)
 }
 
 const onHideModal = () => {
@@ -30,23 +30,20 @@ const onHideModal = () => {
 
 const save = () => {
   emit('update-value', formModal.value)
-  modal.hideModal(id)
+  modal.hideModal(props.modalId)
 }
 
 const deleteForm = () => {
   emit('delete-key')
-  modal.hideModal(id)
+  modal.hideModal(props.modalId)
 }
 </script>
 
 <!-- TODO: refactor sizes -->
 <template>
   <BaseModal
-    :id="id"
+    :id="modalId"
     :title="$t('common.banners.variableTitle')"
-    size="md"
-    centered
-    hide-footer
     @hide="onHideModal"
   >
     <VCard

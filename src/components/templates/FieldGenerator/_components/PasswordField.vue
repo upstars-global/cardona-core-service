@@ -8,14 +8,13 @@ import {VVariants} from "@/@model/vuetify";
 interface Props {
   modelValue: string
   field: PasswordBaseField
-  errors: Array<string>
+  errors: boolean
   disabled?: boolean
   showPassword?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
-  errors: () => [],
 })
 
 const emits = defineEmits<{

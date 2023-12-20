@@ -2,6 +2,7 @@ import { isNumber, isString } from 'lodash'
 import { useRouter } from 'vue-router'
 import {BaseField, DateBaseField, NumberRangeBaseField} from '../@model/templates/baseField'
 import type {NumberOrString, OptionsItem} from '../@model'
+import store from "../store";
 
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
 
@@ -12,23 +13,37 @@ export const transformFormData = (form): object => {
 
       if (typeof transformedValue === 'string') acc[key] = transformedValue
       else acc = { ...acc, ...transformedValue }
-    } else if (valueData instanceof BaseField) {
+    }
+    else if (valueData instanceof BaseField) {
       acc[key] = valueData.transformField()
-    } else if (Array.isArray(valueData) && typeof valueData[0] !== 'string') {
+    }
+    else if (Array.isArray(valueData) && typeof valueData[0] !== 'string') {
       acc[key] = valueData
           .map((item) =>
               item instanceof BaseField ? item.transformField() : transformFormData(item)
           )
           .filter((item) => !!item)
-    } else if (isObject(valueData)) {
-      const valueDataInner = JSON.parse(JSON.stringify(valueData))
-      Object.keys(valueData).forEach((keyInner) => {
-        if (valueData[keyInner] instanceof BaseField) {
-          valueDataInner[keyInner] = valueData[keyInner].transformField()
-        } else {
-          valueDataInner[keyInner] = valueData[keyInner]
-        }
-      })
+    }
+    else if (isObject(valueData)) {
+      let valueDataInner = JSON.parse(JSON.stringify(valueData))
+      if (key === 'fieldTranslations') {
+        const {mainLocale = 'ru'} = store.getters.selectedProject;
+        Object.keys(valueDataInner).forEach((keyInner) => {
+          valueDataInner[keyInner][mainLocale].value = form[keyInner]?.value || form.seo[keyInner].value
+        })
+      }
+      else if (key === 'localisationParameters') {
+        valueDataInner = store.state.textEditor.variableTextBuffer
+      }
+      else {
+        Object.keys(valueData).forEach((keyInner) => {
+          if (valueData[keyInner] instanceof BaseField) {
+            valueDataInner[keyInner] = valueData[keyInner].transformField()
+          } else {
+            valueDataInner[keyInner] = valueData[keyInner]
+          }
+        })
+      }
       acc[key] = valueDataInner
     } else {
       acc[key] = valueData

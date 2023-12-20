@@ -7,11 +7,10 @@ const props = withDefaults(
     modelValue: string
     field: ConditionsBaseField
     disabled?: boolean
-    errors: Array<string>
+    errors: boolean
   }>(),
   {
     modelValue: '',
-    errors: () => [],
   }
 )
 

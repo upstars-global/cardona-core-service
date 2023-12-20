@@ -33,16 +33,15 @@ interface NumberRangeValue {
 type Props = {
   modelValue: NumberRangeValue
   field?: NumberBaseField
-  errors?: Array<string>
+  errors?: boolean
   disabled?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  errors: () => [],
   modelValue: () => ({ from: '', to: '' }),
   field: () => ({} as NumberBaseField),
 })
-const inputClass = computed(() => ({ 'border-danger rounded': props.errors?.isNotEmpty }))
+const inputClass = computed(() => ({ 'border-danger rounded': props.errors }))
 
 const emits = defineEmits<{
   (e: 'update:modelValue', value: NumberRangeValue): void
