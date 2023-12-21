@@ -243,7 +243,7 @@ const currentTab = ref('main')
               <FieldGenerator v-model="formData.phone" :disabled="isDisabledField" />
             </VCol>
 
-<!--            <VCol cols="4">
+            <VCol cols="4">
               <FieldGenerator v-model="formData.password" :disabled="isDisabledField" />
             </VCol>
             <VCol cols="4" class="pt-2">
@@ -251,7 +251,7 @@ const currentTab = ref('main')
                   v-model="formData.passwordFieldWithGeneration"
                   :disabled="isDisabledField"
               />
-            </VCol>-->
+            </VCol>
           </VRow>
 
           <VRow class="mb-2">

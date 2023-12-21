@@ -92,6 +92,7 @@ const onSearch = debounce(async (search: string, loading: Function) => {
         class="select-field"
         :class="selectClasses"
         :disabled="disabled"
+        :clearable="field.clearable"
         @search="onSearch"
     >
       <template #no-options="{ loading, search }">

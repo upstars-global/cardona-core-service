@@ -64,16 +64,17 @@ const onSearch = (search: string) => emits('search', search)
     :class="formGroupClasses"
   >
     <VLabel
-      :for="modelValue?.key"
-      class="mb-1 field-generator-label text-body-2 text-high-emphasis"
+        v-if="groupLabel"
+        :for="modelValue?.key"
+        class="mb-1 field-generator-label text-body-2 text-high-emphasis"
     >
       <span>
         {{ groupLabel }}
       </span>
       <VIcon
-        v-if="withInfo && modelValue.info"
-        :icon="IconsList.InfoIcon"
-        class="text-muted ml-25 align-text-top"
+          v-if="withInfo && modelValue.info"
+          :icon="IconsList.InfoIcon"
+          class="text-muted ml-25 align-text-top"
       />
     </VLabel>
 

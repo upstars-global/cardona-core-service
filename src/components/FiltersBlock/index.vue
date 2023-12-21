@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import {computed, onMounted, ref, watch} from 'vue'
+import {useRoute} from 'vue-router'
 import store from '../../store'
-import { setStorage } from '../../helpers/storage'
+import {setStorage} from '../../helpers/storage'
 import useToastService from '../../helpers/toasts'
-import type { Filter } from '../../@model/filter'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
-import { IconsList } from '../../@model/enums/icons'
+import {IconsList} from '../../@model/enums/icons'
 import FilterSelector from './_components/FilterSelector.vue'
-import { VColors, VVariants } from '@/@model/vuetify'
+import {VColors, VSizes, VVariants} from '@/@model/vuetify'
+import {BaseField} from "@/@model/templates/baseField";
 
 const props = defineProps<{
   entityName: string
-  filters: Filter[]
+  filters: BaseField[]
   isOpen?: boolean
-  size: string // TODO: refactor sizes
+  size: VSizes
 }>()
 
 const emits = defineEmits<{
   (e: 'apply'): void
-  (e: 'changeSelectedFilters', filters: Filter[]): void
+  (e: 'changeSelectedFilters', filters: BaseField[]): void
 }>()
 
 const route = useRoute()
@@ -28,12 +28,12 @@ const { toastSuccess } = useToastService()
 const { name: pageName } = route
 const keyStorage = `${pageName}-${props.entityName}-list-filters`
 
-const selectedFilters = ref<Filter[]>([])
+const selectedFilters = ref<BaseField[]>([])
 
-const isSmallBlock: boolean = props.size === 'sm' // TODO: refactor sizes
+const isSmallBlock: boolean = props.size === VSizes.Small
 const headerTag: string = isSmallBlock ? 'h5' : 'h4'
 
-const onChange = (filter: Filter) => selectedFilters.value.push(filter)
+const onChange = (filter: BaseField) => selectedFilters.value.push(filter)
 
 const onApply = () => {
   store.commit('filtersCore/SET_LIST_ENTITY_NAME', props.entityName)
@@ -43,7 +43,7 @@ const onApply = () => {
   emits('apply')
 }
 
-const onRemoveFilter = ({ key }: Filter) => {
+const onRemoveFilter = ({ key }: BaseField) => {
   selectedFilters.value = selectedFilters.value.filter(filter => filter.key !== key)
 
   onApply()
@@ -74,7 +74,7 @@ onMounted(() => {
     selectedFilters.value = store.getters['filtersCore/appliedListFilters']
   }
   else if (initFiltersStorage) {
-    selectedFilters.value = props.filters.filter(({ key }: Filter) =>
+    selectedFilters.value = props.filters.filter(({ key }: BaseField) =>
       initFiltersStorage?.includes(key),
     )
 
@@ -162,8 +162,7 @@ const listNotSelected = computed(() => {
                 <VBtn
                   :variant="VVariants.Outlined"
                   :color="VColors.Error"
-                  class="btn-icon"
-                  :size="size"
+                  size="38"
                   @click="onRemoveFilter(filter)"
                 >
                   <VIcon :icon="IconsList.Trash2Icon" />
