@@ -5,6 +5,7 @@ import en from 'flatpickr/dist/l10n/default.js'
 import { Russian as ru } from 'flatpickr/dist/l10n/ru.js'
 import i18n from '../../../../libs/i18n'
 import { DateBaseField } from '../../../../@model/baseField'
+import { getISOStringWithoutTimezone } from '../../../../helpers/date'
 
 const props = withDefaults(
   defineProps<{
@@ -49,7 +50,7 @@ const modelValue = computed({
     class="form-control"
     :config="{
       ...flatPickrConfig,
-      minDate: field.isStartDateNow && Date.now(),
+      minDate: field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
       mode: field.isRangeMode ? 'range' : 'single',
       ...field.config,
     }"
