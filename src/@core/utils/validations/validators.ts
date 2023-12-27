@@ -1,5 +1,7 @@
 import { NumberOrString } from '../../../@model/index'
 import { PhoneAndCountry } from '../../../@model/demo'
+import { dateSeparators } from '../../../@model/date'
+import i18n from '../../../libs/i18n'
 
 export const validatorPositive = (value) => {
   if (value >= 0) {
@@ -35,7 +37,7 @@ export const validatorUrlValidator = (val) => {
 }
 
 export const validatorPhone = (value: string): boolean => {
-  const regExp: RegExp = /^\d+$/
+  const regExp = /^\d+$/
   const phoneWithoutPlus: string = value.replace('+', '')
 
   return regExp.test(phoneWithoutPlus)
@@ -63,14 +65,14 @@ export const validatorDateISO8601 = (dateString: string): boolean => {
   return dateRegExp.test(dateString)
 }
 
-export const rangeDateRequired = (dateDiapason: string, args): boolean => {
-  const [separator = 'to'] = args as Array<string>
+export const rangeDate = (dateDiapason: string, args): boolean => {
+  const [separator = dateSeparators[i18n.locale]] = args as Array<string>
   const dates = dateDiapason.split(separator).map((date) => date.trim())
-  return dates.every(Boolean)
+  return dates.length === 2 && dates.every(Boolean)
 }
 
 export const dateRangeDifferent = (dateDiapason: string, args): boolean => {
-  const [separator = 'to'] = args as Array<string>
+  const [separator = dateSeparators[i18n.locale]] = args as Array<string>
   const [from, to] = dateDiapason.split(separator).map((date) => date.trim())
   return from !== to
 }

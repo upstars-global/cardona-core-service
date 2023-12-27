@@ -11,9 +11,11 @@ const props = withDefaults(
   defineProps<{
     value: string
     field: DateBaseField
+    errors?: string[]
   }>(),
   {
     value: '',
+    errors: () => [],
   }
 )
 
@@ -45,23 +47,26 @@ const modelValue = computed({
 </script>
 
 <template>
-  <flat-pickr
-    v-model="modelValue"
-    class="form-control"
-    :config="{
-      ...flatPickrConfig,
-      minDate: field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
-      mode: field.isRangeMode ? 'range' : 'single',
-      ...field.config,
-    }"
-  />
+  <div :class="{ error: errors.isNotEmpty }">
+    <flat-pickr
+      v-model="modelValue"
+      :config="{
+        ...flatPickrConfig,
+        minDate: field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
+        mode: field.isRangeMode ? 'range' : 'single',
+        ...field.config,
+      }"
+    />
+  </div>
 </template>
 
 <style lang="scss">
 @import '../../../../@core/scss/vue/libs/vue-flatpicker.scss';
 
-.form-control[readonly].flatpickr-input {
-  background-color: inherit;
+.error {
+  .input {
+    border-color: $red;
+  }
 }
 </style>
 

@@ -30,7 +30,7 @@ import {
   validatorRange,
   validatorListPhoneAndDomain,
   validatorDateISO8601,
-  rangeDateRequired,
+  rangeDate,
   dateRangeDifferent,
 } from './validators'
 
@@ -136,8 +136,8 @@ export const date_YYYY_MM_DD = extend('date_YYYY_MM_DD', {
   message: (_, values) => i18n.t('validations.dateISO8601', values) as any,
 })
 
-export const range_date_required = extend('range_date_required', {
-  validate: rangeDateRequired,
+export const range_date = extend('range_date', {
+  validate: rangeDate,
   message: i18n.t('validations.dateRange') as any,
 })
 
