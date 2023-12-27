@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { findIndex } from 'lodash'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
 import { DownloadFormat, SortDirection } from '../../../@model/templates/baseList'
-import type {Filter, PayloadFilters} from '../../../@model/filter'
+import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/templates/BaseList/_components/fields/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
 import { ListSort } from '../../../@model'
@@ -30,6 +29,7 @@ import {
   convertCamelCase,
   convertLowerCaseFirstSymbol, isEmptyString, isNullOrUndefinedValue,
 } from '../../../helpers'
+import {VSizes} from "../../../@model/vuetify";
 
 const props = defineProps<{
   config: IBaseListConfig
@@ -37,7 +37,8 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits<{
-  (e: 'rowClicked', item: Record<string, unknown>): void
+  rowClicked: [item: Record<string, unknown>],
+  end: [item: Record<string, unknown>],
 }>()
 
 const modal = inject('modal')
@@ -120,9 +121,9 @@ const onClickRow = data => {
   emits('rowClicked', data)
 }
 
-/* const routerToUpdatePageId = item => {
+const routerToUpdatePageId = item => {
   router.push(getUpdateRoute(item))
-} */
+}
 
 // Table
 const items = ref([])
@@ -146,7 +147,6 @@ const isLoadingList = computed(() => {
   )
 
   const entityUrl: string = convertCamelCase(entityNameForLoad, '/')
-
   return store.getters.isLoadingEndpoint([
     `${entityUrl}/list`,
     `${entityUrl}/update`,
@@ -154,8 +154,8 @@ const isLoadingList = computed(() => {
   ])
 })
 
-/*
-const size = props.config?.small ? 'sm' : 'md' */ // TODO: refactor sizes
+
+const size = props.config?.small ? VSizes.Small : VSizes.Medium
 
 // Sort
 const sortStorageKey = `${currentPageName}-${entityName}-sort`
@@ -237,7 +237,10 @@ const getList = async () => {
 
 const reFetchList = () => getList()
 
-onChangePagination(reFetchList)
+onChangePagination(() => {
+  reFetchList()
+  selectedItems.value = []
+})
 
 const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
 
@@ -257,18 +260,6 @@ const onClickToggleStatus = async ({ id, isActive }) => {
   reFetchList()
 }
 
-/* const onUpdateItem = async item => {
-  const response = await store.dispatch(updateActionName, {
-    type: entityName,
-    data: { form: item },
-    customApiPrefix: props.config?.customApiPrefix,
-  })
-
-  reFetchList()
-
-  return response
-} */
-
 const onEditPosition = async ({ id }: { id: string }, position: number) => {
   await store.dispatch(updateActionName, {
     type: entityName,
@@ -280,7 +271,7 @@ const onEditPosition = async ({ id }: { id: string }, position: number) => {
 }
 
 // Search
-/* watch(searchQuery, reFetchList) */
+watch(() => searchQuery.value, reFetchList)
 
 // Export
 
@@ -365,7 +356,7 @@ const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
 
 const isFiltersShown = ref(false)
 
-const appliedFilters = computed<Filter[]>(() => {
+const appliedFilters = computed<BaseField[]>(() => {
   const isSameEntity: boolean = entityName === store.getters['filtersCore/listEntityName']
 
   return isSameEntity ? store.getters['filtersCore/appliedListFilters'] : []
@@ -397,12 +388,6 @@ watch(selectedItems, newItems => {
 })
 
 const onRowSelected = items => (selectedItems.value = items)
-
-/* const onChangeSelected = (state: boolean, index: number) =>
-  state ? refListTable.value.selectRow(index) : refListTable.value.unselectRow(index)
-
-const toggleAll = (state: boolean) =>
-  state ? refListTable.value.selectAllRows() : refListTable.value.clearSelected() */
 
 // Multiple actions
 const onClickToggleStatusMultiple = async (isActive: boolean) => {
@@ -480,16 +465,6 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
   reFetchList()
 }
 
-const getIndexByItemFromList = item => findIndex(items.value || [], item)
-
-const selectedItemIndex = computed(() => {
-  if (!selectedItem.value)
-    return Number.NaN
-  const itemIndex = getIndexByItemFromList(selectedItem.value)
-
-  return itemIndex > -1 ? itemIndex : Number.NaN
-})
-
 onBeforeMount(async () => {
   await getList()
 })
@@ -514,6 +489,7 @@ onBeforeMount(async () => {
       :sidebar-collapse-mode="config?.sidebarCollapseMode"
       @remove="onClickRemove(selectedItem)"
       @hide="resetSelectedItem"
+      @update="routerToUpdatePageId(selectedItem)"
       @update:model-value="resetSelectedItem"
     >
       <template #sidebar-actions="{ form }">
@@ -571,6 +547,7 @@ onBeforeMount(async () => {
       :is-open="config.filterList?.isNotEmpty && isFiltersShown"
       :entity-name="entityName"
       :filters="filters"
+      :size="size"
       @apply="reFetchList"
       @change-selected-filters="onChangeSelectedFilters"
     />

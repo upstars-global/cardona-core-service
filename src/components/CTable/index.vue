@@ -21,6 +21,7 @@ const props = defineProps<{
   draggable?: boolean
   sortData?: SortItem[]
   itemsPerPage: number
+  selectedItems: Array<Record<string, unknown>>
   isLoadingList: boolean
 }>()
 
@@ -65,6 +66,7 @@ const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxS
 
 <template>
   <VDataTable
+      :model-value="selectedItems"
       :show-select="selectable"
       :select-strategy="selectMode"
       :headers="fields"

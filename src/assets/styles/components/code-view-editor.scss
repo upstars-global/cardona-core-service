@@ -1,0 +1,43 @@
+.block-text-edite,
+.code-view-editor {
+  .fr-toolbar,
+  .fr-element,
+  .fr-second-toolbar,
+  .CodeMirror,
+  .fr-wrapper {
+    background: rgb(var(--v-theme-surface));
+    color: rgb(var(--v-theme-on-background));
+  }
+
+  .fr-toolbar,
+  .fr-popup,
+  .fr-modal {
+    .fr-command.fr-btn {
+      color: rgb(var(--v-theme-on-background));
+      svg path {
+        fill: rgb(var(--v-theme-on-background));
+      }
+    }
+  }
+
+  .fr-desktop .fr-command:hover:not(.fr-table-cell),
+  .fr-desktop .fr-command:focus:not(.fr-table-cell),
+  .fr-desktop .fr-command.fr-btn-hover:not(.fr-table-cell),
+  .fr-desktop .fr-command.fr-expanded:not(.fr-table-cell) {
+    background: rgb(var(--v-theme-surface));
+  }
+  .fr-box.fr-basic {
+    .fr-wrapper,
+    .fr-element {
+      color: inherit;
+    }
+  }
+  .cm-string,
+  .cm-number {
+    color: rgb(var(--v-theme-primary));
+  }
+
+  .cm-s-default .cm-string.cm-property {
+    color: rgb(var(--v-theme-on-background));
+  }
+}

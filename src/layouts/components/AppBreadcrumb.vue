@@ -13,7 +13,7 @@
               </template>
               <template #title="{index, item}">
                 <template v-if="item.active">{{$t(`title.${item.title}`)}}</template>
-                <RouterLink :to="item.to" v-else>
+                <RouterLink :to="item.to" v-else class="d-flex">
                   <template v-if="index">
                     {{$t(`title.${item.title}`)}}
                   </template>

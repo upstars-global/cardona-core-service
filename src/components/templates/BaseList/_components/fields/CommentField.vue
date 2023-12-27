@@ -9,8 +9,9 @@ defineProps<{
     {{ value ? value : '-' }}
 
     <VTooltip
-      activator="parent"
-      location="bottom"
+        v-if="value"
+        activator="parent"
+        location="bottom"
     >
       <div class="comment-text__tooltip">
         {{ value }}

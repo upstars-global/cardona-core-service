@@ -290,7 +290,7 @@ const onChangeCheckboxTable = (
 
 .group-fragment-setting-table {
   .header-table {
-    background-color: #F3F2F7; /*TODO: replace to variable */
+    background-color: rgb(var(--v-theme-background));
   }
 }
 

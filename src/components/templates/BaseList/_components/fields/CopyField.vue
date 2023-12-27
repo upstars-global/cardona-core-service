@@ -17,7 +17,7 @@ const labelValue = computed(() => (props.isShort ? getShortString(props.value) :
 <template>
   <div
     v-if="value"
-    class="text-break copy-field"
+    class="text-break copy-field d-flex align-center gap-2"
   >
     <slot :label="labelValue">
       <span>
@@ -27,7 +27,7 @@ const labelValue = computed(() => (props.isShort ? getShortString(props.value) :
 
     <VIcon
       :icon="IconsList.CopyIcon"
-      class="cursor-pointer ml-1"
+      class="cursor-pointer"
       @click.stop="copyToClipboard(value)"
     />
   </div>

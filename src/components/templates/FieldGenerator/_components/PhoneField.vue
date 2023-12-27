@@ -50,6 +50,12 @@ const onFocus = () => {
 const onBlur = () => {
   isFocused.value = false
 }
+const validateValue = (e: KeyboardEvent) => {
+  if(/[^\w\s]/.test(e.key)) {
+    e.preventDefault()
+  }
+}
+
 </script>
 
 <template>
@@ -63,6 +69,7 @@ const onBlur = () => {
         :active="isFocused"
         :color="isFocused ? 'primary' : 'grey'"
         class="v-input"
+        @keydown="validateValue"
     >
       <Cleave
           v-model="localModelValue"

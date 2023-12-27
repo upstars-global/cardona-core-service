@@ -227,5 +227,9 @@ const getValue = (locale: string, key: string): string => {
   .is-hide-checkbox {
     margin-top: 1.75rem;
   }
+
+  .input-text.disable {
+    background: rgb(var(--v-theme-background));
+  }
 }
 </style>
