@@ -4,6 +4,7 @@ import { BaseField, IBaseField } from './base'
 import DateField from '../../components/templates/FieldGenerator/_components/DateField.vue'
 import { BaseDatePeriod, dateSeparators } from '../date'
 import { getISOStringWithoutTimezone, getUTCISOString } from '../../helpers/date'
+import { ValidationRule } from '../validations'
 
 type DateBaseFieldInputValue = string | BaseDatePeriod
 
@@ -24,6 +25,7 @@ export class DateBaseField extends BaseField implements IDateBaseField {
   readonly withTime?: boolean
   readonly config?: Record<string, unknown>
   readonly separator: string
+  readonly validationRules?: ValidationRule
 
   constructor(field: IDateBaseField) {
     super(field)
@@ -33,13 +35,15 @@ export class DateBaseField extends BaseField implements IDateBaseField {
     this.isStartDateNow = field.isStartDateNow
     this.withTime = field.withTime
     this.config = field.config
+    this.validationRules = this.getValidationRules(field.validationRules)
   }
 
   private getISODateValue(value: DateBaseFieldInputValue): string {
     return value instanceof BaseDatePeriod
-      ? `${getISOStringWithoutTimezone(value.dateFrom)} ${
-          this.separator
-        } ${getISOStringWithoutTimezone(value.dateTo)}`
+      ? Object.values(value)
+          .filter(Boolean)
+          .map((date: string) => getISOStringWithoutTimezone(date))
+          .join(` ${this.separator} `)
       : getISOStringWithoutTimezone(value)
   }
 
@@ -56,5 +60,19 @@ export class DateBaseField extends BaseField implements IDateBaseField {
           [`${key}To`]: dateTo,
         }
       : dateFrom
+  }
+
+  private getValidationRules(
+    rules?: ValidationRule | Array<ValidationRule>
+  ): ValidationRule | undefined {
+    const rangeRequiredRules: ValidationRule[] = ['range_date', 'range_date_different']
+    const allRules: ValidationRule | ValidationRule[] | undefined =
+      this.isRangeMode && rules
+        ? rangeRequiredRules.concat(rules)
+        : this.isRangeMode
+        ? rangeRequiredRules
+        : rules
+
+    return allRules && super.transformRules(allRules)
   }
 }

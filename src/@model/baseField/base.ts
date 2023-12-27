@@ -41,9 +41,7 @@ export abstract class BaseField implements IBaseField {
     this.label = field.label
     this.placeholder = field.placeholder
     this.id = field.id ?? field.key
-    this.validationRules = Array.isArray(field.validationRules)
-      ? (field.validationRules.join('|') as ValidationRule)
-      : field.validationRules
+    this.validationRules = field.validationRules && this.transformRules(field.validationRules)
     this.description = field.description
     this.info = field.info
     this.permission = field.permission
@@ -63,6 +61,10 @@ export abstract class BaseField implements IBaseField {
 
   transformField() {
     return this._value
+  }
+
+  protected transformRules(rules: ValidationRule | ValidationRule[]): ValidationRule {
+    return Array.isArray(rules) ? (rules.join('|') as ValidationRule) : rules
   }
 }
 
