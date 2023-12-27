@@ -2,8 +2,8 @@
 import { computed } from 'vue'
 import type { _RouteLocationBase } from 'vue-router'
 import store from '../../../../../store'
-import CopyField from '@/components/templates/BaseList/_components/fields/CopyField.vue'
-import CopyShortField from '@/components/templates/BaseList/_components/fields/CopyShortField.vue'
+import CopyField from '../../../../../components/templates/BaseList/_components/fields/CopyField.vue'
+import CopyShortField from '../../../../../components/templates/BaseList/_components/fields/CopyShortField.vue'
 
 const props = defineProps<{
   item: Record<string, any>

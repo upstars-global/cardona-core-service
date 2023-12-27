@@ -1,6 +1,6 @@
 import { ANumberBaseField, IANumberBaseField } from './base'
 import { NumberOrString } from '../../index'
-import NumberField from "@/components/templates/FieldGenerator/_components/NumberField.vue";
+import NumberField from "../../../components/templates/FieldGenerator/_components/NumberField.vue";
 
 export interface INumberBaseField extends IANumberBaseField {
   readonly value?: NumberOrString

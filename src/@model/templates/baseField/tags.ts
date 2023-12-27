@@ -1,6 +1,6 @@
 import { Component } from 'vue'
 import { BaseField, IBaseField } from './base'
-import TagsField from "@/components/templates/FieldGenerator/_components/TagsField.vue";
+import TagsField from "../../../components/templates/FieldGenerator/_components/TagsField.vue";
 
 export interface ITagsBaseField extends IBaseField {
   readonly value?: string[]

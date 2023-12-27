@@ -1,6 +1,6 @@
 import { Component } from 'vue'
 import { BaseField, IBaseField } from './base'
-import UsersListField from '@/components/templates/FieldGenerator/_components/UsersListField.vue'
+import UsersListField from '../../../components/templates/FieldGenerator/_components/UsersListField.vue'
 
 export interface IUsersListBaseField extends IBaseField {
   readonly value?: Array<string>

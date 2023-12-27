@@ -1,6 +1,6 @@
 import { Component } from 'vue'
 import { BaseField, IBaseField } from './base'
-import SwitchField from '@/components/templates/FieldGenerator/_components/SwitchField.vue'
+import SwitchField from '../../../components/templates/FieldGenerator/_components/SwitchField.vue'
 
 export interface ISwitchBaseField extends IBaseField {
   readonly value?: boolean

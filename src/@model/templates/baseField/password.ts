@@ -1,6 +1,6 @@
 import { Component } from 'vue'
 import { BaseField, IBaseField } from './base'
-import PasswordField from "@/components/templates/FieldGenerator/_components/PasswordField.vue";
+import PasswordField from "../../../components/templates/FieldGenerator/_components/PasswordField.vue";
 
 export interface IPasswordBaseField extends IBaseField {
   readonly value?: string

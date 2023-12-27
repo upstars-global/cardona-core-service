@@ -1,6 +1,6 @@
 import { Component } from 'vue'
 import { BaseField, IBaseField } from './base'
-import PhoneField from "@/components/templates/FieldGenerator/_components/PhoneField.vue";
+import PhoneField from "../../../components/templates/FieldGenerator/_components/PhoneField.vue";
 
 export interface IPhoneBaseField extends IBaseField {
   readonly value?: string

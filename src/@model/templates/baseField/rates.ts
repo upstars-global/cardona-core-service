@@ -1,6 +1,6 @@
 import { Component } from 'vue'
 import { BaseField, IBaseField } from './base'
-import RatesField from '@/components/templates/FieldGenerator/_components/RatesField.vue'
+import RatesField from '../../../components/templates/FieldGenerator/_components/RatesField.vue'
 import {division, multiplication} from "@/helpers/math-operations";
 
 export interface RatesValueItem {

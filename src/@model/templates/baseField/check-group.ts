@@ -1,6 +1,6 @@
 import { Component } from 'vue'
 import { BaseField, IBaseField } from './base'
-import CheckGroupField from "@/components/templates/FieldGenerator/_components/CheckGroupField.vue";
+import CheckGroupField from "../../../components/templates/FieldGenerator/_components/CheckGroupField.vue";
 import {OptionsItem} from "../../../@model";
 
 interface CheckGroupOptionsItem extends OptionsItem {

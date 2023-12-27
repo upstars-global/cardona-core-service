@@ -1,7 +1,7 @@
 import { Component } from 'vue'
 import { IASelectBaseField, ASelectBaseField, SelectValue, ITransformFieldOptions } from './base'
 import { OptionsItem } from '../../../@model'
-import SelectField from "@/components/templates/FieldGenerator/_components/SelectField.vue";
+import SelectField from "../../../components/templates/FieldGenerator/_components/SelectField.vue";
 
 interface ISelectTransformFieldOptions extends ITransformFieldOptions {
   isStringDefaultValue?: boolean

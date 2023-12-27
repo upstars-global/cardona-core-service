@@ -1,7 +1,7 @@
 import { IANumberBaseField, ANumberBaseField } from './base'
 import { NumberOrString, NumberRangeBaseValue } from '../../../@model'
 import { division, multiplication } from '../../../helpers/math-operations'
-import NumberRangeField from "@/components/templates/FieldGenerator/_components/NumberRangeField.vue";
+import NumberRangeField from "../../../components/templates/FieldGenerator/_components/NumberRangeField.vue";
 
 export interface INumberRangeBaseField extends IANumberBaseField {
   value?: NumberRangeBaseValue

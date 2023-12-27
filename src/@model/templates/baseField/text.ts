@@ -2,7 +2,7 @@ import type { Component } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import type { IBaseField } from './base'
 import { BaseField } from './base'
-import TextField from '@/components/templates/FieldGenerator/_components/TextField.vue'
+import TextField from '../../../components/templates/FieldGenerator/_components/TextField.vue'
 
 export interface ITextBaseField extends IBaseField {
   readonly value?: string | number

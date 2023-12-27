@@ -1,6 +1,6 @@
 import { Component } from 'vue'
 import { BaseField, IBaseField } from './base'
-import TimeField from '@/components/templates/FieldGenerator/_components/TimeField.vue'
+import TimeField from '../../../components/templates/FieldGenerator/_components/TimeField.vue'
 
 export interface ITimeBaseField extends IBaseField {
   readonly value?: string

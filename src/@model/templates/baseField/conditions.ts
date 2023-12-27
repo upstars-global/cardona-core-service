@@ -1,7 +1,7 @@
 import { Component } from 'vue'
 import { BaseField, IBaseField } from './base'
 import store from '../../../store'
-import ConditionsField from "@/components/templates/FieldGenerator/_components/ConditionsField.vue";
+import ConditionsField from "../../../components/templates/FieldGenerator/_components/ConditionsField.vue";
 
 export interface IConditionsBaseField extends IBaseField {
   readonly value?: string

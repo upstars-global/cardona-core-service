@@ -1,5 +1,5 @@
 import { Component } from 'vue'
-import MultiSelectField from "@/components/templates/FieldGenerator/_components/MultiSelectField.vue";
+import MultiSelectField from "../../../components/templates/FieldGenerator/_components/MultiSelectField.vue";
 import { IASelectBaseField, ASelectBaseField, SelectValue, ITransformFieldOptions } from './base'
 import {OptionsItem} from "../../../@model";
 

@@ -1,6 +1,6 @@
 import { Component } from 'vue'
 import { BaseField, IBaseField } from './base'
-import RadioField from '@/components/templates/FieldGenerator/_components/RadioField.vue'
+import RadioField from '../../../components/templates/FieldGenerator/_components/RadioField.vue'
 import { TranslateResult } from 'vue-i18n'
 
 export interface RadioOption {

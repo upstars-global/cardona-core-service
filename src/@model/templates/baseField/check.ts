@@ -1,6 +1,6 @@
 import { Component } from 'vue'
 import { BaseField, IBaseField } from './base'
-import CheckField from "@/components/templates/FieldGenerator/_components/CheckField.vue";
+import CheckField from "../../../components/templates/FieldGenerator/_components/CheckField.vue";
 
 export interface ICheckBaseField extends IBaseField {
   readonly value?: boolean
