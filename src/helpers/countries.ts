@@ -14,7 +14,17 @@ export const countriesSelect = Object.keys(countries).map((item) => {
   } as CountryData
 })
 
-export const allPhoneCodesWithFlags = Object.values(countries).map(({ phone, emoji }) => ({
-  phone,
-  flag: emoji,
-}))
+const getCleanPhoneNumber = (numberPhone: string): string =>
+  numberPhone[0] === '+' ? numberPhone.slice(1) : numberPhone
+
+export const mappedCountryData = Object.entries(countries).map(
+  ([shortCode, { phone, emoji, ...other }]) => ({
+    ...other,
+    shortCode,
+    phone,
+    flag: emoji,
+  })
+)
+
+export const getCountryDataByPhone = (phoneNumber: string) =>
+  mappedCountryData.find(({ phone }) => getCleanPhoneNumber(phoneNumber).indexOf(phone) === 0)
