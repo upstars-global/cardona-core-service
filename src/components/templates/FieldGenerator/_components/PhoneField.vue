@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { PhoneBaseField } from '../../../../@model/baseField'
-import { allPhoneCodesWithFlags } from '../../../../helpers/countries'
+import { getCountryDataByPhone } from '../../../../helpers/countries'
 import Cleave from 'vue-cleave-component'
 
 type PhoneFieldProps = {
@@ -33,16 +33,7 @@ const modelValue = computed({
   },
 })
 
-const phoneFlag = computed(() => {
-  const cleanPhoneNumber: string =
-    modelValue.value[0] === '+' ? modelValue.value.slice(1) : modelValue.value
-
-  const phoneData = allPhoneCodesWithFlags.find(
-    ({ phone }) => cleanPhoneNumber.indexOf(phone) === 0
-  )
-
-  return phoneData?.flag
-})
+const phoneFlag = computed(() => getCountryDataByPhone(modelValue.value)?.flag)
 </script>
 
 <template>

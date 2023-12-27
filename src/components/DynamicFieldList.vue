@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row v-if="templateField">
+    <b-row v-if="templateField && !hideLabelOnEmptyList">
       <b-col v-if="isBaseField(templateField)">
         <label>{{ templateField?.label }}</label>
       </b-col>
@@ -102,9 +102,15 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    hideLabelOnEmptyList: {
+      type: Boolean,
+      default: true,
+    },
   },
-
-  setup(props) {
+  emits: {
+    'on-add-item': (itemData: { item: DynamicField; index: number }) => true,
+  },
+  setup(props, { emit }) {
     const rows = ref()
 
     watch(
@@ -204,6 +210,7 @@ export default defineComponent({
       }
 
       rows.value.push(itemTemplate)
+      emit('on-add-item', { item: itemTemplate, index: rows.value.length - 1 })
     }
 
     const onRemove = (index: NumberOrString) => !props.disabled && rows.value.splice(index, 1)

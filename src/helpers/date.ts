@@ -1,3 +1,5 @@
+import { Nullable } from '../@model'
+
 export const getISOStringWithoutTimezone = (isoString: string | Date): string => {
   if (!isoString) return ''
 
@@ -57,4 +59,16 @@ export const sortListByDate = (list: Array<any>, key: string): Array<any> => {
     const prevDate = new Date(key ? prev[key] : prev).getTime()
     return prevDate - nextDate
   })
+}
+
+export const serializeTimeToISO = (timeString: string): string => {
+  const [hours, minutes] = timeString.split(':')
+  const currentDate = new Date()
+  currentDate.setUTCHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0)
+  return currentDate.toISOString()
+}
+
+export const getTimeFromDate = (date: Nullable<string> | undefined): string => {
+  if (!date) return ''
+  return new Date(date).toISOString().slice(11, 16)
 }
