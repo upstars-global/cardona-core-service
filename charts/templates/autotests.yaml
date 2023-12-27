@@ -1,0 +1,37 @@
+{{ if .Values.autotests.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: {{ .Chart.Name }}-autotests
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: autotests
+        image: curlimages/curl:8.1.0
+        args:
+          - "-X"
+          - "POST"
+          - "-H"
+          - "CF-Access-Client-Id: 42482cb905a19aaabc0b255ff41fc546.access"
+          - "-H"
+          - "CF-Access-Client-Secret: 0842c5020d89a32d4c434d4ec24da948c67b6fa25427d864b5bd0b9ef1e456a6"
+          - "-u"
+          - "$(JENKINS_USER_NAME):$(JENKINS_USER_TOKEN)"
+          - "$(JENKINS_ADDR)/$(JENKINS_PATH)"
+        env:
+          - name: JENKINS_ADDR
+            value: {{ .Values.autotests.jenkins.addr }}
+          - name: JENKINS_PATH
+            value: {{ .Values.autotests.jenkins.path }}
+          - name: JENKINS_USER_NAME
+            value: {{ .Values.autotests.jenkins.user.name }}
+          - name: JENKINS_USER_TOKEN
+            value: {{ .Values.autotests.jenkins.user.token }}
+      restartPolicy: Never
+  backoffLimit: 1
+{{- end }}
+

@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+  annotations:
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+spec:
+  ingressClassName: nginx-cf-{{ .Release.Namespace }}
+  tls:
+    - hosts:
+        - {{.Values.ingressHostName | quote}}
+      secretName: "{{ .Values.ingressHostName }}.tls"
+
+  rules:
+    - host: "{{ .Values.ingressHostName }}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{.Release.Name}}
+                port:
+                  name: http
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "{{ .Release.Name }}"
+spec:
+  secretName: "{{ .Values.ingressHostName }}.tls"
+  dnsNames:
+    - "{{ .Values.ingressHostName }}"
+  issuerRef:
+    name: "letsencrypt-certs"
+    kind: ClusterIssuer

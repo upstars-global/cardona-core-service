@@ -1,0 +1,5 @@
+ingressHostName: "cardona-core-service.upstr.to"
+luckyrootService: "luckyroot-production-service"
+
+serverApiAddr:  luckyroot.net
+serverProxyAddr: back.prod.boffice.site

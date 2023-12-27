@@ -1,0 +1,9 @@
+luckyrootService: ""
+image:
+  name: "registry.digitalocean.com/bbq/backoffice/cardona-core-service"
+  tag: "latest"
+
+lrNamespace: internal-products
+
+autotests:
+  enabled: false

@@ -1,0 +1,14 @@
+ingressHostName: "cardona-core-service-staging.upstr.to"
+luckyrootService: "luckyroot-staging-service"
+
+serverApiAddr: staging.luckyroot.net
+serverProxyAddr: back.staging.boffice.site
+
+autotests:
+  enabled: true
+  jenkins:
+    addr: https://ci15.upstr.to
+    path: job/QA/job/autotests/job/cardona_staging//buildWithParameters
+    user:
+      name: argocd@upstars.com
+      token: 11bde0b10416a225848487bd824d87c430

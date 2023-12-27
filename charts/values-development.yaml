@@ -1,0 +1,7 @@
+ingressHostName: "cardona-core-service-develop.upstr.to"
+luckyrootService: "luckyroot-develop-service"
+
+
+
+serverApiAddr: develop.luckyroot.net
+serverProxyAddr: back.staging.boffice.site
