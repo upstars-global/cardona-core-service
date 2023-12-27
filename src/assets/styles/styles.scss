@@ -9,6 +9,7 @@
 @import "./components/v-breadcrumb";
 @import "./components/sidebar";
 @import "./components/transitions";
+@import "./components/code-view-editor";
 
 
 .font-weight-semi-bold {
@@ -60,4 +61,8 @@ hr {
 .v-card {
   overflow: visible;
   position: static;
+}
+
+.v-window {
+  overflow: visible;
 }
