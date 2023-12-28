@@ -83,6 +83,7 @@ import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
 import { useRouter } from '../../../@core/utils/utils'
 import { BaseSectionConfig } from '../BaseList/model'
 import { basePermissions } from '../../../helpers/base-permissions'
+import { redirectToNotFoundPage } from '../../../helpers/router'
 
 export default defineComponent({
   name: 'BaseSection',
@@ -184,17 +185,21 @@ export default defineComponent({
 
     if (props.withReadAction && entityId) {
       onBeforeMount(async () => {
-        const receivedEntity = await store.dispatch(readActionName, {
-          type: entityName,
-          id: entityId,
-          customApiPrefix: props.config?.customApiPrefix,
-        })
+        try {
+          const receivedEntity = await store.dispatch(readActionName, {
+            type: entityName,
+            id: entityId,
+            customApiPrefix: props.config?.customApiPrefix,
+          })
 
-        if (isCreatePage) {
-          receivedEntity.id = null
+          if (isCreatePage) {
+            receivedEntity.id = null
+          }
+
+          form.value = new EntityFormClass(receivedEntity)
+        } catch (error: any) {
+          await redirectToNotFoundPage(error.type)
         }
-
-        form.value = new EntityFormClass(receivedEntity)
       })
     }
 
