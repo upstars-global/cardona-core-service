@@ -16,7 +16,11 @@
       </template>
       <template #selected-option="{ name }">
         <div class="d-flex align-items-center flex-nowrap">
-          <span class="select-item text-primary text-uppercase">{{ name }}</span>
+          <span
+            class="select-item text-primary text-uppercase"
+            :class="{ 'text-info': isDynamicDomain }"
+            >{{ name }}</span
+          >
         </div>
       </template>
       <template #option="{ name }">
@@ -30,7 +34,7 @@
     </div>
   </div>
   <b-link v-else class="navbar-brand" to="/">
-    <span class="brand-logo text-primary">
+    <span class="brand-logo text-primary" :class="{ 'text-info': isDynamicDomain }">
       {{ productNameSelected }}
     </span>
   </b-link>
@@ -67,10 +71,16 @@ export default {
       props.isCollapsedMenu ? selectedProduct.value?.name : selectedProduct.value?.name.slice(0, 2)
     )
 
+    const DYNAMIC_DOMAIN_PREFIX = ['cardona-bac-', 'cardona-development.boffice.site']
+    const isDynamicDomain = DYNAMIC_DOMAIN_PREFIX.some((parOfHost) =>
+      window.location.host.includes(parOfHost)
+    )
+
     return {
       selectedProduct,
       products,
       productNameSelected,
+      isDynamicDomain,
     }
   },
 }
