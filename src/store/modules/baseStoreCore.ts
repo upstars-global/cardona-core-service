@@ -6,6 +6,7 @@ import { convertLowerCaseFirstSymbol } from '../../helpers'
 import { ApiTypePrefix, productName } from '@productConfig'
 import { productsName } from '../../configs/productsName'
 import { isUndefined } from 'lodash'
+import { redirectToNotFoundPage } from '../../helpers/router'
 
 const isSymbolIsDash = (symbol: string): boolean => symbol === '-'
 
@@ -88,17 +89,23 @@ export default {
       { rootGetters },
       payload: { type: string; id: string; customApiPrefix: string }
     ) {
-      const { data } = await ApiService.request({
-        type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
-          payload.type
-        )}.Read`,
-        data: {
-          id: payload.id,
-          project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
-        },
-      })
+      try {
+        const { data } = await ApiService.request({
+          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+            payload.type
+          )}.Read`,
+          data: {
+            id: payload.id,
+            project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
+          },
+        })
 
-      return data
+        return data
+      } catch (error: any) {
+        const wasRedirect: boolean = await redirectToNotFoundPage(error.type)
+        if (wasRedirect) return
+        return Promise.reject(error)
+      }
     },
 
     async fetchTypes({ rootGetters }, type: string) {
