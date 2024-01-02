@@ -50,7 +50,7 @@ module.exports = {
     'indent': ['error', 2],
 
     // Enforce trailing comma (Already present in TypeScript)
-    'comma-dangle': ['error', 'never'],
+    // 'comma-dangle': ['error', 'never'],
 
     // Enforce consistent spacing inside braces of object (Already present in TypeScript)
     'object-curly-spacing': ['error', 'always'],

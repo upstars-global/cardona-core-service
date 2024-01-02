@@ -49,7 +49,7 @@ module.exports = {
     'indent': ['error', 2],
 
     // Enforce trailing comma (Already present in TypeScript)
-    'comma-dangle': ['error', 'always-multiline'],
+    // 'comma-dangle': ['error', 'always-multiline'],
 
     // Enforce consistent spacing inside braces of object (Already present in TypeScript)
     'object-curly-spacing': ['error', 'always'],
