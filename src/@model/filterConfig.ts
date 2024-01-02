@@ -1,6 +1,6 @@
 import { i18n } from '../plugins/i18n'
-import { tagsList } from '@/@fake-db/demo/demoListData'
-import { MultiSelectBaseField } from '@/@model/templates/baseField'
+import { tagsList } from '../@fake-db/demo/demoListData'
+import { MultiSelectBaseField } from '../@model/templates/baseField'
 
 export enum ProjectFilterTypes {
   Tags = 'tags',

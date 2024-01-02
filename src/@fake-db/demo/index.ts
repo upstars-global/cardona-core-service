@@ -1,6 +1,6 @@
 import mock from '../mock'
-import { filterDemoList } from '@/@fake-db/helpers/filterDemoList'
-import { entityData, listData } from '@/@fake-db/demo/demoListData'
+import { filterDemoList } from '../../@fake-db/helpers/filterDemoList'
+import { entityData, listData } from '../../@fake-db/demo/demoListData'
 
 // List
 mock.onPost('/api/v2/demo/list').reply(({ data }) => {
@@ -92,7 +92,6 @@ const options = [
 ]
 
 mock.onPost('/api/v2/options/list').reply(() => [200, { data: options }])
-
 
 const conditions = [
   'ltp',
