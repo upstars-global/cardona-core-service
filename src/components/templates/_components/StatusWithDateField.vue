@@ -23,14 +23,12 @@ defineProps<{
 </template>
 
 <style lang="scss" scoped>
-@import "src/assets/styles/variables/custom-variables";
-
 .status-with-date {
   display: flex;
   flex-direction: column;
   align-items: start;
   .date-field {
-    opacity: $opacity-text;
+    opacity: var(--v-medium-emphasis-opacity);
   }
 }
 </style>

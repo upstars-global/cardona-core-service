@@ -27,9 +27,7 @@ defineProps<{
 </template>
 
 <style lang="scss" scoped>
-@import "src/assets/styles/variables/custom-variables";
-
-  .status-history--wrapper {
+.status-history--wrapper {
     &__item {
       &:not(:last-child) {
         margin-bottom: .5rem;
@@ -37,7 +35,7 @@ defineProps<{
     }
     .date-field {
       font-size: 15px;
-      opacity: $opacity-text;
+      opacity: var(--v-medium-emphasis-opacity);
     }
   }
 </style>
