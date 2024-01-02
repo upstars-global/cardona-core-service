@@ -72,8 +72,13 @@ class ApiService {
       const isLoginPage: boolean = router.currentRoute.name === 'Login'
 
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', 'TOKEN_INVALID']
+      const isClearAuthType =
+        errorsType.includes(error.type) ||
+        error instanceof TypeError ||
+        error.message?.includes('Invalid token')
+      const isAuthorizedUser = store.getters['authCore/isAuthorizedUser']
 
-      if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type)) {
+      if (isAuthorizedUser && isClearAuthType) {
         store.dispatch('authCore/clearAuth')
 
         const { pathname } = location
