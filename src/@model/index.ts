@@ -1,5 +1,5 @@
-import { TranslateResult } from 'vue-i18n'
-import {SortDirection} from "@/@model/templates/baseList";
+import type { TranslateResult } from 'vue-i18n'
+import { SortDirection } from './templates/baseList'
 
 export interface PaginationData {
   readonly pageNumber: number
@@ -41,27 +41,28 @@ export class ListData<T> {
   readonly list: Array<T>
 
   constructor(
-      { data, pagination }: { data: Array<any>; pagination?: PaginationData },
-      TCreator?: { new (item: any): T }
+    { data, pagination }: { data: Array<any>; pagination?: PaginationData },
+    TCreator?: { new (item: any): T },
   ) {
     this.total = pagination?.total
     this.perPage = pagination?.perPage
     this.pageNumber = pagination?.pageNumber
-    this.list = data.map((item) => (TCreator ? new TCreator(item) : (item as T)))
+    this.list = data.map(item => (TCreator ? new TCreator(item) : (item as T)))
   }
 }
 
-export type OptionsItem = {
+export interface OptionsItem {
   readonly id: string | number
   readonly name: TranslateResult
 }
 
 export type Nullable<T> = T | null
 
-export type Badge = {
+export interface Badge {
   name: string
   id: string
 }
+
 // Number range
 export type NumberOrString = number | string
 

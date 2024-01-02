@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { OptionsItem } from '../../../../@model'
-import { BSize } from '../../../../@model/bootstrap'
+import { computed, ref, watch } from 'vue'
 import { debounce } from 'lodash'
-import {MultiSelectBaseField} from "@/@model/templates/baseField";
-import {i18n} from "@/plugins/i18n";
+import type { OptionsItem } from '../../../../@model'
+import { BSize } from '../../../../@model/bootstrap'
+import type { MultiSelectBaseField } from '../../../../@model/templates/baseField'
+import { i18n } from '../../../../plugins/i18n'
 
-type MultiselectProps = {
+interface MultiselectProps {
   modelValue: OptionsItem[] | string[] | number[]
   field: MultiSelectBaseField
   errors?: boolean
@@ -29,18 +29,19 @@ const isLoading = ref(false)
 
 const valueModel = computed<OptionsItem[]>({
   get: () =>
-    props.modelValue.map((item) =>
+    props.modelValue.map(item =>
       typeof item === 'string' || typeof item === 'number'
         ? props.field.options?.find((option: OptionsItem) => option.id == item)
-        : item
+        : item,
     ),
   set: (item: OptionsItem[]) => emits('update:modelValue', item),
 })
 
 const selectClasses = computed(() => {
   const size = `select-${props.size}`
+
   const classes = {
-    error: props.errors.isNotEmpty,
+    error: props.errors,
   }
 
   return [size, classes]
@@ -50,9 +51,9 @@ const selectClasses = computed(() => {
 const options = computed(() =>
   props.field.options
     ? props.field.options.filter((option: OptionsItem) =>
-        valueModel.value.every((item) => item.id !== option.id)
-      )
-    : []
+      valueModel.value.every(item => item.id !== option.id),
+    )
+    : [],
 )
 
 watch(
@@ -66,7 +67,7 @@ watch(
       isLoading.value = false
     }
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 )
 
 // Handlers
@@ -75,7 +76,8 @@ const onSearch = debounce(async (search: string, loading: Function) => {
 
   try {
     await props.field.fetchOptions(search)
-  } finally {
+  }
+  finally {
     loading(false)
   }
 }, 250)
@@ -84,17 +86,17 @@ const onSearch = debounce(async (search: string, loading: Function) => {
 <template>
   <div>
     <VueSelect
-        v-model="valueModel"
-        :placeholder="placeholder"
-        :dir="$store.getters['appConfig/dirOption']"
-        label="name"
-        :loading="isLoading"
-        multiple
-        :options="options"
-        class="multiselect-field"
-        :class="selectClasses"
-        :disabled="disabled"
-        @search="onSearch"
+      v-model="valueModel"
+      :placeholder="placeholder"
+      :dir="$store.getters['appConfig/dirOption']"
+      label="name"
+      :loading="isLoading"
+      multiple
+      :options="options"
+      class="multiselect-field"
+      :class="selectClasses"
+      :disabled="disabled"
+      @search="onSearch"
     >
       <template #no-options="{ loading, search }">
         <div v-if="!search && !loading">
@@ -108,4 +110,3 @@ const onSearch = debounce(async (search: string, loading: Function) => {
     </VueSelect>
   </div>
 </template>
-

@@ -1,9 +1,10 @@
-import { Component } from 'vue'
-import { BaseField, IBaseField } from './base'
+import type { Component } from 'vue'
 import { BaseDatePeriod, dateSeparators } from '../../date'
 import { getISOStringWithoutTimezone, getUTCISOString } from '../../../helpers/date'
-import DateField from "../../../components/templates/FieldGenerator/_components/DateField.vue";
-import {i18n} from "@/plugins/i18n";
+import DateField from '../../../components/templates/FieldGenerator/_components/DateField.vue'
+import { i18n } from '../../../plugins/i18n'
+import { BaseField } from './base'
+import type { IBaseField } from './base'
 
 type DateBaseFieldInputValue = string | BaseDatePeriod
 
@@ -17,7 +18,7 @@ export interface IDateBaseField extends IBaseField {
 }
 
 export class DateBaseField extends BaseField implements IDateBaseField {
-  readonly component: Component = DateField;
+  readonly component: Component = DateField
   protected _value?: string
   readonly isRangeMode?: boolean
   readonly isStartDateNow?: boolean
@@ -37,24 +38,25 @@ export class DateBaseField extends BaseField implements IDateBaseField {
 
   private getISODateValue(value: DateBaseFieldInputValue): string {
     return value instanceof BaseDatePeriod
-        ? `${getISOStringWithoutTimezone(value.dateFrom)} ${
-            this.separator
-        } ${getISOStringWithoutTimezone(value.dateTo)}`
-        : getISOStringWithoutTimezone(value)
+      ? `${getISOStringWithoutTimezone(value.dateFrom)} ${
+        this.separator
+      } ${getISOStringWithoutTimezone(value.dateTo)}`
+      : getISOStringWithoutTimezone(value)
   }
 
   transformField(key = this.key): string | Record<string, string> {
-    if (!this._value) return ''
+    if (!this._value)
+      return ''
 
     const [dateFrom, dateTo] = this._value
-        .split(this.separator)
-        .map((date) => getUTCISOString(date.trim()))
+      .split(this.separator)
+      .map(date => getUTCISOString(date.trim()))
 
     return dateTo
-        ? {
+      ? {
           [`${key}From`]: dateFrom,
           [`${key}To`]: dateTo,
         }
-        : dateFrom
+      : dateFrom
   }
 }

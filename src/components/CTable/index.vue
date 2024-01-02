@@ -6,8 +6,8 @@ import type { TableField } from '../../@model/templates/tableFields'
 import type { SortItem } from '../../@core/types'
 import type { SelectMode } from '../../@model/enums/selectMode'
 import { AlignType } from '../../@model/templates/tableFields'
-import { IconsList } from '@/@model/enums/icons'
-import { SortDirection } from '@/@model/templates/baseList'
+import { IconsList } from '../../@model/enums/icons'
+import { SortDirection } from '../../@model/templates/baseList'
 
 const props = defineProps<{
   fields: TableField[]
@@ -34,6 +34,7 @@ const emits = defineEmits<{
 
 const cTable = ref({})
 const tableWrapperComponent = ref(props.draggable ? VueDraggableNext : 'tbody')
+
 const compareClasses = (item: Record<string, unknown>, isSelected: boolean): Record<string, boolean> => {
   return {
     [`table-light-${item.rowVariant}`]: !!item.rowVariant,
@@ -61,24 +62,23 @@ const onDragEnd = (event: { moved: object }) => {
 const cellClasses = computed(() => props.small ? 'py-2 px-3' : 'py-3 px-4')
 const maxSkeletonRows = 25
 const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
-
 </script>
 
 <template>
   <VDataTable
-      :model-value="selectedItems"
-      :show-select="selectable"
-      :select-strategy="selectMode"
-      :headers="fields"
-      :items="rows"
-      :sort-by="sortData"
-      return-object
-      class="c-table"
-      ref="cTable"
-      :items-per-page="itemsPerPage"
-      :density="small ? 'compact' : 'comfortable'"
-      @update:sort-by="onUpdateSortData"
-      @update:model-value="onSelectRow"
+    ref="cTable"
+    :model-value="selectedItems"
+    :show-select="selectable"
+    :select-strategy="selectMode"
+    :headers="fields"
+    :items="rows"
+    :sort-by="sortData"
+    return-object
+    class="c-table"
+    :items-per-page="itemsPerPage"
+    :density="small ? 'compact' : 'comfortable'"
+    @update:sort-by="onUpdateSortData"
+    @update:model-value="onSelectRow"
   >
     <template #headers="{ columns, isSorted, sortBy, someSelected, allSelected, selectAll }">
       <th

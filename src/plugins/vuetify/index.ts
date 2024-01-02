@@ -4,10 +4,10 @@ import { useI18n } from 'vue-i18n'
 import { createVuetify } from 'vuetify'
 import { VBtn } from 'vuetify/components/VBtn'
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n'
+import { getI18n } from '../../plugins/i18n'
 import defaults from './defaults'
 import { icons } from './icons'
 import { staticPrimaryColor, themes } from './theme'
-import { getI18n } from '@/plugins/i18n'
 
 // Styles
 import { cookieRef } from '@/@layouts/stores/config'

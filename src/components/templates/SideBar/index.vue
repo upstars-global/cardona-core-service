@@ -5,8 +5,8 @@ import ViewGenerator from '../../../components/templates/ViewGenerator/index.vue
 import { ViewInfo } from '../../../@model/view'
 import { IconsList } from '../../../@model/enums/icons'
 import { convertCamelCase } from '../../../helpers'
-import { SideBarCollapseItem } from '@/@model/templates/baseList'
-import { VColors, VSizes, VVariants } from '@/@model/vuetify'
+import { SideBarCollapseItem } from '../../../@model/templates/baseList'
+import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
 
 const props = defineProps<{
   item?: object
@@ -76,7 +76,10 @@ const onHide = () => {
         @click="onHide"
       />
     </div>
-    <div class="p-1 bg-light px-4" v-if="viewForm">
+    <div
+      v-if="viewForm"
+      class="p-1 bg-light px-4"
+    >
       <!--  ViewInfo   -->
       <template v-if="Object.keys(viewForm).isNotEmpty">
         <div
