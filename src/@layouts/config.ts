@@ -1,4 +1,5 @@
 import { breakpointsVuetify } from '@vueuse/core'
+import { h } from 'vue'
 import { AppContentLayoutNav, ContentWidth, FooterType, HorizontalNavType, NavbarType } from './enums'
 import type { LayoutConfig } from './types'
 
