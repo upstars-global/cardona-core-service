@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router/auto'
-import sectionRouterGenerator from '@/helpers/router'
+import sectionRouterGenerator from '../../helpers/router'
 
 const emailRouteComponent = () => import('@/pages/apps/email/index.vue')
 

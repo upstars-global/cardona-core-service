@@ -2,8 +2,8 @@
 import { computed, ref } from 'vue'
 import generatePassword from '../../../../helpers/password-generator'
 import { IconsList } from '../../../../@model/enums/icons'
-import {PasswordBaseField} from "../../../../@model/templates/baseField";
-import {VVariants} from "@/@model/vuetify";
+import type { PasswordBaseField } from '../../../../@model/templates/baseField'
+import { VVariants } from '../../../../@model/vuetify'
 
 interface Props {
   modelValue: string
@@ -55,14 +55,14 @@ const setGeneratedPassword = () => {
       @click:append-inner="togglePasswordVisibility"
     />
     <VBtn
-        v-if="field.withPasswordGenerator"
-        id="generator-password"
-        :disabled="disabled"
-        :variant="VVariants.Outlined"
-        size="38"
-        @click="setGeneratedPassword"
+      v-if="field.withPasswordGenerator"
+      id="generator-password"
+      :disabled="disabled"
+      :variant="VVariants.Outlined"
+      size="38"
+      @click="setGeneratedPassword"
     >
-      <v-icon :icon="IconsList.RefreshCcwIcon"/>
+      <VIcon :icon="IconsList.RefreshCcwIcon" />
     </VBtn>
   </div>
 </template>

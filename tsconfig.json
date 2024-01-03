@@ -45,6 +45,15 @@
       ],
       "@api-utils/*": [
         "./src/plugins/fake-api/utils/*"
+      ],
+      "@productConfig": [
+        "./src/configs/productConfig"
+      ],
+      "@filterConfig": [
+        "./src/@model/filterConfig"
+      ],
+      "@permissions": [
+        "./src/configs/permissions"
       ]
     },
     "lib": [

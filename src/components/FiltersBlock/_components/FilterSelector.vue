@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {VColors, VSizes, VVariants} from '@/@model/vuetify'
-import { IconsList } from '@/@model/enums/icons'
-import {BaseField} from "@/@model/templates/baseField";
+import type { BaseField } from '../../../@model/templates/baseField'
+import { IconsList } from '../../../@model/enums/icons'
+import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
 
 const props = defineProps<{
   filters: BaseField[]

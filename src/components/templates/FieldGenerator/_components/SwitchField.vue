@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import store from '../../../../store'
-import {IconsList} from "@/@model/enums/icons";
-import {SwitchBaseField} from "@/@model/templates/baseField";
-import {VSizes} from "../../../../@model/vuetify";
+import { IconsList } from '../../../../@model/enums/icons'
+import type { SwitchBaseField } from '../../../../@model/templates/baseField'
+import { VSizes } from '../../../../@model/vuetify'
 
 interface SwitchFieldProps {
   modelValue: boolean
@@ -30,8 +30,7 @@ const canUpdate = computed<boolean>(() =>
   props.field.permission ? store.getters.abilityCan(props.field.permission, 'update') : true,
 )
 
-
-const iconName = computed(() => (props.modelValue ? IconsList.CheckCircleIcon : IconsList.XCircleIcon));
+const iconName = computed(() => (props.modelValue ? IconsList.CheckCircleIcon : IconsList.XCircleIcon))
 const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-error'))
 </script>
 
@@ -49,6 +48,11 @@ const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-er
       {{ field.label }}
     </span>
 
-    <v-icon class="ml-auto" v-if="field.withState" :icon="iconName" :class="iconVariant" />
+    <VIcon
+      v-if="field.withState"
+      class="ml-auto"
+      :icon="iconName"
+      :class="iconVariant"
+    />
   </div>
 </template>

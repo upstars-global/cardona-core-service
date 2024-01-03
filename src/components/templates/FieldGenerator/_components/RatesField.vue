@@ -2,27 +2,27 @@
 import { computed, ref, watch } from 'vue'
 import store from '../../../../store'
 import { IconsList } from '../../../../@model/enums/icons'
-import {NumberBaseField, RatesBaseField} from '../../../../@model/templates/baseField'
+import type { RatesBaseField } from '../../../../@model/templates/baseField'
+import { NumberBaseField } from '../../../../@model/templates/baseField'
 import FieldGenerator from '../index.vue'
-import {RatesValueItem} from "@/@model/templates/baseField/rates";
+import type { RatesValueItem } from '../../../../@model/templates/baseField/rates'
 
 interface Rates {
   readonly currency: string
   readonly bet: number | null
 }
 
-
 const props = withDefaults(
-    defineProps<{
-      modelValue: Array<RatesValueItem>
-      field: RatesBaseField
-      disabled?: boolean
-      append?: string
-    }>(),
-    {
-      modelValue: () => [],
-      append: '',
-    }
+  defineProps<{
+    modelValue: Array<RatesValueItem>
+    field: RatesBaseField
+    disabled?: boolean
+    append?: string
+  }>(),
+  {
+    modelValue: () => [],
+    append: '',
+  },
 )
 
 const emit = defineEmits<{
@@ -35,43 +35,43 @@ const allCurrencies = computed<string[]>(() => store.getters['appConfigCore/allC
 const formRates = ref<NumberBaseField[]>(setRates())
 
 watch(
-    () => props.modelValue,
-    () => {
-      if (isNotFilledFormRates.value && props?.modelValue.some((item: RatesValueItem) => item.value)) {
-        formRates.value = setRates()
+  () => props.modelValue,
+  () => {
+    if (isNotFilledFormRates.value && props?.modelValue.some((item: RatesValueItem) => item.value)) {
+      formRates.value = setRates()
 
-        isNotFilledFormRates.value = false
-      }
-    },
-    { deep: true, immediate: true }
+      isNotFilledFormRates.value = false
+    }
+  },
+  { deep: true, immediate: true },
 )
 
 watch(
-    () => formRates,
-    () => {
-      emit(
-          'update:modelValue',
-          formRates.value.map((item: NumberBaseField) => ({
-            currency: item.key,
-            value: item.value,
-          }))
-      )
-    },
-    { deep: true, immediate: true }
+  () => formRates,
+  () => {
+    emit(
+      'update:modelValue',
+      formRates.value.map((item: NumberBaseField) => ({
+        currency: item.key,
+        value: item.value,
+      })),
+    )
+  },
+  { deep: true, immediate: true },
 )
 
 function setRates(): NumberBaseField[] {
   return allCurrencies.value.map(
-      (currency) =>
-          new NumberBaseField({
-            key: currency,
-            value: props.modelValue.find((item) => item.currency === currency)?.value ?? 0,
-            label: currency,
-            placeholder: props.field.placeholder,
-            validationRules: props.field.validationRules,
-            append: props.append,
-            withPositiveNumbers: true,
-          })
+    currency =>
+      new NumberBaseField({
+        key: currency,
+        value: props.modelValue.find(item => item.currency === currency)?.value ?? 0,
+        label: currency,
+        placeholder: props.field.placeholder,
+        validationRules: props.field.validationRules,
+        append: props.append,
+        withPositiveNumbers: true,
+      }),
   )
 }
 </script>

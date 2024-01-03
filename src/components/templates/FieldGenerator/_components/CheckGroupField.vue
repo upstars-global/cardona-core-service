@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import {CheckGroupBaseField} from "@/@model/templates/baseField";
+import type { CheckGroupBaseField } from '../../../../@model/templates/baseField'
 
 const props = defineProps<{
   modelValue: boolean
-  field: CheckGroupBaseField;
+  field: CheckGroupBaseField
   disabled: boolean
 }>()
 

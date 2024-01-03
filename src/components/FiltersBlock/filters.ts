@@ -7,10 +7,10 @@ import {
   MultiSelectBaseField, NumberRangeBaseField,
   RadioBaseField,
   SelectBaseField,
-  TextBaseField
+  TextBaseField,
 } from '../../@model/templates/baseField'
 import { TransactionType } from '../../@model/enums/playersTransactions'
-import {RadioOption} from "@/@model/templates/baseField/radio";
+import type { RadioOption } from '../../@model/templates/baseField/radio'
 
 // Options
 const stateOptions: RadioOption[] = [

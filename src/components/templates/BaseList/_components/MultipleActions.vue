@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VColors, VSizes, VVariants } from '@/@model/vuetify'
+import { VColors, VSizes, VVariants } from '../../../../@model/vuetify'
 
 interface Props {
   numberSelectedItems: number

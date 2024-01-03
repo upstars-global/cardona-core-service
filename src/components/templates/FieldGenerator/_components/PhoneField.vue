@@ -2,8 +2,8 @@
 import { computed } from 'vue'
 import Cleave from 'vue-cleave-component'
 import { allPhoneCodesWithFlags } from '../../../../helpers/countries'
-import {VVariants} from "@/@model/vuetify";
-import {PhoneBaseField} from "../../../../@model/templates/baseField";
+import { VVariants } from '../../../../@model/vuetify'
+import type { PhoneBaseField } from '../../../../@model/templates/baseField'
 
 interface PhoneFieldProps {
   modelValue: string
@@ -44,18 +44,19 @@ const phoneFlag = computed(() => {
 })
 
 const isFocused = ref(false)
+
 const onFocus = () => {
   isFocused.value = true
 }
+
 const onBlur = () => {
   isFocused.value = false
 }
-const validateValue = (e: KeyboardEvent) => {
-  if(/[^\w\s]/.test(e.key)) {
-    e.preventDefault()
-  }
-}
 
+const validateValue = (e: KeyboardEvent) => {
+  if (/[^\w\s]/.test(e.key))
+    e.preventDefault()
+}
 </script>
 
 <template>
@@ -64,22 +65,22 @@ const validateValue = (e: KeyboardEvent) => {
       {{ phoneFlag }}
     </p>
     <VField
-        :variant="VVariants.Outlined"
-        :focused="isFocused"
-        :active="isFocused"
-        :color="isFocused ? 'primary' : 'grey'"
-        class="v-input"
-        @keydown="validateValue"
+      :variant="VVariants.Outlined"
+      :focused="isFocused"
+      :active="isFocused"
+      :color="isFocused ? 'primary' : 'grey'"
+      class="v-input"
+      @keydown="validateValue"
     >
       <Cleave
-          v-model="localModelValue"
-          type="text"
-          class="v-field__input py-2 phone-input"
-          :placeholder="$t('common.phone._')"
-          :disabled="disabled"
-          :options="cleaveOptions"
-          @focus="onFocus"
-          @blur="onBlur"
+        v-model="localModelValue"
+        type="text"
+        class="v-field__input py-2 phone-input"
+        :placeholder="$t('common.phone._')"
+        :disabled="disabled"
+        :options="cleaveOptions"
+        @focus="onFocus"
+        @blur="onBlur"
       />
     </VField>
   </div>

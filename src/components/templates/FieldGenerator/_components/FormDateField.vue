@@ -3,8 +3,8 @@ import { computed } from 'vue'
 import { Russian as ru } from 'flatpickr/dist/l10n/ru'
 import en from 'flatpickr/dist/l10n/default'
 import { i18n } from '../../../../plugins/i18n'
-import type { FormDateBaseField } from '@/@model/templates/baseField'
-import { IconsList } from '@/@model/enums/icons'
+import type { FormDateBaseField } from '../../../../@model/templates/baseField'
+import { IconsList } from '../../../../@model/enums/icons'
 
 interface Props {
   modelValue: string | Date
