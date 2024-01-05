@@ -78,6 +78,7 @@ function setRates(): NumberBaseField[] {
   return allCurrencies.value.map(
     (currency) =>
       new NumberBaseField({
+        id: `${props.field.id}-${currency}`,
         key: currency,
         value: props.value.find((item) => item.currency === currency)?.value ?? 0,
         label: currency,

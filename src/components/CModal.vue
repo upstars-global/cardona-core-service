@@ -15,6 +15,7 @@ type CModalProps = {
   cancelTitle?: string
   noCloseOnBackdrop?: boolean
   lazy?: boolean
+  bodyClass?: string
 }
 
 const props = withDefaults(defineProps<CModalProps>(), {
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<CModalProps>(), {
   okTitle: i18n.t('action.save') as string,
   cancelVariant: BVariant.OutlineSecondary,
   cancelTitle: i18n.t('action.cancel') as string,
+  bodyClass: 'p-2',
 })
 
 const emit = defineEmits<{
@@ -46,7 +48,7 @@ const onShow = () => emit('show')
     :size="size"
     centered
     :lazy="lazy"
-    body-class="p-2"
+    :body-class="bodyClass"
     :no-close-on-backdrop="noCloseOnBackdrop"
     :hide-footer="hideFooter"
     :ok-variant="okVariant"

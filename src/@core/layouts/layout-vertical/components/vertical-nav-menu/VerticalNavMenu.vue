@@ -17,11 +17,11 @@
           <!-- Logo & Text -->
           <li class="nav-item mr-1 full-width">
             <products-select v-if="isMenuTypeMain" :is-collapsed-menu="isCollapsedMenu" />
-            <b-link v-else class="navbar-brand" to="/">
+            <div v-else class="navbar-brand cursor-pointer" @click="onClickOnBrandLogo">
               <span class="brand-logo text-primary">
                 {{ adminName }}
               </span>
-            </b-link>
+            </div>
           </li>
 
           <!-- Toggler Button -->
@@ -49,7 +49,7 @@
     <!-- Shadow -->
     <div :class="{ 'd-block': shallShadowBottom }" class="shadow-bottom" />
 
-    <project-select v-if="isMenuTypeMain && isNeocore" class="mt-2" />
+    <project-select v-if="isMenuTypeMain && isNeocore" class="mt-2 project-select" />
 
     <div v-if="isMenuTypeMain" class="project-name">
       <span v-if="isCollapsedMenu">
@@ -68,50 +68,39 @@
         <span v-if="isCollapsedMenu">{{ $t('common.back') }}</span>
       </div>
     </div>
-
-    <!-- main menu content-->
-    <vue-perfect-scrollbar
-      :settings="perfectScrollbarSettings"
-      class="main-menu-content scroll-area"
-      tagname="ul"
-      @ps-scroll-y="
-        (evt) => {
-          shallShadowBottom = evt.srcElement.scrollTop > 0
-        }
-      "
-    >
+    <div class="main-menu-content scroll-area" :style="maxHeight">
       <vertical-nav-menu-items :items="navMenuItems" class="navigation navigation-main" />
-    </vue-perfect-scrollbar>
-    <!-- /main menu content-->
-    <slot
-      name="footer"
-      :toggle-vertical-menu-active="toggleVerticalMenuActive"
-      :toggle-collapsed="toggleCollapsed"
-      :collapse-toggler-icon="collapseTogglerIcon"
-    />
+    </div>
+
+    <div class="menu-footer">
+      <slot
+        name="footer"
+        :toggle-vertical-menu-active="toggleVerticalMenuActive"
+        :toggle-collapsed="toggleCollapsed"
+        :collapse-toggler-icon="collapseTogglerIcon"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import navMenuItems from '@/navigation/vertical'
-import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { BLink } from 'bootstrap-vue'
-import { provide, computed, ref } from 'vue'
+import { provide, computed, ref, watch } from 'vue'
 import useAppConfig from '../../../../../@core/app-config/useAppConfig'
 import VerticalNavMenuItems from './components/vertical-nav-menu-items/VerticalNavMenuItems.vue'
 import useVerticalNavMenu from './useVerticalNavMenu'
 import ProjectSelect from './components/ProjectSelect'
 import store from '../../../../../store'
 import ProductsSelect from '../../../../../@core/layouts/layout-vertical/components/vertical-nav-menu/components/ProductsSelect'
-import router from '../../../../../router'
+import { useRouter } from '../../../../../@core/utils/utils'
 import i18n from '../../../../../libs/i18n'
 import { convertUpperCaseFirstSymbol } from '../../../../../helpers'
-
+import { useBlockHeight } from '../../../../../use/useBlockHeight'
 export default {
   name: 'VerticalNavMenu',
   components: {
     ProductsSelect,
-    VuePerfectScrollbar,
     VerticalNavMenuItems,
     ProjectSelect,
     BLink,
@@ -127,6 +116,7 @@ export default {
     },
   },
   setup(props) {
+    const { router, route } = useRouter()
     const {
       isMouseHovered,
       isVerticalMenuCollapsed,
@@ -175,11 +165,43 @@ export default {
         : convertUpperCaseFirstSymbol(store.getters.selectedProduct?.name)
     )
 
-    const goBack = () => {
-      window.history.length > 2 ? router.go(-1) : router.push('/')
+    const goBack = async () => {
+      try {
+        await router.push({ name: 'Dashboard' })
+      } catch {}
     }
 
+    const routeName = computed(() => route.value.name)
+
+    const onClickOnBrandLogo = async () => {
+      const pageName =
+        routeName.value === 'UsersControlList' || routeName.value.includes('UsersControl')
+          ? 'UsersControlList'
+          : 'Dashboard'
+      try {
+        return await router.push({ name: pageName })
+      } catch {}
+    }
+
+    const navbarHeader = useBlockHeight('.navbar-header')
+    const projectSelect = useBlockHeight('.project-select')
+    const projectName = useBlockHeight('.project-name')
+    const footerMenu = useBlockHeight('.customer-menu-block > .customer-menu')
+
+    const listBlocks = computed(() => [
+      navbarHeader.value,
+      projectSelect.value && projectSelect.value + 22, /// + margin
+      projectName.value + 50, /// + padding
+      footerMenu.value,
+    ])
+
+    const fixedHeightInMenu = computed(() => listBlocks.value.reduce((acc, curr) => acc + curr, 0))
+
+    const maxHeight = computed(() => `max-height: calc(100% - ${fixedHeightInMenu.value}px);`)
+
     return {
+      routeName,
+      onClickOnBrandLogo,
       navMenuItems,
       perfectScrollbarSettings,
       isVerticalMenuCollapsed,
@@ -201,6 +223,8 @@ export default {
       isMenuTypeAdmin,
       isNeocore,
       adminName,
+
+      maxHeight,
     }
   },
 }
@@ -208,7 +232,19 @@ export default {
 
 <style lang="scss">
 @import '../../../../../@core/scss/base/core/menu/menu-types/vertical-menu';
+@import '../../../../../assets/scss/mixins/scroll-mixin';
+
+.dark-layout {
+  @include scroll-bar-theme(#283046);
+}
+
 .main-menu {
+  @include scroll-bar-theme(#f6f6f6);
+
+  .main-menu-content {
+    overflow-y: scroll;
+    margin-bottom: 0.642rem;
+  }
   .router-link-active {
     color: $body-color;
     &:hover {
@@ -223,6 +259,20 @@ export default {
 
     &.no-collapsed {
       padding: 0;
+    }
+  }
+  .navigation.navigation-main {
+    li {
+      &:not(.has-sub) {
+        margin-right: 0px !important;
+      }
+      a {
+        padding-right: 0px !important;
+        margin-right: 0px !important;
+        &:after {
+          right: 0.5rem !important;
+        }
+      }
     }
   }
 }
