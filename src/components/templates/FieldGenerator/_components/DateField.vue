@@ -10,6 +10,7 @@ const props = withDefaults(
   defineProps<{
     modelValue: string
     field: DateBaseField
+    errors?: boolean
   }>(),
   {
     modelValue: '',
@@ -40,21 +41,12 @@ const modelValue = computed({
   get: () => props.modelValue,
   set: value => emit('update:modelValue', value),
 })
-
-const isFocused = ref(false)
-
-const onFocus = () => {
-  isFocused.value = true
-}
-
-const onBlur = () => {
-  isFocused.value = false
-}
 </script>
 
 <template>
   <AppDateTimePicker
     v-model="modelValue"
+    :class="{ error: errors }"
     :config="{
       ...flatPickrConfig,
       minDate: field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
@@ -63,3 +55,12 @@ const onBlur = () => {
     }"
   />
 </template>
+
+<style lang="scss">
+.error {
+  .v-field__outline {
+    color: rgb(var(--v-theme-error));
+    --v-field-border-opacity: 1;
+  }
+}
+</style>

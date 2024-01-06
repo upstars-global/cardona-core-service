@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import {BaseField, CheckBaseField, SwitchBaseField} from '../../../@model/templates/baseField'
-import store from "../../../store";
-import { Field } from 'vee-validate';
-import {IconsList} from "../../../@model/enums/icons";
+import { Field } from 'vee-validate'
+import type { BaseField } from '../../../@model/templates/baseField'
+import { CheckBaseField, SwitchBaseField } from '../../../@model/templates/baseField'
+import store from '../../../store'
+import { IconsList } from '../../../@model/enums/icons'
 
 const props = withDefaults(defineProps<{
-          modelValue: BaseField
-          options?: Array<any>
-          withLabel?: boolean
-          withInfo?: boolean
-          disabled?: boolean
-          size?: string // TODO: refactor sizes
-        }>(),
-        {
-          withLabel: true,
-          withInfo: true,
-        })
-
+  modelValue: BaseField
+  options?: Array<any>
+  withLabel?: boolean
+  withInfo?: boolean
+  disabled?: boolean
+  size?: string // TODO: refactor sizes
+}>(),
+{
+  withLabel: true,
+  withInfo: true,
+})
 
 const emits = defineEmits<{
   (e: 'search', search: string): void
@@ -25,16 +25,16 @@ const emits = defineEmits<{
 }>()
 
 const canView = computed<boolean>(() => {
-      return props.modelValue?.permission ? store.getters.abilityCan(props.modelValue.permission, 'view') : true
-    }
+  return props.modelValue?.permission ? store.getters.abilityCan(props.modelValue.permission, 'view') : true
+},
 )
 
 const isCheckType = computed(
-    () => props.modelValue instanceof SwitchBaseField || props.modelValue instanceof CheckBaseField
+  () => props.modelValue instanceof SwitchBaseField || props.modelValue instanceof CheckBaseField,
 )
 
 const groupLabel = computed(() =>
-    props.withLabel && !isCheckType.value ? props.modelValue.label : ''
+  props.withLabel && !isCheckType.value ? props.modelValue.label : '',
 )
 
 const formGroupClasses = computed(() => ({
@@ -50,10 +50,9 @@ const fieldModel = computed({
   },
 })
 
- const localValue = computed(() => props.modelValue.component)
+const localValue = computed(() => props.modelValue.component)
 
 const onSearch = (search: string) => emits('search', search)
-
 </script>
 
 <template>
@@ -64,45 +63,45 @@ const onSearch = (search: string) => emits('search', search)
     :class="formGroupClasses"
   >
     <VLabel
-        v-if="groupLabel"
-        :for="modelValue?.key"
-        class="mb-1 field-generator-label text-body-2 text-high-emphasis"
+      v-if="groupLabel"
+      :for="modelValue?.key"
+      class="mb-1 field-generator-label text-body-2 text-high-emphasis"
     >
       <span>
         {{ groupLabel }}
       </span>
       <VIcon
-          v-if="withInfo && modelValue.info"
-          :icon="IconsList.InfoIcon"
-          class="text-muted ml-25 align-text-top"
+        v-if="withInfo && modelValue.info"
+        :icon="IconsList.InfoIcon"
+        class="text-muted ml-25 align-text-top"
       />
     </VLabel>
 
     <Field
-        :name="modelValue.key"
-        :label="modelValue.label"
-        :rules="modelValue.validationRules"
-        :validate-on-blur="false"
-        :validate-on-change="false"
-        :validate-on-input="false"
-        :validate-on-model-update="false"
-        v-model="fieldModel"
+      v-model="fieldModel"
+      :name="modelValue.key"
+      :label="modelValue.label"
+      :rules="modelValue.validationRules"
+      :validate-on-blur="false"
+      :validate-on-change="false"
+      :validate-on-input="false"
+      :validate-on-model-update="false"
     >
-      <template #default="{errorMessage}">
+      <template #default="{ errorMessage }">
         <Component
-            :is="localValue"
-            :id="modelValue.key"
-            v-model="fieldModel"
-            :options="options"
-            :field="modelValue"
-            :disabled="disabled"
-            :placeholder="modelValue.placeholder"
-            :size="size"
-            v-bind="{...$attrs}"
-            :errors="!!errorMessage"
-            @search="onSearch"
+          :is="localValue"
+          :id="modelValue.key"
+          v-model="fieldModel"
+          :options="options"
+          :field="modelValue"
+          :disabled="disabled"
+          :placeholder="modelValue.placeholder"
+          :size="size"
+          v-bind="{ ...$attrs }"
+          :errors="!!errorMessage"
+          @search="onSearch"
         />
-        <span class="text-caption text-error position-absolute mt-1">{{errorMessage}}</span>
+        <span class="text-caption text-error position-absolute mt-1">{{ errorMessage }}</span>
       </template>
     </Field>
   </div>

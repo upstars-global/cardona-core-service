@@ -18,6 +18,7 @@ import {
 import type { FieldValidationMetaInfo } from '@vee-validate/i18n'
 import { i18n } from '../plugins/i18n'
 import type { NumberOrString } from '../@model/index'
+import { dateSeparators } from '../@model/date'
 
 defineRule('required', required)
 defineRule('email', email)
@@ -60,7 +61,7 @@ const validatorUrlValidator = (val: string): boolean => {
 }
 
 const validatorPhone = (value: string): boolean => {
-  const regExp: RegExp = /^\d+$/
+  const regExp = /^\d+$/
   const phoneWithoutPlus: string = value.replace('+', '')
 
   return regExp.test(phoneWithoutPlus)
@@ -77,7 +78,28 @@ const validatorRange = (value: Record<string, NumberOrString>, args: []): boolea
   const [keyMin, keyMax] = args as Array<NumberOrString>
   if (!validatorObject(value))
     return false
+
   return +value[keyMin] <= +value[keyMax]
+}
+
+export const rangeDate = (dateDiapason: string, args: string[]): boolean => {
+  if (!dateDiapason)
+    return true
+
+  const [separator = dateSeparators[i18n.locale.value]] = args
+  const dates = dateDiapason.split(separator).map(date => date.trim())
+
+  return dates.length === 2 && dates.every(Boolean)
+}
+
+export const dateRangeDifferent = (dateDiapason: string, args: string[]): boolean => {
+  if (!dateDiapason)
+    return true
+
+  const [separator = dateSeparators[i18n.locale.value]] = args
+  const [from, to] = dateDiapason.split(separator).map(date => date.trim())
+
+  return from !== to
 }
 
 defineRule('positive', validatorPositive)
@@ -87,6 +109,8 @@ defineRule('url', validatorUrlValidator)
 defineRule('phone', validatorPhone)
 defineRule('required_object', validatorObject)
 defineRule('range', validatorRange)
+defineRule('range_date', rangeDate)
+defineRule('range_date_different', dateRangeDifferent)
 
 export interface IValidationConfig {
   required?: boolean
@@ -110,6 +134,8 @@ export interface IValidationConfig {
   url?: boolean
   required_object?: boolean
   range?: Array<string>
+  range_date?: boolean | string
+  range_date_different?: boolean | string
 }
 (function () {
   configure({
