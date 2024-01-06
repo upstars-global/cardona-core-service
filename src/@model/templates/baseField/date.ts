@@ -3,6 +3,7 @@ import { BaseDatePeriod, dateSeparators } from '../../date'
 import { getISOStringWithoutTimezone, getUTCISOString } from '../../../helpers/date'
 import DateField from '../../../components/templates/FieldGenerator/_components/DateField.vue'
 import { i18n } from '../../../plugins/i18n'
+import type { IValidationConfig } from '../../validations'
 import { BaseField } from './base'
 import type { IBaseField } from './base'
 
@@ -25,6 +26,7 @@ export class DateBaseField extends BaseField implements IDateBaseField {
   readonly withTime?: boolean
   readonly config?: Record<string, unknown>
   readonly separator: string
+  readonly validationRules?: IValidationConfig
 
   constructor(field: IDateBaseField) {
     super(field)
@@ -34,13 +36,15 @@ export class DateBaseField extends BaseField implements IDateBaseField {
     this.isStartDateNow = field.isStartDateNow
     this.withTime = field.withTime
     this.config = field.config
+    this.validationRules = this.getValidationRules(field.validationRules)
   }
 
   private getISODateValue(value: DateBaseFieldInputValue): string {
     return value instanceof BaseDatePeriod
-      ? `${getISOStringWithoutTimezone(value.dateFrom)} ${
-        this.separator
-      } ${getISOStringWithoutTimezone(value.dateTo)}`
+      ? Object.values(value)
+        .filter(Boolean)
+        .map((date: string) => getISOStringWithoutTimezone(date))
+        .join(` ${this.separator} `)
       : getISOStringWithoutTimezone(value)
   }
 
@@ -58,5 +62,17 @@ export class DateBaseField extends BaseField implements IDateBaseField {
           [`${key}To`]: dateTo,
         }
       : dateFrom
+  }
+
+  private getValidationRules(
+    rules?: IValidationConfig,
+  ): IValidationConfig | undefined {
+    const rangeRequiredRules: IValidationConfig = { range_date: true, range_date_different: true }
+
+    return this.isRangeMode && rules
+      ? { ...rules, ...rangeRequiredRules }
+      : this.isRangeMode
+        ? rangeRequiredRules
+        : rules
   }
 }
