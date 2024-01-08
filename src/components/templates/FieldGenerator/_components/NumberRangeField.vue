@@ -1,7 +1,7 @@
 <template>
   <div class="number-base-field d-flex align-items-center">
     <number-field
-      v-model="numberRangeValue.from"
+      v-model="numberRangeFromValue"
       :class="inputClass"
       :field="{ ...field, placeholder: placeHolderRange.from }"
       :disabled="disabled"
@@ -10,7 +10,7 @@
     <span class="mx-1"> – </span>
 
     <number-field
-      v-model="numberRangeValue.to"
+      v-model="numberRangeToValue"
       :class="inputClass"
       :field="{ ...field, placeholder: placeHolderRange.to }"
       :disabled="disabled"
@@ -49,9 +49,14 @@ const emits = defineEmits<{
   (event: 'input', payload: NumberRangeValue): void
 }>()
 
-const numberRangeValue = computed({
-  get: () => props.value,
-  set: (value) => emits('input', value),
+const numberRangeFromValue = computed({
+  get: () => props.value.from,
+  set: (value) => emits('input', { ...props.value, from: value }),
+})
+
+const numberRangeToValue = computed({
+  get: () => props.value.to,
+  set: (value) => emits('input', { ...props.value, to: value }),
 })
 
 const getPlaceHolder = (translate: TranslateResult): string =>
