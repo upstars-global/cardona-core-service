@@ -1,3 +1,4 @@
+import { defineComponent } from 'vue';
 import type { PropType, VNode } from 'vue'
 
 export const VNodeRenderer = defineComponent({

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useGenerateImageVariant } from '../../@core/composable/useGenerateImageVariant';
+
 import americanExDark from '@images/icons/payments/img/ae-dark.png'
 import americanExLight from '@images/icons/payments/img/american-express.png'
 import dcDark from '@images/icons/payments/img/dc-dark.png'

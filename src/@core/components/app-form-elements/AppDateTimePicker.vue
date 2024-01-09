@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { useFocus } from '@vueuse/core'
+
+import { computed, nextTick, onMounted, ref, useAttrs, watch } from 'vue'
+
+import type { PropType } from 'vue'
+
 import FlatPickr from 'vue-flatpickr-component'
 import { useTheme } from 'vuetify'
 
@@ -112,6 +118,7 @@ const elementId = computed(() => {
 
   return _elementIdToken ? `app-picker-field-${_elementIdToken}-${Math.random().toString(36).slice(2, 7)}` : undefined
 })
+
 defineExpose({ refFlatPicker })
 </script>
 

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { getCurrentInstance, ref, watch } from 'vue';
+
 const vm = getCurrentInstance()
 
 const buyNowUrl = ref(vm?.appContext.config.globalProperties.buyNowUrl || 'https://1.envato.market/vuexy_admin')

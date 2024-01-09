@@ -4,14 +4,18 @@ import 'vue-froala-wysiwyg'
 import FroalaEditor from 'froala-editor'
 
 interface Props {
-  value: Record<string, unknown>
+  modelValue: Record<string, unknown>
   withEditMode?: boolean
 }
 
 const props = defineProps<Props>()
 
+const emits = defineEmits<{
+  (e: 'update:modelValue', value: boolean): void
+}>()
+
 const editor = ref<FroalaEditor>({})
-const code = ref<string>(JSON.stringify(props.value, null, '\t'))
+const code = ref<string>(JSON.stringify(props.modelValue, null, '\t'))
 
 const froalaConfig = {
   apiKey: 'uXD2lC7D6G4D3H4H4C11dNSWXf1h1MDb1CF1PLPFf1C1EESFKVlA3C11A8E6D2B4C4G2F3C2==',
@@ -30,19 +34,19 @@ const froalaConfig = {
   events: {
     initialized() {
       editor.value = this
-      editor.value.html.set(JSON.stringify(props.value, null, '\t'))
+      editor.value.html.set(JSON.stringify(props.modelValue, null, '\t'))
       editor.value.codeView.toggle()
     },
     'html.get': function (html: string) {
       return html.replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&')
-    }
-  }
+    },
+  },
 }
 
 const apply = () => {
   editor.value.codeView.toggle()
   editor.value.codeView.toggle()
-  emit('input', JSON.parse(code.value))
+  emits('update:modelValue', JSON.parse(code.value))
 }
 </script>
 

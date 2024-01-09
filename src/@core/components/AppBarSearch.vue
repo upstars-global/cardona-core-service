@@ -1,4 +1,8 @@
 <script setup lang="ts" generic="T extends unknown">
+import { ref, watch } from 'vue';
+
+import { useMagicKeys } from '@vueuse/core';
+
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { VList, VListItem } from 'vuetify/components/VList'
 

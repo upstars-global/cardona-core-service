@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+
 import type { DealDetails } from './types'
 
 const props = defineProps<{

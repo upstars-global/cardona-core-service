@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { watch } from 'vue';
+
+import { useFileSystemAccess } from '@vueuse/core';
+
 import { computed } from 'vue'
 import TextareaField from './TextareaField.vue'
 import useToastService from '../../../../helpers/toasts'

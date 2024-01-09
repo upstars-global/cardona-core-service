@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const items = ['foo', 'bar', 'fizz', 'buzz']
 const selected = ref(['foo', 'bar', 'fizz', 'buzz'])
 </script>

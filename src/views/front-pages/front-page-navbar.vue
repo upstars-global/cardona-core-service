@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { ref, watch, computed } from 'vue';
+
+import { useRoute, useRouter } from 'vue-router/auto';
+
 import type { RouteLocationRaw } from 'vue-router/auto'
 import { useDisplay } from 'vuetify'
 

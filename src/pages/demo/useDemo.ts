@@ -1,3 +1,4 @@
+import { useI18n } from 'vue-i18n';
 import { DemoFilter, DemoForm, DemoListItem, DemoSideBar } from '../../@model/demo'
 import { AlignType, ListFieldType, TableField } from '../../@model/templates/tableFields'
 import type { UseEntityType } from '../../@model/templates/baseSection'

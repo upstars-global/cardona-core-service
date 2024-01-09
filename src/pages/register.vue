@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
+import { useGenerateImageVariant } from '../@core/composable/useGenerateImageVariant';
+
 import { VForm } from 'vuetify/components/VForm'
 
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'

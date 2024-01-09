@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const textareaValue = ref('This is clearable text.')
 </script>
 

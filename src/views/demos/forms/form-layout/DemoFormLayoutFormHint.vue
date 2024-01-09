@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const username = ref('')
 const email = ref('')
 const password = ref<string>()

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref, watch } from 'vue';
+
 const isDialogVisible = ref(false)
 
 watch(isDialogVisible, value => {

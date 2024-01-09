@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const min = ref(-50)
 const max = ref(90)
 const slider = ref(40)

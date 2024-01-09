@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { $api } from '../../../../utils/api';
+
+import { ref, watch } from 'vue';
+
+import { useRoute } from 'vue-router/auto';
+
 import About from './About.vue'
 import ActivityTimeline from './ActivityTimeline.vue'
 import Connection from './Connection.vue'

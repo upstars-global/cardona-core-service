@@ -1,3 +1,4 @@
+import { usePreferredDark } from '@vueuse/core';
 import { cookieRef } from '@layouts/stores/config'
 import { themeConfig } from '@themeConfig'
 

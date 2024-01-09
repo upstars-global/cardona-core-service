@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const title = ref('Preliminary report')
 const description = ref('California is a state in the western United States')
 const rules = [(v: string) => v.length <= 25 || 'Max 25 characters']

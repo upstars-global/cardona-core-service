@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+
 import type { DealType } from './types'
 import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
 import sittingGirlWithLaptop from '@images/illustrations/sitting-girl-with-laptop.png'

@@ -1,3 +1,4 @@
+import { useCookie } from '../@core/composable/useCookie';
 import { ofetch } from 'ofetch'
 
 export const $api = ofetch.create({

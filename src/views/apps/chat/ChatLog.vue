@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
+
 import { useChatStore } from '@/views/apps/chat/useChatStore'
 import type { ChatOut } from '@db/apps/chat/types'
 

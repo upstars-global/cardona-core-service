@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
 import miscComingSoon from '@images/pages/misc-coming-soon.png'
 import miscMaskDark from '@images/pages/misc-mask-dark.png'

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 import avatar1 from '@images/avatars/avatar-14.png'
 
 const accountData = {

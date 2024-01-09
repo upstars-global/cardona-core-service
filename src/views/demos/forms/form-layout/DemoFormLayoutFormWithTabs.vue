@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const tab = ref('personal-info')
 const firstName = ref('')
 const lastName = ref('')

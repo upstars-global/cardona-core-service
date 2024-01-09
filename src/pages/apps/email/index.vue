@@ -1,4 +1,14 @@
 <script setup lang="ts">
+import { createUrl } from '../../../@core/composable/createUrl';
+
+import { useApi } from '../../../composables/useApi';
+
+import { ref, computed, watch } from 'vue';
+
+import { useRoute } from 'vue-router/auto';
+
+import { useResponsiveLeftSidebar } from '../../../@core/composable/useResponsiveSidebar';
+
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import ComposeDialog from '@/views/apps/email/ComposeDialog.vue'
 import EmailLeftSidebarContent from '@/views/apps/email/EmailLeftSidebarContent.vue'

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import bg1 from '@images/pages/custom-radio-img-1.png'
 import bg2 from '@images/pages/custom-radio-img-2.png'
 import bg3 from '@images/pages/custom-radio-img-3.png'

@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import vSelect from 'vue-select'
 import {App} from "vue/dist/vue";
 

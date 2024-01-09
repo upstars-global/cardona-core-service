@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref, watch } from 'vue';
+
 const totalTabs = ref(3)
 const currentTab = ref(0)
 

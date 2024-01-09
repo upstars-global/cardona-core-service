@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useResponsiveLeftSidebar } from '../../@core/composable/useResponsiveSidebar';
+
+import { ref, watch, computed } from 'vue';
+
 import FullCalendar from '@fullcalendar/vue3'
 import { blankEvent, useCalendar } from '@/views/apps/calendar/useCalendar'
 import { useCalendarStore } from '@/views/apps/calendar/useCalendarStore'

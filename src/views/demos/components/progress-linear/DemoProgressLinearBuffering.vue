@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+
 const modelValue = ref(10)
 const bufferValue = ref(20)
 const interval = ref()

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const radioGroup = ref(1)
 const rules = [(value: number) => (value !== 3 ? true : 'Do not select the third one!')]
 </script>

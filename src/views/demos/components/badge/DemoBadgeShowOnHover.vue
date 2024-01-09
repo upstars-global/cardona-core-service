@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { useElementHover } from '@vueuse/core';
+
+import { ref } from 'vue';
+
 const tRefInstagramBadge = ref()
 const tRefTwitterBadge = ref()
 const tRefWhatsappBadge = ref()

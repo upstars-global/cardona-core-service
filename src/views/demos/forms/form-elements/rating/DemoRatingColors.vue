@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const rating = ref(4)
 const ratingColors = ['primary', 'secondary', 'success', 'info', 'warning', 'error']
 </script>

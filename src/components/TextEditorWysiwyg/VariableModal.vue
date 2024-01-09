@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { inject } from 'vue';
+
 import { ref } from 'vue'
 import { VColors, VVariants } from '../../@model/vuetify'
 

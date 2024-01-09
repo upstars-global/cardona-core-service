@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const tableData = [
   {
     action: 'Collapse', icon: 'tabler-chevron-up', details: 'Collapse card content using collapse action.',

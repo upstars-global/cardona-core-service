@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useAttrs } from 'vue';
+
 import { computed } from 'vue'
 import type { NumberBaseField } from '../../../../@model/templates/baseField'
 import type { NumberOrString } from '../../../../@model'

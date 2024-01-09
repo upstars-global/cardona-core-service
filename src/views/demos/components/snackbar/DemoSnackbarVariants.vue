@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const isDefaultSnackbarVisible = ref(false)
 const isTonalSnackbarVisible = ref(false)
 const isTextSnackbarVisible = ref(false)

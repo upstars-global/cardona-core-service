@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router/auto';
+
+import { inject, useSlots, ref, computed, watch, onMounted, onBeforeMount } from 'vue';
+
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import CTable from '../../CTable/index.vue'

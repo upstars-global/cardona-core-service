@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref, watch, nextTick } from 'vue';
+
 const items = ['Gaming', 'Programming', 'Vue', 'Vuetify']
 const selectedList = ref(['Vuetify'])
 const search = ref(null)

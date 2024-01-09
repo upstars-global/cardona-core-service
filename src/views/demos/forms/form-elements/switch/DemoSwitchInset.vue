@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const insetSwitch1 = ref(true)
 const insetSwitch2 = ref(false)
 </script>

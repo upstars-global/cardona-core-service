@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const chips = ref(['Programming', 'Playing games', 'Sleeping'])
 const items = ref(['Streaming', 'Eating', 'Programming', 'Playing games', 'Sleeping'])
 </script>

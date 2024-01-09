@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const pageSuccess = ref(1)
 const pageError = ref(2)
 const pageInfo = ref(3)

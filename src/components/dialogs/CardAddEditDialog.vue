@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, toRaw, watch } from 'vue';
+
 interface Details {
   number: string
   name: string

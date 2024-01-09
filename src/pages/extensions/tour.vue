@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { watch, onMounted } from 'vue';
+
+import { useMagicKeys } from '@vueuse/core';
+
+import { useRoute } from 'vue-router/auto';
+
 import { useShepherd } from 'vue-shepherd'
 
 const route = useRoute()

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { definePage } from '../../typed-router'
 import pages401 from '@images/pages/401.png'
 import miscMaskDark from '@images/pages/misc-mask-dark.png'
 import miscMaskLight from '@images/pages/misc-mask-light.png'

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
 import type { _RouteLocationBase } from 'vue-router'
 import { ProjectFilterTypes } from '@filterConfig'
 import BaseList from '../../../components/templates/BaseList/index.vue'

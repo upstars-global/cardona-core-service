@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { useApi } from '../../../../../composables/useApi';
+
+import { ref } from 'vue';
+
+import { useRoute } from 'vue-router/auto';
+
 import ECommerceAddCustomerDrawer from '@/views/apps/ecommerce/ECommerceAddCustomerDrawer.vue'
 import CustomerBioPanel from '@/views/apps/ecommerce/customer/view/CustomerBioPanel.vue'
 import CustomerTabAddressAndBilling from '@/views/apps/ecommerce/customer/view/CustomerTabAddressAndBilling.vue'

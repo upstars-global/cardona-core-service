@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useWindowScroll } from '@vueuse/core';
+
 const { y } = useWindowScroll()
 
 const scrollToTop = () => {

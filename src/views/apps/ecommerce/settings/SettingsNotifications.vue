@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const customerNotifications = ref([
   {
     type: 'New customer sign up',

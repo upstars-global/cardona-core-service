@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const selectedSwitch = ref(['Primary', 'Secondary', 'Success', 'Info', 'Warning', 'Error'])
 const switches = ref(['Primary', 'Secondary', 'Success', 'Info', 'Warning', 'Error'])
 </script>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const switchOn = ref('on')
 const switchOnDisabled = ref('on')
 const switchOnLoading = ref('on')

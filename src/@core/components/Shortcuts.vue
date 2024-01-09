@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router/auto';
+
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 
 interface Shortcut {

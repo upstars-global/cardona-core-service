@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const countryList = [
   { label: 'Bahamas, The', value: 'bahamas' },
   { label: 'Bahrain', value: 'bahrain' },

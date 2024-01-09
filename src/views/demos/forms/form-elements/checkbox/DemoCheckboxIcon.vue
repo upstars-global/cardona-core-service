@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const toggleCheckboxOne = ref(true)
 const toggleCheckboxTwo = ref(true)
 const toggleCheckboxThree = ref(true)

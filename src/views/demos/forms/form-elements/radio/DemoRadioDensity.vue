@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const columnRadio = ref('radio-1')
 const inlineRadio = ref('radio-1')
 </script>

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useVModel } from '@vueuse/core';
+
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useChat } from './useChat'
 import ChatContact from '@/views/apps/chat/ChatContact.vue'

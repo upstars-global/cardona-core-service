@@ -31,6 +31,10 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
+import { useRoute } from 'vue-router/auto';
+
 import {IconsList} from "../../@model/enums/icons";
 
 const route = useRoute()

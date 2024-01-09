@@ -1,3 +1,7 @@
+import { $api } from '../../../utils/api';
+import { createUrl } from '../../../@core/composable/createUrl';
+import { useApi } from '../../../composables/useApi';
+import { defineStore } from 'pinia';
 import type { ActiveChat } from './useChat'
 import type { ChatContact, ChatContactWithChat, ChatMessage, ChatOut } from '@/plugins/fake-api/handlers/apps/chat/types'
 

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
 import type { CustomInputContent } from '@core/types'
 

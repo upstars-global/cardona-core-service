@@ -1,3 +1,4 @@
+import { resolveVuetifyTheme } from '../../@core/utils/vuetify';
 import { deepMerge } from '@antfu/utils'
 import type { App } from 'vue'
 import { useI18n } from 'vue-i18n'

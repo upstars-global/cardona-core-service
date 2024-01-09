@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { useCookie } from '../../@core/composable/useCookie';
+
+import { useAbility } from '../../plugins/casl/composables/useAbility';
+
+import { useRouter } from 'vue-router/auto';
+
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 
 const router = useRouter()

@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { useApi } from '../../../composables/useApi';
+
+import { ref } from 'vue';
+
 import type { ProfileHeader } from '@db/pages/profile/types'
 
 const profileHeaderData = ref<ProfileHeader>()

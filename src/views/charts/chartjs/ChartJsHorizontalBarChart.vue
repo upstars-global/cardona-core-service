@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { useTheme } from 'vuetify'
 import type { ChartJsCustomColors } from '@/views/charts/chartjs/types'
 import { getHorizontalBarChartConfig } from '@core/libs/chartjs/chartjsConfig'

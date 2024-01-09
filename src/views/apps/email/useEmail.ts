@@ -1,3 +1,5 @@
+import { $api } from '../../../utils/api';
+import { useRoute } from 'vue-router/auto';
 import type { PartialDeep } from 'type-fest'
 import type { Email } from '@/plugins/fake-api/handlers/apps/email/types'
 

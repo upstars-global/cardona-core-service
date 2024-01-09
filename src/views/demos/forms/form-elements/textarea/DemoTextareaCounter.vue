@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const textareaValue = ref('Hello!')
 </script>
 

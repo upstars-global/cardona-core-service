@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 interface Props {
   confirmationQuestion: string
   isDialogVisible: boolean

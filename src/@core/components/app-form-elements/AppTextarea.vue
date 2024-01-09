@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { computed, useAttrs } from 'vue';
+
 defineOptions({
   name: 'AppTextarea',
   inheritAttrs: false,

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const message = ref('Hey!')
 const marker = ref(true)
 const iconIndex = ref(0)

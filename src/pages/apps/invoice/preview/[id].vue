@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { useApi } from '../../../../composables/useApi';
+
+import { ref } from 'vue';
+
+import { useRoute } from 'vue-router/auto';
+
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 

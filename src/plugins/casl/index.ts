@@ -1,3 +1,4 @@
+import { useCookie } from '../../@core/composable/useCookie';
 import type { App } from 'vue'
 
 import { createMongoAbility } from '@casl/ability'

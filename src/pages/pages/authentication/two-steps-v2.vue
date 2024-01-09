@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
+import { useRouter } from 'vue-router/auto';
+
 import { VOtpInput } from 'vuetify/labs/VOtpInput'
 
 import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'

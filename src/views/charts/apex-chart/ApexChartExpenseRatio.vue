@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
+
 import { useTheme } from 'vuetify'
 import { getDonutChartConfig } from '@core/libs/apex-chart/apexCharConfig'
 

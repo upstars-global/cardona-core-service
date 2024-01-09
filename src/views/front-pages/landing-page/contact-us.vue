@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import ConnectImg from '@images/front-pages/landing-page/contact-customer-service.png'
 
 const name = ref('')

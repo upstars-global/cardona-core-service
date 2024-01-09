@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const switch1 = ref(1)
 const switch2 = ref('Show')
 </script>

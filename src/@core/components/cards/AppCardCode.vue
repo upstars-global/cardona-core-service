@@ -1,4 +1,12 @@
 <script lang="ts" setup>
+import { useClipboard } from '@vueuse/core';
+
+import { ref, computed } from 'vue';
+
+import { COOKIE_MAX_AGE_1_YEAR } from '../../../utils/constants';
+
+import { useCookie } from '../../composable/useCookie';
+
 import 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
 import Prism from 'vue-prism-component'

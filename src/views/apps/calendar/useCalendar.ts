@@ -1,3 +1,5 @@
+import { ref, watch, onMounted } from 'vue';
+import type { Ref } from 'vue';
 import type { CalendarApi, CalendarOptions, EventApi, EventSourceFunc } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'

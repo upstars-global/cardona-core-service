@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import { computed } from 'vue'
 import { Russian as ru } from 'flatpickr/dist/l10n/ru'
 import en from 'flatpickr/dist/l10n/default'

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const selectedRadio = ref('primary')
 const colorsRadio = ['Primary', 'Secondary', 'Success', 'Info', 'Warning', 'Error']
 </script>

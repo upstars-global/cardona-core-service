@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import { VDataTable } from 'vuetify/labs/VDataTable'
 
 const isNewPasswordVisible = ref(false)

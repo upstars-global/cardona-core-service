@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const checkbox = ref(1)
 const checkboxString = ref('Show')
 </script>

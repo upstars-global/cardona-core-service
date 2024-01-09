@@ -1,4 +1,10 @@
 <script lang="ts" setup>
+import { useRoute } from 'vue-router/auto';
+
+import { until, useEventListener } from '@vueuse/core';
+
+import { ref, onMounted, watch } from 'vue';
+
 import type { ReferenceElement } from '@floating-ui/dom'
 import { computePosition, flip, shift } from '@floating-ui/dom'
 import { useLayoutConfigStore } from '@layouts/stores/config'
