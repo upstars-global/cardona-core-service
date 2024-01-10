@@ -17,6 +17,11 @@ module.exports = {
         target: 'https://cardona-develop.upstr.to',
         headers: proxy_headers,
       },
+      '/ws': {
+        changeOrigin: true,
+        target: 'wss://cardona-develop.upstr.to',
+        headers: proxy_headers,
+      },
     },
   },
   css: {
