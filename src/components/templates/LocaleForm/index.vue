@@ -40,7 +40,7 @@
                   @input="(val) => onInputLocalEditor(val, item, local)"
                   @remove-variable="onRemoveVariables"
                 />
-                <div class="d-flex justify-content-end" v-if="!isMainLocale(local)">
+                <div v-if="!isMainLocale(local)" class="d-flex justify-content-end">
                   <check-field
                     v-model="fieldTranslations[item][local].disabled"
                     :field="{ label: $t('action.hide') }"
@@ -75,6 +75,7 @@
                       v-model="fieldTranslations[item][local].disabled"
                       :field="{ label: $t('action.hide') }"
                       class="d-flex align-items-center"
+                      :disabled="disabled"
                     />
                   </div>
                 </template>
