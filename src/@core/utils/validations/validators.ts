@@ -51,7 +51,7 @@ export const validatorObject = (value: Record<string, NumberOrString>): boolean 
 export const validatorRange = (value: Record<string, NumberOrString>, args): boolean => {
   const [keyMin, keyMax] = args as Array<NumberOrString>
   if (!validatorObject(value)) return false
-  return +value[keyMin] <= +value[keyMax]
+  return +value[keyMin] < +value[keyMax]
 }
 
 export const validatorListPhoneAndDomain = (value: Array<PhoneAndCountry>): boolean => {
