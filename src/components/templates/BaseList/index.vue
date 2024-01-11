@@ -131,7 +131,7 @@
         :fields="selectedFields"
         :items="getList"
         class="our-table"
-        :draggable="config.draggable"
+        :draggable="canUpdate && config.draggable"
         :sort-by.sync="sortData.sortBy"
         :sort-desc.sync="sortData.sortDesc"
         :tbody-tr-class="selectedRowClass"
@@ -237,7 +237,7 @@
             :key="index"
             :position="value"
             :size="field.size"
-            :can-update="canUpdate || config.draggable"
+            :can-update="canUpdate"
             @edit-position="(val) => onEditPosition(item, val)"
           />
 
