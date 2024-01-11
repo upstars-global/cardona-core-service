@@ -264,7 +264,7 @@
     "required_if": "The {_field_} field is required",
     "required": "The {_field_} field is required",
     "required_object": "The {_field_} field is required",
-    "range": "The {_field_} value \"{labelTo}\" should be greater than or equal {valueFrom}",
+    "range": "The {_field_} value \"{labelTo}\" should be greater than {valueFrom}",
     "size": "The {_field_} field size must be less than {size}KB",
     "double": "The {_field_} field must be a valid decimal",
     "password": "Your {_field_} must contain at least one uppercase, one lowercase, one special character, one digit and be at least 8 characters",
