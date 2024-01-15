@@ -303,24 +303,30 @@ watch(() => searchQuery.value, reFetchList)
 // Export
 
 const setRequestFilters = (): PayloadFilters => {
-  if (!ListFilterModel) return {}
+  if (!ListFilterModel)
+    return {}
 
   const appliedFiltersData = appliedFilters.value.reduce((acc, filter) => {
     const { key, trackBy = 'name' }: FilterListItem = props.config?.filterList.find(
-        ({ type }: FilterListItem) => type === filter.key
+      ({ type }: FilterListItem) => type === filter.key,
     )
 
     if (filter instanceof SelectBaseField) {
       acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
-    } else if (filter instanceof MultiSelectBaseField) {
+    }
+    else if (filter instanceof MultiSelectBaseField) {
       acc[key] = filter.transformField({ trackBy })
-    } else if (filter instanceof DateBaseField || filter instanceof NumberRangeBaseField) {
+    }
+    else if (filter instanceof DateBaseField || filter instanceof NumberRangeBaseField) {
       const transformedFilterValue = filter.transformField(key)
 
-      if (!transformedFilterValue) return acc
-      else if (typeof transformedFilterValue === 'string') acc[key] = transformedFilterValue
+      if (!transformedFilterValue)
+        return acc
+      else if (typeof transformedFilterValue === 'string')
+        acc[key] = transformedFilterValue
       else acc = { ...acc, ...transformedFilterValue }
-    } else if (filter instanceof BaseField) {
+    }
+    else if (filter instanceof BaseField) {
       acc[key] = filter.transformField()
     }
 
@@ -334,11 +340,13 @@ const setRequestFilters = (): PayloadFilters => {
   })
 
   for (const key in filtersData) {
-    const isEmptyValue =
-        isNullOrUndefinedValue(filtersData[key]) || isEmptyString(filtersData[key])
+    const isEmptyValue
+        = isNullOrUndefinedValue(filtersData[key]) || isEmptyString(filtersData[key])
+
     const isEmptyArray = Array.isArray(filtersData[key]) && filtersData[key].isEmpty
 
-    if (isEmptyValue || isEmptyArray) delete filtersData[key]
+    if (isEmptyValue || isEmptyArray)
+      delete filtersData[key]
   }
 
   return filtersData
@@ -718,7 +726,6 @@ onBeforeMount(async () => {
             v-else-if="field.type === ListFieldType.Date"
             :key="`${index}_${field.type}`"
             :date="cell"
-            field=""
           />
 
           <DateWithSecondsField
