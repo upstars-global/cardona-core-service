@@ -36,3 +36,4 @@ export enum BVariant {
   OutlineSuccess = 'outline-success',
   OutlineDanger = 'outline-danger',
 }
+export default {}
