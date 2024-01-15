@@ -3,15 +3,14 @@ import { i18n } from '../plugins/i18n'
 import { SideBarCollapseItem } from '../@model/templates/baseList'
 import type { BaseListItem } from '../@model/templates/baseList'
 import { VColors } from '../@model/vuetify'
-import type { SeoData } from './seo'
-import type { FieldTranslationsData } from './translations'
+import type { TranslationForm } from './translations'
 import {
   CheckBaseField, CheckGroupBaseField,
   ConditionsBaseField,
   DateBaseField, FormDateBaseField, MultiSelectBaseField,
   NumberBaseField, NumberRangeBaseField, PasswordBaseField, PhoneBaseField, RadioBaseField, RatesBaseField,
-  SelectBaseField, SwitchBaseField, TagsBaseField, TextareaBaseField,
-  TextBaseField,
+  SelectBaseField, SwitchBaseField, TagsBaseField, TextBaseField,
+  TextareaBaseField,
   TimeBaseField, UsersListBaseField,
 } from './templates/baseField'
 import type { StatusWithDateHistoryValue } from './view'
@@ -19,9 +18,8 @@ import { StatusWithVariant, ViewInfo, ViewType } from './view'
 import type { TransactionType } from './enums/playersTransactions'
 import type { BColors, BLightColors } from './bootstrap'
 import { BaseDatePeriod } from './date'
-import {SeoForm} from "./seo";
-import {getTranslationForm, TranslationForm} from "./translations";
-
+import { SeoForm } from './seo'
+import { getTranslationForm } from './translations'
 
 export interface PhoneAndCountry {
   phone: string
@@ -219,21 +217,25 @@ export class DemoForm {
       key: 'text',
       value: data?.text,
       label: i18n.t('page.demo.textField'),
-      validationRules: {required: true},
+      validationRules: { required: true },
       isLocalization: true,
     })
     this.textWithCb = new TextBaseField({
       key: 'textWithCb',
       value: data?.textWithCb,
       label: i18n.t('page.demo.textFieldWithCb'),
-      validationRules: {required: true},
+      validationRules: { required: true },
       isLocalization: true,
       serialize: (value: string) => {
-        if (value?.includes('demo:')) return value
+        if (value?.includes('demo:'))
+          return value
+
         return `demo:${value}`
       },
       deserialize: (value: string) => {
-        if (value?.includes('demo:')) return value
+        if (value?.includes('demo:'))
+          return value
+
         return value?.substring(5)
       },
     })
@@ -249,7 +251,7 @@ export class DemoForm {
       key: 'minute',
       value: data?.minute,
       label: i18n.t('page.demo.minuteField'),
-      validationRules: {positive: true},
+      validationRules: { positive: true },
       append: 'min',
       withPositiveNumbers: true,
       isIntegerNumbers: true,
@@ -261,7 +263,7 @@ export class DemoForm {
       append: 'min',
       key: 'minutesRange',
       label: i18n.t('page.demo.minutesRangeField'),
-      validationRules: {required_object: true, range: ['from', 'to']},
+      validationRules: { required_object: true, range: ['from', 'to'] },
       isCurrency: false,
     })
     this.percent = new NumberBaseField({
@@ -281,7 +283,7 @@ export class DemoForm {
       key: 'email',
       value: data?.email,
       label: i18n.t('common.email'),
-      validationRules: {required: true, email: true},
+      validationRules: { required: true, email: true },
     })
     this.sumRange = new NumberRangeBaseField({
       key: 'sumRange',
@@ -300,7 +302,7 @@ export class DemoForm {
       key: 'phone',
       value: data?.phone,
       label: i18n.t('page.demo.phoneField'),
-      validationRules: {required: true, phone: true},
+      validationRules: { required: true, phone: true },
     })
     this.phoneList = data?.phoneList?.map(createPhoneDomainFieldItem) || []
     this.password = new PasswordBaseField({
@@ -437,7 +439,7 @@ export class DemoForm {
       value: data?.url,
       key: 'url',
       label: i18n.t('common.url'),
-      validationRules: {url: true},
+      validationRules: { url: true },
     })
     this.tags = new TagsBaseField({
       value: data?.tags,
@@ -449,7 +451,7 @@ export class DemoForm {
       key: 'conditions',
       label: i18n.t('page.demo.conditionsField'),
       placeholder: i18n.t('component.conditions.placeholder'),
-      validationRules: {required: true},
+      validationRules: { required: true },
       fetchOptionsActionName: 'conditions/fetchConditions',
     })
     this.usersList = new UsersListBaseField({
@@ -594,13 +596,12 @@ export class DemoSideBar {
   }
 }
 
-
 export const createPhoneDomainFieldItem = (item: PhoneAndCountry) => ({
   phone: new PhoneBaseField({
     key: 'id',
     value: item?.phone || '',
     label: i18n.t('common.phone._'),
-    validationRules: {required:true, phone: true},
+    validationRules: { required: true, phone: true },
   }),
   domain: new SelectBaseField({
     key: 'country',
@@ -611,6 +612,6 @@ export const createPhoneDomainFieldItem = (item: PhoneAndCountry) => ({
       { id: 2, name: 'Poland' },
       { id: 3, name: 'Latvia' },
     ],
-    validationRules: {required: true},
+    validationRules: { required: true },
   }),
 })

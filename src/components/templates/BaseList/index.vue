@@ -303,56 +303,45 @@ watch(() => searchQuery.value, reFetchList)
 // Export
 
 const setRequestFilters = (): PayloadFilters => {
-  if (!ListFilterModel)
-    return {}
+  if (!ListFilterModel) return {}
 
-  let filters = new ListFilterModel(props.config?.staticFilters)
+  const appliedFiltersData = appliedFilters.value.reduce((acc, filter) => {
+    const { key, trackBy = 'name' }: FilterListItem = props.config?.filterList.find(
+        ({ type }: FilterListItem) => type === filter.key
+    )
 
-  if (searchQuery.value)
-    filters = new ListFilterModel({ ...props.config?.staticFilters, search: searchQuery.value })
+    if (filter instanceof SelectBaseField) {
+      acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
+    } else if (filter instanceof MultiSelectBaseField) {
+      acc[key] = filter.transformField({ trackBy })
+    } else if (filter instanceof DateBaseField || filter instanceof NumberRangeBaseField) {
+      const transformedFilterValue = filter.transformField(key)
 
-  filters = appliedFilters.value.reduce(
-    (acc, filter) => {
-      const { key, trackBy = 'name' }: FilterListItem = props.config?.filterList.find(
-        ({ type }: FilterListItem) => type === filter.key,
-      )
+      if (!transformedFilterValue) return acc
+      else if (typeof transformedFilterValue === 'string') acc[key] = transformedFilterValue
+      else acc = { ...acc, ...transformedFilterValue }
+    } else if (filter instanceof BaseField) {
+      acc[key] = filter.transformField()
+    }
 
-      if (filter instanceof SelectBaseField) {
-        acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
-      }
-      else if (filter instanceof MultiSelectBaseField) {
-        acc[key] = filter.transformField({ trackBy })
-      }
-      else if (filter instanceof DateBaseField || filter instanceof NumberRangeBaseField) {
-        const transformedFilterValue = filter.transformField(key)
+    return acc
+  }, {})
 
-        if (!transformedFilterValue)
-          return acc
-        else if (typeof transformedFilterValue === 'string')
-          acc[key] = transformedFilterValue
-        else acc = { ...acc, ...transformedFilterValue }
-      }
-      else if (filter instanceof BaseField) {
-        acc[key] = filter.transformField()
-      }
+  const filtersData = new ListFilterModel({
+    ...props.config?.staticFilters,
+    search: searchQuery.value,
+    ...appliedFiltersData,
+  })
 
-      return acc
-    },
-    new ListFilterModel({
-      ...props.config?.staticFilters,
-      ...filters,
-    }),
-  )
+  for (const key in filtersData) {
+    const isEmptyValue =
+        isNullOrUndefinedValue(filtersData[key]) || isEmptyString(filtersData[key])
+    const isEmptyArray = Array.isArray(filtersData[key]) && filtersData[key].isEmpty
 
-  for (const key in filters) {
-    const isEmptyValue = isNullOrUndefinedValue(filters[key]) || isEmptyString(filters[key])
-    const isEmptyArray = Array.isArray(filters[key]) && filters[key].isEmpty
-
-    if (isEmptyValue || isEmptyArray)
-      delete filters[key]
+    if (isEmptyValue || isEmptyArray) delete filtersData[key]
   }
 
-  return filters
+  return filtersData
 }
 
 const onExportFormatSelected = async (format: string) => {
