@@ -316,22 +316,10 @@
         <template #empty>
           <div class="d-flex flex-column justify-content-center align-items-center p-1">
             <slot name="empty">
-              <div>
-                {{ config.emptyText }}
-              </div>
-            </slot>
-            <b-button
-              v-if="isShownCreateBtn"
-              variant="primary"
-              :to="{ name: CreatePageName }"
-              class="mt-2"
-            >
-              <feather-icon :icon="IconsList.PlusIcon" />
-
-              <span class="text-nowrap">
-                {{ $t('action.create') }}
+              <span>
+                {{ emptyListText }}
               </span>
-            </b-button>
+            </slot>
           </div>
         </template>
       </c-table>
@@ -363,6 +351,7 @@
 import { computed, onMounted, PropType, reactive, ref, watch } from 'vue'
 import store from '../../../store'
 import { useBvModal } from '../../../helpers/bvModal'
+import { useUtils as useI18nUtils } from '../../../@core/libs/i18n'
 import { getStorage, setStorage, removeStorageItem } from '../../../helpers/storage'
 import { useRouter } from '../../../@core/utils/utils'
 import usePagination, { PaginationResult } from '../../../use/pagination'
@@ -473,6 +462,7 @@ export default {
 
   setup(props, { slots, emit }) {
     const bvModal = useBvModal()
+    const { t } = useI18nUtils()
     const { router, route } = useRouter()
     const { name: currentPageName } = route.value
 
@@ -489,6 +479,12 @@ export default {
       beforeRemoveCallback,
       ListItemModel,
     } = props.useList()
+
+    const emptyListText = computed(() =>
+      searchQuery.value || hasSelectedFilters.value
+        ? t('emptyState.emptyRequest')
+        : props.config.emptyText
+    )
 
     // Pages
     const CreatePageName = pageName ? `${pageName}Create` : `${entityName}Create`
@@ -705,9 +701,10 @@ export default {
 
       return isSameEntity ? store.getters['filtersCore/appliedListFilters'] : []
     })
+    const hasSelectedFilters = computed(() => selectedFilters && selectedFilters.value.isNotEmpty)
 
     onMounted(() => {
-      isFiltersShown.value = selectedFilters && selectedFilters.value.isNotEmpty
+      isFiltersShown.value = hasSelectedFilters.value
     })
     const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
       props.config.filterList
@@ -949,6 +946,7 @@ export default {
       isLoadingList,
       isExistsUpdatePage,
       size,
+      emptyListText,
       fields,
       ListFieldType,
       selectedFields,
