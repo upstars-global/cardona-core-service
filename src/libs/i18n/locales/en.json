@@ -360,6 +360,7 @@
   },
   "emptyState": {
     "search": "Nothing found",
+    "emptyRequest": "Nothing was found for your request. Please refine your request.",
     "list": "No entries created",
     "listWithBtn": "No entries created. It's time to do it",
     "projects": "No projects created. It's time to do it",
