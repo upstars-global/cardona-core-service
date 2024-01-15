@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import { computed, ref, watch } from 'vue'
 
-import { useRoute, useRouter } from 'vue-router/auto';
+import { useRoute, useRouter } from 'vue-router'
 
-import type { RouteLocationRaw } from 'vue-router/auto'
+import type { RouteLocationRaw } from 'vue-router'
 import { useDisplay } from 'vuetify'
 
 import { useWindowScroll } from '@vueuse/core'

@@ -1,6 +1,6 @@
 <!-- ❗Errors in the form are set on line 60 -->
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router/auto'
+import { useRoute, useRouter } from 'vue-router'
 import { nextTick, ref } from 'vue'
 import { VForm } from 'vuetify/components/VForm'
 import { useCookie } from '../@core/composable/useCookie'

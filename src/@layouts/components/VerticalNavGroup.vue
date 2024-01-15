@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { useMounted } from '@vueuse/core';
+import { useMounted } from '@vueuse/core'
 
-import { inject, ref, watch } from 'vue';
+import { TransitionGroup, inject, ref, watch } from 'vue'
 
-import { useRoute, useRouter } from 'vue-router/auto';
+import { useRoute, useRouter } from 'vue-router'
 
-import { TransitionGroup } from 'vue'
 import { layoutConfig } from '@layouts'
 import { TransitionExpand, VerticalNavLink } from '@layouts/components'
 import { canViewNavMenuGroup } from '@layouts/plugins/casl'

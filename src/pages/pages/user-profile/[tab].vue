@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed } from 'vue'
 
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router'
 
 import UserProfileHeader from '@/views/pages/user-profile/UserProfileHeader.vue'
 import UserConnections from '@/views/pages/user-profile/connections/index.vue'

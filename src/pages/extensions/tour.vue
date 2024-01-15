@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { watch, onMounted } from 'vue';
+import { onMounted, watch } from 'vue'
 
-import { useMagicKeys } from '@vueuse/core';
+import { useMagicKeys } from '@vueuse/core'
 
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router'
 
 import { useShepherd } from 'vue-shepherd'
 
 const route = useRoute()
 
 // 👉 Hotkey
-// eslint-disable-next-line camelcase
+
 const { ctrl_k, meta_k } = useMagicKeys()
 
 // 👉 Tour initialization
 let tour: any = null
 
 // 👉 watch command palette and route change
-/* eslint-disable camelcase */
+
 watch([
   ctrl_k,
   meta_k,
@@ -26,7 +26,6 @@ watch([
   if (tour.isActive())
     tour.cancel()
 })
-/* eslint-enable */
 
 onMounted(() => {
   const navbar = document.querySelector('.layout-navbar')

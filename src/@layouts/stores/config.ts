@@ -1,9 +1,9 @@
-import { useMediaQuery, useWindowScroll } from '@vueuse/core';
-import { ref, watch, computed, unref, inject } from 'vue';
-import { useRoute } from 'vue-router/auto';
-import { defineStore } from 'pinia';
-import { useCookie } from '../../@core/composable/useCookie';
-import type { Ref } from 'vue';
+import { useMediaQuery, useWindowScroll } from '@vueuse/core'
+import { computed, inject, ref, unref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { defineStore } from 'pinia'
+import type { Ref } from 'vue'
+import { useCookie } from '../../@core/composable/useCookie'
 import { AppContentLayoutNav, NavbarType } from '@layouts/enums'
 import { injectionKeyIsVerticalNavHovered } from '@layouts/symbols'
 import { _setDirAttr } from '@layouts/utils'

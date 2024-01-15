@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { $api } from '../../../../utils/api';
+import { ref, watch } from 'vue'
 
-import { ref, watch } from 'vue';
-
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router'
+import { $api } from '../../../../utils/api'
 
 import type { ProjectsTab } from '@db/pages/profile/types'
 

@@ -1,9 +1,9 @@
 import type { App } from 'vue'
 
 import { setupLayouts } from 'virtual:generated-layouts'
-import type { RouteRecordRaw } from 'vue-router/auto'
-// eslint-disable-next-line import/no-unresolved
-import { createRouter, createWebHistory } from 'vue-router/auto'
+import type { RouteRecordRaw } from 'vue-router'
+
+import { createRouter, createWebHistory } from 'vue-router'
 
 import { redirects, routes } from './additional-routes'
 import { setupGuards } from './guards'

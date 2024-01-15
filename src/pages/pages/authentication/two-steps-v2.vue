@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
 
-import { useRouter } from 'vue-router/auto';
+import { useRouter } from 'vue-router'
 
 import { VOtpInput } from 'vuetify/labs/VOtpInput'
 

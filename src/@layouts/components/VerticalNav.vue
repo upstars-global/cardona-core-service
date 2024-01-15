@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router'
 
-import { useElementHover } from '@vueuse/core';
+import { useElementHover } from '@vueuse/core'
 
-import { ref, provide, watch } from 'vue';
+import { provide, ref, watch } from 'vue'
 
 import type { Component } from 'vue'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'

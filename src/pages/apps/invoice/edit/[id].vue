@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { useApi } from '../../../../composables/useApi';
+import { useRoute } from 'vue-router'
 
-import { useRoute } from 'vue-router/auto';
-
-import { ref } from 'vue';
+import { ref } from 'vue'
+import { useApi } from '../../../../composables/useApi'
 
 import InvoiceAddPaymentDrawer from '@/views/apps/invoice/InvoiceAddPaymentDrawer.vue'
 import InvoiceEditable from '@/views/apps/invoice/InvoiceEditable.vue'

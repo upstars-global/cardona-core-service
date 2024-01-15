@@ -1,5 +1,5 @@
-import { useCookie } from '../../@core/composable/useCookie';
-import type { RouteRecordRaw } from 'vue-router/auto'
+import type { RouteRecordRaw } from 'vue-router'
+import { useCookie } from '../../@core/composable/useCookie'
 import sectionRouterGenerator from '../../helpers/router'
 
 const emailRouteComponent = () => import('@/pages/apps/email/index.vue')

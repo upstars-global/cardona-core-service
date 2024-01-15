@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
 
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router'
 
 import { VDataTable } from 'vuetify/labs/VDataTable'
 
