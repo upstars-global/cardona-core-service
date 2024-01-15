@@ -1,6 +1,6 @@
-import store from '../store'
 import { PermissionLevel } from '../@model/permission'
 import { getPermissionKeys } from './index'
+import store from '@/store'
 import { permissionPrefix } from '@productConfig'
 
 interface PermissionsValue {

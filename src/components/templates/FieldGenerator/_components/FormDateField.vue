@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue'
 
-import { computed } from 'vue'
 import { Russian as ru } from 'flatpickr/dist/l10n/ru'
 import en from 'flatpickr/dist/l10n/default'
 import { i18n } from '../../../../plugins/i18n'
 import type { FormDateBaseField } from '../../../../@model/templates/baseField'
 import { IconsList } from '../../../../@model/enums/icons'
+import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
 
 interface Props {
   modelValue: string | Date

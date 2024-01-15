@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router/auto';
+import { useRoute, useRouter } from 'vue-router'
 
-import { inject, useSlots, ref, computed, watch, onMounted, onBeforeMount } from 'vue';
+import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
 
-import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
@@ -18,7 +17,7 @@ import {
   DateBaseField,
   MultiSelectBaseField,
   NumberRangeBaseField,
-  SelectBaseField
+  SelectBaseField,
 } from '../../../@model/templates/baseField'
 import type { PaginationResult } from '../../../use/pagination'
 import usePagination from '../../../use/pagination'
@@ -27,13 +26,37 @@ import { ListFieldType } from '../../../@model/templates/tableFields'
 import { basePermissions } from '../../../helpers/base-permissions'
 import type { SortItem } from '../../../@core/types'
 import { IconsList } from '../../../@model/enums/icons'
-import MultipleActions from './_components/MultipleActions.vue'
 import {
   checkExistsPage,
   convertCamelCase,
   convertLowerCaseFirstSymbol, isEmptyString, isNullOrUndefinedValue,
 } from '../../../helpers'
-import {VSizes} from "../../../@model/vuetify";
+import { VSizes } from '../../../@model/vuetify'
+import SideBar from '../../../components/templates/SideBar/index.vue'
+import FiltersBlock from '../../../components/FiltersBlock/index.vue'
+import CopyField from '../../../components/templates/_components/CopyField.vue'
+import StatementField from '../../../components/templates/_components/StatementField.vue'
+import DateWithSecondsField from '../../../components/templates/_components/DateWithSecondsField.vue'
+import SumAndCurrency from '../../../components/templates/_components/SumAndCurrency.vue'
+import StatusField from '../../../components/templates/_components/StatusField.vue'
+import MultipleActions from './_components/MultipleActions.vue'
+import ListSearch from './_components/ListSearch.vue'
+import PillStatusField from './_components/fields/PillStatusField.vue'
+import NameWithIdField from './_components/fields/NameWithIdField.vue'
+import NameWithShortIdField from './_components/fields/NameWithShortIdField.vue'
+import EmailField from './_components/fields/EmailField.vue'
+import BadgesField from './_components/fields/BadgesField.vue'
+import PositionField from './_components/fields/PositionField.vue'
+import ButtonField from './_components/fields/ButtonField.vue'
+import CommentField from './_components/fields/CommentField.vue'
+import ImageField from './_components/fields/ImageField.vue'
+import ImageDetailField from './_components/fields/ImageDetailField.vue'
+import DatePeriodField from './_components/fields/DatePeriodField.vue'
+import CopyShortField from './_components/fields/CopyShortField.vue'
+import ItemActions from './_components/fields/ItemActions.vue'
+import ListPagination from './_components/ListPagination.vue'
+import TableFields from './_components/TableFields.vue'
+import DateField from './_components/fields/DateField.vue'
 
 const props = defineProps<{
   config: IBaseListConfig
@@ -41,8 +64,8 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits<{
-  rowClicked: [item: Record<string, unknown>],
-  end: [item: Record<string, unknown>],
+  rowClicked: [item: Record<string, unknown>]
+  end: [item: Record<string, unknown>]
 }>()
 
 const modal = inject('modal')
@@ -151,13 +174,13 @@ const isLoadingList = computed(() => {
   )
 
   const entityUrl: string = convertCamelCase(entityNameForLoad, '/')
+
   return store.getters.isLoadingEndpoint([
     `${entityUrl}/list`,
     `${entityUrl}/update`,
     `${entityUrl}/delete`,
   ])
 })
-
 
 const size = props.config?.small ? VSizes.Small : VSizes.Medium
 
@@ -216,7 +239,7 @@ watch(() => perPage.value, () => {
 // Fetch list
 const getList = async () => {
   const filter = setRequestFilters()
-  const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
+  const sort = sortData.value[0].key ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
 
   const { list, total } = await store.dispatch(fetchActionName, {
     type: entityName,
@@ -280,54 +303,61 @@ watch(() => searchQuery.value, reFetchList)
 // Export
 
 const setRequestFilters = (): PayloadFilters => {
-  if (!ListFilterModel) return {}
+  if (!ListFilterModel)
+    return {}
 
   let filters = new ListFilterModel(props.config?.staticFilters)
 
-  if (searchQuery.value) {
+  if (searchQuery.value)
     filters = new ListFilterModel({ ...props.config?.staticFilters, search: searchQuery.value })
-  }
 
   filters = appliedFilters.value.reduce(
-      (acc, filter) => {
-        const { key, trackBy = 'name' }: FilterListItem = props.config?.filterList.find(
-            ({ type }: FilterListItem) => type === filter.key
-        )
+    (acc, filter) => {
+      const { key, trackBy = 'name' }: FilterListItem = props.config?.filterList.find(
+        ({ type }: FilterListItem) => type === filter.key,
+      )
 
-        if (filter instanceof SelectBaseField) {
-          acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
-        } else if (filter instanceof MultiSelectBaseField) {
-          acc[key] = filter.transformField({ trackBy })
-        } else if (filter instanceof DateBaseField || filter instanceof NumberRangeBaseField) {
-          const transformedFilterValue = filter.transformField(key)
+      if (filter instanceof SelectBaseField) {
+        acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
+      }
+      else if (filter instanceof MultiSelectBaseField) {
+        acc[key] = filter.transformField({ trackBy })
+      }
+      else if (filter instanceof DateBaseField || filter instanceof NumberRangeBaseField) {
+        const transformedFilterValue = filter.transformField(key)
 
-          if (!transformedFilterValue) return acc
-          else if (typeof transformedFilterValue === 'string') acc[key] = transformedFilterValue
-          else acc = { ...acc, ...transformedFilterValue }
-        } else if (filter instanceof BaseField) {
-          acc[key] = filter.transformField()
-        }
+        if (!transformedFilterValue)
+          return acc
+        else if (typeof transformedFilterValue === 'string')
+          acc[key] = transformedFilterValue
+        else acc = { ...acc, ...transformedFilterValue }
+      }
+      else if (filter instanceof BaseField) {
+        acc[key] = filter.transformField()
+      }
 
-        return acc
-      },
-      new ListFilterModel({
-        ...props.config?.staticFilters,
-        ...filters,
-      })
+      return acc
+    },
+    new ListFilterModel({
+      ...props.config?.staticFilters,
+      ...filters,
+    }),
   )
 
   for (const key in filters) {
     const isEmptyValue = isNullOrUndefinedValue(filters[key]) || isEmptyString(filters[key])
     const isEmptyArray = Array.isArray(filters[key]) && filters[key].isEmpty
 
-    if (isEmptyValue || isEmptyArray) delete filters[key]
+    if (isEmptyValue || isEmptyArray)
+      delete filters[key]
   }
+
   return filters
 }
 
 const onExportFormatSelected = async (format: string) => {
   const filter = setRequestFilters()
-  const sort = sortData.sortBy ? [new ListSort(sortData)] : undefined
+  const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
 
   const report: string = await store.dispatch(fetchReportActionName, {
     type: entityName,
@@ -412,6 +442,7 @@ const onClickToggleStatusMultiple = async (isActive: boolean) => {
 
 const onClickDeleteMultiple = async () => {
   const ids: Array<string> = selectedItems.value.map(({ id }) => id)
+
   await store.dispatch(multipleDeleteActionName, {
     type: entityName,
     ids,
@@ -483,6 +514,7 @@ onBeforeMount(async () => {
       @on-click-modal-ok="onClickModalOk"
     />
     <SideBar
+      v-if="config.sidebar"
       v-model:sidebar-active="isSidebarShown"
       :item="selectedItem"
       :entity-name="entityName"
@@ -697,6 +729,7 @@ onBeforeMount(async () => {
             v-else-if="field.type === ListFieldType.Date"
             :key="`${index}_${field.type}`"
             :date="cell"
+            field=""
           />
 
           <DateWithSecondsField

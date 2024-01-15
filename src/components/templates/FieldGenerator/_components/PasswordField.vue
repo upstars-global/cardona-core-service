@@ -4,6 +4,7 @@ import generatePassword from '../../../../helpers/password-generator'
 import { IconsList } from '../../../../@model/enums/icons'
 import type { PasswordBaseField } from '../../../../@model/templates/baseField'
 import { VVariants } from '../../../../@model/vuetify'
+import AppTextField from '../../../../@core/components/app-form-elements/AppTextField.vue'
 
 interface Props {
   modelValue: string

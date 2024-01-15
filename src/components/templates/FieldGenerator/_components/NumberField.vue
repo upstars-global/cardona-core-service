@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { useAttrs } from 'vue';
-
-import { computed } from 'vue'
+import { computed, useAttrs } from 'vue'
 import type { NumberBaseField } from '../../../../@model/templates/baseField'
 import type { NumberOrString } from '../../../../@model'
 import { toIntegerNumbers, toPositiveNumbers } from '../../../../helpers'
+import AppTextField from '../../../../@core/components/app-form-elements/AppTextField.vue'
 
 interface Props {
   modelValue: NumberOrString

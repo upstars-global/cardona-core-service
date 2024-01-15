@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import store from '../../store'
+import { useStore } from 'vuex'
 import { setStorage } from '../../helpers/storage'
 import useToastService from '../../helpers/toasts'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
@@ -22,6 +22,7 @@ const emits = defineEmits<{
   (e: 'changeSelectedFilters', filters: BaseField[]): void
 }>()
 
+const store = useStore()
 const route = useRoute()
 const { toastSuccess } = useToastService()
 

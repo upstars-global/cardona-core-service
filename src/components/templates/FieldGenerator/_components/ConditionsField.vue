@@ -2,6 +2,7 @@
 import { computed, onBeforeMount, ref } from 'vue'
 import type { ConditionsBaseField } from '../../../../@model/templates/baseField'
 import { TextareaBaseField } from '../../../../@model/templates/baseField'
+import FieldGenerator from '../index.vue'
 
 const props = withDefaults(
   defineProps<{

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import {TextareaBaseField} from "../../../../@model/templates/baseField";
+import type { TextareaBaseField } from '../../../../@model/templates/baseField'
+import AppTextarea from '../../../../@core/components/app-form-elements/AppTextarea.vue'
 
-type TextareaFieldProps = {
+interface TextareaFieldProps {
   modelValue?: string
   field: TextareaBaseField
   disabled?: boolean
@@ -19,15 +20,17 @@ const emit = defineEmits<{
 
 const localModelValue = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: value => emit('update:modelValue', value),
 })
 
 const validateMaxLength = (event: any) => {
-  if(props.field.maxLength && event.target.value.length >= props.field.maxLength) {
+  if (props.field.maxLength && event.target.value.length >= props.field.maxLength) {
     const value = event.target.value.slice(0, props.field.maxLength - 1)
+
     localModelValue.value = value
     event.target.value = value
-  } else {
+  }
+  else {
     localModelValue.value = event.target.value
   }
 }

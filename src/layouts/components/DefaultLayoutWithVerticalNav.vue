@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
-
-import navItems from '@/navigation/vertical'
+import { ref, watch } from 'vue'
 
 // Components
-import Footer from '@/layouts/components/Footer.vue'
-import AppBreadcrumb from '@/layouts/components/AppBreadcrumb.vue'
+import TheCustomizer from '../../@core/components/TheCustomizer.vue'
+import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
+import Footer from './Footer.vue'
+import AppBreadcrumb from './AppBreadcrumb.vue'
+import navItems from '@/navigation/vertical'
 
 // @layouts plugin
 import { VerticalNavLayout } from '@layouts'
