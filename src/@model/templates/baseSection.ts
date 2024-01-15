@@ -10,3 +10,4 @@ export interface UseEntityType<T> {
   readonly onSubmitCallback?: (id: string) => void
   readonly onBeforeSubmitCb?: (formData: any) => Promise<boolean>
 }
+export default {}

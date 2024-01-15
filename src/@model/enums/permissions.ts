@@ -16,3 +16,4 @@ export enum PermissionFormType {
   Switch = 'switch',
   Table = 'table',
 }
+export default {}

@@ -287,3 +287,4 @@ export enum IconsList {
   ZoomInIcon = 'ZoomInIcon',
   ZoomOutIcon = 'ZoomOutIcon',
 }
+export default {}
