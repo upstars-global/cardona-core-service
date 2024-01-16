@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router/auto'
 import { useCookie } from '../../@core/composable/useCookie'
 import sectionRouterGenerator from '../../helpers/router'
 
