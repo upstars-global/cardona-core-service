@@ -1,0 +1,13 @@
+{{- define "ingressHostname" -}}
+{{- printf "%s.%s" .Values.ingressHost .Values.ingressDomain -}}
+{{- end -}}
+
+{{- define "common_labels" -}}
+app.kubernetes.io/part-of: cardona
+
+{{- end -}}
+
+{{- define "cardona_labels" -}}
+app.kubernetes.io/component: cardona
+app.kubernetes.io/name: backoffice
+{{- end -}}

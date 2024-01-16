@@ -1,0 +1,28 @@
+image:
+  name: "<argocd placeholder>"
+  tag: "latest"
+
+env: ""
+
+ingress:
+  controller:
+    name: "nginx"
+
+serviceAccount:
+  name: backoffice
+
+desc:
+  project: "backoffice"
+  brand: "cardona-core-service"
+  env: staging
+
+ingressHostName: cardona-core-service-staging.boffice.site
+serverApiAddr:  staging.luckyroot.net
+serverProxyAddr: back.staging.boffice.site
+
+serverPortWs: 8082
+
+connect:
+  enabled: true
+  upstreams: lr-lr-proxy-staging:8082:vilardo-staging
+  servicePort: 82
