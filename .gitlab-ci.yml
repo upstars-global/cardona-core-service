@@ -1,35 +1,56 @@
 include:
   - project: common/gitlab-ci-templates
-    file: '/build/docker-build-1.0.0.yaml'
+    file: '/build/common-variables-latest.yaml'
+    ref: master
+  - project: common/gitlab-ci-templates
+    file: '/build/docker-build-latest.yaml'
     ref: master
   - project: common/gitlab-ci-templates
     file: "/changelog/generate-changelog-1.0.0.yaml"
     ref: master
+  - project: common/gitlab-ci-templates
+    file: "/publish/publish-to-argocd-1.0.0.yaml"
+    ref: master
 
 stages:
   - docker-build
-  - docker-push
-
-default:
-  tags:
-    - ${CI_PROJECT_ROOT_NAMESPACE}-staging
+  - publish
 
 docker-build:
   extends: .docker-build
   variables:
     DOCKERFILE_PATH: './Dockerfile'
 
-docker-push-do:
-  extends: .docker-push-do
+publish to development:
+  extends: .publish-to-argocd
+  variables:
+    PUBLISH_TO_ENV: "development"
+    HELM_VALUES_PATH: values-development.yaml
+    DESTINATION_NAMESPACE: "cardona"
+  stage: publish
   only:
     refs:
       - develop
+
+publish to staging:
+  extends: .publish-to-argocd
+  variables:
+    PUBLISH_TO_ENV: "staging"
+    HELM_VALUES_PATH: values-staging.yaml
+    DESTINATION_NAMESPACE: ${CI_PROJECT_NAME}
+  stage: publish
+  only:
+    refs:
       - master
 
-generate-changelog-with-master:
-  extends: .generate-changelog-with-master
-  stage: docker-push
-generate-changelog-with-before-sha:
-  extends: .generate-changelog-with-before-sha
-  stage: docker-push
-
+publish to production:
+  extends: .publish-to-argocd
+  variables:
+    PUBLISH_TO_ENV: "production"
+    HELM_VALUES_PATH: values-production.yaml
+    DESTINATION_NAMESPACE: ${CI_PROJECT_NAME}
+  stage: publish
+  only:
+    refs:
+      - master
+  when: manual

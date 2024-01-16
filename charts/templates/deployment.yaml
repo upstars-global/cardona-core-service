@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Release.Name}}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: {{.Release.Name}}
+  template:
+    metadata:
+      labels:
+        app: {{.Release.Name}}
+      annotations:
+        {{- if and .Values.connect.enabled .Values.connect.servicePort }}
+        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/transparent-proxy: 'false'
+        consul.hashicorp.com/connect-service-upstreams: '{{ join "," .Values.connect.upstreams }}'
+        {{- end }}
+    spec:
+      containers:
+        - name: app
+          image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+          ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            requests:
+              memory: 64Mi
+              cpu: 10m
+          env:
+            - name: SERVER_API_ADDR
+              value: {{ .Values.serverApiAddr }}
+            - name: SERVER_PROXY_ADDR
+              value: {{ .Values.serverProxyAddr }} 
+            - name: SERVER_PORT_WS
+              value: "{{ .Values.serverPortWs }}"    

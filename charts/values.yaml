@@ -1,0 +1,18 @@
+image:
+  name: "<argocd placeholder>"
+  tag: "latest"
+
+env: ""
+
+### ingressHostName = ingressHost + ingressDomain
+ingressDomain: boffice.site
+ingressHost: "some-name"
+
+ingress:
+  controller:
+    name: "nginx"
+
+connect:
+  enabled: false
+  upstreams: []
+  servicePort: 80

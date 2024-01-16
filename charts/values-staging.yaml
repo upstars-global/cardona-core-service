@@ -1,0 +1,13 @@
+desc:
+  env: staging
+
+ingressHost: cardona-core-service-staging
+
+serverApiAddr: staging.luckyroot.net
+luckyrootService: luckyroot-staging-service
+serverProxyAddr: back.staging.boffice.site
+serverPortWs: 8082
+connect:
+  enabled: true
+  upstreams: lr-lr-proxy-staging:8082:vilardo-staging
+

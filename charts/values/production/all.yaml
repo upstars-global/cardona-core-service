@@ -1,0 +1,28 @@
+image:
+  name: "<argocd placeholder>"
+  tag: "latest"
+
+env: ""
+
+ingress:
+  controller:
+    name: "nginx"
+
+serviceAccount:
+  name: backoffice
+
+desc:
+  project: "backoffice"
+  brand: "cardona-core-service"
+  env: production
+
+ingressHostName: cardona-core-service.boffice.site
+serverApiAddr:  luckyroot.net
+serverProxyAddr: back.prod.boffice.site
+serverPortWs: 8081
+
+connect:
+  enabled: true
+  upstreams: lr-lr-proxy-prod:8081:vilardo-production
+  servicePort: 81
+
