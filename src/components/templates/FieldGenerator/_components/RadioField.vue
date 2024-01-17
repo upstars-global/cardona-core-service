@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import {RadioBaseField} from "@/@model/templates/baseField";
+import type { RadioBaseField } from '../../../../@model/templates/baseField'
 
 const props = defineProps<{
   modelValue: string | boolean
@@ -19,8 +19,8 @@ const localModelValue = computed({
 
 <template>
   <VRadioGroup
-      v-model="localModelValue"
-      inline
+    v-model="localModelValue"
+    inline
   >
     <VRadio
       v-for="(option, index) in field.options"

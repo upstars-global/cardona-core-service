@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const now = new Date()
 const currentMonth = now.toLocaleString('default', { month: '2-digit' })
 const currentYear = now.getFullYear()

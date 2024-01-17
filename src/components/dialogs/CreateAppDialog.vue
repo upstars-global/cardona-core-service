@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+
 import laptopGirl from '@images/illustrations/laptop-girl.png'
 
 const props = defineProps<{

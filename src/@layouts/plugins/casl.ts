@@ -1,3 +1,4 @@
+import { getCurrentInstance } from 'vue';
 import { useAbility } from '@casl/vue'
 import type { RouteLocationNormalized } from 'vue-router'
 import type { NavGroup } from '@layouts/types'

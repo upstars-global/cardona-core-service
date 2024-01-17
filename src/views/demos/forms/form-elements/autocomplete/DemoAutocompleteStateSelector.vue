@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const isEditing = ref(false)
 const selectedState = ref(null)
 

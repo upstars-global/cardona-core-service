@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { $api } from '../../utils/api';
+
+import { ref, watch } from 'vue';
+
 import type { FaqCategory } from '@db/pages/faq/types'
 
 import sittingGirlWithLaptop from '@images/illustrations/sitting-girl-with-laptop.png'

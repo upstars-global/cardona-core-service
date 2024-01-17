@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useApi } from '../../../composables/useApi';
+
+import { ref } from 'vue';
+
 import InvoiceProductEdit from './InvoiceProductEdit.vue'
 import type { InvoiceData, PurchasedProduct } from './types'
 import type { Client } from '@db/apps/invoice/types'

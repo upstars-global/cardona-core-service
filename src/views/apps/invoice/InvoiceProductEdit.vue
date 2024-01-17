@@ -1,5 +1,7 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <script setup lang="ts">
+import { ref, toRaw, watch, computed } from 'vue';
+
 interface Emit {
   (e: 'removeProduct', value: number): void
   (e: 'totalAmount', value: number): void

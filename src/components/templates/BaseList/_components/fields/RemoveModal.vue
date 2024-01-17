@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { IBaseListConfig } from '../model/index'
+import type { IBaseListConfig } from '../../../../../@model/templates/baseList'
 import { VColors, VVariants } from '../../../../../@model/vuetify'
+import AppTextarea from '../../../../../@core/components/app-form-elements/AppTextarea.vue'
+import BaseModal from '../../../../BaseModal/index.vue'
 
 interface Props {
   config: IBaseListConfig

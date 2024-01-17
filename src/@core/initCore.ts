@@ -1,3 +1,5 @@
+import { watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useStorage } from '@vueuse/core'
 import { useTheme } from 'vuetify'
 import { useConfigStore } from '@core/stores/config'

@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import type { IconAliases } from 'vuetify'
 
 const aliases: IconAliases = {

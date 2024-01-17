@@ -1,9 +1,9 @@
-import { Component } from 'vue'
-import { TranslateResult } from 'vue-i18n'
-import { PermissionType } from '@permissions'
-import store from "../../../store";
-import {IValidationConfig} from "@/@model/validations";
-import {OptionsItem} from "../../../@model";
+import type { Component } from 'vue'
+import type { TranslateResult } from 'vue-i18n'
+import type { PermissionType } from '@permissions'
+import store from '../../../store'
+import type { IValidationConfig } from '../../../@model/validations'
+import type { OptionsItem } from '../../../@model'
 
 export interface IBaseField {
   readonly key: string
@@ -31,8 +31,8 @@ export abstract class BaseField implements IBaseField {
   readonly permission?: PermissionType
   readonly isLocalization?: boolean
   public form?: object | null
-  public serialize: (value: any) => any = (value) => value
-  public deserialize: (value: any) => any = (value) => value
+  public serialize: (value: any) => any = value => value
+  public deserialize: (value: any) => any = value => value
 
   protected constructor(field: IBaseField) {
     this.key = field.key
@@ -62,7 +62,7 @@ export abstract class BaseField implements IBaseField {
 }
 
 // Abstract select
-export type SelectValue = OptionsItem | string | number;
+export type SelectValue = OptionsItem | string | number
 
 export interface ITransformFieldOptions {
   trackBy?: string
@@ -75,9 +75,8 @@ export interface IASelectBaseField<T> extends IBaseField {
 }
 
 export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
-    extends BaseField
-    implements IASelectBaseField<T>
-{
+  extends BaseField
+  implements IASelectBaseField<T> {
   public options?: Array<T>
   readonly fetchOptionsActionName?: string
   readonly staticFilters: Record<string, string>
@@ -98,8 +97,9 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
           ...this.staticFilters,
         },
       })
+
       this.options = list.map((option: string | T): OptionsItem | T =>
-          typeof option === 'string' ? { id: option, name: option } : option
+        typeof option === 'string' ? { id: option, name: option } : option,
       )
     }
   }

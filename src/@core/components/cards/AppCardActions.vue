@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue';
+
 interface Props {
   collapsed?: boolean
   noActions?: boolean

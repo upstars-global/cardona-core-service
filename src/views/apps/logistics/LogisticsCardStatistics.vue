@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const logisticData = ref([
   { icon: 'tabler-car', color: 'primary', title: 'On route vehicles', value: 42, change: 18.2, isHover: false },
   { icon: 'tabler-alert-triangle', color: 'warning', title: 'Vehicles with errors', value: 8, change: -8.7, isHover: false },

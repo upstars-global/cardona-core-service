@@ -1,3 +1,4 @@
+import type { VNode, Component } from 'vue';
 import type { RouteLocationRaw } from 'vue-router'
 import type { AppContentLayoutNav, ContentWidth, FooterType, HorizontalNavType, NavbarType } from '@layouts/enums'
 

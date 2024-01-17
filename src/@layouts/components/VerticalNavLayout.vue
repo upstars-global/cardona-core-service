@@ -1,4 +1,8 @@
 <script lang="ts">
+import { useWindowSize, useToggle, syncRef } from '@vueuse/core';
+
+import { defineComponent, ref, watch, toRef, h } from 'vue';
+
 import type { PropType } from 'vue'
 import { VerticalNav } from '@layouts/components'
 import { useLayoutConfigStore } from '@layouts/stores/config'

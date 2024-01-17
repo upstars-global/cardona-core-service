@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const xSmallPagination = ref(1)
 const smallPagination = ref(2)
 const largePagination = ref(3)

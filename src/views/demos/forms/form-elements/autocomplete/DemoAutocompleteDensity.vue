@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const select = ref('Florida')
 const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']
 </script>

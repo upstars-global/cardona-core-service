@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const length = ref(5)
 const rating = ref(2)
 </script>

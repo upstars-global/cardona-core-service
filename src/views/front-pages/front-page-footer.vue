@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useGenerateImageVariant } from '../../@core/composable/useGenerateImageVariant';
+
 import appleImg from '@images/front-pages/landing-page/apple-icon.png'
 import googlePlayImg from '@images/front-pages/landing-page/google-play-icon.png'
 

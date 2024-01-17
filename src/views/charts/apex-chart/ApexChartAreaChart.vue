@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
+
 import { useTheme } from 'vuetify'
 import { getAreaChartSplineConfig } from '@core/libs/apex-chart/apexCharConfig'
 

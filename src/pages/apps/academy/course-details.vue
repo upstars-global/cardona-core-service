@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue';
+
+import { useApi } from '../../../composables/useApi';
+
 import { VideoPlayer } from '@videojs-player/vue'
 import type { CourseDetails } from '@db/apps/academy/types'
 import 'video.js/dist/video-js.css'

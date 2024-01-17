@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { ref, watch } from 'vue';
+
+import { useSkins } from '../@core/composable/useSkins';
+
 const { injectSkinClasses } = useSkins()
 
 // ℹ️ This will inject classes in body tag for accurate styling

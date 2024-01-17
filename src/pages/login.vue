@@ -1,6 +1,14 @@
 <!-- ❗Errors in the form are set on line 60 -->
 <script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router'
+import { nextTick, ref } from 'vue'
 import { VForm } from 'vuetify/components/VForm'
+import { useCookie } from '../@core/composable/useCookie'
+
+import { $api } from '../utils/api'
+
+import { useAbility } from '../plugins/casl/composables/useAbility'
+
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
 import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-login-illustration-bordered-dark.png'

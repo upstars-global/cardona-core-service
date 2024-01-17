@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { useDisplay, useTheme } from 'vuetify'
 import { hexToRgb } from '@layouts/utils'
 

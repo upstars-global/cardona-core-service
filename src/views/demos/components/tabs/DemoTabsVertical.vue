@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const currentTab = ref('tab-1')
 </script>
 

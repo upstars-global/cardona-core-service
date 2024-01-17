@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref, watch } from 'vue';
+
 import navItems from '@/navigation/horizontal'
 
 import { themeConfig } from '@themeConfig'

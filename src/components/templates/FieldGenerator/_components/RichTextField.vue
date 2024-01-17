@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { difference } from 'lodash'
+import { computed } from 'vue'
 import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg/index.vue'
 import store from '../../../../store'
-import type { LocaleVariable } from '../../../../@model/translations'
-import { filterString, getVariablesFromLocale } from '../../../../helpers/text-editor'
+import { filterString } from '../../../../helpers/text-editor'
 import type { RichTextBaseField } from '../../../../@model/templates/baseField'
 
 interface RichTextProps {
@@ -35,7 +33,6 @@ const localModelValue = computed({
 const onRemoveVariable = (localeVariables: string): void => {
   emit('update:modelValue', filterString(localModelValue.value, localeVariables))
 }
-
 </script>
 
 <template>

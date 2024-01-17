@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const seasons = ['Winter', 'Spring', 'Summer', 'Fall']
 const icons = ['tabler-snowflake', 'tabler-leaf', 'tabler-flame', 'tabler-droplet']
 const sliderValues = ref([1, 2])

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useIntersectionObserver } from '@vueuse/core';
+
+import { ref } from 'vue';
+
 import Footer from '@/views/front-pages/front-page-footer.vue'
 import Navbar from '@/views/front-pages/front-page-navbar.vue'
 import Banner from '@/views/front-pages/landing-page/banner.vue'

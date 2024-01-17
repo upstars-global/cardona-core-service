@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+
 import { useConfigStore } from '@core/stores/config'
 import type { ThemeSwitcherTheme } from '@layouts/types'
 

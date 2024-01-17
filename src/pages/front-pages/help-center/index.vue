@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useApi } from '../../../composables/useApi';
+
 import type { HelpCenterAllCategoryArticles, HelpCenterArticlesOverview } from '@db/pages/help-center/types'
 
 import Footer from '@/views/front-pages/front-page-footer.vue'

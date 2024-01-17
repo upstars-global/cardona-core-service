@@ -1,6 +1,8 @@
 <!-- Thanks: https://markus.oberlehner.net/blog/transition-to-height-auto-with-vue/ -->
 
 <script lang="ts">
+import { defineComponent, h } from 'vue';
+
 import { Transition } from 'vue'
 
 export default defineComponent({

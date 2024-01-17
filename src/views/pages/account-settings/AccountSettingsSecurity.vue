@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import laptopGirl from '@images/illustrations/laptop-girl.png'
 

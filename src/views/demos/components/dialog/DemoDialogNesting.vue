@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const isDialogVisible = ref(false)
 const isDialogTwoShow = ref(false)
 </script>

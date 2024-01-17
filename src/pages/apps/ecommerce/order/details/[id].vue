@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
+import { useRoute } from 'vue-router'
+
 import { VDataTable } from 'vuetify/labs/VDataTable'
 
 import avatar1 from '@images/avatars/avatar-1.png'

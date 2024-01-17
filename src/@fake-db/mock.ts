@@ -1,5 +1,5 @@
 import MockAdapter from 'axios-mock-adapter'
-import axios from '../services/api/axios'
+import axios from '../libs/axios'
 
 // This sets the mock adapter on the axios instance
 const mock = new MockAdapter(axios)

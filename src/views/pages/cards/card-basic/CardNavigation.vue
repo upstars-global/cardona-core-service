@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const navigationTab = ref('Item One')
 const navigationTab2 = ref('Item One')
 const tabItems = ['Item One', 'Item Two', 'Item Three']

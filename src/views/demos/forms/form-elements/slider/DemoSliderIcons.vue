@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const mediaSlider = ref(0)
 const alarmSlider = ref(0)
 const zoomInOut = ref(10)

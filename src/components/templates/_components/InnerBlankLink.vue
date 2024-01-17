@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import type { LinkViewValue } from '../../../@model/view'
 import { IconsList } from '../../../@model/enums/icons'
-import { VSizes } from '@/@model/vuetify'
+import { VSizes } from '../../../@model/vuetify'
 
 const props = withDefaults(
   defineProps<{

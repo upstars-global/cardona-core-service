@@ -1,11 +1,12 @@
 import { breakpointsVuetify } from '@vueuse/core'
-import { AppContentLayoutNav, ContentWidth, FooterType, HorizontalNavType, NavbarType } from '@layouts/enums'
-import type { LayoutConfig } from '@layouts/types'
+import { h } from 'vue'
+import { AppContentLayoutNav, ContentWidth, FooterType, HorizontalNavType, NavbarType } from './enums'
+import type { LayoutConfig } from './types'
 
 export const layoutConfig: LayoutConfig = {
   app: {
     title: 'my-layout',
-    logo: h('img', { src: '/src/assets/logo.svg' }),
+    logo: h('img'),
     contentWidth: ContentWidth.Boxed,
     contentLayoutNav: AppContentLayoutNav.Vertical,
     overlayNavFromBreakpoint: breakpointsVuetify.md,

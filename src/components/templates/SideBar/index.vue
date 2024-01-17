@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useSlots } from 'vue';
+
 import { ref, watch } from 'vue'
 import { hide } from '@floating-ui/dom'
 import ViewGenerator from '../../../components/templates/ViewGenerator/index.vue'

@@ -21,7 +21,7 @@ const selectClasses = computed(() => {
   const size = `select-${props.size}`
 
   const classes: object = {
-    error: props.errors?.isNotEmpty,
+    error: props.errors,
   }
 
   return [size, classes]
@@ -29,7 +29,7 @@ const selectClasses = computed(() => {
 
 const valueModel = computed({
   get: () => props.modelValue,
-  set: (item: object) => emit('update:modelValue', item),
+  set: (item: object) => emits('update:modelValue', item),
 })
 
 const onSearch = (search: string) => emits('search', search)

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { inject, nextTick } from 'vue';
+
 import { computed, ref, watch } from 'vue'
 import 'vue-froala-wysiwyg'
 import type { TranslateResult } from 'vue-i18n'

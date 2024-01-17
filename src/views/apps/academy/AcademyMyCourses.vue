@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { createUrl } from '../../../@core/composable/createUrl';
+
+import { useApi } from '../../../composables/useApi';
+
+import { ref, computed, watch } from 'vue';
+
 interface Props {
   searchQuery: string
 }

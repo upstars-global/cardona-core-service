@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import PersonalDetails from '@/views/wizard-examples/property-listing/PersonalDetails.vue'
 import PriceDetails from '@/views/wizard-examples/property-listing/PriceDetails.vue'
 import PropertyArea from '@/views/wizard-examples/property-listing/PropertyArea.vue'

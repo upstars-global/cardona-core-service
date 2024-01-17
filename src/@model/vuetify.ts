@@ -24,3 +24,6 @@ export enum VSizes {
   Large = 'large',
   XLarge = 'x-large',
 }
+
+const obj = {}
+export default obj

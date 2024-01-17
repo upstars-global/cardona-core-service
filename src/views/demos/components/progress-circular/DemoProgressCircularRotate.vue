@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+
 const interval = ref()
 const progressValue = ref(0)
 

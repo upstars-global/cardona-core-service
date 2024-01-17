@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
+
+import { useRoute } from 'vue-router'
+
 import AccountSettingsAccount from '@/views/pages/account-settings/AccountSettingsAccount.vue'
 import AccountSettingsBillingAndPlans from '@/views/pages/account-settings/AccountSettingsBillingAndPlans.vue'
 import AccountSettingsConnections from '@/views/pages/account-settings/AccountSettingsConnections.vue'

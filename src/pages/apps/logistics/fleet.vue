@@ -1,5 +1,9 @@
 // ❗ WARNING please use your access token from mapbox.com
 <script setup lang="ts">
+import { watch } from 'vue';
+
+import { useResponsiveLeftSidebar } from '../../../@core/composable/useResponsiveSidebar';
+
 import type { LngLatLike } from 'mapbox-gl'
 import mapboxgl from 'mapbox-gl'
 import { onMounted, ref } from 'vue'

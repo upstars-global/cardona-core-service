@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref, computed } from 'vue';
+
 const bpm = ref(40)
 const min = 40
 const max = 218

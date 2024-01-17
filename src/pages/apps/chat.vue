@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { ref, watch, nextTick, computed } from 'vue';
+
+import { useResponsiveLeftSidebar } from '../../@core/composable/useResponsiveSidebar';
+
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useDisplay, useTheme } from 'vuetify'
 import { themes } from '@/plugins/vuetify/theme'

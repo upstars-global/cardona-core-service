@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import { useCookie } from '../../@core/composable/useCookie'
+
+import { useAbility } from '../../plugins/casl/composables/useAbility'
 
 const router = useRouter()
 const ability = useAbility()

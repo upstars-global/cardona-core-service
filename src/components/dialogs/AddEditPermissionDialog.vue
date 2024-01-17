@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+
 interface Props {
   isDialogVisible: boolean
   permissionName?: string

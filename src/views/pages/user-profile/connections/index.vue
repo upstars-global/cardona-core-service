@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+
+import { useRoute } from 'vue-router'
+import { $api } from '../../../../utils/api'
+
 import type { ConnectionsTab } from '@db/pages/profile/types'
 
 const router = useRoute('pages-user-profile-tab')

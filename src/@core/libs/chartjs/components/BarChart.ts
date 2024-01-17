@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import type { PluginOptionsByType } from 'chart.js'
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js'
 import type { PropType } from 'vue'

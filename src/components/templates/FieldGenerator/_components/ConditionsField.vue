@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, onBeforeMount } from 'vue'
-import {ConditionsBaseField, TextareaBaseField} from "@/@model/templates/baseField";
+import { computed, onBeforeMount, ref } from 'vue'
+import type { ConditionsBaseField } from '../../../../@model/templates/baseField'
+import { TextareaBaseField } from '../../../../@model/templates/baseField'
+import FieldGenerator from '../index.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -11,7 +13,7 @@ const props = withDefaults(
   }>(),
   {
     modelValue: '',
-  }
+  },
 )
 
 const emit = defineEmits<{
@@ -26,9 +28,9 @@ const modelValue = computed({
       label: props.field.label,
       placeholder: props.field.placeholder,
       validationRules: props.field.validationRules,
-    });
+    })
   },
-  set: (value) => emit('update:modelValue', value.value),
+  set: value => emit('update:modelValue', value.value),
 })
 
 const availableVariables = ref<string[]>([])
@@ -42,14 +44,27 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
 
 <template>
   <div>
-    <field-generator v-model="modelValue" class="mb-50" :disabled="disabled" />
+    <FieldGenerator
+      v-model="modelValue"
+      class="mb-50"
+      :disabled="disabled"
+    />
 
-    <VRow class="small" :class="{ 'pointer-events-none': disabled }">
-      <VCol cols="3" class="font-weight-bolder text-nowrap">
+    <VRow
+      class="small"
+      :class="{ 'pointer-events-none': disabled }"
+    >
+      <VCol
+        cols="3"
+        class="font-weight-bolder text-nowrap"
+      >
         {{ $t('component.conditions.availableVariables') }}:
       </VCol>
 
-      <VCol cols="9" class="font-weight-bold pl-2 d-flex gap-2">
+      <VCol
+        cols="9"
+        class="font-weight-bold pl-2 d-flex gap-2"
+      >
         <div
           v-for="(variable, index) in availableVariables"
           :key="index"
@@ -58,8 +73,8 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
         >
           {{ variable }}
           <VTooltip
-              activator="parent"
-              location="bottom"
+            activator="parent"
+            location="bottom"
           >
             <div class="comment-text__tooltip">
               {{ $t(`component.conditions.${variable}`) }}

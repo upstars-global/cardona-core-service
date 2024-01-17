@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+
+import { defineAsyncComponent, ref, watch } from 'vue'
+
 import Shepherd from 'shepherd.js'
 import { withQuery } from 'ufo'
 import type { RouteLocationRaw } from 'vue-router'
+import { useApi } from '../../composables/useApi'
 import type { SearchResults } from '@db/app-bar-search/types'
 import { useConfigStore } from '@core/stores/config'
 

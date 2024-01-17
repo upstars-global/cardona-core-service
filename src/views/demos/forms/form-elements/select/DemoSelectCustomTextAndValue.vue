@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const selectedOption = ref({ state: 'Florida', abbr: 'FL' })
 
 const items = [

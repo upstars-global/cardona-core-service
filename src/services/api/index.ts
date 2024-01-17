@@ -1,10 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
-import type { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
-import axios from 'axios'
+import type { AxiosError, AxiosInstance, AxiosRequestConfig } from '../../libs/axios'
+import axios from '../../libs/axios'
 import store from '../../store'
 import useToastService from '../../helpers/toasts'
 import { convertCamelCase } from '../../helpers'
-import axiosIns from './axios'
 import {
   ContentType,
   Method,
@@ -46,19 +45,19 @@ class ApiService {
       if (withLoader)
         store.dispatch('loaderOn', url)
 
-      const axiosInstance: AxiosInstance = newAxiosInstance ? axios.create() : axiosIns
+      const axiosInstance: AxiosInstance = newAxiosInstance ? axios.create() : axios
 
       const headers: { 'Content-Type': string } = {
         'Content-Type': contentType,
       }
 
       const body: FormData | any
-          = contentType === ContentType.FormData && payload.formData
-            ? this.createFormData(payload.formData)
-            : JSON.stringify({
-              ...payload,
-              requestId: uuidv4(),
-            })
+        = contentType === ContentType.FormData && payload.formData
+          ? this.createFormData(payload.formData)
+          : JSON.stringify({
+            ...payload,
+            requestId: uuidv4(),
+          })
 
       const { data }: any = await axiosInstance({
         url,

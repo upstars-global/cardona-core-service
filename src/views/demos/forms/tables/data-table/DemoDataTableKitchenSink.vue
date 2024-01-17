@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useApi } from '../../../../../composables/useApi';
+
+import { ref } from 'vue';
+
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import type { SalesDetails } from '@db/pages/datatable/types'
 

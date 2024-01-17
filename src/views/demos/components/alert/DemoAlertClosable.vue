@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const isAlertVisible = ref(true)
 </script>
 

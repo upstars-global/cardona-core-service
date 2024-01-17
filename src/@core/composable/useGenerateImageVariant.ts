@@ -1,3 +1,4 @@
+import { computed } from 'vue';
 import { useTheme } from 'vuetify'
 import { useConfigStore } from '@core/stores/config'
 

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const isSnackbarFadeVisible = ref(false)
 const isSnackbarScaleVisible = ref(false)
 const isSnackbarScrollReverseVisible = ref(false)

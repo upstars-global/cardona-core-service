@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
+import { useRoute } from 'vue-router'
+import { useApi } from '../../../../composables/useApi'
+
 import UserBioPanel from '@/views/apps/user/view/UserBioPanel.vue'
 import UserTabAccount from '@/views/apps/user/view/UserTabAccount.vue'
 import UserTabBillingsPlans from '@/views/apps/user/view/UserTabBillingsPlans.vue'

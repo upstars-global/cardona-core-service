@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+
 import type { CheckoutData } from './types'
 
 const prop = defineProps<{

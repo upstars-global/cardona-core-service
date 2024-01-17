@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import navItems from '@/navigation/vertical'
-import { themeConfig } from '@themeConfig'
+import { ref, watch } from 'vue'
 
 // Components
-import Footer from '@/layouts/components/Footer.vue'
-import AppBreadcrumb from "@/layouts/components/AppBreadcrumb.vue";
+import TheCustomizer from '../../@core/components/TheCustomizer.vue'
+import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
+import Footer from './Footer.vue'
+import AppBreadcrumb from './AppBreadcrumb.vue'
+import navItems from '@/navigation/vertical'
 
 // @layouts plugin
 import { VerticalNavLayout } from '@layouts'
@@ -21,6 +23,7 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
   if (!isFallbackStateActive.value && refLoadingIndicator.value)
     refLoadingIndicator.value.resolveHandle()
 }, { immediate: true })
+
 // !SECTION
 </script>
 
@@ -36,17 +39,20 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
     <!-- 👉 Pages -->
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
-        <transition name="zoom-fade" mode="out-in">
-          <keep-alive>
+        <Transition
+          name="zoom-fade"
+          mode="out-in"
+        >
+          <KeepAlive>
             <Suspense
-                :timeout="0"
-                @fallback="isFallbackStateActive = true"
-                @resolve="isFallbackStateActive = false"
+              :timeout="0"
+              @fallback="isFallbackStateActive = true"
+              @resolve="isFallbackStateActive = false"
             >
               <Component :is="Component" />
             </Suspense>
-          </keep-alive>
-        </transition>
+          </KeepAlive>
+        </Transition>
       </template>
     </RouterView>
 

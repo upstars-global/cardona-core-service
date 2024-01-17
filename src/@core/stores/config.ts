@@ -1,3 +1,6 @@
+import { watch, onMounted } from 'vue';
+import { usePreferredColorScheme } from '@vueuse/core';
+import { defineStore } from 'pinia';
 import { storeToRefs } from 'pinia'
 import { useTheme } from 'vuetify'
 import { cookieRef, useLayoutConfigStore } from '@layouts/stores/config'

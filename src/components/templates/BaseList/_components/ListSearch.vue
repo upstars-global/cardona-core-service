@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IconsList } from '../../../../@model/enums/icons'
-import type { Filter } from '../../../../@model/filter'
 import { BSize } from '../../../../@model/bootstrap'
 import type { IBaseListConfig } from '../../../../@model/templates/baseList'
 import AppTextField from '../../../../@core/components/app-form-elements/AppTextField.vue'
 import { VColors, VVariants } from '../../../../@model/vuetify'
+import ExportFormatSelector from '../../../../components/templates/BaseList/_components/ExportFormatSelector.vue'
+import type { BaseField } from '../../../../@model/templates/baseField'
 
 interface Props {
   config: IBaseListConfig
   modelValue: string
-  selectedFilters: Array<Filter>
+  selectedFilters: Array<BaseField>
   exportSelector: {
     canShow: boolean
     disable: boolean

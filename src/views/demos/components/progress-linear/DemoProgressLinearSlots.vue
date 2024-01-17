@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const skill = ref(20)
 const knowledge = ref(33)
 const power = ref(78)

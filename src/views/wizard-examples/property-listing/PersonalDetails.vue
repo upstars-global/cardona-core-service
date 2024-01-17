@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+
 import type { PersonalDetails } from './types'
 import type { CustomInputContent } from '@core/types'
 

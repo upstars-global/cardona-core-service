@@ -1,7 +1,7 @@
-import { listImages } from '@/@fake-db/compostela'
-import { TransactionType } from '@/@model/enums/playersTransactions'
-import type { IDemoTypeItem } from '@/@model/demo'
-import { VColors } from '@/@model/vuetify'
+import { listImages } from '../../@fake-db/compostela'
+import { TransactionType } from '../../@model/enums/playersTransactions'
+import type { IDemoTypeItem } from '../../@model/demo'
+import { VColors } from '../../@model/vuetify'
 
 export const entityData = {
   id: '2',
@@ -71,7 +71,7 @@ export const entityData = {
       INR: '2334',
       BRL: '1234',
     },
-    qweqwe: {
+    'qweqwe': {
       RUB: '666',
       USD: '999',
       AUD: '90000',

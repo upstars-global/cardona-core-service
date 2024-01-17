@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const show1 = ref(false)
 const show2 = ref(true)
 const password = ref('Password')

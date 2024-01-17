@@ -1,4 +1,12 @@
 <script setup lang="tsx">
+import { useI18n } from 'vue-i18n';
+
+import { useGenerateImageVariant } from '../composable/useGenerateImageVariant';
+
+import { useDebounceFn } from '@vueuse/core';
+
+import { ref, watch, computed, nextTick } from 'vue';
+
 import { useStorage } from '@vueuse/core'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useTheme } from 'vuetify'

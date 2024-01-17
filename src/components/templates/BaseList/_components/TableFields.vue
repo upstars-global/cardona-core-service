@@ -2,9 +2,9 @@
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { TableField } from '../../../../@model/templates/tableFields'
-import { getListStorage, setStorage } from '@/helpers/storage'
-import { VColors, VVariants } from '@/@model/vuetify'
-import { IconsList } from '@/@model/enums/icons'
+import { getListStorage, setStorage } from '../../../../helpers/storage'
+import { VColors, VVariants } from '../../../../@model/vuetify'
+import { IconsList } from '../../../../@model/enums/icons'
 
 const props = defineProps<{
   entityName: string

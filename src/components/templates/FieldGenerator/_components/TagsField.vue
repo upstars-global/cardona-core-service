@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import {TagsBaseField} from "../../../../@model/templates/baseField";
+import type { TagsBaseField } from '../../../../@model/templates/baseField'
+import AppCombobox from '../../../../@core/components/app-form-elements/AppCombobox.vue'
 
 const props = defineProps<{
   modelValue: Array<string>
@@ -17,6 +18,7 @@ const localModelValue = computed({
   get: () => props.modelValue,
   set: value => emits('update:modelValue', value),
 })
+
 const onDelete = (index: number) => {
   localModelValue.value = localModelValue.value.toSpliced(index, 1)
 }
@@ -29,8 +31,8 @@ const onDelete = (index: number) => {
   >
     <template #selection="{ item, index }">
       <VChip
-          closable
-          @click:close="onDelete(index)"
+        closable
+        @click:close="onDelete(index)"
       >
         {{ item.title }}
       </VChip>

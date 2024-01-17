@@ -1,3 +1,4 @@
+import { isObject } from '../@core/utils/helpers';
 import { isNumber, isString } from 'lodash'
 import { useRouter } from 'vue-router'
 import {BaseField, DateBaseField, NumberRangeBaseField} from '../@model/templates/baseField'

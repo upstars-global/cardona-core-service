@@ -2,8 +2,8 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import type { IBaseListConfig } from '../../../../../@model/templates/baseList'
-import { IconsList } from '@/@model/enums/icons'
-import { VColors, VSizes, VVariants } from '@/@model/vuetify'
+import { IconsList } from '../../../../../@model/enums/icons'
+import { VColors, VSizes, VVariants } from '../../../../../@model/vuetify'
 
 interface Props {
   item: any

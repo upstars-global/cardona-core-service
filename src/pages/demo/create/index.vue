@@ -2,8 +2,7 @@
 import { useDemoSection } from '../useDemo'
 import BaseSection from '../../../components/templates/BaseSection/index.vue'
 import { PageType } from '../../../@model/templates/baseSection'
-import DemoForm from "@/pages/demo/_components/DemoForm.vue";
-
+import DemoForm from '@/pages/demo/_components/DemoForm.vue'
 </script>
 
 <template>
@@ -12,8 +11,10 @@ import DemoForm from "@/pages/demo/_components/DemoForm.vue";
     :use-entity="useDemoSection"
   >
     <template #default="{ form, canCreateSeo }">
-        <DemoForm :form="form" :can-create-seo="canCreateSeo" />
+      <DemoForm
+        :form="form"
+        :can-create-seo="canCreateSeo"
+      />
     </template>
   </BaseSection>
-
 </template>

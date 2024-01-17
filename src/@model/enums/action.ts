@@ -11,3 +11,4 @@ export enum ActionVariant {
   deleting = 'danger',
   reporting = 'secondary',
 }
+export default {}

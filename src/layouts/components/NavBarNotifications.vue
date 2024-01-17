@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 import type { Notification } from '@layouts/types'
 
 import avatar3 from '@images/avatars/avatar-3.png'

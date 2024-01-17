@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import type { Customer } from '@db/apps/ecommerce/types'
 import rocketImg from '@images/eCommerce/rocket.png'
 

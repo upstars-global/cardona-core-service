@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import SettingsCheckout from '@/views/apps/ecommerce/settings/SettingsCheckout.vue'
 import SettingsLocations from '@/views/apps/ecommerce/settings/SettingsLocations.vue'
 import SettingsNotifications from '@/views/apps/ecommerce/settings/SettingsNotifications.vue'

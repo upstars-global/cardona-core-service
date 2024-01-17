@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import {computed, onMounted, ref, watch} from 'vue'
-import {useRoute} from 'vue-router'
-import store from '../../store'
-import {setStorage} from '../../helpers/storage'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+import { setStorage } from '../../helpers/storage'
 import useToastService from '../../helpers/toasts'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
-import {IconsList} from '../../@model/enums/icons'
+import { IconsList } from '../../@model/enums/icons'
+import { VColors, VSizes, VVariants } from '../../@model/vuetify'
+import type { BaseField } from '../../@model/templates/baseField'
 import FilterSelector from './_components/FilterSelector.vue'
-import {VColors, VSizes, VVariants} from '@/@model/vuetify'
-import {BaseField} from "@/@model/templates/baseField";
 
 const props = defineProps<{
   entityName: string
@@ -22,6 +22,7 @@ const emits = defineEmits<{
   (e: 'changeSelectedFilters', filters: BaseField[]): void
 }>()
 
+const store = useStore()
 const route = useRoute()
 const { toastSuccess } = useToastService()
 

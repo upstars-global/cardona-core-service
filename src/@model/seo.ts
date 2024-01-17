@@ -1,5 +1,5 @@
 import { i18n } from '../plugins/i18n'
-import {RichTextBaseField, TextareaBaseField, TextBaseField} from "@/@model/templates/baseField";
+import { RichTextBaseField, TextBaseField, TextareaBaseField } from '../@model/templates/baseField'
 
 export interface SeoData {
   readonly metaTitle?: string

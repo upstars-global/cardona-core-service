@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import teamPerson1 from '@images/front-pages/landing-page/team-member-1.png'
 import teamPerson2 from '@images/front-pages/landing-page/team-member-2.png'
 import teamPerson3 from '@images/front-pages/landing-page/team-member-3.png'

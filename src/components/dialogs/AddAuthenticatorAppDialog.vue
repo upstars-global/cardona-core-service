@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, toRaw } from 'vue';
+
 import themeselectionQr from '@images/pages/themeselection-qr.png'
 
 interface Emit {

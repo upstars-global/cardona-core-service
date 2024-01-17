@@ -1,4 +1,6 @@
+import { useRoute } from 'vue-router'
 import type { PartialDeep } from 'type-fest'
+import { $api } from '../../../utils/api'
 import type { Email } from '@/plugins/fake-api/handlers/apps/email/types'
 
 export type MoveEmailToAction = 'inbox' | 'spam' | 'trash'
