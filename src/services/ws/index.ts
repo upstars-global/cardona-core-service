@@ -40,8 +40,9 @@ class WSService {
     this.ws.onclose = (event) => {
       this.ws?.close()
       this.ws = null
-      if (event.wasClean) {
+      if (event.wasClean && this.timeReconnect !== DEFAULT_TIME_RECONNECT) {
         this.WSListSubscribe.clear()
+        this.timeReconnect = DEFAULT_TIME_RECONNECT
       } else {
         this.timeReconnect *= RECONNECTION_TIME_MULTIPLIER
         if (this.timeReconnect > this.maxTimeReconnect) this.timeReconnect = DEFAULT_TIME_RECONNECT
