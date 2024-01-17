@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-
 import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
-
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
 import { DownloadFormat, SortDirection } from '../../../@model/templates/baseList'
@@ -72,6 +71,7 @@ const modal = inject('modal')
 const slots = useSlots()
 
 const store = useStore()
+const { t } = useI18n()
 
 const router = useRouter()
 const route = useRoute()
@@ -183,6 +183,12 @@ const isLoadingList = computed(() => {
 })
 
 const size = props.config?.small ? VSizes.Small : VSizes.Medium
+
+const emptyListText = computed(() =>
+  searchQuery.value || hasSelectedFilters.value
+    ? t('emptyState.emptyRequest')
+    : props.config.emptyText,
+)
 
 // Sort
 const sortStorageKey = `${currentPageName}-${entityName}-sort`
@@ -393,8 +399,10 @@ const appliedFilters = computed<BaseField[]>(() => {
   return isSameEntity ? store.getters['filtersCore/appliedListFilters'] : []
 })
 
+const hasSelectedFilters = computed(() => selectedFilters && selectedFilters.value.isNotEmpty)
+
 onMounted(() => {
-  isFiltersShown.value = selectedFilters && selectedFilters.value.isNotEmpty
+  isFiltersShown.value = hasSelectedFilters.value
 })
 
 // Selectable
@@ -826,6 +834,10 @@ onBeforeMount(async () => {
           <template v-else>
             {{ cell }}
           </template>
+        </template>
+
+        <template #empty>
+          {{ emptyListText }}
         </template>
       </CTable>
     </VCard>

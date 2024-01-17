@@ -1,17 +1,17 @@
 import { ref } from 'vue'
-import { Filter } from '../../@model/filter'
-import { FilterListItem } from '../templates/BaseList/model'
+import type { BaseField } from '../../@model/templates/baseField'
+import type { FilterListItem } from '../../@model/templates/baseList'
 import coreFilters from './filters'
 import productFilters from '@filterConfig'
 
 const allFilters = { ...coreFilters, ...productFilters }
 export const useFilters = (initFilters: Array<FilterListItem>) => {
-  const filters = ref<Filter[]>([])
-  const selectedFilters = ref<Filter[]>([])
+  const filters = ref<BaseField[]>([])
+  const selectedFilters = ref<BaseField[]>([])
 
-  filters.value = initFilters.map((filter) => allFilters[filter.type])
+  filters.value = initFilters.map(filter => allFilters[filter.type])
 
-  const onChangeSelectedFilters = (filters: Filter[]) => {
+  const onChangeSelectedFilters = (filters: BaseField[]) => {
     selectedFilters.value = filters
   }
 
