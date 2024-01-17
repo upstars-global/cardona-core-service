@@ -58,7 +58,7 @@ const onClearAll = () => {
 
 watch(selectedFilters, filters => {
   emits('changeSelectedFilters', filters)
-})
+}, { deep: true })
 
 onMounted(() => {
   const initFiltersStorage = localStorage.getItem(keyStorage)

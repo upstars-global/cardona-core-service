@@ -645,6 +645,7 @@
   "emptyState": {
     "search": "Nothing found",
     "list": "No entries created",
+    "emptyRequest": "Nothing was found for your request. Please refine your request.",
     "listWithBtn": "No entries created. It's time to do it",
     "projects": "No projects created. It's time to do it",
     "conciergeService": "No recently viewed players",

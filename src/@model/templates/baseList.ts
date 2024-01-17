@@ -1,11 +1,12 @@
 import type { TranslateResult } from 'vue-i18n'
-import type { ProjectFilterTypes } from '@filterConfig'
+import { i18n } from '../../plugins/i18n'
 import type { FilterType } from '../filter'
 import type { IListSort } from '../index'
 import type { ViewInfo } from '../view'
 import type { BColors, BLightColors } from '../bootstrap' // TODO remove
 import { SelectMode } from '../../@model/enums/selectMode'
 import type { TableField } from './tableFields'
+import type { ProjectFilterTypes } from '@filterConfig'
 
 export enum SortDirection {
   asc = 'asc',
@@ -233,7 +234,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
     this.withSettings = withSettings
-    this.emptyText = emptyText /* || i18n.global.t('emptyState.list') */
+    this.emptyText = emptyText || i18n.t('emptyState.list')
     this.filterList = filterList || []
     this.staticFilters = staticFilters || {}
     this.staticSorts = staticSorts

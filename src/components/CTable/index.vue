@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue'
 
 import { VueDraggableNext } from 'vue-draggable-next'
 import { VDataTable } from 'vuetify/labs/VDataTable'
@@ -206,6 +206,15 @@ const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxS
           </td>
         </tr>
       </Component>
+
+      <tr v-if="items.isEmpty">
+        <td
+          :colspan="fields.length"
+          class="text-center pa-4"
+        >
+          <slot name="empty" />
+        </td>
+      </tr>
     </template>
     <template #body />
     <template #bottom />
