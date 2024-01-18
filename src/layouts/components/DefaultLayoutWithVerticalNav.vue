@@ -2,9 +2,7 @@
 import { ref, watch } from 'vue'
 
 // Components
-import TheCustomizer from '../../@core/components/TheCustomizer.vue'
 import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
-import Footer from './Footer.vue'
 import AppBreadcrumb from './AppBreadcrumb.vue'
 import navItems from '@/navigation/vertical'
 
@@ -30,7 +28,7 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
 <template>
   <VerticalNavLayout :nav-items="navItems">
     <!-- 👉 navbar -->
-    <template #navbar="{ toggleVerticalOverlayNavActive }">
+    <template #navbar>
       <AppBreadcrumb />
     </template>
 
@@ -57,11 +55,8 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
     </RouterView>
 
     <!-- 👉 Footer -->
-    <template #footer>
-      <Footer />
-    </template>
+    <template #footer />
 
     <!-- 👉 Customizer -->
-    <TheCustomizer />
   </VerticalNavLayout>
 </template>

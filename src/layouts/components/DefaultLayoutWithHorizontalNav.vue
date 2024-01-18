@@ -1,20 +1,17 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
-
-import navItems from '@/navigation/horizontal'
-
-import { themeConfig } from '@themeConfig'
+import { ref, watch } from 'vue'
 
 // Components
-import Footer from '@/layouts/components/Footer.vue'
-import NavBarNotifications from '@/layouts/components/NavBarNotifications.vue'
-import NavSearchBar from '@/layouts/components/NavSearchBar.vue'
-import NavbarShortcuts from '@/layouts/components/NavbarShortcuts.vue'
-import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
-import UserProfile from '@/layouts/components/UserProfile.vue'
-import NavBarI18n from '@core/components/I18n.vue'
-import { HorizontalNavLayout } from '@layouts'
-import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
+import NavBarNotifications from '../../layouts/components/NavBarNotifications.vue'
+import NavSearchBar from '../../layouts/components/NavSearchBar.vue'
+import NavbarShortcuts from '../../layouts/components/NavbarShortcuts.vue'
+import NavbarThemeSwitcher from '../../layouts/components/NavbarThemeSwitcher.vue'
+import UserProfile from '../../layouts/components/UserProfile.vue'
+import NavBarI18n from '../../@core/components/I18n.vue'
+import { HorizontalNavLayout } from '../../@layouts'
+import { VNodeRenderer } from '../../@layouts/components/VNodeRenderer'
+import { themeConfig } from '@themeConfig'
+import navItems from '@/navigation/horizontal'
 
 // SECTION: Loading Indicator
 const isFallbackStateActive = ref(false)
@@ -28,6 +25,7 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
   if (!isFallbackStateActive.value && refLoadingIndicator.value)
     refLoadingIndicator.value.resolveHandle()
 }, { immediate: true })
+
 // !SECTION
 </script>
 
@@ -74,11 +72,8 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
     </RouterView>
 
     <!-- 👉 Footer -->
-    <template #footer>
-      <Footer />
-    </template>
+    <template #footer />
 
     <!-- 👉 Customizer -->
-    <TheCustomizer />
   </HorizontalNavLayout>
 </template>

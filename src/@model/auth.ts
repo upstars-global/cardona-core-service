@@ -1,5 +1,5 @@
-import { i18n } from '../plugins/i18n'
 import { PasswordBaseField, TextBaseField } from './templates/baseField'
+import { i18n } from '@/plugins/i18n'
 
 export interface ILoginData {
   login: string
