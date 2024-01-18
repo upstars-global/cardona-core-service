@@ -653,7 +653,7 @@ onBeforeMount(async () => {
         :select-mode="config.selectMode"
         :selectable="config.selectable"
         :small="config.small"
-        :draggable="config.draggable"
+        :draggable="canUpdate && config.draggable"
         :hover="config.hover"
         :selected-items="selectedItems"
         :items-per-page="perPage"
@@ -759,7 +759,7 @@ onBeforeMount(async () => {
             :key="`${index}_${field.type}`"
             :position="cell"
             :size="field.size"
-            :can-update="canUpdate || config.draggable"
+            :can-update="canUpdate"
             @edit-position="(val) => onEditPosition(item, val)"
           />
 
