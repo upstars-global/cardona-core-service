@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
-
+import { useI18n } from 'vue-i18n'
 import type { _RouteLocationBase } from 'vue-router'
-import { ProjectFilterTypes } from '@filterConfig'
 import BaseList from '../../../components/templates/BaseList/index.vue'
 import { useDemoList } from '../useDemo'
 import { FilterType } from '../../../@model/filter'
 import { IconsList } from '../../../@model/enums/icons'
 import { BaseListConfig, SortDirection } from '../../../@model/templates/baseList'
 import { VSizes } from '../../../@model/vuetify'
+import { ProjectFilterTypes } from '@filterConfig'
 
 const { t } = useI18n()
 
