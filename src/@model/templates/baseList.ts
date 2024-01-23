@@ -52,7 +52,7 @@ export interface IBaseListConfig {
   /** withSettings - Вкл/выкл настройки таблицы */
   readonly withSettings?: boolean
 
-  /** skeletonColumns - Текст когда лист пустой */
+  /** emptyText - Текст когда лист пустой */
   readonly emptyText?: string
 
   /** filterList - Масив <FilterListItem> фильтров для таблицы */
@@ -157,8 +157,6 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withSearch?: boolean
   readonly withDeactivation?: boolean
   readonly withSettings?: boolean
-  readonly skeletonRows?: number
-  readonly skeletonColumns?: number
   readonly emptyText?: string
   readonly filterList: Array<FilterListItem>
   readonly staticFilters: Record<string, string>
@@ -305,7 +303,7 @@ export interface IBaseSectionConfig {
   readonly loadingEndpointArr?: Array<string>
 }
 
-export class BaseSectionConfig implements IBaseSectionConfig {
+export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to base section model
   readonly onePermissionKey?: string
   readonly permissionKey?: string
   readonly withCustomModuleName?: boolean
