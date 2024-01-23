@@ -15,14 +15,14 @@ export class LoginForm {
       key: 'login',
       label: i18n.t('auth.login'),
       placeholder: i18n.t('placeholder.login'),
-      validationRules: 'required',
+      validationRules: { required: true },
     })
 
     this.password = new PasswordBaseField({
       key: 'password',
       label: i18n.t('common.password'),
       placeholder: i18n.t('placeholder.password'),
-      validationRules: 'required',
+      validationRules: { required: true },
     })
   }
 }
