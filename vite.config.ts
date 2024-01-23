@@ -26,7 +26,7 @@ export default defineConfig({
         root.insert('/apps/email/:filter', '/src/pages/apps/email/index.vue')
         root.insert('/apps/email/:label', '/src/pages/apps/email/index.vue')
       },
-      exclude: ['**/demo'],
+      exclude: ['**/demo', '**/permission'],
     }),
     vue({
       template: {

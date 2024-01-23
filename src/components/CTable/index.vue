@@ -82,7 +82,7 @@ const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxS
     @update:sort-by="onUpdateSortData"
     @update:model-value="onSelectRow"
   >
-    <template #headers="{ columns, isSorted, sortBy, someSelected, allSelected, selectAll }">
+    <template #headers="{ columns, isSorted, toggleSort, sortBy, someSelected, allSelected, selectAll }">
       <th
         v-if="props.selectable"
         class="c-table__header-cell"
@@ -207,7 +207,7 @@ const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxS
         </tr>
       </Component>
 
-      <tr v-if="items.isEmpty">
+      <tr v-if="items.isEmpty && !isLoadingList">
         <td
           :colspan="fields.length"
           class="text-center pa-4"
