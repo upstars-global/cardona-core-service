@@ -1,56 +1,91 @@
 include:
   - project: common/gitlab-ci-templates
-    file: '/build/common-variables-latest.yaml'
+    file: '/build/docker-build-nodejs-latest.yaml'
     ref: master
   - project: common/gitlab-ci-templates
-    file: '/build/docker-build-latest.yaml'
+    file: '/build/helpers-build-latest.yaml'
     ref: master
   - project: common/gitlab-ci-templates
-    file: "/changelog/generate-changelog-1.0.0.yaml"
+    file: "/changelog/generate-changelog-latest.yaml"
     ref: master
   - project: common/gitlab-ci-templates
-    file: "/publish/publish-to-argocd-1.0.0.yaml"
+    file: "/publish/publish-to-argocd-latest.yaml"
     ref: master
+  - project: common/gitlab-ci-templates
+    file: "/rules/common-latest.yaml"
+
 
 stages:
   - docker-build
-  - publish
+  - generate_app_json
+  - publish_to_argo
 
-docker-build:
-  extends: .docker-build
+Check Image Tag:
+  extends: .check_if_tag_exists
+  stage: .pre
+  rules:
+    - !reference [ .exclude_charts_and_mr_only, rules ]
+    - !reference [ .exclude_charts_and_develop_only, rules ]
+    - !reference [ .exclude_charts_and_main_only, rules ]
+
+Build Image:
+  extends:
+    - .before_build_check
+    - .docker-build
   variables:
     DOCKERFILE_PATH: './Dockerfile'
+  rules:
+    - !reference [ .exclude_charts_and_mr_only, rules ]
+    - !reference [ .exclude_charts_and_develop_only, rules ]
+    - !reference [ .exclude_charts_and_main_only, rules ]
 
-publish to development:
-  extends: .publish-to-argocd
+generate-changelog-with-master:
+  extends: .generate-changelog-with-master
+  stage: publish_to_argo
+
+generate-changelog-with-before-sha:
+  extends: .generate-changelog-with-before-sha
+  stage: publish_to_argo
+
+Generate ARGO JSON development:
+  extends: .generate-app-json-develop
+  stage: generate_app_json
   variables:
     PUBLISH_TO_ENV: "development"
-    HELM_VALUES_PATH: values-development.yaml
     DESTINATION_NAMESPACE: "cardona"
-  stage: publish
-  only:
-    refs:
-      - develop
 
-publish to staging:
-  extends: .publish-to-argocd
+Generate ARGO JSON staging:
+  extends: .generate-app-json-main
+  stage: generate_app_json
   variables:
     PUBLISH_TO_ENV: "staging"
-    HELM_VALUES_PATH: values-staging.yaml
-    DESTINATION_NAMESPACE: ${CI_PROJECT_NAME}
-  stage: publish
-  only:
-    refs:
-      - master
+    DESTINATION_NAMESPACE: "cardona"
 
-publish to production:
-  extends: .publish-to-argocd
+Generate ARGO JSON production:
+  extends: .generate-app-json-main
+  stage: generate_app_json
   variables:
     PUBLISH_TO_ENV: "production"
-    HELM_VALUES_PATH: values-production.yaml
-    DESTINATION_NAMESPACE: ${CI_PROJECT_NAME}
-  stage: publish
-  only:
-    refs:
-      - master
+    DESTINATION_NAMESPACE: "cardona"
   when: manual
+
+Deploy develop:
+  stage: publish_to_argo
+  extends: .push-to-argo-repo-develop
+  needs:
+    - Generate ARGO JSON development
+  when: always
+
+Deploy staging :
+  stage: publish_to_argo
+  extends: .push-to-argo-repo-main
+  needs:
+    - Generate ARGO JSON staging
+  when: always
+
+Deploy to production:
+  stage: publish_to_argo
+  extends: .push-to-argo-repo-main
+  needs:
+    - Generate ARGO JSON production
+  when: on_success
