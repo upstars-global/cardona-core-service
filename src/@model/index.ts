@@ -1,5 +1,5 @@
 import type { TranslateResult } from 'vue-i18n'
-import { SortDirection } from './templates/baseList'
+import type { SortDirection } from './templates/baseList'
 
 export interface PaginationData {
   readonly pageNumber: number
@@ -21,7 +21,7 @@ export interface IListSort {
 
 export interface IListSortData {
   readonly sortBy: string
-  readonly sortDesc: boolean
+  readonly sortDesc: SortDirection
 }
 
 export class ListSort implements IListSort {
@@ -30,7 +30,7 @@ export class ListSort implements IListSort {
 
   constructor({ sortBy, sortDesc }: IListSortData) {
     this.field = sortBy
-    this.dir = sortDesc ? SortDirection.asc : SortDirection.desc
+    this.dir = sortDesc
   }
 }
 

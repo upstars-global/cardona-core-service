@@ -22,58 +22,58 @@ import { RichTextBaseField } from './rich-text'
 import { TagsBaseField } from './tags'
 
 export const getInstanceClass = (instance: object) => {
-    // TODO: The order in the method is important, since some classes inherit from each other
-    // For example, DummySelectBaseField is inherited from SelectBaseField
-    // and the check dummySelectInstance instanceof SelectBaseField will return true
+  // TODO: The order in the method is important, since some classes inherit from each other
+  // For example, DummySelectBaseField is inherited from SelectBaseField
+  // and the check dummySelectInstance instanceof SelectBaseField will return true
 
-    const fields = [
-        TagsBaseField,
-        RichTextBaseField,
-        RadioBaseField,
-        CheckGroupBaseField,
-        CheckBaseField,
-        DateBaseField,
-        FormDateBaseField,
-        SwitchBaseField,
-        UsersListBaseField,
-        ConditionsBaseField,
-        TimeBaseField,
-        PhoneBaseField,
-        DummySelectBaseField,
-        SelectBaseField,
-        MultiSelectBaseField,
-        RatesBaseField,
-        PasswordBaseField,
-        TextareaBaseField,
-        NumberRangeBaseField,
-        NumberBaseField,
-        TextBaseField,
-    ]
-
-    return fields.find((field) => instance instanceof field)
-}
-
-export {
-    BaseField,
-    TextBaseField,
-    NumberBaseField,
-    NumberRangeBaseField,
-    TextareaBaseField,
-    PasswordBaseField,
+  const fields = [
+    TagsBaseField,
+    RichTextBaseField,
+    RadioBaseField,
+    CheckGroupBaseField,
+    CheckBaseField,
+    DateBaseField,
+    FormDateBaseField,
+    SwitchBaseField,
+    UsersListBaseField,
+    ConditionsBaseField,
+    TimeBaseField,
+    PhoneBaseField,
     DummySelectBaseField,
     SelectBaseField,
     MultiSelectBaseField,
     RatesBaseField,
-    TimeBaseField,
-    PhoneBaseField,
-    ConditionsBaseField,
-    UsersListBaseField,
-    SwitchBaseField,
-    RadioBaseField,
-    DateBaseField,
-    FormDateBaseField,
-    CheckBaseField,
-    RichTextBaseField,
-    CheckGroupBaseField,
-    TagsBaseField,
+    PasswordBaseField,
+    TextareaBaseField,
+    NumberRangeBaseField,
+    NumberBaseField,
+    TextBaseField,
+  ]
+
+  return fields.find(field => instance instanceof field)
+}
+
+export {
+  BaseField,
+  TextBaseField,
+  NumberBaseField,
+  NumberRangeBaseField,
+  TextareaBaseField,
+  PasswordBaseField,
+  DummySelectBaseField,
+  SelectBaseField,
+  MultiSelectBaseField,
+  RatesBaseField,
+  TimeBaseField,
+  PhoneBaseField,
+  ConditionsBaseField,
+  UsersListBaseField,
+  SwitchBaseField,
+  RadioBaseField,
+  DateBaseField,
+  FormDateBaseField,
+  CheckBaseField,
+  RichTextBaseField,
+  CheckGroupBaseField,
+  TagsBaseField,
 }

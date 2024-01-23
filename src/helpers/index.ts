@@ -1,9 +1,9 @@
-import { isObject } from '../@core/utils/helpers';
 import { isNumber, isString } from 'lodash'
 import { useRouter } from 'vue-router'
-import {BaseField, DateBaseField, NumberRangeBaseField} from '../@model/templates/baseField'
-import type {NumberOrString, OptionsItem} from '../@model'
-import store from "../store";
+import { isObject } from '../@core/utils/helpers'
+import { BaseField, DateBaseField, NumberRangeBaseField } from '../@model/templates/baseField'
+import type { NumberOrString, OptionsItem } from '../@model'
+import store from '@/store'
 
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
 
@@ -12,7 +12,8 @@ export const transformFormData = (form): object => {
     if (valueData instanceof DateBaseField || valueData instanceof NumberRangeBaseField) {
       const transformedValue = valueData.transformField()
 
-      if (typeof transformedValue === 'string') acc[key] = transformedValue
+      if (typeof transformedValue === 'string')
+        acc[key] = transformedValue
       else acc = { ...acc, ...transformedValue }
     }
     else if (valueData instanceof BaseField) {
@@ -20,16 +21,17 @@ export const transformFormData = (form): object => {
     }
     else if (Array.isArray(valueData) && typeof valueData[0] !== 'string') {
       acc[key] = valueData
-          .map((item) =>
-              item instanceof BaseField ? item.transformField() : transformFormData(item)
-          )
-          .filter((item) => !!item)
+        .map(item =>
+          item instanceof BaseField ? item.transformField() : transformFormData(item),
+        )
+        .filter(item => !!item)
     }
     else if (isObject(valueData)) {
       let valueDataInner = JSON.parse(JSON.stringify(valueData))
       if (key === 'fieldTranslations') {
-        const {mainLocale = 'ru'} = store.getters.selectedProject;
-        Object.keys(valueDataInner).forEach((keyInner) => {
+        const { mainLocale = 'ru' } = store.getters.selectedProject
+
+        Object.keys(valueDataInner).forEach(keyInner => {
           valueDataInner[keyInner][mainLocale].value = form[keyInner]?.value || form.seo[keyInner].value
         })
       }
@@ -37,16 +39,16 @@ export const transformFormData = (form): object => {
         valueDataInner = store.state.textEditor.variableTextBuffer
       }
       else {
-        Object.keys(valueData).forEach((keyInner) => {
-          if (valueData[keyInner] instanceof BaseField) {
+        Object.keys(valueData).forEach(keyInner => {
+          if (valueData[keyInner] instanceof BaseField)
             valueDataInner[keyInner] = valueData[keyInner].transformField()
-          } else {
+          else
             valueDataInner[keyInner] = valueData[keyInner]
-          }
         })
       }
       acc[key] = valueDataInner
-    } else {
+    }
+    else {
       acc[key] = valueData
     }
 

@@ -5,7 +5,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
-import { DownloadFormat, SortDirection } from '../../../@model/templates/baseList'
+import { DownloadFormat } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/templates/BaseList/_components/fields/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
@@ -196,8 +196,7 @@ const sortFromStorage = getStorage(sortStorageKey, ListSort) as ListSort
 
 const sortBy = sortFromStorage?.key || props.config.staticSorts?.key
 const sortDir = sortFromStorage?.order || props.config.staticSorts?.order
-const sortDesc = !!sortDir && sortDir === SortDirection.asc
-const sortData = ref([{ key: sortBy, order: sortDesc }] as SortItem[])
+const sortData = ref(sortBy && sortDir ? [{ key: sortBy, order: sortDir }] as SortItem[] : [])
 
 watch(() => sortData.value, async ([newSortData]) => {
   newSortData
@@ -242,10 +241,19 @@ watch(() => perPage.value, () => {
   getList()
 })
 
+const mapSortData = () => {
+  return sortData.value.isEmpty
+    ? null
+    : sortData.value.map(item => {
+      if (item.key)
+        return new ListSort({ sortBy: item.key, sortDesc: item.order })
+    })
+}
+
 // Fetch list
 const getList = async () => {
   const filter = setRequestFilters()
-  const sort = sortData.value[0].key ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
+  const sort = mapSortData()
 
   const { list, total } = await store.dispatch(fetchActionName, {
     type: entityName,
