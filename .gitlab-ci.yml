@@ -14,7 +14,6 @@ include:
   - project: common/gitlab-ci-templates
     file: "/rules/common-latest.yaml"
 
-
 stages:
   - docker-build
   - generate_app_json
@@ -32,8 +31,6 @@ Build Image:
   extends:
     - .before_build_check
     - .docker-build
-  variables:
-    DOCKERFILE_PATH: './Dockerfile'
   rules:
     - !reference [ .exclude_charts_and_mr_only, rules ]
     - !reference [ .exclude_charts_and_develop_only, rules ]
@@ -69,14 +66,14 @@ Generate ARGO JSON production:
     DESTINATION_NAMESPACE: "cardona"
   when: manual
 
-Deploy develop:
+Deploy to develop:
   stage: publish_to_argo
   extends: .push-to-argo-repo-develop
   needs:
     - Generate ARGO JSON development
   when: always
 
-Deploy staging :
+Deploy to staging :
   stage: publish_to_argo
   extends: .push-to-argo-repo-main
   needs:
@@ -88,4 +85,4 @@ Deploy to production:
   extends: .push-to-argo-repo-main
   needs:
     - Generate ARGO JSON production
-  when: on_success
+  when: manual
