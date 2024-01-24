@@ -871,9 +871,13 @@ onBeforeMount(async () => {
     .per-page-selector {
       min-width: 6rem;
     }
+  }
+}
 
-    .btn-icon {
-      padding: 0;
+:deep(.c-table) {
+  tr {
+    td[data-c-field='actions'] {
+      width: 3.5rem;
     }
   }
 }
