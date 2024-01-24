@@ -20,7 +20,7 @@ const valueColsCount = computed(() => 12 - props.cols)
 
 <template>
   <div v-if="canView">
-    <VRow class="font-small-3 p-0">
+    <VRow class="font-small-3 p-0 ma-0 px-0">
       <VCol
         :cols="cols"
         class="wrapper-label ma-0 py-1"

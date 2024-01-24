@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useSlots } from 'vue';
+import { ref, useSlots, watch } from 'vue'
 
-import { ref, watch } from 'vue'
 import { hide } from '@floating-ui/dom'
 import ViewGenerator from '../../../components/templates/ViewGenerator/index.vue'
 import { ViewInfo } from '../../../@model/view'
@@ -87,7 +86,7 @@ const onHide = () => {
         <div
           v-for="key in Object.keys(viewForm)"
           :key="key"
-          class="px-50"
+          class="px-2"
         >
           <slot
             :name="`sidebar-row(${key})`"
@@ -98,7 +97,6 @@ const onHide = () => {
               :key="key"
               :model-value="viewForm[key]"
               :key-name="key"
-              class="py-25"
               :class="`${key}-view`"
             >
               <template
@@ -125,7 +123,6 @@ const onHide = () => {
                           :key="key"
                           :model-value="viewForm[key].views[groupKey]"
                           :key-name="groupKey"
-                          class="py-25"
                           :class="`${groupKey}-view`"
                         >
                           <template
