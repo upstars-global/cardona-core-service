@@ -420,6 +420,7 @@ export class DemoForm {
       value: data?.select,
       label: i18n.t('page.demo.selectField'),
       fetchOptionsActionName: 'demo/fetchOptions',
+      withCalculatePosition: true,
     })
     this.multiSelect = new MultiSelectBaseField({
       key: 'multiSelect',

@@ -159,6 +159,7 @@
             :item="item"
             :value="value"
             :get-update-route="getUpdateRoute"
+            :index="getIndexByItemFromList(item)"
           />
 
           <status-field
@@ -999,6 +1000,7 @@ export default {
 
       selectedRowClass,
       selectedItemIndex,
+      getIndexByItemFromList,
     }
   },
 }

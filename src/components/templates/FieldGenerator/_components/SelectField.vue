@@ -5,7 +5,7 @@ import vSelect from 'vue-select'
 import i18n from '../../../../libs/i18n'
 import { SelectBaseField } from '../../../../@model/baseField'
 import { OptionsItem } from '../../../../@model'
-
+import { createPopper } from '@popperjs/core'
 export default {
   name: 'SelectField',
   components: {
@@ -98,12 +98,38 @@ export default {
       }
     }, 250)
 
+    const withPopper = (dropdownList, component, { width }) => {
+      dropdownList.style.width = width
+
+      const popper = createPopper(component.$refs.toggle, dropdownList, {
+        placement: props.field.placement,
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: [0, -1],
+            },
+          },
+          {
+            name: 'toggleClass',
+            enabled: true,
+            phase: 'write',
+            fn({ state }) {
+              component.$el.classList.toggle('drop-up', state.placement === 'top')
+            },
+          },
+        ],
+      })
+      return () => popper.destroy()
+    }
+
     return {
       isLoading,
       selectClasses,
       valueModel,
       options,
       onSearch,
+      withPopper,
     }
   },
 }
@@ -120,7 +146,9 @@ export default {
     class="select-field"
     :class="selectClasses"
     :disabled="disabled"
+    :append-to-body="field.withCalculatePosition"
     :clearable="field.clearable"
+    :calculate-position="withPopper"
     @search="onSearch"
   >
     <template #no-options="{ loading, search }">
