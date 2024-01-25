@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { debounce } from 'lodash'
 import FieldGenerator from '../components/templates/FieldGenerator/index.vue'
 import type { NumberOrString } from '../@model'
@@ -17,19 +17,23 @@ const props = defineProps<{
   allowAddWithEmpty?: boolean
 }>()
 
-const rows = ref()
+const emits = defineEmits<{
+  (event: 'update:modelValue', value: Record<string, string>): void
+  (event: 'on-add-item', value: Record<string, string>): void
+}>()
 
-watch(
-  () => props.modelValue,
-  () => (rows.value = props.modelValue),
-  { deep: true, immediate: true },
-)
+const rows = computed({
+  get: () => props.modelValue,
+  set: value => {
+    emits('update:modelValue', value)
+  },
+})
 
 const isSelectItemNotEmpty = computed(() => {
   if (
     props.modelValue?.[0]
-      && Object.values(props.modelValue[0])?.[0]
-      && isBaseField(Object.values(props.modelValue[0])?.[0])
+    && Object.values(props.modelValue[0])?.[0]
+    && isBaseField(Object.values(props.modelValue[0])?.[0])
   )
     return isSelect(Object.values(props.modelValue[0])[0]) && !filteredOptions.value.length
 
@@ -98,7 +102,7 @@ const fetchSelectOptions = debounce(async (search = '') => {
 
 // Handlers
 const onAdd = async () => {
-  let [itemTemplate]: any = [props.templateField]
+  let [itemTemplate]: any = [props.templateField] // TODO: refactor
   const fieldClass = getInstanceClass(rows.value[0])
 
   if (fieldClass) {
@@ -121,6 +125,7 @@ const onAdd = async () => {
   }
 
   rows.value.push(itemTemplate)
+  emits('on-add-item', { item: itemTemplate, index: rows.value.length - 1 })
 }
 
 const onRemove = (index: NumberOrString) => !props.disabled && rows.value.splice(index, 1)

@@ -56,7 +56,7 @@ const apply = () => {
     :class="{ 'code-view-editor--edit-mode': withEditMode }"
   >
     <Froala
-      v-model="code"
+      v-model:value="code"
       tag="textarea"
       :config="froalaConfig"
     />
