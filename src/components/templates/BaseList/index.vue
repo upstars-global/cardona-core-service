@@ -158,7 +158,8 @@ const items = ref([])
 watch(
   () => items.value,
   () => {
-    selectedItem.value = items.value.find((item: any) => item?.id === selectedItem.value?.id)
+    if (selectedItem.value)
+      selectedItem.value = items.value.find((item: any) => item?.id === selectedItem.value.id)
   },
   { deep: true },
 )
