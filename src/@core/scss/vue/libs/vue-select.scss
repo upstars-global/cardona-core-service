@@ -341,8 +341,29 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
     .vs__search,
     .vs__selected,
     .vs__open-indicator {
-      background-color: $theme-dark-input-bg;
       opacity: 0.5;
+    }
+  }
+}
+
+.vs--disabled {
+  .vs__dropdown-toggle,
+  .vs__clear,
+  .vs__search,
+  .vs__selected,
+  .vs__open-indicator {
+    background-color: #efefef;
+  }
+}
+
+.dark-layout {
+  .vs--disabled {
+    .vs__dropdown-toggle,
+    .vs__clear,
+    .vs__search,
+    .vs__selected,
+    .vs__open-indicator {
+      background-color: $theme-dark-input-bg !important;
     }
   }
 }

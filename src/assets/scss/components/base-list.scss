@@ -19,6 +19,12 @@
   }
 }
 
+.dark-layout .table {
+  .table-default-bg {
+    background-color: $theme-dark-card-bg;
+  }
+}
+
 .table-default-bg {
   background-color: $table-hover-bg;
 }
