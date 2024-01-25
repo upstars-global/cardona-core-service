@@ -145,7 +145,6 @@
     "apexcharts": "^3",
     "stylelint-order": "6.0.3"
   },
-  "packageManager": "pnpm@8.6.2",
   "msw": {
     "workerDirectory": "public"
   }
