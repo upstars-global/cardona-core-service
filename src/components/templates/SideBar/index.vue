@@ -30,7 +30,7 @@ const slots = useSlots()
 
 const emitAfterAnimationSidebar = 200
 
-const viewForm = ref(props.item ? new props.sideBarModel(props.item) : null)
+const viewForm = ref(null)
 
 const action = (name: string, hide: Function) => {
   hide && hide()
