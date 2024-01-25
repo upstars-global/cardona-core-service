@@ -79,7 +79,7 @@ const onSearch = (search: string) => emits('search', search)
 
     <Field
       v-model="fieldModel"
-      :name="modelValue.key"
+      :name="modelValue.id"
       :label="modelValue.label"
       :rules="modelValue.validationRules"
       :validate-on-blur="false"
@@ -90,7 +90,7 @@ const onSearch = (search: string) => emits('search', search)
       <template #default="{ errorMessage }">
         <Component
           :is="localValue"
-          :id="modelValue.key"
+          :id="modelValue.id"
           v-model="fieldModel"
           :options="options"
           :field="modelValue"

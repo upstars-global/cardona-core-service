@@ -1,12 +1,13 @@
 import type { Component } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
-import type { PermissionType } from '@permissions'
 import store from '../../../store'
 import type { IValidationConfig } from '../../../@model/validations'
 import type { OptionsItem } from '../../../@model'
+import type { PermissionType } from '@permissions'
 
 export interface IBaseField {
   readonly key: string
+  readonly id?: string
   readonly label: TranslateResult
   readonly placeholder?: TranslateResult
   readonly description?: TranslateResult
@@ -23,6 +24,7 @@ export abstract class BaseField implements IBaseField {
   protected abstract component: Component
   protected abstract _value?: any
   readonly key: string
+  readonly id: string
   readonly label: TranslateResult
   readonly placeholder?: TranslateResult
   readonly description?: TranslateResult
@@ -36,6 +38,7 @@ export abstract class BaseField implements IBaseField {
 
   protected constructor(field: IBaseField) {
     this.key = field.key
+    this.id = field.id ?? field.key
     this.label = field.label
     this.placeholder = field.placeholder
     this.validationRules = field.validationRules
