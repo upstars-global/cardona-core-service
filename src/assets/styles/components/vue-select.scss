@@ -152,7 +152,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
 
 // Tag/Multi Select
 .v-select {
-  height: 2.5rem;
+  min-height: 2.5rem;
 
   &:not(.vs--single) {
     .vs__selected {
