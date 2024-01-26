@@ -1,4 +1,7 @@
 @import "vue-select/dist/vue-select.css";
+:root {
+  --vs-line-height: 1.25;
+}
 
 $options-padding-x: 20px;
 $options-padding-y: 7px;
