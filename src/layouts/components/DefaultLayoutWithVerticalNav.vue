@@ -41,15 +41,13 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
           name="zoom-fade"
           mode="out-in"
         >
-          <KeepAlive>
-            <Suspense
-              :timeout="0"
-              @fallback="isFallbackStateActive = true"
-              @resolve="isFallbackStateActive = false"
-            >
-              <Component :is="Component" />
-            </Suspense>
-          </KeepAlive>
+          <Suspense
+            :timeout="0"
+            @fallback="isFallbackStateActive = true"
+            @resolve="isFallbackStateActive = false"
+          >
+            <Component :is="Component" />
+          </Suspense>
         </Transition>
       </template>
     </RouterView>
