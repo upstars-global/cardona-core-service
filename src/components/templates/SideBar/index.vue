@@ -21,9 +21,10 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits<{
-  (e: 'update:sidebarActive', value: boolean): void
+  (e: 'update:sidebar-active', value: boolean): void
   (e: 'update'): void
   (e: 'remove'): void
+  (e: 'hide'): void
 }>()
 
 const slots = useSlots()
@@ -43,7 +44,8 @@ const action = (name: string, hide: Function) => {
 watch(
   () => props.item,
   item => {
-    viewForm.value = new props.sideBarModel(item)
+    if (item)
+      viewForm.value = new props.sideBarModel(item)
   },
 )
 
@@ -52,7 +54,8 @@ const title = `title.${convertCamelCase(props.entityName, '.')}.sidebarTitle`
 const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
 
 const onHide = () => {
-  emits('update:sidebarActive', false)
+  emits('update:sidebar-active', false)
+  emits('hide')
 }
 </script>
 

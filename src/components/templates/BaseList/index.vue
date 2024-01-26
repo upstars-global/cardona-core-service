@@ -540,7 +540,6 @@ onBeforeMount(async () => {
       @remove="onClickRemove(selectedItem)"
       @hide="resetSelectedItem"
       @update="routerToUpdatePageId(selectedItem)"
-      @update:model-value="resetSelectedItem"
     >
       <template #sidebar-actions="{ form }">
         <slot
