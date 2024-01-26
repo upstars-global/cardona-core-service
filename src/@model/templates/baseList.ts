@@ -64,10 +64,7 @@ export interface IBaseListConfig {
   /** staticSorts - Статический сортировка таблицы field: 'position', dir: SortDirection.asc, */
   readonly staticSorts?: IListSort
 
-  /** responsive - Вкл/выкл гибкую таблицу  */
-  readonly responsive?: boolean
-
-  /** responsive - Установить режим выделения элементов 'multi'/ 'single'  */
+  /** selectMode - Установить режим выделения элементов 'multi'/ 'single'  */
   readonly selectMode?: SelectMode
 
   /** selectable - Вкл/выкл режим выбора элементов */
@@ -161,7 +158,6 @@ export class BaseListConfig implements IBaseListConfig {
   readonly filterList: Array<FilterListItem>
   readonly staticFilters: Record<string, string>
   readonly staticSorts?: IListSort
-  readonly responsive?: boolean
   readonly selectMode?: SelectMode
   readonly selectable?: boolean
   readonly small?: boolean
@@ -199,7 +195,6 @@ export class BaseListConfig implements IBaseListConfig {
     filterList,
     staticFilters,
     staticSorts,
-    responsive,
     selectMode,
     selectable,
     small,
@@ -236,7 +231,6 @@ export class BaseListConfig implements IBaseListConfig {
     this.filterList = filterList || []
     this.staticFilters = staticFilters || {}
     this.staticSorts = staticSorts
-    this.responsive = responsive
     this.selectMode = selectMode || SelectMode.Page
     this.selectable = selectable
     this.small = small
