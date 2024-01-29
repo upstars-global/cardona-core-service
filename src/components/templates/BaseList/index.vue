@@ -583,8 +583,12 @@ onBeforeMount(async () => {
       @on-click-filter="isFiltersShown = !isFiltersShown"
       @on-export-format-selected="onExportFormatSelected"
     >
-      <template #right-search-btn>
-        <slot name="right-search-btn" />
+      <template #right-search-btn="{ canCreate, createPageName }">
+        <slot
+          name="right-search-btn"
+          :can-create="canCreate"
+          :create-page-name="createPageName"
+        />
       </template>
       <template #left-search-btn>
         <slot name="left-search-btn" />
