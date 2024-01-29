@@ -65,7 +65,7 @@ const onSearch = (search: string) => emits('search', search)
     <VLabel
       v-if="groupLabel"
       :for="modelValue?.key"
-      class="mb-1 field-generator-label text-body-2 text-high-emphasis"
+      class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between"
     >
       <span>
         {{ groupLabel }}

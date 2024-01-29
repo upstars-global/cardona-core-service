@@ -100,14 +100,14 @@ if (props.withReadAction && entityId) {
       customApiPrefix: props.config?.customApiPrefix,
     })
 
-    if (isCreatePage) {
+    if (isCreatePage)
       receivedEntity.id = null
-    }
 
     await store.dispatch('textEditor/setVariableTextBuffer', receivedEntity.localisationParameters)
     form.value = new EntityFormClass(receivedEntity)
   })
-} else {
+}
+else {
   form.value = new EntityFormClass()
 }
 
@@ -246,44 +246,44 @@ onBeforeUnmount(() => {
 
 <template>
   <Form
-      v-if="form"
-      ref="formRef"
-      @submit.prevent
+    v-if="form"
+    ref="formRef"
+    @submit.prevent
   >
     <template #default="{ validate }">
       <slot
-          :entity-id="entityId"
-          :form="form"
-          :can-update="canUpdate"
-          :can-remove="canRemove"
-          :can-view-seo="canViewSeo"
-          :can-create-seo="canCreateSeo"
-          :can-update-seo="canUpdateSeo"
-          :on-click-remove="onClickRemove"
+        :entity-id="entityId"
+        :form="form"
+        :can-update="canUpdate"
+        :can-remove="canRemove"
+        :can-view-seo="canViewSeo"
+        :can-create-seo="canCreateSeo"
+        :can-update-seo="canUpdateSeo"
+        :on-click-remove="onClickRemove"
       />
 
       <slot
-          v-if="pageType"
-          name="actions"
-          :form="form"
+        v-if="pageType"
+        name="actions"
+        :form="form"
       >
         <div class="d-flex align-center mt-5">
           <template v-if="isCreatePage">
             <VBtn
-                class="mr-2"
-                :color="VColors.Primary"
-                data-testid="create-button"
-                @click="validate"
+              class="mr-2"
+              :color="VColors.Primary"
+              data-testid="create-button"
+              @click="onSubmit(true)"
             >
               {{ $t('action.createAndExit') }}
             </VBtn>
 
             <VBtn
-                class="mr-2"
-                :variant="VVariants.Outlined"
-                :color="VColors.Secondary"
-                data-testid="stay-button"
-                @click="onSubmit(true)"
+              class="mr-2"
+              :variant="VVariants.Outlined"
+              :color="VColors.Secondary"
+              data-testid="stay-button"
+              @click="onSubmit(true)"
             >
               {{ $t('action.createAndStay') }}
             </VBtn>
@@ -291,21 +291,21 @@ onBeforeUnmount(() => {
 
           <template v-if="isUpdatePage">
             <VBtn
-                class="mr-2"
-                :color="VColors.Primary"
-                data-testid="save-button"
-                :disabled="isDisableSubmit"
-                @click="onSubmit(false)"
+              class="mr-2"
+              :color="VColors.Primary"
+              data-testid="save-button"
+              :disabled="isDisableSubmit"
+              @click="onSubmit(false)"
             >
               {{ $t('action.save') }}
             </VBtn>
           </template>
 
           <VBtn
-              :variant="VVariants.Outlined"
-              :color="VColors.Error"
-              data-testid="cancel-button"
-              @click.prevent="onClickCancel"
+            :variant="VVariants.Outlined"
+            :color="VColors.Error"
+            data-testid="cancel-button"
+            @click.prevent="onClickCancel"
           >
             {{ $t('action.cancel') }}
           </VBtn>
