@@ -13,7 +13,6 @@ const { t } = useI18n()
 
 const listConfig = new BaseListConfig({
   withSettings: true,
-  responsive: true,
   withCustomFetchList: true,
   withSearch: true,
   createFromCopy: true,

@@ -250,67 +250,65 @@ onBeforeUnmount(() => {
     ref="formRef"
     @submit.prevent
   >
-    <template #default="{ validate }">
-      <slot
-        :entity-id="entityId"
-        :form="form"
-        :can-update="canUpdate"
-        :can-remove="canRemove"
-        :can-view-seo="canViewSeo"
-        :can-create-seo="canCreateSeo"
-        :can-update-seo="canUpdateSeo"
-        :on-click-remove="onClickRemove"
-      />
+    <slot
+      :entity-id="entityId"
+      :form="form"
+      :can-update="canUpdate"
+      :can-remove="canRemove"
+      :can-view-seo="canViewSeo"
+      :can-create-seo="canCreateSeo"
+      :can-update-seo="canUpdateSeo"
+      :on-click-remove="onClickRemove"
+    />
 
-      <slot
-        v-if="pageType"
-        name="actions"
-        :form="form"
-      >
-        <div class="d-flex align-center mt-5">
-          <template v-if="isCreatePage">
-            <VBtn
-              class="mr-2"
-              :color="VColors.Primary"
-              data-testid="create-button"
-              @click="onSubmit(true)"
-            >
-              {{ $t('action.createAndExit') }}
-            </VBtn>
-
-            <VBtn
-              class="mr-2"
-              :variant="VVariants.Outlined"
-              :color="VColors.Secondary"
-              data-testid="stay-button"
-              @click="onSubmit(true)"
-            >
-              {{ $t('action.createAndStay') }}
-            </VBtn>
-          </template>
-
-          <template v-if="isUpdatePage">
-            <VBtn
-              class="mr-2"
-              :color="VColors.Primary"
-              data-testid="save-button"
-              :disabled="isDisableSubmit"
-              @click="onSubmit(false)"
-            >
-              {{ $t('action.save') }}
-            </VBtn>
-          </template>
+    <slot
+      v-if="pageType"
+      name="actions"
+      :form="form"
+    >
+      <div class="d-flex align-center mt-5">
+        <template v-if="isCreatePage">
+          <VBtn
+            class="mr-4"
+            :color="VColors.Primary"
+            data-testid="create-button"
+            @click="onSubmit(false)"
+          >
+            {{ $t('action.createAndExit') }}
+          </VBtn>
 
           <VBtn
+            class="mr-4"
             :variant="VVariants.Outlined"
-            :color="VColors.Error"
-            data-testid="cancel-button"
-            @click.prevent="onClickCancel"
+            :color="VColors.Secondary"
+            data-testid="stay-button"
+            @click="onSubmit(true)"
           >
-            {{ $t('action.cancel') }}
+            {{ $t('action.createAndStay') }}
           </VBtn>
-        </div>
-      </slot>
-    </template>
+        </template>
+
+        <template v-if="isUpdatePage">
+          <VBtn
+            class="mr-4"
+            :color="VColors.Primary"
+            data-testid="save-button"
+            :disabled="isDisableSubmit"
+            @click="onSubmit(false)"
+          >
+            {{ $t('action.save') }}
+          </VBtn>
+        </template>
+
+        <VBtn
+          :variant="VVariants.Outlined"
+          :color="VColors.Error"
+          data-testid="cancel-button"
+          @click.prevent="onClickCancel"
+        >
+          {{ $t('action.cancel') }}
+        </VBtn>
+      </div>
+    </slot>
   </Form>
 </template>

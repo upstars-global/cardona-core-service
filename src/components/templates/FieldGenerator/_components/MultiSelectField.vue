@@ -93,7 +93,6 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :loading="isLoading"
       multiple
       :options="options"
-      class="multiselect-field"
       :class="selectClasses"
       :disabled="disabled"
       @search="onSearch"
