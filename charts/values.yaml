@@ -2,17 +2,18 @@ image:
   name: "<argocd placeholder>"
   tag: "latest"
 
-env: ""
+desc:
+  env: ""
 
-### ingressHostName = ingressHost + ingressDomain
-ingressDomain: boffice.site
-ingressHost: "some-name"
+dynamic:
+  isDynamic: "false"
+  branchSlug: ""
 
+## for dynamic envs only
 ingress:
   controller:
     name: "nginx"
 
-connect:
-  enabled: false
-  upstreams: []
-  servicePort: 80
+### ingressHostName = ingressHost + ingressDomain
+ingressDomain: "boffice.site"
+ingressHost: ""
