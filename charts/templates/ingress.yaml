@@ -1,0 +1,34 @@
+{{- if eq .Values.dynamic.isDynamic "true" -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-certs"
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+  name: {{ .Release.Name }}
+  labels:
+    app.kubernetes.io/project: bo
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/brand: cardona
+    app.kubernetes.io/part-of: cardona
+    app.kubernetes.io/env: {{ .Values.desc.env }}
+
+spec:
+  ingressClassName: {{ .Values.ingress.controller.name | quote }}
+  tls:
+    - hosts:
+        - {{ include "ingressHostname" . }}
+      secretName: {{ include "ingressHostname" . }}
+  rules:
+    - host: {{ include "ingressHostname" . }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}
+                port:
+                  name: http
+{{- end -}}

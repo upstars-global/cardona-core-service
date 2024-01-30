@@ -1,0 +1,3 @@
+{{- define "ingressHostname" -}}
+  {{- printf "%s.%s" .Values.ingressHost .Values.ingressDomain -}}
+  {{- end -}}

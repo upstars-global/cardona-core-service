@@ -1,0 +1,19 @@
+image:
+  name: "<argocd placeholder>"
+  tag: "latest"
+
+desc:
+  env: ""
+
+dynamic:
+  isDynamic: "false"
+  branchSlug: ""
+
+## for dynamic envs only
+ingress:
+  controller:
+    name: "nginx"
+
+### ingressHostName = ingressHost + ingressDomain
+ingressDomain: "boffice.site"
+ingressHost: ""

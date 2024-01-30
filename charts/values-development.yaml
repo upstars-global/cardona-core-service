@@ -1,0 +1,13 @@
+desc:
+  env: "develop"
+
+ingressHost: cardona-core-service-development
+
+serverApiAddr: develop.luckyroot.net
+luckyrootService: luckyroot-develop-service
+serverProxyAddr: back.staging.boffice.site
+serverPortWs: 8081
+
+connect:
+  enabled: true
+  upstreams: lr-lr-proxy-develop:8081:vilardo-staging

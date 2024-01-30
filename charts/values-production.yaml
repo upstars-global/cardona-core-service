@@ -1,0 +1,25 @@
+luckyrootService: luckyroot-staging-service
+
+image:
+  name: "<argocd placeholder>"
+  tag: "latest"
+
+env: ""
+
+ingress:
+  controller:
+    name: "nginx"
+
+serviceAccount:
+  name: backoffice
+
+desc:
+  project: "backoffice"
+  brand: "cardona-core-service"
+  env: production
+
+
+ingressHost: cardona-core-service
+serverApiAddr: luckyroot.net
+serverProxyAddr: back.prod.boffice.site
+serverPortWs: 8081

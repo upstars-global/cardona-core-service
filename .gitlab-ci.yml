@@ -1,35 +1,89 @@
 include:
   - project: common/gitlab-ci-templates
-    file: '/build/docker-build-1.0.0.yaml'
+    file: '/build/docker-build-nodejs-latest.yaml'
     ref: master
   - project: common/gitlab-ci-templates
-    file: "/changelog/generate-changelog-1.0.0.yaml"
+    file: '/build/helpers-build-latest.yaml'
     ref: master
+  - project: common/gitlab-ci-templates
+    file: "/changelog/generate-changelog-latest.yaml"
+    ref: master
+  - project: common/gitlab-ci-templates
+    file: "/publish/publish-to-argocd-latest.yaml"
+    ref: master
+  - project: common/gitlab-ci-templates
+    file: "/rules/common-latest.yaml"
+
 
 stages:
   - docker-build
-  - docker-push
+  - generate_app_json
+  - publish_to_argo
 
-default:
-  tags:
-    - ${CI_PROJECT_ROOT_NAMESPACE}-staging
+Check Image Tag:
+  extends: .check_if_tag_exists
+  stage: .pre
+  rules:
+    - !reference [ .exclude_charts_and_mr_only, rules ]
+    - !reference [ .exclude_charts_and_develop_only, rules ]
+    - !reference [ .exclude_charts_and_main_only, rules ]
 
-docker-build:
-  extends: .docker-build
-  variables:
-    DOCKERFILE_PATH: './Dockerfile'
-
-docker-push-do:
-  extends: .docker-push-do
-  only:
-    refs:
-      - develop
-      - master
+Build Image:
+  extends:
+    - .before_build_check
+    - .docker-build
+  rules:
+    - !reference [ .exclude_charts_and_mr_only, rules ]
+    - !reference [ .exclude_charts_and_develop_only, rules ]
+    - !reference [ .exclude_charts_and_main_only, rules ]
 
 generate-changelog-with-master:
   extends: .generate-changelog-with-master
-  stage: docker-push
+  stage: publish_to_argo
+
 generate-changelog-with-before-sha:
   extends: .generate-changelog-with-before-sha
-  stage: docker-push
+  stage: publish_to_argo
 
+Generate ARGO JSON development:
+  extends: .generate-app-json-develop
+  stage: generate_app_json
+  variables:
+    PUBLISH_TO_ENV: "development"
+    DESTINATION_NAMESPACE: "cardona"
+
+Generate ARGO JSON staging:
+  extends: .generate-app-json-main
+  stage: generate_app_json
+  variables:
+    PUBLISH_TO_ENV: "staging"
+    DESTINATION_NAMESPACE: "cardona"
+
+Generate ARGO JSON production:
+  extends: .generate-app-json-main
+  stage: generate_app_json
+  variables:
+    PUBLISH_TO_ENV: "production"
+    DESTINATION_NAMESPACE: "cardona"
+  when: manual
+
+Deploy to develop:
+  stage: publish_to_argo
+  extends: .push-to-argo-repo-develop
+  needs:
+    - Generate ARGO JSON development
+  when: always
+
+Deploy to staging :
+  stage: publish_to_argo
+  extends: .push-to-argo-repo-main
+  needs:
+    - Generate ARGO JSON staging
+  when: always
+
+Deploy to production:
+  stage: publish_to_argo
+  extends: .push-to-argo-repo-main
+  needs:
+    - Generate ARGO JSON production
+  when: manual
