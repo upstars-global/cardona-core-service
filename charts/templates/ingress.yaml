@@ -1,19 +1,19 @@
+{{- if eq .Values.dynamic.isDynamic "true" -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-certs"
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
-    nginx.org/location-snippets: |
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection "Upgrade";
   name: {{ .Release.Name }}
   labels:
     app.kubernetes.io/project: bo
     app.kubernetes.io/component: ingress
     app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/brand: cardona-core-service
-    app.kubernetes.io/part-of: cardona-core-service
+    app.kubernetes.io/brand: cardona
+    app.kubernetes.io/part-of: cardona
     app.kubernetes.io/env: {{ .Values.desc.env }}
+
 spec:
   ingressClassName: {{ .Values.ingress.controller.name | quote }}
   tls:
@@ -31,3 +31,4 @@ spec:
                 name: {{ .Release.Name }}
                 port:
                   name: http
+{{- end -}}
