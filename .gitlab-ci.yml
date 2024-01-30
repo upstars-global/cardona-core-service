@@ -60,30 +60,26 @@ Generate ARGO JSON staging:
     DESTINATION_NAMESPACE: "cardona"
 
 Generate ARGO JSON production:
-  extends: .generate-app-json-main
+  extends: .generate-app-json-main-manual
   stage: generate_app_json
   variables:
     PUBLISH_TO_ENV: "production"
     DESTINATION_NAMESPACE: "cardona"
-  when: manual
 
 Deploy to develop:
   stage: publish_to_argo
   extends: .push-to-argo-repo-develop
   needs:
     - Generate ARGO JSON development
-  when: always
 
 Deploy to staging :
   stage: publish_to_argo
   extends: .push-to-argo-repo-main
   needs:
     - Generate ARGO JSON staging
-  when: always
 
 Deploy to production:
   stage: publish_to_argo
-  extends: .push-to-argo-repo-main
+  extends: .push-to-argo-repo-main-manual
   needs:
     - Generate ARGO JSON production
-  when: manual
