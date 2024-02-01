@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeMount, onBeforeUnmount, ref } from 'vue'
+import { computed, inject, nextTick, onBeforeMount, onBeforeUnmount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
 import store from '../../../store'
@@ -8,6 +8,7 @@ import { basePermissions } from '../../../helpers/base-permissions'
 import { PageType } from '../../../@model/templates/baseSection'
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
 import { VColors, VVariants } from '../../../@model/vuetify'
+import RemoveModal from '../BaseList/_components/fields/RemoveModal.vue'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean
@@ -22,6 +23,8 @@ const props = withDefaults(defineProps<{
   pageType: PageType.Create,
 },
 )
+
+const modal = inject('modal')
 
 const route = useRoute()
 const router = useRouter()
@@ -209,34 +212,21 @@ const onSubmit = async (isStay: boolean) => {
 }
 
 const onClickCancel = () => router.push({ name: ListPageName })
+const removeModalId = 'list-item-remove-modal'
 
 // Remove
-const onClickRemove = async (id: string) => {
-  const isRemoveConfirmed = await confirmRemoveModal()
+const onClickRemove = async () => {
+  modal.showModal(removeModalId)
+}
 
-  if (!isRemoveConfirmed)
-    return
-
+const confirmRemoveModal = async () => {
   await store.dispatch(deleteActionName, {
     type: entityName,
-    id,
+    id: entityId,
     customApiPrefix: props.config?.customApiPrefix,
   })
 
   await router.push({ name: ListPageName })
-}
-
-const confirmRemoveModal = () => {
-  /* return bvModal.msgBoxConfirm(t(`modal.remove${entityName}.description`, proxy), {
-    title: t(`modal.remove${entityName}.title`, proxy),
-    size: 'sm',
-    okVariant: 'danger',
-    okTitle: t('action.remove', proxy),
-    cancelVariant: 'outline-secondary',
-    cancelTitle: t('action.cancel', proxy),
-    hideHeaderClose: false,
-    centered: true,
-  }) */ // TODO: после реализации https://upstars.atlassian.net/browse/BAC-2031
 }
 
 onBeforeUnmount(() => {
@@ -310,5 +300,12 @@ onBeforeUnmount(() => {
         </VBtn>
       </div>
     </slot>
+
+    <RemoveModal
+      :config="config"
+      :remove-modal-id="removeModalId"
+      :entity-name="entityName"
+      @on-click-modal-ok="confirmRemoveModal"
+    />
   </Form>
 </template>

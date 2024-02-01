@@ -59,7 +59,11 @@ const currentTab = ref('main')
     <VWindowItem value="main">
       <VCard class="mb-7">
         <template #title>
-          {{ $t('page.demo.input') }}
+          <div class="d-flex align-center justify-space-between">
+            {{ $t('page.demo.input') }}
+
+            <slot name="header-right" />
+          </div>
         </template>
 
         <template #text>

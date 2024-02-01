@@ -116,7 +116,7 @@ const getUpdateRoute = ({ id }): _RouteLocationBase => ({ name: 'DemoUpdate', pa
         <h6 class="mb-1">
           {{ $t('common.callback') }}
         </h6>
-        <CodeViewEditor :value="item" />
+        <CodeViewEditor :model-value="item" />
       </template>
     </template>
   </BaseList>
