@@ -3,6 +3,7 @@ import { useDemoSection } from '../useDemo'
 import BaseSection from '../../../components/templates/BaseSection/index.vue'
 import { PageType } from '../../../@model/templates/baseSection'
 import DemoForm from '@/pages/demo/_components/DemoForm.vue'
+import { VColors } from '@/@model/vuetify'
 </script>
 
 <template>
@@ -19,7 +20,18 @@ import DemoForm from '@/pages/demo/_components/DemoForm.vue'
         :can-view-seo="canViewSeo"
         :can-update-seo="canUpdateSeo"
         :remove-handler="onClickRemove"
-      />
+      >
+        <template #header-right>
+          <VBtn
+            v-if="canRemove"
+            :color="VColors.Error"
+            class="ml-2"
+            @click="onClickRemove(entityId)"
+          >
+            {{ $t('action.remove') }}
+          </VBtn>
+        </template>
+      </DemoForm>
     </template>
   </BaseSection>
 </template>

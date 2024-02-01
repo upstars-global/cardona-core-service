@@ -1,4 +1,3 @@
-import { productName } from '@productConfig'
 import { setStorage } from '../../helpers/storage'
 import { storageKeys } from '../../configs/storage'
 import type { ProjectInfoInput } from '../../@model/project'
@@ -10,6 +9,7 @@ import { AllPermission, Permission } from '../../@model/permission'
 import ApiService from '../../services/api'
 import type { PermissionGroup } from '../../@model/enums/permissions'
 import { productsName } from '../../configs/productsName'
+import { productName } from '@productConfig'
 
 export const fetchCurrentUser = async () => {
   const { data } = await ApiService.request({

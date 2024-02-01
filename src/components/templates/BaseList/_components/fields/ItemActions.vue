@@ -11,6 +11,8 @@ interface Props {
   config: IBaseListConfig
   canUpdate: boolean
   canUpdateItem: boolean
+  canUpdateSeo: boolean
+  canCreate: boolean
   getUpdateRoute: (item: { id: string }) => Location
   canRemoveItem?: boolean
 }
@@ -27,12 +29,14 @@ const router = useRouter()
 
 const isShowActions = computed(() => {
   return [
-    props.config.withDeactivation,
-    props.canUpdateItem,
-    props.config.createFromCopy,
+    props.canUpdate && props.canUpdateItem,
+    props.canUpdateSeo,
+    props.canCreate && props.config.createFromCopy,
     props.canRemoveItem,
   ].some(Boolean)
 })
+
+const canShowEdit = computed(() => (props.canUpdate || props.canUpdateSeo) && props.canUpdateItem)
 
 const onUpdateItem = () => {
   router.push(props.getUpdateRoute(props.item))
@@ -73,7 +77,7 @@ const onCreateCopy = () => {
         </VListItemTitle>
       </VListItem>
       <VListItem
-        v-if="canUpdateItem"
+        v-if="canShowEdit"
         :prepend-icon="IconsList.EditIcon"
         @click="onUpdateItem"
       >

@@ -1,4 +1,4 @@
-import store from "../store";
+import store from '../store'
 
 interface FieldTranslationsLocaleData {
   value: string
@@ -19,7 +19,7 @@ export interface FieldTranslationsData {
 }
 
 export const getTranslationForm = (form: Record<string, any>, data: Record<string, any>): TranslationForm => {
-  const { locales } = store.getters.selectedProject;
+  const { locales } = store.getters.selectedProject
   const keys: string[] = []
 
   Object.keys(form).forEach(key => {
@@ -32,7 +32,8 @@ export const getTranslationForm = (form: Record<string, any>, data: Record<strin
         keys.push(key)
     })
   }
-  let translationsForm: TranslationForm = {}
+  const translationsForm: TranslationForm = {}
+
   keys.forEach((key: string) => {
     translationsForm[key] = {}
     locales.forEach((locale: string) => {

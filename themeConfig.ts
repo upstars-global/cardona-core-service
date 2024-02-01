@@ -1,4 +1,4 @@
-import { h } from 'vue';
+import { h } from 'vue'
 import { breakpointsVuetify } from '@vueuse/core'
 import { VIcon } from 'vuetify/components/VIcon'
 import { defineThemeConfig } from '@core'
@@ -13,7 +13,7 @@ export const { themeConfig, layoutConfig } = defineThemeConfig({
   app: {
     title: 'vuexy',
     logo: h('div', { innerHTML: logo, style: 'line-height:0; color: rgb(var(--v-global-theme-primary))' }),
-    contentWidth: ContentWidth.Boxed,
+    contentWidth: ContentWidth.Fluid,
     contentLayoutNav: AppContentLayoutNav.Vertical,
     overlayNavFromBreakpoint: breakpointsVuetify.md + 16, // 16 for scrollbar. Docs: https://next.vuetifyjs.com/en/features/display-and-platform/
     i18n: {
@@ -24,16 +24,6 @@ export const { themeConfig, layoutConfig } = defineThemeConfig({
           label: 'English',
           i18nLang: 'en',
           isRTL: false,
-        },
-        {
-          label: 'French',
-          i18nLang: 'fr',
-          isRTL: false,
-        },
-        {
-          label: 'Arabic',
-          i18nLang: 'ar',
-          isRTL: true,
         },
       ],
     },
