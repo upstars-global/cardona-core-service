@@ -35,6 +35,12 @@ const variant = computed((): ButtonCheckboxIconVariant => {
   if (props?.disabled) return ButtonCheckboxIconVariant.OutlineSecondary
   return props?.value ? ButtonCheckboxIconVariant.Success : ButtonCheckboxIconVariant.Danger
 })
+
+const onClick = () => {
+  if (!props.disabled) {
+    emits('click', props.value)
+  }
+}
 </script>
 
 <template>
@@ -42,9 +48,11 @@ const variant = computed((): ButtonCheckboxIconVariant => {
     <b-button
       :id="id"
       :variant="variant"
-      :disabled="disabled"
       class="btn-icon p-50"
-      @click="emits('click', !value)"
+      :class="{
+        'state-disabled': disabled,
+      }"
+      @click="onClick"
     >
       <feather-icon v-if="icon" :icon="icon" />
     </b-button>
@@ -56,6 +64,9 @@ const variant = computed((): ButtonCheckboxIconVariant => {
 
 <style scoped lang="scss">
 @import '../@core/scss/base/core/colors/palette-variables';
+.state-disabled {
+  opacity: 0.65;
+}
 
 .btn-check-icon {
   .active {
