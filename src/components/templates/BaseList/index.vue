@@ -536,14 +536,20 @@ export default {
       selectedItem.value = null
     }
 
-    const onClickRow = (data) => {
+    const onClickRow = async (data) => {
       if (props.config?.selectable) return
-
-      if (props.config?.sidebar) {
-        isSidebarShown.value = true
-        selectedItem.value = data
-      }
       emit('row-clicked', data)
+
+      if (props.config?.sidebar && !props.config?.cbShowSidebar) {
+        selectedItem.value = data
+        isSidebarShown.value = true
+      }
+      if (props.config?.sidebar && props.config?.cbShowSidebar) {
+        await props.config?.cbShowSidebar(selectedItem, isSidebarShown, {
+          itemList: data,
+          index: getIndexByItemFromList(data),
+        })
+      }
     }
 
     const routerToUpdatePageId = (item) => {
@@ -557,7 +563,7 @@ export default {
     watch(
       () => items.value,
       () => {
-        selectedItem.value = items.value.find((item: any) => item?.id === selectedItem.value?.id)
+        selectedItem.value = items.value[getIndexByItemFromList(selectedItem.value)]
       },
       { deep: true }
     )

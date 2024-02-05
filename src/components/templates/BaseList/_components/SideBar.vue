@@ -36,9 +36,8 @@
                 <template
                   v-if="checkSlotExistence(`sidebar-value(${key})`)"
                   :slot="`sidebar-value(${key})`"
-                  slot-scope="{ item }"
                 >
-                  <slot :name="`sidebar-value(${key})`" :item="item" />
+                  <slot :name="`sidebar-value(${key})`" :item="viewForm[key]" />
                 </template>
               </view-generator>
               <template
