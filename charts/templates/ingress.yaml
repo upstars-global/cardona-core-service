@@ -1,4 +1,4 @@
-{{- if eq .Values.dynamic.isDynamic "true" -}}
+{{- if ne .Values.desc.env "production" -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
