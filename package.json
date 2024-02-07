@@ -66,7 +66,8 @@
     "vue3-perfect-scrollbar": "^1.6.1",
     "vuetify": "3.3.22",
     "vuex": "^4.0.2",
-    "webfontloader": "^1.6.28"
+    "webfontloader": "^1.6.28",
+    "@popperjs/core": "^2.11.8"
   },
   "devDependencies": {
     "@antfu/eslint-config-vue": "^0.43.1",
