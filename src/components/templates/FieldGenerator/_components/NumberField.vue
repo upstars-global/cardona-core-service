@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<Props>(), { errors: () => [], value: '' }
 const emits = defineEmits<{
   (event: 'input', string): void
 }>()
-const appendText = ref(props.field?.append)
+const appendText = computed(() => props?.field?.append || '')
 
 const getPositiveNumbers = (value: NumberOrString): NumberOrString =>
   props.field.withPositiveNumbers ? toPositiveNumbers(value) : value
