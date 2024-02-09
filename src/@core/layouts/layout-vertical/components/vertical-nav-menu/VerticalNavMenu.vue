@@ -235,7 +235,9 @@ export default {
 @import '../../../../../assets/scss/mixins/scroll-mixin';
 
 .dark-layout {
-  @include scroll-bar-theme(#283046);
+  .main-menu {
+    @include scroll-bar-theme(#283046);
+  }
 }
 
 .main-menu {
