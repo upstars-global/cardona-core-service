@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, useSlots } from 'vue'
 import { useRouter } from 'vue-router'
 import type { IBaseListConfig } from '../../../../../@model/templates/baseList'
 import { IconsList } from '../../../../../@model/enums/icons'
@@ -26,6 +26,11 @@ const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
 
 const router = useRouter()
+const slots = useSlots()
+
+const isExistsActionItemsSlot = computed(
+  () => !!slots['action-items'] && !!slots['action-items']()?.length,
+)
 
 const isShowActions = computed(() => {
   return [
@@ -33,6 +38,7 @@ const isShowActions = computed(() => {
     props.canUpdateSeo,
     props.canCreate && props.config.createFromCopy,
     props.canRemoveItem,
+    isExistsActionItemsSlot.value,
   ].some(Boolean)
 })
 

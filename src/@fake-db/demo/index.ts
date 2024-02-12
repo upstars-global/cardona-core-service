@@ -50,6 +50,7 @@ mock.onPost('/api/v2/demo/create').reply(({ data }) => {
 })
 mock.onPost('/api/v2/demo/update').reply(() => [200, { data: null }])
 mock.onPost('/api/v2/demo/delete').reply(() => [200, { data: null }])
+mock.onPost('api/v2/demo/list/report').reply(() => [200, { data: null }])
 
 // Options
 const options = [

@@ -78,7 +78,7 @@ const searchQuery = computed({
 
           <span
             v-if="selectedFilters?.isNotEmpty"
-            class="align-middle"
+            class="align-middle ml-1"
           >
             {{ selectedFilters.length }}
           </span>

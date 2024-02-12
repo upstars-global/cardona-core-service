@@ -1,4 +1,4 @@
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n'
 import { DemoFilter, DemoForm, DemoListItem, DemoSideBar } from '../../@model/demo'
 import { AlignType, ListFieldType, TableField } from '../../@model/templates/tableFields'
 import type { UseEntityType } from '../../@model/templates/baseSection'
@@ -121,6 +121,7 @@ export const useDemoList = (): UseListType => {
       title: i18n.t('common.type'),
     }),
     new TableField({ key: 'actions', title: '' }),
+    new TableField({ key: 'settings', title: i18n.t('common.settings') }),
   ]
 
   return {

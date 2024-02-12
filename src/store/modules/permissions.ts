@@ -1,6 +1,6 @@
-import { ApiTypePrefix } from '@productConfig'
 import ApiService from '../../services/api'
 import { transformNameToType } from './baseStoreCore'
+import { ApiTypePrefix } from '@productConfig'
 
 export default {
   namespaced: true,

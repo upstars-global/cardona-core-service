@@ -29,7 +29,7 @@ const modal = inject('modal')
 const route = useRoute()
 const router = useRouter()
 
-const entityId: string = props.pageType === PageType.Update ? route.params.id.toString() : ''
+const entityId: string = route.params?.id?.toString()
 const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
 
@@ -103,8 +103,10 @@ if (props.withReadAction && entityId) {
       customApiPrefix: props.config?.customApiPrefix,
     })
 
-    if (isCreatePage)
+    if (isCreatePage) {
       receivedEntity.id = null
+      await router.push({ name: route.name, params: { id: null }, replace: true })
+    }
 
     await store.dispatch('textEditor/setVariableTextBuffer', receivedEntity.localisationParameters)
     form.value = new EntityFormClass(receivedEntity)

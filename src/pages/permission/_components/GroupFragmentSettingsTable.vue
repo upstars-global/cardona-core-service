@@ -262,7 +262,7 @@ const onChangeCheckboxTable = (
                   :model-value="switchItem.access > 0"
                   class="ml-0"
                   :label="$t(`permission.${switchItem.target}`)"
-                  @change="onChangeCheckbox(switchItem, $event)"
+                  @update:model-value="onChangeCheckbox(switchItem, $event)"
                 />
               </VRow>
             </div>

@@ -10,6 +10,11 @@ export const setupGuards = (router: Router) => {
      * If it's a public route, continue navigation. This kind of pages are allowed to visited by login & non-login users. Basically, without any restrictions.
      * Examples of public routes are, 404, under maintenance, etc.
      */
+    const permission = to.meta.permission
+    const permissionLevel = to.meta.level || 1
+    const permissionGroup = to.meta.permissionGroup
+    const isAllPermissions = to.meta.isAllPermissions
+
     if (to.meta.public)
       return
 
@@ -26,6 +31,15 @@ export const setupGuards = (router: Router) => {
         store.dispatch('appConfigCore/fetchConfig'),
       ])
     }
+
+    const hasPermission = permission
+      ? store.getters.abilityCan(permission, permissionLevel)
+      : permissionGroup
+        ? store.getters.abilityCanInGroup(permissionGroup, permissionLevel, isAllPermissions)
+        : true
+
+    if (!hasPermission)
+      return '/error-404'
 
     /*
       If user is logged in and is trying to access login like page, redirect to home

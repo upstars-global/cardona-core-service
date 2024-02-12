@@ -9,6 +9,7 @@ import DemoForm from '@/pages/demo/_components/DemoForm.vue'
   <BaseSection
     :page-type="PageType.Create"
     :use-entity="useDemoSection"
+    with-read-action
   >
     <template #default="{ form, canCreateSeo }">
       <DemoForm

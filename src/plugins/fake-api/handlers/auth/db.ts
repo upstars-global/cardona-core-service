@@ -115,6 +115,12 @@ export const db: DB = {
       extras: {
         eCommerceCartItemsCount: 5,
       },
+      ability: [
+        {
+          action: 'manage',
+          subject: 'all',
+        },
+      ],
       defaultCurrency: 'USD',
       currencies: ['AUD', 'NZD', 'CAD', 'EUR', 'INR', 'USD', 'BRL'],
     },
