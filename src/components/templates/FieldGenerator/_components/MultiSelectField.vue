@@ -5,6 +5,8 @@ import type { OptionsItem } from '../../../../@model'
 import { BSize } from '../../../../@model/bootstrap'
 import type { MultiSelectBaseField } from '../../../../@model/templates/baseField'
 import { i18n } from '../../../../plugins/i18n'
+import { withPopper } from '../../../../helpers/selectPopper'
+import { IconsList } from '@/@model/enums/icons'
 
 interface MultiselectProps {
   modelValue: OptionsItem[] | string[] | number[]
@@ -88,13 +90,14 @@ const onSearch = debounce(async (search: string, loading: Function) => {
     <VueSelect
       v-model="valueModel"
       :placeholder="placeholder"
-      :dir="$store.getters['appConfig/dirOption']"
       label="name"
       :loading="isLoading"
       multiple
       :options="options"
       :class="selectClasses"
       :disabled="disabled"
+      append-to-body
+      :calculate-position="withPopper"
       @search="onSearch"
     >
       <template #no-options="{ loading, search }">
@@ -105,6 +108,12 @@ const onSearch = debounce(async (search: string, loading: Function) => {
         <div v-else>
           {{ $t('common.nothingFound') }}
         </div>
+      </template>
+      <template #open-indicator="{ attributes }">
+        <VIcon
+          v-bind="attributes"
+          :icon="IconsList.ChevronDownIcon"
+        />
       </template>
     </VueSelect>
   </div>

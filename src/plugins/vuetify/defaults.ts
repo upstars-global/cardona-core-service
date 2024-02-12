@@ -183,4 +183,10 @@ export default {
       },
     },
   },
+  VCard: {
+    style: 'overflow: visible; position: static;',
+  },
+  VWindow: {
+    style: 'overflow: visible;',
+  },
 }

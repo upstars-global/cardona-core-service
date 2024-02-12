@@ -5,6 +5,7 @@ import type { OptionsItem } from '../../../../@model'
 import { IconsList } from '../../../../@model/enums/icons'
 import type { SelectBaseField } from '../../../../@model/templates/baseField'
 import { i18n } from '../../../../plugins/i18n'
+import { withPopper } from '../../../../helpers/selectPopper'
 
 const props = withDefaults(
   defineProps<{
@@ -93,6 +94,8 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :class="selectClasses"
       :disabled="disabled"
       :clearable="field.clearable"
+      append-to-body
+      :calculate-position="withPopper"
       @search="onSearch"
     >
       <template #no-options="{ loading, search }">
