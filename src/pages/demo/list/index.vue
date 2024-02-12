@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { _RouteLocationBase } from 'vue-router'
 import BaseList from '../../../components/templates/BaseList/index.vue'
@@ -6,7 +7,7 @@ import { useDemoList } from '../useDemo'
 import { FilterType } from '../../../@model/filter'
 import { IconsList } from '../../../@model/enums/icons'
 import { BaseListConfig, SortDirection } from '../../../@model/templates/baseList'
-import { VSizes } from '../../../@model/vuetify'
+import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
 import { ProjectFilterTypes } from '@filterConfig'
 
 const { t } = useI18n()
@@ -58,6 +59,15 @@ const listConfig = new BaseListConfig({
 })
 
 const getUpdateRoute = ({ id }): _RouteLocationBase => ({ name: 'DemoUpdate', params: { id } })
+
+const buttonState = ref({})
+
+const setButtonState = (key: string): void => {
+  buttonState.value = {
+    ...buttonState.value,
+    [key]: !buttonState.value[key] || false,
+  }
+}
 </script>
 
 <template>
@@ -118,6 +128,33 @@ const getUpdateRoute = ({ id }): _RouteLocationBase => ({ name: 'DemoUpdate', pa
         </h6>
         <CodeViewEditor :model-value="item" />
       </template>
+    </template>
+    <template #cell(settings)="{ item }">
+      <div class="d-flex gap-2">
+        <VBtn
+          disabled
+          :color="VColors.Secondary"
+          :variant="VVariants.Outlined"
+          :size="VSizes.XSmall"
+          :icon="IconsList.ClockIcon"
+          :value="!!buttonState[item.id]"
+          rounded="lg"
+        />
+        <VTooltip location="start">
+          <template #activator="{ props }">
+            <VBtn
+              :color="Boolean(buttonState[item.id]) ? VColors.Success : VColors.Error"
+              :variant="VVariants.Tonal"
+              :size="VSizes.XSmall"
+              :icon="IconsList.ClockIcon"
+              rounded="lg"
+              v-bind="props"
+              @click.stop="setButtonState(item.id)"
+            />
+          </template>
+          {{ Boolean(buttonState[item.id]) ? $t('common.isActive') : $t('common.unActive') }}
+        </VTooltip>
+      </div>
     </template>
   </BaseList>
 </template>

@@ -2,6 +2,7 @@ import { listImages } from '../../@fake-db/compostela'
 import { TransactionType } from '../../@model/enums/playersTransactions'
 import type { IDemoTypeItem } from '../../@model/demo'
 import { VColors } from '../../@model/vuetify'
+import { i18n } from '@/plugins/i18n'
 
 export const entityData = {
   id: '2',
@@ -220,6 +221,7 @@ export const listData = [
     tags: [tagsList[0], tagsList[1], tagsList[2]],
     type: {
       id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     gameId: '622c39448e03b2dab20c8a77',
     state: true,
@@ -255,7 +257,8 @@ export const listData = [
     },
     tags: [tagsList[3], tagsList[4], tagsList[5]],
     type: {
-      id: TransactionType.Deposit,
+      id: TransactionType.Payout,
+      name: i18n.t('common.payout'),
     },
     gameId: '622c39448e03b2dab20c8a78',
     state: false,
@@ -298,7 +301,8 @@ export const listData = [
     state: true,
     comment: '',
     type: {
-      id: TransactionType.Payout,
+      id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     paymentsToday: '200',
     paymentsWeek: '2200',
@@ -363,6 +367,7 @@ export const listData = [
     comment: 'Some commmmmmmmmmmmmmment Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
     type: {
       id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     paymentsToday: '300',
     paymentsWeek: '3300',
@@ -402,6 +407,7 @@ export const listData = [
     tags: [tagsList[0], tagsList[1], tagsList[2]],
     type: {
       id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     gameId: '622c39448e03b2dab20c8a77',
     state: true,
@@ -438,6 +444,7 @@ export const listData = [
     tags: [tagsList[3], tagsList[4], tagsList[5]],
     type: {
       id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     gameId: '622c39448e03b2dab20c8a78',
     state: false,
@@ -480,7 +487,8 @@ export const listData = [
     state: true,
     comment: '',
     type: {
-      id: TransactionType.Payout,
+      id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     paymentsToday: '200',
     paymentsWeek: '2200',
@@ -521,6 +529,7 @@ export const listData = [
     comment: 'Some commmmmmmmmmmmmmment',
     type: {
       id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     paymentsToday: '300',
     paymentsWeek: '3300',
@@ -560,6 +569,7 @@ export const listData = [
     tags: [tagsList[0], tagsList[1], tagsList[2]],
     type: {
       id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     gameId: '622c39448e03b2dab20c8a77',
     state: true,
@@ -596,6 +606,7 @@ export const listData = [
     tags: [tagsList[3], tagsList[4], tagsList[5]],
     type: {
       id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     gameId: '622c39448e03b2dab20c8a78',
     state: false,
@@ -638,7 +649,8 @@ export const listData = [
     state: true,
     comment: '',
     type: {
-      id: TransactionType.Payout,
+      id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     paymentsToday: '200',
     paymentsWeek: '2200',
@@ -679,6 +691,7 @@ export const listData = [
     comment: 'Some commmmmmmmmmmmmmment',
     type: {
       id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     paymentsToday: '300',
     paymentsWeek: '3300',
@@ -718,6 +731,7 @@ export const listData = [
     tags: [tagsList[0], tagsList[1], tagsList[2]],
     type: {
       id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     gameId: '622c39448e03b2dab20c8a77',
     state: true,
@@ -754,6 +768,7 @@ export const listData = [
     tags: [tagsList[3], tagsList[4], tagsList[5]],
     type: {
       id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     gameId: '622c39448e03b2dab20c8a78',
     state: false,
@@ -796,7 +811,8 @@ export const listData = [
     state: true,
     comment: '',
     type: {
-      id: TransactionType.Payout,
+      id: TransactionType.Deposit,
+      name: i18n.t('common.deposit'),
     },
     paymentsToday: '200',
     paymentsWeek: '2200',

@@ -1,6 +1,6 @@
-import { permissionPrefix } from '@productConfig'
 import type { RouterConfig } from '../@model/router'
 import { convertCamelCase } from '../helpers/index'
+import { permissionPrefix } from '@productConfig'
 
 export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfig>) {
   const arrRouters: Array<any> = []
@@ -35,7 +35,7 @@ export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfi
           },
         },
         {
-          path: `${entityUrl}/create`,
+          path: `${entityUrl}/create/:id?`,
           name: `${entityName}Create`,
           component: () => import(`@/pages/${importSTR}/create/index.vue`),
           meta: {

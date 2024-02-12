@@ -19,7 +19,7 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   (e: 'apply'): void
-  (e: 'changeSelectedFilters', filters: BaseField[]): void
+  (e: 'change-selected-filters', filters: BaseField[]): void
 }>()
 
 const store = useStore()
@@ -57,7 +57,7 @@ const onClearAll = () => {
 }
 
 watch(selectedFilters, filters => {
-  emits('changeSelectedFilters', filters)
+  emits('change-selected-filters', filters)
 }, { deep: true })
 
 onMounted(() => {
@@ -79,7 +79,7 @@ onMounted(() => {
       initFiltersStorage?.includes(key),
     )
 
-    emits('changeSelectedFilters', selectedFilters.value)
+    emits('change-selected-filters', selectedFilters.value)
   }
 })
 

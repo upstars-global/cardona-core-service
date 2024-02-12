@@ -19,8 +19,8 @@ interface OnCLickModalOkPayload {
 }
 
 interface Emits {
-  (event: 'onClickModalOk', payload: OnCLickModalOkPayload): void
-  (event: 'onCloseModal'): void
+  (event: 'on-click-modal-ok', payload: OnCLickModalOkPayload): void
+  (event: 'on-close-modal'): void
 }
 
 defineProps<Props>()
@@ -30,11 +30,11 @@ const emits = defineEmits<Emits>()
 const commentToRemove = ref()
 
 const onClickModalOk = async (hide: Function) => {
-  emits('onClickModalOk', { hide, commentToRemove: commentToRemove.value })
+  emits('on-click-modal-ok', { hide, commentToRemove: commentToRemove.value })
 }
 
 const onCloseModal = (hide: Function) => {
-  emits('onCloseModal')
+  emits('on-close-modal')
   hide()
 }
 </script>
@@ -59,7 +59,7 @@ const onCloseModal = (hide: Function) => {
         />
       </VCardText>
       <hr>
-      <VCardText class="d-flex justify-end gap-3 flex-wrap">
+      <VCardText class="d-flex justify-end gap-3 flex-wrap py-4">
         <VBtn
           :color="VColors.Secondary"
           :variant="VVariants.Outlined"

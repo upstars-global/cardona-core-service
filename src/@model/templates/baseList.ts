@@ -94,6 +94,9 @@ export interface IBaseListConfig {
   /** sidebar - Вкл/выкл sidebar для элемента */
   readonly sidebar?: boolean
 
+  /** cbShowSidebar - метод перед отображением sidebar */
+  readonly cbShowSidebar?: Function
+
   /** sidebarCollapseMode - Вкл/выкл CollapseMode для sidebar */
   readonly sidebarCollapseMode?: boolean
 
@@ -168,6 +171,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withExport?: boolean
   readonly withMultipleActions?: boolean
   readonly sidebar?: boolean
+  readonly cbShowSidebar?: Function
   readonly sidebarCollapseMode?: boolean
   readonly isShowYou?: boolean
   readonly isShowUpdatePassword?: boolean
@@ -205,6 +209,7 @@ export class BaseListConfig implements IBaseListConfig {
     withExport,
     withMultipleActions,
     sidebar,
+    cbShowSidebar,
     sidebarCollapseMode,
     isShowYou,
     isShowUpdatePassword,
@@ -241,6 +246,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.withExport = withExport
     this.withMultipleActions = withMultipleActions
     this.sidebar = sidebar
+    this.cbShowSidebar = cbShowSidebar
     this.sidebarCollapseMode = sidebarCollapseMode
     this.isShowYou = isShowYou
     this.isShowUpdatePassword = isShowUpdatePassword

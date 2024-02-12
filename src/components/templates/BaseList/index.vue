@@ -3,6 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
+import { findIndex } from 'lodash'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
 import { DownloadFormat } from '../../../@model/templates/baseList'
@@ -130,6 +131,8 @@ const canRemoveItem = (item): boolean =>
 const isSidebarShown = ref(false)
 const selectedItem: any = ref(null)
 
+const getIndexByItemFromList = item => findIndex(items.value, item)
+
 const sidebarSlots = computed(() =>
   Object.keys(slots).filter(
     key => key.includes('sidebar-row') || key.includes('sidebar-value'),
@@ -140,12 +143,20 @@ const resetSelectedItem = () => {
   selectedItem.value = null
 }
 
-const onClickRow = data => {
-  if (props.config?.sidebar) {
+const onClickRow = async data => {
+  emits('rowClicked', data)
+  if (!props.config?.sidebar)
+    return
+  if (props.config?.cbShowSidebar) {
+    await props.config?.cbShowSidebar(selectedItem, isSidebarShown, {
+      itemList: data,
+      index: getIndexByItemFromList(data),
+    })
+  }
+  else {
     isSidebarShown.value = true
     selectedItem.value = data
   }
-  emits('rowClicked', data)
 }
 
 const routerToUpdatePageId = item => {
@@ -159,7 +170,7 @@ watch(
   () => items.value,
   () => {
     if (selectedItem.value)
-      selectedItem.value = items.value.find((item: any) => item?.id === selectedItem.value.id)
+      selectedItem.value = getIndexByItemFromList(selectedItem.value)
   },
   { deep: true },
 )
@@ -576,7 +587,7 @@ onBeforeMount(async () => {
       }"
       :selected-filters="selectedFilters"
       :export-selector="{
-        canShow: Boolean(config.withExport && canExport),
+        canShow: !!(config.withExport && canExport),
         disable: !total,
       }"
       :config="config"
@@ -596,7 +607,7 @@ onBeforeMount(async () => {
     </ListSearch>
 
     <FiltersBlock
-      v-if="config.filterList?.isNotEmpty && isFiltersShown"
+      v-if="config.filterList?.isNotEmpty"
       :is-open="config.filterList?.isNotEmpty && isFiltersShown"
       :entity-name="entityName"
       :filters="filters"
@@ -641,6 +652,7 @@ onBeforeMount(async () => {
         <!-- Table field settings -->
         <div class="d-flex align-center justify-content-end">
           <slot name="table-field-setting" />
+
           <TableFields
             v-model="selectedFields"
             :entity-name="entityName"
