@@ -1,6 +1,6 @@
 <template>
   <text-editor-wysiwyg
-    v-model.trim="modelValue"
+    v-model="modelValue"
     :placeholder="field.label"
     :disabled="disabled"
     :options-variable="allCurrencies"

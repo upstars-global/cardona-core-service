@@ -3,12 +3,13 @@
     <b-input-group class="input-group-merge" :class="{ error: errors.isNotEmpty }">
       <b-form-input
         :id="field.key"
-        v-model.trim="modelValue"
+        v-model="modelValue"
         :state="errors.isNotEmpty ? false : null"
         :type="inputType"
         name="login-password"
         :placeholder="field.placeholder"
         :disabled="disabled"
+        @blur="onBlur"
       />
       <b-input-group-append is-text>
         <feather-icon
@@ -37,6 +38,7 @@ import { computed, ref } from 'vue'
 import { PasswordBaseField } from '../../../../@model/baseField/password'
 import generatePassword from '../../../../helpers/password-generator'
 import { IconsList } from '../../../../@model/enums/icons'
+import { trimEdges } from '../../../../helpers'
 
 type Props = {
   value: string
@@ -53,6 +55,10 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   (event: 'input', value: string): void
 }>()
+
+const onBlur = () => {
+  emit('input', trimEdges(modelValue.value))
+}
 
 const modelValue = computed({
   get: () => props.value,

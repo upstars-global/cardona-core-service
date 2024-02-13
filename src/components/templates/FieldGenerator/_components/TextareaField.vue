@@ -1,13 +1,14 @@
 <template>
   <div>
     <b-form-textarea
-      v-model.trim="modelValue"
+      v-model="modelValue"
       :placeholder="field.placeholder || field.label"
       :state="errors.isNotEmpty ? false : null"
       no-resize
       :rows="field.rows"
       :disabled="disabled"
       :maxlength="field.maxLength"
+      @blur="onBlur"
     />
 
     <small v-if="field.counter" class="textarea-counter-value float-right">
@@ -19,6 +20,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { TextareaBaseField } from '../../../../@model/baseField'
+import { trimEdges } from '../../../../helpers'
 
 type TextareaFieldProps = {
   value?: string
@@ -31,6 +33,10 @@ const props = withDefaults(defineProps<TextareaFieldProps>(), {
   value: '',
   errors: () => [],
 })
+
+const onBlur = () => {
+  emit('input', trimEdges(modelValue.value))
+}
 
 const emit = defineEmits<{
   (event: 'input', value: string): void
