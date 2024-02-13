@@ -10,7 +10,11 @@
     <div class="header-navbar-shadow" />
     <div class="content-wrapper" :class="contentWidth === 'boxed' ? 'container p-0' : null">
       <slot name="breadcrumb">
-        <app-breadcrumb />
+        <app-breadcrumb>
+          <template #right>
+            <slot name="breadcrumb-right" />
+          </template>
+        </app-breadcrumb>
       </slot>
       <div class="content-body">
         <transition :name="routerTransition" mode="out-in">
