@@ -59,6 +59,9 @@
         <template v-for="(index, name) in $scopedSlots" #[name]="data">
           <slot :name="name" v-bind="data" />
         </template>
+        <template #breadcrumb-right>
+          <slot name="breadcrumb-right"></slot>
+        </template>
       </component>
     </transition>
     <!--/ Content -->

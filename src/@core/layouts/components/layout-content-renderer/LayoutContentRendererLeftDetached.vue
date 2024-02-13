@@ -14,7 +14,11 @@
         :class="contentWidth === 'boxed' ? 'container p-0' : null"
       >
         <slot name="breadcrumb">
-          <app-breadcrumb />
+          <app-breadcrumb>
+            <template #right>
+              <slot name="breadcrumb-right" />
+            </template>
+          </app-breadcrumb>
         </slot>
         <div class="content-detached content-right">
           <div class="content-wrapper">
