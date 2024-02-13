@@ -5,6 +5,7 @@ import { isObject } from '../@core/utils/utils'
 import { isNumber, isString } from 'lodash'
 
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
+export const trimEdges = (value: string): string => value.trimEnd().trimStart()
 
 export const transformFormData = (form): object => {
   return Object.entries(form).reduce((acc, [key, valueData]: [string, any]) => {
@@ -32,7 +33,7 @@ export const transformFormData = (form): object => {
       })
       acc[key] = valueDataInner
     } else {
-      acc[key] = valueData
+      acc[key] = typeof valueData === 'string' ? trimEdges(valueData) : valueData
     }
 
     return acc

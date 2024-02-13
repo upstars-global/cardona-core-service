@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import CModal from '../../../CModal.vue'
 import { IBaseListConfig } from '../model'
+import { trimEdges } from '../../../../helpers'
 
 interface Props {
   config: IBaseListConfig
@@ -33,6 +34,10 @@ const onCloseModal = () => {
   commentToRemove.value = ''
   emits('on-close-modal')
 }
+
+const onBlur = () => {
+  commentToRemove.value = trimEdges(commentToRemove.value)
+}
 </script>
 
 <template>
@@ -54,10 +59,11 @@ const onCloseModal = () => {
     >
       <b-form-textarea
         id="removeComment"
-        v-model.trim="commentToRemove"
+        v-model="commentToRemove"
         no-resize
         rows="3"
         :placeholder="$t('common.comment._')"
+        @blur="onBlur"
       />
     </b-form-group>
   </c-modal>

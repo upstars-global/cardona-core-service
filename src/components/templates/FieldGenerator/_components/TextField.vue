@@ -6,12 +6,13 @@
     :class="{ error: errors.isNotEmpty }"
   >
     <b-form-input
-      v-model.trim="modelValue"
+      v-model="modelValue"
       :placeholder="field.placeholder || field.label"
       :state="errors.isNotEmpty ? false : null"
       :type="inputType"
       :disabled="disabled"
       autocomplete="off"
+      @blur="onBlur"
     />
   </b-input-group>
 </template>
@@ -19,6 +20,7 @@
 <script lang="ts">
 import { computed, PropType, ref } from 'vue'
 import { TextBaseField } from '../../../../@model/baseField'
+import { trimEdges } from '../../../../helpers'
 
 export default {
   name: 'TextField',
@@ -48,12 +50,16 @@ export default {
     const inputType: string = 'text'
     const appendText = ref(props.field?.append)
 
+    const onBlur = () => {
+      emit('input', trimEdges(modelValue.value))
+    }
+
     const modelValue = computed({
       get: () => props.value,
       set: (value) => emit('input', value),
     })
 
-    return { inputType, appendText, modelValue }
+    return { inputType, appendText, modelValue, onBlur }
   },
 }
 </script>
