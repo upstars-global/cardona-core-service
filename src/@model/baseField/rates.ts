@@ -2,6 +2,7 @@ import { Component } from 'vue'
 import { BaseField, IBaseField } from './base'
 import RatesField from '../../components/templates/FieldGenerator/_components/RatesField.vue'
 import { multiplication, division } from '../../helpers/math-operations'
+import { AlignType } from '../../@core/components/table-fields/model'
 
 export interface RatesValueItem {
   readonly currency: string
@@ -12,6 +13,7 @@ export interface IRatesBaseField extends IBaseField {
   readonly value?: RatesValueItem[]
   readonly isCents?: boolean
   readonly trackBy?: string
+  readonly infoAlignText?: AlignType
 }
 
 export class RatesBaseField extends BaseField implements IRatesBaseField {
@@ -19,11 +21,13 @@ export class RatesBaseField extends BaseField implements IRatesBaseField {
   protected _value?: Required<RatesValueItem>[]
   readonly trackBy: string
   readonly isCents: boolean
+  readonly infoAlignText: AlignType
 
   constructor(field: IRatesBaseField) {
     super(field)
     this.trackBy = field.trackBy ?? 'value'
     this.isCents = field.isCents ?? true
+    this.infoAlignText = field.infoAlignText ?? AlignType.Center
     this._value = field.value?.map((item) => ({
       currency: item.currency,
       value: !item[this.trackBy]
