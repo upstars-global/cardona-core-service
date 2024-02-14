@@ -5,7 +5,7 @@
 
       <feather-icon
         v-if="field.info"
-        v-b-tooltip.hover.top="field.info"
+        v-b-tooltip.hover.top="infoTitle"
         :icon="IconsList.InfoIcon"
         class="text-muted ml-25 align-text-top"
       />
@@ -89,4 +89,9 @@ function setRates(): NumberBaseField[] {
       })
   )
 }
+
+const infoTitle = computed(() => ({
+  title: `<div class='${`text-${props.field.infoAlignText}`}'>${props.field.info}</div>`,
+  html: true,
+}))
 </script>

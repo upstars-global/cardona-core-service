@@ -13,7 +13,7 @@
 
       <feather-icon
         v-if="withInfo && value.info"
-        v-b-tooltip.hover.top="value.info"
+        v-b-tooltip.hover.top="infoTitle"
         :icon="IconsList.InfoIcon"
         class="text-muted ml-25 align-text-top"
       />
@@ -58,6 +58,7 @@ import { defineComponent, PropType, computed } from 'vue'
 import store from '../../../store'
 import { BaseField, SwitchBaseField, CheckBaseField } from '../../../@model/baseField'
 import { IconsList } from '../../../@model/enums/icons'
+import { AlignType } from '../../../@core/components/table-fields/model'
 
 export default defineComponent({
   name: 'FieldGenerator',
@@ -83,6 +84,11 @@ export default defineComponent({
       default: true,
     },
 
+    infoAlignText: {
+      type: String as PropType<AlignType>,
+      default: AlignType.Center,
+    },
+
     disabled: {
       type: Boolean,
       default: false,
@@ -106,9 +112,15 @@ export default defineComponent({
     const groupLabel = computed(() =>
       props.withLabel && !isCheckType.value ? props.value.label : ''
     )
+
+    const withInfoClass = computed(() =>
+      [isCheckType.value, props.withInfo, props.value.info].every(Boolean)
+    )
+
     const formGroupClasses = computed(() => ({
       'form-required':
         props.withLabel && props.value?.validationRules?.includes('required') && groupLabel.value,
+      'with-info': withInfoClass.value,
     }))
 
     const fieldModel = computed({
@@ -121,12 +133,18 @@ export default defineComponent({
 
     const onSearch = (search: string) => emit('search', search)
 
+    const infoTitle = computed(() => ({
+      title: `<div class='${`text-${props.infoAlignText}`}'>${props.value.info}</div>`,
+      html: true,
+    }))
+
     return {
       canView,
       isCheckType,
       groupLabel,
       formGroupClasses,
       fieldModel,
+      infoTitle,
       IconsList,
       onSearch,
     }
@@ -138,5 +156,19 @@ export default defineComponent({
 .check-description {
   font-size: 0.75rem;
   padding-left: 1.8rem;
+}
+
+.with-info {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: center;
+  :deep(label) {
+    margin-bottom: initial !important;
+    svg {
+      margin-left: 0.5rem !important;
+      display: block;
+    }
+  }
 }
 </style>
