@@ -31,6 +31,7 @@ export enum BVariant {
   Warning = 'warning',
   Danger = 'danger',
   Info = 'info',
+  Outline = `outline`,
   OutlinePrimary = `outline-primary`,
   OutlineSecondary = `outline-secondary`,
   OutlineSuccess = `outline-success`,
