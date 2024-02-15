@@ -1,6 +1,9 @@
 import { useClipboard } from '@vueuse/core'
 import type { TranslateResult } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
 import { i18n } from '../plugins/i18n'
+import ToastificationContent from '@/components/templates/toast/ToastificationContent.vue'
+import { IconsList } from '@/@model/enums/icons'
 
 interface ICopyToClipboardConfig {
   readonly withToast?: boolean
@@ -14,13 +17,15 @@ export const copyToClipboard = (value: string, config: ICopyToClipboardConfig = 
   copy(value)
 
   if (withToast) {
-    /* Vue.$toast({
+    const toast = useToast()
+
+    toast({
       component: ToastificationContent,
       props: {
         title,
-        icon: 'CopyIcon',
         variant: 'success',
+        icon: IconsList.CopyIcon,
       },
-    }) */
+    })
   }
 }

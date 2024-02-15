@@ -18,6 +18,7 @@
     "@floating-ui/dom": "1.5.3",
     "@iconify-json/fa": "^1.1.5",
     "@iconify-json/tabler": "^1.1.96",
+    "@popperjs/core": "^2.11.8",
     "@sindresorhus/is": "^6.0.1",
     "@tiptap/extension-highlight": "^2.1.12",
     "@tiptap/extension-image": "^2.1.12",
@@ -62,12 +63,12 @@
     "vue-prism-component": "^2.0.0",
     "vue-router": "^4.2.5",
     "vue-select": "^4.0.0-beta.6",
+    "vue-toastification": "^2.0.0-rc.5",
     "vue3-apexcharts": "^1.4.4",
     "vue3-perfect-scrollbar": "^1.6.1",
     "vuetify": "3.3.22",
     "vuex": "^4.0.2",
-    "webfontloader": "^1.6.28",
-    "@popperjs/core": "^2.11.8"
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
     "@antfu/eslint-config-vue": "^0.43.1",

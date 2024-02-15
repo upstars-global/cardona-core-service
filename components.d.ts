@@ -469,6 +469,7 @@ declare module 'vue' {
     TimelineCard: typeof import('./src/views/demos/components/timeline/TimelineCard.vue')['default']
     TimelineWithIcons: typeof import('./src/views/demos/components/timeline/TimelineWithIcons.vue')['default']
     TiptapEditor: typeof import('./src/@core/components/TiptapEditor.vue')['default']
+    ToastificationContent: typeof import('./src/components/templates/toast/ToastificationContent.vue')['default']
     TransactionType: typeof import('./src/components/templates/_components/TransactionType.vue')['default']
     TransactionTypeView: typeof import('./src/components/templates/ViewGenerator/_components/TransactionTypeView.vue')['default']
     TwoFactorAuthDialog: typeof import('./src/components/dialogs/TwoFactorAuthDialog.vue')['default']
