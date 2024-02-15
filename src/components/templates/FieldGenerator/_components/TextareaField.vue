@@ -20,31 +20,21 @@ const emit = defineEmits<{
 
 const localModelValue = computed({
   get: () => props.modelValue,
-  set: value => emit('update:modelValue', value),
+  set: value => {
+    emit('update:modelValue', value)
+  },
 })
-
-const validateMaxLength = (event: any) => {
-  if (props.field.maxLength && event.target.value.length >= props.field.maxLength) {
-    const value = event.target.value.slice(0, props.field.maxLength - 1)
-
-    localModelValue.value = value
-    event.target.value = value
-  }
-  else {
-    localModelValue.value = event.target.value
-  }
-}
 </script>
 
 <template>
   <AppTextarea
-    :model-value="localModelValue"
+    v-model="localModelValue"
     :placeholder="field.label"
     :state="errors ? false : null"
     no-resize
     :counter="field.maxLength"
+    :maxlength="field.maxLength"
     :disabled="disabled"
     :persistent-counter="field.maxLength"
-    @input="validateMaxLength"
   />
 </template>

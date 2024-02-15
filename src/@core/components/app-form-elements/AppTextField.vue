@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, useAttrs } from 'vue';
+import { computed, useAttrs } from 'vue'
 
 defineOptions({
   name: 'AppTextField',

@@ -27,8 +27,11 @@ const localModelValue = computed({
 </script>
 
 <template>
-  <AppDateTimePicker
-    v-model="localModelValue"
-    :config="{ enableTime: true, noCalendar: true, dateFormat: 'H:i' }"
-  />
+  <div>
+    <AppDateTimePicker
+      v-model="localModelValue"
+      :placeholder="field.placeholder || field.label"
+      :config="{ enableTime: true, noCalendar: true, dateFormat: 'H:i' }"
+    />
+  </div>
 </template>
