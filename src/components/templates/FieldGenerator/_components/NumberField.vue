@@ -52,14 +52,16 @@ const onKeyDown = event => {
 </script>
 
 <template>
-  <AppTextField
-    v-model.trim="localValue"
-    :placeholder="field.placeholder || field.label"
-    :state="errors ? false : null"
-    type="number"
-    :disabled="disabled"
-    autocomplete="off"
-    :suffix="field?.append"
-    @keydown="onKeyDown"
-  />
+  <div>
+    <AppTextField
+      v-model.trim="localValue"
+      :placeholder="field.placeholder || field.label"
+      :state="errors ? false : null"
+      type="number"
+      :disabled="disabled"
+      autocomplete="off"
+      :suffix="field?.append"
+      @keydown="onKeyDown"
+    />
+  </div>
 </template>

@@ -52,7 +52,7 @@ const setGeneratedPassword = () => {
       :placeholder="field.placeholder"
       :disabled="disabled"
       :append-inner-icon="passwordToggleIcon"
-      name="login-password"
+      name="password"
       @click:append-inner="togglePasswordVisibility"
     />
     <VBtn

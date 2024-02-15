@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import en from 'flatpickr/dist/l10n/default.js'
 import { Russian as ru } from 'flatpickr/dist/l10n/ru.js'
 import type { DateBaseField } from '../../../../@model/templates/baseField'
@@ -45,16 +45,19 @@ const modelValue = computed({
 </script>
 
 <template>
-  <AppDateTimePicker
-    v-model="modelValue"
-    :class="{ error: errors }"
-    :config="{
-      ...flatPickrConfig,
-      minDate: field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
-      mode: field.isRangeMode ? 'range' : 'single',
-      ...field.config,
-    }"
-  />
+  <div>
+    <AppDateTimePicker
+      v-model="modelValue"
+      :class="{ error: errors }"
+      :placeholder="field.placeholder || field.label"
+      :config="{
+        ...flatPickrConfig,
+        minDate: field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
+        mode: field.isRangeMode ? 'range' : 'single',
+        ...field.config,
+      }"
+    />
+  </div>
 </template>
 
 <style lang="scss">

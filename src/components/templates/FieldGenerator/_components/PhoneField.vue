@@ -65,12 +65,14 @@ const validateValue = (e: KeyboardEvent) => {
     <p class="flag">
       {{ phoneFlag }}
     </p>
+
     <VField
       :variant="VVariants.Outlined"
       :focused="isFocused"
       :active="isFocused"
       :color="isFocused ? 'primary' : 'grey'"
-      class="v-input"
+      class="v-input pl-4"
+      :class="{ 'pl-12': phoneFlag }"
       @keydown="validateValue"
     >
       <Cleave
@@ -99,6 +101,6 @@ const validateValue = (e: KeyboardEvent) => {
   line-height: 1.5rem;
 }
 .phone-input {
-  padding-left: 2.7rem;
+  padding-left: 0;
 }
 </style>

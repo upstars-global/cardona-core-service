@@ -1,15 +1,14 @@
 <script lang="ts" setup>
-import { inject, nextTick } from 'vue';
-
-import { computed, ref, watch } from 'vue'
+import { computed, inject, nextTick, ref, watch } from 'vue'
 import 'vue-froala-wysiwyg'
 import type { TranslateResult } from 'vue-i18n'
-import store from '../../store'
+import { useStore } from 'vuex'
 import type { LocaleVariable } from '../../@model/translations'
 import { VColors } from '../../@model/vuetify'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
-import { IconsList } from '../../@model/enums/icons'
+import { IconsList } from '@/@model/enums/icons'
+import { copyToClipboard } from '@/helpers/clipboard'
 
 interface Props {
   modelValue: string
@@ -17,7 +16,6 @@ interface Props {
   localisationParameters: LocaleVariable
   readonly placeholder?: TranslateResult
   disabled?: boolean
-  onInput: Function
 }
 
 interface Emits {
@@ -31,15 +29,18 @@ const props = withDefaults(defineProps<Props>(), {
   optionsVariable: () => [],
   localisationParameters: () => ({}),
   disabled: false,
-  placeholder: '' //getI18n.t('common.description') as string
+  placeholder: '', // getI18n.t('common.description') as string
 })
+
 const emit = defineEmits<Emits>()
 
 const modal = inject('modal')
 
+const store = useStore()
+
 const content = computed({
   get: () => props.modelValue,
-  set: value => emit('update:modelValue', value)
+  set: value => emit('update:modelValue', value),
 })
 
 const globalEditor = ref()
@@ -76,7 +77,7 @@ const variableTextBuffer = computed({
   },
   set: val => {
     store.dispatch('textEditor/setVariableTextBuffer', val)
-  }
+  },
 })
 
 watch(
@@ -85,8 +86,8 @@ watch(
     emit('update-localisation-parameters', variableTextBuffer.value)
   },
   {
-    deep: true
-  }
+    deep: true,
+  },
 )
 
 watch(
@@ -94,7 +95,7 @@ watch(
   async () => {
     setVariableTextBuffer(props.localisationParameters)
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 )
 
 const variableKeySelect = ref('')
@@ -148,7 +149,7 @@ const config = {
             .replace(' {{', '{{')
             .replace('}} ', '}}')
             .replace('{{', '&nbsp;<span class="variable-box">{')
-            .replace('}}', '}</span>&nbsp;')
+            .replace('}}', '}</span>&nbsp;'),
         )
         editor.selection.restore()
         store.dispatch('textEditor/setUpdateVar', true)
@@ -163,9 +164,9 @@ const config = {
       editor.selection.restore()
 
       emit('update:modelValue', contentChanged)
-    }
+    },
   },
-  ...baseConfig
+  ...baseConfig,
 }
 
 const newVariableText = ref({})
@@ -221,6 +222,7 @@ const variableKeyUnselect = () => {
 }
 
 const modalId = 'variable-modal'
+
 const setVariableKeySelect = (key: string) => {
   variableKeySelect.value = key
   nextTick(() => {
@@ -244,7 +246,7 @@ const deleteVariableTextByKey = () => {
     globalEditor.value.html
       .get(true) // Параметр true нужен для возвращения HTML вместе с положением каретки текста
       .replaceAll(`<span class="variable-box">{${variableKeySelect.value}}</span>`, '')
-      .replaceAll('&nbsp;&nbsp;', '')
+      .replaceAll('&nbsp;&nbsp;', ''),
   )
   removeVariableValueByKey(variableKeySelect.value)
   emit('remove-variable', variableKeySelect.value)
@@ -269,16 +271,16 @@ const deleteVariableTextByKey = () => {
       :class="{ disabled }"
     >
       <Froala
-          v-model:value.trim="content"
-          tag="textarea"
-          :config="config"
+        v-model:value="content"
+        tag="textarea"
+        :config="config"
       />
     </div>
 
     <div :class="{ 'd-none': Object.keys(variableTextBuffer).isEmpty }">
       <div
         :key="`block-text-edite-variable${isUpdateVar}`"
-        class="d-flex flex-wrap align-center block-text-edite-variable pt-1"
+        class="d-flex flex-wrap align-center block-text-edite-variable pt-1 gap-2"
       >
         <span class="font-small-3 font-weight-bolder mr-1 mb-50">
           <small><b>{{ $t('common.editor.addedVariables') }}:</b></small>
@@ -287,13 +289,16 @@ const deleteVariableTextByKey = () => {
           v-for="key in Object.keys(variableTextBuffer)"
           :key="key"
           label
-          closable
           :color="VColors.Primary"
-          class="tag-variable mr-1 mb-50"
+          class="tag-variable gap-4"
           @click="setVariableKeySelect(key)"
-          @click:close="deleteVariableTextByKey(key)"
         >
           <span class="pr-1">{{ `{${key}\}` }} </span>
+          <VIcon
+            size="18"
+            :icon="IconsList.CopyIcon"
+            @click.stop="copyToClipboard(`{{${key}}}`)"
+          />
         </VChip>
       </div>
     </div>

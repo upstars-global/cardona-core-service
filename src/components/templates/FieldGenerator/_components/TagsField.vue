@@ -25,17 +25,20 @@ const onDelete = (index: number) => {
 </script>
 
 <template>
-  <AppCombobox
-    v-model="localModelValue"
-    multiple
-  >
-    <template #selection="{ item, index }">
-      <VChip
-        closable
-        @click:close="onDelete(index)"
-      >
-        {{ item.title }}
-      </VChip>
-    </template>
-  </AppCombobox>
+  <div>
+    <AppCombobox
+      v-model="localModelValue"
+      :placeholder="field.placeholder || field.label"
+      multiple
+    >
+      <template #selection="{ item, index }">
+        <VChip
+          closable
+          @click:close="onDelete(index)"
+        >
+          {{ item.title }}
+        </VChip>
+      </template>
+    </AppCombobox>
+  </div>
 </template>

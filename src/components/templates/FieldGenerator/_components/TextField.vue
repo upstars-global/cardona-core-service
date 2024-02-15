@@ -27,16 +27,20 @@ const localModelValue = computed({
     emits('update:modelValue', value)
   },
 })
+
+const placeholder = computed(() => props.field.label)
 </script>
 
 <template>
-  <AppTextField
-    v-model.trim="localModelValue"
-    :placeholder="field.placeholder || field.label"
-    :type="inputType"
-    :disabled="disabled"
-    :suffix="appendText"
-    :error="errors"
-    autocomplete="off"
-  />
+  <div>
+    <AppTextField
+      v-model.trim="localModelValue"
+      :placeholder="placeholder"
+      :type="inputType"
+      :disabled="disabled"
+      :suffix="appendText"
+      :error="errors"
+      autocomplete="off"
+    />
+  </div>
 </template>

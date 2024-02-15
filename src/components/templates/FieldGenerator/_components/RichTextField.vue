@@ -36,12 +36,14 @@ const onRemoveVariable = (localeVariables: string): void => {
 </script>
 
 <template>
-  <TextEditorWysiwyg
-    v-model.trim="localModelValue"
-    :placeholder="field.label"
-    :disabled="disabled"
-    :options-variable="allCurrencies"
-    :localisation-parameters="variableTextBufferStore"
-    @remove-variable="onRemoveVariable"
-  />
+  <div>
+    <TextEditorWysiwyg
+      v-model="localModelValue"
+      :placeholder="field.label"
+      :disabled="disabled"
+      :options-variable="allCurrencies"
+      :localisation-parameters="variableTextBufferStore"
+      @remove-variable="onRemoveVariable"
+    />
+  </div>
 </template>

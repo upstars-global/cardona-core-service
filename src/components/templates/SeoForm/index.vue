@@ -1,14 +1,10 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
-import { transformFormData } from '../../../helpers'
-import { SeoForm } from '../../../@model/seo'
 import FieldGenerator from '../../../components/templates/FieldGenerator/index.vue'
 
 const props = defineProps<{
   modelValue: any
   disabled: boolean
 }>()
-
 </script>
 
 <template>
@@ -21,9 +17,9 @@ const props = defineProps<{
       <VRow class="mb-2">
         <VCol cols="4">
           <FieldGenerator
-              v-model="modelValue.metaTitle"
-              :disabled="disabled"
-              data-at="metaTitle"
+            v-model="modelValue.metaTitle"
+            :disabled="disabled"
+            data-at="metaTitle"
           />
         </VCol>
       </VRow>
@@ -31,9 +27,9 @@ const props = defineProps<{
       <VRow class="mb-2">
         <VCol md="4">
           <FieldGenerator
-              v-model="modelValue.metaDescription"
-              :disabled="disabled"
-              data-at="metaDescription"
+            v-model="modelValue.metaDescription"
+            :disabled="disabled"
+            data-at="metaDescription"
           />
         </VCol>
       </VRow>
@@ -41,9 +37,9 @@ const props = defineProps<{
       <VRow class="mb-2">
         <VCol>
           <FieldGenerator
-              v-model="modelValue.description"
-              :disabled="disabled"
-              data-at="description"
+            v-model="modelValue.description"
+            :disabled="disabled"
+            data-at="description"
           />
         </VCol>
       </VRow>
