@@ -1,7 +1,7 @@
 import { useToast } from 'vue-toastification'
 import ToastificationContent from '../components/templates/toast/ToastificationContent.vue'
+import { IconsList } from '../@model/enums/icons'
 import { i18n } from '@/plugins/i18n'
-import { IconsList } from '@/@model/enums/icons'
 
 type ToastOptions = Record<string | 'defaultCode', string>
 
