@@ -1,3 +1,8 @@
+import { useToast } from 'vue-toastification'
+import ToastificationContent from '../components/templates/toast/ToastificationContent.vue'
+import { i18n } from '@/plugins/i18n'
+import { IconsList } from '@/@model/enums/icons'
+
 type ToastOptions = Record<string | 'defaultCode', string>
 
 const defaultOptions: ToastOptions = {
@@ -6,50 +11,52 @@ const defaultOptions: ToastOptions = {
 }
 
 export default function useToastService() {
-  const toastSuccess = (code: string, options: ToastOptions = defaultOptions) => {
-    /* const message = i18n.te(`toast.success.${code}`)
-      ? `toast.success.${code}`
-      : `toast.success.${options.defaultCode}` */
+  const toast = useToast()
 
-    /* Vue.$toast({
+  const toastSuccess = (code: string, options: ToastOptions = defaultOptions) => {
+    const message = i18n.te(`toast.success.${code}`)
+      ? `toast.success.${code}`
+      : `toast.success.${options.defaultCode}`
+
+    toast({
       component: ToastificationContent,
       props: {
         title: i18n.t(message, options),
         icon: IconsList.CheckCircleIcon,
         variant: 'success',
       },
-    }) */
+    })
   }
 
   const toastError = (code, options: ToastOptions = defaultOptions) => {
-    /* const message = i18n.te(`toast.error.${code}`)
+    const message = i18n.te(`toast.error.${code}`)
       ? `toast.error.${code}`
       : options?.defaultText
-      ? options.defaultText
-      : `toast.error.${options.defaultCode}`
+        ? options.defaultText
+        : `toast.error.${options.defaultCode}`
 
-    Vue.$toast({
+    toast({
       component: ToastificationContent,
       props: {
         title: i18n.t(message, options),
         icon: IconsList.AlertTriangleIcon,
         variant: 'danger',
       },
-    }) */
+    })
   }
 
   const toastErrorMessageString = (message: string) => {
-    /* const strToRemove = 'Invalid response. '
+    const strToRemove = 'Invalid response. '
     const newMessage = message.replace(strToRemove, '')
 
-    Vue.$toast({
+    toast({
       component: ToastificationContent,
       props: {
         title: newMessage,
         icon: IconsList.AlertTriangleIcon,
         variant: 'danger',
       },
-    }) */
+    })
   }
 
   return {
