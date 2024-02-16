@@ -5,9 +5,9 @@ import type { TranslateResult } from 'vue-i18n'
 import { useStore } from 'vuex'
 import type { LocaleVariable } from '../../@model/translations'
 import { VColors } from '../../@model/vuetify'
+import { IconsList } from '../../@model/enums/icons'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
-import { IconsList } from '@/@model/enums/icons'
 import { copyToClipboard } from '@/helpers/clipboard'
 
 interface Props {

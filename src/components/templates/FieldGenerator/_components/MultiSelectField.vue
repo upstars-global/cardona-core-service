@@ -6,7 +6,7 @@ import { BSize } from '../../../../@model/bootstrap'
 import type { MultiSelectBaseField } from '../../../../@model/templates/baseField'
 import { i18n } from '../../../../plugins/i18n'
 import { withPopper } from '../../../../helpers/selectPopper'
-import { IconsList } from '@/@model/enums/icons'
+import { IconsList } from '../../../../@model/enums/icons'
 
 interface MultiselectProps {
   modelValue: OptionsItem[] | string[] | number[]
