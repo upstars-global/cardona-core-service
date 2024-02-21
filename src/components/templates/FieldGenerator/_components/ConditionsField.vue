@@ -46,7 +46,7 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
   <div>
     <FieldGenerator
       v-model="modelValue"
-      class="mb-50"
+      class="mb-2"
       :disabled="disabled"
     />
 

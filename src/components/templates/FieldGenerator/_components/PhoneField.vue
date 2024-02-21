@@ -9,6 +9,7 @@ import type { PhoneBaseField } from '../../../../@model/templates/baseField'
 interface PhoneFieldProps {
   modelValue: string
   field: PhoneBaseField
+  errors?: boolean
   disabled?: boolean
 }
 
@@ -70,6 +71,7 @@ const validateValue = (e: KeyboardEvent) => {
       :variant="VVariants.Outlined"
       :focused="isFocused"
       :active="isFocused"
+      :error="errors"
       :color="isFocused ? 'primary' : 'grey'"
       class="v-input pl-4"
       :class="{ 'pl-12': phoneFlag }"

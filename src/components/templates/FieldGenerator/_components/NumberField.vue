@@ -61,6 +61,7 @@ const onKeyDown = event => {
       :disabled="disabled"
       autocomplete="off"
       :suffix="field?.append"
+      :error="errors"
       @keydown="onKeyDown"
     />
   </div>

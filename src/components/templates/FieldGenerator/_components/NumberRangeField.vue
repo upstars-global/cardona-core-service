@@ -58,6 +58,8 @@ const placeHolderRange = computed(() => ({
       :class="inputClass"
       :field="{ ...field, placeholder: placeHolderRange.from }"
       :disabled="disabled"
+      :errors="errors"
+      class="number-base-field__item"
     />
 
     <span class="mx-1"> – </span>
@@ -67,6 +69,16 @@ const placeHolderRange = computed(() => ({
       :class="inputClass"
       :field="{ ...field, placeholder: placeHolderRange.to }"
       :disabled="disabled"
+      :errors="errors"
+      class="number-base-field__item"
     />
   </div>
 </template>
+
+<style lang="scss" scoped>
+.number-base-field {
+  &__item {
+    flex: 1 1 auto;
+  }
+}
+</style>

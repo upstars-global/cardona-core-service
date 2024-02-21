@@ -92,12 +92,12 @@ function setRates(): NumberBaseField[] {
     </div>
     <VRow
       v-if="formRates.length"
-      no-gutters
-      class="flex-wrap mt-1 gap-1"
+      class="flex-wrap mt-1"
     >
       <VCol
         v-for="(currency, index) in allCurrencies"
         :key="currency"
+        cols="2"
       >
         <FieldGenerator
           v-model="formRates[index]"
