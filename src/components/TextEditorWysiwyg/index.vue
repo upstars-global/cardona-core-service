@@ -8,7 +8,7 @@ import { VColors } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
-import { copyToClipboard } from '@/helpers/clipboard'
+import { copyToClipboard } from '../../helpers/clipboard'
 
 interface Props {
   modelValue: string

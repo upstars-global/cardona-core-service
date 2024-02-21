@@ -53,7 +53,9 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
     </RouterView>
 
     <!-- 👉 Footer -->
-    <template #footer />
+    <template #footer>
+      <slot name="footer" />
+    </template>
 
     <!-- 👉 Customizer -->
   </VerticalNavLayout>

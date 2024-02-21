@@ -4,10 +4,14 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { IconsList } from '../../@model/enums/icons'
+import { VVariants } from '../../@model/vuetify'
+import { useLayoutConfigStore } from '@layouts/stores/config'
 
 const route = useRoute()
 
 const allBreadcrumb = computed(() => [{ to: '/' }, ...route.meta.breadcrumb])
+
+const layoutConfig = useLayoutConfigStore()
 </script>
 
 <template>
@@ -28,6 +32,17 @@ const allBreadcrumb = computed(() => [{ to: '/' }, ...route.meta.breadcrumb])
           cols="12"
           class="d-flex align-center"
         >
+          <VBtn
+            size="28"
+            class="d-lg-none mr-4"
+            :variant="VVariants.Text"
+            @click="layoutConfig.toggleMenu"
+          >
+            <VIcon
+              size="24"
+              :icon="IconsList.Menu2Icon"
+            />
+          </VBtn>
           <h2 class="content-header-title float-left pr-1 mb-0">
             {{ $t(`title.${$route.meta.title}`) }}
           </h2>

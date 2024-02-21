@@ -59,6 +59,7 @@ export default defineComponent({
         {
           'nav-header': () => slots['vertical-nav-header']?.(),
           'before-nav-items': () => slots['before-vertical-nav-items']?.(),
+          'footer': () => slots['nav-footer']?.(),
         },
       )
 
