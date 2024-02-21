@@ -119,12 +119,14 @@ else {
 const validate = async () => {
   const { valid } = await formRef.value.validate()
 
-  /* const fieldsNotValid = Object.keys(refFormObserver.value.errors).filter(
-    nameField => refFormObserver.value.errors[nameField].isNotEmpty,
-  ) */ //
+  const errors = formRef.value.getErrors()
 
-  /* if (fieldsNotValid[0])
-    setTabError(fieldsNotValid[0]) */ // TODO: доработать в таске https://upstars.atlassian.net/browse/ALARO-1864
+  const fieldsNotValid = Object.keys(errors).filter(
+    nameField => errors[nameField].isNotEmpty,
+  )
+
+  if (fieldsNotValid[0])
+    setTabError(fieldsNotValid[0])
 
   return valid
 }
@@ -133,15 +135,15 @@ const setTabError = (fieldName: string) => {
   fieldNameError.value = fieldName
   tabNameError.value = ''
   if (form.value.hasOwnProperty(fieldName))
-    tabNameError.value = 'mainTab'
+    tabNameError.value = 'main'
   else if (form.value.seo?.hasOwnProperty(fieldName))
-    tabNameError.value = 'seoTab'
+    tabNameError.value = 'seo'
   else if (form.value.fieldTranslations?.hasOwnProperty(fieldName))
-    tabNameError.value = 'localizationTab'
+    tabNameError.value = 'localization'
 
   if (tabNameError.value) {
     const tabElement: HTMLElement | null = document.querySelector(
-      `a[aria-controls=${tabNameError.value}]`,
+      `button[value=${tabNameError.value}]`,
     )
 
     if (tabElement)
@@ -153,7 +155,6 @@ const setTabError = (fieldName: string) => {
       const el: HTMLElement | null = document.getElementById(`${fieldNameError.value}-field`)
       if (el) {
         el.scrollIntoView({
-          behavior: 'smooth',
           block: 'start',
         })
       }

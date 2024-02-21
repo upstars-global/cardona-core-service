@@ -41,6 +41,7 @@ const placeholder = computed(() => props.field.label)
       :suffix="appendText"
       :error="errors"
       autocomplete="off"
+      :autofocus="false"
     />
   </div>
 </template>

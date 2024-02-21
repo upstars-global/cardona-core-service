@@ -101,7 +101,7 @@ const onSearch = (search: string) => emits('search', search)
           :errors="!!errorMessage"
           @search="onSearch"
         />
-        <span class="text-caption text-error position-absolute mt-1">{{ errorMessage }}</span>
+        <span class="text-caption text-error mt-1">{{ errorMessage }}</span>
       </template>
     </Field>
   </div>
