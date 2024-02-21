@@ -101,6 +101,12 @@ export const useLayoutConfigStore = defineStore('layoutConfig', () => {
     return computed(() => isVerticalNavCollapsed.value && !isVerticalNavHoveredLocal.value && !isLessThanOverlayNavBreakpoint.value)
   }
 
+  const isHiddenMenu = ref(false)
+
+  const toggleMenu = (value: boolean) => {
+    isHiddenMenu.value = typeof value !== 'undefined' ? value : !isHiddenMenu.value
+  }
+
   return {
     appContentWidth,
     appContentLayoutNav,
@@ -113,5 +119,7 @@ export const useLayoutConfigStore = defineStore('layoutConfig', () => {
     isAppRTL,
     _layoutClasses,
     isVerticalNavMini,
+    isHiddenMenu,
+    toggleMenu,
   }
 })

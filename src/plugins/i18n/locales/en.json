@@ -891,5 +891,11 @@
       "description": "Text",
       "text": "Text"
     }
+  },
+  "customMenu": {
+    "logout": "Logout",
+    "adminSection": "Admin section",
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode"
   }
 }

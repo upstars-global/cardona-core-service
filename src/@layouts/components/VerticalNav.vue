@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
 
-import { useElementHover } from '@vueuse/core'
+import { useElementHover, useWindowSize } from '@vueuse/core'
 
-import { provide, ref, watch } from 'vue'
+import { computed, provide, ref, watch } from 'vue'
 
 import type { Component } from 'vue'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import CustomMenu from '../../layouts/components/CustomMenu.vue'
 import { VNodeRenderer } from './VNodeRenderer'
 import { layoutConfig } from '@layouts'
 import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
@@ -60,19 +61,29 @@ const handleNavScroll = (evt: Event) => {
 }
 
 const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
+
+const { width } = useWindowSize()
+
+const isMinMode = computed(() => width.value < 1279)
+
+watch(() => isMinMode.value, () => {
+  if (!isMinMode.value)
+    configStore.toggleMenu(false)
+})
 </script>
 
 <template>
   <Component
     :is="props.tag"
     ref="refNav"
-    class="layout-vertical-nav"
+    class="layout-vertical-nav sidenav-overlay "
     :class="[
       {
-        'overlay-nav': configStore.isLessThanOverlayNavBreakpoint,
+        'show': configStore.isHiddenMenu,
         'hovered': isHovered,
         'visible': isOverlayNavActive,
         'scrolled': isVerticalNavScrolled,
+        'show-menu': configStore.isHiddenMenu,
       },
     ]"
   >
@@ -114,9 +125,12 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
         />
         <Component
           :is="layoutConfig.app.iconRenderer || 'div'"
-          class="header-action d-lg-none"
           v-bind="layoutConfig.icons.close"
-          @click="toggleIsOverlayNavActive(false)"
+          class="header-action d-lg-none ml-1"
+          @click="() => {
+            toggleIsOverlayNavActive(false)
+            configStore.toggleMenu(false)
+          }"
         />
       </slot>
     </div>
@@ -142,6 +156,7 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
         />
       </PerfectScrollbar>
     </slot>
+    <CustomMenu />
   </Component>
 </template>
 
@@ -163,6 +178,17 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
 <style lang="scss">
 @use "@configured-variables" as variables;
 @use "@layouts/styles/mixins";
+
+.layout-vertical-nav-collapsed {
+  transition: transform 0.3s ease-in-out;
+  .layout-vertical-nav{
+    &:not(.hovered) {
+      .full-name {
+        transform: translateX(-10rem);
+      }
+    }
+  }
+}
 
 // 👉 Vertical Nav
 .layout-vertical-nav {
@@ -237,5 +263,40 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
 
     transition: transform 0.25s ease-in-out;
   }
+}
+
+html:has(.sidenav-overlay.show) {
+  overflow: hidden;
+}
+
+.sidenav-overlay.show {
+  &:after {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+  }
+}
+
+.sidenav-overlay {
+  &:after {
+    content: ' ';
+    background-color: rgba(34,41,47,.5);
+    position: fixed;
+    top: 0;
+    height: 120vh;
+    width: 400vw;
+    z-index: 997;
+    display: block;
+    left: 100%;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+  }
+}
+
+.show-menu {
+  transform: translateX(0) !important;
 }
 </style>
