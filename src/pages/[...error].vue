@@ -1,53 +1,25 @@
 <script setup lang="ts">
-import { definePage } from '../../typed-router'
-import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
-import misc404 from '@images/pages/404.png'
-import miscMaskDark from '@images/pages/misc-mask-dark.png'
-import miscMaskLight from '@images/pages/misc-mask-light.png'
-
-const authThemeMask = useGenerateImageVariant(miscMaskLight, miscMaskDark)
-
-definePage({
-  alias: '/pages/misc/not-found/:error(.*)',
-  meta: {
-    layout: 'blank',
-    public: true,
-  },
-})
+import ErrorHeader from '../components/ErrorHeader.vue'
 </script>
 
 <template>
-  <div class="misc-wrapper">
+  <div class="misc-wrapper d-flex align-center justify-center">
     <ErrorHeader
-      status-code="404"
-      title="Page Not Found ⚠️"
-      description="We couldn't find the page you are looking for."
+      :status-code="$t('page.404.statusCode')"
+      :title="$t('page.404.title')"
+      :description="$t('page.404.description')"
     />
-
-    <VBtn
-      to="/"
-      class="mb-12"
-    >
-      Back to Home
-    </VBtn>
-
-    <!-- 👉 Image -->
-    <div class="misc-avatar w-100 text-center">
-      <VImg
-        :src="misc404"
-        alt="Coming Soon"
-        :max-width="200"
-        class="mx-auto"
-      />
+    <div class="d-flex align-center justify-center">
+      <VBtn
+        to="/"
+        class="mb-12"
+      >
+        {{ $t('page.404.backToHome') }}
+      </VBtn>
     </div>
-
-    <VImg
-      :src="authThemeMask"
-      class="misc-footer-img d-none d-md-block"
-    />
   </div>
 </template>
 
 <style lang="scss">
-@use "@core/scss/template/pages/misc.scss";
+@use "../@core/scss/template/pages/misc.scss";
 </style>
