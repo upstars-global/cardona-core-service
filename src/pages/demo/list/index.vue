@@ -95,6 +95,20 @@ const setButtonState = (key: string): void => {
     <template #nameSlot-nameWithIdTitle="{ item }">
       {{ item.name }}
     </template>
+    <template #cell(editableField)="{ item }">
+      <EditFieldWrapper :value="item.editableField">
+        <template #default="{ value }">
+          <div>{{ value.from }} - {{ value.to }}</div>
+        </template>
+        <template #input="{ inputValue, updateValue }">
+          <NumberRangeField
+            :model-value="inputValue"
+            @update:modelValue="updateValue"
+          />
+        </template>
+      </EditFieldWrapper>
+    </template>
+
     <template #cell(type)="{ item }">
       {{ item.type.name }}
     </template>
@@ -168,4 +182,14 @@ const setButtonState = (key: string): void => {
       display: none;
     }
   }
- </style>
+  .demo-list {
+      :deep(td[data-c-field='editableField']) {
+        .editable-wrapper {
+          display: flex;
+          justify-content: start;
+          align-items: center;
+          min-width: 12rem;
+        }
+    }
+  }
+</style>

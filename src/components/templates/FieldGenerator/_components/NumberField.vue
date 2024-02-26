@@ -62,7 +62,21 @@ const onKeyDown = event => {
       autocomplete="off"
       :suffix="field?.append"
       :error="errors"
+      class="number-field"
       @keydown="onKeyDown"
     />
   </div>
 </template>
+
+<style
+  scoped
+  lang="scss"
+>
+.number-field {
+  :deep(input)::-webkit-outer-spin-button,
+  :deep(input)::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+</style>
