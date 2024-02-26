@@ -1,18 +1,24 @@
 .v-application.v-layout {
   .v-application__wrap {
     .side-bar {
-      min-width: 28.125rem;
+      min-width: 30.75rem;
       width: 100%;
       .content-sidebar-header {
-        h5 {
+        background-color: rgb(var(--v-theme-extra-body));
+        &__title {
+          color: rgba(var(--v-theme-body), var(--v-body-opacity));
           font-weight: 600;
+        }
+        .v-icon {
+          color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
         }
       }
       .v-expansion-panels {
         .v-expansion-panel {
+          color: inherit !important;
           &--active {
             .v-expansion-panel-text__wrapper {
-              padding-top: 1rem;
+              padding-top: 0rem;
             }
           }
           &-title {
@@ -20,6 +26,7 @@
             padding-right: 0;
             font-weight: 600;
             font-size: 1rem;
+            color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
             .v-expansion-panel-title__icon {
               .v-icon {
                 font-size: 1rem;

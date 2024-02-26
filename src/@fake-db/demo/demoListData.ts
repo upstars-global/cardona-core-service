@@ -187,6 +187,30 @@ export const tagsList: Array<IDemoTypeItem> = [
     id: '638f1a4c9bb32010930bf239',
     name: 'test 9',
   },
+  {
+    id: '638f1a4c9bb32010930bf239',
+    name: 'test 9',
+  },
+  {
+    id: '638f1a4c9bb32010930bf2312',
+    name: 'test 10',
+  },
+  {
+    id: '638f1a4c9bb32010930bf2392',
+    name: 'test 11',
+  },
+  {
+    id: '638f1a4c9bb32010930bf2329',
+    name: 'test 12',
+  },
+  {
+    id: '638f1a4c9sbb32010930bf239',
+    name: 'test 13',
+  },
+  {
+    id: '638f1a4c9sbb3201093s0bf239',
+    name: 'test 14',
+  },
 ]
 export const listData = [
   {
@@ -218,7 +242,7 @@ export const listData = [
       imagePath: listImages[0].publicPath,
       id: '632c39448e03b2dab20c8a77',
     },
-    tags: [tagsList[0], tagsList[1], tagsList[2]],
+    tags: tagsList,
     type: {
       id: TransactionType.Deposit,
       name: i18n.t('common.deposit'),

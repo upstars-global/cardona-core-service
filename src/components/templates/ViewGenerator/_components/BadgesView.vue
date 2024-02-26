@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ViewInfo } from '../../../../@model/view'
 import { IconsList } from '../../../../@model/enums/icons'
-import { VSizes, VVariants } from '../../../../@model/vuetify'
+import { VColors, VSizes, VVariants } from '../../../../@model/vuetify'
 
 const props = defineProps<{
   item: ViewInfo
@@ -34,10 +34,6 @@ const onToggleShowList = () => {
 
 const toggleLabel = computed(() => {
   return isCollapsedList.value ? t('common.showMore') : t('common.showLess')
-})
-
-const toggleIcon = computed(() => {
-  return isCollapsedList.value ? IconsList.PlusSquareIcon : IconsList.MinusSquareIcon
 })
 
 const isShowToggleButton = computed(() => {
@@ -78,16 +74,14 @@ const isShowToggleButton = computed(() => {
         </VChip>
         <VChip
           v-if="isShowToggleButton"
+          label
+          :color="VColors.Primary"
           :variant="VVariants.Tonal"
           :size="VSizes.XSmall"
           class="cursor-pointer"
           @click="onToggleShowList"
         >
           {{ toggleLabel }}
-          <VIcon
-            :icon="toggleIcon"
-            class="mr-2"
-          />
         </VChip>
       </div>
     </Transition>

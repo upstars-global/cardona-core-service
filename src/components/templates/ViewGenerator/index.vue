@@ -19,11 +19,11 @@ const valueColsCount = computed(() => 12 - props.cols)
 </script>
 
 <template>
-  <div v-if="canView">
-    <VRow class="font-small-3 p-0 ma-0 px-0">
+  <div v-if="canView" class="field-generator">
+    <VRow class="font-small-3 p-0 px-0">
       <VCol
         :cols="cols"
-        class="wrapper-label ma-0 py-1"
+        class="wrapper-label py-1"
         style="max-width: 154px"
       >
         <div
@@ -33,17 +33,18 @@ const valueColsCount = computed(() => 12 - props.cols)
           <VIcon :icon="modelValue.icon" />
         </div>
 
-        <label class="mb-0 label p-0 font-weight-medium">{{ modelValue.label }}</label>
+        <label class="mb-0 label p-0 font-weight-regular view-generator__text">{{ modelValue.label }}</label>
       </VCol>
       <VCol
         :cols="valueColsCount"
-        class="font-weight-bolder d-flex align-items-start text-break wrapper-value text-base ma-0 py-1"
+        class="view-generator__text value font-weight-medium d-flex align-items-start text-break wrapper-value text-base ma-0 py-1"
         :class="justifyClass"
       >
         <slot :name="`sidebar-value(${keyName})`">
           <Component
             :is="modelValue.type"
             :item="modelValue"
+            class="label-view"
           />
         </slot>
       </VCol>
@@ -55,6 +56,7 @@ const valueColsCount = computed(() => 12 - props.cols)
 <style lang="scss" scoped>
 .wrapper-label {
   width: 38.5rem;
+  color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
 }
 .wrapper-value {
   width: 100%;
@@ -63,5 +65,9 @@ const valueColsCount = computed(() => 12 - props.cols)
   display: inline-block;
   width: 1rem;
   margin-right: 0.5rem;
+}
+
+.view-generator__text {
+  color: rgba(var(--v-theme-body), var(--v-body-opacity));
 }
 </style>

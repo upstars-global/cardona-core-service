@@ -69,8 +69,8 @@ const onHide = () => {
     @update:model-value="onHide"
   >
     <!-- Header -->
-    <div class="content-sidebar-header d-flex justify-space-between align-center px-5 py-3 bg-light px-2">
-      <h5 class="mb-0 text-h5">
+    <div class="content-sidebar-header d-flex justify-space-between align-center px-6 py-3 bg-light">
+      <h5 class="content-sidebar-header__title mb-0 text-h5">
         {{ $t(title) }}
       </h5>
       <VIcon
@@ -115,7 +115,7 @@ const onHide = () => {
             <template v-else-if="viewForm[key] instanceof SideBarCollapseItem && sidebarCollapseMode">
               <div>
                 <VExpansionPanels multiple>
-                  <VExpansionPanel :title="viewForm[key].title">
+                  <VExpansionPanel :title="`${viewForm[key].title}`">
                     <VExpansionPanelText>
                       <div
                         v-for="groupKey in Object.keys(viewForm[key].views)"
@@ -187,7 +187,6 @@ const onHide = () => {
 
 <style lang="scss" scoped>
 .side-bar {
-  min-width: 35rem;
   .content-sidebar-header {
     background: rgb(var(--v-theme-background));
   }
