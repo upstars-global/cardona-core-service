@@ -1,13 +1,18 @@
 <template>
-  <b-badge
-    :variant="variant"
-    class="cursor-pointer overflow-hidden copy-badge"
-    @click="copyToClipboard(value)"
-  >
-    <span v-if="isViewLabel">{{ label }}: </span>
-    {{ valueShort }}
-    <feather-icon :icon="IconsList.CopyIcon" class="ml-25" />
-  </b-badge>
+  <div>
+    <template v-if="value">
+      <b-badge
+        :variant="variant"
+        class="cursor-pointer overflow-hidden copy-badge"
+        @click="copyToClipboard(value)"
+      >
+        <span v-if="isViewLabel">{{ label }}: </span>
+        {{ valueShort }}
+        <feather-icon :icon="IconsList.CopyIcon" class="ml-25" />
+      </b-badge>
+    </template>
+    <template v-else> - </template>
+  </div>
 </template>
 
 <script lang="ts">

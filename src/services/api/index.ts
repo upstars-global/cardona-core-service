@@ -27,6 +27,7 @@ class ApiService {
       withErrorDescriptionToast = false,
       withErrorNotFound = true,
       withSuccessToast = false,
+      successToastDescription = undefined,
       withLoader = true,
       formRef = null,
       newAxiosInstance = false,
@@ -65,7 +66,7 @@ class ApiService {
 
       if (data.error) throw data.error
 
-      if (withSuccessToast) toastSuccess(url)
+      if (withSuccessToast) toastSuccess(url, { defaultDescription: successToastDescription })
 
       return data
     } catch (error: any) {
