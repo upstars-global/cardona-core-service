@@ -1,35 +1,43 @@
 import type { ThemeDefinition } from 'vuetify'
 
-export const staticPrimaryColor = '#7367F0'
+export const staticPrimaryColor = '#6D60F0'
+export const grey900 = '#1F1C32'
 
 export const themes: Record<string, ThemeDefinition> = {
   light: {
     dark: false,
     colors: {
-      'primary': staticPrimaryColor,
+      'primary': staticPrimaryColor, /// !TODO ADD ALSO TO DARK
       'on-primary': '#fff',
-      'secondary': '#A8AAAE',
+      'secondary': '#787A80', /// !TODO ADD ALSO TO DARK
       'on-secondary': '#fff',
-      'success': '#28C76F',
+      'success': '#0DB157', /// !TODO ADD ALSO TO DARK
       'on-success': '#fff',
-      'info': '#00CFE8',
+      'info': '#3B83F7', /// !TODO ADD ALSO TO DARK
       'on-info': '#fff',
-      'warning': '#FF9F43',
+      'warning': '#F08C35', /// !TODO ADD ALSO TO DARK
       'on-warning': '#fff',
-      'error': '#EA5455',
+      'error': '#EA3D3E', /// !TODO ADD ALSO TO DARK
       'background': '#F8F7FA',
       'on-background': '#2F2B3D',
       'on-surface': '#2F2B3D',
+
+      /// !TODO ADD ALSO TO DARK - start
       'grey-50': '#FAFAFA',
-      'grey-100': '#F5F5F5',
-      'grey-200': '#EEEEEE',
-      'grey-300': '#E0E0E0',
-      'grey-400': '#BDBDBD',
-      'grey-500': '#9E9E9E',
-      'grey-600': '#757575',
-      'grey-700': '#616161',
-      'grey-800': '#424242',
-      'grey-900': '#212121',
+      'grey-100': '#F4F4F7',
+      'grey-200': '#E9E9F0',
+      'grey-300': '#D2D1DB',
+      'grey-400': '#ADABBE',
+      'grey-500': '#84819D',
+      'grey-600': '#615E78',
+      'grey-700': '#4A485B',
+      'grey-800': '#373645',
+      'grey-900': grey900,
+      'body': grey900,
+      'extra-body': '#F9F9FA',
+      'border-color': '#2F2B3D',
+
+      /// !TODO ADD ALSO TO DARK - end >
       'perfect-scrollbar-thumb': '#DBDADE',
       'skin-bordered-background': '#fff',
       'skin-bordered-surface': '#fff',
@@ -44,10 +52,11 @@ export const themes: Record<string, ThemeDefinition> = {
       'focus-opacity': 0.12,
       'selected-opacity': 0.06,
       'activated-opacity': 0.16,
+      'alert-opacity': 0.16,
+      'badge-opacity': 0.16,
       'pressed-opacity': 0.14,
       'dragged-opacity': 0.1,
       'disabled-opacity': 0.42,
-      'border-color': '#2F2B3D',
       'border-opacity': 0.16,
       'high-emphasis-opacity': 0.78,
       'medium-emphasis-opacity': 0.68,
@@ -55,6 +64,8 @@ export const themes: Record<string, ThemeDefinition> = {
       'switch-disabled-track-opacity': 0.3,
       'switch-disabled-thumb-opacity': 0.4,
       'switch-checked-disabled-opacity': 0.3,
+      'muted-placeholder-opacity': 0.62,
+      'body-opacity': 0.9,
 
       // Shadows
       'shadow-key-umbra-color': '#2F2B3D',

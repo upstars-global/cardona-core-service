@@ -35,7 +35,6 @@ defineProps<{
     }
     .date-field {
       font-size: 15px;
-      opacity: var(--v-medium-emphasis-opacity);
     }
   }
 </style>

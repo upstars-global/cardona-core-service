@@ -20,7 +20,7 @@
 
 hr {
   border: 0;
-  border-top: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border-top: 1px solid rgb(var(--v-theme-grey-300));
 }
 
 .full-width {
@@ -39,6 +39,7 @@ hr {
   }
   .v-text-field {
     input.v-field__input {
+      border: 1px solid var(--v-theme-grey-300);
       height: 2rem;
       min-height: 2rem;
     }

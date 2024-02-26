@@ -27,8 +27,5 @@ defineProps<{
   display: flex;
   flex-direction: column;
   align-items: start;
-  .date-field {
-    opacity: var(--v-medium-emphasis-opacity);
-  }
 }
 </style>
