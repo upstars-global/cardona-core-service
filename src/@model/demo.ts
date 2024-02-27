@@ -58,6 +58,7 @@ export interface IDemoListItem {
   localization: string
   country: string
   position: number
+  positionByInputWrapper: number
   imagePath: string
   tags: Array<IDemoTypeItem>
   type: {
@@ -95,6 +96,7 @@ export class DemoListItem implements BaseListItem {
   localization: string
   country: string
   position: number
+  positionByInputWrapper: number
   imagePath: string
   tags: Array<IDemoTypeItem>
   type: {
@@ -127,6 +129,7 @@ export class DemoListItem implements BaseListItem {
     this.localization = data.localization
     this.country = data.country
     this.position = data.position
+    this.positionByInputWrapper = data.positionByInputWrapper
     this.imagePath = data.imagePath
     this.tags = data.tags
     this.type = data.type

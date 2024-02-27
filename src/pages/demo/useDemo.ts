@@ -23,6 +23,10 @@ export const useDemoList = (): UseListType => {
       type: ListFieldType.Status,
     }),
     new TableField({
+      key: 'editableField',
+      title: i18n.t('common.editableField'),
+    }),
+    new TableField({
       key: 'shortId',
       title: i18n.t('common.shortId'),
       type: ListFieldType.CopyShort,

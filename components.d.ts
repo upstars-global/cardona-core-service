@@ -394,6 +394,7 @@ declare module 'vue' {
     DialogCloseBtn: typeof import('./src/@core/components/DialogCloseBtn.vue')['default']
     DummySelectField: typeof import('./src/components/templates/FieldGenerator/_components/DummySelectField.vue')['default']
     DynamicFieldList: typeof import('./src/components/DynamicFieldList.vue')['default']
+    EditFieldWrapper: typeof import('./src/components/templates/BaseList/_components/EditFieldWrapper.vue')['default']
     EmailField: typeof import('./src/components/templates/BaseList/_components/fields/EmailField.vue')['default']
     EnableOneTimePasswordDialog: typeof import('./src/components/dialogs/EnableOneTimePasswordDialog.vue')['default']
     ErrorHeader: typeof import('./src/components/ErrorHeader.vue')['default']
