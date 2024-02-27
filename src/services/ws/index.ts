@@ -1,4 +1,4 @@
-import { isLoggedIn, getAccessToken } from 'axios-jwt'
+import { isLoggedIn, getAccessToken, getRefreshToken } from 'axios-jwt'
 import { messageTypes } from './config'
 import { WSTypePrefix } from '@productConfig'
 import store from '../../store'
@@ -18,8 +18,11 @@ class WSService {
   static async connect(channel) {
     if (!isLoggedIn() && !channel) return
     this.Channel = channel
-    const JWT = getAccessToken()
-    const url = `wss://${location.host || location.hostname}/ws?jwt=${JWT}`
+
+    if (!getAccessToken()) return
+
+    const { accessToken } = await store.dispatch('authCore/refreshAuth', getRefreshToken())
+    const url = `wss://${location.host || location.hostname}/ws?jwt=${accessToken}`
     this.ws = await new WebSocket(url)
 
     this.ws.onopen = () => {
@@ -37,12 +40,14 @@ class WSService {
       this.parseData(JSON.parse(event.data) as Array<any>)
     }
 
-    this.ws.onclose = (event) => {
+    this.ws.onclose = async (event) => {
       this.ws?.close()
       this.ws = null
-      if (event.wasClean && this.timeReconnect !== DEFAULT_TIME_RECONNECT) {
+      if (
+        event.wasClean &&
+        (this.timeReconnect !== DEFAULT_TIME_RECONNECT || event.code === 1000)
+      ) {
         this.WSListSubscribe.clear()
-        this.timeReconnect = DEFAULT_TIME_RECONNECT
       } else {
         this.timeReconnect *= RECONNECTION_TIME_MULTIPLIER
         if (this.timeReconnect > this.maxTimeReconnect) this.timeReconnect = DEFAULT_TIME_RECONNECT
@@ -93,9 +98,14 @@ class WSService {
   static async parseData(messageArray: Array<any>) {
     const [messageTypesData, channelDataSTR, data] = messageArray
 
+    // if(channelDataSTR === this.Channel.Ping) {
+    //   this.send('pong')
+    // }
+
     if (messageTypesData === messageTypes.EVENT) {
       const channelData = String(channelDataSTR).replace(WSTypePrefix, '')
 
+      if (channelData === 'ping') return
       await store.dispatch(`${channelData}/setWSData`, data)
     }
   }
