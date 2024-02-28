@@ -37,7 +37,7 @@ const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyF
       <slot>
         <RouterLink
           v-if="isExistsRoute"
-          :to="getUpdateRoute(props.item)"
+          :to="getUpdateRoute(item)"
           class="d-flex align-center"
           @click.stop
         >

@@ -750,7 +750,7 @@ onBeforeMount(async () => {
           <EmailField
             v-else-if="field.type === ListFieldType.Email"
             :key="`${index}_${field.type}`"
-            :item="item"
+            :item="item.raw"
             :get-update-route="getUpdateRoute"
           />
 
