@@ -66,6 +66,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'switch-checked-disabled-opacity': 0.3,
       'muted-placeholder-opacity': 0.62,
       'body-opacity': 0.9,
+      'border-radius': '0.5rem',
 
       // Shadows
       'shadow-key-umbra-color': '#2F2B3D',
@@ -123,6 +124,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'switch-disabled-track-opacity': 0.4,
       'switch-disabled-thumb-opacity': 0.8,
       'switch-checked-disabled-opacity': 0.3,
+      'border-radius': '0.5rem',
 
       // Shadows
       'shadow-key-umbra-color': '#0F1422',

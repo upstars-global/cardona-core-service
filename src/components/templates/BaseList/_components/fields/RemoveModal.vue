@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { IBaseListConfig } from '../../../../../@model/templates/baseList'
 import { VColors, VVariants } from '../../../../../@model/vuetify'
 import AppTextarea from '../../../../../@core/components/app-form-elements/AppTextarea.vue'
 import BaseModal from '../../../../BaseModal/index.vue'
 
 interface Props {
-  config: IBaseListConfig
-  entityName: string
+  entityName?: string
   removeModalId: string
+  title?: string
+  description?: string
   withRemoveComment?: boolean
   state?: boolean
 }
@@ -42,14 +42,14 @@ const onCloseModal = (hide: Function) => {
 <template>
   <BaseModal
     :id="removeModalId"
-    :title="$t(`modal.remove${entityName}.title`)"
+    :title="title || $t(`modal.remove${entityName}.title`)"
   >
     <template #default="{ action }">
       <VCardText
         :class="{ 'pb-16': withRemoveComment }"
         class="d-flex flex-column"
       >
-        <span>{{ $t(`modal.remove${entityName}.description`) }} </span>
+        <span>{{ description || $t(`modal.remove${entityName}.description`) }}</span>
         <AppTextarea
           v-if="withRemoveComment"
           v-model.trim="commentToRemove"

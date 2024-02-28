@@ -43,7 +43,7 @@
 
   /* Handle */
   &::-webkit-scrollbar-thumb {
-    border-radius: 0.5rem;
+    border-radius: var(--v-border-radius);
     background: rgb(var(--v-theme-perfect-scrollbar-thumb));
   }
 

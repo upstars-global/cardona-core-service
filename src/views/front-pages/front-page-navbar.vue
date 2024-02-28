@@ -421,20 +421,20 @@ const isPageActive = computed(() => menuItems.some(item => item.navItems.some(li
 
 .app-bar-light{
   border: 2px solid rgba(var(--v-theme-surface),68%);
-  border-radius: 0.5rem;
+  border-radius: var(--v-border-radius);
   background-color: rgba(var(-v--theme-surface),38%);
   transition: all 0.1s ease-in-out;
 }
 
 .app-bar-dark{
   border: 2px solid rgba(255,255,255,8%);
-  border-radius: 0.5rem;
+  border-radius: var(--v-border-radius);
   background-color: rgba(255,255,255,4%);
   transition: all 0.1s ease-in-out;
 }
 
 .app-bar-scrolled{
-  border-radius: 0.5rem;
+  border-radius: var(--v-border-radius);
   background-color: rgb(var(--v-theme-surface)) !important;
   transition: all 0.1s ease-in-out;
 }

@@ -231,7 +231,7 @@ const editor = useEditor({
   }
 
   pre {
-    border-radius: 0.5rem;
+    border-radius: var(--v-border-radius);
     background: #0d0d0d;
     color: #fff;
     font-family: JetBrainsMono, monospace;
