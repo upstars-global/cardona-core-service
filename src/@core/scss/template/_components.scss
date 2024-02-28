@@ -90,7 +90,7 @@ $alert-prepend-icon-font-size: 1.125rem !important;
 }
 
 .v-alert.v-alert--density-default {
-  border-radius: 0.5rem;
+  border-radius: var(--v-border-radius);
 }
 
 @each $color-name in variables.$theme-colors-name {
@@ -110,7 +110,7 @@ $alert-prepend-icon-font-size: 1.125rem !important;
       &:not(.v-alert--prominent) {
         &.text-#{$color-name},
         &.bg-#{$color-name} {
-          .v-alert__prepend { 
+          .v-alert__prepend {
             background-color: rgb(var(--v-theme-#{$color-name}));
 
             .v-icon {
@@ -266,7 +266,7 @@ body .v-btn {
     .v-selection-control__input {
       .v-icon.custom-checkbox-checked {
         // ℹ️ Using filter: drop-shadow() instead of box-shadow because box-shadow creates white background for SVG
-        filter: drop-shadow(map.get(vuetify.$shadow-key-umbra, 2));        
+        filter: drop-shadow(map.get(vuetify.$shadow-key-umbra, 2));
       }
     }
   }
@@ -394,7 +394,7 @@ body .v-layout .v-application__wrap .v-expansion-panels {
 }
 
 .v-field {
-  &.v-field--variant-solo, 
+  &.v-field--variant-solo,
   &.v-field--variant-filled {
     --v-field-padding-top: 7px !important;
 

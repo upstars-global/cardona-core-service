@@ -1,5 +1,5 @@
-<script setup lang="ts" >
-import { computed, ref, watch } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 import store from '../../../store'
 import type {
   FieldTranslationsLocale,
@@ -17,15 +17,15 @@ interface Props {
 }
 
 const props = withDefaults(
-    defineProps<Props>(),
-    {
-      type: 'default'
-    }
+  defineProps<Props>(),
+  {
+    type: 'default',
+  },
 )
 
 const emits = defineEmits<{
-      (e: 'update:model-value', value: any): void
-    }>()
+  (e: 'update:model-value', value: any): void
+}>()
 
 const selectEditeInput = ref('')
 const selectedProject = computed(() => store.getters.selectedProject)
@@ -45,8 +45,8 @@ const onSelectEditeInput = (item, local) => {
 const cleanMetaTitle = (metaTitle: FieldTranslationsLocale, variableText: string): any => {
   const metaTitlesInLists = Object.entries(metaTitle).map(([key, value]) => [
     key,
-    { ...value, value: filterString(value.value, variableText) }
-      ])
+    { ...value, value: filterString(value.value, variableText) },
+  ])
 
   return Object.fromEntries(metaTitlesInLists)
 }
@@ -61,7 +61,7 @@ const onRemoveVariables = (variable: string): void => {
   props!.modelValue.fieldTranslations.metaTitle = cleanMetaTitle(
     props!.modelValue.fieldTranslations.metaTitle || {},
     variable || '',
-      )
+  )
 }
 
 const getValue = (locale: string, key: string): string => {
@@ -129,7 +129,7 @@ const getValue = (locale: string, key: string): string => {
               </div>
               <InputTextWrapper
                 v-else
-                :content="getValue(local,item)"
+                :content="getValue(local, item)"
               >
                 <template #default="{ childrenStyle }">
                   <div
@@ -141,7 +141,7 @@ const getValue = (locale: string, key: string): string => {
                     :data-at="`text-${item}-${local}`"
                     :style="childrenStyle"
                     @click="onSelectEditeInput(item, local)"
-                    v-html="getValue(local,item) || `<span class=\'span-empty\'>${$t('common.empty')}</span>`"
+                    v-html="getValue(local, item) || `<span class=\'span-empty\'>${$t('common.empty')}</span>`"
                   />
                 </template>
                 <template #footer="{ isShowButton }">
@@ -186,7 +186,7 @@ const getValue = (locale: string, key: string): string => {
     min-height: 2.714rem;
 
     border: 1px solid rgba(var(--v-theme-on-background), var(--v-focus-opacity));
-    border-radius: 0.5rem;
+    border-radius: var(--v-border-radius);
     padding: 0.5rem 1rem;
     overflow: hidden;
     cursor: pointer;

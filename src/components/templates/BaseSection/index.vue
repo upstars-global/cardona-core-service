@@ -305,7 +305,6 @@ onBeforeUnmount(() => {
     </slot>
 
     <RemoveModal
-      :config="config"
       :remove-modal-id="removeModalId"
       :entity-name="entityName"
       @on-click-modal-ok="confirmRemoveModal"

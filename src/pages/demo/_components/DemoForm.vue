@@ -379,6 +379,18 @@ const currentTab = ref('main')
               />
             </VCol>
           </VRow>
+          <VRow>
+            <VCol cols="6">
+              <UploadImage
+                v-model="formData.image"
+                type="banners"
+                size="md"
+                :text-btn="$t('uploadImg.selectImage')"
+                :path="`/${selectedProjectPublicName}/banners`"
+                :disabled="isDisabledField"
+              />
+            </VCol>
+          </VRow>
         </template>
       </VCard>
     </VWindowItem>
