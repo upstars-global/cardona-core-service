@@ -268,6 +268,8 @@ const entityData = {
   time: '22:55',
   dateBtn: '07-03-2022',
   textarea: 'Some text',
+  textareaAutoHeight:
+    'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
   textareaWithCounter: 'Some text',
   credit: '4242 4242 4242 4242',
   url: 'https://cardona-develop.upstr.to/alaro/',
