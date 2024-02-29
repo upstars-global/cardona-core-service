@@ -188,6 +188,10 @@
             <b-col cols="4">
               <field-generator v-model="formData.textareaWithCounter" :disabled="isDisabledField" />
             </b-col>
+
+            <b-col cols="4">
+              <field-generator v-model="formData.textareaAutoHeight" :disabled="isDisabledField" />
+            </b-col>
           </b-row>
         </b-card-body>
       </b-card>
