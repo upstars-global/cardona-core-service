@@ -8,12 +8,11 @@ import { computed } from 'vue'
 enum ButtonCheckboxIconVariant {
   Success = 'flat active',
   Danger = 'flat not-active',
-  OutlineSecondary = 'outline-secondary',
 }
 interface Props {
   value: boolean
   icon: IconsList
-  disabled?: boolean
+  isStatic?: boolean
   tooltipText?: TranslateResult
   tooltipPlacement?: TooltipPlacement
 }
@@ -31,26 +30,26 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<Emits>()
 
-const variant = computed((): ButtonCheckboxIconVariant => {
-  if (props?.disabled) return ButtonCheckboxIconVariant.OutlineSecondary
-  return props?.value ? ButtonCheckboxIconVariant.Success : ButtonCheckboxIconVariant.Danger
-})
+const variant = computed(
+  (): ButtonCheckboxIconVariant =>
+    props?.value ? ButtonCheckboxIconVariant.Success : ButtonCheckboxIconVariant.Danger
+)
 
 const onClick = () => {
-  if (!props.disabled) {
+  if (!props.isStatic) {
     emits('click', props.value)
   }
 }
 </script>
 
 <template>
-  <div class="btn-check-icon">
+  <div class="btn-check-icon" :class="{ 'is-static': isStatic }">
     <b-button
       :id="id"
       :variant="variant"
       class="btn-icon p-50"
       :class="{
-        'state-disabled': disabled,
+        'is-static': isStatic,
       }"
       @click="onClick"
     >
@@ -64,18 +63,28 @@ const onClick = () => {
 
 <style scoped lang="scss">
 @import '../@core/scss/base/core/colors/palette-variables';
-.state-disabled {
-  opacity: 0.65;
-}
 
+$success-with-opacity: rgba($success, 0.2);
+$danger-with-opacity: rgba($danger, 0.2);
+
+.is-static {
+  cursor: initial !important;
+}
 .btn-check-icon {
-  .active {
-    color: $success;
-    background-color: #28c76f33;
-  }
-  .not-active {
-    color: $danger;
-    background-color: #ea545533;
+  button {
+    &.not-active {
+      color: $danger;
+      border-color: $danger-with-opacity;
+      background-color: $danger-with-opacity;
+    }
+    &.active {
+      color: $success;
+      border-color: $success-with-opacity;
+      background-color: $success-with-opacity;
+    }
+    &.is-static {
+      background-color: initial;
+    }
   }
 }
 </style>

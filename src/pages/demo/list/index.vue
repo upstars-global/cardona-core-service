@@ -44,8 +44,8 @@
       />
     </template>
     <template #cell(settings)="{ item }">
-      <div class="d-flex">
-        <btn-icon disabled :icon="IconsList.ClockIcon" :value="!!buttonState[item.id]" />
+      <div class="d-flex mr-4">
+        <btn-icon is-static :icon="IconsList.ClockIcon" :value="!!buttonState[item.id]" />
         <btn-icon
           class="ml-50"
           :value="!!buttonState[item.id]"
