@@ -253,6 +253,9 @@ export default defineComponent({
     const isUpdateSeoOnly = computed(
       () => isUpdatePage && canCreateSeo && canUpdateSeo && !canUpdate
     )
+    const isCreateOrUpdateSeo = computed(
+      () => (isCreatePage && canCreateSeo) || (isUpdatePage && canUpdateSeo)
+    )
     // Handlers
     const onSubmit = async (isStay: boolean) => {
       if (!(await validate()) || isExistsEndpointsWithError.value) return
@@ -266,7 +269,14 @@ export default defineComponent({
             fieldTranslations: form.value.fieldTranslations,
             localisationParameters: form.value.localisationParameters,
           }
-        : form.value
+        : {
+            ...form.value,
+            seo: isCreateOrUpdateSeo.value ? form.value.seo : null,
+            fieldTranslations: isCreateOrUpdateSeo.value ? form.value.fieldTranslations : null,
+            localisationParameters: isCreateOrUpdateSeo.value
+              ? form.value.localisationParameters
+              : null,
+          }
 
       const transformedForm: any = transformFormData(formData)
       if (onBeforeSubmitCb && !(await onBeforeSubmitCb(formData))) return
