@@ -869,7 +869,7 @@ onBeforeMount(async () => {
     </VCard>
     <div class="mx-2">
       <ListPagination
-        v-if="items.length && config?.pagination"
+        v-if="items?.length && config?.pagination"
         :model-value="currentPage"
         :link-gen="linkGenerator"
         :pagination-config="paginationConfig"

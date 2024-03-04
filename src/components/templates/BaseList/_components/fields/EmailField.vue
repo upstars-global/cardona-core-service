@@ -20,6 +20,7 @@ const isExistsRoute = computed(() => {
       v-if="isExistsRoute"
       :to="getUpdateRoute(item)"
       class="d-block"
+      @click.stop
     >
       {{ item.email }}
     </RouterLink>
