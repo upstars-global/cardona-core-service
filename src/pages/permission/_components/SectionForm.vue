@@ -2,7 +2,7 @@
 import { ref, watchEffect } from 'vue'
 import type { Permission } from '../../../@model/permission'
 import { GroupForm } from '../../../@model/group'
-import GroupFragmentSettings from './GroupFragmentSettings.vue'
+import GroupFragmentSettings from '@/components/permitionsForm/GroupFragmentSettings.vue'
 
 const props = defineProps<{
   form: GroupForm

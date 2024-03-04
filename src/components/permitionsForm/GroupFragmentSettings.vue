@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { Permission } from '../../../@model/permission'
-import { AllPermission } from '../../../@model/permission'
+import type { Permission } from '../../@model/permission'
+import { AllPermission } from '../../@model/permission'
+import { VVariants } from '../../@model/vuetify'
 import GroupFragmentSettingsTable from './GroupFragmentSettingsTable.vue'
-import { VVariants } from '../../../@model/vuetify'
 
 const props = defineProps<{
   permissions: Permission[]
