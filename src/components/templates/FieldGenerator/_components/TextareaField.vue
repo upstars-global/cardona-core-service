@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { TextareaBaseField } from '../../../../@model/baseField'
 import { trimEdges } from '../../../../helpers'
 
@@ -31,6 +31,8 @@ type TextareaFieldProps = {
   disabled?: boolean
   errors?: string[]
 }
+
+const TIME_DEBOUNCE = 100
 
 const props = withDefaults(defineProps<TextareaFieldProps>(), {
   value: '',
@@ -63,9 +65,16 @@ const setHeightByContent = () => {
 }
 
 onMounted(() => {
+  if (!props.field.autoHeight) return
   setTimeout(() => {
     setHeightByContent()
   })
+  window.addEventListener('resize', () => {
+    setTimeout(setHeightByContent, TIME_DEBOUNCE)
+  })
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', setHeightByContent)
 })
 </script>
 
