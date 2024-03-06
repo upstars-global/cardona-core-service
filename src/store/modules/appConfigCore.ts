@@ -1,4 +1,5 @@
 import ApiService from '../../services/api'
+import { MenuType } from '../../@model/enums/menuType'
 
 export default {
   namespaced: true,
@@ -22,12 +23,14 @@ export default {
     } */
     defaultCurrency: '',
     currencies: [],
+    menuType: MenuType.main,
   },
   getters: {
     typeMenu: ({ layout }) => layout.menu.type,
     dirOption: ({ layout }) => (layout.isRTL ? 'rtl' : 'ltr'),
     allCurrencies: ({ currencies }) => currencies,
     defaultCurrency: ({ defaultCurrency }) => defaultCurrency,
+    isMenuTypeMain(state) { return state.menuType === MenuType.main },
   },
   mutations: {
     TOGGLE_RTL(state) {
@@ -71,6 +74,9 @@ export default {
       state.defaultCurrency = defaultCurrency
       state.currencies = currencies
     },
+    UPDATE_MENU_TYPE(state, menuType) {
+      state.menuType = menuType
+    },
   },
   actions: {
     async fetchConfig({ commit, state, rootGetters }) {
@@ -87,6 +93,9 @@ export default {
         }
         catch (e) {}
       }
+    },
+    onToggleMenuType({ commit, getters }) {
+      commit('UPDATE_MENU_TYPE', getters.isMenuTypeMain ? MenuType.admin : MenuType.main)
     },
   },
 }

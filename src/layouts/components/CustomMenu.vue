@@ -4,6 +4,7 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors } from '../../@model/vuetify'
 import { useConfigStore } from '@core/stores/config'
@@ -12,6 +13,7 @@ import { Theme } from '@core/enums'
 const { t } = useI18n()
 
 const store = useStore()
+const router = useRouter()
 
 const userName = computed(() => {
   return store.getters.userInfo?.userName || 'No name'
@@ -36,6 +38,10 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
     {
       title: t('customMenu.adminSection'),
       icon: IconsList.CommandIcon,
+      action: async () => {
+        await store.dispatch('appConfigCore/onToggleMenuType')
+        router.push({ name: 'UsersControlList' })
+      },
     },
     {
       title: t(`customMenu.${actualMode}Mode`),
