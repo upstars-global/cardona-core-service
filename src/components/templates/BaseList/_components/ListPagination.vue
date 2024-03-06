@@ -25,8 +25,6 @@ const currentPage = computed({
     emits('update:modelValue', value)
   },
 })
-
-const numberOfPages = computed(() => props.paginationConfig.numberOfPages.value)
 </script>
 
 <template>
@@ -49,7 +47,7 @@ const numberOfPages = computed(() => props.paginationConfig.numberOfPages.value)
       <VPagination
         v-model="currentPage"
         :length="total"
-        :total-visible="numberOfPages"
+        :total-visible="6"
         rounded="circle"
         class="ml-auto"
       />

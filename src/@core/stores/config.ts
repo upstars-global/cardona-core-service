@@ -1,7 +1,6 @@
-import { watch, onMounted } from 'vue';
-import { usePreferredColorScheme } from '@vueuse/core';
-import { defineStore } from 'pinia';
-import { storeToRefs } from 'pinia'
+import { onMounted, watch } from 'vue'
+import { usePreferredColorScheme } from '@vueuse/core'
+import { defineStore, storeToRefs } from 'pinia'
 import { useTheme } from 'vuetify'
 import { cookieRef, useLayoutConfigStore } from '@layouts/stores/config'
 import { themeConfig } from '@themeConfig'
@@ -57,6 +56,7 @@ export const useConfigStore = defineStore('config', () => {
     isAppRTL,
   }
 })
+
 // !SECTION
 
 // SECTION Init
@@ -80,4 +80,5 @@ export const initConfigStore = () => {
       vuetifyTheme.global.name.value = userPreferredColorScheme.value
   })
 }
+
 // !SECTION
