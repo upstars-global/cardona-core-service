@@ -44,7 +44,6 @@ declare module 'vue' {
     CardStatisticsVertical: typeof import('./src/@core/components/cards/CardStatisticsVertical.vue')['default']
     CardStatisticsVerticalSimple: typeof import('./src/@core/components/CardStatisticsVerticalSimple.vue')['default']
     ChangePassword: typeof import('./src/components/change-password/ChangePassword.vue')['default']
-    ChangePasswordInput: typeof import('./src/components/change-password/ChangePasswordInput.vue')['default']
     CheckField: typeof import('./src/components/templates/FieldGenerator/_components/CheckField.vue')['default']
     CheckGroupField: typeof import('./src/components/templates/FieldGenerator/_components/CheckGroupField.vue')['default']
     CodeViewEditor: typeof import('./src/components/CodeViewEditor.vue')['default']

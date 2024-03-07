@@ -19,11 +19,17 @@ const valueColsCount = computed(() => 12 - props.cols)
 </script>
 
 <template>
-  <div v-if="canView" class="field-generator">
-    <VRow class="font-small-3 p-0 px-0">
+  <div
+    v-if="canView"
+    class="field-generator"
+  >
+    <VRow
+      class="font-small-3 "
+      no-gutters
+    >
       <VCol
         :cols="cols"
-        class="wrapper-label py-1"
+        class="wrapper-label"
         style="max-width: 154px"
       >
         <div
