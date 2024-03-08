@@ -1,5 +1,5 @@
 export enum IconsList {
-  ActivityIcon = 'ActivityIcon',
+  ActivityIcon = 'tabler-activity',
   AirplayIcon = 'AirplayIcon',
   AlertCircleIcon = 'AlertCircleIcon',
   AlertOctagonIcon = 'AlertOctagonIcon',

@@ -61,7 +61,7 @@ const layoutConfig = useLayoutConfigStore()
                   class="d-flex"
                 >
                   <template v-if="index">
-                    {{ $t(`title.${item.title}`) }}
+                    {{ $t(`title.${item.title || item.text}`) }}
                   </template>
                   <template v-else>
                     <VIcon :icon="IconsList.HomeIcon" />
