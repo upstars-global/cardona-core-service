@@ -15,6 +15,8 @@ interface Emits {
 const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
 
+const LARGE_SIZE_BUTTON = 1000
+
 const total = computed(() => {
   return Math.ceil(+props.paginationConfig.total.value / props.paginationConfig.perPage.value) || 0
 })
@@ -32,7 +34,7 @@ const currentPage = computed({
     <VCol
       cols="12"
       sm="6"
-      class="d-flex align-center justify-content-center justify-content-sm-start p-0"
+      class="d-flex align-center justify-center justify-content-sm-start p-0"
     >
       <span class="text-muted">
         {{ $t('pagination.showing', dataMeta) }}
@@ -42,7 +44,8 @@ const currentPage = computed({
     <VCol
       cols="12"
       sm="6"
-      class="d-flex align-center justify-content-center px-0 py-0"
+      class="d-flex align-center justify-center px-0 py-0"
+      :class="{ 'is-longer-item': LARGE_SIZE_BUTTON < total }"
     >
       <VPagination
         v-model="currentPage"
@@ -54,3 +57,20 @@ const currentPage = computed({
     </vcol>
   </VRow>
 </template>
+
+<style scoped lang="scss">
+.is-longer-item {
+  :deep(.v-pagination__list) {
+    .v-pagination__item:nth-child(8) {
+      button {
+        border-radius: initial;
+        width: auto;
+        span {
+          padding: 0 0.5rem;
+          border-radius: 6.25rem;
+        }
+      }
+    }
+  }
+}
+</style>

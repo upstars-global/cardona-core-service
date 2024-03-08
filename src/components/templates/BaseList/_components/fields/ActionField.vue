@@ -1,7 +1,9 @@
 <script lang="ts">
-import { defineComponent, computed, PropType } from 'vue'
-import { useUtils as useI18nUtils } from '../../../../@core/libs/i18n'
-import { ActionType, ActionVariant } from '../../../../@model/action'
+import type { PropType } from 'vue'
+import { computed, defineComponent } from 'vue'
+import { useI18n } from 'vue-i18n'
+import type { ActionType } from '../../../../../@model/enums/action'
+import { ActionVariant } from '../../../../../@model/enums/action'
 import StatementField from './StatementField.vue'
 
 export default defineComponent({
@@ -16,7 +18,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const { t } = useI18nUtils()
+    const { t } = useI18n()
     const badgeVariant = computed(() => `light-${ActionVariant[props.type]}`)
     const badgeLabel = computed(() => props.type && t(`action.${props.type}`))
 
