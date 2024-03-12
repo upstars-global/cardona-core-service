@@ -4,8 +4,11 @@ import { useI18n } from 'vue-i18n'
 import NoFiles from '../UploadImage/NoFiles.vue'
 import usePagination from '../../use/pagination'
 import store from '../../store'
-import { IconsList } from '@/@model/enums/icons'
-import { VColors, VSizes, VVariants } from '@/@model/vuetify'
+import AppTextField from '../../@core/components/app-form-elements/AppTextField.vue'
+import { IconsList } from '../../@model/enums/icons'
+import { VColors, VSizes, VVariants } from '../../@model/vuetify'
+import GridView from './GridView.vue'
+import ListView from './ListView.vue'
 
 const props = withDefaults(defineProps<{
   urlFile: string

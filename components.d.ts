@@ -54,6 +54,7 @@ declare module 'vue' {
     CopyField: typeof import('./src/components/templates/_components/CopyField.vue')['default']
     CopyShortField: typeof import('./src/components/templates/BaseList/_components/fields/CopyShortField.vue')['default']
     CopyView: typeof import('./src/components/templates/ViewGenerator/_components/CopyView.vue')['default']
+    CountriesSelect: typeof import('./src/components/CountriesSelect.vue')['default']
     CreateAppDialog: typeof import('./src/components/dialogs/CreateAppDialog.vue')['default']
     CTable: typeof import('./src/components/CTable/index.vue')['default']
     CustomCheckboxes: typeof import('./src/@core/components/app-form-elements/CustomCheckboxes.vue')['default']

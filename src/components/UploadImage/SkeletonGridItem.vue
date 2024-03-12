@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconsList } from '@/@model/enums/icons'
+import { IconsList } from '../../@model/enums/icons'
 </script>
 
 <template>

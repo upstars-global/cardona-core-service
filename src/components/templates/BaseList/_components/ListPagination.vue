@@ -34,7 +34,7 @@ const currentPage = computed({
     <VCol
       cols="12"
       sm="6"
-      class="d-flex align-center justify-center justify-content-sm-start p-0"
+      class="d-flex align-center justify-start justify-content-sm-start p-0"
     >
       <span class="text-muted">
         {{ $t('pagination.showing', dataMeta) }}

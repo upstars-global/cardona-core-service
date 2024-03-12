@@ -37,7 +37,7 @@ export enum IconsList {
   BookOpenIcon = 'BookOpenIcon',
   BookIcon = 'tabler-book-2',
   BookmarkIcon = 'BookmarkIcon',
-  BoxIcon = 'BoxIcon',
+  BoxIcon = 'tabler-box',
   BriefcaseIcon = 'BriefcaseIcon',
   CalendarIcon = 'tabler-calendar-event',
   CameraOffIcon = 'CameraOffIcon',

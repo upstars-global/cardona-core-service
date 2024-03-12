@@ -8,6 +8,8 @@ import type {
 import {
   filterString,
 } from '../../../helpers/text-editor'
+import TextEditorWysiwyg from '../../TextEditorWysiwyg/index.vue'
+import InputTextWrapper from '../../templates/LocaleForm/_components/InputTextWrapper.vue'
 
 interface Props {
   modelValue: any

@@ -450,6 +450,13 @@
       "adc(LastMonth)": "Calculate average daily check for last “N” months",
       "partnerIdMatch(needle)": "Match partner id",
       "adc(lastNMonths)": "Calculate average daily check for last N months"
+    },
+    "countriesSelect": {
+      "banInCountries": "Ban in countries",
+      "allowInCountries": "Allow in countries",
+      "bannedCountries": "Banned countries",
+      "allowedCountries": "Allowed countries",
+      "allowAll": "Allow All"
     }
   },
   "page": {
