@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { VColors, VVariants } from '../../@model/vuetify'
+import FilesUpload from '../FilesUpload/FilesUpload.vue'
+import FileGallery from './FileGallery.vue'
 
 const props = defineProps<{
   modelValue: string

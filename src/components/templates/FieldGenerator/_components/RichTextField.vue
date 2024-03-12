@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useStore } from 'vuex'
 import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg/index.vue'
-import store from '../../../../store'
 import { filterString } from '../../../../helpers/text-editor'
 import type { RichTextBaseField } from '../../../../@model/templates/baseField'
 
@@ -21,9 +21,9 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: string | number): void
 }>()
 
+const store = useStore()
 const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
 const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
-const watchOptions = { immediate: true, deep: true }
 
 const localModelValue = computed({
   get: () => props.modelValue,

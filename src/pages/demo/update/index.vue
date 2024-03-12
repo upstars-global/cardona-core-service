@@ -2,8 +2,8 @@
 import { useDemoSection } from '../useDemo'
 import BaseSection from '../../../components/templates/BaseSection/index.vue'
 import { PageType } from '../../../@model/templates/baseSection'
+import { VColors } from '../../../@model/vuetify'
 import DemoForm from '@/pages/demo/_components/DemoForm.vue'
-import { VColors } from '@/@model/vuetify'
 </script>
 
 <template>

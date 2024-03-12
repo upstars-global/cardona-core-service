@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
+import BaseModal from '../../../../BaseModal/index.vue'
 import ImageField from './ImageField.vue'
 
 const props = defineProps<{
@@ -7,6 +8,8 @@ const props = defineProps<{
   imagePath: string
   compressionForPreview?: number
 }>()
+
+const modal = inject('modal')
 
 const previewAdditionalParams = computed(() =>
   props.compressionForPreview ? `?ar=${props.compressionForPreview}` : '',
@@ -16,13 +19,16 @@ const previewImage = computed(() => props.imagePath + previewAdditionalParams.va
 </script>
 
 <template>
-  <div class="d-flex justify-content-center align-center image-detail-field" v-if="imagePath">
+  <div
+    v-if="imagePath"
+    class="d-flex justify-content-center align-center image-detail-field"
+  >
     <ImageField
       :image-path="previewImage"
-      @click.stop="$modal.showModal(`${id}-image-detail`)"
+      @click.stop="modal.showModal(`${id}-image-detail`)"
     />
     <BaseModal :id="`${id}-image-detail`">
-      <div class="d-flex justify-content-center align-center">
+      <div class="d-flex justify-center align-center pa-5">
         <img
           :src="imagePath"
           alt="full img"
