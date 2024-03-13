@@ -271,11 +271,16 @@ export default defineComponent({
           }
         : {
             ...form.value,
-            seo: isCreateOrUpdateSeo.value ? form.value.seo : null,
-            fieldTranslations: isCreateOrUpdateSeo.value ? form.value.fieldTranslations : null,
-            localisationParameters: isCreateOrUpdateSeo.value
-              ? form.value.localisationParameters
-              : null,
+            seo:
+              isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission ? form.value.seo : null,
+            fieldTranslations:
+              isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission
+                ? form.value.fieldTranslations
+                : null,
+            localisationParameters:
+              isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission
+                ? form.value.localisationParameters
+                : null,
           }
 
       const transformedForm: any = transformFormData(formData)
