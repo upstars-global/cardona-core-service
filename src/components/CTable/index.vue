@@ -11,7 +11,7 @@ import { AlignType } from '../../@model/templates/tableFields'
 import { IconsList } from '../../@model/enums/icons'
 import { SortDirection } from '../../@model/templates/baseList'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   fields: TableField[]
   rows: Array<Record<string, unknown>>
   class?: string
@@ -25,7 +25,10 @@ const props = defineProps<{
   itemsPerPage: number
   selectedItems: Array<Record<string, unknown>>
   isLoadingList: boolean
-}>()
+  disabledRowIds?: string[]
+}>(), {
+  disabledRowIds: [],
+})
 
 const emits = defineEmits<{
   (e: 'rowSelected', items: Array<Record<string, unknown>>): void
@@ -42,6 +45,7 @@ const compareClasses = (item: Record<string, unknown>, isSelected: boolean): Rec
     [`table-light-${item.rowVariant}`]: !!item.rowVariant,
     'c-table__row--selected': isSelected,
     'is-hover-row': props.hover,
+    'row-disabled': props.disabledRowIds?.includes(item.id),
   }
 }
 
@@ -184,6 +188,7 @@ const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxS
           >
             <VCheckbox
               :model-value="isSelected([item])"
+              :disabled="disabledRowIds?.includes(item.raw.id)"
               @update:model-value="select([item], $event)"
               @click.stop
             />

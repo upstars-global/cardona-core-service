@@ -8,7 +8,7 @@ import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
 import { DownloadFormat } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
-import RemoveModal from '../../../components/templates/BaseList/_components/fields/RemoveModal.vue'
+import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
 import { ListSort } from '../../../@model'
 import { useFilters } from '../../../components/FiltersBlock/useFilters'
@@ -78,6 +78,7 @@ const router = useRouter()
 const route = useRoute()
 const searchQuery = ref('')
 const currentPageName = route.name?.toString()
+const disableRowIds = ref<string[]>([])
 
 const {
   entityName,
@@ -528,6 +529,8 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
 onBeforeMount(async () => {
   await getList()
 })
+
+defineExpose({ reFetchList, selectedItems, disableRowIds })
 </script>
 
 <template>
@@ -579,42 +582,51 @@ onBeforeMount(async () => {
       </template>
     </SideBar>
 
-    <ListSearch
-      v-model="searchQuery"
-      :right-search-btn="{
-        canCreate: isShownCreateBtn,
-        createPage: CreatePageName,
-      }"
-      :selected-filters="selectedFilters"
-      :export-selector="{
-        canShow: !!(config.withExport && canExport),
-        disable: !total,
-      }"
-      :config="config"
-      @on-click-filter="isFiltersShown = !isFiltersShown"
-      @on-export-format-selected="onExportFormatSelected"
-    >
-      <template #right-search-btn>
-        <slot
-          name="right-search-btn"
-          :can-create="canCreate"
-          :create-page-name="CreatePageName"
-        />
-      </template>
-      <template #left-search-btn>
-        <slot name="left-search-btn" />
-      </template>
-    </ListSearch>
-
-    <FiltersBlock
-      v-if="config.filterList?.isNotEmpty"
-      :is-open="config.filterList?.isNotEmpty && isFiltersShown"
-      :entity-name="entityName"
-      :filters="filters"
-      :size="size"
-      @apply="reFetchList"
-      @change-selected-filters="onChangeSelectedFilters"
+    <slot
+      name="table-header"
+      :selected-items="selectedItems"
+      :total="total"
+      :search="searchQuery"
     />
+
+    <div>
+      <ListSearch
+        v-model="searchQuery"
+        :right-search-btn="{
+          canCreate: isShownCreateBtn,
+          createPage: CreatePageName,
+        }"
+        :selected-filters="selectedFilters"
+        :export-selector="{
+          canShow: !!(config.withExport && canExport),
+          disable: !total,
+        }"
+        :config="config"
+        @on-click-filter="isFiltersShown = !isFiltersShown"
+        @on-export-format-selected="onExportFormatSelected"
+      >
+        <template #right-search-btn>
+          <slot
+            name="right-search-btn"
+            :can-create="canCreate"
+            :create-page-name="CreatePageName"
+          />
+        </template>
+        <template #left-search-btn>
+          <slot name="left-search-btn" />
+        </template>
+      </ListSearch>
+
+      <FiltersBlock
+        v-if="config.filterList?.isNotEmpty"
+        :is-open="config.filterList?.isNotEmpty && isFiltersShown"
+        :entity-name="entityName"
+        :filters="filters"
+        :size="size"
+        @apply="reFetchList"
+        @change-selected-filters="onChangeSelectedFilters"
+      />
+    </div>
 
     <VCard class="table-card-settings">
       <div
@@ -681,6 +693,7 @@ onBeforeMount(async () => {
         :hover="config.hover"
         :selected-items="selectedItems"
         :items-per-page="perPage"
+        :disabled-row-ids="disableRowIds"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"

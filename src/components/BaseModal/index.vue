@@ -13,6 +13,7 @@ interface Emits {
   (event: 'show'): void
   (event: 'hide'): void
 }
+defineOptions({ name: 'BaseModal' })
 
 const props = withDefaults(defineProps<Props>(), { title: '' })
 
