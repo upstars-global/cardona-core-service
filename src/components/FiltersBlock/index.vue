@@ -99,7 +99,10 @@ const listNotSelected = computed(() => {
 </script>
 
 <template>
-  <VRow no-gutters>
+  <VRow
+    no-gutters
+    :class="{ 'mt-5': isOpen }"
+  >
     <VCol
       class="p-0"
       :class="{ 'filters-block-small': isSmallBlock }"

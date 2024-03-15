@@ -8,7 +8,7 @@ import { basePermissions } from '../../../helpers/base-permissions'
 import { PageType } from '../../../@model/templates/baseSection'
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
 import { VColors, VVariants } from '../../../@model/vuetify'
-import RemoveModal from '../BaseList/_components/fields/RemoveModal.vue'
+import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean

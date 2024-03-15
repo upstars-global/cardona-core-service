@@ -7,7 +7,7 @@ import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { i18n } from '../../plugins/i18n'
 import BaseModal from '../../components/BaseModal/index.vue'
 import { UploadFileSizes } from '../../@model/enums/uploadFileSizes'
-import RemoveModal from '../templates/BaseList/_components/fields/RemoveModal.vue'
+import RemoveModal from '../../components/BaseModal/RemoveModal.vue'
 import FilesUpload from '../FilesUpload/FilesUpload.vue'
 import ModalFileUpload from './ModalFileUpload.vue'
 
