@@ -1,11 +1,11 @@
 import type { App, InjectionKey } from 'vue'
 
 interface IModalInstance {
-  show: () => void
+  show: (payload: Record<string, unknown>) => void
   hide: () => void
 }
 
-interface IModalPlugin {
+export interface IModalPlugin {
   modals: Record<string, IModalInstance>
   showModal: (modalKey: string) => void
   hideModal: (modalKey: string) => void
@@ -18,9 +18,9 @@ export default function (app: App) {
   const modal = (app: App) => {
     const modals: Record<string, IModalInstance> = {}
 
-    const showModal = (modalKey: string) => {
+    const showModal = (modalKey: string, payload: Record<string, unknown>) => {
       if (modals[modalKey])
-        modals[modalKey].show()
+        modals[modalKey].show(payload)
     }
 
     const hideModal = (modalKey: string) => {
