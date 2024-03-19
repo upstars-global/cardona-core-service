@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, inject, onBeforeUnmount, onMounted, ref } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { IconsList } from '../../@model/enums/icons'
 
@@ -22,9 +22,13 @@ const emits = defineEmits<Emits>()
 const modal = inject('modal')
 
 const showModal = ref(false)
+const payload = ref(null)
 
-const show = () => {
+const title = computed(() => payload.value?.title || props.title)
+
+const show = payloadData => {
   showModal.value = true
+  payload.value = payloadData
   emits('show')
 }
 
@@ -76,7 +80,10 @@ const onHide = (value: boolean) => {
             <VIcon :icon="IconsList.XIcon" />
           </VBtn>
         </div>
-        <slot :action="{ show, hide }" />
+        <slot
+          :action="{ show, hide }"
+          :payload="payload"
+        />
       </VCard>
     </template>
   </VDialog>

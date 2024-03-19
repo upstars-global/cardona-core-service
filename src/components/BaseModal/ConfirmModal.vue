@@ -5,8 +5,8 @@ import BaseModal from '../BaseModal/index.vue'
 interface Props {
   entityName?: string
   modalId: string
-  title: string
-  description: string
+  title?: string
+  description?: string
 }
 
 interface OnCLickModalOkPayload {
@@ -37,9 +37,9 @@ const onCloseModal = (hide: Function) => {
     :id="modalId"
     :title="title"
   >
-    <template #default="{ action }">
+    <template #default="{ action, payload }">
       <VCardText class="d-flex flex-column">
-        <span>{{ description }}</span>
+        <span>{{ payload.description || description }}</span>
       </VCardText>
       <hr>
       <VCardText class="d-flex justify-end gap-3 flex-wrap py-4">

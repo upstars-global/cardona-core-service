@@ -301,6 +301,9 @@ export interface IBaseSectionConfig {
 
   /** loadingEndpointArr - Масив url за загрузкой которых нужно следить и показывать прелодер */
   readonly loadingEndpointArr?: Array<string>
+
+  /** ignoreSeoPermission - Флаг для передачи на бекенд формы с seo and localisation полями */
+  readonly ignoreSeoPermission?: boolean
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to base section model
@@ -312,7 +315,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly customApiPrefix?: string
   readonly loadingEndpointArr: Array<string>
   readonly customPermissionPrefix?: string
-
+  readonly ignoreSeoPermission?: boolean
   constructor(data: IBaseSectionConfig) {
     this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
@@ -322,6 +325,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
     this.customApiPrefix = data?.customApiPrefix
     this.loadingEndpointArr = data?.loadingEndpointArr || []
     this.customPermissionPrefix = data?.customPermissionPrefix
+    this.ignoreSeoPermission = data?.ignoreSeoPermission || false
   }
 }
 

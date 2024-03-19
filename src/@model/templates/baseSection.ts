@@ -8,6 +8,6 @@ export interface UseEntityType<T> {
   readonly pageName?: string
   readonly EntityFormClass: { new (data?: any): T }
   readonly onSubmitCallback?: (id: string) => void
-  readonly onBeforeSubmitCb?: (formData: any) => Promise<boolean>
+  readonly onBeforeSubmitCb?: (formData: any) => boolean
 }
 export default {}

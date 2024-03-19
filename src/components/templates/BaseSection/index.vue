@@ -9,6 +9,8 @@ import { PageType } from '../../../@model/templates/baseSection'
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
 import { VColors, VVariants } from '../../../@model/vuetify'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
+import ConfirmModal from '../../../components/BaseModal/ConfirmModal.vue'
+import { ModalsId } from '../../..//@model/modalsId'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean
@@ -37,7 +39,7 @@ const tabNameError = ref('')
 const fieldNameError = ref('')
 
 const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb }
-    = props.useEntity()
+  = props.useEntity()
 
 const formRef = ref(null)
 const ListPageName: string = pageName ? `${pageName}List` : `${entityName}List`
@@ -56,7 +58,7 @@ const deleteActionName = `${moduleName}/deleteEntity`
 // Permissions
 
 const { canCreateSeo, canUpdate, canUpdateSeo, canRemove, canViewSeo }
-    = basePermissions<BaseSectionConfig>({ entityName, config: props.config })
+  = basePermissions<BaseSectionConfig>({ entityName, config: props.config })
 
 const generateEntityUrl = () => {
   const indexSymbolNextDash = entityName.indexOf('-') + 1
@@ -162,37 +164,57 @@ const setTabError = (fieldName: string) => {
   }
 }
 
+const isDisableSubmit = computed(() => [isLoadingPage.value, isDisableSubmitBtn.value, isExistsEndpointsWithError.value].some(Boolean))
+
+// Handlers
+const transformedForm = ref({})
+const actionName = computed(() => isCreatePage ? createActionName : updateActionName)
+const isStaySubmit = ref(false)
+
 const isUpdateSeoOnly = computed(
   () => isUpdatePage && canCreateSeo && canUpdateSeo && !canUpdate,
 )
 
-const isDisableSubmit = computed(() => [isLoadingPage.value, isDisableSubmitBtn.value, isExistsEndpointsWithError.value].some(Boolean))
+const isCreateOrUpdateSeo = computed(
+  () => (isCreatePage && canCreateSeo) || (isUpdatePage && canUpdateSeo),
+)
 
-// Handlers
 const onSubmit = async (isStay: boolean) => {
   if (!(await validate()) || isExistsEndpointsWithError.value)
     return
-
-  const actionName: string = isCreatePage ? createActionName : updateActionName
+  isStaySubmit.value = isStay
 
   const formData = isUpdateSeoOnly.value
     ? {
-        id: form.value.id,
-        seo: form.value.seo,
-        fieldTranslations: form.value.fieldTranslations,
-        localisationParameters: form.value.localisationParameters,
-      }
-    : form.value
+      id: form.value.id,
+      seo: form.value.seo,
+      fieldTranslations: form.value.fieldTranslations,
+      localisationParameters: form.value.localisationParameters,
+    }
+    : {
+      ...form.value,
+      seo: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission ? form.value.seo : null,
+      fieldTranslations: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission ? form.value.fieldTranslations : null,
+      localisationParameters: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission
+        ? form.value.localisationParameters
+        : null,
+    }
 
-  const transformedForm: any = transformFormData(formData)
-  if (onBeforeSubmitCb && !(await onBeforeSubmitCb(formData)))
+  transformedForm.value = transformFormData(formData)
+
+  if (onBeforeSubmitCb && !onBeforeSubmitCb(formData))
     return
 
+  await onSave()
+}
+
+const onSave = async () => {
+  modal.hideModal(ModalsId.ConfirmModal)
   try {
-    const data = await store.dispatch(actionName, {
+    const data = await store.dispatch(actionName.value, {
       type: entityName,
       data: {
-        form: transformedForm,
+        form: transformedForm.value,
 
         // formRef: refFormObserver.value,
       },
@@ -200,13 +222,13 @@ const onSubmit = async (isStay: boolean) => {
     })
 
     if (isCreatePage) {
-      isStay && data
+      isStaySubmit.value && data
         ? await router.push({ name: UpdatePageName, params: { id: String(data?.id) } })
         : await router.push({ name: ListPageName })
     }
 
     if (onSubmitCallback)
-      await onSubmitCallback(String(transformedForm?.id))
+      await onSubmitCallback(String(transformedForm.value?.id))
   }
   catch (e) {
     if (e?.validationErrors?.[0])
@@ -304,6 +326,10 @@ onBeforeUnmount(() => {
       </div>
     </slot>
 
+    <ConfirmModal
+      :modal-id="ModalsId.ConfirmModal"
+      @on-click-modal-ok="onSave"
+    />
     <RemoveModal
       :remove-modal-id="removeModalId"
       :entity-name="entityName"
