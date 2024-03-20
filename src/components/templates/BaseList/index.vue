@@ -523,14 +523,14 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
   })
 
   hide()
-  reFetchList()
+  await reFetchList()
 }
 
 onBeforeMount(async () => {
   await getList()
 })
 
-defineExpose({ reFetchList, selectedItems, disableRowIds })
+defineExpose({ reFetchList, selectedItems, disableRowIds, sortData })
 </script>
 
 <template>
@@ -582,51 +582,42 @@ defineExpose({ reFetchList, selectedItems, disableRowIds })
       </template>
     </SideBar>
 
-    <slot
-      name="table-header"
-      :selected-items="selectedItems"
-      :total="total"
-      :search="searchQuery"
+    <ListSearch
+      v-model="searchQuery"
+      :right-search-btn="{
+        canCreate: isShownCreateBtn,
+        createPage: CreatePageName,
+      }"
+      :selected-filters="selectedFilters"
+      :export-selector="{
+        canShow: !!(config.withExport && canExport),
+        disable: !total,
+      }"
+      :config="config"
+      @on-click-filter="isFiltersShown = !isFiltersShown"
+      @on-export-format-selected="onExportFormatSelected"
+    >
+      <template #right-search-btn>
+        <slot
+          name="right-search-btn"
+          :can-create="canCreate"
+          :create-page-name="CreatePageName"
+        />
+      </template>
+      <template #left-search-btn>
+        <slot name="left-search-btn" />
+      </template>
+    </ListSearch>
+
+    <FiltersBlock
+      v-if="config.filterList?.isNotEmpty"
+      :is-open="config.filterList?.isNotEmpty && isFiltersShown"
+      :entity-name="entityName"
+      :filters="filters"
+      :size="size"
+      @apply="reFetchList"
+      @change-selected-filters="onChangeSelectedFilters"
     />
-
-    <div>
-      <ListSearch
-        v-model="searchQuery"
-        :right-search-btn="{
-          canCreate: isShownCreateBtn,
-          createPage: CreatePageName,
-        }"
-        :selected-filters="selectedFilters"
-        :export-selector="{
-          canShow: !!(config.withExport && canExport),
-          disable: !total,
-        }"
-        :config="config"
-        @on-click-filter="isFiltersShown = !isFiltersShown"
-        @on-export-format-selected="onExportFormatSelected"
-      >
-        <template #right-search-btn>
-          <slot
-            name="right-search-btn"
-            :can-create="canCreate"
-            :create-page-name="CreatePageName"
-          />
-        </template>
-        <template #left-search-btn>
-          <slot name="left-search-btn" />
-        </template>
-      </ListSearch>
-
-      <FiltersBlock
-        v-if="config.filterList?.isNotEmpty"
-        :is-open="config.filterList?.isNotEmpty && isFiltersShown"
-        :entity-name="entityName"
-        :filters="filters"
-        :size="size"
-        @apply="reFetchList"
-        @change-selected-filters="onChangeSelectedFilters"
-      />
-    </div>
 
     <VCard class="table-card-settings">
       <div
@@ -693,7 +684,6 @@ defineExpose({ reFetchList, selectedItems, disableRowIds })
         :hover="config.hover"
         :selected-items="selectedItems"
         :items-per-page="perPage"
-        :disabled-row-ids="disableRowIds"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"
@@ -709,6 +699,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds })
             :field="field"
             :item="item.raw"
             :cell="cell"
+            :value="item.value"
             :get-update-route="getUpdateRoute"
             @click.stop
           />

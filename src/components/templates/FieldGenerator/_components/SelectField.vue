@@ -94,7 +94,7 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :class="selectClasses"
       :disabled="disabled"
       :clearable="field.clearable"
-      append-to-body
+      :append-to-body="field.withCalculatePosition"
       :calculate-position="withPopper"
       @search="onSearch"
     >

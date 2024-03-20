@@ -54,13 +54,13 @@ const onHide = (value: boolean) => {
 <template>
   <VDialog
     v-model="showModal"
-    width="auto"
+    class="base-modal"
     @update:model-value="onHide"
   >
     <template #default>
       <VCard class="modal-card">
         <div
-          class="modal-header with-absolute px-6 pt-6 d-flex align-end justify-space-between"
+          class="modal-header with-absolute px-6 py-3 d-flex align-end justify-space-between"
           :class="{
             'without-header-title': !title,
           }"
@@ -96,7 +96,7 @@ const onHide = (value: boolean) => {
 .modal-header {
   position: relative;
   border-radius: 0.375rem 0.375rem 0 0;
-  min-width: 500px;
+  min-width: initial;
 
   &__close {
     position: absolute;
