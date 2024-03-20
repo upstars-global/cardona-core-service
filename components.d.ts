@@ -451,6 +451,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ScrollToTop: typeof import('./src/@core/components/ScrollToTop.vue')['default']
+    SearchInput: typeof import('./src/components/templates/BaseList/_components/SearchInput.vue')['default']
     SelectField: typeof import('./src/components/templates/FieldGenerator/_components/SelectField.vue')['default']
     SeoForm: typeof import('./src/components/templates/SeoForm/index.vue')['default']
     ShareProjectDialog: typeof import('./src/components/dialogs/ShareProjectDialog.vue')['default']

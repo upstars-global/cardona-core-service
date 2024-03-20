@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<{
   config?: BaseSectionConfig
   pageType?: PageType
   useEntity: Function
+  localEntityData?: Record<string, unknown>
 }>(),
 {
   useEntity: undefined,
@@ -114,6 +115,11 @@ if (props.withReadAction && entityId) {
     form.value = new EntityFormClass(receivedEntity)
   })
 }
+
+else if (props.localEntityData) {
+  form.value = new EntityFormClass(props.localEntityData)
+}
+
 else {
   form.value = new EntityFormClass()
 }
@@ -256,6 +262,11 @@ const confirmRemoveModal = async () => {
 
 onBeforeUnmount(() => {
   store.dispatch('resetErrorUrls')
+})
+
+defineExpose({
+  form,
+  validate,
 })
 </script>
 

@@ -6,6 +6,11 @@ export const getISOStringWithoutTimezone = (isoString: string | Date): string =>
     return new Date(utcStringWithoutTimezone).toISOString()
 }
 
+export  const isISODate = (dateString: string | Date): boolean =>  {
+  const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/;
+  return isoRegex.test(dateString.toString());
+}
+
 export const getLocaleDateString = (date: Date, language = navigator.language): string => {
     return date.toLocaleDateString(language, {
         hour: '2-digit',
@@ -21,6 +26,7 @@ export const getLocaleDateStringWithoutTimezone = (isoString: string): string =>
 }
 
 export const getUTCISOString = (dateString: string | Date): string => {
+    if (!isISODate(dateString)) return  dateString.toString()
     const localeDateString: string = getLocaleDateString(new Date(dateString))
 
     return transformDateToISO(localeDateString)
