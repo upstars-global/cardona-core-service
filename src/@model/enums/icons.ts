@@ -239,7 +239,7 @@ export enum IconsList {
   SunsetIcon = 'SunsetIcon',
   TabletIcon = 'TabletIcon',
   TagIcon = 'TagIcon',
-  TargetIcon = 'TargetIcon',
+  TargetIcon = 'tabler-target',
   TerminalIcon = 'TerminalIcon',
   ThermometerIcon = 'ThermometerIcon',
   ThumbsDownIcon = 'ThumbsDownIcon',
