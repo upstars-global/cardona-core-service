@@ -70,48 +70,49 @@ const onCreateCopy = () => {
       </VBtn>
     </template>
 
-    <slot name="action-items" />
-
-    <VList>
-      <VListItem
-        v-if="canUpdate && config.withDeactivation"
-        :prepend-icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
-        @click="emits('on-toggle-status', item)"
-      >
-        <VListItemTitle>
-          {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
-        </VListItemTitle>
-      </VListItem>
-      <VListItem
-        v-if="canShowEdit"
-        :prepend-icon="IconsList.EditIcon"
-        @click="onUpdateItem"
-      >
-        <VListItemTitle>
-          {{ $t('action.edit') }}
-        </VListItemTitle>
-      </VListItem>
-      <VListItem
-        v-if="canRemoveItem"
-        @click="emits('on-remove', item)"
-      >
-        <template #prepend>
-          <VIcon :icon="IconsList.Trash2Icon" />
-        </template>
-        <VListItemTitle>
-          {{ $t('action.remove') }}
-        </VListItemTitle>
-      </VListItem>
-      <VListItem
-        v-if="config.createFromCopy"
-        :prepend-icon="IconsList.CopyIcon"
-        @click="onCreateCopy"
-      >
-        <VListItemTitle>
-          {{ $t('action.makeCopy') }}
-        </VListItemTitle>
-      </VListItem>
-    </VList>
+    <slot name="action-items">
+      <VList>
+        <slot name="additional-action-items" />
+        <VListItem
+          v-if="canUpdate && config.withDeactivation"
+          :prepend-icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
+          @click="emits('on-toggle-status', item)"
+        >
+          <VListItemTitle>
+            {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
+          </VListItemTitle>
+        </VListItem>
+        <VListItem
+          v-if="canShowEdit"
+          :prepend-icon="IconsList.EditIcon"
+          @click="onUpdateItem"
+        >
+          <VListItemTitle>
+            {{ $t('action.edit') }}
+          </VListItemTitle>
+        </VListItem>
+        <VListItem
+          v-if="canRemoveItem"
+          @click="emits('on-remove', item)"
+        >
+          <template #prepend>
+            <VIcon :icon="IconsList.Trash2Icon" />
+          </template>
+          <VListItemTitle>
+            {{ $t('action.remove') }}
+          </VListItemTitle>
+        </VListItem>
+        <VListItem
+          v-if="config.createFromCopy"
+          :prepend-icon="IconsList.CopyIcon"
+          @click="onCreateCopy"
+        >
+          <VListItemTitle>
+            {{ $t('action.makeCopy') }}
+          </VListItemTitle>
+        </VListItem>
+      </VList>
+    </slot>
   </VMenu>
 </template>
 
