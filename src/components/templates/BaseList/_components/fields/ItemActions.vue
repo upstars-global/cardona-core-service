@@ -28,8 +28,15 @@ const emits = defineEmits<Emits>()
 const router = useRouter()
 const slots = useSlots()
 
+enum SLOTS {
+  ACTION_ITEMS = 'action-items',
+  ADDITIONAL_ACTION_ITEMS = 'additional-action-items',
+}
+
+const existSlot = (slotKey: SLOTS) => !!slots[slotKey] && !!slots[slotKey]()?.length
+
 const isExistsActionItemsSlot = computed(
-  () => !!slots['action-items'] && !!slots['action-items']()?.length,
+  () => [SLOTS.ACTION_ITEMS, SLOTS.ADDITIONAL_ACTION_ITEMS].some(slotName => !!slots[slotName] && !!slots[slotName]()?.length),
 )
 
 const isShowActions = computed(() => {
@@ -70,49 +77,52 @@ const onCreateCopy = () => {
       </VBtn>
     </template>
 
-    <slot name="action-items">
-      <VList>
-        <slot name="additional-action-items" />
-        <VListItem
-          v-if="canUpdate && config.withDeactivation"
-          :prepend-icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
-          @click="emits('on-toggle-status', item)"
-        >
-          <VListItemTitle>
-            {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
-          </VListItemTitle>
-        </VListItem>
-        <VListItem
-          v-if="canShowEdit"
-          :prepend-icon="IconsList.EditIcon"
-          @click="onUpdateItem"
-        >
-          <VListItemTitle>
-            {{ $t('action.edit') }}
-          </VListItemTitle>
-        </VListItem>
-        <VListItem
-          v-if="canRemoveItem"
-          @click="emits('on-remove', item)"
-        >
-          <template #prepend>
-            <VIcon :icon="IconsList.Trash2Icon" />
-          </template>
-          <VListItemTitle>
-            {{ $t('action.remove') }}
-          </VListItemTitle>
-        </VListItem>
-        <VListItem
-          v-if="config.createFromCopy"
-          :prepend-icon="IconsList.CopyIcon"
-          @click="onCreateCopy"
-        >
-          <VListItemTitle>
-            {{ $t('action.makeCopy') }}
-          </VListItemTitle>
-        </VListItem>
-      </VList>
-    </slot>
+    <slot name="action-items" />
+
+    <VList v-if="!existSlot(SLOTS.ACTION_ITEMS)">
+      <slot
+        name="additional-action-items"
+        :item="item"
+      />
+      <VListItem
+        v-if="canUpdate && config.withDeactivation"
+        :prepend-icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
+        @click="emits('on-toggle-status', item)"
+      >
+        <VListItemTitle>
+          {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
+        </VListItemTitle>
+      </VListItem>
+      <VListItem
+        v-if="canShowEdit"
+        :prepend-icon="IconsList.EditIcon"
+        @click="onUpdateItem"
+      >
+        <VListItemTitle>
+          {{ $t('action.edit') }}
+        </VListItemTitle>
+      </VListItem>
+      <VListItem
+        v-if="canRemoveItem"
+        @click="emits('on-remove', item)"
+      >
+        <template #prepend>
+          <VIcon :icon="IconsList.Trash2Icon" />
+        </template>
+        <VListItemTitle>
+          {{ $t('action.remove') }}
+        </VListItemTitle>
+      </VListItem>
+      <VListItem
+        v-if="config.createFromCopy"
+        :prepend-icon="IconsList.CopyIcon"
+        @click="onCreateCopy"
+      >
+        <VListItemTitle>
+          {{ $t('action.makeCopy') }}
+        </VListItemTitle>
+      </VListItem>
+    </VList>
   </VMenu>
 </template>
 

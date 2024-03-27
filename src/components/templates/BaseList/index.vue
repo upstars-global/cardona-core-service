@@ -541,6 +541,13 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData })
       :entity-name="entityName"
       @on-click-modal-ok="onClickModalOk"
     />
+    <slot
+      name="table-header"
+      :selected-items="selectedItems"
+      :total="total"
+      :search="searchQuery"
+    />
+
     <SideBar
       v-if="config.sidebar"
       v-model:sidebar-active="isSidebarShown"
@@ -853,9 +860,21 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData })
             @on-remove="onClickRemove"
             @on-toggle-status="onClickToggleStatus"
           >
-            <template #action-items>
+            <template
+              v-if="checkSlotExistence('action-items')"
+              #action-items
+            >
               <slot
                 name="action-items"
+                :item="item"
+              />
+            </template>
+            <template
+              v-if="checkSlotExistence('additional-action-items')"
+              #additional-action-items
+            >
+              <slot
+                name="additional-action-items"
                 :item="item"
               />
             </template>
