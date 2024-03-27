@@ -53,7 +53,7 @@ export enum IconsList {
   ChevronsDownIcon = 'tabler-chevrons-down',
   ChevronsLeftIcon = 'ChevronsLeftIcon',
   ChevronsRightIcon = 'ChevronsRightIcon',
-  ChevronsUpIcon = 'ChevronsUpIcon',
+  ChevronsUpIcon = 'tabler-chevrons-up',
   ChromeIcon = 'ChromeIcon',
   CircleIcon = 'CircleIcon',
   CircleOffIcon = 'tabler-circle-off',
