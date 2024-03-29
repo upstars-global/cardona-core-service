@@ -30,7 +30,7 @@ const locales = {
 }
 
 const flatPickrConfig = computed(() => ({
-  dateFormat: 'Y.m.d',
+  dateFormat: props.field.dateFormat,
   locale: locales[currentLocale],
   time_24hr: true,
   defaultHour: 0,
