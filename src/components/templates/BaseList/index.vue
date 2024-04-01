@@ -35,6 +35,8 @@
       :search="searchQuery"
     />
 
+    {{ isFiltersShown }}
+
     <!-- Search -->
     <list-search
       v-model="searchQuery"
@@ -406,7 +408,7 @@ import {
   DateBaseField,
   NumberRangeBaseField,
 } from '../../../@model/baseField'
-import { findIndex, omit } from 'lodash'
+import { findIndex, omit, has } from 'lodash'
 import { IconsList } from '../../../@model/enums/icons'
 import RemoveModal from './_components/RemoveModal.vue'
 import ListSearch from './_components/ListSearch.vue'
@@ -702,7 +704,12 @@ export default {
     }
 
     // Filters
-    const isFiltersShown = ref(false)
+    // TODO Check  info about saved state statue about filter input
+    const filterStateKey = computed(() => `show-filter-state-${route.value.fullPath}`)
+    if (!has(localStorage, filterStateKey.value)) {
+      localStorage.setItem(filterStateKey.value, 0)
+    }
+    const isFiltersShown = ref(Boolean(+localStorage.getItem(filterStateKey.value)) || false)
     const appliedFilters = computed<BaseField[]>(() => {
       const isSameEntity: boolean = entityName === store.getters['filtersCore/listEntityName']
 
@@ -710,9 +717,14 @@ export default {
     })
     const hasSelectedFilters = computed(() => selectedFilters && selectedFilters.value.isNotEmpty)
 
-    onMounted(() => {
-      isFiltersShown.value = hasSelectedFilters.value
+    // onMounted(() => {
+    //   isFiltersShown.value = hasSelectedFilters.value
+    // })
+
+    watch(isFiltersShown, (value) => {
+      localStorage.setItem(filterStateKey.value, Number(value))
     })
+
     const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
       props.config.filterList
     )
