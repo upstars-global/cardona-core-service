@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { PhoneBaseField } from '../../../../@model/baseField'
 import { getCountryDataByPhone } from '../../../../helpers/countries'
 import Cleave from 'vue-cleave-component'
+import '/node_modules/flag-icons/css/flag-icons.min.css'
 
 type PhoneFieldProps = {
   value: string
@@ -33,29 +34,41 @@ const modelValue = computed({
   },
 })
 
-const phoneFlag = computed(() => getCountryDataByPhone(modelValue.value)?.flag)
+const phoneFlag = computed(() => getCountryDataByPhone(modelValue.value)?.shortCode.toLowerCase())
 </script>
 
 <template>
   <div class="d-flex justify-content-between align-items-center position-relative">
-    <p class="flag">
-      {{ phoneFlag }}
-    </p>
-
-    <cleave
-      v-model="modelValue"
-      type="text"
-      class="form-control"
-      :class="{ 'pl-3': phoneFlag, error: errors.isNotEmpty }"
-      :placeholder="$t('common.phone._')"
-      :disabled="disabled"
-      :options="cleaveOptions"
-    />
+    <div class="position-relative input-phone-wrapper w-100">
+      <span
+        v-if="phoneFlag"
+        class="flag-icon fi position-absolute"
+        :class="`fi-${phoneFlag}`"
+      ></span>
+      <cleave
+        v-model="modelValue"
+        type="text"
+        class="form-control"
+        :class="{ 'pl-3': phoneFlag }"
+        :placeholder="$t('common.phone._')"
+        :disabled="disabled"
+        :options="cleaveOptions"
+      />
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 @import '../../../../@core/scss/base/bootstrap-extended/_variables.scss';
+
+.input-phone-wrapper {
+  .flag-icon {
+    top: 0;
+    left: 0.75rem;
+    bottom: 0;
+    right: 0;
+  }
+}
 
 .flag {
   display: inline-block;
