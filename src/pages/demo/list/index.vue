@@ -118,6 +118,7 @@ const setButtonState = (key: string): void => {
       <InnerBlankLink
         :value="{ title: item.name, route: getUpdateRoute(item) }"
         :size="VSizes.Large"
+        :copy-element="item.name"
       />
       <InnerBlankLink :value="{ title: item.name, route: getUpdateRoute(item) }" />
       <InnerBlankLink

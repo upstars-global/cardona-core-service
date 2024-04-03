@@ -4,12 +4,16 @@ import { useRouter } from 'vue-router'
 import type { LinkViewValue } from '../../../@model/view'
 import { IconsList } from '../../../@model/enums/icons'
 import { VSizes } from '../../../@model/vuetify'
+import { copyToClipboard } from '../../../helpers/clipboard'
+
+interface Props {
+  value: LinkViewValue
+  size?: VSizes
+  copyElement?: string
+}
 
 const props = withDefaults(
-  defineProps<{
-    value: LinkViewValue
-    size?: VSizes
-  }>(),
+  defineProps<Props>(),
   {
     size: VSizes.Medium,
   },
@@ -17,7 +21,7 @@ const props = withDefaults(
 
 const router = useRouter()
 
-const linkSizeClass = computed(() => {
+const inkSizeClass = computed(() => {
   switch (props.size) {
     case VSizes.Large: return 'text-h4'
     case VSizes.Small: return 'text-subtitle-1'
@@ -36,7 +40,6 @@ const onClickLink = () => {
   <div
     class="d-flex align-center text-primary font-weight-bold cursor-pointer"
     :class="linkSizeClass"
-    @click="onClickLink"
   >
     <span class="link-title">
       {{ value.title }}
@@ -45,6 +48,12 @@ const onClickLink = () => {
     <VIcon
       :icon="IconsList.ExternalLinkIcon"
       :size="size"
+      @click.stop="onClickLink"
+    />
+    <VIcon
+      :icon="IconsList.CopyIcon"
+      :size="size"
+      @click.stop="copyToClipboard(copyElement)"
     />
   </div>
 </template>
