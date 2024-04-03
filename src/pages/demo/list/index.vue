@@ -28,7 +28,11 @@
     </template>
 
     <template #cell(innerLink)="{ item }">
-      <inner-blank-link :value="{ title: item.name, route: getUpdateRoute(item) }" size="xl" />
+      <inner-blank-link
+        :value="{ title: item.name, route: getUpdateRoute(item) }"
+        :copy-element="item.name"
+        size="xl"
+      />
       <inner-blank-link :value="{ title: item.name, route: getUpdateRoute(item) }" />
       <inner-blank-link :value="{ title: item.name, route: getUpdateRoute(item) }" size="sm" />
     </template>
