@@ -49,7 +49,7 @@ const setUpdate = (): void => {
 }
 
 const cancelUpdate = (): void => {
-  acceptedValue.value = cloneDeep(editableValue.value)
+  updateValue(editableValue.value)
   setEditMode(false)
   emits('reject-change', editableValue.value)
 }
@@ -78,7 +78,7 @@ const updateValue = (value: unknown): void => {
         />
       </div>
       <slot :value="acceptedValue">
-        {{ acceptedValue }}
+        {{ value }}
       </slot>
     </div>
 

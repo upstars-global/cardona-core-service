@@ -302,6 +302,12 @@ const currentTab = ref('main')
                 :disabled="isDisabledField"
               />
             </VCol>
+            <VCol cols="4">
+              <FieldGenerator
+                v-model="formData.textareaWithAutoHeight"
+                :disabled="isDisabledField"
+              />
+            </VCol>
 
             <VCol cols="4">
               <FieldGenerator

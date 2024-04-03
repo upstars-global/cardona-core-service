@@ -9,6 +9,7 @@ import { IconsList } from '../../../@model/enums/icons'
 import { BaseListConfig, SortDirection } from '../../../@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
 import { ProjectFilterTypes } from '@filterConfig'
+import BtnIcon from '@/components/templates/_components/BtnIcon.vue'
 
 const { t } = useI18n()
 
@@ -145,29 +146,19 @@ const setButtonState = (key: string): void => {
     </template>
     <template #cell(settings)="{ item }">
       <div class="d-flex gap-2">
-        <VBtn
-          disabled
-          :color="VColors.Secondary"
-          :variant="VVariants.Outlined"
-          :size="VSizes.XSmall"
+        <BtnIcon
           :icon="IconsList.ClockIcon"
           :value="!!buttonState[item.id]"
-          rounded="lg"
+          :tooltip-text="Boolean(buttonState[item.id]) ? $t('common.isActive') : $t('common.unActive')"
+          @click="setButtonState(item.id)"
         />
-        <VTooltip location="start">
-          <template #activator="{ props }">
-            <VBtn
-              :color="Boolean(buttonState[item.id]) ? VColors.Success : VColors.Error"
-              :variant="VVariants.Tonal"
-              :size="VSizes.XSmall"
-              :icon="IconsList.ClockIcon"
-              rounded="lg"
-              v-bind="props"
-              @click.stop="setButtonState(item.id)"
-            />
-          </template>
-          {{ Boolean(buttonState[item.id]) ? $t('common.isActive') : $t('common.unActive') }}
-        </VTooltip>
+        <BtnIcon
+          is-static
+          :icon="IconsList.ClockIcon"
+          :value="!!buttonState[item.id]"
+          :tooltip-text="Boolean(buttonState[item.id]) ? $t('common.isActive') : $t('common.unActive')"
+          @click="setButtonState(item.id)"
+        />
       </div>
     </template>
   </BaseList>

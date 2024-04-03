@@ -1,0 +1,78 @@
+<script setup lang="ts">
+import type { TranslateResult } from 'vue-i18n'
+import { computed } from 'vue'
+import { IconsList } from '../../../@model/enums/icons'
+import { Location } from '../../../@model/enums/tooltipPlacement'
+import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
+
+const props = withDefaults(defineProps<Props>(), {
+  tooltipPlacement: Location.Bottom,
+  tooltipText: () => '',
+})
+
+const emits = defineEmits<Emits>()
+interface Props {
+  value: boolean
+  icon: IconsList
+  isStatic?: boolean
+  tooltipText?: TranslateResult
+  tooltipPlacement?: Location
+}
+
+interface Emits {
+  (event: 'click', payload: boolean): void
+}
+
+const stateColor = computed(
+  () =>
+    props?.value ? VColors.Success : VColors.Error,
+)
+
+const onClick = () => {
+  if (!props.isStatic)
+    emits('click', props.value)
+}
+
+const variant = computed(
+  () =>
+    `${VVariants.Outlined} ${VVariants.Flat}`,
+)
+</script>
+
+<template>
+  <div
+    class="btn-check-icon"
+    :class="{ 'default-cursor': isStatic }"
+    style="cursor: initial"
+  >
+    <VTooltip :location="tooltipPlacement">
+      <template #activator="{ props }">
+        <VBtn
+          :class="{
+            'v-btn--variant-tonal': !isStatic,
+          }"
+          :disabled="isStatic"
+          :color="stateColor"
+          :variant="VVariants.Outlined"
+          :size="VSizes.XSmall"
+          :icon="icon"
+          rounded="lg"
+          v-bind="props"
+          @click.stop="onClick"
+        />
+      </template>
+      {{ tooltipText }}
+    </VTooltip>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.default-cursor {
+  cursor: initial !important;
+}
+.btn-check-icon {
+  button {
+    opacity: 1 !important;
+  }
+}
+</style>

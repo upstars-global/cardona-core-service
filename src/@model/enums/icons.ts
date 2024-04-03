@@ -59,6 +59,8 @@ export enum IconsList {
   CircleOffIcon = 'tabler-circle-off',
   ClipboardIcon = 'ClipboardIcon',
   ClockIcon = 'tabler-clock-hour-5',
+  ClockPauseIcon = 'tabler-clock-pause',
+  ClockShieldIcon = 'tabler-clock-shield',
   CloudDrizzleIcon = 'CloudDrizzleIcon',
   CloudLightningIcon = 'CloudLightningIcon',
   CloudOffIcon = 'CloudOffIcon',
@@ -205,6 +207,7 @@ export enum IconsList {
   RefreshCwIcon = 'RefreshCwIcon',
   RepeatIcon = 'RepeatIcon',
   RewindIcon = 'RewindIcon',
+  RobotFaceIcon = 'tabler-robot-face',
   RotateCcwIcon = 'RotateCcwIcon',
   RotateCwIcon = 'RotateCwIcon',
   RssIcon = 'RssIcon',
@@ -218,6 +221,7 @@ export enum IconsList {
   ShareIcon = 'ShareIcon',
   ShieldOffIcon = 'ShieldOffIcon',
   ShieldIcon = 'ShieldIcon',
+  ShieldCheckIcon = 'tabler-shield-check',
   ShoppingBagIcon = 'ShoppingBagIcon',
   ShoppingCartIcon = 'ShoppingCartIcon',
   ShuffleIcon = 'ShuffleIcon',
@@ -289,5 +293,6 @@ export enum IconsList {
   ZapIcon = 'tabler-bolt',
   ZoomInIcon = 'ZoomInIcon',
   ZoomOutIcon = 'ZoomOutIcon',
+  ZoomCheckIcon = 'tabler-zoom-check',
 }
 export default {}

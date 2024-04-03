@@ -9,6 +9,7 @@ import {
   email,
   integer,
   length,
+  max,
   max_value,
   min,
   min_value,
@@ -16,6 +17,8 @@ import {
   required,
 } from '@vee-validate/rules'
 import type { FieldValidationMetaInfo } from '@vee-validate/i18n'
+import { has } from 'lodash'
+import type { TranslateResult } from 'vue-i18n'
 import { i18n } from '../plugins/i18n'
 import type { NumberOrString } from '../@model/index'
 import { dateSeparators } from '../@model/date'
@@ -23,6 +26,7 @@ import { dateSeparators } from '../@model/date'
 defineRule('required', required)
 defineRule('email', email)
 defineRule('min', min)
+defineRule('max', max)
 defineRule('min_value', min_value)
 defineRule('max_value', max_value)
 defineRule('confirmed', confirmed)
@@ -34,6 +38,16 @@ defineRule('digits', digits)
 defineRule('alpha_dash', alpha_dash)
 defineRule('alpha_num', alpha_num)
 defineRule('length', length)
+
+const customMessageOfRules: Record<
+  Partial<keyof IValidationConfig>,
+  (ctx: FieldValidationMetaInfo) => TranslateResult> = {
+    max(ctx: FieldValidationMetaInfo): TranslateResult {
+      const _length_ = ctx.rule.params.at(0)
+
+      return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, _length_ })
+    },
+  }
 
 const validatorPositive = (value: number): boolean => {
   return value >= 0
@@ -116,6 +130,7 @@ export interface IValidationConfig {
   required?: boolean
   email?: boolean
   min?: number
+  max?: number
   min_value?: number
   max_value?: number
   confirmed?: string
@@ -140,6 +155,9 @@ export interface IValidationConfig {
 (function () {
   configure({
     generateMessage: (ctx: FieldValidationMetaInfo) => {
+      if (has(customMessageOfRules, ctx.rule?.name))
+        return customMessageOfRules[ctx.rule?.name](ctx)
+
       return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label })
     },
   })
