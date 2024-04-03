@@ -7,6 +7,8 @@ export interface ITextareaBaseField extends IBaseField {
   readonly counter?: boolean
   readonly rows?: number
   readonly maxLength?: number
+  readonly autoHeight?: boolean
+
 }
 
 export class TextareaBaseField extends BaseField implements ITextareaBaseField {
@@ -15,6 +17,7 @@ export class TextareaBaseField extends BaseField implements ITextareaBaseField {
   readonly counter?: boolean
   readonly rows: number
   readonly maxLength?: number
+  readonly autoHeight?: boolean
 
   constructor(field: ITextareaBaseField) {
     super(field)
@@ -22,6 +25,7 @@ export class TextareaBaseField extends BaseField implements ITextareaBaseField {
     this.counter = field.counter
     this.rows = field.rows ?? 4
     this.maxLength = field.maxLength ? field.maxLength : field.counter ? 100 : undefined
+    this.autoHeight = field?.autoHeight
   }
 
   transformField() {

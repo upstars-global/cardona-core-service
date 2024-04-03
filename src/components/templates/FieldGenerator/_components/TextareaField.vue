@@ -8,6 +8,7 @@ interface TextareaFieldProps {
   field: TextareaBaseField
   disabled?: boolean
   errors?: boolean
+  autoHeight?: boolean
 }
 
 const props = withDefaults(defineProps<TextareaFieldProps>(), {
@@ -18,12 +19,22 @@ const emit = defineEmits<{
   (event: 'update:modelValue', value: string): void
 }>()
 
+const AUTO_HEIGHT_PARAMS = {
+  rows: 1,
+  rowHeight: 15,
+  autoGrow: true,
+}
+
 const localModelValue = computed({
   get: () => props.modelValue,
   set: value => {
     emit('update:modelValue', value)
   },
 })
+
+const autoHeight = computed(() => props.field?.autoHeight
+  ? AUTO_HEIGHT_PARAMS
+  : {})
 </script>
 
 <template>
@@ -36,5 +47,6 @@ const localModelValue = computed({
     :maxlength="field.maxLength"
     :disabled="disabled"
     :persistent-counter="field.maxLength"
+    v-bind="autoHeight"
   />
 </template>

@@ -37,6 +37,7 @@ declare module 'vue' {
     BaseList: typeof import('./src/components/templates/BaseList/index.vue')['default']
     BaseModal: typeof import('./src/components/BaseModal/index.vue')['default']
     BaseSection: typeof import('./src/components/templates/BaseSection/index.vue')['default']
+    BtnIcon: typeof import('./src/components/templates/_components/BtnIcon.vue')['default']
     ButtonField: typeof import('./src/components/templates/BaseList/_components/fields/ButtonField.vue')['default']
     BuyNow: typeof import('./src/@core/components/BuyNow.vue')['default']
     CardAddEditDialog: typeof import('./src/components/dialogs/CardAddEditDialog.vue')['default']

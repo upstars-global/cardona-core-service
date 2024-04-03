@@ -66,3 +66,11 @@ export class FilterSearch {
     this.search = search
   }
 }
+
+export class FilterProject {
+  readonly project: string
+
+  constructor({ project }) {
+    this.project = project
+  }
+}

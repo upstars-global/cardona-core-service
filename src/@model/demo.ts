@@ -197,6 +197,7 @@ export class DemoForm {
   readonly time: TimeBaseField
   readonly dateBtn: FormDateBaseField
   readonly textarea?: TextareaBaseField
+  readonly textareaWithAutoHeight?: TextareaBaseField
   readonly textareaWithCounter: TextareaBaseField
   readonly tags: TagsBaseField
   readonly url: TextBaseField
@@ -429,6 +430,12 @@ export class DemoForm {
       value: data?.textarea,
       key: 'textarea',
       label: i18n.t('page.demo.textareaField'),
+    })
+    this.textareaWithAutoHeight = new TextareaBaseField({
+      value: data?.textareaWithAutoHeight,
+      key: 'textareaForAutoHeight',
+      label: i18n.t('page.demo.textareaField'),
+      autoHeight: true,
     })
     this.textareaWithCounter = new TextareaBaseField({
       value: data?.textareaWithCounter,

@@ -241,6 +241,8 @@ const {
   onChangePagination,
 } = paginationConfig
 
+const itemsPerPage = computed(() => props.config?.pagination ? perPage.value : items.value.length)
+
 const dataMeta = computed(() => setupDataMeta(items.value.length))
 
 const linkGenerator = (page: number) => {
@@ -530,7 +532,7 @@ onBeforeMount(async () => {
   await getList()
 })
 
-defineExpose({ reFetchList, selectedItems, disableRowIds, sortData })
+defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
 </script>
 
 <template>
@@ -690,7 +692,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData })
         :draggable="canUpdate && config.draggable"
         :hover="config.hover"
         :selected-items="selectedItems"
-        :items-per-page="perPage"
+        :items-per-page="itemsPerPage"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"
@@ -708,6 +710,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData })
             :cell="cell"
             :value="item.value"
             :get-update-route="getUpdateRoute"
+            :index="getIndexByItemFromList(item.value)"
             @click.stop
           />
           <StatusField
@@ -886,7 +889,13 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData })
         </template>
 
         <template #empty>
-          {{ emptyListText }}
+          <div class="d-flex flex-column justify-center align-center p-2">
+            <slot name="empty">
+              <span>
+                {{ emptyListText }}
+              </span>
+            </slot>
+          </div>
         </template>
       </CTable>
     </VCard>

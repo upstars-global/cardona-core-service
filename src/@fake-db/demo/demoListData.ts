@@ -46,6 +46,7 @@ export const entityData = {
   time: '22:55',
   dateBtn: '07-03-2022',
   textarea: 'Some text',
+  textareaWithAutoHeight: 'Some text for auto height',
   textareaWithCounter: 'Some text',
   credit: '4242 4242 4242 4242',
   url: 'https://cardona-develop.upstr.to/alaro/',

@@ -267,6 +267,7 @@ onBeforeUnmount(() => {
 defineExpose({
   form,
   validate,
+  formRef,
 })
 </script>
 
