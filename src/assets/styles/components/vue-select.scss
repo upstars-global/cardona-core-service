@@ -198,6 +198,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
   padding: 0;
   top: calc(100% + 1rem);
   background: rgb(var(--v-theme-surface));
+  z-index: 9999;
 }
 
 // ------------------------------------------------

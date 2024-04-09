@@ -171,7 +171,7 @@ watch(
   () => items.value,
   () => {
     if (selectedItem.value)
-      selectedItem.value = getIndexByItemFromList(selectedItem.value)
+      selectedItem.value = items.value[getIndexByItemFromList(selectedItem.value)]
   },
   { deep: true },
 )
@@ -532,6 +532,10 @@ onBeforeMount(async () => {
   await getList()
 })
 
+const showActions = computed(() =>
+  [canUpdate, canUpdateSeo, canCreate, canRemove].some(Boolean),
+)
+
 defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
 </script>
 
@@ -848,9 +852,11 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
           <template v-else-if="field.type === ListFieldType.Percent">
             {{ cell }} %
           </template>
-
+          <template v-else>
+            {{ cell }}
+          </template>
           <ItemActions
-            v-else-if="field.key === 'actions'"
+            v-if="showActions && field.key === 'actions'"
             :item="item.raw"
             :create-page-name="CreatePageName"
             :can-update="canUpdate"
@@ -882,10 +888,6 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
               />
             </template>
           </ItemActions>
-
-          <template v-else>
-            {{ cell }}
-          </template>
         </template>
 
         <template #empty>

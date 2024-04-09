@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, inject, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { IconsList } from '../../@model/enums/icons'
 
@@ -18,6 +18,8 @@ defineOptions({ name: 'BaseModal' })
 const props = withDefaults(defineProps<Props>(), { title: '' })
 
 const emits = defineEmits<Emits>()
+
+const attrs = useAttrs()
 
 const modal = inject('modal')
 
@@ -55,6 +57,7 @@ const onHide = (value: boolean) => {
   <VDialog
     v-model="showModal"
     class="base-modal"
+    V-bind="attrs"
     @update:model-value="onHide"
   >
     <template #default>

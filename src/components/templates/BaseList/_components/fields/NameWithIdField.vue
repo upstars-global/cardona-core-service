@@ -17,7 +17,8 @@ const isYou = computed(() => {
 })
 
 const isExistsRoute = computed(() => {
-  const { name }: _RouteLocationBase = props.getUpdateRoute(props.item)
+  if (!props?.getUpdateRoute) return false
+  const { name }: _RouteLocationBase = props?.getUpdateRoute(props.item)
 
   return !!name
 })
