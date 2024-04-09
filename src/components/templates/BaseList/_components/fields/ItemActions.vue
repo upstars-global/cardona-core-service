@@ -33,10 +33,10 @@ enum SLOTS {
   ADDITIONAL_ACTION_ITEMS = 'additional-action-items',
 }
 
-const existSlot = (slotKey: SLOTS) => !!slots[slotKey] && !!slots[slotKey]()?.length
+const existSlot = (slotKey: SLOTS) => !!slots[slotKey]
 
 const isExistsActionItemsSlot = computed(
-  () => [SLOTS.ACTION_ITEMS, SLOTS.ADDITIONAL_ACTION_ITEMS].some(slotName => !!slots[slotName] && !!slots[slotName]()?.length),
+  () => [SLOTS.ACTION_ITEMS, SLOTS.ADDITIONAL_ACTION_ITEMS].some(slotName => !!slots[slotName] && !!slots[slotName]?.length),
 )
 
 const isShowActions = computed(() => {
@@ -77,10 +77,14 @@ const onCreateCopy = () => {
       </VBtn>
     </template>
 
-    <slot name="action-items" />
+    <slot
+      v-if="existSlot(SLOTS.ACTION_ITEMS)"
+      name="action-items"
+    />
 
-    <VList v-if="!existSlot(SLOTS.ACTION_ITEMS)">
+    <VList>
       <slot
+        v-if="existSlot(SLOTS.ADDITIONAL_ACTION_ITEMS)"
         name="additional-action-items"
         :item="item"
       />
