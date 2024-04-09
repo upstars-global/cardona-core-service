@@ -139,6 +139,7 @@ export enum IconsList {
   ImageIcon = 'tabler-photo',
   InboxIcon = 'InboxIcon',
   InfoIcon = 'InfoIcon',
+  InfoCircleIcon = 'tabler-info-circle',
   InstagramIcon = 'InstagramIcon',
   ItalicIcon = 'ItalicIcon',
   KeyIcon = 'KeyIcon',
