@@ -33,6 +33,7 @@ enum StatusVariants {
   wager = 'light-success',
   'wager_done' = 'light-success',
   creation = 'light-success',
+  creating = 'light-success',
 
   // Warning
   inactive = 'light-warning',

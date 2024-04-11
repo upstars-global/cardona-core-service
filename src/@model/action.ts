@@ -1,5 +1,5 @@
 export enum ActionType {
-  Creation = 'creation',
+  Creation = 'creating',
   Updating = 'updating',
   Deleting = 'deleting',
   Reporting = 'reporting',
