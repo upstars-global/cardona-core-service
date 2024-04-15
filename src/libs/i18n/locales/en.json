@@ -5,6 +5,8 @@
     "logout": "Logout"
   },
   "common": {
+    "dateFrom": "From",
+    "dateTo": "To",
     "generatePassword": "Generate password",
     "segments": "Segments",
     "manager": "Manager",
