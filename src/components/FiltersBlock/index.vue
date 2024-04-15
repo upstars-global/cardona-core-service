@@ -21,7 +21,7 @@
             </b-col>
           </b-row>
 
-          <b-row v-for="(filter, key) in selectedFilters" :key="key" class="mt-2">
+          <b-row v-for="(filter, key) in selectedFilters" :key="filter.key || key" class="mt-2">
             <b-col md="3" class="d-flex align-items-center">
               <p class="font-weight-bolder mb-0" :class="{ 'font-small-3': isSmallBlock }">
                 {{ filter.label }}
@@ -113,6 +113,7 @@ import { BaseField } from '../../@model/baseField'
 import FilterSelector from './_components/FilterSelector.vue'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 import { IconsList } from '../../@model/enums/icons'
+import { cloneDeep } from 'lodash'
 
 export default defineComponent({
   name: 'FiltersBlock',
@@ -154,7 +155,7 @@ export default defineComponent({
     const isSmallBlock: boolean = props.size === 'sm'
     const headerTag: string = isSmallBlock ? 'h5' : 'h4'
 
-    const onChange = (filter: BaseField) => selectedFilters.value.push(filter)
+    const onChange = (filter: BaseField) => selectedFilters.value.push(cloneDeep(filter))
 
     const onRemoveFilter = ({ key }: BaseField) => {
       selectedFilters.value = selectedFilters.value.filter((filter) => filter.key !== key)
