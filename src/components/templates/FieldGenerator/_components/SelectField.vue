@@ -95,7 +95,7 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :disabled="disabled"
       :clearable="field.clearable"
       :append-to-body="field.withCalculatePosition"
-      :calculate-position="withPopper"
+      :calculate-position="withPopper(props.field.toggleDropdownCb)"
       @search="onSearch"
     >
       <template #no-options="{ loading, search }">

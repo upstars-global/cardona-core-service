@@ -1,6 +1,6 @@
 import { createPopper } from '@popperjs/core'
 
-export const withPopper = (dropdownList, component, { width }) => {
+export const withPopper = (toggleDropdownCb?: CallableFunction) => (dropdownList, component, { width }) => {
   dropdownList.style.width = width
 
   const popper = createPopper(component.$refs.toggle, dropdownList, {
@@ -18,6 +18,7 @@ export const withPopper = (dropdownList, component, { width }) => {
         phase: 'write',
         fn({ state }) {
           component.$el.classList.toggle('drop-up', state.placement === 'top')
+          toggleDropdownCb?.({ dropdownList, component, state })
         },
       },
     ],
