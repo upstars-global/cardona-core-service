@@ -135,7 +135,7 @@ watch([selectedCountries, countriesRadioModel], () => {
         v-model="selectedCountries"
         multiple
         append-to-body
-        :calculate-position="withPopper"
+        :calculate-position="withPopper()"
         :disabled="disabled"
         :options="regionsOptions"
         :placeholder="$t('component.countriesSelect.allowAll')"

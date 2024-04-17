@@ -1,16 +1,16 @@
-import { Component } from 'vue'
-import MultiSelectField from "../../../components/templates/FieldGenerator/_components/MultiSelectField.vue";
-import { IASelectBaseField, ASelectBaseField, SelectValue, ITransformFieldOptions } from './base'
-import {OptionsItem} from "../../../@model";
+import type { Component } from 'vue'
+import MultiSelectField from '../../../components/templates/FieldGenerator/_components/MultiSelectField.vue'
+import type { OptionsItem } from '../../../@model'
+import type { IASelectBaseField, ITransformFieldOptions, SelectValue } from './base'
+import { ASelectBaseField } from './base'
 
 export interface IMultiSelectBaseField<T> extends IASelectBaseField<T> {
   readonly value?: T[] | SelectValue[] | null
 }
 
 export class MultiSelectBaseField<T extends OptionsItem = OptionsItem>
-    extends ASelectBaseField<T>
-    implements IMultiSelectBaseField<T>
-{
+  extends ASelectBaseField<T>
+  implements IMultiSelectBaseField<T> {
   readonly component: Component = MultiSelectField
   protected _value?: T[] | SelectValue[] | null
 
