@@ -40,7 +40,7 @@ export default function useToastService() {
       props: {
         title: i18n.t(message, options),
         icon: IconsList.AlertTriangleIcon,
-        variant: 'danger',
+        variant: 'error',
       },
     })
   }

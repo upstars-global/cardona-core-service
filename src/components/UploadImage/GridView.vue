@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { debounce } from 'lodash'
-
-import SkeletonGridItem from '../UploadImage/SkeletonGridItem.vue'
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { IconsList } from '../../@model/enums/icons'
+import ImageItem from './ImageItem.vue'
+import SkeletonGrid from './SkeletonGrid.vue'
 
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
   isLoad: boolean
   files: any[]
   page: number
@@ -26,10 +26,9 @@ const perfectScrollbarSettings = {
   wheelPropagation: false,
 }
 
-const onScroll = debounce(({ target }): void => {
-  if (target.scrollTop + target.clientHeight >= target.scrollHeight)
-    emits('scrolledBottom')
-}, 500)
+const onScrollEnd = () => {
+  emits('scrolledBottom')
+}
 </script>
 
 <template>
@@ -37,48 +36,42 @@ const onScroll = debounce(({ target }): void => {
     id="filesGridScroll"
     :settings="perfectScrollbarSettings"
     class="scroll-area"
-    @ps-scroll-y="onScroll"
+    @ps-y-reach-end="onScrollEnd"
   >
     <div class="files files-grid d-flex flex-wrap">
-      <template v-if="files.length">
-        <div
-          v-for="file in files"
-          :key="file.path + file.publicPath"
-          class="item-file"
-          :class="{ active: urlFile === file.publicPath }"
-        >
-          <div class="item-file-content">
+      <div class="d-flex flex-wrap gap-4">
+        <template v-if="files.length">
+          <div
+            v-for="file in files"
+            :key="file.path + file.publicPath"
+          >
             <div
-              v-if="file.type === 'DIRECTORY'"
-              class="item-directory d-flex justify-center align-center"
-              @click="$emit('clickDirectory', `/${file.path}`)"
+              class="item-file"
+              :class="{ active: urlFile === file.publicPath }"
             >
-              <VIcon
-                :icon="IconsList.FolderIcon"
-                size="16"
-                class="mr-1"
+              <div
+                v-if="file.type === 'DIRECTORY'"
+                class="item-directory d-flex justify-center align-center gap-1"
+                @click="$emit('clickDirectory', `/${file.path}`)"
+              >
+                <VIcon
+                  :icon="IconsList.FolderIcon"
+                  size="16"
+                />
+                {{ file.name }}
+              </div>
+              <ImageItem
+                v-else
+                :file="file"
+                @click="$emit('clickFile', file.publicPath, file.path)"
               />
-              {{ file.name }}
             </div>
-            <div
-              v-else
-              class="item-file-img"
-              :style="{ backgroundImage: `url(${file.publicPath}?ar=184)` }"
-              @click="$emit('clickFile', file.publicPath, file.path)"
-            />
           </div>
-        </div>
-        <template v-if="isLoad">
-          <SkeletonGridItem
-            v-for="n in 16"
-            :key="`skeleton-${n}-item`"
-          />
         </template>
-      </template>
-      <SkeletonGrid
-        v-else
-        :number="16"
-      />
+        <template v-if="isLoad">
+          <SkeletonGrid :number="16" />
+        </template>
+      </div>
     </div>
   </PerfectScrollbar>
 </template>
@@ -87,56 +80,6 @@ const onScroll = debounce(({ target }): void => {
 .scroll-area {
   position: relative;
   width: 100%;
-  height: 310px;
-  margin-right: -0.5rem;
-  margin-left: -0.5rem;
-}
-.files {
-  &.files-grid {
-    .item-file {
-      position: relative;
-      width: calc(25% - 1rem);
-      margin: 0.5rem;
-      border-radius: 4px;
-      border: 1px solid rgba(var(--v-theme-on-surface), var(--v-selected-opacity));
-      font-size: 1rem;
-      font-weight: 400;
-      cursor: pointer;
-      overflow: hidden;
-
-      .item-file-content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-      }
-
-      &:hover {
-        border-color: rgb(var(--v-theme-primary));
-        color: rgb(var(--v-theme-primary));
-      }
-      &.active {
-        border: 2px solid rgb(var(--v-theme-primary));
-        color: rgb(var(--v-theme-primary));
-      }
-
-      &:before {
-        content: '';
-        display: block;
-        padding-bottom: 50%;
-      }
-
-      .item-directory,
-      .item-file-img {
-        width: 100%;
-        height: 100%;
-      }
-      .item-file-img {
-        background-size: cover;
-        background-position: center;
-      }
-    }
-  }
+  height: 18.5rem;
 }
 </style>

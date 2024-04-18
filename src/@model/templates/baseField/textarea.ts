@@ -1,6 +1,8 @@
-import { Component } from 'vue'
-import { BaseField, IBaseField } from './base'
-import TextareaField from "../../../components/templates/FieldGenerator/_components/TextareaField.vue";
+import type { Component } from 'vue'
+import { markRaw } from 'vue'
+import TextareaField from '../../../components/templates/FieldGenerator/_components/TextareaField.vue'
+import type { IBaseField } from './base'
+import { BaseField } from './base'
 
 export interface ITextareaBaseField extends IBaseField {
   readonly value?: string
@@ -12,7 +14,7 @@ export interface ITextareaBaseField extends IBaseField {
 }
 
 export class TextareaBaseField extends BaseField implements ITextareaBaseField {
-  readonly component: Component = TextareaField
+  readonly component: Component = markRaw(TextareaField)
   protected _value?: string
   readonly counter?: boolean
   readonly rows: number

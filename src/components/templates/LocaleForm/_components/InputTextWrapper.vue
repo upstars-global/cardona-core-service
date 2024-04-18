@@ -1,26 +1,7 @@
-<template>
-  <div>
-    <div ref="observedElement" class="elementToObserve">
-      <slot :children-style="childrenStyle"></slot>
-    </div>
-    <div class="d-flex align-items-center" :class="footerClass">
-      <VBtn
-          v-show="canShowButton"
-          :variant="VVariants.Flat"
-          :color="VColors.Primary"
-          :size="VSizes.Small"
-          class="button-toggle"
-          @click="toggleSizeChildren"
-      >{{ $t(`common.${buttonToggleLabel}`) }}</VBtn>
-      <slot name="footer" :is-show-button="canShowButton" />
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import useResizeObserver from '../../../../use/resizeObserver'
-import {VColors, VSizes, VVariants} from "../../../../@model/vuetify";
+import { VColors, VSizes, VVariants } from '../../../../@model/vuetify'
 
 interface Props {
   maxHeight?: number
@@ -51,20 +32,52 @@ const toggleSizeChildren = () => {
 }
 
 const canShowButton = computed(() => wasSelectedMaxHeightStyle.value || isMoreThanMaxHeight.value)
+
 const footerClass = computed(() =>
-  canShowButton.value ? 'justify-content-between' : 'justify-content-end'
+  canShowButton.value ? 'justify-content-between' : 'justify-content-end',
 )
 
-watch(elementHeight, (actualElementHeight) => {
-  if (wasSelectedMaxHeightStyle.value) return
+watch(elementHeight, actualElementHeight => {
+  if (wasSelectedMaxHeightStyle.value)
+    return
   wasSelectedMaxHeightStyle.value = actualElementHeight > props.maxHeight
-  if (wasSelectedMaxHeightStyle.value) toggleSizeChildren()
+  if (wasSelectedMaxHeightStyle.value)
+    toggleSizeChildren()
 })
 </script>
 
-<style>
+<template>
+  <div>
+    <div
+      ref="observedElement"
+      class="elementToObserve"
+    >
+      <slot :children-style="childrenStyle" />
+    </div>
+    <div
+      class="d-flex align-items-center pt-1"
+      :class="footerClass"
+    >
+      <VBtn
+        v-show="canShowButton"
+        :variant="VVariants.Text"
+        :color="VColors.Primary"
+        :size="VSizes.Small"
+        class="button-toggle"
+        @click="toggleSizeChildren"
+      >
+        {{ $t(`common.${buttonToggleLabel}`) }}
+      </VBtn>
+      <slot
+        name="footer"
+        :is-show-button="canShowButton"
+      />
+    </div>
+  </div>
+</template>
+
+<style lang="scss">
 .button-toggle {
-  padding: 0;
   background-color: initial;
 }
 </style>

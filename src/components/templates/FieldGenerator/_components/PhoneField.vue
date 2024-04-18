@@ -5,6 +5,7 @@ import Cleave from 'vue-cleave-component'
 import { allPhoneCodesWithFlags } from '../../../../helpers/countries'
 import { VVariants } from '../../../../@model/vuetify'
 import type { PhoneBaseField } from '../../../../@model/templates/baseField'
+import { IconsList } from '../../../../@model/enums/icons'
 
 interface PhoneFieldProps {
   modelValue: string
@@ -59,10 +60,20 @@ const validateValue = (e: KeyboardEvent) => {
   if (/[^\w\s]/.test(e.key))
     e.preventDefault()
 }
+
+const appendInnerIcon = computed(() => {
+  if (props.errors)
+    return IconsList.InfoIcon
+
+  return null
+})
 </script>
 
 <template>
-  <div class="position-relative d-flex justify-content-between align-center position-relative">
+  <div
+    class="position-relative d-flex justify-content-between align-center phone-field"
+    :class="{ 'phone-field--disabled': disabled }"
+  >
     <p class="flag">
       {{ phoneFlag }}
     </p>
@@ -74,7 +85,8 @@ const validateValue = (e: KeyboardEvent) => {
       :error="errors"
       :color="isFocused ? 'primary' : 'grey'"
       class="v-input pl-4"
-      :class="{ 'pl-12': phoneFlag }"
+      :append-inner-icon="appendInnerIcon"
+      :class="{ 'pl-12': phoneFlag, 'v-input--error': errors }"
       @keydown="validateValue"
     >
       <Cleave
@@ -92,6 +104,11 @@ const validateValue = (e: KeyboardEvent) => {
 </template>
 
 <style scoped lang="scss">
+.phone-field {
+  &--disabled {
+    background: rgb(var(--v-theme-grey-100));
+  }
+}
 .flag {
   display: inline-block;
   font-size: 2rem;

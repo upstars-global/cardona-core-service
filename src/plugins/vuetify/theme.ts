@@ -1,6 +1,7 @@
 import type { ThemeDefinition } from 'vuetify'
 
 export const staticPrimaryColor = '#6D60F0'
+export const grey800 = '#373645'
 export const grey900 = '#1F1C32'
 
 export const themes: Record<string, ThemeDefinition> = {
@@ -18,7 +19,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'warning': '#F08C35', /// !TODO ADD ALSO TO DARK
       'on-warning': '#fff',
       'error': '#EA3D3E', /// !TODO ADD ALSO TO DARK
-      'background': '#F8F7FA',
+      'background': '#F9F9FA',
       'on-background': '#2F2B3D',
       'on-surface': '#2F2B3D',
 
@@ -31,7 +32,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'grey-500': '#84819D',
       'grey-600': '#615E78',
       'grey-700': '#4A485B',
-      'grey-800': '#373645',
+      'grey-800': grey800,
       'grey-900': grey900,
       'body': grey900,
       'extra-body': '#F9F9FA',
@@ -46,7 +47,7 @@ export const themes: Record<string, ThemeDefinition> = {
     variables: {
       'code-color': '#d400ff',
       'overlay-scrim-background': '#4C4E64',
-      'tooltip-background': '#4A5072',
+      'tooltip-background': grey800,
       'overlay-scrim-opacity': 0.5,
       'hover-opacity': 0.04,
       'focus-opacity': 0.12,
@@ -58,7 +59,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'dragged-opacity': 0.1,
       'disabled-opacity': 0.42,
       'border-opacity': 0.16,
-      'high-emphasis-opacity': 0.78,
+      'high-emphasis-opacity': 0.9,
       'medium-emphasis-opacity': 0.68,
       'switch-opacity': 0.2,
       'switch-disabled-track-opacity': 0.3,

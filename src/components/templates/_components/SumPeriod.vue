@@ -19,6 +19,7 @@ const props = defineProps<{
       <span
         :key="data.today"
         v-currency="data.today"
+        class="mr-1"
       />
 
       <span>
@@ -34,6 +35,7 @@ const props = defineProps<{
       <span
         :key="data.week"
         v-currency="data.week"
+        class="mr-1"
       />
 
       <span>
@@ -49,6 +51,7 @@ const props = defineProps<{
       <span
         :key="data.month"
         v-currency="data.month"
+        class="mr-1"
       />
 
       <span>

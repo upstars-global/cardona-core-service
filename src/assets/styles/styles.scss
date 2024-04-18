@@ -8,6 +8,12 @@
 @import "./components/sidebar";
 @import "./components/transitions";
 @import "./components/code-view-editor";
+@import "./components/v-textarea";
+@import "./components/v-tabs";
+@import "./components/v-card";
+@import "./components/toasts";
+@import "./components/v-switch";
+@import "./components/gallery";
 
 
 .font-weight-semi-bold {
@@ -15,7 +21,7 @@
 }
 
 .v-icon--size-default {
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 
 hr {
@@ -47,9 +53,9 @@ hr {
 }
 
 .layout-wrapper.layout-nav-type-vertical {
-  .layout-navbar {
+  .navbar-blur.layout-navbar {
     .navbar-content-container {
-      background: transparent;
+      background: rgb(var(--v-theme-background));
       box-shadow: none;
       padding: 0;
     }

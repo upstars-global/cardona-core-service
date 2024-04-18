@@ -160,6 +160,20 @@ const setButtonState = (key: string): void => {
           :tooltip-text="Boolean(buttonState[item.id]) ? $t('common.isActive') : $t('common.unActive')"
           @click="setButtonState(item.id)"
         />
+        <VTooltip location="bottom">
+          <template #activator="{ props }">
+            <VBtn
+              :color="Boolean(buttonState[item.id]) ? VColors.Success : VColors.Error"
+              :variant="VVariants.Tonal"
+              :size="VSizes.XSmall"
+              :icon="IconsList.ClockIcon"
+              rounded="lg"
+              v-bind="props"
+              @click.stop="setButtonState(item.id)"
+            />
+          </template>
+          {{ Boolean(buttonState[item.id]) ? $t('common.isActive') : $t('common.unActive') }}
+        </VTooltip>
       </div>
     </template>
   </BaseList>

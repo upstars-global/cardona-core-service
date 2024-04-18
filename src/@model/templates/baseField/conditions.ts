@@ -1,7 +1,9 @@
-import { Component } from 'vue'
-import { BaseField, IBaseField } from './base'
+import type { Component } from 'vue'
+import { markRaw } from 'vue'
 import store from '../../../store'
-import ConditionsField from "../../../components/templates/FieldGenerator/_components/ConditionsField.vue";
+import ConditionsField from '../../../components/templates/FieldGenerator/_components/ConditionsField.vue'
+import type { IBaseField } from './base'
+import { BaseField } from './base'
 
 export interface IConditionsBaseField extends IBaseField {
   readonly value?: string
@@ -9,7 +11,7 @@ export interface IConditionsBaseField extends IBaseField {
 }
 
 export class ConditionsBaseField extends BaseField implements IConditionsBaseField {
-  readonly component: Component = ConditionsField;
+  readonly component: Component = markRaw(ConditionsField)
   protected _value?: string
   readonly fetchOptionsActionName: string
 
@@ -20,8 +22,7 @@ export class ConditionsBaseField extends BaseField implements IConditionsBaseFie
   }
 
   async fetchOptions() {
-    if (this.fetchOptionsActionName) {
+    if (this.fetchOptionsActionName)
       return await store.dispatch(this.fetchOptionsActionName)
-    }
   }
 }

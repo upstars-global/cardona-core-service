@@ -1,6 +1,8 @@
-import { Component } from 'vue'
-import { BaseField, IBaseField } from './base'
+import type { Component } from 'vue'
+import { markRaw } from 'vue'
 import SwitchField from '../../../components/templates/FieldGenerator/_components/SwitchField.vue'
+import type { IBaseField } from './base'
+import { BaseField } from './base'
 
 export interface ISwitchBaseField extends IBaseField {
   readonly value?: boolean
@@ -8,7 +10,7 @@ export interface ISwitchBaseField extends IBaseField {
 }
 
 export class SwitchBaseField extends BaseField implements ISwitchBaseField {
-  readonly component: Component = SwitchField
+  readonly component: Component = markRaw(SwitchField)
   protected _value?: boolean
   readonly withState?: boolean
 

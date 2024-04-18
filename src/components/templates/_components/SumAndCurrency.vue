@@ -25,13 +25,14 @@ defineProps<{
       v-if="data?.remainder"
       class="font-weight-light"
     >
-      <span>
+      <span class="pl-1">
         {{ $t('common.remainder') }}
       </span>
 
       <span
         :key="data.remainder"
         v-currency="data.remainder"
+        class="px-1"
       />
       <span>
         {{ data.currency }}

@@ -4,28 +4,33 @@ import { debounce } from 'lodash'
 import FieldGenerator from '../components/templates/FieldGenerator/index.vue'
 import type { NumberOrString } from '../@model'
 import { IconsList } from '../@model/enums/icons'
-import { BaseField, SelectBaseField, getInstanceClass } from '../@model/templates/baseField'
+import { BaseField, SelectBaseField } from '../@model/templates/baseField'
 import { VColors, VSizes, VVariants } from '../@model/vuetify'
 
 type DynamicField = BaseField | Record<string, BaseField>
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   modelValue: DynamicField[]
   templateField: object
   disabled?: boolean
   required?: boolean
   allowAddWithEmpty?: boolean
-}>()
+  hideLabelOnEmptyList?: boolean
+}>(),
+{
+  hideLabelOnEmptyList: true,
+  required: false,
+})
 
 const emits = defineEmits<{
-  (event: 'update:modelValue', value: Record<string, string>): void
+  (event: 'update:model-value', value: Record<string, string>): void
   (event: 'on-add-item', value: Record<string, string>): void
 }>()
 
 const rows = computed({
   get: () => props.modelValue,
   set: value => {
-    emits('update:modelValue', value)
+    emits('update:model-value', value)
   },
 })
 
@@ -93,7 +98,7 @@ const fetchStartSelect = async rows => {
 }
 
 onMounted(async () => {
-  await fetchStartSelect([props.templateField])
+  await fetchStartSelect([props.templateField()])
 })
 
 const fetchSelectOptions = debounce(async (search = '') => {
@@ -102,27 +107,7 @@ const fetchSelectOptions = debounce(async (search = '') => {
 
 // Handlers
 const onAdd = async () => {
-  let [itemTemplate]: any = [props.templateField] // TODO: refactor
-  const fieldClass = getInstanceClass(rows.value[0])
-
-  if (fieldClass) {
-    itemTemplate = new fieldClass({
-      ...itemTemplate,
-      value: undefined,
-    })
-  }
-  else {
-    for (const key in itemTemplate) {
-      const templateData = {
-        ...itemTemplate[key],
-        value: undefined,
-      }
-
-      const fieldClass = getInstanceClass(itemTemplate[key])
-
-      itemTemplate[key] = fieldClass && new fieldClass(templateData)
-    }
-  }
+  const itemTemplate: any = props.templateField()
 
   rows.value.push(itemTemplate)
   emits('on-add-item', { item: itemTemplate, index: rows.value.length - 1 })
@@ -141,7 +126,7 @@ const disableAddFiled = computed(() =>
 
 <template>
   <div>
-    <VRow v-if="templateField">
+    <VRow v-if="templateField && !hideLabelOnEmptyList">
       <VCol v-if="isBaseField(templateField)">
         <label>{{ templateField?.label }}</label>
       </VCol>
@@ -194,15 +179,18 @@ const disableAddFiled = computed(() =>
 
       <VCol
         md="1"
-        class="d-flex justify-start remove-field__wrapper"
+        class="d-flex justify-start align-self-end remove-field__wrapper py-0"
       >
-        <VIcon
+        <VBtn
           v-if="rowIndex || !required"
-          :icon="IconsList.Trash2Icon"
-          class="text-error cursor-pointer"
+          :variant="VVariants.Outlined"
+          :color="VColors.Error"
+          class="filed-list__delete pa-0"
           :class="{ 'cursor-default': disabled }"
           @click="onRemove(rowIndex)"
-        />
+        >
+          <VIcon :icon="IconsList.Trash2Icon" />
+        </VBtn>
       </VCol>
     </VRow>
 
@@ -225,9 +213,8 @@ const disableAddFiled = computed(() =>
 .filed-list__item {
   margin-bottom: 1.125rem;
 }
-
-.remove-field__wrapper {
-  margin-top: auto;
+.filed-list__delete {
+  min-width: 2.5rem;
   height: 2.5rem;
 }
 </style>

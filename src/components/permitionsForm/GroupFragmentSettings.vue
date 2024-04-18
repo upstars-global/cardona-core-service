@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import type { Permission } from '../../@model/permission'
 import { AllPermission } from '../../@model/permission'
-import { VVariants } from '../../@model/vuetify'
 import GroupFragmentSettingsTable from './GroupFragmentSettingsTable.vue'
 
 const props = defineProps<{
@@ -28,23 +27,13 @@ const onChange = () => {
         {{ $t('page.groupFragment.groupSettings') }}
       </span>
     </VCardText>
-    <VTabs class="mb-5 mx-6">
-      <VTab>
-        <span class="font-weight-semi-bold">{{ $t('page.demo.fields') }}</span>
-      </VTab>
-    </VTabs>
-    <VWindow class="pa-6 pt-0">
-      <VCard
-        :variant="VVariants.Outlined"
-        class="pa-0 mt-1"
-      >
-        <GroupFragmentSettingsTable
-          :permissions="allPermission.demoPage"
-          :title="$t('page.groupFragment.accessControl')"
-          @change="onChange"
-        />
-      </VCard>
-    </VWindow>
+
+    <GroupFragmentSettingsTable
+      :permissions="allPermission.demoPage"
+      :title="$t('page.groupFragment.accessControl')"
+      class="pa-6 pt-0"
+      @change="onChange"
+    />
   </VCard>
 </template>
 

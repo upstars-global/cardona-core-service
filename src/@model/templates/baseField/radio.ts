@@ -1,7 +1,9 @@
-import { Component } from 'vue'
-import { BaseField, IBaseField } from './base'
+import type { Component } from 'vue'
+import { markRaw } from 'vue'
+import type { TranslateResult } from 'vue-i18n'
 import RadioField from '../../../components/templates/FieldGenerator/_components/RadioField.vue'
-import { TranslateResult } from 'vue-i18n'
+import type { IBaseField } from './base'
+import { BaseField } from './base'
 
 export interface RadioOption {
   text: TranslateResult
@@ -14,7 +16,7 @@ export interface IRadioBaseField extends IBaseField {
 }
 
 export class RadioBaseField extends BaseField implements IRadioBaseField {
-  readonly component: Component = RadioField
+  readonly component: Component = markRaw(RadioField)
   protected _value?: string | boolean
   readonly options: RadioOption[]
 

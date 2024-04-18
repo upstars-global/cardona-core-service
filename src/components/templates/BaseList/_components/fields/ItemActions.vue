@@ -107,7 +107,17 @@ const onCreateCopy = () => {
         </VListItemTitle>
       </VListItem>
       <VListItem
+        v-if="config.createFromCopy"
+        :prepend-icon="IconsList.CopyIcon"
+        @click="onCreateCopy"
+      >
+        <VListItemTitle>
+          {{ $t('action.makeCopy') }}
+        </VListItemTitle>
+      </VListItem>
+      <VListItem
         v-if="canRemoveItem"
+        class="text-error"
         @click="emits('on-remove', item)"
       >
         <template #prepend>
@@ -115,15 +125,6 @@ const onCreateCopy = () => {
         </template>
         <VListItemTitle>
           {{ $t('action.remove') }}
-        </VListItemTitle>
-      </VListItem>
-      <VListItem
-        v-if="config.createFromCopy"
-        :prepend-icon="IconsList.CopyIcon"
-        @click="onCreateCopy"
-      >
-        <VListItemTitle>
-          {{ $t('action.makeCopy') }}
         </VListItemTitle>
       </VListItem>
     </VList>

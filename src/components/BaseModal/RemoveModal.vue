@@ -47,7 +47,7 @@ const onCloseModal = (hide: Function) => {
     <template #default="{ action }">
       <VCardText
         :class="{ 'pb-16': withRemoveComment }"
-        class="d-flex flex-column"
+        class="d-flex flex-column pt-0"
       >
         <span>{{ description || $t(`modal.remove${entityName}.description`) }}</span>
         <AppTextarea

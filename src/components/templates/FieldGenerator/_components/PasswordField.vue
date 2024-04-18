@@ -11,7 +11,6 @@ interface Props {
   field: PasswordBaseField
   errors: boolean
   disabled?: boolean
-  showPassword?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,10 +26,10 @@ const localModelValue = computed({
   set: value => emits('update:modelValue', value),
 })
 
-const inputType = ref(props.showPassword ? 'text' : 'password')
+const inputType = ref(props.field.showPassword ? 'text' : 'password')
 
 const passwordToggleIcon = computed(() => {
-  return inputType.value === 'password' ? IconsList.EyeOffIcon : IconsList.EyeIcon
+  return inputType.value === 'password' ? IconsList.EyeIcon : IconsList.EyeOffIcon
 })
 
 const togglePasswordVisibility = () => {
@@ -47,7 +46,6 @@ const setGeneratedPassword = () => {
     <AppTextField
       :id="field.key"
       v-model.trim="localModelValue"
-      :rules="field.validationRules"
       :type="inputType"
       :placeholder="field.placeholder"
       :disabled="disabled"
@@ -58,15 +56,23 @@ const setGeneratedPassword = () => {
       :autofocus="false"
       @click:append-inner="togglePasswordVisibility"
     />
-    <VBtn
-      v-if="field.withPasswordGenerator"
-      id="generator-password"
-      :disabled="disabled"
-      :variant="VVariants.Outlined"
-      size="38"
-      @click="setGeneratedPassword"
+    <VTooltip
+      :text="$t('common.generatePassword')"
+      location="bottom"
     >
-      <VIcon :icon="IconsList.RefreshCcwIcon" />
-    </VBtn>
+      <template #activator="{ props }">
+        <VBtn
+          v-if="field.withPasswordGenerator"
+          id="generator-password"
+          :disabled="disabled"
+          :variant="VVariants.Outlined"
+          size="38"
+          v-bind="props"
+          @click="setGeneratedPassword"
+        >
+          <VIcon :icon="IconsList.RefreshCcwIcon" />
+        </VBtn>
+      </template>
+    </VTooltip>
   </div>
 </template>

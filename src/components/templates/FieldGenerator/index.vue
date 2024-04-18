@@ -64,17 +64,25 @@ const onSearch = (search: string) => emits('search', search)
   >
     <VLabel
       v-if="groupLabel"
-      :for="modelValue?.key"
+      :for="`${modelValue?.key}-field`"
       class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between"
     >
       <span>
         {{ groupLabel }}
       </span>
-      <VIcon
+      <VTooltip
         v-if="withInfo && modelValue.info"
-        :icon="IconsList.InfoIcon"
-        class="text-muted ml-25 align-text-top"
-      />
+        :text="modelValue.info"
+      >
+        <template #activator="{ props }">
+          <VIcon
+            v-if="withInfo && modelValue.info"
+            :icon="IconsList.InfoIcon"
+            v-bind="props"
+            class="ml-1 align-text-top text-grey-500"
+          />
+        </template>
+      </VTooltip>
     </VLabel>
 
     <Field
@@ -95,7 +103,7 @@ const onSearch = (search: string) => emits('search', search)
           :options="options"
           :field="modelValue"
           :disabled="disabled"
-          :placeholder="modelValue.placeholder"
+          :placeholder="modelValue.placeholder || modelValue.label"
           :size="size"
           v-bind="{ ...$attrs }"
           :errors="!!errorMessage"

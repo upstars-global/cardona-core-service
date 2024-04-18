@@ -1,53 +1,133 @@
 <script setup lang="ts">
 import { useDropZone, useFileDialog } from '@vueuse/core'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { UploadFileSizes } from '../../@model/enums/uploadFileSizes'
+import useToastService from '../../helpers/toasts'
+import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 
 interface Props {
   size: UploadFileSizes
   disabled: boolean
-  accept: string
+  dataTypes: string[]
+  maxSizeFileMb: number
+  onSubmitCallback?: Function
+  onBtnClickCallback?: Function
+  textBtn: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: UploadFileSizes.md,
   disabled: false,
-  accept: 'image/*',
+  dataTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  maxSizeFileMb: 10,
+  textBtn: 'Upload file',
 })
 
 const emits = defineEmits<{
   uploadedFiles: [files: any]
 }>()
 
+const { toastError } = useToastService()
 const dropZoneRef = ref<HTMLDivElement>()
+const kbsInMb = 1048576 // 1MB
+const maxSizeFileKB = computed(() => props.maxSizeFileMb * kbsInMb)
+const fileSizeFormatted = computed(() => (maxSizeFileKB.value / kbsInMb).toString())
+const isLoading = ref(false)
+const isSizeError = ref(false)
 
 const { open, onChange } = useFileDialog({
-  accept: props.accept,
+  accept: props.dataTypes.join(','),
   reset: true,
 })
 
-onChange(items => {
-  emits('uploadedFiles', items)
-})
-function onDrop(files: File[] | null) {
-  if (files)
-    emits('uploadedFiles', files)
+const onClickBtn = () => {
+  if (props.onBtnClickCallback)
+    props.onBtnClickCallback()
+  else
+    open()
 }
 
-const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
+onChange(items => {
+  if (items?.length)
+    onDrop(items)
+})
+async function onDrop(files: File[] | null) {
+  if (files && files.length) {
+    const file = files[0]
+    if (file.size > maxSizeFileKB.value) {
+      toastError('fileSizeError', { MB: fileSizeFormatted.value })
+      isSizeError.value = true
+
+      return
+    }
+
+    try {
+      isLoading.value = true
+      if (props.onSubmitCallback)
+        await props.onSubmitCallback(file)
+    }
+    catch {
+    }
+    finally {
+      isLoading.value = false
+    }
+  }
+}
+
+const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.dataTypes })
 </script>
 
 <template>
   <div
     ref="dropZoneRef"
     class="files-upload d-flex align-center justify-center"
-    :class="[props.size]"
+    :class="[props.size, { 'files-upload--over-drop': isOverDropZone }]"
   >
     <slot
-      name="content"
+      name="default"
       :is-over-drop-zone="isOverDropZone"
       :open-file-dialog="open"
-    />
+      :is-loading="isLoading"
+      :is-size-error="isSizeError"
+    >
+      <p v-if="isOverDropZone">
+        {{ $t('placeholder.dropFile') }}
+      </p>
+      <div
+        v-else-if="isLoading"
+        class="d-flex flex-column justify-center align-center"
+      >
+        <VProgressCircular
+          indeterminate
+          :color="VColors.Primary"
+          class="mb-1"
+        />
+        <p class="text-body-heading font-weight-bold mb-0">
+          {{ $t('common.loading') }}
+        </p>
+      </div>
+      <div
+        v-else
+        class="btn-open-modal-block d-flex flex-column gap-2 align-center justify-center text-center"
+      >
+        <slot
+          name="content"
+          :is-over-drop-zone="isOverDropZone"
+          :open-file-dialog="open"
+          :file-size-formatted="fileSizeFormatted"
+        />
+        <VBtn
+          :variant="VVariants.Outlined"
+          :color="VColors.Secondary"
+          :size="VSizes.Small"
+          @click="onClickBtn"
+        >
+          <span class="white-space-nowrap">
+            {{ textBtn }}
+          </span>
+        </VBtn>
+      </div>
+    </slot>
   </div>
 </template>
 
@@ -59,14 +139,18 @@ const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
     border-color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
   }
 
+  &--over-drop {
+    border-color: rgb(var(--v-theme-primary));
+  }
+
   &.sm {
     width: 7.625rem;
-    height: 7.625rem;
+    min-height: 7.625rem;
 
   }
   &.md {
     width: 100%;
-    height: 7.625rem;
+    min-height: 7.625rem;
   }
 }
 </style>

@@ -304,3 +304,27 @@ const deleteVariableTextByKey = () => {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.block-text-edite {
+  .editor-wrap {
+
+    &.disabled {
+      :deep(.fr-toolbar),
+      :deep(.fr-element),
+      :deep(.fr-second-toolbar) {
+        background: rgb(var(--v-theme-grey-100));
+      }
+    }
+    :deep(ul) {
+      margin-top: 1em;
+      margin-bottom: 1em;
+      padding-left: 40px;
+    }
+  }
+  :deep(.variable-box) {
+    background: rgba(var(--v-theme-grey-500), var(--v-badge-opacity));
+    padding: 1px 0.285rem;
+  }
+}
+</style>

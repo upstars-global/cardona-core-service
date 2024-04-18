@@ -1,3 +1,4 @@
+import { markRaw } from 'vue'
 import type { NumberOrString } from '../../index'
 import NumberField from '../../../components/templates/FieldGenerator/_components/NumberField.vue'
 import type { IANumberBaseField } from './base'
@@ -8,11 +9,11 @@ export interface INumberBaseField extends IANumberBaseField {
 }
 
 export class NumberBaseField extends ANumberBaseField implements INumberBaseField {
-  readonly component = NumberField
+  readonly component = markRaw(NumberField)
   protected _value?: NumberOrString
 
   constructor(field: INumberBaseField) {
     super(field)
-    this._value = field.value
+    this._value = field.value || ''
   }
 }

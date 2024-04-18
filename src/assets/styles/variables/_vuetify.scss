@@ -69,5 +69,6 @@ $typography-body-1-line-height: 1.375rem;
                 "line-height": 2.66rem,
                 "letter-spacing": 0.0625rem,
         )
-  ) !default
+  ) !default,
+    $text-field-affix-color: rgba(var(--v-theme-grey-700)),
  );

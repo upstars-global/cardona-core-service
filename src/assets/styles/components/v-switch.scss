@@ -1,0 +1,10 @@
+.v-switch {
+
+
+  &.v-input--disabled {
+    .v-switch__track {
+      background: rgb(var(--v-theme-primary));
+      opacity: 1;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { PermissionFormType } from '../@model/enums/permissions'
-import type { PermissionUpdatableTable } from 'src/@model/permission'
+import type { PermissionUpdatableTable } from '../@model/permission'
 
 export enum PermissionType {
   DemoPage = 'demo-demo',

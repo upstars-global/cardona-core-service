@@ -21,7 +21,7 @@ const props = withDefaults(
 
 const router = useRouter()
 
-const inkSizeClass = computed(() => {
+const linkSizeClass = computed(() => {
   switch (props.size) {
     case VSizes.Large: return 'text-h4'
     case VSizes.Small: return 'text-subtitle-1'

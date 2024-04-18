@@ -3,6 +3,7 @@ import type { TranslateResult } from 'vue-i18n'
 import FormDateField from '../../../components/templates/FieldGenerator/_components/FormDateField.vue'
 import type { IBaseField } from './base'
 import { BaseField } from './base'
+import { markRaw } from 'vue'
 
 export interface IFormDateBaseField extends IBaseField {
   readonly value?: string | Date
@@ -11,7 +12,7 @@ export interface IFormDateBaseField extends IBaseField {
 }
 
 export class FormDateBaseField extends BaseField implements IFormDateBaseField {
-  readonly component: Component = FormDateField
+  readonly component: Component = markRaw(FormDateField)
   protected _value?: string | Date
   readonly buttonOnly?: boolean
   readonly placeholder: TranslateResult

@@ -1,9 +1,9 @@
+import { v4 as uuidv4 } from 'uuid'
 import { listImages } from '../../@fake-db/compostela'
 import { TransactionType } from '../../@model/enums/playersTransactions'
 import type { IDemoTypeItem } from '../../@model/demo'
 import { VColors } from '../../@model/vuetify'
 import { i18n } from '@/plugins/i18n'
-import { v4 as uuidv4 } from 'uuid'
 
 export const entityData = {
   id: '2',
@@ -228,11 +228,11 @@ const baseListData = [
     currency: 'EUR',
     wagerValue: '4000',
     wagerLimit: '300',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-11-31T10:00:00+00:00',
+    date: '2024-12-31T10:00:00+00:00',
+    newDate: '2024-11-30T10:00:00+00:00',
     email: 'test@test.com',
     period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
+      dateFrom: '2024-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     buttonName: 'Test button name',
@@ -268,10 +268,10 @@ const baseListData = [
     wagerValue: '77000',
     wagerLimit: '3200',
     status: 'active',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-10-31T10:00:00+00:00',
+    date: '2024-12-31T10:00:00+00:00',
+    newDate: '2024-10-31T10:00:00+00:00',
     period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
+      dateFrom: '2024-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     email: 'test@test.com',
@@ -310,10 +310,10 @@ const baseListData = [
     wagerValue: '0',
     wagerLimit: '0',
     status: 'inactive',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-09-31T10:00:00+00:00',
+    date: '2024-12-31T10:00:00+00:00',
+    newDate: '2024-09-31T10:00:00+00:00',
     period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
+      dateFrom: '2024-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     email: 'test@test.com',
@@ -337,7 +337,6 @@ const baseListData = [
     paymentsToday: '200',
     paymentsWeek: '2200',
     paymentsMonth: '22200',
-
     rowVariant: VColors.Info,
   },
   {
@@ -353,10 +352,10 @@ const baseListData = [
     currency: 'USD',
     wagerValue: '40200',
     wagerLimit: '30990',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-12-31T10:00:00+00:00',
+    date: '2024-12-31T10:00:00+00:00',
+    newDate: '2024-12-31T10:00:00+00:00',
     period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
+      dateFrom: '2024-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     callbackData: {
@@ -418,11 +417,11 @@ const baseListData = [
     currency: 'EUR',
     wagerValue: '4000',
     wagerLimit: '300',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-11-31T10:00:00+00:00',
+    date: '2024-12-31T10:00:00+00:00',
+    newDate: '2024-11-30T10:00:00+00:00',
     email: 'test@test.com',
     period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
+      dateFrom: '2024-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     buttonName: 'Test button name',
@@ -458,10 +457,10 @@ const baseListData = [
     wagerValue: '77000',
     wagerLimit: '3200',
     status: 'active',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-10-31T10:00:00+00:00',
+    date: '2024-12-31T10:00:00+00:00',
+    newDate: '2024-10-31T10:00:00+00:00',
     period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
+      dateFrom: '2024-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     email: 'test@test.com',
@@ -500,10 +499,10 @@ const baseListData = [
     wagerValue: '0',
     wagerLimit: '0',
     status: 'inactive',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-09-31T10:00:00+00:00',
+    date: '2024-12-31T10:00:00+00:00',
+    newDate: '2024-09-31T10:00:00+00:00',
     period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
+      dateFrom: '2024-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     email: 'test@test.com',
@@ -542,10 +541,10 @@ const baseListData = [
     currency: 'USD',
     wagerValue: '40200',
     wagerLimit: '30990',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-12-31T10:00:00+00:00',
+    date: '2024-12-31T10:00:00+00:00',
+    newDate: '2024-12-31T10:00:00+00:00',
     period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
+      dateFrom: '2024-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     email: 'test@test.com',
@@ -584,11 +583,11 @@ const baseListData = [
     currency: 'EUR',
     wagerValue: '4000',
     wagerLimit: '300',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-11-31T10:00:00+00:00',
+    date: '2024-12-31T10:00:00+00:00',
+    newDate: '2024-11-30T10:00:00+00:00',
     email: 'test@test.com',
     period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
+      dateFrom: '2024-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     buttonName: 'Test button name',
@@ -624,10 +623,10 @@ const baseListData = [
     wagerValue: '77000',
     wagerLimit: '3200',
     status: 'active',
-    date: '2022-12-31T10:00:00+00:00',
-    newDate: '2022-10-31T10:00:00+00:00',
+    date: '2024-12-31T10:00:00+00:00',
+    newDate: '2024-10-31T10:00:00+00:00',
     period: {
-      dateFrom: '2022-12-31T10:00:00+00:00',
+      dateFrom: '2024-12-31T10:00:00+00:00',
       dateTo: '2024-04-26T20:59:00+00:00',
     },
     email: 'test@test.com',

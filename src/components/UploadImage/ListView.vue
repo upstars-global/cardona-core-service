@@ -4,6 +4,8 @@ import { useI18n } from 'vue-i18n'
 import ListPagination from '../templates/BaseList/_components/ListPagination.vue'
 import { TableField } from '../../@model/templates/tableFields'
 import { IconsList } from '.././../@model/enums/icons'
+import CTable from '../../components/CTable/index.vue'
+import ImageItem from './ImageItem.vue'
 
 const props = withDefaults(defineProps<{
   isLoad: boolean
@@ -55,12 +57,8 @@ const onRowClick = (val: Record<string, string>) => {
 <template>
   <div>
     <div class="table-box mb-4">
-      <VRow class="search-row">
-        <VCol
-          cols="12"
-          md="6"
-          class="d-flex justify-start align-center gap-4 mb-1 mb-md-0"
-        >
+      <div class="search-row">
+        <div class="d-flex justify-start align-center gap-4 mb-1 mb-md-0">
           <label class="text-body-heading mb-0">
             {{ $t('common.show') }}
           </label>
@@ -71,29 +69,37 @@ const onRowClick = (val: Record<string, string>) => {
             :options="paginated.perPageOptions"
             :clearable="false"
             :searchable="false"
+            class="search-row__select select-size-sm"
             @update:model-value="setPerPage"
-          />
-        </VCol>
-      </VRow>
-
-      <CTable
-        v-show="!isLoad"
-        ref="refTable"
-        hover
-        show-empty
-        :fields="selectedColumns"
-        :items="files"
-        :busy="isLoad"
-        class="mb-2"
-        responsive
-        @row-clicked="onRowClick"
-      >
-        <template #cell(img)="{ item }">
-          <div
-            class="item-file"
-            :class="{ active: urlFile === item.raw.publicPath }"
           >
-            <div class="item-file-content">
+            <template #open-indicator="{ attributes }">
+              <VIcon
+                v-bind="attributes"
+                :icon="IconsList.ChevronDownIcon"
+              />
+            </template>
+          </VueSelect>
+        </div>
+      </div>
+
+      <div class="mb-2 table-box__table">
+        <CTable
+          ref="refTable"
+          hover
+          show-empty
+          :fields="selectedColumns"
+          :rows="files"
+          :is-loading-list="isLoad"
+          responsive
+          small
+          :items-per-page="perPage"
+          @row-clicked="onRowClick"
+        >
+          <template #cell(img)="{ item }">
+            <div
+              class="item-file"
+              :class="{ active: urlFile === item.raw.publicPath }"
+            >
               <div
                 v-if="item.raw.type === 'DIRECTORY'"
                 class="item-directory d-flex justify-center align-center"
@@ -103,23 +109,22 @@ const onRowClick = (val: Record<string, string>) => {
                   size="20"
                 />
               </div>
-              <div
+              <ImageItem
                 v-else
-                class="item-file-img"
-                :style="{ backgroundImage: `url(${item.raw.publicPath}?ar=184)` }"
+                :file="item.raw"
               />
             </div>
-          </div>
-        </template>
-        <template #cell(url)="{ item }">
-          <div v-if="item.raw.type === 'DIRECTORY'">
-            {{ item.raw.name }}
-          </div>
-          <div v-else>
-            /{{ item.raw.name }}
-          </div>
-        </template>
-      </CTable>
+          </template>
+          <template #cell(url)="{ item }">
+            <div v-if="item.raw.type === 'DIRECTORY'">
+              {{ item.raw.name }}
+            </div>
+            <div v-else>
+              /{{ item.raw.name }}
+            </div>
+          </template>
+        </CTable>
+      </div>
     </div>
 
     <div class="mx-2">
@@ -137,46 +142,25 @@ const onRowClick = (val: Record<string, string>) => {
   border: 1px solid rgba(var(--v-theme-on-surface), var(--v-selected-opacity));
   border-radius: var(--v-border-radius);
   overflow: hidden;
+
+  :deep(.c-table) {
+    tr {
+      td[data-c-field='img'] {
+        width: 13rem;
+
+        .v-skeleton-loader__text {
+          height: 5.5rem;
+          margin: 0;
+        }
+      }
+    }
+  }
 }
 .search-row {
-  padding: 1rem 2rem;
-}
-.item-file {
-  position: relative;
-  width: 8.571rem;
-  border-radius: 4px;
-  border: 1px solid rgba(var(--v-theme-on-surface), var(--v-selected-opacity));
-  font-size: 1rem;
-  font-weight: 400;
-  cursor: pointer;
-  overflow: hidden;
+  padding: 0.75rem 1rem;
 
-  .item-file-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  &.active {
-    border: 2px solid rgb(var(--v-theme-primary));
-    color: rgb(var(--v-theme-primary));
-  }
-  &:before {
-    content: '';
-    display: block;
-    padding-bottom: 50%;
-  }
-
-  .item-directory,
-  .item-file-img {
-    width: 100%;
-    height: 100%;
-  }
-  .item-file-img {
-    background-size: cover;
-    background-position: center;
+  &__select {
+    min-width: 5.75rem;
   }
 }
 </style>

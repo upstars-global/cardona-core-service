@@ -1,7 +1,9 @@
-import { IANumberBaseField, ANumberBaseField } from './base'
-import { NumberOrString, NumberRangeBaseValue } from '../../../@model'
+import { markRaw } from 'vue'
+import type { NumberOrString, NumberRangeBaseValue } from '../../../@model'
 import { division, multiplication } from '../../../helpers/math-operations'
-import NumberRangeField from "../../../components/templates/FieldGenerator/_components/NumberRangeField.vue";
+import NumberRangeField from '../../../components/templates/FieldGenerator/_components/NumberRangeField.vue'
+import type { IANumberBaseField } from './base'
+import { ANumberBaseField } from './base'
 
 export interface INumberRangeBaseField extends IANumberBaseField {
   value?: NumberRangeBaseValue
@@ -9,7 +11,7 @@ export interface INumberRangeBaseField extends IANumberBaseField {
 }
 
 export class NumberRangeBaseField extends ANumberBaseField implements INumberRangeBaseField {
-  readonly component = NumberRangeField
+  readonly component = markRaw(NumberRangeField)
   protected _value?: NumberRangeBaseValue
   isCurrency: boolean
 
@@ -37,4 +39,3 @@ export class NumberRangeBaseField extends ANumberBaseField implements INumberRan
     return value && this.isCurrency ? multiplication(value, 100) : value
   }
 }
-

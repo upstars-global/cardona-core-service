@@ -2,13 +2,15 @@
 import { ref } from 'vue'
 import { VColors, VVariants } from '../../@model/vuetify'
 import FilesUpload from '../FilesUpload/FilesUpload.vue'
+import { IconsList } from '.././../@model/enums/icons'
 import FileGallery from './FileGallery.vue'
 
-const props = defineProps<{
+defineProps<{
   modelValue: string
   path: string
   file: File
   isLoad: boolean
+  onUploadImageCb: Function
 }>()
 
 const emits = defineEmits<{
@@ -17,6 +19,8 @@ const emits = defineEmits<{
   (e: 'update:modelValue', value: string): void
   (e: 'clear'): void
 }>()
+
+const maxSizeMb = 4
 
 const setUrlFile = val => {
   emits('update:modelValue', val)
@@ -36,18 +40,11 @@ const tabs = {
 }
 
 const currentTab = ref(tabs.new)
-
-const onFileUpload = files => {
-  emits('upload-files', files)
-}
 </script>
 
 <template>
   <div class="px-6 pb-6 overflow-hidden tabs-file-upload">
-    <VTabs
-      v-model="currentTab"
-      class="pb-1"
-    >
+    <VTabs v-model="currentTab">
       <VTab :value="tabs.new">
         {{ $t('uploadImg.downloadNew') }}
       </VTab>
@@ -78,22 +75,21 @@ const onFileUpload = files => {
         </div>
         <FilesUpload
           v-else
-          @uploaded-files="onFileUpload"
+          :max-size-file-mb="maxSizeMb"
+          :on-submit-callback="onUploadImageCb"
+          class="upload-file"
         >
-          <template #content="{ isOverDropZone, openFileDialog }">
-            <div
-              v-if="isOverDropZone"
-              class=""
-            >
+          <template #default="{ isOverDropZone, openFileDialog, isLoading, isSizeError }">
+            <div v-if="isOverDropZone">
               <p class="text-body-heading font-weight-bold mb-0">
                 {{ $t('uploadImg.dragTextDrop') }}
               </p>
               <p class="font-small-3">
-                {{ $t('uploadImg.maxSize') }}
+                {{ $t('uploadImg.maxSize', { size: maxSizeMb }) }}
               </p>
             </div>
             <div
-              v-else-if="isLoad"
+              v-else-if="isLoading"
               class="d-flex flex-column justify-center align-center"
             >
               <VProgressCircular
@@ -101,7 +97,6 @@ const onFileUpload = files => {
                 :color="VColors.Primary"
                 class="mb-1"
               />
-
               <span class="text-body-heading font-weight-bold">
                 {{ $t('common.loading') }}
               </span>
@@ -110,19 +105,36 @@ const onFileUpload = files => {
               v-else
               class="text-center"
             >
-              <p class="text-body-heading font-weight-bold mb-0">
-                {{ $t('uploadImg.dragText') }}
-              </p>
-              <p class="font-small-3">
-                {{ $t('uploadImg.maxSize') }}
-              </p>
-
-              <VBtn
-                :color="VColors.Primary"
-                @click="openFileDialog"
-              >
-                {{ $t('uploadImg.downloadDevice') }}
-              </VBtn>
+              <template v-if="isSizeError">
+                <VIcon
+                  :icon="IconsList.AlertCircleIcon"
+                  size="32"
+                  class="text-error mb-4"
+                />
+                <p class="text-error mb-4">
+                  {{ $t('uploadImg.loadError') }}
+                </p>
+                <VBtn
+                  :color="VColors.Primary"
+                  @click="openFileDialog"
+                >
+                  {{ $t('action.repeat') }}
+                </VBtn>
+              </template>
+              <template v-else>
+                <p class="text-body-heading font-weight-bold mb-0">
+                  {{ $t('uploadImg.dragText') }}
+                </p>
+                <p class="font-small-3">
+                  {{ $t('uploadImg.maxSize', { size: maxSizeMb }) }}
+                </p>
+                <VBtn
+                  :color="VColors.Primary"
+                  @click="openFileDialog"
+                >
+                  {{ $t('uploadImg.uploadFromDevice') }}
+                </VBtn>
+              </template>
             </div>
           </template>
         </FilesUpload>
@@ -160,6 +172,16 @@ const onFileUpload = files => {
     img {
       height: 100%;
       border-radius: 0.286rem;
+    }
+  }
+
+  .upload-file {
+    height: 16.625rem;
+
+    &.files-upload--over-drop {
+      border-style: solid;
+      border-color: rgb(var(--v-theme-primary));
+      background: rgba(var(--v-theme-primary), 0.08);
     }
   }
 }

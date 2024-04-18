@@ -1,4 +1,6 @@
 import type { TranslateResult } from 'vue-i18n'
+import { markRaw } from 'vue'
+import type { Raw } from 'vue'
 import TextView from '../components/templates/ViewGenerator/_components/TextView.vue'
 import BadgesView from '../components/templates/ViewGenerator/_components/BadgesView.vue'
 import BadgeView from '../components/templates/ViewGenerator/_components/BadgeView.vue'
@@ -101,7 +103,7 @@ interface IViewInfo {
 
 // TODO: Delete T = {} All project https://upstars.atlassian.net/browse/BAC-1177
 export class ViewInfo {
-  readonly type?: ViewType
+  readonly type?: Raw<object>
   readonly value: LinkViewValue | SumAndCurrencyViewValue | StatusWithDateValue | any
   readonly label?: TranslateResult
   readonly description?: TranslateResult
@@ -111,7 +113,7 @@ export class ViewInfo {
   readonly withSearch?: boolean
 
   constructor(data: IViewInfo) {
-    this.type = data?.type
+    this.type = markRaw(data?.type)
     this.value = data?.value
     this.label = data?.label
     this.description = data?.description

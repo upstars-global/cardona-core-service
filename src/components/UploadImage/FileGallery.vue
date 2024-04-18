@@ -122,6 +122,10 @@ watch(searchQuery, () => {
   resetPage()
 })
 
+watch(() => currentPage.value, () => {
+  fetchFilesStructure()
+})
+
 const goToCatalog = path => {
   if (path === url.value || isLoad.value)
     return
@@ -175,8 +179,11 @@ onMounted(async () => {
 
 <template>
   <div class="file-gallery">
-    <div class="breadcrumb-wrapper">
-      <VBreadcrumbs v-if="!searchQuery">
+    <div class="breadcrumb-wrapper ">
+      <VBreadcrumbs
+        v-if="!searchQuery"
+        class="pt-0"
+      >
         <VBreadcrumbsItem
           :active="items.length === 0"
           @click.prevent="goToCatalog('/')"
@@ -220,18 +227,21 @@ onMounted(async () => {
       <VBtnToggle
         :color="VColors.Primary"
         :variant="VVariants.Outlined"
+        divided
         class="file-gallery__btn-toggle"
       >
         <VBtn
           :class="{ active: type === 'grid' }"
           :icon="IconsList.GridIcon"
           :size="VSizes.Small"
+          class="file-gallery__btn-toggle-item"
           @click="setType('grid')"
         />
         <VBtn
           :class="{ active: type === 'list' }"
           :icon="IconsList.ListIcon"
           :size="VSizes.Small"
+          class="file-gallery__btn-toggle-item"
           @click="setType('list')"
         />
       </VBtnToggle>
@@ -266,6 +276,15 @@ onMounted(async () => {
 .file-gallery {
   &__btn-toggle {
     height: 2.5rem;
+  }
+  &__btn-toggle-item {
+    &.v-btn {
+      border-color: rgb(var(--v-theme-primary));
+      color: rgb(var(--v-theme-primary));
+      &.active {
+        background-color: rgba(var(--v-theme-primary), var(--v-activated-opacity))!important;
+      }
+    }
   }
 }
 </style>
