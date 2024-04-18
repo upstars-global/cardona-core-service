@@ -415,6 +415,7 @@ const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
 )
 
 const isFiltersShown = ref(false)
+const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
 const appliedFilters = computed<BaseField[]>(() => {
   const isSameEntity: boolean = entityName === store.getters['filtersCore/listEntityName']
@@ -523,7 +524,7 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
     comment: commentToRemove,
     customApiPrefix: props.config?.customApiPrefix,
   })
-
+  resetSelectedItem()
   hide()
   await reFetchList()
 }
@@ -607,6 +608,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
         disable: !total,
       }"
       :config="config"
+      :is-open-filter-block="isOpenFilterBlock"
       @on-click-filter="isFiltersShown = !isFiltersShown"
       @on-export-format-selected="onExportFormatSelected"
     >
@@ -624,7 +626,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
 
     <FiltersBlock
       v-if="config.filterList?.isNotEmpty"
-      :is-open="config.filterList?.isNotEmpty && isFiltersShown"
+      :is-open="isOpenFilterBlock"
       :entity-name="entityName"
       :filters="filters"
       :size="size"

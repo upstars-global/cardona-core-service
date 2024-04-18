@@ -38,10 +38,10 @@ const valueModel = computed<OptionsItem>({
 })
 
 const selectClasses = computed(() => {
-  const size = `select-${props.size}`
+  const size = props.size ? `select-${props.size}` : null
 
   const classes: object = {
-    error: props.errors?.isNotEmpty,
+    error: props.errors,
   }
 
   return [size, classes]

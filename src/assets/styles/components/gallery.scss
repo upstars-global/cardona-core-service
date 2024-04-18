@@ -1,0 +1,30 @@
+.item-file {
+  position: relative;
+  border-radius: 6px;
+  border: 1px solid rgba(var(--v-theme-on-surface), var(--v-selected-opacity));
+  font-size: 1rem;
+  cursor: pointer;
+  height: 5.5rem;
+  width: 11rem;
+  overflow: hidden;
+
+
+  &:hover {
+    border-color: rgb(var(--v-theme-primary));
+    color: rgb(var(--v-theme-primary));
+  }
+  &.active {
+    border: 2px solid rgb(var(--v-theme-primary));
+    color: rgb(var(--v-theme-primary));
+  }
+
+  .item-directory,
+  .item-file-img {
+    width: 100%;
+    height: 100%;
+  }
+  .item-file-img {
+    background-size: cover;
+    background-position: center;
+  }
+}

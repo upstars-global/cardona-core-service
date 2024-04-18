@@ -73,10 +73,11 @@ const getValue = (locale: string, key: string): string => {
 
 <template>
   <VCard class="locale-tab">
-    <VCardTitle>
+    <template #title>
       {{ $t('locale.localization') }}
+
       <slot name="header-right" />
-    </VCardTitle>
+    </template>
     <VCardText v-if="form.fieldTranslations">
       <div
         v-for="item in Object.keys(form.fieldTranslations)"
@@ -87,7 +88,7 @@ const getValue = (locale: string, key: string): string => {
           <VRow
             v-for="local in Object.keys(form.fieldTranslations[item])"
             :key="item + local"
-            class="row-item-field-translations"
+            class="row-item-field-translations mt-0"
             :class="{ 'order-first': isMainLocale(local) }"
           >
             <VCol
@@ -95,19 +96,21 @@ const getValue = (locale: string, key: string): string => {
               class="locale-title"
               cols="12"
             >
-              <span class="font-small-3 font-weight-bolder mr-1">
+              <h5 class="text-h5 font-weight-bolder mr-1">
                 {{ $t(`locale.${type}.${item}`) }}
-              </span>
+              </h5>
             </VCol>
             <VCol
               cols="2"
-              class="label-locale"
+              class="label-locale text-button mt-2"
             >
-              <span>{{ allLocales[local] }}</span>
+              <h6 class="text-h6">
+                {{ allLocales[local] }}
+              </h6>
             </VCol>
             <VCol
               cols="10"
-              class="body-locale pl-0"
+              class="body-locale pl-0 pt-0"
             >
               <div v-if="item + local === selectEditeInput">
                 <TextEditorWysiwyg
@@ -120,7 +123,7 @@ const getValue = (locale: string, key: string): string => {
                 />
                 <div
                   v-if="!isMainLocale(local)"
-                  class="d-flex justify-content-end"
+                  class="d-flex justify-end"
                 >
                   <CheckField
                     v-model="form.fieldTranslations[item][local].disabled"
@@ -148,12 +151,13 @@ const getValue = (locale: string, key: string): string => {
                 </template>
                 <template #footer="{ isShowButton }">
                   <div
-                    class="hide-checkbox"
+                    class="hide-checkbox w-100 d-flex justify-end"
                     :class="{ 'is-hide-checkbox': isShowButton && isMainLocale(local) }"
                   >
                     <CheckField
                       v-if="!isMainLocale(local)"
                       v-model="form.fieldTranslations[item][local].disabled"
+                      :disabled="disabled"
                       :field="{ label: $t('action.hide') }"
                       class="d-flex align-items-center"
                     />
@@ -192,10 +196,16 @@ const getValue = (locale: string, key: string): string => {
     padding: 0.5rem 1rem;
     overflow: hidden;
     cursor: pointer;
+    color: rgba(var(--v-theme-grey-900), var(--v-high-emphasis-opacity));
 
     &.disable {
       cursor: default;
-      background: #efefef;
+      background: rgb(var(--v-theme-grey-100));
+      color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+
+      .variable-box {
+        color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+      }
     }
 
     p {
@@ -207,10 +217,17 @@ const getValue = (locale: string, key: string): string => {
       background: rgba(108, 117, 125, 0.12);
       color: rgb(var(--v-theme-on-surface));
       padding: 1px 0.285rem;
+
+    }
+
+    ul {
+      margin-top: 1em;
+      margin-bottom: 1em;
+      padding-left: 40px;
     }
 
     .span-empty {
-      color: rgba(var(--v-theme-on-background), var(--v-medium-emphasis-opacity));
+      color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
     }
   }
 
@@ -228,10 +245,6 @@ const getValue = (locale: string, key: string): string => {
   }
   .is-hide-checkbox {
     margin-top: 1.75rem;
-  }
-
-  .input-text.disable {
-    background: rgb(var(--v-theme-background));
   }
 }
 </style>

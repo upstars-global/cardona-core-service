@@ -23,6 +23,7 @@ export class SeoForm {
       key: 'metaDescription',
       value: data?.metaDescription,
       label: i18n.t('seo.metaDescription'),
+      placeholder: i18n.t('seo.metaDescription'),
       isLocalization: true,
     })
     this.description = new RichTextBaseField({

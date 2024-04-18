@@ -1,8 +1,10 @@
 import type { TranslateResult } from 'vue-i18n'
+import { v4 as uuidv4 } from 'uuid'
 import { i18n } from '../plugins/i18n'
 import { SideBarCollapseItem } from '../@model/templates/baseList'
 import type { BaseListItem } from '../@model/templates/baseList'
 import { VColors } from '../@model/vuetify'
+import { IconsList } from '../@model/enums/icons'
 import type { TranslationForm } from './translations'
 import {
   CheckBaseField, CheckGroupBaseField,
@@ -267,7 +269,7 @@ export class DemoForm {
       append: 'min',
       key: 'minutesRange',
       label: i18n.t('page.demo.minutesRangeField'),
-      validationRules: { required_object: true, range: ['from', 'to'] },
+      validationRules: { required: true, required_object: true, range: ['from', 'to'] },
       isCurrency: false,
     })
     this.percent = new NumberBaseField({
@@ -316,7 +318,7 @@ export class DemoForm {
       validationRules: { required: true, password: true },
     })
     this.passwordFieldWithGeneration = new PasswordBaseField({
-      key: 'password',
+      key: 'passwordWithGenerator',
       value: data?.passwordWithGenerator,
       label: i18n.t('page.demo.passwordFieldWithGeneration'),
       validationRules: { required: true, password: true },
@@ -455,6 +457,7 @@ export class DemoForm {
       value: data?.tags,
       key: 'tags',
       label: i18n.t('page.demo.tagsField'),
+      placeholder: i18n.t('common.addTags'),
     })
     this.conditions = new ConditionsBaseField({
       value: data?.conditions,
@@ -544,9 +547,10 @@ export class DemoSideBar {
           label: i18n.t('common.tags', { count: data?.tags?.length }),
         }),
         email: new ViewInfo({
-          type: ViewType.Text,
+          type: ViewType.Copy,
           value: data?.email,
           label: i18n.t('common.email'),
+          icon: IconsList.AtIcon,
         }),
         newDate: new ViewInfo({
           type: ViewType.DateWithSeconds,
@@ -584,7 +588,7 @@ export class DemoSideBar {
         callbackData: data?.callbackData,
         link: new ViewInfo({
           type: ViewType.Link,
-          value: { route: { name: 'PermissionPage' }, title: 'Permission' },
+          value: { route: { name: 'PermissionPage', params: { id: 'demo' } }, title: 'Permission' },
           label: i18n.t('common.link'),
         }),
         objectToRows: new ViewInfo({
@@ -608,13 +612,13 @@ export class DemoSideBar {
 
 export const createPhoneDomainFieldItem = (item: PhoneAndCountry) => ({
   phone: new PhoneBaseField({
-    key: 'id',
+    key: `id-${uuidv4()}`,
     value: item?.phone || '',
     label: i18n.t('common.phone._'),
     validationRules: { required: true, phone: true },
   }),
   domain: new SelectBaseField({
-    key: 'country',
+    key: `country-${uuidv4()}`,
     value: item?.country || '',
     label: i18n.t('common.country'),
     options: [

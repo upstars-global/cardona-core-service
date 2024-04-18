@@ -49,12 +49,9 @@ const deleteForm = () => {
     :title="$t('common.banners.variableTitle')"
     @hide="onHideModal"
   >
-    <VCard
-      class="w-100 pa-4"
-      style="min-width: 31.25rem"
-    >
-      <VRow class="w-100">
-        <VCol class="col-4">
+    <div class="full-width pa-4 variable-modal">
+      <VRow class="full-width flex-nowrap">
+        <VCol cols="4">
           <VChip
             label
             class="variable-box"
@@ -63,16 +60,22 @@ const deleteForm = () => {
             {{ `{ ${keyVar} }` }}
           </VChip>
         </VCol>
-        <VCol cols="8">
+        <VCol
+          cols="8"
+          class="mb-3 pr-0"
+        >
           <VRow
             v-for="itemKey in Object.keys(formModal)"
             :key="itemKey"
-            class="flex-nowrap align-center justify-content-end mb-1"
+            class="flex-nowrap align-center justify-content-end"
           >
             <VCol class="font-small-3">
               {{ itemKey }}
             </VCol>
-            <VCol cols="10">
+            <VCol
+              cols="10"
+              class="pr-0"
+            >
               <AppTextField
                 v-model="formModal[itemKey]"
                 :placeholder="$t('common.banners.empty')"
@@ -115,12 +118,22 @@ const deleteForm = () => {
           </VBtn>
         </div>
       </footer>
-    </VCard>
+    </div>
   </BaseModal>
 </template>
 
 <style lang="scss" scoped>
 .variable-box {
   margin-top: 0.571rem;
+}
+
+.variable-modal {
+  min-width: 31.25rem;
+
+  :deep(.v-chip__content) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
 }
 </style>

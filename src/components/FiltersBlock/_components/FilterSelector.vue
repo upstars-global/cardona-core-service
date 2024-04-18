@@ -9,22 +9,23 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits<{
-  (e: 'selectedFiltersChanged', filters: BaseField): void
+  (e: 'selected-filters-changed', filters: BaseField): void
 }>()
 
 const isSmallSize: boolean = props.size === VSizes.Small
 
-const onChange = (filter: BaseField) => emits('selectedFiltersChanged', filter)
+const onChange = (filter: BaseField) => emits('selected-filters-changed', filter)
 </script>
 
 <template>
-  <VMenu :disabled="filters.isEmpty">
+  <VMenu>
     <template #activator="{ props }">
       <VBtn
         :variant="VVariants.Outlined"
         :color="VColors.Secondary"
         dark
         v-bind="props"
+        :disabled="filters.isEmpty"
         :append-icon="IconsList.ChevronDownIcon"
       >
         {{ $t('action.selectEntity') }}

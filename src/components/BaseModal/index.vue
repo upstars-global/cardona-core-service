@@ -2,6 +2,7 @@
 import { computed, inject, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { IconsList } from '../../@model/enums/icons'
+import { VColors, VVariants } from '../../@model/vuetify'
 
 interface Props {
   id: string
@@ -57,7 +58,8 @@ const onHide = (value: boolean) => {
   <VDialog
     v-model="showModal"
     class="base-modal"
-    V-bind="attrs"
+    width="auto"
+    v-bind="attrs"
     @update:model-value="onHide"
   >
     <template #default>
@@ -68,16 +70,17 @@ const onHide = (value: boolean) => {
             'without-header-title': !title,
           }"
         >
-          <p
+          <h4
             v-if="title"
             class="mb-0"
           >
             {{ title }}
-          </p>
+          </h4>
           <VBtn
-            color="white"
             size="30"
-            class="modal-header__close"
+            :variant="VVariants.Outlined"
+            :color="VColors.Secondary"
+            class="modal-header__close bg-surface"
             @click="hide"
           >
             <VIcon :icon="IconsList.XIcon" />
@@ -99,13 +102,13 @@ const onHide = (value: boolean) => {
 .modal-header {
   position: relative;
   border-radius: 0.375rem 0.375rem 0 0;
-  min-width: initial;
 
   &__close {
     position: absolute;
     right: 0;
     top: 0;
     transform: translate(8px,-2px);
+    border-color: rgb(var(--v-theme-grey-200));
 
     &:hover {
       transform: translate(5px,3px);

@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import type { TextBaseField } from '../../../../@model/templates/baseField'
 import AppTextField from '../../../../@core/components/app-form-elements/AppTextField.vue'
+import { IconsList } from '../../../../@model/enums/icons'
 
 const props = withDefaults(
   defineProps<{
@@ -29,6 +30,13 @@ const localModelValue = computed({
 })
 
 const placeholder = computed(() => props.field.label)
+
+const appendInnerIcon = computed(() => {
+  if (props.errors)
+    return IconsList.InfoIcon
+
+  return null
+})
 </script>
 
 <template>
@@ -40,6 +48,7 @@ const placeholder = computed(() => props.field.label)
       :disabled="disabled"
       :suffix="appendText"
       :error="errors"
+      :append-inner-icon="appendInnerIcon"
       autocomplete="off"
       :autofocus="false"
     />

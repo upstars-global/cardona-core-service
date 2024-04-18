@@ -34,7 +34,7 @@ export default {
     size: 'small',
   },
   VExpansionPanel: {
-    expandIcon: 'tabler-chevron-right',
+    expandIcon: 'tabler-chevron-up',
     collapseIcon: 'tabler-chevron-right',
   },
   VExpansionPanelTitle: {
@@ -63,6 +63,7 @@ export default {
   VTooltip: {
     // set v-tooltip default location to top
     location: 'top',
+    offset: '8px',
   },
   VCheckboxBtn: {
     color: 'primary',
@@ -185,6 +186,7 @@ export default {
   },
   VCard: {
     style: 'overflow: visible; position: static;',
+    elevation: 0,
   },
   VWindow: {
     style: 'overflow: visible;',

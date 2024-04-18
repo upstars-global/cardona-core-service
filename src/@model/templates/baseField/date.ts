@@ -1,4 +1,5 @@
 import type { Component } from 'vue'
+import { markRaw } from 'vue'
 import { BaseDatePeriod, dateSeparators } from '../../date'
 import { getISOStringWithoutTimezone, getUTCISOString } from '../../../helpers/date'
 import DateField from '../../../components/templates/FieldGenerator/_components/DateField.vue'
@@ -19,7 +20,7 @@ export interface IDateBaseField extends IBaseField {
 }
 
 export class DateBaseField extends BaseField implements IDateBaseField {
-  readonly component: Component = DateField
+  readonly component: Component = markRaw(DateField)
   protected _value?: string
   readonly isRangeMode?: boolean
   readonly isStartDateNow?: boolean

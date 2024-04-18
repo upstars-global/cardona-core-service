@@ -6,7 +6,7 @@
   .CodeMirror,
   .fr-wrapper {
     background: rgb(var(--v-theme-surface));
-    color: rgb(var(--v-theme-on-background));
+    color: rgb(var(--v-theme-grey-900));
   }
 
   .fr-toolbar,
@@ -29,7 +29,12 @@
   .fr-box.fr-basic {
     .fr-wrapper,
     .fr-element {
-      color: inherit;
+      font-family: inherit;
+      color: rgba(var(--v-theme-grey-900), var(--v-high-emphasis-opacity));
+
+      &.fr-disabled {
+        color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+      }
     }
   }
   .cm-string,

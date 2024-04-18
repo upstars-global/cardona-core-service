@@ -17,8 +17,8 @@ export const filterDemoList = (list: Array<any>, filter: IDemoFilter) => {
   if (!!createdFrom && !!createdTo) {
     result = result.filter(item => {
       return (
-        moment(item.newDate).isSameOrAfter(createdFrom)
-        && moment(item.newDate).isSameOrBefore(createdTo)
+        moment(item.newDate).isSameOrAfter(moment(createdFrom, 'DD.MM.YYYY HH.mm'))
+        && moment(item.newDate).isSameOrBefore(moment(createdTo, 'DD.MM.YYYY HH.mm'))
       )
     })
   }

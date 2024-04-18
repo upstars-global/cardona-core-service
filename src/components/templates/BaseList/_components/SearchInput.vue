@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { debounce } from 'lodash'
 import { useI18n } from 'vue-i18n'
 import { IconsList } from '../../../../@model/enums/icons'
-import type { VSizes } from '@/@model/vuetify'
+import type { VSizes } from '../../../../@model/vuetify'
 
 interface Props {
   modelValue: string

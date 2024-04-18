@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
+import { cloneDeep } from 'lodash'
 import { setStorage } from '../../helpers/storage'
 import useToastService from '../../helpers/toasts'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
@@ -34,7 +35,7 @@ const selectedFilters = ref<BaseField[]>([])
 const isSmallBlock: boolean = props.size === VSizes.Small
 const headerTag: string = isSmallBlock ? 'h5' : 'h4'
 
-const onChange = (filter: BaseField) => selectedFilters.value.push(filter)
+const onChange = (filter: BaseField) => selectedFilters.value.push(cloneDeep(filter))
 
 const onApply = () => {
   store.commit('filtersCore/SET_LIST_ENTITY_NAME', props.entityName)
@@ -161,7 +162,7 @@ const listNotSelected = computed(() => {
                   v-model="selectedFilters[key]"
                   :with-label="false"
                   :size="size"
-                  class="field-generator mr-1 w-100"
+                  class="field-generator mr-4 full-width"
                 />
                 <VBtn
                   :variant="VVariants.Outlined"
@@ -211,24 +212,20 @@ const listNotSelected = computed(() => {
 
       <div
         v-else-if="selectedFilters.length"
-        class="d-flex flex-wrap align-center pb-1"
+        class="d-flex flex-wrap align-center pb-1 gap-2"
       >
-        <span class="font-small-3 font-weight-bold text-body-heading mr-1 mb-50">
+        <span class="font-small-3 font-weight-bold text-body-heading">
           {{ $t('common.filter.appliedFilters') }}
         </span>
         <VChip
           v-for="filter in selectedFilters"
           :key="filter.key"
-          class="mr-1 mb-50"
           label
           :color="VColors.Secondary"
         >
           {{ filter.label }}
 
-          <span
-            v-if="Array.isArray(filter.value) && filter.value.length && filter.type !== 'sum-range'"
-            class="ml-20"
-          >
+          <span v-if="Array.isArray(filter.value) && filter.value.length && filter.type !== 'sum-range'">
             ({{ filter.value.length }})
           </span>
         </VChip>

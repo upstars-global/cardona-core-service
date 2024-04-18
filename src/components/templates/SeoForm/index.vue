@@ -9,9 +9,9 @@ const props = defineProps<{
 
 <template>
   <VCard>
-    <VCardText>
+    <template #title>
       {{ $t('title.seo') }}
-    </VCardText>
+    </template>
 
     <VCardText>
       <VRow class="mb-2">

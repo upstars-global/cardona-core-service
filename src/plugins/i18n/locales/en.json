@@ -339,6 +339,7 @@
     "sumPeriod": "Sum period",
     "settings": "Settings",
     "editableField": "Editable field",
+    "addTags": "Add tags...",
     "phone": {
       "_": "Phone",
       "list": "Phones"
@@ -433,7 +434,7 @@
   },
   "component": {
     "tags": {
-      "duplicateTag": "Duplicate tag"
+      "duplicateTag": "Duplicate tag:"
     },
     "sumPeriod": {
       "today": "Today: ",
@@ -570,7 +571,8 @@
     "phone": "Phone can contain only numbers and one plus",
     "Demo_text_ALREADY_EXISTS": "This entry already exists in the collection",
     "range_date": "The date range must contain two dates",
-    "range_date_different": "Date from and to should be different"
+    "range_date_different": "Date from and to should be different",
+    "positive": "The {_field_} field must be a positive number"
   },
   "toast": {
     "success": {
@@ -761,13 +763,15 @@
     "label": "Image",
     "textBtn": "Select",
     "selectImage": "Select Image",
+    "errorLoadImage": "Image not loaded. Server error.",
     "delete": "Delete",
     "dragText": "Drag file here or upload from device",
-    "maxSize": "Max size 4 MB",
+    "maxSize": "Max size {size} MB",
     "downloadNew": "Download new",
-    "downloadDevice": "Download from device",
+    "downloadDevice": "Upload new",
+    "uploadFromDevice": "Upload from device",
     "dragTextDrop": "Drag file here",
-    "chooseFromDownloaded": "Choose From Downloaded",
+    "chooseFromDownloaded": "Choose from uploaded",
     "tableColImg": "Image",
     "tableColUrl": "URL",
     "nothingInFolder": "There is nothing in this folder",
@@ -902,7 +906,8 @@
       "metaTitle": "Title",
       "metaDescription": "Description",
       "description": "Text",
-      "text": "Text"
+      "text": "Text",
+      "textWithCb": "Text with callback"
     }
   },
   "customMenu": {

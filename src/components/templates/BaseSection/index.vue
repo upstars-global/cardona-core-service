@@ -3,7 +3,7 @@ import { computed, inject, nextTick, onBeforeMount, onBeforeUnmount, ref } from 
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
 import store from '../../../store'
-import { convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
+import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
 import { basePermissions } from '../../../helpers/base-permissions'
 import { PageType } from '../../../@model/templates/baseSection'
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
@@ -45,6 +45,8 @@ const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitC
 const formRef = ref(null)
 const ListPageName: string = pageName ? `${pageName}List` : `${entityName}List`
 const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Update`
+
+const isExistsListPage = checkExistsPage(ListPageName)
 
 // Action names
 const moduleName: string = props.config?.withCustomModuleName
@@ -328,8 +330,9 @@ defineExpose({
         </template>
 
         <VBtn
+          v-if="isExistsListPage"
           :variant="VVariants.Outlined"
-          :color="VColors.Error"
+          :color="VColors.Secondary"
           data-testid="cancel-button"
           @click.prevent="onClickCancel"
         >

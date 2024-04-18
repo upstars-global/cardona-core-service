@@ -1,4 +1,5 @@
 import type { Component } from 'vue'
+import { markRaw } from 'vue'
 import type { OptionsItem } from '../../../@model'
 import SelectField from '../../../components/templates/FieldGenerator/_components/SelectField.vue'
 import type { IASelectBaseField, ITransformFieldOptions, SelectValue } from './base'
@@ -18,7 +19,7 @@ export interface ISelectBaseField<T> extends IASelectBaseField<T> {
 export class SelectBaseField<T extends OptionsItem = OptionsItem>
   extends ASelectBaseField<T>
   implements ISelectBaseField<T> {
-  readonly component: Component = SelectField
+  readonly component: Component = markRaw(SelectField)
   protected _value?: T | SelectValue | null
   readonly clearable: boolean
   readonly withCalculatePosition: boolean

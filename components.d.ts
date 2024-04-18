@@ -416,6 +416,7 @@ declare module 'vue' {
     I18n: typeof import('./src/@core/components/I18n.vue')['default']
     ImageDetailField: typeof import('./src/components/templates/BaseList/_components/fields/ImageDetailField.vue')['default']
     ImageField: typeof import('./src/components/templates/BaseList/_components/fields/ImageField.vue')['default']
+    ImageItem: typeof import('./src/components/UploadImage/ImageItem.vue')['default']
     InnerBlankLink: typeof import('./src/components/templates/_components/InnerBlankLink.vue')['default']
     InnerBlankLinkView: typeof import('./src/components/templates/ViewGenerator/_components/InnerBlankLinkView.vue')['default']
     InputTextWrapper: typeof import('./src/components/templates/LocaleForm/_components/InputTextWrapper.vue')['default']

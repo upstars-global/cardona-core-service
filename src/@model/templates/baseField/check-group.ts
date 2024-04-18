@@ -1,7 +1,9 @@
-import { Component } from 'vue'
-import { BaseField, IBaseField } from './base'
-import CheckGroupField from "../../../components/templates/FieldGenerator/_components/CheckGroupField.vue";
-import {OptionsItem} from "../../../@model";
+import type { Component } from 'vue'
+import { markRaw } from 'vue'
+import CheckGroupField from '../../../components/templates/FieldGenerator/_components/CheckGroupField.vue'
+import type { OptionsItem } from '../../../@model'
+import type { IBaseField } from './base'
+import { BaseField } from './base'
 
 interface CheckGroupOptionsItem extends OptionsItem {
   readonly disabled?: boolean
@@ -13,13 +15,13 @@ export interface ICheckGroupBaseField extends IBaseField {
 }
 
 export class CheckGroupBaseField extends BaseField implements ICheckGroupBaseField {
-  readonly component: Component = CheckGroupField
+  readonly component: Component = markRaw(CheckGroupField)
   protected _value?: string[]
   readonly options: CheckGroupOptionsItem[]
 
   constructor(field: ICheckGroupBaseField) {
     super(field)
-    this._value = field.value
+    this._value = field.value || []
     this.options = field.options
   }
 

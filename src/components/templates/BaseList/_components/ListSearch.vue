@@ -20,12 +20,13 @@ interface Props {
     canCreate: boolean
     createPage: string
   }
+  isOpenFilterBlock?: boolean
 }
 
 interface Emits {
   (e: 'update:modelValue', payload: string): void
-  (e: 'onClickFilter'): void
-  (e: 'onExportFormatSelected', payload: string): void
+  (e: 'on-click-filter'): void
+  (e: 'on-export-format-selected', payload: string): void
 }
 
 const props = defineProps<Props>()
@@ -34,11 +35,11 @@ const emits = defineEmits<Emits>()
 const size = computed(() => (props.config?.small ? BSize.Sm : BSize.Md)) // TODO: refactor sizes
 
 const onFilterButtonClick = () => {
-  emits('onClickFilter')
+  emits('on-click-filter')
 }
 
 const onExportFormatSelected = (format: string) => {
-  emits('onExportFormatSelected', format)
+  emits('on-export-format-selected', format)
 }
 
 const searchQuery = computed({
@@ -58,8 +59,7 @@ const searchQuery = computed({
           v-model="searchQuery"
           :prepend-inner-icon="IconsList.SearchIcon"
           :placeholder="config.searchPlaceholder"
-          :bg-color="VColors.White"
-          class="search"
+          class="search bg-surface"
         />
 
         <VBtn
@@ -67,6 +67,7 @@ const searchQuery = computed({
           :prepend-icon="IconsList.FilterIcon"
           :variant="VVariants.Outlined"
           :color="VColors.Secondary"
+          :active="isOpenFilterBlock"
           @click="onFilterButtonClick"
         >
           <span

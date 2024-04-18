@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed, inject, nextTick, ref } from 'vue'
-import useToastService from '../../helpers/toasts'
 import store from '../../store'
 import { IconsList } from '../../@model/enums/icons'
-import { VColors, VSizes, VVariants } from '../../@model/vuetify'
+import { VColors, VSizes } from '../../@model/vuetify'
 import { i18n } from '../../plugins/i18n'
 import BaseModal from '../../components/BaseModal/index.vue'
 import { UploadFileSizes } from '../../@model/enums/uploadFileSizes'
@@ -42,22 +41,25 @@ const emits = defineEmits<{
 
 const modal = inject('modal')
 
-const maxSizeFileKB = 4194304 // 4MB
-const isLoading = ref(false)
-const { toastError } = useToastService()
+const maxSizeFileMb = 4 // 4MB
 const file = ref()
 
 const urlFile = computed({
   get: () => props.modelValue,
-  set: value => emits('update:modelValue', value),
+  set: value => {
+    if (value)
+      modal.hideModal(selectModalId)
+
+    emits('update:modelValue', value)
+  },
 })
 
-const clearFile = ({ hide }) => {
+const clearFile = actions => {
   emits('input-path', '')
   emits('update:modelValue', '')
   file.value = null
-  if (hide)
-    hide()
+  if (actions?.hide)
+    actions.hide()
 
   // It is necessary for the work of the watcher inside when re-deleting
   nextTick(() => {
@@ -81,40 +83,22 @@ const openSelectModal = () => {
   modal.showModal(selectModalId)
 }
 
-const onFileUpload = async files => {
-  if (files.length) {
-    const file = files[0]
-    if (file.size > maxSizeFileKB) {
-      clearFile()
+const onFileUpload = async file => {
+  try {
+    const _path = `${props.path}/${file.name.replace(/\W/g, '_')}`
 
-      toastError('fileSizeError', { MB: String(maxSizeFileKB / 1048576) })
+    const { publicPath } = await store.dispatch('compostelaCore/uploadFile', {
+      file,
+      path: _path,
+    })
 
-      return
-    }
-
-    try {
-      isLoading.value = true
-
-      const _path = `${props.path}/${file.name.replace(/\W/g, '_')}`
-
-      const { publicPath } = await store.dispatch('compostelaCore/uploadFile', {
-        file,
-        path: _path,
-      })
-
-      urlFile.value = publicPath
-      emits('input-path', _path)
-    }
-    catch {
-      await clearFile()
-    }
-    finally {
-      isLoading.value = false
-    }
+    urlFile.value = publicPath
+    emits('input-path', _path)
   }
-  else {
-    emits('update:modelValue', '')
-    emits('input-path', '')
+  catch {
+    await clearFile()
+  }
+  finally {
   }
 }
 </script>
@@ -128,9 +112,13 @@ const onFileUpload = async files => {
       class="img-file"
       :style="{ backgroundImage: `url(${urlFile})` }"
     />
-    <div class="img-file-block-inner__actions d-flex gap-3">
+    <div
+      class="img-file-block-inner__actions d-flex gap-3"
+      :class="{ 'd-none': props.disabled }"
+    >
       <VBtn
-        :size="VSizes.Small"
+        :size="
+          VSizes.Small"
         :color="VColors.Secondary"
         :icon="IconsList.UploadIcon"
         rounded="sm"
@@ -148,56 +136,28 @@ const onFileUpload = async files => {
   </div>
   <FilesUpload
     v-else
-    @uploaded-files="onFileUpload"
-  >
-    <template #content="{ isOverDropZone }">
-      <p v-if="isOverDropZone">
-        {{ $t('placeholder.dropFile') }}
-      </p>
-      <div
-        v-else-if="isLoading"
-        class="d-flex flex-column justify-center align-center"
-      >
-        <VProgressCircular
-          indeterminate
-          :color="VColors.Primary"
-          class="mb-1"
-        />
-        <p class="text-body-heading font-weight-bold mb-0">
-          {{ $t('common.loading') }}
-        </p>
-      </div>
-      <div
-        v-else
-        class="btn-open-modal-block d-flex align-items-center justify-content-center"
-      >
-        <VBtn
-          :variant="VVariants.Outlined"
-          :color="VColors.Secondary"
-          :size="VSizes.Small"
-          @click="openSelectModal"
-        >
-          <span class="white-space-nowrap">
-            {{ textBtn }}
-          </span>
-        </VBtn>
-      </div>
-    </template>
-  </FilesUpload>
+    :text-btn="textBtn"
+    :on-submit-callback="onFileUpload"
+    :max-size-file-mb="maxSizeFileMb"
+    :on-btn-click-callback="openSelectModal"
+  />
   <BaseModal
     :id="selectModalId"
     :title="$t('uploadImg.selectImage')"
     size="md"
   >
-    <ModalFileUpload
-      v-model="urlFile"
-      :path="path"
-      :file="file"
-      :is-load="isLoading"
-      @upload-files="onFileUpload"
-      @set-path="onSetPath"
-      @clear="onClickRemove"
-    />
+    <template #default>
+      <div class="transaction-modal-content--wrapper overflow-y-auto">
+        <ModalFileUpload
+          v-model="urlFile"
+          :path="path"
+          :file="file"
+          :on-upload-image-cb="onFileUpload"
+          @set-path="onSetPath"
+          @clear="onClickRemove"
+        />
+      </div>
+    </template>
   </BaseModal>
   <RemoveModal
     :remove-modal-id="removeModalId"
@@ -210,6 +170,9 @@ const onFileUpload = async files => {
 <style lang="scss">
 @import '../../assets/styles/components/upload';
 
+.transaction-modal-content--wrapper {
+  max-height: 90vh;
+}
 .img-file-block-inner {
   position: relative;
   width: 100%;

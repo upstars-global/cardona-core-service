@@ -56,7 +56,7 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
     >
       <VCol
         cols="4"
-        class="font-weight-bolder text-nowrap"
+        class="font-weight-bolder text-no-wrap"
       >
         {{ $t('component.conditions.availableVariables') }}:
       </VCol>

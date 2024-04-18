@@ -4,6 +4,7 @@ import type { NumberBaseField } from '../../../../@model/templates/baseField'
 import type { NumberOrString } from '../../../../@model'
 import { toIntegerNumbers, toPositiveNumbers } from '../../../../helpers'
 import AppTextField from '../../../../@core/components/app-form-elements/AppTextField.vue'
+import { IconsList } from '../../../../@model/enums/icons'
 
 interface Props {
   modelValue: NumberOrString
@@ -49,6 +50,13 @@ const onKeyDown = event => {
   if (disabledKeys.value.includes(event.key))
     event.preventDefault()
 }
+
+const appendInnerIcon = computed(() => {
+  if (props.errors)
+    return IconsList.InfoIcon
+
+  return null
+})
 </script>
 
 <template>
@@ -62,6 +70,7 @@ const onKeyDown = event => {
       autocomplete="off"
       :suffix="field?.append"
       :error="errors"
+      :append-inner-icon="appendInnerIcon"
       class="number-field"
       @keydown="onKeyDown"
     />

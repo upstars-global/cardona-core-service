@@ -1,4 +1,5 @@
 import type { Component } from 'vue'
+import { markRaw } from 'vue'
 import MultiSelectField from '../../../components/templates/FieldGenerator/_components/MultiSelectField.vue'
 import type { OptionsItem } from '../../../@model'
 import type { IASelectBaseField, ITransformFieldOptions, SelectValue } from './base'
@@ -11,7 +12,7 @@ export interface IMultiSelectBaseField<T> extends IASelectBaseField<T> {
 export class MultiSelectBaseField<T extends OptionsItem = OptionsItem>
   extends ASelectBaseField<T>
   implements IMultiSelectBaseField<T> {
-  readonly component: Component = MultiSelectField
+  readonly component: Component = markRaw(MultiSelectField)
   protected _value?: T[] | SelectValue[] | null
 
   constructor(field: IMultiSelectBaseField<T>) {

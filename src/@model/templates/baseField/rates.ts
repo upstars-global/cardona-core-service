@@ -1,4 +1,5 @@
 import type { Component } from 'vue'
+import { markRaw } from 'vue'
 import RatesField from '../../../components/templates/FieldGenerator/_components/RatesField.vue'
 import { division, multiplication } from '../../../helpers/math-operations'
 import type { IBaseField } from './base'
@@ -16,7 +17,7 @@ export interface IRatesBaseField extends IBaseField {
 }
 
 export class RatesBaseField extends BaseField implements IRatesBaseField {
-  readonly component: Component = RatesField
+  readonly component: Component = markRaw(RatesField)
   protected _value?: Required<RatesValueItem>[]
   readonly trackBy: string
   readonly isCents: boolean

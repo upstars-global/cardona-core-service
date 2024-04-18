@@ -20,7 +20,7 @@ import { IconsList } from '../../@model/enums/icons'
 
 <style lang="scss" scoped>
 .not-files-block {
-  height: 14.286rem;
+  height: 16.625rem;
 
   .icon-no-file {
     color: rgba(var(--v-theme-on-background), var(--v-disabled-opacity));

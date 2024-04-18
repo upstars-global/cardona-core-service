@@ -20,7 +20,7 @@ defineProps<Props>()
     >
       <div class="toastification__avatar d-flex align-center justify-center">
         <i
-          class="v-icon notranslate v-theme--dark v-icon--size-default v-icon--clickable cursor-pointer v-icon notranslate v-theme--dark v-icon--size-default v-icon--clickable cursor-pointer text-white"
+          class="toastification__avarat-icon v-icon notranslate v-icon--size-default v-icon--clickable cursor-pointer v-icon notranslate v-icon--size-default v-icon--clickable cursor-pointer"
           :class="icon"
           role="button"
           aria-hidden="false"
@@ -48,7 +48,7 @@ defineProps<Props>()
         @click="$emit('close-toast')"
       >
         <i
-          class="v-icon notranslate v-theme--dark v-icon--size-default v-icon--clickable cursor-pointer v-icon notranslate v-theme--dark v-icon--size-default v-icon--clickable cursor-pointer "
+          class="v-icon notranslate v-icon--size-default v-icon--clickable cursor-pointer v-icon notranslate v-icon--size-default v-icon--clickable cursor-pointer "
           :class="IconsList.XIcon"
           role="button"
           aria-hidden="false"
@@ -66,9 +66,9 @@ defineProps<Props>()
     border-radius: 50%;
     background: currentColor;
   }
-}
-.Vue-Toastification__toast--default {
-  background-color: white!important;
+  &__avarat-icon {
+    color: rgb(var(--v-theme-surface));
+  }
 }
 .toastification-close-icon,
 .toastification-title {
@@ -76,7 +76,7 @@ defineProps<Props>()
 }
 
 .toastification-close-icon {
- color: rgb(var(--v-theme-background))
+ color: rgb(var(--v-theme-on-surface))
 }
 .toastification-title {
   color: inherit;

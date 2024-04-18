@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { TimeBaseField } from '../../../../@model/templates/baseField'
 import { VSizes } from '../../../../@model/vuetify'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
+import { IconsList } from '../../../../@model/enums/icons'
 
 interface TimeFieldProps {
   modelValue?: string
@@ -24,14 +25,22 @@ const localModelValue = computed({
   get: () => props.modelValue,
   set: value => emit('update:modelValue', value),
 })
+
+const config = {
+  enableTime: true,
+  noCalendar: true,
+  dateFormat: 'H:i',
+  time_24hr: true,
+  minuteIncrement: 1,
+}
 </script>
 
 <template>
-  <div>
-    <AppDateTimePicker
-      v-model="localModelValue"
-      :placeholder="field.placeholder || field.label"
-      :config="{ enableTime: true, noCalendar: true, dateFormat: 'H:i' }"
-    />
-  </div>
+  <AppDateTimePicker
+    v-model="localModelValue"
+    :prepend-inner-icon="IconsList.ClockIcon"
+    :placeholder="field.placeholder || field.label"
+    :disabled="disabled"
+    :config="config"
+  />
 </template>

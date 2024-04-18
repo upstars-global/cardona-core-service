@@ -160,7 +160,7 @@ const onChangeCheckboxTable = (
     multiple
   >
     <VExpansionPanel>
-      <VExpansionPanelText
+      <VExpansionPanelTitle
         v-if="!notHeader"
         class="py-4"
       >
@@ -178,17 +178,17 @@ const onChangeCheckboxTable = (
             <VSwitch
               v-model="checked"
               :readonly="checked"
+              :disabled="checked"
               :color="VColors.Primary"
               :label="$t('permission.fullAccess')"
             />
           </div>
         </div>
-      </VExpansionPanelText>
+      </VExpansionPanelTitle>
       <VExpansionPanelText>
         <Component
           :is="componentRenderer"
           :key="componentRendererName"
-          :title="title"
           is-visible
           class="pa-0"
         >
@@ -197,6 +197,7 @@ const onChangeCheckboxTable = (
               v-if="tableItems.length"
               responsive
               caption-top
+              class="group-fragment-setting-table"
             >
               <thead>
                 <tr class="header-table">

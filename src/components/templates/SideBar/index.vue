@@ -70,9 +70,9 @@ const onHide = () => {
   >
     <!-- Header -->
     <div class="content-sidebar-header d-flex justify-space-between align-center px-6 py-3 bg-light">
-      <h5 class="content-sidebar-header__title mb-0 text-h5">
+      <h4 class="content-sidebar-header__title mb-0 text-h4">
         {{ $t(title) }}
-      </h5>
+      </h4>
       <VIcon
         class="ml-1 cursor-pointer"
         :icon="IconsList.XIcon"
@@ -81,7 +81,7 @@ const onHide = () => {
       />
     </div>
     <div
-      v-if="viewForm"
+      v-if="viewForm && sidebarActive"
       class="p-1 bg-light px-4"
     >
       <!--  ViewInfo   -->
@@ -114,7 +114,7 @@ const onHide = () => {
             </ViewGenerator>
             <template v-else-if="viewForm[key] instanceof SideBarCollapseItem && sidebarCollapseMode">
               <div>
-                <VExpansionPanels multiple>
+                <VExpansionPanels>
                   <VExpansionPanel :title="`${viewForm[key].title}`">
                     <VExpansionPanelText>
                       <div

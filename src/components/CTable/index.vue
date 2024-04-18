@@ -142,29 +142,32 @@ const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxS
       </template>
     </template>
     <template #tbody="{ items, select, toggleSelect, isSelected }">
-      <template v-if="isLoadingList">
-        <tr
-          v-for="index in skeletonRows"
-          :key="`skeleton-row_${index}`"
-        >
-          <td
-            v-if="props.selectable"
-            class="c-table__cell"
-            :class="cellClasses"
-            data-c-field="selectable"
+      <tbody v-if="isLoadingList">
+        <slot name="skeleton">
+          <tr
+            v-for="index in skeletonRows"
+            :key="`skeleton-row_${index}`"
           >
-            <VSkeletonLoader type="text" />
-          </td>
-          <td
-            v-for="(_, cellIndex) in fields"
-            :key="`skeleton-cell_${index}_${cellIndex}`"
-            class="c-table__cell"
-            :class="cellClasses"
-          >
-            <VSkeletonLoader type="text" />
-          </td>
-        </tr>
-      </template>
+            <td
+              v-if="props.selectable"
+              class="c-table__cell"
+              :class="cellClasses"
+              data-c-field="selectable"
+            >
+              <VSkeletonLoader type="text" />
+            </td>
+            <td
+              v-for="(field, cellIndex) in fields"
+              :key="`skeleton-cell_${index}_${cellIndex}`"
+              class="c-table__cell"
+              :class="cellClasses"
+              :data-c-field="field.key"
+            >
+              <VSkeletonLoader type="text" />
+            </td>
+          </tr>
+        </slot>
+      </tbody>
       <Component
         :is="tableWrapperComponent"
         v-else

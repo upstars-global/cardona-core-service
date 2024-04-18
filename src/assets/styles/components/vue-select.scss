@@ -1,6 +1,7 @@
 @import "vue-select/dist/vue-select.css";
 :root {
   --vs-line-height: 1.25;
+  --vs-disabled-bg: rgb(var(--v-theme-grey-100));
 }
 
 $options-padding-x: 20px;
@@ -141,7 +142,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
   // Slide selected option to right on focus
   // * Just like on input focus we get placeholder moved
   .vs--single.vs--open & {
-    transform: translateX(5px);
+    // transform: translateX(5px);
   }
 
   // Close icon in tag
@@ -153,6 +154,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
 // Tag/Multi Select
 .v-select {
   min-height: 2.5rem;
+
 
   &:not(.vs--single) {
     .vs__selected {
@@ -174,6 +176,11 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
     &:focus,
     & {
       margin: 0;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+    &::placeholder {
+      color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity))
     }
   }
 
@@ -183,11 +190,16 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
   }
 
   &.vs--single .vs__selected {
-    color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+    color: rgba(var(--v-theme-grey-700));
+    font-weight: 400;
   }
   .vs__selected-options {
     padding: 0;
     gap: 0.5rem;
+  }
+
+  &.error .vs__dropdown-toggle {
+    border-color: rgb(var(--v-theme-error));
   }
 }
 
@@ -238,44 +250,10 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
 // Size: Small
 // ------------------------------------------------
 .select-size-sm {
-  // Remove toggle padding from medium size
-  .vs__dropdown-toggle {
-    padding: 1px;
-    padding-bottom: 0;
-  }
+  min-height: 2rem;
 
   &.vs--single .vs__dropdown-toggle {
-    padding: 2px;
-  }
-
-  // set line-height and font size for sm
-  .vs__dropdown-toggle,
-  .vs__selected {
-    // line-height: 1.8;
-    font-size: 0.9rem;
-  }
-
-  // Set close and dropdown icon position in center
-  .vs__actions {
-    padding-bottom: 2px;
-    padding-top: 2px;
-  }
-
-  .vs__deselect {
-    svg {
-      vertical-align: middle !important;
-    }
-  }
-
-  // Remove mt from search
-  .vs__search {
-    margin-top: 0;
-  }
-
-  // Selected options size
-  &.v-select .vs__selected {
-    font-size: 0.75rem;
-    padding: 0 0.3rem;
+    padding: 0.25rem 0.75px;
   }
 
   // Only set margin for multi/tag select
@@ -286,13 +264,6 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
   // Selected options size for single selection
   &.v-select.vs--single .vs__selected {
     margin-top: 1px;
-  }
-
-  // Set margin-top for selected when input is selected
-  &.vs--single.vs--open {
-    .vs__selected {
-      margin-top: 0;
-    }
   }
 }
 

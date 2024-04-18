@@ -1,25 +1,44 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 import store from '../../../../store'
 import type { ViewInfo } from '../../../../@model/view'
-import { VColors } from '../../../../@model/vuetify'
 
 const props = defineProps<{
   item: ViewInfo
 }>()
 
+const modal = inject('modal')
+
 const canUpdate = computed<boolean>(() =>
   props.item.permission ? store.getters.abilityCan(props.item.permission, 'update') : true,
 )
+
+const isLink = computed<boolean>(() => props.item.value.route)
+
+const openModal = () => {
+  if (!canUpdate.value)
+    return
+
+  modal.showModal(props.item.value.modalId)
+}
 </script>
 
 <template>
-  <BLink
-    v-b-modal="item.value.modalId"
+  <RouterLink
+    v-if="isLink"
     :to="item.value.route"
     :disabled="!canUpdate"
-    :class="[`text-${VColors.Primary}`, { 'text-muted': !canUpdate }]"
+    class="text-primary"
+    :class="{ 'text-muted': !canUpdate }"
   >
     {{ item.value.title }}
-  </BLink>
+  </RouterLink>
+  <p
+    v-else
+    class="text-primary mb-0 cursor-pointer"
+    :class="{ 'text-muted': !canUpdate }"
+    @click="openModal"
+  >
+    {{ item.value.title }}
+  </p>
 </template>

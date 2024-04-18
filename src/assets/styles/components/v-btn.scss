@@ -1,4 +1,5 @@
 .v-btn {
+  text-transform: none;
   .v-btn--size-default {
     transform: scale(1);
     --v-btn-size: 15px;
@@ -9,4 +10,9 @@
     --v-btn-size: 14px;
     --v-btn-height: 2rem;
   }
+}
+
+
+.v-tabs .v-btn {
+  font-weight: 600;
 }

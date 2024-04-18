@@ -57,10 +57,7 @@ onMounted(() => {
     icon
   >
     <VIcon :icon="IconsList.SettingsIcon" />
-    <VMenu
-      activator="parent"
-      :close-on-content-click="false"
-    >
+    <VMenu activator="parent">
       <VList>
         <VListItem
           v-for="item in filledList"

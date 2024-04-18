@@ -25,7 +25,7 @@ const labelValue = computed(() => (props.isShort ? getShortString(props.value) :
 
     <VIcon
       :icon="IconsList.CopyIcon"
-      class="cursor-pointer ml-25"
+      class="cursor-pointer ml-1"
       @click.stop="copyToClipboard(value)"
     />
   </div>

@@ -26,16 +26,15 @@ const valueShort = computed(() => {
 
 <template>
   <VChip
-    :color="variant"
     label
-    class="cursor-pointer overflow-hidden copy-badge"
+    class="cursor-pointer overflow-hidden copy-badge "
     @click="copyToClipboard(value)"
   >
     <span v-if="isViewLabel">{{ label }}: </span>
     {{ valueShort }}
     <VIcon
       :icon="IconsList.CopyIcon"
-      class="ml-25"
+      class="ml-1"
     />
   </VChip>
 </template>
@@ -43,5 +42,6 @@ const valueShort = computed(() => {
 <style lang="scss" scoped>
 .copy-badge {
   text-overflow: ellipsis;
+  color: rgb(var(--v-theme-secondary));
 }
 </style>

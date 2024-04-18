@@ -29,7 +29,7 @@
     "@tiptap/vue-3": "^2.1.12",
     "@vee-validate/i18n": "^4.11.8",
     "@vee-validate/rules": "^4.11.8",
-    "@vueuse/core": "^10.5.0",
+    "@vueuse/core": "10.9.0",
     "@vueuse/math": "^10.5.0",
     "apexcharts-clevision": "^3.28.5",
     "axios": "1.4.0",

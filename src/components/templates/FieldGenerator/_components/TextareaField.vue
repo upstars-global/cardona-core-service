@@ -2,9 +2,11 @@
 import { computed } from 'vue'
 import type { TextareaBaseField } from '../../../../@model/templates/baseField'
 import AppTextarea from '../../../../@core/components/app-form-elements/AppTextarea.vue'
+import { IconsList } from '../../../../@model/enums/icons'
 
 interface TextareaFieldProps {
   modelValue?: string
+  placeholder?: string
   field: TextareaBaseField
   disabled?: boolean
   errors?: boolean
@@ -35,17 +37,25 @@ const localModelValue = computed({
 const autoHeight = computed(() => props.field?.autoHeight
   ? AUTO_HEIGHT_PARAMS
   : {})
+
+const appendInnerIcon = computed(() => {
+  if (props.errors)
+    return IconsList.InfoIcon
+
+  return null
+})
 </script>
 
 <template>
   <AppTextarea
     v-model="localModelValue"
-    :placeholder="field.label"
-    :state="errors ? false : null"
+    :placeholder="placeholder"
+    :error="errors"
     no-resize
     :counter="field.maxLength"
     :maxlength="field.maxLength"
     :disabled="disabled"
+    :append-inner-icon="appendInnerIcon"
     :persistent-counter="field.maxLength"
     v-bind="autoHeight"
   />

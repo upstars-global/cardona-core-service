@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue'
 import type { DemoForm } from '../../../@model/demo'
-import store from '../../../store'
 import { createPhoneDomainFieldItem } from '../../../@model/demo'
+import store from '../../../store'
+import useToastService from '@/helpers/toasts'
+
+const props = defineProps<Props>()
+
+const { toastSuccess } = useToastService()
 
 interface Props {
   entityId?: string
@@ -13,8 +18,6 @@ interface Props {
   canCreateSeo?: boolean
   canUpdateSeo?: boolean
 }
-
-const props = defineProps<Props>()
 
 const formData = ref<DemoForm>({} as DemoForm)
 
@@ -38,20 +41,31 @@ const isDisabledField = computed(() => isUpdatePage.value && !props.canUpdate)
 const isDisabledSeo = computed(() => isUpdatePage.value && !props.canUpdateSeo)
 
 const currentTab = ref('main')
+
+const mockUploadFile = async () => {
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  toastSuccess('/mock/upload')
+}
 </script>
 
 <template>
   <VTabs
     v-model="currentTab"
-    class="mb-5"
+    class="mb-6"
   >
     <VTab value="main">
       {{ $t('page.demo.fields') }}
     </VTab>
-    <VTab value="seo">
+    <VTab
+      value="seo"
+      :disabled="isDisabledTabs"
+    >
       {{ $t('title.seo') }}
     </VTab>
-    <VTab value="localization">
+    <VTab
+      value="localization"
+      :disabled="isDisabledTabs"
+    >
       {{ $t('common.localization') }}
     </VTab>
   </VTabs>
@@ -152,6 +166,7 @@ const currentTab = ref('main')
           </VRow>
         </template>
       </VCard>
+
       <VCard class="mb-7">
         <template #title>
           {{ $t('page.demo.select') }}
@@ -184,6 +199,7 @@ const currentTab = ref('main')
           </VRow>
         </template>
       </VCard>
+
       <VCard class="mb-7">
         <template #title>
           {{ $t('page.demo.check') }}
@@ -234,6 +250,7 @@ const currentTab = ref('main')
           </VRow>
         </template>
       </VCard>
+
       <VCard class="mb-7">
         <template #title>
           {{ $t('common.date') }}
@@ -289,9 +306,10 @@ const currentTab = ref('main')
           </VRow>
         </template>
       </VCard>
+
       <VCard class="mb-7">
         <template #title>
-          {{ $t('page.demo.check') }}
+          {{ $t('page.demo.textarea') }}
         </template>
 
         <template #text>
@@ -304,14 +322,13 @@ const currentTab = ref('main')
             </VCol>
             <VCol cols="4">
               <FieldGenerator
-                v-model="formData.textareaWithAutoHeight"
+                v-model="formData.textareaWithCounter"
                 :disabled="isDisabledField"
               />
             </VCol>
-
             <VCol cols="4">
               <FieldGenerator
-                v-model="formData.textareaWithCounter"
+                v-model="formData.textareaWithAutoHeight"
                 :disabled="isDisabledField"
               />
             </VCol>
@@ -371,7 +388,7 @@ const currentTab = ref('main')
             <VCol cols="8">
               <DynamicFieldList
                 v-model="formData.phoneList"
-                :template-field="createPhoneDomainFieldItem()"
+                :template-field="createPhoneDomainFieldItem"
                 show-even-label
                 allow-add-with-empty
                 :disabled="isDisabledField"
@@ -386,7 +403,7 @@ const currentTab = ref('main')
             </VCol>
           </VRow>
           <VRow>
-            <VCol cols="6">
+            <VCol cols="8">
               <UploadImage
                 v-model="formData.image"
                 type="banners"
@@ -395,6 +412,25 @@ const currentTab = ref('main')
                 :path="`/${selectedProjectPublicName}/banners`"
                 :disabled="isDisabledField"
               />
+            </VCol>
+          </VRow>
+          <VRow>
+            <VCol cols="8">
+              <FilesUpload
+                :disabled="isDisabledTabs"
+                :on-submit-callback="mockUploadFile"
+                :text-btn="$t('uploadFile.textBtn')"
+                :data-types="['application/json']"
+              >
+                <template #content="{ fileSizeFormatted }">
+                  <h5 class="mb-0">
+                    {{ $t('uploadFile.dropFile') }}
+                  </h5>
+                  <p class="mb-0">
+                    {{ $t('uploadFile.fileParams', { accept: 'JSON', size: fileSizeFormatted }) }}
+                  </p>
+                </template>
+              </FilesUpload>
             </VCol>
           </VRow>
         </template>
