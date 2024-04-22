@@ -767,7 +767,7 @@
     "delete": "Delete",
     "dragText": "Drag file here or upload from device",
     "maxSize": "Max size {size} MB",
-    "downloadNew": "Download new",
+    "downloadNew": "Upload new",
     "downloadDevice": "Upload new",
     "uploadFromDevice": "Upload from device",
     "dragTextDrop": "Drag file here",
