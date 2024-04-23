@@ -159,7 +159,7 @@ const onChangeCheckboxTable = (
     v-model="panel"
     multiple
   >
-    <VExpansionPanel>
+    <VExpansionPanel elevation="0">
       <VExpansionPanelTitle
         v-if="!notHeader"
         class="py-4"
@@ -185,7 +185,7 @@ const onChangeCheckboxTable = (
           </div>
         </div>
       </VExpansionPanelTitle>
-      <VExpansionPanelText>
+      <VExpansionPanelText :class="{ 'inner-table': notHeader }">
         <Component
           :is="componentRenderer"
           :key="componentRendererName"
@@ -301,6 +301,11 @@ const onChangeCheckboxTable = (
     border: none;
     padding-top: 1rem;
     padding-bottom: 1rem;
+  }
+}
+.inner-table {
+  .v-expansion-panel-text__wrapper {
+    padding: 0;
   }
 }
 </style>
