@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
+import moment from 'moment'
 import type { DateBaseField } from '../../../../@model/templates/baseField'
-import { getISOStringWithoutTimezone } from '../../../../helpers/date'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
+import { getISOStringWithoutTimezone } from '../../../../helpers/date'
+import { dateSeparators } from '../../../../@model/date'
+import { i18n } from '@/plugins/i18n'
 
 const props = withDefaults(
   defineProps<{
@@ -27,14 +30,67 @@ const flatPickrConfig = computed(() => ({
   minuteIncrement: 1,
 }))
 
+const separator = ref(` ${dateSeparators[i18n.locale]} `)
+
 const modelValue = computed({
   get: () => props.modelValue,
   set: value => emit('update:modelValue', value),
 })
+
+const startedAt = ref()
+const endedAt = ref()
+
+watch(
+  () => props.modelValue,
+  value => {
+    if (value && props.field.isRangeMode && !startedAt.value && !endedAt.value) {
+      ;[startedAt.value, endedAt.value] = value.split(separator.value)
+    }
+  },
+)
+
+const setRangeDate = (value, isStartDate = true) => {
+  if (isStartDate) {
+    startedAt.value = value
+    if (endedAt.value) {
+      if (!value) {
+        emit('update:modelValue', moment(1432252800).format() + separator.value + endedAt.value)
+
+        return
+      }
+      emit('update:modelValue', value + separator.value + endedAt.value)
+    }
+    else {
+      if (!value) {
+        emit('update:modelValue', '')
+
+        return
+      }
+      emit('update:modelValue', value + separator.value + moment().format())
+    }
+  }
+  else {
+    endedAt.value = value
+    if (startedAt.value) {
+      emit('update:modelValue', startedAt.value + separator.value + value)
+      if (!value)
+        emit('update:modelValue', startedAt.value + separator.value + moment().format())
+    }
+    else {
+      if (!value) {
+        emit('update:modelValue', '')
+
+        return
+      }
+      emit('update:modelValue', moment(1432252800).format() + separator.value + value)
+    }
+  }
+}
 </script>
 
 <template>
   <AppDateTimePicker
+    v-if="!field.isRangeMode"
     v-model="modelValue"
     :class="{ error: errors }"
     :placeholder="field.placeholder || field.label"
@@ -45,9 +101,49 @@ const modelValue = computed({
       ...field.config,
     }"
   />
+  <div
+    v-else
+    class="date-time-base-field d-flex align-center"
+  >
+    <AppDateTimePicker
+      :value="startedAt"
+      :class="{ error: errors }"
+      :config="{
+        ...flatPickrConfig,
+        minDate: field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
+        maxDate: endedAt,
+        mode: 'single',
+        defaultHour: 0,
+        defaultMinute: 0,
+        ...field.config,
+      }"
+      :placeholder="i18n.t('common.dateFrom')"
+      @update:model-value="(val) => setRangeDate(val)"
+    />
+    <span class="mx-1"> – </span>
+    <AppDateTimePicker
+      :class="{ error: errors }"
+      :value="endedAt"
+      :config="{
+        ...flatPickrConfig,
+        minDate: startedAt,
+        mode: 'single',
+        defaultHour: 23,
+        defaultMinute: 59,
+        ...field.config,
+      }"
+      :placeholder="i18n.t('common.dateTo')"
+      @update:model-value="(val) => setRangeDate(val, false)"
+    />
+  </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.date-time-base-field {
+  .app-picker-field {
+    flex: 1 1 auto;
+  }
+}
 .error {
   .v-field__outline {
     color: rgb(var(--v-theme-error));
