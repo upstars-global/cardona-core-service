@@ -11,6 +11,7 @@ const props = defineProps<{
 
 const checkeds = ref(props.tables.map(() => false))
 const checked = ref(false)
+const panel = ref(0)
 
 const updateAllChecked = (index, val) => {
   checkeds.value[index] = val
@@ -24,44 +25,55 @@ watch(checked, val => {
 </script>
 
 <template>
-  <VExpansionPanels>
-    <VExpansionPanel>
-      <VExpansionPanelTitle class="gap-2 py-4">
-        <div class="d-flex justify-space-between align-center full-width">
-          <span class="lead collapse-title ">{{ title }}</span>
-          <VSwitch
-            v-model="checked"
-            :readonly="checked"
-            :color="VColors.Primary"
-            :label="$t('permission.fullAccess')"
-            @click.stop
-          />
-        </div>
-      </VExpansionPanelTitle>
-      <VExpansionPanelText>
-        <div
-          v-for="(item, index) in tables"
-          :key="item.title"
-          class="block-table-inner"
-        >
-          <p
-            v-if="item.title"
-            class="font-weight-bold"
+  <VCard>
+    <VExpansionPanels
+      v-model="panel"
+      multiple
+    >
+      <VExpansionPanel elevation="0">
+        <VExpansionPanelTitle class="py-4">
+          <div class="d-flex justify-space-between w-100 align-center">
+            <span class="lead collapse-title ">{{ title }}</span>
+            <div
+              class="pr-8"
+              @click.stop
+            >
+              <VSwitch
+                v-model="checked"
+                :readonly="checked"
+                :disabled="checked"
+                :color="VColors.Primary"
+                :label="$t('permission.fullAccess')"
+                @click.stop
+              />
+            </div>
+          </div>
+        </VExpansionPanelTitle>
+        <VExpansionPanelText class="px-0">
+          <div
+            v-for="(item, index) in tables"
+            :key="item.title"
+            class="block-table-inner"
           >
-            {{ item.title }}
-          </p>
-          <GroupFragmentSettingsTable
-            :permissions="item.permissions"
-            :title="item.title"
-            not-header
-            :checked-table="checked"
-            @update-all-checked="(val) => updateAllChecked(index, val)"
-            @change="$emit('change')"
-          />
-        </div>
-      </VExpansionPanelText>
-    </VExpansionPanel>
-  </VExpansionPanels>
+            <p
+              v-if="item.title"
+              class="font-weight-bold"
+            >
+              {{ item.title }}
+            </p>
+            <GroupFragmentSettingsTable
+              :permissions="item.permissions"
+              :title="item.title"
+              not-header
+              :checked-table="checked"
+              @update-all-checked="(val) => updateAllChecked(index, val)"
+              @change="$emit('change')"
+            />
+          </div>
+        </VExpansionPanelText>
+      </VExpansionPanel>
+    </VExpansionPanels>
+  </VCard>
 </template>
 
 <style lang="scss">
