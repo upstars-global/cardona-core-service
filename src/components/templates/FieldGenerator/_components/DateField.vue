@@ -30,7 +30,7 @@ const flatPickrConfig = computed(() => ({
   minuteIncrement: 1,
 }))
 
-const separator = ref(` ${dateSeparators[i18n.locale]} `)
+const separator = ref(` ${dateSeparators[i18n.locale._value]} `)
 
 const modelValue = computed({
   get: () => props.modelValue,
@@ -106,12 +106,12 @@ const setRangeDate = (value, isStartDate = true) => {
     class="date-time-base-field d-flex align-center"
   >
     <AppDateTimePicker
-      :value="startedAt"
+      :model-value="startedAt"
       :class="{ error: errors }"
       :config="{
         ...flatPickrConfig,
-        minDate: field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
-        maxDate: endedAt,
+        minDate: field.isStartDateNow && moment(field.isStartDateNow).valueOf(),
+        maxDate: moment(endedAt).valueOf(),
         mode: 'single',
         defaultHour: 0,
         defaultMinute: 0,
@@ -121,16 +121,17 @@ const setRangeDate = (value, isStartDate = true) => {
       @update:model-value="(val) => setRangeDate(val)"
     />
     <span class="mx-1"> – </span>
+
     <AppDateTimePicker
+      :model-value="endedAt"
       :class="{ error: errors }"
-      :value="endedAt"
       :config="{
         ...flatPickrConfig,
-        minDate: startedAt,
+        ...field.config,
+        minDate: moment(startedAt).valueOf(),
         mode: 'single',
         defaultHour: 23,
         defaultMinute: 59,
-        ...field.config,
       }"
       :placeholder="i18n.t('common.dateTo')"
       @update:model-value="(val) => setRangeDate(val, false)"
