@@ -10,6 +10,7 @@ import {
 } from '../../../helpers/text-editor'
 import TextEditorWysiwyg from '../../TextEditorWysiwyg/index.vue'
 import InputTextWrapper from '../../templates/LocaleForm/_components/InputTextWrapper.vue'
+import CheckField from '../../templates/FieldGenerator/_components/CheckField.vue'
 
 interface Props {
   modelValue: any
