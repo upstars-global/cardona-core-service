@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
-import { debounce } from 'lodash'
+import { cloneDeep, debounce } from 'lodash'
 import FieldGenerator from '../components/templates/FieldGenerator/index.vue'
 import type { NumberOrString } from '../@model'
 import { IconsList } from '../@model/enums/icons'
@@ -98,7 +98,7 @@ const fetchStartSelect = async rows => {
 }
 
 onMounted(async () => {
-  await fetchStartSelect([props.templateField()])
+  await fetchStartSelect([props.templateField])
 })
 
 const fetchSelectOptions = debounce(async (search = '') => {
@@ -107,7 +107,7 @@ const fetchSelectOptions = debounce(async (search = '') => {
 
 // Handlers
 const onAdd = async () => {
-  const itemTemplate: any = props.templateField()
+  const itemTemplate: any = cloneDeep(props.templateField)
 
   rows.value.push(itemTemplate)
   emits('on-add-item', { item: itemTemplate, index: rows.value.length - 1 })
@@ -179,7 +179,7 @@ const disableAddFiled = computed(() =>
 
       <VCol
         md="1"
-        class="d-flex justify-start align-self-end remove-field__wrapper py-0"
+        class="d-flex justify-start align-self-start remove-field__wrapper py-0"
       >
         <VBtn
           v-if="rowIndex || !required"
@@ -214,6 +214,7 @@ const disableAddFiled = computed(() =>
   margin-bottom: 1.125rem;
 }
 .filed-list__delete {
+  margin-top: 1.65rem;
   min-width: 2.5rem;
   height: 2.5rem;
 }

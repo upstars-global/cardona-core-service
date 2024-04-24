@@ -104,6 +104,11 @@ const onFileUpload = async file => {
 </script>
 
 <template>
+  <VLabel class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between">
+    <span>
+      {{ label }}
+    </span>
+  </VLabel>
   <div
     v-if="urlFile"
     class="img-file-block-inner d-flex justify-center align-center"

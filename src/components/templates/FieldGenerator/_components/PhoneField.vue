@@ -2,10 +2,11 @@
 import { computed, ref } from 'vue'
 
 import Cleave from 'vue-cleave-component'
-import { allPhoneCodesWithFlags } from '../../../../helpers/countries'
+import { getCountryDataByPhone } from '../../../../helpers/countries'
 import { VVariants } from '../../../../@model/vuetify'
 import type { PhoneBaseField } from '../../../../@model/templates/baseField'
 import { IconsList } from '../../../../@model/enums/icons'
+import 'flag-icons/css/flag-icons.min.css'
 
 interface PhoneFieldProps {
   modelValue: string
@@ -35,16 +36,7 @@ const localModelValue = computed({
   },
 })
 
-const phoneFlag = computed(() => {
-  const cleanPhoneNumber: string
-    = localModelValue.value[0] === '+' ? localModelValue.value.slice(1) : localModelValue.value
-
-  const phoneData = allPhoneCodesWithFlags.find(
-    ({ phone }) => cleanPhoneNumber.indexOf(phone) === 0,
-  )
-
-  return phoneData?.flag
-})
+const phoneFlag = computed(() => getCountryDataByPhone(localModelValue.value)?.shortCode.toLowerCase())
 
 const isFocused = ref(false)
 
@@ -74,9 +66,11 @@ const appendInnerIcon = computed(() => {
     class="position-relative d-flex justify-content-between align-center phone-field"
     :class="{ 'phone-field--disabled': disabled }"
   >
-    <p class="flag">
-      {{ phoneFlag }}
-    </p>
+    <span
+      v-if="phoneFlag"
+      class="flag-icon fi position-absolute pl-12"
+      :class="`fi-${phoneFlag}`"
+    />
 
     <VField
       :variant="VVariants.Outlined"
