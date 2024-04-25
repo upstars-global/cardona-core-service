@@ -60,6 +60,10 @@ const onShow = () => emit('show')
     @hidden="onHidden"
     @show="onShow"
   >
+    <template #modal-header="{ hide }">
+      <slot name="modal-header" :hide="hide" :title="title" />
+    </template>
+
     <template #default="{ hide }">
       <slot :hide="hide" />
     </template>
