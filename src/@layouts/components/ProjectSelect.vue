@@ -1,0 +1,111 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { IconsList } from '../../@model/enums/icons'
+import { useChangeProject } from '../../composables/useChangeProject'
+
+const store = useStore()
+
+const { changeProject } = useChangeProject()
+
+const selectProject = computed({
+  get: () => store.getters.selectedProject,
+  set: val => {
+    changeProject(val)
+  },
+})
+
+const projects = computed(() => store.getters.userInfo.projects)
+const cantSelect = computed(() => projects.value.length < 2)
+</script>
+
+<template>
+  <div
+    class="project-select"
+    :class="{ 'cant-select': cantSelect }"
+  >
+    <VueSelect
+      v-model="selectProject"
+      :options="projects"
+      label="publicName"
+      class="select-field"
+      :clearable="false"
+      :searchable="false"
+      :no-drop="cantSelect"
+    >
+      <template #selected-option="{ publicName, title, alias, iconPath }">
+        <div class="d-flex align-center overflow-hidden gap-2">
+          <img
+            v-if="iconPath"
+            :alt="alias"
+            :src="iconPath"
+            class="project-logo"
+          >
+          <div
+            v-else
+            class="project-logo project-logo-no-ico d-flex align-center justify-center"
+          >
+            {{ publicName[0].toUpperCase() }}
+          </div>
+          <span class="text-expanded">{{ publicName || title }}</span>
+        </div>
+      </template>
+      <template #option="{ publicName, title, alias, iconPath }">
+        <div class="d-flex  align-center overflow-hidden gap-2">
+          <img
+            v-if="iconPath"
+            :alt="alias"
+            :src="iconPath"
+            class="project-logo"
+          >
+          <div
+            v-else
+            class="project-logo project-logo-no-ico d-flex align-center justify-center"
+          >
+            {{ publicName[0].toUpperCase() }}
+          </div>
+          <span class="text-expanded">{{ publicName || title }}</span>
+        </div>
+      </template>
+      <template #open-indicator="{ attributes }">
+        <VIcon
+          v-bind="attributes"
+          :icon="IconsList.ChevronDownIcon"
+        />
+      </template>
+    </VueSelect>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.project-select {
+  :deep(.vs__selected-options) {
+    flex-wrap: nowrap;
+    overflow: hidden;
+
+    .vs__search {
+      display: none;
+    }
+  }
+
+  &--collapsed {
+    :deep(.vs__actions) {
+      display: none;
+    }
+  }
+}
+.project-logo {
+  width: 1.5rem;
+  height: 1.5rem;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+.project-logo-no-ico {
+  background: rgb(var(--v-theme-primary));
+  color: white;
+}
+</style>

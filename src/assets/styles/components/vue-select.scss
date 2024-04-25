@@ -143,6 +143,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
   // * Just like on input focus we get placeholder moved
   .vs--single.vs--open & {
     // transform: translateX(5px);
+    position: relative;
   }
 
   // Close icon in tag

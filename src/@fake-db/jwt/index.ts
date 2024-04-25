@@ -1,5 +1,5 @@
-import { productId, productName } from '@productConfig'
 import { genId } from '../../@fake-db/utils'
+import { productId, productName } from '@productConfig'
 import mock from '@/@fake-db/mock'
 import type { User, UserOut } from '@/@fake-db/types.d'
 import avatar1 from '@images/avatars/avatar-1.png'
@@ -95,6 +95,57 @@ export const database: User[] = [
           id: 164,
           name: 'ThorDevelop',
           alias: 'thor_develop',
+          iconPath: '/svc/img/i/shared/projects/chromevnztIDiq_png',
+        },
+        mainLocale: 'en',
+        locales: [
+          'en',
+          'en_AU',
+          'en_CA',
+          'en_IN',
+          'en_NZ',
+          'es',
+          'fr',
+          'fr_CA',
+          'fr_FR',
+          'pt',
+          'pt_BR',
+        ],
+      },
+      {
+        id: 165,
+        name: 'ThorDevelop2',
+        publicName: 'ThorDevelop2',
+        alias: 'thor_develop2',
+        websiteUrl: 'https://rc.thor-develop.upstr.to',
+        integrations: { valencia: true, marbella: true },
+        iconPath: '/svc/img/i/shared/projects/chromevnztIDiq_png',
+        originProject: {
+          integrations: { valencia: true, marbella: true },
+          websiteUrl: 'https://rc.thor-develop.upstr.to',
+          publicName: 'ThorDevelop2',
+          locales: [
+            'en',
+            'en_AU',
+            'en_CA',
+            'en_IN',
+            'en_NZ',
+            'es',
+            'fr',
+            'fr_CA',
+            'fr_FR',
+            'pt',
+            'pt_BR',
+          ],
+          mainLocale: 'en',
+          icon: {
+            path: null,
+            compostelaPath: '/svc/img/i/shared/projects/chromevnztIDiq_png',
+            publicPath: '/svc/img/i/shared/projects/chromevnztIDiq_png',
+          },
+          id: 164,
+          name: 'ThorDevelop2',
+          alias: 'thor_develop2',
           iconPath: '/svc/img/i/shared/projects/chromevnztIDiq_png',
         },
         mainLocale: 'en',
