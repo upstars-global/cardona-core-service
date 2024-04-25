@@ -7,7 +7,11 @@ import { computed, provide, ref, watch } from 'vue'
 
 import type { Component } from 'vue'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import { useStore } from 'vuex'
 import CustomMenu from '../../layouts/components/CustomMenu.vue'
+import { convertUpperCaseFirstSymbol } from '../../helpers'
+import { IconsList } from '../../@model/enums/icons'
+import ProjectSelect from '../../@layouts/components/ProjectSelect.vue'
 import { VNodeRenderer } from './VNodeRenderer'
 import { layoutConfig } from '@layouts'
 import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
@@ -26,6 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   tag: 'aside',
 })
 
+const store = useStore()
 const refNav = ref()
 
 const isHovered = useElementHover(refNav)
@@ -70,16 +75,24 @@ watch(() => isMinMode.value, () => {
   if (!isMinMode.value)
     configStore.toggleMenu(false)
 })
+
+const isNeocore = computed(() => store.getters.isNeocore)
+const isMenuTypeMain = computed(() => store.getters['appConfigCore/isMenuTypeMain'])
+
+const selectedProjectTitle = computed(() =>
+  isNeocore.value
+    ? store.getters.selectedProject?.publicName
+    : convertUpperCaseFirstSymbol(store.getters.selectedProduct?.name),
+)
 </script>
 
 <template>
   <Component
     :is="props.tag"
     ref="refNav"
-    class="layout-vertical-nav sidenav-overlay "
+    class="layout-vertical-nav"
     :class="[
       {
-        'show': configStore.isHiddenMenu,
         'hovered': isHovered,
         'visible': isOverlayNavActive,
         'scrolled': isVerticalNavScrolled,
@@ -137,6 +150,30 @@ watch(() => isMinMode.value, () => {
     <slot name="before-nav-items">
       <div class="vertical-nav-items-shadow" />
     </slot>
+    <ProjectSelect
+      v-if="isMenuTypeMain && isNeocore"
+      class="mx-3 mt-6"
+      :class="{ 'project-select--collapsed': configStore.isVerticalNavCollapsed && !isHovered }"
+    />
+
+    <div
+      v-if="isMenuTypeMain"
+      class="nav-section-title mt-8 mb-4 d-flex"
+    >
+      <span
+        v-if="!configStore.isVerticalNavCollapsed || isHovered"
+        class="title-text"
+      >
+        {{ selectedProjectTitle }}
+      </span>
+
+      <VIcon
+        v-else
+        :icon="IconsList.MoreHorizontalIcon"
+        size="18"
+        class="mx-auto"
+      />
+    </div>
     <slot
       name="nav-items"
       :update-is-vertical-nav-scrolled="updateIsVerticalNavScrolled"
@@ -158,6 +195,11 @@ watch(() => isMinMode.value, () => {
     </slot>
     <CustomMenu />
   </Component>
+  <div
+    class="sidenav-overlay"
+    :class="{ show: configStore.isHiddenMenu }"
+    @click="configStore.toggleMenu(false)"
+  />
 </template>
 
 <style lang="scss" scoped>
@@ -265,34 +307,18 @@ watch(() => isMinMode.value, () => {
   }
 }
 
-html:has(.sidenav-overlay.show) {
-  overflow: hidden;
-}
-
-.sidenav-overlay.show {
-  &:after {
-    opacity: 1;
-    visibility: visible;
-    -webkit-transition: all .5s ease;
-    transition: all .5s ease;
-  }
-}
-
 .sidenav-overlay {
-  &:after {
-    content: ' ';
-    background-color: rgba(34,41,47,.5);
-    position: fixed;
-    top: 0;
-    height: 120vh;
-    width: 400vw;
-    z-index: 997;
+  display: none;
+  background-color: rgba(34,41,47,.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 997;
+
+  &.show {
     display: block;
-    left: 100%;
-    visibility: hidden;
-    opacity: 0;
-    -webkit-transition: all .5s ease;
-    transition: all .5s ease;
   }
 }
 

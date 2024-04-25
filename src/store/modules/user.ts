@@ -1,4 +1,3 @@
-import { setStorage } from '../../helpers/storage'
 import { storageKeys } from '../../configs/storage'
 import type { ProjectInfoInput } from '../../@model/project'
 import { ProjectInfo } from '../../@model/project'
@@ -138,30 +137,8 @@ export default {
       commit('SET_SELECTED_PRODUCT', product)
     },
 
-    setSelectedProject({ getters, commit }, project: ProjectInfoInput) {
-      const { selectedProject } = getters
-      const { currentRoute } = {} // router
-
-      const changingProjectRouteName: string | undefined
-        = currentRoute.meta.changingProjectRouteName
-
-      const isSameProject: boolean = selectedProject?.id === project.id
-
-      setStorage(storageKeys.selectedProjectId, project.id)
-
+    setSelectedProject({ commit }, project: ProjectInfoInput) {
       commit('SET_SELECTED_PROJECT', project)
-
-      if (!isSameProject) {
-        if (changingProjectRouteName) {
-          /* router.push({
-            name: changingProjectRouteName,
-            params: { ...currentRoute.params, project: project.alias },
-          }) */
-        }
-        else if (currentRoute.matched?.[0]?.path.includes(':project')) {
-          // router.push({ params: { ...currentRoute.params, project: project.alias } })
-        }
-      }
     },
   },
 }

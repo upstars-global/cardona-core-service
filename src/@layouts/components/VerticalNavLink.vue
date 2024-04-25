@@ -4,12 +4,17 @@ import { useLayoutConfigStore } from '@layouts/stores/config'
 import type { NavLink } from '@layouts/types'
 import { getComputedNavLinkToProp, getDynamicI18nProps, isNavLinkActive } from '@layouts/utils'
 
-defineProps<{
+const props = defineProps<{
   item: NavLink
 }>()
 
 const configStore = useLayoutConfigStore()
 const hideTitleAndBadge = configStore.isVerticalNavMini()
+
+const onClick = () => {
+  if (props.item.to)
+    configStore.toggleMenu(false)
+}
 </script>
 
 <template>
@@ -21,6 +26,7 @@ const hideTitleAndBadge = configStore.isVerticalNavMini()
       :is="item.to ? 'RouterLink' : 'a'"
       v-bind="getComputedNavLinkToProp(item)"
       :class="{ 'router-link-active router-link-exact-active': isNavLinkActive(item, $router) }"
+      @click="onClick"
     >
       <Component
         :is="layoutConfig.app.iconRenderer || 'div'"
