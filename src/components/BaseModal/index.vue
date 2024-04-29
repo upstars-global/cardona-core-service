@@ -70,12 +70,14 @@ const onHide = (value: boolean) => {
             'without-header-title': !title,
           }"
         >
-          <h4
-            v-if="title"
-            class="mb-0"
-          >
-            {{ title }}
-          </h4>
+          <slot name="modal-header" :title="title" :hide="hide">
+            <h4
+              v-if="title"
+              class="mb-0"
+            >
+              {{ title }}
+            </h4>
+          </slot>
           <VBtn
             size="30"
             :variant="VVariants.Outlined"
