@@ -541,7 +541,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
 </script>
 
 <template>
-  <div class="d-flex flex-column gap-5">
+  <div class="d-flex flex-column">
     <RemoveModal
       :config="config"
       :remove-modal-id="removeModalId"
@@ -597,6 +597,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
     </SideBar>
 
     <ListSearch
+      class="pb-8"
       v-model="searchQuery"
       :right-search-btn="{
         canCreate: isShownCreateBtn,
@@ -903,7 +904,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
         </template>
       </CTable>
     </VCard>
-    <div class="mx-2">
+    <div class="mx-2 pt-8">
       <ListPagination
         v-if="items?.length && config?.pagination"
         :model-value="currentPage"

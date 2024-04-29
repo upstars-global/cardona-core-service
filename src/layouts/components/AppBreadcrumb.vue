@@ -1,10 +1,11 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 
 import { useRoute } from 'vue-router'
 
 import { IconsList } from '../../@model/enums/icons'
 import { VVariants } from '../../@model/vuetify'
+import { useClockUtc } from '../../use/useClockUtc'
 import { useLayoutConfigStore } from '@layouts/stores/config'
 
 const route = useRoute()
@@ -12,6 +13,13 @@ const route = useRoute()
 const allBreadcrumb = computed(() => [{ to: '/' }, ...route.meta.breadcrumb])
 
 const layoutConfig = useLayoutConfigStore()
+
+const clock = useClockUtc({ isUtc: true })
+
+const time = computed(() => clock.time.value)
+
+onMounted(clock.runTime)
+onUnmounted(clock.stopTime)
 </script>
 
 <template>
@@ -29,7 +37,7 @@ const layoutConfig = useLayoutConfigStore()
         class="breadcrumbs-top"
       >
         <VCol
-          cols="12"
+          cols="10"
           class="d-flex align-center"
         >
           <VBtn
@@ -71,7 +79,23 @@ const layoutConfig = useLayoutConfigStore()
             </VBreadcrumbs>
           </div>
         </VCol>
+        <VCol
+          cols="2"
+          class="d-flex align-center justify-end"
+        >
+          <div><VIcon :icon="IconsList.ClockIcon" /></div>
+          <div class="mx-1 time-value">
+            {{ time }}
+          </div>
+          <div>UTC</div>
+        </VCol>
       </VRow>
     </VCol>
   </VRow>
 </template>
+
+<style lang="scss" scoped>
+  .time-value {
+    width: 60px;
+  }
+</style>

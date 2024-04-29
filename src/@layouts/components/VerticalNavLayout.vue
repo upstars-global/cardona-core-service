@@ -66,11 +66,11 @@ export default defineComponent({
       // 👉 Navbar
       const navbar = h(
         'header',
-        { class: ['layout-navbar', { 'navbar-blur': configStore.isNavbarBlurEnabled }] },
+        { class: ['layout-navbar pt-4', { 'navbar-blur': configStore.isNavbarBlurEnabled }] },
         [
           h(
             'div',
-            { class: 'navbar-content-container' },
+            { class: '' },
             slots.navbar?.({
               toggleVerticalOverlayNavActive: toggleIsOverlayNavActive,
             }),
@@ -81,7 +81,7 @@ export default defineComponent({
       // 👉 Content area
       const main = h(
         'main',
-        { class: 'layout-page-content' },
+        { class: 'layout-page-content pt-3' },
         h('div', { class: 'page-content-container' }, slots.default?.()),
       )
 
