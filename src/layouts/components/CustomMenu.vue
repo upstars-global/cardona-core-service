@@ -26,7 +26,10 @@ const firstLetter = computed(() => {
 const logOutAction = {
   title: t('customMenu.logout'),
   icon: IconsList.LogOutIcon,
-  action: () => store.dispatch('authCore/clearAuth'),
+  action: async () => {
+    store.dispatch('authCore/clearAuth')
+    await router.push({ name: 'Login' })
+  },
 }
 
 const configStore = useConfigStore()
