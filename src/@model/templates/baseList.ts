@@ -151,6 +151,9 @@ export interface IBaseListConfig {
   /** hoverable - Вкл/выкл выдиление строки при навидении на нее курсора */
   readonly hover?: boolean
 
+  /** skeletonRows - указать количество строк скелетона */
+  readonly skeletonRows?: number
+
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -190,7 +193,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly customApiPrefix?: string
   readonly customPermissionPrefix?: string
   readonly hover: boolean
-
+  readonly skeletonRows?: number
   constructor({
     withSearch,
     withDeactivation,
@@ -228,6 +231,7 @@ export class BaseListConfig implements IBaseListConfig {
     customApiPrefix,
     customPermissionPrefix,
     hover,
+    skeletonRows,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -265,6 +269,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.customApiPrefix = customApiPrefix
     this.customPermissionPrefix = customPermissionPrefix
     this.hover = hover ?? true
+    this.skeletonRows = skeletonRows
   }
 }
 
