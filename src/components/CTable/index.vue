@@ -26,6 +26,7 @@ const props = withDefaults(defineProps<{
   selectedItems: Array<Record<string, unknown>>
   isLoadingList: boolean
   disabledRowIds?: string[]
+  skeletonRows?: number
 }>(), {
   disabledRowIds: [],
 })
@@ -67,7 +68,7 @@ const onDragEnd = (event: { moved: object }) => {
 
 const cellClasses = computed(() => props.small ? 'py-2 px-3' : 'py-3 px-4')
 const maxSkeletonRows = 25
-const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
+const skeletonRows = computed(() => props.skeletonRows ? props.skeletonRows : props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
 </script>
 
 <template>

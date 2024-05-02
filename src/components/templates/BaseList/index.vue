@@ -698,6 +698,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
         :small="config.small"
         :draggable="canUpdate && config.draggable"
         :hover="config.hover"
+        :skeleton-rows="config.skeletonRows"
         :selected-items="selectedItems"
         :items-per-page="itemsPerPage"
         @end="onDragChanged"
