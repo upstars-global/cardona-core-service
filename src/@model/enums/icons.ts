@@ -126,7 +126,7 @@ export enum IconsList {
   GitPullRequestIcon = 'GitPullRequestIcon',
   GithubIcon = 'GithubIcon',
   GitlabIcon = 'GitlabIcon',
-  GlobeIcon = 'GlobeIcon',
+  GlobeIcon = 'tabler-world',
   GridIcon = 'tabler-layout-grid',
   HardDriveIcon = 'HardDriveIcon',
   HashIcon = 'HashIcon',
@@ -192,7 +192,7 @@ export enum IconsList {
   PhoneMissedIcon = 'PhoneMissedIcon',
   PhoneOffIcon = 'PhoneOffIcon',
   PhoneOutgoingIcon = 'PhoneOutgoingIcon',
-  PhoneIcon = 'PhoneIcon',
+  PhoneIcon = 'tabler-phone',
   PieChartIcon = 'PieChartIcon',
   PlayCircleIcon = 'tabler-circle-caret-right',
   PlayIcon = ' tabler-player-play',
@@ -271,7 +271,7 @@ export enum IconsList {
   UserMinusIcon = 'UserMinusIcon',
   UserPlusIcon = 'UserPlusIcon',
   UserXIcon = 'UserXIcon',
-  UserIcon = 'UserIcon',
+  UserIcon = 'tabler-user',
   UsersIcon = 'tabler-users',
   VideoOffIcon = 'VideoOffIcon',
   VideoIcon = 'VideoIcon',
@@ -294,5 +294,6 @@ export enum IconsList {
   ZoomInIcon = 'ZoomInIcon',
   ZoomOutIcon = 'ZoomOutIcon',
   ZoomCheckIcon = 'tabler-zoom-check',
+  AtSignIcon = 'tabler-at',
 }
 export default {}

@@ -9,8 +9,8 @@ import type { TableField } from './tableFields'
 import type { ProjectFilterTypes } from '@filterConfig'
 
 export enum SortDirection {
-  asc = 'asc',
-  desc = 'desc',
+  asc = 'ASC',
+  desc = 'DESC',
 }
 export interface IOptionsBaseFetch {
   readonly listItemModel?: { new (item: unknown): unknown }

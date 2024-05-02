@@ -24,6 +24,7 @@ const listConfig = new BaseListConfig({
   withDeactivation: true,
   selectable: true,
   searchPlaceholder: t('placeholder.search._'),
+  draggable: true,
   staticSorts: {
     key: 'shortId',
     order: SortDirection.asc,

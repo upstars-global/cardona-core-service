@@ -6,6 +6,7 @@ import { ListData } from '../../@model'
 // TODO import { ExportFormat, IOptionsBaseFetch } from '../../components/templates/BaseList/model'
 import { convertLowerCaseFirstSymbol } from '../../helpers'
 import { productsName } from '../../configs/productsName'
+import { ExportFormat } from '../../@model/templates/baseList'
 import { ApiTypePrefix, productName } from '@productConfig'
 
 const isSymbolIsDash = (symbol: string): boolean => symbol === '-'
@@ -90,7 +91,7 @@ export default {
         filter: combineFilter(payload.data?.filter, rootGetters.selectedProject?.alias),
       })
 
-      // return payload.data.filter.format === ExportFormat.JSON ? JSON.stringify(response) : response
+      return payload.data.filter.format === ExportFormat.JSON ? JSON.stringify(response) : response
     },
 
     async readEntity(

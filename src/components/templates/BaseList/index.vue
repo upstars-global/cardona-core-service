@@ -597,8 +597,8 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
     </SideBar>
 
     <ListSearch
-      class="pb-8"
       v-model="searchQuery"
+      class="pb-6"
       :right-search-btn="{
         canCreate: isShownCreateBtn,
         createPage: CreatePageName,

@@ -1,6 +1,7 @@
 export enum PageType {
   Create = 'create',
   Update = 'update',
+  Empty = '',
 }
 
 export interface UseEntityType<T> {

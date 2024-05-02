@@ -37,7 +37,7 @@ const onCloseModal = () => {
     <BaseSection
       :use-entity="useSection"
       :with-read-action="false"
-      class="px-6 py-6"
+      class="px-6 py-6 password-change"
     >
       <template #default="{ form }">
         <FieldGenerator
@@ -50,7 +50,7 @@ const onCloseModal = () => {
         />
       </template>
       <template #actions="{ form }">
-        <div class="d-flex justify-end gap-2">
+        <div class="d-flex justify-end gap-2 mt-6">
           <VBtn
             :variant="VVariants.Outlined"
             :color="VColors.Secondary"
@@ -66,3 +66,9 @@ const onCloseModal = () => {
     </BaseSection>
   </BaseModal>
 </template>
+
+<style lang="scss" scoped>
+.password-change {
+ width: 31.25rem;
+}
+</style>

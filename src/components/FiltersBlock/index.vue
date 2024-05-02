@@ -102,7 +102,7 @@ const listNotSelected = computed(() => {
 <template>
   <VRow
     no-gutters
-    :class="{ 'mt-5': isOpen }"
+    :class="{ 'mb-6': isOpen }"
   >
     <VCol
       class="p-0"
