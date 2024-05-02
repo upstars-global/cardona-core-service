@@ -105,6 +105,11 @@ props.optionsVariable.forEach(item => {
   defaultObjLocalisationParameters[item] = ''
 })
 
+const selectedProject = computed(() => store.getters.selectedProject)
+const selectedProjectPublicName = computed(
+    () => selectedProject.value?.publicName || store.getters.selectedProject?.title
+)
+
 const config = {
   placeholderText: props.placeholder,
   events: {
@@ -166,6 +171,30 @@ const config = {
       emit('update:modelValue', contentChanged)
     },
   },
+
+  'image.beforeUpload': function (images: any[]) {
+    images.forEach(async (file) => {
+      if (!file) return
+      const fileName = file.name
+
+      const _path = `/${selectedProjectPublicName.value}/upload/` + fileName
+      try {
+        const { publicPath } = await store.dispatch('compostelaCore/uploadFile', {
+          file,
+          path: _path,
+        })
+
+        this.image.insert(publicPath, true, { name: fileName, id: fileName }, '', {
+          link: publicPath,
+        })
+
+        this.image.hideProgressBar(true)
+      } catch (e) {}
+    })
+
+    return false
+  },
+
   ...baseConfig,
 }
 
