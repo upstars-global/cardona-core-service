@@ -88,6 +88,10 @@ const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxS
   >
     <template #headers="{ columns, isSorted, toggleSort, sortBy, someSelected, allSelected, selectAll }">
       <th
+        v-if="draggable"
+        class="c-table__header-cell"
+      />
+      <th
         v-if="props.selectable"
         class="c-table__header-cell"
         :class="cellClasses"
@@ -184,6 +188,15 @@ const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxS
           @click="onRowClicked(item.raw)"
         >
           <td
+            v-if="draggable"
+            class="pl-1 pr-1"
+          >
+            <VIcon
+              :icon="IconsList.MoreVerticalIcon"
+              class="dragging-icon"
+            />
+          </td>
+          <td
             v-if="props.selectable"
             class="c-table__cell"
             :class="cellClasses"
@@ -273,6 +286,18 @@ const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxS
 
   :deep(.v-data-table-header__content) {
     white-space: nowrap;
+  }
+
+  .c-table__row {
+    &:hover {
+      .dragging-icon {
+        opacity: 1;
+      }
+    }
+  }
+  .dragging-icon {
+    opacity: 0;
+    transition: opacity 0.3s;
   }
 }
 </style>

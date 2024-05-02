@@ -64,15 +64,15 @@ const searchQuery = computed({
 
         <VBtn
           v-if="config.filterList?.isNotEmpty"
-          :prepend-icon="IconsList.FilterIcon"
           :variant="VVariants.Outlined"
           :color="VColors.Secondary"
           :active="isOpenFilterBlock"
           @click="onFilterButtonClick"
         >
+          <VIcon :icon="IconsList.FilterIcon" />
           <span
             v-if="!config.small"
-            class="align-middle"
+            class="align-middle ml-1"
           >
             {{ $t('common.filter._') }}
           </span>

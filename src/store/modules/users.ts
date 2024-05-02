@@ -6,9 +6,9 @@ import { productName } from '@productConfig'
 export default {
   namespaced: true,
   actions: {
-    async fetchUsersList({ rootGetters, rootState }, inputData) {
+    async fetchUsersList({ rootGetters }, inputData) {
       const data = inputData?.data ? inputData.data : inputData
-      const isMenuTypeAdmin = rootState.appConfigCore.layout.menu.type === 'admin'
+      const isMenuTypeAdmin = !rootGetters['appConfigCore/isMenuTypeMain']
 
       return new ListData(
         await ApiService.request({
