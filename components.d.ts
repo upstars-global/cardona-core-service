@@ -497,5 +497,6 @@ declare module 'vue' {
     UserUpgradePlanDialog: typeof import('./src/components/dialogs/UserUpgradePlanDialog.vue')['default']
     VariableModal: typeof import('./src/components/TextEditorWysiwyg/VariableModal.vue')['default']
     ViewGenerator: typeof import('./src/components/templates/ViewGenerator/index.vue')['default']
+    VueApexCharts: typeof import('vue3-apexcharts')['default']
   }
 }
