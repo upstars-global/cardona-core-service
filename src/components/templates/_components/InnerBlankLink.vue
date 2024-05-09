@@ -51,6 +51,7 @@ const onClickLink = () => {
       @click.stop="onClickLink"
     />
     <VIcon
+      v-if="copyElement"
       :icon="IconsList.CopyIcon"
       :size="size"
       @click.stop="copyToClipboard(copyElement)"

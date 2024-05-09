@@ -12,6 +12,7 @@ import CustomMenu from '../../layouts/components/CustomMenu.vue'
 import { convertUpperCaseFirstSymbol } from '../../helpers'
 import { IconsList } from '../../@model/enums/icons'
 import ProjectSelect from '../../@layouts/components/ProjectSelect.vue'
+import { VVariants } from '../../@model/vuetify'
 import { VNodeRenderer } from './VNodeRenderer'
 import { layoutConfig } from '@layouts'
 import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
@@ -84,6 +85,15 @@ const selectedProjectTitle = computed(() =>
     ? store.getters.selectedProject?.publicName
     : convertUpperCaseFirstSymbol(store.getters.selectedProduct?.name),
 )
+
+const actualBackRoute = computed(() => {
+  if (!isMenuTypeMain.value)
+    return { name: 'UsersControlList' }
+
+  return { path: '/' }
+})
+
+const defaultRoute = { path: '/' }
 </script>
 
 <template>
@@ -104,7 +114,7 @@ const selectedProjectTitle = computed(() =>
     <div class="nav-header">
       <slot name="nav-header">
         <RouterLink
-          to="/"
+          :to="actualBackRoute"
           class="app-logo app-title-wrapper"
         >
           <VNodeRenderer :nodes="layoutConfig.app.logo" />
@@ -173,6 +183,18 @@ const selectedProjectTitle = computed(() =>
         size="18"
         class="mx-auto"
       />
+    </div>
+    <div
+      v-if="!isMenuTypeMain"
+      class="d-flex align-center pb-4 pl-2"
+    >
+      <VBtn
+        :prepend-icon="IconsList.ArrowLeftIcon"
+        :variant="VVariants.Text"
+        :to="defaultRoute"
+      >
+        {{ $t('action.back') }}
+      </VBtn>
     </div>
     <slot
       name="nav-items"

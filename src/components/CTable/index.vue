@@ -59,7 +59,10 @@ const onRowClicked = (item: Record<string, unknown>) => {
 }
 
 const onUpdateSortData = (event: any) => {
-  emits('update:sortData', event)
+  emits('update:sortData', event.map(item => ({
+    ...item,
+    order: item?.order?.toUpperCase(),
+  })))
 }
 
 const onDragEnd = (event: { moved: object }) => {
@@ -68,7 +71,13 @@ const onDragEnd = (event: { moved: object }) => {
 
 const cellClasses = computed(() => props.small ? 'py-2 px-3' : 'py-3 px-4')
 const maxSkeletonRows = 25
-const skeletonRows = computed(() => props.skeletonRows ? props.skeletonRows : props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
+const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
+const isSortableColumn = (column: TableField): boolean => props.fields?.find(item => item?.key === column?.key)?.sortable
+
+const sortDataTable = computed(() => props.sortData?.map(item => ({
+  ...item,
+  order: item?.order?.toLowerCase(),
+})))
 </script>
 
 <template>
@@ -79,7 +88,7 @@ const skeletonRows = computed(() => props.skeletonRows ? props.skeletonRows : pr
     :select-strategy="selectMode"
     :headers="fields"
     :items="rows"
-    :sort-by="sortData"
+    :sort-by="sortDataTable"
     return-object
     class="c-table"
     :items-per-page="itemsPerPage"
@@ -87,7 +96,7 @@ const skeletonRows = computed(() => props.skeletonRows ? props.skeletonRows : pr
     @update:sort-by="onUpdateSortData"
     @update:model-value="onSelectRow"
   >
-    <template #headers="{ columns, isSorted, toggleSort, sortBy, someSelected, allSelected, selectAll }">
+    <template #headers="{ columns, toggleSort, sortBy, someSelected, allSelected, selectAll }">
       <th
         v-if="draggable"
         class="c-table__header-cell"
@@ -114,7 +123,7 @@ const skeletonRows = computed(() => props.skeletonRows ? props.skeletonRows : pr
           class="c-table__header-cell whitespace-no-wrap text-left cursor-pointer"
           :class="cellClasses"
           :data-c-field="column.key"
-          @click="toggleSort(column)"
+          @click="isSortableColumn(column) && toggleSort(column)"
         >
           <div
             class="d-flex align-center"
@@ -128,18 +137,18 @@ const skeletonRows = computed(() => props.skeletonRows ? props.skeletonRows : pr
             {{ column.title }}
 
             <div
-              v-if="isSorted(column)"
+              v-if="isSortableColumn(column)"
               class="c-table__header-cell-icon-wrapper"
             >
               <VIcon
                 :icon="IconsList.ChevronUpIcon"
                 class="d-block c-table__header-cell-icon"
-                :class="{ 'c-table__header-cell-icon--active': sortBy[0].order === SortDirection.desc || sortBy[0].order === false }"
+                :class="{ 'c-table__header-cell-icon--active': sortBy[0]?.key === column.key && (sortBy[0]?.order === SortDirection.desc || sortBy[0]?.order === false) }"
               />
               <VIcon
                 :icon="IconsList.ChevronDownIcon"
                 class="d-block c-table__header-cell-icon"
-                :class="{ 'c-table__header-cell-icon--active': sortBy[0].order === SortDirection.asc || sortBy[0].order === true }"
+                :class="{ 'c-table__header-cell-icon--active': sortBy[0]?.key === column.key && (sortBy[0]?.order === SortDirection.asc || sortBy[0]?.order === true) }"
               />
             </div>
           </div>

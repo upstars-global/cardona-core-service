@@ -16,7 +16,7 @@ export enum IconsList {
   ArrowDownRightIcon = 'tabler-arrow-down-right',
   ArrowDownIcon = 'ArrowDownIcon',
   ArrowLeftCircleIcon = 'ArrowLeftCircleIcon',
-  ArrowLeftIcon = 'ArrowLeftIcon',
+  ArrowLeftIcon = 'tabler-arrow-narrow-left',
   ArrowRightCircleIcon = 'ArrowRightCircleIcon',
   ArrowRightIcon = 'ArrowRightIcon',
   ArrowUpCircleIcon = 'ArrowUpCircleIcon',
