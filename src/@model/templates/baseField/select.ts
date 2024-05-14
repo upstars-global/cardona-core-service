@@ -29,7 +29,7 @@ export class SelectBaseField<T extends OptionsItem = OptionsItem>
     super(field)
     this._value = field.value
     this.clearable = field.clearable ?? true
-    this.withCalculatePosition = field?.withCalculatePosition ?? false
+    this.withCalculatePosition = field?.withCalculatePosition ?? true
     this.toggleDropdownCb = field.toggleDropdownCb
   }
 
