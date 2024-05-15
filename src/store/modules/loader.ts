@@ -1,3 +1,5 @@
+const getMappedUrl = (url: string) => url.replace(/\/api\/v\d+\//, '')
+
 export default {
   state: {
     globalLoader: false,
@@ -11,6 +13,15 @@ export default {
         return Array.isArray(url)
           ? url.some((url) => loadingEndpoints.some((loadingUrl) => loadingUrl.includes(url)))
           : loadingEndpoints.some((loadingUrl) => loadingUrl.includes(url))
+      },
+    isLoadingEndpointFullPath:
+      ({ loadingEndpoints }) =>
+      (url: string | Array<string>): boolean => {
+        return Array.isArray(url)
+          ? url.some((url) =>
+              loadingEndpoints.some((loadingUrl) => getMappedUrl(url) === getMappedUrl(loadingUrl))
+            )
+          : loadingEndpoints.some((loadingUrl) => getMappedUrl(loadingUrl) === getMappedUrl(url))
       },
   },
 
