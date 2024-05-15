@@ -47,6 +47,11 @@ const customMessageOfRules: Record<
 
       return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, _length_ })
     },
+    min(ctx: FieldValidationMetaInfo): TranslateResult {
+      const _length_ = ctx.rule.params.at(0)
+
+      return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, _length_ })
+    },
     length(ctx: FieldValidationMetaInfo): TranslateResult {
       const _length_ = ctx.rule.params.at(0)
 
