@@ -554,7 +554,7 @@
     "ext": "The {_field_} field is not a valid file",
     "image": "The {_field_} field must be an image",
     "integer": "The {_field_} field must be an integer",
-    "length": "The {_field_} field must be {length} long",
+    "length": "The {_field_} field must be {_length_} long",
     "max_value": "The {_field_} field must be {max} or less",
     "max": "The {_field_} field may not be greater than {_length_} characters",
     "mimes": "The {_field_} field must have a valid file type",

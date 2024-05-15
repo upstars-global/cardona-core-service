@@ -7,6 +7,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors } from '../../@model/vuetify'
+import { PermissionLevel } from '../../@model/permission'
 import { useConfigStore } from '@core/stores/config'
 import { Theme } from '@core/enums'
 
@@ -34,27 +35,35 @@ const logOutAction = {
 
 const configStore = useConfigStore()
 
-const customMenuActions = computed((): Array<{ title: TranslateResult; icon: IconsList; action?: Function }> => {
+const canAllAdminSection = computed(() => {
+  return store.getters.abilityCan('backoffice-users-control', PermissionLevel.view)
+})
+
+const changeMode = computed(() => {
   const actualMode = configStore.theme === Theme.Light ? Theme.Dark : Theme.Light
 
-  return [
-    {
-      title: t('customMenu.adminSection'),
-      icon: IconsList.CommandIcon,
-      action: async () => {
-        await store.dispatch('appConfigCore/onToggleMenuType')
-        router.push({ name: 'UsersControlList' })
-      },
+  return {
+    title: t(`customMenu.${actualMode}Mode`),
+    icon: IconsList.MoonIcon,
+    action: () => {
+      configStore.theme = actualMode
     },
-    {
-      title: t(`customMenu.${actualMode}Mode`),
-      icon: IconsList.MoonIcon,
-      action: () => {
-        configStore.theme = actualMode
-      },
-    },
+  }
+})
 
-  ]
+const superAdminMenu = computed(() => {
+  return {
+    title: t('customMenu.adminSection'),
+    icon: IconsList.CommandIcon,
+    action: async () => {
+      await store.dispatch('appConfigCore/onToggleMenuType')
+      router.push({ name: 'UsersControlList' })
+    },
+  }
+})
+
+const customMenuActions = computed((): Array<{ title: TranslateResult; icon: IconsList; action?: Function }> => {
+  return canAllAdminSection.value ? [superAdminMenu.value, changeMode.value] : [changeMode.value]
 })
 </script>
 
@@ -70,7 +79,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
             bordered
             offset-x="5"
             offset-y="5"
-            class="badge"
+            class="badge cursor-pointer"
           >
             <VAvatar
               :color="VColors.Success"

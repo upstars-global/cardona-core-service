@@ -112,7 +112,7 @@ export enum IconsList {
   FileTextIcon = 'FileTextIcon',
   FileIcon = 'FileIcon',
   FilmIcon = 'FilmIcon',
-  FilterIcon = 'tabler-adjustments-search',
+  FilterIcon = 'tabler-adjustments',
   FlagIcon = 'FlagIcon',
   FolderMinusIcon = 'FolderMinusIcon',
   FolderPlusIcon = 'FolderPlusIcon',
@@ -295,5 +295,6 @@ export enum IconsList {
   ZoomOutIcon = 'ZoomOutIcon',
   ZoomCheckIcon = 'tabler-zoom-check',
   AtSignIcon = 'tabler-at',
+  NoAccessIcon = 'tabler-lock',
 }
 export default {}

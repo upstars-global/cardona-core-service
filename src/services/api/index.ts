@@ -14,6 +14,7 @@ import type {
   IResponseError,
   IValidationError,
 } from './config'
+import { i18n } from '@/plugins/i18n'
 
 const { toastSuccess, toastError, toastErrorMessageString } = useToastService()
 
@@ -128,9 +129,9 @@ class ApiService {
       error.validationErrors.forEach(({ code, field }: IValidationError) => {
         const localizationKey = `${entity}_${field}_${code}`
 
-        /* formRef?.setErrors({
-          [field]: i18n.global.t(`validations.${localizationKey}`),
-        }) */
+        formRef?.setErrors({
+          [field]: i18n.t(`validations.${localizationKey}`),
+        })
 
         toastError(localizationKey, { field, defaultCode: 'field_ALREADY_EXISTS' })
       })

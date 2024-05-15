@@ -147,7 +147,7 @@ const listNotSelected = computed(() => {
                 class="d-flex align-center"
               >
                 <p
-                  class="font-weight-bolder mb-0"
+                  class="text-button mb-0"
                   :class="{ 'font-small-3': isSmallBlock }"
                 >
                   {{ filter.label }}
