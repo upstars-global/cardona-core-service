@@ -223,8 +223,7 @@ const onSave = async () => {
       type: entityName,
       data: {
         form: transformedForm.value,
-
-        // formRef: refFormObserver.value,
+        formRef: formRef.value,
       },
       customApiPrefix: props.config?.customApiPrefix,
     })
