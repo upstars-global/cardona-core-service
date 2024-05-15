@@ -18,6 +18,9 @@ import { storageKeys } from '../../configs/storage'
 
 const { toastSuccess, toastError, toastErrorMessageString } = useToastService()
 
+const getLoaderSlug = (url: string, loaderSlug: string): string =>
+  loaderSlug ? `${url}${loaderSlug}` : url
+
 class ApiService {
   static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}) {
     const {
@@ -33,6 +36,7 @@ class ApiService {
       newAxiosInstance = false,
       entityName = '',
       rejectError = true,
+      loaderSlug = '',
     } = config
 
     const convertedType: Array<string> = payload.type
@@ -43,7 +47,7 @@ class ApiService {
     const url: string = convertedType.join('/')
 
     try {
-      if (withLoader) store.dispatch('loaderOn', url)
+      if (withLoader) store.dispatch('loaderOn', getLoaderSlug(url, loaderSlug))
 
       const axiosInstance: AxiosInstance = newAxiosInstance ? axios.create() : axios
       const headers: { 'Content-Type': string } = {
@@ -98,7 +102,7 @@ class ApiService {
 
       return rejectError ? Promise.reject(error) : undefined
     } finally {
-      store.dispatch('loaderOff', url)
+      store.dispatch('loaderOff', getLoaderSlug(url, loaderSlug))
     }
   }
 
