@@ -6,6 +6,7 @@ import type { NumberOrString, OptionsItem } from '../@model'
 import store from '@/store'
 
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
+export const trimEdges = (value: string): string => value.trimEnd().trimStart()
 
 export const transformFormData = (form): object => {
   return Object.entries(form).reduce((acc, [key, valueData]: [string, any]) => {
