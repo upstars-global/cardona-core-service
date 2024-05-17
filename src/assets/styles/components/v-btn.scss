@@ -10,6 +10,19 @@
     --v-btn-size: 14px;
     --v-btn-height: 2rem;
   }
+
+  &.v-btn--rectangle {
+    padding-left: 0;
+    padding-right: 0;
+    &.v-btn--size-default {
+      width: 2.5rem;
+      min-width: 2.5rem;
+    }
+    &.v-btn--size-small {
+      width: 2rem;
+      min-width: 2rem;
+    }
+  }
 }
 
 

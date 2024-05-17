@@ -30,7 +30,10 @@ const valueShort = computed(() => {
     class="cursor-pointer overflow-hidden copy-badge "
     @click="copyToClipboard(value)"
   >
-    <span v-if="isViewLabel">{{ label }}: </span>
+    <span
+      v-if="isViewLabel"
+      class="mr-1"
+    >{{ label }}: </span>
     {{ valueShort }}
     <VIcon
       :icon="IconsList.CopyIcon"

@@ -30,7 +30,10 @@ const currentPage = computed({
 </script>
 
 <template>
-  <VRow class="align-center">
+  <VRow
+    class="align-center"
+    no-gutters
+  >
     <VCol
       cols="12"
       sm="4"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, useSlots } from 'vue'
 import { IconsList } from '../../../../@model/enums/icons'
 import { BSize } from '../../../../@model/bootstrap'
 import type { IBaseListConfig } from '../../../../@model/templates/baseList'
@@ -28,10 +28,9 @@ interface Emits {
   (e: 'on-click-filter'): void
   (e: 'on-export-format-selected', payload: string): void
 }
-
 const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
-
+const slots = useSlots()
 const size = computed(() => (props.config?.small ? BSize.Sm : BSize.Md)) // TODO: refactor sizes
 
 const onFilterButtonClick = () => {
