@@ -46,7 +46,7 @@ watch(
     if (value && props.field.isRangeMode && !startedAt.value && !endedAt.value) {
       ;[startedAt.value, endedAt.value] = value.split(separator.value)
     }
-  },
+  }, { immediate: true },
 )
 
 const setRangeDate = (value, isStartDate = true) => {
