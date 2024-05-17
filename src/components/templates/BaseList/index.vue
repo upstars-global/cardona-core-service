@@ -188,11 +188,17 @@ const isLoadingList = computed(() => {
 
   const entityUrl: string = convertCamelCase(entityNameForLoad, '/')
 
-  return store.getters.isLoadingEndpoint([
-    `${entityUrl}/list`,
-    `${entityUrl}/update`,
-    `${entityUrl}/delete`,
-  ])
+  const listUrl = `${entityUrl}/list`
+
+  return props.config.loadingOnlyByList
+    ? store.getters.isLoadingEndpoint([
+      listUrl,
+    ])
+    : store.getters.isLoadingEndpoint([
+      listUrl,
+      `${entityUrl}/update`,
+      `${entityUrl}/delete`,
+    ])
 })
 
 const size = props.config?.small ? VSizes.Small : VSizes.Medium
@@ -597,6 +603,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
     </SideBar>
 
     <ListSearch
+      v-if="!config.hideSearchBlock"
       v-model="searchQuery"
       class="pb-6"
       :right-search-btn="{
@@ -905,7 +912,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
         </template>
       </CTable>
     </VCard>
-    <div class="mx-2 pt-8">
+    <div class="pt-8">
       <ListPagination
         v-if="items?.length && config?.pagination"
         :model-value="currentPage"

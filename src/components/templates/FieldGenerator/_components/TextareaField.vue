@@ -57,6 +57,7 @@ const appendInnerIcon = computed(() => {
     :disabled="disabled"
     :append-inner-icon="appendInnerIcon"
     :persistent-counter="field.maxLength"
+    hide-details
     v-bind="autoHeight"
   />
 </template>

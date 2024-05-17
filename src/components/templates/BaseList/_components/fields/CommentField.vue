@@ -9,9 +9,9 @@ defineProps<{
     {{ value ? value : '-' }}
 
     <VTooltip
-        v-if="value"
-        activator="parent"
-        location="bottom"
+      v-if="value"
+      activator="parent"
+      location="bottom"
     >
       <div class="comment-text__tooltip">
         {{ value }}
@@ -22,13 +22,17 @@ defineProps<{
 
 <style lang="scss" scoped>
 .comment-text {
-  width: 110px;
+  width: 100%;
+  max-width: 110px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
   &__tooltip {
-    width: 15rem;
+    width: 100%;
+    max-width: 15rem;
+    word-break: break-all;
+    text-align: center;
   }
 }
 </style>
