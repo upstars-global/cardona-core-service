@@ -58,7 +58,7 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', value + separator.value + separator.value + endedAt.value)
+      emit('update:modelValue', value + separator.value + endedAt.value)
     }
     else {
       if (!value) {
@@ -74,7 +74,7 @@ const setRangeDate = (value, isStartDate = true) => {
     if (startedAt.value) {
       emit('update:modelValue', startedAt.value + separator.value + value)
       if (!value)
-        emit('update:modelValue', startedAt.value + endedAt.value)
+        emit('update:modelValue', startedAt.value + separator.value + endedAt.value)
     }
     else {
       if (!value) {
