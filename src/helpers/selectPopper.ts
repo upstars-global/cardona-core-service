@@ -4,7 +4,7 @@ export const withPopper = (toggleDropdownCb?: CallableFunction) => (dropdownList
   dropdownList.style.width = width
 
   const popper = createPopper(component.$refs.toggle, dropdownList, {
-    placement: 'top',
+    placement: 'bottom',
     modifiers: [
       {
         name: 'offset',
