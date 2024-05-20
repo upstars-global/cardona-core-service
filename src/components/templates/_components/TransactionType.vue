@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n'
 
 import { computed } from 'vue'
 import { IconsList } from '../../../@model/enums/icons'
@@ -22,7 +22,7 @@ const iconName = computed(() =>
 const text = computed(() => t(`common.${props.type}`))
 
 const textColorClass = computed(() =>
-  props.type === TransactionType.Payout ? 'text-danger' : 'text-success',
+  props.type === TransactionType.Payout ? 'text-error' : 'text-success',
 )
 </script>
 

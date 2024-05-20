@@ -235,7 +235,7 @@ export enum IconsList {
   SmileIcon = 'SmileIcon',
   SpeakerIcon = 'SpeakerIcon',
   SquareIcon = 'SquareIcon',
-  StarIcon = 'tabler-star-filled',
+  StarIcon = 'tabler-star',
   StartFilledIcon = 'tabler-star-filled',
   StopCircleIcon = 'StopCircleIcon',
   SunIcon = 'SunIcon',

@@ -199,4 +199,7 @@ const onHide = () => {
     }
   }
 }
+.v-navigation-drawer__scrim {
+  position: fixed;
+}
 </style>

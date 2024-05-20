@@ -109,7 +109,10 @@ const onSearch = (search: string) => emits('search', search)
           :errors="!!errorMessage"
           @search="onSearch"
         />
-        <span class="text-caption text-error mt-1" v-if="errorMessage">{{ errorMessage }}</span>
+        <span
+          v-if="errorMessage"
+          class="text-caption text-error mt-1 text-no-wrap"
+        >{{ errorMessage }}</span>
       </template>
     </Field>
   </div>
