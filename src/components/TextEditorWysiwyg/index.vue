@@ -193,14 +193,14 @@ const config = {
         )
         editor.selection.restore()
         store.dispatch('textEditor/setUpdateVar', true)
+
+        // TODO: Delete id="isPasted" in copy text html
+        editor.selection.save()
+        editor.html.set(editor.html.get(true).replace(/id="isPasted"/g, ''))
+        editor.selection.restore()
       } else {
         updateVariableInContent(editor)
       }
-
-      // TODO: Delete id="isPasted" in copy text html
-      editor.selection.save()
-      editor.html.set(editor.html.get(true).replace(/id="isPasted"/g, ''))
-      editor.selection.restore()
 
       emit('input', contentChanged)
     },
