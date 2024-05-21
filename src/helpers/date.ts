@@ -34,17 +34,18 @@ export const getUTCISOString = (dateString: string | Date): string => {
     return transformDateToISO(localeDateString)
 }
 
-export const transformDateToISO = (dateString: string): string => {
-    const pattern = /(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})/
-    const replaceValue = '$3-$2-$1-$4-$5'
+export const transformDateToISO = (date: string): string => {
 
-    const [year, month, day, hour, minute]: Array<number> = dateString
-        .trim()
-        .replace(pattern, replaceValue)
-        .split('-')
-        .map((dateStringItem: string): number => Number(dateStringItem))
+  const dateString = moment(date).format('DD.MM.YYYY, HH:mm')
+  const pattern = /(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})/
+  const replaceValue = '$3-$2-$1-$4-$5'
 
-    return new Date(Date.UTC(year, month - 1, day, hour, minute)).toISOString()
+  const [year, month, day, hour, minute]: Array<number> = dateString
+    .trim()
+    .replace(pattern, replaceValue)
+    .split('-')
+    .map((dateStringItem: string): number => Number(dateStringItem))
+  return new Date(Date.UTC(year, month - 1, day, hour, minute)).toISOString()
 }
 
 export const convertDateToUTC = (date: Date): Date => {
