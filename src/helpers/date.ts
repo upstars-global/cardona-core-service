@@ -1,41 +1,43 @@
 import type { Nullable } from '../@model/index'
 
 export const getISOStringWithoutTimezone = (isoString: string | Date): string => {
-    if (!isoString) return ''
+  if (!isoString)
+    return ''
 
-    const utcStringWithoutTimezone: string = new Date(isoString).toUTCString().replace('GMT', '')
+  const utcStringWithoutTimezone: string = new Date(isoString).toUTCString().replace('GMT', '')
 
-    return new Date(utcStringWithoutTimezone).toISOString()
+  return new Date(utcStringWithoutTimezone).toISOString()
 }
 
-export  const isISODate = (dateString: string | Date): boolean =>  {
-  const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/;
-  return isoRegex.test(dateString.toString());
+export const isISODate = (dateString: string | Date): boolean => {
+  const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/
+
+  return isoRegex.test(dateString.toString())
 }
 
 export const getLocaleDateString = (date: Date, language = navigator.language): string => {
-    return date.toLocaleDateString(language, {
-        hour: '2-digit',
-        minute: '2-digit',
-    })
+  return date.toLocaleDateString(language, {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
 }
 
 export const getLocaleDateStringWithoutTimezone = (isoString: string): string => {
-    const utcStringWithoutTimezone: string = new Date(isoString).toUTCString().replace('GMT', '')
-    const date = new Date(utcStringWithoutTimezone)
+  const utcStringWithoutTimezone: string = new Date(isoString).toUTCString().replace('GMT', '')
+  const date = new Date(utcStringWithoutTimezone)
 
-    return getLocaleDateString(date)
+  return getLocaleDateString(date)
 }
 
 export const getUTCISOString = (dateString: string | Date): string => {
-    if (!isISODate(dateString)) return  dateString.toString()
-    const localeDateString: string = getLocaleDateString(new Date(dateString))
+  if (!isISODate(dateString))
+    return dateString.toString()
+  const localeDateString: string = getLocaleDateString(new Date(dateString))
 
-    return transformDateToISO(localeDateString)
+  return transformDateToISO(localeDateString)
 }
 
 export const transformDateToISO = (date: string): string => {
-
   const dateString = moment(date).format('DD.MM.YYYY, HH:mm')
   const pattern = /(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})/
   const replaceValue = '$3-$2-$1-$4-$5'
@@ -45,40 +47,45 @@ export const transformDateToISO = (date: string): string => {
     .replace(pattern, replaceValue)
     .split('-')
     .map((dateStringItem: string): number => Number(dateStringItem))
+
   return new Date(Date.UTC(year, month - 1, day, hour, minute)).toISOString()
 }
 
 export const convertDateToUTC = (date: Date): Date => {
-    return new Date(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate(),
-        date.getUTCHours(),
-        date.getUTCMinutes(),
-        date.getUTCSeconds(),
-    )
+  return new Date(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds(),
+  )
 }
 
 export const sortListByDate = (list: Array<any>, key: string): Array<any> => {
-    if (!Array.isArray(list))
-        return []
+  if (!Array.isArray(list))
+    return []
 
-    return list.sort((next, prev) => {
-        const nextDate = new Date(key ? next[key] : next).getTime()
-        const prevDate = new Date(key ? prev[key] : prev).getTime()
+  return list.sort((next, prev) => {
+    const nextDate = new Date(key ? next[key] : next).getTime()
+    const prevDate = new Date(key ? prev[key] : prev).getTime()
 
-        return prevDate - nextDate
-    })
+    return prevDate - nextDate
+  })
 }
 
 export const serializeTimeToISO = (timeString: string): string => {
   const [hours, minutes] = timeString.split(':')
   const currentDate = new Date()
-  currentDate.setUTCHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0)
+
+  currentDate.setUTCHours(Number.parseInt(hours, 10), Number.parseInt(minutes, 10), 0, 0)
+
   return currentDate.toISOString()
 }
 
 export const getTimeFromDate = (date: Nullable<string> | undefined): string => {
-  if (!date) return ''
+  if (!date)
+    return ''
+
   return new Date(date).toISOString().slice(11, 16)
 }
