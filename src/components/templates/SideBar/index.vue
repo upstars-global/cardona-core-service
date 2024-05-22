@@ -156,7 +156,7 @@ const onHide = () => {
       >
         <div
           v-if="canUpdate"
-          class="d-flex py-4 sidebar-actions"
+          class="d-flex py-4 gap-4 sidebar-actions"
         >
           <slot name="sidebar-action-items" />
 
@@ -192,13 +192,6 @@ const onHide = () => {
   }
 }
 
-.sidebar-actions {
-  :deep(.v-btn) {
-    &:not(:last-child) {
-      margin-right: 1rem;
-    }
-  }
-}
 .v-navigation-drawer__scrim {
   position: fixed;
 }

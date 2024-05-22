@@ -54,7 +54,7 @@ export default function useToastService() {
       props: {
         title: newMessage,
         icon: IconsList.AlertTriangleIcon,
-        variant: 'danger',
+        variant: 'error',
       },
     })
   }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ViewInfo } from '../../../../@model/view'
+import DateField from '../../_components/DateField.vue'
 
 defineProps<{
   item: ViewInfo
