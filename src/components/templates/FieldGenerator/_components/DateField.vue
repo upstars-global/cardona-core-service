@@ -86,6 +86,29 @@ const setRangeDate = (value, isStartDate = true) => {
     }
   }
 }
+
+const configFrom = computed(() => {
+  return {
+    ...flatPickrConfig.value,
+    minDate: props.field.isStartDateNow && moment().valueOf(),
+    maxDate: moment(endedAt.value || new Date(), 'DD.MM.YYYY, HH:mm').valueOf(),
+    mode: 'single',
+    defaultHour: 0,
+    defaultMinute: 0,
+    ...props.field.config,
+  }
+})
+
+const configTo = computed(() => {
+  return {
+    ...flatPickrConfig.value,
+    ...props.field.config,
+    minDate: moment(startedAt.value, 'DD.MM.YYYY, HH:mm').valueOf(),
+    mode: 'single',
+    defaultHour: 23,
+    defaultMinute: 59,
+  }
+})
 </script>
 
 <template>
@@ -108,31 +131,15 @@ const setRangeDate = (value, isStartDate = true) => {
     <AppDateTimePicker
       :model-value="startedAt"
       :class="{ error: errors }"
-      :config="{
-        ...flatPickrConfig,
-        minDate: field.isStartDateNow && moment(field.isStartDateNow).valueOf(),
-        maxDate: moment(endedAt).valueOf(),
-        mode: 'single',
-        defaultHour: 0,
-        defaultMinute: 0,
-        ...field.config,
-      }"
+      :config="configFrom"
       :placeholder="i18n.t('common.dateFrom')"
       @update:model-value="(val) => setRangeDate(val)"
     />
     <span class="mx-1"> – </span>
-
     <AppDateTimePicker
       :model-value="endedAt"
       :class="{ error: errors }"
-      :config="{
-        ...flatPickrConfig,
-        ...field.config,
-        minDate: moment(startedAt).valueOf(),
-        mode: 'single',
-        defaultHour: 23,
-        defaultMinute: 59,
-      }"
+      :config="configTo"
       :placeholder="i18n.t('common.dateTo')"
       @update:model-value="(val) => setRangeDate(val, false)"
     />
