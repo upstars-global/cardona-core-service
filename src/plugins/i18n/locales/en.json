@@ -559,7 +559,7 @@
     "max": "The {_field_} field may not be greater than {_length_} characters",
     "mimes": "The {_field_} field must have a valid file type",
     "min_value": "The {_field_} field must be {min} or more",
-    "min": "The {_field_} field must be at least {length} characters",
+    "min": "The {_field_} field must be at least {_length_} characters",
     "numeric": "The {_field_} field may only contain numeric characters",
     "oneOf": "The {_field_} field is not a valid value",
     "regex": "The {_field_} field format is invalid",
