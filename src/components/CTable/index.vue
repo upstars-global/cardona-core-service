@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-
 import { VueDraggableNext } from 'vue-draggable-next'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
+import { find } from 'lodash'
 import type { TableField } from '../../@model/templates/tableFields'
 import type { SortItem } from '../../@core/types'
 import type { SelectMode } from '../../@model/enums/selectMode'
@@ -58,13 +58,6 @@ const onRowClicked = (item: Record<string, unknown>) => {
   emits('rowClicked', item)
 }
 
-const onUpdateSortData = (event: any) => {
-  emits('update:sortData', event.map(item => ({
-    ...item,
-    order: item?.order?.toUpperCase(),
-  })))
-}
-
 const onDragEnd = (event: { moved: object }) => {
   emits('end', event.moved)
 }
@@ -74,10 +67,35 @@ const maxSkeletonRows = 25
 const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
 const isSortableColumn = (column: TableField): boolean => props.fields?.find(item => item?.key === column?.key)?.sortable
 
-const sortDataTable = computed(() => props.sortData?.map(item => ({
+const sortParams = ref(props.sortData?.map(item => ({
   ...item,
   order: item?.order?.toLowerCase(),
 })))
+
+const handleSorByField = ({ key }: { key: string }) => {
+  if (find(sortParams.value, { key })?.key) {
+    const index = sortParams.value.findIndex(item => item?.key === key)
+    if (sortParams.value[index].order === 'DESC') {
+      emits('update:sortData', [])
+      sortParams.value[index].order = ''
+
+      return
+    }
+    sortParams.value[index].order = sortParams.value[index].order === 'ASC' ? 'DESC' : 'ASC'
+  }
+  else {
+    sortParams.value = [...sortParams.value, { key, order: 'ASC', isActive: true }]
+  }
+  sortParams.value = sortParams.value.map(item => ({
+    ...item,
+    isActive: item?.key === key,
+  }))
+  emits('update:sortData', sortParams.value.filter(item => item?.isActive))
+}
+
+const isActiveSort = (key: string, direction: string): boolean => {
+  return find(sortParams.value, { key })?.order?.toLowerCase() === direction
+}
 </script>
 
 <template>
@@ -88,12 +106,10 @@ const sortDataTable = computed(() => props.sortData?.map(item => ({
     :select-strategy="selectMode"
     :headers="fields"
     :items="rows"
-    :sort-by="sortDataTable"
     return-object
     class="c-table"
     :items-per-page="itemsPerPage"
     :density="small ? 'compact' : 'comfortable'"
-    @update:sort-by="onUpdateSortData"
     @update:model-value="onSelectRow"
   >
     <template #headers="{ columns, toggleSort, sortBy, someSelected, allSelected, selectAll }">
@@ -123,7 +139,7 @@ const sortDataTable = computed(() => props.sortData?.map(item => ({
           class="c-table__header-cell whitespace-no-wrap text-left cursor-pointer"
           :class="cellClasses"
           :data-c-field="column.key"
-          @click="isSortableColumn(column) && toggleSort(column)"
+          @click="isSortableColumn(column) && handleSorByField(column)"
         >
           <div
             class="d-flex align-center"
@@ -143,12 +159,12 @@ const sortDataTable = computed(() => props.sortData?.map(item => ({
               <VIcon
                 :icon="IconsList.ChevronUpIcon"
                 class="d-block c-table__header-cell-icon"
-                :class="{ 'c-table__header-cell-icon--active': sortBy[0]?.key === column.key && (sortBy[0]?.order === SortDirection.desc || sortBy[0]?.order === false) }"
+                :class="{ 'c-table__header-cell-icon--active': isActiveSort(column.key, SortDirection.desc) }"
               />
               <VIcon
                 :icon="IconsList.ChevronDownIcon"
                 class="d-block c-table__header-cell-icon"
-                :class="{ 'c-table__header-cell-icon--active': sortBy[0]?.key === column.key && (sortBy[0]?.order === SortDirection.asc || sortBy[0]?.order === true) }"
+                :class="{ 'c-table__header-cell-icon--active': isActiveSort(column.key, SortDirection.asc) }"
               />
             </div>
           </div>
