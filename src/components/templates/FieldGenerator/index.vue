@@ -110,9 +110,13 @@ const onSearch = (search: string) => emits('search', search)
           @search="onSearch"
         />
         <span
-          v-if="errorMessage"
-          class="text-caption text-error mt-1 text-no-wrap"
-        >{{ errorMessage }}</span>
+          v-if="errorMessage || modelValue.description"
+          class="text-caption mt-1 text-no-wrap"
+          :class="{
+            'text-error': errorMessage,
+            'check-description': isCheckType && modelValue.description,
+          }"
+        >{{ errorMessage || modelValue.description }}</span>
       </template>
     </Field>
   </div>

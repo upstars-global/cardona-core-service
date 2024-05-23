@@ -45,6 +45,7 @@ const props = defineProps({
     variant: 'outlined',
     color: 'primary',
   }),
+  config: Object as PropType<Record<string, unknown>>,
 })
 
 const emit = defineEmits<Emit>()
@@ -168,6 +169,7 @@ defineExpose({ refFlatPicker })
                 :readonly="isReadonly.value"
                 class="flat-picker-custom-style"
                 :disabled="isReadonly.value"
+                :config="config"
                 @on-open="isCalendarOpen = true"
                 @on-close="isCalendarOpen = false"
                 @update:model-value="emitModelValue"

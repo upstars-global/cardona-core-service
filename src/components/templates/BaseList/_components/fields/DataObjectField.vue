@@ -8,19 +8,26 @@ defineProps<{
 
 <template>
   <div class="table-block">
-    <div v-for="(value, name) in data" :key="name" class="d-flex align-items-start">
-      <span class="mr-25">
+    <div
+      v-for="(value, name) in data"
+      :key="name"
+      class="d-flex align-start"
+    >
+      <span class="mr-1">
         {{ `${name}:` }}
       </span>
 
       <span
         v-if="isEmptyString(value) || isNullOrUndefinedValue(value)"
-        class="font-weight-bold text-muted"
+        class="font-weight-bold text-grey-400"
       >
         {{ String($t('common.empty')).toLowerCase() }}
       </span>
 
-      <span v-else class="font-weight-bold">
+      <span
+        v-else
+        class="font-weight-bold"
+      >
         {{ value }}
       </span>
     </div>
