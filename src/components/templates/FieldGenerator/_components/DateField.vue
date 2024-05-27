@@ -140,7 +140,6 @@ const configTo = computed(() => {
     class="date-time-base-field d-flex align-center"
   >
     <AppDateTimePicker
-      ref="datePickerToRef"
       :model-value="startedAt"
       :class="{ error: errors }"
       :config="configFrom"
@@ -149,6 +148,7 @@ const configTo = computed(() => {
     />
     <span class="mx-1"> – </span>
     <AppDateTimePicker
+      ref="datePickerToRef"
       :model-value="endedAt"
       :class="{ error: errors }"
       :config="configTo"
