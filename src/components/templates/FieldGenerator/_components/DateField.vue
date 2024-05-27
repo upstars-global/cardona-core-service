@@ -86,6 +86,17 @@ const setRangeDate = (value, isStartDate = true) => {
     }
   }
 }
+
+const datePickerTo = ref()
+
+const onChangeValue = () => {
+  datePickerTo.value?.refFlatPicker?.fp.close()
+}
+
+const onUpdateValueForm = (val: string) => {
+  setRangeDate(val)
+  onChangeValue()
+}
 </script>
 
 <template>
@@ -118,7 +129,7 @@ const setRangeDate = (value, isStartDate = true) => {
         ...field.config,
       }"
       :placeholder="i18n.t('common.dateFrom')"
-      @update:model-value="(val) => setRangeDate(val)"
+      @update:model-value="onUpdateValueForm"
     />
     <span class="mx-1"> – </span>
 
