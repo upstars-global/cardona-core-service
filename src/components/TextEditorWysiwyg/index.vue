@@ -106,13 +106,14 @@ props.optionsVariable.forEach(item => {
 })
 
 const selectedProject = computed(() => store.getters.selectedProject)
+
 const selectedProjectPublicName = computed(
-    () => selectedProject.value?.publicName || store.getters.selectedProject?.title
+  () => selectedProject.value?.publicName || store.getters.selectedProject?.title,
 )
 
 const config = {
-  placeholderText: props.placeholder,
-  events: {
+  'placeholderText': props.placeholder,
+  'events': {
     initialized() {
       globalEditor.value = this
 
@@ -158,26 +159,27 @@ const config = {
         )
         editor.selection.restore()
         store.dispatch('textEditor/setUpdateVar', true)
+
+        // TODO: Delete id="isPasted" in copy text html
+        editor.selection.save()
+        editor.html.set(editor.html.get(true).replace(/id="isPasted"/g, ''))
+        editor.selection.restore()
       }
       else {
         updateVariableInContent(editor)
       }
-
-      // TODO: Delete id="isPasted" in copy text html
-      editor.selection.save()
-      editor.html.set(editor.html.get(true).replace(/id="isPasted"/g, ''))
-      editor.selection.restore()
 
       emit('update:modelValue', contentChanged)
     },
   },
 
   'image.beforeUpload': function (images: any[]) {
-    images.forEach(async (file) => {
-      if (!file) return
+    images.forEach(async file => {
+      if (!file)
+        return
       const fileName = file.name
 
-      const _path = `/${selectedProjectPublicName.value}/upload/` + fileName
+      const _path = `/${selectedProjectPublicName.value}/upload/${fileName}`
       try {
         const { publicPath } = await store.dispatch('compostelaCore/uploadFile', {
           file,
@@ -189,7 +191,8 @@ const config = {
         })
 
         this.image.hideProgressBar(true)
-      } catch (e) {}
+      }
+      catch (e) {}
     })
 
     return false

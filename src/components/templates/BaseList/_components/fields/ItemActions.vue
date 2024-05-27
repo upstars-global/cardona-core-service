@@ -36,7 +36,9 @@ enum SLOTS {
 const existSlot = (slotKey: SLOTS) => !!slots[slotKey]
 
 const isExistsActionItemsSlot = computed(
-  () => [SLOTS.ACTION_ITEMS, SLOTS.ADDITIONAL_ACTION_ITEMS].some(slotName => !!slots[slotName] && !!slots[slotName]?.length),
+  () => {
+    return [SLOTS.ACTION_ITEMS, SLOTS.ADDITIONAL_ACTION_ITEMS].some(slotName => !!slots[slotName] && !!slots[slotName]()[0].children.length)
+  },
 )
 
 const isShowActions = computed(() => {

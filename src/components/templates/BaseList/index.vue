@@ -142,6 +142,7 @@ const sidebarSlots = computed(() =>
 
 const resetSelectedItem = () => {
   selectedItem.value = null
+  isSidebarShown.value = false
 }
 
 const onClickRow = async data => {
@@ -604,7 +605,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
 
     <ListSearch
       v-if="!config.hideSearchBlock"
-      v-model="searchQuery"
+      v-model.trim="searchQuery"
       class="pb-6"
       :right-search-btn="{
         canCreate: isShownCreateBtn,
@@ -867,7 +868,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
             {{ cell }}
           </template>
           <ItemActions
-            v-if="showActions && field.key === 'actions'"
+            v-if="field.key === 'actions'"
             :item="item.raw"
             :create-page-name="CreatePageName"
             :can-update="canUpdate"
