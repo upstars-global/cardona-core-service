@@ -141,7 +141,7 @@ const configTo = computed(() => {
   >
     <AppDateTimePicker
       :model-value="startedAt"
-      :class="{ error: errors }"
+      :is-invalid="Boolean(errors)"
       :config="configFrom"
       :placeholder="i18n.t('common.dateFrom')"
       @update:model-value="onUpdateValueForm"
@@ -150,7 +150,7 @@ const configTo = computed(() => {
     <AppDateTimePicker
       ref="datePickerToRef"
       :model-value="endedAt"
-      :class="{ error: errors }"
+      :is-invalid="Boolean(errors)"
       :config="configTo"
       :placeholder="i18n.t('common.dateTo')"
       @update:model-value="(val) => setRangeDate(val, false)"
@@ -162,12 +162,6 @@ const configTo = computed(() => {
 .date-time-base-field {
   .app-picker-field {
     flex: 1 1 auto;
-  }
-}
-.error {
-  .v-field__outline {
-    color: rgb(var(--v-theme-error));
-    --v-field-border-opacity: 1;
   }
 }
 </style>

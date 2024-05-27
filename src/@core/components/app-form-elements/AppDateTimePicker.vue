@@ -46,6 +46,7 @@ const props = defineProps({
     color: 'primary',
   }),
   config: Object as PropType<Record<string, unknown>>,
+  isInvalid: Boolean,
 })
 
 const emit = defineEmits<Emit>()
@@ -144,7 +145,7 @@ defineExpose({ refFlatPicker })
       class="position-relative v-text-field"
       :style="props.style"
     >
-      <template #default="{ id, isDirty, isValid, isDisabled, isReadonly }">
+      <template #default="{ id, isDirty, isDisabled, isReadonly }">
         <VField
           v-bind="{ ...fieldProps, label: undefined }"
           :id="id.value"
@@ -152,7 +153,7 @@ defineExpose({ refFlatPicker })
           :active="focused || isDirty.value || isCalendarOpen"
           :focused="focused || isCalendarOpen"
           :dirty="isDirty.value || props.dirty"
-          :error="isValid.value === false"
+          :error="isInvalid"
           :disabled="isDisabled.value"
           @click:clear="onClear"
         >
