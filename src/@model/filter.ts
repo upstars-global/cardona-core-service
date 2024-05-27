@@ -19,6 +19,7 @@ export enum FilterType {
   Slug = 'slug',
   Name = 'name',
   DateRangeCreative = 'dateRangeCreative',
+  DateRangeApproved = 'dateRangeApproved',
   DateRangeUpdate = 'dateRangeUpdate',
   DateRangeProcessing = 'dateRangeProcessing',
   Hidden = 'hidden',
