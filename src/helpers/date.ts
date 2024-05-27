@@ -1,5 +1,17 @@
-import type { Nullable } from '../@model/index'
 import moment from 'moment'
+import type { Nullable } from '../@model/index'
+
+const BASE_FORMAT = 'DD.MM.YYYY, HH:mm'
+
+export const formatDate = (dateString: string): string => {
+  const parsedDate = moment(dateString, BASE_FORMAT)
+
+  if (parsedDate.isValid())
+    return parsedDate.format(BASE_FORMAT)
+
+  else
+    return moment().format(BASE_FORMAT)
+}
 
 export const getISOStringWithoutTimezone = (isoString: string | Date): string => {
   if (!isoString)
@@ -39,7 +51,7 @@ export const getUTCISOString = (dateString: string | Date): string => {
 }
 
 export const transformDateToISO = (date: string): string => {
-  const dateString = moment(date).format('DD.MM.YYYY, HH:mm')
+  const dateString = formatDate(date)
   const pattern = /(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})/
   const replaceValue = '$3-$2-$1-$4-$5'
 

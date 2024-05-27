@@ -87,10 +87,10 @@ const setRangeDate = (value, isStartDate = true) => {
   }
 }
 
-const datePickerTo = ref()
+const datePickerToRef = ref()
 
 const onChangeValue = () => {
-  datePickerTo.value?.refFlatPicker?.fp.close()
+  datePickerToRef.value?.refFlatPicker?.fp.close()
 }
 
 const onUpdateValueForm = (val: string) => {
@@ -140,6 +140,7 @@ const configTo = computed(() => {
     class="date-time-base-field d-flex align-center"
   >
     <AppDateTimePicker
+      ref="datePickerToRef"
       :model-value="startedAt"
       :class="{ error: errors }"
       :config="configFrom"
