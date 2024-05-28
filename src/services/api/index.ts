@@ -30,6 +30,7 @@ class ApiService {
       withErrorDescriptionToast = false,
       withErrorNotFound = true,
       withSuccessToast = false,
+      successToastDescription = undefined,
       withLoader = true,
       formRef = null,
       newAxiosInstance = false,
@@ -75,7 +76,7 @@ class ApiService {
         throw data.error
 
       if (withSuccessToast)
-        toastSuccess(url)
+        toastSuccess(url, { defaultDescription: successToastDescription })
 
       return data
     }
@@ -88,7 +89,7 @@ class ApiService {
         store.dispatch('authCore/clearAuth')
 
       /* if (!isLoginPage)
-          router.push({ name: 'Login' }) */
+        router.push({ name: 'Login' }) */
 
       store.dispatch('addErrorUrl', url)
 

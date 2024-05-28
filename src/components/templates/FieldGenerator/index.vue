@@ -93,7 +93,7 @@ const onSearch = (search: string) => emits('search', search)
       :validate-on-blur="false"
       :validate-on-change="false"
       :validate-on-input="false"
-      :validate-on-model-update="false"
+      :validate-on-model-update="true"
     >
       <template #default="{ errorMessage }">
         <Component
