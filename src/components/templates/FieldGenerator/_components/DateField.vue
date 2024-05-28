@@ -5,7 +5,7 @@ import en from 'flatpickr/dist/l10n/default.js'
 import { Russian as ru } from 'flatpickr/dist/l10n/ru.js'
 import i18n from '../../../../libs/i18n'
 import { DateBaseField } from '../../../../@model/baseField'
-import { getISOStringWithoutTimezone, getUTCISOString } from '../../../../helpers/date'
+import { getISOStringWithoutTimezone } from '../../../../helpers/date'
 import { dateSeparators } from '../../../../@model/date'
 import moment from 'moment'
 
@@ -55,10 +55,17 @@ const endedAt = ref()
 watch(
   () => props.value,
   (value) => {
-    if (value && props.field.isRangeMode && !startedAt.value && !endedAt.value) {
-      ;[startedAt.value, endedAt.value] = value.split(separator.value)
+    if (!props.field.withInitFullData) {
+      if (value && props.field.isRangeMode && !startedAt.value && !endedAt.value) {
+        ;[startedAt.value, endedAt.value = ''] = value.split(separator.value)
+      }
+    } else {
+      if (value && props.field.isRangeMode) {
+        ;[startedAt.value, endedAt.value = ''] = value.split(separator.value)
+      }
     }
-  }
+  },
+  { immediate: true }
 )
 
 const setRangeDate = (value, isStartDate = true) => {
@@ -67,12 +74,14 @@ const setRangeDate = (value, isStartDate = true) => {
     if (endedAt.value) {
       if (!value) {
         emit('input', moment(1432252800).format() + separator.value + endedAt.value)
+
         return
       }
       emit('input', value + separator.value + endedAt.value)
     } else {
       if (!value) {
         emit('input', '')
+
         return
       }
       emit('input', value + separator.value + moment().format())
@@ -81,13 +90,11 @@ const setRangeDate = (value, isStartDate = true) => {
     endedAt.value = value
     if (startedAt.value) {
       emit('input', startedAt.value + separator.value + value)
-      if (!value) {
-        emit('input', startedAt.value + separator.value + moment().format())
-        return
-      }
+      if (!value) emit('input', startedAt.value + separator.value + moment().format())
     } else {
       if (!value) {
         emit('input', '')
+
         return
       }
       emit('input', moment(1432252800).format() + separator.value + value)
