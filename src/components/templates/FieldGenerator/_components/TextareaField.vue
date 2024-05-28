@@ -48,7 +48,7 @@ const appendInnerIcon = computed(() => {
 
 <template>
   <AppTextarea
-    v-model="localModelValue"
+    v-model.trim="localModelValue"
     :placeholder="placeholder"
     :error="errors"
     no-resize
@@ -59,5 +59,18 @@ const appendInnerIcon = computed(() => {
     :persistent-counter="field.maxLength"
     :hide-details="!field.maxLength"
     v-bind="autoHeight"
+    class="text-area"
+    :class="{ 'app-textarea__counter': field.maxLength }"
   />
 </template>
+
+<style lang="scss">
+.app-textarea__counter {
+  position: relative;
+  .v-input__details {
+    position: absolute;
+    bottom: -20px;
+    width: 100%;
+  }
+}
+</style>

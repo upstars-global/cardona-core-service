@@ -63,7 +63,7 @@ const appendInnerIcon = computed(() => {
 
 <template>
   <div
-    class="position-relative d-flex justify-content-between align-center phone-field"
+    class="position-relative d-flex justify-space-between align-center phone-field"
     :class="{ 'phone-field--disabled': disabled }"
   >
     <span

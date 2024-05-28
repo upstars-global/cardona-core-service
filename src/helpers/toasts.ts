@@ -3,20 +3,27 @@ import ToastificationContent from '../components/templates/toast/ToastificationC
 import { IconsList } from '../@model/enums/icons'
 import { i18n } from '@/plugins/i18n'
 
-type ToastOptions = Record<string | 'defaultCode', string>
+type ToastOptions = Record<string | 'defaultCode' | 'defaultDescription', string | undefined>
 
 const defaultOptions: ToastOptions = {
   defaultText: '',
   defaultCode: 'default',
+  defaultDescription: '',
 }
 
 export default function useToastService() {
   const toast = useToast()
 
   const toastSuccess = (code: string, options: ToastOptions = defaultOptions) => {
+    const { defaultText = '', defaultCode = 'default', defaultDescription = undefined } = options
+
     const message = i18n.te(`toast.success.${code}`)
       ? `toast.success.${code}`
-      : `toast.success.${options.defaultCode}`
+      : `toast.success.${defaultCode}`
+
+    const text = defaultDescription || (i18n.te(`toast.success.${code}-text`)
+      ? i18n.t(`toast.success.${code}-text`)
+      : undefined)
 
     toast({
       component: ToastificationContent,
@@ -24,6 +31,7 @@ export default function useToastService() {
         title: i18n.t(message, options),
         icon: IconsList.CheckCircleIcon,
         variant: 'success',
+        text,
       },
     })
   }
