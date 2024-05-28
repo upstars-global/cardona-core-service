@@ -43,10 +43,17 @@ const endedAt = ref()
 watch(
   () => props.modelValue,
   value => {
-    if (value && props.field.isRangeMode && !startedAt.value && !endedAt.value) {
-      ;[startedAt.value, endedAt.value] = value.split(separator.value)
+    if (!props.field.withInitFullData) {
+      if (value && props.field.isRangeMode && !startedAt.value && !endedAt.value) {
+        ;[startedAt.value, endedAt.value = ''] = value.split(separator.value)
+      }
     }
-  },
+    else {
+      if (value && props.field.isRangeMode) {
+        ;[startedAt.value, endedAt.value = ''] = value.split(separator.value)
+      }
+    }
+  }, { immediate: true },
 )
 
 const setRangeDate = (value, isStartDate = true) => {
@@ -54,7 +61,7 @@ const setRangeDate = (value, isStartDate = true) => {
     startedAt.value = value
     if (endedAt.value) {
       if (!value) {
-        emit('update:modelValue', moment(1432252800).format() + separator.value + endedAt.value)
+        emit('update:modelValue', moment(1432252800).format('DD.MM.YYYY, HH:mm') + separator.value + endedAt.value)
 
         return
       }
@@ -66,7 +73,7 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', value + separator.value + moment().format())
+      emit('update:modelValue', value + separator.value + moment().format('DD.MM.YYYY, HH:mm'))
     }
   }
   else {
@@ -74,7 +81,7 @@ const setRangeDate = (value, isStartDate = true) => {
     if (startedAt.value) {
       emit('update:modelValue', startedAt.value + separator.value + value)
       if (!value)
-        emit('update:modelValue', startedAt.value + separator.value + moment().format())
+        emit('update:modelValue', startedAt.value + separator.value + moment().format('DD.MM.YYYY, HH:mm'))
     }
     else {
       if (!value) {
@@ -82,7 +89,7 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', moment(1432252800).format() + separator.value + value)
+      emit('update:modelValue', moment(1432252800).format('DD.MM.YYYY, HH:mm') + separator.value + value)
     }
   }
 }
