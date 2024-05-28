@@ -42,20 +42,23 @@ const endedAt = ref()
 
 const isFilter = computed(() => props.field.isFilter)
 
-const getDateNotSelectedDate = (): string => {
-  return isFilter.value ? moment(1432252800).format('DD.MM.YYYY, HH:mm') : ''
+const getDateNotSelectedDate = ({ isDateTo }: { isDateTo: boolean } = { isDateTo: false }): string => {
+  if (!isFilter.value)
+    return ''
+
+  return isDateTo ? moment().format('DD.MM.YYYY, HH:mm') : moment(1432252800).format('DD.MM.YYYY, HH:mm')
 }
 
 watch(
   () => props.modelValue,
   value => {
-    if (!props.field.isFilter) {
+    if (props.field.isFilter) {
       if (value && isFilter.value && !startedAt.value && !endedAt.value) {
         ;[startedAt.value, endedAt.value = ''] = value.split(separator.value)
       }
     }
     else {
-      if (value && isFilter.value) {
+      if (value) {
         ;[startedAt.value, endedAt.value = ''] = value.split(separator.value)
       }
     }
@@ -79,7 +82,7 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', value + separator.value + getDateNotSelectedDate())
+      emit('update:modelValue', value + separator.value + getDateNotSelectedDate({ isDateTo: true }))
     }
   }
   else {
@@ -87,7 +90,7 @@ const setRangeDate = (value, isStartDate = true) => {
     if (startedAt.value) {
       emit('update:modelValue', startedAt.value + separator.value + value)
       if (!value)
-        emit('update:modelValue', startedAt.value + separator.value + getDateNotSelectedDate())
+        emit('update:modelValue', startedAt.value + separator.value + getDateNotSelectedDate({ isDateTo: true }))
     }
     else {
       if (!value) {
