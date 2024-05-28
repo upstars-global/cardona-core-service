@@ -1,4 +1,14 @@
 import { Nullable } from '../@model'
+import moment from 'moment'
+
+const BASE_FORMAT = 'DD.MM.YYYY, HH:mm'
+
+export const formatDate = (dateString?: string): string => {
+  const parsedDate = moment(dateString, BASE_FORMAT)
+
+  if (parsedDate.isValid()) return parsedDate.format(BASE_FORMAT)
+  else return moment().format(BASE_FORMAT)
+}
 
 export const getISOStringWithoutTimezone = (isoString: string | Date): string => {
   if (!isoString) return ''
