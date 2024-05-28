@@ -40,16 +40,22 @@ const modelValue = computed({
 const startedAt = ref()
 const endedAt = ref()
 
+const isFilter = computed(() => props.field.isFilter)
+
+const getDateNotSelectedDate = (): string => {
+  return isFilter.value ? moment(1432252800).format('DD.MM.YYYY, HH:mm') : ''
+}
+
 watch(
   () => props.modelValue,
   value => {
-    if (!props.field.withInitFullData) {
-      if (value && props.field.isRangeMode && !startedAt.value && !endedAt.value) {
+    if (!props.field.isFilter) {
+      if (value && isFilter.value && !startedAt.value && !endedAt.value) {
         ;[startedAt.value, endedAt.value = ''] = value.split(separator.value)
       }
     }
     else {
-      if (value && props.field.isRangeMode) {
+      if (value && isFilter.value) {
         ;[startedAt.value, endedAt.value = ''] = value.split(separator.value)
       }
     }
@@ -61,7 +67,7 @@ const setRangeDate = (value, isStartDate = true) => {
     startedAt.value = value
     if (endedAt.value) {
       if (!value) {
-        emit('update:modelValue', moment(1432252800).format('DD.MM.YYYY, HH:mm') + separator.value + endedAt.value)
+        emit('update:modelValue', getDateNotSelectedDate() + separator.value + endedAt.value)
 
         return
       }
@@ -73,7 +79,7 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', value + separator.value + moment().format('DD.MM.YYYY, HH:mm'))
+      emit('update:modelValue', value + separator.value + getDateNotSelectedDate())
     }
   }
   else {
@@ -81,7 +87,7 @@ const setRangeDate = (value, isStartDate = true) => {
     if (startedAt.value) {
       emit('update:modelValue', startedAt.value + separator.value + value)
       if (!value)
-        emit('update:modelValue', startedAt.value + separator.value + moment().format('DD.MM.YYYY, HH:mm'))
+        emit('update:modelValue', startedAt.value + separator.value + getDateNotSelectedDate())
     }
     else {
       if (!value) {
@@ -89,7 +95,7 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', moment(1432252800).format('DD.MM.YYYY, HH:mm') + separator.value + value)
+      emit('update:modelValue', getDateNotSelectedDate() + separator.value + value)
     }
   }
 }

@@ -225,6 +225,7 @@ const date = new DateBaseField({
   label: i18n.t('common.date'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
 })
 
 const dateRangeCreative = new DateBaseField({
@@ -232,6 +233,7 @@ const dateRangeCreative = new DateBaseField({
   label: i18n.t('filters.dateRangeCreative'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
 })
 
 const dateRangeApproved = new DateBaseField({
@@ -239,6 +241,7 @@ const dateRangeApproved = new DateBaseField({
   label: i18n.t('filters.dateRangeApproved'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
 })
 
 const dateRangeUpdate = new DateBaseField({
@@ -246,6 +249,7 @@ const dateRangeUpdate = new DateBaseField({
   label: i18n.t('filters.dateRangeUpdate'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
 })
 
 const dateRangeIssued = new DateBaseField({
@@ -253,6 +257,7 @@ const dateRangeIssued = new DateBaseField({
   label: i18n.t('filters.dateRangeIssued'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
 })
 
 const dateRangeExpired = new DateBaseField({
@@ -260,6 +265,7 @@ const dateRangeExpired = new DateBaseField({
   label: i18n.t('filters.dateRangeExpired'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
 })
 
 const dateRangeProcessing = new DateBaseField({
@@ -267,6 +273,7 @@ const dateRangeProcessing = new DateBaseField({
   label: i18n.t('filters.dateRangeProcessing'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
 })
 
 const dateRangeActivated = new DateBaseField({
@@ -274,6 +281,7 @@ const dateRangeActivated = new DateBaseField({
   label: i18n.t('filters.dateRangeActivated'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
 })
 
 const dateRangeUsed = new DateBaseField({
@@ -281,6 +289,7 @@ const dateRangeUsed = new DateBaseField({
   label: i18n.t('filters.dateRangeUsed'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
 })
 
 const bettingDateCreative = new DateBaseField({
@@ -288,6 +297,7 @@ const bettingDateCreative = new DateBaseField({
   label: i18n.t('filters.bettingDateCreative'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
 })
 
 // ---------------------------------------------------------------------------

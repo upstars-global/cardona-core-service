@@ -17,7 +17,7 @@ export interface IDateBaseField extends IBaseField {
   readonly withTime?: boolean
   readonly separator?: string
   readonly config?: Record<string, unknown>
-  readonly withInitFullData?: boolean
+  readonly isFilter?: boolean
 }
 
 export class DateBaseField extends BaseField implements IDateBaseField {
@@ -29,7 +29,7 @@ export class DateBaseField extends BaseField implements IDateBaseField {
   readonly config?: Record<string, unknown>
   readonly separator: string
   readonly validationRules?: IValidationConfig
-  readonly withInitFullData?: boolean
+  readonly isFilter?: boolean
 
   constructor(field: IDateBaseField) {
     super(field)
@@ -40,7 +40,7 @@ export class DateBaseField extends BaseField implements IDateBaseField {
     this.withTime = field.withTime
     this.config = field.config
     this.validationRules = this.getValidationRules(field.validationRules)
-    this.withInitFullData = field.withInitFullData
+    this.isFilter = field?.isFilter
   }
 
   private getISODateValue(value: DateBaseFieldInputValue): string {
