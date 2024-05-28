@@ -50,6 +50,7 @@ const appendInnerIcon = computed(() => {
       :error="errors"
       :append-inner-icon="appendInnerIcon"
       autocomplete="off"
+      hide-details
       :autofocus="false"
     />
   </div>

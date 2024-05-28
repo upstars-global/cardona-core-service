@@ -57,6 +57,17 @@ const customMessageOfRules: Record<
 
       return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, _length_ })
     },
+    min_value(ctx: FieldValidationMetaInfo): TranslateResult {
+      const _min_ = ctx.rule.params.at(0)
+
+      return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, _min_ })
+    },
+    between(ctx: FieldValidationMetaInfo): TranslateResult {
+      const _min_ = ctx.rule.params.at(0)
+      const _max_ = ctx.rule.params.at(1)
+
+      return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, _min_, _max_ })
+    },
   }
 
 const validatorPositive = (value: number): boolean => {

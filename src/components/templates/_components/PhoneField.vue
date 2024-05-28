@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { allPhoneCodesWithFlags } from '../../../helpers/countries'
 import Cleave from 'vue-cleave-component'
-import {PhoneBaseField} from "../../../@model/templates/baseField";
+import { allPhoneCodesWithFlags } from '../../../helpers/countries'
+import type { PhoneBaseField } from '../../../@model/templates/baseField'
 
-type PhoneFieldProps = {
+interface PhoneFieldProps {
   value: string
   field: PhoneBaseField
   disabled?: boolean
@@ -33,11 +33,11 @@ const modelValue = computed({
 })
 
 const phoneFlag = computed(() => {
-  const cleanPhoneNumber: string =
-    modelValue.value[0] === '+' ? modelValue.value.slice(1) : modelValue.value
+  const cleanPhoneNumber: string
+    = modelValue.value[0] === '+' ? modelValue.value.slice(1) : modelValue.value
 
   const phoneData = allPhoneCodesWithFlags.find(
-    ({ phone }) => cleanPhoneNumber.indexOf(phone) === 0
+    ({ phone }) => cleanPhoneNumber.indexOf(phone) === 0,
   )
 
   return phoneData?.flag
@@ -45,20 +45,19 @@ const phoneFlag = computed(() => {
 </script>
 
 <template>
-  <div class="d-flex justify-content-between align-center position-relative">
+  <div class="d-flex justify-space-between align-center position-relative">
     <p class="flag">
       {{ phoneFlag }}
     </p>
 
-    <cleave
+    <Cleave
       v-model="modelValue"
       type="text"
       class="form-control"
-      :class="{ 'pl-3': phoneFlag, error: errors }"
+      :class="{ 'pl-3': phoneFlag, 'error': errors }"
       :placeholder="$t('common.phone._')"
       :disabled="disabled"
       :options="cleaveOptions"
     />
   </div>
 </template>
-

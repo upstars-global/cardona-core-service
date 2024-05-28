@@ -544,7 +544,7 @@ const showActions = computed(() =>
   [canUpdate, canUpdateSeo, canCreate, canRemove].some(Boolean),
 )
 
-defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
+defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items, isSidebarShown, resetSelectedItem })
 </script>
 
 <template>
@@ -677,7 +677,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items })
         </div>
 
         <!-- Table field settings -->
-        <div class="d-flex align-center justify-content-end">
+        <div class="d-flex align-center justify-end">
           <slot name="table-field-setting" />
 
           <TableFields

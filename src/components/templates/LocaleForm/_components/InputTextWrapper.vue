@@ -34,7 +34,7 @@ const toggleSizeChildren = () => {
 const canShowButton = computed(() => wasSelectedMaxHeightStyle.value || isMoreThanMaxHeight.value)
 
 const footerClass = computed(() =>
-  canShowButton.value ? 'justify-content-between' : 'justify-content-end',
+  canShowButton.value ? 'justify-space-between' : 'justify-end',
 )
 
 watch(elementHeight, actualElementHeight => {
