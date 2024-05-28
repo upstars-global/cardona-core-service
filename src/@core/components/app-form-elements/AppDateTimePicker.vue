@@ -154,7 +154,6 @@ defineExpose({ refFlatPicker })
           :dirty="isDirty.value || props.dirty"
           :error="isValid.value === false"
           :disabled="isDisabled.value"
-          @click:append-inner="emit('click:control', $event)"
           @click:clear="onClear"
         >
           <template #default="{ props: vFieldProps }">
