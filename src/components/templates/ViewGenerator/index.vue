@@ -30,7 +30,6 @@ const valueColsCount = computed(() => 12 - props.cols)
       <VCol
         :cols="cols"
         class="wrapper-label"
-        style="max-width: 154px"
       >
         <div
           v-if="modelValue.icon !== undefined"
@@ -62,7 +61,9 @@ const valueColsCount = computed(() => 12 - props.cols)
 <style lang="scss" scoped>
 .wrapper-label {
   width: 38.5rem;
+  max-width: 154px;
   color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
+  margin-right: 0.5rem;
 }
 .wrapper-value {
   width: 100%;
@@ -74,6 +75,6 @@ const valueColsCount = computed(() => 12 - props.cols)
 }
 
 .view-generator__text {
-  color: rgba(var(--v-theme-body), var(--v-body-opacity));
+  color: rgb(var(--v-theme-body));
 }
 </style>

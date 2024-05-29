@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
+import { computed, inject, onBeforeMount, onMounted, onUnmounted, ref, useSlots, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { findIndex } from 'lodash'
@@ -241,6 +241,7 @@ const {
   perPageOptions,
   total,
   setPerPage,
+  removePerPage,
   setPage,
   setupDataMeta,
   linkGen,
@@ -538,6 +539,10 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
 
 onBeforeMount(async () => {
   await getList()
+})
+
+onUnmounted(() => {
+  removePerPage()
 })
 
 const showActions = computed(() =>
