@@ -64,7 +64,7 @@ const onDragEnd = (event: { moved: object }) => {
 
 const cellClasses = computed(() => props.small ? 'py-2 px-3' : 'py-3 px-4')
 const maxSkeletonRows = 25
-const skeletonRows = computed(() => props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
+const skeletonRowsCount = computed(() => props.skeletonRows ? props.skeletonRows : props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
 const isSortableColumn = (column: TableField): boolean => props.fields?.find(item => item?.key === column?.key)?.sortable
 
 const sortParams = ref(props.sortData?.map(item => ({
@@ -175,7 +175,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
       <tbody v-if="isLoadingList">
         <slot name="skeleton">
           <tr
-            v-for="index in skeletonRows"
+            v-for="index in skeletonRowsCount"
             :key="`skeleton-row_${index}`"
           >
             <td
