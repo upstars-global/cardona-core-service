@@ -41,7 +41,8 @@ const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-er
   >
     <VSwitch
       v-model="localModelValue"
-      :class="{ 'is-disabled': disabled || !canUpdate }"
+      class="switch-input"
+      :class="{ 'is-disabled': disabled || !canUpdate, 'not-checked': !localModelValue }"
     />
 
     <span class="switch-label">
@@ -58,8 +59,17 @@ const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-er
 </template>
 
 <style lang="scss" scoped>
-  .is-disabled {
-    pointer-events: none;
-    opacity:  var(--v-switch-checked-disabled-opacity);
+.switch-input.not-checked.is-disabled {
+  :deep(.v-switch__track) {
+    background-color: rgb(var(--v-theme-grey-300)) !important;
   }
+  :deep(.v-switch__thumb) {
+    background-color: rgb(var(--v-theme-on-surface)) !important;
+  }
+}
+
+.is-disabled {
+  pointer-events: none;
+  opacity:  var(--v-switch-checked-disabled-opacity);
+}
 </style>
