@@ -103,15 +103,11 @@ const setRangeDate = (value, isStartDate = true) => {
   }
 }
 
+const datePickerFromRef = ref()
 const datePickerToRef = ref()
-
-const onChangeValue = () => {
-  datePickerToRef.value?.refFlatPicker?.fp.close()
-}
 
 const onUpdateValueForm = (val: string) => {
   setRangeDate(val)
-  onChangeValue()
 }
 
 const configFrom = computed(() => {
@@ -136,6 +132,11 @@ const configTo = computed(() => {
     defaultMinute: 59,
   }
 })
+
+const onOpenCalendarTo = () => {
+  if (!datePickerFromRef.value?.refFlatPicker.fp.isOpen) return
+  datePickerToRef.value?.refFlatPicker?.fp.close()
+}
 </script>
 
 <template>
@@ -157,6 +158,7 @@ const configTo = computed(() => {
   >
     <AppDateTimePicker
       :model-value="startedAt"
+      ref="datePickerFromRef"
       :is-invalid="Boolean(errors)"
       :config="configFrom"
       :placeholder="i18n.t('common.dateFrom')"
@@ -170,6 +172,7 @@ const configTo = computed(() => {
       :config="configTo"
       :placeholder="i18n.t('common.dateTo')"
       @update:model-value="(val) => setRangeDate(val, false)"
+      @open-calendar="onOpenCalendarTo"
     />
   </div>
 </template>

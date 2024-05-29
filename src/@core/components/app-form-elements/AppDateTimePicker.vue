@@ -57,6 +57,8 @@ interface Emit {
   (e: 'update:focused', val: MouseEvent): true
   (e: 'update:modelValue', val: string): void
   (e: 'click:clear', el: MouseEvent): void
+  (e: 'open-calendar'): void
+  (e: 'close-calendar'): void
 }
 
 const configStore = useConfigStore()
@@ -121,6 +123,11 @@ const elementId = computed(() => {
   return _elementIdToken ? `app-picker-field-${_elementIdToken}-${Math.random().toString(36).slice(2, 7)}` : undefined
 })
 
+const toggleCalendar = (state: boolean) => {
+  emit(state ? 'open-calendar' : 'close-calendar')
+  isCalendarOpen.value = state
+}
+
 defineExpose({ refFlatPicker })
 </script>
 
@@ -170,8 +177,8 @@ defineExpose({ refFlatPicker })
                 class="flat-picker-custom-style"
                 :disabled="isReadonly.value"
                 :config="config"
-                @on-open="isCalendarOpen = true"
-                @on-close="isCalendarOpen = false"
+                @on-open="toggleCalendar(true)"
+                @on-close="toggleCalendar(false)"
                 @update:model-value="emitModelValue"
               />
 
