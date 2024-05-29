@@ -3,6 +3,16 @@ import type { Nullable } from '../@model/index'
 
 export const BASE_FORMAT = 'DD.MM.YYYY, HH:mm'
 
+export const getDateRange = (date: string) => {
+  const dateRangeList = date.split('to').map(date => date.trim())
+  const isValidDate = dateRangeList.every(date => moment(date, BASE_FORMAT, true).isValid())
+
+  if (isValidDate)
+    return date
+
+  return dateRangeList.map((date: string) => moment(date).format(BASE_FORMAT)).join(' to ')
+}
+
 export const formatDate = (dateString: string): string => {
   const parsedDate = moment(dateString, BASE_FORMAT)
 
