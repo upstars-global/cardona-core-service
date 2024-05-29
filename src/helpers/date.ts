@@ -1,7 +1,7 @@
 import moment from 'moment'
 import type { Nullable } from '../@model/index'
 
-const BASE_FORMAT = 'DD.MM.YYYY, HH:mm'
+export const BASE_FORMAT = 'DD.MM.YYYY, HH:mm'
 
 export const formatDate = (dateString: string): string => {
   const parsedDate = moment(dateString, BASE_FORMAT)
