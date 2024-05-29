@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 import type { FormDateBaseField } from '../../../../@model/templates/baseField'
 import { IconsList } from '../../../../@model/enums/icons'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
@@ -17,6 +18,7 @@ const emit = defineEmits<{
   (event: 'update:modelValue', value: string | Date): void
 }>()
 
+const id = ref(uuidv4())
 const refPicker = ref({})
 
 const flatPickrConfig = computed(() => ({
@@ -33,8 +35,14 @@ const localModelValue = computed({
   set: value => emit('update:modelValue', value),
 })
 
-const toggle = () => {
+const openByClick = () => {
   refPicker.value.refFlatPicker.fp.open()
+}
+
+const isOpen = ref(false)
+
+const onToggle = () => {
+  isOpen.value = !isOpen.value
 }
 </script>
 
@@ -44,15 +52,34 @@ const toggle = () => {
     v-model="localModelValue"
     :append-inner-icon="IconsList.CalendarIcon"
     class="form-date-field"
-    @click:control="toggle"
+    :config="{
+      static: true,
+    }"
+    :class="{ 'form-date-field--open': isOpen }"
+    @click:control="openByClick"
+    @onClose="onToggle"
+    @onOpen="onToggle"
   />
 </template>
 
 <style lang="scss">
 .form-date-field {
+  z-index: 5;
   .v-field__append-inner {
     color: rgb(var(--v-theme-primary));
     opacity: 1;
+  }
+
+  &--open {
+    .v-field__input {
+      opacity: 1;
+    }
+  }
+  .flatpickr-wrapper {
+    width: 100%;
+  }
+  .flatpickr-input {
+    padding: 0;
   }
 }
 </style>

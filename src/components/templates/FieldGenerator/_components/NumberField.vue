@@ -72,6 +72,7 @@ const appendInnerIcon = computed(() => {
       :error="errors"
       :append-inner-icon="appendInnerIcon"
       class="number-field"
+      hide-details
       @keydown="onKeyDown"
     />
   </div>
