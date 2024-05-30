@@ -231,6 +231,13 @@ const dateRangeCreative = new DateBaseField({
   withTime: true,
 })
 
+const dateRangeApproved = new DateBaseField({
+  key: FilterType.DateRangeApproved,
+  label: i18n.t('filters.dateRangeApproved'),
+  isRangeMode: true,
+  withTime: true,
+})
+
 const dateRangeUpdate = new DateBaseField({
   key: FilterType.DateRangeUpdate,
   label: i18n.t('filters.dateRangeUpdate'),
@@ -382,6 +389,7 @@ export default {
   // Date
   date,
   dateRangeCreative,
+  dateRangeApproved,
   dateRangeUpdate,
   dateRangeIssued,
   dateRangeExpired,
