@@ -244,7 +244,7 @@ const onSave = async () => {
 }
 
 const onClickCancel = () => router.push({ name: ListPageName })
-const removeModalId = 'list-item-remove-modal'
+const removeModalId = 'form-item-remove-modal'
 
 // Remove
 const onClickRemove = async () => {
