@@ -59,6 +59,7 @@ interface Emit {
   (e: 'click:clear', el: MouseEvent): void
   (e: 'open-calendar'): void
   (e: 'close-calendar'): void
+  (e: 'click:append-inner', el: MouseEvent): void
 }
 
 const configStore = useConfigStore()
@@ -162,6 +163,7 @@ defineExpose({ refFlatPicker })
           :dirty="isDirty.value || props.dirty"
           :error="isInvalid"
           :disabled="isDisabled.value"
+          @click:append-inner="onAppendClick"
           @click:clear="onClear"
         >
           <template #default="{ props: vFieldProps }">
@@ -177,6 +179,9 @@ defineExpose({ refFlatPicker })
                 class="flat-picker-custom-style"
                 :disabled="isReadonly.value"
                 :config="config"
+                :class="{
+                  'flat-picker-custom-style--static': config.static,
+                }"
                 @on-open="toggleCalendar(true)"
                 @on-close="toggleCalendar(false)"
                 @update:model-value="emitModelValue"
@@ -221,6 +226,11 @@ defineExpose({ refFlatPicker })
   outline: none;
   padding-block: 0;
   padding-inline: var(--v-field-padding-start);
+
+  &--static {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 $heading-color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
@@ -522,5 +532,13 @@ input[altinputclass="inlinePicker"] {
 // Update hour font-weight
 .flatpickr-time input.flatpickr-hour {
   font-weight: 400;
+}
+
+.app-picker-field {
+  &--open {
+    .v-field__input {
+      opacity: 1;
+    }
+  }
 }
 </style>
