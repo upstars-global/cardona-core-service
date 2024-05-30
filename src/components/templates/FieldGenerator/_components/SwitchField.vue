@@ -61,15 +61,15 @@ const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-er
 <style lang="scss" scoped>
 .switch-input.not-checked.is-disabled {
   :deep(.v-switch__track) {
-    background-color: rgb(var(--v-theme-grey-300)) !important;
+    background-color: rgb(var(--v-theme-grey-200)) !important;
+    border-style: none;
   }
   :deep(.v-switch__thumb) {
-    background-color: rgb(var(--v-theme-on-surface)) !important;
+    background-color: rgb(var(--v-theme-grey-300)) !important;
   }
 }
 
 .is-disabled {
   pointer-events: none;
-  opacity:  var(--v-switch-checked-disabled-opacity);
 }
 </style>
