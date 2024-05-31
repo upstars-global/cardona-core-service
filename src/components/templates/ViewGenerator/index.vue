@@ -60,7 +60,7 @@ const valueColsCount = computed(() => 12 - props.cols)
 
 <style lang="scss" scoped>
 .wrapper-label {
-  width: 38.5rem;
+  width: 100%;
   max-width: 154px;
   color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
   margin-right: 0.5rem;
