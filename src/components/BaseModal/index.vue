@@ -8,6 +8,7 @@ interface Props {
   id: string
   title?: string | TranslateResult
   state?: boolean
+  width: string
 }
 
 interface Emits {
@@ -16,7 +17,7 @@ interface Emits {
 }
 defineOptions({ name: 'BaseModal' })
 
-const props = withDefaults(defineProps<Props>(), { title: '' })
+const props = withDefaults(defineProps<Props>(), { title: '', width: 'auto' })
 
 const emits = defineEmits<Emits>()
 
@@ -58,7 +59,7 @@ const onHide = (value: boolean) => {
   <VDialog
     v-model="showModal"
     class="base-modal"
-    width="auto"
+    :width="width"
     v-bind="attrs"
     @update:model-value="onHide"
   >
@@ -70,7 +71,11 @@ const onHide = (value: boolean) => {
             'without-header-title': !title,
           }"
         >
-          <slot name="modal-header" :title="title" :hide="hide">
+          <slot
+            name="modal-header"
+            :title="title"
+            :hide="hide"
+          >
             <h4
               v-if="title"
               class="mb-0"

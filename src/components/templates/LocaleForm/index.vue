@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import store from '../../../store'
+import { useStore } from 'vuex'
 import type {
   FieldTranslationsLocale,
-  LocaleVariable,
+  LocaleVariable, TranslationForm,
 } from '../../../@model/translations'
 import {
   filterString,
@@ -13,7 +13,7 @@ import InputTextWrapper from '../../templates/LocaleForm/_components/InputTextWr
 import CheckField from '../../templates/FieldGenerator/_components/CheckField.vue'
 
 interface Props {
-  modelValue: any
+  modelValue: TranslationForm
   form: any
   type?: string
   disabled: boolean
@@ -30,12 +30,13 @@ const emits = defineEmits<{
   (e: 'update:model-value', value: any): void
 }>()
 
+const store = useStore()
+
 const selectEditeInput = ref('')
 const selectedProject = computed(() => store.getters.selectedProject)
 const mainLocale = computed<string>(() => selectedProject.value?.mainLocale || 'ru')
 const allLocales = computed(() => store.getters['localeCore/allLocalesKeys'])
 const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
-
 const isMainLocale = (locale: string): boolean => locale === mainLocale.value
 
 const onSelectEditeInput = (item, local) => {
@@ -70,6 +71,8 @@ const onRemoveVariables = (variable: string): void => {
 const getValue = (locale: string, key: string): string => {
   return isMainLocale(locale) ? props.form[key] ? props.form[key].value : props.form.seo[key].value : props.form.fieldTranslations[key][locale].value
 }
+
+const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
 </script>
 
 <template>
@@ -117,7 +120,7 @@ const getValue = (locale: string, key: string): string => {
                 <TextEditorWysiwyg
                   v-model="form.fieldTranslations[item][local].value"
                   :options-variable="allCurrencies"
-                  :localisation-parameters="form.localisationParameters"
+                  :localisation-parameters="variableTextBufferStore"
                   :data-at="`input-${item}-${local}`"
                   @update-localisation-parameters="updateLocalisationParameters"
                   @remove-variable="onRemoveVariables"

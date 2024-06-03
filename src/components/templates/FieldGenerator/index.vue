@@ -103,7 +103,7 @@ const onSearch = (search: string) => emits('search', search)
           :options="options"
           :field="modelValue"
           :disabled="disabled"
-          :placeholder="modelValue.placeholder || modelValue.label"
+          :placeholder="modelValue.placeholder"
           :size="size"
           v-bind="{ ...$attrs }"
           :errors="!!errorMessage"
