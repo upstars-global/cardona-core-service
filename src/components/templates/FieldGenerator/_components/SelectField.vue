@@ -85,7 +85,7 @@ const onSearch = debounce(async (search: string, loading: Function) => {
   <div>
     <VueSelect
       v-model="valueModel"
-      :placeholder="placeholder || $t('placeholder.choose._')"
+      :placeholder="placeholder"
       label="name"
       :loading="isLoading"
       :multiple="isMultiple"

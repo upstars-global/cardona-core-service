@@ -74,7 +74,7 @@ export class DateBaseField extends BaseField implements IDateBaseField {
     const rangeRequiredRules: IValidationConfig = { range_date: true, range_date_different: true }
 
     return this.isRangeMode && rules
-      ? { ...rules, ...rangeRequiredRules }
+      ? { ...rangeRequiredRules, ...rules }
       : this.isRangeMode
         ? rangeRequiredRules
         : rules

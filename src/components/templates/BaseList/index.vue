@@ -485,6 +485,7 @@ const onClickDeleteMultiple = async () => {
     customApiPrefix: props.config?.customApiPrefix,
   })
 
+  selectedItems.value = []
   reFetchList()
 }
 

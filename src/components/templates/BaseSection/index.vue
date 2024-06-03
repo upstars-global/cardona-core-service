@@ -252,6 +252,7 @@ const onClickRemove = async () => {
 }
 
 const confirmRemoveModal = async () => {
+  modal.hideModal(removeModalId)
   await store.dispatch(deleteActionName, {
     type: entityName,
     id: entityId,
@@ -278,21 +279,32 @@ defineExpose({
     ref="formRef"
     @submit.prevent
   >
-    <slot
-      :entity-id="entityId"
-      :form="form"
-      :can-update="canUpdate"
-      :can-remove="canRemove"
-      :can-view-seo="canViewSeo"
-      :can-create-seo="canCreateSeo"
-      :can-update-seo="canUpdateSeo"
-      :on-click-remove="onClickRemove"
-    />
-
+    <div class="position-relative">
+      <slot
+        :entity-id="entityId"
+        :form="form"
+        :can-update="canUpdate"
+        :can-remove="canRemove"
+        :can-view-seo="canViewSeo"
+        :can-create-seo="canCreateSeo"
+        :can-update-seo="canUpdateSeo"
+        :on-click-remove="onClickRemove"
+      />
+      <div
+        v-if="isLoadingPage && pageType"
+        class="position-absolute base-section__loading d-flex"
+      >
+        <VProgressCircular
+          indeterminate
+          class="ma-auto"
+        />
+      </div>
+    </div>
     <slot
       v-if="pageType"
       name="actions"
       :form="form"
+      :loading="isLoadingPage"
     >
       <div class="d-flex align-center mt-5">
         <template v-if="isCreatePage">
@@ -300,6 +312,7 @@ defineExpose({
             class="mr-4"
             :color="VColors.Primary"
             data-testid="create-button"
+            :disabled="isLoadingPage"
             @click="onSubmit(false)"
           >
             {{ $t('action.createAndExit') }}
@@ -310,6 +323,7 @@ defineExpose({
             :variant="VVariants.Outlined"
             :color="VColors.Secondary"
             data-testid="stay-button"
+            :disabled="isLoadingPage"
             @click="onSubmit(true)"
           >
             {{ $t('action.createAndStay') }}
@@ -321,7 +335,7 @@ defineExpose({
             class="mr-4"
             :color="VColors.Primary"
             data-testid="save-button"
-            :disabled="isDisableSubmit"
+            :disabled="isDisableSubmit || isLoadingPage"
             @click="onSubmit(false)"
           >
             {{ $t('action.save') }}
