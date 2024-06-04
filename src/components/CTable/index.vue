@@ -124,7 +124,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
         data-c-field="selectable"
       >
         <VCheckbox
-          :model-value="allSelected"
+          :model-value="allSelected || someSelected"
           :indeterminate="allSelected ? false : someSelected"
           :disabled="isLoadingList"
           @update:model-value="selectAll"
@@ -283,8 +283,8 @@ const isActiveSort = (key: string, direction: string): boolean => {
   }
   .c-table__header-cell-icon {
     opacity: 0.5;
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 0.7rem;
+    height: 0.7rem;
 
     &--active {
       opacity: 1;

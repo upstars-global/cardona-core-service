@@ -53,7 +53,7 @@ export const getLocaleDateStringWithoutTimezone = (isoString: string): string =>
 }
 
 export const getUTCISOString = (dateString: string | Date): string => {
-  if (!isISODate(dateString))
+  if (!dateString)
     return dateString.toString()
   const localeDateString: string = getLocaleDateString(new Date(dateString))
 

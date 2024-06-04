@@ -64,7 +64,7 @@ onMounted(() => {
           :key="item.key"
           @click="onToggleActive(item)"
         >
-          <template #prepend>
+          <template #append>
             <VIcon
               v-if="selectedKeys.includes(item.key)"
               icon="tabler-check"

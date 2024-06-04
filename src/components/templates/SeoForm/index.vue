@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import FieldGenerator from '../../../components/templates/FieldGenerator/index.vue'
+import type { SeoForm } from '../../../@model/seo'
 
-const props = defineProps<{
-  modelValue: any
+defineProps<{
+  modelValue: SeoForm
   disabled: boolean
 }>()
 </script>
