@@ -94,7 +94,9 @@ const handleSorByField = ({ key }: { key: string }) => {
 }
 
 const isActiveSort = (key: string, direction: string): boolean => {
-  return find(sortParams.value, { key })?.order?.toLowerCase() === direction
+  const currentItem = find(sortParams.value, { key })
+
+  return currentItem?.isActive && currentItem?.order?.toLowerCase() === direction
 }
 </script>
 
@@ -279,7 +281,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
   .c-table__header-cell-icon-wrapper {
     position: relative;
     width: 1rem;
-    height: 1rem;
+    height: 1.4rem;
   }
   .c-table__header-cell-icon {
     opacity: 0.5;
