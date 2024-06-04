@@ -486,6 +486,7 @@ const onClickDeleteMultiple = async () => {
     customApiPrefix: props.config?.customApiPrefix,
   })
 
+  selectedItems.value = []
   reFetchList()
 }
 
@@ -508,7 +509,13 @@ const onDragChanged = async e => {
     reFetchList()
   }
 
-  emits('end', { itemId: id, newIndex: e.newIndex, oldIndex: e.oldIndex })
+  emits('end', {
+    itemId: id,
+    newIndex: e.newIndex,
+    oldIndex: e.oldIndex,
+    page: currentPage.value,
+    perPage: perPage.value,
+  })
 }
 
 // Remove

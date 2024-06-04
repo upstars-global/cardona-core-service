@@ -27,7 +27,10 @@ const previewImage = computed(() => props.imagePath + previewAdditionalParams.va
       :image-path="previewImage"
       @click.stop="modal.showModal(`${id}-image-detail`)"
     />
-    <BaseModal :id="`${id}-image-detail`">
+    <BaseModal
+      :id="`${id}-image-detail`"
+      width="100%"
+    >
       <div class="d-flex justify-center align-center pa-5">
         <img
           :src="imagePath"
