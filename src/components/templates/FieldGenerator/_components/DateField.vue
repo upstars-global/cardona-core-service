@@ -23,7 +23,11 @@ const emit = defineEmits<{
 }>()
 
 const flatPickrConfig = computed(() => ({
-  dateFormat: props.field.withTime ? 'd.m.Y, H:i' : 'd.m.Y',
+  dateFormat: 'Z',
+  altInput: true,
+  altFormat: props.field.withTime ? 'd.m.Y, H:i' : 'd.m.Y',
+
+  // locale: locales[currentLocale],
   enableTime: props.field.withTime,
   time_24hr: true,
   defaultHour: 0,
@@ -52,17 +56,18 @@ const getDateNotSelectedDate = ({ isDateTo }: { isDateTo: boolean } = { isDateTo
 watch(
   () => props.modelValue,
   value => {
-    if (props.field.isFilter) {
-      if (value && isFilter.value && !startedAt.value && !endedAt.value) {
+    if (!props.field.withInitFullData) {
+      if (value && props.field.isRangeMode && !startedAt.value && !endedAt.value) {
         ;[startedAt.value, endedAt.value = ''] = value.split(separator.value)
       }
     }
     else {
-      if (value) {
+      if (value && props.field.isRangeMode) {
         ;[startedAt.value, endedAt.value = ''] = value.split(separator.value)
       }
     }
-  }, { immediate: true },
+  },
+  { immediate: true },
 )
 
 const setRangeDate = (value, isStartDate = true) => {
@@ -70,7 +75,7 @@ const setRangeDate = (value, isStartDate = true) => {
     startedAt.value = value
     if (endedAt.value) {
       if (!value) {
-        emit('update:modelValue', getDateNotSelectedDate() + separator.value + endedAt.value)
+        emit('update:modelValue', moment(1432252800).format() + separator.value + endedAt.value)
 
         return
       }
@@ -82,7 +87,7 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', value + separator.value + getDateNotSelectedDate({ isDateTo: true }))
+      emit('update:modelValue', value + separator.value + moment().format())
     }
   }
   else {
@@ -90,7 +95,7 @@ const setRangeDate = (value, isStartDate = true) => {
     if (startedAt.value) {
       emit('update:modelValue', startedAt.value + separator.value + value)
       if (!value)
-        emit('update:modelValue', startedAt.value + separator.value + getDateNotSelectedDate({ isDateTo: true }))
+        emit('update:modelValue', startedAt.value + separator.value + moment().format())
     }
     else {
       if (!value) {
@@ -98,7 +103,7 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', getDateNotSelectedDate() + separator.value + value)
+      emit('update:modelValue', moment(1432252800).format() + separator.value + value)
     }
   }
 }
@@ -132,11 +137,6 @@ const configTo = computed(() => {
     defaultMinute: 59,
   }
 })
-
-const onOpenCalendarTo = () => {
-  if (!datePickerFromRef.value?.refFlatPicker.fp.isOpen) return
-  datePickerToRef.value?.refFlatPicker?.fp.close()
-}
 </script>
 
 <template>
@@ -157,22 +157,36 @@ const onOpenCalendarTo = () => {
     class="date-time-base-field d-flex align-center"
   >
     <AppDateTimePicker
-      :model-value="startedAt"
       ref="datePickerFromRef"
+      :model-value="startedAt"
       :is-invalid="Boolean(errors)"
-      :config="configFrom"
+      :config="{
+        ...flatPickrConfig,
+        minDate: field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
+        maxDate: endedAt,
+        mode: 'single',
+        defaultHour: 0,
+        defaultMinute: 0,
+        ...field.config,
+      }"
       :placeholder="i18n.t('common.dateFrom')"
-      @update:model-value="onUpdateValueForm"
+      @update:model-value="(val) => setRangeDate(val)"
     />
     <span class="mx-1"> – </span>
     <AppDateTimePicker
       ref="datePickerToRef"
       :model-value="endedAt"
       :is-invalid="Boolean(errors)"
-      :config="configTo"
+      :config="{
+        ...flatPickrConfig,
+        minDate: startedAt,
+        mode: 'single',
+        defaultHour: 23,
+        defaultMinute: 59,
+        ...field.config,
+      }"
       :placeholder="i18n.t('common.dateTo')"
       @update:model-value="(val) => setRangeDate(val, false)"
-      @open-calendar="onOpenCalendarTo"
     />
   </div>
 </template>
