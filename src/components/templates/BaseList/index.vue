@@ -863,7 +863,13 @@ export default {
         reFetchList()
       }
 
-      emit('end', { itemId: id, newIndex: e.newIndex, oldIndex: e.oldIndex })
+      emit('end', {
+        itemId: id,
+        newIndex: e.newIndex,
+        oldIndex: e.oldIndex,
+        page: currentPage.value,
+        perPage: perPage.value,
+      })
     }
 
     // Remove
