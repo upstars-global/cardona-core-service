@@ -21,6 +21,7 @@ export const useDemoList = (): UseListType => {
       key: 'status',
       title: i18n.t('common.status'),
       type: ListFieldType.Status,
+      sortable: true,
     }),
     new TableField({
       key: 'editableField',

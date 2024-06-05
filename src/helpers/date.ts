@@ -28,7 +28,7 @@ export const isISODate = (dateString: string | Date): boolean => {
   return isoRegex.test(dateString.toString())
 }
 
-export const getLocaleDateString = (date: Date, language = navigator.language): string => {
+export const getLocaleDateString = (date: Date, language = 'uk'): string => {
   return date.toLocaleDateString(language, {
     hour: '2-digit',
     minute: '2-digit',
