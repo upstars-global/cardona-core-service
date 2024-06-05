@@ -1,5 +1,6 @@
 import type { TranslateResult } from 'vue-i18n'
 import type { SortDirection } from './templates/baseList'
+import type { SortItem } from '@core/types'
 
 export interface PaginationData {
   readonly pageNumber: number
@@ -34,6 +35,15 @@ export class ListSort implements IListSort {
   }
 }
 
+export class SortedItem implements SortItem {
+  readonly key: string
+  readonly order?: boolean | 'asc' | 'desc'
+
+  constructor({ key, order }: SortItem) {
+    this.key = key
+    this.order = order
+  }
+}
 export class ListData<T> {
   readonly total?: number
   readonly perPage?: number

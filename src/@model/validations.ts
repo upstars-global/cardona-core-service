@@ -63,8 +63,8 @@ const customMessageOfRules: Record<
       return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, _min_ })
     },
     between(ctx: FieldValidationMetaInfo): TranslateResult {
-      const _min_ = ctx.rule.params.at(0)
-      const _max_ = ctx.rule.params.at(1)
+      const _min_ = ctx.rule.params.min
+      const _max_ = ctx.rule.params.max
 
       return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, _min_, _max_ })
     },
