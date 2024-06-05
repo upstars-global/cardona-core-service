@@ -23,7 +23,6 @@ const emit = defineEmits<{
 }>()
 
 const flatPickrConfig = computed(() => ({
-  dateFormat: 'Z',
   altInput: true,
   altFormat: props.field.withTime ? 'd.m.Y, H:i' : 'd.m.Y',
 
