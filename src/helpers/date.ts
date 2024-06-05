@@ -60,8 +60,7 @@ export const getUTCISOString = (dateString: string | Date): string => {
   return transformDateToISO(localeDateString)
 }
 
-export const transformDateToISO = (date: string): string => {
-  const dateString = formatDate(date)
+export const transformDateToISO = (dateString: string): string => {
   const pattern = /(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})/
   const replaceValue = '$3-$2-$1-$4-$5'
 
