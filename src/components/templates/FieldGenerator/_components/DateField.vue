@@ -23,7 +23,10 @@ const emit = defineEmits<{
 }>()
 
 const flatPickrConfig = computed(() => ({
-  dateFormat: props.field.withTime ? 'd.m.Y, H:i' : 'd.m.Y',
+  altInput: true,
+  altFormat: props.field.withTime ? 'd.m.Y, H:i' : 'd.m.Y',
+
+  // locale: locales[currentLocale],
   enableTime: props.field.withTime,
   time_24hr: true,
   defaultHour: 0,
@@ -40,6 +43,15 @@ const modelValue = computed({
 const startedAt = ref()
 const endedAt = ref()
 
+const isFilter = computed(() => props.field.isFilter)
+
+const getDateNotSelectedDate = ({ isDateTo }: { isDateTo: boolean } = { isDateTo: false }): string => {
+  if (!isFilter.value)
+    return ''
+
+  return isDateTo ? moment().format('DD.MM.YYYY, HH:mm') : moment(1432252800).format('DD.MM.YYYY, HH:mm')
+}
+
 watch(
   () => props.modelValue,
   value => {
@@ -53,7 +65,8 @@ watch(
         ;[startedAt.value, endedAt.value = ''] = value.split(separator.value)
       }
     }
-  }, { immediate: true },
+  },
+  { immediate: true },
 )
 
 const setRangeDate = (value, isStartDate = true) => {
@@ -61,7 +74,7 @@ const setRangeDate = (value, isStartDate = true) => {
     startedAt.value = value
     if (endedAt.value) {
       if (!value) {
-        emit('update:modelValue', moment(1432252800).format('DD.MM.YYYY, HH:mm') + separator.value + endedAt.value)
+        emit('update:modelValue', moment(1432252800).format() + separator.value + endedAt.value)
 
         return
       }
@@ -73,7 +86,7 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', value + separator.value + moment().format('DD.MM.YYYY, HH:mm'))
+      emit('update:modelValue', value + separator.value + moment().format())
     }
   }
   else {
@@ -81,7 +94,7 @@ const setRangeDate = (value, isStartDate = true) => {
     if (startedAt.value) {
       emit('update:modelValue', startedAt.value + separator.value + value)
       if (!value)
-        emit('update:modelValue', startedAt.value + separator.value + moment().format('DD.MM.YYYY, HH:mm'))
+        emit('update:modelValue', startedAt.value + separator.value + moment().format())
     }
     else {
       if (!value) {
@@ -89,9 +102,16 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', moment(1432252800).format('DD.MM.YYYY, HH:mm') + separator.value + value)
+      emit('update:modelValue', moment(1432252800).format() + separator.value + value)
     }
   }
+}
+
+const datePickerFromRef = ref()
+const datePickerToRef = ref()
+
+const onUpdateValueForm = (val: string) => {
+  setRangeDate(val)
 }
 
 const configFrom = computed(() => {
@@ -136,17 +156,34 @@ const configTo = computed(() => {
     class="date-time-base-field d-flex align-center"
   >
     <AppDateTimePicker
+      ref="datePickerFromRef"
       :model-value="startedAt"
-      :class="{ error: errors }"
-      :config="configFrom"
+      :is-invalid="Boolean(errors)"
+      :config="{
+        ...flatPickrConfig,
+        minDate: field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
+        maxDate: endedAt,
+        mode: 'single',
+        defaultHour: 0,
+        defaultMinute: 0,
+        ...field.config,
+      }"
       :placeholder="i18n.t('common.dateFrom')"
       @update:model-value="(val) => setRangeDate(val)"
     />
     <span class="mx-1"> – </span>
     <AppDateTimePicker
+      ref="datePickerToRef"
       :model-value="endedAt"
-      :class="{ error: errors }"
-      :config="configTo"
+      :is-invalid="Boolean(errors)"
+      :config="{
+        ...flatPickrConfig,
+        minDate: startedAt,
+        mode: 'single',
+        defaultHour: 23,
+        defaultMinute: 59,
+        ...field.config,
+      }"
       :placeholder="i18n.t('common.dateTo')"
       @update:model-value="(val) => setRangeDate(val, false)"
     />
@@ -157,12 +194,6 @@ const configTo = computed(() => {
 .date-time-base-field {
   .app-picker-field {
     flex: 1 1 auto;
-  }
-}
-.error {
-  .v-field__outline {
-    color: rgb(var(--v-theme-error));
-    --v-field-border-opacity: 1;
   }
 }
 </style>

@@ -19,6 +19,7 @@ import {
 import type { FieldValidationMetaInfo } from '@vee-validate/i18n'
 import { has } from 'lodash'
 import type { TranslateResult } from 'vue-i18n'
+import moment from 'moment'
 import { i18n } from '../plugins/i18n'
 import type { NumberOrString } from '../@model/index'
 import { dateSeparators } from '../@model/date'
@@ -134,7 +135,7 @@ export const dateRangeDifferent = (dateDiapason: string, args: string[]): boolea
   const [separator = dateSeparators[i18n.locale.value]] = args
   const [from, to] = dateDiapason.split(separator).map(date => date.trim())
 
-  return from !== to
+  return moment(from).valueOf() !== moment(to).valueOf()
 }
 
 defineRule('positive', validatorPositive)

@@ -1,7 +1,17 @@
 import moment from 'moment'
 import type { Nullable } from '../@model/index'
 
-const BASE_FORMAT = 'DD.MM.YYYY, HH:mm'
+export const BASE_FORMAT = 'DD.MM.YYYY, HH:mm'
+
+export const getDateRange = (date: string) => {
+  const dateRangeList = date.split('to').map(date => date.trim())
+  const isValidDate = dateRangeList.every(date => moment(date, BASE_FORMAT, true).isValid())
+
+  if (isValidDate)
+    return date
+
+  return dateRangeList.map((date: string) => moment(date).format(BASE_FORMAT)).join(' to ')
+}
 
 export const formatDate = (dateString: string): string => {
   const parsedDate = moment(dateString, BASE_FORMAT)
@@ -50,8 +60,7 @@ export const getUTCISOString = (dateString: string | Date): string => {
   return transformDateToISO(localeDateString)
 }
 
-export const transformDateToISO = (date: string): string => {
-  const dateString = formatDate(date)
+export const transformDateToISO = (dateString: string): string => {
   const pattern = /(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})/
   const replaceValue = '$3-$2-$1-$4-$5'
 
