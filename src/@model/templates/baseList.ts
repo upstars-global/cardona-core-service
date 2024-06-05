@@ -1,10 +1,11 @@
 import type { TranslateResult } from 'vue-i18n'
 import { i18n } from '../../plugins/i18n'
 import type { FilterType } from '../filter'
-import type { IListSort } from '../index'
+
 import type { ViewInfo } from '../view'
 import type { BColors, BLightColors } from '../bootstrap' // TODO remove
 import { SelectMode } from '../../@model/enums/selectMode'
+import type { SortItem } from '../../@core/types'
 import type { TableField } from './tableFields'
 import type { ProjectFilterTypes } from '@filterConfig'
 
@@ -62,7 +63,7 @@ export interface IBaseListConfig {
   readonly staticFilters?: Record<string, string>
 
   /** staticSorts - Статический сортировка таблицы field: 'position', dir: SortDirection.asc, */
-  readonly staticSorts?: IListSort
+  readonly staticSorts?: SortItem
 
   /** selectMode - Установить режим выделения элементов 'multi'/ 'single'  */
   readonly selectMode?: SelectMode
@@ -168,7 +169,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly emptyText?: string
   readonly filterList: Array<FilterListItem>
   readonly staticFilters: Record<string, string>
-  readonly staticSorts?: IListSort
+  readonly staticSorts?: SortItem
   readonly selectMode?: SelectMode
   readonly selectable?: boolean
   readonly small?: boolean

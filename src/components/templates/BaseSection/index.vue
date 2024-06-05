@@ -110,7 +110,7 @@ if (props.withReadAction && entityId) {
 
     if (isCreatePage) {
       receivedEntity.id = null
-      await router.push({ name: route.name, params: { id: null }, replace: true })
+      await router.replace({ name: route.name, params: { id: '' } })
     }
 
     await store.dispatch('textEditor/setVariableTextBuffer', receivedEntity.localisationParameters)
@@ -264,6 +264,7 @@ const confirmRemoveModal = async () => {
 
 onBeforeUnmount(() => {
   store.dispatch('resetErrorUrls')
+  store.dispatch('textEditor/setVariableTextBuffer', {})
 })
 
 defineExpose({
