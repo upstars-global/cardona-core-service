@@ -109,8 +109,8 @@ const setRangeDate = (value, isStartDate = true) => {
 const configFrom = computed(() => {
   return {
     ...flatPickrConfig.value,
-    minDate: props.field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
-    maxDate: moment(endedAt.value || new Date(), 'DD.MM.YYYY, HH:mm').valueOf(),
+    minDate: props.field.isStartDateNow,
+    maxDate: endedAt.value || new Date(),
     mode: 'single',
     defaultHour: 0,
     defaultMinute: 0,
@@ -122,7 +122,7 @@ const configTo = computed(() => {
   return {
     ...flatPickrConfig.value,
     ...props.field.config,
-    minDate: moment(startedAt.value, 'DD.MM.YYYY, HH:mm').valueOf(),
+    minDate: startedAt.value,
     mode: 'single',
     defaultHour: 23,
     defaultMinute: 59,
