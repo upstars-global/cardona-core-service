@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import moment from 'moment'
+import en from 'flatpickr/dist/l10n/default.js'
+import { Russian as ru } from 'flatpickr/dist/l10n/ru.js'
+import { useI18n } from 'vue-i18n'
 import type { DateBaseField } from '../../../../@model/templates/baseField'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
 import { getISOStringWithoutTimezone } from '../../../../helpers/date'
 import { dateSeparators } from '../../../../@model/date'
-import { i18n } from '@/plugins/i18n'
 
 const props = withDefaults(
   defineProps<{
@@ -22,15 +24,25 @@ const emit = defineEmits<{
   (event: 'update:modelValue', value: string): void
 }>()
 
+const { locale } = useI18n()
+
+const locales = {
+  ru,
+  en,
+}
+
 const flatPickrConfig = computed(() => ({
-  dateFormat: props.field.withTime ? 'd.m.Y, H:i' : 'd.m.Y',
+  dateFormat: 'Z',
+  altInput: true,
+  altFormat: props.field.withTime ? 'd.m.Y, H:i' : 'd.m.Y',
+  locale: locales[locale.value],
   enableTime: props.field.withTime,
   time_24hr: true,
   defaultHour: 0,
   minuteIncrement: 1,
 }))
 
-const separator = ref(` ${dateSeparators[i18n.locale._value]} `)
+const separator = ref(` ${dateSeparators[locale.value]} `)
 
 const modelValue = computed({
   get: () => props.modelValue,
@@ -61,7 +73,7 @@ const setRangeDate = (value, isStartDate = true) => {
     startedAt.value = value
     if (endedAt.value) {
       if (!value) {
-        emit('update:modelValue', moment(1432252800).format('DD.MM.YYYY, HH:mm') + separator.value + endedAt.value)
+        emit('update:modelValue', moment(1432252800).format() + separator.value + endedAt.value)
 
         return
       }
@@ -73,7 +85,7 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', value + separator.value + moment().format('DD.MM.YYYY, HH:mm'))
+      emit('update:modelValue', value + separator.value + moment().format())
     }
   }
   else {
@@ -81,7 +93,7 @@ const setRangeDate = (value, isStartDate = true) => {
     if (startedAt.value) {
       emit('update:modelValue', startedAt.value + separator.value + value)
       if (!value)
-        emit('update:modelValue', startedAt.value + separator.value + moment().format('DD.MM.YYYY, HH:mm'))
+        emit('update:modelValue', startedAt.value + separator.value + moment().format())
     }
     else {
       if (!value) {
@@ -89,7 +101,7 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', moment(1432252800).format('DD.MM.YYYY, HH:mm') + separator.value + value)
+      emit('update:modelValue', moment(1432252800).format() + separator.value + value)
     }
   }
 }
@@ -97,8 +109,8 @@ const setRangeDate = (value, isStartDate = true) => {
 const configFrom = computed(() => {
   return {
     ...flatPickrConfig.value,
-    minDate: props.field.isStartDateNow && moment().valueOf(),
-    maxDate: moment(endedAt.value || new Date(), 'DD.MM.YYYY, HH:mm').valueOf(),
+    minDate: props.field.isStartDateNow,
+    maxDate: endedAt.value || new Date(),
     mode: 'single',
     defaultHour: 0,
     defaultMinute: 0,
@@ -110,7 +122,7 @@ const configTo = computed(() => {
   return {
     ...flatPickrConfig.value,
     ...props.field.config,
-    minDate: moment(startedAt.value, 'DD.MM.YYYY, HH:mm').valueOf(),
+    minDate: startedAt.value,
     mode: 'single',
     defaultHour: 23,
     defaultMinute: 59,
@@ -136,18 +148,20 @@ const configTo = computed(() => {
     class="date-time-base-field d-flex align-center"
   >
     <AppDateTimePicker
+      :is-invalid="Boolean(errors)"
       :model-value="startedAt"
       :class="{ error: errors }"
       :config="configFrom"
-      :placeholder="i18n.t('common.dateFrom')"
+      :placeholder="$t('common.dateFrom')"
       @update:model-value="(val) => setRangeDate(val)"
     />
     <span class="mx-1"> – </span>
     <AppDateTimePicker
+      :is-invalid="Boolean(errors)"
       :model-value="endedAt"
       :class="{ error: errors }"
       :config="configTo"
-      :placeholder="i18n.t('common.dateTo')"
+      :placeholder="$t('common.dateTo')"
       @update:model-value="(val) => setRangeDate(val, false)"
     />
   </div>

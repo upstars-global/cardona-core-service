@@ -46,6 +46,7 @@ const props = defineProps({
     color: 'primary',
   }),
   config: Object as PropType<Record<string, unknown>>,
+  isInvalid: Boolean,
 })
 
 const emit = defineEmits<Emit>()
@@ -56,6 +57,8 @@ interface Emit {
   (e: 'update:focused', val: MouseEvent): true
   (e: 'update:modelValue', val: string): void
   (e: 'click:clear', el: MouseEvent): void
+  (e: 'open-calendar'): void
+  (e: 'close-calendar'): void
   (e: 'click:append-inner', el: MouseEvent): void
 }
 
@@ -121,18 +124,16 @@ const elementId = computed(() => {
   return _elementIdToken ? `app-picker-field-${_elementIdToken}-${Math.random().toString(36).slice(2, 7)}` : undefined
 })
 
-defineExpose({ refFlatPicker })
-
-const onAppendClick = (event: MouseEvent) => {
-  emit('click:append-inner', event)
+const toggleCalendar = (state: boolean) => {
+  emit(state ? 'open-calendar' : 'close-calendar')
+  isCalendarOpen.value = state
 }
+
+defineExpose({ refFlatPicker })
 </script>
 
 <template>
-  <div
-    class="app-picker-field"
-    :class="{ 'app-picker-field--open': isCalendarOpen }"
-  >
+  <div class="app-picker-field">
     <VLabel
       v-if="fieldProps.label"
       class="mb-1 text-body-2 text-high-emphasis"
@@ -152,7 +153,7 @@ const onAppendClick = (event: MouseEvent) => {
       class="position-relative v-text-field"
       :style="props.style"
     >
-      <template #default="{ id, isDirty, isValid, isDisabled, isReadonly }">
+      <template #default="{ id, isDirty, isDisabled, isReadonly }">
         <VField
           v-bind="{ ...fieldProps, label: undefined }"
           :id="id.value"
@@ -160,7 +161,7 @@ const onAppendClick = (event: MouseEvent) => {
           :active="focused || isDirty.value || isCalendarOpen"
           :focused="focused || isCalendarOpen"
           :dirty="isDirty.value || props.dirty"
-          :error="isValid.value === false"
+          :error="isInvalid"
           :disabled="isDisabled.value"
           @click:append-inner="onAppendClick"
           @click:clear="onClear"
@@ -181,8 +182,8 @@ const onAppendClick = (event: MouseEvent) => {
                 :class="{
                   'flat-picker-custom-style--static': config.static,
                 }"
-                @on-open="isCalendarOpen = true"
-                @on-close="isCalendarOpen = false"
+                @on-open="toggleCalendar(true)"
+                @on-close="toggleCalendar(false)"
                 @update:model-value="emitModelValue"
               />
 

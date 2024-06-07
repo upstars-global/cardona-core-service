@@ -38,8 +38,8 @@ export const getTranslationForm = (form: Record<string, any>, data: Record<strin
     translationsForm[key] = {}
     locales?.forEach((locale: string) => {
       translationsForm[key][locale] = {
-        value: data?.fieldTranslations[key] && data?.fieldTranslations[key][locale] ? data?.fieldTranslations[key][locale].value : '',
-        disabled: data?.fieldTranslations[key] && data?.fieldTranslations[key][locale] ? data?.fieldTranslations[key][locale].disabled : false,
+        value: data?.fieldTranslations && data?.fieldTranslations[key] && data?.fieldTranslations[key][locale] ? data?.fieldTranslations[key][locale].value : '',
+        disabled: data?.fieldTranslations && data?.fieldTranslations[key] && data?.fieldTranslations[key][locale] ? data?.fieldTranslations[key][locale].disabled : false,
       }
     })
   })

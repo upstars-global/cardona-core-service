@@ -19,6 +19,7 @@ import {
 import type { FieldValidationMetaInfo } from '@vee-validate/i18n'
 import { has } from 'lodash'
 import type { TranslateResult } from 'vue-i18n'
+import moment from 'moment'
 import { i18n } from '../plugins/i18n'
 import type { NumberOrString } from '../@model/index'
 import { dateSeparators } from '../@model/date'
@@ -63,8 +64,8 @@ const customMessageOfRules: Record<
       return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, _min_ })
     },
     between(ctx: FieldValidationMetaInfo): TranslateResult {
-      const _min_ = ctx.rule.params.at(0)
-      const _max_ = ctx.rule.params.at(1)
+      const _min_ = ctx.rule.params.min
+      const _max_ = ctx.rule.params.max
 
       return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, _min_, _max_ })
     },
@@ -134,7 +135,7 @@ export const dateRangeDifferent = (dateDiapason: string, args: string[]): boolea
   const [separator = dateSeparators[i18n.locale.value]] = args
   const [from, to] = dateDiapason.split(separator).map(date => date.trim())
 
-  return from !== to
+  return moment(from).valueOf() !== moment(to).valueOf()
 }
 
 defineRule('positive', validatorPositive)

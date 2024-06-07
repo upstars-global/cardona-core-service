@@ -49,7 +49,7 @@ const deleteForm = () => {
     :title="$t('common.banners.variableTitle')"
     @hide="onHideModal"
   >
-    <div class="full-width pa-4 variable-modal">
+    <div class="full-width pa-4 px-6 variable-modal">
       <VRow class="full-width flex-nowrap">
         <VCol cols="4">
           <VChip

@@ -81,7 +81,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
   <div
     ref="dropZoneRef"
     class="files-upload d-flex align-center justify-center"
-    :class="[props.size, { 'files-upload--over-drop': isOverDropZone }]"
+    :class="[props.size, { 'files-upload--over-drop': isOverDropZone, disabled }]"
   >
     <slot
       name="default"
@@ -120,6 +120,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
           :variant="VVariants.Outlined"
           :color="VColors.Secondary"
           :size="VSizes.Small"
+          :disabled="disabled"
           @click="onClickBtn"
         >
           <span class="white-space-nowrap">
@@ -151,6 +152,11 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
   &.md {
     width: 100%;
     min-height: 7.625rem;
+  }
+
+  &.disabled {
+    border-color: rgba(var(--v-theme-grey-300));
+    pointer-events: none;
   }
 }
 </style>

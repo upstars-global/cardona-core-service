@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import type {
   FieldTranslationsLocale,
   LocaleVariable, TranslationForm,
 } from '../../../@model/translations'
 import {
-  filterString,
+  filterString, getExcessKeyVariable,
+  getVariablesFromAllLocaleText, getVariablesFromLocale,
 } from '../../../helpers/text-editor'
 import TextEditorWysiwyg from '../../TextEditorWysiwyg/index.vue'
 import InputTextWrapper from '../../templates/LocaleForm/_components/InputTextWrapper.vue'
@@ -37,6 +38,8 @@ const selectedProject = computed(() => store.getters.selectedProject)
 const mainLocale = computed<string>(() => selectedProject.value?.mainLocale || 'ru')
 const allLocales = computed(() => store.getters['localeCore/allLocalesKeys'])
 const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
+const variables = computed(() => store.state.textEditor.variableTextBuffer)
+
 const isMainLocale = (locale: string): boolean => locale === mainLocale.value
 
 const onSelectEditeInput = (item, local) => {
@@ -62,15 +65,32 @@ const updateLocalisationParameters = (variableText: LocaleVariable): void => {
 const onRemoveVariables = (variable: string): void => {
   if (!variable)
     return
-  props!.modelValue.fieldTranslations.metaTitle = cleanMetaTitle(
-    props!.modelValue.fieldTranslations.metaTitle || {},
+  props!.modelValue.metaTitle = cleanMetaTitle(
+    props!.modelValue.metaTitle || {},
     variable || '',
+  )
+}
+
+const handleVariablesChange = () => {
+  const allString = getVariablesFromAllLocaleText(props!.modelValue?.metaTitle)
+  if (!allString)
+    return
+  const localeKeyInText = getVariablesFromLocale(allString)
+  const excessKeyVariable = getExcessKeyVariable(localeKeyInText, variables.value)
+
+  props!.modelValue.metaTitle = cleanMetaTitle(
+    props!.modelValue.metaTitle || {},
+    excessKeyVariable || '',
   )
 }
 
 const getValue = (locale: string, key: string): string => {
   return isMainLocale(locale) ? props.form[key] ? props.form[key].value : props.form.seo[key].value : props.form.fieldTranslations[key][locale].value
 }
+
+const watchOptions = { immediate: true, deep: true }
+
+watch(() => variables, handleVariablesChange, watchOptions)
 
 const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
 </script>

@@ -10,7 +10,7 @@ import { DownloadFormat } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
-import { ListSort } from '../../../@model'
+import { ListSort, SortedItem } from '../../../@model'
 import { useFilters } from '../../../components/FiltersBlock/useFilters'
 import {
   BaseField,
@@ -212,7 +212,7 @@ const emptyListText = computed(() =>
 
 // Sort
 const sortStorageKey = `${currentPageName}-${entityName}-sort`
-const sortFromStorage = getStorage(sortStorageKey, ListSort) as ListSort
+const sortFromStorage: SortItem = getStorage(sortStorageKey, SortedItem) as SortItem
 
 const sortBy = sortFromStorage?.key || props.config.staticSorts?.key
 const sortDir = sortFromStorage?.order || props.config.staticSorts?.order
@@ -296,6 +296,8 @@ const getList = async () => {
 
   updateTotal(total)
 
+  selectedItems.value = []
+
   return list
 }
 
@@ -303,7 +305,6 @@ const reFetchList = () => getList()
 
 onChangePagination(() => {
   reFetchList()
-  selectedItems.value = []
 })
 
 const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
@@ -438,7 +439,7 @@ onMounted(() => {
 })
 
 // Selectable
-const selectedItems = ref([])
+const selectedItems = ref<Record<string, unknown>[]>([])
 
 const allSelected = ref(false)
 const indeterminate = ref(false)
@@ -486,7 +487,6 @@ const onClickDeleteMultiple = async () => {
     customApiPrefix: props.config?.customApiPrefix,
   })
 
-  selectedItems.value = []
   reFetchList()
 }
 
@@ -533,14 +533,16 @@ const onClickRemove = item => {
 }
 
 const onClickModalOk = async ({ hide, commentToRemove }) => {
+  hide()
   await store.dispatch(deleteActionName, {
     type: entityName,
     id: selectedItem.value.id,
     comment: commentToRemove,
     customApiPrefix: props.config?.customApiPrefix,
   })
+
+  selectedItems.value = selectedItems.value.filter(item => item?.id !== selectedItem.value.id)
   resetSelectedItem()
-  hide()
   await reFetchList()
 }
 
@@ -721,6 +723,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items, isSid
         :skeleton-rows="config.skeletonRows"
         :selected-items="selectedItems"
         :items-per-page="itemsPerPage"
+        :disabled-row-ids="disableRowIds"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"
