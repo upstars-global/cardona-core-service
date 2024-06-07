@@ -718,6 +718,7 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items, isSid
         :skeleton-rows="config.skeletonRows"
         :selected-items="selectedItems"
         :items-per-page="itemsPerPage"
+        :disabled-row-ids="disableRowIds"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"

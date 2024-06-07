@@ -39,7 +39,7 @@ const onCloseModal = (hide: Function) => {
   >
     <template #default="{ action, payload }">
       <VCardText class="d-flex flex-column">
-        <span>{{ payload.description || description }}</span>
+        <span>{{ payload?.description || description }}</span>
       </VCardText>
       <hr>
       <VCardText class="d-flex justify-end gap-3 flex-wrap py-4">

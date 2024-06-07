@@ -1,7 +1,7 @@
-.v-switch {
+.v-switch.v-switch--inset {
 
 
-  &.v-input--disabled {
+  &.v-input--disabled.v-input--dirty {
     .v-switch__track {
       background: rgb(var(--v-theme-primary));
       opacity: 1;

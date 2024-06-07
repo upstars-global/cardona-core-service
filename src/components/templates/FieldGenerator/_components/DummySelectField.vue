@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { IconsList } from '../../../../@model/enums/icons'
 
 const props = defineProps<{
   modelValue: object
@@ -39,7 +40,6 @@ const onSearch = (search: string) => emits('search', search)
   <VueSelect
     v-model="valueModel"
     :placeholder="placeholder"
-    :dir="$store.getters['appConfigCore/dirOption']"
     label="name"
     :disabled="disabled"
     :options="options"
@@ -55,6 +55,13 @@ const onSearch = (search: string) => emits('search', search)
       <div v-else>
         {{ $t('common.nothingFound') }}
       </div>
+    </template>
+
+    <template #open-indicator="{ attributes }">
+      <VIcon
+        v-bind="attributes"
+        :icon="IconsList.ChevronDownIcon"
+      />
     </template>
   </VueSelect>
 </template>
