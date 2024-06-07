@@ -65,7 +65,6 @@ watch(
   () => isUpdateVar.value,
   () => {
     if (isUpdateVar.value) {
-      console.log('asdasd')
       findNoUseVarAndDelete()
       store.dispatch('textEditor/setUpdateVar', false)
     }
