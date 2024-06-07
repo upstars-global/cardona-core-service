@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { Russian as ru } from 'flatpickr/dist/l10n/ru'
+import en from 'flatpickr/dist/l10n/default'
 import type { FormDateBaseField } from '../../../../@model/templates/baseField'
 import { IconsList } from '../../../../@model/enums/icons'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
@@ -18,15 +21,20 @@ const emit = defineEmits<{
 }>()
 
 const refPicker = ref({})
+const { locale } = useI18n()
+
+const locales = {
+  ru,
+  en,
+}
 
 const flatPickrConfig = computed(() => ({
-  dateFormat: props.field.dateFormat,
+  dateFormat: 'Z',
+  altInput: true,
+  locale: locales[locale.value],
   time_24hr: true,
   defaultHour: 0,
   minuteIncrement: 1,
-  allowInput: true,
-  clickOpens: false,
-  ...props.field.config,
 }))
 
 const localModelValue = computed({

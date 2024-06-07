@@ -109,7 +109,7 @@ const onCreateCopy = () => {
         </VListItemTitle>
       </VListItem>
       <VListItem
-        v-if="config.createFromCopy"
+        v-if="canCreate && config.createFromCopy"
         :prepend-icon="IconsList.CopyIcon"
         @click="onCreateCopy"
       >

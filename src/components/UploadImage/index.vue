@@ -112,14 +112,15 @@ const onFileUpload = async file => {
   <div
     v-if="urlFile"
     class="img-file-block-inner d-flex justify-center align-center"
+    :class="{ disabled }"
   >
     <div
       class="img-file"
       :style="{ backgroundImage: `url(${urlFile})` }"
     />
     <div
-      class="img-file-block-inner__actions d-flex gap-3"
-      :class="{ 'd-none': props.disabled }"
+      class="img-file-block-inner__actions gap-3"
+      :class="{ 'd-none': disabled, 'd-flex': !disabled }"
     >
       <VBtn
         :size="
@@ -145,6 +146,7 @@ const onFileUpload = async file => {
     :on-submit-callback="onFileUpload"
     :max-size-file-mb="maxSizeFileMb"
     :on-btn-click-callback="openSelectModal"
+    :disabled="disabled"
   />
   <BaseModal
     :id="selectModalId"
@@ -198,6 +200,11 @@ const onFileUpload = async file => {
   &__actions {
     position: relative;
     z-index: 1;
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.3;
   }
 }
 </style>

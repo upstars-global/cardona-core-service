@@ -278,6 +278,7 @@ defineExpose({
   <Form
     v-if="form"
     ref="formRef"
+    class="base-section"
     @submit.prevent
   >
     <div class="position-relative">
@@ -366,3 +367,16 @@ defineExpose({
     />
   </Form>
 </template>
+
+<style lang="scss" scoped>
+.base-section {
+    &__loading {
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: rgb(var(--v-theme-surface), var(--v-medium-emphasis-opacity));
+      z-index: 5;
+    }
+}
+</style>

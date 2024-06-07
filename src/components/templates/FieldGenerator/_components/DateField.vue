@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import moment from 'moment'
+import en from 'flatpickr/dist/l10n/default.js'
+import { Russian as ru } from 'flatpickr/dist/l10n/ru.js'
+import { useI18n } from 'vue-i18n'
 import type { DateBaseField } from '../../../../@model/templates/baseField'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
 import { getISOStringWithoutTimezone } from '../../../../helpers/date'
 import { dateSeparators } from '../../../../@model/date'
-import { i18n } from '@/plugins/i18n'
 
 const props = withDefaults(
   defineProps<{
@@ -22,18 +24,25 @@ const emit = defineEmits<{
   (event: 'update:modelValue', value: string): void
 }>()
 
+const { locale } = useI18n()
+
+const locales = {
+  ru,
+  en,
+}
+
 const flatPickrConfig = computed(() => ({
+  dateFormat: 'Z',
   altInput: true,
   altFormat: props.field.withTime ? 'd.m.Y, H:i' : 'd.m.Y',
-
-  // locale: locales[currentLocale],
+  locale: locales[locale.value],
   enableTime: props.field.withTime,
   time_24hr: true,
   defaultHour: 0,
   minuteIncrement: 1,
 }))
 
-const separator = ref(` ${dateSeparators[i18n.locale._value]} `)
+const separator = ref(` ${dateSeparators[locale.value]} `)
 
 const modelValue = computed({
   get: () => props.modelValue,
@@ -42,15 +51,6 @@ const modelValue = computed({
 
 const startedAt = ref()
 const endedAt = ref()
-
-const isFilter = computed(() => props.field.isFilter)
-
-const getDateNotSelectedDate = ({ isDateTo }: { isDateTo: boolean } = { isDateTo: false }): string => {
-  if (!isFilter.value)
-    return ''
-
-  return isDateTo ? moment().format('DD.MM.YYYY, HH:mm') : moment(1432252800).format('DD.MM.YYYY, HH:mm')
-}
 
 watch(
   () => props.modelValue,
@@ -65,8 +65,7 @@ watch(
         ;[startedAt.value, endedAt.value = ''] = value.split(separator.value)
       }
     }
-  },
-  { immediate: true },
+  }, { immediate: true },
 )
 
 const setRangeDate = (value, isStartDate = true) => {
@@ -107,17 +106,10 @@ const setRangeDate = (value, isStartDate = true) => {
   }
 }
 
-const datePickerFromRef = ref()
-const datePickerToRef = ref()
-
-const onUpdateValueForm = (val: string) => {
-  setRangeDate(val)
-}
-
 const configFrom = computed(() => {
   return {
     ...flatPickrConfig.value,
-    minDate: props.field.isStartDateNow && moment().valueOf(),
+    minDate: props.field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
     maxDate: moment(endedAt.value || new Date(), 'DD.MM.YYYY, HH:mm').valueOf(),
     mode: 'single',
     defaultHour: 0,
@@ -156,35 +148,20 @@ const configTo = computed(() => {
     class="date-time-base-field d-flex align-center"
   >
     <AppDateTimePicker
-      ref="datePickerFromRef"
-      :model-value="startedAt"
       :is-invalid="Boolean(errors)"
-      :config="{
-        ...flatPickrConfig,
-        minDate: field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
-        maxDate: endedAt,
-        mode: 'single',
-        defaultHour: 0,
-        defaultMinute: 0,
-        ...field.config,
-      }"
-      :placeholder="i18n.t('common.dateFrom')"
+      :model-value="startedAt"
+      :class="{ error: errors }"
+      :config="configFrom"
+      :placeholder="$t('common.dateFrom')"
       @update:model-value="(val) => setRangeDate(val)"
     />
     <span class="mx-1"> – </span>
     <AppDateTimePicker
-      ref="datePickerToRef"
-      :model-value="endedAt"
       :is-invalid="Boolean(errors)"
-      :config="{
-        ...flatPickrConfig,
-        minDate: startedAt,
-        mode: 'single',
-        defaultHour: 23,
-        defaultMinute: 59,
-        ...field.config,
-      }"
-      :placeholder="i18n.t('common.dateTo')"
+      :model-value="endedAt"
+      :class="{ error: errors }"
+      :config="configTo"
+      :placeholder="$t('common.dateTo')"
       @update:model-value="(val) => setRangeDate(val, false)"
     />
   </div>
@@ -194,6 +171,12 @@ const configTo = computed(() => {
 .date-time-base-field {
   .app-picker-field {
     flex: 1 1 auto;
+  }
+}
+.error {
+  .v-field__outline {
+    color: rgb(var(--v-theme-error));
+    --v-field-border-opacity: 1;
   }
 }
 </style>
