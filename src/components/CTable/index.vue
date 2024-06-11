@@ -70,32 +70,33 @@ const isSortableColumn = (column: TableField): boolean => props.fields?.find(ite
 
 const sortParams = ref(props.sortData?.map(item => ({
   ...item,
-  order: item?.order?.toLowerCase(),
+  order: item?.order,
+  isActive: true,
 })))
 
 const handleSorByField = ({ key }: { key: string }) => {
-  if (find(sortParams.value, { key })?.key) {
-    const index = sortParams.value.findIndex(item => item?.key === key)
-    if (sortParams.value[index].order === 'DESC') {
+  const itemIndex = sortParams.value.findIndex(item => item?.key === key)
+
+  console.log(sortParams.value, itemIndex, key)
+  if (itemIndex !== -1) {
+    if (sortParams.value[itemIndex].order === 'DESC') {
       emits('update:sortData', [])
-      sortParams.value[index].order = ''
+      sortParams.value[itemIndex].order = ''
 
       return
     }
-    sortParams.value[index].order = sortParams.value[index].order === 'ASC' ? 'DESC' : 'ASC'
+    sortParams.value[itemIndex].order = sortParams.value[itemIndex].order === 'ASC' ? 'DESC' : 'ASC'
   }
   else {
-    sortParams.value = [...sortParams.value, { key, order: 'ASC', isActive: true }]
+    sortParams.value = [{ key, order: 'ASC', isActive: true }]
   }
-  sortParams.value = sortParams.value.map(item => ({
-    ...item,
-    isActive: item?.key === key,
-  }))
   emits('update:sortData', sortParams.value.filter(item => item?.isActive))
 }
 
 const isActiveSort = (key: string, direction: string): boolean => {
-  return find(sortParams.value, { key })?.order?.toLowerCase() === direction
+  const currentItem = find(sortParams.value, { key })
+
+  return currentItem?.isActive && currentItem?.order?.toLowerCase() === direction
 }
 </script>
 
@@ -282,7 +283,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
   .c-table__header-cell-icon-wrapper {
     position: relative;
     width: 1rem;
-    height: 1rem;
+    height: 1.4rem;
   }
   .c-table__header-cell-icon {
     opacity: 0.5;

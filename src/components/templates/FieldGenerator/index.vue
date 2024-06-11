@@ -24,6 +24,8 @@ const emits = defineEmits<{
   (e: 'update:modelValue', item: BaseField): void
 }>()
 
+const MAX_WIDTH_TOOLTIP = '240px'
+
 const canView = computed<boolean>(() => {
   return props.modelValue?.permission ? store.getters.abilityCan(props.modelValue.permission, 'view') : true
 },
@@ -33,13 +35,15 @@ const isCheckType = computed(
   () => props.modelValue instanceof SwitchBaseField || props.modelValue instanceof CheckBaseField,
 )
 
+const isCheckTypeWithInfo = computed(() => isCheckType.value && props.withInfo && props.modelValue.info)
+
 const groupLabel = computed(() =>
   props.withLabel && !isCheckType.value ? props.modelValue.label : '',
 )
 
 const formGroupClasses = computed(() => ({
   'form-required':
-      props.withLabel && props.modelValue?.validationRules?.required && groupLabel.value,
+    props.withLabel && props.modelValue?.validationRules?.required && groupLabel.value,
 }))
 
 const fieldModel = computed({
@@ -73,6 +77,7 @@ const onSearch = (search: string) => emits('search', search)
       <VTooltip
         v-if="withInfo && modelValue.info"
         :text="modelValue.info"
+        :max-width="MAX_WIDTH_TOOLTIP"
       >
         <template #activator="{ props }">
           <VIcon
@@ -96,19 +101,36 @@ const onSearch = (search: string) => emits('search', search)
       :validate-on-model-update="true"
     >
       <template #default="{ errorMessage }">
-        <Component
-          :is="localValue"
-          :id="modelValue.id"
-          v-model="fieldModel"
-          :options="options"
-          :field="modelValue"
-          :disabled="disabled"
-          :placeholder="modelValue.placeholder"
-          :size="size"
-          v-bind="{ ...$attrs }"
-          :errors="!!errorMessage"
-          @search="onSearch"
-        />
+        <div :class="{ 'd-flex align-center': isCheckTypeWithInfo }">
+          <Component
+            :is="localValue"
+            :id="modelValue.id"
+            v-model="fieldModel"
+            :options="options"
+            :field="modelValue"
+            :disabled="disabled"
+            :placeholder="modelValue.placeholder"
+            :size="size"
+            v-bind="{ ...$attrs }"
+            :errors="!!errorMessage"
+            @search="onSearch"
+          />
+          <div v-if="isCheckTypeWithInfo">
+            <VTooltip
+              :text="modelValue.info"
+              :max-width="MAX_WIDTH_TOOLTIP"
+            >
+              <template #activator="{ props }">
+                <VIcon
+                  v-if="withInfo && modelValue.info"
+                  :icon="IconsList.InfoIcon"
+                  v-bind="props"
+                  class="check-type tooltip-icon ml-1 align-text-top text-grey-500"
+                />
+              </template>
+            </VTooltip>
+          </div>
+        </div>
         <span
           v-if="errorMessage || modelValue.description"
           class="text-caption mt-1 text-no-wrap"
@@ -124,6 +146,9 @@ const onSearch = (search: string) => emits('search', search)
 
 <style lang="scss" scoped>
 .field-generator {
+  .check-type {
+    margin-bottom: 0.1rem;
+  }
   .form-required &-label:after {
     content: "*";
     color: rgb(var(--v-theme-error));
