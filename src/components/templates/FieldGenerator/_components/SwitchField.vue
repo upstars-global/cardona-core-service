@@ -43,6 +43,7 @@ const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-er
       v-model="localModelValue"
       class="switch-input"
       :class="{ 'is-disabled': disabled || !canUpdate, 'not-checked': !localModelValue }"
+      :disabled="disabled"
     />
 
     <span class="switch-label">

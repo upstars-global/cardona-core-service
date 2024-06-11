@@ -187,6 +187,7 @@ const disableAddFiled = computed(() =>
           :color="VColors.Error"
           class="filed-list__delete pa-0"
           :class="{ 'cursor-default': disabled }"
+          :disabled="disabled"
           @click="onRemove(rowIndex)"
         >
           <VIcon :icon="IconsList.Trash2Icon" />

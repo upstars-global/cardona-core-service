@@ -200,6 +200,14 @@ const onFileUpload = async file => {
   &__actions {
     position: relative;
     z-index: 1;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.3s;
+  }
+  &:hover {
+    .img-file-block-inner__actions {
+      opacity: 1;
+    }
   }
 
   &.disabled {
