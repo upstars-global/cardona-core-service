@@ -65,6 +65,7 @@ const onDragEnd = (event: { moved: object }) => {
 const cellClasses = computed(() => props.small ? 'py-2 px-3' : 'py-3 px-4')
 const maxSkeletonRows = 25
 const skeletonRows = computed(() => props.skeletonRows ? props.skeletonRows : props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
+const emptyColspan = computed(() => props.selectable ? props.fields.length + 1 : props.fields.length)
 const isSortableColumn = (column: TableField): boolean => props.fields?.find(item => item?.key === column?.key)?.sortable
 
 const sortParams = ref(props.sortData?.map(item => ({
@@ -116,11 +117,12 @@ const isActiveSort = (key: string, direction: string): boolean => {
       <th
         v-if="draggable"
         class="c-table__header-cell"
+        data-c-field="draggable"
       />
       <th
         v-if="props.selectable"
         class="c-table__header-cell"
-        :class="cellClasses"
+        :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
         data-c-field="selectable"
       >
         <VCheckbox
@@ -215,17 +217,18 @@ const isActiveSort = (key: string, direction: string): boolean => {
         >
           <td
             v-if="draggable"
-            class="pl-1 pr-1"
+            class="px-1 c-table__cell"
+            data-c-field="draggable"
           >
             <VIcon
-              :icon="IconsList.MoreVerticalIcon"
+              :icon="IconsList.DragVerticalIcon"
               class="dragging-icon"
             />
           </td>
           <td
             v-if="props.selectable"
             class="c-table__cell"
-            :class="cellClasses"
+            :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
             data-c-field="selectable"
           >
             <VCheckbox
@@ -256,7 +259,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
 
       <tr v-if="items.isEmpty && !isLoadingList">
         <td
-          :colspan="fields.length"
+          :colspan="emptyColspan"
           class="text-center pa-4"
         >
           <slot name="empty" />
@@ -300,8 +303,11 @@ const isActiveSort = (key: string, direction: string): boolean => {
   .c-table__cell {
     background-color: transparent;
     cursor: pointer;
-    &[data-c-field='selectable'] {
-      min-width: 4.25rem;
+    /*&[data-c-field='selectable'] {
+       min-width: 4.25rem;
+    }*/
+    &[data-c-field='draggable'] {
+      width: 1.25rem;
     }
   }
   :deep(.v-skeleton-loader__text) {

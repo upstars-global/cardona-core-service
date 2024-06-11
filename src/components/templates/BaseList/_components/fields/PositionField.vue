@@ -9,6 +9,7 @@ import {
 } from '../../../../../helpers'
 import type { NumberOrString } from '../../../../../@model'
 import type { ListSize } from '../../../../../@model/templates/tableFields'
+import { VColors } from '../../../../../@model/vuetify'
 
 const props = withDefaults(
   defineProps<{
@@ -123,6 +124,7 @@ const formatterInput = (value: NumberOrString): NumberOrString =>
     <VIcon
       v-if="canUpdate"
       :icon="IconsList.EditIcon"
+      :color="VColors.Primary"
       class="mr-1"
     />
     <span>{{ position }}</span>
