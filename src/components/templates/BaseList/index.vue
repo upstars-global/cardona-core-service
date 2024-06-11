@@ -378,7 +378,7 @@ const setRequestFilters = (): PayloadFilters => {
 
   for (const key in filtersData) {
     const isEmptyValue
-        = isNullOrUndefinedValue(filtersData[key]) || isEmptyString(filtersData[key])
+      = isNullOrUndefinedValue(filtersData[key]) || isEmptyString(filtersData[key])
 
     const isEmptyArray = Array.isArray(filtersData[key]) && filtersData[key].isEmpty
 

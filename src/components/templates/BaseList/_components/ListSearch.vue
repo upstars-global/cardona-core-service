@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, useSlots } from 'vue'
 import { IconsList } from '../../../../@model/enums/icons'
-import { BSize } from '../../../../@model/bootstrap'
 import type { IBaseListConfig } from '../../../../@model/templates/baseList'
 import AppTextField from '../../../../@core/components/app-form-elements/AppTextField.vue'
 import { VColors, VVariants } from '../../../../@model/vuetify'
@@ -66,6 +65,8 @@ const searchQuery = computed({
           :variant="VVariants.Outlined"
           :color="VColors.Secondary"
           :active="isOpenFilterBlock"
+          class="filter-btn"
+          :class="{ 'filter-btn--small': config?.small }"
           @click="onFilterButtonClick"
         >
           <VIcon :icon="IconsList.FilterIcon" />
@@ -110,3 +111,12 @@ const searchQuery = computed({
     </VCol>
   </VRow>
 </template>
+
+<style lang="scss" scoped>
+.filter-btn {
+  &--small {
+    min-width: 2.5rem;
+    padding: 0 0.625rem;
+  }
+}
+</style>
