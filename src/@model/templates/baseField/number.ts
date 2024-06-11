@@ -14,6 +14,6 @@ export class NumberBaseField extends ANumberBaseField implements INumberBaseFiel
 
   constructor(field: INumberBaseField) {
     super(field)
-    this._value = field.value || ''
+    this._value = field.value ?? ''
   }
 }

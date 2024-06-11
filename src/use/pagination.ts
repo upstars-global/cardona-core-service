@@ -1,6 +1,7 @@
 import type { ComputedRef, Ref } from 'vue'
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { omit } from 'lodash'
 import { getStorage, setStorage } from '../helpers/storage'
 
 interface PaginationConfig {
@@ -21,6 +22,7 @@ export interface PaginationResult {
   numberOfPages: Ref<number>
   setPerPage: (value: number) => void
   setPage: (page?: number, perPageProps?: any) => void
+  removePerPage: () => void
   currentPage: Ref<number>
   updateTotal: (value: number) => void
   onChangePagination: (cb: Function) => void
@@ -100,6 +102,16 @@ export default function usePagination(
     }
   }
 
+  const removePerPage = () => {
+    if (!isUseRouter)
+      return
+    const query = omit(route.query, 'perPage')
+
+    router.push({
+      query,
+    } as any)
+  }
+
   const linkGen = (pageNum: number) => {
     if (!isUseRouter)
       return
@@ -159,6 +171,7 @@ export default function usePagination(
     setupDataMeta,
     numberOfPages,
     setPerPage,
+    removePerPage,
     setPage,
     currentPage,
     updateTotal,

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
+import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { findIndex } from 'lodash'
@@ -246,6 +246,7 @@ const {
   linkGen,
   updateTotal,
   onChangePagination,
+  removePerPage,
 } = paginationConfig
 
 const itemsPerPage = computed(() => props.config?.pagination ? perPage.value : items.value.length)
@@ -552,6 +553,10 @@ onBeforeMount(async () => {
 const showActions = computed(() =>
   [canUpdate, canUpdateSeo, canCreate, canRemove].some(Boolean),
 )
+
+onUnmounted(() => {
+  removePerPage()
+})
 
 defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items, isSidebarShown, resetSelectedItem })
 </script>
