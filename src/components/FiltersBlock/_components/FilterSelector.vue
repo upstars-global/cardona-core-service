@@ -25,6 +25,7 @@ const onChange = (filter: BaseField) => emits('selected-filters-changed', filter
         :color="VColors.Secondary"
         dark
         v-bind="props"
+        :size="size"
         :disabled="filters.isEmpty"
         :append-icon="IconsList.ChevronDownIcon"
       >

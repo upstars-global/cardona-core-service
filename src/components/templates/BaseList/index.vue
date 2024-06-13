@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch, onUnmounted } from 'vue'
+import { computed, inject, onBeforeMount, onMounted, onUnmounted, ref, useSlots, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { findIndex } from 'lodash'
@@ -928,9 +928,9 @@ defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items, isSid
         </template>
       </CTable>
     </VCard>
-    <div class="pt-8">
+    <div :class="config.small ? 'pt-4' : 'pt-8'">
       <ListPagination
-        v-if="items?.length && config?.pagination"
+        v-if="config?.pagination"
         :model-value="currentPage"
         :link-gen="linkGenerator"
         :pagination-config="paginationConfig"

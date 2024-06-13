@@ -38,7 +38,7 @@ const valueModel = computed<OptionsItem>({
 })
 
 const selectClasses = computed(() => {
-  const size = props.size ? `select-${props.size}` : null
+  const size = props.size ? 'select-size-sm' : null
 
   const classes: object = {
     error: props.errors,
