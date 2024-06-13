@@ -158,6 +158,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
             <div
               v-if="isSortableColumn(column)"
               class="c-table__header-cell-icon-wrapper"
+              :class="{ small: props.small }"
             >
               <VIcon
                 :icon="IconsList.ChevronUpIcon"
@@ -284,6 +285,14 @@ const isActiveSort = (key: string, direction: string): boolean => {
     position: relative;
     width: 1rem;
     height: 1.4rem;
+
+    &.small {
+      height: 1rem;
+
+      .c-table__header-cell-icon {
+        height: 0.5rem;
+      }
+    }
   }
   .c-table__header-cell-icon {
     opacity: 0.5;
@@ -301,15 +310,20 @@ const isActiveSort = (key: string, direction: string): boolean => {
       background: rgba(var(--v-theme-secondary), 0.08);
     }
   }
+  .c-table__header-cell,
   .c-table__cell {
+
+    &[data-c-field='selectable'] {
+       min-width: 4.25rem;
+    }
+    &[data-c-field='draggable'] {
+      width: 1.75rem;
+    }
+  }
+
+  .c-table__cell{
     background-color: transparent;
     cursor: pointer;
-    /*&[data-c-field='selectable'] {
-       min-width: 4.25rem;
-    }*/
-    &[data-c-field='draggable'] {
-      width: 1.25rem;
-    }
   }
   :deep(.v-skeleton-loader__text) {
     margin-left: 0;

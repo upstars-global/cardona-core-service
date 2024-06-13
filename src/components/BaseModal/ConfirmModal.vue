@@ -51,7 +51,7 @@ const onCloseModal = (hide: Function) => {
           {{ $t('action.cancel') }}
         </VBtn>
         <VBtn
-          :color="VColors.Success"
+          :color="VColors.Primary"
           @click="onClickModalOk(action.hide)"
         >
           {{ $t('action.add') }}

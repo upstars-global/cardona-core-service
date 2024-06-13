@@ -16,10 +16,8 @@ const emits = defineEmits<{
   (e: 'update:modelValue', value: object): void
 }>()
 
-/* emits: ['input', 'search'], */
-
 const selectClasses = computed(() => {
-  const size = `select-${props.size}`
+  const size = props.size ? 'select-size-sm' : null
 
   const classes: object = {
     error: props.errors,

@@ -73,7 +73,7 @@ const formatterInput = (value: NumberOrString): NumberOrString =>
 <template>
   <div
     v-if="openEdit"
-    class="d-flex justify-content-center align-center"
+    class="d-flex justify-center align-center"
     @click.stop
   >
     <div
@@ -117,7 +117,7 @@ const formatterInput = (value: NumberOrString): NumberOrString =>
   </div>
   <div
     v-else
-    class="d-flex justify-content-center align-center"
+    class="d-flex justify-center align-center"
     :class="{ 'position-text-block': canUpdate }"
     @click.stop="onOpenEdit"
   >

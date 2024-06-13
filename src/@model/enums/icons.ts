@@ -142,7 +142,7 @@ export enum IconsList {
   InstagramIcon = 'InstagramIcon',
   ItalicIcon = 'ItalicIcon',
   KeyIcon = 'KeyIcon',
-  LayersIcon = 'tabler-layers-subtract',
+  LayersIcon = 'tabler-stack-2',
   LayoutIcon = 'LayoutIcon',
   LifeBuoyIcon = 'LifeBuoyIcon',
   Link2Icon = 'Link2Icon',

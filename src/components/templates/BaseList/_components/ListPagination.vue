@@ -51,6 +51,7 @@ const currentPage = computed({
       :class="{ 'is-longer-item': LARGE_SIZE_BUTTON < total }"
     >
       <VPagination
+        v-if="total"
         v-model="currentPage"
         :length="total"
         :total-visible="6"

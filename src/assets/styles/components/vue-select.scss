@@ -208,6 +208,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
   &.error .vs__dropdown-toggle {
     border-color: rgb(var(--v-theme-error));
   }
+
 }
 
 // Dropdown Position
@@ -259,18 +260,26 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
 .select-size-sm {
   min-height: 2rem;
 
-  &.vs--single .vs__dropdown-toggle {
-    padding: 0.25rem 0.75px;
+  & .vs__dropdown-toggle {
+    padding: 0.25rem 0.75rem;
+    min-height: 2rem;
   }
 
   // Only set margin for multi/tag select
   &.v-select:not(.vs--single) .vs__selected {
-    margin: 4px 5px;
+    font-size: 0.75rem;
+    height: 1.25rem;
   }
 
   // Selected options size for single selection
   &.v-select.vs--single .vs__selected {
     margin-top: 1px;
+  }
+
+  .vs__actions {
+    .v-icon {
+      font-size: 1rem;
+    }
   }
 }
 

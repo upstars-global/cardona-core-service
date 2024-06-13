@@ -112,14 +112,16 @@ const listNotSelected = computed(() => {
         v-if="isOpen"
         no-body
       >
-        <VCardItem>
+        <VCardItem :class="{ 'py-4': isSmallBlock }">
           <Component
             :is="headerTag"
             class="mb-0"
+            :class="{ 'text-h5': isSmallBlock, 'text-h4': !isSmallBlock }"
           >
             {{ $t('common.filter.filtrate') }}
           </Component>
         </VCardItem>
+        <hr class="my-0">
 
         <VCardText>
           <VCol class="pl-0 pr-0">
@@ -167,7 +169,8 @@ const listNotSelected = computed(() => {
                 <VBtn
                   :variant="VVariants.Outlined"
                   :color="VColors.Error"
-                  size="38"
+                  class="v-btn--rectangle"
+                  :size="size"
                   @click="onRemoveFilter(filter)"
                 >
                   <VIcon :icon="IconsList.Trash2Icon" />
@@ -184,6 +187,7 @@ const listNotSelected = computed(() => {
               :color="VColors.Success"
               :variant="VVariants.Elevated"
               class="ml-0 px-4"
+              :size="size"
               @click="onApply"
             >
               {{ isSmallBlock ? $t('action.apply') : $t('action.applyFilters') }}
@@ -192,6 +196,7 @@ const listNotSelected = computed(() => {
               :color="VColors.Secondary"
               :variant="VVariants.Outlined"
               class="ml-0 px-4"
+              :size="size"
               @click="onSaveByDefault"
             >
               {{ $t('action.saveByDefault') }}
