@@ -69,6 +69,12 @@ const customMessageOfRules: Record<
 
       return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, _min_, _max_ })
     },
+    range(ctx: FieldValidationMetaInfo): TranslateResult {
+      const [keyFrom, keyTo] = ctx.rule?.params
+      const valueFrom = ctx.form[ctx.name][keyFrom]
+
+      return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, valueFrom, labelTo: keyTo })
+    },
   }
 
 const validatorPositive = (value: number): boolean => {
@@ -107,7 +113,10 @@ const validatorObject = (value: Record<string, NumberOrString>): boolean => {
   if (value === null || value === undefined)
     return false
 
-  return Object.values(value).every(Boolean)
+  const values = Object.values(value)
+  const isNotEmpty = values.every((item: number | string) => item || item?.toString()?.length)
+
+  return isNotEmpty && values.map(Number).some(Boolean)
 }
 
 const validatorRange = (value: Record<string, NumberOrString>, args: []): boolean => {
@@ -115,7 +124,7 @@ const validatorRange = (value: Record<string, NumberOrString>, args: []): boolea
   if (!validatorObject(value))
     return false
 
-  return +value[keyMin] <= +value[keyMax]
+  return +value[keyMin] < +value[keyMax]
 }
 
 export const rangeDate = (dateDiapason: string, args: string[]): boolean => {
