@@ -87,6 +87,7 @@ const pickerOpts = {
   <div>
     <TextareaField
       v-model="value"
+      :placeholder="field.placeholder"
       :field="field"
       :errors="errors"
       :disabled="disabled"

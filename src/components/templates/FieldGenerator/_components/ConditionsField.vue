@@ -16,6 +16,8 @@ const props = withDefaults(
   },
 )
 
+const MAX_WIDTH_TOOLTIP = '240px'
+
 const emit = defineEmits<{
   (event: 'update:modelValue', value: string): void
 }>()
@@ -56,14 +58,14 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
     >
       <VCol
         cols="4"
-        class="font-weight-bolder text-no-wrap"
+        class="font-weight-regular text-no-wrap"
       >
         {{ $t('component.conditions.availableVariables') }}:
       </VCol>
 
       <VCol
         cols="8"
-        class="font-weight-bold pl-2 d-flex flex-wrap"
+        class="font-weight-regular pl-2 d-flex flex-wrap"
       >
         <div
           v-for="(variable, index) in availableVariables"
@@ -75,6 +77,7 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
           <VTooltip
             activator="parent"
             location="bottom"
+            :max-width="MAX_WIDTH_TOOLTIP"
           >
             <div class="comment-text__tooltip">
               {{ $t(`component.conditions.${variable}`) }}
