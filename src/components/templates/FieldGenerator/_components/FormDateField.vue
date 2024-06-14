@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { Russian as ru } from 'flatpickr/dist/l10n/ru'
-import en from 'flatpickr/dist/l10n/default'
+import { v4 as uuidv4 } from 'uuid'
 import type { FormDateBaseField } from '../../../../@model/templates/baseField'
 import { IconsList } from '../../../../@model/enums/icons'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
@@ -20,21 +18,17 @@ const emit = defineEmits<{
   (event: 'update:modelValue', value: string | Date): void
 }>()
 
+const id = ref(uuidv4())
 const refPicker = ref({})
-const { locale } = useI18n()
-
-const locales = {
-  ru,
-  en,
-}
 
 const flatPickrConfig = computed(() => ({
-  dateFormat: 'Z',
-  altInput: true,
-  locale: locales[locale.value],
+  dateFormat: props.field.dateFormat,
   time_24hr: true,
   defaultHour: 0,
   minuteIncrement: 1,
+  allowInput: true,
+  clickOpens: false,
+  ...props.field.config,
 }))
 
 const localModelValue = computed({
@@ -45,6 +39,13 @@ const localModelValue = computed({
 const openByClick = () => {
   refPicker.value.refFlatPicker.fp.open()
 }
+
+const isOpen = ref(false)
+
+const onToggle = () => {
+  openByClick()
+  isOpen.value = !isOpen.value
+}
 </script>
 
 <template>
@@ -54,7 +55,8 @@ const openByClick = () => {
     :append-inner-icon="IconsList.CalendarIcon"
     class="form-date-field"
     :config="flatPickrConfig"
-    @click:append-inner="openByClick"
+    :class="{ 'form-date-field--open': isOpen }"
+    @click:append-inner="onToggle"
   />
 </template>
 
@@ -64,6 +66,18 @@ const openByClick = () => {
   .v-field__append-inner {
     color: rgb(var(--v-theme-primary));
     opacity: 1;
+  }
+
+  &--open {
+    .v-field__input {
+      opacity: 1;
+    }
+  }
+  .flatpickr-wrapper {
+    width: 100%;
+  }
+  .flatpickr-input {
+    padding: 0;
   }
 }
 </style>

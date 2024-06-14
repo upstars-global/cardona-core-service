@@ -129,6 +129,10 @@ const toggleCalendar = (state: boolean) => {
   isCalendarOpen.value = state
 }
 
+const onAppendClick = (event: MouseEvent) => {
+  emit('click:append-inner', event)
+}
+
 defineExpose({ refFlatPicker })
 </script>
 
