@@ -121,7 +121,7 @@ const buttonSize = computed(() => {
   </div>
   <div
     v-else
-    class="d-flex justify-center align-center"
+    class="d-flex align-center"
     :class="{ 'position-text-block': canUpdate }"
     @click.stop="onOpenEdit"
   >
