@@ -110,6 +110,7 @@ watch([selectedCountries, countriesRadioModel], () => {
       v-model="countriesRadioModel"
       :disabled="disabled"
       divided
+      mandatory
       color="primary"
       variant="outlined"
       :size="VSizes.Small"
