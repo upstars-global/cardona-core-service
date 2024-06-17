@@ -2,14 +2,10 @@
 import { computed, ref, withDefaults } from 'vue'
 import AppTextField from '../../../../../@core/components/app-form-elements/AppTextField.vue'
 import { IconsList } from '../../../../../@model/enums/icons'
-import {
-  getMappedValueByManyMethods,
-  toIntegerNumbers,
-  toPositiveNumbers,
-} from '../../../../../helpers'
+import { getMappedValueByManyMethods, toIntegerNumbers, toPositiveNumbers } from '../../../../../helpers'
 import type { NumberOrString } from '../../../../../@model'
-import type { ListSize } from '../../../../../@model/templates/tableFields'
-import { VColors } from '../../../../../@model/vuetify'
+import { ListSize } from '../../../../../@model/templates/tableFields'
+import { VColors, VSizes } from '../../../../../@model/vuetify'
 
 const props = withDefaults(
   defineProps<{
@@ -20,6 +16,7 @@ const props = withDefaults(
   {
     position: 0,
     canUpdate: false,
+    size: ListSize.MD,
   },
 )
 
@@ -68,12 +65,18 @@ const formatterInput = (value: NumberOrString): NumberOrString =>
     toIntegerNumbers,
     getNumberMoreThenZero,
   ])
+
+const isSmallSize = computed(() => props.size === ListSize.SM)
+
+const buttonSize = computed(() => {
+  return isSmallSize.value ? VSizes.Small : VSizes.Medium
+})
 </script>
 
 <template>
   <div
     v-if="openEdit"
-    class="d-flex justify-center align-center"
+    class="d-flex align-center"
     @click.stop
   >
     <div
@@ -82,20 +85,21 @@ const formatterInput = (value: NumberOrString): NumberOrString =>
     >
       <AppTextField
         v-model="numberPositionComputed"
-        :size="size"
+        :size="buttonSize"
         type="number"
         autofocus
         :formatter="formatterInput"
         class="priority-input"
+        :class="{ 'app-text-field--small': isSmallSize }"
         @keydown="onKeyDown"
         @keyup.enter="successNewPosition"
         @keyup.esc="cancelNewPosition"
       />
     </div>
     <VBtn
-      class="text-success mr-1"
+      class="text-success mr-1 v-btn--rectangle"
       variant="text"
-      size="40"
+      :size="buttonSize"
       @click.stop="successNewPosition"
     >
       <VIcon
@@ -104,9 +108,9 @@ const formatterInput = (value: NumberOrString): NumberOrString =>
       />
     </VBtn>
     <VBtn
-      class="cursor-pointer text-error"
+      class="cursor-pointer text-error v-btn--rectangle"
       variant="text"
-      size="40"
+      :size="buttonSize"
       @click.stop="cancelNewPosition"
     >
       <VIcon

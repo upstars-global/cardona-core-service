@@ -17,7 +17,7 @@ const emits = defineEmits<{
 }>()
 
 const selectClasses = computed(() => {
-  const size = props.size ? 'select-size-sm' : null
+  const size = props.size ? `select-size-${props.size}` : null
 
   const classes: object = {
     error: props.errors,

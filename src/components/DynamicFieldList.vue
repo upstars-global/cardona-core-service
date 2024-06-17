@@ -152,7 +152,6 @@ const disableAddFiled = computed(() =>
       <VCol
         v-if="isBaseField(row)"
         class="py-0"
-        md="4"
       >
         <FieldGenerator
           v-model="rows[rowIndex]"
