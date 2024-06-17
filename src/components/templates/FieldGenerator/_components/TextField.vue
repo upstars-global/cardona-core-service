@@ -29,7 +29,7 @@ const localModelValue = computed({
   },
 })
 
-const placeholder = computed(() => props.field.label)
+const placeholder = computed(() => props.field.placeholder || props.field.label)
 
 const appendInnerIcon = computed(() => {
   if (props.errors)
