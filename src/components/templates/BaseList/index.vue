@@ -558,7 +558,7 @@ onUnmounted(() => {
   removePerPage()
 })
 
-defineExpose({ reFetchList, selectedItems, disableRowIds, sortData, items, isSidebarShown, resetSelectedItem })
+defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
 
 <template>

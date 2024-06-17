@@ -117,7 +117,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
     <template #headers="{ columns, toggleSort, sortBy, someSelected, allSelected, selectAll }">
       <th
         v-if="draggable"
-        class="c-table__header-cell"
+        class="pl-1 pr-0 c-table__header-cell"
         data-c-field="draggable"
       />
       <th
@@ -219,7 +219,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
         >
           <td
             v-if="draggable"
-            class="px-1 c-table__cell"
+            class="pl-1 pr-0 c-table__cell"
             data-c-field="draggable"
           >
             <VIcon
@@ -307,17 +307,20 @@ const isActiveSort = (key: string, direction: string): boolean => {
     cursor: pointer;
     &--selected,
     &:hover {
-      background: rgba(var(--v-theme-secondary), 0.08);
+      background: rgb(var(--v-theme-grey-100));
     }
   }
   .c-table__header-cell,
   .c-table__cell {
-
     &[data-c-field='selectable'] {
-       min-width: 4.25rem;
+      min-width: 4.25rem;
     }
     &[data-c-field='draggable'] {
-      width: 1.75rem;
+      width: 1.25rem;
+      max-width: 1.25rem;
+      .v-icon {
+        font-size: 1rem;
+      }
     }
   }
 
