@@ -46,7 +46,11 @@ const separator = ref(` ${dateSeparators[locale.value]} `)
 
 const modelValue = computed({
   get: () => props.modelValue,
-  set: value => emit('update:modelValue', value),
+  set: value => {
+    if (props.modelValue === value)
+      return
+    emit('update:modelValue', value)
+  },
 })
 
 const startedAt = ref()
@@ -73,7 +77,9 @@ const setRangeDate = (value, isStartDate = true) => {
     startedAt.value = value
     if (endedAt.value) {
       if (!value) {
-        emit('update:modelValue', moment(1432252800).format() + separator.value + endedAt.value)
+        const startedAtValue = props.field.isFilter ? moment(1432252800).format() : ''
+
+        emit('update:modelValue', startedAtValue + separator.value + endedAt.value)
 
         return
       }
@@ -85,15 +91,20 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', value + separator.value + moment().format())
+      const endedAtValue = props.field.isFilter ? moment().format() : ''
+
+      emit('update:modelValue', value + separator.value + endedAtValue)
     }
   }
   else {
     endedAt.value = value
     if (startedAt.value) {
       emit('update:modelValue', startedAt.value + separator.value + value)
-      if (!value)
-        emit('update:modelValue', startedAt.value + separator.value + moment().format())
+      if (!value) {
+        const endedAtValue = props.field.isFilter ? moment().format() : ''
+
+        emit('update:modelValue', startedAt.value + separator.value + endedAtValue)
+      }
     }
     else {
       if (!value) {
@@ -101,7 +112,9 @@ const setRangeDate = (value, isStartDate = true) => {
 
         return
       }
-      emit('update:modelValue', moment(1432252800).format() + separator.value + value)
+      const startedAtValue = props.field.isFilter ? moment(1432252800).format() : ''
+
+      emit('update:modelValue', startedAtValue + separator.value + value)
     }
   }
 }

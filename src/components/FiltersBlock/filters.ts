@@ -225,6 +225,7 @@ const date = new DateBaseField({
   label: i18n.t('common.date'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
   validationRules: { range_date: false, range_date_different: false },
 })
 
@@ -233,6 +234,7 @@ const dateRangeCreative = new DateBaseField({
   label: i18n.t('filters.dateRangeCreative'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
   validationRules: { range_date: false, range_date_different: false },
 })
 
@@ -241,6 +243,7 @@ const dateRangeApproved = new DateBaseField({
   label: i18n.t('filters.dateRangeApproved'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
   validationRules: { range_date: false, range_date_different: false },
 })
 
@@ -249,6 +252,7 @@ const dateRangeUpdate = new DateBaseField({
   label: i18n.t('filters.dateRangeUpdate'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
   validationRules: { range_date: false, range_date_different: false },
 })
 
@@ -257,6 +261,7 @@ const dateRangeIssued = new DateBaseField({
   label: i18n.t('filters.dateRangeIssued'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
   validationRules: { range_date: false, range_date_different: false },
 })
 
@@ -265,6 +270,7 @@ const dateRangeExpired = new DateBaseField({
   label: i18n.t('filters.dateRangeExpired'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
   validationRules: { range_date: false, range_date_different: false },
 })
 
@@ -273,6 +279,7 @@ const dateRangeProcessing = new DateBaseField({
   label: i18n.t('filters.dateRangeProcessing'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
   validationRules: { range_date: false, range_date_different: false },
 })
 
@@ -289,6 +296,7 @@ const dateRangeUsed = new DateBaseField({
   label: i18n.t('filters.dateRangeUsed'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
   validationRules: { range_date: false, range_date_different: false },
 })
 
@@ -297,6 +305,7 @@ const bettingDateCreative = new DateBaseField({
   label: i18n.t('filters.bettingDateCreative'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
   validationRules: { range_date: false, range_date_different: false },
 })
 
