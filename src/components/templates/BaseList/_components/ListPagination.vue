@@ -39,7 +39,7 @@ const currentPage = computed({
       sm="4"
       class="d-flex align-center justify-start justify-content-sm-start px-0"
     >
-      <span class="text-muted">
+      <span class="pagination-text">
         {{ $t('pagination.showing', dataMeta) }}
       </span>
     </VCol>
@@ -63,6 +63,9 @@ const currentPage = computed({
 </template>
 
 <style scoped lang="scss">
+.pagination-text {
+  color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+}
 .is-longer-item {
   :deep(.v-pagination__list) {
     .v-pagination__item:nth-child(8) {

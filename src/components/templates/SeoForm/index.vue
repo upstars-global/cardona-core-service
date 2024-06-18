@@ -15,7 +15,7 @@ defineProps<{
     </template>
 
     <VCardText>
-      <VRow class="mb-2">
+      <VRow>
         <VCol cols="4">
           <FieldGenerator
             v-model="modelValue.metaTitle"
@@ -25,7 +25,7 @@ defineProps<{
         </VCol>
       </VRow>
 
-      <VRow class="mb-2">
+      <VRow>
         <VCol md="4">
           <FieldGenerator
             v-model="modelValue.metaDescription"
@@ -35,7 +35,7 @@ defineProps<{
         </VCol>
       </VRow>
 
-      <VRow class="mb-2">
+      <VRow>
         <VCol>
           <FieldGenerator
             v-model="modelValue.description"
