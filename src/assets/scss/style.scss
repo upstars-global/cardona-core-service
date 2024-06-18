@@ -12,6 +12,9 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 $bg-light-purple: rgba(115, 103, 240, 0.08);
 $bg-light-grey: rgba(186, 191, 199, 0.12);
 
+.main-menu {
+  overflow-x: hidden;
+}
 .form-required label:after {
   content: '*';
   margin-left: 5px;
