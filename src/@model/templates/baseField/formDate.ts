@@ -25,7 +25,6 @@ export class FormDateBaseField extends BaseField implements IFormDateBaseField {
     this._value = field.value
     this.buttonOnly = field.buttonOnly
     this.placeholder = field.placeholder ?? 'YYYY-MM-DD'
-    this.dateFormat = field.dateFormat ?? 'Y.m.d'
     this.config = field.config
   }
 

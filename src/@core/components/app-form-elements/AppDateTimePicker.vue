@@ -115,6 +115,9 @@ onMounted(() => {
 })
 
 const emitModelValue = (val: string) => {
+  if (val?.includes('0000-00-00')) // TODO: правка для задачи https://upstars.atlassian.net/browse/BAC-2924 ввод 0000-00-00 даты
+    val = ''
+
   emit('update:modelValue', val)
 }
 
