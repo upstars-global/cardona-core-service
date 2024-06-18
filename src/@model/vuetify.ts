@@ -25,5 +25,11 @@ export enum VSizes {
   XLarge = 'x-large',
 }
 
+export enum ModalSizes {
+  Small = '31.25rem',
+  Medium = '50rem',
+  Flex = 'auto',
+}
+
 const obj = {}
 export default obj
