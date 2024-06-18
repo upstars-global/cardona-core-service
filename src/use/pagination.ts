@@ -125,10 +125,12 @@ export default function usePagination(
     }
   }
 
-  watch(route, () => {
-    currentPage.value = Number(route.query.page) || 1
-    perPage.value = Number(route.query.perPage) || defaultPerPage
-  })
+  if (isUseRouter) {
+    watch(route, () => {
+      currentPage.value = Number(route.query.page) || 1
+      perPage.value = Number(route.query.perPage) || defaultPerPage
+    })
+  }
 
   const onChangePagination = (cb: Function) => {
     CbFunction.value = cb

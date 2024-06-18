@@ -75,6 +75,11 @@ const customMessageOfRules: Record<
 
       return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, valueFrom, labelTo: keyTo })
     },
+    date_format(ctx: FieldValidationMetaInfo): TranslateResult {
+      const format = ctx.rule?.params[0].replace(/_/g, '-')
+
+      return i18n.t(`validations.${ctx.rule?.name}`, { format })
+    },
   }
 
 const validatorPositive = (value: number): boolean => {
@@ -147,6 +152,15 @@ export const dateRangeDifferent = (dateDiapason: string, args: string[]): boolea
   return moment(from).valueOf() !== moment(to).valueOf()
 }
 
+export const date_format = (value: string, args: string[]) => {
+  let [format] = args
+
+  if (!format)
+    format = 'YYYY_MM_DD'
+
+  return moment(value, format).isValid()
+}
+
 defineRule('positive', validatorPositive)
 defineRule('password', validatorPassword)
 defineRule('creditCard', validatorCreditCard)
@@ -156,6 +170,7 @@ defineRule('required_object', validatorObject)
 defineRule('range', validatorRange)
 defineRule('range_date', rangeDate)
 defineRule('range_date_different', dateRangeDifferent)
+defineRule('date_format', date_format)
 
 export interface IValidationConfig {
   required?: boolean
@@ -182,6 +197,7 @@ export interface IValidationConfig {
   range?: Array<string>
   range_date?: boolean | string
   range_date_different?: boolean | string
+  date_format?: string
 }
 (function () {
   configure({
