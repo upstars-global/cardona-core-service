@@ -2,13 +2,14 @@
 import { computed, inject, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { IconsList } from '../../@model/enums/icons'
-import { VColors, VVariants } from '../../@model/vuetify'
+import { ModalSizes, VColors, VVariants } from '../../@model/vuetify'
 
 interface Props {
   id: string
   title?: string | TranslateResult
   state?: boolean
   width: string
+  size: ModalSizes
 }
 
 interface Emits {
@@ -17,16 +18,17 @@ interface Emits {
 }
 defineOptions({ name: 'BaseModal' })
 
-const props = withDefaults(defineProps<Props>(), { title: '', width: 'auto' })
+const props = withDefaults(defineProps<Props>(), { title: '', width: '', size: ModalSizes.Small })
 
 const emits = defineEmits<Emits>()
 
 const attrs = useAttrs()
 
 const modal = inject('modal')
-
 const showModal = ref(false)
 const payload = ref(null)
+
+const modalWidth = computed(() => props.width || props.size)
 
 const title = computed(() => payload.value?.title || props.title)
 
@@ -59,7 +61,7 @@ const onHide = (value: boolean) => {
   <VDialog
     v-model="showModal"
     class="base-modal"
-    :width="width"
+    :width="modalWidth"
     v-bind="attrs"
     @update:model-value="onHide"
   >
