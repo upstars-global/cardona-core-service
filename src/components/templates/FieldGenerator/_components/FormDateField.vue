@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
 import type { FormDateBaseField } from '../../../../@model/templates/baseField'
 import { IconsList } from '../../../../@model/enums/icons'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
@@ -8,6 +7,7 @@ import AppDateTimePicker from '../../../../@core/components/app-form-elements/Ap
 interface Props {
   modelValue: string | Date
   field: FormDateBaseField
+  errors?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -18,11 +18,9 @@ const emit = defineEmits<{
   (event: 'update:modelValue', value: string | Date): void
 }>()
 
-const id = ref(uuidv4())
 const refPicker = ref({})
 
 const flatPickrConfig = computed(() => ({
-  dateFormat: props.field.dateFormat,
   time_24hr: true,
   defaultHour: 0,
   minuteIncrement: 1,
@@ -56,6 +54,7 @@ const onToggle = () => {
     class="form-date-field"
     :config="flatPickrConfig"
     :class="{ 'form-date-field--open': isOpen }"
+    :is-invalid="errors"
     @click:append-inner="onToggle"
   />
 </template>
