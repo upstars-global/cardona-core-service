@@ -112,7 +112,7 @@ const variableTextBufferStore = computed(() => store.state.textEditor.variableTe
           <VRow
             v-for="local in Object.keys(form.fieldTranslations[item])"
             :key="item + local"
-            class="row-item-field-translations mt-0"
+            class="row-item-field-translations mt-0 mb-3"
             :class="{ 'order-first': isMainLocale(local) }"
           >
             <VCol
