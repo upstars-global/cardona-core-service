@@ -577,7 +577,7 @@
     "range_date": "The date range must contain two dates",
     "range_date_different": "Date from and to should be different",
     "positive": "The {_field_} field must be a positive number",
-    "date_format": "The entered value has an invalid format date. The format should be {format}"
+    "date_format": "The entered value has an invalid format date. The format should be \n {format}"
   },
   "toast": {
     "success": {

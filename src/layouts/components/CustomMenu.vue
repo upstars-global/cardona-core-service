@@ -44,7 +44,7 @@ const changeMode = computed(() => {
 
   return {
     title: t(`customMenu.${actualMode}Mode`),
-    icon: IconsList.MoonIcon,
+    icon: configStore.theme === Theme.Light ? IconsList.MoonIcon : IconsList.CloudLightningIcon,
     action: () => {
       configStore.theme = actualMode
     },
@@ -71,7 +71,10 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
   <div class="custom-menu">
     <VMenu>
       <template #activator="{ props }">
-        <div class="d-flex align-center">
+        <div
+          class="d-flex align-center cursor-pointer user-info"
+          v-bind="props"
+        >
           <VBadge
             dot
             color="success"
@@ -85,7 +88,6 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
               :color="VColors.Success"
               variant="tonal"
               size="large"
-              v-bind="props"
             >
               <span class="text-h5 first-letter">{{ firstLetter }}</span>
             </VAvatar>
@@ -133,6 +135,13 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
   font-weight: 600;
 }
 
+.user-info {
+  &:hover {
+    .full-name {
+      color: rgb(var(--v-theme-primary))
+    }
+  }
+}
 .full-name {
   font-weight: 600;
   color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));

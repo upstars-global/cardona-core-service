@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStore } from 'vuex'
-import { inject } from 'vue'
+import { inject, ref } from 'vue'
 import { useSection } from '../../@model/changePassword'
 import BaseModal from '../BaseModal/index.vue'
 import FieldGenerator from '../templates/FieldGenerator/index.vue'
@@ -15,8 +15,12 @@ const props = defineProps<{
 
 const modal = inject('modal')
 const store = useStore()
+const passwordFormRef = ref()
 
 const onSuccess = async (form: Record<string, BaseField>) => {
+  if (!await passwordFormRef.value.validate())
+    return
+
   const payload = { id: props.id, password: form.password.value }
 
   await store.dispatch('users/updateUserPassword', payload)
@@ -35,6 +39,7 @@ const onCloseModal = () => {
     :title="$t('modal.changePassword.title')"
   >
     <BaseSection
+      ref="passwordFormRef"
       :use-entity="useSection"
       :with-read-action="false"
       class="px-6 py-6 password-change"

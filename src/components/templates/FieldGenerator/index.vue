@@ -133,7 +133,7 @@ const onSearch = (search: string) => emits('search', search)
         </div>
         <span
           v-if="errorMessage || modelValue.description"
-          class="text-caption mt-1 text-no-wrap"
+          class="text-caption mt-1 field-generator__error"
           :class="{
             'text-error': errorMessage,
             'check-description': isCheckType && modelValue.description,
@@ -153,6 +153,10 @@ const onSearch = (search: string) => emits('search', search)
     content: "*";
     color: rgb(var(--v-theme-error));
     margin-left: 0.25rem;
+  }
+
+  &__error {
+    white-space: break-spaces;
   }
 }
 .check-description {
