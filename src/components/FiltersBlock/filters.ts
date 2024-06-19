@@ -288,6 +288,7 @@ const dateRangeActivated = new DateBaseField({
   label: i18n.t('filters.dateRangeActivated'),
   isRangeMode: true,
   withTime: true,
+  isFilter: true,
   validationRules: { range_date: false, range_date_different: false },
 })
 
