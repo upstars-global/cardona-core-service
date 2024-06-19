@@ -884,6 +884,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           </template>
           <ItemActions
             v-if="field.key === 'actions'"
+            :key="item.raw"
             :item="item.raw"
             :create-page-name="CreatePageName"
             :can-update="canUpdate"
