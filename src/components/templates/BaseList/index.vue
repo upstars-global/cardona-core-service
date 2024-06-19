@@ -936,6 +936,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :link-gen="linkGenerator"
         :pagination-config="paginationConfig"
         :data-meta="dataMeta"
+        :small="config.small"
         @update:model-value="setPage"
       />
     </div>
