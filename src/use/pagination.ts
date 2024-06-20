@@ -79,7 +79,6 @@ export default function usePagination(
     }
     else {
       perPage.value = value
-      CbFunction.value()
     }
 
     setStorage(storageKey, value)
@@ -134,9 +133,9 @@ export default function usePagination(
 
   const onChangePagination = (cb: Function) => {
     CbFunction.value = cb
-    watch(() => currentPage.value, () => {
+    watch(() => [currentPage.value, perPage.value], () => {
       cb()
-    })
+    }, { deep: true })
   }
 
   const updateTotal = (value: number) => {

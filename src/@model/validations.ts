@@ -153,6 +153,9 @@ export const dateRangeDifferent = (dateDiapason: string, args: string[]): boolea
 }
 
 export const date_format = (value: string, args: string[]) => {
+  if (!value)
+    return true
+
   let [format] = args
 
   if (!format)
