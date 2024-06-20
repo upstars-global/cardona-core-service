@@ -260,10 +260,6 @@ const linkGenerator = (page: number) => {
   return linkGen(page)
 }
 
-watch(() => perPage.value, () => {
-  getList()
-})
-
 const mapSortData = () => {
   return sortData.value.isEmpty
     ? null
