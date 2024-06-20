@@ -151,10 +151,10 @@ const onFileUpload = async file => {
   <BaseModal
     :id="selectModalId"
     :title="$t('uploadImg.selectImage')"
-    :size="ModalSizes.Medium"
+    size="md"
   >
     <template #default>
-      <div class="transaction-modal-content--wrapper">
+      <div class="transaction-modal-content--wrapper overflow-y-auto">
         <ModalFileUpload
           v-model="urlFile"
           :path="path"
@@ -170,6 +170,9 @@ const onFileUpload = async file => {
     :remove-modal-id="removeModalId"
     :title="$t(`uploadImg.modalTitle.${props.type}`)"
     :description="$t(`uploadImg.modalLabel.${props.type}`)"
+    :remove-btn-variant="VVariants.Outlined"
+    :cancel-btn-color="VColors.Primary"
+    :cancel-btn-variant="VVariants.Flat"
     @on-click-modal-ok="clearFile"
   />
 </template>
