@@ -2,7 +2,7 @@
 import { computed, inject, nextTick, ref } from 'vue'
 import store from '../../store'
 import { IconsList } from '../../@model/enums/icons'
-import { VColors, VSizes } from '../../@model/vuetify'
+import { ModalSizes, VColors, VSizes } from '../../@model/vuetify'
 import { i18n } from '../../plugins/i18n'
 import BaseModal from '../../components/BaseModal/index.vue'
 import { UploadFileSizes } from '../../@model/enums/uploadFileSizes'
@@ -151,10 +151,10 @@ const onFileUpload = async file => {
   <BaseModal
     :id="selectModalId"
     :title="$t('uploadImg.selectImage')"
-    size="md"
+    :size="ModalSizes.Medium"
   >
     <template #default>
-      <div class="transaction-modal-content--wrapper overflow-y-auto">
+      <div class="transaction-modal-content--wrapper">
         <ModalFileUpload
           v-model="urlFile"
           :path="path"
