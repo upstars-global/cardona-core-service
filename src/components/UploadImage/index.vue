@@ -2,7 +2,7 @@
 import { computed, inject, nextTick, ref } from 'vue'
 import store from '../../store'
 import { IconsList } from '../../@model/enums/icons'
-import { ModalSizes, VColors, VSizes } from '../../@model/vuetify'
+import { ModalSizes, VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { i18n } from '../../plugins/i18n'
 import BaseModal from '../../components/BaseModal/index.vue'
 import { UploadFileSizes } from '../../@model/enums/uploadFileSizes'
@@ -104,7 +104,10 @@ const onFileUpload = async file => {
 </script>
 
 <template>
-  <VLabel class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between">
+  <VLabel
+    class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between"
+    :class="{ 'field-generator-label--required': isRequired }"
+  >
     <span>
       {{ label }}
     </span>
@@ -151,10 +154,10 @@ const onFileUpload = async file => {
   <BaseModal
     :id="selectModalId"
     :title="$t('uploadImg.selectImage')"
-    size="md"
+    :size="ModalSizes.Medium"
   >
     <template #default>
-      <div class="transaction-modal-content--wrapper overflow-y-auto">
+      <div class="transaction-modal-content--wrapper">
         <ModalFileUpload
           v-model="urlFile"
           :path="path"
@@ -179,6 +182,15 @@ const onFileUpload = async file => {
 
 <style lang="scss">
 @import '../../assets/styles/components/upload';
+
+.field-generator-label {
+
+  &--required:after {
+    content: "*";
+    color: rgb(var(--v-theme-error));
+    margin-left: 0.25rem;
+  }
+}
 
 .transaction-modal-content--wrapper {
   max-height: 90vh;
