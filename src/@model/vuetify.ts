@@ -28,6 +28,7 @@ export enum VSizes {
 export enum ModalSizes {
   Small = '31.25rem',
   Medium = '50rem',
+  FullScreen = '',
   Flex = 'auto',
 }
 
