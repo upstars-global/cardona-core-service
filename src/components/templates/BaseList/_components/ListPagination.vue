@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { VSizes } from '../../../../@model/vuetify'
 import type { PaginationResult } from '@/use/pagination'
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
   linkGen?: Function
   dataMeta: { from: number; to: number; of: number }
   modelValue: number
+  small: boolean
 }
 
 interface Emits {
@@ -20,6 +22,8 @@ const LARGE_SIZE_BUTTON = 1000
 const total = computed(() => {
   return Math.ceil(+props.paginationConfig.total.value / props.paginationConfig.perPage.value) || 0
 })
+
+const totalVisible = computed(() => props.small ? 4 : 6)
 
 const currentPage = computed({
   get: () => props.modelValue,
@@ -54,7 +58,8 @@ const currentPage = computed({
         v-if="total"
         v-model="currentPage"
         :length="total"
-        :total-visible="6"
+        :total-visible="totalVisible"
+        :size="small ? VSizes.Small : VSizes.Medium"
         rounded="circle"
         class="ml-auto"
       />
