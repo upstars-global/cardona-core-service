@@ -11,6 +11,10 @@ interface Props {
   description?: string
   withRemoveComment?: boolean
   state?: boolean
+  removeBtnColor: VColors
+  removeBtnVariant: VVariants
+  cancelBtnColor: VColors
+  cancelBtnVariant: VVariants
 }
 
 interface OnCLickModalOkPayload {
@@ -23,7 +27,12 @@ interface Emits {
   (event: 'on-close-modal'): void
 }
 
-defineProps<Props>()
+withDefaults(defineProps<Props>(), {
+  removeBtnColor: VColors.Error,
+  removeBtnVariant: VVariants.Flat,
+  cancelBtnColor: VColors.Secondary,
+  cancelBtnVariant: VVariants.Outlined,
+})
 
 const emits = defineEmits<Emits>()
 
@@ -61,14 +70,15 @@ const onCloseModal = (hide: Function) => {
       <hr>
       <VCardText class="d-flex justify-end gap-3 flex-wrap py-4">
         <VBtn
-          :color="VColors.Secondary"
-          :variant="VVariants.Outlined"
+          :color="cancelBtnColor"
+          :variant="cancelBtnVariant"
           @click="onCloseModal(action.hide)"
         >
           {{ $t('action.cancel') }}
         </VBtn>
         <VBtn
-          :color="VColors.Error"
+          :color="removeBtnColor"
+          :variant="removeBtnVariant"
           @click="onClickModalOk(action.hide)"
         >
           {{ $t('action.remove') }}
