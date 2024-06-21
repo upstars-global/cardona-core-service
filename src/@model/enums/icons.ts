@@ -231,7 +231,7 @@ export enum IconsList {
   SkipForwardIcon = 'SkipForwardIcon',
   SlackIcon = 'SlackIcon',
   SlashIcon = 'SlashIcon',
-  SlidersIcon = 'SlidersIcon',
+  AdjustmentsAltIcon = 'tabler-adjustments-alt',
   SmartphoneIcon = 'SmartphoneIcon',
   SmileIcon = 'SmileIcon',
   SpeakerIcon = 'SpeakerIcon',
