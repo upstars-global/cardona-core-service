@@ -313,7 +313,8 @@ const isActiveSort = (key: string, direction: string): boolean => {
   .c-table__header-cell,
   .c-table__cell {
     &[data-c-field='selectable'] {
-      min-width: 4.25rem;
+      min-width: 3rem;
+      width: 4.25rem;
     }
     &[data-c-field='draggable'] {
       width: 1.25rem;
