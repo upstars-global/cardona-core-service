@@ -63,3 +63,9 @@ hr {
     }
   }
 }
+
+.disable-transition-tabs {
+  div {
+    transition: none !important;
+  }
+}
