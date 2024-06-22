@@ -98,8 +98,6 @@ const onFileUpload = async file => {
   catch {
     await clearFile()
   }
-  finally {
-  }
 }
 </script>
 
@@ -126,8 +124,7 @@ const onFileUpload = async file => {
       :class="{ 'd-none': disabled, 'd-flex': !disabled }"
     >
       <VBtn
-        :size="
-          VSizes.Small"
+        :size="VSizes.Small"
         :color="VColors.Secondary"
         :icon="IconsList.UploadIcon"
         rounded="sm"
