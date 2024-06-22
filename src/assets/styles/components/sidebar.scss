@@ -18,7 +18,7 @@
           color: inherit !important;
           &--active {
             .v-expansion-panel-text__wrapper {
-              padding-top: 0rem;
+              padding-top: 0;
             }
           }
           &-title {
@@ -34,7 +34,6 @@
             }
           }
           &-text__wrapper {
-            padding: 1rem 0;
             hr {
               margin: 1rem 0;
             }
