@@ -159,8 +159,14 @@ const onRowClick = (val: Record<string, string>) => {
 .search-row {
   padding: 0.75rem 1rem;
 
-  &__select {
-    min-width: 5.75rem;
+  :deep(.v-select) {
+    width: 5.75rem;
+    .vs__search {
+      display: none;
+    }
+    .vs__dropdown-menu {
+      min-width: 8.75rem;
+    }
   }
 }
 </style>
