@@ -154,7 +154,7 @@ const onFileUpload = async file => {
     :size="ModalSizes.Medium"
   >
     <template #default>
-      <div class="transaction-modal-content--wrapper">
+      <div class="transaction-modal-content--wrapper overflow-y-auto overflow-x-hidden">
         <ModalFileUpload
           v-model="urlFile"
           :path="path"

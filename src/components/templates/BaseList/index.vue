@@ -825,7 +825,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :position="cell"
             :size="field.size"
             :can-update="canUpdate"
-            @edit-position="(val) => onEditPosition(item, val)"
+            @edit-position="(val) => onEditPosition(item.raw, val)"
           />
 
           <ButtonField
