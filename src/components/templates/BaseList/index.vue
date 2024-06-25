@@ -956,6 +956,10 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     td[data-c-field='actions'] {
       width: 3.5rem;
     }
+
+    td[data-c-field="email"] {
+      padding: 0 !important;
+    }
   }
 }
 </style>

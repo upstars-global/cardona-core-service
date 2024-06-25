@@ -17,7 +17,7 @@ export class ChangePassword {
     this.repeatPassword = new PasswordBaseField({
       key: 'repeatPassword',
       label: i18n.t('placeholder.repeatPassword'),
-      validationRules: { required: true, confirmed: 'password' },
+      validationRules: { required: true, confirmed: '@password' },
       showPassword: true,
     })
   }

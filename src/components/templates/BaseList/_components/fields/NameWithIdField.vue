@@ -4,6 +4,7 @@ import type { _RouteLocationBase } from 'vue-router'
 import store from '../../../../../store'
 import CopyField from '../../../../../components/templates/BaseList/_components/fields/CopyField.vue'
 import CopyShortField from '../../../../../components/templates/BaseList/_components/fields/CopyShortField.vue'
+import { VColors } from '../../../../../@model/vuetify'
 
 const props = defineProps<{
   item: Record<string, any>
@@ -17,7 +18,8 @@ const isYou = computed(() => {
 })
 
 const isExistsRoute = computed(() => {
-  if (!props?.getUpdateRoute) return false
+  if (!props?.getUpdateRoute)
+    return false
   const { name }: _RouteLocationBase = props?.getUpdateRoute(props.item)
 
   return !!name
@@ -46,8 +48,9 @@ const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyF
 
           <VChip
             v-if="isYou"
-            variant="light-info"
-            class="font-weight-bold ml-25"
+            :color="VColors.Info"
+            label
+            class="font-weight-semi-bold ml-1"
           >
             {{ $t('common.you') }}
           </VChip>

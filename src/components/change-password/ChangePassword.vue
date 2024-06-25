@@ -51,7 +51,7 @@ const onCloseModal = () => {
         />
         <FieldGenerator
           v-model="form.repeatPassword"
-          class="mb-2 pr-4"
+          class="repeat-password"
         />
       </template>
       <template #actions="{ form }">
@@ -74,6 +74,10 @@ const onCloseModal = () => {
 
 <style lang="scss" scoped>
 .password-change {
- width: 31.25rem;
+  width: 31.25rem;
+
+  .repeat-password {
+    padding-right: 2.825rem;
+  }
 }
 </style>

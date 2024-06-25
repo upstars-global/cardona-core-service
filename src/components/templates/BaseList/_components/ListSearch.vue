@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import { computed } from 'vue'
+import { debounce } from 'lodash'
 import { IconsList } from '../../../../@model/enums/icons'
 import type { IBaseListConfig } from '../../../../@model/templates/baseList'
 import AppTextField from '../../../../@core/components/app-form-elements/AppTextField.vue'
@@ -29,8 +30,7 @@ interface Emits {
 }
 const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
-const slots = useSlots()
-const size = computed(() => (props.config?.small ? BSize.Sm : BSize.Md)) // TODO: refactor sizes
+const TIME_DEBOUNCE = 500
 
 const onFilterButtonClick = () => {
   emits('on-click-filter')
@@ -42,7 +42,7 @@ const onExportFormatSelected = (format: string) => {
 
 const searchQuery = computed({
   get: () => props.modelValue,
-  set: value => emits('update:modelValue', value),
+  set: debounce((value: string) => emits('update:modelValue', value), TIME_DEBOUNCE),
 })
 </script>
 
