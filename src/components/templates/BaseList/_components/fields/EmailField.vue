@@ -15,12 +15,14 @@ const isExistsRoute = computed(() => {
 </script>
 
 <template>
-  <div class="white-space-nowrap">
+  <div
+    class="white-space-nowrap h-100 d-flex align-center px-4 py-3"
+    @click.stop
+  >
     <RouterLink
       v-if="isExistsRoute"
       :to="getUpdateRoute(item)"
       class="d-block"
-      @click.stop
     >
       {{ item.email }}
     </RouterLink>
