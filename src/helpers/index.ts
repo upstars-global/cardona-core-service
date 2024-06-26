@@ -33,7 +33,7 @@ export const transformFormData = (form): object => {
         const { mainLocale = 'ru' } = store.getters.selectedProject
 
         Object.keys(valueDataInner).forEach(keyInner => {
-          valueDataInner[keyInner][mainLocale].value = form[keyInner]?.value || form.seo[keyInner]?.value
+          valueDataInner[keyInner][mainLocale].value = form[keyInner] ? form[keyInner]?.value : form.seo[keyInner]?.value
         })
       }
       else if (key === 'localisationParameters') {
