@@ -65,10 +65,12 @@ const updateLocalisationParameters = (variableText: LocaleVariable): void => {
 const onRemoveVariables = (variable: string): void => {
   if (!variable)
     return
-  props!.modelValue.metaTitle = cleanMetaTitle(
-    props!.modelValue.metaTitle || {},
-    variable || '',
-  )
+  if (props!.modelValue.metaTitle) {
+    props!.modelValue.metaTitle = cleanMetaTitle(
+      props!.modelValue.metaTitle || {},
+      variable || '',
+    )
+  }
 }
 
 const handleVariablesChange = () => {
