@@ -5,7 +5,6 @@
   .fr-second-toolbar,
   .CodeMirror,
   .fr-wrapper {
-    background: rgb(var(--v-theme-surface));
     color: rgb(var(--v-theme-grey-900));
   }
 
@@ -44,5 +43,25 @@
 
   .cm-s-default .cm-string.cm-property {
     color: rgb(var(--v-theme-on-background));
+  }
+}
+
+.code-view-editor {
+  .fr-toolbar,
+  .fr-element,
+  .fr-second-toolbar,
+  .CodeMirror,
+  .fr-box.fr-basic .fr-wrapper {
+    background: rgb(var(--v-theme-surface));
+  }
+}
+
+.block-text-edite {
+  .fr-toolbar,
+  .fr-element,
+  .fr-second-toolbar,
+  .CodeMirror,
+  .fr-box.fr-basic .fr-wrapper {
+    background: transparent;
   }
 }
