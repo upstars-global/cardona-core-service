@@ -357,10 +357,12 @@ defineExpose({
     </slot>
 
     <ConfirmModal
+      v-if="!config?.withoutConfirmModal"
       :modal-id="ModalsId.ConfirmModal"
       @on-click-modal-ok="onSave"
     />
     <RemoveModal
+      v-if="!config?.withoutDeleteModal"
       :remove-modal-id="removeModalId"
       :entity-name="entityName"
       @on-click-modal-ok="confirmRemoveModal"
