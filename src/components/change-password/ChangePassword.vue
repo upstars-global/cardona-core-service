@@ -7,8 +7,8 @@ import FieldGenerator from '../templates/FieldGenerator/index.vue'
 import BaseSection from '../templates/BaseSection/index.vue'
 import { ModalsId } from '../../@model/modalsId'
 import { VColors, VVariants } from '../../@model/vuetify'
-import type { BaseField } from '@/@model/templates/baseField'
-import { BaseSectionConfig } from '@/@model/templates/baseList'
+import type { BaseField } from '../../@model/templates/baseField'
+import { BaseSectionConfig } from '../../@model/templates/baseList'
 
 const props = defineProps<{
   id: string | number
