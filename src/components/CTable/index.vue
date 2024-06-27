@@ -128,7 +128,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
       >
         <VSkeletonLoader
           v-if="isLoadingList"
-          class="col-table-skelton"
+          class="col-table-skeleton"
           type="text"
         />
         <VCheckbox
@@ -153,7 +153,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
           <VSkeletonLoader
             v-show="isLoadingList"
             type="text"
-            class="col-table-skelton"
+            class="col-table-skeleton"
           />
           <div
             class="d-flex align-center"
@@ -365,8 +365,15 @@ const isActiveSort = (key: string, direction: string): boolean => {
     transition: opacity 0.3s;
   }
 }
+tbody {
+  td {
+    .v-skeleton-loader {
+      width: 90%;
+    }
+  }
+}
 
-.col-table-skelton {
+.col-table-skeleton {
   height: 2rem;
   background-color: initial !important;
   :deep(.v-skeleton-loader) {
