@@ -321,6 +321,12 @@ export interface IBaseSectionConfig {
 
   /** ignoreSeoPermission - Флаг для передачи на бекенд формы с seo and localisation полями */
   readonly ignoreSeoPermission?: boolean
+
+  /** withoutDeleteModal - Флаг для скрытия модалки удаления нужно для использования BaseSection внутри модалки */
+  readonly withoutDeleteModal?: boolean
+
+  /** withoutConfirmModal - Флаг для скрытия модалки подтверждения нужно для использования BaseSection внутри модалки */
+  readonly withoutConfirmModal?: boolean
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to base section model
@@ -333,6 +339,8 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly loadingEndpointArr: Array<string>
   readonly customPermissionPrefix?: string
   readonly ignoreSeoPermission?: boolean
+  readonly withoutDeleteModal?: boolean
+  readonly withoutConfirmModal?: boolean
   constructor(data: IBaseSectionConfig) {
     this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
@@ -343,6 +351,8 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
     this.loadingEndpointArr = data?.loadingEndpointArr || []
     this.customPermissionPrefix = data?.customPermissionPrefix
     this.ignoreSeoPermission = data?.ignoreSeoPermission || false
+    this.withoutDeleteModal = data?.withoutDeleteModal || false
+    this.withoutConfirmModal = data?.withoutConfirmModal || false
   }
 }
 
