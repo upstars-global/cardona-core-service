@@ -7,7 +7,8 @@ import FieldGenerator from '../templates/FieldGenerator/index.vue'
 import BaseSection from '../templates/BaseSection/index.vue'
 import { ModalsId } from '../../@model/modalsId'
 import { VColors, VVariants } from '../../@model/vuetify'
-import type { BaseField } from '@/@model/templates/baseField'
+import type { BaseField } from '../../@model/templates/baseField'
+import { BaseSectionConfig } from '../../@model/templates/baseList'
 
 const props = defineProps<{
   id: string | number
@@ -31,6 +32,11 @@ const onSuccess = async (form: Record<string, BaseField>) => {
 const onCloseModal = () => {
   modal.hideModal(ModalsId.ChangePassword)
 }
+
+const baseSectionConfig = new BaseSectionConfig({
+  withoutDeleteModal: true,
+  withoutConfirmModal: true,
+})
 </script>
 
 <template>
@@ -41,6 +47,7 @@ const onCloseModal = () => {
     <BaseSection
       ref="passwordFormRef"
       :use-entity="useSection"
+      :config="baseSectionConfig"
       :with-read-action="false"
       class="px-6 py-6 password-change"
     >
