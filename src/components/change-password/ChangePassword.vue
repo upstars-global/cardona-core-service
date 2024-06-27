@@ -45,10 +45,8 @@ const onCloseModal = () => {
       class="px-6 py-6 password-change"
     >
       <template #default="{ form }">
-        <FieldGenerator
-          v-model="form.password"
-          class="mb-2"
-        />
+        <FieldGenerator v-model="form.password" />
+
         <FieldGenerator
           v-model="form.repeatPassword"
           class="repeat-password"
@@ -78,6 +76,7 @@ const onCloseModal = () => {
 
   .repeat-password {
     padding-right: 2.825rem;
+    padding-top: 0.5rem;
   }
 }
 </style>
