@@ -9,9 +9,6 @@ import App from '@/App.vue'
 import { registerPlugins } from '@core/utils/plugins'
 import vuex from '@/store'
 
-
-
-
 // Styles
 import '@core/scss/template/index.scss'
 import '@styles/styles.scss'
