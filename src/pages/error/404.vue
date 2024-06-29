@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import ErrorHeader from '../components/ErrorHeader.vue'
+import ErrorHeader from '../../components/ErrorHeader.vue'
+
+defineOptions({
+  name: 'NotFound',
+})
 </script>
 
 <template>
@@ -23,7 +27,7 @@ import ErrorHeader from '../components/ErrorHeader.vue'
 </template>
 
 <style lang="scss">
-@use "../@core/scss/template/pages/misc.scss";
+@use "../../@core/scss/template/pages/misc.scss";
 .grid-container {
   position: absolute;
   top: 50%;
