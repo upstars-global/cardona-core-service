@@ -6,6 +6,7 @@ import type { RatesBaseField } from '../../../../@model/templates/baseField'
 import { NumberBaseField } from '../../../../@model/templates/baseField'
 import FieldGenerator from '../index.vue'
 import type { RatesValueItem } from '../../../../@model/templates/baseField/rates'
+import { MAX_WIDTH_TOOLTIP } from '../../../..//utils/constants'
 
 interface Rates {
   readonly currency: string
@@ -62,9 +63,10 @@ watch(
 
 function setRates(): NumberBaseField[] {
   return allCurrencies.value.map(
-    currency =>
+    (currency, index) =>
       new NumberBaseField({
         key: currency,
+        id: `${props.field.key}-${index}`,
         value: props.modelValue.find(item => item.currency === currency)?.value ?? 0,
         label: currency,
         placeholder: props.field.placeholder,
@@ -81,14 +83,25 @@ function setRates(): NumberBaseField[] {
     v-if="allCurrencies.isNotEmpty"
     class="full-width"
   >
-    <div class="d-flex align-center font-small-4 font-weight-bold">
-      {{ field.label }}
+    <div class="d-flex align-center">
+      <div class="font-small-4 font-weight-medium">
+        {{ field.label }}
+      </div>
 
-      <VIcon
+      <VTooltip
         v-if="field.info"
-        :icon="IconsList.InfoIcon"
-        class="text-muted ml-25 align-text-top"
-      />
+        :text="field.info"
+        :max-width="MAX_WIDTH_TOOLTIP"
+      >
+        <template #activator="{ props }">
+          <VIcon
+            v-if="field.info"
+            :icon="IconsList.InfoIcon"
+            v-bind="props"
+            class="ml-1 text-muted text-grey-500 align-text-top"
+          />
+        </template>
+      </VTooltip>
     </div>
     <VRow
       v-if="formRates.length"

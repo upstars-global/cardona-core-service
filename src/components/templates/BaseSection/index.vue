@@ -11,6 +11,7 @@ import { VColors, VVariants } from '../../../@model/vuetify'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import ConfirmModal from '../../../components/BaseModal/ConfirmModal.vue'
 import { ModalsId } from '../../..//@model/modalsId'
+import { useRedirectToNotFoundPage } from '../../../helpers/router'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean
@@ -31,6 +32,8 @@ const modal = inject('modal')
 
 const route = useRoute()
 const router = useRouter()
+
+const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 
 const entityId: string = route.params?.id?.toString()
 const isCreatePage: boolean = props.pageType === PageType.Create
@@ -102,19 +105,24 @@ const form = ref()
 
 if (props.withReadAction && entityId) {
   onBeforeMount(async () => {
-    const receivedEntity = await store.dispatch(readActionName, {
-      type: entityName,
-      id: entityId,
-      customApiPrefix: props.config?.customApiPrefix,
-    })
+    try {
+      const receivedEntity = await store.dispatch(readActionName, {
+        type: entityName,
+        id: entityId,
+        customApiPrefix: props.config?.customApiPrefix,
+      })
 
-    if (isCreatePage) {
-      receivedEntity.id = null
-      await router.replace({ name: route.name, params: { id: '' } })
+      if (isCreatePage) {
+        receivedEntity.id = null
+        await router.replace({ name: route.name, params: { id: '' } })
+      }
+
+      await store.dispatch('textEditor/setVariableTextBuffer', receivedEntity.localisationParameters)
+      form.value = new EntityFormClass(receivedEntity)
     }
-
-    await store.dispatch('textEditor/setVariableTextBuffer', receivedEntity.localisationParameters)
-    form.value = new EntityFormClass(receivedEntity)
+    catch (error) {
+      await redirectToNotFoundPage(error.type)
+    }
   })
 }
 

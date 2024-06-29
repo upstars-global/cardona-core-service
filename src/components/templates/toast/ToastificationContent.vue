@@ -61,7 +61,7 @@ defineProps<Props>()
 <style lang="scss" scoped>
 .toastification {
   &__avatar {
-    width: 1.8rem;
+    min-width: 1.8rem;
     height: 1.8rem;
     border-radius: 50%;
     background: currentColor;

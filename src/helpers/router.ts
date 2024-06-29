@@ -2,6 +2,16 @@ import type { RouterConfig } from '../@model/router'
 import { convertCamelCase } from '../helpers/index'
 import { permissionPrefix } from '@productConfig'
 
+export const useRedirectToNotFoundPage = router => async (errorType: string): Promise<boolean> => {
+  if (errorType === 'NOT_FOUND') {
+    await router.push({ name: 'NotFound' })
+
+    return true
+  }
+
+  return false
+}
+
 export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfig>) {
   const arrRouters: Array<any> = []
 

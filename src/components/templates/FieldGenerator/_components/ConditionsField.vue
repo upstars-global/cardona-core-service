@@ -3,6 +3,7 @@ import { computed, onBeforeMount, ref } from 'vue'
 import type { ConditionsBaseField } from '../../../../@model/templates/baseField'
 import { TextareaBaseField } from '../../../../@model/templates/baseField'
 import FieldGenerator from '../index.vue'
+import { MAX_WIDTH_TOOLTIP } from '../../../../utils/constants'
 
 const props = withDefaults(
   defineProps<{
@@ -15,8 +16,6 @@ const props = withDefaults(
     modelValue: '',
   },
 )
-
-const MAX_WIDTH_TOOLTIP = '240px'
 
 const emit = defineEmits<{
   (event: 'update:modelValue', value: string): void

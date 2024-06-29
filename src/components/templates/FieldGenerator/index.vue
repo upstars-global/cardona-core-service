@@ -5,6 +5,7 @@ import type { BaseField } from '../../../@model/templates/baseField'
 import { CheckBaseField, SwitchBaseField } from '../../../@model/templates/baseField'
 import store from '../../../store'
 import { IconsList } from '../../../@model/enums/icons'
+import { MAX_WIDTH_TOOLTIP } from '../../../utils/constants'
 
 const props = withDefaults(defineProps<{
   modelValue: BaseField
@@ -23,8 +24,6 @@ const emits = defineEmits<{
   (e: 'search', search: string): void
   (e: 'update:modelValue', item: BaseField): void
 }>()
-
-const MAX_WIDTH_TOOLTIP = '240px'
 
 const canView = computed<boolean>(() => {
   return props.modelValue?.permission ? store.getters.abilityCan(props.modelValue.permission, 'view') : true

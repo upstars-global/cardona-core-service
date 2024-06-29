@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, onMounted, onUnmounted, ref, useSlots, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import { findIndex } from 'lodash'
+import { debounce, findIndex } from 'lodash'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
 import { DownloadFormat } from '../../../@model/templates/baseList'
@@ -332,7 +332,9 @@ const onEditPosition = async ({ id }: { id: string }, position: number) => {
 }
 
 // Search
-watch(() => searchQuery.value, reFetchList)
+const debouncedSearch = debounce(reFetchList, 300)
+
+watch(() => searchQuery.value, debouncedSearch)
 
 // Export
 
