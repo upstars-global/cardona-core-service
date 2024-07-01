@@ -83,8 +83,6 @@ const openSelectModal = () => {
   modal.showModal(selectModalId)
 }
 
-const loadingFileError = ref(false)
-
 const onFileUpload = async file => {
   try {
     const _path = `${props.path}/${file.name.replace(/\W/g, '_')}`
@@ -97,9 +95,9 @@ const onFileUpload = async file => {
     urlFile.value = publicPath
     emits('input-path', _path)
   }
-  catch {
-    loadingFileError.value = true
+  catch (error) {
     await clearFile()
+    throw error
   }
 }
 </script>
@@ -163,7 +161,6 @@ const onFileUpload = async file => {
           :path="path"
           :file="file"
           :on-upload-image-cb="onFileUpload"
-          :loading-file-error="loadingFileError"
           @set-path="onSetPath"
           @clear="onClickRemove"
         />

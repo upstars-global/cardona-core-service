@@ -10,7 +10,6 @@ defineProps<{
   path: string
   file: File
   isLoad: boolean
-  loadingFileError: boolean
   onUploadImageCb: Function
 }>()
 
@@ -80,7 +79,7 @@ const currentTab = ref(tabs.new)
           :on-submit-callback="onUploadImageCb"
           class="upload-file"
         >
-          <template #default="{ isOverDropZone, openFileDialog, isLoading, isSizeError }">
+          <template #default="{ isOverDropZone, openFileDialog, isLoading, isLoadingError }">
             <div v-if="isOverDropZone">
               <p class="text-body-heading font-weight-bold mb-0">
                 {{ $t('uploadImg.dragTextDrop') }}
@@ -106,7 +105,7 @@ const currentTab = ref(tabs.new)
               v-else
               class="text-center"
             >
-              <template v-if="isSizeError || loadingFileError">
+              <template v-if="isLoadingError">
                 <VIcon
                   :icon="IconsList.AlertCircleIcon"
                   size="32"

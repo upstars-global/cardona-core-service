@@ -33,7 +33,7 @@ const kbsInMb = 1048576 // 1MB
 const maxSizeFileKB = computed(() => props.maxSizeFileMb * kbsInMb)
 const fileSizeFormatted = computed(() => (maxSizeFileKB.value / kbsInMb).toString())
 const isLoading = ref(false)
-const isSizeError = ref(false)
+const isLoadingError = ref(false)
 
 const { open, onChange } = useFileDialog({
   accept: props.dataTypes.join(','),
@@ -56,7 +56,7 @@ async function onDrop(files: File[] | null) {
     const file = files[0]
     if (file.size > maxSizeFileKB.value) {
       toastError('fileSizeError', { MB: fileSizeFormatted.value })
-      isSizeError.value = true
+      isLoadingError.value = true
 
       return
     }
@@ -67,6 +67,7 @@ async function onDrop(files: File[] | null) {
         await props.onSubmitCallback(file)
     }
     catch {
+      isLoadingError.value = true
     }
     finally {
       isLoading.value = false
@@ -88,7 +89,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
       :is-over-drop-zone="isOverDropZone"
       :open-file-dialog="open"
       :is-loading="isLoading"
-      :is-size-error="isSizeError"
+      :is-loading-error="isLoadingError"
     >
       <p v-if="isOverDropZone">
         {{ $t('placeholder.dropFile') }}

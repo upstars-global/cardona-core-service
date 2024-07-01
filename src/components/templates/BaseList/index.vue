@@ -128,6 +128,8 @@ const canUpdateItem = (item): boolean =>
 const canRemoveItem = (item): boolean =>
   canRemoveCb && item ? canRemove && canRemoveCb(item) : canRemove
 
+const canDraggable = computed(() => { return props.config.small ? canUpdate && props.config.draggable && !searchQuery.value : canUpdate && props.config.draggable })
+
 // Sidebar
 const isSidebarShown = ref(false)
 const selectedItem: any = ref(null)
@@ -716,7 +718,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :select-mode="config.selectMode"
         :selectable="config.selectable"
         :small="config.small"
-        :draggable="canUpdate && config.draggable"
+        :draggable="canDraggable"
         :hover="config.hover"
         :skeleton-rows="config.skeletonRows"
         :selected-items="selectedItems"
