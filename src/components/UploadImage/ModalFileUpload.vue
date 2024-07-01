@@ -10,6 +10,7 @@ defineProps<{
   path: string
   file: File
   isLoad: boolean
+  loadingFileError: boolean
   onUploadImageCb: Function
 }>()
 
@@ -105,7 +106,7 @@ const currentTab = ref(tabs.new)
               v-else
               class="text-center"
             >
-              <template v-if="isSizeError">
+              <template v-if="isSizeError || loadingFileError">
                 <VIcon
                   :icon="IconsList.AlertCircleIcon"
                   size="32"

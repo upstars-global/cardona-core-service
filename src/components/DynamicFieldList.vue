@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
-import { cloneDeep, debounce } from 'lodash'
+import { debounce } from 'lodash'
 import FieldGenerator from '../components/templates/FieldGenerator/index.vue'
 import type { NumberOrString } from '../@model'
 import { IconsList } from '../@model/enums/icons'
@@ -11,7 +11,7 @@ type DynamicField = BaseField | Record<string, BaseField>
 
 const props = withDefaults(defineProps<{
   modelValue: DynamicField[]
-  templateField: object
+  templateField: Function
   disabled?: boolean
   required?: boolean
   allowAddWithEmpty?: boolean
@@ -98,7 +98,7 @@ const fetchStartSelect = async rows => {
 }
 
 onMounted(async () => {
-  await fetchStartSelect([props.templateField])
+  await fetchStartSelect([props.templateField()])
 })
 
 const fetchSelectOptions = debounce(async (search = '') => {
@@ -107,7 +107,7 @@ const fetchSelectOptions = debounce(async (search = '') => {
 
 // Handlers
 const onAdd = async () => {
-  const itemTemplate: any = cloneDeep(props.templateField)
+  const itemTemplate: any = props.templateField()
 
   rows.value.push(itemTemplate)
   emits('on-add-item', { item: itemTemplate, index: rows.value.length - 1 })
