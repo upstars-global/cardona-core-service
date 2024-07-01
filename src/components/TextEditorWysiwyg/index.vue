@@ -40,7 +40,9 @@ const store = useStore()
 
 const content = computed({
   get: () => props.modelValue,
-  set: value => emit('update:modelValue', value),
+  set: value => {
+    emit('update:modelValue', value)
+  },
 })
 
 const globalEditor = ref()
@@ -246,6 +248,7 @@ const findNoUseVarAndDelete = () => {
     globalEditor.value.selection.restore()
     globalEditor.value.selection.setAfter(globalEditor.value.selection.element())
     globalEditor.value.selection.restore()
+    content.value = text.value
   }
 }
 
@@ -274,12 +277,14 @@ const updateVariableTextByKey = val => {
 const deleteVariableTextByKey = () => {
   if (!globalEditor.value)
     return
-  globalEditor.value.html.set(
-    globalEditor.value.html
-      .get(true) // Параметр true нужен для возвращения HTML вместе с положением каретки текста
-      .replaceAll(`<span class="variable-box">{${variableKeySelect.value}}</span>`, '')
-      .replaceAll('&nbsp;&nbsp;', ''),
-  )
+
+  const text = globalEditor.value.html
+    .get(true) // Параметр true нужен для возвращения HTML вместе с положением каретки текста
+    .replaceAll(`<span class="variable-box">{${variableKeySelect.value}}</span>`, '')
+    .replaceAll('&nbsp;&nbsp;', '')
+
+  globalEditor.value.html.set(text)
+  content.value = text
   removeVariableValueByKey(variableKeySelect.value)
   emit('remove-variable', variableKeySelect.value)
   variableKeySelect.value = ''
