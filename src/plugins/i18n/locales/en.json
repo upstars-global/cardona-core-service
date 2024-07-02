@@ -433,6 +433,11 @@
       "name": "Group name",
       "adminAdd": "Add an admin to a group",
       "searchPlaceholder": "Search by name and id"
+    },
+    "products": {
+      "_": "Products",
+      "list": "Products",
+      "listCount": "Products ({count})"
     }
   },
   "component": {

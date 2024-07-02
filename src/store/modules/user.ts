@@ -28,7 +28,7 @@ export const fetchCurrentUser = async () => {
     status: UserInfo.toStatus(data.isActive),
     groups: data.groups,
     projects: data.projects.map((project: any) => new ProjectInfo(project)),
-    products: data.products.map((project: any) => project as OptionsItem),
+    products: data.products.map((product: any) => product as OptionsItem),
     permissions: data.permissions.map((permission: any) => new Permission(permission)),
   })
 }

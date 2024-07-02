@@ -13,12 +13,12 @@ import { convertUpperCaseFirstSymbol } from '../../helpers'
 import { IconsList } from '../../@model/enums/icons'
 import ProjectSelect from '../../@layouts/components/ProjectSelect.vue'
 import { VVariants } from '../../@model/vuetify'
-import { VNodeRenderer } from './VNodeRenderer'
 import { layoutConfig } from '@layouts'
 import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
 import { useLayoutConfigStore } from '@layouts/stores/config'
 import { injectionKeyIsVerticalNavHovered } from '@layouts/symbols'
 import type { NavGroup, NavLink, NavSectionTitle, VerticalNavItems } from '@layouts/types'
+import ProductsSelect from '@layouts/components/ProductsSelect.vue'
 
 interface Props {
   tag?: string | Component
@@ -111,23 +111,9 @@ const defaultRoute = { path: '/' }
     ]"
   >
     <!-- 👉 Header -->
-    <div class="nav-header">
+    <div class="nav-header justify-space-between">
       <slot name="nav-header">
-        <RouterLink
-          :to="actualBackRoute"
-          class="app-logo app-title-wrapper"
-        >
-          <VNodeRenderer :nodes="layoutConfig.app.logo" />
-
-          <Transition name="vertical-nav-app-title">
-            <h1
-              v-show="!hideTitleAndIcon"
-              class="app-logo-title leading-normal"
-            >
-              {{ layoutConfig.app.title }}
-            </h1>
-          </Transition>
-        </RouterLink>
+        <ProductsSelect :is-collapsed-menu="configStore.isVerticalNavCollapsed" />
         <!-- 👉 Vertical nav actions -->
         <!-- Show toggle collapsible in >md and close button in <md -->
         <Component

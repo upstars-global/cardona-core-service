@@ -71,6 +71,7 @@ const cantSelect = computed(() => projects.value.length < 2)
         <VIcon
           v-bind="attributes"
           :icon="IconsList.ChevronDownIcon"
+          class="text-expanded"
         />
       </template>
     </VueSelect>
@@ -92,6 +93,9 @@ const cantSelect = computed(() => projects.value.length < 2)
     :deep(.vs__actions) {
       display: none;
     }
+  }
+  .text-expanded {
+    display: none;
   }
 }
 .project-logo {
