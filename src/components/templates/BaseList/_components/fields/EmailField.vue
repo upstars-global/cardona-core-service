@@ -26,5 +26,12 @@ const isExistsRoute = computed(() => {
     >
       {{ item.email }}
     </RouterLink>
+
+    <p
+      v-else
+      class="mb-0 text-primary"
+    >
+      {{ item.email }}
+    </p>
   </div>
 </template>

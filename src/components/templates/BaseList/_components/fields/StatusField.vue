@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { convertUpperCaseFirstSymbol } from '../../../../../helpers'
+import { VVariants } from '../../../../../@model/vuetify'
 
 interface IStatusWithVariantReplace {
 
@@ -14,6 +15,7 @@ type ValueType = string | IStatusWithVariantReplace
 
 const props = defineProps<{
   value: ValueType
+  variant: VVariants
 }>()
 
 enum StatusVariants {
@@ -25,6 +27,7 @@ enum StatusVariants {
   waiting = 'secondary',
   received = 'secondary',
   updating = 'secondary',
+  reporting = 'secondary',
 
   // Success
   active = 'success',
@@ -72,13 +75,21 @@ const value = computed(() => {
   return status && convertUpperCaseFirstSymbol(status?.replace(RegExp('_', 'g'), ' '))
 })
 
-const variantName = computed(() => {
+const color = computed(() => {
   return typeof props.value === 'string' ? StatusVariants[props.value] : props.value?.variant
+})
+
+const actualVariant = computed(() => {
+  return props.variant || VVariants.Tonal
 })
 </script>
 
 <template>
-  <VChip :color="variantName" label>
+  <VChip
+    :color="color"
+    :variant="actualVariant"
+    label
+  >
     {{ value }}
   </VChip>
 </template>
