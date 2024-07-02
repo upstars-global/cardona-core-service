@@ -8,7 +8,7 @@ export enum ActionType {
 export enum ActionVariant {
   creation = 'success',
   updating = 'secondary',
-  deleting = 'danger',
+  deleting = 'error',
   reporting = 'secondary',
 }
 export default {}
