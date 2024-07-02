@@ -39,7 +39,7 @@ const emits = defineEmits<{
 }>()
 
 const cTable = ref({})
-const tableWrapperComponent = ref(props.draggable ? VueDraggableNext : 'tbody')
+const tableWrapperComponent = computed(() => props.draggable ? VueDraggableNext : 'tbody')
 
 const compareClasses = (item: Record<string, unknown>, isSelected: boolean): Record<string, boolean> => {
   return {
