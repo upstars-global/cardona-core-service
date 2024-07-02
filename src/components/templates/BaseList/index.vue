@@ -846,6 +846,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             v-else-if="field.type === ListFieldType.Image"
             :key="`${index}_${field.type}`"
             :image-path="cell"
+            :size="field.size"
           />
 
           <ImageDetailField
@@ -853,6 +854,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :id="item.raw.id"
             :key="`${index}_${field.type}`"
             :image-path="item.raw[field.key]?.imagePath"
+            :size="field.size"
             :compression-for-preview="item.raw[field.key]?.compressionForPreview || 0"
           />
 

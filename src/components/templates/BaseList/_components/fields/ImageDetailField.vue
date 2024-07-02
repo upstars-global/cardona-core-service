@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
 import BaseModal from '../../../../BaseModal/index.vue'
+import { ModalSizes } from '../../../../../@model/vuetify'
+import { ListSize } from '../../../../../@model/templates/tableFields'
 import ImageField from './ImageField.vue'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   id: string
   imagePath: string
   compressionForPreview?: number
-}>()
+  size?: ListSize
+}>(), {
+  size: ListSize.MD,
+})
 
 const modal = inject('modal')
 
@@ -25,11 +30,12 @@ const previewImage = computed(() => props.imagePath + previewAdditionalParams.va
   >
     <ImageField
       :image-path="previewImage"
+      :size="size"
       @click.stop="modal.showModal(`${id}-image-detail`)"
     />
     <BaseModal
       :id="`${id}-image-detail`"
-      width="100%"
+      :size="ModalSizes.FullScreen"
     >
       <div class="d-flex justify-center align-center pa-5">
         <img
