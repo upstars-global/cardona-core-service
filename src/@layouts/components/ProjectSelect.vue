@@ -21,8 +21,8 @@ const cantSelect = computed(() => projects.value.length < 2)
 
 <template>
   <div
-    class="project-select"
-    :class="{ 'cant-select': cantSelect }"
+    class="project-select over"
+    :class="{ 'cant-select': cantSelect, 'overflow-hidden': !cantSelect }"
   >
     <VueSelect
       v-model="selectProject"
@@ -69,7 +69,7 @@ const cantSelect = computed(() => projects.value.length < 2)
       </template>
       <template #open-indicator="{ attributes }">
         <VIcon
-          v-if="projects.length > 1"
+          v-if="cantSelect"
           v-bind="attributes"
           :icon="IconsList.ChevronDownIcon"
           class="text-expanded"
