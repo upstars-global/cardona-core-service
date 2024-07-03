@@ -38,62 +38,61 @@ const isDynamicDomain = DYNAMIC_DOMAIN_PREFIX.some(parOfHost =>
 </script>
 
 <template>
-  <div
-    v-if="products.length > 1"
-    class="product-select"
-  >
-    <div
-      v-if="isCollapsedMenu"
-      class="select-item text-primary text-uppercase py-2"
-    >
-      {{ selectedProduct?.name.slice(0, 2) }}
-    </div>
-    <VueSelect
+  <div class="product-select">
+    <template v-if="products.length > 1">
+      <div
+        v-if="isCollapsedMenu"
+        class="select-item text-primary text-uppercase py-2"
+      >
+        {{ selectedProduct?.name.slice(0, 2) }}
+      </div>
+      <VueSelect
+        v-else
+        v-model="selectedProduct"
+        :options="products"
+        label="name"
+        :clearable="false"
+        :searchable="false"
+      >
+        <template #list-header>
+          <div class="text-uppercase header-select">
+            {{ $t('common.products._') }}
+          </div>
+        </template>
+        <template #selected-option="{ name }">
+          <div class="d-flex align-items-center flex-nowrap">
+            <span
+              class="select-item text-primary text-uppercase"
+              :class="{ 'text-info': isDynamicDomain }"
+            >{{ name }}</span>
+          </div>
+        </template>
+        <template #option="{ name }">
+          <div class="d-flex align-items-center flex-nowrap">
+            <span>{{ name[0].toUpperCase() + name.slice(1) }}</span>
+          </div>
+        </template>
+        <template #open-indicator="{ attributes }">
+          <VIcon
+            v-bind="attributes"
+            :icon="IconsList.ChevronDownIcon"
+          />
+        </template>
+      </VueSelect>
+    </template>
+    <RouterLink
       v-else
-      v-model="selectedProduct"
-      :options="products"
-      label="name"
-      :clearable="false"
-      :searchable="false"
+      class="navbar-brand"
+      to="/"
     >
-      <template #list-header>
-        <div class="text-uppercase header-select">
-          {{ $t('common.products._') }}
-        </div>
-      </template>
-      <template #selected-option="{ name }">
-        <div class="d-flex align-items-center flex-nowrap">
-          <span
-            class="select-item text-primary text-uppercase"
-            :class="{ 'text-info': isDynamicDomain }"
-          >{{ name }}</span>
-        </div>
-      </template>
-      <template #option="{ name }">
-        <div class="d-flex align-items-center flex-nowrap">
-          <span>{{ name[0].toUpperCase() + name.slice(1) }}</span>
-        </div>
-      </template>
-      <template #open-indicator="{ attributes }">
-        <VIcon
-          v-bind="attributes"
-          :icon="IconsList.ChevronDownIcon"
-        />
-      </template>
-    </VueSelect>
+      <span
+        class="brand-logo text-primary select-item text-uppercase"
+        :class="{ 'text-info': isDynamicDomain }"
+      >
+        {{ selectedProduct.name }}
+      </span>
+    </RouterLink>
   </div>
-  <RouterLink
-    v-else
-    class="navbar-brand"
-    to="/"
-  >
-    <span
-      class="brand-logo text-primary"
-      :class="{ 'text-info': isDynamicDomain }"
-    >
-      {{ productNameSelected }}
-    </span>
-  </RouterLink>
 </template>
 
 <style lang="scss">

@@ -69,6 +69,7 @@ const cantSelect = computed(() => projects.value.length < 2)
       </template>
       <template #open-indicator="{ attributes }">
         <VIcon
+          v-if="projects.length > 1"
           v-bind="attributes"
           :icon="IconsList.ChevronDownIcon"
           class="text-expanded"
