@@ -35,11 +35,16 @@ const DYNAMIC_DOMAIN_PREFIX = ['cardona-bac-', 'cardona-development.boffice.site
 const isDynamicDomain = DYNAMIC_DOMAIN_PREFIX.some(parOfHost =>
   window.location.host.includes(parOfHost),
 )
+
+const canSelect = computed(() => products.value.length > 1)
 </script>
 
 <template>
-  <div class="product-select">
-    <template v-if="products.length > 1">
+  <div
+    class="product-select"
+    :class="{ 'overflow-hidden': !canSelect }"
+  >
+    <template v-if="canSelect">
       <div
         v-if="isCollapsedMenu"
         class="select-item text-primary text-uppercase py-2"

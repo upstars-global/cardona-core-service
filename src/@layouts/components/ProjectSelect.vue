@@ -21,8 +21,8 @@ const cantSelect = computed(() => projects.value.length < 2)
 
 <template>
   <div
-    class="project-select over"
-    :class="{ 'cant-select': cantSelect, 'overflow-hidden': !cantSelect }"
+    class="project-select"
+    :class="{ 'cant-select': cantSelect }"
   >
     <VueSelect
       v-model="selectProject"
