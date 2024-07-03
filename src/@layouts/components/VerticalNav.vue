@@ -148,7 +148,7 @@ const defaultRoute = { path: '/' }
     </slot>
     <ProjectSelect
       v-if="isMenuTypeMain && isNeocore"
-      class="mx-3 mt-6"
+      class="mx-3 mt-6 mb-8"
       :class="{ 'project-select--collapsed': configStore.isVerticalNavCollapsed && !isHovered }"
     />
 
