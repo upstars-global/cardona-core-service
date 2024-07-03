@@ -82,11 +82,14 @@ const cantSelect = computed(() => projects.value.length < 2)
 .project-select {
   :deep(.vs__selected-options) {
     flex-wrap: nowrap;
-    overflow: hidden;
 
     .vs__search {
       display: none;
     }
+  }
+
+  :deep(.vs__dropdown-menu) {
+    min-width: auto;
   }
 
   &--collapsed {
@@ -95,6 +98,10 @@ const cantSelect = computed(() => projects.value.length < 2)
     }
     .text-expanded {
       display: none;
+    }
+    :deep(.vs__dropdown-option) {
+      padding-left: 0.875rem;
+      padding-right: 0.875rem;
     }
   }
 }

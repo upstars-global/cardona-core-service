@@ -44,7 +44,7 @@ const isDynamicDomain = DYNAMIC_DOMAIN_PREFIX.some(parOfHost =>
   >
     <div
       v-if="isCollapsedMenu"
-      class="select-item text-primary text-uppercase mt-50"
+      class="select-item text-primary text-uppercase py-2"
     >
       {{ selectedProduct?.name.slice(0, 2) }}
     </div>
@@ -98,13 +98,18 @@ const isDynamicDomain = DYNAMIC_DOMAIN_PREFIX.some(parOfHost =>
 
 <style lang="scss">
 .product-select {
+
   .vs__dropdown-toggle {
     border: none !important;
     box-shadow: none !important;
     padding-left: 0;
+    flex-wrap: nowrap;
   }
   .vs__actions {
     color: rgba(var(--v-theme-primary));
+  }
+  .vs__search {
+    display: none;
   }
   .header-select {
     color: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));

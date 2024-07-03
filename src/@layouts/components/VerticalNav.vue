@@ -113,7 +113,7 @@ const defaultRoute = { path: '/' }
     <!-- 👉 Header -->
     <div class="nav-header justify-space-between">
       <slot name="nav-header">
-        <ProductsSelect :is-collapsed-menu="configStore.isVerticalNavCollapsed" />
+        <ProductsSelect :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered" />
         <!-- 👉 Vertical nav actions -->
         <!-- Show toggle collapsible in >md and close button in <md -->
         <Component
@@ -227,6 +227,7 @@ const defaultRoute = { path: '/' }
   inset-inline-start: 0;
   transition: inline-size 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
   will-change: transform, inline-size;
+  overflow: hidden;
 
   .nav-header {
     display: flex;
