@@ -12,6 +12,10 @@ import { PermissionLevel } from '../../@model/permission'
 import { useConfigStore } from '@core/stores/config'
 import { Theme } from '@core/enums'
 
+const props = defineProps<{
+  isCollapsedMenu: boolean
+}>()
+
 const { t } = useI18n()
 
 const store = useStore()
@@ -70,7 +74,10 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 </script>
 
 <template>
-  <div class="custom-menu">
+  <div
+    class="custom-menu"
+    :class="{ 'custom-menu--collapsed': isCollapsedMenu }"
+  >
     <VMenu>
       <template #activator="{ props }">
         <div
@@ -94,7 +101,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
               <span class="text-h5 first-letter">{{ firstLetter }}</span>
             </VAvatar>
           </VBadge>
-          <div class="full-name">
+          <div class="full-name ml-5">
             {{ userName }}
           </div>
         </div>
@@ -138,6 +145,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 }
 
 .user-info {
+  overflow: hidden;
   &:hover {
     .full-name {
       color: rgb(var(--v-theme-primary))
@@ -147,7 +155,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 .full-name {
   font-weight: 600;
   color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
-  margin-left: 1rem;
+  white-space: nowrap;
 }
 
 .action-menu {
@@ -171,6 +179,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 
 .custom-menu {
   padding: 1rem;
+
   :deep(.v-badge__badge) {
     height: 11px;
     width: 11px;

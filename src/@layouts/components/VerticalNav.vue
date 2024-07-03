@@ -156,19 +156,20 @@ const defaultRoute = { path: '/' }
       v-if="isMenuTypeMain"
       class="nav-section-title mt-8 mb-4 d-flex"
     >
-      <span
-        v-if="!configStore.isVerticalNavCollapsed || isHovered"
-        class="title-text"
-      >
-        {{ selectedProjectTitle }}
-      </span>
-
-      <VIcon
-        v-else
-        :icon="IconsList.MoreHorizontalIcon"
-        size="18"
-        class="mx-auto"
-      />
+      <div class="title-wrapper">
+        <span
+          v-if="!configStore.isVerticalNavCollapsed || isHovered"
+          class="title-text"
+        >
+          {{ selectedProjectTitle }} ThorDevelop
+        </span>
+        <VIcon
+          v-else
+          :icon="IconsList.MoreHorizontalIcon"
+          size="18"
+          class="mx-auto"
+        />
+      </div>
     </div>
     <div
       v-if="!isMenuTypeMain"
@@ -201,7 +202,7 @@ const defaultRoute = { path: '/' }
         />
       </PerfectScrollbar>
     </slot>
-    <CustomMenu />
+    <CustomMenu :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered" />
   </Component>
   <div
     class="sidenav-overlay"
@@ -231,13 +232,6 @@ const defaultRoute = { path: '/' }
 
 .layout-vertical-nav-collapsed {
   transition: transform 0.3s ease-in-out;
-  .layout-vertical-nav{
-    &:not(.hovered) {
-      .full-name {
-        transform: translateX(-10rem);
-      }
-    }
-  }
 }
 
 // 👉 Vertical Nav

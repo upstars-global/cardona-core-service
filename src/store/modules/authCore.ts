@@ -21,16 +21,21 @@ export default {
 
   actions: {
     async login({ commit, dispatch }, authData: ILoginData) {
-      const { data }: { data: IAuthTokens } = await ApiService.request({
-        type: 'App.V2.Auth',
-        data: authData,
-      })
+      try {
+        const { data }: { data: IAuthTokens } = await ApiService.request({
+          type: 'App.V2.Auth',
+          data: authData,
+        })
 
-      setAuthTokens(data)
+        setAuthTokens(data)
 
-      commit('SET_AUTH', true)
+        commit('SET_AUTH', true)
 
-      await dispatch('fetchCurrentUser', {}, { root: true })
+        await dispatch('fetchCurrentUser', {}, { root: true })
+      }
+      catch {
+
+      }
     },
 
     async refreshAuth(context, refreshToken: string): Promise<IAuthTokens> {
