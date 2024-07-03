@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { productsName } from '@/configs/productsName'
-import { IconsList } from '@/@model/enums/icons'
+import { productsName } from '../../configs/productsName'
+import { IconsList } from '../../@model/enums/icons'
 
 defineOptions({ name: 'ProductsSelect' })
 
