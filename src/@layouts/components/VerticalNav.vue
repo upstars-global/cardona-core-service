@@ -153,25 +153,6 @@ const defaultRoute = { path: '/' }
     />
 
     <div
-      v-if="isMenuTypeMain"
-      class="nav-section-title mt-8 mb-4 d-flex"
-    >
-      <div class="title-wrapper">
-        <span
-          v-if="!configStore.isVerticalNavCollapsed || isHovered"
-          class="title-text"
-        >
-          {{ selectedProjectTitle }} ThorDevelop
-        </span>
-        <VIcon
-          v-else
-          :icon="IconsList.MoreHorizontalIcon"
-          size="18"
-          class="mx-auto"
-        />
-      </div>
-    </div>
-    <div
       v-if="!isMenuTypeMain"
       class="d-flex align-center pb-4 pl-2"
     >

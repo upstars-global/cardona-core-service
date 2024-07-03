@@ -5,7 +5,6 @@ import { computed } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { usePreferredColorScheme } from '@vueuse/core'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors } from '../../@model/vuetify'
 import { PermissionLevel } from '../../@model/permission'
@@ -45,8 +44,7 @@ const canAllAdminSection = computed(() => {
 })
 
 const changeMode = computed(() => {
-  const theme = configStore.theme === Theme.System ? usePreferredColorScheme() : configStore.theme
-  const actualMode = theme === Theme.Light ? Theme.Dark : Theme.Light
+  const actualMode = configStore.theme === Theme.Light ? Theme.Dark : Theme.Light
 
   return {
     title: t(`customMenu.${actualMode}Mode`),
