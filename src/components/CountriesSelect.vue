@@ -105,7 +105,7 @@ watch([selectedCountries, countriesRadioModel], () => {
 
 <template>
   <div>
-    <hr class="mb-2 mt-0">
+    <hr class="mb-6 mt-0">
     <VBtnToggle
       v-model="countriesRadioModel"
       :disabled="disabled"
@@ -114,7 +114,7 @@ watch([selectedCountries, countriesRadioModel], () => {
       color="primary"
       variant="outlined"
       :size="VSizes.Small"
-      class="mb-1 select-countries-radio"
+      class="select-countries-radio"
     >
       <VBtn
         v-for="({ text, value }) in optionsRadioCountries"
@@ -125,7 +125,7 @@ watch([selectedCountries, countriesRadioModel], () => {
       />
     </VBtnToggle>
 
-    <div>
+    <div class="mt-4">
       <VLabel class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between">
         <span>
           {{ countriesRadioLabel }}
