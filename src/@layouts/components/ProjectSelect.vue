@@ -65,6 +65,11 @@ const cantSelect = computed(() => projects.value.length < 2)
             {{ publicName[0].toUpperCase() }}
           </div>
           <span class="text-expanded">{{ publicName || title }}</span>
+          <VIcon
+            v-if="selectProject.publicName === publicName"
+            :icon="IconsList.CheckIcon"
+            class="ml-auto"
+          />
         </div>
       </template>
       <template #open-indicator="{ attributes }">
