@@ -73,12 +73,15 @@ const cantSelect = computed(() => projects.value.length < 2)
         </div>
       </template>
       <template #open-indicator="{ attributes }">
-        <VIcon
+        <div
           v-if="!cantSelect"
           v-bind="attributes"
-          :icon="IconsList.ChevronDownIcon"
-          class="text-expanded"
-        />
+        >
+          <VIcon
+            :icon="IconsList.ChevronDownIcon"
+            class="text-expanded"
+          />
+        </div>
       </template>
     </VueSelect>
   </div>
@@ -90,7 +93,7 @@ const cantSelect = computed(() => projects.value.length < 2)
     flex-wrap: nowrap;
 
     .vs__search {
-      display: none;
+      flex: 0 0 0px;
     }
   }
 
