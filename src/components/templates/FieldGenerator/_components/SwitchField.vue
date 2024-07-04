@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import store from '../../../../store'
 import { IconsList } from '../../../../@model/enums/icons'
 import type { SwitchBaseField } from '../../../../@model/templates/baseField'
 import { VSizes } from '../../../../@model/vuetify'
@@ -26,10 +25,6 @@ const localModelValue = computed({
   set: (value: boolean) => emits('update:modelValue', value),
 })
 
-const canUpdate = computed<boolean>(() =>
-  props.field.permission ? store.getters.abilityCan(props.field.permission, 'update') : true,
-)
-
 const iconName = computed(() => (props.modelValue ? IconsList.CheckCircleIcon : IconsList.XCircleIcon))
 const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-error'))
 </script>
@@ -42,7 +37,7 @@ const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-er
     <VSwitch
       v-model="localModelValue"
       class="switch-input"
-      :class="{ 'is-disabled': disabled || !canUpdate, 'not-checked': !localModelValue }"
+      :class="{ 'is-disabled': disabled, 'not-checked': !localModelValue }"
       :disabled="disabled"
     />
 
