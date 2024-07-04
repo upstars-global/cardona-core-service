@@ -139,6 +139,7 @@ const configTo = computed(() => {
     mode: 'single',
     defaultHour: 23,
     defaultMinute: 59,
+    maxDate: props.field?.maxDateTo || '',
   }
 })
 </script>
