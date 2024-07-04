@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { Field } from 'vee-validate'
 import type { BaseField } from '../../../@model/templates/baseField'
 import { CheckBaseField, SwitchBaseField } from '../../../@model/templates/baseField'
-import store from '../../../store'
 import { IconsList } from '../../../@model/enums/icons'
 import { MAX_WIDTH_TOOLTIP } from '../../../utils/constants'
+import { PermissionLevel } from '../../../@model/permission'
 
 const props = withDefaults(defineProps<{
   modelValue: BaseField
@@ -24,6 +25,8 @@ const emits = defineEmits<{
   (e: 'search', search: string): void
   (e: 'update:modelValue', item: BaseField): void
 }>()
+
+const store = useStore()
 
 const canView = computed<boolean>(() => {
   return props.modelValue?.permission ? store.getters.abilityCan(props.modelValue.permission, 'view') : true
@@ -56,6 +59,10 @@ const fieldModel = computed({
 const localValue = computed(() => props.modelValue.component)
 
 const onSearch = (search: string) => emits('search', search)
+
+const canUpdate = computed<boolean>(() =>
+  props.modelValue?.permission ? store.getters.abilityCan(props.modelValue?.permission, PermissionLevel.update) : true,
+)
 </script>
 
 <template>
@@ -107,7 +114,7 @@ const onSearch = (search: string) => emits('search', search)
             v-model="fieldModel"
             :options="options"
             :field="modelValue"
-            :disabled="disabled"
+            :disabled="disabled || !canUpdate"
             :placeholder="modelValue.placeholder"
             :size="size"
             v-bind="{ ...$attrs }"
