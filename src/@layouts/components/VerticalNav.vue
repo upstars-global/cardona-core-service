@@ -75,6 +75,8 @@ const isMinMode = computed(() => width.value < 1279)
 watch(() => isMinMode.value, () => {
   if (!isMinMode.value)
     configStore.toggleMenu(false)
+  if (isMinMode.value)
+    configStore.isVerticalNavCollapsed = false
 })
 
 const isNeocore = computed(() => store.getters.isNeocore)
