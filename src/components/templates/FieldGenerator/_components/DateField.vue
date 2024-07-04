@@ -171,6 +171,7 @@ const configTo = computed(() => {
     />
     <span class="mx-1"> – </span>
     <AppDateTimePicker
+      :key="startedAt"
       :is-invalid="Boolean(errors)"
       :model-value="endedAt"
       :class="{ error: errors }"
