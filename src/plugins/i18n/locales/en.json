@@ -539,7 +539,7 @@
     }
   },
   "pagination": {
-    "showing": "Showing {from} to {to} of {of} entries"
+    "showing": "Results: {from} to {to} of {of}"
   },
   "validations": {
     "incorrectLoginOrPassword": "Incorrect login or password",

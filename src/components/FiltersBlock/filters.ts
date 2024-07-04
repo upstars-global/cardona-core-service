@@ -11,6 +11,7 @@ import {
 } from '../../@model/templates/baseField'
 import { TransactionType } from '../../@model/enums/playersTransactions'
 import type { RadioOption } from '../../@model/templates/baseField/radio'
+import { getEndOfDay } from '../../helpers/date';
 
 // Options
 const stateOptions: RadioOption[] = [
@@ -235,6 +236,7 @@ const dateRangeCreative = new DateBaseField({
   isRangeMode: true,
   withTime: true,
   isFilter: true,
+  maxDateTo: getEndOfDay(),
   validationRules: { range_date: false, range_date_different: false },
 })
 
