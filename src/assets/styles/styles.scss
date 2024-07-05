@@ -15,6 +15,12 @@
 @import "./components/v-switch";
 @import "./components/gallery";
 
+html {
+  &.v-overlay-scroll-blocked {
+    overflow-y: hidden;
+    position: static;
+  }
+}
 
 .font-weight-semi-bold {
   font-weight: 600;
