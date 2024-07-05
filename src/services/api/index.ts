@@ -15,6 +15,7 @@ import type {
   IValidationError,
 } from './config'
 import { i18n } from '@/plugins/i18n'
+import { router } from '@/plugins/1.router'
 
 const { toastSuccess, toastError, toastErrorMessageString } = useToastService()
 
@@ -81,15 +82,15 @@ class ApiService {
       return data
     }
     catch (error: any) {
-      // const isLoginPage: boolean = router.currentRoute.value.name === 'Login'
+      const isLoginPage: boolean = router.currentRoute.value.name === 'Login'
 
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', 'TOKEN_INVALID']
 
       if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type))
         store.dispatch('authCore/clearAuth')
 
-      /* if (!isLoginPage)
-        router.push({ name: 'Login' }) */
+      if (!isLoginPage)
+        router.push({ name: 'Login' })
 
       store.dispatch('addErrorUrl', url)
 
