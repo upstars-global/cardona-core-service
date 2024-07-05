@@ -126,7 +126,13 @@ const isActiveSort = (key: string, direction: string): boolean => {
         :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
         data-c-field="selectable"
       >
+        <VSkeletonLoader
+          v-if="isLoadingList"
+          class="col-table-skeleton"
+          type="text"
+        />
         <VCheckbox
+          v-else
           :model-value="allSelected || someSelected"
           :indeterminate="allSelected ? false : someSelected"
           :disabled="isLoadingList"
@@ -144,6 +150,11 @@ const isActiveSort = (key: string, direction: string): boolean => {
           :data-c-field="column.key"
           @click="isSortableColumn(column) && handleSorByField(column)"
         >
+          <VSkeletonLoader
+            v-show="isLoadingList"
+            type="text"
+            class="col-table-skeleton"
+          />
           <div
             class="d-flex align-center"
             :class="{
@@ -151,7 +162,9 @@ const isActiveSort = (key: string, direction: string): boolean => {
               'justify-center': column.align === AlignType.Center,
               'gap-2': column.align,
               'justify-space-between': !column.align,
+              'd-none': !isLoadingList,
             }"
+            :style=" isLoadingList && `display: none !important`"
           >
             {{ column.title }}
 
@@ -223,6 +236,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
             data-c-field="draggable"
           >
             <VIcon
+              v-if="!isLoadingList"
               :icon="IconsList.DragVerticalIcon"
               class="dragging-icon"
             />
@@ -349,6 +363,27 @@ const isActiveSort = (key: string, direction: string): boolean => {
   .dragging-icon {
     opacity: 0;
     transition: opacity 0.3s;
+  }
+}
+tbody {
+  td {
+    .v-skeleton-loader {
+      width: 90%;
+    }
+  }
+}
+
+.col-table-skeleton {
+  height: 2rem;
+  background-color: initial !important;
+  :deep(.v-skeleton-loader) {
+    padding: 0;
+    margin: 0;
+  }
+  :deep(.v-skeleton-loader__bone) {
+    height: 12px !important;
+    margin: 0;
+    margin-inline: auto;
   }
 }
 </style>
