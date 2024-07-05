@@ -82,7 +82,7 @@ const onHide = () => {
     </div>
     <div
       v-if="viewForm && sidebarActive"
-      class="p-1 bg-light px-4"
+      class="p-1 pb-2 bg-light px-4"
     >
       <!--  ViewInfo   -->
       <template v-if="Object.keys(viewForm).isNotEmpty">
