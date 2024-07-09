@@ -64,7 +64,7 @@ const isShowToggleButton = computed(() => {
         :key="itemsList.length"
         class="chip-list"
       >
-        <div class="d-flex flex-wrap gap-2 ">
+        <div class="d-flex flex-wrap gap-2 mb-1">
           <VChip
             v-for="(itemArr, key) in itemsList"
             :key="key"
