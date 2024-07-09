@@ -97,7 +97,7 @@ const isShowToggleButton = computed(() => {
   width: 17.8rem;
   .label-chip {
     min-width: auto;
-    max-width: auto;
+    max-width: initial;
   }
 }
 </style>
