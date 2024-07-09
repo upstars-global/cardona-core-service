@@ -24,7 +24,7 @@ const valueColsCount = computed(() => 12 - props.cols)
     class="field-generator"
   >
     <VRow
-      class="font-small-3 "
+      class="font-small-3"
       no-gutters
     >
       <VCol
@@ -63,7 +63,6 @@ const valueColsCount = computed(() => 12 - props.cols)
   width: 100%;
   max-width: 154px;
   color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
-  margin-right: 0.5rem;
 }
 .wrapper-value {
   width: 100%;

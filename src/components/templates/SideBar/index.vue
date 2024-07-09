@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { ref, useSlots, watch } from 'vue'
+import { computed, ref, useSlots, watch } from 'vue'
 
 import { hide } from '@floating-ui/dom'
+import { useRoute } from 'vue-router'
 import ViewGenerator from '../../../components/templates/ViewGenerator/index.vue'
 import { ViewInfo } from '../../../@model/view'
 import { IconsList } from '../../../@model/enums/icons'
 import { convertCamelCase } from '../../../helpers'
 import { SideBarCollapseItem } from '../../../@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
+import { getStorage, setStorage } from '../../../helpers/storage'
 
 const props = defineProps<{
   item?: object
@@ -27,8 +29,13 @@ const emits = defineEmits<{
   (e: 'hide'): void
 }>()
 
+const route = useRoute()
 const slots = useSlots()
 
+const currentPageName = route.name?.toString()
+const openBlocsKey = `${currentPageName}-${props.entityName}-suidebar-open-blocs`
+const allBlocsKey = computed(() => viewForm.value ? Object.keys(viewForm.value) : [])
+const openBlocs = ref([])
 const emitAfterAnimationSidebar = 200
 
 const viewForm = ref(null)
@@ -46,12 +53,24 @@ watch(
   item => {
     if (item)
       viewForm.value = new props.sideBarModel(item)
+    openBlocs.value = JSON.parse(getStorage(openBlocsKey)) || allBlocsKey.value
   },
 )
 
 const title = `title.${convertCamelCase(props.entityName, '.')}.sidebarTitle`
 
 const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
+
+const updateOpensBloks = newKey => {
+  const list = openBlocs.value.find(key => key === newKey) ? openBlocs.value.filter(key => key !== newKey) : [...openBlocs.value, newKey]
+
+  setStorage(openBlocsKey, list)
+  openBlocs.value = list
+}
+
+const isOpenBlock = key => {
+  return openBlocs.value.find(item => item === key)
+}
 
 const onHide = () => {
   emits('update:sidebar-active', false)
@@ -101,6 +120,7 @@ const onHide = () => {
               :model-value="viewForm[key]"
               :key-name="key"
               :class="`${key}-view`"
+              cols="4"
             >
               <template
                 v-if="checkSlotExistence(`sidebar-value(${key})`)"
@@ -114,9 +134,16 @@ const onHide = () => {
             </ViewGenerator>
             <template v-else-if="viewForm[key] instanceof SideBarCollapseItem && sidebarCollapseMode">
               <div>
-                <VExpansionPanels>
-                  <VExpansionPanel :title="`${viewForm[key].title}`">
-                    <VExpansionPanelText>
+                <VExpansionPanels :model-value="isOpenBlock(key)">
+                  <VExpansionPanel
+                    :title="`${viewForm[key].title}`"
+                    :value="key"
+                    @click="updateOpensBloks(key)"
+                  >
+                    <VExpansionPanelText
+                      class="px-0"
+                      @click.stop
+                    >
                       <div
                         v-for="groupKey in Object.keys(viewForm[key].views)"
                         :key="groupKey"
@@ -127,6 +154,7 @@ const onHide = () => {
                           :model-value="viewForm[key].views[groupKey]"
                           :key-name="groupKey"
                           :class="`${groupKey}-view`"
+                          cols="4"
                         >
                           <template
                             v-if="checkSlotExistence(`sidebar-value(${groupKey})`)"
@@ -144,7 +172,10 @@ const onHide = () => {
                 </VExpansionPanels>
               </div>
 
-              <hr v-if="viewForm[key].withBottomSeparator">
+              <hr
+                v-if="viewForm[key].withBottomSeparator"
+                class="my-0"
+              >
             </template>
           </slot>
         </div>
@@ -189,6 +220,11 @@ const onHide = () => {
 .side-bar {
   .content-sidebar-header {
     background: rgb(var(--v-theme-background));
+  }
+
+  :deep(.v-expansion-panel-text__wrapper) {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 

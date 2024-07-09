@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import type { ViewInfo } from '../../../../@model/view'
 import { IconsList } from '../../../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../../../@model/vuetify'
@@ -45,7 +46,7 @@ const isShowToggleButton = computed(() => {
   <div class="full-width">
     <div
       v-if="item.withSearch"
-      class="mb-50 input-field mb-2"
+      class="input-field mb-2"
     >
       <VTextField
         v-model="localSearch"
@@ -58,32 +59,45 @@ const isShowToggleButton = computed(() => {
       name="fade"
       mode="out-in"
     >
-      <div
+      <PerfectScrollbar
         v-if="itemsList && Array.isArray(itemsList)"
         :key="itemsList.length"
+        class="chip-list"
       >
-        <VChip
-          v-for="(itemArr, key) in itemsList"
-          :key="key"
-          label
-          :variant="VVariants.Tonal"
-          :size="VSizes.XSmall"
-          class="mr-2 font-weight-bold"
-        >
-          {{ itemArr.name }}
-        </VChip>
-        <VChip
-          v-if="isShowToggleButton"
-          label
-          :color="VColors.Primary"
-          :variant="VVariants.Tonal"
-          :size="VSizes.XSmall"
-          class="cursor-pointer"
-          @click="onToggleShowList"
-        >
-          {{ toggleLabel }}
-        </VChip>
-      </div>
+        <div class="d-flex flex-wrap gap-2 ">
+          <VChip
+            v-for="(itemArr, key) in itemsList"
+            :key="key"
+            label
+            :variant="VVariants.Tonal"
+            :size="VSizes.Small"
+            class="font-weight-medium px-2 overflow-visible label-chip"
+          >
+            {{ itemArr.name }}
+          </VChip>
+          <VChip
+            v-if="isShowToggleButton"
+            label
+            :color="VColors.Primary"
+            :variant="VVariants.Tonal"
+            :size="VSizes.Small"
+            class="cursor-pointer px-2"
+            @click="onToggleShowList"
+          >
+            {{ toggleLabel }}
+          </VChip>
+        </div>
+      </PerfectScrollbar>
     </Transition>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.chip-list {
+  width: 17.8rem;
+  .label-chip {
+    min-width: auto;
+    max-width: auto;
+  }
+}
+</style>
