@@ -111,3 +111,11 @@ export const getTimeFromDate = (date: Nullable<string> | undefined): string => {
 
   return new Date(date).toISOString().slice(11, 16)
 }
+
+export const getEndOfDay = () => {
+  const now = new Date()
+
+  now.setHours(23, 59, 0, 0)
+
+  return now
+}

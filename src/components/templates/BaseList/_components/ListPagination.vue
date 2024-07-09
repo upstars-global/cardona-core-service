@@ -24,9 +24,6 @@ interface Emits {
 const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
 
-const LARGE_SIZE_BUTTON = 1000
-const BUTTON_SIZE = 40
-
 const total = computed(() => {
   return Math.ceil(+props.paginationConfig.total.value / props.paginationConfig.perPage.value) || 0
 })
@@ -44,7 +41,7 @@ const getNumberOfPage = ({ page }) => {
   if (page.includes('...'))
     return page
 
-  return page.replace(/[^0-9]/g, '')
+  return +page.replace(/[^0-9]/g, '')
 }
 
 const isEllipsis = (item: VPaginationItem) => item.page.includes('...')
@@ -55,12 +52,7 @@ const setActivePage = (item: VPaginationItem) => {
   currentPage.value = getNumberOfPage(item)
 }
 
-const paramsOfSize = (item: VPaginationItem) => {
-  if (isEllipsis(item))
-    return { size: BUTTON_SIZE }
-
-  return item.page?.length >= 4 ? { height: BUTTON_SIZE } : { size: BUTTON_SIZE }
-}
+const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
 </script>
 
 <template>
@@ -73,7 +65,7 @@ const paramsOfSize = (item: VPaginationItem) => {
       sm="4"
       class="d-flex align-center justify-start justify-content-sm-start px-0"
     >
-      <span class="pagination-text">
+      <span class="pagination-text text-no-wrap">
         {{ $t('pagination.showing', dataMeta) }}
       </span>
     </VCol>
@@ -82,25 +74,22 @@ const paramsOfSize = (item: VPaginationItem) => {
       cols="12"
       sm="8"
       class="d-flex align-center justify-center px-0"
-      :class="{ 'is-longer-item': LARGE_SIZE_BUTTON < total }"
     >
       <VPagination
         v-if="total"
         v-model="currentPage"
         :length="total"
         :total-visible="totalVisible"
-        :size="small ? VSizes.Small : VSizes.Medium"
+        :size="actualSize"
         rounded="circle"
         class="ml-auto pagination"
       >
         <template #item="item">
           <VBtn
-            v-bind="paramsOfSize(item)"
             :variant="VVariants.Tonal"
             :color="item.isActive ? 'primary' : 'secondary'"
             class="pagination--button"
-            rounded
-            :class="{ 'long-number': item.page.length >= 3 && !isEllipsis(item), [`number-length-${item.page.length}`]: item.page.length < 4 }"
+            rounded="circle"
             @click="setActivePage(item)"
           >
             {{ getNumberOfPage(item) }}
@@ -116,40 +105,20 @@ const paramsOfSize = (item: VPaginationItem) => {
   color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
 }
 .pagination {
-  &--buton {
-    border-radius: 100%;
-    width: initial
-  }
-}
-
-.pagination--button {
-  border-radius: 100%;
-  width: initial;
-}
-
-.number-length-1 { padding-inline: calc(1rem - 2px) }
-.number-length-2 { padding-inline: 0.75rem }
-.long-number {
-  border-radius: 100% !important;
-  width: auto !important;
-  padding: 0 !important;
-  :deep(span) {
-    padding: 0 0.5rem;
-    border-radius: 6.25rem;
-  }
-}
-.is-longer-item {
-  :deep(.v-pagination__list) {
-    .v-pagination__item:nth-child(8) {
+  :deep(ul) {
+    li {
       button {
-        border-radius: initial;
-        width: auto;
-        span {
-          padding: 0 0.5rem;
-          border-radius: 6.25rem;
-        }
+        border-radius: 100px !important;
+        min-width: 32px !important;
+        height: 32px !important;
+        border-radius: 100px !important;
+        padding: 0 6px !important;
+        width: auto !important;
       }
     }
+  }
+  :deep(.v-pagination__list) {
+    align-items: center;
   }
 }
 </style>

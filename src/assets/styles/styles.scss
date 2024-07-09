@@ -15,6 +15,12 @@
 @import "./components/v-switch";
 @import "./components/gallery";
 
+html {
+  &.v-overlay-scroll-blocked {
+    overflow-y: hidden;
+    position: static;
+  }
+}
 
 .font-weight-semi-bold {
   font-weight: 600;
@@ -60,6 +66,20 @@ hr {
       background: rgb(var(--v-theme-background));
       box-shadow: none;
       padding: 0;
+    }
+  }
+}
+
+$directions: (top: t, right: r, bottom: b, left: l);
+$values: (25: 0.25rem, 50: 0.50rem, 75: 0.75rem);
+
+@each $valueKey, $value in $values {
+  @each $directionKey, $direction in $directions {
+    .m#{$direction}-#{$valueKey} {
+      margin-#{$directionKey}: $value;
+    }
+    .p#{$direction}-#{$valueKey} {
+      padding-#{$directionKey}: $value;
     }
   }
 }

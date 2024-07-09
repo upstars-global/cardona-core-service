@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
+import { useRouter } from 'vue-router'
 import type { AxiosError, AxiosInstance, AxiosRequestConfig } from '../../libs/axios'
 import axios from '../../libs/axios'
 import store from '../../store'
@@ -23,6 +24,8 @@ const getLoaderSlug = (url: string, loaderSlug: string): string =>
 
 class ApiService {
   static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}) {
+    const router = useRouter()
+    console.log(router)
     const {
       method = Method.POST,
       contentType = ContentType.JSON,
@@ -81,15 +84,17 @@ class ApiService {
       return data
     }
     catch (error: any) {
-      // const isLoginPage: boolean = router.currentRoute.value.name === 'Login'
+      const isLoginPage: boolean = router?.currentRoute.value.name === 'Login'
+
+      console.log(isLoginPage)
 
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', 'TOKEN_INVALID']
 
       if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type))
         store.dispatch('authCore/clearAuth')
 
-      /* if (!isLoginPage)
-        router.push({ name: 'Login' }) */
+      if (!isLoginPage)
+        router.push({ name: 'Login' })
 
       store.dispatch('addErrorUrl', url)
 
