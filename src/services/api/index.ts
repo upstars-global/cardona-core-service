@@ -25,7 +25,6 @@ const getLoaderSlug = (url: string, loaderSlug: string): string =>
 class ApiService {
   static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}) {
     const router = useRouter()
-    console.log(router)
     const {
       method = Method.POST,
       contentType = ContentType.JSON,
@@ -85,8 +84,6 @@ class ApiService {
     }
     catch (error: any) {
       const isLoginPage: boolean = router?.currentRoute.value.name === 'Login'
-
-      console.log(isLoginPage)
 
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', 'TOKEN_INVALID']
 
