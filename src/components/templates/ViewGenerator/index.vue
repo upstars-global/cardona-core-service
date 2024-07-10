@@ -21,7 +21,7 @@ const valueColsCount = computed(() => 12 - props.cols)
 <template>
   <div
     v-if="canView"
-    class="field-generator"
+    class="view-generator py-1"
   >
     <VRow
       class="font-small-3"
