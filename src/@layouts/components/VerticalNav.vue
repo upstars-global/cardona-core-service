@@ -145,15 +145,13 @@ const defaultRoute = { path: '/' }
         />
       </slot>
     </div>
-    <slot name="before-nav-items">
-      <div class="vertical-nav-items-shadow" />
-    </slot>
+
     <ProjectSelect
       v-if="isMenuTypeMain && isNeocore"
       class="mx-3 mt-6 mb-8"
       :class="{ 'project-select--collapsed': configStore.isVerticalNavCollapsed && !isHovered }"
     />
-
+    <slot name="before-nav-items" />
     <div
       v-if="!isMenuTypeMain"
       class="d-flex align-center pb-4 pl-2"
