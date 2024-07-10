@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import type { TextareaBaseField } from '../../../../@model/templates/baseField'
 import AppTextarea from '../../../../@core/components/app-form-elements/AppTextarea.vue'
 import { IconsList } from '../../../../@model/enums/icons'
@@ -23,8 +23,8 @@ const emit = defineEmits<{
 
 const AUTO_HEIGHT_PARAMS = {
   rows: 1,
-  rowHeight: 15,
-  autoGrow: true,
+  rowHeight: 2,
+  autoGrow: false,
 }
 
 const localModelValue = computed({
@@ -44,10 +44,48 @@ const appendInnerIcon = computed(() => {
 
   return null
 })
+
+const textareaField = ref(null)
+
+const onInput = () => {
+  const textareaWrapper = textareaField.value?.textarea.$el
+
+  if (textareaWrapper) {
+    textareaWrapper.style.height = 'auto'
+
+    const inputElement = textareaWrapper.querySelector('.v-field__input')
+
+    if (inputElement) {
+      inputElement.style.whiteSpace = 'pre-line'
+      inputElement.style.overflow = 'hidden'
+      inputElement.style.height = 'auto'
+      if (localModelValue.value.length)
+        inputElement.style.height = `${inputElement.scrollHeight}px`
+    }
+  }
+}
+
+watch(() => localModelValue.value, () => {
+  nextTick(onInput)
+}, {
+  immediate: true,
+  deep: true,
+})
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (!props.field.autoHeight)
+    return
+  if (event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault()
+    localModelValue.value += '\t\n'
+    onInput()
+  }
+}
 </script>
 
 <template>
   <AppTextarea
+    ref="textareaField"
     v-model.trim="localModelValue"
     :placeholder="placeholder"
     :error="errors"
@@ -61,6 +99,7 @@ const appendInnerIcon = computed(() => {
     v-bind="autoHeight"
     class="text-area"
     :class="{ 'app-textarea__counter': field.maxLength }"
+    @keydown="handleKeydown"
   />
 </template>
 

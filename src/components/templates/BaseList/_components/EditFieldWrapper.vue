@@ -77,7 +77,7 @@ const updateValue = (value: unknown): void => {
           @click.stop="setEditMode(true)"
         />
       </div>
-      <slot :value="acceptedValue">
+      <slot :value="value">
         {{ value }}
       </slot>
     </div>

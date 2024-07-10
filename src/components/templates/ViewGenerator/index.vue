@@ -24,7 +24,7 @@ const valueColsCount = computed(() => 12 - props.cols)
     class="field-generator"
   >
     <VRow
-      class="font-small-3 "
+      class="font-small-3 py-1"
       no-gutters
     >
       <VCol
@@ -42,7 +42,7 @@ const valueColsCount = computed(() => 12 - props.cols)
       </VCol>
       <VCol
         :cols="valueColsCount"
-        class="view-generator__text value font-weight-medium d-flex align-items-start text-break wrapper-value text-base ma-0 py-1"
+        class="view-generator__text value font-weight-medium text-break d-flex align-start wrapper-value text-base ma-0"
         :class="justifyClass"
       >
         <slot :name="`sidebar-value(${keyName})`">

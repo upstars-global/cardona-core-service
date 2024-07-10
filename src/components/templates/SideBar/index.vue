@@ -104,11 +104,11 @@ const onHide = () => {
             >
               <template
                 v-if="checkSlotExistence(`sidebar-value(${key})`)"
-                #[`sidebar-value(${key})`]="{ item }"
+                #[`sidebar-value(${key})`]
               >
                 <slot
                   :name="`sidebar-value(${key})`"
-                  :item="item"
+                  :item="viewForm[key]"
                 />
               </template>
             </ViewGenerator>

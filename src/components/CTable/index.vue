@@ -10,6 +10,7 @@ import type { SelectMode } from '../../@model/enums/selectMode'
 import { AlignType } from '../../@model/templates/tableFields'
 import { IconsList } from '../../@model/enums/icons'
 import { SortDirection } from '../../@model/templates/baseList'
+import { useOS } from '../../use/useOS'
 
 const props = withDefaults(defineProps<{
   fields: TableField[]
@@ -37,6 +38,8 @@ const emits = defineEmits<{
   (e: 'end', data: Record<string, unknown>): void
   (e: 'update:sortData', event: SortItem[]): void
 }>()
+
+const { isMacOS } = useOS()
 
 const cTable = ref({})
 const tableWrapperComponent = computed(() => props.draggable ? VueDraggableNext : 'tbody')
@@ -110,6 +113,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
     :items="rows"
     return-object
     class="c-table"
+    :class="{ 'base-scroll': !isMacOS }"
     :items-per-page="itemsPerPage"
     :density="small ? 'compact' : 'comfortable'"
     @update:model-value="onSelectRow"

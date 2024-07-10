@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, useAttrs } from 'vue';
+import { computed, ref, useAttrs } from 'vue'
 
 defineOptions({
   name: 'AppTextarea',
@@ -16,6 +16,12 @@ const elementId = computed (() => {
 })
 
 const label = computed(() => useAttrs().label as string | undefined)
+
+const textarea = ref(null)
+
+defineExpose({
+  textarea,
+})
 </script>
 
 <template>
@@ -37,6 +43,7 @@ const label = computed(() => useAttrs().label as string | undefined)
         variant: 'outlined',
         id: elementId,
       }"
+      ref="textarea"
     >
       <template
         v-for="(_, name) in $slots"
