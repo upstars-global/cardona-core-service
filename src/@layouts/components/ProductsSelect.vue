@@ -113,7 +113,8 @@ const canSelect = computed(() => products.value.length > 1)
     color: rgba(var(--v-theme-primary));
   }
   .vs__search {
-    display: none;
+    flex: 0 0 0;
+    padding: 0;
   }
   .header-select {
     color: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));
@@ -135,6 +136,7 @@ const canSelect = computed(() => products.value.length > 1)
   .vs__selected-options {
     flex-basis: auto;
     flex-grow: initial;
+    flex-wrap: nowrap;
   }
   .vs__dropdown-menu {
     top: calc(100% + 0.1rem);

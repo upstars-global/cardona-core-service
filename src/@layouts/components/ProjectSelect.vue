@@ -93,7 +93,8 @@ const cantSelect = computed(() => projects.value.length < 2)
     flex-wrap: nowrap;
 
     .vs__search {
-      flex: 0 0 0px;
+      flex: 0 0 0;
+      padding: 0;
     }
   }
 
