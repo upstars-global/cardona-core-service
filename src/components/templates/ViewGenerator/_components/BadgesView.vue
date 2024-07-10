@@ -71,7 +71,7 @@ const isShowToggleButton = computed(() => {
             label
             :variant="VVariants.Tonal"
             :size="VSizes.Small"
-            class="font-weight-medium px-2 overflow-visible label-chip"
+            class="font-weight-medium px-2 overflow-visible label-chip text-grey-500"
           >
             {{ itemArr.name }}
           </VChip>
