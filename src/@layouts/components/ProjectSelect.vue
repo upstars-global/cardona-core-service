@@ -95,6 +95,10 @@ const cantSelect = computed(() => projects.value.length < 2)
     .vs__search {
       flex: 0 0 0;
       padding: 0;
+
+      &:focus {
+        padding: 0;
+      }
     }
   }
 

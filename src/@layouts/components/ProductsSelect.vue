@@ -115,6 +115,9 @@ const canSelect = computed(() => products.value.length > 1)
   .vs__search {
     flex: 0 0 0;
     padding: 0;
+    &:focus {
+      padding: 0;
+    }
   }
   .header-select {
     color: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));
