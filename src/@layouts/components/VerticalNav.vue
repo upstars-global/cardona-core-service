@@ -13,12 +13,12 @@ import { convertUpperCaseFirstSymbol } from '../../helpers'
 import { IconsList } from '../../@model/enums/icons'
 import ProjectSelect from '../../@layouts/components/ProjectSelect.vue'
 import { VVariants } from '../../@model/vuetify'
-import { VNodeRenderer } from './VNodeRenderer'
 import { layoutConfig } from '@layouts'
 import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
 import { useLayoutConfigStore } from '@layouts/stores/config'
 import { injectionKeyIsVerticalNavHovered } from '@layouts/symbols'
 import type { NavGroup, NavLink, NavSectionTitle, VerticalNavItems } from '@layouts/types'
+import ProductsSelect from '@layouts/components/ProductsSelect.vue'
 
 interface Props {
   tag?: string | Component
@@ -75,6 +75,8 @@ const isMinMode = computed(() => width.value < 1279)
 watch(() => isMinMode.value, () => {
   if (!isMinMode.value)
     configStore.toggleMenu(false)
+  if (isMinMode.value)
+    configStore.isVerticalNavCollapsed = false
 })
 
 const isNeocore = computed(() => store.getters.isNeocore)
@@ -111,23 +113,9 @@ const defaultRoute = { path: '/' }
     ]"
   >
     <!-- 👉 Header -->
-    <div class="nav-header">
+    <div class="nav-header justify-space-between">
       <slot name="nav-header">
-        <RouterLink
-          :to="actualBackRoute"
-          class="app-logo app-title-wrapper"
-        >
-          <VNodeRenderer :nodes="layoutConfig.app.logo" />
-
-          <Transition name="vertical-nav-app-title">
-            <h1
-              v-show="!hideTitleAndIcon"
-              class="app-logo-title leading-normal"
-            >
-              {{ layoutConfig.app.title }}
-            </h1>
-          </Transition>
-        </RouterLink>
+        <ProductsSelect :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered" />
         <!-- 👉 Vertical nav actions -->
         <!-- Show toggle collapsible in >md and close button in <md -->
         <Component
@@ -157,33 +145,13 @@ const defaultRoute = { path: '/' }
         />
       </slot>
     </div>
-    <slot name="before-nav-items">
-      <div class="vertical-nav-items-shadow" />
-    </slot>
+
     <ProjectSelect
       v-if="isMenuTypeMain && isNeocore"
-      class="mx-3 mt-6"
+      class="mx-3 mt-6 mb-8"
       :class="{ 'project-select--collapsed': configStore.isVerticalNavCollapsed && !isHovered }"
     />
-
-    <div
-      v-if="isMenuTypeMain"
-      class="nav-section-title mt-8 mb-4 d-flex"
-    >
-      <span
-        v-if="!configStore.isVerticalNavCollapsed || isHovered"
-        class="title-text"
-      >
-        {{ selectedProjectTitle }}
-      </span>
-
-      <VIcon
-        v-else
-        :icon="IconsList.MoreHorizontalIcon"
-        size="18"
-        class="mx-auto"
-      />
-    </div>
+    <slot name="before-nav-items" />
     <div
       v-if="!isMenuTypeMain"
       class="d-flex align-center pb-4 pl-2"
@@ -215,7 +183,7 @@ const defaultRoute = { path: '/' }
         />
       </PerfectScrollbar>
     </slot>
-    <CustomMenu />
+    <CustomMenu :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered" />
   </Component>
   <div
     class="sidenav-overlay"
@@ -245,13 +213,6 @@ const defaultRoute = { path: '/' }
 
 .layout-vertical-nav-collapsed {
   transition: transform 0.3s ease-in-out;
-  .layout-vertical-nav{
-    &:not(.hovered) {
-      .full-name {
-        transform: translateX(-10rem);
-      }
-    }
-  }
 }
 
 // 👉 Vertical Nav
@@ -266,6 +227,7 @@ const defaultRoute = { path: '/' }
   inset-inline-start: 0;
   transition: inline-size 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
   will-change: transform, inline-size;
+  overflow: hidden;
 
   .nav-header {
     display: flex;

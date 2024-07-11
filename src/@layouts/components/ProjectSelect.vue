@@ -65,13 +65,23 @@ const cantSelect = computed(() => projects.value.length < 2)
             {{ publicName[0].toUpperCase() }}
           </div>
           <span class="text-expanded">{{ publicName || title }}</span>
+          <VIcon
+            v-if="selectProject.publicName === publicName"
+            :icon="IconsList.CheckIcon"
+            class="ml-auto"
+          />
         </div>
       </template>
       <template #open-indicator="{ attributes }">
-        <VIcon
+        <div
+          v-if="!cantSelect"
           v-bind="attributes"
-          :icon="IconsList.ChevronDownIcon"
-        />
+        >
+          <VIcon
+            :icon="IconsList.ChevronDownIcon"
+            class="text-expanded"
+          />
+        </div>
       </template>
     </VueSelect>
   </div>
@@ -81,16 +91,31 @@ const cantSelect = computed(() => projects.value.length < 2)
 .project-select {
   :deep(.vs__selected-options) {
     flex-wrap: nowrap;
-    overflow: hidden;
 
     .vs__search {
-      display: none;
+      flex: 0 0 0;
+      padding: 0;
+
+      &:focus {
+        padding: 0;
+      }
     }
+  }
+
+  :deep(.vs__dropdown-menu) {
+    min-width: auto;
   }
 
   &--collapsed {
     :deep(.vs__actions) {
       display: none;
+    }
+    .text-expanded {
+      display: none;
+    }
+    :deep(.vs__dropdown-option) {
+      padding-left: 0.875rem;
+      padding-right: 0.875rem;
     }
   }
 }
