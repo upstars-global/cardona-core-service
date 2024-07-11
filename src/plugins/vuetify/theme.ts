@@ -14,7 +14,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'on-secondary': '#fff',
       'success': '#0DB157', /// !TODO ADD ALSO TO DARK
       'on-success': '#fff',
-      'info': '#3B83F7', /// !TODO ADD ALSO TO DARK
+      'info': '#00CFE8', /// !TODO ADD ALSO TO DARK
       'on-info': '#fff',
       'warning': '#F08C35', /// !TODO ADD ALSO TO DARK
       'on-warning': '#fff',

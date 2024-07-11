@@ -124,9 +124,8 @@ const validatorObject = (value: Record<string, NumberOrString>): boolean => {
     return false
 
   const values = Object.values(value)
-  const isNotEmpty = values.every((item: number | string) => item || item?.toString()?.length)
 
-  return isNotEmpty && values.map(Number).some(Boolean)
+  return values.every((item: number | string) => item?.toString()?.length)
 }
 
 const validatorRange = (value: Record<string, NumberOrString>, args: []): boolean => {
