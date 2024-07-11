@@ -96,6 +96,10 @@ export default defineComponent({
       type: String,
       default: '/',
     },
+    isOnlyGallery: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['input', 'inputPath'],
   setup(props, { emit }) {
@@ -220,6 +224,12 @@ export default defineComponent({
 
     const setUrlFile = async (publicPathIMG, path) => {
       const propsPath = props.path[0] === '/' ? props.path : '/' + props.path
+
+      if (props.isOnlyGallery) {
+        emit('inputPath', publicPathIMG)
+        return
+      }
+
       if (propsPath === url.value) {
         emit('input', publicPathIMG)
         emit('inputPath', path)

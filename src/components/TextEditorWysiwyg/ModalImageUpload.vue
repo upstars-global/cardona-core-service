@@ -8,7 +8,13 @@
     size="lg"
     :title="$t('uploadImg.selectImage')"
   >
-    <file-gallery :url-file="value" :path="path" @input="setUrlFile" @inputPath="setPathFile" />
+    <file-gallery
+      :url-file="value"
+      :path="path"
+      :is-only-gallery="true"
+      @input="setUrlFile"
+      @inputPath="setPathFile"
+    />
   </b-modal>
 </template>
 
@@ -40,9 +46,7 @@ export default defineComponent({
     const modalImageUpload: any = ref(null)
 
     const setUrlFile = (val) => {
-      // console.log(val)
-      // console.log(val.split('/')[-1])
-      // emit('insert', { publicPath: val, fileName: val.split('/')[-1] })
+      emit('insert', { publicPath: val, fileName: val.split('/')[-1] })
     }
     const setPathFile = (val) => {
       emit('insert', { publicPath: val, fileName: val.split('/')[-1] })
