@@ -378,7 +378,6 @@ const deleteVariableTextByKey = () => {
 <style lang="scss" scoped>
 .block-text-edite {
   .editor-wrap {
-
     &.disabled {
       :deep(.fr-toolbar),
       :deep(.fr-element),
