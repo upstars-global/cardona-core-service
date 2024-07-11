@@ -60,7 +60,6 @@ FroalaEditor.RegisterCommand('gallery', {
   undo: false,
   refreshAfterCallback: false,
   callback: function () {
-    console.log(modalImageUpload.value)
     modalImageUpload.value.modalImageUpload.show()
   },
 })
@@ -253,8 +252,6 @@ const config = {
 
 const insertImages = ({ publicPath, fileName }) => {
   modalImageUpload.value.hideModal()
-
-  console.log(publicPath)
 
   globalEditor.value.image.insert(publicPath, true, { name: fileName, id: fileName }, '', {
     link: publicPath,
