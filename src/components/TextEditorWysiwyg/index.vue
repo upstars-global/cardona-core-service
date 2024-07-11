@@ -9,6 +9,9 @@
       @close-modal="variableKeyUnselect"
       @delete-key="deleteVariableTextByKey"
     />
+
+    <modal-image-upload ref="modalImageUpload" @insert="insertImages" />
+
     <div class="editor-wrap" :class="{ disabled }">
       <froala v-if="showEditor" v-model.trim="content" :tag="'textarea'" :config="config"></froala>
     </div>
@@ -40,12 +43,27 @@
 import { computed, ref, watch } from 'vue'
 import { VBTooltip } from 'bootstrap-vue'
 import VariableModal from './VariableModal.vue'
+import ModalImageUpload from './ModalImageUpload.vue'
 import 'vue-froala-wysiwyg'
 import i18n from '../../libs/i18n'
 import store from '../../store'
 import baseConfig from './config'
 import { TranslateResult } from 'vue-i18n'
 import { LocaleVariable } from '../../@model/translations'
+
+import FroalaEditor from 'froala-editor'
+
+FroalaEditor.DefineIcon('gallery', { NAME: 'folder', SVG_KEY: 'imageManager' })
+FroalaEditor.RegisterCommand('gallery', {
+  title: 'Gallery',
+  focus: false,
+  undo: false,
+  refreshAfterCallback: false,
+  callback: function () {
+    console.log(modalImageUpload.value)
+    modalImageUpload.value.modalImageUpload.show()
+  },
+})
 
 interface Props {
   value: string
@@ -72,6 +90,8 @@ const props = withDefaults(defineProps<Props>(), {
 const directives = { 'b-tooltip': VBTooltip }
 
 const emit = defineEmits<Emits>()
+
+const modalImageUpload: any = ref(null)
 
 const content = computed({
   get: () => props.value,
@@ -229,6 +249,18 @@ const config = {
     },
   },
   ...baseConfig,
+}
+
+const insertImages = ({ publicPath, fileName }) => {
+  modalImageUpload.value.hideModal()
+
+  console.log(publicPath)
+
+  globalEditor.value.image.insert(publicPath, true, { name: fileName, id: fileName }, '', {
+    link: publicPath,
+  })
+
+  globalEditor.value.image.hideProgressBar(true)
 }
 
 const newVariableText = ref({})
