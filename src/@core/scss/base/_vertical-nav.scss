@@ -23,7 +23,7 @@
 
     // 👉 Nav header
     .nav-header {
-      overflow: hidden;
+      // overflow: hidden;
       padding: variables.$vertical-nav-header-padding;
       margin-inline: variables.$vertical-nav-header-inline-spacing;
       min-block-size: variables.$vertical-nav-header-height;
@@ -183,7 +183,7 @@
       // Nav group label
       > :first-child {
         // Adds before psudo element to style hover state
-        @include mixins.before-pseudo;     
+        @include mixins.before-pseudo;
       }
 
       &:not(.active,.open) > :first-child {
