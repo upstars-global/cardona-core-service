@@ -182,6 +182,8 @@ watch(
 const selectedFields = ref<TableField[]>([...fields])
 
 const isLoadingList = computed(() => {
+  if (additianlLoading.value)
+    return true
   const indexSymbolNextDash = entityName.indexOf('-') + 1
 
   const entityNameForLoad = entityName.replace(
@@ -271,10 +273,15 @@ const mapSortData = () => {
     })
 }
 
+const additianlLoading = ref(false)
+
 // Fetch list
 const getList = async () => {
   const filter = setRequestFilters()
   const sort = mapSortData()
+
+  // TODO убрать флаг "additianlLoading" после выполнения https://upstars.atlassian.net/browse/BAC-3125
+  additianlLoading.value = true
 
   const { list, total } = await store.dispatch(fetchActionName, {
     type: entityName,
@@ -289,6 +296,8 @@ const getList = async () => {
       customApiPrefix: props.config?.customApiPrefix,
     },
   })
+
+  additianlLoading.value = false
 
   items.value = list
 
