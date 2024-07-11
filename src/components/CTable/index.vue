@@ -157,6 +157,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
           <VSkeletonLoader
             v-show="isLoadingList"
             type="text"
+            :class="{'is-active': isLoadingList }"
             class="col-table-skeleton"
           />
           <div
