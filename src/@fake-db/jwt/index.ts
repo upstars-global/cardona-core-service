@@ -59,6 +59,10 @@ export const database: User[] = [
         name: productName,
         id: productId,
       },
+      {
+        name: 'product-test',
+        id: 2,
+      },
     ],
     projects: [
       {
