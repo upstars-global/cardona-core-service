@@ -321,10 +321,14 @@ const isActiveSort = (key: string, direction: string): boolean => {
       opacity: 1;
     }
   }
+  .is-hover-row {
+    &:hover {
+      background: rgb(var(--v-theme-grey-100));
+    }
+  }
   .c-table__row {
     cursor: pointer;
-    &--selected,
-    &:hover {
+    &--selected {
       background: rgb(var(--v-theme-grey-100));
     }
   }
