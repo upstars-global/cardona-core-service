@@ -730,6 +730,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :draggable="canDraggable"
         :hover="config.hover"
         :skeleton-rows="config.skeletonRows"
+        :skeleton-cols="config.skeletonCols"
         :selected-items="selectedItems"
         :items-per-page="itemsPerPage"
         :disabled-row-ids="disableRowIds"

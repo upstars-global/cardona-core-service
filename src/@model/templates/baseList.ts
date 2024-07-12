@@ -155,6 +155,9 @@ export interface IBaseListConfig {
   /** skeletonRows - указать количество строк скелетона */
   readonly skeletonRows?: number
 
+  /** skeletonCols - указать количество колонок скелетона */
+  readonly skeletonCols?: number
+
   /** loadingOnlyByList - Показывать скелетон только при загрузке листа */
   readonly loadingOnlyByList?: boolean
 
@@ -200,6 +203,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly customPermissionPrefix?: string
   readonly hover: boolean
   readonly skeletonRows?: number
+  readonly skeletonCols?: number
   readonly loadingOnlyByList?: boolean
   readonly hideSearchBlock?: boolean
   constructor({
@@ -240,6 +244,7 @@ export class BaseListConfig implements IBaseListConfig {
     customPermissionPrefix,
     hover,
     skeletonRows,
+    skeletonCols,
     loadingOnlyByList,
     hideSearchBlock,
   }: IBaseListConfig) {
@@ -280,6 +285,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.customPermissionPrefix = customPermissionPrefix
     this.hover = hover ?? true
     this.skeletonRows = skeletonRows
+    this.skeletonCols = skeletonCols
     this.loadingOnlyByList = loadingOnlyByList
     this.hideSearchBlock = hideSearchBlock
   }

@@ -28,6 +28,7 @@ const props = withDefaults(defineProps<{
   isLoadingList: boolean
   disabledRowIds?: string[]
   skeletonRows?: number
+  skeletonCols?: number
 }>(), {
   disabledRowIds: [],
 })
@@ -101,6 +102,20 @@ const isActiveSort = (key: string, direction: string): boolean => {
 
   return currentItem?.isActive && currentItem?.order?.toLowerCase() === direction
 }
+
+const actualHeadersTable = computed(() => {
+  if (!props.skeletonCols)
+    return props.fields
+
+  return props.isLoadingList ? props.fields.slice(0, 4) : props.fields
+})
+
+const getActualField = (fields: Array<unknown>) => {
+  if (!props.skeletonCols)
+    return fields
+
+  return props.isLoadingList ? fields.slice(0, 4) : fields
+}
 </script>
 
 <template>
@@ -109,7 +124,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
     :model-value="selectedItems"
     :show-select="selectable"
     :select-strategy="selectMode"
-    :headers="fields"
+    :headers="actualHeadersTable"
     :items="rows"
     return-object
     class="c-table"
@@ -157,7 +172,6 @@ const isActiveSort = (key: string, direction: string): boolean => {
           <VSkeletonLoader
             v-show="isLoadingList"
             type="text"
-            :class="{'is-active': isLoadingList }"
             class="col-table-skeleton"
           />
           <div
@@ -209,7 +223,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
               <VSkeletonLoader type="text" />
             </td>
             <td
-              v-for="(field, cellIndex) in fields"
+              v-for="(field, cellIndex) in getActualField(fields)"
               :key="`skeleton-cell_${index}_${cellIndex}`"
               class="c-table__cell"
               :class="cellClasses"
@@ -322,10 +336,14 @@ const isActiveSort = (key: string, direction: string): boolean => {
       opacity: 1;
     }
   }
+  .is-hover-row {
+    &:hover {
+      background: rgb(var(--v-theme-grey-100));
+    }
+  }
   .c-table__row {
     cursor: pointer;
-    &--selected,
-    &:hover {
+    &--selected {
       background: rgb(var(--v-theme-grey-100));
     }
   }
