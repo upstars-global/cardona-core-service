@@ -10,7 +10,7 @@ import { useLayoutConfigStore } from '@layouts/stores/config'
 
 const route = useRoute()
 
-const allBreadcrumb = computed(() => [{ to: '/' }, ...route.meta.breadcrumb])
+const allBreadcrumb = computed(() => [{ to: '/', disabled: false }, ...route.meta.breadcrumb])
 
 const layoutConfig = useLayoutConfigStore()
 

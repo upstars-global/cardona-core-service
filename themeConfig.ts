@@ -2,7 +2,7 @@ import { h } from 'vue'
 import { breakpointsVuetify } from '@vueuse/core'
 import { VIcon } from 'vuetify/components/VIcon'
 import { defineThemeConfig } from '@core'
-import { Skins } from '@core/enums'
+import { Skins, Theme } from '@core/enums'
 
 // ❗ Logo SVG must be imported with ?raw suffix
 import logo from '@images/logo.svg?raw'
@@ -27,7 +27,7 @@ export const { themeConfig, layoutConfig } = defineThemeConfig({
         },
       ],
     },
-    theme: 'system',
+    theme: Theme.Light,
     skin: Skins.Default,
     iconRenderer: VIcon,
   },

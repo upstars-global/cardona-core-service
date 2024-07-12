@@ -14,9 +14,6 @@ export const $api = ofetch.create({
     }
   },
   async onResponseError({ request, response, options }) {
-    console.log(request)
-    console.log(response)
-    console.log(options)
     await $api('/')
   },
 })
