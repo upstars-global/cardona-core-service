@@ -10,7 +10,6 @@ interface TextareaFieldProps {
   field: TextareaBaseField
   disabled?: boolean
   errors?: boolean
-  autoHeight?: boolean
 }
 
 const props = withDefaults(defineProps<TextareaFieldProps>(), {
@@ -66,7 +65,8 @@ const onInput = () => {
 }
 
 watch(() => localModelValue.value, () => {
-  nextTick(onInput)
+  if (props.field.autoHeight)
+    nextTick(onInput)
 }, {
   immediate: true,
   deep: true,
