@@ -107,14 +107,14 @@ const actualHeadersTable = computed(() => {
   if (!props.skeletonCols)
     return props.fields
 
-  return props.isLoadingList ? props.fields.slice(0, 4) : props.fields
+  return props.isLoadingList ? props.fields.slice(0, props.skeletonCols) : props.fields
 })
 
 const getActualField = (fields: Array<unknown>) => {
   if (!props.skeletonCols)
     return fields
 
-  return props.isLoadingList ? fields.slice(0, 4) : fields
+  return props.isLoadingList ? fields.slice(0, props.skeletonCols) : fields
 }
 </script>
 
