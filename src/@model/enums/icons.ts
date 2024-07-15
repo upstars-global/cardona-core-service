@@ -30,7 +30,7 @@ export enum IconsList {
   BatteryChargingIcon = 'BatteryChargingIcon',
   BatteryIcon = 'BatteryIcon',
   BellOffIcon = 'BellOffIcon',
-  BellIcon = 'BellIcon',
+  BellIcon = 'tabler-bell',
   BluetoothIcon = 'BluetoothIcon',
   BoldIcon = 'BoldIcon',
   BookOpenIcon = 'tabler-book',
