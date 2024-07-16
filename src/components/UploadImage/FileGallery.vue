@@ -13,9 +13,11 @@ import ListView from './ListView.vue'
 const props = withDefaults(defineProps<{
   urlFile: string
   path: string
+  isOnlyGallery: boolean
 }>(), {
   urlFile: '',
   path: '/',
+  isOnlyGallery: false,
 })
 
 const emits = defineEmits<{
@@ -153,6 +155,13 @@ const scrolledBottom = () => {
 
 const setUrlFile = async (publicPathIMG, path) => {
   const propsPath = props.path[0] === '/' ? props.path : `/${props.path}`
+
+  if (props.isOnlyGallery) {
+    emits('inputPath', publicPathIMG)
+
+    return
+  }
+
   if (propsPath === url.value) {
     emits('input', publicPathIMG)
     emits('inputPath', path)
