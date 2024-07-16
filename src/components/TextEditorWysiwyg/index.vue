@@ -139,7 +139,7 @@ FroalaEditor.RegisterCommand('gallery', {
     const text = this.html.get(true)
 
     this.html.set(text)
-
+    globalEditor.value = this
     nextTick(() => {
       modal.showModal(galleryModalId)
     })
