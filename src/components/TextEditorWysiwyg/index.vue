@@ -3,12 +3,24 @@ import { computed, inject, nextTick, ref, watch } from 'vue'
 import 'vue-froala-wysiwyg'
 import type { TranslateResult } from 'vue-i18n'
 import { useStore } from 'vuex'
+import FroalaEditor from 'froala-editor'
 import type { LocaleVariable } from '../../@model/translations'
 import { VColors } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import { copyToClipboard } from '../../helpers/clipboard'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
+import ModalImageUpload from './ModalImageUpload.vue'
+
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: '',
+  optionsVariable: () => [],
+  localisationParameters: () => ({}),
+  disabled: false,
+  placeholder: '', // getI18n.t('common.description') as string
+})
+
+const emit = defineEmits<Emits>()
 
 interface Props {
   modelValue: string
@@ -23,16 +35,6 @@ interface Emits {
   (event: 'update-localisation-parameters', payload: LocaleVariable): void
   (event: 'remove-variable', payload: string): void
 }
-
-const props = withDefaults(defineProps<Props>(), {
-  modelValue: '',
-  optionsVariable: () => [],
-  localisationParameters: () => ({}),
-  disabled: false,
-  placeholder: '', // getI18n.t('common.description') as string
-})
-
-const emit = defineEmits<Emits>()
 
 const modal = inject('modal')
 
@@ -112,6 +114,33 @@ const selectedProject = computed(() => store.getters.selectedProject)
 const selectedProjectPublicName = computed(
   () => selectedProject.value?.publicName || store.getters.selectedProject?.title,
 )
+
+const galleryModalId = 'gallery-modal'
+
+const insertImages = ({ publicPath, fileName }: { publicPath: string; fileName: string }) => {
+  nextTick(() => {
+    modal.hideModal(galleryModalId)
+  })
+
+  globalEditor.value.image.insert(publicPath, true, { name: fileName, id: fileName }, '', {
+    link: publicPath,
+  })
+
+  globalEditor.value.image.hideProgressBar(true)
+}
+
+FroalaEditor.DefineIcon('gallery', { NAME: 'folder', SVG_KEY: 'imageManager' })
+FroalaEditor.RegisterCommand('gallery', {
+  title: 'Gallery',
+  focus: false,
+  undo: false,
+  refreshAfterCallback: false,
+  callback() {
+    nextTick(() => {
+      modal.showModal(galleryModalId)
+    })
+  },
+})
 
 const config = {
   'placeholderText': props.placeholder,
@@ -303,6 +332,10 @@ const deleteVariableTextByKey = () => {
       @close-modal="variableKeyUnselect"
       @delete-key="deleteVariableTextByKey"
     />
+    <ModalImageUpload
+      :modal-id="galleryModalId"
+      @insert="insertImages"
+    />
     <div
       class="editor-wrap"
       :class="{ disabled }"
@@ -345,7 +378,6 @@ const deleteVariableTextByKey = () => {
 <style lang="scss" scoped>
 .block-text-edite {
   .editor-wrap {
-
     &.disabled {
       :deep(.fr-toolbar),
       :deep(.fr-element),
