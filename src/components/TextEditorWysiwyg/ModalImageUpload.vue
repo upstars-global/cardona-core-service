@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import FileGallery from '../UploadImage/FileGallery.vue'
 import { ModalSizes } from '../../@model/vuetify'
+import BaseModal from '../../components/BaseModal/index.vue'
 
 defineProps<{
   modalId: string
