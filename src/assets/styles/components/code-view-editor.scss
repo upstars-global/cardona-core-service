@@ -57,11 +57,13 @@
 }
 
 .block-text-edite {
-  .fr-toolbar,
   .fr-element,
   .fr-second-toolbar,
   .CodeMirror,
   .fr-box.fr-basic .fr-wrapper {
     background: transparent;
+  }
+  .fr-toolbar {
+    background: rgb(var(--v-theme-surface));
   }
 }
