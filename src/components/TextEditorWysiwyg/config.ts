@@ -76,6 +76,7 @@ const baseConfig = {
       buttons: [
         'insertLink',
         'insertImage',
+        'gallery',
         'insertVideo',
         'insertTable',
         'emoticons',
