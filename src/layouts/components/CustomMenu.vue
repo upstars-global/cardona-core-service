@@ -154,6 +154,8 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
   font-weight: 600;
   color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .action-menu {
@@ -177,6 +179,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 
 .custom-menu {
   padding: 1rem;
+  border-top: 1px solid rgb(var(--v-theme-grey-200));
 
   :deep(.v-badge__badge) {
     height: 11px;
