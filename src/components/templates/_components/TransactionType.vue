@@ -31,7 +31,7 @@ const textColorClass = computed(() =>
     :class="textColorClass"
     class="transaction-type-label"
   >
-    <span class="mr-25">
+    <span class="mr-1">
       {{ text }}
     </span>
     <VIcon
