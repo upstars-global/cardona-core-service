@@ -136,6 +136,10 @@ FroalaEditor.RegisterCommand('gallery', {
   undo: false,
   refreshAfterCallback: false,
   callback() {
+    const text = this.html.get(true)
+
+    this.html.set(text)
+    globalEditor.value = this
     nextTick(() => {
       modal.showModal(galleryModalId)
     })

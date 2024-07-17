@@ -28,7 +28,7 @@ const setPathFile = (val: string) => {
     :title="$t('uploadImg.selectImage')"
     :size="ModalSizes.Medium"
   >
-    <div class="px-6 pb-6 overflow-hidden tabs-file-upload">
+    <div class="px-6 pb-6 tabs-file-upload">
       <FileGallery
         :url-file="modelValue"
         :path="path"
@@ -42,7 +42,13 @@ const setPathFile = (val: string) => {
 
 <style lang="scss">
 .tabs-file-upload {
- width: 800px;
+  width: 800px;
+  max-height: 600px;
+  overflow: auto;
+
+  .scroll-area {
+    width: calc(100% + 17px);
+  }
 }
 
 .tabs-file-upload {
