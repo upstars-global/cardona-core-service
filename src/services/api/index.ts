@@ -85,7 +85,7 @@ class ApiService {
       return data
     }
     catch (error: any) {
-      const isLoginPage: boolean = route.name === 'Login'
+      const isLoginPage: boolean = route?.name === 'Login'
 
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', 'TOKEN_INVALID']
 
