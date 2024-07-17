@@ -10,6 +10,7 @@ import type { SelectMode } from '../../@model/enums/selectMode'
 import { AlignType } from '../../@model/templates/tableFields'
 import { IconsList } from '../../@model/enums/icons'
 import { SortDirection } from '../../@model/templates/baseList'
+import { useOS } from '../../use/useOS'
 
 const props = withDefaults(defineProps<{
   fields: TableField[]
@@ -27,6 +28,7 @@ const props = withDefaults(defineProps<{
   isLoadingList: boolean
   disabledRowIds?: string[]
   skeletonRows?: number
+  skeletonCols?: number
 }>(), {
   disabledRowIds: [],
 })
@@ -37,6 +39,8 @@ const emits = defineEmits<{
   (e: 'end', data: Record<string, unknown>): void
   (e: 'update:sortData', event: SortItem[]): void
 }>()
+
+const { isMacOS } = useOS()
 
 const cTable = ref({})
 const tableWrapperComponent = computed(() => props.draggable ? VueDraggableNext : 'tbody')
@@ -98,6 +102,20 @@ const isActiveSort = (key: string, direction: string): boolean => {
 
   return currentItem?.isActive && currentItem?.order?.toLowerCase() === direction
 }
+
+const actualHeadersTable = computed(() => {
+  if (!props.skeletonCols)
+    return props.fields
+
+  return props.isLoadingList ? props.fields.slice(0, props.skeletonCols) : props.fields
+})
+
+const getActualField = (fields: Array<unknown>) => {
+  if (!props.skeletonCols)
+    return fields
+
+  return props.isLoadingList ? fields.slice(0, props.skeletonCols) : fields
+}
 </script>
 
 <template>
@@ -106,10 +124,11 @@ const isActiveSort = (key: string, direction: string): boolean => {
     :model-value="selectedItems"
     :show-select="selectable"
     :select-strategy="selectMode"
-    :headers="fields"
+    :headers="actualHeadersTable"
     :items="rows"
     return-object
     class="c-table"
+    :class="{ 'base-scroll': !isMacOS }"
     :items-per-page="itemsPerPage"
     :density="small ? 'compact' : 'comfortable'"
     @update:model-value="onSelectRow"
@@ -204,7 +223,7 @@ const isActiveSort = (key: string, direction: string): boolean => {
               <VSkeletonLoader type="text" />
             </td>
             <td
-              v-for="(field, cellIndex) in fields"
+              v-for="(field, cellIndex) in getActualField(fields)"
               :key="`skeleton-cell_${index}_${cellIndex}`"
               class="c-table__cell"
               :class="cellClasses"
@@ -317,10 +336,14 @@ const isActiveSort = (key: string, direction: string): boolean => {
       opacity: 1;
     }
   }
+  .is-hover-row {
+    &:hover {
+      background: rgb(var(--v-theme-grey-100));
+    }
+  }
   .c-table__row {
     cursor: pointer;
-    &--selected,
-    &:hover {
+    &--selected {
       background: rgb(var(--v-theme-grey-100));
     }
   }

@@ -42,7 +42,6 @@ export const canViewNavMenuGroup = (item: NavGroup) => {
 }
 
 export const canNavigate = (to: RouteLocationNormalized) => {
-  console.log('dsfdfsdf', useAbility())
 
   const ability = useAbility()
 

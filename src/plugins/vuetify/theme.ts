@@ -82,7 +82,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'on-secondary': '#fff',
       'success': '#28C76F',
       'on-success': '#fff',
-      'info': '#00CFE8',
+      'info': '#3B83F7',
       'on-info': '#fff',
       'warning': '#FF9F43',
       'on-warning': '#fff',

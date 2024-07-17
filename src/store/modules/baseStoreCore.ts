@@ -1,4 +1,6 @@
 import { isUndefined } from 'lodash'
+import { useRouter } from 'vue-router'
+import { useRedirectToNotFoundPage } from '../../helpers/router'
 import ApiService from '../../services/api'
 import type { IRequestListPayload } from '../../@model'
 import { ListData } from '../../@model'
@@ -98,17 +100,28 @@ export default {
       { rootGetters },
       payload: { type: string; id: string; customApiPrefix: string },
     ) {
-      const { data } = await ApiService.request({
-        type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
-          payload.type,
-        )}.Read`,
-        data: {
-          id: payload.id,
-          project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
-        },
-      })
+      const router = useRouter()
+      const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
+      try {
+        const { data } = await ApiService.request({
+          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+            payload.type,
+          )}.Read`,
+          data: {
+            id: payload.id,
+            project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
+          },
+        })
 
-      return data
+        return data
+      }
+      catch (error) {
+        const wasRedirect: boolean = await redirectToNotFoundPage(error.type)
+        if (wasRedirect)
+          return
+
+        return Promise.reject(error)
+      }
     },
 
     async fetchTypes({ rootGetters }, type: string) {

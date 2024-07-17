@@ -51,7 +51,7 @@ const variant = computed(
           :class="{
             'v-btn--variant-tonal': !isStatic,
           }"
-          :disabled="isStatic"
+          :ripple="!isStatic"
           :color="stateColor"
           :variant="VVariants.Outlined"
           :size="VSizes.XSmall"
@@ -68,7 +68,9 @@ const variant = computed(
 
 <style scoped lang="scss">
 .default-cursor {
-  cursor: initial !important;
+  button {
+    cursor: initial;
+  }
 }
 .btn-check-icon {
   button {

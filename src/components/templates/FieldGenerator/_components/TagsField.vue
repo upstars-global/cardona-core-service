@@ -41,6 +41,9 @@ const uniqueTagsList = computed(() => {
 })
 
 const onAddValue = () => {
+  if (!inputValue.value)
+    return
+
   localModelValue.value = [...localModelValue.value, ...uniqueTagsList.value]
   inputValue.value = duplicateTagsList.value.join(' ')
 }
@@ -63,22 +66,21 @@ const appendInnerIcon = computed(() => {
       :append-inner-icon="appendInnerIcon"
       autocomplete="off"
       :autofocus="false"
+      class="tags-field"
       @keydown.enter.stop="onAddValue"
       @keydown.space.stop="onAddValue"
     >
-      <template #prepend-inner>
-        <div class="d-flex align-center gap-2">
-          <VChip
-            v-for="(tag, index) in localModelValue"
-            :key="`tag_${index}`"
-            closable
-            label
-            :color="VColors.Primary"
-            @click:close="onDelete(index)"
-          >
-            {{ tag }}
-          </VChip>
-        </div>
+      <template #default>
+        <VChip
+          v-for="(tag, index) in localModelValue"
+          :key="`tag_${tag}`"
+          closable
+          label
+          :color="VColors.Primary"
+          @click:close="onDelete(index)"
+        >
+          {{ tag }}
+        </VChip>
       </template>
     </AppTextField>
     <p
@@ -95,3 +97,17 @@ const appendInnerIcon = computed(() => {
     </p>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.tags-field {
+  :deep(.v-text-field) {
+    height: auto;
+  }
+  :deep(.v-field__input){
+    gap: 0.5rem;
+    input {
+      min-width: 10rem;
+    }
+  }
+}
+</style>
