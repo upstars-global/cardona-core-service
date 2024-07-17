@@ -102,8 +102,8 @@ onUnmounted(clock.stopTime)
   .content-header-title {
     font-size: 1.5rem;
     line-height: 1.75rem;
-    padding-right: 1rem;
-    border: 1px solid rgb(var(--v-theme-grey-200))
+    padding-right: 1rem !important;
+    border-right: 1px solid rgb(var(--v-theme-grey-200))
   }
 
   .breadcrumb-wrapper {
