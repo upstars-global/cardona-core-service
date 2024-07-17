@@ -113,6 +113,12 @@ const searchQuery = computed({
 </template>
 
 <style lang="scss" scoped>
+.search {
+  :deep(.v-input__control) {
+    margin-top: 1px;
+    height: 38px;
+  }
+}
 .filter-btn {
   &--small {
     min-width: 2.5rem;
