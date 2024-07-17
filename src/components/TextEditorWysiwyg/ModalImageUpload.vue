@@ -45,6 +45,10 @@ const setPathFile = (val: string) => {
   width: 800px;
   max-height: 600px;
   overflow: auto;
+
+  .scroll-area {
+    width: calc(100% + 17px);
+  }
 }
 
 .tabs-file-upload {
