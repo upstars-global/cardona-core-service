@@ -1,3 +1,4 @@
+import { onMounted } from 'vue'
 import { useOS } from './useOS'
 
 const CUSTOM_SCROLL_CLASS = 'custom-scroll'
