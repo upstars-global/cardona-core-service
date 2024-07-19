@@ -774,6 +774,7 @@
     "label": "Image",
     "textBtn": "Select",
     "selectImage": "Select Image",
+    "selectImageTooltip": "In image name using words  such as “banner, promo, affiliate, marketing” may cause blocking",
     "errorLoadImage": "Image not loaded. Server error.",
     "delete": "Delete",
     "dragText": "Drag file here or upload from device",
