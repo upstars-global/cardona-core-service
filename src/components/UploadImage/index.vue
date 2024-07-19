@@ -8,6 +8,7 @@ import BaseModal from '../../components/BaseModal/index.vue'
 import { UploadFileSizes } from '../../@model/enums/uploadFileSizes'
 import RemoveModal from '../../components/BaseModal/RemoveModal.vue'
 import FilesUpload from '../FilesUpload/FilesUpload.vue'
+import { MAX_WIDTH_TOOLTIP } from '../../utils/constants'
 import ModalFileUpload from './ModalFileUpload.vue'
 
 interface Props {
@@ -154,6 +155,25 @@ const onFileUpload = async file => {
     :title="$t('uploadImg.selectImage')"
     :size="ModalSizes.Medium"
   >
+    <template #modal-header="{ title }">
+      <div class="d-flex items-center">
+        <h4 class="mb-0">
+          {{ title }}
+        </h4>
+        <VTooltip
+          :text="$t('uploadImg.selectImageTooltip')"
+          :max-width="MAX_WIDTH_TOOLTIP"
+        >
+          <template #activator="{ props }">
+            <VIcon
+              :icon="IconsList.InfoIcon"
+              v-bind="props"
+              class="ml-2 align-text-top text-grey-500"
+            />
+          </template>
+        </VTooltip>
+      </div>
+    </template>
     <template #default>
       <div class="transaction-modal-content--wrapper overflow-y-auto overflow-x-hidden">
         <ModalFileUpload
