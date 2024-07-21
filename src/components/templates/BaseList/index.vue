@@ -559,10 +559,6 @@ onBeforeMount(async () => {
   await getList()
 })
 
-const showActions = computed(() =>
-  [canUpdate, canUpdateSeo, canCreate, canRemove].some(Boolean),
-)
-
 onUnmounted(() => {
   removePerPage()
 })
