@@ -3,12 +3,12 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { cloneDeep } from 'lodash'
-import { setStorage } from '../../helpers/storage'
 import useToastService from '../../helpers/toasts'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import type { BaseField } from '../../@model/templates/baseField'
+import type { IDefaultFilter } from '../../@model/filter'
 import FilterSelector from './_components/FilterSelector.vue'
 
 const props = defineProps<{
@@ -28,7 +28,7 @@ const route = useRoute()
 const { toastSuccess } = useToastService()
 
 const { name: pageName } = route
-const keyStorage = `${pageName}-${props.entityName}-list-filters`
+const keyStorage = `${pageName}_${props.entityName}`
 
 const selectedFilters = ref<BaseField[]>([])
 
@@ -61,8 +61,7 @@ watch(selectedFilters, filters => {
   emits('change-selected-filters', filters)
 }, { deep: true })
 
-onMounted(() => {
-  const initFiltersStorage = localStorage.getItem(keyStorage)
+onMounted(async () => {
   const isSamePath = route.path === store.getters['filtersCore/listPath']
   const isSameEntity = props.entityName === store.getters['filtersCore/listEntityName']
 
@@ -75,12 +74,17 @@ onMounted(() => {
   if (store.getters['filtersCore/appliedListFilters'].length) {
     selectedFilters.value = store.getters['filtersCore/appliedListFilters']
   }
-  else if (initFiltersStorage) {
-    selectedFilters.value = props.filters.filter(({ key }: BaseField) =>
-      initFiltersStorage?.includes(key),
-    )
+  else {
+    const filtersSavedByDefault: IDefaultFilter[] = await store.dispatch('filtersCore/fetchDefaultFilters')
+    const currentListFilters: IDefaultFilter | undefined = filtersSavedByDefault.find(({ type }) => type === keyStorage)
 
-    emits('change-selected-filters', selectedFilters.value)
+    if (currentListFilters) {
+      selectedFilters.value = props.filters.filter(({ key }: BaseField) =>
+        currentListFilters.fields.includes(key),
+      )
+
+      emits('change-selected-filters', selectedFilters.value)
+    }
   }
 })
 
@@ -88,8 +92,10 @@ const selectedFiltersKeys = computed(() => {
   return selectedFilters.value.map(({ key }) => key)
 })
 
-const onSaveByDefault = () => {
-  setStorage(keyStorage, selectedFiltersKeys.value)
+const onSaveByDefault = async () => {
+  const savedFilter: IDefaultFilter = { type: keyStorage, fields: selectedFiltersKeys.value }
+
+  await store.dispatch('filtersCore/setDefaultFilters', savedFilter)
 
   toastSuccess('filtersSavedByDefault')
 }
