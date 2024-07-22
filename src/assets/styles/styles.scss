@@ -78,8 +78,8 @@ hr {
   }
 }
 
-.base-scroll {
-  .v-table__wrapper {
+html.custom-scroll {
+  * {
     &::-webkit-scrollbar {
       width: 11px;
       height: 11px;
