@@ -104,7 +104,7 @@ onUnmounted(clock.stopTime)
     line-height: 1.75rem;
     padding-right: 1rem !important;
     border-right: 1px solid rgb(var(--v-theme-grey-200));
-    color: 1px solid rgb(var(--v-theme-grey-900))
+    color: rgb(var(--v-theme-grey-900), 0.9)
   }
 
   .breadcrumb-wrapper {
