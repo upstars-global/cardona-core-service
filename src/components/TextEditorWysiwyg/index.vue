@@ -63,8 +63,6 @@ const removeVariableValueByKey = key => {
   store.dispatch('textEditor/removeVariableValueByKey', key)
 }
 
-const allowInit = ref(false)
-
 watch(
   () => isUpdateVar.value,
   () => {
