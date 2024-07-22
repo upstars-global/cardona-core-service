@@ -41,7 +41,7 @@ export default {
   },
 
   actions: {
-    async setDefaultFilters({ commit }, filter: IDefaultFilter) {
+    async setDefaultFilter({ commit }, filter: IDefaultFilter) {
       await ApiService.request({
         type: 'App.V2.Users.Filters.Store',
         data: filter,
@@ -61,6 +61,10 @@ export default {
       commit('SET_DEFAULT_FILTERS', data)
 
       return data
+    },
+
+    clearLocalDefaultFilters({ commit }) {
+      commit('SET_DEFAULT_FILTERS', [])
     },
   },
 }

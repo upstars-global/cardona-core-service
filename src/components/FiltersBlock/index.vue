@@ -95,7 +95,7 @@ const selectedFiltersKeys = computed(() => {
 const onSaveByDefault = async () => {
   const savedFilter: IDefaultFilter = { type: keyStorage, fields: selectedFiltersKeys.value }
 
-  await store.dispatch('filtersCore/setDefaultFilters', savedFilter)
+  await store.dispatch('filtersCore/setDefaultFilter', savedFilter)
 
   toastSuccess('filtersSavedByDefault')
 }
