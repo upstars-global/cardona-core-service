@@ -91,6 +91,7 @@ const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
             class="pagination--button"
             rounded="circle"
             @click="setActivePage(item)"
+            :disabled="isEllipsis(item)"
           >
             {{ getNumberOfPage(item) }}
           </VBtn>
