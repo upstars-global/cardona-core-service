@@ -51,7 +51,7 @@ onUnmounted(clock.stopTime)
               :icon="IconsList.Menu2Icon"
             />
           </VBtn>
-          <h2 class="content-header-title float-left pr-1 mb-0">
+          <h2 class="content-header-title font-weight-medium float-left mb-0 pr-1">
             {{ $t(`title.${$route.meta.title}`) }}
           </h2>
           <div class="breadcrumb-wrapper">
@@ -97,5 +97,20 @@ onUnmounted(clock.stopTime)
 <style lang="scss" scoped>
   .time-value {
     width: 60px;
+  }
+
+  .content-header-title {
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+    padding-right: 1rem !important;
+    border-right: 1px solid rgb(var(--v-theme-grey-200));
+    color: rgb(var(--v-theme-grey-900), 0.9)
+  }
+
+  .breadcrumb-wrapper {
+    padding-left: 1rem;
+    :deep(ul) {
+      padding-inline: 0;
+    }
   }
 </style>
