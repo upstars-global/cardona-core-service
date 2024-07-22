@@ -47,6 +47,7 @@ watch(searchInput, (newValue: string) => {
       :placeholder="placeholder"
       :size="size"
       autocomplete="off"
+      class="search"
     >
       <template #prepend-inner>
         <VIcon :icon="IconsList.SearchIcon" />
@@ -54,3 +55,12 @@ watch(searchInput, (newValue: string) => {
     </VTextField>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.search {
+  :deep(.v-input__control) {
+    margin-top: 1px;
+    height: 38px;
+  }
+}
+</style>
