@@ -75,3 +75,8 @@ export class FilterProject {
     this.project = project
   }
 }
+
+export interface IDefaultFilter {
+  readonly type: string
+  readonly fields: string[]
+}
