@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed } from 'vue'
+import { VColors } from '../../../../../@model/vuetify'
 
 const props = withDefaults(
   defineProps<{
@@ -26,7 +27,7 @@ const showListBadges = computed(() =>
       v-for="(value, index) in showListBadges"
       :key="index"
       label
-      color="secondary"
+      :color="VColors.Secondary"
     >
       {{ value.name }}
       <span v-if="value?.position">({{ value.position }})</span>
@@ -34,7 +35,7 @@ const showListBadges = computed(() =>
     <VChip
       v-if="isShowBadgeCount"
       label
-      color="primary"
+      :color="VColors.Primary"
     >
       +{{ listBadges.length - countItemShowBadge }}
     </VChip>
