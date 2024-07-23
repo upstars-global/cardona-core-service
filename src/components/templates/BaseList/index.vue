@@ -705,7 +705,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
           <TableFields
             v-model="selectedFields"
-            :entity-name="entityName"
+            :entity-name="pageName || entityName"
             :list="fields"
           />
         </div>
