@@ -17,7 +17,12 @@ import type {
 } from './config'
 import { i18n } from '@/plugins/i18n'
 
+const INVALID_TOKEN_ERROR = 'TypeError: Failed to execute \'setRequestHeader\' on \'XMLHttpRequest\': String contains non ISO-8859-1 code point.'
+const TOKEN_INVALID = 'TOKEN_INVALID'
+
 const { toastSuccess, toastError, toastErrorMessageString } = useToastService()
+
+const isInvalidTokenError = (error): string => error?.toString()?.includes(INVALID_TOKEN_ERROR) || ''
 
 const getLoaderSlug = (url: string, loaderSlug: string): string =>
   loaderSlug ? `${url}${loaderSlug}` : url
@@ -85,11 +90,14 @@ class ApiService {
       return data
     }
     catch (error: any) {
+      const invalidTokenError = isInvalidTokenError(error)
       const isLoginPage: boolean = route?.name === 'Login'
 
-      const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', 'TOKEN_INVALID']
+      const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', TOKEN_INVALID]
 
-      if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type)) {
+      invalidTokenError && toastError(TOKEN_INVALID)
+
+      if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type) || invalidTokenError) {
         store.dispatch('authCore/clearAuth')
 
         if (!isLoginPage)
