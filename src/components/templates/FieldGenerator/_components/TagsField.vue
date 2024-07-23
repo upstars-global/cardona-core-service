@@ -26,7 +26,7 @@ const onDelete = (index: number) => {
 }
 
 const inputValue = ref('')
-const splitValue = computed(() => inputValue.value.split(' '))
+const splitValue = computed(() => Array.from(new Set(inputValue.value.replace(/\//g, '').split(' ').filter(tag => !!tag))))
 
 const duplicateTagsList = computed(() => {
   const tags = localModelValue.value
