@@ -831,7 +831,16 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             v-else-if="field.type === ListFieldType.Badges"
             :key="`${index}_${field.type}`"
             :list-badges="cell"
-          />
+          >
+            <template #default="{ value }">
+              <slot
+                :name="`${field.key}-badgeTitle`"
+                :item="item.raw"
+                :cell="cell"
+                :value="value"
+              />
+            </template>
+          </BadgesField>
 
           <PositionField
             v-else-if="field.type === ListFieldType.Priority"
