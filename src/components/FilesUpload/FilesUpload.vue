@@ -18,7 +18,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   size: UploadFileSizes.md,
   disabled: false,
-  dataTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  dataTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'],
   maxSizeFileMb: 10,
   textBtn: 'Upload file',
 })
