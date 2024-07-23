@@ -29,7 +29,10 @@ const showListBadges = computed(() =>
       label
       :color="VColors.Secondary"
     >
-      {{ value.name }}
+      <slot :value="value">
+        {{ value.name }}
+      </slot>
+
       <span v-if="value?.position">({{ value.position }})</span>
     </VChip>
     <VChip
