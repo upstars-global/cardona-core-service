@@ -22,7 +22,7 @@ const TOKEN_INVALID = 'TOKEN_INVALID'
 
 const { toastSuccess, toastError, toastErrorMessageString } = useToastService()
 
-const isInvalidTokenError = (error): string => error?.toString()?.includes(INVALID_TOKEN_ERROR) || ''
+const isInvalidTokenError = (error): boolean => error?.toString()?.includes(INVALID_TOKEN_ERROR)
 
 const getLoaderSlug = (url: string, loaderSlug: string): string =>
   loaderSlug ? `${url}${loaderSlug}` : url
