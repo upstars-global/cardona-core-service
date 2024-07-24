@@ -755,7 +755,8 @@
     "approveAll": "Approve all",
     "rejectAll": "Reject all",
     "hide": "Hide",
-    "back": "Back"
+    "back": "Back",
+    "saveChanges": "Save changes"
   },
   "sms": {
     "smsMessages": "SMS messages",
