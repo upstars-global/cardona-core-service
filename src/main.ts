@@ -18,7 +18,6 @@ const app = createApp(App)
 
 // Register plugins
 registerPlugins(app)
-
 initDirectives(app)
 app.use(VueFroala)
 app.use(vuex)

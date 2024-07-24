@@ -52,10 +52,11 @@ export default {
       return data
     },
 
-    clearAuth({ commit }) {
+    clearAuth({ commit, dispatch }) {
       clearAuthTokens()
 
       commit('SET_AUTH', false)
+      dispatch('filtersCore/clearLocalDefaultFilters', null, { root: true })
     },
   },
 }
