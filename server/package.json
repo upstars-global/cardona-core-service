@@ -7,8 +7,5 @@
     "dev": "nitro dev",
     "prepare": "nitro prepare",
     "preview": "node .output/server/index.mjs"
-  },
-  "devDependencies": {
-    "nitropack": "^2.9.7"
   }
 }
