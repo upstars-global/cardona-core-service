@@ -78,22 +78,30 @@ class ApiService {
         const base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(compressedData)));
 
         config.gzip = true;
-        console.log('gzip', JSON.stringify(compressedData))
+        console.log('gzip', JSON.stringify({
+          type: payload.type,
+          data: base64String,
+          requestId: uuidv4(),
+        }))
+
+        return await fetch(url, {
+          method,
+          headers,
+          body: JSON.stringify({
+            type: payload.type,
+            data: base64String,
+            requestId: uuidv4(),
+          })
+        });
       }
 
       const body: FormData | any
         = contentType === ContentType.FormData && payload.formData
         ? this.createFormData(payload.formData)
-        : config.gzip
-          ? JSON.stringify({
-            type: payload.type,
-            data: base64String,
-            requestId: uuidv4(),
-          })
-          : JSON.stringify({
-            ...payload,
-            requestId: uuidv4(),
-          })
+        : JSON.stringify({
+          ...payload,
+          requestId: uuidv4(),
+        })
 
       const { data }: any = await axiosInstance({
         url,
