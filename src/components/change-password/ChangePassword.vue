@@ -10,9 +10,12 @@ import { VColors, VVariants } from '../../@model/vuetify'
 import type { BaseField } from '../../@model/templates/baseField'
 import { BaseSectionConfig } from '../../@model/templates/baseList'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   id: string | number
-}>()
+  isProduct?: boolean
+}>(), {
+  isProduct: true,
+})
 
 const modal = inject('modal')
 const store = useStore()
@@ -22,7 +25,7 @@ const onSuccess = async (form: Record<string, BaseField>) => {
   if (!await passwordFormRef.value.validate())
     return
 
-  const payload = { id: props.id, password: form.password.value }
+  const payload = { id: props.id, password: form.password.value, isProduct: props.isProduct }
 
   await store.dispatch('users/updateUserPassword', payload)
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, onBeforeMount, onMounted, onUnmounted, ref, useSlots, watch } from 'vue'
+import { computed, inject, onBeforeMount, onUnmounted, ref, useSlots, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
@@ -443,9 +443,10 @@ const appliedFilters = computed<BaseField[]>(() => {
 
 const hasSelectedFilters = computed(() => selectedFilters && selectedFilters.value.isNotEmpty)
 
-onMounted(() => {
-  isFiltersShown.value = hasSelectedFilters.value
-})
+watch(() => hasSelectedFilters.value, hasFilters => {
+  if (hasFilters)
+    isFiltersShown.value = hasFilters
+}, { immediate: true })
 
 // Selectable
 const selectedItems = ref<Record<string, unknown>[]>([])
@@ -558,10 +559,6 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
 onBeforeMount(async () => {
   await getList()
 })
-
-const showActions = computed(() =>
-  [canUpdate, canUpdateSeo, canCreate, canRemove].some(Boolean),
-)
 
 onUnmounted(() => {
   removePerPage()
@@ -705,7 +702,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
           <TableFields
             v-model="selectedFields"
-            :entity-name="entityName"
+            :entity-name="pageName || entityName"
             :list="fields"
           />
         </div>

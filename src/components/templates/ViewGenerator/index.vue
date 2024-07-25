@@ -21,10 +21,10 @@ const valueColsCount = computed(() => 12 - props.cols)
 <template>
   <div
     v-if="canView"
-    class="field-generator"
+    class="view-generator py-1"
   >
     <VRow
-      class="font-small-3 py-1"
+      class="font-small-3"
       no-gutters
     >
       <VCol
@@ -42,7 +42,7 @@ const valueColsCount = computed(() => 12 - props.cols)
       </VCol>
       <VCol
         :cols="valueColsCount"
-        class="view-generator__text value font-weight-medium text-break d-flex align-start wrapper-value text-base ma-0"
+        class="view-generator__text value font-weight-medium d-flex align-items-start text-break wrapper-value text-base ma-0"
         :class="justifyClass"
       >
         <slot :name="`sidebar-value(${keyName})`">
@@ -63,7 +63,6 @@ const valueColsCount = computed(() => 12 - props.cols)
   width: 100%;
   max-width: 154px;
   color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
-  margin-right: 0.5rem;
 }
 .wrapper-value {
   width: 100%;

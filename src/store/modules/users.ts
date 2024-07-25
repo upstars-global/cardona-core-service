@@ -26,15 +26,20 @@ export default {
       )
     },
 
-    async updateUserPassword(_, payload) {
-      await ApiService.request({
-        type: `App.V2.${
+    async updateUserPassword(_, { id, password, isProduct }: { id: string; password: string; isProduct: boolean }) {
+      const product = isProduct
+        ? `${
           productName.charAt(0).toUpperCase() + productName.slice(1)
-        }.Users.Password.Update`,
+        }.`
+        : ''
+
+      await ApiService.request({
+        type: `App.V2.${product}Users.Password.Update`,
         data: {
-          ...payload,
+          id,
+          password,
         },
-      })
+      }, { withSuccessToast: true })
     },
   },
 }

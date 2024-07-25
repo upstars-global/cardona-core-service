@@ -30,8 +30,6 @@ const setPathFile = (val: string) => {
   >
     <div class="px-6 pb-6 tabs-file-upload">
       <FileGallery
-        :url-file="modelValue"
-        :path="path"
         is-only-gallery
         @input="setUrlFile"
         @input-path="setPathFile"
@@ -40,11 +38,15 @@ const setPathFile = (val: string) => {
   </BaseModal>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .tabs-file-upload {
   width: 800px;
   max-height: 600px;
   overflow: auto;
+
+  :deep(.scroll-area) {
+    width: calc(100% + 17px);
+  }
 }
 
 .tabs-file-upload {

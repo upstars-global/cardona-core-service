@@ -76,7 +76,7 @@ const onScrollEnd = () => {
   </PerfectScrollbar>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .scroll-area {
   position: relative;
   width: 100%;

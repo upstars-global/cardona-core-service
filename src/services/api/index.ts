@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import type { AxiosError, AxiosInstance, AxiosRequestConfig } from '../../libs/axios'
 import axios from '../../libs/axios'
 import store from '../../store'
@@ -25,6 +25,8 @@ const getLoaderSlug = (url: string, loaderSlug: string): string =>
 class ApiService {
   static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}) {
     const router = useRouter()
+    const route = useRoute()
+
     const {
       method = Method.POST,
       contentType = ContentType.JSON,
@@ -83,7 +85,7 @@ class ApiService {
       return data
     }
     catch (error: any) {
-      const isLoginPage: boolean = router?.currentRoute.value.name === 'Login'
+      const isLoginPage: boolean = route?.name === 'Login'
 
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', 'TOKEN_INVALID']
 
