@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider vite build && cp -r ./dist/ ./server/public && cd ./server && NITRO_PRESET=cloudflare-pages npm run build",
+    "build": "vite build",
+    "build-cf": "vite build && cp -r ./dist/ ./server/public && cd ./server && NITRO_PRESET=cloudflare-pages npm run build",
     "build:vite": "vite build",
     "preview": "vite preview --port 5050",
     "typecheck": "vue-tsc --noEmit",
