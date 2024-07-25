@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build-cf": "vite build && cp -r ./dist/ ./server/public && cd ./server && NITRO_PRESET=cloudflare-pages npm run build",
+    "build:vite": "vite build",
     "preview": "vite preview --port 5050",
     "typecheck": "vue-tsc --noEmit",
     "lint": "eslint . -c .eslintrc.cjs --fix --rulesdir eslint-internal-rules/ --ext .ts,.js,.cjs,.vue,.tsx,.jsx",
@@ -131,7 +133,8 @@
     "vite-plugin-vue-layouts": "^0.8.0",
     "vite-plugin-vuetify": "1.0.2",
     "vue-shepherd": "^3.0.0",
-    "vue-tsc": "^1.8.19"
+    "vue-tsc": "^1.8.19",
+    "nitropack": "^2.9.7"
   },
   "resolutions": {
     "postcss": "^8",
