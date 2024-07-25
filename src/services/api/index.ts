@@ -16,6 +16,8 @@ import type {
   IValidationError,
 } from './config'
 import { i18n } from '@/plugins/i18n'
+import pako from 'pako';
+
 
 const { toastSuccess, toastError, toastErrorMessageString } = useToastService()
 
@@ -41,6 +43,7 @@ class ApiService {
       entityName = '',
       rejectError = true,
       loaderSlug = '',
+      gzip= false,
     } = config
 
     const convertedType: Array<string> = payload.type
@@ -61,9 +64,32 @@ class ApiService {
         'Content-Type': contentType,
       }
 
+      if(payload.type == 'App.V2.Static.Pages.Update') {
+
+        console.log(payload);
+
+        // Преобразуем данные в строку JSON
+        const jsonString = JSON.stringify(payload.data);
+
+        // Сжимаем строку JSON
+        const compressedData = pako.deflate(jsonString);
+
+        // Преобразуем сжатые данные в строку Base64 (для удобства передачи)
+        const base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(compressedData)));
+
+        config.gzip = true;
+        console.log('gzip', JSON.stringify(compressedData))
+      }
+
       const body: FormData | any
         = contentType === ContentType.FormData && payload.formData
-          ? this.createFormData(payload.formData)
+        ? this.createFormData(payload.formData)
+        : config.gzip
+          ? JSON.stringify({
+            type: payload.type,
+            data: base64String,
+            requestId: uuidv4(),
+          })
           : JSON.stringify({
             ...payload,
             requestId: uuidv4(),
