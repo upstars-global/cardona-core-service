@@ -205,32 +205,32 @@ const config = {
       emit('update:modelValue', contentChanged)
     },
   },
+  events: {
+    'image.beforeUpload': function (images: any[]) {
+      Array.from(images).forEach(async file => {
+        if (!file)
+          return
+        const fileName = file.name
 
-  'image.beforeUpload': function (images: any[]) {
-    images.forEach(async file => {
-      if (!file)
-        return
-      const fileName = file.name
+        const _path = `/${selectedProjectPublicName.value}/upload/${fileName}`
+        try {
+          const { publicPath } = await store.dispatch('compostelaCore/uploadFile', {
+            file,
+            path: _path,
+          })
 
-      const _path = `/${selectedProjectPublicName.value}/upload/${fileName}`
-      try {
-        const { publicPath } = await store.dispatch('compostelaCore/uploadFile', {
-          file,
-          path: _path,
-        })
+          this.image.insert(publicPath, true, { name: fileName, id: fileName }, '', {
+            link: publicPath,
+          })
 
-        this.image.insert(publicPath, true, { name: fileName, id: fileName }, '', {
-          link: publicPath,
-        })
+          this.image.hideProgressBar(true)
+        }
+        catch (e) {}
+      })
 
-        this.image.hideProgressBar(true)
-      }
-      catch (e) {}
-    })
-
-    return false
+      return false
+    },
   },
-
   ...baseConfig,
 }
 
