@@ -65,6 +65,7 @@ export default {
     // set v-tooltip default location to top
     location: 'top',
     offset: '8px',
+    class: 'text-body-1',
   },
   VCheckboxBtn: {
     color: 'primary',

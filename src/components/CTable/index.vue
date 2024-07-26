@@ -291,7 +291,7 @@ const getActualField = (fields: Array<unknown>) => {
       <tr v-if="items.isEmpty && !isLoadingList">
         <td
           :colspan="emptyColspan"
-          class="text-center pa-4"
+          class="text-center text-body-1 pa-4"
         >
           <slot name="empty" />
         </td>
