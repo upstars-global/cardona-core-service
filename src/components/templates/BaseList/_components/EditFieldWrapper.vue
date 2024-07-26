@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, useSlots, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { cloneDeep } from 'lodash'
 import { IconsList } from '../../../../@model/enums/icons'
+import { VColors, VSizes } from '@/@model/vuetify'
 
 interface Props {
   value?: unknown
@@ -21,7 +22,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emits = defineEmits<Emits>()
-const slots = useSlots()
 const openEdit = ref(props.isEdit)
 
 watch(
@@ -62,11 +62,12 @@ const updateValue = (value: unknown): void => {
 <template>
   <div
     class="editable-wrapper"
+    :class="{ 'editable-wrapper--open': openEdit }"
     @click.stop
   >
     <div
       v-if="!openEdit"
-      class="d-flex justify-content-center align-items-center"
+      class="d-flex justify-content-center align-center"
     >
       <div
         v-if="canEdit"
@@ -74,6 +75,7 @@ const updateValue = (value: unknown): void => {
       >
         <VIcon
           :icon="IconsList.EditIcon"
+          :color="VColors.Primary"
           @click.stop="setEditMode(true)"
         />
       </div>
@@ -91,19 +93,23 @@ const updateValue = (value: unknown): void => {
         :update-value="updateValue"
         :input-value="acceptedValue"
       />
-      <div class="action-buttons d-flex align-center pl-1">
-        <div
-          class="cursor-pointer text-success"
+      <div class="action-buttons d-flex align-center gap-1 pl-1">
+        <VBtn
+          class="cursor-pointer text-success v-btn--rectangle"
+          variant="text"
+          :size="VSizes.Medium"
           @click.stop="setUpdate"
         >
           <VIcon :icon="IconsList.CheckIcon" />
-        </div>
-        <div
-          class="cursor-pointer text-error ml-1"
+        </VBtn>
+        <VBtn
+          class="cursor-pointer text-error v-btn--rectangle"
+          variant="text"
+          :size="VSizes.Medium"
           @click.stop="cancelUpdate"
         >
           <VIcon :icon="IconsList.XIcon" />
-        </div>
+        </VBtn>
       </div>
     </div>
   </div>
@@ -111,9 +117,8 @@ const updateValue = (value: unknown): void => {
 
 <style lang="scss" scoped>
 .editable-wrapper {
-  .icon-edit-wrapper {
-    width: 1rem;
-    height: 24px;
+  &--open {
+    width: 16.75rem;
   }
 }
 </style>

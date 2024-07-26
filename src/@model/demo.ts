@@ -4,7 +4,6 @@ import { i18n } from '../plugins/i18n'
 import { SideBarCollapseItem } from '../@model/templates/baseList'
 import type { BaseListItem } from '../@model/templates/baseList'
 import { VColors } from '../@model/vuetify'
-import { IconsList } from '../@model/enums/icons'
 import type { TranslationForm } from './translations'
 import {
   CheckBaseField, CheckGroupBaseField,
@@ -550,7 +549,6 @@ export class DemoSideBar {
           type: ViewType.Copy,
           value: data?.email,
           label: i18n.t('common.email'),
-          icon: IconsList.AtIcon,
         }),
         newDate: new ViewInfo({
           type: ViewType.DateWithSeconds,

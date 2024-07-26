@@ -51,11 +51,14 @@ onUnmounted(clock.stopTime)
               :icon="IconsList.Menu2Icon"
             />
           </VBtn>
-          <h2 class="content-header-title font-weight-medium float-left mb-0 pr-1">
+          <h4 class="float-left mb-0 text-h4">
             {{ $t(`title.${$route.meta.title}`) }}
-          </h2>
+          </h4>
           <div class="breadcrumb-wrapper">
-            <VBreadcrumbs :items="allBreadcrumb">
+            <VBreadcrumbs
+              :items="allBreadcrumb"
+              class="text-body-1"
+            >
               <template #divider>
                 <VIcon :icon="IconsList.ChevronRightIcon" />
               </template>
@@ -97,14 +100,6 @@ onUnmounted(clock.stopTime)
 <style lang="scss" scoped>
   .time-value {
     width: 60px;
-  }
-
-  .content-header-title {
-    font-size: 1.5rem;
-    line-height: 1.75rem;
-    padding-right: 1rem !important;
-    border-right: 1px solid rgb(var(--v-theme-grey-200));
-    color: rgb(var(--v-theme-grey-900), 0.9)
   }
 
   .breadcrumb-wrapper {

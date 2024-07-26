@@ -11,6 +11,7 @@
 @import "./components/v-textarea";
 @import "./components/v-tabs";
 @import "./components/v-card";
+@import "./components/v-icon";
 @import "./components/toasts";
 @import "./components/v-switch";
 @import "./components/gallery";
@@ -26,10 +27,6 @@ html {
 
 .font-weight-semi-bold {
   font-weight: 600;
-}
-
-.v-icon--size-default {
-  font-size: 1.25rem;
 }
 
 hr {

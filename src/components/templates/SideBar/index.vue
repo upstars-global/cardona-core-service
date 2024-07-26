@@ -89,9 +89,9 @@ const onHide = () => {
   >
     <!-- Header -->
     <div class="content-sidebar-header d-flex justify-space-between align-center px-6 py-3 bg-light">
-      <h4 class="content-sidebar-header__title mb-0 text-h4">
+      <h5 class="content-sidebar-header__title mb-0 text-h5">
         {{ $t(title) }}
-      </h4>
+      </h5>
       <VIcon
         class="ml-1 cursor-pointer"
         :icon="IconsList.XIcon"

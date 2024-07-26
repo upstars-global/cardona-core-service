@@ -78,12 +78,12 @@ const onHide = (value: boolean) => {
             :title="title"
             :hide="hide"
           >
-            <h4
+            <h5
               v-if="title"
-              class="mb-0"
+              class="text-h5 mb-0"
             >
               {{ title }}
-            </h4>
+            </h5>
           </slot>
           <VBtn
             size="30"

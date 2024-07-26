@@ -40,6 +40,7 @@ export default {
   VExpansionPanelTitle: {
     expandIcon: 'tabler-chevron-right',
     collapseIcon: 'tabler-chevron-right',
+    class: 'text-h6',
   },
   VList: {
     density: 'comfortable',
@@ -187,6 +188,10 @@ export default {
   VCard: {
     style: 'overflow: visible; position: static;',
     elevation: 0,
+  },
+  VCardTitle: {
+    class: 'text-h5',
+    tag: 'h5',
   },
   VWindow: {
     style: 'overflow: visible;',
