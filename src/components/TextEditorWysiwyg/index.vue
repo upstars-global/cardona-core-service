@@ -204,8 +204,6 @@ const config = {
 
       emit('update:modelValue', contentChanged)
     },
-  },
-  events: {
     'image.beforeUpload': function (images: any[]) {
       Array.from(images).forEach(async file => {
         if (!file)
