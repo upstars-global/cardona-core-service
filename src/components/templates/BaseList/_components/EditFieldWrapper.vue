@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue'
 import { cloneDeep } from 'lodash'
 import { IconsList } from '../../../../@model/enums/icons'
-import { VColors, VSizes } from '@/@model/vuetify'
+import { VColors, VSizes } from '../../../../@model/vuetify'
 
 interface Props {
   value?: unknown
