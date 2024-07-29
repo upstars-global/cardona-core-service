@@ -1,6 +1,7 @@
 import { computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
+import { useRoute, useRouter } from 'vue-router'
 
 export function useCheckToken() {
   const store = useStore()
