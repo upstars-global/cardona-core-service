@@ -73,6 +73,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
 
 // Options list color
 .vs__dropdown-option {
+  white-space: normal;
   color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));;
 }
 
