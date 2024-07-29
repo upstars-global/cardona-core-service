@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-
 import '@/@fake-db/db'
 import './@model/validations'
 import './extensions'
