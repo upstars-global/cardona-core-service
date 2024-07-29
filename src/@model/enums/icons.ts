@@ -155,6 +155,8 @@ export enum IconsList {
   LogOutIcon = 'tabler-logout',
   MailIcon = 'tabler-mail',
   MapPinIcon = 'MapPinIcon',
+  Pin = 'tabler-pin',
+  PinFilled = 'tabler-pin-filled',
   MapIcon = 'MapIcon',
   Maximize2Icon = 'Maximize2Icon',
   MaximizeIcon = 'tabler-maximize',
