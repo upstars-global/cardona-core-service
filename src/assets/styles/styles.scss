@@ -94,3 +94,8 @@ html.custom-scroll {
     }
   }
 }
+
+.text-body-1,
+.text-body-2 {
+  color: rgba(var(--v-theme-grey-900), var(--v-high-emphasis-opacity));
+}
