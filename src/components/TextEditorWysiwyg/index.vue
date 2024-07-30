@@ -145,8 +145,8 @@ FroalaEditor.RegisterCommand('gallery', {
 })
 
 const config = {
-  'placeholderText': props.placeholder,
-  'events': {
+  placeholderText: props.placeholder,
+  events: {
     initialized() {
       globalEditor.value = this
 
@@ -204,8 +204,6 @@ const config = {
 
       emit('update:modelValue', contentChanged)
     },
-  },
-  events: {
     'image.beforeUpload': function (images: any[]) {
       Array.from(images).forEach(async file => {
         if (!file)

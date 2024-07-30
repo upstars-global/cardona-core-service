@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useToggle } from '@vueuse/core'
 import { debounce } from 'lodash'
 import type { OptionsItem } from '../../../../@model'
 import { IconsList } from '../../../../@model/enums/icons'
@@ -28,6 +29,7 @@ const emits = defineEmits<{
 
 const isMultiple = false
 const isLoading = ref(false)
+const [isOpenDropDown, toggleDropDownState] = useToggle()
 
 const valueModel = computed<OptionsItem>({
   get: () =>
@@ -40,11 +42,15 @@ const valueModel = computed<OptionsItem>({
 const selectClasses = computed(() => {
   const size = props.size ? `select-size-${props.size}` : null
 
+  const openedDropDownWithValue = valueModel.value && isOpenDropDown.value ? 'opened-drop-down-with-value' : ''
+  const closedDropDownWithValue = valueModel.value && !isOpenDropDown.value ? 'closed-drop-down-with-value' : ''
+  const withoutClear = !props.field.clearable ? 'without-clear' : ''
+
   const classes: object = {
     error: props.errors,
   }
 
-  return [size, classes]
+  return [size, classes, openedDropDownWithValue, closedDropDownWithValue, withoutClear]
 })
 
 // Options
@@ -97,7 +103,14 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :append-to-body="field.withCalculatePosition"
       :calculate-position="withPopper(props.field.toggleDropdownCb)"
       @search="onSearch"
+      @open="toggleDropDownState"
+      @close="toggleDropDownState"
     >
+      <template #selected-option="{ name }">
+        <div class="selected-option-value">
+          {{ name }}
+        </div>
+      </template>
       <template #no-options="{ loading, search }">
         <div v-if="!search && !loading">
           {{ $t('common.enterSomething') }}
@@ -117,3 +130,35 @@ const onSearch = debounce(async (search: string, loading: Function) => {
     </VueSelect>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.selected-option-value {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.opened-drop-down-with-value {
+  :deep(.vs__selected-options) {
+    max-width: calc(100% - 1.75rem);
+  }
+}
+.closed-drop-down-with-value {
+  :deep(.vs__selected-options) {
+    max-width: calc(100% - 3.5rem);
+  }
+}
+
+.without-clear {
+  :deep(.vs__selected-options) {
+    max-width: calc(100% - 2rem);
+  }
+}
+
+.select-field {
+  :deep(.vs__selected) {
+    max-width: calc(100% - 2rem);
+  }
+}
+</style>
