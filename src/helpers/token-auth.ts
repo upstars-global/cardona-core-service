@@ -1,8 +1,7 @@
 import { isLoggedIn } from 'axios-jwt'
-import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import store from '../store'
 
-const store = useStore()
 const router = useRouter()
 
 export const actionOnBrokenToken = () => {
