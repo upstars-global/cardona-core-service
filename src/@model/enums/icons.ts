@@ -92,6 +92,7 @@ export enum IconsList {
   DivideCircleIcon = 'DivideCircleIcon',
   DivideSquareIcon = 'DivideSquareIcon',
   DivideIcon = 'DivideIcon',
+  DeviceFloppyIcon = 'tabler-device-floppy',
   DollarSignIcon = 'tabler-currency-dollar',
   DownloadCloudIcon = 'DownloadCloudIcon',
   DownloadIcon = 'DownloadIcon',
