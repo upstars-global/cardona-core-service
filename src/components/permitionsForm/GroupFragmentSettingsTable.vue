@@ -54,7 +54,7 @@ const searchLevel = (permission: PermissionUpdatableTable, val: string) => {
 const getMaxValue = (permission: PermissionUpdatableTable) => {
   switch (permission.type) {
     case 'switch':
-      return 1
+      return permission?.forAccessLevelValue || 1
     case 'table':
       return searchLevel(permission, tableColumns.value[tableColumns.value.length - 1].key)
   }
@@ -134,8 +134,9 @@ const onChangeTrigger = (
   })
 }
 
-const onChangeCheckbox = (permission: PermissionUpdatableTable, isCheck: boolean) => {
-  const level = isCheck ? 1 : 0
+const onChangeSwitch = (permission: PermissionUpdatableTable, isCheck: boolean) => {
+  const itemPermissionLevel = permission?.forAccessLevelValue || 1
+  const level = isCheck ? itemPermissionLevel : 0
 
   changeAccess(permission, level)
   onChangeTrigger(permission)
@@ -263,7 +264,7 @@ const onChangeCheckboxTable = (
                 :model-value="switchItem.access > 0"
                 class="ml-0"
                 :label="$t(`permission.${switchItem.target}`)"
-                @update:model-value="onChangeCheckbox(switchItem, $event)"
+                @update:model-value="onChangeSwitch(switchItem, $event)"
               />
             </VRow>
           </div>
