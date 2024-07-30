@@ -1,5 +1,6 @@
-import { getAccessToken, getRefreshToken, isLoggedIn } from 'axios-jwt'
+import { getAccessToken, getRefreshToken } from 'axios-jwt'
 import store from '../../store'
+import { actionOnBrokenToken, checkIsLoggedIn } from '../../helpers/token-auth'
 import { messageTypes } from './config'
 import { WSTypePrefix } from '@productConfig'
 
@@ -15,9 +16,8 @@ class WSService {
   }
 
   static readonly maxTimeReconnect: number = 60000
-
   static async connect(channel) {
-    if (!isLoggedIn() && !channel)
+    if (!checkIsLoggedIn(actionOnBrokenToken) && !channel)
       return
     this.Channel = channel
 
