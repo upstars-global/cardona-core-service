@@ -1,24 +1,30 @@
 import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
-import { useRoute } from 'vue-router'
-import { actionOnBrokenToken } from '../helpers/token-auth'
+import { useRouter, useRoute } from 'vue-router'
 
 export function useCheckToken() {
   const store = useStore()
   const route = useRoute()
+  const router = useRouter()
+
   const isLoginPage = computed(() => route.name === 'Login')
 
   const tokenKey = ref<string>('')
   const getActualTokenKey = () => Object.keys(localStorage).find(key => key.includes('auth-tokens-'))
   const tokenState = ref<Record<string, unknown> | null>(null)
 
+  const actionOnBrokenToken = () => {
+    store.dispatch('authCore/clearAuth')
+    router.push({ name: 'Login' })
+  }
+
   const checkOnActualToken = async () => {
     try {
       await store.dispatch('fetchCurrentUser')
     }
     catch (e) {
-      actionOnBrokenToken()
+      await actionOnBrokenToken()
     }
   }
 
@@ -27,13 +33,6 @@ export function useCheckToken() {
       return
 
     await checkOnActualToken()
-    try {
-      JSON.parse(localStorage[tokenKey.value])
-    }
-    catch (e) {
-      console.log('initCheckToken')
-      actionOnBrokenToken()
-    }
   }, { deep: true })
 
   const initCheckToken = () => {
