@@ -145,8 +145,8 @@ FroalaEditor.RegisterCommand('gallery', {
 })
 
 const config = {
-  'placeholderText': props.placeholder,
-  'events': {
+  placeholderText: props.placeholder,
+  events: {
     initialized() {
       globalEditor.value = this
 
@@ -208,33 +208,31 @@ const config = {
       if (command === 'html')
         isCodeViewActive.value = this.codeView.isActive()
     },
+    'image.beforeUpload': function (images: any[]) {
+      Array.from(images).forEach(async file => {
+        if (!file)
+          return
+        const fileName = file.name
+
+        const _path = `/${selectedProjectPublicName.value}/upload/${fileName}`
+        try {
+          const { publicPath } = await store.dispatch('compostelaCore/uploadFile', {
+            file,
+            path: _path,
+          })
+
+          this.image.insert(publicPath, true, { name: fileName, id: fileName }, '', {
+            link: publicPath,
+          })
+
+          this.image.hideProgressBar(true)
+        }
+        catch (e) {}
+      })
+
+      return false
+    },
   },
-
-  'image.beforeUpload': function (images: any[]) {
-    images.forEach(async file => {
-      if (!file)
-        return
-      const fileName = file.name
-
-      const _path = `/${selectedProjectPublicName.value}/upload/${fileName}`
-      try {
-        const { publicPath } = await store.dispatch('compostelaCore/uploadFile', {
-          file,
-          path: _path,
-        })
-
-        this.image.insert(publicPath, true, { name: fileName, id: fileName }, '', {
-          link: publicPath,
-        })
-
-        this.image.hideProgressBar(true)
-      }
-      catch (e) {}
-    })
-
-    return false
-  },
-
   ...baseConfig,
 }
 
