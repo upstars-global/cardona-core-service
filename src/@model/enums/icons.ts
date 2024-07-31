@@ -157,7 +157,7 @@ export enum IconsList {
   MapPinIcon = 'MapPinIcon',
   Pin = 'tabler-pin',
   PinFilled = 'tabler-pin-filled',
-  PinedOff = 'tabler-pined-off',
+  PinedOff = 'tabler-pinned-off',
   MapIcon = 'MapIcon',
   Maximize2Icon = 'Maximize2Icon',
   MaximizeIcon = 'tabler-maximize',
