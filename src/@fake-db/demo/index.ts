@@ -90,6 +90,10 @@ const options = [
     id: 'option9',
     name: 'Option 9',
   },
+  {
+    id: 'option10',
+    name: 'Option realy large option example Option realy large option example  Option realy large option example ',
+  },
 ]
 
 mock.onPost('/api/v2/options/list').reply(() => [200, { data: options }])
