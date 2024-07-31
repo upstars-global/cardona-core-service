@@ -113,6 +113,8 @@ const validatorUrlValidator = (val: string): boolean => {
 }
 
 const validatorPhone = (value: string): boolean => {
+  if (!value)
+    return true
   const regExp = /^\d+$/
   const phoneWithoutPlus: string = value.replace('+', '')
 
