@@ -49,11 +49,13 @@ interface PermissionUpdatableInput extends PermissionInput {
   readonly addiction?: PermissionInput[]
   readonly trigger?: PermissionTriggerInput[]
   readonly notAccessLevel?: number[]
+  readonly forAccessLevelValue?: number
 }
 export class PermissionUpdatableTable extends Permission implements PermissionUpdatableInput {
   readonly type: PermissionUpdatableType
   readonly trigger?: PermissionTriggerInput[]
   readonly notAccessLevel?: number[]
+  readonly forAccessLevelValue?: number
 
   constructor(data: PermissionUpdatableInput) {
     super({ ...data, access: data.access ? data.access : 0 })
@@ -61,6 +63,7 @@ export class PermissionUpdatableTable extends Permission implements PermissionUp
     this.type = data.type
     this.trigger = data.trigger || []
     this.notAccessLevel = data.notAccessLevel || [0]
+    this.forAccessLevelValue = data?.forAccessLevelValue ?? 0
   }
 }
 export class PermissionUpdatableTableList {

@@ -5,7 +5,7 @@ import type { TranslateResult } from 'vue-i18n'
 import { useStore } from 'vuex'
 import FroalaEditor from 'froala-editor'
 import type { LocaleVariable } from '../../@model/translations'
-import { VColors } from '../../@model/vuetify'
+import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import { copyToClipboard } from '../../helpers/clipboard'
 import baseConfig from './config'
@@ -204,6 +204,10 @@ const config = {
 
       emit('update:modelValue', contentChanged)
     },
+    'commands.after': function (command) {
+      if (command === 'html')
+        isCodeViewActive.value = this.codeView.isActive()
+    },
     'image.beforeUpload': function (images: any[]) {
       Array.from(images).forEach(async file => {
         if (!file)
@@ -319,6 +323,13 @@ const deleteVariableTextByKey = () => {
   variableKeySelect.value = ''
   store.dispatch('textEditor/setUpdateVar', true)
 }
+
+const isCodeViewActive = ref(false)
+
+const onSaveChanges = () => {
+  globalEditor.value.codeView.toggle()
+  isCodeViewActive.value = false
+}
 </script>
 
 <template>
@@ -345,6 +356,25 @@ const deleteVariableTextByKey = () => {
         tag="textarea"
         :config="config"
       />
+
+      <VBtn
+        v-if="isCodeViewActive"
+        :color="VColors.Primary"
+        :variant="VVariants.Text"
+        :size="VSizes.Small"
+        class="save-changes-btn mx-4 px-3"
+        @click.stop="onSaveChanges"
+      >
+        <VIcon
+          class="mr-2"
+          :icon="IconsList.DeviceFloppyIcon"
+          :color="VColors.Primary"
+        />
+
+        <span>
+          {{ $t('action.saveChanges') }}
+        </span>
+      </VBtn>
     </div>
 
     <div :class="{ 'd-none': Object.keys(variableTextBuffer).isEmpty }">
@@ -378,6 +408,8 @@ const deleteVariableTextByKey = () => {
 <style lang="scss" scoped>
 .block-text-edite {
   .editor-wrap {
+    position: relative;
+
     &.disabled {
       :deep(.fr-toolbar),
       :deep(.fr-element),
@@ -385,10 +417,18 @@ const deleteVariableTextByKey = () => {
         background: rgb(var(--v-theme-grey-100));
       }
     }
+
     :deep(ul) {
       margin-top: 1em;
       margin-bottom: 1em;
       padding-left: 40px;
+    }
+
+    .save-changes-btn {
+      position: absolute;
+      bottom: 0.375rem;
+      right: 0;
+      z-index: 99;
     }
   }
   :deep(.variable-box) {
