@@ -142,23 +142,22 @@ const canUpdate = computed<boolean>(() =>
           </div>
         </div>
 
-        <div class="text-caption mt-1">
-          <span
-            v-if="errorMessage"
-            class="field-generator__error text-error"
-          >
-            {{ errorMessage }}
-          </span>
+        <span
+          v-if="errorMessage"
+          class="field-generator__error text-error text-caption mt-1"
+        >
+          {{ errorMessage }}
+        </span>
 
-          <span
-            v-else-if="modelValue.description"
-            :class="{
-              'check-description': isCheckType,
-            }"
-          >
-            {{ modelValue.description }}
-          </span>
-        </div>
+        <span
+          v-else-if="modelValue.description"
+          class="text-caption mt-1"
+          :class="{
+            'check-description': isCheckType,
+          }"
+        >
+          {{ modelValue.description }}
+        </span>
       </template>
     </Field>
   </div>
