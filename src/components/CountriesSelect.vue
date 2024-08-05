@@ -214,7 +214,7 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
               :class="{ 'order-1': region.code === region.countryCode }"
               @click:close="onDeleteRegion(key, index, region.code, region.countryCode)"
             >
-              {{ region.label }}
+              {{ region.code === region.countryCode ? `${$t('action.remove')} ${region.label}` : region.label }}
             </VChip>
           </div>
         </div>
