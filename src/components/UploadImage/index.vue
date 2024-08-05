@@ -18,7 +18,7 @@ interface Props {
   textBtn: string
   dropPlaceholder: string
   isRequired: boolean
-  isError: boolean
+  isError?: boolean
   modelValue: string
   path: string
   disabled: boolean
