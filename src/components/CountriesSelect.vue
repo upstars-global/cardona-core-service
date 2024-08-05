@@ -91,8 +91,7 @@ const regionsOptions = computed(() => {
   const list = [...regionsSet.value.difference(new Set(selectedCountriesList.value))]
 
   return list.map(code => regions.value[code])
-},
-)
+})
 
 watch(() => countriesRadioModel.value, () => {
   updateValue()
@@ -189,32 +188,38 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
         </template>
       </VueSelect>
     </div>
-    <PerfectScrollbar
-      class="scroll-area mt-3"
-      :options="{ wheelPropagation: false }"
+    <div
+      v-if="selectedCountriesVisible.size"
+      class="selected-coutries pa-3 mt-3"
     >
-      <div
-        v-for="[key, value] in selectedCountriesVisible"
-        :key="key"
-        class="mb-2"
+      <PerfectScrollbar
+        class="scroll-area"
+        :options="{ wheelPropagation: false }"
       >
-        <div class="d-flex flex-wrap gap-2">
-          <p class="text-body-1 mb-0">
-            {{ key }}:
-          </p>
-          <VChip
-            v-for="(region, index) in value"
-            :key="`${key}_${region.name}`"
-            closable
-            label
-            :color="VColors.Primary"
-            @click:close="onDeleteRegion(key, index, region.code, region.countryCode)"
-          >
-            {{ region.label }}
-          </VChip>
+        <div
+          v-for="[key, value] in selectedCountriesVisible"
+          :key="key"
+          class="mb-2"
+        >
+          <div class="d-flex flex-wrap gap-2">
+            <p class="text-body-1 mb-0">
+              {{ key }}:
+            </p>
+            <VChip
+              v-for="(region, index) in value"
+              :key="`${key}_${region.name}`"
+              closable
+              label
+              :color="region.code === region.countryCode ? VColors.Error : VColors.Primary"
+              :class="{ 'order-1': region.code === region.countryCode }"
+              @click:close="onDeleteRegion(key, index, region.code, region.countryCode)"
+            >
+              {{ region.label }}
+            </VChip>
+          </div>
         </div>
-      </div>
-    </PerfectScrollbar>
+      </PerfectScrollbar>
+    </div>
   </div>
 </template>
 
@@ -223,6 +228,10 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
   height: 1.75rem;
 }
 
+.selected-coutries {
+  border: 1px solid rgb(var(--v-theme-grey-200));
+  border-radius: 6px;
+}
 .scroll-area {
   max-height: 30rem;
   transition: max-height 1s;
