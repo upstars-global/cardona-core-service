@@ -103,7 +103,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
           :color="VColors.Primary"
           class="mb-1"
         />
-        <p class="text-body-heading font-weight-bold mb-0">
+        <p class="text-body-1 mb-0">
           {{ $t('common.loading') }}
         </p>
       </div>
