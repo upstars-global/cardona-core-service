@@ -143,6 +143,8 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
 
   &--over-drop {
     border-color: rgb(var(--v-theme-primary));
+    border-style: solid;
+    background: rgba(var(--v-theme-primary), var(--v-selected-opacity));
   }
 
   &.sm {

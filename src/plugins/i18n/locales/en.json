@@ -635,7 +635,7 @@
       "group": "Choose a group",
       "project": "Choose a project"
     },
-    "dropFile": "Drop file",
+    "dropFile": "Drop file here",
     "search": {
       "_": "Search",
       "login": "Search by login",
@@ -800,7 +800,7 @@
     }
   },
   "uploadFile": {
-    "textBtn": "Select from device",
+    "textBtn": "Upload from device",
     "dropFile": "Drag file here or upload from device",
     "dragTextDrop": "Drop file",
     "fileParams": "{accept}, maximum size {size} MB"
