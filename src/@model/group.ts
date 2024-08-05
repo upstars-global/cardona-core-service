@@ -45,7 +45,7 @@ export class GroupsSideBarFields {
     this.name = new ViewInfo({
       type: ViewType.Text,
       value: data?.name,
-      label: i18n.t('common.groups._'),
+      label: i18n.t('common.name'),
     })
     this.id = new ViewInfo({
       type: ViewType.BadgeCopy,

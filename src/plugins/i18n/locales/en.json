@@ -371,7 +371,7 @@
       "_": "Admin",
       "list" : "Admins",
       "full": "Administrator",
-      "fullListCount": "Administrators ({count})",
+      "fullListCount": "Admins ({count})",
       "fullList": "Administrators",
       "group": "Administrators group",
       "add": "Add administrator"
