@@ -43,6 +43,7 @@ export enum IconsList {
   CameraIcon = 'CameraIcon',
   CastIcon = 'CastIcon',
   CheckCircleIcon = 'tabler-checks',
+  CheckboxIcon = 'tabler-checkbox',
   CheckSquareIcon = 'CheckSquareIcon',
   CheckIcon = 'tabler-check',
   ChevronDownIcon = 'tabler-chevron-down',
@@ -299,6 +300,7 @@ export enum IconsList {
   ZoomInIcon = 'ZoomInIcon',
   ZoomOutIcon = 'ZoomOutIcon',
   ZoomCheckIcon = 'tabler-zoom-check',
+  ZoomMoneyIcon = 'tabler-zoom-money',
   AtSignIcon = 'tabler-at',
   NoAccessIcon = 'tabler-lock',
 }
