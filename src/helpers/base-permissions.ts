@@ -37,8 +37,8 @@ export function basePermissions<T>({ entityName, config }: PermissionsParams<T>)
   const permissionPrefixValue = noPermissionPrefix ? undefined : customPermissionPrefix
 
   const { permissionKey, permissionKeySeo, permissionKeyReport } = getPermissionKeys({
-    permissionKey: configPermissionKey,
-    permissionPrefix: permissionPrefixValue,
+    permissionKey: config.permissionKey || configPermissionKey,
+    permissionPrefix: !config.permissionKey ? permissionPrefixValue : '',
     entityNamePermission,
   })
 
@@ -54,6 +54,6 @@ export function basePermissions<T>({ entityName, config }: PermissionsParams<T>)
     canCreateSeo: getPermission(permissionKeySeo, PermissionLevel.create),
     canViewSeo: getPermission(permissionKeySeo, PermissionLevel.view),
     canRemove: getPermission(permissionKey, PermissionLevel.delete),
-    canExport: getPermission(permissionKeyReport, PermissionLevel.view),
+    canExport: getPermission(permissionKeyReport, PermissionLevel.view) || getPermission(permissionKey, PermissionLevel.view),
   }
 }
