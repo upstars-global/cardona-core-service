@@ -54,6 +54,6 @@ export function basePermissions<T>({ entityName, config }: PermissionsParams<T>)
     canCreateSeo: getPermission(permissionKeySeo, PermissionLevel.create),
     canViewSeo: getPermission(permissionKeySeo, PermissionLevel.view),
     canRemove: getPermission(permissionKey, PermissionLevel.delete),
-    canExport: getPermission(permissionKeyReport, PermissionLevel.view) || getPermission(permissionKey, PermissionLevel.view),
+    canExport: getPermission(permissionKeyReport, PermissionLevel.view),
   }
 }
