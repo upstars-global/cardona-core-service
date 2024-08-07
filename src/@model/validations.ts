@@ -214,7 +214,7 @@ export interface IValidationConfig {
       if (has(customMessageOfRules, ctx.rule?.name))
         return customMessageOfRules[ctx.rule?.name](ctx)
 
-      return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label })
+      return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label?.toLowerCase() })
     },
   })
 })()
