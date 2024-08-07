@@ -74,6 +74,7 @@ export enum IconsList {
   CommandIcon = 'tabler-command',
   CompassIcon = 'CompassIcon',
   CopyIcon = 'tabler-copy',
+  CopyPlusIcon = 'tabler-copy-plus',
   CornerDownLeftIcon = 'CornerDownLeftIcon',
   CornerDownRightIcon = 'CornerDownRightIcon',
   CornerLeftDownIcon = 'CornerLeftDownIcon',
