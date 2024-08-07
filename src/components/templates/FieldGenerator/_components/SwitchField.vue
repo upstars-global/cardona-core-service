@@ -41,7 +41,7 @@ const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-er
       :disabled="disabled"
     />
 
-    <span class="switch-label">
+    <span class="text-body-1">
       {{ field.label }}
     </span>
 
@@ -55,9 +55,6 @@ const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-er
 </template>
 
 <style lang="scss" scoped>
-.switch-input {
-}
-
 .v-theme--dark {
   .switch-input {
     :deep(.v-switch__thumb) {

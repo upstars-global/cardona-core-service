@@ -214,6 +214,7 @@ onMounted(async () => {
         >
           <VBreadcrumbsItem
             :active="index === items.length - 1"
+            class="text-body-1"
             @click.prevent="goToCatalog(item.path)"
           >
             {{ item.name }}

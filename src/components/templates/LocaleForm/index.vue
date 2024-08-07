@@ -130,9 +130,9 @@ const variableTextBufferStore = computed(() => store.state.textEditor.variableTe
               cols="2"
               class="label-locale text-button mt-2"
             >
-              <h6 class="text-h6">
+              <p class="text-body-1">
                 {{ allLocales[local] }}
-              </h6>
+              </p>
             </VCol>
             <VCol
               cols="10"
@@ -164,9 +164,9 @@ const variableTextBufferStore = computed(() => store.state.textEditor.variableTe
               >
                 <template #default="{ childrenStyle }">
                   <div
-                    class="input-text"
+                    class="input-text text-body-1"
                     :class="{
-                      'mb-50': !isMainLocale(local),
+                      'mb-2': !isMainLocale(local),
                       'disable': isMainLocale(local) || disabled,
                     }"
                     :data-at="`text-${item}-${local}`"

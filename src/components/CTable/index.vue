@@ -272,7 +272,7 @@ const getActualField = (fields: Array<unknown>) => {
           <td
             v-for="field in fields"
             :key="`c-table-cell_${index}_${field.key}`"
-            class="c-table__cell whitespace-no-wrap"
+            class="c-table__cell text-body-1 whitespace-no-wrap"
             :class="cellClasses"
             :data-c-field="field.key"
           >
@@ -291,7 +291,7 @@ const getActualField = (fields: Array<unknown>) => {
       <tr v-if="items.isEmpty && !isLoadingList">
         <td
           :colspan="emptyColspan"
-          class="text-center pa-4"
+          class="text-center text-body-1 pa-4"
         >
           <slot name="empty" />
         </td>

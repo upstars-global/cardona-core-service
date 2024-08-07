@@ -13,7 +13,7 @@ defineProps<{
       activator="parent"
       location="bottom"
     >
-      <div class="comment-text__tooltip">
+      <div class="comment-text__tooltip text-body-1">
         {{ value }}
       </div>
     </VTooltip>
@@ -33,6 +33,7 @@ defineProps<{
     max-width: 15rem;
     word-break: break-all;
     text-align: center;
+    color: rgb(var(--v-theme-on-primary));
   }
 }
 </style>

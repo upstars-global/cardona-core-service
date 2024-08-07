@@ -65,7 +65,7 @@ const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
       sm="4"
       class="d-flex align-center justify-start justify-content-sm-start px-0"
     >
-      <span class="pagination-text text-no-wrap">
+      <span class="pagination-text text-body-1 text-no-wrap">
         {{ $t('pagination.showing', dataMeta) }}
       </span>
     </VCol>
@@ -90,8 +90,8 @@ const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
             :color="item.isActive ? 'primary' : 'secondary'"
             class="pagination--button"
             rounded="circle"
-            @click="setActivePage(item)"
             :disabled="isEllipsis(item)"
+            @click="setActivePage(item)"
           >
             {{ getNumberOfPage(item) }}
           </VBtn>

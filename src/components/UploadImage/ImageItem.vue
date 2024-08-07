@@ -33,7 +33,7 @@ const toggleLoad = (value = true) => {
     />
     <span
       v-if="isError"
-      class="text-center text-error text-wrap"
+      class="text-center text-body-2 text-error text-wrap"
     >{{ $t('uploadImg.errorLoadImage') }}</span>
 
     <VImg

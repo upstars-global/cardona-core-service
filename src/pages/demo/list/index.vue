@@ -81,7 +81,6 @@ const setButtonState = (key: string): void => {
     <template #table-field-setting>
       <VIcon
         :icon="IconsList.BookIcon"
-        size="21"
         class="mr-1"
       />
     </template>
@@ -187,16 +186,6 @@ const setButtonState = (key: string): void => {
     }
     .CodeMirror-gutters {
       display: none;
-    }
-  }
-  .demo-list {
-      :deep(td[data-c-field='editableField']) {
-        .editable-wrapper {
-          display: flex;
-          justify-content: start;
-          align-items: center;
-          min-width: 12rem;
-        }
     }
   }
 </style>

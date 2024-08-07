@@ -81,10 +81,10 @@ const currentTab = ref(tabs.new)
         >
           <template #default="{ isOverDropZone, openFileDialog, isLoading, isLoadingError }">
             <div v-if="isOverDropZone">
-              <p class="text-body-heading font-weight-bold mb-0">
+              <p class="text-body-1 font-weight-medium mb-0">
                 {{ $t('uploadImg.dragTextDrop') }}
               </p>
-              <p class="font-small-3">
+              <p class="text-body-1">
                 {{ $t('uploadImg.maxSize', { size: maxSizeMb }) }}
               </p>
             </div>
@@ -97,7 +97,7 @@ const currentTab = ref(tabs.new)
                 :color="VColors.Primary"
                 class="mb-1"
               />
-              <span class="text-body-heading font-weight-bold">
+              <span class="text-body-1 font-weight-medium">
                 {{ $t('common.loading') }}
               </span>
             </div>
@@ -111,7 +111,7 @@ const currentTab = ref(tabs.new)
                   size="32"
                   class="text-error mb-4"
                 />
-                <p class="text-error mb-4">
+                <p class="text-error text-body-1 mb-4">
                   {{ $t('uploadImg.loadError') }}
                 </p>
                 <VBtn
@@ -122,10 +122,10 @@ const currentTab = ref(tabs.new)
                 </VBtn>
               </template>
               <template v-else>
-                <p class="text-body-heading font-weight-bold mb-0">
+                <p class="text-body-1 font-weight-medium mb-0">
                   {{ $t('uploadImg.dragText') }}
                 </p>
-                <p class="font-small-3">
+                <p class="text-body-1">
                   {{ $t('uploadImg.maxSize', { size: maxSizeMb }) }}
                 </p>
                 <VBtn

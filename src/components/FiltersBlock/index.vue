@@ -154,10 +154,7 @@ const listNotSelected = computed(() => {
                 md="3"
                 class="d-flex align-center"
               >
-                <p
-                  class="text-button mb-0"
-                  :class="{ 'font-small-3': isSmallBlock }"
-                >
+                <p class="text-h6 mb-0">
                   {{ filter.label }}
                 </p>
               </VCol>

@@ -69,7 +69,7 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
         <div
           v-for="(variable, index) in availableVariables"
           :key="index"
-          class="variable-label ml-2"
+          class="variable-label  ml-2"
           @click="onClickVariable(variable)"
         >
           <small>{{ variable }}</small>
