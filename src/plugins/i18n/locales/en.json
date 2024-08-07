@@ -431,7 +431,7 @@
       "list": "Groups",
       "listCount": "Groups ({count})",
       "name": "Group name",
-      "adminAdd": "Add an admin to a group",
+      "adminAdd": "Add an admin to the group",
       "searchPlaceholder": "Search by name and id"
     },
     "products": {
@@ -635,7 +635,7 @@
       "group": "Choose a group",
       "project": "Choose a project"
     },
-    "dropFile": "Drop file",
+    "dropFile": "Drop file here",
     "search": {
       "_": "Search",
       "login": "Search by login",
@@ -800,7 +800,7 @@
     }
   },
   "uploadFile": {
-    "textBtn": "Select from device",
+    "textBtn": "Upload from device",
     "dropFile": "Drag file here or upload from device",
     "dragTextDrop": "Drop file",
     "fileParams": "{accept}, maximum size {size} MB"
@@ -814,15 +814,15 @@
     "gameType": "Game type",
     "gamesCategories": "Game category",
     "gamesProducers": "Game producer",
-    "dateRangeCreative": "Creation date range",
-    "dateRangeApproved": "Approved date range",
-    "dateRangeUpdate": "Update date range",
-    "dateRangeProcessing": "Processing date range",
-    "dateRangeIssued": "Issued date range",
-    "dateRangeExpired": "Expired date range",
-    "dateRangeReceive": "Receive date range",
-    "dateRangeActivated": "Activated date range",
-    "dateRangeUsed": "Used date range",
+    "dateRangeCreative": "Creation period",
+    "dateRangeApproved": "Approved period",
+    "dateRangeUpdate": "Update period",
+    "dateRangeProcessing": "Processing period",
+    "dateRangeIssued": "Issued period",
+    "dateRangeExpired": "Expired period",
+    "dateRangeReceive": "Receive period",
+    "dateRangeActivated": "Activated period",
+    "dateRangeUsed": "Used period",
     "runner": "Runner",
     "gameForBonuses": "Game for bonuses",
     "availableWithBonuses": "Availability with bonuses",
