@@ -165,6 +165,8 @@ const canUpdate = computed<boolean>(() =>
 
 <style lang="scss" scoped>
 .field-generator {
+  color: rgb(var(--v-theme-body));
+
   .check-type {
     margin-bottom: 0.1rem;
   }
