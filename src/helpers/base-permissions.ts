@@ -37,8 +37,8 @@ export function basePermissions<T>({ entityName, config }: PermissionsParams<T>)
   const permissionPrefixValue = noPermissionPrefix ? undefined : customPermissionPrefix
 
   const { permissionKey, permissionKeySeo, permissionKeyReport } = getPermissionKeys({
-    permissionKey: config.permissionKey || configPermissionKey,
-    permissionPrefix: !config.permissionKey ? permissionPrefixValue : '',
+    permissionKey: configPermissionKey,
+    permissionPrefix: !configPermissionKey ? permissionPrefixValue : '',
     entityNamePermission,
   })
 
