@@ -7,7 +7,6 @@ import store from '@/store'
 
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
 export const trimEdges = (value: string): string => value.trimEnd().trimStart()
-export const capitalize = (text: string): string => text[0]?.toUpperCase() + text.slice(1)
 
 export const transformFormData = (form): object => {
   return Object.entries(form).reduce((acc, [key, valueData]: [string, any]) => {
