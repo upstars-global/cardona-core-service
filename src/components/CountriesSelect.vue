@@ -128,14 +128,16 @@ const onSelectItem = (region: RegionInfo) => {
 }
 
 const onDeleteRegion = (key: string, index: number, code: string, countryCode: string) => {
-  if (code === countryCode)
+  if (code === countryCode) {
     selectedCountriesVisible.value.delete(key)
-
-  const list = Array.from(selectedCountriesVisible.value.get(key))
-  if (list.length === 1)
-    selectedCountriesVisible.value.delete(key)
-  else
-    selectedCountriesVisible.value.set(key, list.toSpliced(index, 1))
+  } else {
+    const list = Array.from(selectedCountriesVisible.value.get(key))
+    if (list.length === 1) {
+      selectedCountriesVisible.value.delete(key)
+    } else {
+      selectedCountriesVisible.value.set(key, list.toSpliced(index, 1))
+    }
+  }
 
   updateValue()
 }
