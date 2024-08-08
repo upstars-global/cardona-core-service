@@ -138,6 +138,7 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
     else
       selectedCountriesVisible.value.set(key, list.toSpliced(index, 1))
   }
+
   updateValue()
 }
 </script>
