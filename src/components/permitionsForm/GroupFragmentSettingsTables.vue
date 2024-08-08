@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import type { PermissionUpdatableTableList } from 'cardona-core-service/src/@model/permission'
-import GroupFragmentSettingsTable from 'cardona-core-service/src/components/permitionsForm/GroupFragmentSettingsTable.vue'
-import { VColors } from 'cardona-core-service/src/@model/vuetify'
+import type { PermissionUpdatableTableList } from '../../@model/permission'
+import GroupFragmentSettingsTable from '../../components/permitionsForm/GroupFragmentSettingsTable.vue'
+import { VColors } from '../../@model/vuetify'
 
 const props = defineProps<{
   title: string

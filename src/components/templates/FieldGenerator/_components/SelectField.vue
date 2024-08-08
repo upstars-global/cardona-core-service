@@ -2,10 +2,10 @@
 import { computed, ref, watch } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { debounce } from 'lodash'
+import { useI18n } from 'vue-i18n'
 import type { OptionsItem } from '../../../../@model'
 import { IconsList } from '../../../../@model/enums/icons'
 import type { SelectBaseField } from '../../../../@model/templates/baseField'
-import { i18n } from '../../../../plugins/i18n'
 import { withPopper } from '../../../../helpers/selectPopper'
 
 const props = withDefaults(
@@ -15,21 +15,21 @@ const props = withDefaults(
     errors?: boolean
     disabled?: boolean
     size: string // TODO: refactor sizes
-    placeholder?: string
   }>(),
   {
     modelValue: '',
     size: '',
-    placeholder: i18n.t('placeholder.choose._') as string,
   })
 
 const emits = defineEmits<{
   (e: 'update:modelValue', value: string | number): void
 }>()
 
+const { t } = useI18n()
 const isMultiple = false
 const isLoading = ref(false)
 const [isOpenDropDown, toggleDropDownState] = useToggle()
+const placeholder = computed(() => t('placeholder.choose._'))
 
 const valueModel = computed<OptionsItem>({
   get: () =>
