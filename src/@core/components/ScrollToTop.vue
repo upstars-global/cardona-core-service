@@ -38,5 +38,6 @@ const scrollToTop = () => {
   z-index: 999;
   inset-block-end: 5%;
   inset-inline-end: 25px;
+  bottom: 0.5rem;
 }
 </style>

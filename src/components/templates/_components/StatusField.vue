@@ -94,7 +94,9 @@ const actualVariant = computed(() => {
     :variant="actualVariant"
     label
   >
-    {{ value }}
+    <span class="lh-normal">
+      {{ value }}
+    </span>
   </VChip>
 </template>
 `
