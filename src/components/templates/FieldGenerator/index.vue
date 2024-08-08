@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { Field } from 'vee-validate'
 import type { BaseField } from '../../../@model/templates/baseField'
-import { CheckBaseField, SwitchBaseField } from '../../../@model/templates/baseField'
+import { CheckBaseField, RatesBaseField, SwitchBaseField } from '../../../@model/templates/baseField'
 import { IconsList } from '../../../@model/enums/icons'
 import { MAX_WIDTH_TOOLTIP } from '../../../utils/constants'
 import { PermissionLevel } from '../../../@model/permission'
@@ -36,6 +36,10 @@ const canView = computed<boolean>(() => {
 const isCheckType = computed(
   () => props.modelValue instanceof SwitchBaseField || props.modelValue instanceof CheckBaseField,
 )
+
+const isRatesType = computed(() => props.modelValue instanceof RatesBaseField)
+
+const rules = computed(() => !isRatesType.value ? props.modelValue?.validationRules : {})
 
 const isCheckTypeWithInfo = computed(() => isCheckType.value && props.withInfo && props.modelValue.info)
 
@@ -100,7 +104,7 @@ const canUpdate = computed<boolean>(() =>
       v-model="fieldModel"
       :name="modelValue.id"
       :label="modelValue.label"
-      :rules="modelValue.validationRules"
+      :rules="rules"
       :validate-on-blur="false"
       :validate-on-change="false"
       :validate-on-input="false"
@@ -137,14 +141,23 @@ const canUpdate = computed<boolean>(() =>
             </VTooltip>
           </div>
         </div>
+
         <span
-          v-if="errorMessage || modelValue.description"
-          class="text-caption mt-1 field-generator__error"
+          v-if="errorMessage"
+          class="field-generator__error text-error text-caption mt-1"
+        >
+          {{ errorMessage }}
+        </span>
+
+        <span
+          v-else-if="modelValue.description"
+          class="text-caption mt-1"
           :class="{
-            'text-error': errorMessage,
-            'check-description': isCheckType && modelValue.description,
+            'check-description': isCheckType,
           }"
-        >{{ errorMessage || modelValue.description }}</span>
+        >
+          {{ modelValue.description }}
+        </span>
       </template>
     </Field>
   </div>
@@ -152,6 +165,8 @@ const canUpdate = computed<boolean>(() =>
 
 <style lang="scss" scoped>
 .field-generator {
+  color: rgb(var(--v-theme-body));
+
   .check-type {
     margin-bottom: 0.1rem;
   }
