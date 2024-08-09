@@ -26,6 +26,7 @@ export interface UseListType {
   readonly SideBarModel?: Function
   readonly beforeRemoveCallback?: Function
   readonly ListItemModel?: Function
+  readonly canRemoveCb: (item: Record<string, unknown>) => boolean
 }
 
 export interface FilterListItem {
