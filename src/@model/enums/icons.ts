@@ -10,7 +10,7 @@ export enum IconsList {
   AlignRightIcon = 'AlignRightIcon',
   AnchorIcon = 'AnchorIcon',
   ApertureIcon = 'ApertureIcon',
-  ArchiveIcon = 'ArchiveIcon',
+  ArchiveIcon = 'tabler-archive',
   ArrowDownCircleIcon = 'ArrowDownCircleIcon',
   ArrowDownLeftIcon = 'ArrowDownLeftIcon',
   ArrowDownRightIcon = 'tabler-arrow-down-right',
