@@ -924,6 +924,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
                 :item="item"
               />
             </template>
+
             <template
               v-if="checkSlotExistence('additional-action-items')"
               #additional-action-items
@@ -931,6 +932,17 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               <slot
                 name="additional-action-items"
                 :item="item"
+              />
+            </template>
+
+            <template
+              v-if="checkSlotExistence('append-action-item')"
+              #append-action-item
+            >
+              <slot
+                name="append-action-item"
+                :item="item"
+                :can-update="canUpdate"
               />
             </template>
           </ItemActions>
