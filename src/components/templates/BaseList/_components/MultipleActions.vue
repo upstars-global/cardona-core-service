@@ -24,33 +24,35 @@ const emits = defineEmits<Emits>()
     </span>
 
     <div class="d-flex gap-4">
-      <VBtn
-        :variant="VVariants.Outlined"
-        :color="VColors.Secondary"
-        :size="VSizes.Small"
-        @click="emits('on-activate')"
-      >
-        {{ $t('action.activate') }}
-      </VBtn>
+      <slot>
+        <VBtn
+          :variant="VVariants.Outlined"
+          :color="VColors.Secondary"
+          :size="VSizes.Small"
+          @click="emits('on-activate')"
+        >
+          {{ $t('action.activate') }}
+        </VBtn>
 
-      <VBtn
-        :variant="VVariants.Outlined"
-        :color="VColors.Secondary"
-        :size="VSizes.Small"
-        @click="emits('on-deactivate')"
-      >
-        {{ $t('action.deactivate') }}
-      </VBtn>
+        <VBtn
+          :variant="VVariants.Outlined"
+          :color="VColors.Secondary"
+          :size="VSizes.Small"
+          @click="emits('on-deactivate')"
+        >
+          {{ $t('action.deactivate') }}
+        </VBtn>
 
-      <VBtn
-        v-if="canRemove"
-        :variant="VVariants.Outlined"
-        :color="VColors.Error"
-        :size="VSizes.Small"
-        @click="emits('on-remove')"
-      >
-        {{ $t('action.remove') }}
-      </VBtn>
+        <VBtn
+          v-if="canRemove"
+          :variant="VVariants.Outlined"
+          :color="VColors.Error"
+          :size="VSizes.Small"
+          @click="emits('on-remove')"
+        >
+          {{ $t('action.remove') }}
+        </VBtn>
+      </slot>
     </div>
   </div>
 </template>

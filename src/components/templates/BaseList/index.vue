@@ -118,7 +118,7 @@ const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
 
 // Permissions
 const { canCreate, canUpdate, canUpdateSeo, canRemove, canExport }
-    = basePermissions<IBaseListConfig>({ entityName, config: props.config })
+  = basePermissions<IBaseListConfig>({ entityName, config: props.config })
 
 const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
 
@@ -714,7 +714,13 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         @on-activate="onClickToggleStatusMultiple(true)"
         @on-deactivate="onClickToggleStatusMultiple(false)"
         @on-remove="onClickDeleteMultiple"
-      />
+      >
+        <slot
+          name="multiple-actions"
+          :selected-items="selectedItems"
+          :can-update="canUpdate"
+        />
+      </MultipleActions>
 
       <CTable
         v-model:sort-data="sortData"
