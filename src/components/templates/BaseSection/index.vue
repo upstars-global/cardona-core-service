@@ -158,7 +158,7 @@ const setTabError = (fieldName: string) => {
   else if (form.value.seo?.hasOwnProperty(fieldName))
     tabNameError.value = FormTabs.Seo
   else if (form.value.fieldTranslations?.hasOwnProperty(fieldName))
-    tabNameError.value = FormTabs.Localisation
+    tabNameError.value = FormTabs.Localization
 
   if (tabNameError.value) {
     const tabElement: HTMLElement | null = document.querySelector(
