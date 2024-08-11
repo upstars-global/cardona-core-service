@@ -1,5 +1,5 @@
 export enum FormTabs {
   Main = 'main',
   Seo = 'seo',
-  Localisation = 'localisation',
+  Localization = 'localization',
 }
