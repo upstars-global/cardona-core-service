@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeMount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import { sortBy } from 'lodash'
 import type { RegionInfo } from '../@model/regions'
-import { VSizes } from '../@model/vuetify'
+import { VColors, VSizes } from '../@model/vuetify'
 import { IconsList } from '../@model/enums/icons'
 import { withPopper } from '../helpers/selectPopper'
 
@@ -18,14 +20,19 @@ const emits = defineEmits<{
 
 const { t } = useI18n()
 const store = useStore()
-
-const countriesRadioModel = ref('ban')
-const selectedCountries = ref()
-const regions = ref<Array<RegionInfo>>([])
+enum countriesType {
+  Ban = 'ban',
+  Allow = 'allow',
+}
+const selectRef = ref()
+const countriesRadioModel = ref(countriesType.Ban)
+const selectedCountries = ref([])
+const selectedCountriesVisible = ref(new Map())
+const regions = ref({})
 
 const optionsRadioCountries = computed(() => [
-  { text: t('component.countriesSelect.banInCountries'), value: 'ban' },
-  { text: t('component.countriesSelect.allowInCountries'), value: 'allow' },
+  { text: t('component.countriesSelect.banInCountries'), value: countriesType.Ban },
+  { text: t('component.countriesSelect.allowInCountries'), value: countriesType.Allow },
 ])
 
 const countriesRadioLabel = computed(() => {
@@ -45,62 +52,95 @@ const hasCountryCode = (codeList: string[], countryCode: string): boolean => {
   })
 }
 
-onMounted(async () => {
+const regionsSet = computed(() => new Set(Object.values(regions.value).map(item => item.code)))
+const selectedCountriesList = computed(() => [...selectedCountriesVisible.value.values()].flat(1).map(item => item.code))
+
+onBeforeMount(async () => {
   regions.value = await store.dispatch('regions/fetchRegionList')
 
   if (props.modelValue.isNotEmpty) {
-    const formRestrictedCountries: Array<RegionInfo> = regions.value.filter(
-      ({ code }: RegionInfo) => props.modelValue?.includes(code),
-    )
-
-    if (formRestrictedCountries.length > regions.value.length / 2) {
-      countriesRadioModel.value = 'allow'
-      selectedCountries.value = regions.value.filter(({ code }: RegionInfo) => {
-        const [country, region] = code.split('-')
-
-        return region ? !props.modelValue.includes(code) : !hasCountryCode(props.modelValue, country)
-      })
+    let list = props.modelValue
+    if (props.modelValue.length > Object.keys(regions.value).length / 2) {
+      countriesRadioModel.value = countriesType.Allow
+      list = Array.from(regionsSet.value.difference(new Set(props.modelValue)))
     }
     else {
-      countriesRadioModel.value = 'ban'
-      selectedCountries.value = formRestrictedCountries
+      countriesRadioModel.value = countriesType.Ban
     }
+    list.forEach(item => {
+      const [country, region] = item.split('-')
+
+      if (selectedCountriesVisible.value.has(regions.value[country].name) && region) {
+        const list: Array<string> = selectedCountriesVisible.value.get(regions.value[country].name)
+
+        list.push(regions.value[item])
+        selectedCountriesVisible.value.set(regions.value[country].name, list)
+      }
+      else {
+        selectedCountriesVisible.value.set(regions.value[country].name, [regions.value[item]])
+      }
+    })
   }
   else {
-    countriesRadioModel.value = 'ban'
+    countriesRadioModel.value = countriesType.Ban
     selectedCountries.value = []
   }
 })
 
-const regionsOptions = computed(() =>
-  regions.value.filter(
-    ({ code }: RegionInfo) =>
-      !selectedCountries.value.some((region: RegionInfo) => region.code === code),
-  ),
-)
+const regionsOptions = computed(() => {
+  const list = [...regionsSet.value.difference(new Set(selectedCountriesList.value))]
 
-watch([selectedCountries, countriesRadioModel], () => {
-  if (!selectedCountries.value)
-    return
-  const bannedCountries = selectedCountries.value.map(({ code }: RegionInfo) => code)
+  return list.map(code => regions.value[code])
+})
 
-  if (countriesRadioModel.value === 'ban' || bannedCountries.isEmpty) {
+watch(() => countriesRadioModel.value, () => {
+  updateValue()
+})
+
+const updateValue = () => {
+  const bannedCountries = [...selectedCountriesVisible.value.values()].flat(1).map(item => item.code)
+
+  if (countriesRadioModel.value === countriesType.Ban || bannedCountries.isEmpty)
     emits('update:modelValue', bannedCountries)
+
+  else
+    emits('update:modelValue', Array.from(regionsSet.value.difference(new Set(bannedCountries))))
+}
+
+const onSelectItem = (region: RegionInfo) => {
+  if (selectedCountriesVisible.value.has(region.countryName || region.name)) {
+    const regions = selectedCountriesVisible.value.get(region.countryName || region.name)
+
+    regions.push(region)
+    selectedCountriesVisible.value.set(region.countryName || region.name, sortBy(regions, item => item.code))
   }
   else {
-    const allowedCountries: Array<string> = regions.value
-      .map(({ code }: RegionInfo) => code)
-      .filter((code: string) => {
-        const [country, region] = code.split('-')
+    let selectedRegions = []
+    if (region.countryName)
+      selectedRegions = [region]
+    else
+      selectedRegions = Object.values(regions.value).filter(item => item.countryCode === region.countryCode)
 
-        return region
-          ? !bannedCountries.includes(country) && !bannedCountries.includes(code)
-          : !hasCountryCode(bannedCountries, country)
-      })
-
-    emits('update:modelValue', allowedCountries)
+    selectedCountriesVisible.value.set(region.countryName || region.name, selectedRegions)
   }
-})
+  selectRef.value.clearSelection()
+  updateValue()
+}
+
+const onDeleteRegion = (key: string, index: number, code: string, countryCode: string) => {
+  if (code === countryCode) {
+    selectedCountriesVisible.value.delete(key)
+  }
+  else {
+    const list = Array.from(selectedCountriesVisible.value.get(key))
+    if (list.length === 1)
+      selectedCountriesVisible.value.delete(key)
+    else
+      selectedCountriesVisible.value.set(key, list.toSpliced(index, 1))
+  }
+
+  updateValue()
+}
 </script>
 
 <template>
@@ -133,14 +173,14 @@ watch([selectedCountries, countriesRadioModel], () => {
       </VLabel>
 
       <VueSelect
-        v-model="selectedCountries"
-        multiple
+        ref="selectRef"
         append-to-body
         :calculate-position="withPopper()"
         :disabled="disabled"
         :options="regionsOptions"
         :placeholder="$t('component.countriesSelect.allowAll')"
         class="select-field"
+        @option:selected="onSelectItem"
       >
         <template #open-indicator="{ attributes }">
           <VIcon
@@ -150,11 +190,52 @@ watch([selectedCountries, countriesRadioModel], () => {
         </template>
       </VueSelect>
     </div>
+    <div
+      v-if="selectedCountriesVisible.size"
+      class="selected-coutries pa-3 mt-3"
+    >
+      <PerfectScrollbar
+        class="scroll-area"
+        :options="{ wheelPropagation: false }"
+      >
+        <div
+          v-for="[key, value] in selectedCountriesVisible"
+          :key="key"
+          class="mb-2"
+        >
+          <div class="d-flex flex-wrap gap-2">
+            <p class="text-body-1 mb-0">
+              {{ key }}:
+            </p>
+            <VChip
+              v-for="(region, index) in value"
+              :key="`${key}_${region.name}`"
+              closable
+              label
+              :color="region.code === region.countryCode ? VColors.Error : VColors.Primary"
+              :class="{ 'order-1': region.code === region.countryCode }"
+              @click:close="onDeleteRegion(key, index, region.code, region.countryCode)"
+            >
+              {{ region.code === region.countryCode ? `${$t('action.remove')} ${region.label}` : region.label }}
+            </VChip>
+          </div>
+        </div>
+      </PerfectScrollbar>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .select-countries-radio {
   height: 1.75rem;
+}
+
+.selected-coutries {
+  border: 1px solid rgb(var(--v-theme-grey-200));
+  border-radius: 6px;
+}
+.scroll-area {
+  max-height: 30rem;
+  transition: max-height 1s;
 }
 </style>

@@ -39,6 +39,7 @@ const onRemoveVariable = (localeVariables: string): void => {
   <div>
     <TextEditorWysiwyg
       v-model="localModelValue"
+      :class="{ errors }"
       :placeholder="field.label"
       :disabled="disabled"
       :options-variable="allCurrencies"
@@ -47,3 +48,16 @@ const onRemoveVariable = (localeVariables: string): void => {
     />
   </div>
 </template>
+
+<style scoped lang="scss">
+:deep(.errors) {
+  .fr-toolbar, .fr-second-toolbar {
+    border-color: rgba(var(--v-theme-error)) !important;
+  }
+
+  .fr-wrapper {
+    border-right-color: rgba(var(--v-theme-error)) !important;
+    border-left-color: rgba(var(--v-theme-error)) !important;
+  }
+}
+</style>
