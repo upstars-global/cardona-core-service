@@ -12,7 +12,7 @@ import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import ConfirmModal from '../../../components/BaseModal/ConfirmModal.vue'
 import { ModalsId } from '../../..//@model/modalsId'
 import { useRedirectToNotFoundPage } from '../../../helpers/router'
-import { FormTabs } from '../../../@model/enums/formTabs'
+import { formTabs } from '../../../@model/enums/formTabs'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean
@@ -154,11 +154,11 @@ const setTabError = (fieldName: string) => {
   fieldNameError.value = fieldName
   tabNameError.value = ''
   if (form.value.hasOwnProperty(fieldName))
-    tabNameError.value = FormTabs.Main
+    tabNameError.value = formTabs.Main
   else if (form.value.seo?.hasOwnProperty(fieldName))
-    tabNameError.value = FormTabs.Seo
+    tabNameError.value = formTabs.Seo
   else if (form.value.fieldTranslations?.hasOwnProperty(fieldName))
-    tabNameError.value = FormTabs.Localization
+    tabNameError.value = formTabs.Localization
 
   if (tabNameError.value) {
     const tabElement: HTMLElement | null = document.querySelector(
