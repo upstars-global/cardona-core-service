@@ -423,10 +423,10 @@ const mockUploadFile = async () => {
                 :data-types="['application/json']"
               >
                 <template #content="{ fileSizeFormatted }">
-                  <p class="mb-0 text-body-1 font-weight-medium">
+                  <p class="mb-0 text-body-1 font-weight-medium text-medium-emphasis">
                     {{ $t('uploadFile.dropFile') }}
                   </p>
-                  <p class="mb-0 text-body-1">
+                  <p class="mb-0 text-body-1 text-medium-emphasis">
                     {{ $t('uploadFile.fileParams', { accept: 'JSON', size: fileSizeFormatted }) }}
                   </p>
                 </template>
