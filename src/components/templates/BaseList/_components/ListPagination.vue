@@ -65,7 +65,7 @@ const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
       sm="4"
       class="d-flex align-center justify-start justify-content-sm-start px-0"
     >
-      <span class="pagination-text text-body-1 text-no-wrap">
+      <span class="text-body-1 text-medium-emphasis	text-no-wrap">
         {{ $t('pagination.showing', dataMeta) }}
       </span>
     </VCol>
@@ -102,9 +102,6 @@ const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
 </template>
 
 <style scoped lang="scss">
-.pagination-text {
-  color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
-}
 .pagination {
   :deep(ul) {
     li {
