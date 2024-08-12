@@ -13,6 +13,7 @@ interface Props {
   onSubmitCallback?: Function
   onBtnClickCallback?: Function
   textBtn: string
+  isError: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -82,7 +83,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
   <div
     ref="dropZoneRef"
     class="files-upload d-flex align-center justify-center text-medium-emphasis"
-    :class="[props.size, { 'files-upload--over-drop': isOverDropZone, disabled }]"
+    :class="[props.size, { 'files-upload--over-drop': isOverDropZone, disabled, 'error': isError }]"
   >
     <slot
       name="default"
@@ -143,6 +144,8 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
 
   &--over-drop {
     border-color: rgb(var(--v-theme-primary));
+    border-style: solid;
+    background: rgba(var(--v-theme-primary), var(--v-selected-opacity));
   }
 
   &.sm {
@@ -159,5 +162,9 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
     border-color: rgba(var(--v-theme-grey-300));
     pointer-events: none;
   }
+}
+
+.error {
+  border-color: rgba(var(--v-theme-error));
 }
 </style>

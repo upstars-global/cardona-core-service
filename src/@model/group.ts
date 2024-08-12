@@ -42,15 +42,15 @@ export class GroupsSideBarFields {
   readonly users: ViewInfo
 
   constructor(data?: GroupData) {
-    this.name = new ViewInfo({
-      type: ViewType.Text,
-      value: data?.name,
-      label: i18n.t('common.groups._'),
-    })
     this.id = new ViewInfo({
       type: ViewType.BadgeCopy,
       value: data?.id,
       label: i18n.t('page.groupList.groupID'),
+    })
+    this.name = new ViewInfo({
+      type: ViewType.Text,
+      value: data?.name,
+      label: i18n.t('common.name'),
     })
     this.users = new ViewInfo({
       type: ViewType.Badges,

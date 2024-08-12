@@ -200,4 +200,7 @@ export default {
   VWindow: {
     style: 'overflow: visible;',
   },
+  VMenu: {
+    offset: '4',
+  },
 }

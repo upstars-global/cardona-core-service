@@ -18,6 +18,7 @@ interface Props {
   textBtn: string
   dropPlaceholder: string
   isRequired: boolean
+  isError?: boolean
   modelValue: string
   path: string
   disabled: boolean
@@ -147,6 +148,7 @@ const onFileUpload = async file => {
     :max-size-file-mb="maxSizeFileMb"
     :on-btn-click-callback="openSelectModal"
     :disabled="disabled"
+    :is-error="isError"
   />
   <BaseModal
     :id="selectModalId"
