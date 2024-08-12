@@ -35,6 +35,8 @@ export interface FilterListItem {
   readonly trackBy?: string
 }
 
+type StaticFilters = Record<string, string | string[] | number[]>
+
 /**
  * IBaseListConfig - Конфиг базового листа
  *
@@ -57,11 +59,11 @@ export interface IBaseListConfig {
   /** emptyText - Текст когда лист пустой */
   readonly emptyText?: string
 
-  /** filterList - Масив <FilterListItem> фильтров для таблицы */
+  /** filterList - Массив <FilterListItem> фильтров для таблицы */
   readonly filterList?: Array<FilterListItem>
 
-  /** staticFilters - Статический фильтр например playerId. Всегда отправляеться в АПИ */
-  readonly staticFilters?: Record<string, string>
+  /** staticFilters - Статический фильтр например playerId. Всегда отправляется в АПИ */
+  readonly staticFilters?: StaticFilters
 
   /** staticSorts - Статический сортировка таблицы field: 'position', dir: SortDirection.asc, */
   readonly staticSorts?: SortItem
@@ -72,7 +74,7 @@ export interface IBaseListConfig {
   /** selectable - Вкл/выкл режим выбора элементов */
   readonly selectable?: boolean
 
-  /** small - Вкл/выкл уменьшеный вид таблицы  */
+  /** small - Вкл/выкл уменьшенный вид таблицы  */
   readonly small?: boolean
 
   /** draggable - Вкл/выкл перетаскивание элементов  */
@@ -172,7 +174,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withSettings?: boolean
   readonly emptyText?: string
   readonly filterList: Array<FilterListItem>
-  readonly staticFilters: Record<string, string>
+  readonly staticFilters: StaticFilters
   readonly staticSorts?: SortItem
   readonly selectMode?: SelectMode
   readonly selectable?: boolean
