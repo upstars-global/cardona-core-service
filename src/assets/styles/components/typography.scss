@@ -1,0 +1,9 @@
+.text-high-emphasis {
+  color: rgba(var(--v-theme-grey-900), var(–v-high-emphasis-opacity));
+}
+.text-medium-emphasis {
+  color: rgba(var(--v-theme-grey-900), var(–v-medium-emphasis-opacity));
+}
+.text-disabled {
+  color: rgba(var(--v-theme-grey-900), var(–v-disabled-opacity));
+}
