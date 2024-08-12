@@ -208,7 +208,7 @@ const balancesReasons = new MultiSelectBaseField({
 const tagNames = new MultiSelectBaseField({
   key: 'tagNames',
   label: i18n.t('common.tags'),
-  placeholder: i18n.t('common.tags'),
+  placeholder: i18n.t('placeholder.filter.tags'),
   fetchOptionsActionName: 'tags/fetchTags',
 })
 
