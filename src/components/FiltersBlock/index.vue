@@ -121,8 +121,7 @@ const listNotSelected = computed(() => {
         <VCardItem :class="{ 'py-4': isSmallBlock }">
           <Component
             :is="headerTag"
-            class="mb-0"
-            :class="{ 'text-h5': isSmallBlock, 'text-h4': !isSmallBlock }"
+            class="mb-0 text-h5"
           >
             {{ $t('common.filter.filtrate') }}
           </Component>
