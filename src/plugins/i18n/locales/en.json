@@ -228,6 +228,7 @@
     "conciergeService": "Concierge service",
     "listIsEmpty": "List is empty",
     "show": "Show",
+    "showTo": "Show to",
     "nothingFound": "Nothing found",
     "enterSomething": "Enter something",
     "recentRequests": "Recent Requests",

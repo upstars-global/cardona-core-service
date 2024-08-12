@@ -82,7 +82,7 @@ const action = new SelectBaseField({
 
 const bannerStrategy = new SelectBaseField({
   key: FilterType.BannerStrategy,
-  label: i18n.t('common.show'),
+  label: i18n.t('common.showTo'),
   placeholder: i18n.t('placeholder.filter.bannerStrategy'),
   fetchOptionsActionName: 'banner/fetchBannersStrategy',
 })
