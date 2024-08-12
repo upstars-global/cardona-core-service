@@ -5,6 +5,7 @@ import axios from '../../libs/axios'
 import store from '../../store'
 import useToastService from '../../helpers/toasts'
 import { convertCamelCase } from '../../helpers'
+import { TOKEN_INVALID } from '../../utils/constants'
 import {
   ContentType,
   Method,
@@ -17,7 +18,11 @@ import type {
 } from './config'
 import { i18n } from '@/plugins/i18n'
 
+const INVALID_TOKEN_ERROR = 'TypeError: Failed to execute \'setRequestHeader\' on \'XMLHttpRequest\': String contains non ISO-8859-1 code point.'
+
 const { toastSuccess, toastError, toastErrorMessageString } = useToastService()
+
+const isInvalidTokenError = (error): boolean => error?.toString()?.includes(INVALID_TOKEN_ERROR)
 
 const getLoaderSlug = (url: string, loaderSlug: string): string =>
   loaderSlug ? `${url}${loaderSlug}` : url
@@ -86,10 +91,11 @@ class ApiService {
     }
     catch (error: any) {
       const isLoginPage: boolean = route?.name === 'Login'
+      const isInvalidToken = isInvalidTokenError(error)
+      const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', TOKEN_INVALID]
 
-      const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', 'TOKEN_INVALID']
-
-      if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type)) {
+      if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type) || isInvalidToken) {
+        toastError(TOKEN_INVALID)
         store.dispatch('authCore/clearAuth')
 
         if (!isLoginPage)
