@@ -61,6 +61,9 @@ export default {
       showArrows: true,
     },
   },
+  VTab: {
+    class: 'text-high-emphasis',
+  },
   VTooltip: {
     // set v-tooltip default location to top
     location: 'top',
