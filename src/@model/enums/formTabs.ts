@@ -1,4 +1,4 @@
-export const formTabs = {
+export const FormTabs = {
   Main: 'main',
   Seo: 'seo',
   Localization: 'localization',
