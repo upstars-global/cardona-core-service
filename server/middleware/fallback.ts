@@ -10,7 +10,7 @@ export default defineEventHandler(async event => {
   catch (e) {
     // Если произошла ошибка (например, 404), возвращаем index.html
     if (e.statusCode === 404) {
-      const indexPath = resolve('public/index.html')
+      const indexPath = resolve('./index.html')
       const indexFile = readFileSync(indexPath)
 
       event.node.res.statusCode = 200
