@@ -161,6 +161,9 @@ export interface IBaseListConfig {
   /** loadingOnlyByList - Показывать скелетон только при загрузке листа */
   readonly loadingOnlyByList?: boolean
 
+  /** loadingEndpointArr - Массив url за загрузкой которых нужно отслеживать и показывать скелетон */
+  readonly loadingEndpointArr?: Array<string>
+
   /** hideSearchBlock - Скрывать полностью верхний блок с поиском, фильтром, создании айтема */
   readonly hideSearchBlock?: boolean
 }
@@ -205,7 +208,9 @@ export class BaseListConfig implements IBaseListConfig {
   readonly skeletonRows?: number
   readonly skeletonCols?: number
   readonly loadingOnlyByList?: boolean
+  readonly loadingEndpointArr: Array<string>
   readonly hideSearchBlock?: boolean
+
   constructor({
     withSearch,
     withDeactivation,
@@ -246,6 +251,7 @@ export class BaseListConfig implements IBaseListConfig {
     skeletonRows,
     skeletonCols,
     loadingOnlyByList,
+    loadingEndpointArr,
     hideSearchBlock,
   }: IBaseListConfig) {
     this.withSearch = withSearch
@@ -287,6 +293,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.skeletonRows = skeletonRows
     this.skeletonCols = skeletonCols
     this.loadingOnlyByList = loadingOnlyByList
+    this.loadingEndpointArr = loadingEndpointArr ?? []
     this.hideSearchBlock = hideSearchBlock
   }
 }
