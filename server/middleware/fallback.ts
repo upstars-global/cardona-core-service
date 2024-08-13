@@ -18,14 +18,17 @@ export default defineEventHandler(async event => {
     await event.node.resolved
   }
   catch (e) {
-    const request = event?.request || event.node.req
+    const request = event.node.req
 
     console.log(request.url)
     console.log(event)
+    console.log(getRequestURL(event))
 
     // return await fetch('https://bac-3366-add-middleware.cardona-core-service.pages.dev/index.html')
 
-    const url = new URL(request.url)
+    const url = new URL(getRequestURL(event))
+
+    console.log(url);
 
     if (url?.origin)
       return fetch(new Request(`${url.origin}/index.html`, request))
