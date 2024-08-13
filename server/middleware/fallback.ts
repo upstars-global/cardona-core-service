@@ -6,7 +6,7 @@ export default defineEventHandler(async event => {
   try {
     console.log(event)
     if(!event.res.writableEnded) {
-      const indexPath = resolve('../index.html')
+      const indexPath = resolve('../public/index.html')
       const indexFile = readFileSync(indexPath)
 
       event.node.res.statusCode = 200
