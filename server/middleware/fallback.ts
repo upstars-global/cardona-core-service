@@ -18,10 +18,19 @@ export default defineEventHandler(async event => {
     await event.node.resolved
   }
   catch (e) {
-    const request = event.node.req
+    const request = event?.request || event.node.req
+
     console.log(request.url)
     console.log(event)
 
-    return await fetch('https://bac-3366-add-middleware.cardona-core-service.pages.dev/index.html')
+    // return await fetch('https://bac-3366-add-middleware.cardona-core-service.pages.dev/index.html')
+
+    const url = new URL(request.url)
+
+    if (url?.origin)
+      return fetch(new Request(`${url.origin}/index.html`, request))
+
+    event.res.statusCode = 404
+    event.res.end('Page not found')
   }
 })
