@@ -4,7 +4,7 @@ import { defineEventHandler, send } from 'h3'
 
 export default defineEventHandler(async event => {
   try {
-    if(!event.res.writableEnded) {
+    if (!event.res.writableEnded) {
       const indexPath = resolve('public/index.html')
       const indexFile = readFileSync(indexPath)
 
@@ -13,19 +13,16 @@ export default defineEventHandler(async event => {
 
       return send(event, indexFile)
     }
+
     // Пытаемся обработать запрос дальше
     await event.node.resolved
   }
   catch (e) {
-    const indexPath = resolve('public/index.html')
-    const indexFile = readFileSync(indexPath)
+    const request = event.node.req
+    const url = new URL(request.url)
 
-    if (indexFile) {
-      event.node.res.statusCode = 200
-      event.node.res.setHeader('Content-Type', 'text/html')
-
-      return send(event, indexFile)
-    }
+    if (url)
+      return await fetch(`${url.origin}/index.html`)
 
     event.res.statusCode = 404
     event.res.end('Page not found')
