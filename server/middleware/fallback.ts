@@ -17,6 +17,18 @@ export default defineEventHandler(async event => {
     await event.node.resolved
   }
   catch (e) {
+    const indexPath = resolve('public/index.html')
+    const indexPath2 = resolve('./index.html')
+    const indexPath3 = resolve('../index.html')
+    const indexFile = readFileSync(indexPath) || readFileSync(indexPath2) || readFileSync(indexPath3)
+
+    if (indexFile) {
+      event.node.res.statusCode = 200
+      event.node.res.setHeader('Content-Type', 'text/html')
+
+      return send(event, indexFile)
+    }
+
     event.res.statusCode = 404
     event.res.end('Page not found')
   }
