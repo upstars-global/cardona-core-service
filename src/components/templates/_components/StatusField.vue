@@ -52,6 +52,7 @@ enum StatusVariants {
   used = 'warning',
   self_exclusion_waiting_to_confirm = 'warning',
   waiting_to_confirm = 'warning',
+  waiting_disable = 'warning',
 
   // Danger
   delete = 'error',
@@ -68,7 +69,6 @@ enum StatusVariants {
   'erased_by_withdraw' = 'error',
   deleting = 'error',
   disabled = 'error',
-  waiting_disable = 'error',
 
   // TODO: Add status variant here
 }
