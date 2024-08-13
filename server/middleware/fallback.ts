@@ -18,13 +18,6 @@ export default defineEventHandler(async event => {
     await event.node.resolved
   }
   catch (e) {
-    const request = event.node.req
-    const url = new URL(request.url)
-
-    if (url)
-      return await fetch(`${url.origin}/index.html`)
-
-    event.res.statusCode = 404
-    event.res.end('Page not found')
+    return await fetch('/index.html')
   }
 })
