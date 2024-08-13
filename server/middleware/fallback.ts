@@ -18,9 +18,7 @@ export default defineEventHandler(async event => {
   }
   catch (e) {
     const indexPath = resolve('public/index.html')
-    const indexPath2 = resolve('./index.html')
-    const indexPath3 = resolve('../index.html')
-    const indexFile = readFileSync(indexPath) || readFileSync(indexPath2) || readFileSync(indexPath3)
+    const indexFile = readFileSync(indexPath)
 
     if (indexFile) {
       event.node.res.statusCode = 200
