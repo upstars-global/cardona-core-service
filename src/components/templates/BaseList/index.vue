@@ -119,7 +119,7 @@ const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
 
 // Permissions
 const { canCreate, canUpdate, canUpdateSeo, canRemove, canExport }
-    = basePermissions<IBaseListConfig>({ entityName, config: props.config })
+  = basePermissions<IBaseListConfig>({ entityName, config: props.config })
 
 const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
 
@@ -183,8 +183,6 @@ watch(
 const selectedFields = ref<TableField[]>([...fields])
 
 const isLoadingList = computed(() => {
-  if (additianlLoading.value)
-    return true
   const indexSymbolNextDash = entityName.indexOf('-') + 1
 
   const entityNameForLoad = entityName.replace(
@@ -199,11 +197,13 @@ const isLoadingList = computed(() => {
   return props.config.loadingOnlyByList
     ? store.getters.isLoadingEndpoint([
       listUrl,
+      ...props.config.loadingEndpointArr!,
     ])
     : store.getters.isLoadingEndpoint([
       listUrl,
       `${entityUrl}/update`,
       `${entityUrl}/delete`,
+      ...props.config.loadingEndpointArr!,
     ])
 })
 
@@ -274,15 +274,10 @@ const mapSortData = () => {
     })
 }
 
-const additianlLoading = ref(false)
-
 // Fetch list
 const getList = async () => {
   const filter = setRequestFilters()
   const sort = mapSortData()
-
-  // TODO убрать флаг "additianlLoading" после выполнения https://upstars.atlassian.net/browse/BAC-3125
-  additianlLoading.value = true
 
   const { list, total } = await store.dispatch(fetchActionName, {
     type: entityName,
@@ -297,8 +292,6 @@ const getList = async () => {
       customApiPrefix: props.config?.customApiPrefix,
     },
   })
-
-  additianlLoading.value = false
 
   items.value = list
 

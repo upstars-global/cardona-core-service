@@ -1,12 +1,13 @@
 import type { IAuthTokens } from 'axios-jwt'
-import { clearAuthTokens, isLoggedIn, setAuthTokens } from 'axios-jwt'
+import { clearAuthTokens, setAuthTokens } from 'axios-jwt'
 import ApiService from '../../services/api'
 import type { ILoginData } from '../../@model/auth'
+import { checkIsLoggedIn } from '../../helpers/token-auth'
 
 export default {
   namespaced: true,
   state: {
-    isAuthorized: isLoggedIn(),
+    isAuthorized: checkIsLoggedIn(),
   },
 
   getters: {
