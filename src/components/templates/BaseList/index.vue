@@ -2,6 +2,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, onUnmounted, ref, useSlots, watch } from 'vue'
 import { useStore } from 'vuex'
+import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
 import CTable from '../../CTable/index.vue'
@@ -425,7 +426,7 @@ const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
   props.config?.filterList,
 )
 
-const isFiltersShown = ref(false)
+const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, false)
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
 const appliedFilters = computed<BaseField[]>(() => {
