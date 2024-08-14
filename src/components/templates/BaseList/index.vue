@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
-import { DownloadFormat } from '../../../@model/templates/baseList'
+// import { DownloadFormat } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
@@ -409,14 +409,23 @@ const onExportFormatSelected = async (format: string) => {
     customApiPrefix: props.config?.customApiPrefix,
   })
 
+  /// / TODO add logic for grnration URL file for XLSX format
+  /// / ALSO add send response responseType to baseStoreCore and api service
   const fakeLink: HTMLElement = document.createElement('a')
+
+  const downloadUrl = window.URL.createObjectURL(new Blob([report]))
 
   fakeLink.setAttribute(
     'href',
-    `data:${DownloadFormat[format]};charset=utf-8,${encodeURIComponent(report)}`,
+    downloadUrl,
   )
+
+  // fakeLink.setAttribute(
+  //   'href',
+  //   `data:${downloadUrl};charset=utf-8,${encodeURIComponent(report)}`,
+  // )
   fakeLink.setAttribute('target', '_blank')
-  fakeLink.setAttribute('download', `${entityName}Report`)
+  fakeLink.setAttribute('download', `${entityName}Report.${format}`)
   fakeLink.click()
 }
 

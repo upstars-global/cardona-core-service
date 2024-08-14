@@ -53,6 +53,7 @@ export interface IApiServiceConfig {
   readonly entityName?: string
   readonly rejectError?: boolean
   readonly loaderSlug?: string
+  readonly responseType?: string
 }
 
 // Response error
