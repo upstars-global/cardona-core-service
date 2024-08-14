@@ -39,6 +39,7 @@ import StatementField from '../../../components/templates/_components/StatementF
 import DateWithSecondsField from '../../../components/templates/_components/DateWithSecondsField.vue'
 import SumAndCurrency from '../../../components/templates/_components/SumAndCurrency.vue'
 import StatusField from '../../../components/templates/_components/StatusField.vue'
+import { ExportFormat } from '../../../@model/templates/baseList'
 import MultipleActions from './_components/MultipleActions.vue'
 import ListSearch from './_components/ListSearch.vue'
 import PillStatusField from './_components/fields/PillStatusField.vue'
@@ -392,7 +393,7 @@ const setRequestFilters = (): PayloadFilters => {
   return filtersData
 }
 
-const onExportFormatSelected = async (format: string) => {
+const onExportFormatSelected = async (format: ExportFormat) => {
   const filter = setRequestFilters()
   const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
 
@@ -415,15 +416,18 @@ const onExportFormatSelected = async (format: string) => {
 
   const downloadUrl = window.URL.createObjectURL(new Blob([report]))
 
-  fakeLink.setAttribute(
-    'href',
-    downloadUrl,
-  )
-
-  // fakeLink.setAttribute(
-  //   'href',
-  //   `data:${downloadUrl};charset=utf-8,${encodeURIComponent(report)}`,
-  // )
+  if (format === ExportFormat.XLSX) {
+    fakeLink.setAttribute(
+      'href',
+      downloadUrl,
+    )
+  }
+  else {
+    fakeLink.setAttribute(
+      'href',
+      `data:${downloadUrl};charset=utf-8,${encodeURIComponent(report)}`,
+    )
+  }
   fakeLink.setAttribute('target', '_blank')
   fakeLink.setAttribute('download', `${entityName}Report.${format}`)
   fakeLink.click()
