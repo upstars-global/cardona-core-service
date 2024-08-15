@@ -1,26 +1,13 @@
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
-import { defineEventHandler, send } from 'h3'
+import { defineEventHandler } from 'h3'
 
 export default defineEventHandler(async event => {
   try {
-    if (readFileSync && !event.res.writableEnded) {
-      const indexPath = resolve('public/index.html')
-      const indexFile = readFileSync(indexPath)
+    const request = event.node.req
 
-      event.node.res.statusCode = 200
-      event.node.res.setHeader('Content-Type', 'text/html')
+    const url = new URL(getRequestURL(event))
 
-      return send(event, indexFile)
-    }
-    else if (getRequestURL) {
-      const request = event.node.req
-
-      const url = new URL(getRequestURL(event))
-
-      if (url?.origin)
-        return fetch(new Request(`${url.origin}/index.html`, request))
-    }
+    if (url?.origin)
+      return fetch(new Request(`${url.origin}/index.html`, request))
 
     // Пытаемся обработать запрос дальше
     await event.node.resolved
