@@ -37,6 +37,8 @@ enum StatusVariants {
   wager = 'success',
   'wager_done' = 'success',
   creation = 'success',
+  cooling_off_active = 'success',
+  self_exclusion_active = 'success',
 
   // Warning
   inactive = 'warning',
@@ -48,6 +50,9 @@ enum StatusVariants {
   'wait_activation' = 'warning',
   processing = 'warning',
   used = 'warning',
+  self_exclusion_waiting_to_confirm = 'warning',
+  waiting_to_confirm = 'warning',
+  waiting_disable = 'warning',
 
   // Danger
   delete = 'error',
@@ -63,6 +68,7 @@ enum StatusVariants {
   cancelled = 'error',
   'erased_by_withdraw' = 'error',
   deleting = 'error',
+  disabled = 'error',
 
   // TODO: Add status variant here
 }
@@ -93,3 +99,4 @@ const actualVariant = computed(() => {
     </span>
   </VChip>
 </template>
+`
