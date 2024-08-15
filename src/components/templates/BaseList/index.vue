@@ -4,9 +4,9 @@ import { computed, inject, onBeforeMount, onUnmounted, ref, useSlots, watch } fr
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
+import { ExportFormat } from '../../../@model/templates/baseList'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
-// import { DownloadFormat } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
@@ -31,6 +31,7 @@ import {
   convertCamelCase,
   convertLowerCaseFirstSymbol, isEmptyString, isNullOrUndefinedValue,
 } from '../../../helpers'
+import useToastService from '../../../helpers/toasts'
 import { VSizes } from '../../../@model/vuetify'
 import SideBar from '../../../components/templates/SideBar/index.vue'
 import FiltersBlock from '../../../components/FiltersBlock/index.vue'
@@ -39,7 +40,6 @@ import StatementField from '../../../components/templates/_components/StatementF
 import DateWithSecondsField from '../../../components/templates/_components/DateWithSecondsField.vue'
 import SumAndCurrency from '../../../components/templates/_components/SumAndCurrency.vue'
 import StatusField from '../../../components/templates/_components/StatusField.vue'
-import { ExportFormat } from '../../../@model/templates/baseList'
 import MultipleActions from './_components/MultipleActions.vue'
 import ListSearch from './_components/ListSearch.vue'
 import PillStatusField from './_components/fields/PillStatusField.vue'
@@ -68,6 +68,8 @@ const emits = defineEmits<{
   rowClicked: [item: Record<string, unknown>]
   end: [item: Record<string, unknown>]
 }>()
+
+const { toastError } = useToastService()
 
 const modal = inject('modal')
 const slots = useSlots()
@@ -394,6 +396,12 @@ const setRequestFilters = (): PayloadFilters => {
 }
 
 const onExportFormatSelected = async (format: ExportFormat) => {
+  if (props.config?.maxExportItems && props.config?.maxExportItems < total.value) {
+    toastError('maxLimitForExport', { quantity: props.config.maxExportItems })
+
+    return
+  }
+
   const filter = setRequestFilters()
   const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
 
@@ -410,8 +418,6 @@ const onExportFormatSelected = async (format: ExportFormat) => {
     customApiPrefix: props.config?.customApiPrefix,
   })
 
-  /// / TODO add logic for grnration URL file for XLSX format
-  /// / ALSO add send response responseType to baseStoreCore and api service
   const fakeLink: HTMLElement = document.createElement('a')
 
   const downloadUrl = window.URL.createObjectURL(new Blob([report]))

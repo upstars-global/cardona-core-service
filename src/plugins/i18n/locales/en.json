@@ -606,7 +606,8 @@
       "fileSizeError": "File is larger than {MB} MB",
       "upload_path_IN_USE": "An image with the same name or path already exists in the gallery",
       "axiosError": "Data loading error",
-      "invalidTypeFile": "The format of the file is invalid"
+      "invalidTypeFile": "The format of the file is invalid",
+      "maxLimitForExport": "List contains more than { quantity } rows, adjust filters to reduce total count"
     }
   },
   "userStatuses": {
