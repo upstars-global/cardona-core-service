@@ -2,6 +2,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, onUnmounted, ref, useSlots, watch } from 'vue'
 import { useStore } from 'vuex'
+import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
 import CTable from '../../CTable/index.vue'
@@ -118,7 +119,7 @@ const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
 
 // Permissions
 const { canCreate, canUpdate, canUpdateSeo, canRemove, canExport }
-    = basePermissions<IBaseListConfig>({ entityName, config: props.config })
+  = basePermissions<IBaseListConfig>({ entityName, config: props.config })
 
 const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
 
@@ -182,8 +183,6 @@ watch(
 const selectedFields = ref<TableField[]>([...fields])
 
 const isLoadingList = computed(() => {
-  if (additianlLoading.value)
-    return true
   const indexSymbolNextDash = entityName.indexOf('-') + 1
 
   const entityNameForLoad = entityName.replace(
@@ -198,11 +197,13 @@ const isLoadingList = computed(() => {
   return props.config.loadingOnlyByList
     ? store.getters.isLoadingEndpoint([
       listUrl,
+      ...props.config.loadingEndpointArr!,
     ])
     : store.getters.isLoadingEndpoint([
       listUrl,
       `${entityUrl}/update`,
       `${entityUrl}/delete`,
+      ...props.config.loadingEndpointArr!,
     ])
 })
 
@@ -273,15 +274,10 @@ const mapSortData = () => {
     })
 }
 
-const additianlLoading = ref(false)
-
 // Fetch list
 const getList = async () => {
   const filter = setRequestFilters()
   const sort = mapSortData()
-
-  // TODO убрать флаг "additianlLoading" после выполнения https://upstars.atlassian.net/browse/BAC-3125
-  additianlLoading.value = true
 
   const { list, total } = await store.dispatch(fetchActionName, {
     type: entityName,
@@ -296,8 +292,6 @@ const getList = async () => {
       customApiPrefix: props.config?.customApiPrefix,
     },
   })
-
-  additianlLoading.value = false
 
   items.value = list
 
@@ -432,7 +426,7 @@ const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
   props.config?.filterList,
 )
 
-const isFiltersShown = ref(false)
+const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, false)
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
 const appliedFilters = computed<BaseField[]>(() => {
