@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
-import { DownloadFormat } from '../../../@model/templates/baseList'
+import { BaseListActionsSlots, DownloadFormat } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
@@ -916,31 +916,21 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             @on-toggle-status="onClickToggleStatus"
           >
             <template
-              v-if="checkSlotExistence('action-items')"
-              #action-items
+              v-if="checkSlotExistence(BaseListActionsSlots.PrependActionItem)"
+              #[BaseListActionsSlots.PrependActionItem]
             >
               <slot
-                name="action-items"
+                :name="BaseListActionsSlots.PrependActionItem"
                 :item="item"
               />
             </template>
 
             <template
-              v-if="checkSlotExistence('additional-action-items')"
-              #additional-action-items
+              v-if="checkSlotExistence(BaseListActionsSlots.AppendActionItem)"
+              #[BaseListActionsSlots.AppendActionItem]
             >
               <slot
-                name="additional-action-items"
-                :item="item"
-              />
-            </template>
-
-            <template
-              v-if="checkSlotExistence('append-action-item')"
-              #append-action-item
-            >
-              <slot
-                name="append-action-item"
+                :name="BaseListActionsSlots.AppendActionItem"
                 :item="item"
                 :can-update="canUpdate"
               />
