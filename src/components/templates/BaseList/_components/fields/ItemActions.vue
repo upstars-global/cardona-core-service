@@ -31,13 +31,14 @@ const slots = useSlots()
 enum SLOTS {
   ACTION_ITEMS = 'action-items',
   ADDITIONAL_ACTION_ITEMS = 'additional-action-items',
+  APPEND_ACTION_ITEM = 'append-action-item',
 }
 
 const existSlot = (slotKey: SLOTS) => !!slots[slotKey]
 
 const isExistsActionItemsSlot = computed(
   () => {
-    return [SLOTS.ACTION_ITEMS, SLOTS.ADDITIONAL_ACTION_ITEMS].some(slotName => !!slots[slotName] && !!slots[slotName]()[0].children.length)
+    return [SLOTS.ACTION_ITEMS, SLOTS.ADDITIONAL_ACTION_ITEMS, SLOTS.APPEND_ACTION_ITEM].some(slotName => !!slots[slotName] && !!slots[slotName]()[0].children.length)
   },
 )
 
@@ -99,6 +100,7 @@ const onCreateCopy = () => {
           {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
         </VListItemTitle>
       </VListItem>
+
       <VListItem
         v-if="canShowEdit"
         :prepend-icon="IconsList.EditIcon"
@@ -108,6 +110,7 @@ const onCreateCopy = () => {
           {{ $t('action.edit') }}
         </VListItemTitle>
       </VListItem>
+
       <VListItem
         v-if="canCreate && config.createFromCopy"
         :prepend-icon="IconsList.CopyPlusIcon"
@@ -117,6 +120,7 @@ const onCreateCopy = () => {
           {{ $t('action.makeCopy') }}
         </VListItemTitle>
       </VListItem>
+
       <VListItem
         v-if="canRemoveItem"
         class="text-error"
@@ -129,6 +133,12 @@ const onCreateCopy = () => {
           {{ $t('action.remove') }}
         </VListItemTitle>
       </VListItem>
+
+      <slot
+        v-if="existSlot(SLOTS.APPEND_ACTION_ITEM)"
+        :name="SLOTS.APPEND_ACTION_ITEM"
+        :item="item"
+      />
     </VList>
   </VMenu>
 </template>
