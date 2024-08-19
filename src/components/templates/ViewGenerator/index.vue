@@ -45,7 +45,10 @@ const valueColsCount = computed(() => 12 - props.cols)
         class="view-generator__text value font-weight-medium d-flex align-items-start text-break wrapper-value text-base ma-0"
         :class="justifyClass"
       >
-        <slot :name="`sidebar-value(${keyName})`">
+        <slot
+          :name="`sidebar-value(${keyName})`"
+          :value="modelValue.value"
+        >
           <Component
             :is="modelValue.type"
             :item="modelValue"
