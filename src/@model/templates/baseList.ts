@@ -404,3 +404,8 @@ export class SideBarCollapseItem {
 export interface BaseListItem {
   rowVariant?: BColors | BLightColors
 }
+
+export enum BaseListActionsSlots {
+  PrependActionItem = 'prepend-action-item',
+  AppendActionItem = 'append-action-item',
+}
