@@ -178,7 +178,7 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
         :calculate-position="withPopper()"
         :disabled="disabled"
         :options="regionsOptions"
-        :placeholder="$t('component.countriesSelect.allowAll')"
+        :placeholder="$t('component.countriesSelect.placeholder')"
         class="select-field"
         @option:selected="onSelectItem"
       >

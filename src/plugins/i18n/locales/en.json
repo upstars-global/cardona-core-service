@@ -467,7 +467,7 @@
       "allowInCountries": "Allow in countries",
       "bannedCountries": "Banned countries",
       "allowedCountries": "Allowed countries",
-      "allowAll": "Allow All"
+      "placeholder": "Search by Country and Region"
     }
   },
   "page": {
