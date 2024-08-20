@@ -190,6 +190,11 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
         </template>
       </VueSelect>
     </div>
+
+    <span class="text-sm text-secondary mt-1">
+      {{ $t('component.countriesSelect.description') }}
+    </span>
+
     <div
       v-if="selectedCountriesVisible.size"
       class="selected-coutries pa-3 mt-3"
