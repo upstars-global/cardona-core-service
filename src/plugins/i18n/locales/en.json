@@ -228,6 +228,7 @@
     "conciergeService": "Concierge service",
     "listIsEmpty": "List is empty",
     "show": "Show",
+    "showTo": "Show to",
     "nothingFound": "Nothing found",
     "enterSomething": "Enter something",
     "recentRequests": "Recent Requests",
@@ -665,7 +666,7 @@
       "status": "Choose a status",
       "manager": "Choose a manager",
       "reason": "Choose some reasons",
-      "tags": "Choose some tags"
+      "tags": "Search by Tags"
     }
   },
   "emptyState": {
