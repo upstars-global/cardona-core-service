@@ -53,7 +53,7 @@ const selectClasses = computed(() => {
 const options = computed(() =>
   props.field.options
     ? props.field.options.filter((option: OptionsItem) =>
-      valueModel.value.every(item => item.id !== option.id),
+      valueModel.value.every(item => item?.id !== option.id),
     )
     : [],
 )
