@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 
-import AppLogo from '../AppLogo.vue'
+import AppLogo from '../../src/components/AppLogo.vue'
 
 const TEXT_IN_COMPONENT = 'BackOffice'
 
