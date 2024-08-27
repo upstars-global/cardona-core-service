@@ -11,7 +11,7 @@ import { withPopper } from '../helpers/selectPopper'
 
 const props = defineProps<{
   modelValue: Array<string>
-  disabled: boolean
+  disabled?: boolean
 }>()
 
 const emits = defineEmits<{

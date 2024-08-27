@@ -293,6 +293,7 @@ defineExpose({
     <div class="position-relative">
       <slot
         :entity-id="entityId"
+        :entity-name="entityName"
         :form="form"
         :can-update="canUpdate"
         :can-remove="canRemove"
@@ -381,13 +382,13 @@ defineExpose({
 
 <style lang="scss" scoped>
 .base-section {
-    &__loading {
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background: rgb(var(--v-theme-surface), var(--v-medium-emphasis-opacity));
-      z-index: 5;
-    }
+  &__loading {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgb(var(--v-theme-surface), var(--v-medium-emphasis-opacity));
+    z-index: 5;
+  }
 }
 </style>
