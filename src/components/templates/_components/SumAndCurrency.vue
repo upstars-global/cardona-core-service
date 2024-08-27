@@ -14,7 +14,11 @@ withDefaults(defineProps<{
 <template>
   <div
     class="d-flex flex-column width-content justify-start"
-    :class="`text-${align}`"
+    :class="{
+      [`text-${align}`]: true,
+      'mx-auto': align === 'center',
+      'ml-auto': align === 'right',
+    }"
   >
     <div>
       <span
