@@ -13,7 +13,7 @@ withDefaults(defineProps<{
 
 <template>
   <div
-    class="d-flex flex-column width-content currency-wrapper justify-start"
+    class="d-flex flex-column width-content justify-start"
     :class="`text-${align}`"
   >
     <div>
@@ -50,9 +50,5 @@ withDefaults(defineProps<{
 <style lang="scss" scoped>
 .width-content {
   width: max-content;
-}
-
-.currency-wrapper {
-  margin-left: auto;
 }
 </style>
