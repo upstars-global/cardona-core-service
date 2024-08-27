@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TranslateResult } from 'vue-i18n'
 import { computed } from 'vue'
-import { IconsList } from '../../../@model/enums/icons'
+import type { IconsList } from '../../../@model/enums/icons'
 import { Location } from '../../../@model/enums/tooltipPlacement'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
 
