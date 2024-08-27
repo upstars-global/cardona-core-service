@@ -89,6 +89,11 @@ export default defineConfig({
       ],
     }),
   ],
+  test: {
+    globals: true,
+    setupFiles: 'src/setupTests.ts',
+    includeSource: ['src/**/*.{js,ts,vue}'],
+  },
   define: { 'process.env': {} },
   resolve: {
     alias: {
