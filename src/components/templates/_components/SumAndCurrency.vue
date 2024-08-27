@@ -1,15 +1,21 @@
 <script setup lang="ts">
-defineProps<{
+withDefaults(defineProps<{
   data: {
     remainder?: number
     amount: number
     currency: string
   }
-}>()
+  align: 'left' | 'right' | 'center'
+}>(), {
+  align: 'right',
+})
 </script>
 
 <template>
-  <div class="d-flex flex-column width-content currency-wrapper justify-start">
+  <div
+    class="d-flex flex-column width-content currency-wrapper justify-start"
+    :class="`text-${align}`"
+  >
     <div>
       <span
         :key="data.amount"
@@ -48,6 +54,5 @@ defineProps<{
 
 .currency-wrapper {
   margin-left: auto;
-  text-align: right;
 }
 </style>
