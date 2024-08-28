@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AlignType } from '@/@model/templates/tableFields'
+import { AlignType } from '../../../@model/templates/tableFields'
 
 withDefaults(defineProps<{
   data: {
