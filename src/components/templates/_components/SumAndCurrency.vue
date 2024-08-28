@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import { AlignType } from '@/@model/templates/tableFields'
+
 withDefaults(defineProps<{
   data: {
     remainder?: number
     amount: number
     currency: string
   }
-  align: 'left' | 'right' | 'center'
+  align: AlignType.Left | AlignType.Right | AlignType.Center
 }>(), {
-  align: 'right',
+  align: AlignType.Right,
 })
 </script>
 
@@ -16,8 +18,8 @@ withDefaults(defineProps<{
     class="d-flex flex-column width-content justify-start"
     :class="{
       [`text-${align}`]: true,
-      'mx-auto': align === 'center',
-      'ml-auto': align === 'right',
+      'mx-auto': align === AlignType.Center,
+      'ml-auto': align === AlignType.Right,
     }"
   >
     <div>
