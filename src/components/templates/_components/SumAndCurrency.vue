@@ -7,7 +7,7 @@ withDefaults(defineProps<{
     amount: number
     currency: string
   }
-  align: AlignType.Left | AlignType.Right | AlignType.Center
+  align: AlignType
 }>(), {
   align: AlignType.Right,
 })
