@@ -109,7 +109,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 .app-textarea__counter {
   position: relative;
   .v-counter {
-    font-size: $typography-h5-font-size;
+    font-size: $typography-body-2-font-size;
   }
   .v-input__details {
     position: absolute;
