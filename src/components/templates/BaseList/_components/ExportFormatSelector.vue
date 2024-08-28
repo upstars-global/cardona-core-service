@@ -1,17 +1,33 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { pickBy } from 'lodash'
 import { ExportFormat } from '../../../../@model/templates/baseList'
 import { IconsList } from '../../../../@model/enums/icons'
 import { VColors, VVariants } from '../../../../@model/vuetify'
 
-defineProps<{
+interface Props {
   disabled: boolean
-}>()
+  formatOfExports?: Array<ExportFormat>
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  formatOfExports: [ExportFormat.JSON, ExportFormat.JSON]
+})
 
 const emits = defineEmits<{
   (e: 'exportFormatSelected', format: string): void
 }>()
 
 const onClick = (format: string) => emits('exportFormatSelected', format)
+
+const actualExportFormats = computed(() => {
+  if (props?.formatOfExports?.isEmpty)
+    return ExportFormat
+
+  return pickBy(ExportFormat, (value: ExportFormat) => props.formatOfExports.includes(value))
+})
+
+const isOneTypeExport = computed(() => props.formatOfExports.length === 1)
 </script>
 
 <template>
@@ -20,15 +36,16 @@ const onClick = (format: string) => emits('exportFormatSelected', format)
       <VBtn
         :variant="VVariants.Outlined"
         :color="VColors.Secondary"
-        v-bind="props"
+        v-bind="isOneTypeExport ? {} : props"
         :prepend-icon="IconsList.UploadIcon"
+        @click="isOneTypeExport && onClick(formatOfExports[0])"
       >
         {{ $t('action.export') }}
       </VBtn>
     </template>
-    <VList>
+    <VList v-if="!isOneTypeExport">
       <VListItem
-        v-for="(value, key) in ExportFormat"
+        v-for="(value, key) in actualExportFormats"
         :key="value"
         @click="onClick(value)"
       >
