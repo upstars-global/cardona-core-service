@@ -25,7 +25,7 @@ defineProps<{
       v-if="data?.remainder"
       class="font-weight-light"
     >
-      <span class="pl-1">
+      <span class="pl-1 remainder-label">
         {{ $t('common.remainder') }}
       </span>
 
