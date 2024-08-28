@@ -46,6 +46,7 @@ class ApiService {
       entityName = '',
       rejectError = true,
       loaderSlug = '',
+      responseType = 'json',
     } = config
 
     const convertedType: Array<string> = payload.type
@@ -79,6 +80,7 @@ class ApiService {
         method,
         headers,
         data: body,
+        responseType,
       } as AxiosRequestConfig)
 
       if (data.error)
