@@ -5,9 +5,10 @@ import { useStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
+import { ExportFormat } from '../../../@model/templates/baseList'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
-import { DownloadFormat } from '../../../@model/templates/baseList'
+import { BaseListActionsSlots } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
@@ -32,6 +33,7 @@ import {
   convertCamelCase,
   convertLowerCaseFirstSymbol, isEmptyString, isNullOrUndefinedValue,
 } from '../../../helpers'
+import useToastService from '../../../helpers/toasts'
 import { VSizes } from '../../../@model/vuetify'
 import SideBar from '../../../components/templates/SideBar/index.vue'
 import FiltersBlock from '../../../components/FiltersBlock/index.vue'
@@ -68,6 +70,8 @@ const emits = defineEmits<{
   rowClicked: [item: Record<string, unknown>]
   end: [item: Record<string, unknown>]
 }>()
+
+const { toastError } = useToastService()
 
 const modal = inject('modal')
 const slots = useSlots()
@@ -393,7 +397,13 @@ const setRequestFilters = (): PayloadFilters => {
   return filtersData
 }
 
-const onExportFormatSelected = async (format: string) => {
+const onExportFormatSelected = async (format: ExportFormat) => {
+  if (props.config?.maxExportItems && props.config?.maxExportItems < total.value) {
+    toastError('maxLimitForExport', { quantity: props.config.maxExportItems })
+
+    return
+  }
+
   const filter = setRequestFilters()
   const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
 
@@ -412,12 +422,22 @@ const onExportFormatSelected = async (format: string) => {
 
   const fakeLink: HTMLElement = document.createElement('a')
 
-  fakeLink.setAttribute(
-    'href',
-    `data:${DownloadFormat[format]};charset=utf-8,${encodeURIComponent(report)}`,
-  )
+  const downloadUrl = window.URL.createObjectURL(new Blob([report]))
+
+  if (format === ExportFormat.XLSX) {
+    fakeLink.setAttribute(
+      'href',
+      downloadUrl,
+    )
+  }
+  else {
+    fakeLink.setAttribute(
+      'href',
+      `data:${downloadUrl};charset=utf-8,${encodeURIComponent(report)}`,
+    )
+  }
   fakeLink.setAttribute('target', '_blank')
-  fakeLink.setAttribute('download', `${entityName}Report`)
+  fakeLink.setAttribute('download', `${entityName}Report.${format}`)
   fakeLink.click()
 }
 
@@ -916,31 +936,21 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             @on-toggle-status="onClickToggleStatus"
           >
             <template
-              v-if="checkSlotExistence('action-items')"
-              #action-items
+              v-if="checkSlotExistence(BaseListActionsSlots.PrependActionItem)"
+              #[BaseListActionsSlots.PrependActionItem]
             >
               <slot
-                name="action-items"
+                :name="BaseListActionsSlots.PrependActionItem"
                 :item="item"
               />
             </template>
 
             <template
-              v-if="checkSlotExistence('additional-action-items')"
-              #additional-action-items
+              v-if="checkSlotExistence(BaseListActionsSlots.AppendActionItem)"
+              #[BaseListActionsSlots.AppendActionItem]
             >
               <slot
-                name="additional-action-items"
-                :item="item"
-              />
-            </template>
-
-            <template
-              v-if="checkSlotExistence('append-action-item')"
-              #append-action-item
-            >
-              <slot
-                name="append-action-item"
+                :name="BaseListActionsSlots.AppendActionItem"
                 :item="item"
                 :can-update="canUpdate"
               />
