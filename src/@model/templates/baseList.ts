@@ -26,6 +26,7 @@ export interface UseListType {
   readonly SideBarModel?: Function
   readonly beforeRemoveCallback?: Function
   readonly ListItemModel?: Function
+  readonly canRemoveCb?: (item: Record<string, unknown>) => boolean
 }
 
 export interface FilterListItem {
@@ -33,6 +34,8 @@ export interface FilterListItem {
   readonly key: string
   readonly trackBy?: string
 }
+
+type StaticFilters = Record<string, string | string[] | number[]>
 
 /**
  * IBaseListConfig - Конфиг базового листа
@@ -56,11 +59,11 @@ export interface IBaseListConfig {
   /** emptyText - Текст когда лист пустой */
   readonly emptyText?: string
 
-  /** filterList - Масив <FilterListItem> фильтров для таблицы */
+  /** filterList - Массив <FilterListItem> фильтров для таблицы */
   readonly filterList?: Array<FilterListItem>
 
-  /** staticFilters - Статический фильтр например playerId. Всегда отправляеться в АПИ */
-  readonly staticFilters?: Record<string, string>
+  /** staticFilters - Статический фильтр например playerId. Всегда отправляется в АПИ */
+  readonly staticFilters?: StaticFilters
 
   /** staticSorts - Статический сортировка таблицы field: 'position', dir: SortDirection.asc, */
   readonly staticSorts?: SortItem
@@ -71,7 +74,7 @@ export interface IBaseListConfig {
   /** selectable - Вкл/выкл режим выбора элементов */
   readonly selectable?: boolean
 
-  /** small - Вкл/выкл уменьшеный вид таблицы  */
+  /** small - Вкл/выкл уменьшенный вид таблицы  */
   readonly small?: boolean
 
   /** draggable - Вкл/выкл перетаскивание элементов  */
@@ -88,6 +91,14 @@ export interface IBaseListConfig {
 
   /** selectable - Текст placeholder для поиска */
   readonly withExport?: boolean
+
+  /** formatOfExports - Указать какие форматы должен поддерживать список */
+
+  readonly formatOfExports?: Array<ExportFormat>
+
+  /** maxExportItems - Указать максимальное количество на export элементов списка  */
+
+  readonly maxExportItems?: number
 
   /** withMultipleActions - Вкл/выкл действие с несколькими элементами */
   readonly withMultipleActions?: boolean
@@ -161,6 +172,9 @@ export interface IBaseListConfig {
   /** loadingOnlyByList - Показывать скелетон только при загрузке листа */
   readonly loadingOnlyByList?: boolean
 
+  /** loadingEndpointArr - Массив url за загрузкой которых нужно отслеживать и показывать скелетон */
+  readonly loadingEndpointArr?: Array<string>
+
   /** hideSearchBlock - Скрывать полностью верхний блок с поиском, фильтром, создании айтема */
   readonly hideSearchBlock?: boolean
 }
@@ -171,7 +185,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withSettings?: boolean
   readonly emptyText?: string
   readonly filterList: Array<FilterListItem>
-  readonly staticFilters: Record<string, string>
+  readonly staticFilters: StaticFilters
   readonly staticSorts?: SortItem
   readonly selectMode?: SelectMode
   readonly selectable?: boolean
@@ -181,6 +195,8 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withIndependentPagination?: boolean
   readonly searchPlaceholder?: string
   readonly withExport?: boolean
+  readonly formatOfExports?: Array<ExportFormat>
+  readonly maxExportItems?: number
   readonly withMultipleActions?: boolean
   readonly sidebar?: boolean
   readonly cbShowSidebar?: Function
@@ -205,7 +221,9 @@ export class BaseListConfig implements IBaseListConfig {
   readonly skeletonRows?: number
   readonly skeletonCols?: number
   readonly loadingOnlyByList?: boolean
+  readonly loadingEndpointArr: Array<string>
   readonly hideSearchBlock?: boolean
+
   constructor({
     withSearch,
     withDeactivation,
@@ -222,6 +240,8 @@ export class BaseListConfig implements IBaseListConfig {
     withIndependentPagination,
     searchPlaceholder,
     withExport,
+    formatOfExports,
+    maxExportItems,
     withMultipleActions,
     sidebar,
     cbShowSidebar,
@@ -246,6 +266,7 @@ export class BaseListConfig implements IBaseListConfig {
     skeletonRows,
     skeletonCols,
     loadingOnlyByList,
+    loadingEndpointArr,
     hideSearchBlock,
   }: IBaseListConfig) {
     this.withSearch = withSearch
@@ -263,6 +284,8 @@ export class BaseListConfig implements IBaseListConfig {
     this.withIndependentPagination = withIndependentPagination
     this.searchPlaceholder = searchPlaceholder
     this.withExport = withExport
+    this.formatOfExports = formatOfExports ?? [ExportFormat.JSON, ExportFormat.CSV]
+    this.maxExportItems = maxExportItems
     this.withMultipleActions = withMultipleActions
     this.sidebar = sidebar
     this.cbShowSidebar = cbShowSidebar
@@ -287,6 +310,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.skeletonRows = skeletonRows
     this.skeletonCols = skeletonCols
     this.loadingOnlyByList = loadingOnlyByList
+    this.loadingEndpointArr = loadingEndpointArr ?? []
     this.hideSearchBlock = hideSearchBlock
   }
 }
@@ -366,11 +390,13 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
 export enum ExportFormat {
   JSON = 'json',
   CSV = 'csv',
+  XLSX = 'xlsx',
 }
 
 export enum DownloadFormat {
   json = 'application/json',
   csv = 'text/csv',
+  xlsx = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 }
 
 export interface ISideBarCollapseItem {

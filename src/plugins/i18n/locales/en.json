@@ -228,6 +228,7 @@
     "conciergeService": "Concierge service",
     "listIsEmpty": "List is empty",
     "show": "Show",
+    "showTo": "Show to",
     "nothingFound": "Nothing found",
     "enterSomething": "Enter something",
     "recentRequests": "Recent Requests",
@@ -466,7 +467,8 @@
       "allowInCountries": "Allow in countries",
       "bannedCountries": "Banned countries",
       "allowedCountries": "Allowed countries",
-      "allowAll": "Allow All"
+      "placeholder": "Search by Country and Region",
+      "description": "If no countries are selected, then all countries are allowed"
     }
   },
   "page": {
@@ -606,7 +608,8 @@
       "fileSizeError": "File is larger than {MB} MB",
       "upload_path_IN_USE": "An image with the same name or path already exists in the gallery",
       "axiosError": "Data loading error",
-      "invalidTypeFile": "The format of the file is invalid"
+      "invalidTypeFile": "The format of the file is invalid",
+      "maxLimitForExport": "List contains more than { quantity } rows, adjust filters to reduce total count"
     }
   },
   "userStatuses": {
@@ -664,7 +667,7 @@
       "status": "Choose a status",
       "manager": "Choose a manager",
       "reason": "Choose some reasons",
-      "tags": "Choose some tags"
+      "tags": "Search by Tags"
     }
   },
   "emptyState": {

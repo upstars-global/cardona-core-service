@@ -11,10 +11,10 @@ import {
 } from '../../@model/templates/baseField'
 import { TransactionType } from '../../@model/enums/playersTransactions'
 import type { RadioOption } from '../../@model/templates/baseField/radio'
-import { getEndOfDay } from '../../helpers/date';
+import { getEndOfDay } from '../../helpers/date'
 
 // Options
-const stateOptions: RadioOption[] = [
+export const stateOptions: RadioOption[] = [
   { text: i18n.t('common.yes'), value: true },
   { text: i18n.t('common.no'), value: false },
 ]
@@ -82,7 +82,7 @@ const action = new SelectBaseField({
 
 const bannerStrategy = new SelectBaseField({
   key: FilterType.BannerStrategy,
-  label: i18n.t('common.show'),
+  label: i18n.t('common.showTo'),
   placeholder: i18n.t('placeholder.filter.bannerStrategy'),
   fetchOptionsActionName: 'banner/fetchBannersStrategy',
 })
@@ -208,7 +208,7 @@ const balancesReasons = new MultiSelectBaseField({
 const tagNames = new MultiSelectBaseField({
   key: 'tagNames',
   label: i18n.t('common.tags'),
-  placeholder: i18n.t('common.tags'),
+  placeholder: i18n.t('placeholder.filter.tags'),
   fetchOptionsActionName: 'tags/fetchTags',
 })
 
