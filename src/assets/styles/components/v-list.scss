@@ -1,0 +1,7 @@
+.v-list {
+  .v-list-item {
+    &__content {
+      color: rgb(var(--v-theme-grey-900), 0.9);
+    }
+  }
+}

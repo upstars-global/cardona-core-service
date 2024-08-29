@@ -84,13 +84,13 @@ onUnmounted(clock.stopTime)
         </VCol>
         <VCol
           cols="2"
-          class="d-flex align-center justify-end"
+          class="d-flex align-center justify-end text-body-1"
         >
           <div><VIcon :icon="IconsList.ClockIcon" /></div>
-          <div class="mx-1 time-value">
+          <div class="time-value mt-1">
             {{ time }}
           </div>
-          <div>UTC</div>
+          <div class="mt-1">UTC</div>
         </VCol>
       </VRow>
     </VCol>
