@@ -20,6 +20,8 @@ const emits = defineEmits<{
 
 const { t } = useI18n()
 const store = useStore()
+const collator = new Intl.Collator('en')
+
 enum countriesType {
   Ban = 'ban',
   Allow = 'allow',
@@ -29,6 +31,8 @@ const countriesRadioModel = ref(countriesType.Ban)
 const selectedCountries = ref([])
 const selectedCountriesVisible = ref(new Map())
 const regions = ref({})
+
+const selectedCountriesVisibleView = computed(() => Object.values([...selectedCountriesVisible.value]).sort(([country1], [country2]) => collator.compare(country1, country2)))
 
 const optionsRadioCountries = computed(() => [
   { text: t('component.countriesSelect.banInCountries'), value: countriesType.Ban },
@@ -204,7 +208,7 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
         :options="{ wheelPropagation: false }"
       >
         <div
-          v-for="[key, value] in selectedCountriesVisible"
+          v-for="[key, value] in selectedCountriesVisibleView"
           :key="key"
           class="mb-2"
         >
