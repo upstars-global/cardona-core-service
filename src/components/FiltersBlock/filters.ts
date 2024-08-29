@@ -11,10 +11,10 @@ import {
 } from '../../@model/templates/baseField'
 import { TransactionType } from '../../@model/enums/playersTransactions'
 import type { RadioOption } from '../../@model/templates/baseField/radio'
-import { getEndOfDay } from '../../helpers/date';
+import { getEndOfDay } from '../../helpers/date'
 
 // Options
-const stateOptions: RadioOption[] = [
+export const stateOptions: RadioOption[] = [
   { text: i18n.t('common.yes'), value: true },
   { text: i18n.t('common.no'), value: false },
 ]
