@@ -43,8 +43,19 @@ const label = computed(() => useAttrs().label as string | undefined)
         <slot
           :name="name"
           v-bind="slotProps || {}"
+          class=""
         />
       </template>
     </VTextField>
   </div>
 </template>
+
+<style lang="scss" scoped>
+  .app-text-field {
+    :deep(.v-field__field){
+      .v-text-field__suffix {
+        color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)) !important;
+      }
+    }
+  }
+</style>

@@ -178,6 +178,7 @@ const canUpdate = computed<boolean>(() =>
 
   &__error {
     white-space: break-spaces;
+    font-size: 0.8125rem;
   }
 }
 .check-description {

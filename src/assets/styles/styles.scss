@@ -17,6 +17,18 @@
 @import "./components/gallery";
 @import "./components/v-list";
 
+.text-color-base {
+  color: rgba(var(--v-theme-grey-900)) !important;
+}
+
+.text-color-mute {
+  color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)) !important;
+}
+
+.text-color-placeholder-disabled {
+  color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)) !important;
+}
+
 .no-border {
   border-style: none !important;
 }
