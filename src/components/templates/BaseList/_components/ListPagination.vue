@@ -112,6 +112,7 @@ const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
         border-radius: 100px !important;
         padding: 0 6px !important;
         width: auto !important;
+        font-size: 13px;
       }
     }
   }
