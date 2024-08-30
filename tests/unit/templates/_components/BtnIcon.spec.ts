@@ -1,16 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { IconsList } from '../../../../src/@model/enums/icons'
 import { VColors } from '../../../../src/@model/vuetify'
-import type { Props } from '../../../../src/components/templates/_components/BtnIcon.vue'
 import BtnIcon from '../../../../src/components/templates/_components/BtnIcon.vue'
-import { getSelectorTestId } from '../../utils'
+import { getSelectorTestId, setMountComponent } from '../../utils'
 
-function mountBtnIcon(props: Props) {
-  return mount(BtnIcon, { props })
-}
+const getMountBtnIcon = setMountComponent(BtnIcon)
 
 function assertClickEvent(wrapper: VueWrapper, expectedPayload: boolean | null) {
   const clickEvents = wrapper.emitted('click')
@@ -24,7 +20,7 @@ function assertClickEvent(wrapper: VueWrapper, expectedPayload: boolean | null) 
 }
 describe('BtnIcon', () => {
   it('computes the correct state color based on value prop', async () => {
-    const wrapper = mountBtnIcon({
+    const wrapper = getMountBtnIcon({
       value: true,
       icon: IconsList.CheckIcon,
     })
@@ -39,7 +35,7 @@ describe('BtnIcon', () => {
   })
 
   it('should apply correct classes based on isStatic prop', async () => {
-    const wrapper = mountBtnIcon({
+    const wrapper = getMountBtnIcon({
       value: true,
       isStatic: true,
       icon: IconsList.CheckIcon,
@@ -60,7 +56,7 @@ describe('BtnIcon', () => {
   ])(
     'emits a "click" event with the correct payload if $description',
     async ({ value, isStatic, expected }) => {
-      const wrapper = mountBtnIcon({
+      const wrapper = getMountBtnIcon({
         value,
         isStatic,
         icon: IconsList.CheckIcon,
