@@ -92,6 +92,14 @@ export interface IBaseListConfig {
   /** selectable - Текст placeholder для поиска */
   readonly withExport?: boolean
 
+  /** formatOfExports - Указать какие форматы должен поддерживать список */
+
+  readonly formatOfExports?: Array<ExportFormat>
+
+  /** maxExportItems - Указать максимальное количество на export элементов списка  */
+
+  readonly maxExportItems?: number
+
   /** withMultipleActions - Вкл/выкл действие с несколькими элементами */
   readonly withMultipleActions?: boolean
 
@@ -187,6 +195,8 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withIndependentPagination?: boolean
   readonly searchPlaceholder?: string
   readonly withExport?: boolean
+  readonly formatOfExports?: Array<ExportFormat>
+  readonly maxExportItems?: number
   readonly withMultipleActions?: boolean
   readonly sidebar?: boolean
   readonly cbShowSidebar?: Function
@@ -230,6 +240,8 @@ export class BaseListConfig implements IBaseListConfig {
     withIndependentPagination,
     searchPlaceholder,
     withExport,
+    formatOfExports,
+    maxExportItems,
     withMultipleActions,
     sidebar,
     cbShowSidebar,
@@ -272,6 +284,8 @@ export class BaseListConfig implements IBaseListConfig {
     this.withIndependentPagination = withIndependentPagination
     this.searchPlaceholder = searchPlaceholder
     this.withExport = withExport
+    this.formatOfExports = formatOfExports ?? [ExportFormat.JSON, ExportFormat.CSV]
+    this.maxExportItems = maxExportItems
     this.withMultipleActions = withMultipleActions
     this.sidebar = sidebar
     this.cbShowSidebar = cbShowSidebar
@@ -376,11 +390,13 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
 export enum ExportFormat {
   JSON = 'json',
   CSV = 'csv',
+  XLSX = 'xlsx',
 }
 
 export enum DownloadFormat {
   json = 'application/json',
   csv = 'text/csv',
+  xlsx = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 }
 
 export interface ISideBarCollapseItem {
@@ -403,4 +419,9 @@ export class SideBarCollapseItem {
 
 export interface BaseListItem {
   rowVariant?: BColors | BLightColors
+}
+
+export enum BaseListActionsSlots {
+  PrependActionItem = 'prepend-action-item',
+  AppendActionItem = 'append-action-item',
 }

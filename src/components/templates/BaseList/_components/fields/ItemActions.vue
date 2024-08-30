@@ -2,6 +2,7 @@
 import { computed, useSlots } from 'vue'
 import { useRouter } from 'vue-router'
 import type { IBaseListConfig } from '../../../../../@model/templates/baseList'
+import { BaseListActionsSlots } from '../../../../../@model/templates/baseList'
 import { IconsList } from '../../../../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../../../../@model/vuetify'
 
@@ -28,17 +29,11 @@ const emits = defineEmits<Emits>()
 const router = useRouter()
 const slots = useSlots()
 
-enum SLOTS {
-  ACTION_ITEMS = 'action-items',
-  ADDITIONAL_ACTION_ITEMS = 'additional-action-items',
-  APPEND_ACTION_ITEM = 'append-action-item',
-}
-
-const existSlot = (slotKey: SLOTS) => !!slots[slotKey]
+const existSlot = (slotKey: BaseListActionsSlots) => !!slots[slotKey]
 
 const isExistsActionItemsSlot = computed(
   () => {
-    return [SLOTS.ACTION_ITEMS, SLOTS.ADDITIONAL_ACTION_ITEMS, SLOTS.APPEND_ACTION_ITEM].some(slotName => !!slots[slotName] && !!slots[slotName]()[0].children.length)
+    return [BaseListActionsSlots.PrependActionItem, BaseListActionsSlots.AppendActionItem].some(slotName => !!slots[slotName] && !!slots[slotName]()[0].children.length)
   },
 )
 
@@ -80,17 +75,13 @@ const onCreateCopy = () => {
       </VBtn>
     </template>
 
-    <slot
-      v-if="existSlot(SLOTS.ACTION_ITEMS)"
-      name="action-items"
-    />
-
     <VList>
       <slot
-        v-if="existSlot(SLOTS.ADDITIONAL_ACTION_ITEMS)"
-        name="additional-action-items"
+        v-if="existSlot(BaseListActionsSlots.PrependActionItem)"
+        :name="BaseListActionsSlots.PrependActionItem"
         :item="item"
       />
+
       <VListItem
         v-if="canUpdate && config.withDeactivation"
         :prepend-icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
@@ -135,8 +126,8 @@ const onCreateCopy = () => {
       </VListItem>
 
       <slot
-        v-if="existSlot(SLOTS.APPEND_ACTION_ITEM)"
-        :name="SLOTS.APPEND_ACTION_ITEM"
+        v-if="existSlot(BaseListActionsSlots.AppendActionItem)"
+        :name="BaseListActionsSlots.AppendActionItem"
         :item="item"
       />
     </VList>
