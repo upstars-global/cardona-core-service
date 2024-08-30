@@ -54,7 +54,7 @@ const label = computed(() => useAttrs().label as string | undefined)
   .app-text-field {
     :deep(.v-field__field){
       .v-text-field__suffix {
-        color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)) !important;
+        color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
       }
     }
   }

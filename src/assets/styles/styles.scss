@@ -19,7 +19,7 @@
 @import "./components/check-field";
 
 .text-color-base {
-  color: rgba(var(--v-theme-grey-900), 0.9) !important;
+  color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
 }
 
 .text-color-mute {
