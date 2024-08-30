@@ -91,6 +91,8 @@ export default {
           perPage: payload.data?.perPage,
         },
         filter: combineFilter(payload.data?.filter, rootGetters.selectedProject?.alias),
+      }, {
+        responseType: payload.data.filter.format === ExportFormat.XLSX ? 'blob' : 'json',
       })
 
       return payload.data.filter.format === ExportFormat.JSON ? JSON.stringify(response) : response

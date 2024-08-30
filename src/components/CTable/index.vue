@@ -171,7 +171,7 @@ const getActualField = (fields: Array<unknown>) => {
             class="col-table-skeleton"
           />
           <div
-            class="d-flex align-center"
+            class="d-flex align-center c-table__header-title"
             :class="{
               'justify-end': column.align === AlignType.Right,
               'justify-center': column.align === AlignType.Center,
