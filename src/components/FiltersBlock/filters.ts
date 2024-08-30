@@ -84,7 +84,7 @@ const bannerStrategy = new SelectBaseField({
   key: FilterType.BannerStrategy,
   label: i18n.t('common.showTo'),
   placeholder: i18n.t('placeholder.filter.bannerStrategy'),
-  fetchOptionsActionName: 'banner/fetchBannersStrategy',
+  fetchOptionsActionName: 'segments/fetchSegmentsStrategyList',
 })
 
 const entityType = new SelectBaseField({
