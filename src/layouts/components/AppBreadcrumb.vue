@@ -86,8 +86,8 @@ onUnmounted(clock.stopTime)
           cols="2"
           class="d-flex align-center justify-end text-body-1"
         >
-          <div><VIcon :icon="IconsList.ClockIcon" /></div>
-          <div class="time-value mt-1 mr-2">
+          <div class="mr-1"><VIcon :icon="IconsList.ClockIcon" /></div>
+          <div class="time-value mt-1 mr-1">
             {{ time }}
           </div>
           <div class="mt-1">UTC</div>
