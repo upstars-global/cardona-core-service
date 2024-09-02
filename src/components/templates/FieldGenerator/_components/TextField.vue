@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import type { TextBaseField } from '../../../../@model/templates/baseField'
 import AppTextField from '../../../../@core/components/app-form-elements/AppTextField.vue'
 import { IconsList } from '../../../../@model/enums/icons'
@@ -20,7 +20,6 @@ const emits = defineEmits<{
 }>()
 
 const inputType = 'text'
-const appendText = ref(props.field?.append)
 
 const localModelValue = computed({
   get: () => props.modelValue,
@@ -46,7 +45,8 @@ const appendInnerIcon = computed(() => {
       :placeholder="placeholder"
       :type="inputType"
       :disabled="disabled"
-      :suffix="appendText"
+      :prefix="field?.prepend"
+      :suffix="field?.append"
       :error="errors"
       :append-inner-icon="appendInnerIcon"
       autocomplete="off"
