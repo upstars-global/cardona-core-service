@@ -4,7 +4,7 @@ import DateWithSecondsField from '../../../../src/components/templates/_componen
 import { setMountComponent } from '../../utils'
 
 import { fullDate, fullDateWithSeconds } from '../../../../src/utils/date'
-import { getTestCases } from '../shared-tests/dateAnddateTimeField'
+import { getTestCases } from '../shared-tests/date-and-dateTimeField'
 
 const getMountDateField = setMountComponent(DateWithSecondsField)
 

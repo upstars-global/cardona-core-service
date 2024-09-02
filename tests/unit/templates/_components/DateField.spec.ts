@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import DateField from '../../../../src/components/templates/_components/DateField.vue'
 import { setMountComponent } from '../../utils'
 import { fullDate } from '../../../../src/utils/date'
-import { getTestCases } from '../shared-tests/dateAnddateTimeField'
+import { getTestCases } from '../shared-tests/date-and-dateTimeField'
 
 const getMountDateField = setMountComponent(DateField)
 
