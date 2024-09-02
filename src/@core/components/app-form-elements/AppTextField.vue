@@ -48,3 +48,13 @@ const label = computed(() => useAttrs().label as string | undefined)
     </VTextField>
   </div>
 </template>
+
+<style lang="scss" scoped>
+:deep(.v-text-field__prefix) {
+  opacity: 1;
+
+  .v-text-field__prefix__text {
+    margin: 0;
+  }
+}
+</style>
