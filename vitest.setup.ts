@@ -6,6 +6,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { dayDateDirective, fullDateDirective, fullDateWithSecondsDirective } from './src/directives/date'
 import { currency } from './src/directives/currency'
+import { getI18n } from './src/plugins/i18n'
 
 const projectDirective = {
   'day-date': dayDateDirective,
@@ -29,4 +30,4 @@ vi.mock('./src/helpers/clipboard', () => ({
   copyToClipboard: vi.fn(),
 }))
 
-config.global.plugins = [vuetify]
+config.global.plugins = [vuetify, getI18n()]
