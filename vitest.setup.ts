@@ -25,4 +25,8 @@ export const vuetify = createVuetify({
 vi.mock('*.css', () => ({}))
 vi.mock('*.scss', () => ({}))
 
+vi.mock('./src/helpers/clipboard', () => ({
+  copyToClipboard: vi.fn(),
+}))
+
 config.global.plugins = [vuetify]

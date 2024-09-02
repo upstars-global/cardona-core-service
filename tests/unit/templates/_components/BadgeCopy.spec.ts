@@ -1,12 +1,8 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import BadgeCopy from '../../../../src/components/templates/_components/BadgeCopy.vue'
 import { setMountComponent } from '../../utils'
 import { copyAndShortValueTests } from '../shared-tests/copy-and-shortValue'
 import { getShortString } from '../../../../src/helpers'
-
-vi.mock('../../../../src/helpers/clipboard', () => ({
-  copyToClipboard: vi.fn(),
-}))
 
 const getMountBadgeCopy = setMountComponent(BadgeCopy)
 

@@ -1,11 +1,7 @@
-import { describe, expect, vi, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import CopyField from '../../../../src/components/templates/_components/CopyField.vue'
 import { getSelectorTestId, setMountComponent } from '../../utils'
 import { copyAndShortValueTests } from '../shared-tests/copy-and-shortValue'
-
-vi.mock('../../../../src/helpers/clipboard', () => ({
-  copyToClipboard: vi.fn(),
-}))
 
 const getMountCopyField = setMountComponent(CopyField)
 

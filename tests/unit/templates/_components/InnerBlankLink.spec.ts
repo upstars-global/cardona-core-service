@@ -13,11 +13,8 @@ const mockRouter = {
 vi.mock('vue-router', () => ({
   useRouter: () => mockRouter,
 }))
-vi.spyOn(window, 'open').mockImplementation(() => {})
 
-vi.mock('../../../../src/helpers/clipboard', () => ({
-  copyToClipboard: vi.fn(),
-}))
+vi.spyOn(window, 'open').mockImplementation(() => {})
 
 const getMountInnerBlankLink = setMountComponent(InnerBlankLink)
 
@@ -66,14 +63,15 @@ describe('InnerBlankLink', () => {
   })
 
   it('Opens a new tab when link icon is clicked', async () => {
+    const link = 'https://example.com'
     const router = useRouter()
 
-    router.resolve = vi.fn().mockReturnValue({ href: 'https://example.com' })
+    router.resolve = vi.fn().mockReturnValue({ href: link })
 
     const wrapper = getMountInnerBlankLink({ value })
 
     await wrapper.findComponent({ name: 'VIcon' }).trigger('click')
 
-    expect(window.open).toHaveBeenCalledWith('https://example.com', '_blank')
+    expect(window.open).toHaveBeenCalledWith(link, '_blank')
   })
 })
