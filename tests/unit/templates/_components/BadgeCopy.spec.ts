@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import BadgeCopy from '../../../../src/components/templates/_components/BadgeCopy.vue'
 import { copyToClipboard } from '../../../../src/helpers/clipboard'
-import { getProps, setMountComponent } from '../../utils'
+import { setMountComponent } from '../../utils'
 import { getShortString } from '../../../../src/helpers'
 
 vi.mock('../../../../src/helpers/clipboard', () => ({
@@ -48,7 +48,7 @@ describe('BadgeCopy', () => {
   })
 
   it('renders "-" when value is falsy', () => {
-    const wrapper = getMountBadgeCopy(getProps({ value: '' }))
+    const wrapper = getMountBadgeCopy({ value: '' })
 
     expect(wrapper.text()).toBe('-')
   })
