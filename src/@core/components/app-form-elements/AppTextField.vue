@@ -43,7 +43,6 @@ const label = computed(() => useAttrs().label as string | undefined)
         <slot
           :name="name"
           v-bind="slotProps || {}"
-          class=""
         />
       </template>
     </VTextField>
