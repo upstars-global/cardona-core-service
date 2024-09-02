@@ -22,7 +22,7 @@ export interface UseListType {
   readonly entityName: string
   readonly pageName?: string
   readonly fields: Array<TableField>
-  readonly ListFilterModel: Function
+  readonly ListFilterModel?: Function
   readonly SideBarModel?: Function
   readonly beforeRemoveCallback?: Function
   readonly ListItemModel?: Function
