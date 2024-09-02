@@ -14,6 +14,7 @@ const badgeLabel = computed(() => (props.state ? t('common.yes') : t('common.no'
 <template>
   <VChip
     class="custom-badge"
+    test-id="statement-badge"
     label
     :color="badgeVariant"
   >
