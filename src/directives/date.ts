@@ -7,12 +7,12 @@ export const dayDateDirective = {
 }
 export const fullDateDirective = {
   beforeMount(el, binding) {
-    el.innerText = fullDate(binding.value)
+    el.textContent = fullDate(binding.value)
   },
 }
 
 export const fullDateWithSecondsDirective = {
   beforeMount(el, binding) {
-    el.innerText = fullDateWithSeconds(binding.value)
+    el.textContent = fullDateWithSeconds(binding.value)
   },
 }
