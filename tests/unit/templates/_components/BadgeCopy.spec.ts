@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import BadgeCopy from '../../../../src/components/templates/_components/BadgeCopy.vue'
-import { copyToClipboard } from '../../../../src/helpers/clipboard'
 import { setMountComponent } from '../../utils'
+import { copyAndShortValueTests } from '../shared-tests/copy-and-shortValue'
 import { getShortString } from '../../../../src/helpers'
 
 vi.mock('../../../../src/helpers/clipboard', () => ({
@@ -13,15 +13,14 @@ const getMountBadgeCopy = setMountComponent(BadgeCopy)
 const value = '1234567890'
 
 describe('BadgeCopy', () => {
-  it('renders correctly with value', () => {
-    const wrapper = getMountBadgeCopy({ value })
+  copyAndShortValueTests(getMountBadgeCopy, {
+    value,
+    selectorActivationCopy: '.copy-badge',
+    componentName: 'BadgeCopy',
 
-    expect(wrapper.text()).toContain(value)
-
-    expect(wrapper.findComponent({ name: 'VIcon' }).exists()).toBe(true)
   })
 
-  it('renders the short value when isShort is true', () => {
+  it('Renders the short value when isShort is true', () => {
     const wrapper = getMountBadgeCopy({
       value,
       isShort: true,
@@ -31,7 +30,7 @@ describe('BadgeCopy', () => {
     expect(wrapper.text()).toContain(getShortString(value))
   })
 
-  it('does not render the label when isViewLabel is false', () => {
+  it('Does not render the label when isViewLabel is false', () => {
     const wrapper = getMountBadgeCopy({
       value,
       isViewLabel: false,
@@ -40,14 +39,7 @@ describe('BadgeCopy', () => {
     expect(wrapper.text()).not.toContain('ID:')
   })
 
-  it('calls copyToClipboard with the correct value when clicked', async () => {
-    const wrapper = getMountBadgeCopy({ value })
-
-    await wrapper.find('.copy-badge').trigger('click')
-    expect(copyToClipboard).toHaveBeenCalledWith(value)
-  })
-
-  it('renders "-" when value is falsy', () => {
+  it('Renders "-" when value is falsy', () => {
     const wrapper = getMountBadgeCopy({ value: '' })
 
     expect(wrapper.text()).toBe('-')
