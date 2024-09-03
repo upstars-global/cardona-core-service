@@ -1,37 +1,44 @@
-import { describe, expect, it } from 'vitest'
+import { describe, it } from 'vitest'
 import { nextTick } from 'vue'
 import TransactionType from '../../../../src/components/templates/_components/TransactionType.vue'
-import { findByTestId, getComponentFromWrapper, setMountComponent } from '../../utils'
+import {
+  setMountComponent,
+  testOnExistClassesByTestId, testOnExistClassesInWrapper,
+  testOnExistTextByTestId,
+} from '../../utils'
 import { TransactionType as TransactionTypeList } from '../../../../src/@model/enums/playersTransactions'
 import { t } from '../shared-tests/locales'
 import { IconsList } from '../../../../src/@model/enums/icons'
 
 const getMountTransactionType = setMountComponent(TransactionType)
 
-describe('transactionType', () => {
-  it('renders the correct icon and text for payout transaction', async () => {
-    const wrapper = getMountTransactionType({
-      type: TransactionTypeList.Payout,
+const testCases = [
+  {
+    type: TransactionTypeList.Payout,
+    expectedText: t('common.payout'),
+    expectedIconClass: IconsList.ArrowUpRightIcon,
+    expectedWrapperClass: 'text-error',
+  },
+  {
+    type: TransactionTypeList.Deposit,
+    expectedText: t('common.deposit'),
+    expectedIconClass: IconsList.ArrowDownRightIcon,
+    expectedWrapperClass: 'text-success',
+  },
+]
+
+describe('TransactionType', () => {
+  testCases.forEach(({ type, expectedText, expectedIconClass, expectedWrapperClass }) => {
+    it(`renders the correct icon and text for ${type.toLowerCase()} transaction`, async () => {
+      const wrapper = getMountTransactionType({
+        type,
+      })
+
+      await nextTick()
+
+      testOnExistTextByTestId({ wrapper, testId: 'transaction-type-text' }, expectedText)
+      testOnExistClassesByTestId({ wrapper, testId: 'transaction-type-icon' }, [expectedIconClass])
+      testOnExistClassesInWrapper(wrapper, [expectedWrapperClass])
     })
-
-    await nextTick()
-
-    expect(findByTestId(wrapper, 'transaction-type-text').text()).toBe(t('common.payout'))
-
-    expect(findByTestId(wrapper, 'transaction-type-icon').classes()).toContain(IconsList.ArrowUpRightIcon)
-
-    expect(wrapper.classes()).toContain('text-error')
-  })
-
-  it('renders the correct icon and text for deposit transaction', () => {
-    const wrapper = getMountTransactionType({
-      type: TransactionTypeList.Deposit,
-    })
-
-    expect(findByTestId(wrapper, 'transaction-type-text').text()).toBe(t('common.deposit'))
-
-    expect(getComponentFromWrapper(wrapper, 'VIcon').classes()).toContain(IconsList.ArrowDownRightIcon)
-
-    expect(wrapper.classes()).toContain('text-success')
   })
 })
