@@ -1,44 +1,55 @@
 import { describe, expect, it } from 'vitest'
-import SumAndCurrency from '../../../../src/components/templates/_components/SumAndCurrency.vue'
-import { findByTestId, getSelectorTestId, setMountComponent } from '../../utils'
-import { getCurrency } from '../../../../src/directives/currency'
-import { t } from '../shared-tests/locales'
-import { Currency } from '../../../../src/@model/enums/currency'
+import SumPeriod from '../../../../src/components/templates/_components/SumPeriod.vue'
+import { setMountComponent, setWrapper } from '../../utils'
+import type { SumAndCurrencyParams } from '../shared-tests/sum-and-currency'
+import { checkLabelAndValue } from '../shared-tests/sum-and-currency'
 
-const getMountSumAndCurrency = setMountComponent(SumAndCurrency)
+const getMountSumPeriod = setMountComponent(SumPeriod)
 
 const data = {
-  amount: 100,
-  currency: Currency.USD,
+  today: 100,
+  week: 700,
+  month: 3000,
+  currency: 'USD',
 }
 
-describe('SumAndCurrency', () => {
-  it('Renders the correct amount and currency', () => {
-    const wrapper = getMountSumAndCurrency({ data })
+const testCases: Array<SumAndCurrencyParams> = [
+  { key: 'today', label: 'label-today', value: data.today },
+  { key: 'week', label: 'label-week', value: data.week },
+  { key: 'month', label: 'label-month', value: data.month },
+]
 
-    expect(true).toBeTruthy()
+describe('SumPeriod', () => {
+  it('Renders the correct labels and values', () => {
+    const wrapper = getMountSumPeriod({ data })
+    const currentElement = setWrapper(wrapper)
 
-    expect(wrapper.text()).toContain(getCurrency(data.amount))
-    expect(wrapper.text()).toContain(Currency.USD)
+    testCases.forEach(params => {
+      checkLabelAndValue(currentElement, params)
+    })
   })
 
-  it('Renders the correct element with empty amount', () => {
-    const wrapper = getMountSumAndCurrency({ data: {} })
+  it('Renders the correct currency', () => {
+    const wrapper = getMountSumPeriod({ data })
+    const currentElement = setWrapper(wrapper)
 
-    expect(wrapper.text()).toContain('0')
+    testCases.forEach(({ key }) => {
+      expect(currentElement(`data-${key}-currency`).text()).toContain(data.currency)
+    })
   })
 
-  it('Renders the remainder when it is present', () => {
-    const wrapper = getMountSumAndCurrency({ data: { ...data, remainder: 50 } })
+  it('Renders without currency when it is not provided', () => {
+    const wrapper = getMountSumPeriod({
+      data: {
+        ...data,
+        currency: '',
+      },
+    })
 
-    expect(findByTestId(wrapper, 'data-remainder-value').text()).toBe(getCurrency(50))
+    const currentElement = setWrapper(wrapper)
 
-    expect(findByTestId(wrapper, 'data-remainder-label').text()).toContain(t('common.remainder'))
-  })
-
-  it('Does not render the remainder section when remainder is not provided', () => {
-    const wrapper = getMountSumAndCurrency({ data })
-
-    expect(wrapper.findAll(getSelectorTestId('data-remainder')).length).toBeFalsy()
+    testCases.forEach(({ key }) => {
+      expect(currentElement(`data-${key}-currency`).text()).toBe('')
+    })
   })
 })

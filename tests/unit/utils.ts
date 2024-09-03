@@ -17,3 +17,5 @@ export const findByTestId = (
   wrapper: VueWrapper,
   name: string,
 ): BaseWrapper<Node> => wrapper.find(getSelectorTestId(name))
+
+export const setWrapper = (wrapper: VueWrapper) => (key: string): BaseWrapper<Node> => findByTestId(wrapper, key)
