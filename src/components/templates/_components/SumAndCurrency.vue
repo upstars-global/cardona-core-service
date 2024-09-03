@@ -24,13 +24,15 @@ defineProps<{
     <div
       v-if="data?.remainder"
       class="font-weight-light"
+      test-id="data-remainder"
     >
-      <span class="pl-1">
+      <span class="pl-1"  test-id="data-remainder-label">
         {{ $t('common.remainder') }}
       </span>
 
       <span
         :key="data.remainder"
+        test-id="data-remainder-value"
         v-currency="data.remainder"
         class="px-1"
       />
