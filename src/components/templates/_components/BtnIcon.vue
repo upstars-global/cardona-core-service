@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TranslateResult } from 'vue-i18n'
 import { computed } from 'vue'
-import { IconsList } from '../../../@model/enums/icons'
+import type { IconsList } from '../../../@model/enums/icons'
 import { Location } from '../../../@model/enums/tooltipPlacement'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
 
@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emits = defineEmits<Emits>()
-interface Props {
+export interface Props {
   value: boolean
   icon: IconsList
   isStatic?: boolean
@@ -45,9 +45,12 @@ const variant = computed(
     :class="{ 'default-cursor': isStatic }"
     style="cursor: initial"
   >
-    <VTooltip :location="tooltipPlacement">
+    <VTooltip
+      :location="tooltipPlacement"
+    >
       <template #activator="{ props }">
         <VBtn
+          test-id="button-icon__body"
           :class="{
             'v-btn--variant-tonal': !isStatic,
           }"
