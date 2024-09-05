@@ -959,7 +959,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         </template>
 
         <template #empty>
-          <div class="d-flex flex-column justify-center align-center p-2">
+          <div class="d-flex flex-column justify-center align-center p-2 text-color-mute">
             <slot name="empty">
               <span>
                 {{ emptyListText }}

@@ -82,7 +82,7 @@ const currentTab = ref(tabs.new)
           <template #default="{ isOverDropZone, openFileDialog, isLoading, isLoadingError }">
             <div v-if="isOverDropZone">
               <p class="text-body-1 font-weight-medium text-medium-emphasis mb-0">
-                {{ $t('uploadImg.dragTextDrop') }}
+                {{ $t('uploadImg.textDrop') }}
               </p>
               <p class="text-body-1 text-medium-emphasis">
                 {{ $t('uploadImg.maxSize', { size: maxSizeMb }) }}

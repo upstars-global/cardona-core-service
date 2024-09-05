@@ -221,6 +221,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
   .vs__actions {
     padding-bottom: 0;
     padding-top: 0;
+    color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
   }
 
   &.vs--single .vs__selected {

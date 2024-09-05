@@ -48,6 +48,7 @@ const isOneTypeExport = computed(() => props.formatOfExports.length === 1)
         v-for="(value, key) in actualExportFormats"
         :key="value"
         @click="onClick(value)"
+        class="text-color-base"
       >
         {{ key }}
       </VListItem>

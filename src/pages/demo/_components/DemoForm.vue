@@ -426,7 +426,7 @@ const mockUploadFile = async () => {
                   <p class="mb-0 text-body-1 font-weight-medium text-medium-emphasis">
                     {{ $t('uploadFile.dropFile') }}
                   </p>
-                  <p class="mb-0 text-body-1 text-medium-emphasis">
+                  <p class="mb-0 text-body-2 text-medium-emphasis">
                     {{ $t('uploadFile.fileParams', { accept: 'JSON', size: fileSizeFormatted }) }}
                   </p>
                 </template>

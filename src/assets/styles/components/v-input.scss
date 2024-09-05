@@ -19,6 +19,7 @@
   &.v-text-field {
     .v-field__input {
       line-height: 1.5rem;
+      color: rgb(var(--v-theme-grey-900), var(--v-body-opacity));
     }
     &.v-input--disabled {
       background: rgb(var(--v-theme-grey-100));
