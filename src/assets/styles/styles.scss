@@ -18,15 +18,15 @@
 @import "./components/v-list";
 @import "./components/check-field";
 
-.text-color-base {
+.text-color-base:not(:hover) {
   color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
 }
 
-.text-color-mute {
+.text-color-mute:not(:hover) {
   color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)) !important;
 }
 
-.text-color-placeholder-disabled {
+.text-color-placeholder-disabled:not(:hover) {
   color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)) !important;
 }
 

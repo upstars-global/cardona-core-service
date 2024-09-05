@@ -75,7 +75,7 @@ const onCreateCopy = () => {
       </VBtn>
     </template>
 
-    <VList>
+    <VList class="actions-list">
       <slot
         v-if="existSlot(BaseListActionsSlots.PrependActionItem)"
         :name="BaseListActionsSlots.PrependActionItem"
@@ -86,8 +86,9 @@ const onCreateCopy = () => {
         v-if="canUpdate && config.withDeactivation"
         :prepend-icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
         @click="emits('on-toggle-status', item)"
+        class="text-color-base"
       >
-        <VListItemTitle class="text-color-base">
+        <VListItemTitle>
           {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
         </VListItemTitle>
       </VListItem>
@@ -96,8 +97,9 @@ const onCreateCopy = () => {
         v-if="canShowEdit"
         :prepend-icon="IconsList.EditIcon"
         @click="onUpdateItem"
+        class="text-color-base"
       >
-        <VListItemTitle class="text-color-base">
+        <VListItemTitle>
           {{ $t('action.edit') }}
         </VListItemTitle>
       </VListItem>
@@ -105,9 +107,11 @@ const onCreateCopy = () => {
       <VListItem
         v-if="canCreate && config.createFromCopy"
         class="text-color-base"
-        :prepend-icon="IconsList.CopyPlusIcon"
         @click="onCreateCopy"
       >
+        <template #prepend>
+          <VIcon :icon="IconsList.CopyPlusIcon" />
+        </template>
         <VListItemTitle>
           {{ $t('action.makeCopy') }}
         </VListItemTitle>
@@ -115,13 +119,13 @@ const onCreateCopy = () => {
 
       <VListItem
         v-if="canRemoveItem"
-        class="text-error"
+        class="text-error hover-text-error"
         @click="emits('on-remove', item)"
       >
         <template #prepend>
           <VIcon :icon="IconsList.Trash2Icon" />
         </template>
-        <VListItemTitle>
+        <VListItemTitle class="on-hover-color-error">
           {{ $t('action.remove') }}
         </VListItemTitle>
       </VListItem>
