@@ -326,7 +326,7 @@ export class DemoForm {
     })
     this.switchWithState = new SwitchBaseField({
       key: 'switchWithState',
-      value: data?.switchWithState,
+      value: true,
       label: i18n.t('page.demo.switchWithStateField'),
       withState: true,
     })

@@ -213,11 +213,27 @@ const mockUploadFile = async () => {
                 :disabled="isDisabledField"
               />
             </VCol>
-
+            <hr>
             <VCol cols="4">
               <FieldGenerator
                 v-model="formData.switchWithState"
                 :disabled="isDisabledField"
+              />
+            </VCol>
+          </VRow>
+
+          <VRow>
+            <VCol cols="4">
+              <FieldGenerator
+                v-model="formData.switch"
+                disabled
+              />
+            </VCol>
+            <hr>
+            <VCol cols="4">
+              <FieldGenerator
+                v-model="formData.switchWithState"
+                disabled
               />
             </VCol>
           </VRow>
