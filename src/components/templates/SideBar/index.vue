@@ -136,6 +136,7 @@ const onHide = () => {
               <div>
                 <VExpansionPanels :model-value="isOpenBlock(key)">
                   <VExpansionPanel
+                    :expand-icon="IconsList.ChevronRightIcon"
                     :title="`${viewForm[key].title}`"
                     :value="key"
                     @click="updateOpensBloks(key)"
