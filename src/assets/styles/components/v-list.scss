@@ -1,10 +1,17 @@
 .v-list {
   .v-list-item {
-    color: rgb(var(--v-theme-grey-900), --v-body-opacity);
+    &:not(:hover) {
+      color: rgb(var(--v-theme-grey-900), --v-body-opacity);
+    }
     &__content {
-      .v-list-item-title {
+      &:not(:hover) {
         color: rgb(var(--v-theme-grey-900), --v-body-opacity);
       }
+    }
+  }
+  .v-list-item-title {
+    &:not(:hover) {
+      color: rgb(var(--v-theme-grey-900), --v-body-opacity);
     }
   }
 }

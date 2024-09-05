@@ -86,7 +86,6 @@ const onCreateCopy = () => {
         v-if="canUpdate && config.withDeactivation"
         :prepend-icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
         @click="emits('on-toggle-status', item)"
-        class="text-color-base"
       >
         <VListItemTitle>
           {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
@@ -97,7 +96,6 @@ const onCreateCopy = () => {
         v-if="canShowEdit"
         :prepend-icon="IconsList.EditIcon"
         @click="onUpdateItem"
-        class="text-color-base"
       >
         <VListItemTitle>
           {{ $t('action.edit') }}
@@ -106,7 +104,6 @@ const onCreateCopy = () => {
 
       <VListItem
         v-if="canCreate && config.createFromCopy"
-        class="text-color-base"
         @click="onCreateCopy"
       >
         <template #prepend>
