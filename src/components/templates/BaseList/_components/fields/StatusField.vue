@@ -28,6 +28,7 @@ enum StatusVariants {
   received = 'secondary',
   updating = 'secondary',
   reporting = 'secondary',
+  draft = 'secondary',
 
   // Success
   active = 'success',

@@ -50,6 +50,7 @@ export enum ListFieldType {
 export enum ListSize {
   SM = 'sm',
   MD = 'md',
+  FULL = 'full',
 }
 
 export enum AlignType {

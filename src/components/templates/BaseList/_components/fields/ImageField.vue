@@ -32,5 +32,10 @@ withDefaults(defineProps<{
     width: 3rem;
     height: 3rem;
   }
+
+  &--full {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
