@@ -97,7 +97,7 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :class="selectClasses"
       :disabled="disabled"
       append-to-body
-      :calculate-position="withPopper(props.field.toggleDropdownCb)"
+      :calculate-position="withPopper(field.calculatePositionCb)"
       @search="onSearch"
     >
       <template #no-options="{ loading, search }">
