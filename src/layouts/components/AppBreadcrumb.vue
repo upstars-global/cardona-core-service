@@ -86,7 +86,7 @@ onUnmounted(clock.stopTime)
           cols="2"
           class="d-flex align-center justify-end text-body-1"
         >
-          <div class="mr-1"><VIcon :icon="IconsList.ClockIcon" /></div>
+          <div class="mr-1 text-color-mute  "><VIcon :icon="IconsList.ClockIcon" /></div>
           <div class="time-value mt-1 mr-1">
             {{ time }}
           </div>

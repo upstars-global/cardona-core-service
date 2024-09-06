@@ -185,7 +185,16 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
 }
 .v-select {
   min-height: 2.5rem;
-
+  .vs__clear {
+    height: 16px;
+    width: 16px;
+    display: flex;
+    i {
+      font-size: 16px;
+      height: 16px;
+      width: 16px;
+    }
+  }
 
   &:not(.vs--single) {
     .vs__selected {

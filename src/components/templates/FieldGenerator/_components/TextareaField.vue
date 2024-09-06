@@ -110,6 +110,7 @@ const handleKeydown = (event: KeyboardEvent) => {
   position: relative;
   .v-counter {
     font-size: $typography-body-2-font-size;
+    color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)) !important;
   }
   .v-input__details {
     position: absolute;
