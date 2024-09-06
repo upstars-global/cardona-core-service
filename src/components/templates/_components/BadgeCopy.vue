@@ -40,7 +40,7 @@ const valueShort = computed(() => {
         <VIcon
           :icon="IconsList.CopyIcon"
           class="ml-1"
-          size="14"
+          size="16"
         />
       </VChip>
     </template>

@@ -395,7 +395,7 @@ const onSaveChanges = () => {
         >
           <span class="pr-1">{{ `{${key}\}` }} </span>
           <VIcon
-            size="18"
+            size="16"
             :icon="IconsList.CopyIcon"
             @click.stop="copyToClipboard(`{{${key}}}`)"
           />

@@ -29,7 +29,7 @@ const labelValue = computed(() => (props.isShort ? getShortString(props.value) :
       :icon="IconsList.CopyIcon"
       class="cursor-pointer"
       @click.stop="copyToClipboard(value)"
-      size="14"
+      size="16"
     />
   </div>
 </template>
