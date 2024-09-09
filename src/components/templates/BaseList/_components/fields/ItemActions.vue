@@ -122,7 +122,7 @@ const onCreateCopy = () => {
         <template #prepend>
           <VIcon :icon="IconsList.Trash2Icon" />
         </template>
-        <VListItemTitle class="on-hover-color-error">
+        <VListItemTitle class="on-hover-color-error text-error">
           {{ $t('action.remove') }}
         </VListItemTitle>
       </VListItem>

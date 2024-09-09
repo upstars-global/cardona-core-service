@@ -52,6 +52,10 @@ const appendInnerIcon = computed(() => {
       autocomplete="off"
       hide-details
       :autofocus="false"
-    />
+    >
+      <template #prepend>
+        11
+      </template>
+    </AppTextField>
   </div>
 </template>

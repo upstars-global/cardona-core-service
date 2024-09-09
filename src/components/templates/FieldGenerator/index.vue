@@ -151,7 +151,7 @@ const canUpdate = computed<boolean>(() =>
 
         <span
           v-else-if="modelValue.description"
-          class="text-caption mt-1"
+          class="mt-1 text-color-mute text-body-2"
           :class="{
             'check-description': isCheckType,
           }"

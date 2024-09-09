@@ -122,7 +122,7 @@ const variableTextBufferStore = computed(() => store.state.textEditor.variableTe
               class="locale-title"
               cols="12"
             >
-              <h5 class="text-h5 font-weight-bolder mr-1">
+              <h5 class="text-h5 font-weight-bolder mr-1 text-body-1 font-weight-medium">
                 {{ $t(`locale.${type}.${item}`) }}
               </h5>
             </VCol>
@@ -154,7 +154,7 @@ const variableTextBufferStore = computed(() => store.state.textEditor.variableTe
                   <CheckField
                     v-model="form.fieldTranslations[item][local].disabled"
                     :field="{ label: $t('action.hide') }"
-                    class="ml-auto"
+                    class="ml-auto action-hide text-body-2"
                   />
                 </div>
               </div>
@@ -185,7 +185,7 @@ const variableTextBufferStore = computed(() => store.state.textEditor.variableTe
                       v-model="form.fieldTranslations[item][local].disabled"
                       :disabled="disabled"
                       :field="{ label: $t('action.hide') }"
-                      class="d-flex align-items-center"
+                      class="d-flex align-items-center text-body-2 action-hide"
                     />
                   </div>
                 </template>
@@ -199,10 +199,14 @@ const variableTextBufferStore = computed(() => store.state.textEditor.variableTe
 </template>
 
 <style lang="scss">
+.action-hide {
+  label {
+    font-size: 0.8125rem !important;
+  }
+}
 .locale-tab {
-  .local-key-block {
-    border-bottom: 1px solid #3b405c;
-    border-bottom: 1px solid rgb(var(--v-theme-on-background));
+  .local-key-block:not(:last-child) {
+    border-bottom: 1px solid rgb(var(--v-theme-grey-200));
     margin-bottom: 1.5rem;
 
     .row-item-field-translations {
@@ -213,7 +217,7 @@ const variableTextBufferStore = computed(() => store.state.textEditor.variableTe
       }
     }
   }
-  .input-text {
+  .input-text{
     width: 100%;
     min-height: 2.714rem;
 
