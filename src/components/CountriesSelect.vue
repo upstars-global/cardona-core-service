@@ -195,7 +195,7 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
       </VueSelect>
     </div>
 
-    <span class="text-sm text-secondary mt-1">
+    <span class="text-sm text-color-mute mt-1">
       {{ $t('component.countriesSelect.description') }}
     </span>
 
