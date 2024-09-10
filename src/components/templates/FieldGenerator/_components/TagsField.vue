@@ -76,10 +76,9 @@ const appendInnerIcon = computed(() => {
           :key="`tag_${tag}`"
           closable
           label
-          :color="VColors.Primary"
           @click:close="onDelete(index)"
         >
-          {{ tag }}
+          {{ tag }}qwe
         </VChip>
       </template>
     </AppTextField>

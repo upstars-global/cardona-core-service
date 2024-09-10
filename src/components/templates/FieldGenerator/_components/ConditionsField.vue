@@ -57,7 +57,7 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
     >
       <VCol
         cols="4"
-        class="font-weight-regular text-no-wrap"
+        class="font-weight-regular text-no-wrap text-body-2 text-color-base"
       >
         {{ $t('component.conditions.availableVariables') }}:
       </VCol>
@@ -72,7 +72,7 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
           class="variable-label  ml-2"
           @click="onClickVariable(variable)"
         >
-          <small>{{ variable }}</small>
+          <small class="text-body-1 text-color-base">{{ variable }}</small>
           <VTooltip
             activator="parent"
             location="bottom"
