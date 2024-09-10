@@ -10476,7 +10476,7 @@ vue-chartjs@^5.2.0:
 
 vue-cleave-component@^3.0.2:
   version "3.0.2"
-  resolved "https://registry.npmjs.org/vue-cleave-component/-/vue-cleave-component-3.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/vue-cleave-component/-/vue-cleave-component-3.0.2.tgz#07eb9a1b58c3a64db614aaef30dae98d231e4b16"
   integrity sha512-brQGSDQF1e2gfpd4J3eojz5kWc267DL+20TIHY6Pla2IahcMZEd56zoyaKjkxB+F9gsXSoPnqVIh2sb6pbuTjQ==
   dependencies:
     cleave.js "^1.6.0"
