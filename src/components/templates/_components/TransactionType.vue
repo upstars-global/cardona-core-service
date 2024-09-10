@@ -3,17 +3,13 @@ import { useI18n } from 'vue-i18n'
 
 import { computed } from 'vue'
 import { IconsList } from '../../../@model/enums/icons'
+import { TransactionType } from '../../../@model/enums/playersTransactions'
 
 const props = defineProps<{
   type: string
 }>()
 
 const { t } = useI18n()
-
-enum TransactionType {
-  Payout = 'payout',
-  Deposit = 'deposit',
-}
 
 const iconName = computed(() =>
   props.type === TransactionType.Payout ? IconsList.ArrowUpRightIcon : IconsList.ArrowDownRightIcon,
@@ -29,14 +25,16 @@ const textColorClass = computed(() =>
 <template>
   <div
     :class="textColorClass"
-    class="transaction-type-label"
+    class="transaction-type"
+    test-id="transaction-type"
   >
-    <span class="mr-1">
+    <span class="mr-1" test-id="transaction-type-text">
       {{ text }}
     </span>
     <VIcon
       :icon="iconName"
       size="16"
+      test-id="transaction-type-icon"
     />
   </div>
 </template>

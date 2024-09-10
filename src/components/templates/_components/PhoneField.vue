@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import Cleave from 'vue-cleave-component'
 import { allPhoneCodesWithFlags } from '../../../helpers/countries'
 import type { PhoneBaseField } from '../../../@model/templates/baseField'
 
@@ -46,7 +45,10 @@ const phoneFlag = computed(() => {
 
 <template>
   <div class="d-flex justify-space-between align-center position-relative">
-    <p class="flag">
+    <p
+      class="flag"
+      test-id="phone-flag"
+    >
       {{ phoneFlag }}
     </p>
 
@@ -54,6 +56,7 @@ const phoneFlag = computed(() => {
       v-model="modelValue"
       type="text"
       class="form-control"
+      test-id="input-number-phone"
       :class="{ 'pl-3': phoneFlag, 'error': errors }"
       :placeholder="$t('common.phone._')"
       :disabled="disabled"
