@@ -19,14 +19,14 @@ defineProps<{
 
       <span
         v-if="isEmptyString(value) || isNullOrUndefinedValue(value)"
-        class="font-weight-bold text-color-placeholder-disabled"
+        class="font-weight-medium text-color-placeholder-disabled"
       >
         {{ String($t('common.empty')).toLowerCase() }}
       </span>
 
       <span
         v-else
-        class="font-weight-bold"
+        class="font-weight-medium"
       >
         {{ value }}
       </span>
