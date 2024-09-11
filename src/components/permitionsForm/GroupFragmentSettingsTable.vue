@@ -163,7 +163,7 @@ const onChangeCheckboxTable = (
     <VExpansionPanel elevation="0">
       <VExpansionPanelTitle
         v-if="!notHeader"
-        class="py-4"
+        class="py-4 text-color-base"
       >
         <div class="d-flex justify-space-between w-100 align-center">
           <h5
@@ -237,7 +237,7 @@ const onChangeCheckboxTable = (
                           :model-value="+tableItem.access >= +tableColumn.key"
                           @update:model-value="onChangeCheckboxTable(tableItem, Number(tableColumn.key), $event)"
                         />
-                        <span v-else> - </span>
+                        <span v-else class="text-color-base"> - </span>
                       </div>
                     </template>
                   </td>
@@ -277,6 +277,10 @@ const onChangeCheckboxTable = (
 <style lang="scss">
 .field-group-disabled {
   cursor: pointer;
+}
+
+.collapse-title {
+  //color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
 }
 
 .table-box.table-permission {

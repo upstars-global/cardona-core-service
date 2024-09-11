@@ -33,7 +33,7 @@ watch(checked, val => {
       <VExpansionPanel elevation="0">
         <VExpansionPanelTitle class="py-4">
           <div class="d-flex justify-space-between w-100 align-center">
-            <span class="lead collapse-title text-body-1 text-color-base font-weight-medium">{{ title }}</span>
+            <span class="lead collapse-title text-body-1 font-weight-medium text-color-base">{{ title }}</span>
             <div
               class="pr-8"
               @click.stop
