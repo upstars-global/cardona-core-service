@@ -72,7 +72,7 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
           class="variable-label  ml-2"
           @click="onClickVariable(variable)"
         >
-          <small class="text-body-1 variable-label text-color-base">{{ variable }}</small>
+          <small class="text-body-1 variable-label text-color-base font-weight-medium">{{ variable }}</small>
           <VTooltip
             activator="parent"
             location="bottom"
