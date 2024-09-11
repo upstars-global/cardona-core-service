@@ -166,12 +166,12 @@ const onChangeCheckboxTable = (
         class="py-4"
       >
         <div class="d-flex justify-space-between w-100 align-center">
-          <div
+          <h5
             v-if="title"
-            class="lead collapse-title text-h5"
+            class="lead collapse-title text-h5 text-body-1 font-weight-medium"
           >
             {{ title }}
-          </div>
+          </h5>
           <div
             class="pr-8"
             @click.stop
@@ -208,7 +208,7 @@ const onChangeCheckboxTable = (
                     :class="{ 'text-center': tableColumn.key !== 'target' }"
                     class="px-2 header-table-th"
                   >
-                    <span class="font-weight-semi-bold">
+                    <span class="font-weight-medium text-color-mute">
                       {{ tableColumn.label }}
                     </span>
                   </th>
@@ -226,9 +226,9 @@ const onChangeCheckboxTable = (
                   >
                     <span
                       v-if="index === 0"
-                      class="font-weight-medium text-color-base"
+                      class="font-weight-regular text-color-base"
                     >
-                      {{ $t(`permission.${tableItem.target}`) }}123
+                      {{ $t(`permission.${tableItem.target}`) }}
                     </span>
                     <template v-else>
                       <div class="d-flex justify-center">
