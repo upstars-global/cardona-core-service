@@ -1,6 +1,7 @@
 .v-switch.v-switch--inset {
-
-
+  .v-label {
+    color: rgb(var(--v-theme-grey-900), var(--v-body-opacity));
+  }
   &.v-input--disabled.v-input--dirty:not(.not-checked) {
     .v-switch__track {
       background: rgb(var(--v-theme-primary));

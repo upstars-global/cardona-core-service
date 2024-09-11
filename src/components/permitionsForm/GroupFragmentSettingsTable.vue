@@ -226,9 +226,9 @@ const onChangeCheckboxTable = (
                   >
                     <span
                       v-if="index === 0"
-                      class="font-weight-medium"
+                      class="font-weight-medium text-color-base"
                     >
-                      {{ $t(`permission.${tableItem.target}`) }}
+                      {{ $t(`permission.${tableItem.target}`) }}123
                     </span>
                     <template v-else>
                       <div class="d-flex justify-center">

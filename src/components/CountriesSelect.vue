@@ -165,6 +165,7 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
         :key="value"
         :value="value"
         :text="text"
+        class="text-primary"
         :disabled="disabled"
       />
     </VBtnToggle>
@@ -237,6 +238,11 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
 <style lang="scss" scoped>
 .select-countries-radio {
   height: 1.75rem;
+  border-color: rgba(var(--v-theme-primary));
+  .v-btn {
+    font-size: 0.8125rem;
+    text-weight: 500 !important;
+  }
 }
 
 .selected-coutries {

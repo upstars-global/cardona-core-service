@@ -409,6 +409,9 @@ const onSaveChanges = () => {
 .block-text-edite {
   .editor-wrap {
     position: relative;
+    :deep(.fr-counter) {
+      color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+    }
 
     &.disabled {
       :deep(.fr-toolbar),
