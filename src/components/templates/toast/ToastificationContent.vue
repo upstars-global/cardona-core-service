@@ -31,7 +31,7 @@ defineProps<Props>()
         <div>
           <h4
             v-if="title"
-            class="text-body-1 toastification-title"
+            class="text-body-1 toastification-title font-weight-semi-bold"
             v-text="title"
           />
           <small
