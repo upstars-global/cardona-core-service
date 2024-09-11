@@ -151,7 +151,6 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
   }
 }
 .full-name {
-  font-weight: 600;
   color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
   white-space: nowrap;
   overflow: hidden;
