@@ -139,6 +139,8 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 
 <style lang="scss" scoped>
 .avatar-block {
+  height: 40px;
+  width: 40px;
   background-color: rgba(var(--v-theme-success), var(--v-badge-opacity)) !important;
 }
 .first-letter {

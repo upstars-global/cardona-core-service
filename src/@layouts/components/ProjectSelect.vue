@@ -28,7 +28,7 @@ const cantSelect = computed(() => projects.value.length < 2)
       v-model="selectProject"
       :options="projects"
       label="publicName"
-      class="select-field"
+      class="select-field text-color-base"
       :clearable="false"
       :searchable="false"
       :no-drop="cantSelect"
@@ -47,7 +47,7 @@ const cantSelect = computed(() => projects.value.length < 2)
           >
             {{ publicName[0].toUpperCase() }}
           </div>
-          <span class="text-expanded">{{ publicName || title }}</span>
+          <span class="text-expanded text-color-base">{{ publicName || title }}</span>
         </div>
       </template>
       <template #option="{ publicName, title, alias, iconPath }">
@@ -79,7 +79,7 @@ const cantSelect = computed(() => projects.value.length < 2)
         >
           <VIcon
             :icon="IconsList.ChevronDownIcon"
-            class="text-expanded"
+            class="text-expanded text-primary"
           />
         </div>
       </template>
