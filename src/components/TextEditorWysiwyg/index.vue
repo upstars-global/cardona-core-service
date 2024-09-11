@@ -411,6 +411,7 @@ const onSaveChanges = () => {
     position: relative;
     :deep(.fr-counter) {
       color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+      font-size: 15px;
     }
 
     &.disabled {

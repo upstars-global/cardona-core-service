@@ -242,6 +242,7 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
   .v-btn {
     font-size: 0.8125rem;
     text-weight: 500 !important;
+    border-right-color: rgba(var(--v-theme-primary));
   }
 }
 
