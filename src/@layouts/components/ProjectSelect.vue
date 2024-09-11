@@ -79,7 +79,7 @@ const cantSelect = computed(() => projects.value.length < 2)
         >
           <VIcon
             :icon="IconsList.ChevronDownIcon"
-            class="text-expanded text-primary"
+            class="text-expanded text-color-base"
           />
         </div>
       </template>
