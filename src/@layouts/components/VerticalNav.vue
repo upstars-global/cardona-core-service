@@ -204,6 +204,11 @@ const defaultRoute = { path: '/' }
     line-height: 1.75rem;
     text-transform: capitalize;
   }
+  .nav-item {
+    :deep(.nav-item-title) {
+      color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity)) !important;
+    }
+  }
 }
 </style>
 
