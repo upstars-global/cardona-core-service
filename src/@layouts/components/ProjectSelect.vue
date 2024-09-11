@@ -43,7 +43,7 @@ const cantSelect = computed(() => projects.value.length < 2)
           >
           <div
             v-else
-            class="project-logo project-logo-no-ico d-flex align-center justify-center"
+            class="project-logo project-logo-no-ico d-flex align-center justify-center text-color-base"
           >
             {{ publicName[0].toUpperCase() }}
           </div>
@@ -60,7 +60,7 @@ const cantSelect = computed(() => projects.value.length < 2)
           >
           <div
             v-else
-            class="project-logo project-logo-no-ico d-flex align-center justify-center"
+            class="project-logo project-logo-no-ico d-flex align-center justify-center text-color-base"
           >
             {{ publicName[0].toUpperCase() }}
           </div>
