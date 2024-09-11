@@ -79,6 +79,7 @@ const canSelect = computed(() => products.value.length > 1)
         </template>
         <template #open-indicator="{ attributes }">
           <VIcon
+            class="text-primary"
             v-bind="attributes"
             :icon="IconsList.ChevronDownIcon"
           />
