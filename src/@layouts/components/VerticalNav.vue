@@ -113,7 +113,7 @@ const defaultRoute = { path: '/' }
     ]"
   >
     <!-- 👉 Header -->
-    <div class="nav-header justify-space-between">
+    <div class="nav-header justify-space-between text-primary">
       <slot name="nav-header">
         <ProductsSelect :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered" />
         <!-- 👉 Vertical nav actions -->

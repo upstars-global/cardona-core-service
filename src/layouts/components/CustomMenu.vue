@@ -93,10 +93,10 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
           >
             <VAvatar
               :color="VColors.Success"
-              variant="tonal"
               size="large"
+              class="avatar-block"
             >
-              <span class="text-h5 first-letter">{{ firstLetter }}</span>
+              <h5 class="text-h5 text-body-1 first-letter text-success">{{ firstLetter }}</h5>
             </VAvatar>
           </VBadge>
           <div class="full-name ml-5">
@@ -138,6 +138,9 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 </template>
 
 <style lang="scss" scoped>
+.avatar-block {
+  background-color: rgba(var(--v-theme-success), var(--v-badge-opacity)) !important;
+}
 .first-letter {
   font-weight: 600;
 }
