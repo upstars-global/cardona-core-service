@@ -99,7 +99,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
               <span class="text-h5 first-letter">{{ firstLetter }}</span>
             </VAvatar>
           </VBadge>
-          <div class="full-name ml-5 text-weight-medium">
+          <div class="full-name ml-5">
             {{ userName }}
           </div>
         </div>
@@ -151,6 +151,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
   }
 }
 .full-name {
+  font-weight: 500;
   color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
   white-space: nowrap;
   overflow: hidden;
