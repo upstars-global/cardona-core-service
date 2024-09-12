@@ -1,7 +1,7 @@
 .v-card {
   border: 1px solid rgb(var(--v-theme-grey-200));
 
-  //&--variant-elevated {
-  //  color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
-  //}
+  &--variant-elevated {
+    color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
+  }
 }
