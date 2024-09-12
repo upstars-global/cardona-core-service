@@ -268,7 +268,9 @@ const isMounted = useMounted()
 
 .layout-vertical-nav {
   .nav-group.open {
-    background-color: rgba(var(--v-theme-grey-900), 0.08);
+    div {
+      background-color: rgba(var(--v-theme-grey-500), 0.08);
+    }
   }
   .nav-group {
     &-label {
