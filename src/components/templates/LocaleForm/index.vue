@@ -199,9 +199,11 @@ const variableTextBufferStore = computed(() => store.state.textEditor.variableTe
 </template>
 
 <style lang="scss">
+@import "@styles/variables/_vuetify";
+
 .action-hide {
   label {
-    font-size: 0.8125rem !important;
+    font-size: $typography-body-2-font-size !important;
   }
 }
 .locale-tab {
