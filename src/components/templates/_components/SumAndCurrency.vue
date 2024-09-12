@@ -1,15 +1,27 @@
 <script setup lang="ts">
-defineProps<{
+import { AlignType } from '../../../@model/templates/tableFields'
+
+withDefaults(defineProps<{
   data: {
     remainder?: number
     amount: number
     currency: string
   }
-}>()
+  align: AlignType
+}>(), {
+  align: AlignType.Right,
+})
 </script>
 
 <template>
-  <div class="d-flex flex-column width-content currency-wrapper justify-start">
+  <div
+    class="d-flex flex-column width-content justify-start"
+    :class="{
+      [`text-${align}`]: true,
+      'mx-auto': align === AlignType.Center,
+      'ml-auto': align === AlignType.Right,
+    }"
+  >
     <div>
       <span
         :key="data.amount"
@@ -24,13 +36,15 @@ defineProps<{
     <div
       v-if="data?.remainder"
       class="font-weight-light"
+      test-id="data-remainder"
     >
-      <span class="pl-1">
+      <span class="pl-1"  test-id="data-remainder-label">
         {{ $t('common.remainder') }}
       </span>
 
       <span
         :key="data.remainder"
+        test-id="data-remainder-value"
         v-currency="data.remainder"
         class="px-1"
       />
@@ -44,10 +58,5 @@ defineProps<{
 <style lang="scss" scoped>
 .width-content {
   width: max-content;
-}
-
-.currency-wrapper {
-  margin-left: auto;
-  text-align: right;
 }
 </style>

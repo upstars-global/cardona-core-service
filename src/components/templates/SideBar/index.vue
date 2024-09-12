@@ -88,8 +88,8 @@ const onHide = () => {
     @update:model-value="onHide"
   >
     <!-- Header -->
-    <div class="content-sidebar-header d-flex justify-space-between align-center px-6 py-3 bg-light">
-      <h4 class="content-sidebar-header__title mb-0 text-h4">
+    <div class="content-sidebar-header d-flex justify-space-between align-center px-6 py-4 bg-light">
+      <h4 class="content-sidebar-header__title mb-0 text-h4 font-weight-medium">
         {{ $t(title) }}
       </h4>
       <VIcon
@@ -101,7 +101,7 @@ const onHide = () => {
     </div>
     <div
       v-if="viewForm && sidebarActive"
-      class="p-1 pb-2 bg-light px-4"
+      class="bg-light pa-4"
     >
       <!--  ViewInfo   -->
       <template v-if="Object.keys(viewForm).isNotEmpty">
