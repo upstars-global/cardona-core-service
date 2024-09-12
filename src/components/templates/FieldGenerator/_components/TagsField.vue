@@ -78,7 +78,7 @@ const appendInnerIcon = computed(() => {
           label
           @click:close="onDelete(index)"
         >
-          {{ tag }}qwe
+          {{ tag }}
         </VChip>
       </template>
     </AppTextField>

@@ -236,11 +236,13 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
 </template>
 
 <style lang="scss" scoped>
+@import "src/assets/styles/variables/_vuetify.scss";
+
 .select-countries-radio {
   height: 1.75rem;
   border-color: rgba(var(--v-theme-primary));
   .v-btn {
-    font-size: 0.8125rem;
+    font-size: $typography-body-2-font-size;
     text-weight: 500 !important;
     border-right-color: rgba(var(--v-theme-primary));
   }
