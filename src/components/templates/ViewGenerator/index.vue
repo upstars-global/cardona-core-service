@@ -42,7 +42,7 @@ const valueColsCount = computed(() => 12 - props.cols)
       </VCol>
       <VCol
         :cols="valueColsCount"
-        class="value font-weight-medium d-flex align-items-start text-break wrapper-value text-body-1 font-weight-medium ma-0"
+        class="value font-weight-medium d-flex align-items-start text-break wrapper-value font-weight-medium ma-0"
         :class="justifyClass"
       >
         <slot
