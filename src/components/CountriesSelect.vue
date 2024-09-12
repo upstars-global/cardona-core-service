@@ -236,7 +236,7 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
 </template>
 
 <style lang="scss" scoped>
-@import "src/assets/styles/variables/_vuetify.scss";
+@import "@styles/variables/_vuetify";
 
 .select-countries-radio {
   height: 1.75rem;
