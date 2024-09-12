@@ -165,6 +165,7 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
         :key="value"
         :value="value"
         :text="text"
+        class="text-primary"
         :disabled="disabled"
       />
     </VBtnToggle>
@@ -195,7 +196,7 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
       </VueSelect>
     </div>
 
-    <span class="text-sm text-secondary mt-1">
+    <span class="text-sm text-color-mute mt-1">
       {{ $t('component.countriesSelect.description') }}
     </span>
 
@@ -235,8 +236,16 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
 </template>
 
 <style lang="scss" scoped>
+@import "@styles/variables/_vuetify";
+
 .select-countries-radio {
   height: 1.75rem;
+  border-color: rgba(var(--v-theme-primary));
+  .v-btn {
+    font-size: $typography-body-2-font-size !important;
+    text-weight: 500 !important;
+    border-right-color: rgba(var(--v-theme-primary));
+  }
 }
 
 .selected-coutries {

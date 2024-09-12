@@ -23,5 +23,6 @@ const localModelValue = computed({
     v-model="localModelValue"
     :disabled="disabled"
     :label="field.label"
+    class="base-checkbox"
   />
 </template>

@@ -20,7 +20,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'on-warning': '#fff',
       'error': '#EA3D3E', /// !TODO ADD ALSO TO DARK
       'background': '#F9F9FA',
-      'on-background': '#2F2B3D',
+      'on-background': grey900,
       'on-surface': '#2F2B3D',
 
       /// !TODO ADD ALSO TO DARK - start
@@ -60,12 +60,12 @@ export const themes: Record<string, ThemeDefinition> = {
       'disabled-opacity': 0.42,
       'border-opacity': 0.16,
       'high-emphasis-opacity': 0.9,
-      'medium-emphasis-opacity': 0.68,
+      'medium-emphasis-opacity': 0.62,
       'switch-opacity': 0.2,
       'switch-disabled-track-opacity': 0.3,
       'switch-disabled-thumb-opacity': 0.4,
       'switch-checked-disabled-opacity': 0.3,
-      'muted-placeholder-opacity': 0.62,
+      'muted-placeholder-opacity': 0.62, // TODO: medium-emphasis-opacity
       'body-opacity': 0.9,
       'border-radius': '0.5rem',
 
@@ -88,7 +88,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'on-warning': '#fff',
       'error': '#EA5455',
       'background': '#25293C',
-      'on-background': '#D0D4F1',
+      'on-background': '#E7E9F6',
       'surface': '#2F3349',
       'on-surface': '#D0D4F1',
       'grey-50': '#26293A',

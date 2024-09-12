@@ -213,11 +213,27 @@ const mockUploadFile = async () => {
                 :disabled="isDisabledField"
               />
             </VCol>
-
+            <hr>
             <VCol cols="4">
               <FieldGenerator
                 v-model="formData.switchWithState"
                 :disabled="isDisabledField"
+              />
+            </VCol>
+          </VRow>
+
+          <VRow>
+            <VCol cols="4">
+              <FieldGenerator
+                v-model="formData.switch"
+                disabled
+              />
+            </VCol>
+            <hr>
+            <VCol cols="4">
+              <FieldGenerator
+                v-model="formData.switchWithState"
+                disabled
               />
             </VCol>
           </VRow>
@@ -423,10 +439,10 @@ const mockUploadFile = async () => {
                 :data-types="['application/json']"
               >
                 <template #content="{ fileSizeFormatted }">
-                  <h5 class="mb-0">
+                  <p class="mb-0 text-body-1 font-weight-medium text-medium-emphasis">
                     {{ $t('uploadFile.dropFile') }}
-                  </h5>
-                  <p class="mb-0">
+                  </p>
+                  <p class="mb-0 text-body-2 text-medium-emphasis">
                     {{ $t('uploadFile.fileParams', { accept: 'JSON', size: fileSizeFormatted }) }}
                   </p>
                 </template>

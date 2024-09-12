@@ -155,7 +155,7 @@ const listNotSelected = computed(() => {
                 class="d-flex align-center"
               >
                 <p
-                  class="font-weight-medium mb-0"
+                  class="text-h6 text-button mb-0 font-weight-medium"
                   :class="{ 'font-small-3': isSmallBlock }"
                 >
                   {{ filter.label }}
@@ -249,6 +249,7 @@ const listNotSelected = computed(() => {
 .field-generator {
   :deep(label) {
     margin-bottom: 0;
+    color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
   }
 }
 

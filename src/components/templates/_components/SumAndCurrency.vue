@@ -35,10 +35,10 @@ withDefaults(defineProps<{
 
     <div
       v-if="data?.remainder"
-      class="font-weight-light"
       test-id="data-remainder"
+      class="text-color-mute"
     >
-      <span class="pl-1"  test-id="data-remainder-label">
+      <span class="pl-1 remainder-label"  test-id="data-remainder-label">
         {{ $t('common.remainder') }}
       </span>
 

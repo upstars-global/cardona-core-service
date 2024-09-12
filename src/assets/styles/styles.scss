@@ -11,9 +11,24 @@
 @import "./components/v-textarea";
 @import "./components/v-tabs";
 @import "./components/v-card";
+@import "./components/v-icon";
 @import "./components/toasts";
 @import "./components/v-switch";
 @import "./components/gallery";
+@import "./components/v-list";
+@import "./components/check-field";
+
+.text-color-base {
+  color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
+}
+
+.text-color-mute {
+  color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)) !important;
+}
+
+.text-color-placeholder-disabled {
+  color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)) !important;
+}
 
 .no-border {
   border-style: none !important;
@@ -26,10 +41,6 @@ html {
 
 .font-weight-semi-bold {
   font-weight: 600;
-}
-
-.v-icon--size-default {
-  font-size: 1.25rem;
 }
 
 hr {
@@ -96,6 +107,11 @@ html.custom-scroll {
       background: transparent;
     }
   }
+}
+
+.text-body-1,
+.text-body-2 {
+  color: rgba(var(--v-theme-grey-900), var(--v-high-emphasis-opacity));
 }
 
 .lh-normal {

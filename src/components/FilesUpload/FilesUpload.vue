@@ -82,7 +82,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
 <template>
   <div
     ref="dropZoneRef"
-    class="files-upload d-flex align-center justify-center"
+    class="files-upload d-flex align-center justify-center text-medium-emphasis"
     :class="[props.size, { 'files-upload--over-drop': isOverDropZone, disabled, 'error': isError }]"
   >
     <slot
@@ -104,7 +104,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
           :color="VColors.Primary"
           class="mb-1"
         />
-        <p class="text-body-heading font-weight-bold mb-0">
+        <p class="text-body-1 mb-0">
           {{ $t('common.loading') }}
         </p>
       </div>

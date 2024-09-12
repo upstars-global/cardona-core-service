@@ -23,8 +23,18 @@ const router = useRouter()
 
 const linkSizeClass = computed(() => {
   switch (props.size) {
-    case VSizes.Large: return 'text-h4'
-    case VSizes.Small: return 'text-subtitle-1'
+    case VSizes.Large: return 'text-h5'
+    case VSizes.Medium: return 'text-body-1'
+    case VSizes.Small: return 'text-body-2'
+    default: return ''
+  }
+})
+
+const iconSize = computed(() => {
+  switch (props.size) {
+    case VSizes.Large: return VSizes.Medium
+    case VSizes.Medium: return VSizes.Small
+    case VSizes.Small: return VSizes.XSmall
     default: return ''
   }
 })
@@ -38,7 +48,7 @@ const onClickLink = () => {
 
 <template>
   <div
-    class="d-flex align-center text-primary font-weight-bold cursor-pointer"
+    class="d-flex align-center text-primary cursor-pointer"
     :class="linkSizeClass"
   >
     <span class="link-title">
@@ -48,14 +58,14 @@ const onClickLink = () => {
     <VIcon
       test-id="icon-link"
       :icon="IconsList.ExternalLinkIcon"
-      :size="size"
+      :size="iconSize"
       @click.stop="onClickLink"
     />
     <VIcon
       v-if="copyElement"
       test-id="icon-copy"
       :icon="IconsList.CopyIcon"
-      :size="size"
+      :size="iconSize"
       @click.stop="copyToClipboard(copyElement)"
     />
   </div>

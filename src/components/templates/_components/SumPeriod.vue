@@ -20,10 +20,10 @@ const props = defineProps<{
         :key="data.today"
         v-currency="data.today"
         test-id="data-today"
-        class="mr-1"
+        class="mr-1 font-weight-medium"
       />
 
-      <span test-id="data-today-currency">
+      <span class="font-weight-medium" test-id="data-today-currency">
         {{ data.currency }}
       </span>
     </div>
@@ -37,10 +37,10 @@ const props = defineProps<{
         :key="data.week"
         v-currency="data.week"
         test-id="data-week"
-        class="mr-1"
+        class="mr-1 font-weight-medium"
       />
 
-      <span test-id="data-week-currency">
+      <span test-id="data-week-currency" class="font-weight-medium">
         {{ data.currency }}
       </span>
     </div>
@@ -54,10 +54,10 @@ const props = defineProps<{
         :key="data.month"
         v-currency="data.month"
         test-id="data-month"
-        class="mr-1"
+        class="mr-1 font-weight-medium"
       />
 
-      <span test-id="data-month-currency">
+      <span class="font-weight-medium" test-id="data-month-currency">
         {{ data.currency }}
       </span>
     </div>

@@ -151,7 +151,7 @@ const canUpdate = computed<boolean>(() =>
 
         <span
           v-else-if="modelValue.description"
-          class="text-caption mt-1"
+          class="mt-1 text-color-mute text-body-2"
           :class="{
             'check-description': isCheckType,
           }"
@@ -164,6 +164,8 @@ const canUpdate = computed<boolean>(() =>
 </template>
 
 <style lang="scss" scoped>
+@import "@styles/variables/_vuetify";
+
 .field-generator {
   color: rgb(var(--v-theme-body));
 
@@ -178,6 +180,7 @@ const canUpdate = computed<boolean>(() =>
 
   &__error {
     white-space: break-spaces;
+    font-size: $typography-body-2-font-size !important;
   }
 }
 .check-description {

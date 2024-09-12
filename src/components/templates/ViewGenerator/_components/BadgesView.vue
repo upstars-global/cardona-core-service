@@ -69,9 +69,9 @@ const isShowToggleButton = computed(() => {
             v-for="(itemArr, key) in itemsList"
             :key="key"
             label
-            :variant="VVariants.Tonal"
             :size="VSizes.Small"
-            class="font-weight-medium px-2 overflow-visible label-chip text-grey-500"
+            :color="VColors.Secondary"
+            class="font-weight-medium px-2 overflow-visible label-chip"
           >
             {{ itemArr.name }}
           </VChip>

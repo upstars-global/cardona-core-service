@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { copyToClipboard } from '../../../helpers/clipboard'
 import { IconsList } from '../../../@model/enums/icons'
 import { getShortString } from '../../../helpers'
+import { VSizes } from '../../../@model/vuetify'
 
 const props = defineProps<{
   value: string
@@ -15,7 +16,7 @@ const labelValue = computed(() => (props.isShort ? getShortString(props.value) :
 <template>
   <div
     v-if="value"
-    class="text-break copy-field"
+    class="text-break copy-field d-flex align-center"
   >
     <slot :label="labelValue">
       <span test-id="copy-field-value">
@@ -27,6 +28,7 @@ const labelValue = computed(() => (props.isShort ? getShortString(props.value) :
       :icon="IconsList.CopyIcon"
       test-id="copy-field-icon"
       class="cursor-pointer ml-1"
+      size="16"
       @click.stop="copyToClipboard(value)"
     />
   </div>

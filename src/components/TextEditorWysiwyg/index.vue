@@ -380,10 +380,10 @@ const onSaveChanges = () => {
     <div :class="{ 'd-none': Object.keys(variableTextBuffer).isEmpty }">
       <div
         :key="`block-text-edite-variable${isUpdateVar}`"
-        class="d-flex flex-wrap align-center block-text-edite-variable pt-1 gap-2"
+        class="d-flex flex-wrap align-center block-text-edite-variable pt-3 gap-2"
       >
-        <span class="font-small-3 font-weight-bolder mr-1 mb-50">
-          <small><b>{{ $t('common.editor.addedVariables') }}:</b></small>
+        <span class="text-body-2 mr-1">
+          {{ $t('common.editor.addedVariables') }}:
         </span>
         <VChip
           v-for="key in Object.keys(variableTextBuffer)"
@@ -395,7 +395,7 @@ const onSaveChanges = () => {
         >
           <span class="pr-1">{{ `{${key}\}` }} </span>
           <VIcon
-            size="18"
+            size="16"
             :icon="IconsList.CopyIcon"
             @click.stop="copyToClipboard(`{{${key}}}`)"
           />
@@ -409,6 +409,10 @@ const onSaveChanges = () => {
 .block-text-edite {
   .editor-wrap {
     position: relative;
+    :deep(.fr-counter) {
+      color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+      font-size: 15px;
+    }
 
     &.disabled {
       :deep(.fr-toolbar),

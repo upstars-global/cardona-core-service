@@ -215,7 +215,7 @@ const isMounted = useMounted()
           v-bind="getDynamicI18nProps(item.title, 'span')"
           v-show="!hideTitleAndBadge"
           key="title"
-          class="nav-item-title"
+          class="nav-item-title font-weight-regular text-color-base"
         >
           {{ item.title }}
         </Component>
@@ -258,7 +258,20 @@ const isMounted = useMounted()
 </template>
 
 <style lang="scss">
+.nav-item-icon {
+  color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity))
+}
+
+.nav-item-title + i.v-icon {
+  color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
+}
+
 .layout-vertical-nav {
+  .nav-group.open {
+    div {
+      background-color: rgba(var(--v-theme-grey-500), 0.08);
+    }
+  }
   .nav-group {
     &-label {
       display: flex;

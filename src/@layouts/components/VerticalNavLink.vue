@@ -39,7 +39,8 @@ const onClick = () => {
           :is="layoutConfig.app.i18n.enable ? 'i18n-t' : 'span'"
           v-show="!hideTitleAndBadge"
           key="title"
-          class="nav-item-title"
+          class="nav-item-title font-weight-regular"
+          :class="{ 'text-color-base': !isNavLinkActive(item, $router) }"
           v-bind="getDynamicI18nProps(item.title, 'span')"
         >
           {{ item.title }}

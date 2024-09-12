@@ -104,8 +104,14 @@ const handleKeydown = (event: KeyboardEvent) => {
 </template>
 
 <style lang="scss">
+@import "@styles/variables/_vuetify";
+
 .app-textarea__counter {
   position: relative;
+  .v-counter {
+    font-size: $typography-body-2-font-size;
+    color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)) !important;
+  }
   .v-input__details {
     position: absolute;
     bottom: -20px;

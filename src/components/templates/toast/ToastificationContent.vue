@@ -31,12 +31,12 @@ defineProps<Props>()
         <div>
           <h4
             v-if="title"
-            class="toastification-title"
+            class="text-body-1 toastification-title font-weight-semi-bold"
             v-text="title"
           />
           <small
             v-if="text"
-            class="d-inline-block text-body"
+            class="d-inline-block text-body text-body-1"
             v-text="text"
           />
         </div>
@@ -70,8 +70,7 @@ defineProps<Props>()
     color: rgb(var(--v-theme-surface));
   }
 }
-.toastification-close-icon,
-.toastification-title {
+.toastification-close-icon {
   line-height: 26px;
 }
 
@@ -80,5 +79,6 @@ defineProps<Props>()
 }
 .toastification-title {
   color: inherit;
+  line-height: 1.8rem;
 }
 </style>

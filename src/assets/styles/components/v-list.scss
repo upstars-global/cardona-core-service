@@ -1,0 +1,17 @@
+.v-list {
+  .v-list-item {
+    &:not(:hover) {
+      color: rgb(var(--v-theme-grey-900), var(--v-body-opacity));
+    }
+    &__content {
+      &:not(:hover) {
+        color: rgb(var(--v-theme-grey-900), var(--v-body-opacity));
+      }
+    }
+  }
+  .v-list-item-title {
+    &:not(:hover) {
+      color: rgb(var(--v-theme-grey-900), var(--v-body-opacity));
+    }
+  }
+}
