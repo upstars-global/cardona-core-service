@@ -1,7 +1,7 @@
 import { type BaseWrapper, type VueWrapper, mount } from '@vue/test-utils'
 import { expect } from 'vitest'
 
-export const getSelectorTestId = (testId: string): string => `[test-id="${testId}"]`
+export const getSelectorTestId = (testId: string): string => `[data-test-id="${testId}"]`
 
 export const getProps = (params: Record<string, any>) => ({ props: params })
 

@@ -47,7 +47,7 @@ const phoneFlag = computed(() => {
   <div class="d-flex justify-space-between align-center position-relative">
     <p
       class="flag"
-      test-id="phone-flag"
+      data-test-id="phone-flag"
     >
       {{ phoneFlag }}
     </p>
@@ -56,7 +56,7 @@ const phoneFlag = computed(() => {
       v-model="modelValue"
       type="text"
       class="form-control"
-      test-id="input-number-phone"
+      data-test-id="input-number-phone"
       :class="{ 'pl-3': phoneFlag, 'error': errors }"
       :placeholder="$t('common.phone._')"
       :disabled="disabled"

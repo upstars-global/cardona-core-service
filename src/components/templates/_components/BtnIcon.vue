@@ -50,7 +50,7 @@ const variant = computed(
     >
       <template #activator="{ props }">
         <VBtn
-          test-id="button-icon__body"
+          data-test-id="button-icon__body"
           :class="{
             'v-btn--variant-tonal': !isStatic,
           }"

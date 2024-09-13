@@ -56,14 +56,14 @@ const onClickLink = () => {
     </span>
 
     <VIcon
-      test-id="icon-link"
+      data-test-id="icon-link"
       :icon="IconsList.ExternalLinkIcon"
       :size="iconSize"
       @click.stop="onClickLink"
     />
     <VIcon
       v-if="copyElement"
-      test-id="icon-copy"
+      data-test-id="icon-copy"
       :icon="IconsList.CopyIcon"
       :size="iconSize"
       @click.stop="copyToClipboard(copyElement)"

@@ -35,16 +35,16 @@ withDefaults(defineProps<{
 
     <div
       v-if="data?.remainder"
-      test-id="data-remainder"
+      data-test-id="data-remainder"
       class="text-color-mute"
     >
-      <span class="pl-1 remainder-label"  test-id="data-remainder-label">
+      <span class="pl-1 remainder-label"  data-test-id="data-remainder-label">
         {{ $t('common.remainder') }}
       </span>
 
       <span
         :key="data.remainder"
-        test-id="data-remainder-value"
+        data-test-id="data-remainder-value"
         v-currency="data.remainder"
         class="px-1"
       />
