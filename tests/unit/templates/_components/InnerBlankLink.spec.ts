@@ -36,13 +36,13 @@ describe('InnerBlankLink', () => {
   it('Applies correct size class when size is large', () => {
     const wrapper = getMountInnerBlankLink({ value, size: VSizes.Large })
 
-    expect(wrapper.classes()).toContain('text-h4')
+    expect(wrapper.classes()).toContain('text-h5')
   })
 
   it('Applies correct size class when size is small', () => {
     const wrapper = getMountInnerBlankLink({ value, size: VSizes.Small })
 
-    expect(wrapper.classes()).toContain('text-subtitle-1')
+    expect(wrapper.classes()).toContain('text-body-2')
   })
 
   it('Copies text to clipboard when copy icon is clicked', async () => {

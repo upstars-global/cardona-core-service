@@ -4,7 +4,7 @@ import StatusField from '../../../../src/components/templates/_components/Status
 import { getSelectorTestId, setMountComponent } from '../../utils'
 
 import { StatusVariants } from '../../../../src/@model/enums/statusField'
-import { VVariants } from '../../../../src/@model/vuetify'
+import {VColors, VVariants} from '../../../../src/@model/vuetify'
 
 const getMountStatusField = setMountComponent(StatusField)
 
@@ -31,7 +31,7 @@ describe('StatementField', () => {
 
     const chip = getChipFromWrapper(wrapper)
 
-    expect(chip.props('color')).toBeUndefined()
+    expect(chip.props('color')).toBe(VColors.Secondary)
     expect(chip.props('variant')).toBe(VVariants.Outlined)
   })
 
