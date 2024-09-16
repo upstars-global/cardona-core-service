@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type TranslateResult } from 'vue-i18n'
-import { ModalSizes, VColors, VVariants } from '@/@model/vuetify'
+import { ModalSizes, VColors, VVariants } from '../../@model/vuetify'
 
 defineProps<{
   modalId: string
