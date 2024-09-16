@@ -38,14 +38,17 @@ const valueColsCount = computed(() => 12 - props.cols)
           <VIcon :icon="modelValue.icon" />
         </div>
 
-        <label class="mb-0 label p-0 font-weight-regular view-generator__text">{{ modelValue.label }}</label>
+        <label class="mb-0 label p-0 text-body-1">{{ modelValue.label }}</label>
       </VCol>
       <VCol
         :cols="valueColsCount"
-        class="view-generator__text value font-weight-medium d-flex align-items-start text-break wrapper-value text-base ma-0"
+        class="value font-weight-medium d-flex align-items-start text-break wrapper-value font-weight-medium ma-0"
         :class="justifyClass"
       >
-        <slot :name="`sidebar-value(${keyName})`">
+        <slot
+          :name="`sidebar-value(${keyName})`"
+          :value="modelValue.value"
+        >
           <Component
             :is="modelValue.type"
             :item="modelValue"
@@ -62,7 +65,6 @@ const valueColsCount = computed(() => 12 - props.cols)
 .wrapper-label {
   width: 100%;
   max-width: 154px;
-  color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
 }
 .wrapper-value {
   width: 100%;
@@ -71,9 +73,5 @@ const valueColsCount = computed(() => 12 - props.cols)
   display: inline-block;
   width: 1rem;
   margin-right: 0.5rem;
-}
-
-.view-generator__text {
-  color: rgb(var(--v-theme-body));
 }
 </style>

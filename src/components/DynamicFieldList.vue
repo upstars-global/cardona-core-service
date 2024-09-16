@@ -184,7 +184,7 @@ const disableAddFiled = computed(() =>
       >
         <VBtn
           v-if="rowIndex || !required"
-          :variant="VVariants.Text"
+          :variant="VVariants.Outlined"
           :color="VColors.Error"
           class="filed-list__delete pa-0"
           :class="{ 'cursor-default': disabled }"

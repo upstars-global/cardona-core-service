@@ -109,9 +109,7 @@ const onFileUpload = async file => {
     class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between"
     :class="{ 'field-generator-label--required': isRequired }"
   >
-    <span>
-      {{ label }}
-    </span>
+    {{ label }}
   </VLabel>
   <div
     v-if="urlFile"
@@ -158,13 +156,14 @@ const onFileUpload = async file => {
     :size="ModalSizes.Medium"
   >
     <template #modal-header="{ title }">
-      <div class="d-flex items-center">
-        <h4 class="mb-0">
+      <div class="d-flex align-center">
+        <h5 class="mb-0 text-h5">
           {{ title }}
-        </h4>
+        </h5>
         <VTooltip
           :text="$t('uploadImg.selectImageTooltip')"
           :max-width="MAX_WIDTH_TOOLTIP"
+          class="text-body-1"
         >
           <template #activator="{ props }">
             <VIcon

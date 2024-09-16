@@ -57,7 +57,7 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
     >
       <VCol
         cols="4"
-        class="font-weight-regular text-no-wrap"
+        class="font-weight-regular text-no-wrap text-body-2 text-color-base"
       >
         {{ $t('component.conditions.availableVariables') }}:
       </VCol>
@@ -69,10 +69,10 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
         <div
           v-for="(variable, index) in availableVariables"
           :key="index"
-          class="variable-label ml-2"
+          class="variable-label  ml-2"
           @click="onClickVariable(variable)"
         >
-          <small>{{ variable }}</small>
+          <small class="text-body-1 variable-label text-color-base font-weight-medium">{{ variable }}</small>
           <VTooltip
             activator="parent"
             location="bottom"
@@ -93,7 +93,7 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
   cursor: pointer;
 
   &:hover {
-    color: rgb(var(--v-theme-primary));
+    color: rgb(var(--v-theme-primary)) !important;
   }
 }
 </style>

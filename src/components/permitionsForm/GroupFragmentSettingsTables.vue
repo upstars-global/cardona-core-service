@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import type { PermissionUpdatableTableList } from 'cardona-core-service/src/@model/permission'
-import GroupFragmentSettingsTable from 'cardona-core-service/src/components/permitionsForm/GroupFragmentSettingsTable.vue'
-import { VColors } from 'cardona-core-service/src/@model/vuetify'
+import type { PermissionUpdatableTableList } from '../../@model/permission'
+import GroupFragmentSettingsTable from '../../components/permitionsForm/GroupFragmentSettingsTable.vue'
+import { VColors } from '../../@model/vuetify'
 
 const props = defineProps<{
   title: string
@@ -33,7 +33,7 @@ watch(checked, val => {
       <VExpansionPanel elevation="0">
         <VExpansionPanelTitle class="py-4">
           <div class="d-flex justify-space-between w-100 align-center">
-            <span class="lead collapse-title ">{{ title }}</span>
+            <span class="lead collapse-title text-body-1 font-weight-medium text-color-base">{{ title }}</span>
             <div
               class="pr-8"
               @click.stop
@@ -57,7 +57,7 @@ watch(checked, val => {
           >
             <p
               v-if="item.title"
-              class="font-weight-bold"
+              class="text-body-1 font-weight-regular text-color-base"
             >
               {{ item.title }}
             </p>

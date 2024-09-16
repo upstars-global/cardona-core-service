@@ -163,15 +163,15 @@ const onChangeCheckboxTable = (
     <VExpansionPanel elevation="0">
       <VExpansionPanelTitle
         v-if="!notHeader"
-        class="py-4"
+        class="py-4 text-color-base"
       >
         <div class="d-flex justify-space-between w-100 align-center">
-          <div
+          <h5
             v-if="title"
-            class="lead collapse-title text-h5"
+            class="lead collapse-title text-h5 text-body-1 font-weight-medium"
           >
             {{ title }}
-          </div>
+          </h5>
           <div
             class="pr-8"
             @click.stop
@@ -208,7 +208,7 @@ const onChangeCheckboxTable = (
                     :class="{ 'text-center': tableColumn.key !== 'target' }"
                     class="px-2 header-table-th"
                   >
-                    <span class="font-weight-semi-bold">
+                    <span class="font-weight-medium text-color-mute">
                       {{ tableColumn.label }}
                     </span>
                   </th>
@@ -226,7 +226,7 @@ const onChangeCheckboxTable = (
                   >
                     <span
                       v-if="index === 0"
-                      class="font-weight-medium"
+                      class="font-weight-regular text-color-base"
                     >
                       {{ $t(`permission.${tableItem.target}`) }}
                     </span>
@@ -237,7 +237,7 @@ const onChangeCheckboxTable = (
                           :model-value="+tableItem.access >= +tableColumn.key"
                           @update:model-value="onChangeCheckboxTable(tableItem, Number(tableColumn.key), $event)"
                         />
-                        <span v-else> - </span>
+                        <span v-else class="text-color-base"> - </span>
                       </div>
                     </template>
                   </td>
@@ -277,6 +277,10 @@ const onChangeCheckboxTable = (
 <style lang="scss">
 .field-group-disabled {
   cursor: pointer;
+}
+
+.collapse-title {
+  //color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
 }
 
 .table-box.table-permission {

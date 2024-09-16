@@ -75,7 +75,7 @@ const onCreateCopy = () => {
       </VBtn>
     </template>
 
-    <VList>
+    <VList class="actions-list">
       <slot
         v-if="existSlot(BaseListActionsSlots.PrependActionItem)"
         :name="BaseListActionsSlots.PrependActionItem"
@@ -104,9 +104,11 @@ const onCreateCopy = () => {
 
       <VListItem
         v-if="canCreate && config.createFromCopy"
-        :prepend-icon="IconsList.CopyPlusIcon"
         @click="onCreateCopy"
       >
+        <template #prepend>
+          <VIcon :icon="IconsList.CopyPlusIcon" />
+        </template>
         <VListItemTitle>
           {{ $t('action.makeCopy') }}
         </VListItemTitle>
@@ -114,13 +116,13 @@ const onCreateCopy = () => {
 
       <VListItem
         v-if="canRemoveItem"
-        class="text-error"
+        class="text-error hover-text-error"
         @click="emits('on-remove', item)"
       >
         <template #prepend>
           <VIcon :icon="IconsList.Trash2Icon" />
         </template>
-        <VListItemTitle>
+        <VListItemTitle class="on-hover-color-error text-error">
           {{ $t('action.remove') }}
         </VListItemTitle>
       </VListItem>

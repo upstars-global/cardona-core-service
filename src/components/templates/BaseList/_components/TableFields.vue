@@ -70,7 +70,7 @@ onMounted(() => {
               icon="tabler-check"
             />
           </template>
-          <VListItemTitle>{{ item.title }}</VListItemTitle>
+          <VListItemTitle class="text-color-base">{{ item.title }}</VListItemTitle>
         </VListItem>
       </VList>
     </VMenu>

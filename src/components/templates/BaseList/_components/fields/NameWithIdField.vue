@@ -65,7 +65,7 @@ const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyF
       </slot>
     </div>
 
-    <span class="d-flex small">
+    <span class="d-flex small text-body-2 text-medium-emphasis">
       <span class="mr-1">ID</span>
       <Component
         :is="currentComponent"

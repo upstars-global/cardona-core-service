@@ -7,5 +7,5 @@ defineProps<{
 </script>
 
 <template>
-  <span class="mb-0">{{ item.value }}</span>
+  <span class="mb-0 text-color-base">{{ item.value }}</span>
 </template>

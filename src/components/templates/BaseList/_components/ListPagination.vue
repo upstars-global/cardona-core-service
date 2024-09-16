@@ -65,7 +65,7 @@ const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
       sm="4"
       class="d-flex align-center justify-start justify-content-sm-start px-0"
     >
-      <span class="pagination-text text-no-wrap">
+      <span class="text-body-1 text-medium-emphasis	text-no-wrap">
         {{ $t('pagination.showing', dataMeta) }}
       </span>
     </VCol>
@@ -90,8 +90,8 @@ const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
             :color="item.isActive ? 'primary' : 'secondary'"
             class="pagination--button"
             rounded="circle"
-            @click="setActivePage(item)"
             :disabled="isEllipsis(item)"
+            @click="setActivePage(item)"
           >
             {{ getNumberOfPage(item) }}
           </VBtn>
@@ -102,9 +102,6 @@ const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
 </template>
 
 <style scoped lang="scss">
-.pagination-text {
-  color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
-}
 .pagination {
   :deep(ul) {
     li {
@@ -115,6 +112,7 @@ const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
         border-radius: 100px !important;
         padding: 0 6px !important;
         width: auto !important;
+        font-size: 13px;
       }
     }
   }

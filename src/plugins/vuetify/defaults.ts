@@ -40,6 +40,7 @@ export default {
   VExpansionPanelTitle: {
     expandIcon: 'tabler-chevron-right',
     collapseIcon: 'tabler-chevron-right',
+    class: 'text-h6',
   },
   VList: {
     density: 'comfortable',
@@ -60,10 +61,14 @@ export default {
       showArrows: true,
     },
   },
+  VTab: {
+    class: 'text-high-emphasis',
+  },
   VTooltip: {
     // set v-tooltip default location to top
     location: 'top',
     offset: '8px',
+    class: 'text-body-1',
   },
   VCheckboxBtn: {
     color: 'primary',
@@ -187,6 +192,10 @@ export default {
   VCard: {
     style: 'overflow: visible; position: static;',
     elevation: 0,
+  },
+  VCardTitle: {
+    class: 'text-h5',
+    tag: 'h5',
   },
   VWindow: {
     style: 'overflow: visible;',

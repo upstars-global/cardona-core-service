@@ -10,6 +10,7 @@ interface Props {
   state?: boolean
   width: string
   size: ModalSizes
+  modalHeaderClass?: string
 }
 
 interface Emits {
@@ -18,7 +19,7 @@ interface Emits {
 }
 defineOptions({ name: 'BaseModal' })
 
-const props = withDefaults(defineProps<Props>(), { title: '', width: '', size: ModalSizes.Small })
+const props = withDefaults(defineProps<Props>(), { title: '', width: '', size: ModalSizes.Small, modalHeaderClass: '' })
 
 const emits = defineEmits<Emits>()
 
@@ -71,6 +72,7 @@ const onHide = (value: boolean) => {
           class="modal-header with-absolute px-6 py-3 d-flex align-end justify-space-between"
           :class="{
             'without-header-title': !title,
+            [modalHeaderClass]: modalHeaderClass,
           }"
         >
           <slot
@@ -78,12 +80,12 @@ const onHide = (value: boolean) => {
             :title="title"
             :hide="hide"
           >
-            <h4
+            <h5
               v-if="title"
-              class="mb-0"
+              class="text-h5 mb-0"
             >
               {{ title }}
-            </h4>
+            </h5>
           </slot>
           <VBtn
             size="30"

@@ -2,7 +2,8 @@
 import { computed } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { convertUpperCaseFirstSymbol } from '../../../helpers'
-import { VVariants } from '../../../@model/vuetify'
+import { VColors, VVariants } from '../../../@model/vuetify'
+import { StatusVariants } from '../../../@model/enums/statusField'
 
 interface IStatusWithVariantReplace {
   status: TranslateResult
@@ -16,63 +17,6 @@ const props = defineProps<{
   variant: VVariants
 }>()
 
-enum StatusVariants {
-
-  // Secondary
-  initial = 'secondary',
-  New = 'secondary',
-  new = 'secondary',
-  waiting = 'secondary',
-  received = 'secondary',
-  updating = 'secondary',
-  reporting = 'secondary',
-
-  // Success
-  active = 'success',
-  activated = 'success',
-  finished = 'success',
-  approved = 'success',
-  read = 'success',
-  Confirmed = 'success',
-  wager = 'success',
-  'wager_done' = 'success',
-  creation = 'success',
-  cooling_off_active = 'success',
-  self_exclusion_active = 'success',
-
-  // Warning
-  inactive = 'warning',
-  'in progress' = 'warning',
-  pending = 'warning',
-  're-check' = 'warning',
-  Processing = 'warning',
-  Waiting = 'warning',
-  'wait_activation' = 'warning',
-  processing = 'warning',
-  used = 'warning',
-  self_exclusion_waiting_to_confirm = 'warning',
-  waiting_to_confirm = 'warning',
-  waiting_disable = 'warning',
-
-  // Danger
-  delete = 'error',
-  expired = 'error',
-  rejected = 'error',
-  Canceled = 'error',
-  Error = 'error',
-  'Canceled by user' = 'error',
-  'Marbella cancel processing' = 'error',
-  removed = 'error',
-  canceled = 'error',
-  lost = 'error',
-  cancelled = 'error',
-  'erased_by_withdraw' = 'error',
-  deleting = 'error',
-  disabled = 'error',
-
-  // TODO: Add status variant here
-}
-
 const value = computed(() => {
   const status = typeof props.value === 'string' ? props.value : props.value?.status
 
@@ -80,7 +24,10 @@ const value = computed(() => {
 })
 
 const color = computed(() => {
-  return typeof props.value === 'string' ? StatusVariants[props.value] : props.value?.variant
+  if (typeof props.value === 'string')
+    return StatusVariants[props.value] || VColors.Secondary
+
+  return props.value?.variant
 })
 
 const actualVariant = computed(() => {
@@ -92,6 +39,7 @@ const actualVariant = computed(() => {
   <VChip
     :color="color"
     :variant="actualVariant"
+    test-id="status-field"
     label
   >
     <span class="lh-normal">

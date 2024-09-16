@@ -618,8 +618,8 @@
   },
   "placeholder": {
     "minutesRange": {
-      "from": "from",
-      "to": "to"
+      "from": "From",
+      "to": "To"
     },
     "select": "Select",
     "login": "Enter your login",

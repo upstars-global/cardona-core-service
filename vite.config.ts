@@ -41,6 +41,7 @@ export default defineConfig({
 
     // Docs: https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin
     vuetify({
+      autoImport: true,
       styles: {
         configFile: 'src/assets/styles/variables/_vuetify.scss',
       },
@@ -90,8 +91,12 @@ export default defineConfig({
     }),
   ],
   test: {
-    globals: true,
-    includeSource: ['src/**/*.{js,ts,vue}'],
+    environment: 'jsdom',
+    setupFiles: './vitest.setup.ts',
+    css: false,
+    deps: {
+      inline: ['vuetify'],
+    },
   },
   define: { 'process.env': {} },
   resolve: {

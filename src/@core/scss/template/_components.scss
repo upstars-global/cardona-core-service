@@ -631,7 +631,7 @@ body .v-layout .v-application__wrap .v-expansion-panels {
   }
 
   &:not(.v-input--disabled) .v-switch__track {
-    border: 1px solid rgba(var(--v-border-color), var(--v-switch-opacity));
+    border: 1px solid rgba(var(--v-theme-grey-300));
     background-color: rgb(var(--v-theme-surface));
     opacity: 1;
   }
@@ -642,7 +642,7 @@ body .v-layout .v-application__wrap .v-expansion-panels {
     --v-selection-control-size: 1.125rem;
 
     .v-switch__thumb {
-      background: rgba(var(--v-theme-on-surface), var(--v-switch-opacity));
+      background:  rgba(var(--v-theme-grey-300));
       block-size: 0.75rem;
       inline-size: 0.75rem;
       transform: scale(1);
@@ -686,7 +686,7 @@ body .v-layout .v-application__wrap .v-expansion-panels {
 
     &.v-input--dirty {
       .v-selection-control--disabled {
-        opacity: var(--v-switch-checked-disabled-opacity);
+        opacity: 0.32;
       }
     }
   }
