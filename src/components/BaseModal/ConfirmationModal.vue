@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { type TranslateResult } from 'vue-i18n'
 import { ModalSizes, VColors, VVariants } from '../../@model/vuetify'
+import BaseModal from './index.vue'
 
 defineProps<{
   modalId: string
   title: TranslateResult
   description: TranslateResult
   actionBtnText: TranslateResult
+  isLoading: boolean
 }>()
 
 defineEmits<{
@@ -40,6 +42,7 @@ defineEmits<{
 
         <VBtn
           :color="VColors.Error"
+          :loading="isLoading"
           @click="$emit('confirmed', action.hide)"
         >
           {{ actionBtnText }}
