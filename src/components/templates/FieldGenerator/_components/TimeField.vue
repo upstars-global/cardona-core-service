@@ -31,7 +31,7 @@ const localModelValue = computed({
 const config = {
   enableTime: true,
   noCalendar: true,
-  dateFormat: 'H:i',
+  dateFormat: 'H:i:S',
   time_24hr: true,
   minuteIncrement: 1,
 }
