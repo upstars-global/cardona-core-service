@@ -4,12 +4,14 @@ import type { TimeBaseField } from '../../../../@model/templates/baseField'
 import { VSizes } from '../../../../@model/vuetify'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
 import { IconsList } from '../../../../@model/enums/icons'
+import AppTextField from 'cardona-core-service/src/@core/components/app-form-elements/AppTextField.vue'
 
 interface TimeFieldProps {
   modelValue?: string
   field: TimeBaseField
   disabled?: boolean
   size?: VSizes
+  errors?: boolean
 }
 
 const props = withDefaults(defineProps<TimeFieldProps>(), {
@@ -42,5 +44,6 @@ const config = {
     :placeholder="field.placeholder || field.label"
     :disabled="disabled"
     :config="config"
+    :isInvalid="errors"
   />
 </template>
