@@ -36,6 +36,7 @@ const config = {
   dateFormat: props.format,
   time_24hr: true,
   minuteIncrement: 1,
+  enableSeconds: props.format === 'H:i:s' || props.format === 'H:i:S',
 }
 </script>
 
