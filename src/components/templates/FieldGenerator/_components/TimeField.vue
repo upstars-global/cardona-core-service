@@ -12,11 +12,13 @@ interface TimeFieldProps {
   disabled?: boolean
   size?: VSizes
   errors?: boolean
+  format?: string
 }
 
 const props = withDefaults(defineProps<TimeFieldProps>(), {
   modelValue: '',
   size: VSizes.Medium,
+  format: 'H:i',
 })
 
 const emit = defineEmits<{
@@ -31,7 +33,7 @@ const localModelValue = computed({
 const config = {
   enableTime: true,
   noCalendar: true,
-  dateFormat: 'H:i:S',
+  dateFormat: props.format,
   time_24hr: true,
   minuteIncrement: 1,
 }
