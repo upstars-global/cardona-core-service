@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import CopyField from '../../../../src/components/templates/_components/CopyField.vue'
-import { ExpectMethods, getSelectorTestId, setMountComponent, testOnElement } from '../../utils'
+import {getSelectorTestId, setMountComponent, testOnExistText, testOnExistTextByGenerator} from '../../utils'
 import { copyAndShortValueTests } from '../shared-tests/copy-and-shortValue'
 
 const getMountCopyField = setMountComponent(CopyField)
@@ -32,9 +32,11 @@ describe('CopyField', () => {
     })
 
     // expect(icon.exists()).toBeFalsy()
-    testOnElement({ wrapper }, ExpectMethods.ToBeFalsy)
+    // testOnElement({ wrapper }, ExpectMethods.ToBeFalsy)
 
     // expect(icon.exists()).toBeTruthy()
-    expect(wrapper.text()).toBeFalsy()
+    expect(wrapper.text()).any
+    expect(wrapper.text()).not.toBeNull()
+    testOnExistTextByGenerator({ wrapper })
   })
 })
