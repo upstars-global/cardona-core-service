@@ -1,30 +1,32 @@
-import { describe, expect, it } from 'vitest'
+import { describe, it } from 'vitest'
+import type { VueWrapper } from '@vue/test-utils'
 import StatementField from '../../../../src/components/templates/_components/StatementField.vue'
-import { getSelectorTestId, setMountComponent } from '../../utils'
+import {
+  setMountComponent, testOnEqualTextValue,
+  testOnExistClass, testOnExistElement,
+} from '../../utils'
 import { VColors } from '../../../../src/@model/vuetify'
-import {t} from "../shared-tests/locales";
+import { t } from '../shared-tests/locales'
 
 const getMountStatementField = setMountComponent(StatementField)
 
+const getCurrentElement = (wrapper: VueWrapper) => ({ wrapper, testId: 'statement-badge' })
+
 describe('StatementField', () => {
+  const runTest = async (state: boolean, expectedText: string, expectedClass: string) => {
+    const wrapper = getMountStatementField({ state })
+    const currentElement = getCurrentElement(wrapper)
+
+    testOnExistElement(currentElement)
+    testOnEqualTextValue(currentElement, expectedText)
+    testOnExistClass(currentElement, expectedClass)
+  }
+
   it('Renders correctly when state is true', async () => {
-    const wrapper = getMountStatementField({ state: true })
-
-    const badge = wrapper.find(getSelectorTestId('statement-badge'))
-
-    expect(wrapper.vm.badgeVariant).toBe(VColors.Success)
-    expect(badge.exists()).toBe(true)
-    expect(badge.text()).toBe(t('common.yes'))
-    expect(badge.classes()).includes('text-success')
+    await runTest(true, t('common.yes'), `text-${VColors.Success}`)
   })
+
   it('Renders correctly when state is false', async () => {
-    const wrapper = getMountStatementField({ state: false })
-
-    const badge = wrapper.find(getSelectorTestId('statement-badge'))
-
-    expect(wrapper.vm.badgeVariant).toBe(VColors.Error)
-    expect(badge.exists()).toBe(true)
-    expect(badge.text()).toBe(t('common.no'))
-    expect(badge.classes()).includes('text-error')
+    await runTest(false, t('common.no'), `text-${VColors.Error}`)
   })
 })

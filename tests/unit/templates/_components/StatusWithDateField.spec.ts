@@ -1,7 +1,13 @@
-import { describe, expect, it } from 'vitest'
+import { describe, it } from 'vitest'
 
 import StatusWithDateField from '../../../../src/components/templates/_components/StatusWithDateField.vue'
-import { getComponentFromWrapper, setMountComponent } from '../../utils'
+
+import {
+  getComponentFromWrapper,
+  setMountComponent,
+  testOnEqualTextValue,
+  testOnExistClass,
+} from '../../utils'
 
 import { StatusVariants } from '../../../../src/@model/enums/statusField'
 import { fullDate } from '../../../../src/utils/date'
@@ -20,10 +26,12 @@ describe('StatusWithDateField', () => {
       },
     })
 
-    expect(getComponentFromWrapper(wrapper, 'StatusField').findComponent({ name: 'VChip' }).classes())
-      .includes(`text-${StatusVariants[statusKeys[0]]}`)
+    testOnExistClass({
+      wrapper: getComponentFromWrapper(wrapper, 'StatusField'),
+    }, `text-${StatusVariants[statusKeys[0]]}`)
 
-    expect(getComponentFromWrapper(wrapper, 'DateField').text())
-      .toBe(fullDate(new Date(testingDate)))
+    testOnEqualTextValue({
+      wrapper: getComponentFromWrapper(wrapper, 'DateField'),
+    }, fullDate(new Date(testingDate)))
   })
 })

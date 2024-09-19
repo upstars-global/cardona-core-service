@@ -21,25 +21,6 @@ export const findByTestId = (
 
 export const setWrapper = (wrapper: VueWrapper) => (testId: string): BaseWrapper<Node> => findByTestId(wrapper, testId)
 
-const getElementOfTesting = ({ wrapper, testId }: { wrapper: VueWrapper; testId?: string }) => {
-  if (!testId)
-    return wrapper
-
-  return findByTestId(wrapper, testId)
-}
-
-export const testOnExistText = ({
-  wrapper, testId,
-}: { wrapper: VueWrapper; testId?: string }, expectedValue: string) => {
-  return expect(getElementOfTesting({ wrapper, testId }).text()).toBe(expectedValue)
-}
-
-export const testOnExistClasses = ({
-  wrapper, testId,
-}: { wrapper: VueWrapper; testId?: string }, expectedValue: Array<string>) => {
-  return expect(getElementOfTesting({ wrapper, testId }).classes()).toEqual(expect.arrayContaining(expectedValue))
-}
-
 export enum WrapperProperties {
   Exists = 'exists',
   Text = 'text',
@@ -47,6 +28,7 @@ export enum WrapperProperties {
   Classes = 'classes',
   Attributes = 'attributes',
   IsVisible = 'isVisible',
+  Length = 'length',
 
   // THIS WILL NEED IN FUTURE
   // Props = 'props',
@@ -88,9 +70,10 @@ interface TestCaseGeneratorParams {
 interface GetWrapperElementPrams {
   wrapper: VueWrapper
   testId?: string
+  component?: string
 }
 
-const getWrapperElement = (
+export const getWrapperElement = (
   { wrapper, testId = '' }: GetWrapperElementPrams,
 ): BaseWrapper<Node> | VueWrapper => testId
   ? findByTestId(wrapper, testId)
@@ -110,7 +93,46 @@ const testCaseGenerator = ({
   }
 }
 
-export const testOnExistTextByGenerator = testCaseGenerator({
+export const getWrapperWithId = (params: GetWrapperElementPrams) => params
+
+export const testOnNotExistText = testCaseGenerator({
   property: WrapperProperties.Text,
   methodExpect: ExpectMethods.ToBeFalsy,
+})
+
+export const testOnExistTextValue = testCaseGenerator({
+  property: WrapperProperties.Text,
+  methodExpect: ExpectMethods.ToContain,
+})
+
+export const testOnNotExistTextValue = testCaseGenerator({
+  property: WrapperProperties.Text,
+  methodExpect: ExpectMethods.ToContain,
+  withNot: true,
+})
+
+export const testOnExistClass = testCaseGenerator({
+  property: WrapperProperties.Classes,
+  methodExpect: ExpectMethods.ToContain,
+})
+export const testOnNotExistClasses = testCaseGenerator({
+  property: WrapperProperties.Classes,
+  methodExpect: ExpectMethods.ToContain,
+  withNot: true,
+})
+
+export const testOnEqualTextValue = testCaseGenerator({
+  property: WrapperProperties.Text,
+  methodExpect: ExpectMethods.ToEqual,
+})
+
+export const testOnExistElement = testCaseGenerator({
+  property: WrapperProperties.Exists,
+  methodExpect: ExpectMethods.ToBeTruthy,
+})
+
+export const testOnNotExistElement = testCaseGenerator({
+  property: WrapperProperties.Exists,
+  methodExpect: ExpectMethods.ToBeTruthy,
+  withNot: true,
 })

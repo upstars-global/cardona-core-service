@@ -42,7 +42,7 @@ const actualVariant = computed(() => {
     data-test-id="status-field"
     label
   >
-    <span class="lh-normal">
+    <span class="lh-normal" data-test-id="status-field-value">
       {{ value }}
     </span>
   </VChip>

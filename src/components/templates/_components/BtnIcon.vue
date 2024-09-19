@@ -44,6 +44,7 @@ const variant = computed(
     class="btn-check-icon"
     :class="{ 'default-cursor': isStatic }"
     style="cursor: initial"
+    data-test-id="btn-icon-wrapper"
   >
     <VTooltip
       :location="tooltipPlacement"

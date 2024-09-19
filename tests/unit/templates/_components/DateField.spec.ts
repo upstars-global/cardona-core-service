@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest'
+import { describe, it } from 'vitest'
 import DateField from '../../../../src/components/templates/_components/DateField.vue'
-import { setMountComponent } from '../../utils'
+import { setMountComponent, testOnEqualTextValue } from '../../utils'
 import { fullDate } from '../../../../src/utils/date'
 import { getTestCases } from '../shared-tests/date-and-dateTimeField'
 
@@ -12,10 +12,9 @@ describe('DateField', () => {
       const wrapper = getMountDateField(props)
 
       if (expectedDate instanceof Date)
-        expect(wrapper.text()).toEqual(fullDate(expectedDate))
-
+        testOnEqualTextValue({ wrapper }, fullDate(expectedDate))
       else
-        expect(wrapper.text()).toBe(expectedDate)
+        testOnEqualTextValue({ wrapper }, expectedDate)
     })
   })
 })

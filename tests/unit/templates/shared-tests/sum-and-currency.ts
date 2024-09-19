@@ -1,5 +1,6 @@
-import { expect } from 'vitest'
+import type { VueWrapper } from '@vue/test-utils'
 import { getCurrency } from '../../../../src/directives/currency'
+import { testOnEqualTextValue } from '../../utils'
 import { t } from './locales'
 
 export interface SumAndCurrencyParams {
@@ -9,10 +10,10 @@ export interface SumAndCurrencyParams {
 }
 
 export const checkLabelAndValue = (
-  currentElement: (key: string) => unknown,
+  wrapper: VueWrapper,
   { key, label, value }: SumAndCurrencyParams,
 ) => {
-  expect(currentElement(label).text()).toBe(t(`component.sumPeriod.${key}`).trim())
-
-  expect(currentElement(`data-${key}`).text()).toBe(getCurrency(value))
+  console.log(label)
+  testOnEqualTextValue({ wrapper, testId: label }, t(`component.sumPeriod.${key}`).trim())
+  testOnEqualTextValue({ wrapper, testId: `data-${key}` }, getCurrency(value))
 }

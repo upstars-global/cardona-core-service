@@ -3,8 +3,8 @@ import { nextTick } from 'vue'
 import TransactionType from '../../../../src/components/templates/_components/TransactionType.vue'
 import {
   setMountComponent,
-  testOnExistClasses,
-  testOnExistText,
+  testOnEqualTextValue,
+  testOnExistClass,
 } from '../../utils'
 import { TransactionType as TransactionTypeList } from '../../../../src/@model/enums/playersTransactions'
 import { t } from '../shared-tests/locales'
@@ -35,10 +35,9 @@ describe('TransactionType', () => {
       })
 
       await nextTick()
-
-      testOnExistText({ wrapper, testId: 'transaction-type-text' }, expectedText)
-      testOnExistClasses({ wrapper, testId: 'transaction-type-icon' }, [expectedIconClass])
-      testOnExistClasses({ wrapper }, [expectedWrapperClass])
+      testOnEqualTextValue({ wrapper, testId: 'transaction-type-text' }, expectedText)
+      testOnExistClass({ wrapper, testId: 'transaction-type-icon' }, expectedIconClass)
+      testOnExistClass({ wrapper }, expectedWrapperClass)
     })
   })
 })

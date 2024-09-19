@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { describe, it } from 'vitest'
 import DateWithSecondsField from '../../../../src/components/templates/_components/DateWithSecondsField.vue'
 
-import { setMountComponent } from '../../utils'
+import { setMountComponent, testOnEqualTextValue } from '../../utils'
 
 import { fullDate, fullDateWithSeconds } from '../../../../src/utils/date'
 import { getTestCases } from '../shared-tests/date-and-dateTimeField'
@@ -14,9 +14,9 @@ describe('DateFieldWithSeconds', () => {
       const wrapper = getMountDateField(props)
 
       if (expectedDate instanceof Date)
-        expect(wrapper.text()).toEqual(fullDate(expectedDate))
-
-      else expect(wrapper.text()).toBe(expectedDate)
+        testOnEqualTextValue({ wrapper }, fullDate(expectedDate))
+      else
+        testOnEqualTextValue({ wrapper }, expectedDate)
     })
   })
 })
