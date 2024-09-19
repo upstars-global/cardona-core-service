@@ -1,14 +1,12 @@
 import { describe, it } from 'vitest'
 import StatusField from '../../../../src/components/templates/_components/StatusField.vue'
 import {
-  getWrapperWithId,
   setMountComponent,
-  testOnEqualTextValue,
-  testOnExistClass,
 } from '../../utils'
 
 import { StatusVariants } from '../../../../src/@model/enums/statusField'
 import { VColors, VVariants } from '../../../../src/@model/vuetify'
+import { getWrapperWithId, testOn } from '../shared-tests/test-case-generator'
 
 const getMountStatusField = setMountComponent(StatusField)
 
@@ -21,7 +19,7 @@ describe('StatementField', () => {
     it(`Renders correctly color for status ${value}`, () => {
       const wrapper = getMountStatusField({ value })
 
-      testOnExistClass({ wrapper, testId: testIdStatusField }, `text-${StatusVariants[value]}`)
+      testOn.existClass({ wrapper, testId: testIdStatusField }, `text-${StatusVariants[value]}`)
     })
   })
 
@@ -33,9 +31,9 @@ describe('StatementField', () => {
 
     const currentElement = getWrapperWithId({ wrapper, testId: testIdStatusField })
 
-    testOnEqualTextValue({ wrapper }, 'Unknown status')
-    testOnExistClass(currentElement, `text-${VColors.Secondary}`)
-    testOnExistClass(currentElement, `v-chip--variant-${VVariants.Outlined}`)
+    testOn.equalTextValue({ wrapper }, 'Unknown status')
+    testOn.existClass(currentElement, `text-${VColors.Secondary}`)
+    testOn.existClass(currentElement, `v-chip--variant-${VVariants.Outlined}`)
   })
 
   it('Uses the default variant when no variant is provided', () => {
@@ -43,7 +41,7 @@ describe('StatementField', () => {
       value: '',
     })
 
-    testOnExistClass({ wrapper, testId: testIdStatusField }, `v-chip--variant-${VVariants.Tonal}`)
+    testOn.existClass({ wrapper, testId: testIdStatusField }, `v-chip--variant-${VVariants.Tonal}`)
   })
 
   it('Renders a custom status and variant when passed as object', () => {
@@ -56,8 +54,8 @@ describe('StatementField', () => {
 
     const currentElement = getWrapperWithId({ wrapper, testId: testIdStatusField })
 
-    testOnEqualTextValue({ wrapper }, 'Custom status')
-    testOnExistClass(currentElement, `bg-${variant}`)
-    testOnExistClass(currentElement, `v-chip--variant-${VVariants.Flat}`)
+    testOn.equalTextValue({ wrapper }, 'Custom status')
+    testOn.existClass(currentElement, `bg-${variant}`)
+    testOn.existClass(currentElement, `v-chip--variant-${VVariants.Flat}`)
   })
 })

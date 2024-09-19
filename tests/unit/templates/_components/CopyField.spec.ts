@@ -2,10 +2,10 @@ import { describe, it } from 'vitest'
 import CopyField from '../../../../src/components/templates/_components/CopyField.vue'
 import {
   getSelectorTestId,
-  setMountComponent, testOnEqualTextValue, testOnExistElement,
-  testOnNotExistText,
+  setMountComponent,
 } from '../../utils'
 import { copyAndShortValueTests } from '../shared-tests/copy-and-shortValue'
+import { testOn } from '../shared-tests/test-case-generator'
 
 const getMountCopyField = setMountComponent(CopyField)
 
@@ -24,8 +24,8 @@ describe('CopyField', () => {
       value,
     })
 
-    testOnEqualTextValue({ wrapper }, value)
-    testOnExistElement({ wrapper, testId: 'copy-field-icon' })
+    testOn.equalTextValue({ wrapper }, value)
+    testOn.existElement({ wrapper, testId: 'copy-field-icon' })
   })
 
   it('Not renders the value and icon when exist value', () => {
@@ -33,6 +33,6 @@ describe('CopyField', () => {
       value: '',
     })
 
-    testOnNotExistText({ wrapper })
+    testOn.notExistText({ wrapper })
   })
 })

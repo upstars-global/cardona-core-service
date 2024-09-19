@@ -4,13 +4,11 @@ import InnerBlankLink from '../../../../src/components/templates/_components/Inn
 import {
   getWrapperElement,
   setMountComponent,
-  testOnEqualTextValue,
-  testOnExistClass,
-  testOnExistElement,
 } from '../../utils'
 import { VSizes } from '../../../../src/@model/vuetify'
 import { copyToClipboard } from '../../../../src/helpers/clipboard'
 import { IconsList } from '../../../../src/@model/enums/icons'
+import { testOn } from '../shared-tests/test-case-generator'
 
 const mockRouter = {
   resolve: vi.fn(),
@@ -37,20 +35,20 @@ describe('InnerBlankLink', () => {
   it('Renders correctly with default props', () => {
     const wrapper = getMountInnerBlankLink({ value })
 
-    testOnEqualTextValue({ wrapper }, value.title)
-    testOnExistElement({ wrapper, testId: testIdIconLink })
+    testOn.equalTextValue({ wrapper }, value.title)
+    testOn.existElement({ wrapper, testId: testIdIconLink })
   })
 
   it('Applies correct size class when size is large', () => {
     const wrapper = getMountInnerBlankLink({ value, size: VSizes.Large })
 
-    testOnExistClass({ wrapper }, 'text-h5')
+    testOn.existClass({ wrapper }, 'text-h5')
   })
 
   it('Applies correct size class when size is small', () => {
     const wrapper = getMountInnerBlankLink({ value, size: VSizes.Small })
 
-    testOnExistClass({ wrapper }, 'text-body-2')
+    testOn.existClass({ wrapper }, 'text-body-2')
   })
 
   it('Copies text to clipboard when copy icon is clicked', async () => {
@@ -64,8 +62,8 @@ describe('InnerBlankLink', () => {
   it('Does not render copy icon when copyElement is not provided', () => {
     const wrapper = getMountInnerBlankLink({ value })
 
-    testOnExistElement({ wrapper, testId: testIdIconLink })
-    testOnExistClass({ wrapper, testId: testIdIconLink }, IconsList.ExternalLinkIcon)
+    testOn.existElement({ wrapper, testId: testIdIconLink })
+    testOn.existClass({ wrapper, testId: testIdIconLink }, IconsList.ExternalLinkIcon)
   })
 
   it('Opens a new tab when link icon is clicked', async () => {

@@ -3,12 +3,11 @@ import { nextTick } from 'vue'
 import TransactionType from '../../../../src/components/templates/_components/TransactionType.vue'
 import {
   setMountComponent,
-  testOnEqualTextValue,
-  testOnExistClass,
 } from '../../utils'
 import { TransactionType as TransactionTypeList } from '../../../../src/@model/enums/playersTransactions'
 import { t } from '../shared-tests/locales'
 import { IconsList } from '../../../../src/@model/enums/icons'
+import { testOn } from '../shared-tests/test-case-generator'
 
 const getMountTransactionType = setMountComponent(TransactionType)
 
@@ -35,9 +34,9 @@ describe('TransactionType', () => {
       })
 
       await nextTick()
-      testOnEqualTextValue({ wrapper, testId: 'transaction-type-text' }, expectedText)
-      testOnExistClass({ wrapper, testId: 'transaction-type-icon' }, expectedIconClass)
-      testOnExistClass({ wrapper }, expectedWrapperClass)
+      testOn.equalTextValue({ wrapper, testId: 'transaction-type-text' }, expectedText)
+      testOn.existClass({ wrapper, testId: 'transaction-type-icon' }, expectedIconClass)
+      testOn.existClass({ wrapper }, expectedWrapperClass)
     })
   })
 })

@@ -2,11 +2,10 @@ import { describe, it } from 'vitest'
 import SumPeriod from '../../../../src/components/templates/_components/SumPeriod.vue'
 import {
   setMountComponent,
-  testOnEqualTextValue,
-  testOnNotExistElement,
 } from '../../utils'
 import type { SumAndCurrencyParams } from '../shared-tests/sum-and-currency'
 import { checkLabelAndValue } from '../shared-tests/sum-and-currency'
+import { testOn } from '../shared-tests/test-case-generator'
 
 const getMountSumPeriod = setMountComponent(SumPeriod)
 
@@ -34,7 +33,7 @@ describe('SumPeriod', () => {
     const wrapper = getMountSumPeriod({ data })
 
     testCases.forEach(({ key }) => {
-      testOnEqualTextValue({ wrapper, testId: `data-${key}-currency` }, data.currency)
+      testOn.equalTextValue({ wrapper, testId: `data-${key}-currency` }, data.currency)
     })
   })
 
@@ -47,12 +46,12 @@ describe('SumPeriod', () => {
     })
 
     testCases.forEach(({ key }) => {
-      testOnEqualTextValue({ wrapper, testId: `data-${key}-currency` }, '')
+      testOn.equalTextValue({ wrapper, testId: `data-${key}-currency` }, '')
     })
   })
   it('Does not render the remainder section when remainder is not provided', () => {
     const wrapper = getMountSumPeriod({ data })
 
-    testOnNotExistElement({ wrapper, testId: 'data-remainder' })
+    testOn.notExistElement({ wrapper, testId: 'data-remainder' })
   })
 })

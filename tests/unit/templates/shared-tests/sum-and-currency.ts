@@ -1,7 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { getCurrency } from '../../../../src/directives/currency'
-import { testOnEqualTextValue } from '../../utils'
 import { t } from './locales'
+import { testOn } from './test-case-generator'
 
 export interface SumAndCurrencyParams {
   key: string
@@ -13,7 +13,6 @@ export const checkLabelAndValue = (
   wrapper: VueWrapper,
   { key, label, value }: SumAndCurrencyParams,
 ) => {
-  console.log(label)
-  testOnEqualTextValue({ wrapper, testId: label }, t(`component.sumPeriod.${key}`).trim())
-  testOnEqualTextValue({ wrapper, testId: `data-${key}` }, getCurrency(value))
+  testOn.equalTextValue({ wrapper, testId: label }, t(`component.sumPeriod.${key}`).trim())
+  testOn.equalTextValue({ wrapper, testId: `data-${key}` }, getCurrency(value))
 }

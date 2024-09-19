@@ -3,7 +3,7 @@
 import { expect, it } from 'vitest'
 import { copyToClipboard } from '../../../../src/helpers/clipboard'
 import { getShortString } from '../../../../src/helpers'
-import { testOnExistTextValue } from '../../utils'
+import { testOn } from './test-case-generator'
 
 interface CopyAndShortValueTestsConfig {
   value: string
@@ -17,7 +17,7 @@ export const copyAndShortValueTests = (
   it(`renders correctly with value in ${componentName}`, () => {
     const wrapper = getMountComponent({ value })
 
-    testOnExistTextValue({ wrapper }, value)
+    testOn.existTextValue({ wrapper }, value)
   })
 
   it(`renders the short value when isShort is true in ${componentName}`, () => {
@@ -26,7 +26,7 @@ export const copyAndShortValueTests = (
       isShort: true,
     })
 
-    testOnExistTextValue({ wrapper }, getShortString(value))
+    testOn.existTextValue({ wrapper }, getShortString(value))
   })
 
   it(`calls copyToClipboard with the correct value when clicked in ${componentName}`, async () => {

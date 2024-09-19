@@ -7,9 +7,8 @@ import BtnIcon from '../../../../src/components/templates/_components/BtnIcon.vu
 import {
   getSelectorTestId,
   setMountComponent,
-  testOnExistClass,
-  testOnNotExistClasses,
 } from '../../utils'
+import { testOn } from '../shared-tests/test-case-generator'
 
 const getMountBtnIcon = setMountComponent(BtnIcon)
 
@@ -32,11 +31,11 @@ describe('BtnIcon', () => {
 
     const testId = 'button-icon__body'
 
-    testOnExistClass({ wrapper, testId }, `text-${VColors.Success}`)
+    testOn.existClass({ wrapper, testId }, `text-${VColors.Success}`)
 
     await wrapper.setProps({ value: false })
 
-    testOnExistClass({ wrapper, testId }, `text-${VColors.Error}`)
+    testOn.existClass({ wrapper, testId }, `text-${VColors.Error}`)
   })
 
   it('should apply correct classes based on isStatic prop', async () => {
@@ -46,13 +45,13 @@ describe('BtnIcon', () => {
       icon: IconsList.CheckIcon,
     })
 
-    testOnExistClass({ wrapper }, 'default-cursor')
+    testOn.existClass({ wrapper }, 'default-cursor')
 
     await wrapper.setProps({ isStatic: false })
 
     await nextTick()
 
-    testOnNotExistClasses({ wrapper }, 'default-cursor')
+    testOn.notExistClasses({ wrapper }, 'default-cursor')
   })
 
   it.each([

@@ -2,12 +2,11 @@ import { describe, it } from 'vitest'
 import SumAndCurrency from '../../../../src/components/templates/_components/SumAndCurrency.vue'
 import {
   setMountComponent,
-  testOnEqualTextValue,
-  testOnExistTextValue,
 } from '../../utils'
 import { getCurrency } from '../../../../src/directives/currency'
 import { t } from '../shared-tests/locales'
 import { Currency } from '../../../../src/@model/enums/currency'
+import { testOn } from '../shared-tests/test-case-generator'
 
 const getMountSumAndCurrency = setMountComponent(SumAndCurrency)
 
@@ -20,19 +19,19 @@ describe('SumAndCurrency', () => {
   it('Renders the correct amount and currency', () => {
     const wrapper = getMountSumAndCurrency({ data })
 
-    testOnEqualTextValue({ wrapper }, `${getCurrency(data.amount)}${Currency.USD}`)
+    testOn.equalTextValue({ wrapper }, `${getCurrency(data.amount)}${Currency.USD}`)
   })
 
   it('Renders the correct element with empty amount', () => {
     const wrapper = getMountSumAndCurrency({ data: {} })
 
-    testOnEqualTextValue({ wrapper }, '0')
+    testOn.equalTextValue({ wrapper }, '0')
   })
 
   it('Renders the remainder when it is present', () => {
     const wrapper = getMountSumAndCurrency({ data: { ...data, remainder: 50 } })
 
-    testOnEqualTextValue({ wrapper, testId: 'data-remainder-value' }, getCurrency(50))
-    testOnExistTextValue({ wrapper, testId: 'data-remainder-label' }, t('common.remainder'))
+    testOn.equalTextValue({ wrapper, testId: 'data-remainder-value' }, getCurrency(50))
+    testOn.existTextValue({ wrapper, testId: 'data-remainder-label' }, t('common.remainder'))
   })
 })

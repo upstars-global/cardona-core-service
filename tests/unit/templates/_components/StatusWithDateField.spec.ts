@@ -5,13 +5,12 @@ import StatusWithDateField from '../../../../src/components/templates/_component
 import {
   getComponentFromWrapper,
   setMountComponent,
-  testOnEqualTextValue,
-  testOnExistClass,
 } from '../../utils'
 
 import { StatusVariants } from '../../../../src/@model/enums/statusField'
 import { fullDate } from '../../../../src/utils/date'
 import { testingDate } from '../shared-tests/date-and-dateTimeField'
+import { testOn } from '../shared-tests/test-case-generator'
 
 const getMountStatusWithDateField = setMountComponent(StatusWithDateField)
 
@@ -26,11 +25,11 @@ describe('StatusWithDateField', () => {
       },
     })
 
-    testOnExistClass({
+    testOn.existClass({
       wrapper: getComponentFromWrapper(wrapper, 'StatusField'),
     }, `text-${StatusVariants[statusKeys[0]]}`)
 
-    testOnEqualTextValue({
+    testOn.equalTextValue({
       wrapper: getComponentFromWrapper(wrapper, 'DateField'),
     }, fullDate(new Date(testingDate)))
   })
