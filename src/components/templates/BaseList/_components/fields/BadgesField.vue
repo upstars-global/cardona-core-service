@@ -33,6 +33,7 @@ const showListBadges = computed(() =>
         <VIcon
           v-if="value.icon"
           :icon="value.icon"
+          :size="value.iconSize || 16"
         />
         {{ value.name }}
       </slot>
