@@ -4,7 +4,6 @@ import type { TimeBaseField } from '../../../../@model/templates/baseField'
 import { VSizes } from '../../../../@model/vuetify'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
 import { IconsList } from '../../../../@model/enums/icons'
-import AppTextField from 'cardona-core-service/src/@core/components/app-form-elements/AppTextField.vue'
 
 interface TimeFieldProps {
   modelValue?: string
@@ -37,6 +36,7 @@ const config = {
   time_24hr: true,
   minuteIncrement: 1,
   enableSeconds: props.format === 'H:i:s' || props.format === 'H:i:S',
+  static: true,
 }
 </script>
 
@@ -47,6 +47,17 @@ const config = {
     :placeholder="field.placeholder || field.label"
     :disabled="disabled"
     :config="config"
-    :isInvalid="errors"
+    :is-invalid="errors"
+    :class="{ static: config.static }"
   />
 </template>
+
+<style lang="scss">
+.static .flatpickr-wrapper {
+  position: static;
+
+  .flatpickr-input {
+    margin: 0 5px;
+  }
+}
+</style>
