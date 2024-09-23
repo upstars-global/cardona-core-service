@@ -156,6 +156,7 @@ defineExpose({ refFlatPicker })
         'v-text-field--prefixed': props.prefix,
         'v-text-field--suffixed': props.suffix,
         'v-text-field--flush-details': ['plain', 'underlined'].includes(props.variant),
+        'v-input--error': isInvalid, // TODO: правка для задачи https://upstars.atlassian.net/browse/BAC-3578 error
       }, props.class]"
       class="position-relative v-text-field"
       :style="props.style"
