@@ -68,7 +68,7 @@ const onCloseModal = (hide: Function) => {
         />
       </VCardText>
       <hr>
-      <VCardText class="d-flex justify-end gap-3 flex-wrap pb-4">
+      <VCardText class="d-flex justify-end gap-3 flex-wrap pt-0 pb-4">
         <VBtn
           :color="cancelBtnColor"
           :variant="cancelBtnVariant"
