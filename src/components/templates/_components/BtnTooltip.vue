@@ -11,6 +11,7 @@ interface Props {
   variant?: VVariants
   appendIcon?: IconsList
   prependIcon?: IconsList
+  disabled?: boolean
   label?: string
 }
 
@@ -35,6 +36,7 @@ defineEmits<Emits>()
         :size="size"
         :color="color"
         v-bind="props"
+        :disabled="disabled"
         @click="$emit('click')"
       >
         <slot>
