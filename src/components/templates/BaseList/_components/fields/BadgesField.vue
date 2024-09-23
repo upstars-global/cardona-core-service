@@ -27,9 +27,15 @@ const showListBadges = computed(() =>
       v-for="(value, index) in showListBadges"
       :key="index"
       label
-      :color="VColors.Secondary"
+      :color="value.color || VColors.Secondary"
     >
       <slot :value="value">
+        <VIcon
+          v-if="value.icon"
+          :icon="value.icon"
+          :size="value.iconSize || 16"
+          class="mr-1"
+        />
         {{ value.name }}
       </slot>
 
