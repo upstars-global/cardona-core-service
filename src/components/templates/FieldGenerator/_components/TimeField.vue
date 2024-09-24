@@ -53,11 +53,16 @@ const config = {
 </template>
 
 <style lang="scss">
-.static .flatpickr-wrapper {
-  position: static;
+.static {
+  z-index: 1;
+  position: relative;
 
-  .flatpickr-input {
-    margin: 0 5px;
+  .flatpickr-wrapper {
+    position: static;
+
+    .flatpickr-input {
+      margin: 0 5px;
+    }
   }
 }
 </style>

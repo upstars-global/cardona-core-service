@@ -12,6 +12,7 @@ interface ISelectTransformFieldOptions extends ITransformFieldOptions {
 export interface ISelectBaseField<T> extends IASelectBaseField<T> {
   readonly value?: T | SelectValue | null
   readonly clearable?: boolean
+  readonly appendToBody?: boolean
 }
 
 export class SelectBaseField<T extends OptionsItem = OptionsItem>
@@ -20,11 +21,13 @@ export class SelectBaseField<T extends OptionsItem = OptionsItem>
   readonly component: Component = markRaw(SelectField)
   protected _value?: T | SelectValue | null
   readonly clearable: boolean
+  readonly appendToBody: boolean
 
   constructor(field: ISelectBaseField<T>) {
     super(field)
     this._value = field.value
     this.clearable = field.clearable ?? true
+    this.appendToBody = field.appendToBody ?? true
   }
 
   transformField(options: ISelectTransformFieldOptions = {}) {

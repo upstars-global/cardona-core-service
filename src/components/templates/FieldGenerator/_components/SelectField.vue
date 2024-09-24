@@ -21,6 +21,7 @@ const props = withDefaults(
     modelValue: '',
     size: '',
     placeholder: i18n.t('placeholder.choose._') as string,
+    appendToBody: true,
   })
 
 const emits = defineEmits<{
@@ -100,7 +101,7 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :class="selectClasses"
       :disabled="disabled"
       :clearable="field.clearable"
-      append-to-body
+      :append-to-body="field.appendToBody"
       :calculate-position="withPopper(field.calculatePositionCb)"
       @search="onSearch"
       @open="toggleDropDownState"
