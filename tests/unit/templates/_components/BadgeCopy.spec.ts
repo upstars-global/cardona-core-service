@@ -1,8 +1,9 @@
-import { describe, expect, it } from 'vitest'
+import { describe, it } from 'vitest'
 import BadgeCopy from '../../../../src/components/templates/_components/BadgeCopy.vue'
 import { setMountComponent } from '../../utils'
 import { copyAndShortValueTests } from '../shared-tests/copy-and-shortValue'
 import { getShortString } from '../../../../src/helpers'
+import { testOn } from '../shared-tests/test-case-generator'
 
 const getMountBadgeCopy = setMountComponent(BadgeCopy)
 
@@ -23,7 +24,7 @@ describe('BadgeCopy', () => {
       maxLengthForShort: 8,
     })
 
-    expect(wrapper.text()).toContain(getShortString(value))
+    testOn.existTextValue({ wrapper }, getShortString(value))
   })
 
   it('Does not render the label when isViewLabel is false', () => {
@@ -32,12 +33,12 @@ describe('BadgeCopy', () => {
       isViewLabel: false,
     })
 
-    expect(wrapper.text()).not.toContain('ID:')
+    testOn.notExistTextValue({ wrapper }, 'ID:')
   })
 
   it('Renders "-" when value is falsy', () => {
     const wrapper = getMountBadgeCopy({ value: '' })
 
-    expect(wrapper.text()).toBe('-')
+    testOn.equalTextValue({ wrapper }, '-')
   })
 })

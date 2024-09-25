@@ -26,15 +26,15 @@ const textColorClass = computed(() =>
   <div
     :class="textColorClass"
     class="transaction-type"
-    test-id="transaction-type"
+    data-test-id="transaction-type"
   >
-    <span class="mr-1" test-id="transaction-type-text">
+    <span class="mr-1" data-test-id="transaction-type-text">
       {{ text }}
     </span>
     <VIcon
       :icon="iconName"
       size="16"
-      test-id="transaction-type-icon"
+      data-test-id="transaction-type-icon"
     />
   </div>
 </template>

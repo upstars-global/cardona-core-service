@@ -39,10 +39,10 @@ const actualVariant = computed(() => {
   <VChip
     :color="color"
     :variant="actualVariant"
-    test-id="status-field"
+    data-test-id="status-field"
     label
   >
-    <span class="lh-normal">
+    <span class="lh-normal" data-test-id="status-field-value">
       {{ value }}
     </span>
   </VChip>

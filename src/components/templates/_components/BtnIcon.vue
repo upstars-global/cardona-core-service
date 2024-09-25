@@ -44,13 +44,14 @@ const variant = computed(
     class="btn-check-icon"
     :class="{ 'default-cursor': isStatic }"
     style="cursor: initial"
+    data-test-id="btn-icon-wrapper"
   >
     <VTooltip
       :location="tooltipPlacement"
     >
       <template #activator="{ props }">
         <VBtn
-          test-id="button-icon__body"
+          data-test-id="button-icon__body"
           :class="{
             'v-btn--variant-tonal': !isStatic,
           }"
