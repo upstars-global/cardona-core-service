@@ -19,14 +19,14 @@ const labelValue = computed(() => (props.isShort ? getShortString(props.value) :
     class="text-break copy-field d-flex align-center"
   >
     <slot :label="labelValue">
-      <span test-id="copy-field-value">
+      <span data-test-id="copy-field-value">
         {{ labelValue }}
       </span>
     </slot>
 
     <VIcon
       :icon="IconsList.CopyIcon"
-      test-id="copy-field-icon"
+      data-test-id="copy-field-icon"
       class="cursor-pointer ml-1 text-color-mute"
       size="16"
       @click.stop="copyToClipboard(value)"

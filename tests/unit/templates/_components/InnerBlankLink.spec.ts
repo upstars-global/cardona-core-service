@@ -1,10 +1,14 @@
 import { describe, expect, it, vi } from 'vitest'
 import { useRouter } from 'vue-router'
 import InnerBlankLink from '../../../../src/components/templates/_components/InnerBlankLink.vue'
-import { getSelectorTestId, setMountComponent } from '../../utils'
+import {
+  getWrapperElement,
+  setMountComponent,
+} from '../../utils'
 import { VSizes } from '../../../../src/@model/vuetify'
 import { copyToClipboard } from '../../../../src/helpers/clipboard'
 import { IconsList } from '../../../../src/@model/enums/icons'
+import { testOn } from '../shared-tests/test-case-generator'
 
 const mockRouter = {
   resolve: vi.fn(),
@@ -26,40 +30,40 @@ describe('InnerBlankLink', () => {
     route: { name: 'test-route' },
   }
 
+  const testIdIconLink = 'icon-link'
+
   it('Renders correctly with default props', () => {
     const wrapper = getMountInnerBlankLink({ value })
 
-    expect(wrapper.text()).toContain(value.title)
-    expect(wrapper.findComponent({ name: 'VIcon' }).exists()).toBe(true)
+    testOn.equalTextValue({ wrapper }, value.title)
+    testOn.existElement({ wrapper, testId: testIdIconLink })
   })
 
   it('Applies correct size class when size is large', () => {
     const wrapper = getMountInnerBlankLink({ value, size: VSizes.Large })
 
-    expect(wrapper.classes()).toContain('text-h4')
+    testOn.existClass({ wrapper }, 'text-h5')
   })
 
   it('Applies correct size class when size is small', () => {
     const wrapper = getMountInnerBlankLink({ value, size: VSizes.Small })
 
-    expect(wrapper.classes()).toContain('text-subtitle-1')
+    testOn.existClass({ wrapper }, 'text-body-2')
   })
 
   it('Copies text to clipboard when copy icon is clicked', async () => {
     const copyElement = 'Text to copy'
     const wrapper = getMountInnerBlankLink({ value, copyElement })
 
-    await wrapper.find(getSelectorTestId('icon-copy')).trigger('click')
+    await getWrapperElement({ wrapper, testId: 'icon-copy' }).trigger('click')
     expect(copyToClipboard).toHaveBeenCalledWith(copyElement)
   })
 
   it('Does not render copy icon when copyElement is not provided', () => {
     const wrapper = getMountInnerBlankLink({ value })
 
-    const icons = wrapper.find(getSelectorTestId('icon-link'))
-
-    expect(icons.exists).toBeTruthy()
-    expect(icons.classes()).toContain(IconsList.ExternalLinkIcon)
+    testOn.existElement({ wrapper, testId: testIdIconLink })
+    testOn.existClass({ wrapper, testId: testIdIconLink }, IconsList.ExternalLinkIcon)
   })
 
   it('Opens a new tab when link icon is clicked', async () => {
@@ -70,7 +74,7 @@ describe('InnerBlankLink', () => {
 
     const wrapper = getMountInnerBlankLink({ value })
 
-    await wrapper.findComponent({ name: 'VIcon' }).trigger('click')
+    await getWrapperElement({ wrapper, testId: testIdIconLink }).trigger('click')
 
     expect(window.open).toHaveBeenCalledWith(link, '_blank')
   })

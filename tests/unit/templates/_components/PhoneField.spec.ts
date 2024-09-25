@@ -1,7 +1,8 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, it, vi } from 'vitest'
 import PhoneField from '../../../../src/components/templates/_components/PhoneField.vue'
-import { getSelectorTestId, setMountComponent } from '../../utils'
+import { setMountComponent } from '../../utils'
 import { allPhoneCodesWithFlags } from '../../../../src/helpers/countries'
+import { testOn } from '../shared-tests/test-case-generator'
 
 vi.mock('vue-cleave-component', () => ({
   default: {},
@@ -16,17 +17,17 @@ const props = {
   errors: false,
 }
 
+const testId = 'phone-flag'
+
 describe('PhoneField', () => {
   it('Renders correctly flags by number phone', () => {
     const wrapper = getMountPhoneField(props)
 
-    const flagElement = wrapper.find(getSelectorTestId('phone-flag'))
-
-    expect(flagElement.exists()).toBe(true)
+    testOn.existElement({ wrapper, testId })
 
     const expectedFlag = allPhoneCodesWithFlags
       .find(({ phone }) => props.value.substring(0, 4).replace('+', '') === phone)?.flag
 
-    expect(flagElement.text()).toBe(expectedFlag)
+    testOn.equalTextValue({ wrapper, testId }, expectedFlag)
   })
 })

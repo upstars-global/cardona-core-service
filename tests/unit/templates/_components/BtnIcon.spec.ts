@@ -1,10 +1,14 @@
+import { nextTick } from 'vue'
 import { describe, expect, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { nextTick } from 'vue'
 import { IconsList } from '../../../../src/@model/enums/icons'
 import { VColors } from '../../../../src/@model/vuetify'
 import BtnIcon from '../../../../src/components/templates/_components/BtnIcon.vue'
-import { getSelectorTestId, setMountComponent } from '../../utils'
+import {
+  getSelectorTestId,
+  setMountComponent,
+} from '../../utils'
+import { testOn } from '../shared-tests/test-case-generator'
 
 const getMountBtnIcon = setMountComponent(BtnIcon)
 
@@ -25,13 +29,13 @@ describe('BtnIcon', () => {
       icon: IconsList.CheckIcon,
     })
 
-    expect(false).toBe(false)
+    const testId = 'button-icon__body'
 
-    expect(wrapper.vm.stateColor).toBe(VColors.Success)
+    testOn.existClass({ wrapper, testId }, `text-${VColors.Success}`)
 
     await wrapper.setProps({ value: false })
 
-    expect(wrapper.vm.stateColor).toBe(VColors.Error)
+    testOn.existClass({ wrapper, testId }, `text-${VColors.Error}`)
   })
 
   it('should apply correct classes based on isStatic prop', async () => {
@@ -41,13 +45,13 @@ describe('BtnIcon', () => {
       icon: IconsList.CheckIcon,
     })
 
-    expect(wrapper.find('div').classes()).toContain('default-cursor')
+    testOn.existClass({ wrapper }, 'default-cursor')
 
     await wrapper.setProps({ isStatic: false })
 
     await nextTick()
 
-    expect(wrapper.find('div').classes()).not.toContain('default-cursor')
+    testOn.notExistClasses({ wrapper }, 'default-cursor')
   })
 
   it.each([
