@@ -1,23 +1,25 @@
-import { describe, expect, it } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
+import { describe, it } from 'vitest'
 import StatusField from '../../../../src/components/templates/_components/StatusField.vue'
-import { getSelectorTestId, setMountComponent } from '../../utils'
+import {
+  setMountComponent,
+} from '../../utils'
 
 import { StatusVariants } from '../../../../src/@model/enums/statusField'
-import { VVariants } from '../../../../src/@model/vuetify'
+import { VColors, VVariants } from '../../../../src/@model/vuetify'
+import { getWrapperWithId, testOn } from '../shared-tests/test-case-generator'
 
 const getMountStatusField = setMountComponent(StatusField)
 
 const statusKeys = Object.keys(StatusVariants) as Array<keyof typeof StatusVariants>
 
-const getChipFromWrapper = (wrapper: VueWrapper) => wrapper.findComponent({ name: 'VChip' })
+const testIdStatusField = 'status-field'
 
 describe('StatementField', () => {
   statusKeys.forEach(value => {
     it(`Renders correctly color for status ${value}`, () => {
       const wrapper = getMountStatusField({ value })
 
-      expect(wrapper.find(getSelectorTestId('status-field')).classes()).includes(`text-${StatusVariants[value]}`)
+      testOn.existClass({ wrapper, testId: testIdStatusField }, `text-${StatusVariants[value]}`)
     })
   })
 
@@ -27,12 +29,11 @@ describe('StatementField', () => {
       variant: VVariants.Outlined,
     })
 
-    expect(wrapper.text()).toBe('Unknown status')
+    const currentElement = getWrapperWithId({ wrapper, testId: testIdStatusField })
 
-    const chip = getChipFromWrapper(wrapper)
-
-    expect(chip.props('color')).toBeUndefined()
-    expect(chip.props('variant')).toBe(VVariants.Outlined)
+    testOn.equalTextValue({ wrapper }, 'Unknown status')
+    testOn.existClass(currentElement, `text-${VColors.Secondary}`)
+    testOn.existClass(currentElement, `v-chip--variant-${VVariants.Outlined}`)
   })
 
   it('Uses the default variant when no variant is provided', () => {
@@ -40,7 +41,7 @@ describe('StatementField', () => {
       value: '',
     })
 
-    expect(getChipFromWrapper(wrapper).props('variant')).toBe(VVariants.Tonal)
+    testOn.existClass({ wrapper, testId: testIdStatusField }, `v-chip--variant-${VVariants.Tonal}`)
   })
 
   it('Renders a custom status and variant when passed as object', () => {
@@ -51,11 +52,10 @@ describe('StatementField', () => {
       variant: VVariants.Flat,
     })
 
-    expect(wrapper.text()).toBe('Custom status')
+    const currentElement = getWrapperWithId({ wrapper, testId: testIdStatusField })
 
-    const chip = getChipFromWrapper(wrapper)
-
-    expect(chip.props('color')).toBe(variant)
-    expect(chip.props('variant')).toBe(VVariants.Flat)
+    testOn.equalTextValue({ wrapper }, 'Custom status')
+    testOn.existClass(currentElement, `bg-${variant}`)
+    testOn.existClass(currentElement, `v-chip--variant-${VVariants.Flat}`)
   })
 })

@@ -1,8 +1,11 @@
-import { describe, expect, it } from 'vitest'
+import { describe, it } from 'vitest'
 import SumPeriod from '../../../../src/components/templates/_components/SumPeriod.vue'
-import { setMountComponent, setWrapper } from '../../utils'
+import {
+  setMountComponent,
+} from '../../utils'
 import type { SumAndCurrencyParams } from '../shared-tests/sum-and-currency'
 import { checkLabelAndValue } from '../shared-tests/sum-and-currency'
+import { testOn } from '../shared-tests/test-case-generator'
 
 const getMountSumPeriod = setMountComponent(SumPeriod)
 
@@ -22,19 +25,15 @@ const testCases: Array<SumAndCurrencyParams> = [
 describe('SumPeriod', () => {
   it('Renders the correct labels and values', () => {
     const wrapper = getMountSumPeriod({ data })
-    const currentElement = setWrapper(wrapper)
 
-    testCases.forEach(params => {
-      checkLabelAndValue(currentElement, params)
-    })
+    testCases.forEach(params => { checkLabelAndValue(wrapper, params) })
   })
 
   it('Renders the correct currency', () => {
     const wrapper = getMountSumPeriod({ data })
-    const currentElement = setWrapper(wrapper)
 
     testCases.forEach(({ key }) => {
-      expect(currentElement(`data-${key}-currency`).text()).toContain(data.currency)
+      testOn.equalTextValue({ wrapper, testId: `data-${key}-currency` }, data.currency)
     })
   })
 
@@ -46,10 +45,13 @@ describe('SumPeriod', () => {
       },
     })
 
-    const currentElement = setWrapper(wrapper)
-
     testCases.forEach(({ key }) => {
-      expect(currentElement(`data-${key}-currency`).text()).toBe('')
+      testOn.equalTextValue({ wrapper, testId: `data-${key}-currency` }, '')
     })
+  })
+  it('Does not render the remainder section when remainder is not provided', () => {
+    const wrapper = getMountSumPeriod({ data })
+
+    testOn.notExistElement({ wrapper, testId: 'data-remainder' })
   })
 })

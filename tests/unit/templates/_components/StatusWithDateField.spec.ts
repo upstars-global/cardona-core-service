@@ -1,11 +1,16 @@
-import { describe, expect, it } from 'vitest'
+import { describe, it } from 'vitest'
 
 import StatusWithDateField from '../../../../src/components/templates/_components/StatusWithDateField.vue'
-import { getComponentFromWrapper, setMountComponent } from '../../utils'
+
+import {
+  getComponentFromWrapper,
+  setMountComponent,
+} from '../../utils'
 
 import { StatusVariants } from '../../../../src/@model/enums/statusField'
 import { fullDate } from '../../../../src/utils/date'
 import { testingDate } from '../shared-tests/date-and-dateTimeField'
+import { testOn } from '../shared-tests/test-case-generator'
 
 const getMountStatusWithDateField = setMountComponent(StatusWithDateField)
 
@@ -20,10 +25,12 @@ describe('StatusWithDateField', () => {
       },
     })
 
-    expect(getComponentFromWrapper(wrapper, 'StatusField').findComponent({ name: 'VChip' }).classes())
-      .includes(`text-${StatusVariants[statusKeys[0]]}`)
+    testOn.existClass({
+      wrapper: getComponentFromWrapper(wrapper, 'StatusField'),
+    }, `text-${StatusVariants[statusKeys[0]]}`)
 
-    expect(getComponentFromWrapper(wrapper, 'DateField').text())
-      .toBe(fullDate(new Date(testingDate)))
+    testOn.equalTextValue({
+      wrapper: getComponentFromWrapper(wrapper, 'DateField'),
+    }, fullDate(new Date(testingDate)))
   })
 })

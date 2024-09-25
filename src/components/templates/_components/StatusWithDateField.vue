@@ -13,11 +13,13 @@ defineProps<{
     <StatusField
       :value="item.status"
       class="mb-1"
+      data-test-id="status-field"
     />
 
     <DateField
       :date="item.updatedAt"
       class="date-field"
+      data-test-id="date-field"
     />
   </div>
 </template>
