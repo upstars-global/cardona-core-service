@@ -19,6 +19,7 @@ export interface IDateBaseField extends IBaseField {
   readonly config?: Record<string, unknown>
   readonly isFilter?: boolean
   readonly maxDateTo?: Date | string
+  readonly allowFutureDate?: boolean
 }
 
 export class DateBaseField extends BaseField implements IDateBaseField {
@@ -32,6 +33,7 @@ export class DateBaseField extends BaseField implements IDateBaseField {
   readonly validationRules?: IValidationConfig
   readonly isFilter?: boolean
   readonly maxDateTo?: Date | string
+  readonly allowFutureDate?: boolean
 
   constructor(field: IDateBaseField) {
     super(field)
@@ -44,6 +46,7 @@ export class DateBaseField extends BaseField implements IDateBaseField {
     this.validationRules = this.getValidationRules(field.validationRules)
     this.isFilter = field?.isFilter
     this.maxDateTo = field?.maxDateTo || ''
+    this.allowFutureDate = field?.allowFutureDate
   }
 
   private getISODateValue(value: DateBaseFieldInputValue): string {
