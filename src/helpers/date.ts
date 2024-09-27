@@ -119,3 +119,8 @@ export const getEndOfDay = () => {
 
   return now
 }
+
+// converts 2024-09-14T00:00:00.000Z => 2024-09-14T00:00:00+00:00
+export const formatToISOWithTimeZone = (isoDateString: string): string => {
+  return moment(isoDateString).format('YYYY-MM-DDTHH:mm:ss+00:00')
+}

@@ -7,6 +7,7 @@ import { ASelectBaseField } from './base'
 
 export interface IMultiSelectBaseField<T> extends IASelectBaseField<T> {
   readonly value?: T[] | SelectValue[] | null
+  readonly appendToBody?: boolean
 }
 
 export class MultiSelectBaseField<T extends OptionsItem = OptionsItem>
@@ -14,10 +15,12 @@ export class MultiSelectBaseField<T extends OptionsItem = OptionsItem>
   implements IMultiSelectBaseField<T> {
   readonly component: Component = markRaw(MultiSelectField)
   protected _value?: T[] | SelectValue[] | null
+  readonly appendToBody: boolean
 
   constructor(field: IMultiSelectBaseField<T>) {
     super(field)
     this._value = field.value
+    this.appendToBody = field.appendToBody ?? true
   }
 
   transformField(options: ITransformFieldOptions = {}) {
