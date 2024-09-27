@@ -24,19 +24,17 @@ const openModal = () => {
 </script>
 
 <template>
-  <ё
+  <RouterLink
     v-if="isLink"
     :to="item.value.route"
     :disabled="!canUpdate"
     class="text-primary"
     :class="{ 'text-muted': !canUpdate }"
-    data-test-id="link"
   >
     {{ item.value.title }}
-  </ё>
+  </RouterLink>
   <p
     v-else
-    data-test-id="text"
     class="text-primary mb-0 cursor-pointer"
     :class="{ 'text-muted': !canUpdate }"
     @click="openModal"

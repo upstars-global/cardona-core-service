@@ -1,77 +1,144 @@
-import { vi } from 'vitest'
+import { storageKeys } from '../../configs/storage'
+import type { ProjectInfoInput } from '../../@model/project'
+import { ProjectInfo } from '../../@model/project'
+import { UserInfo } from '../../@model/users'
+import type { OptionsItem } from '../../@model'
+import type { PermissionLevel } from '../../@model/permission'
+import { AllPermission, Permission } from '../../@model/permission'
 import ApiService from '../../services/api'
-import { transformNameToType } from './baseStoreCore'
-import { ApiTypePrefix } from '@productConfig'
+import type { PermissionGroup } from '../../@model/enums/permissions'
+import { productsName } from '../../configs/productsName'
+import { productName } from '@productConfig'
 
-vi.mock('../../services/api', () => ({
-  request: vi.fn(),
-}))
+export const fetchCurrentUser = async () => {
+  const { data } = await ApiService.request({
+    type: 'App.V2.Users.Current.Read',
+  })
 
-export const createMockedStore = ({ canUpdate = true, userInfo = null } = {}) => {
-  return {
-    namespaced: true,
+  const [firstName, lastName] = (data.fullName || '').split(' ')
 
-    actions: {
-      async readEntity(_, payload) {
-        ApiService.request.mockResolvedValue({
-          data: { id: payload.id, type: payload.type, name: 'Mocked Entity' },
-        })
+  return new UserInfo({
+    id: data.id,
+    firstName,
+    lastName: lastName || '',
+    userName: data.userName,
+    email: data.email,
+    description: data.description || '',
+    roles: data.roles,
+    status: UserInfo.toStatus(data.isActive),
+    groups: data.groups,
+    projects: data.projects.map((project: any) => new ProjectInfo(project)),
+    products: data.products.map((product: any) => product as OptionsItem),
+    permissions: data.permissions.map((permission: any) => new Permission(permission)),
+  })
+}
+export default {
+  state: {
+    accessLevels: ['noaccess', 'view', 'create', 'update', 'delete'],
+    userInfo: new UserInfo(),
+    permissions: new AllPermission(),
+    selectedProduct: null,
+    selectedProject: null,
+  },
 
-        const { data } = await ApiService.request({
-          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
-            payload.type,
-          )}.Read`,
-          data: {
-            id: payload.id,
-          },
-        })
+  getters: {
+    userInfo: ({ userInfo }) => userInfo,
 
-        return data
-      },
+    userProjects: ({ userInfo }) => userInfo.projects,
+    userProducts: ({ userInfo }) => userInfo.products,
 
-      async updateEntity({ commit, rootGetters }, payload) {
-        const user = {
-          ...rootGetters.userInfo,
-          permissions: payload.data.form.permissions,
-        }
+    selectedProject: ({ selectedProject }, { userProjects }): ProjectInfoInput => {
+      const defaultProject: ProjectInfoInput = userProjects[0]
 
-        commit('SET_USER_INFO', user, { root: true })
+      const projectIdFromStorage: string | null = localStorage.getItem(
+        storageKeys.selectedProjectId,
+      )
 
-        ApiService.request.mockResolvedValue({
-          success: true,
-          updatedEntity: payload.data.form,
-        })
+      const selectedProjectInfo: ProjectInfoInput = userProjects.find(
+        ({ id }) => id === Number(projectIdFromStorage),
+      )
 
-        return await ApiService.request(
-          {
-            type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
-              payload.type,
-            )}.Update`,
-            data: {
-              ...payload.data.form,
-              id: payload.data.form?.id,
-            },
-          },
-          { withSuccessToast: true, formRef: payload.data.formRef },
-        )
-      },
+      return selectedProject || selectedProjectInfo || defaultProject
     },
 
-    mutations: {
-      SET_USER_INFO(state, user) {
-        state.user = user
-      },
+    selectedProduct: ({ selectedProduct }) => selectedProduct,
+
+    // @ts-expect-error
+    isNeocore: () => productName === productsName.neocore,
+
+    getSpecificProject:
+      ({ userInfo }) =>
+        (projectAlias: string): ProjectInfo =>
+          userInfo.projects.find(project => project.alias === projectAlias),
+
+    canViewVCoinInProject:
+      ({ userInfo }) =>
+        (projectAlias: string) => {
+          const project = userInfo.projects.find(item => item.alias === projectAlias)
+
+          return project?.integrations?.vCoins
+        },
+
+    abilityCan:
+      ({ accessLevels, userInfo }) =>
+        (target: string, access: number | PermissionLevel) => {
+          if (typeof access === 'string')
+            access = accessLevels.indexOf(access.toLowerCase())
+
+          const permission = userInfo.permissions.find(permission => permission.target === target)
+
+          return permission && permission.access >= access
+        },
+
+    abilityCanInGroup:
+      ({ accessLevels, permissions }, { abilityCan }) =>
+        (group: PermissionGroup | string[], access: number | PermissionLevel, all = false) => {
+          if (typeof access === 'string')
+            access = accessLevels.indexOf(access.toLowerCase())
+
+          if (Array.isArray(group)) {
+            if (all)
+              return group.every(item => abilityCan(item, access))
+
+            return group.some(item => abilityCan(item, access))
+          }
+
+          const groups = permissions.allPermission[group]
+
+          if (all)
+            return groups.every(item => abilityCan(item.target, access))
+
+          return groups.some(item => abilityCan(item.target, access))
+        },
+  },
+
+  mutations: {
+    SET_USER_INFO(state, userInfo: UserInfo) {
+      state.userInfo = userInfo
+      state.permissions.setAccessAllPermission(userInfo.permissions)
+      state.selectedProduct = userInfo.products.find(({ name }) => name === productName)
+    },
+    SET_SELECTED_PROJECT(state, project: ProjectInfoInput) {
+      state.selectedProject = project
+    },
+    SET_SELECTED_PRODUCT(state, product: OptionsItem) {
+      state.selectedProduct = product
+    },
+  },
+
+  actions: {
+    async fetchCurrentUser({ commit }) {
+      const currentUser: UserInfo = await fetchCurrentUser()
+
+      commit('SET_USER_INFO', currentUser)
     },
 
-    getters: {
-      abilityCan: () => (permission, action) => {
-        return canUpdate
-      },
-      userInfo: () => userInfo,
+    setSelectedProduct({ commit }, product: OptionsItem) {
+      commit('SET_SELECTED_PRODUCT', product)
     },
 
-    state: {
-      user: userInfo,
+    setSelectedProject({ commit }, project: ProjectInfoInput) {
+      commit('SET_SELECTED_PROJECT', project)
     },
-  }
+  },
 }
