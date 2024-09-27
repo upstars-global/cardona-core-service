@@ -5,10 +5,9 @@ import { useStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
-import { ExportFormat } from '../../../@model/templates/baseList'
+import { BaseListActionsSlots, ExportFormat } from '../../../@model/templates/baseList'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
-import { BaseListActionsSlots } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
@@ -194,7 +193,7 @@ const isLoadingList = computed(() => {
     entityName[indexSymbolNextDash].toLowerCase(),
   )
 
-  const entityUrl: string = convertCamelCase(entityNameForLoad, '/')
+  const entityUrl: string = parseEntityNameWithTabs(convertCamelCase(entityNameForLoad, '/'))
 
   const listUrl = `${entityUrl}/list`
 
@@ -284,7 +283,7 @@ const getList = async () => {
   const sort = mapSortData()
 
   const { list, total } = await store.dispatch(fetchActionName, {
-    type: entityName,
+    type: parseEntityNameWithTabs(entityName),
     data: {
       perPage: perPage.value,
       page: currentPage.value,
@@ -568,6 +567,13 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
   selectedItems.value = selectedItems.value.filter(item => item?.id !== selectedItem.value.id)
   resetSelectedItem()
   await reFetchList()
+}
+
+const parseEntityNameWithTabs = (entityName: string) => {
+  // Removes the #tabName from entityName
+  // Example: "Tournaments#tabName" -> "Tournaments"
+  // This helps save different settings for the same entity across different tabs
+  return entityName.replace(/#\w+/, '').replace('..', '.')
 }
 
 onBeforeMount(async () => {
