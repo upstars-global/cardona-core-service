@@ -43,7 +43,7 @@ export enum ExpectMethods {
 }
 
 interface TestCaseGeneratorParams {
-  property: WrapperProperties
+  property?: WrapperProperties
   methodExpect: ExpectMethods
   withNot?: boolean
 }
@@ -106,5 +106,9 @@ export const testOn = {
     property: WrapperProperties.Exists,
     methodExpect: ExpectMethods.ToBeTruthy,
     withNot: true,
+  }),
+
+  checkLengthElements: testCaseGenerator({
+    methodExpect: ExpectMethods.ToHaveLength,
   }),
 }
