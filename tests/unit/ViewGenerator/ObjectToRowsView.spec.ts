@@ -3,7 +3,7 @@ import ObjectToRowsView from '../../../src/components/templates/ViewGenerator/_c
 import { setMountComponent } from '../utils'
 import { testOn } from '../templates/shared-tests/test-case-generator'
 
-const getMountCommentView = setMountComponent(ObjectToRowsView)
+const getMountObjectToRowsView = setMountComponent(ObjectToRowsView)
 
 describe('Component.vue', () => {
   it('renders item values correctly', () => {
@@ -15,7 +15,7 @@ describe('Component.vue', () => {
       },
     }
 
-    const wrapper = getMountCommentView({ item: mockItem })
+    const wrapper = getMountObjectToRowsView({ item: mockItem })
 
     testOn.existTextValue({ wrapper }, mockItem.value.name)
     testOn.existTextValue({ wrapper }, mockItem.value.age)
@@ -27,7 +27,7 @@ describe('Component.vue', () => {
       value: {},
     }
 
-    const wrapper = getMountCommentView({ item: mockItem })
+    const wrapper = getMountObjectToRowsView({ item: mockItem })
 
     expect(wrapper.text()).toBe('')
   })
