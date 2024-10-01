@@ -1,11 +1,14 @@
-import { describe, expect, it, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { describe, it, vi } from 'vitest'
 import LocaleView from '../../../src/components/templates/ViewGenerator/_components/LocaleView.vue'
+import { setMountComponent } from '../utils'
+import { testOn } from '../templates/shared-tests/test-case-generator'
 
 const allLocalesKeys = {
   en: 'English',
   fr: 'French',
 }
+
+const getMountLocaleView = setMountComponent(LocaleView)
 
 vi.mock('../../../src/store', () => ({
   default: {
@@ -24,25 +27,17 @@ describe('LocaleView.vue', () => {
       value: 'en',
     }
 
-    const wrapper = mount(LocaleView, {
-      props: {
-        item: mockItem,
-      },
-    })
+    const wrapper = getMountLocaleView({ item: mockItem })
 
-    expect(wrapper.text()).toBe(allLocalesKeys.en)
+    testOn.existTextValue({ wrapper }, allLocalesKeys.en)
   })
   it('Not render any value with not correct key or empty item ', () => {
     const mockItem = {
       value: '',
     }
 
-    const wrapper = mount(LocaleView, {
-      props: {
-        item: mockItem,
-      },
-    })
+    const wrapper = getMountLocaleView({ item: mockItem })
 
-    expect(wrapper.text()).toBe(mockItem.value)
+    testOn.existTextValue({ wrapper }, '')
   })
 })
