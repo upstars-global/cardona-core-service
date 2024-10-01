@@ -1,11 +1,9 @@
-import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import ObjectToRowsView from '../../../src/components/templates/ViewGenerator/_components/ObjectToRowsView.vue'
 import { setMountComponent } from '../utils'
-import {testOn} from "../templates/shared-tests/test-case-generator";
+import { testOn } from '../templates/shared-tests/test-case-generator'
 
 const getMountCommentView = setMountComponent(ObjectToRowsView)
-
 
 describe('Component.vue', () => {
   it('renders item values correctly', () => {
@@ -16,7 +14,6 @@ describe('Component.vue', () => {
         job: 'Developer',
       },
     }
-
 
     const wrapper = getMountCommentView({ item: mockItem })
 
