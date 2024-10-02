@@ -5,7 +5,7 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import type { ViewInfo } from '../../../../@model/view'
 import { IconsList } from '../../../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../../../@model/vuetify'
-import {MAX_SHOW_ITEMS_BADGES_VIEW} from "@/utils/constants";
+import { MAX_SHOW_ITEMS_BADGES_VIEW } from '../../../../utils/constants'
 
 const props = defineProps<{
   item: ViewInfo
@@ -85,8 +85,8 @@ const isShowToggleButton = computed(() => {
             :variant="VVariants.Tonal"
             :size="VSizes.Small"
             class="cursor-pointer px-2"
-            @click="onToggleShowList"
             data-test-id="show-more"
+            @click="onToggleShowList"
           >
             {{ toggleLabel }}
           </VChip>
