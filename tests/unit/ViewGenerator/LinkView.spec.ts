@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import LinkView from '../../../src/components/templates/ViewGenerator/_components/LinkView.vue'
 import { getWrapperElement, setMountComponent } from '../utils'
 import type { Nullable } from '../../../src/@model/index'
+import { testOn } from '../templates/shared-tests/test-case-generator'
+import type {BaseWrapper} from "@vue/test-utils";
 
 const mockModal = {
   showModal: vi.fn(),
@@ -28,11 +30,11 @@ vi.mock('vuex', async importOriginal => {
   }
 })
 
-const findAndTriggerClick = async wrapper => {
-  const pElement = getWrapperElement({ wrapper, testId: 'title' })
+const findAndTriggerClick = async (wrapperParent: BaseWrapper<Node>) => {
+  const wrapper = getWrapperElement({ wrapper: wrapperParent, testId: 'title' })
 
-  expect(pElement.exists()).toBe(true)
-  await pElement.trigger('click')
+  testOn.existElement({ wrapper })
+  await wrapper.trigger('click')
 }
 
 const createWrapper = (
@@ -53,6 +55,9 @@ const createWrapper = (
   })
 }
 
+const wrapperModal = mockModal.showModal
+const argumentOnShowModal = 'test-modal'
+
 describe('LinkView.vue', () => {
   const mockItem = {
     value: { title: 'Test Title', modalId: 'test-modal', route: null },
@@ -67,13 +72,14 @@ describe('LinkView.vue', () => {
     const wrapper = createWrapper(false, mockItem)
 
     await findAndTriggerClick(wrapper)
-    expect(mockModal.showModal).not.toHaveBeenCalled()
+    testOn.checkNotExistCalledMethod({ wrapper: wrapperModal })
   })
 
   it('Calls showModal when item is clicked and canUpdate is true', async () => {
     const wrapper = createWrapper(true, mockItem)
 
+    expect(wrapper).not.toHaveBeenCalled
     await findAndTriggerClick(wrapper)
-    expect(mockModal.showModal).toHaveBeenCalledWith('test-modal')
+    testOn.checkExistCalledMethodWithArguments({ wrapper: wrapperModal }, argumentOnShowModal)
   })
 })

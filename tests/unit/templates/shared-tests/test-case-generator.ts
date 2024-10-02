@@ -40,6 +40,8 @@ export enum ExpectMethods {
   ToStrictEqual = 'toStrictEqual',
   ToBeGreaterThan = 'toBeGreaterThan',
   ToBeLessThan = 'toBeLessThan',
+  ToHaveBeenCalledWith = 'toHaveBeenCalledWith',
+  ToHaveBeenCalled = 'toHaveBeenCalled',
 }
 
 interface TestCaseGeneratorParams {
@@ -110,5 +112,13 @@ export const testOn = {
 
   checkLengthElements: testCaseGenerator({
     methodExpect: ExpectMethods.ToHaveLength,
+  }),
+
+  checkExistCalledMethodWithArguments: testCaseGenerator({
+    methodExpect: ExpectMethods.ToHaveBeenCalledWith,
+  }),
+  checkNotExistCalledMethod: testCaseGenerator({
+    methodExpect: ExpectMethods.ToHaveBeenCalled,
+    withNot: true
   }),
 }
