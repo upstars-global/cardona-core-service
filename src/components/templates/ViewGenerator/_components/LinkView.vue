@@ -31,13 +31,14 @@ const openModal = () => {
     :to="item.value.route"
     :disabled="!canUpdate"
     class="text-primary"
+    data-test-id="link"
     :class="{ 'text-muted': !canUpdate }"
   >
     {{ item.value.title }}
   </RouterLink>
   <p
     v-else
-    data-test-id="text"
+    data-test-id="title"
     class="text-primary mb-0 cursor-pointer"
     :class="{ 'text-muted': !canUpdate }"
     @click="openModal"

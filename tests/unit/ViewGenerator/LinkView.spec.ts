@@ -1,6 +1,7 @@
-import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import LinkView from '../../../src/components/templates/ViewGenerator/_components/LinkView.vue'
+import { getWrapperElement, setMountComponent } from '../utils'
+import type { Nullable } from '../../../src/@model/index'
 
 const mockModal = {
   showModal: vi.fn(),
@@ -9,6 +10,8 @@ const mockModal = {
   unregisterModal: vi.fn(),
   modals: {},
 }
+
+const getMountLinkView = setMountComponent(LinkView)
 
 const mockAbilityCan = vi.fn()
 
@@ -26,26 +29,26 @@ vi.mock('vuex', async importOriginal => {
 })
 
 const findAndTriggerClick = async wrapper => {
-  const pElement = wrapper.find('[data-test-id="text"]')
+  const pElement = getWrapperElement({ wrapper, testId: 'title' })
 
   expect(pElement.exists()).toBe(true)
   await pElement.trigger('click')
 }
 
-const createWrapper = (abilityCanReturnValue, mockItem) => {
+const createWrapper = (
+  abilityCanReturnValue: boolean,
+  mockItem: {
+    value: { title: string; modalId: string; route: Nullable<unknown> }
+    permission: Nullable<string>
+  }) => {
   mockAbilityCan.mockReturnValue(abilityCanReturnValue)
 
-  return mount(LinkView, {
-    props: {
-      item: mockItem,
+  return getMountLinkView({ item: mockItem }, {
+    provide: {
+      modal: mockModal,
     },
-    global: {
-      provide: {
-        modal: mockModal,
-      },
-      stubs: {
-        RouterLink: true,
-      },
+    stubs: {
+      RouterLink: true,
     },
   })
 }
@@ -60,14 +63,14 @@ describe('LinkView.vue', () => {
     vi.clearAllMocks()
   })
 
-  it('does not call showModal when canUpdate is false', async () => {
+  it('Does not call showModal when canUpdate is false', async () => {
     const wrapper = createWrapper(false, mockItem)
 
     await findAndTriggerClick(wrapper)
     expect(mockModal.showModal).not.toHaveBeenCalled()
   })
 
-  it('calls showModal when item is clicked and canUpdate is true', async () => {
+  it('Calls showModal when item is clicked and canUpdate is true', async () => {
     const wrapper = createWrapper(true, mockItem)
 
     await findAndTriggerClick(wrapper)
