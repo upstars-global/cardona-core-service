@@ -2,6 +2,7 @@
 import { computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 import type { ViewInfo } from '../../../../@model/view'
+import { isEmpty } from '../../../../@core/utils/helpers'
 
 const props = defineProps<{
   item: ViewInfo
@@ -11,7 +12,7 @@ const store = useStore()
 
 onBeforeMount(() => {
   const countryList = store.getters['regions/countryList']?.list
-  if (!countryList || countryList.length === 0)
+  if (!countryList || isEmpty(countryList))
     store.dispatch('regions/fetchCountriesList')
 })
 
