@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { BaseWrapper } from '@vue/test-utils'
 import LinkView from '../../../src/components/templates/ViewGenerator/_components/LinkView.vue'
 import { getWrapperElement, setMountComponent } from '../utils'
 import type { Nullable } from '../../../src/@model/index'
 import { testOn } from '../templates/shared-tests/test-case-generator'
-import type {BaseWrapper} from "@vue/test-utils";
 
 const mockModal = {
   showModal: vi.fn(),
