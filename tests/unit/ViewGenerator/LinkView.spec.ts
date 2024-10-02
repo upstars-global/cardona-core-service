@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, it, vi } from 'vitest'
 import type { BaseWrapper } from '@vue/test-utils'
 import LinkView from '../../../src/components/templates/ViewGenerator/_components/LinkView.vue'
 import { getWrapperElement, setMountComponent } from '../utils'
@@ -78,7 +78,6 @@ describe('LinkView.vue', () => {
   it('Calls showModal when item is clicked and canUpdate is true', async () => {
     const wrapper = createWrapper(true, mockItem)
 
-    expect(wrapper).not.toHaveBeenCalled
     await findAndTriggerClick(wrapper)
     testOn.checkExistCalledMethodWithArguments({ wrapper: wrapperModal }, argumentOnShowModal)
   })
