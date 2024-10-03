@@ -14,6 +14,7 @@ import BadgeCopyView from '../components/templates/ViewGenerator/_components/Bad
 import BadgeShortCopyView from '../components/templates/ViewGenerator/_components/BadgeShortCopyView.vue'
 import CopyView from '../components/templates/ViewGenerator/_components/CopyView.vue'
 import DateView from '../components/templates/ViewGenerator/_components/DateView.vue'
+import DateRangeView from '../components/templates/ViewGenerator/_components/DateRangeView.vue'
 import DateWithSecondsView from '../components/templates/ViewGenerator/_components/DateWithSecondsView.vue'
 import SumAndCurrencyView from '../components/templates/ViewGenerator/_components/SumAndCurrencyView.vue'
 import CommentView from '../components/templates/ViewGenerator/_components/CommentView.vue'
@@ -24,7 +25,6 @@ import RegionView from '../components/templates/ViewGenerator/_components/Region
 import SumPeriodView from '../components/templates/ViewGenerator/_components/SumPeriodView.vue'
 import type { IconsList } from './enums/icons'
 import type { PermissionType } from '@permissions'
-import DateRangeView from '@/components/templates/ViewGenerator/_components/DateRangeView.vue'
 
 export enum ViewType {
   Text = TextView,
