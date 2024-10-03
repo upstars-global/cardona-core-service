@@ -255,6 +255,7 @@ const {
   updateTotal,
   onChangePagination,
   removePerPage,
+  removePagination,
 } = paginationConfig
 
 const itemsPerPage = computed(() => props.config?.pagination ? perPage.value : items.value.length)
@@ -581,7 +582,7 @@ onBeforeMount(async () => {
 })
 
 onUnmounted(() => {
-  removePerPage()
+  removePagination()
 })
 
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
