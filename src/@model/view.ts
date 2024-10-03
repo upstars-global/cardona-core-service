@@ -24,6 +24,7 @@ import RegionView from '../components/templates/ViewGenerator/_components/Region
 import SumPeriodView from '../components/templates/ViewGenerator/_components/SumPeriodView.vue'
 import type { IconsList } from './enums/icons'
 import type { PermissionType } from '@permissions'
+import DateRangeView from '@/components/templates/ViewGenerator/_components/DateRangeView.vue'
 
 export enum ViewType {
   Text = TextView,
