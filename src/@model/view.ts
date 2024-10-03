@@ -36,6 +36,7 @@ export enum ViewType {
   Status = StatusView,
   Statement = StatementView,
   Date = DateView,
+  DateRange = DateRangeView,
   DateWithSeconds = DateWithSecondsView,
   BadgeCopy = BadgeCopyView,
   BadgeShortCopy = BadgeShortCopyView,
