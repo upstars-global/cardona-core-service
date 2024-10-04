@@ -123,7 +123,7 @@ const configFrom = computed(() => {
   return {
     ...flatPickrConfig.value,
     minDate: props.field.isStartDateNow,
-    maxDate: endedAt.value || new Date(),
+    maxDate: endedAt.value || props.field.allowFutureDate || new Date(),
     mode: 'single',
     defaultHour: 0,
     defaultMinute: 0,
