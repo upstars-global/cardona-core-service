@@ -35,7 +35,7 @@ export interface FilterListItem {
   readonly trackBy?: string
 }
 
-type StaticFilters = Record<string, string | string[] | number[]>
+type StaticFilters = Record<string, string | string[] | number | number[]>
 
 /**
  * IBaseListConfig - Конфиг базового листа
