@@ -10,7 +10,15 @@ import { useLayoutConfigStore } from '@layouts/stores/config'
 
 const route = useRoute()
 
-const allBreadcrumb = computed(() => [{ to: '/', disabled: false }, ...route.meta.breadcrumb])
+const allBreadcrumb = computed(() => {
+  const breadcrumbs = route.meta.breadcrumb
+    ? typeof route.meta.breadcrumb === 'function'
+      ? route.meta.breadcrumb(route)
+      : route.meta.breadcrumb
+    : []
+
+  return [{ to: '/', disabled: false }, ...breadcrumbs]
+})
 
 const layoutConfig = useLayoutConfigStore()
 
@@ -86,11 +94,15 @@ onUnmounted(clock.stopTime)
           cols="2"
           class="d-flex align-center justify-end text-body-1"
         >
-          <div class="mr-1 text-color-mute  "><VIcon :icon="IconsList.ClockIcon" /></div>
+          <div class="mr-1 text-color-mute  ">
+            <VIcon :icon="IconsList.ClockIcon" />
+          </div>
           <div class="time-value mt-1 mr-1">
             {{ time }}
           </div>
-          <div class="mt-1">UTC</div>
+          <div class="mt-1">
+            UTC
+          </div>
         </VCol>
       </VRow>
     </VCol>
@@ -98,14 +110,14 @@ onUnmounted(clock.stopTime)
 </template>
 
 <style lang="scss" scoped>
-  .time-value {
-    width: 60px;
-  }
+.time-value {
+  width: 60px;
+}
 
-  .breadcrumb-wrapper {
-    padding-left: 1rem;
-    :deep(ul) {
-      padding-inline: 0;
-    }
+.breadcrumb-wrapper {
+  padding-left: 1rem;
+  :deep(ul) {
+    padding-inline: 0;
   }
+}
 </style>
