@@ -35,7 +35,7 @@ defineProps<{
         </VCol>
       </VRow>
 
-      <VRow>
+      <VRow v-if="modelValue.description">
         <VCol>
           <FieldGenerator
             v-model="modelValue.description"
