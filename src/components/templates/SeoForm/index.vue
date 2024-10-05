@@ -4,7 +4,7 @@ import type { SeoForm } from '../../../@model/seo'
 
 defineProps<{
   modelValue: SeoForm
-  disabled: boolean
+  disabled?: boolean
 }>()
 </script>
 
