@@ -5,10 +5,9 @@ import { useStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
-import { ExportFormat } from '../../../@model/templates/baseList'
+import { BaseListActionsSlots, ExportFormat } from '../../../@model/templates/baseList'
 import CTable from '../../CTable/index.vue'
 import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
-import { BaseListActionsSlots } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
@@ -676,6 +675,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       @apply="reFetchList"
       @change-selected-filters="onChangeSelectedFilters"
     />
+
+    <slot name="custom-filter" />
 
     <VCard class="table-card-settings">
       <div
