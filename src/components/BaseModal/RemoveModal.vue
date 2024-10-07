@@ -52,6 +52,7 @@ const onCloseModal = (hide: Function) => {
   <BaseModal
     :id="removeModalId"
     :title="title || $t(`modal.remove${entityName}.title`)"
+    @hide="$emit('on-close-modal')"
   >
     <template #default="{ action }">
       <VCardText
