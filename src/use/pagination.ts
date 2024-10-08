@@ -23,6 +23,7 @@ export interface PaginationResult {
   setPerPage: (value: number) => void
   setPage: (page?: number, perPageProps?: any) => void
   removePerPage: () => void
+  removePagination: () => void
   currentPage: Ref<number>
   updateTotal: (value: number) => void
   onChangePagination: (cb: Function) => void
@@ -111,6 +112,16 @@ export default function usePagination(
     } as any)
   }
 
+  const removePagination = () => {
+    if (!isUseRouter)
+      return
+    const query = omit(route.query, ['perPage', 'page'])
+
+    router.push({
+      query,
+    } as any)
+  }
+
   const linkGen = (pageNum: number) => {
     if (!isUseRouter)
       return
@@ -127,7 +138,7 @@ export default function usePagination(
   if (isUseRouter) {
     watch(route, () => {
       currentPage.value = Number(route.query.page) || 1
-      perPage.value = Number(route.query.perPage) || defaultPerPage
+      perPage.value = Number(route.query.perPage) || perPageFromStorage || defaultPerPage
     })
   }
 
@@ -173,6 +184,7 @@ export default function usePagination(
     numberOfPages,
     setPerPage,
     removePerPage,
+    removePagination,
     setPage,
     currentPage,
     updateTotal,
