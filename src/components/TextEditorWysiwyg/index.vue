@@ -413,7 +413,20 @@ const onSaveChanges = () => {
       color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
       font-size: 15px;
     }
-
+    :deep(.fr-toolbar) {
+      border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
+    }
+    :deep(.fr-newline) {
+      background:  rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
+    }
+    :deep(.fr-box.fr-basic) {
+      .fr-wrapper {
+        border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
+      }
+    }
+    :deep(.fr-second-toolbar) {
+      border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
+    }
     &.disabled {
       :deep(.fr-toolbar),
       :deep(.fr-element),
