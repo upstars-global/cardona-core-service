@@ -8,5 +8,11 @@ defineProps<{
 </script>
 
 <template>
-  <DateField :date="item.value.dateFrom" />-<DateField :date="item.value.dateTo" />
+  <DateField
+    :date="item.value.dateFrom"
+    class="mr-1"
+  />-<DateField
+    :date="item.value.dateTo"
+    class="ml-1"
+  />
 </template>
