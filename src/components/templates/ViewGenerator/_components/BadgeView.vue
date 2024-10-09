@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <VChip variant="light-primary">
+  <VChip variant="light-primary" data-test-id="badge-chip">
     {{ item.value }}
   </VChip>
 </template>
