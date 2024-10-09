@@ -1,3 +1,4 @@
 export const COOKIE_MAX_AGE_1_YEAR = 365 * 24 * 60 * 60
 export const MAX_WIDTH_TOOLTIP = '240px'
 export const TOKEN_INVALID = 'TOKEN_INVALID'
+export const MAX_SHOW_ITEMS_BADGES_VIEW = 10
