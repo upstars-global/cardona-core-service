@@ -57,7 +57,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
   border-radius: 0.375rem;
   min-height: 2.5rem;
   height: 100%;
-  border-color: rgba(var(--v-theme-on-surface), 0.25);
+  border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
   .vs--single & {
     padding-left: 6px;
   }

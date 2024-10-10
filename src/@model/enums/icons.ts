@@ -267,6 +267,7 @@ export enum IconsList {
   TriangleIcon = 'TriangleIcon',
   TruckIcon = 'TruckIcon',
   TrophyIcon = 'tabler-trophy',
+  TrophyFilledIcon = 'tabler-trophy-filled',
   TvIcon = 'TvIcon',
   TwitchIcon = 'TwitchIcon',
   TwitterIcon = 'TwitterIcon',
