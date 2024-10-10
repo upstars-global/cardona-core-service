@@ -8,11 +8,12 @@ import ToastificationContent from '../components/templates/toast/ToastificationC
 interface ICopyToClipboardConfig {
   readonly withToast?: boolean
   readonly title?: TranslateResult
+  readonly icon?: IconsList
 }
 
 export const copyToClipboard = (value: string, config: ICopyToClipboardConfig = {}) => {
   const { copy } = useClipboard()
-  const { withToast = true, title = i18n.t('toast.success.copied') } = config
+  const { withToast = true, title = i18n.t('toast.success.copied'), icon = IconsList.CopyIcon } = config
 
   copy(value)
 
@@ -24,7 +25,7 @@ export const copyToClipboard = (value: string, config: ICopyToClipboardConfig = 
       props: {
         title,
         variant: 'success',
-        icon: IconsList.CopyIcon,
+        icon,
       },
     })
   }
