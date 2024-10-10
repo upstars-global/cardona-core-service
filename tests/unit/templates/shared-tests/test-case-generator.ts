@@ -119,6 +119,6 @@ export const testOn = {
   }),
   checkNotExistCalledMethod: testCaseGenerator({
     methodExpect: ExpectMethods.ToHaveBeenCalled,
-    withNot: true
+    withNot: true,
   }),
 }
