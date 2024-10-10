@@ -72,6 +72,7 @@ declare module 'vue' {
     DateField: typeof import('./src/components/templates/_components/DateField.vue')['default']
     DatePeriodField: typeof import('./src/components/templates/BaseList/_components/fields/DatePeriodField.vue')['default']
     DateView: typeof import('./src/components/templates/ViewGenerator/_components/DateView.vue')['default']
+    DateRangeView: typeof import('./src/components/templates/ViewGenerator/_components/DateRangeView.vue')['default']
     DateWithSecondsField: typeof import('./src/components/templates/_components/DateWithSecondsField.vue')['default']
     DateWithSecondsView: typeof import('./src/components/templates/ViewGenerator/_components/DateWithSecondsView.vue')['default']
     DemoAlertBasic: typeof import('./src/views/demos/components/alert/DemoAlertBasic.vue')['default']

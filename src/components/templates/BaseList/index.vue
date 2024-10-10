@@ -684,6 +684,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       @change-selected-filters="onChangeSelectedFilters"
     />
 
+    <slot name="custom-filter" />
+
     <VCard class="table-card-settings">
       <div
         v-if="config.withSettings && (!canUpdate || selectedItems.isEmpty)"

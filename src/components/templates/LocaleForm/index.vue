@@ -200,7 +200,9 @@ const variableTextBufferStore = computed(() => store.state.textEditor.variableTe
 
 <style lang="scss">
 @import "@styles/variables/_vuetify";
-
+.input-text {
+  border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)) !important;
+}
 .action-hide {
   label {
     font-size: $typography-body-2-font-size !important;
