@@ -32,6 +32,7 @@ const valueColsCount = computed(() => 12 - props.cols)
       <VCol
         :cols="cols"
         class="wrapper-label"
+        data-test-id="wrapper-label"
       >
         <div
           v-if="modelValue.icon !== undefined"
@@ -46,6 +47,7 @@ const valueColsCount = computed(() => 12 - props.cols)
         :cols="valueColsCount"
         class="value font-weight-medium d-flex align-items-start text-break wrapper-value font-weight-medium ma-0"
         :class="justifyClass"
+        data-test-id="wrapper-value"
       >
         <slot
           :name="`sidebar-value(${keyName})`"

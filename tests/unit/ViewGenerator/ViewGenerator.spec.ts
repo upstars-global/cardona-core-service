@@ -9,11 +9,7 @@ import { fullDate } from '../../../src/utils/date'
 
 const getMountViewGenerator = setMountComponent(ViewGenerator)
 
-const mockStore = {
-  getters: {
-    abilityCan: vi.fn(),
-  },
-}
+const mockAbilityCan = vi.fn()
 
 vi.mock('vuex', async importOriginal => {
   const original = await importOriginal()
@@ -21,94 +17,89 @@ vi.mock('vuex', async importOriginal => {
   return {
     ...original,
     useStore: () => ({
-      getters: mockStore.getters,
+      getters: {
+        abilityCan: mockAbilityCan,
+      },
     }),
   }
 })
 
-const modelValue = {
-  type: ViewType.BadgeCopy,
-  value: 'Test Value',
-  label: 'Test Label',
-  icon: IconsList.StarIcon,
-  withSeparator: false,
-  permission: 'view_permission',
-}
+const testIdLabel = 'label'
+const testIdViewGeneratorComponent = 'view-generator-component'
+const testIdIcon = 'icon'
+const testIdSeparator = 'separator'
+const testIdWrapperValue = 'wrapper-value'
+
+const createDefaultProps = (modelValueOverrides = {}) => ({
+  modelValue: {
+    type: ViewType.BadgeCopy,
+    value: 'Test Value',
+    label: 'Test Label',
+    icon: IconsList.StarIcon,
+    withSeparator: false,
+    permission: 'view_permission',
+    ...modelValueOverrides,
+  },
+  keyName: 'testKey',
+  justifyContent: 'center',
+  cols: 4,
+})
 
 describe('ViewGenerator.vue', () => {
-  const defaultProps = {
-    modelValue,
-    keyName: 'testKey',
-    justifyContent: 'center',
-    cols: 4,
-  }
-
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
-  const testIdLabel = 'label'
-  const testIdViewGeneratorComponent = 'view-generator-component'
-  const testIdIcon = 'icon'
-  const testIdSeparator = 'separator'
-
   it('Renders label and value correctly when user has permission without separator and use ViewType component', async () => {
-    mockStore.getters.abilityCan.mockReturnValue(true)
+    mockAbilityCan.mockReturnValue(true)
 
-    const wrapper = getMountViewGenerator(defaultProps)
+    const props = createDefaultProps()
+    const wrapper = getMountViewGenerator(props)
+    const maxCols = 12
 
-    testOn.equalTextValue({ wrapper, testId: testIdLabel }, modelValue.label)
-    testOn.equalTextValue({ wrapper, testId: testIdViewGeneratorComponent }, modelValue.value)
-    testOn.existClass({ wrapper, testId: testIdIcon }, modelValue.icon)
+    testOn.equalTextValue({ wrapper, testId: testIdLabel }, props.modelValue.label)
+    testOn.equalTextValue({ wrapper, testId: testIdViewGeneratorComponent }, 'Test Value')
+    testOn.existClass({ wrapper, testId: testIdIcon }, IconsList.StarIcon)
     testOn.notExistElement({ wrapper, testId: testIdSeparator })
+    testOn.existClass({ wrapper, testId: 'wrapper-label' }, `v-col-${props.cols}`)
+    testOn.existClass({ wrapper, testId: testIdWrapperValue }, `v-col-${maxCols - props.cols}`)
   })
+
   it('Renders label and value correctly when user has permission with separator and use ViewType component', async () => {
-    mockStore.getters.abilityCan.mockReturnValue(true)
-
-    const modelValue = {
+    const modelValueOverrides = {
       label: 'Second label',
       value: new Date(testingDate),
       type: ViewType.Date,
       withSeparator: true,
       icon: undefined,
+      permission: undefined,
     }
 
-    const wrapper = getMountViewGenerator({
-      ...defaultProps,
-      modelValue: {
-        ...modelValue,
-      },
-    })
+    const props = { ...createDefaultProps(modelValueOverrides), justifyContent: 'center' }
 
-    testOn.equalTextValue({ wrapper, testId: testIdLabel }, modelValue.label)
-    testOn.equalTextValue({ wrapper, testId: testIdViewGeneratorComponent }, fullDate(modelValue.value))
+    const wrapper = getMountViewGenerator(props)
+
+    testOn.equalTextValue({ wrapper, testId: testIdLabel }, modelValueOverrides.label)
+    testOn.equalTextValue({ wrapper, testId: testIdViewGeneratorComponent }, fullDate(new Date(testingDate)))
     testOn.notExistElement({ wrapper, testId: testIdIcon })
     testOn.existElement({ wrapper, testId: testIdSeparator })
+    testOn.existClass({ wrapper, testId: testIdWrapperValue }, `justify-content-${props.justifyContent}`)
   })
 
-  it('Not renders component without access permission', async () => {
-    mockStore.getters.abilityCan.mockReturnValue(false)
+  it('Does not render component without access permission', async () => {
+    mockAbilityCan.mockReturnValue(false)
 
-    const modelValue = {
-      label: 'Second label',
-      value: new Date(testingDate),
-      type: ViewType.Date,
-      withSeparator: true,
-      icon: undefined,
-    }
+    const wrapper = getMountViewGenerator(createDefaultProps())
 
-    const wrapper = getMountViewGenerator({
-      ...defaultProps,
-      modelValue: {
-        ...modelValue,
-      },
+    const testIds = [
+      testIdLabel,
+      testIdViewGeneratorComponent,
+      testIdIcon,
+      testIdSeparator,
+    ]
+
+    testIds.forEach(testId => {
+      testOn.notExistElement({ wrapper, testId })
     })
-
-    console.log(wrapper.html(), '1111')
-
-    testOn.equalTextValue({ wrapper, testId: testIdLabel }, modelValue.label)
-    testOn.equalTextValue({ wrapper, testId: testIdViewGeneratorComponent }, fullDate(modelValue.value))
-    testOn.notExistElement({ wrapper, testId: testIdIcon })
-    testOn.existElement({ wrapper, testId: testIdSeparator })
   })
 })
