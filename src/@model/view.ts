@@ -14,6 +14,7 @@ import BadgeCopyView from '../components/templates/ViewGenerator/_components/Bad
 import BadgeShortCopyView from '../components/templates/ViewGenerator/_components/BadgeShortCopyView.vue'
 import CopyView from '../components/templates/ViewGenerator/_components/CopyView.vue'
 import DateView from '../components/templates/ViewGenerator/_components/DateView.vue'
+import DateRangeView from '../components/templates/ViewGenerator/_components/DateRangeView.vue'
 import DateWithSecondsView from '../components/templates/ViewGenerator/_components/DateWithSecondsView.vue'
 import SumAndCurrencyView from '../components/templates/ViewGenerator/_components/SumAndCurrencyView.vue'
 import CommentView from '../components/templates/ViewGenerator/_components/CommentView.vue'
@@ -36,6 +37,7 @@ export enum ViewType {
   Status = StatusView,
   Statement = StatementView,
   Date = DateView,
+  DateRange = DateRangeView,
   DateWithSeconds = DateWithSecondsView,
   BadgeCopy = BadgeCopyView,
   BadgeShortCopy = BadgeShortCopyView,
