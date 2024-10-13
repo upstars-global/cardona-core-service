@@ -85,7 +85,6 @@ const sortParams = ref(props.sortData?.map(item => ({
 const handleSorByField = ({ key }: { key: string }) => {
   const itemIndex = sortParams.value.findIndex(item => item?.key === key)
 
-  console.log(sortParams.value, itemIndex, key)
   if (itemIndex !== -1) {
     if (sortParams.value[itemIndex].order === 'DESC') {
       emits('update:sortData', [])
