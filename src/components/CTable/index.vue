@@ -65,7 +65,14 @@ const onDragEnd = (event: { moved: object }) => {
 
 const cellClasses = computed(() => props.small ? 'py-2 px-3' : 'py-3 px-4')
 const maxSkeletonRows = 25
-const skeletonRows = computed(() => props.skeletonRows ? props.skeletonRows : props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
+
+const skeletonRows = computed(() =>
+  props.skeletonRows
+    ? props.skeletonRows
+    : !props.itemsPerPage || props.itemsPerPage > maxSkeletonRows
+      ? +maxSkeletonRows
+      : +props.itemsPerPage)
+
 const emptyColspan = computed(() => props.selectable ? props.fields.length + 1 : props.fields.length)
 const isSortableColumn = (column: TableField): boolean => props.fields?.find(item => item?.key === column?.key)?.sortable
 
