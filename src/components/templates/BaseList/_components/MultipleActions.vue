@@ -18,7 +18,7 @@ const emits = defineEmits<Emits>()
 </script>
 
 <template>
-  <div class="table-settings w-100 align-center justify-space-between">
+  <div class="table-settings w-100 align-center justify-space-between px-4 py-3">
     <span>
       {{ $t('common.numberOfSelected', { number: numberSelectedItems }) }}
     </span>
