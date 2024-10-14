@@ -1017,6 +1017,6 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 }
 
 .empty-state-wrapper {
-  height: 7.2rem;
+  height: 5.2rem;
 }
 </style>
