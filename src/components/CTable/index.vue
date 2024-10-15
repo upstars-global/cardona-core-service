@@ -65,7 +65,14 @@ const onDragEnd = (event: { moved: object }) => {
 
 const cellClasses = computed(() => props.small ? 'py-2 px-3' : 'py-3 px-4')
 const maxSkeletonRows = 25
-const skeletonRows = computed(() => props.skeletonRows ? props.skeletonRows : props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
+
+const skeletonRows = computed(() =>
+  props.skeletonRows
+    ? props.skeletonRows
+    : !props.itemsPerPage || props.itemsPerPage > maxSkeletonRows
+      ? +maxSkeletonRows
+      : +props.itemsPerPage)
+
 const emptyColspan = computed(() => props.selectable ? props.fields.length + 1 : props.fields.length)
 const isSortableColumn = (column: TableField): boolean => props.fields?.find(item => item?.key === column?.key)?.sortable
 
@@ -78,7 +85,6 @@ const sortParams = ref(props.sortData?.map(item => ({
 const handleSorByField = ({ key }: { key: string }) => {
   const itemIndex = sortParams.value.findIndex(item => item?.key === key)
 
-  console.log(sortParams.value, itemIndex, key)
   if (itemIndex !== -1) {
     if (sortParams.value[itemIndex].order === 'DESC') {
       emits('update:sortData', [])
