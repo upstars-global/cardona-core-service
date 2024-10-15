@@ -120,12 +120,17 @@ const onSelectItem = (region: RegionInfo) => {
   }
   else {
     let selectedRegions = []
-    if (region.countryName)
+    if (region.countryName) {
       selectedRegions = [region]
-    else
-      selectedRegions = Object.values(regions.value).filter(item => item.countryCode === region.countryCode)
+      if (countriesRadioModel.value === countriesType.Allow) {
+        const currentCountry = regionsOptions.value.find(option => (option.name === region.countryName) && !option.countryName)
 
-    selectedCountriesVisible.value.set(region.countryName || region.name, selectedRegions)
+        selectedRegions.push(currentCountry)
+      }
+    }
+    else {
+      selectedRegions = Object.values(regions.value).filter(item => item.countryCode === region.countryCode)
+    }
   }
   selectRef.value.clearSelection()
   updateValue()
