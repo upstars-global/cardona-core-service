@@ -131,6 +131,7 @@ const onSelectItem = (region: RegionInfo) => {
     else {
       selectedRegions = Object.values(regions.value).filter(item => item.countryCode === region.countryCode)
     }
+    selectedCountriesVisible.value.set(region.countryName || region.name, selectedRegions)
   }
   selectRef.value.clearSelection()
   updateValue()
