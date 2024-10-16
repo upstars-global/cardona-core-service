@@ -1,4 +1,5 @@
 import { expect } from 'vitest'
+import { has } from 'lodash'
 import type { GetWrapperElementPrams } from '../../utils'
 import { getWrapperElement } from '../../utils'
 
@@ -23,6 +24,37 @@ export enum WrapperProperties {
   // Destroy = 'destroy',
 }
 
+export enum InputAttributes {
+  Type = 'type',
+  Name = 'name',
+  Value = 'value',
+  Id = 'id',
+  Placeholder = 'placeholder',
+  Disabled = 'disabled',
+  ReadOnly = 'readonly',
+  Required = 'required',
+  Autocomplete = 'autocomplete',
+  Autofocus = 'autofocus',
+  Multiple = 'multiple',
+  Accept = 'accept',
+  Checked = 'checked',
+  Src = 'src',
+  Alt = 'alt',
+
+  // THIS WILL NEED IN FUTURE
+  // Height = 'height',
+  // Width = 'width',
+  // Form = 'form',
+  // List = 'list',
+  // Spellcheck = 'spellcheck',
+  // MaxLength = 'maxlength',
+  // MinLength = 'minlength',
+  // Min = 'min',
+  // Max = 'max',
+  // Step = 'step',
+  // Pattern = 'pattern',
+}
+
 export enum ExpectMethods {
   ToBe = 'toBe',
   ToEqual = 'toEqual',
@@ -44,8 +76,23 @@ export enum ExpectMethods {
   ToHaveBeenCalled = 'toHaveBeenCalled',
 }
 
+interface TestCaseGenerationProperty { name: WrapperProperties; value?: string | number }
+
+const getWrapperWithProperty = (wrapper, property?: TestCaseGenerationProperty) => {
+  if (has(property, 'name'))
+    return wrapper[property.name](property?.value || '')
+
+  return wrapper
+}
+
 interface TestCaseGeneratorParams {
-  property?: WrapperProperties
+  property?: TestCaseGenerationProperty
+  methodExpect: ExpectMethods
+  withNot?: boolean
+}
+
+interface TestCaseGeneratorParams {
+  property?: TestCaseGenerationProperty
   methodExpect: ExpectMethods
   withNot?: boolean
 }
@@ -57,7 +104,9 @@ const testCaseGenerator = ({
 }: TestCaseGeneratorParams) => {
   return (wrapperElementPrams: GetWrapperElementPrams, expectedValue?: unknown) => {
     const elementTest = getWrapperElement(wrapperElementPrams)
-    const wrapper = property ? elementTest[property]() : elementTest
+    const wrapper = getWrapperWithProperty(elementTest, property)
+
+    // const wrapper = property ? elementTest[property]() : elementTest
     const expectation = withNot ? expect(wrapper).not : expect(wrapper)
 
     expectation[methodExpect](expectedValue)
@@ -68,44 +117,44 @@ export const getWrapperWithId = (params: GetWrapperElementPrams) => params
 
 export const testOn = {
   notExistText: testCaseGenerator({
-    property: WrapperProperties.Text,
+    property: { name: WrapperProperties.Text },
     methodExpect: ExpectMethods.ToBeFalsy,
   }),
 
   existTextValue: testCaseGenerator({
-    property: WrapperProperties.Text,
+    property: { name: WrapperProperties.Text },
     methodExpect: ExpectMethods.ToContain,
   }),
 
   notExistTextValue: testCaseGenerator({
-    property: WrapperProperties.Text,
+    property: { name: WrapperProperties.Text },
     methodExpect: ExpectMethods.ToContain,
     withNot: true,
   }),
 
   existClass: testCaseGenerator({
-    property: WrapperProperties.Classes,
+    property: { name: WrapperProperties.Classes },
     methodExpect: ExpectMethods.ToContain,
   }),
 
   notExistClasses: testCaseGenerator({
-    property: WrapperProperties.Classes,
+    property: { name: WrapperProperties.Classes },
     methodExpect: ExpectMethods.ToContain,
     withNot: true,
   }),
 
   equalTextValue: testCaseGenerator({
-    property: WrapperProperties.Text,
+    property: { name: WrapperProperties.Text },
     methodExpect: ExpectMethods.ToEqual,
   }),
 
   existElement: testCaseGenerator({
-    property: WrapperProperties.Exists,
+    property: { name: WrapperProperties.Exists },
     methodExpect: ExpectMethods.ToBeTruthy,
   }),
 
   notExistElement: testCaseGenerator({
-    property: WrapperProperties.Exists,
+    property: { name: WrapperProperties.Exists },
     methodExpect: ExpectMethods.ToBeTruthy,
     withNot: true,
   }),
@@ -117,7 +166,6 @@ export const testOn = {
   checkExistCalledMethodWithArguments: testCaseGenerator({
     methodExpect: ExpectMethods.ToHaveBeenCalledWith,
   }),
-
   checkNotExistCalledMethod: testCaseGenerator({
     methodExpect: ExpectMethods.ToHaveBeenCalled,
     withNot: true,
@@ -125,5 +173,10 @@ export const testOn = {
 
   isEqual: testCaseGenerator({
     methodExpect: ExpectMethods.ToEqual,
-  })
+  }),
+
+  isEqualPlaceholder: testCaseGenerator({
+    methodExpect: ExpectMethods.ToEqual,
+    property: { name: WrapperProperties.Attributes, value: InputAttributes.Placeholder },
+  }),
 }
