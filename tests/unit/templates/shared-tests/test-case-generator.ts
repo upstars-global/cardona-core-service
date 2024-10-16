@@ -11,6 +11,8 @@ export enum WrapperProperties {
   Attributes = 'attributes',
   IsVisible = 'isVisible',
   Length = 'length',
+  Emitted = 'emitted',
+  Element = 'element',
 
   // THIS WILL NEED IN FUTURE
   // Props = 'props',
@@ -19,9 +21,12 @@ export enum WrapperProperties {
   // Trigger = 'trigger',
   // Find = 'find',
   // FindAll = 'findAll',
-  // Emitted = 'emitted',
   // Vm = 'vm',
   // Destroy = 'destroy',
+}
+
+export enum EventEmittersNames {
+  UpdateVModel = 'update:modelValue',
 }
 
 export enum InputAttributes {
@@ -76,11 +81,18 @@ export enum ExpectMethods {
   ToHaveBeenCalled = 'toHaveBeenCalled',
 }
 
-interface TestCaseGenerationProperty { name: WrapperProperties; value?: string | number }
+type WrapperPropertyValues = EventEmittersNames | EventEmittersNames | string | number
+
+interface TestCaseGenerationProperty { name: WrapperProperties; value?: WrapperPropertyValues; callable?: boolean }
 
 const getWrapperWithProperty = (wrapper, property?: TestCaseGenerationProperty) => {
-  if (has(property, 'name'))
-    return wrapper[property.name](property?.value || '')
+  const { name = '', value = '', callable = true } = property || {}
+  if (has(property, 'name')) {
+    if (!callable)
+      return value ? wrapper[name][value] : wrapper[name]
+
+    return wrapper[name](value || '')
+  }
 
   return wrapper
 }
@@ -105,8 +117,6 @@ const testCaseGenerator = ({
   return (wrapperElementPrams: GetWrapperElementPrams, expectedValue?: unknown) => {
     const elementTest = getWrapperElement(wrapperElementPrams)
     const wrapper = getWrapperWithProperty(elementTest, property)
-
-    // const wrapper = property ? elementTest[property]() : elementTest
     const expectation = withNot ? expect(wrapper).not : expect(wrapper)
 
     expectation[methodExpect](expectedValue)
@@ -178,5 +188,27 @@ export const testOn = {
   isEqualPlaceholder: testCaseGenerator({
     methodExpect: ExpectMethods.ToEqual,
     property: { name: WrapperProperties.Attributes, value: InputAttributes.Placeholder },
+  }),
+
+  isCalledEmittedEvent: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBeTruthy,
+    property: { name: WrapperProperties.Emitted, value: EventEmittersNames.UpdateVModel },
+  }),
+
+  isNotCalledEmittedEvent: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBeTruthy,
+    property: { name: WrapperProperties.Emitted, value: EventEmittersNames.UpdateVModel },
+    withNot: true,
+  }),
+
+  isEqualEmittedValue: testCaseGenerator({
+    methodExpect: ExpectMethods.ToEqual,
+    property: { name: WrapperProperties.Emitted, value: EventEmittersNames.UpdateVModel },
+  }),
+
+  isDisabledElement: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBeTruthy,
+
+    property: { name: WrapperProperties.Element, value: InputAttributes.Disabled, callable: false },
   }),
 }
