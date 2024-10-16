@@ -1,14 +1,18 @@
-import { describe, expect, it } from 'vitest'
-import type {BaseWrapper, VueWrapper} from '@vue/test-utils'
+import { describe, it } from 'vitest'
 import CheckField from '../../../../src/components/templates/FieldGenerator/_components/CheckField.vue'
-import { CheckBaseField } from '../../../../src/@model/templates/baseField'
-import { getWrapperElement, setMountComponent } from '../../utils'
+import { CheckGroupBaseField } from '../../../../src/@model/templates/baseField'
+import { setMountComponent } from '../../utils'
 import { testOn } from '../shared-tests/test-case-generator'
+import {
+  getCheckBoxElement,
+  isActiveDisabledState, testEmitData,
+  testOnValidLabel,
+} from '../shared-tests/checkbox-field'
 
 const getMountCheckField = setMountComponent(CheckField)
 
 describe('CheckField.vue', () => {
-  const field = new CheckBaseField({
+  const field = new CheckGroupBaseField({
     label: 'Test Checkbox',
     value: false,
     key: 'test-check',
@@ -20,23 +24,15 @@ describe('CheckField.vue', () => {
     field,
   }
 
-  const getCheckBoxElement = (wrapper: VueWrapper): BaseWrapper<Node> => getWrapperElement({ wrapper, selector: 'input[type="checkbox"]' })
-
   it('Renders the checkbox with the correct label', () => {
     const wrapper = getMountCheckField(defaultProps)
 
-    testOn.equalTextValue({ wrapper, selector: 'label' }, 'Test Checkbox')
+    testOnValidLabel(wrapper, field.label)
   })
   it('Binds modelValue to checkbox and emits update on change', async () => {
     const wrapper = getMountCheckField(defaultProps)
-    const checkbox = getCheckBoxElement(wrapper)
 
-    expect(checkbox.element.checked).toBe(false)
-
-    await checkbox.setChecked(true)
-
-    expect(wrapper.emitted('update:modelValue')).toBeTruthy()
-    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true])
+    testEmitData(wrapper, [true])
   })
 
   it('Exist is disabled state', async () => {
@@ -44,7 +40,7 @@ describe('CheckField.vue', () => {
 
     const checkbox = getCheckBoxElement(wrapper)
 
-    testOn.isEqual({ wrapper: checkbox.element.disabled }, true)
+    isActiveDisabledState(checkbox)
   })
 
   it('Updates modelValue correctly when the prop changes', async () => {
