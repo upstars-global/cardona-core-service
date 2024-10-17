@@ -2,7 +2,12 @@ import { describe, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import TextField from '../../../../src/components/templates/FieldGenerator/_components/TextField.vue'
 import { getWrapperElement, setMountComponent } from '../../utils'
-import { testOnValidPlaceholder } from '../shared-tests/text-input-fields'
+import {
+  getPropsWithDisabled, getPropsWithDisabledTrue,
+  onDisabledInput,
+  testOnCalledEmittedEvent,
+  testOnValidPlaceholder,
+} from '../shared-tests/text-input-fields'
 import { testOn } from '../shared-tests/test-case-generator'
 import { IconsList } from '../../../../src/@model/enums/icons'
 
@@ -24,7 +29,7 @@ describe('TextField.vue', () => {
   it('Renders the text field with the correct placeholder', () => {
     const wrapper = getWrapperElement({
       wrapper: getMountTextField(defaultProps),
-      testId: 'text-field',
+      selector: 'input',
     }) as VueWrapper
 
     testOnValidPlaceholder(wrapper, defaultProps.field.placeholder)
@@ -33,22 +38,13 @@ describe('TextField.vue', () => {
     const newValue = 'New Value'
     const wrapper = getMountTextField(defaultProps)
 
-    const input = getWrapperElement({ wrapper, selector: 'input' }) as VueWrapper
-
-    testOn.isNotCalledEmittedEvent({ wrapper })
-
-    await input.setValue(newValue)
-
-    testOn.isCalledEmittedEvent({ wrapper })
-    testOn.isEqualEmittedValue({ wrapper }, [[newValue]])
+    await testOnCalledEmittedEvent({ wrapper, selector: 'input' }, newValue)
   })
 
   it('Disables the input field when the disabled prop is true', async () => {
-    const wrapper = getMountTextField({ ...defaultProps, disabled: true })
+    const wrapper = getMountTextField(getPropsWithDisabledTrue(defaultProps))
 
-    const input = getWrapperElement({ wrapper, selector: 'input' }) as VueWrapper
-
-    testOn.isDisabledElement({ wrapper: input })
+    onDisabledInput({ wrapper, selector: 'input' })
   })
 
   it('Shows the error icon when errors prop is true and when is false', async () => {

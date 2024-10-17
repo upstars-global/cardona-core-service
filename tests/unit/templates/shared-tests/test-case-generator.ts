@@ -45,6 +45,7 @@ export enum InputAttributes {
   Checked = 'checked',
   Src = 'src',
   Alt = 'alt',
+  MaxLength = 'maxlength',
 
   // THIS WILL NEED IN FUTURE
   // Height = 'height',
@@ -52,7 +53,6 @@ export enum InputAttributes {
   // Form = 'form',
   // List = 'list',
   // Spellcheck = 'spellcheck',
-  // MaxLength = 'maxlength',
   // MinLength = 'minlength',
   // Min = 'min',
   // Max = 'max',
@@ -208,7 +208,11 @@ export const testOn = {
 
   isDisabledElement: testCaseGenerator({
     methodExpect: ExpectMethods.ToBeTruthy,
-
     property: { name: WrapperProperties.Element, value: InputAttributes.Disabled, callable: false },
+  }),
+
+  maxLengthAttributeToBe: testCaseGenerator({
+    methodExpect: ExpectMethods.ToEqual,
+    property: { name: WrapperProperties.Attributes, value: InputAttributes.MaxLength },
   }),
 }
