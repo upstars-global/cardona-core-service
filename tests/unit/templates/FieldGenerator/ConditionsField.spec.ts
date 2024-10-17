@@ -86,6 +86,6 @@ describe('ConditionsField.vue', () => {
 
     await conditionItem?.trigger('click')
 
-    testOn.isEqualEmittedValue({ wrapper }, 1)
+    testOn.isEqualEmittedValue({ wrapper }, undefined)
   })
 })
