@@ -69,10 +69,14 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
         <div
           v-for="(variable, index) in availableVariables"
           :key="index"
-          class="variable-label  ml-2"
+          class="variable-label variable-label__wrapper  ml-2"
+          data-test-id="condition-variable-item"
           @click="onClickVariable(variable)"
         >
-          <small class="text-body-1 variable-label text-color-base font-weight-medium">{{ variable }}</small>
+          <small
+            class="text-body-1 variable-label text-color-base font-weight-medium"
+            :data-test-id="`variable-value-${index}`"
+          >{{ variable }}</small>
           <VTooltip
             activator="parent"
             location="bottom"

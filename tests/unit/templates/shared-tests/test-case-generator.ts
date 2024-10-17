@@ -1,4 +1,5 @@
 import { expect } from 'vitest'
+import { has } from 'lodash'
 import type { GetWrapperElementPrams } from '../../utils'
 import { getWrapperElement } from '../../utils'
 
@@ -10,6 +11,8 @@ export enum WrapperProperties {
   Attributes = 'attributes',
   IsVisible = 'isVisible',
   Length = 'length',
+  Emitted = 'emitted',
+  Element = 'element',
 
   // THIS WILL NEED IN FUTURE
   // Props = 'props',
@@ -18,9 +21,43 @@ export enum WrapperProperties {
   // Trigger = 'trigger',
   // Find = 'find',
   // FindAll = 'findAll',
-  // Emitted = 'emitted',
   // Vm = 'vm',
   // Destroy = 'destroy',
+}
+
+export enum EventEmittersNames {
+  UpdateVModel = 'update:modelValue',
+}
+
+export enum InputAttributes {
+  Type = 'type',
+  Name = 'name',
+  Value = 'value',
+  Id = 'id',
+  Placeholder = 'placeholder',
+  Disabled = 'disabled',
+  ReadOnly = 'readonly',
+  Required = 'required',
+  Autocomplete = 'autocomplete',
+  Autofocus = 'autofocus',
+  Multiple = 'multiple',
+  Accept = 'accept',
+  Checked = 'checked',
+  Src = 'src',
+  Alt = 'alt',
+  MaxLength = 'maxlength',
+
+  // THIS WILL NEED IN FUTURE
+  // Height = 'height',
+  // Width = 'width',
+  // Form = 'form',
+  // List = 'list',
+  // Spellcheck = 'spellcheck',
+  // MinLength = 'minlength',
+  // Min = 'min',
+  // Max = 'max',
+  // Step = 'step',
+  // Pattern = 'pattern',
 }
 
 export enum ExpectMethods {
@@ -44,8 +81,30 @@ export enum ExpectMethods {
   ToHaveBeenCalled = 'toHaveBeenCalled',
 }
 
+type WrapperPropertyValues = EventEmittersNames | EventEmittersNames | string | number
+
+interface TestCaseGenerationProperty { name: WrapperProperties; value?: WrapperPropertyValues; callable?: boolean }
+
+const getWrapperWithProperty = (wrapper, property?: TestCaseGenerationProperty) => {
+  const { name = '', value = '', callable = true } = property || {}
+  if (has(property, 'name')) {
+    if (!callable)
+      return value ? wrapper[name][value] : wrapper[name]
+
+    return wrapper[name](value || '')
+  }
+
+  return wrapper
+}
+
 interface TestCaseGeneratorParams {
-  property?: WrapperProperties
+  property?: TestCaseGenerationProperty
+  methodExpect: ExpectMethods
+  withNot?: boolean
+}
+
+interface TestCaseGeneratorParams {
+  property?: TestCaseGenerationProperty
   methodExpect: ExpectMethods
   withNot?: boolean
 }
@@ -57,7 +116,7 @@ const testCaseGenerator = ({
 }: TestCaseGeneratorParams) => {
   return (wrapperElementPrams: GetWrapperElementPrams, expectedValue?: unknown) => {
     const elementTest = getWrapperElement(wrapperElementPrams)
-    const wrapper = property ? elementTest[property]() : elementTest
+    const wrapper = getWrapperWithProperty(elementTest, property)
     const expectation = withNot ? expect(wrapper).not : expect(wrapper)
 
     expectation[methodExpect](expectedValue)
@@ -68,44 +127,44 @@ export const getWrapperWithId = (params: GetWrapperElementPrams) => params
 
 export const testOn = {
   notExistText: testCaseGenerator({
-    property: WrapperProperties.Text,
+    property: { name: WrapperProperties.Text },
     methodExpect: ExpectMethods.ToBeFalsy,
   }),
 
   existTextValue: testCaseGenerator({
-    property: WrapperProperties.Text,
+    property: { name: WrapperProperties.Text },
     methodExpect: ExpectMethods.ToContain,
   }),
 
   notExistTextValue: testCaseGenerator({
-    property: WrapperProperties.Text,
+    property: { name: WrapperProperties.Text },
     methodExpect: ExpectMethods.ToContain,
     withNot: true,
   }),
 
   existClass: testCaseGenerator({
-    property: WrapperProperties.Classes,
+    property: { name: WrapperProperties.Classes },
     methodExpect: ExpectMethods.ToContain,
   }),
 
   notExistClasses: testCaseGenerator({
-    property: WrapperProperties.Classes,
+    property: { name: WrapperProperties.Classes },
     methodExpect: ExpectMethods.ToContain,
     withNot: true,
   }),
 
   equalTextValue: testCaseGenerator({
-    property: WrapperProperties.Text,
+    property: { name: WrapperProperties.Text },
     methodExpect: ExpectMethods.ToEqual,
   }),
 
   existElement: testCaseGenerator({
-    property: WrapperProperties.Exists,
+    property: { name: WrapperProperties.Exists },
     methodExpect: ExpectMethods.ToBeTruthy,
   }),
 
   notExistElement: testCaseGenerator({
-    property: WrapperProperties.Exists,
+    property: { name: WrapperProperties.Exists },
     methodExpect: ExpectMethods.ToBeTruthy,
     withNot: true,
   }),
@@ -117,7 +176,6 @@ export const testOn = {
   checkExistCalledMethodWithArguments: testCaseGenerator({
     methodExpect: ExpectMethods.ToHaveBeenCalledWith,
   }),
-
   checkNotExistCalledMethod: testCaseGenerator({
     methodExpect: ExpectMethods.ToHaveBeenCalled,
     withNot: true,
@@ -125,5 +183,41 @@ export const testOn = {
 
   isEqual: testCaseGenerator({
     methodExpect: ExpectMethods.ToEqual,
-  })
+  }),
+
+  isEqualPlaceholder: testCaseGenerator({
+    methodExpect: ExpectMethods.ToEqual,
+    property: { name: WrapperProperties.Attributes, value: InputAttributes.Placeholder },
+  }),
+
+  isCalledEmittedEvent: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBeTruthy,
+    property: { name: WrapperProperties.Emitted, value: EventEmittersNames.UpdateVModel },
+  }),
+
+  isNotCalledEmittedEvent: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBeTruthy,
+    property: { name: WrapperProperties.Emitted, value: EventEmittersNames.UpdateVModel },
+    withNot: true,
+  }),
+
+  isEqualEmittedValue: testCaseGenerator({
+    methodExpect: ExpectMethods.ToEqual,
+    property: { name: WrapperProperties.Emitted, value: EventEmittersNames.UpdateVModel },
+  }),
+
+  isDisabledElement: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBeTruthy,
+    property: { name: WrapperProperties.Element, value: InputAttributes.Disabled, callable: false },
+  }),
+
+  maxLengthAttributeToBe: testCaseGenerator({
+    methodExpect: ExpectMethods.ToEqual,
+    property: { name: WrapperProperties.Attributes, value: InputAttributes.MaxLength },
+  }),
+
+  inputAttributeValueToBe: testCaseGenerator({
+    methodExpect: ExpectMethods.ToEqual,
+    property: { name: WrapperProperties.Element, value: InputAttributes.Value, callable: false },
+  }),
 }

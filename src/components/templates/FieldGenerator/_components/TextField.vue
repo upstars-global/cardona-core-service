@@ -52,6 +52,7 @@ const appendInnerIcon = computed(() => {
       autocomplete="off"
       hide-details
       :autofocus="false"
+      data-test-id="text-field"
     />
   </div>
 </template>
