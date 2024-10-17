@@ -215,4 +215,9 @@ export const testOn = {
     methodExpect: ExpectMethods.ToEqual,
     property: { name: WrapperProperties.Attributes, value: InputAttributes.MaxLength },
   }),
+
+  inputAttributeValueToBe: testCaseGenerator({
+    methodExpect: ExpectMethods.ToEqual,
+    property: { name: WrapperProperties.Element, value: InputAttributes.Value, callable: false },
+  }),
 }

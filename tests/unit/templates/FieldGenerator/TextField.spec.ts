@@ -3,7 +3,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import TextField from '../../../../src/components/templates/FieldGenerator/_components/TextField.vue'
 import { getWrapperElement, setMountComponent } from '../../utils'
 import {
-  getPropsWithDisabled, getPropsWithDisabledTrue,
+  getPropsWithDisabledTrue,
   onDisabledInput,
   testOnCalledEmittedEvent,
   testOnValidPlaceholder,
