@@ -40,9 +40,6 @@ const entityId: string = route.params?.id?.toString()
 const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
 
-const tabNameError = ref('')
-const fieldNameError = ref('')
-
 const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb }
   = props.useEntity()
 
@@ -140,43 +137,42 @@ const validate = async () => {
 
   const errors = formRef.value.getErrors()
 
-  const fieldsNotValid = Object.keys(errors).filter(
+  const [fieldName] = Object.keys(errors).filter(
     nameField => errors[nameField].isNotEmpty,
   )
 
-  if (fieldsNotValid[0])
-    setTabError(fieldsNotValid[0])
+  if (fieldName)
+    setTabError(fieldName)
 
   return valid
 }
 
 const setTabError = (fieldName: string) => {
-  fieldNameError.value = fieldName
-  tabNameError.value = ''
-  if (form.value.hasOwnProperty(fieldName))
-    tabNameError.value = FormTabs.Main
-  else if (form.value.seo?.hasOwnProperty(fieldName))
-    tabNameError.value = FormTabs.Seo
-  else if (form.value.fieldTranslations?.hasOwnProperty(fieldName))
-    tabNameError.value = FormTabs.Localization
+  const fieldElement: HTMLElement | null = document.getElementById(`${fieldName}-field`)
+  let tabName = ''
 
-  if (tabNameError.value) {
-    const tabElement: HTMLElement | null = document.querySelector(
-      `button[value=${tabNameError.value}]`,
+  if (fieldElement) {
+    const windowElement: HTMLElement | null = fieldElement.closest('div[data-tab]')
+
+    if (windowElement)
+      tabName = windowElement.dataset.tab!
+    else if (form.value.hasOwnProperty(fieldName))
+      tabName = FormTabs.Main
+    else if (form.value.seo?.hasOwnProperty(fieldName))
+      tabName = FormTabs.Seo
+    else if (form.value.fieldTranslations?.hasOwnProperty(fieldName))
+      tabName = FormTabs.Localization
+
+    const tabButton: HTMLElement | null = document.querySelector(
+      `button[value=${tabName}]`,
     )
 
-    if (tabElement)
-      tabElement.click()
-  }
+    tabButton && tabButton.click()
 
-  if (fieldNameError.value) {
     nextTick(() => {
-      const el: HTMLElement | null = document.getElementById(`${fieldNameError.value}-field`)
-      if (el) {
-        el.scrollIntoView({
-          block: 'start',
-        })
-      }
+      fieldElement.scrollIntoView({
+        block: 'start',
+      })
     })
   }
 }
