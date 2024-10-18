@@ -117,8 +117,13 @@ export const testOn = {
   checkExistCalledMethodWithArguments: testCaseGenerator({
     methodExpect: ExpectMethods.ToHaveBeenCalledWith,
   }),
+
   checkNotExistCalledMethod: testCaseGenerator({
     methodExpect: ExpectMethods.ToHaveBeenCalled,
-    withNot: true
+    withNot: true,
   }),
+
+  isEqual: testCaseGenerator({
+    methodExpect: ExpectMethods.ToEqual,
+  })
 }

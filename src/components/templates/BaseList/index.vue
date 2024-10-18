@@ -968,7 +968,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         </template>
 
         <template #empty>
-          <div class="d-flex flex-column justify-center align-center p-2 text-color-mute">
+          <div class="d-flex flex-column justify-center align-center p-2 text-color-mute empty-state-wrapper">
             <slot name="empty">
               <span>
                 {{ emptyListText }}
@@ -978,7 +978,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         </template>
       </CTable>
     </VCard>
-    <div :class="config.small ? 'pt-4' : 'pt-8'">
+    <div v-if="items.isNotEmpty" :class="config.small ? 'pt-4' : 'pt-8'">
       <ListPagination
         v-if="config?.pagination"
         :model-value="currentPage"
@@ -1014,5 +1014,9 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       padding: 0 !important;
     }
   }
+}
+
+.empty-state-wrapper {
+  height: 5.2rem;
 }
 </style>

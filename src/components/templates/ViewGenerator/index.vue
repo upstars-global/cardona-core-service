@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import store from '../../../store'
+import { useStore } from 'vuex'
 import type { ViewInfo, ViewJustifyContent } from '../../../@model/view'
 
 const props = defineProps<{
@@ -9,6 +9,8 @@ const props = defineProps<{
   justifyContent?: ViewJustifyContent
   cols?: number
 }>()
+
+const store = useStore()
 
 const canView = computed<boolean>(() =>
   props.modelValue?.permission ? store.getters.abilityCan(props.modelValue?.permission, 'view') : true,
@@ -30,20 +32,22 @@ const valueColsCount = computed(() => 12 - props.cols)
       <VCol
         :cols="cols"
         class="wrapper-label"
+        data-test-id="wrapper-label"
       >
         <div
           v-if="modelValue.icon !== undefined"
           class="icon-block"
         >
-          <VIcon :icon="modelValue.icon" />
+          <VIcon data-test-id="icon" :icon="modelValue.icon" />
         </div>
 
-        <label class="mb-0 label p-0 text-body-1">{{ modelValue.label }}</label>
+        <label class="mb-0 label p-0 text-body-1" data-test-id="label">{{ modelValue.label }}</label>
       </VCol>
       <VCol
         :cols="valueColsCount"
         class="value font-weight-medium d-flex align-items-start text-break wrapper-value font-weight-medium ma-0"
         :class="justifyClass"
+        data-test-id="wrapper-value"
       >
         <slot
           :name="`sidebar-value(${keyName})`"
@@ -53,11 +57,12 @@ const valueColsCount = computed(() => 12 - props.cols)
             :is="modelValue.type"
             :item="modelValue"
             class="label-view"
+            data-test-id="view-generator-component"
           />
         </slot>
       </VCol>
     </VRow>
-    <hr v-if="modelValue.withSeparator">
+    <hr data-test-id="separator"  v-if="modelValue.withSeparator">
   </div>
 </template>
 
