@@ -11,7 +11,7 @@ export const getComponentFromWrapper = (
   name: string,
 ): BaseWrapper<Node> => wrapper.findComponent({ name })
 
-type WrapperResult = BaseWrapper<Node> | BaseWrapper<Node>[];
+type WrapperResult = BaseWrapper<Node> | BaseWrapper<Node>[]
 
 export const findByTestId = (
   wrapper: VueWrapper,
@@ -27,12 +27,19 @@ export const findByTestId = (
 export interface GetWrapperElementPrams {
   wrapper: VueWrapper
   testId?: string
+  selector?: string
   component?: string
   all?: boolean
 }
 
 export const getWrapperElement = (
-  { wrapper, testId = '', all = false }: GetWrapperElementPrams,
-): WrapperResult => testId
-  ? findByTestId(wrapper, testId, { all })
-  : wrapper
+  { wrapper, testId = '', selector = '', all = false }: GetWrapperElementPrams,
+): WrapperResult => {
+  if (testId)
+    return findByTestId(wrapper, testId, { all })
+
+  if (selector)
+    return all ? wrapper.findAll(selector) : wrapper.find(selector)
+
+  return wrapper
+}
