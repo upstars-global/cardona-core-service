@@ -3,7 +3,7 @@ import { nextTick } from 'vue'
 import BaseModal from '../../../src/components/BaseModal/index.vue'
 import { ModalSizes } from '../../../src/@model/vuetify'
 import { mockModal } from '../mocks/modal-provide-config'
-import { getSelectorTestId, setMountComponent } from '../utils'
+import {getSelectorTestId, setMountComponent, showModal} from '../utils'
 import { testOn } from '../templates/shared-tests/test-case-generator'
 
 const getMountBaseModal = setMountComponent(BaseModal)
@@ -25,8 +25,7 @@ describe('BaseModal', () => {
   it('Renders BaseModal and displays modal with correct slot content after showModal is called', async () => {
     const wrapper = getMountBaseModal(defaultProps, { provide: { modal: mockModal } }, slots)
 
-    await wrapper.vm.show()
-    await nextTick()
+    await showModal(wrapper)
 
     testOn.existElement({ wrapper, selector: '.modal-header-slot' })
     testOn.existElement({ wrapper, selector: '.default-slot-content' })
@@ -35,8 +34,7 @@ describe('BaseModal', () => {
   it('Call event hide on click button close modal', async () => {
     const wrapper = getMountBaseModal(defaultProps, { provide: { modal: mockModal } }, slots)
 
-    await wrapper.vm.show()
-    await nextTick()
+    await showModal(wrapper)
 
     await wrapper.find(getSelectorTestId('btn-close')).trigger('click')
     testOn.isCalledEmitEventHide({ wrapper })
@@ -45,8 +43,8 @@ describe('BaseModal', () => {
   it('Exist content by props', async () => {
     const wrapper = getMountBaseModal(defaultProps, { provide: { modal: mockModal } })
 
-    await wrapper.vm.show()
-    await nextTick()
+    await showModal(wrapper)
+
     testOn.equalTextValue({ wrapper, selector: '.modal-title' }, defaultProps.title)
     expect(wrapper.find('.v-overlay__content').element.style.width).toBe(defaultProps.width)
   })
