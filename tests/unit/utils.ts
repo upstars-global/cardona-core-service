@@ -11,7 +11,7 @@ export const getComponentFromWrapper = (
   name: string,
 ): BaseWrapper<Node> => wrapper.findComponent({ name })
 
-type WrapperResult = BaseWrapper<Node> | BaseWrapper<Node>[]
+export type WrapperResult = BaseWrapper<Node> | BaseWrapper<Node>[]
 
 export const findByTestId = (
   wrapper: VueWrapper,
