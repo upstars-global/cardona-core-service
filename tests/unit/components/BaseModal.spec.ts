@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest'
-import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import BaseModal from '../../../src/components/BaseModal/index.vue'
 import { ModalSizes } from '../../../src/@model/vuetify'
@@ -24,16 +23,7 @@ const slots = {
 
 describe('BaseModal', () => {
   it('Renders BaseModal and displays modal with correct slot content after showModal is called', async () => {
-    const wrapper = mount(BaseModal, {
-      props: defaultProps,
-      global: {
-        provide: {
-          modal: mockModal,
-        },
-      },
-      slots,
-      attachTo: document.body,
-    })
+    const wrapper = getMountBaseModal(defaultProps, { provide: { modal: mockModal } }, slots)
 
     await wrapper.vm.show()
     await nextTick()
@@ -43,38 +33,21 @@ describe('BaseModal', () => {
   })
 
   it('Call event hide on click button close modal', async () => {
-    const wrapper = mount(BaseModal, {
-      props: defaultProps,
-      global: {
-        provide: {
-          modal: mockModal,
-        },
-      },
-      slots,
-      attachTo: document.body,
-    })
+    const wrapper = getMountBaseModal(defaultProps, { provide: { modal: mockModal } }, slots)
 
     await wrapper.vm.show()
     await nextTick()
 
     await wrapper.find(getSelectorTestId('btn-close')).trigger('click')
-    expect(wrapper.emitted('hide')).toBeTruthy()
+    testOn.isCalledEmitEventHide({ wrapper })
   })
 
   it('Exist content by props', async () => {
-    const wrapper = mount(BaseModal, {
-      props: defaultProps,
-      global: {
-        provide: {
-          modal: mockModal,
-        },
-      },
-      attachTo: document.body,
-    })
+    const wrapper = getMountBaseModal(defaultProps, { provide: { modal: mockModal } })
 
     await wrapper.vm.show()
     await nextTick()
-    expect(wrapper.find('.modal-title').text()).toBe(defaultProps.title)
+    testOn.equalTextValue({ wrapper, selector: '.modal-title' }, defaultProps.title)
     expect(wrapper.find('.v-overlay__content').element.style.width).toBe(defaultProps.width)
   })
 })

@@ -2,9 +2,9 @@ import { type BaseWrapper, type VueWrapper, mount } from '@vue/test-utils'
 
 export const getSelectorTestId = (testId: string): string => `[data-test-id="${testId}"]`
 
-export const getConfig = (props: Record<string, unknown>, global: Record<string, unknown>) => ({ props, global })
+export const getConfig = (props: Record<string, unknown>, global?: Record<string, unknown>, slots?: Record<string, unknown>) => ({ props, global, slots })
 
-export const setMountComponent = (component: unknown) => (props: unknown, global = {}) => mount(component, getConfig(props, global))
+export const setMountComponent = (component: unknown) => (props: unknown, global = {}, slots = {}) => mount(component, getConfig(props, global, slots))
 
 export const getComponentFromWrapper = (
   wrapper: VueWrapper,

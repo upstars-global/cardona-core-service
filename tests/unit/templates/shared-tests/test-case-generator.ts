@@ -222,4 +222,9 @@ export const testOn = {
     methodExpect: ExpectMethods.ToEqual,
     property: { name: WrapperProperties.Element, value: InputAttributes.Value, callable: false },
   }),
+
+  isCalledEmitEventHide: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBeTruthy,
+    property: { name: WrapperProperties.Emitted, value: EventEmittersNames.Hide },
+  }),
 }
