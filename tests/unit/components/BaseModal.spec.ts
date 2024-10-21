@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest'
-import { nextTick } from 'vue'
 import BaseModal from '../../../src/components/BaseModal/index.vue'
 import { ModalSizes } from '../../../src/@model/vuetify'
 import { mockModal } from '../mocks/modal-provide-config'
