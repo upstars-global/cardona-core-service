@@ -56,6 +56,11 @@ const onHide = (value: boolean) => {
   if (!value)
     emits('hide')
 }
+
+const enhancedAttrs = computed(() => ({
+  ...attrs,
+  attach: process.env.NODE_ENV === 'test' ? true : attrs.attach,
+}))
 </script>
 
 <template>
@@ -63,7 +68,7 @@ const onHide = (value: boolean) => {
     v-model="showModal"
     class="base-modal"
     :width="modalWidth"
-    v-bind="attrs"
+    v-bind="enhancedAttrs"
     @update:model-value="onHide"
   >
     <template #default>
@@ -92,8 +97,8 @@ const onHide = (value: boolean) => {
             :variant="VVariants.Outlined"
             :color="VColors.Secondary"
             class="modal-header__close bg-surface"
-            @click="hide"
             data-test-id="btn-close"
+            @click="hide"
           >
             <VIcon :icon="IconsList.XIcon" />
           </VBtn>

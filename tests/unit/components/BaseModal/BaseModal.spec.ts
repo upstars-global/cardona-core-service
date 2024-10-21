@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import BaseModal from '../../../src/components/BaseModal/index.vue'
-import { ModalSizes } from '../../../src/@model/vuetify'
-import { mockModal } from '../mocks/modal-provide-config'
-import {getSelectorTestId, setMountComponent, showModal} from '../utils'
-import { testOn } from '../templates/shared-tests/test-case-generator'
+import BaseModal from '../../../../src/components/BaseModal/index.vue'
+import { ModalSizes } from '../../../../src/@model/vuetify'
+import { mockModal } from '../../mocks/modal-provide-config'
+import { getSelectorTestId, setMountComponent, showModal } from '../../utils'
+import { testOn } from '../../templates/shared-tests/test-case-generator'
 
 const getMountBaseModal = setMountComponent(BaseModal)
 
@@ -12,7 +12,6 @@ const defaultProps = {
   size: ModalSizes.Small,
   title: 'Test Modal Title',
   width: '400px',
-  attach: true,
 }
 
 const slots = {

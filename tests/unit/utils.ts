@@ -49,3 +49,9 @@ export const showModal = async (wrapperModal: VueWrapper) => {
   await wrapperModal.vm.show()
   await nextTick()
 }
+
+export const callActionShowForInternalBaseModal = async (wrapper: VueWrapper) => {
+  const baseModalWrapper = wrapper.findComponent({ name: 'BaseModal' })
+
+  await showModal(baseModalWrapper)
+}

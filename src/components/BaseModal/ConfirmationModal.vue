@@ -22,9 +22,10 @@ defineEmits<{
     :title="title"
     :size="ModalSizes.Small"
     centered
+    v-bind="$attrs"
   >
     <template #default="{ action }">
-      <p class="px-6 mb-2">
+      <p class="px-6 mb-2 modal-description">
         {{ description }}
       </p>
 
@@ -36,6 +37,7 @@ defineEmits<{
           :color="VColors.Secondary"
           class="mr-4"
           @click="action.hide"
+          data-test-id="btn-cancel"
         >
           {{ $t('common.cancel') }}
         </VBtn>
@@ -44,6 +46,7 @@ defineEmits<{
           :color="VColors.Error"
           :loading="isLoading"
           @click="$emit('confirmed', action.hide)"
+          data-test-id="btn-confirm"
         >
           {{ actionBtnText }}
         </VBtn>
