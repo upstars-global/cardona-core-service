@@ -93,6 +93,7 @@ const onHide = (value: boolean) => {
             :color="VColors.Secondary"
             class="modal-header__close bg-surface"
             @click="hide"
+            data-test-id="btn-close"
           >
             <VIcon :icon="IconsList.XIcon" />
           </VBtn>
