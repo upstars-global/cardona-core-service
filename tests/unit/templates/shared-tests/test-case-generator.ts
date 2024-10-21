@@ -27,6 +27,8 @@ export enum WrapperProperties {
 
 export enum EventEmittersNames {
   UpdateVModel = 'update:modelValue',
+  Show = 'show',
+  Hide = 'hide',
 }
 
 export enum InputAttributes {
