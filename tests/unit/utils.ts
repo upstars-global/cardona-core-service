@@ -45,13 +45,8 @@ export const getWrapperElement = (
   return wrapper
 }
 
-export const showModal = async (wrapperModal: VueWrapper) => {
-  await wrapperModal.vm.show()
-  await nextTick()
-}
 
-export const callActionShowForInternalBaseModal = async (wrapper: VueWrapper) => {
-  const baseModalWrapper = wrapper.findComponent({ name: 'BaseModal' })
-
-  await showModal(baseModalWrapper)
+export const clickTrigger = async (params: GetWrapperElementPrams) => {
+  const wrapper = getWrapperElement(params) as VueWrapper
+  await wrapper.trigger('click')
 }

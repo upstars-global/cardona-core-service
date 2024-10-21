@@ -1,11 +1,11 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
 import ConfirmationModal from '../../../../src/components/BaseModal/ConfirmationModal.vue'
-import { callActionShowForInternalBaseModal, getWrapperElement, setMountComponent } from '../../utils'
+import { clickTrigger, setMountComponent } from '../../utils'
 import { ModalSizes } from '../../../../src/@model/vuetify'
 import { i18n } from '../../../../src/plugins/i18n'
 import { mockModal } from '../../mocks/modal-provide-config'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
+import { callActionShowForInternalBaseModal, isEqualModalTitle } from '../../templates/shared-tests/modal'
 
 const getMountConfirmationModal = setMountComponent(ConfirmationModal)
 
@@ -18,6 +18,7 @@ const defaultProps = {
   isLoading: false,
 }
 
+const globalConfig = { provide: { modal: mockModal } }
 const testIdConfirmBtn = 'btn-confirm'
 const btnLoadingClass = 'v-btn--loading'
 
@@ -30,18 +31,18 @@ describe('ConfirmationModal', () => {
     }
   })
   it('Opens modal and renders correct content', async () => {
-    const wrapper = getMountConfirmationModal(defaultProps, { provide: { modal: mockModal } })
+    const wrapper = getMountConfirmationModal(defaultProps, globalConfig)
 
     await callActionShowForInternalBaseModal(wrapper)
 
-    testOn.equalTextValue({ wrapper, selector: '.modal-title' }, defaultProps.title)
+    isEqualModalTitle(wrapper, defaultProps.title)
     testOn.equalTextValue({ wrapper, selector: '.modal-description' }, defaultProps.description)
     testOn.equalTextValue({ wrapper, testId: testIdConfirmBtn }, defaultProps.actionBtnText)
     testOn.notExistClasses({ wrapper, testId: testIdConfirmBtn }, btnLoadingClass)
   })
 
   it('Loading state button', async () => {
-    const wrapper = getMountConfirmationModal({ ...defaultProps, isLoading: true }, { provide: { modal: mockModal } })
+    const wrapper = getMountConfirmationModal({ ...defaultProps, isLoading: true }, globalConfig)
 
     await callActionShowForInternalBaseModal(wrapper)
 
@@ -49,13 +50,11 @@ describe('ConfirmationModal', () => {
   })
 
   it('Valid actions on button clicks', async () => {
-    const wrapper = getMountConfirmationModal({ ...defaultProps, isLoading: true }, { provide: { modal: mockModal } })
+    const wrapper = getMountConfirmationModal(defaultProps, globalConfig)
 
     await callActionShowForInternalBaseModal(wrapper)
 
-    const btnConfirm = getWrapperElement({ wrapper, testId: testIdConfirmBtn }) as VueWrapper
-
-    await btnConfirm.trigger('click')
+    await clickTrigger({ wrapper, testId: testIdConfirmBtn })
     expect(wrapper.emitted('confirmed')).toBeTruthy()
   })
 })

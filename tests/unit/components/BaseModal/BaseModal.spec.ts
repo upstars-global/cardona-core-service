@@ -2,8 +2,9 @@ import { describe, expect, it } from 'vitest'
 import BaseModal from '../../../../src/components/BaseModal/index.vue'
 import { ModalSizes } from '../../../../src/@model/vuetify'
 import { mockModal } from '../../mocks/modal-provide-config'
-import { getSelectorTestId, setMountComponent, showModal } from '../../utils'
+import { clickTrigger, setMountComponent } from '../../utils'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
+import { isEqualModalTitle, showModal } from '../../templates/shared-tests/modal'
 
 const getMountBaseModal = setMountComponent(BaseModal)
 
@@ -34,7 +35,8 @@ describe('BaseModal', () => {
 
     await showModal(wrapper)
 
-    await wrapper.find(getSelectorTestId('btn-close')).trigger('click')
+    await clickTrigger({ wrapper, testId: 'btn-close' })
+
     testOn.isCalledEmitEventHide({ wrapper })
   })
 
@@ -43,7 +45,7 @@ describe('BaseModal', () => {
 
     await showModal(wrapper)
 
-    testOn.equalTextValue({ wrapper, selector: '.modal-title' }, defaultProps.title)
+    isEqualModalTitle(wrapper, defaultProps.title)
     expect(wrapper.find('.v-overlay__content').element.style.width).toBe(defaultProps.width)
   })
 })
