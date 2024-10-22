@@ -27,6 +27,8 @@ export enum WrapperProperties {
 
 export enum EventEmittersNames {
   UpdateVModel = 'update:modelValue',
+  Show = 'show',
+  Hide = 'hide',
 }
 
 export enum InputAttributes {
@@ -219,5 +221,10 @@ export const testOn = {
   inputAttributeValueToBe: testCaseGenerator({
     methodExpect: ExpectMethods.ToEqual,
     property: { name: WrapperProperties.Element, value: InputAttributes.Value, callable: false },
+  }),
+
+  isCalledEmitEventHide: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBeTruthy,
+    property: { name: WrapperProperties.Emitted, value: EventEmittersNames.Hide },
   }),
 }
