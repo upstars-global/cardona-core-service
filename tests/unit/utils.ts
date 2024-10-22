@@ -4,7 +4,7 @@ export const getSelectorTestId = (testId: string): string => `[data-test-id="${t
 
 export const getConfig = (props: Record<string, unknown>, global?: Record<string, unknown>, slots?: Record<string, unknown>) => ({ props, global, slots })
 
-export const setMountComponent = (component: unknown) => (props: unknown, global = {}, slots = {}) => mount(component, getConfig(props, global, slots))
+export const setMountComponent = (component: unknown) => (props: unknown, global = {}, slots?: Record<string, unknown>) => mount(component, getConfig(props, global, slots))
 
 export const getComponentFromWrapper = (
   wrapper: VueWrapper,

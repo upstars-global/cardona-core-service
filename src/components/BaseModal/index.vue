@@ -99,7 +99,6 @@ const enhancedAttrs = computed(() => ({
             class="modal-header__close bg-surface"
             data-test-id="btn-close"
             @click="hide"
-            data-test-id="btn-close"
           >
             <VIcon :icon="IconsList.XIcon" />
           </VBtn>
