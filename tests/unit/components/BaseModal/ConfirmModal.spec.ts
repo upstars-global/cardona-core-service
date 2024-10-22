@@ -1,12 +1,15 @@
-import { beforeAll, describe, expect, it, vi } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 import ConfirmModal from '../../../../src/components/BaseModal/ConfirmModal.vue'
-import { getSelectorTestId, setMountComponent } from '../../utils'
+import { clickTrigger, setMountComponent } from '../../utils'
 import { ModalSizes } from '../../../../src/@model/vuetify'
 import { i18n } from '../../../../src/plugins/i18n'
 import { mockModal } from '../../mocks/modal-provide-config'
-import { testOn } from '../../templates/shared-tests/test-case-generator'
-import { callActionShowForInternalBaseModal, isEqualModalTitle, showModal } from '../../templates/shared-tests/modal'
-import {nextTick} from "vue";
+import {
+  callActionShowForInternalBaseModal,
+  isEqualModalDescription,
+  isEqualModalTitle,
+} from '../../templates/shared-tests/modal'
+import { isCalledEmitEvent } from '../../templates/shared-tests/general'
 
 const getMountConfirmModal = setMountComponent(ConfirmModal)
 
@@ -33,7 +36,7 @@ describe('ConfirmModal', () => {
     await callActionShowForInternalBaseModal(wrapper)
 
     isEqualModalTitle(wrapper, defaultProps.title)
-    testOn.equalTextValue({ wrapper, selector: '.modal-description' }, defaultProps.description)
+    isEqualModalDescription(wrapper, defaultProps.description)
   })
 
   it('emits "on-click-modal-ok" on click btn add', async () => {
@@ -41,10 +44,9 @@ describe('ConfirmModal', () => {
 
     await callActionShowForInternalBaseModal(wrapper)
 
-    const cancelButton = wrapper.find(getSelectorTestId('btn-add'))
+    await clickTrigger({ wrapper, testId: 'btn-add' })
 
-    await cancelButton.trigger('click')
-    expect(wrapper.emitted('on-click-modal-ok')).toBeTruthy()
+    isCalledEmitEvent(wrapper, 'on-click-modal-ok')
   })
 
   it('emits "on-close-modal" on click btn close', async () => {
@@ -52,8 +54,7 @@ describe('ConfirmModal', () => {
 
     await callActionShowForInternalBaseModal(wrapper)
 
-    const cancelButton = wrapper.find(getSelectorTestId('btn-cancel'))
-    await cancelButton.trigger('click')
+    await clickTrigger({ wrapper, testId: 'btn-cancel' })
 
     expect(wrapper.emitted('on-close-modal')).toBeTruthy()
   })

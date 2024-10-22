@@ -53,3 +53,4 @@ export const clickTrigger = async (params: GetWrapperElementPrams) => {
 export const setValue = async (wrapper: VueWrapper, value: string) => {
   await wrapper.setValue(value)
 }
+

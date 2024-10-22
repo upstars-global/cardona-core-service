@@ -6,7 +6,11 @@ import { ModalSizes } from '../../../../src/@model/vuetify'
 import { i18n } from '../../../../src/plugins/i18n'
 import { mockModal } from '../../mocks/modal-provide-config'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
-import {callActionShowForInternalBaseModal, isEqualModalTitle} from '../../templates/shared-tests/modal'
+import {
+  callActionShowForInternalBaseModal,
+  isEqualModalDescription,
+  isEqualModalTitle
+} from '../../templates/shared-tests/modal'
 import { testOnValidPlaceholder } from '../../templates/shared-tests/text-input-fields'
 
 const getMountConfirmModal = setMountComponent(RemoveModal)
@@ -35,7 +39,7 @@ describe('ConfirmationModal', () => {
     await callActionShowForInternalBaseModal(wrapper)
 
     isEqualModalTitle(wrapper, defaultProps.title)
-    testOn.equalTextValue({ wrapper, selector: '.modal-description' }, defaultProps.description)
+    isEqualModalDescription(wrapper, defaultProps.description)
   })
 
   it('Emits "on-click-modal-ok" on click btn add', async () => {

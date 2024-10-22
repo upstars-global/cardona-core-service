@@ -1,11 +1,16 @@
-import { beforeAll, describe, expect, it } from 'vitest'
+import { beforeAll, describe, it } from 'vitest'
 import ConfirmationModal from '../../../../src/components/BaseModal/ConfirmationModal.vue'
 import { clickTrigger, setMountComponent } from '../../utils'
 import { ModalSizes } from '../../../../src/@model/vuetify'
 import { i18n } from '../../../../src/plugins/i18n'
 import { mockModal } from '../../mocks/modal-provide-config'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
-import { callActionShowForInternalBaseModal, isEqualModalTitle } from '../../templates/shared-tests/modal'
+import {
+  callActionShowForInternalBaseModal,
+  isEqualModalDescription,
+  isEqualModalTitle,
+} from '../../templates/shared-tests/modal'
+import { isCalledEmitEvent } from '../../templates/shared-tests/general'
 
 const getMountConfirmationModal = setMountComponent(ConfirmationModal)
 
@@ -36,7 +41,7 @@ describe('ConfirmationModal', () => {
     await callActionShowForInternalBaseModal(wrapper)
 
     isEqualModalTitle(wrapper, defaultProps.title)
-    testOn.equalTextValue({ wrapper, selector: '.modal-description' }, defaultProps.description)
+    isEqualModalDescription(wrapper, defaultProps.description)
     testOn.equalTextValue({ wrapper, testId: testIdConfirmBtn }, defaultProps.actionBtnText)
     testOn.notExistClasses({ wrapper, testId: testIdConfirmBtn }, btnLoadingClass)
   })
@@ -55,6 +60,6 @@ describe('ConfirmationModal', () => {
     await callActionShowForInternalBaseModal(wrapper)
 
     await clickTrigger({ wrapper, testId: testIdConfirmBtn })
-    expect(wrapper.emitted('confirmed')).toBeTruthy()
+    isCalledEmitEvent(wrapper, 'confirmed')
   })
 })
