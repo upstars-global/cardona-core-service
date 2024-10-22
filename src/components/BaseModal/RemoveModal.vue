@@ -10,7 +10,6 @@ interface Props {
   title?: string
   description?: string
   withRemoveComment?: boolean
-  state?: boolean
   removeBtnColor: VColors
   removeBtnVariant: VVariants
   cancelBtnColor: VColors
@@ -59,11 +58,12 @@ const onCloseModal = (hide: Function) => {
         :class="{ 'pb-16': withRemoveComment }"
         class="d-flex flex-column pt-0"
       >
-        <span class="text-body-1">{{ description || $t(`modal.remove${entityName}.description`) }}</span>
+        <span class="text-body-1 modal-description">{{ description || $t(`modal.remove${entityName}.description`) }}</span>
         <AppTextarea
           v-if="withRemoveComment"
           v-model.trim="commentToRemove"
           :label="$t('common.comment')"
+          data-test-id="comment-to-remove"
           rows="3"
           :placeholder="$t('common.comment')"
         />
@@ -74,6 +74,7 @@ const onCloseModal = (hide: Function) => {
           :color="cancelBtnColor"
           :variant="cancelBtnVariant"
           @click="onCloseModal(action.hide)"
+          data-test-id="btn-cancel"
         >
           {{ $t('action.cancel') }}
         </VBtn>
@@ -81,6 +82,7 @@ const onCloseModal = (hide: Function) => {
           :color="removeBtnColor"
           :variant="removeBtnVariant"
           @click="onClickModalOk(action.hide)"
+          data-test-id="btn-remove"
         >
           {{ $t('action.remove') }}
         </VBtn>

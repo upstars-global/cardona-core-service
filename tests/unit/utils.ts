@@ -1,5 +1,4 @@
 import { type BaseWrapper, type VueWrapper, mount } from '@vue/test-utils'
-import {nextTick} from "vue";
 
 export const getSelectorTestId = (testId: string): string => `[data-test-id="${testId}"]`
 
@@ -45,8 +44,12 @@ export const getWrapperElement = (
   return wrapper
 }
 
-
 export const clickTrigger = async (params: GetWrapperElementPrams) => {
   const wrapper = getWrapperElement(params) as VueWrapper
+
   await wrapper.trigger('click')
+}
+
+export const setValue = async (wrapper: VueWrapper, value: string) => {
+  await wrapper.setValue(value)
 }
