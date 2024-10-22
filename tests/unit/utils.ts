@@ -21,7 +21,7 @@ export const findByTestId = (
   if (params?.all)
     return wrapper.findAll(getSelectorTestId(name))
 
-  return wrapper.find(getSelectorTestId(name)) // This was missing
+  return wrapper.find(getSelectorTestId(name))
 }
 
 export interface GetWrapperElementPrams {
