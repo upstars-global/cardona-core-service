@@ -1,24 +1,25 @@
 <script setup lang="ts">
 import { VColors, VVariants } from '../../@model/vuetify'
 import BaseModal from '../BaseModal/index.vue'
+import type { ConfirmModalPropsOfSlotDefault, ModalActionsFromSlot } from '../../@model/modal'
+import { i18n } from '../../plugins/i18n'
 
 interface Props {
   entityName?: string
   modalId: string
   title?: string
   description?: string
-}
-
-interface OnCLickModalOkPayload {
-  hide: Function
+  confirmBtnText?: string
 }
 
 interface Emits {
-  (event: 'on-click-modal-ok', payload: OnCLickModalOkPayload): void
+  (event: 'on-click-modal-ok', payload: Pick<ModalActionsFromSlot, 'hide'>): void
   (event: 'on-close-modal'): void
 }
 
-defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  confirmBtnText: i18n.t('action.add'),
+})
 
 const emits = defineEmits<Emits>()
 
@@ -30,6 +31,8 @@ const onCloseModal = (hide: Function) => {
   emits('on-close-modal')
   hide()
 }
+
+const getButtonConfirm = (text: string) => text || props.confirmBtnText
 </script>
 
 <template>
@@ -37,7 +40,7 @@ const onCloseModal = (hide: Function) => {
     :id="modalId"
     :title="title"
   >
-    <template #default="{ action, payload }">
+    <template #default="{ action, payload }: ConfirmModalPropsOfSlotDefault">
       <VCardText class="d-flex flex-column">
         <span class="text-body-1">{{ payload?.description || description }}</span>
       </VCardText>
@@ -54,7 +57,7 @@ const onCloseModal = (hide: Function) => {
           :color="VColors.Primary"
           @click="onClickModalOk(action.hide)"
         >
-          {{ $t('action.add') }}
+          {{ getButtonConfirm(payload.btnConfirmText) }}
         </VBtn>
       </VCardText>
     </template>
