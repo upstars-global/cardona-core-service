@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { VColors, VVariants } from '../../@model/vuetify'
 import AppTextarea from '../../@core/components/app-form-elements/AppTextarea.vue'
 import BaseModal from '../BaseModal/index.vue'
-import type { BaseModalDefaultPropsOfSlot } from '@/@model/modal'
+import type { BaseModalDefaultPropsOfSlot } from '../../@model/modal'
 
 interface Props {
   entityName?: string

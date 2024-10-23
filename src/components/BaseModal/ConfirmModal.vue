@@ -2,7 +2,7 @@
 import { VColors, VVariants } from '../../@model/vuetify'
 import BaseModal from '../BaseModal/index.vue'
 import type { ConfirmModalPropsOfSlotDefault, ModalActionsFromSlot } from '../../@model/modal'
-import { i18n } from '@/plugins/i18n'
+import { i18n } from '../../plugins/i18n'
 
 interface Props {
   entityName?: string
