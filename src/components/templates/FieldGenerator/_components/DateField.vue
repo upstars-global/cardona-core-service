@@ -168,6 +168,7 @@ const configTo = computed(() => {
       :config="configFrom"
       :placeholder="$t('common.dateFrom')"
       @update:model-value="(val) => setRangeDate(val)"
+      data-test-id="from"
     />
     <span class="mx-1"> – </span>
     <AppDateTimePicker
@@ -178,6 +179,7 @@ const configTo = computed(() => {
       :config="configTo"
       :placeholder="$t('common.dateTo')"
       @update:model-value="(val) => setRangeDate(val, false)"
+      data-test-id="to"
     />
   </div>
 </template>
