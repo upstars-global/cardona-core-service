@@ -25,7 +25,7 @@ const onClickModalOk = async (hide: Function) => {
   emits('on-click-modal-ok', { hide })
 }
 
-const onCloseModal = async (hide: Function) => {
+const onCloseModal = (hide: Function) => {
   emits('on-close-modal')
   hide()
 }
@@ -39,7 +39,7 @@ const onCloseModal = async (hide: Function) => {
   >
     <template #default="{ action, payload }">
       <VCardText class="d-flex flex-column">
-        <span class="text-body-1 modal-description">{{ payload?.description || description }}</span>
+        <span class="text-body-1" data-test-id="modal-description">{{ payload?.description || description }}</span>
       </VCardText>
       <hr>
       <VCardText class="d-flex justify-end gap-3 flex-wrap py-4">

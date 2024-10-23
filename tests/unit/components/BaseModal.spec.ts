@@ -45,7 +45,7 @@ describe('BaseModal', () => {
 
     await showModal(wrapper)
 
-    testOn.equalTextValue({ wrapper, selector: '.modal-title' }, defaultProps.title)
+    testOn.equalTextValue({ wrapper, testId: 'modal-title' }, defaultProps.title)
     expect(wrapper.find('.v-overlay__content').element.style.width).toBe(defaultProps.width)
   })
 })

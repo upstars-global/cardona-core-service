@@ -14,9 +14,9 @@ export const callActionShowForInternalBaseModal = async (wrapper: VueWrapper) =>
 }
 
 export const isEqualModalTitle = (wrapper: VueWrapper, value: string) => {
-  testOn.equalTextValue({ wrapper, selector: '.modal-title' }, value)
+  testOn.equalTextValue({ wrapper, testId: 'modal-title' }, value)
 }
 
 export const isEqualModalDescription = (wrapper: VueWrapper, value: string) => {
-  testOn.equalTextValue({ wrapper, selector: '.modal-description' }, value)
+  testOn.equalTextValue({ wrapper, testId: 'modal-description' }, value)
 }

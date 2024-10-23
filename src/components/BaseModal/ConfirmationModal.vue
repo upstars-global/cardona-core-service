@@ -25,7 +25,7 @@ defineEmits<{
     v-bind="$attrs"
   >
     <template #default="{ action }">
-      <p class="px-6 mb-2 modal-description">
+      <p class="px-6 mb-2" data-test-id="modal-description">
         {{ description }}
       </p>
 

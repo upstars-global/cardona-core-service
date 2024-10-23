@@ -58,7 +58,7 @@ const onCloseModal = (hide: Function) => {
         :class="{ 'pb-16': withRemoveComment }"
         class="d-flex flex-column pt-0"
       >
-        <span class="text-body-1 modal-description">{{ description || $t(`modal.remove${entityName}.description`) }}</span>
+        <span class="text-body-1" data-test-id="modal-description">{{ description || $t(`modal.remove${entityName}.description`) }}</span>
         <AppTextarea
           v-if="withRemoveComment"
           v-model.trim="commentToRemove"
