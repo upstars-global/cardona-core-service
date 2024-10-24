@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, nextTick, onBeforeMount, onBeforeUnmount, ref } from 'vue'
+import { computed, inject, nextTick, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
 import store from '../../../store'
@@ -266,6 +266,10 @@ const confirmRemoveModal = async () => {
 
   await router.push({ name: ListPageName })
 }
+
+watch(() => formRef.value?.values, () => {
+  store.dispatch('resetErrorUrls')
+}, { deep: true })
 
 onBeforeUnmount(() => {
   store.dispatch('resetErrorUrls')
