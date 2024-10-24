@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type TranslateResult } from 'vue-i18n'
 import { ModalSizes, VColors, VVariants } from '../../@model/vuetify'
+import type { BaseModalDefaultPropsOfSlot } from '../../@model/modal'
 import BaseModal from './index.vue'
 
 defineProps<{
@@ -23,7 +24,7 @@ defineEmits<{
     :size="ModalSizes.Small"
     centered
   >
-    <template #default="{ action }">
+    <template #default="{ action }: BaseModalDefaultPropsOfSlot">
       <p class="px-6 mb-2">
         {{ description }}
       </p>

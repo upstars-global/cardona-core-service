@@ -1,17 +1,18 @@
 import { type BaseWrapper, type VueWrapper, mount } from '@vue/test-utils'
+import {nextTick} from "vue";
 
 export const getSelectorTestId = (testId: string): string => `[data-test-id="${testId}"]`
 
-export const getConfig = (props: Record<string, unknown>, global: Record<string, unknown>) => ({ props, global })
+export const getConfig = (props: Record<string, unknown>, global?: Record<string, unknown>, slots?: Record<string, unknown>) => ({ props, global, slots })
 
-export const setMountComponent = (component: unknown) => (props: unknown, global = {}) => mount(component, getConfig(props, global))
+export const setMountComponent = (component: unknown) => (props: unknown, global = {}, slots = {}) => mount(component, getConfig(props, global, slots))
 
 export const getComponentFromWrapper = (
   wrapper: VueWrapper,
   name: string,
 ): BaseWrapper<Node> => wrapper.findComponent({ name })
 
-type WrapperResult = BaseWrapper<Node> | BaseWrapper<Node>[]
+export type WrapperResult = BaseWrapper<Node> | BaseWrapper<Node>[]
 
 export const findByTestId = (
   wrapper: VueWrapper,
@@ -42,4 +43,9 @@ export const getWrapperElement = (
     return all ? wrapper.findAll(selector) : wrapper.find(selector)
 
   return wrapper
+}
+
+export const showModal = async (wrapperModal: VueWrapper) => {
+  await wrapperModal.vm.show()
+  await nextTick()
 }
