@@ -27,8 +27,10 @@ const isInvalidTokenError = (error): boolean => error?.toString()?.includes(INVA
 const getLoaderSlug = (url: string, loaderSlug: string): string =>
   loaderSlug ? `${url}${loaderSlug}` : url
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
 class ApiService {
-  static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}) {
+  static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}, retryCount = 5, retryDelay = 1000) {
     const router = useRouter()
     const route = useRoute()
 
@@ -92,6 +94,14 @@ class ApiService {
       return data
     }
     catch (error: any) {
+      if (retryCount > 0 && !error.description) {
+        // response contains description from backend but if internal or network error description is missing
+        console.log(`Request failed. Waiting ${retryDelay / 1000} sec before next try. ${retryCount}`)
+        await delay(retryDelay)
+
+        return this.request(payload, config, retryCount - 1, retryDelay * 2)
+      }
+
       const isLoginPage: boolean = route?.name === 'Login'
       const isInvalidToken = isInvalidTokenError(error)
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', TOKEN_INVALID]
