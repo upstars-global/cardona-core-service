@@ -59,7 +59,7 @@ const getButtonConfirm = (text: string) => text || props.confirmBtnText
           @click="onClickModalOk(action.hide)"
           data-test-id="btn-add"
         >
-          {{ getButtonConfirm(payload.btnConfirmText) }}
+          {{ getButtonConfirm(payload?.btnConfirmText) }}
         </VBtn>
       </VCardText>
     </template>
