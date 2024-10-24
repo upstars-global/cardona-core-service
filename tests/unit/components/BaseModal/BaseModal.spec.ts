@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import BaseModal from '../../../src/components/BaseModal/index.vue'
-import { ModalSizes } from '../../../src/@model/vuetify'
-import { mockModal } from '../mocks/modal-provide-config'
-import { getSelectorTestId, setMountComponent } from '../utils'
-import { testOn } from '../templates/shared-tests/test-case-generator'
-import { showModal } from '../templates/shared-tests/modal'
+import BaseModal from '../../../../src/components/BaseModal/index.vue'
+import { ModalSizes } from '../../../../src/@model/vuetify'
+import { mockModal } from '../../mocks/modal-provide-config'
+import { clickTrigger, setMountComponent } from '../../utils'
+import { testOn } from '../../templates/shared-tests/test-case-generator'
+import { isEqualModalTitle, showModal } from '../../templates/shared-tests/modal'
 
 const getMountBaseModal = setMountComponent(BaseModal)
 
@@ -13,7 +13,6 @@ const defaultProps = {
   size: ModalSizes.Small,
   title: 'Test Modal Title',
   width: '400px',
-  attach: true,
 }
 
 const slots = {
@@ -36,7 +35,8 @@ describe('BaseModal', () => {
 
     await showModal(wrapper)
 
-    await wrapper.find(getSelectorTestId('btn-close')).trigger('click')
+    await clickTrigger({ wrapper, testId: 'btn-close' })
+
     testOn.isCalledEmitEventHide({ wrapper })
   })
 
@@ -45,7 +45,7 @@ describe('BaseModal', () => {
 
     await showModal(wrapper)
 
-    testOn.equalTextValue({ wrapper, testId: 'modal-title' }, defaultProps.title)
+    isEqualModalTitle(wrapper, defaultProps.title)
     expect(wrapper.find('.v-overlay__content').element.style.width).toBe(defaultProps.width)
   })
 })

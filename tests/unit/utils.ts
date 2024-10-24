@@ -1,11 +1,10 @@
 import { type BaseWrapper, type VueWrapper, mount } from '@vue/test-utils'
-import {nextTick} from "vue";
 
 export const getSelectorTestId = (testId: string): string => `[data-test-id="${testId}"]`
 
 export const getConfig = (props: Record<string, unknown>, global?: Record<string, unknown>, slots?: Record<string, unknown>) => ({ props, global, slots })
 
-export const setMountComponent = (component: unknown) => (props: unknown, global = {}, slots = {}) => mount(component, getConfig(props, global, slots))
+export const setMountComponent = (component: unknown) => (props: unknown, global = {}, slots?: Record<string, unknown>) => mount(component, getConfig(props, global, slots))
 
 export const getComponentFromWrapper = (
   wrapper: VueWrapper,
@@ -22,7 +21,7 @@ export const findByTestId = (
   if (params?.all)
     return wrapper.findAll(getSelectorTestId(name))
 
-  return wrapper.find(getSelectorTestId(name)) // This was missing
+  return wrapper.find(getSelectorTestId(name))
 }
 
 export interface GetWrapperElementPrams {
@@ -45,7 +44,13 @@ export const getWrapperElement = (
   return wrapper
 }
 
-export const showModal = async (wrapperModal: VueWrapper) => {
-  await wrapperModal.vm.show()
-  await nextTick()
+export const clickTrigger = async (params: GetWrapperElementPrams) => {
+  const wrapper = getWrapperElement(params) as VueWrapper
+
+  await wrapper.trigger('click')
 }
+
+export const setValue = async (wrapper: VueWrapper, value: string) => {
+  await wrapper.setValue(value)
+}
+

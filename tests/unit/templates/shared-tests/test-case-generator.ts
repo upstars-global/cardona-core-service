@@ -2,6 +2,7 @@ import { expect } from 'vitest'
 import { has } from 'lodash'
 import type { GetWrapperElementPrams } from '../../utils'
 import { getWrapperElement } from '../../utils'
+import {VueWrapper} from "@vue/test-utils";
 
 export enum WrapperProperties {
   Exists = 'exists',
@@ -111,13 +112,14 @@ interface TestCaseGeneratorParams {
   withNot?: boolean
 }
 
-const testCaseGenerator = ({
+export const testCaseGenerator = ({
   property,
   methodExpect,
   withNot,
 }: TestCaseGeneratorParams) => {
   return (wrapperElementPrams: GetWrapperElementPrams, expectedValue?: unknown) => {
     const elementTest = getWrapperElement(wrapperElementPrams)
+
     const wrapper = getWrapperWithProperty(elementTest, property)
     const expectation = withNot ? expect(wrapper).not : expect(wrapper)
 
@@ -227,4 +229,10 @@ export const testOn = {
     methodExpect: ExpectMethods.ToBeTruthy,
     property: { name: WrapperProperties.Emitted, value: EventEmittersNames.Hide },
   }),
+  isCalledEmitEvent: (wrapper: VueWrapper, actionEmit: string) => {
+    testCaseGenerator({
+      methodExpect: ExpectMethods.ToBeTruthy,
+      property: { name: WrapperProperties.Emitted, value: actionEmit },
+    })({ wrapper })
+  },
 }
