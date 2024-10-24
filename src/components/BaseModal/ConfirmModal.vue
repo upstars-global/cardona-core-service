@@ -5,7 +5,6 @@ import type { ConfirmModalPropsOfSlotDefault, ModalActionsFromSlot } from '../..
 import { i18n } from '../../plugins/i18n'
 
 interface Props {
-  entityName?: string
   modalId: string
   title?: string
   description?: string
@@ -39,10 +38,11 @@ const getButtonConfirm = (text: string) => text || props.confirmBtnText
   <BaseModal
     :id="modalId"
     :title="title"
+    data-test-id="base-modal"
   >
     <template #default="{ action, payload }: ConfirmModalPropsOfSlotDefault">
       <VCardText class="d-flex flex-column">
-        <span class="text-body-1">{{ payload?.description || description }}</span>
+        <span class="text-body-1" data-test-id="modal-description">{{ payload?.description || description }}</span>
       </VCardText>
       <hr>
       <VCardText class="d-flex justify-end gap-3 flex-wrap py-4">
@@ -50,14 +50,16 @@ const getButtonConfirm = (text: string) => text || props.confirmBtnText
           :color="VColors.Secondary"
           :variant="VVariants.Outlined"
           @click="onCloseModal(action.hide)"
+          data-test-id="btn-cancel"
         >
           {{ $t('action.cancel') }}
         </VBtn>
         <VBtn
           :color="VColors.Primary"
           @click="onClickModalOk(action.hide)"
+          data-test-id="btn-add"
         >
-          {{ getButtonConfirm(payload.btnConfirmText) }}
+          {{ getButtonConfirm(payload?.btnConfirmText) }}
         </VBtn>
       </VCardText>
     </template>

@@ -25,7 +25,7 @@ defineEmits<{
     centered
   >
     <template #default="{ action }: BaseModalDefaultPropsOfSlot">
-      <p class="px-6 mb-2">
+      <p class="px-6 mb-2" data-test-id="modal-description">
         {{ description }}
       </p>
 
@@ -37,6 +37,7 @@ defineEmits<{
           :color="VColors.Secondary"
           class="mr-4"
           @click="action.hide"
+          data-test-id="btn-cancel"
         >
           {{ $t('common.cancel') }}
         </VBtn>
@@ -45,6 +46,7 @@ defineEmits<{
           :color="VColors.Error"
           :loading="isLoading"
           @click="$emit('confirmed', action.hide)"
+          data-test-id="btn-confirm"
         >
           {{ actionBtnText }}
         </VBtn>
