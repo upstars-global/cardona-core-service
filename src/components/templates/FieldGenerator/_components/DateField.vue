@@ -156,6 +156,7 @@ const configTo = computed(() => {
       mode: field.isRangeMode ? 'range' : 'single',
       ...field.config,
     }"
+    data-test-id="single-picker"
   />
   <div
     v-else
