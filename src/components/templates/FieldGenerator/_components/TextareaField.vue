@@ -100,6 +100,7 @@ const handleKeydown = (event: KeyboardEvent) => {
     class="text-area"
     :class="{ 'app-textarea__counter': field.maxLength }"
     @keydown="handleKeydown"
+    data-test-id="textarea-field"
   />
 </template>
 

@@ -4,14 +4,7 @@ import LinkView from '../../../src/components/templates/ViewGenerator/_component
 import { getWrapperElement, setMountComponent } from '../utils'
 import type { Nullable } from '../../../src/@model/index'
 import { testOn } from '../templates/shared-tests/test-case-generator'
-
-const mockModal = {
-  showModal: vi.fn(),
-  hideModal: vi.fn(),
-  registerModal: vi.fn(),
-  unregisterModal: vi.fn(),
-  modals: {},
-}
+import {mockModal} from "../mocks/modal-provide-config";
 
 const getMountLinkView = setMountComponent(LinkView)
 

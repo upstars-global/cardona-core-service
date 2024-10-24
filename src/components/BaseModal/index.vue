@@ -82,7 +82,7 @@ const onHide = (value: boolean) => {
           >
             <h5
               v-if="title"
-              class="text-h5 mb-0"
+              class="text-h5 mb-0 modal-title"
             >
               {{ title }}
             </h5>
@@ -93,6 +93,7 @@ const onHide = (value: boolean) => {
             :color="VColors.Secondary"
             class="modal-header__close bg-surface"
             @click="hide"
+            data-test-id="btn-close"
           >
             <VIcon :icon="IconsList.XIcon" />
           </VBtn>

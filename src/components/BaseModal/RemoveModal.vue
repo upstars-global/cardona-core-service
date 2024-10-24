@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { VColors, VVariants } from '../../@model/vuetify'
 import AppTextarea from '../../@core/components/app-form-elements/AppTextarea.vue'
 import BaseModal from '../BaseModal/index.vue'
+import type { BaseModalDefaultPropsOfSlot } from '../../@model/modal'
 
 interface Props {
   entityName?: string
@@ -54,7 +55,7 @@ const onCloseModal = (hide: Function) => {
     :title="title || $t(`modal.remove${entityName}.title`)"
     @hide="$emit('on-close-modal')"
   >
-    <template #default="{ action }">
+    <template #default="{ action }: BaseModalDefaultPropsOfSlot">
       <VCardText
         :class="{ 'pb-16': withRemoveComment }"
         class="d-flex flex-column pt-0"
