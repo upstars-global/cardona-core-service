@@ -4,7 +4,7 @@ import type { SeoForm } from '../../../@model/seo'
 
 defineProps<{
   modelValue: SeoForm
-  disabled: boolean
+  disabled?: boolean
 }>()
 </script>
 
@@ -35,7 +35,7 @@ defineProps<{
         </VCol>
       </VRow>
 
-      <VRow>
+      <VRow v-if="modelValue.description">
         <VCol>
           <FieldGenerator
             v-model="modelValue.description"

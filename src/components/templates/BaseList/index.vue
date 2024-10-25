@@ -213,7 +213,7 @@ const isLoadingList = computed(() => {
 const size = props.config?.small ? VSizes.Small : VSizes.Medium
 
 const emptyListText = computed(() =>
-  searchQuery.value || hasSelectedFilters.value
+  searchQuery.value || hasSelectedFilters.value || isDebouncedSearch.value
     ? t('emptyState.emptyRequest')
     : props.config.emptyText,
 )
@@ -280,6 +280,8 @@ const mapSortData = () => {
 
 // Fetch list
 const getList = async () => {
+  isDebouncedSearch.value = false
+
   const filter = setRequestFilters()
   const sort = mapSortData()
 
@@ -342,8 +344,12 @@ const onEditPosition = async ({ id }: { id: string }, position: number) => {
 
 // Search
 const debouncedSearch = debounce(reFetchList, 300)
+const isDebouncedSearch = ref(false)
 
-watch(() => searchQuery.value, debouncedSearch)
+watch(() => searchQuery.value, () => {
+  isDebouncedSearch.value = true
+  debouncedSearch()
+})
 
 // Export
 
@@ -978,7 +984,10 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         </template>
       </CTable>
     </VCard>
-    <div v-if="items.isNotEmpty" :class="config.small ? 'pt-4' : 'pt-8'">
+    <div
+      v-if="items.isNotEmpty"
+      :class="config.small ? 'pt-4' : 'pt-8'"
+    >
       <ListPagination
         v-if="config?.pagination"
         :model-value="currentPage"
