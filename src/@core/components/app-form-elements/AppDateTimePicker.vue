@@ -192,6 +192,7 @@ defineExpose({ refFlatPicker })
                 @on-open="toggleCalendar(true)"
                 @on-close="toggleCalendar(false)"
                 @update:model-value="emitModelValue"
+                data-test-id="flat-picker"
               />
 
               <!-- simple input for inline prop -->
