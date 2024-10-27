@@ -3,11 +3,11 @@ import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
+import moment from 'moment'
 import DateFieldComponent from '../../../../src/components/templates/FieldGenerator/_components/DateField.vue'
 import { router } from '../../../../src/plugins/1.router'
 import { testOn } from '../shared-tests/test-case-generator'
 import 'flatpickr/dist/flatpickr.css'
-import moment from 'moment'
 import { getSelectorTestId } from '../../utils'
 
 const getArialLabelOfCalendar = (date: string) => `[aria-label="${moment(date).format('MMMM D, YYYY')}"]`
@@ -62,13 +62,14 @@ const getInputsRange = (wrapper: VueWrapper) => ({
 
 interface OnChangeValueRangeConfig {
   inputKey: 'from' | 'to'
-  valueOfSet: string
+  isFilter: boolean
   dateRange: { from: string; to: string }
+  valueOfSet?: string
   indexEmit?: number
 }
 
-const testOnChangeInputValue = async ({ valueOfSet = '', inputKey, dateRange, indexEmit = 0 }: OnChangeValueRangeConfig, expectedValue: string) => {
-  const props = getOverwritedParams({ isRangeMode: true, isFilter: true, config: { static: true } })
+const testOnChangeInputValue = async ({ valueOfSet = '', inputKey, dateRange, indexEmit = 0, isFilter }: OnChangeValueRangeConfig, expectedValue: string) => {
+  const props = getOverwritedParams({ isRangeMode: true, isFilter, config: { static: true } })
 
   props.modelValue = `${dateRange.from} to ${dateRange.to}`
 
@@ -218,9 +219,10 @@ describe('DateFieldComponent.vue', () => {
     expect(Number.parseInt(minuteInput.element.value, 10)).toBe(initialMinute + 1)
   })
 
-  it('On change input value From with filled value', async () => {
+  it('Filter mode on change input value From with filled value', async () => {
     const config: OnChangeValueRangeConfig = {
       inputKey: 'from',
+      isFilter: true,
       dateRange: {
         from: '2024-11-11T11:00:00.000Z',
         to: '2024-11-12T11:00:00.000Z',
@@ -230,9 +232,10 @@ describe('DateFieldComponent.vue', () => {
     await testOnChangeInputValue(config, `${moment(1432252800).format()} to ${config.dateRange.to}`)
   })
 
-  it('On change input value To with filled value', async () => {
+  it('Filter mode on change input value To with filled value', async () => {
     const config: OnChangeValueRangeConfig = {
       inputKey: 'to',
+      isFilter: true,
       dateRange: {
         from: '2024-11-11T11:00:00.000Z',
         to: '2024-11-12T11:00:00.000Z',
@@ -243,9 +246,10 @@ describe('DateFieldComponent.vue', () => {
     await testOnChangeInputValue(config, `${config.dateRange.from} to ${moment().format()}`)
   })
 
-  it('On change input value From with initial empty value', async () => {
+  it('Filter mode on change input value From with initial empty value', async () => {
     const config: OnChangeValueRangeConfig = {
       inputKey: 'from',
+      isFilter: true,
       valueOfSet: '2024-11-12T11:00:00.000Z',
       dateRange: {
         from: '',
@@ -256,9 +260,10 @@ describe('DateFieldComponent.vue', () => {
     await testOnChangeInputValue(config, `2024-11-12T11:00:00.000Z to ${moment().format()}`)
   })
 
-  it('On change input value To with initial empty value', async () => {
+  it('Filter mode on change input value To with initial empty value', async () => {
     const config: OnChangeValueRangeConfig = {
       inputKey: 'to',
+      isFilter: true,
       valueOfSet: '2024-11-12T11:00:00.000Z',
       dateRange: {
         from: '',
@@ -267,5 +272,32 @@ describe('DateFieldComponent.vue', () => {
     }
 
     await testOnChangeInputValue(config, '1970-01-17T16:50:52+03:00 to 2024-11-12T11:00:00.000Z')
+  })
+
+  it('Filter mode on change input value To with initial empty value', async () => {
+    const config: OnChangeValueRangeConfig = {
+      inputKey: 'to',
+      isFilter: false,
+      valueOfSet: '2024-11-12T11:00:00.000Z',
+      dateRange: {
+        from: '',
+        to: '',
+      },
+    }
+
+    await testOnChangeInputValue(config, ' to 2024-11-12T11:00:00.000Z')
+  })
+  it('Filter mode on change input value To with initial empty value', async () => {
+    const config: OnChangeValueRangeConfig = {
+      inputKey: 'from',
+      isFilter: false,
+      valueOfSet: '2024-11-12T11:00:00.000Z',
+      dateRange: {
+        from: '',
+        to: '',
+      },
+    }
+
+    await testOnChangeInputValue(config, '2024-11-12T11:00:00.000Z to ')
   })
 })
