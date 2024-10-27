@@ -10,18 +10,7 @@ import 'flatpickr/dist/flatpickr.css'
 import moment from 'moment'
 import { getSelectorTestId } from '../../utils'
 
-/// .flatpickr-prev-month
-/// .flatpickr-next-month
-/// .flatpickr-day
-
-// 2024-10-23T17:40:45.000Z to 2024-10-23T17:40:45.000Z
-// 2024-10-14
-
 const getArialLabelOfCalendar = (date: string) => `[aria-label="${moment(date).format('MMMM D, YYYY')}"]`
-
-// const clickCurrentCalendar = async (wrapper: VueWrapper, date: string) => {
-//   await wrapper.find(getArialLabelOfCalendar(date)).trigger('click')
-// }
 
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({
@@ -71,12 +60,17 @@ const getInputsRange = (wrapper: VueWrapper) => ({
   to: getInput(wrapper, 'to'),
 })
 
-const testOnChangeInputValue = async (keyOfInput: 'from' | 'to', expectedValue: string, indexEmit = 0) => {
-  const props = getOverwritedParams({ isRangeMode: true, isFilter: true, config: { static: true } })
-  const propsDateFrom = '2024-11-11T11:00:00.000Z'
-  const propsDateTo = '2024-11-12T11:00:00.000Z'
+interface OnChangeValueRangeConfig {
+  inputKey: 'from' | 'to'
+  valueOfSet: string
+  dateRange: { from: string; to: string }
+  indexEmit?: number
+}
 
-  props.modelValue = `${propsDateFrom} to ${propsDateTo}`
+const testOnChangeInputValue = async ({ valueOfSet = '', inputKey, dateRange, indexEmit = 0 }: OnChangeValueRangeConfig, expectedValue: string) => {
+  const props = getOverwritedParams({ isRangeMode: true, isFilter: true, config: { static: true } })
+
+  props.modelValue = `${dateRange.from} to ${dateRange.to}`
 
   const wrapper = mount(DateFieldComponent, {
     props,
@@ -87,10 +81,10 @@ const testOnChangeInputValue = async (keyOfInput: 'from' | 'to', expectedValue: 
 
   const inputs = getInputsRange(wrapper)
 
-  expect(inputs.from.element.value).toBe('2024-11-11T11:00:00.000Z')
-  expect(inputs.to.element.value).toBe('2024-11-12T11:00:00.000Z')
+  expect(inputs.from.element.value).toBe(dateRange.from)
+  expect(inputs.to.element.value).toBe(dateRange.to)
 
-  await inputs[keyOfInput].setValue('')
+  await inputs[inputKey].setValue(valueOfSet)
 
   testOnCallEventEmmitAndEqualValue(wrapper, expectedValue, indexEmit)
 }
@@ -224,15 +218,54 @@ describe('DateFieldComponent.vue', () => {
     expect(Number.parseInt(minuteInput.element.value, 10)).toBe(initialMinute + 1)
   })
 
-  it('On change input value from in filter mode', async () => {
-    const propsDateTo = '2024-11-12T11:00:00.000Z'
+  it('On change input value From with filled value', async () => {
+    const config: OnChangeValueRangeConfig = {
+      inputKey: 'from',
+      dateRange: {
+        from: '2024-11-11T11:00:00.000Z',
+        to: '2024-11-12T11:00:00.000Z',
+      },
+    }
 
-    await testOnChangeInputValue('from', `${moment(1432252800).format()} to ${propsDateTo}`)
+    await testOnChangeInputValue(config, `${moment(1432252800).format()} to ${config.dateRange.to}`)
   })
 
-  it('On change input value to in filter mode', async () => {
-    const propsDateFrom = '2024-11-11T11:00:00.000Z'
+  it('On change input value To with filled value', async () => {
+    const config: OnChangeValueRangeConfig = {
+      inputKey: 'to',
+      dateRange: {
+        from: '2024-11-11T11:00:00.000Z',
+        to: '2024-11-12T11:00:00.000Z',
+      },
+      indexEmit: 1,
+    }
 
-    await testOnChangeInputValue('to', `${propsDateFrom} to ${moment().format()}`, 1)
+    await testOnChangeInputValue(config, `${config.dateRange.from} to ${moment().format()}`)
+  })
+
+  it('On change input value From with initial empty value', async () => {
+    const config: OnChangeValueRangeConfig = {
+      inputKey: 'from',
+      valueOfSet: '2024-11-12T11:00:00.000Z',
+      dateRange: {
+        from: '',
+        to: '',
+      },
+    }
+
+    await testOnChangeInputValue(config, `2024-11-12T11:00:00.000Z to ${moment().format()}`)
+  })
+
+  it('On change input value To with initial empty value', async () => {
+    const config: OnChangeValueRangeConfig = {
+      inputKey: 'to',
+      valueOfSet: '2024-11-12T11:00:00.000Z',
+      dateRange: {
+        from: '',
+        to: '',
+      },
+    }
+
+    await testOnChangeInputValue(config, '1970-01-17T16:50:52+03:00 to 2024-11-12T11:00:00.000Z')
   })
 })
