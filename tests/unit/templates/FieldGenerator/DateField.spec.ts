@@ -1,3 +1,4 @@
+import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
@@ -55,6 +56,44 @@ const defaultProps = {
 const getOverwritedParams = params => ({
   ...defaultProps, field: { ...defaultProps.field, ...params },
 })
+
+const testOnCallEventEmmitAndEqualValue = (wrapper: VueWrapper, value: string, emmitIndex = 0) => {
+  expect(wrapper.emitted()).toHaveProperty('update:modelValue')
+  expect(wrapper.emitted()['update:modelValue'][emmitIndex][0]).toEqual(value)
+}
+
+const getInput = (wrapper: VueWrapper, testId: string) => wrapper
+  .find(getSelectorTestId(testId))
+  .find(getSelectorTestId('flat-picker'))
+
+const getInputsRange = (wrapper: VueWrapper) => ({
+  from: getInput(wrapper, 'from'),
+  to: getInput(wrapper, 'to'),
+})
+
+const testOnChangeInputValue = async (keyOfInput: 'from' | 'to', expectedValue: string, indexEmit = 0) => {
+  const props = getOverwritedParams({ isRangeMode: true, isFilter: true, config: { static: true } })
+  const propsDateFrom = '2024-11-11T11:00:00.000Z'
+  const propsDateTo = '2024-11-12T11:00:00.000Z'
+
+  props.modelValue = `${propsDateFrom} to ${propsDateTo}`
+
+  const wrapper = mount(DateFieldComponent, {
+    props,
+    global: {
+      plugins: [router],
+    },
+  })
+
+  const inputs = getInputsRange(wrapper)
+
+  expect(inputs.from.element.value).toBe('2024-11-11T11:00:00.000Z')
+  expect(inputs.to.element.value).toBe('2024-11-12T11:00:00.000Z')
+
+  await inputs[keyOfInput].setValue('')
+
+  testOnCallEventEmmitAndEqualValue(wrapper, expectedValue, indexEmit)
+}
 
 describe('DateFieldComponent.vue', () => {
   it('Render picker by range flag', async () => {
@@ -119,8 +158,8 @@ describe('DateFieldComponent.vue', () => {
     await dayOfCalendar.trigger('click')
 
     await nextTick()
-    expect(wrapper.emitted()).toHaveProperty('update:modelValue')
-    expect(wrapper.emitted()['update:modelValue']).toEqual([[`${datePickerButton}T11:00:00.000Z`]])
+
+    testOnCallEventEmmitAndEqualValue(wrapper, `${datePickerButton}T11:00:00.000Z`)
   })
 
   it('Change value on click button month on calendar ', async () => {
@@ -148,8 +187,7 @@ describe('DateFieldComponent.vue', () => {
 
     await dayOfCalendar.trigger('click')
 
-    expect(wrapper.emitted()).toHaveProperty('update:modelValue')
-    expect(wrapper.emitted()['update:modelValue'][0][0]).includes(datePickerButton)
+    testOnCallEventEmmitAndEqualValue(wrapper, `${datePickerButton}T12:00:00.000Z`)
   })
 
   it('Change value on change input oh hours ', async () => {
@@ -187,56 +225,14 @@ describe('DateFieldComponent.vue', () => {
   })
 
   it('On change input value from in filter mode', async () => {
-    const props = getOverwritedParams({ isRangeMode: true, isFilter: true, config: { static: true } })
-    const propsDateFrom = '2024-11-11T11:00:00.000Z'
     const propsDateTo = '2024-11-12T11:00:00.000Z'
 
-    props.modelValue = `${propsDateFrom} to ${propsDateTo}`
-
-    const wrapper = mount(DateFieldComponent, {
-      props,
-      global: {
-        plugins: [router],
-      },
-    })
-
-    const inputFrom = wrapper.find(getSelectorTestId('from')).find(getSelectorTestId('flat-picker'))
-    const inputTo = wrapper.find(getSelectorTestId('to')).find(getSelectorTestId('flat-picker'))
-
-    expect(inputFrom.element.value).toBe('2024-11-11T11:00:00.000Z')
-    expect(inputTo.element.value).toBe('2024-11-12T11:00:00.000Z')
-
-    await inputFrom.setValue('')
-
-    expect(wrapper.emitted()).toHaveProperty('update:modelValue')
-
-    expect(wrapper.emitted()['update:modelValue'][0][0]).includes(`${moment(1432252800).format()} to ${propsDateTo}`)
+    await testOnChangeInputValue('from', `${moment(1432252800).format()} to ${propsDateTo}`)
   })
 
   it('On change input value to in filter mode', async () => {
-    const props = getOverwritedParams({ isRangeMode: true, isFilter: true, config: { static: true } })
     const propsDateFrom = '2024-11-11T11:00:00.000Z'
-    const propsDateTo = '2024-11-12T11:00:00.000Z'
 
-    props.modelValue = `${propsDateFrom} to ${propsDateTo}`
-
-    const wrapper = mount(DateFieldComponent, {
-      props,
-      global: {
-        plugins: [router],
-      },
-    })
-
-    const inputFrom = wrapper.find(getSelectorTestId('from')).find(getSelectorTestId('flat-picker'))
-    const inputTo = wrapper.find(getSelectorTestId('to')).find(getSelectorTestId('flat-picker'))
-
-    expect(inputFrom.element.value).toBe('2024-11-11T11:00:00.000Z')
-    expect(inputTo.element.value).toBe('2024-11-12T11:00:00.000Z')
-
-    await inputTo.setValue('')
-
-    expect(wrapper.emitted()).toHaveProperty('update:modelValue')
-
-    expect(wrapper.emitted()['update:modelValue'][1][0]).includes(`${propsDateFrom} to ${moment().format()}`)
+    await testOnChangeInputValue('to', `${propsDateFrom} to ${moment().format()}`, 1)
   })
 })
