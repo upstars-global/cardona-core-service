@@ -49,7 +49,7 @@ const defaultProps = {
   errors: false,
 }
 
-const getOverwritedParams = (params: Partial<typeof defaultProps.field>) => ({
+const getOverwrittenParams = (params: Partial<typeof defaultProps.field>) => ({
   ...defaultProps,
   field: { ...defaultProps.field, ...params },
 })
@@ -66,7 +66,7 @@ const mountDateField = (propsOverride: Partial<typeof defaultProps> = {}) =>
   })
 
 const testChangeInputValue = async ({ valueOfSet = '', inputKey, dateRange, indexEmit = 0, isFilter }: OnChangeValueRangeConfig, expectedValue: string) => {
-  const props = getOverwritedParams({ isRangeMode: true, isFilter, config: { static: true } })
+  const props = getOverwrittenParams({ isRangeMode: true, isFilter, config: { static: true } })
 
   props.modelValue = `${dateRange.from} to ${dateRange.to}`
 
@@ -137,7 +137,7 @@ describe('DateField.vue', () => {
     const updatedValue = '2024-10-10T11:00:00.000Z'
 
     const datePickerButton = '2024-11-11'
-    const props = getOverwritedParams({ config: { static: true } })
+    const props = getOverwrittenParams({ config: { static: true } })
 
     props.modelValue = updatedValue
 
@@ -165,7 +165,7 @@ describe('DateField.vue', () => {
   it('Change value on click button day on calendar ', async () => {
     const updatedValue = '2024-11-10T11:00:00.000Z'
     const datePickerButton = '2024-11-11'
-    const props = getOverwritedParams({ config: { static: true } })
+    const props = getOverwrittenParams({ config: { static: true } })
 
     props.modelValue = updatedValue
 
@@ -196,7 +196,7 @@ describe('DateField.vue', () => {
   it('Change value on change input oh hours ', async () => {
     const updatedValue = '2024-10-10T11:00:00.000Z'
 
-    const props = getOverwritedParams({ config: { static: true } })
+    const props = getOverwrittenParams({ config: { static: true } })
 
     props.modelValue = updatedValue
 
