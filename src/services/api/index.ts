@@ -94,9 +94,9 @@ class ApiService {
       return data
     }
     catch (error: any) {
-      if (retryCount > 0 && !error.description) {
+      if (retryCount > 0 && (!error.description || error.type === 'INTERNAL')) {
         // response contains description from backend but if internal or network error description is missing
-        console.log(`Request failed. Waiting ${retryDelay / 1000} sec before next try. ${retryCount}`)
+        console.log(`Request failed. Waiting ${retryDelay / 1000} sec before next try. Count: ${retryCount}`)
         await delay(retryDelay)
 
         return this.request(payload, config, retryCount - 1, retryDelay * 2)
