@@ -26,11 +26,11 @@ jobs:
       - name: Yarn install
         run: yarn install
 
-      - name: Unit Tests and build
-        run: npm run build-cf
+      - name: Unit Tests
+        run: npm run test:unit
 
-      - name: Check Formatting
-        run: npm run check
+      - name: Build
+        run: npm run build-cf
 
       - name: Deploy app
         uses: cloudflare/wrangler-action@v3

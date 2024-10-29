@@ -7,7 +7,7 @@
     "build": "vite build",
     "build:icons": "tsx src/plugins/iconify/build-icons.ts",
     "build:vite": "vite build",
-    "build-cf": "vitest --environment jsdom && vite build && cp -r ./dist/ ./server/public && cd ./server && NITRO_PRESET=cloudflare-pages npm run build",
+    "build-cf": "vite build && cp -r ./dist/ ./server/public && cd ./server && NITRO_PRESET=cloudflare-pages npm run build",
     "preview": "vite preview --port 5050",
     "typecheck": "vue-tsc --noEmit",
     "lint": "eslint . -c .eslintrc.cjs --fix --rulesdir eslint-internal-rules/ --ext .ts,.js,.cjs,.vue,.tsx,.jsx",
