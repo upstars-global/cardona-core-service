@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - main
+      - OlehMiha-patch-1
 
 jobs:
   deploy:
