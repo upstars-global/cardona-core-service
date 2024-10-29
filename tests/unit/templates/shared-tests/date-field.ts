@@ -7,6 +7,7 @@ import { getSelectorTestId, setMountComponent } from '../../utils'
 import { router } from '../../../../src/plugins/1.router'
 import DateField from '../../../../src/components/templates/FieldGenerator/_components/DateField.vue'
 import { testOn } from './test-case-generator'
+import { expectedEmitValue } from './general'
 
 export const getMountDateField = setMountComponent(DateField)
 
@@ -55,7 +56,7 @@ export const mountDateFieldWithDefaultProps = (propsOverride: Partial<typeof def
 
 export const checkEmittedValue = (wrapper: VueWrapper, expectedValue: string, emitIndex = 0) => {
   testOn.isCalledEmittedEvent({ wrapper })
-  expect(wrapper.emitted()['update:modelValue'][emitIndex][0]).toEqual(expectedValue)
+  expectedEmitValue(wrapper, expectedValue, emitIndex)
 }
 
 export const testChangeInputValue = async ({ valueOfSet = '', inputKey, dateRange, indexEmit = 0, isFilter }: OnChangeValueRangeConfig, expectedValue: string) => {
@@ -73,9 +74,9 @@ export const testChangeInputValue = async ({ valueOfSet = '', inputKey, dateRang
   checkEmittedValue(wrapper, expectedValue, indexEmit)
 }
 
-export const testOnCallEventEmmitAndEqualValue = (wrapper: VueWrapper, value: string, emmitIndex = 0) => {
+export const testOnCallEventEmmitAndEqualValue = (wrapper: VueWrapper, value: string) => {
   testOn.isCalledEmittedEvent({ wrapper })
-  expect(wrapper.emitted()['update:modelValue'][emmitIndex][0]).toEqual(value)
+  expectedEmitValue(wrapper, value)
 }
 
 export const setAndCheckInputValue = async (input: DOMWrapper<HTMLInputElement>, initialValue: number, increment: number) => {
