@@ -35,10 +35,9 @@ jobs:
       - name: Deploy app
         uses: cloudflare/wrangler-action@v3
         with:
-          workingDirectory: "./server/dist"
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy --project-name=cardona-core-service
+          command: pages deploy ./server/dist --project-name=cardona-core-service
 
       - name: Print deployment-url
         env:
