@@ -85,7 +85,7 @@ class ApiService {
         responseType,
       } as AxiosRequestConfig)
 
-      if (data.error)
+      if (data.error || !data.data)
         throw data.error
 
       if (withSuccessToast)
@@ -94,8 +94,7 @@ class ApiService {
       return data
     }
     catch (error: any) {
-      if (retryCount > 0 && (!error.description || error.type === 'INTERNAL')) {
-        // response contains description from backend but if internal or network error description is missing
+      if (retryCount > 0 && (!error?.description || error?.type === 'INTERNAL')) {
         console.log(`Request failed. Waiting ${retryDelay / 1000} sec before next try. Count: ${retryCount}`)
         await delay(retryDelay)
 
