@@ -20,10 +20,18 @@ jobs:
           node-version: "latest"
           cache: "npm"
 
+      - name: Unit Tests and build
+        run: npm run build-cf
+
+      - name: Check Formatting
+        run: npm run check
+
       - name: Deploy app
         uses: cloudflare/wrangler-action@v3
         with:
+          workingDirectory: "./server/dist"
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: deploy *
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env ${{ github.event.inputs.environment }}
 
 
