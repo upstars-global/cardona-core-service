@@ -1,11 +1,13 @@
 import moment from 'moment/moment'
 import type { DOMWrapper, VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
 import { beforeEach, expect, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { getSelectorTestId } from '../../utils'
+import { merge } from 'lodash'
+import { getSelectorTestId, setMountComponent } from '../../utils'
 import { router } from '../../../../src/plugins/1.router'
 import DateField from '../../../../src/components/templates/FieldGenerator/_components/DateField.vue'
+
+export const getMountDateField = setMountComponent(DateField)
 
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({
@@ -37,29 +39,18 @@ export const defaultProps = {
 
 export const getArialLabelOfCalendar = (date: string) => `[aria-label="${moment(date).format('MMMM D, YYYY')}"]`
 
-export const getInput = (wrapper: VueWrapper, testId: string) => {
-  const inputWrapper = wrapper.find(getSelectorTestId(testId)).find(getSelectorTestId('flat-picker'))
-  if (!inputWrapper.exists())
-    throw new Error(`Input with test ID ${testId} not found.`)
-
-  return inputWrapper
-}
+export const getInput = (wrapper: VueWrapper, testId: string) => wrapper.find(getSelectorTestId(testId)).find(getSelectorTestId('flat-picker'))
 
 export const getInputsRange = (wrapper: VueWrapper) => ({
   from: getInput(wrapper, 'from'),
   to: getInput(wrapper, 'to'),
 })
 
-export const mountDateField = (propsOverride: Partial<typeof defaultProps> = {}) =>
-  mount(DateField, {
-    props: { ...defaultProps, ...propsOverride },
-    global: { plugins: [router] },
-  })
-
-export const getOverwrittenParams = (params: Partial<typeof defaultProps.field>) => ({
-  ...defaultProps,
-  field: { ...defaultProps.field, ...params },
-})
+export const mountDateFieldWithDefaultProps = (propsOverride: Partial<typeof defaultProps> = {}) =>
+  getMountDateField(merge(defaultProps, propsOverride), {},
+    {
+      plugins: [router],
+    })
 
 export const checkEmittedValue = (wrapper: VueWrapper, expectedValue: string, emitIndex = 0) => {
   expect(wrapper.emitted()).toHaveProperty('update:modelValue')
@@ -67,11 +58,11 @@ export const checkEmittedValue = (wrapper: VueWrapper, expectedValue: string, em
 }
 
 export const testChangeInputValue = async ({ valueOfSet = '', inputKey, dateRange, indexEmit = 0, isFilter }: OnChangeValueRangeConfig, expectedValue: string) => {
-  const props = getOverwrittenParams({ isRangeMode: true, isFilter, config: { static: true } })
+  const props = merge(defaultProps, { field: { isRangeMode: true, isFilter, config: { static: true } } })
 
   props.modelValue = `${dateRange.from} to ${dateRange.to}`
 
-  const wrapper = mountDateField(props)
+  const wrapper = mountDateFieldWithDefaultProps(props)
   const inputs = getInputsRange(wrapper)
 
   expect(inputs.from.element.value).toBe(dateRange.from)

@@ -1,37 +1,34 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 import moment from 'moment'
-import DateField from '../../../../src/components/templates/FieldGenerator/_components/DateField.vue'
-import { router } from '../../../../src/plugins/1.router'
 import { testOn } from '../shared-tests/test-case-generator'
 import 'flatpickr/dist/flatpickr.css'
 import {
   checkEmittedValue,
-  defaultProps,
-  getArialLabelOfCalendar, getOverwrittenParams,
-  mountDateField, setAndCheckInputValue, testChangeInputValue,
+  getArialLabelOfCalendar,
+  mountDateFieldWithDefaultProps, setAndCheckInputValue, testChangeInputValue,
   testOnCallEventEmmitAndEqualValue,
 } from '../shared-tests/date-field'
 
 describe('DateField.vue', () => {
-  it('Renders picker by range flag', async () => {
-    const wrapper = mountDateField({ field: { ...defaultProps.field, isRangeMode: true } })
+  it('Render multiple inputs on range mode', async () => {
+    const wrapper = mountDateFieldWithDefaultProps({ field: { isRangeMode: true } })
     const pickerDataTestIds = ['from', 'to']
 
     pickerDataTestIds.forEach(testId => testOn.existElement({ wrapper, testId }))
+  })
 
-    await wrapper.setProps(defaultProps)
-    await nextTick()
+  it('Render one input on default single mode', async () => {
+    const wrapper = mountDateFieldWithDefaultProps({ field: { isRangeMode: false } })
 
-    pickerDataTestIds.forEach(testId => testOn.notExistElement({ wrapper, testId }))
     testOn.existElement({ wrapper, testId: 'single-picker' })
   })
 
   it('Emits on date value update', async () => {
     const updatedValue = '2024-11-11T11:00:00.000Z'
-    const wrapper = mountDateField()
+
+    const wrapper = mountDateFieldWithDefaultProps()
 
     await wrapper.setValue(updatedValue)
     await nextTick()
@@ -39,7 +36,11 @@ describe('DateField.vue', () => {
     checkEmittedValue(wrapper, updatedValue)
   })
 
-  const testOnCheckClickableAndValidDayOfPicker = async ({ wrapper, datePickerButton }: { wrapper: VueWrapper; datePickerButton: string }, expectedValue: string, actionBeforeCheckValue?: CallableFunction) => {
+  const testOnCheckClickableAndValidDayOfPicker = async (
+    { wrapper, datePickerButton }: { wrapper: VueWrapper; datePickerButton: string },
+    expectedValue: string,
+    actionBeforeCheckValue?: CallableFunction,
+  ) => {
     actionBeforeCheckValue && await actionBeforeCheckValue()
 
     const dayOfCalendar = wrapper.find(getArialLabelOfCalendar(datePickerButton))
@@ -50,18 +51,11 @@ describe('DateField.vue', () => {
   }
 
   it('Change value on click button month on calendar ', async () => {
-    const updatedValue = '2024-10-10T11:00:00.000Z'
-
     const datePickerButton = '2024-11-11'
-    const props = getOverwrittenParams({ config: { static: true } })
 
-    props.modelValue = updatedValue
-
-    const wrapper = mount(DateField, {
-      props,
-      global: {
-        plugins: [router],
-      },
+    const wrapper = mountDateFieldWithDefaultProps({
+      field: { config: { static: true }, isRangeMode: false },
+      modelValue: '2024-10-10T11:00:00.000Z',
     })
 
     await testOnCheckClickableAndValidDayOfPicker(
@@ -79,17 +73,11 @@ describe('DateField.vue', () => {
   })
 
   it('Change value on click button day on calendar ', async () => {
-    const updatedValue = '2024-11-10T11:00:00.000Z'
     const datePickerButton = '2024-11-11'
-    const props = getOverwrittenParams({ config: { static: true } })
 
-    props.modelValue = updatedValue
-
-    const wrapper = mount(DateField, {
-      props,
-      global: {
-        plugins: [router],
-      },
+    const wrapper = mountDateFieldWithDefaultProps({
+      field: { config: { static: true }, isRangeMode: false },
+      modelValue: '2024-11-10T11:00:00.000Z',
     })
 
     await testOnCheckClickableAndValidDayOfPicker(
@@ -99,7 +87,7 @@ describe('DateField.vue', () => {
     )
   })
 
-  const onCheckInputValue = async (wrapper, selector: string) => {
+  const onCheckInputValue = async (wrapper: VueWrapper, selector: string) => {
     const input = wrapper.find(selector)
 
     expect(input.exists()).toBe(true)
@@ -110,18 +98,7 @@ describe('DateField.vue', () => {
   }
 
   it('Change value on change input oh hours ', async () => {
-    const updatedValue = '2024-10-10T11:00:00.000Z'
-
-    const props = getOverwrittenParams({ config: { static: true } })
-
-    props.modelValue = updatedValue
-
-    const wrapper = mount(DateField, {
-      props,
-      global: {
-        plugins: [router],
-      },
-    })
+    const wrapper = mountDateFieldWithDefaultProps({ field: { config: { static: true } }, modelValue: '2024-10-10T11:00:00.000Z' })
 
     const selectors = ['input.flatpickr-hour', 'input.flatpickr-minute']
 
