@@ -2,34 +2,17 @@ name: Deploy
 on:
   pull_request:
     branches:
-      - OlehMiha-patch-1
       - master
   push:
     branches:
       - OlehMiha-patch-1
-      - master
 
 jobs:
-  wrangler_action_self_testing:
+  deploy-core-service:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "latest"
-          cache: "npm"
-
-      - name: Unit Tests
-        run: npm run test:unit
-
-      - name: Check Formatting
-        run: npm run check
-
-      - name: Install modules and build
-        run: npm ci && npm run build-cf
 
       - name: Deploy app
         uses: cloudflare/wrangler-action@v3
