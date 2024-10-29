@@ -20,6 +20,12 @@ jobs:
           node-version: "latest"
           cache: "npm"
 
+      - name: Install yarn
+        run: npm i -g yarn
+
+      - name: Yarn install
+        run: yarn install
+
       - name: Unit Tests and build
         run: npm run build-cf
 
