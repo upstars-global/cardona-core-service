@@ -38,6 +38,6 @@ jobs:
           workingDirectory: "./server/dist"
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --env ${{ github.event.inputs.environment }}
+          command: deploy
 
 
