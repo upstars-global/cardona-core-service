@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { describe, it } from 'vitest'
 import { nextTick } from 'vue'
 import moment from 'moment'
 import { testOn } from '../shared-tests/test-case-generator'
@@ -90,7 +90,7 @@ describe('DateField.vue', () => {
   const onCheckInputValue = async (wrapper: VueWrapper, selector: string) => {
     const input = wrapper.find(selector)
 
-    expect(input.exists()).toBe(true)
+    testOn.existElement({ wrapper: input })
 
     const initialHour = Number.parseInt(input.element.value, 10)
 

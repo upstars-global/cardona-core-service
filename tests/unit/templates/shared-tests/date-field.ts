@@ -6,6 +6,7 @@ import { merge } from 'lodash'
 import { getSelectorTestId, setMountComponent } from '../../utils'
 import { router } from '../../../../src/plugins/1.router'
 import DateField from '../../../../src/components/templates/FieldGenerator/_components/DateField.vue'
+import { testOn } from './test-case-generator'
 
 export const getMountDateField = setMountComponent(DateField)
 
@@ -53,7 +54,7 @@ export const mountDateFieldWithDefaultProps = (propsOverride: Partial<typeof def
     })
 
 export const checkEmittedValue = (wrapper: VueWrapper, expectedValue: string, emitIndex = 0) => {
-  expect(wrapper.emitted()).toHaveProperty('update:modelValue')
+  testOn.isCalledEmittedEvent({ wrapper })
   expect(wrapper.emitted()['update:modelValue'][emitIndex][0]).toEqual(expectedValue)
 }
 
@@ -73,7 +74,7 @@ export const testChangeInputValue = async ({ valueOfSet = '', inputKey, dateRang
 }
 
 export const testOnCallEventEmmitAndEqualValue = (wrapper: VueWrapper, value: string, emmitIndex = 0) => {
-  expect(wrapper.emitted()).toHaveProperty('update:modelValue')
+  testOn.isCalledEmittedEvent({ wrapper })
   expect(wrapper.emitted()['update:modelValue'][emmitIndex][0]).toEqual(value)
 }
 
