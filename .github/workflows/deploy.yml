@@ -2,8 +2,12 @@ name: Deploy
 on:
   pull_request:
     branches:
-      - main
       - OlehMiha-patch-1
+      - master
+  push:
+    branches:
+      - OlehMiha-patch-1
+      - master
 
 jobs:
   wrangler_action_self_testing:
