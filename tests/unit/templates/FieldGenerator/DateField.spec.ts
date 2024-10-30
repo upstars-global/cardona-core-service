@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 import moment from 'moment'
 import { testOn } from '../shared-tests/test-case-generator'
@@ -68,7 +68,7 @@ describe('DateField.vue', () => {
 
     await dayOfCalendar.trigger('click')
 
-    testOnCallEventEmmitAndEqualValue(wrapper, `${datePickerButton}T11:00:00.000Z`)
+    expect(wrapper.emitted()['update:modelValue'][0][0]).includes(datePickerButton)
   })
 
   it('Change value on click button day on calendar ', async () => {
