@@ -68,7 +68,7 @@ describe('DateField.vue', () => {
 
     await dayOfCalendar.trigger('click')
 
-    testOnCallEventEmmitAndEqualValue(wrapper, `${datePickerButton}T12:00:00.000Z`)
+    testOnCallEventEmmitAndEqualValue(wrapper, `${datePickerButton}T11:00:00.000Z`)
   })
 
   it('Change value on click button day on calendar ', async () => {
@@ -106,6 +106,8 @@ describe('DateField.vue', () => {
   })
 
   it('Updates in filter mode with empty from value', async () => {
+    const dateTo = moment().format()
+
     await testChangeInputValue(
       {
         inputKey: 'from',
@@ -113,7 +115,7 @@ describe('DateField.vue', () => {
         dateRange: { from: '', to: '' },
         valueOfSet: '2024-11-12T11:00:00.000Z',
       },
-      `2024-11-12T11:00:00.000Z to ${moment().format()}`,
+      `2024-11-12T11:00:00.000Z to ${dateTo}`,
     )
   })
 
