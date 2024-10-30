@@ -51,7 +51,7 @@ describe('DateField.vue', () => {
   }
 
   it('Change value on click button month on calendar ', async () => {
-    const datePickerButton = '2024-11-11'
+    const datePickerButton = '2024-11-10'
 
     const wrapper = mountDateFieldWithDefaultProps({
       field: { config: { static: true }, isRangeMode: false },
@@ -67,7 +67,6 @@ describe('DateField.vue', () => {
     const dayOfCalendar = wrapper.find(getArialLabelOfCalendar(datePickerButton))
 
     await dayOfCalendar.trigger('click')
-
     expect(wrapper.emitted()['update:modelValue'][0][0]).includes(datePickerButton)
   })
 
