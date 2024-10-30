@@ -41,11 +41,11 @@ describe('DateField.vue', () => {
     expectedValue: string,
     actionBeforeCheckValue?: CallableFunction,
   ) => {
-    actionBeforeCheckValue && await actionBeforeCheckValue()
-
     const dayOfCalendar = wrapper.find(getArialLabelOfCalendar(datePickerButton))
 
     await dayOfCalendar.trigger('click')
+
+    actionBeforeCheckValue && console.log(expectedValue)
 
     testOnCallEventEmmitAndEqualValue(wrapper, expectedValue)
   }
@@ -58,18 +58,17 @@ describe('DateField.vue', () => {
       modelValue: '2024-10-10T11:00:00.000Z',
     })
 
-    await testOnCheckClickableAndValidDayOfPicker(
-      {
-        wrapper, datePickerButton,
-      }, `${datePickerButton}T12:00:00.000Z`,
-      async () => {
-        const monthOfCalendar = wrapper.find('.flatpickr-next-month')
+    const monthOfCalendar = wrapper.find('.flatpickr-next-month')
 
-        await monthOfCalendar.trigger('click')
+    await monthOfCalendar.trigger('click')
 
-        await nextTick()
-      },
-    )
+    await nextTick()
+
+    const dayOfCalendar = wrapper.find(getArialLabelOfCalendar(datePickerButton))
+
+    await dayOfCalendar.trigger('click')
+
+    testOnCallEventEmmitAndEqualValue(wrapper, `${datePickerButton}T12:00:00.000Z`)
   })
 
   it('Change value on click button day on calendar ', async () => {
