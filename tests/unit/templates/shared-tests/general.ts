@@ -9,6 +9,6 @@ export const isCalledEmitEvent = (wrapper: VueWrapper, actionEmit: string) => {
   })({ wrapper })
 }
 
-export const expectedEmitValue = (wrapper: VueWrapper, value: string | number, indexEmit = 0) => {
+export const expectedEmitValue = (wrapper: VueWrapper, value: unknown, indexEmit = 0) => {
   expect(wrapper.emitted()['update:modelValue'][indexEmit][0]).toEqual(value)
 }
