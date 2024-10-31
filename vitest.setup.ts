@@ -14,7 +14,7 @@ const projectDirective = {
   'full-date-with-seconds': fullDateWithSecondsDirective,
   'currency': currency,
 }
-
+// vue-flatpickr-component
 export const vuetify = createVuetify({
   components,
   directives: {
