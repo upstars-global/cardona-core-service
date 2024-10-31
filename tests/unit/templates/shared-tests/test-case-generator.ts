@@ -129,10 +129,6 @@ export const testCaseGenerator = ({
 
 export const getWrapperWithId = (params: GetWrapperElementPrams) => params
 
-const isEqual = testCaseGenerator({
-  methodExpect: ExpectMethods.ToEqual,
-})
-
 export const testOn = {
   notExistText: testCaseGenerator({
     property: { name: WrapperProperties.Text },
@@ -189,7 +185,9 @@ export const testOn = {
     withNot: true,
   }),
 
-  isEqual,
+  isEqual: testCaseGenerator({
+    methodExpect: ExpectMethods.ToEqual,
+  }),
 
   isEqualPlaceholder: testCaseGenerator({
     methodExpect: ExpectMethods.ToEqual,
