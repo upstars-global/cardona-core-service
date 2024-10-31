@@ -3,7 +3,6 @@ import { has } from 'lodash'
 import type { VueWrapper } from '@vue/test-utils'
 import type { GetWrapperElementPrams } from '../../utils'
 import { getWrapperElement } from '../../utils'
-import { getCheckBoxElement } from './checkbox-field'
 
 export enum WrapperProperties {
   Exists = 'exists',
@@ -218,6 +217,12 @@ export const testOn = {
     property: { name: WrapperProperties.Element, value: InputAttributes.Disabled, callable: false },
   }),
 
+  isNotDisabledElement: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBeTruthy,
+    property: { name: WrapperProperties.Element, value: InputAttributes.Disabled, callable: false },
+    withNot: true,
+  }),
+
   maxLengthAttributeToBe: testCaseGenerator({
     methodExpect: ExpectMethods.ToEqual,
     property: { name: WrapperProperties.Attributes, value: InputAttributes.MaxLength },
@@ -243,12 +248,4 @@ export const testOn = {
     methodExpect: ExpectMethods.ToBe,
     property: { name: WrapperProperties.Element, value: InputAttributes.Checked, callable: false },
   }),
-
-  isEqualValueOfCheckBox: (wrapper: VueWrapper, value: boolean) => {
-    isEqual({ wrapper: getCheckBoxElement(wrapper).element.checked }, value)
-  },
-
-  isDisabledCheckBox: (wrapper: VueWrapper, value: boolean) => {
-    isEqual({ wrapper: getCheckBoxElement(wrapper).element.disabled }, value)
-  },
 }

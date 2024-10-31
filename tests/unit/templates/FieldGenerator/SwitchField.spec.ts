@@ -22,9 +22,6 @@ const defaultProps = {
   disabled: false,
 }
 
-const selector = '.v-selection-control'
-const classSelectorControllDisabled = 'v-selection-control--disabled'
-
 describe('SwitchField', () => {
   it('Render switch elements and styles with params withState', async () => {
     const wrapper = getMountSwitchField(defaultProps)
@@ -32,11 +29,11 @@ describe('SwitchField', () => {
     testOn.existClass({ wrapper, testId: 'icon-state' }, IconsList.CheckCircleIcon)
     testOn.existClass({ wrapper, testId: 'icon-state' }, `text-${VColors.Success}`)
 
-    testOn.isEqualValueOfCheckBox(wrapper, true)
+    testOn.checkedElementToBe({ wrapper, selector: 'input' }, true)
 
     await wrapper.setProps({ modelValue: false })
 
-    testOn.isEqualValueOfCheckBox(wrapper, false)
+    testOn.checkedElementToBe({ wrapper, selector: 'input' }, false)
 
     testOn.existClass({ wrapper, testId: 'icon-state' }, IconsList.XCircleIcon)
     testOn.existClass({ wrapper, testId: 'icon-state' }, `text-${VColors.Error}`)
@@ -64,10 +61,11 @@ describe('SwitchField', () => {
 
   it('Check disabled param', async () => {
     const wrapper = getMountSwitchField({ ...defaultProps, disabled: true })
-    testOn.isDisabledCheckBox(wrapper, true)
+
+    testOn.isDisabledElement({ wrapper, selector: 'input' }, true)
 
     await wrapper.setProps({ disabled: false })
 
-    testOn.isDisabledCheckBox(wrapper, false)
+    testOn.isNotDisabledElement({ wrapper, selector: 'input' }, true)
   })
 })

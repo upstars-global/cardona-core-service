@@ -4,8 +4,7 @@ import { CheckGroupBaseField } from '../../../../src/@model/templates/baseField'
 import { setMountComponent } from '../../utils'
 import { testOn } from '../shared-tests/test-case-generator'
 import {
-  getCheckBoxElement,
-  isActiveDisabledState, testEmitData,
+  testEmitData,
   testOnValidLabel,
 } from '../shared-tests/checkbox-field'
 
@@ -38,18 +37,16 @@ describe('CheckField.vue', () => {
   it('Exist is disabled state', async () => {
     const wrapper = getMountCheckField({ ...defaultProps, disabled: true })
 
-    const checkbox = getCheckBoxElement(wrapper)
-
-    isActiveDisabledState(checkbox)
+    testOn.isDisabledElement({ wrapper, selector: 'input' })
   })
 
   it('Updates modelValue correctly when the prop changes', async () => {
     const wrapper = getMountCheckField(defaultProps)
 
-    testOn.isEqualValueOfCheckBox(wrapper, false)
+    testOn.checkedElementToBe({ wrapper, selector: 'input' }, false)
 
     await wrapper.setProps({ modelValue: true })
 
-    testOn.isEqualValueOfCheckBox(wrapper, true)
+    testOn.checkedElementToBe({ wrapper, selector: 'input' }, true)
   })
 })
