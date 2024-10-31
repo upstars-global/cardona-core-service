@@ -48,6 +48,7 @@ const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-er
     <VIcon
       v-if="field.withState"
       class="ml-auto"
+      data-test-id="icon-state"
       :icon="iconName"
       :class="iconVariant"
     />
