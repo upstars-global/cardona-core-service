@@ -968,6 +968,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
                 :name="BaseListActionsSlots.AppendActionItem"
                 :item="item"
                 :can-update="canUpdate"
+                :can-create="canCreate"
               />
             </template>
           </ItemActions>
