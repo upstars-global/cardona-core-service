@@ -1,0 +1,50 @@
+import { describe, it } from 'vitest'
+import type { VueWrapper } from '@vue/test-utils'
+import RadioField from '../../../../src/components/templates/FieldGenerator/_components/RadioField.vue'
+import { getWrapperElement, setMountComponent } from '../../utils'
+import { testOn } from '../shared-tests/test-case-generator'
+import { expectedEmitValue } from '../shared-tests/general'
+
+const getMountRadioField = setMountComponent(RadioField)
+
+const field = {
+  key: 'radioTest',
+  label: 'Test Radio Label',
+  options: [
+    { text: 'Option 1', value: 'option1' },
+    { text: 'Option 2', value: 'option2' },
+    { text: 'Option 3', value: 'option3' },
+  ],
+}
+
+const defaultProps = {
+  modelValue: false,
+  field,
+}
+
+describe('RadioField.vue', () => {
+  it('Render render valid options ', () => {
+    const wrapper = getMountRadioField(defaultProps)
+
+    const radioOptions = getWrapperElement({ wrapper, testId: 'radio-option', all: true }) as Array<VueWrapper>
+
+    radioOptions.forEach((radiOption, index) => {
+      testOn.equalTextValue(
+        {
+          wrapper: radiOption,
+          selector: 'label',
+        },
+        field.options[index].text)
+    })
+  })
+  it('Check state on actual model value ', async () => {
+    const wrapper = getMountRadioField(defaultProps)
+
+    await wrapper.setProps({ modelValue: field.options[0].value })
+
+    testOn.checkedElementToBe({ wrapper: wrapper.findAll('input')[0] }, true)
+
+    await wrapper.setValue(field.options[1].value)
+    await expectedEmitValue(wrapper, field.options[1].value)
+  })
+})

@@ -239,6 +239,11 @@ export const testOn = {
     })({ wrapper })
   },
 
+  checkedElementToBe: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBe,
+    property: { name: WrapperProperties.Element, value: InputAttributes.Checked, callable: false },
+  }),
+
   isEqualValueOfCheckBox: (wrapper: VueWrapper, value: boolean) => {
     isEqual({ wrapper: getCheckBoxElement(wrapper).element.checked }, value)
   },
