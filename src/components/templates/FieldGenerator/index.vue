@@ -14,7 +14,6 @@ const props = withDefaults(defineProps<{
   withLabel?: boolean
   withInfo?: boolean
   disabled?: boolean
-  validationMessage?: string
   size?: string // TODO: refactor sizes,
 
 }>(),
@@ -148,7 +147,12 @@ const canUpdate = computed<boolean>(() =>
           v-if="errorMessage"
           class="field-generator__error text-error text-caption mt-1"
         >
-          {{ validationMessage || errorMessage }}
+          <slot
+            name="errorMessage"
+            :message="errorMessage"
+          >
+            {{ errorMessage }}
+          </slot>
         </span>
 
         <span
