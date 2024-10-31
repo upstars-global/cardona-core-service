@@ -3,6 +3,7 @@ import { has } from 'lodash'
 import type { VueWrapper } from '@vue/test-utils'
 import type { GetWrapperElementPrams } from '../../utils'
 import { getWrapperElement } from '../../utils'
+import { getCheckBoxElement } from './checkbox-field'
 
 export enum WrapperProperties {
   Exists = 'exists',
@@ -129,6 +130,10 @@ export const testCaseGenerator = ({
 
 export const getWrapperWithId = (params: GetWrapperElementPrams) => params
 
+const isEqual = testCaseGenerator({
+  methodExpect: ExpectMethods.ToEqual,
+})
+
 export const testOn = {
   notExistText: testCaseGenerator({
     property: { name: WrapperProperties.Text },
@@ -185,9 +190,7 @@ export const testOn = {
     withNot: true,
   }),
 
-  isEqual: testCaseGenerator({
-    methodExpect: ExpectMethods.ToEqual,
-  }),
+  isEqual,
 
   isEqualPlaceholder: testCaseGenerator({
     methodExpect: ExpectMethods.ToEqual,
@@ -234,5 +237,9 @@ export const testOn = {
       methodExpect: ExpectMethods.ToBeTruthy,
       property: { name: WrapperProperties.Emitted, value: actionEmit },
     })({ wrapper })
+  },
+
+  isEqualValueOfCheckBox: (wrapper: VueWrapper, value: boolean) => {
+    isEqual({ wrapper: getCheckBoxElement(wrapper).element.checked }, value)
   },
 }

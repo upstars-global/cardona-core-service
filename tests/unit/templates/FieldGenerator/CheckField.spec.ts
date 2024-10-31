@@ -46,10 +46,10 @@ describe('CheckField.vue', () => {
   it('Updates modelValue correctly when the prop changes', async () => {
     const wrapper = getMountCheckField(defaultProps)
 
-    const checkbox = getCheckBoxElement(wrapper)
+    testOn.isEqualValueOfCheckBox(wrapper, false)
 
-    testOn.isEqual({ wrapper: checkbox.element.checked }, false)
     await wrapper.setProps({ modelValue: true })
-    testOn.isEqual({ wrapper: checkbox.element.checked }, true)
+
+    testOn.isEqualValueOfCheckBox(wrapper, true)
   })
 })

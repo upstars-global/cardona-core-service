@@ -4,7 +4,6 @@ import { setMountComponent } from '../../utils'
 import { VColors, VSizes } from '../../../../src/@model/vuetify'
 import { testOn } from '../shared-tests/test-case-generator'
 import { IconsList } from '../../../../src/@model/enums/icons'
-import { getCheckBoxElement } from '../shared-tests/checkbox-field'
 import { expectedEmitValue } from '../shared-tests/general'
 
 const getMountSwitchField = setMountComponent(SwitchField)
@@ -33,11 +32,11 @@ describe('SwitchField', () => {
     testOn.existClass({ wrapper, testId: 'icon-state' }, IconsList.CheckCircleIcon)
     testOn.existClass({ wrapper, testId: 'icon-state' }, `text-${VColors.Success}`)
 
-    testOn.isEqual({ wrapper: getCheckBoxElement(wrapper).element.checked }, true)
+    testOn.isEqualValueOfCheckBox(wrapper, true)
 
     await wrapper.setProps({ modelValue: false })
 
-    testOn.isEqual({ wrapper: getCheckBoxElement(wrapper).element.checked }, false)
+    testOn.isEqualValueOfCheckBox(wrapper, false)
 
     testOn.existClass({ wrapper, testId: 'icon-state' }, IconsList.XCircleIcon)
     testOn.existClass({ wrapper, testId: 'icon-state' }, `text-${VColors.Error}`)
