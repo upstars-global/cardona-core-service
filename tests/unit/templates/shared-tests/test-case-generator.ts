@@ -248,4 +248,9 @@ export const testOn = {
     methodExpect: ExpectMethods.ToBe,
     property: { name: WrapperProperties.Element, value: InputAttributes.Checked, callable: false },
   }),
+
+  inputTypeToBe: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBe,
+    property: { name: WrapperProperties.Attributes, value: InputAttributes.Type },
+  }),
 }
