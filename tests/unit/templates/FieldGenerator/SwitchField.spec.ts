@@ -64,11 +64,10 @@ describe('SwitchField', () => {
 
   it('Check disabled param', async () => {
     const wrapper = getMountSwitchField({ ...defaultProps, disabled: true })
-
-    testOn.existClass({ wrapper, selector }, classSelectorControllDisabled)
+    testOn.isDisabledCheckBox(wrapper, true)
 
     await wrapper.setProps({ disabled: false })
 
-    testOn.notExistClasses({ wrapper, selector }, classSelectorControllDisabled)
+    testOn.isDisabledCheckBox(wrapper, false)
   })
 })

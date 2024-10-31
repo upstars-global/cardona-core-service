@@ -32,7 +32,7 @@ describe('CheckField.vue', () => {
   it('Binds modelValue to checkbox and emits update on change', async () => {
     const wrapper = getMountCheckField(defaultProps)
 
-    testEmitData(wrapper, [true])
+    await testEmitData(wrapper, [true])
   })
 
   it('Exist is disabled state', async () => {

@@ -242,4 +242,8 @@ export const testOn = {
   isEqualValueOfCheckBox: (wrapper: VueWrapper, value: boolean) => {
     isEqual({ wrapper: getCheckBoxElement(wrapper).element.checked }, value)
   },
+
+  isDisabledCheckBox: (wrapper: VueWrapper, value: boolean) => {
+    isEqual({ wrapper: getCheckBoxElement(wrapper).element.disabled }, value)
+  },
 }
