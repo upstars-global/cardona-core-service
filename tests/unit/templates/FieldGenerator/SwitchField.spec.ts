@@ -1,4 +1,5 @@
 import { describe, it } from 'vitest'
+import { merge } from 'lodash'
 import SwitchField from '../../../../src/components/templates/FieldGenerator/_components/SwitchField.vue'
 import { setMountComponent } from '../../utils'
 import { VColors, VSizes } from '../../../../src/@model/vuetify'
@@ -12,7 +13,7 @@ const field = {
   key: 'testSwitch',
   label: 'Test Switch Label',
   value: true,
-  withState: true,
+  withState: false,
 }
 
 const defaultProps = {
@@ -24,7 +25,7 @@ const defaultProps = {
 
 describe('SwitchField', () => {
   it('Render switch elements state and styles with params withState', async () => {
-    const wrapper = getMountSwitchField(defaultProps)
+    const wrapper = getMountSwitchField(merge(defaultProps, { field: { withState: true } }))
 
     testOn.existClass({ wrapper, testId: 'icon-state' }, IconsList.CheckCircleIcon)
     testOn.existClass({ wrapper, testId: 'icon-state' }, `text-${VColors.Success}`)
