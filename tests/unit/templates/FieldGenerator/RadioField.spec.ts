@@ -23,15 +23,15 @@ const defaultProps = {
 }
 
 describe('RadioField.vue', () => {
-  it('Render render valid options ', () => {
+  it('Render valid options ', () => {
     const wrapper = getMountRadioField(defaultProps)
 
     const radioOptions = getWrapperElement({ wrapper, testId: 'radio-option', all: true }) as Array<VueWrapper>
 
-    radioOptions.forEach((radiOption, index) => {
+    radioOptions.forEach((radioOption, index) => {
       testOn.equalTextValue(
         {
-          wrapper: radiOption,
+          wrapper: radioOption,
           selector: 'label',
         },
         field.options[index].text)
@@ -45,6 +45,6 @@ describe('RadioField.vue', () => {
     testOn.checkedElementToBe({ wrapper: wrapper.findAll('input')[0] }, true)
 
     await wrapper.setValue(field.options[1].value)
-    await expectedEmitValue(wrapper, field.options[1].value)
+    expectedEmitValue(wrapper, field.options[1].value)
   })
 })
