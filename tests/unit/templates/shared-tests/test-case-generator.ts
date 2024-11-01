@@ -1,8 +1,8 @@
 import { expect } from 'vitest'
 import { has } from 'lodash'
+import type { VueWrapper } from '@vue/test-utils'
 import type { GetWrapperElementPrams } from '../../utils'
 import { getWrapperElement } from '../../utils'
-import {VueWrapper} from "@vue/test-utils";
 
 export enum WrapperProperties {
   Exists = 'exists',
