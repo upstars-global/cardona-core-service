@@ -85,7 +85,9 @@ class ApiService {
         responseType,
       } as AxiosRequestConfig)
 
-      if (data.error || !data.data)
+      console.log(url)
+
+      if (data.error || (!data.data && !url.includes('report')))
         throw data.error
 
       if (withSuccessToast)
@@ -105,7 +107,7 @@ class ApiService {
       const isInvalidToken = isInvalidTokenError(error)
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', TOKEN_INVALID]
 
-      if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type) || isInvalidToken) {
+      if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error?.type) || isInvalidToken) {
         toastError(TOKEN_INVALID)
         store.dispatch('authCore/clearAuth')
 
@@ -115,7 +117,7 @@ class ApiService {
 
       store.dispatch('addErrorUrl', url)
 
-      const notVisibleErrorToast = !withErrorNotFound && error.type === 'NOT_FOUND'
+      const notVisibleErrorToast = !withErrorNotFound && error?.type === 'NOT_FOUND'
       if (!notVisibleErrorToast) {
         if (withErrorToast)
           this.showError(error, entity, formRef, withErrorDescriptionToast)
@@ -166,7 +168,7 @@ class ApiService {
     else if (withErrorDescriptionToast && error.description) {
       toastErrorMessageString(error.description)
     }
-    else if (error.type) {
+    else if (error?.type) {
       toastError(error.type, {
         defaultText: error.description,
       })
