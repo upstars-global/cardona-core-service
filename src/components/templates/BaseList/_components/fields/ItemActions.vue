@@ -80,6 +80,7 @@ const onCreateCopy = () => {
         v-if="existSlot(BaseListActionsSlots.PrependActionItem)"
         :name="BaseListActionsSlots.PrependActionItem"
         :item="item"
+        :can-update="canUpdate"
       />
 
       <VListItem

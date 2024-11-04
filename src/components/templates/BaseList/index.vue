@@ -818,6 +818,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             <slot
               :name="`${field.key}-nameWithIdTitle`"
               :item="item.raw"
+              :can-update="canUpdate"
             />
           </NameWithIdField>
 
