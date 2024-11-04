@@ -958,6 +958,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               <slot
                 :name="BaseListActionsSlots.PrependActionItem"
                 :item="item"
+                :can-update="canUpdate"
               />
             </template>
 
