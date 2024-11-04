@@ -85,8 +85,6 @@ class ApiService {
         responseType,
       } as AxiosRequestConfig)
 
-      console.log(url)
-
       if (data.error || (!data.data && !url.includes('report')))
         throw data.error
 
