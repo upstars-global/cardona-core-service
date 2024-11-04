@@ -96,9 +96,11 @@ const {
   ListItemModel,
 } = props.useList()
 
+const getCleanEntityName = (name: string): string => name?.split('#')?.at(0) || ''
+
 // Pages
-const CreatePageName = pageName ? `${pageName}Create` : `${entityName}Create`
-const UpdatePageName = pageName ? `${pageName}Update` : `${entityName}Update`
+const CreatePageName = pageName ? `${pageName}Create` : `${getCleanEntityName(entityName)}Create`
+const UpdatePageName = pageName ? `${pageName}Update` : `${getCleanEntityName(entityName)}Update`
 
 const isExistsCreatePage = checkExistsPage(CreatePageName)
 const isExistsUpdatePage = checkExistsPage(UpdatePageName)
