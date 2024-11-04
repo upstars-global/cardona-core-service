@@ -67,6 +67,7 @@ describe('DateField.vue', () => {
     const dayOfCalendar = wrapper.find(getArialLabelOfCalendar(datePickerButton))
 
     await dayOfCalendar.trigger('click')
+
     expect(wrapper.emitted()['update:modelValue'][0][0]).includes(datePickerButton)
   })
 

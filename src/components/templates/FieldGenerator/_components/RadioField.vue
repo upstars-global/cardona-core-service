@@ -27,6 +27,7 @@ const localModelValue = computed({
       :key="`radio_${index}`"
       :label="option.text"
       :value="option.value"
+      data-test-id="radio-option"
     />
   </VRadioGroup>
 </template>

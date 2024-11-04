@@ -9,8 +9,6 @@ export const getCheckBoxElement = (wrapper: VueWrapper): BaseWrapper<Node> => ge
 
 export const testOnValidLabel = (wrapper: VueWrapper<unknown>, value: string) => testOn.equalTextValue({ wrapper }, value)
 
-export const isActiveDisabledState = checkbox => testOn.isEqual({ wrapper: checkbox.element.disabled }, true)
-
 export const testEmitData = async (wrapper, value: Array<unknown>) => {
   const checkbox = getCheckBoxElement(wrapper)
 
