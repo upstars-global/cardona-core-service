@@ -74,7 +74,7 @@ export const testChangeInputValue = async ({ valueOfSet = '', inputKey, dateRang
   checkEmittedValue(wrapper, expectedValue, indexEmit)
 }
 
-export const testOnCallEventEmmitAndEqualValue = (wrapper: VueWrapper, value: string) => {
+export const testOnCallEventEmitAndEqualValue = (wrapper: VueWrapper, value: string) => {
   testOn.isCalledEmittedEvent({ wrapper })
   expectedEmitValue(wrapper, value)
 }

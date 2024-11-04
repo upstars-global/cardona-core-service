@@ -3,7 +3,7 @@ import { nextTick } from 'vue'
 import PhoneField from '../../../../src/components/templates/FieldGenerator/_components/PhoneField.vue'
 import { setMountComponent } from '../../utils'
 import { testOn } from '../shared-tests/test-case-generator'
-import { testOnCallEventEmmitAndEqualValue } from '../shared-tests/date-field'
+import { testOnCallEventEmitAndEqualValue } from '../shared-tests/date-field'
 import { expectedEmitValue } from '../shared-tests/general'
 
 const getMountPhoneField = setMountComponent(PhoneField)
@@ -42,17 +42,17 @@ describe('PhoneField.vue', () => {
     }
   })
 
-  it('Call event emmite with correct value ', async () => {
+  it('Call event emited with correct value ', async () => {
     const wrapper = getMountPhoneField(defaultProps)
 
     await wrapper.setProps({ modelValue: countryCodes[0].code })
 
-    testOnCallEventEmmitAndEqualValue(wrapper, `+${countryCodes[0].code}`)
+    testOnCallEventEmitAndEqualValue(wrapper, `+${countryCodes[0].code}`)
 
     await nextTick()
 
     await wrapper.setProps({ modelValue: `+${countryCodes[1].code}` })
-    await expectedEmitValue(wrapper, `+${countryCodes[1].code}`, 1)
+    expectedEmitValue(wrapper, `+${countryCodes[1].code}`, 1)
   })
 
   it('State on focus input and on blur ', async () => {
@@ -67,7 +67,7 @@ describe('PhoneField.vue', () => {
 
     const wrapper = getMountPhoneField({ ...defaultProps, modelValue: countryCodes[0].code })
 
-    // On blur state
+    // On focus state
 
     await wrapper.find('input').trigger('focus')
 
