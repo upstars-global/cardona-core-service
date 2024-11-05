@@ -45,6 +45,6 @@ describe('RadioField.vue', () => {
     testOn.checkedElementToBe({ wrapper: wrapper.findAll('input')[0] }, true)
 
     await wrapper.setValue(field.options[1].value)
-    expectedEmitValue(wrapper, field.options[1].value)
+    await expectedEmitValue(wrapper, field.options[1].value)
   })
 })
