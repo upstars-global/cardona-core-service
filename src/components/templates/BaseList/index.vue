@@ -96,14 +96,19 @@ const {
   ListItemModel,
 } = props.useList()
 
-const getCleanEntityName = (name: string): string => name?.split('#')?.at(0) || ''
+const parseEntityNameWithTabs = (entityName: string) => {
+  // Removes the #tabName from entityName
+  // Example: "Tournaments#tabName" -> "Tournaments"
+  // This helps save different settings for the same entity across different tabs
+  return entityName.replace(/#\w+/, '').replace('..', '.')
+}
 
 // Pages
-const CreatePageName = pageName ? `${pageName}Create` : `${getCleanEntityName(entityName)}Create`
-const UpdatePageName = pageName ? `${pageName}Update` : `${getCleanEntityName(entityName)}Update`
+const CreatePageName = pageName ? `${pageName}Create` : `${entityName}Create`
+const UpdatePageName = pageName ? `${pageName}Update` : `${entityName}Update`
 
-const isExistsCreatePage = checkExistsPage(CreatePageName)
-const isExistsUpdatePage = checkExistsPage(UpdatePageName)
+const isExistsCreatePage = checkExistsPage(parseEntityNameWithTabs(CreatePageName))
+const isExistsUpdatePage = checkExistsPage(parseEntityNameWithTabs(UpdatePageName))
 
 // Action names
 const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
@@ -576,13 +581,6 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
   selectedItems.value = selectedItems.value.filter(item => item?.id !== selectedItem.value.id)
   resetSelectedItem()
   await reFetchList()
-}
-
-const parseEntityNameWithTabs = (entityName: string) => {
-  // Removes the #tabName from entityName
-  // Example: "Tournaments#tabName" -> "Tournaments"
-  // This helps save different settings for the same entity across different tabs
-  return entityName.replace(/#\w+/, '').replace('..', '.')
 }
 
 onBeforeMount(async () => {
