@@ -104,11 +104,11 @@ const parseEntityNameWithTabs = (entityName: string) => {
 }
 
 // Pages
-const CreatePageName = pageName ? `${pageName}Create` : `${entityName}Create`
-const UpdatePageName = pageName ? `${pageName}Update` : `${entityName}Update`
+const CreatePageName = pageName ? `${pageName}Create` : `${parseEntityNameWithTabs(entityName)}Create`
+const UpdatePageName = pageName ? `${pageName}Update` : `${parseEntityNameWithTabs(entityName)}Update`
 
-const isExistsCreatePage = checkExistsPage(parseEntityNameWithTabs(CreatePageName))
-const isExistsUpdatePage = checkExistsPage(parseEntityNameWithTabs(UpdatePageName))
+const isExistsCreatePage = checkExistsPage(CreatePageName)
+const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 
 // Action names
 const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
