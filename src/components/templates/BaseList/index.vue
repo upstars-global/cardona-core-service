@@ -96,9 +96,16 @@ const {
   ListItemModel,
 } = props.useList()
 
+const parseEntityNameWithTabs = (entityName: string) => {
+  // Removes the #tabName from entityName
+  // Example: "Tournaments#tabName" -> "Tournaments"
+  // This helps save different settings for the same entity across different tabs
+  return entityName.replace(/#\w+/, '').replace('..', '.')
+}
+
 // Pages
-const CreatePageName = pageName ? `${pageName}Create` : `${entityName}Create`
-const UpdatePageName = pageName ? `${pageName}Update` : `${entityName}Update`
+const CreatePageName = pageName ? `${pageName}Create` : `${parseEntityNameWithTabs(entityName)}Create`
+const UpdatePageName = pageName ? `${pageName}Update` : `${parseEntityNameWithTabs(entityName)}Update`
 
 const isExistsCreatePage = checkExistsPage(CreatePageName)
 const isExistsUpdatePage = checkExistsPage(UpdatePageName)
@@ -574,13 +581,6 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
   selectedItems.value = selectedItems.value.filter(item => item?.id !== selectedItem.value.id)
   resetSelectedItem()
   await reFetchList()
-}
-
-const parseEntityNameWithTabs = (entityName: string) => {
-  // Removes the #tabName from entityName
-  // Example: "Tournaments#tabName" -> "Tournaments"
-  // This helps save different settings for the same entity across different tabs
-  return entityName.replace(/#\w+/, '').replace('..', '.')
 }
 
 onBeforeMount(async () => {
