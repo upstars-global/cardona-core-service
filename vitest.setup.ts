@@ -7,6 +7,7 @@ import * as directives from 'vuetify/directives'
 import { dayDateDirective, fullDateDirective, fullDateWithSecondsDirective } from './src/directives/date'
 import { currency } from './src/directives/currency'
 import { getI18n } from './src/plugins/i18n'
+import './src/extensions/index'
 
 const projectDirective = {
   'day-date': dayDateDirective,
@@ -15,6 +16,7 @@ const projectDirective = {
   'currency': currency,
 }
 
+// vue-flatpickr-component
 export const vuetify = createVuetify({
   components,
   directives: {

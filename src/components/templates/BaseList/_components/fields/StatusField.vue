@@ -16,6 +16,7 @@ type ValueType = string | IStatusWithVariantReplace
 const props = defineProps<{
   value: ValueType
   variant: VVariants
+  rounded: boolean
 }>()
 
 enum StatusVariants {
@@ -89,7 +90,7 @@ const actualVariant = computed(() => {
   <VChip
     :color="color"
     :variant="actualVariant"
-    label
+    :label="!rounded"
   >
     <span class="lh-normal">
       {{ value }}

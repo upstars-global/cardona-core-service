@@ -70,6 +70,7 @@ const appendInnerIcon = computed(() => {
       v-if="phoneFlag"
       class="flag-icon fi position-absolute pl-12"
       :class="`fi-${phoneFlag}`"
+      data-test-id="phone-flag"
     />
 
     <VField
@@ -82,6 +83,7 @@ const appendInnerIcon = computed(() => {
       :append-inner-icon="appendInnerIcon"
       :class="{ 'pl-12': phoneFlag, 'v-input--error': errors }"
       @keydown="validateValue"
+      data-test-id="field-wrapper"
     >
       <Cleave
         v-model="localModelValue"
@@ -90,6 +92,7 @@ const appendInnerIcon = computed(() => {
         :placeholder="$t('common.phone._')"
         :disabled="disabled"
         :options="cleaveOptions"
+        data-test-id="phone-input"
         @focus="onFocus"
         @blur="onBlur"
       />

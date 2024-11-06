@@ -39,6 +39,8 @@ const togglePasswordVisibility = () => {
 const setGeneratedPassword = () => {
   emits('update:modelValue', generatePassword())
 }
+
+const isAttach = computed(() => process.env.NODE_ENV === 'test')
 </script>
 
 <template>
@@ -57,13 +59,16 @@ const setGeneratedPassword = () => {
       @click:append-inner="togglePasswordVisibility"
     />
     <VTooltip
+      :attach="isAttach"
       :text="$t('common.generatePassword')"
       location="bottom"
+      data-test-id="tooltip"
     >
       <template #activator="{ props }">
         <VBtn
           v-if="field.withPasswordGenerator"
           id="generator-password"
+          data-test-id="btn-generate-password"
           :disabled="disabled"
           :variant="VVariants.Outlined"
           size="38"

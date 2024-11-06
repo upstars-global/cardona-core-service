@@ -96,9 +96,16 @@ const {
   ListItemModel,
 } = props.useList()
 
+const parseEntityNameWithTabs = (entityName: string) => {
+  // Removes the #tabName from entityName
+  // Example: "Tournaments#tabName" -> "Tournaments"
+  // This helps save different settings for the same entity across different tabs
+  return entityName.replace(/#\w+/, '').replace('..', '.')
+}
+
 // Pages
-const CreatePageName = pageName ? `${pageName}Create` : `${entityName}Create`
-const UpdatePageName = pageName ? `${pageName}Update` : `${entityName}Update`
+const CreatePageName = pageName ? `${pageName}Create` : `${parseEntityNameWithTabs(entityName)}Create`
+const UpdatePageName = pageName ? `${pageName}Update` : `${parseEntityNameWithTabs(entityName)}Update`
 
 const isExistsCreatePage = checkExistsPage(CreatePageName)
 const isExistsUpdatePage = checkExistsPage(UpdatePageName)
@@ -576,13 +583,6 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
   await reFetchList()
 }
 
-const parseEntityNameWithTabs = (entityName: string) => {
-  // Removes the #tabName from entityName
-  // Example: "Tournaments#tabName" -> "Tournaments"
-  // This helps save different settings for the same entity across different tabs
-  return entityName.replace(/#\w+/, '').replace('..', '.')
-}
-
 onBeforeMount(async () => {
   await getList()
 })
@@ -795,6 +795,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           <SumAndCurrency
             v-else-if="field.type === ListFieldType.SumAndCurrency"
             :key="`${index}_${field.type}`"
+            :align="field.align"
             :data="{
               amount: cell,
               currency: item.raw.currency,
@@ -818,6 +819,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             <slot
               :name="`${field.key}-nameWithIdTitle`"
               :item="item.raw"
+              :can-update="canUpdate"
             />
           </NameWithIdField>
 
@@ -957,6 +959,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               <slot
                 :name="BaseListActionsSlots.PrependActionItem"
                 :item="item"
+                :can-update="canUpdate"
               />
             </template>
 
@@ -968,6 +971,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
                 :name="BaseListActionsSlots.AppendActionItem"
                 :item="item"
                 :can-update="canUpdate"
+                :can-create="canCreate"
               />
             </template>
           </ItemActions>
