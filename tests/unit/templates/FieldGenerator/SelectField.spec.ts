@@ -128,7 +128,6 @@ describe('SelectField', () => {
 
     const searchQuery = options[0].name
 
-
     const input = wrapper.find('input')
 
     await input.setValue(searchQuery)
@@ -151,5 +150,33 @@ describe('SelectField', () => {
     await nextTick()
 
     expect(wrapper.find('.vs__spinner').element.style.display).not.toBe('none')
+  })
+
+  it('Check immediate fetch on empty options', async () => {
+    const wrapper = getMountSelectField(props, {
+      components: {
+        VueSelect: vSelect,
+      },
+    })
+
+    expect(wrapper.vm.isLoading).toBe(false)
+
+    await wrapper.setProps({
+      field: {
+        ...field,
+        options: null,
+        fetchOptions: async () =>
+          new Promise(resolve => setTimeout(() => resolve(options), 100)), // Задержка 1 сек
+      },
+    })
+
+    await nextTick()
+    expect(wrapper.vm.isLoading).toBe(true)
+
+    await new Promise(resolve => setTimeout(resolve, 150))
+    await nextTick()
+
+    expect(field.fetchOptions).toHaveBeenCalled()
+    expect(wrapper.vm.isLoading).toBe(false)
   })
 })
