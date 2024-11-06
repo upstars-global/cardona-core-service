@@ -795,6 +795,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           <SumAndCurrency
             v-else-if="field.type === ListFieldType.SumAndCurrency"
             :key="`${index}_${field.type}`"
+            :align="field.align"
             :data="{
               amount: cell,
               currency: item.raw.currency,
@@ -968,6 +969,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
                 :name="BaseListActionsSlots.AppendActionItem"
                 :item="item"
                 :can-update="canUpdate"
+                :can-create="canCreate"
               />
             </template>
           </ItemActions>
