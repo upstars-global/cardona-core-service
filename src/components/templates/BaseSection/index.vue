@@ -249,7 +249,7 @@ const onSave = async () => {
 }
 
 const onClickCancel = () => {
-  if (props.config.backToTheHistoryLast && router.options.history.back)
+  if (props.config.backToTheHistoryLast && router.options.history.state.back)
     return router.go(-1)
 
   return router.push({ name: ListPageName })
