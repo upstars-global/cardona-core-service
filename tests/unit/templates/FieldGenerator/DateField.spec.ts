@@ -8,7 +8,7 @@ import {
   checkEmittedValue,
   getArialLabelOfCalendar,
   mountDateFieldWithDefaultProps, setAndCheckInputValue, testChangeInputValue,
-  testOnCallEventEmmitAndEqualValue,
+  testOnCallEventEmitAndEqualValue,
 } from '../shared-tests/date-field'
 
 describe('DateField.vue', () => {
@@ -47,7 +47,7 @@ describe('DateField.vue', () => {
 
     actionBeforeCheckValue && console.log(expectedValue)
 
-    testOnCallEventEmmitAndEqualValue(wrapper, expectedValue)
+    testOnCallEventEmitAndEqualValue(wrapper, expectedValue)
   }
 
   it('Change value on click button month on calendar ', async () => {
