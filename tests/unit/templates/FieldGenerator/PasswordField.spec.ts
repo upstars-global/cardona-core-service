@@ -6,7 +6,7 @@ import { testOn } from '../shared-tests/test-case-generator'
 import { IconsList } from '../../../../src/@model/enums/icons'
 import { i18n } from '../../../../src/plugins/i18n'
 import generatePassword from '../../../../src/helpers/password-generator'
-import { testOnCallEventEmmitAndEqualValue } from '../shared-tests/date-field'
+import { testOnCallEventEmitAndEqualValue } from '../shared-tests/date-field'
 
 const getMountPasswordField = setMountComponent(PasswordField)
 
@@ -33,7 +33,7 @@ describe('PasswordField.vue', () => {
 
     await wrapper.setValue(modelValue)
 
-    testOnCallEventEmmitAndEqualValue(wrapper, modelValue)
+    testOnCallEventEmitAndEqualValue(wrapper, modelValue)
 
     await wrapper.setProps({ modelValue })
 
