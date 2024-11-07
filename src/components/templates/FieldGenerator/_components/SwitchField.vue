@@ -33,6 +33,7 @@ const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-er
   <div
     class="d-flex align-center gap-3"
     :class="`size-${size}`"
+    data-test-id="switch-wrapper"
   >
     <VSwitch
       v-model="localModelValue"
@@ -48,6 +49,7 @@ const iconVariant = computed(() => (props.modelValue ? 'text-success' : 'text-er
     <VIcon
       v-if="field.withState"
       class="ml-auto"
+      data-test-id="icon-state"
       :icon="iconName"
       :class="iconVariant"
     />

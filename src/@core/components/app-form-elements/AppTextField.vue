@@ -6,6 +6,10 @@ defineOptions({
   inheritAttrs: false,
 })
 
+defineEmits<{
+  clear: []
+}>()
+
 const elementId = computed(() => {
   const attrs = useAttrs()
   const _elementIdToken = attrs.id || attrs.label
@@ -35,6 +39,7 @@ const label = computed(() => useAttrs().label as string | undefined)
         variant: 'outlined',
         id: elementId,
       }"
+      @click:clear="$emit('clear')"
     >
       <template
         v-for="(_, name) in $slots"

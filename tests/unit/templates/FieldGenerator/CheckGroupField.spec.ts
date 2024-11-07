@@ -1,12 +1,12 @@
-import { describe, expect, it } from 'vitest'
+import { describe, it } from 'vitest'
 
+import type { VueWrapper } from '@vue/test-utils'
 import CheckGroupField from '../../../../src/components/templates/FieldGenerator/_components/CheckGroupField.vue'
 
 import { getWrapperElement, setMountComponent } from '../../utils'
 
 import {
   selectorInput,
-  isActiveDisabledState,
   testEmitData,
   testOnValidLabel,
 } from '../shared-tests/checkbox-field'
@@ -58,10 +58,10 @@ describe('CheckFieldGroup.vue', () => {
       },
     })
 
-    const inputs = getWrapperElement({ wrapper, selector: selectorInput, all: true })
+    const inputs = getWrapperElement({ wrapper, selector: selectorInput, all: true }) as Array<VueWrapper>
 
     Array.from(inputs).forEach(input => {
-      isActiveDisabledState(input)
+      testOn.isDisabledElement({ wrapper: input })
     })
   })
 
@@ -72,13 +72,13 @@ describe('CheckFieldGroup.vue', () => {
   })
 
   it('Correct selected checkbox by props modelValue', async () => {
-    const modelValue = [1,3]
+    const modelValue = [1, 3]
     const wrapper = getMountCheckGroupField({ ...defaultProps, modelValue })
 
     const inputs = getWrapperElement({ wrapper, selector: selectorInput, all: true })
 
     Array.from(inputs).forEach((input, index) => {
-      testOn.isEqual({ wrapper: input.element.checked }, modelValue.includes(index + 1 ))
+      testOn.isEqual({ wrapper: input.element.checked }, modelValue.includes(index + 1))
     })
   })
 })
