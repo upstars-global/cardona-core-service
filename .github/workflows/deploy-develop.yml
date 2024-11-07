@@ -37,11 +37,6 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./server/dist --project-name=cardona-core-service
 
-      - name: Print outputs
-        env:
-          OUTPUTS_JSON: ${{ steps.deploy.outputs }}
-        run: echo $OUTPUTS_JSON
-
       - name: Print deployment-url
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
