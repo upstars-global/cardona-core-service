@@ -1,20 +1,12 @@
-name: Deploy
+name: Deploy production
 on:
-  pull_request:
-    branches:
-      - master
   push:
     branches:
-      - OlehMiha-patch-1
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: "Choose an environment to deploy to: <develop|production>"
-        required: true
-        default: "develop"
+      - master
 jobs:
-  deploy-core-service:
+  deploy-core-service-production:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
