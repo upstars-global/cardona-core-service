@@ -324,7 +324,7 @@ onChangePagination(() => {
 const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
 
 const getUpdateRoute = ({ id }): Location => {
-  return isExistsUpdatePage && (canUpdate || canUpdateSeo)
+  return isExistsUpdatePage
     ? { name: UpdatePageName, params: { id } }
     : {}
 }
