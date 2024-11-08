@@ -10,24 +10,6 @@ import { i18n } from '../../../../src/plugins/i18n'
 
 const getMountSelectField = setMountComponent(SelectField)
 
-// Mock the store, debounce, and i18n
-// vi.mock('../../../../plugins/i18n', () => ({
-//   i18n: { t: (key: string) => key },
-// }))
-// vi.mock('lodash', () => ({
-//   debounce: (fn: Function) => fn,
-// }))
-
-// vSelect.props.components.default = () => ({
-//   Deselect: {
-//     render() {
-//       return h('i', {
-//         class: 'v-icon notranslate v-theme--light v-icon--size-default ml-25 tabler-x',
-//       })
-//     },
-//   },
-// })
-
 vi.mock('lodash', async importOriginal => {
   const actual = await importOriginal()
 
@@ -46,14 +28,15 @@ const options: OptionsItem[] = [
 
 const field = new SelectBaseField({
   key: 'currency',
-  label: 'Currency !!!!',
+  label: 'Currency',
   options,
   clearable: true,
-  appendToBody: true,
+  appendToBody: false,
+
 })
 
 const defaultProps = {
-  modelValue: '',
+  modelValue: 'US Dollar',
   field,
   errors: false,
   disabled: false,
@@ -83,12 +66,11 @@ describe('SelectField', () => {
 
     await wrapper.setProps(installedPlaceholderParam)
 
+    /// Installed new placeholder
     testOn.isEqualPlaceholder({ wrapper, selector: 'input' }, installedPlaceholderParam.placeholder)
   })
 
   it('Check loading on fetch ', async () => {
-    const installedPlaceholderParam = { placeholder: i18n.t('placeholder.choose.group') }
-
     const wrapper = getMountSelectField(props, {
       components: {
         VueSelect: vSelect,
@@ -98,25 +80,7 @@ describe('SelectField', () => {
     await wrapper.setProps({ fetchOptions: vi.fn().mockResolvedValue(options) })
   })
 
-  // it('calls fetchOptions when props.field.options is empty', async () => {
-  //   expect(field.fetchOptions).toHaveBeenCalledTimes(1)
-  //
-  //   const wrapper = getMountSelectField(props, {
-  //     components: {
-  //       VueSelect: vSelect,
-  //     },
-  //   })
-  //
-  //   await wrapper.vm.$nextTick()
-  //
-  //   expect(wrapper.vm.isLoading).toBe(false)
-  //   expect(wrapper.vm.options).toEqual([
-  //     { id: 'USD', name: 'US Dollar' },
-  //     { id: 'EUR', name: 'Euro' },
-  //   ])
-  // })
-  //
-  it('Calls fetchOptions in onSearch debounce handler', async () => {
+  it('Option search options actions', async () => {
     const wrapper = getMountSelectField({
       ...props,
       fetchOptions: async () => options,
@@ -134,7 +98,12 @@ describe('SelectField', () => {
     await input.trigger('input')
     await nextTick()
 
+    /// Check call fetch cation
     expect(field.fetchOptions).toHaveBeenCalledWith(searchQuery)
+
+    /// Check filtered of options by search value
+    testOn.checkLengthElements({ wrapper, selector: '.vs__dropdown-option', all: true }, 1)
+    testOn.equalTextValue({ wrapper, selector: '.vs__dropdown-option' }, searchQuery)
   })
 
   it('Check loading state input', async () => {
@@ -175,8 +144,51 @@ describe('SelectField', () => {
 
     await new Promise(resolve => setTimeout(resolve, 150))
     await nextTick()
-
     expect(field.fetchOptions).toHaveBeenCalled()
     expect(wrapper.vm.isLoading).toBe(false)
+  })
+
+  it('Is actual quantity  options', async () => {
+    const wrapper = getMountSelectField(props, {
+      components: {
+        VueSelect: vSelect,
+      },
+    })
+
+    testOn.checkLengthElements({ wrapper, selector: '.vs__dropdown-option', all: true }, field.options.length)
+  })
+
+  it('Check exist button clear by props ', async () => {
+    props.field.clearable = true
+
+    const wrapper = getMountSelectField(props, {
+      components: {
+        VueSelect: vSelect,
+      },
+    })
+
+    /// When model value empty
+    testOn.includePropertyStyle({ wrapper, selector: '.vs__clear' }, { display: 'none' })
+
+    await wrapper.setProps({ modelValue: options[0] })
+
+    /// When model value filled
+    testOn.notIncludePropertyStyle({ wrapper, selector: '.vs__clear' }, { display: 'none' })
+  })
+
+  it('Disable state by props', async () => {
+    const wrapper = getMountSelectField(props, {
+      components: {
+        VueSelect: vSelect,
+      },
+    })
+
+    /// Disabled props false
+    testOn.notExistClasses({ wrapper, selector: '.select-field' }, 'vs--disabled')
+
+    await wrapper.setProps({ disabled: true })
+
+    /// Disabled props true
+    testOn.existClass({ wrapper, selector: '.select-field' }, 'vs--disabled')
   })
 })
