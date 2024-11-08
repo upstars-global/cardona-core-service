@@ -2,6 +2,7 @@
 import { computed, inject, nextTick, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
+import { IconsList } from '../../../@model/enums/icons'
 import store from '../../../store'
 import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
 import { basePermissions } from '../../../helpers/base-permissions'
@@ -192,6 +193,8 @@ const isCreateOrUpdateSeo = computed(
   () => (isCreatePage && canCreateSeo) || (isUpdatePage && canUpdateSeo),
 )
 
+const isReadMode = computed<boolean>(() => isUpdatePage && (canUpdate || canUpdateSeo))
+
 const onSubmit = async (isStay: boolean) => {
   if (!(await validate()) || isExistsEndpointsWithError.value)
     return
@@ -284,66 +287,76 @@ defineExpose({
 </script>
 
 <template>
-  <Form
-    v-if="form"
-    ref="formRef"
-    class="base-section"
-    @submit.prevent
-  >
-    <div class="position-relative">
-      <slot
-        :entity-id="entityId"
-        :entity-name="entityName"
-        :form="form"
-        :can-update="canUpdate"
-        :can-remove="canRemove"
-        :can-view-seo="canViewSeo"
-        :can-create-seo="canCreateSeo"
-        :can-update-seo="canUpdateSeo"
-        :on-click-remove="onClickRemove"
-      />
-      <div
-        v-if="isLoadingPage && pageType"
-        class="position-absolute base-section__loading d-flex"
-      >
-        <VProgressCircular
-          indeterminate
-          class="ma-auto"
-        />
-      </div>
-    </div>
-    <slot
-      v-if="pageType"
-      name="actions"
-      :form="form"
-      :loading="isLoadingPage"
+  <div>
+    <VAlert
+      v-if="isReadMode"
+      :icon="IconsList.EyeIcon"
+      :variant="VVariants.Tonal"
+      class="mb-6 px-4 py-2 font-weight-bolder"
+      :color="VColors.Info"
+      :text="$t('component.baseSection.readModeAlert')"
+    />
+
+    <Form
+      v-if="form"
+      ref="formRef"
+      class="base-section"
+      @submit.prevent
     >
-      <div class="d-flex align-center mt-5">
-        <template v-if="isCreatePage">
-          <VBtn
-            class="mr-4"
-            :color="VColors.Primary"
-            data-testid="create-button"
-            :disabled="isLoadingPage"
-            @click="onSubmit(false)"
-          >
-            {{ $t('action.createAndExit') }}
-          </VBtn>
+      <div class="position-relative">
+        <slot
+          :entity-id="entityId"
+          :entity-name="entityName"
+          :form="form"
+          :can-update="canUpdate"
+          :can-remove="canRemove"
+          :can-view-seo="canViewSeo"
+          :can-create-seo="canCreateSeo"
+          :can-update-seo="canUpdateSeo"
+          :on-click-remove="onClickRemove"
+        />
+        <div
+          v-if="isLoadingPage && pageType"
+          class="position-absolute base-section__loading d-flex"
+        >
+          <VProgressCircular
+            indeterminate
+            class="ma-auto"
+          />
+        </div>
+      </div>
+      <slot
+        v-if="pageType"
+        name="actions"
+        :form="form"
+        :loading="isLoadingPage"
+      >
+        <div class="d-flex align-center mt-5">
+          <template v-if="isCreatePage">
+            <VBtn
+              class="mr-4"
+              :color="VColors.Primary"
+              data-testid="create-button"
+              :disabled="isLoadingPage"
+              @click="onSubmit(false)"
+            >
+              {{ $t('action.createAndExit') }}
+            </VBtn>
+
+            <VBtn
+              class="mr-4"
+              :variant="VVariants.Outlined"
+              :color="VColors.Secondary"
+              data-testid="stay-button"
+              :disabled="isLoadingPage"
+              @click="onSubmit(true)"
+            >
+              {{ $t('action.createAndStay') }}
+            </VBtn>
+          </template>
 
           <VBtn
-            class="mr-4"
-            :variant="VVariants.Outlined"
-            :color="VColors.Secondary"
-            data-testid="stay-button"
-            :disabled="isLoadingPage"
-            @click="onSubmit(true)"
-          >
-            {{ $t('action.createAndStay') }}
-          </VBtn>
-        </template>
-
-        <template v-if="isUpdatePage">
-          <VBtn
+            v-if="isReadMode"
             class="mr-4"
             :color="VColors.Primary"
             data-testid="save-button"
@@ -352,32 +365,32 @@ defineExpose({
           >
             {{ $t('action.save') }}
           </VBtn>
-        </template>
 
-        <VBtn
-          v-if="isExistsListPage"
-          :variant="VVariants.Outlined"
-          :color="VColors.Secondary"
-          data-testid="cancel-button"
-          @click.prevent="onClickCancel"
-        >
-          {{ $t('action.cancel') }}
-        </VBtn>
-      </div>
-    </slot>
+          <VBtn
+            v-if="isExistsListPage"
+            :variant="VVariants.Outlined"
+            :color="VColors.Secondary"
+            data-testid="cancel-button"
+            @click.prevent="onClickCancel"
+          >
+            {{ $t('action.cancel') }}
+          </VBtn>
+        </div>
+      </slot>
 
-    <ConfirmModal
-      v-if="!config?.withoutConfirmModal"
-      :modal-id="ModalsId.ConfirmModal"
-      @on-click-modal-ok="onSave"
-    />
-    <RemoveModal
-      v-if="!config?.withoutDeleteModal"
-      :remove-modal-id="removeModalId"
-      :entity-name="entityName"
-      @on-click-modal-ok="confirmRemoveModal"
-    />
-  </Form>
+      <ConfirmModal
+        v-if="!config?.withoutConfirmModal"
+        :modal-id="ModalsId.ConfirmModal"
+        @on-click-modal-ok="onSave"
+      />
+      <RemoveModal
+        v-if="!config?.withoutDeleteModal"
+        :remove-modal-id="removeModalId"
+        :entity-name="entityName"
+        @on-click-modal-ok="confirmRemoveModal"
+      />
+    </Form>
+  </div>
 </template>
 
 <style lang="scss" scoped>

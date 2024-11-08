@@ -469,6 +469,9 @@
       "allowedCountries": "Allowed countries",
       "placeholder": "Search by Country and Region",
       "description": "If no countries are selected, then all countries are allowed"
+    },
+    "baseSection": {
+      "readModeAlert": "You are currently in reading mode, which means that interactive features are limited. Please contact your administrator for full access."
     }
   },
   "page": {
