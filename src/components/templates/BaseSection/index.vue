@@ -193,7 +193,8 @@ const isCreateOrUpdateSeo = computed(
   () => (isCreatePage && canCreateSeo) || (isUpdatePage && canUpdateSeo),
 )
 
-const isReadMode = computed<boolean>(() => isUpdatePage && (canUpdate || canUpdateSeo))
+const isShowSaveBtn = computed<boolean>(() => isUpdatePage && (canUpdate || canUpdateSeo))
+const isReadMode = computed<boolean>(() => isUpdatePage && !canUpdate && !canUpdateSeo)
 
 const onSubmit = async (isStay: boolean) => {
   if (!(await validate()) || isExistsEndpointsWithError.value)
@@ -356,7 +357,7 @@ defineExpose({
           </template>
 
           <VBtn
-            v-if="isReadMode"
+            v-if="isShowSaveBtn"
             class="mr-4"
             :color="VColors.Primary"
             data-testid="save-button"
