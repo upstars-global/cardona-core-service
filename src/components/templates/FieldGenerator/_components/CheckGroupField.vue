@@ -24,7 +24,7 @@ const localModelValue = computed({
     :key="option.id"
     v-model="localModelValue"
     :value="option.id"
-    :disabled="option.disabled"
+    :disabled="disabled"
     :name="`check-group-field-${field.key}`"
     :label="option.name"
     class="check-fields mt-75 text-color-mute"
@@ -32,9 +32,9 @@ const localModelValue = computed({
 </template>
 
 <style scoped lang="scss">
-  .check-fields {
-    :deep(.v-label) {
-      color: rgba(var(--v-theme-body), var(--v-body-opacity)) !important;
-    }
+.check-fields {
+  :deep(.v-label) {
+    color: rgba(var(--v-theme-body), var(--v-body-opacity)) !important;
   }
+}
 </style>
