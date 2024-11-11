@@ -1,14 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import vSelect from 'vue-select'
 import { nextTick } from 'vue'
 import SelectField from '../../../../src/components/templates/FieldGenerator/_components/SelectField.vue'
-import { setMountComponent } from '../../utils'
 import { SelectBaseField } from '../../../../src/@model/templates/baseField'
 import type { OptionsItem } from '../../../../src/@model'
 import { testOn } from '../shared-tests/test-case-generator'
 import { i18n } from '../../../../src/plugins/i18n'
+import { setMountComponentSelect } from '../shared-tests/select-field'
 
-const getMountSelectField = setMountComponent(SelectField)
+const getMountSelectField = setMountComponentSelect(SelectField)
 
 vi.mock('lodash', async importOriginal => {
   const actual = await importOriginal()
@@ -55,11 +54,7 @@ describe('SelectField', () => {
   it('Check placeholder states default and filled ', async () => {
     const installedPlaceholderParam = { placeholder: i18n.t('placeholder.choose.group') }
 
-    const wrapper = getMountSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountSelectField(props)
 
     /// Default placeholder check
     testOn.isEqualPlaceholder({ wrapper, selector: 'input' }, i18n.t('placeholder.choose._'))
@@ -71,11 +66,7 @@ describe('SelectField', () => {
   })
 
   it('Check loading on fetch ', async () => {
-    const wrapper = getMountSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountSelectField(props)
 
     await wrapper.setProps({ fetchOptions: vi.fn().mockResolvedValue(options) })
   })
@@ -84,10 +75,6 @@ describe('SelectField', () => {
     const wrapper = getMountSelectField({
       ...props,
       fetchOptions: async () => options,
-    }, {
-      components: {
-        VueSelect: vSelect,
-      },
     })
 
     const searchQuery = options[0].name
@@ -107,11 +94,7 @@ describe('SelectField', () => {
   })
 
   it('Check loading state input', async () => {
-    const wrapper = getMountSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountSelectField(props)
 
     expect(wrapper.find('.vs__spinner').element.style.display).toBe('none')
 
@@ -122,11 +105,7 @@ describe('SelectField', () => {
   })
 
   it('Check immediate fetch on empty options', async () => {
-    const wrapper = getMountSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountSelectField(props)
 
     expect(wrapper.vm.isLoading).toBe(false)
 
@@ -149,11 +128,7 @@ describe('SelectField', () => {
   })
 
   it('Is actual quantity  options', async () => {
-    const wrapper = getMountSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountSelectField(props)
 
     testOn.checkLengthElements({ wrapper, selector: '.vs__dropdown-option', all: true }, field.options.length)
   })
@@ -161,11 +136,7 @@ describe('SelectField', () => {
   it('Check exist button clear by props ', async () => {
     props.field.clearable = true
 
-    const wrapper = getMountSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountSelectField(props)
 
     /// When model value empty
     testOn.includePropertyStyle({ wrapper, selector: '.vs__clear' }, { display: 'none' })
@@ -177,11 +148,7 @@ describe('SelectField', () => {
   })
 
   it('Disable state by props', async () => {
-    const wrapper = getMountSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountSelectField(props)
 
     /// Disabled props false
     testOn.notExistClasses({ wrapper, selector: '.select-field' }, 'vs--disabled')

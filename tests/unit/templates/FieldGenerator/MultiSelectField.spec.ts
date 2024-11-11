@@ -2,14 +2,15 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import vSelect from 'vue-select'
 import { nextTick } from 'vue'
 import MultiSelectField from '../../../../src/components/templates/FieldGenerator/_components/MultiSelectField.vue'
-import { clickTrigger, setMountComponent } from '../../utils'
+import { clickTrigger } from '../../utils'
 import { SelectBaseField } from '../../../../src/@model/templates/baseField'
 import type { OptionsItem } from '../../../../src/@model'
 import { testOn } from '../shared-tests/test-case-generator'
 import { i18n } from '../../../../src/plugins/i18n'
 import { expectedEmitValue } from '../shared-tests/general'
+import {setMountComponentSelect} from "../shared-tests/select-field";
 
-const getMountMultiSelectField = setMountComponent(MultiSelectField)
+const getMountMultiSelectField = setMountComponentSelect(MultiSelectField)
 
 vi.mock('lodash', async importOriginal => {
   const actual = await importOriginal()
@@ -56,11 +57,7 @@ describe('MultiSelectField', () => {
   it('Check placeholder states default and filled ', async () => {
     const installedPlaceholderParam = { placeholder: i18n.t('placeholder.choose.group') }
 
-    const wrapper = getMountMultiSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountMultiSelectField(props)
 
     /// Default placeholder check
     testOn.isEqualPlaceholder({ wrapper, selector: 'input' }, i18n.t('placeholder.choose._'))
@@ -72,11 +69,7 @@ describe('MultiSelectField', () => {
   })
 
   it('Check loading on fetch ', async () => {
-    const wrapper = getMountMultiSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountMultiSelectField(props)
 
     await wrapper.setProps({ fetchOptions: vi.fn().mockResolvedValue(options) })
   })
@@ -85,10 +78,6 @@ describe('MultiSelectField', () => {
     const wrapper = getMountMultiSelectField({
       ...props,
       fetchOptions: async () => options,
-    }, {
-      components: {
-        VueSelect: vSelect,
-      },
     })
 
     const searchQuery = options[0].name
@@ -108,11 +97,7 @@ describe('MultiSelectField', () => {
   })
 
   it('Check loading state input', async () => {
-    const wrapper = getMountMultiSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountMultiSelectField(props)
 
     expect(wrapper.find('.vs__spinner').element.style.display).toBe('none')
 
@@ -123,11 +108,7 @@ describe('MultiSelectField', () => {
   })
 
   it('Check immediate fetch on empty options', async () => {
-    const wrapper = getMountMultiSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountMultiSelectField(props)
 
     expect(wrapper.vm.isLoading).toBe(false)
 
@@ -150,11 +131,7 @@ describe('MultiSelectField', () => {
   })
 
   it('Is actual quantity  options', async () => {
-    const wrapper = getMountMultiSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountMultiSelectField(props)
 
     testOn.checkLengthElements({ wrapper, selector: '.vs__dropdown-option', all: true }, field.options.length)
   })
@@ -162,11 +139,7 @@ describe('MultiSelectField', () => {
   it('Select and unselect option item ', async () => {
     props.modelValue = [options[0], options[1]]
 
-    const wrapper = getMountMultiSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountMultiSelectField(props)
 
     /// Deselect option item
     await clickTrigger({ wrapper, selector: '.vs__deselect' })
@@ -191,11 +164,7 @@ describe('MultiSelectField', () => {
   })
 
   it('Disable state by props', async () => {
-    const wrapper = getMountMultiSelectField(props, {
-      components: {
-        VueSelect: vSelect,
-      },
-    })
+    const wrapper = getMountMultiSelectField(props)
 
     /// Disabled props false
     testOn.notExistClasses({ wrapper, selector: '.vs--multiple' }, 'vs--disabled')
