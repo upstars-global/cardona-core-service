@@ -96,6 +96,7 @@ const pickerOpts = {
       <VBtn
         :variant="VVariants.Outlined"
         :size="VSizes.Small"
+        :disabled="disabled"
         @click="open(pickerOpts)"
       >
         <VIcon
