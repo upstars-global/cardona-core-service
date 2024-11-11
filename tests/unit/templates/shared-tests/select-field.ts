@@ -84,7 +84,7 @@ export const checkImmediateFetchOnEmptyOptions = async (wrapper: VueWrapper, { o
       ...field,
       options: null,
       fetchOptions: async () =>
-        new Promise(resolve => setTimeout(() => resolve(options), 100)), // Задержка 1 сек
+        new Promise(resolve => setTimeout(() => resolve(options), 100)),
     },
   })
 

@@ -40,7 +40,7 @@ describe('SelectField', () => {
     await checkPlaceholderStatesAndFilter(getMountSelectField(props))
   })
 
-  it('Option search actions', async () => {
+  it('Call action fetch options on update search input', async () => {
     const wrapper = getMountSelectField({
       ...props,
       fetchOptions: async () => options,
@@ -61,7 +61,7 @@ describe('SelectField', () => {
     await checkImmediateFetchOnEmptyOptions(wrapper, { options, field })
   })
 
-  it('Is actual quantity  options', async () => {
+  it('Check valid options length', async () => {
     const wrapper = getMountSelectField(props)
 
     checkOptionsLength(wrapper, field)

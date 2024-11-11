@@ -44,7 +44,7 @@ describe('MultiSelectField', () => {
     await checkPlaceholderStatesAndFilter(getMountMultiSelectField(props))
   })
 
-  it('Option search options actions', async () => {
+  it('Call action fetch options on update search input ', async () => {
     const wrapper = getMountMultiSelectField({
       ...props,
       fetchOptions: async () => options,
@@ -65,7 +65,7 @@ describe('MultiSelectField', () => {
     await checkImmediateFetchOnEmptyOptions(wrapper, { options, field })
   })
 
-  it('Is actual quantity  options', async () => {
+  it('Check valid options length', async () => {
     const wrapper = getMountMultiSelectField(props)
 
     checkOptionsLength(wrapper, field)
@@ -76,7 +76,7 @@ describe('MultiSelectField', () => {
 
     const wrapper = getMountMultiSelectField(props)
 
-    /// Deselect option item
+    /// Click for deselect option item
     await clickTrigger({ wrapper, selector: '.vs__deselect' })
 
     expectedEmitValue(wrapper, [options[1]])
@@ -84,17 +84,17 @@ describe('MultiSelectField', () => {
 
     await nextTick()
 
-    /// Check actual selected elements
+    /// Test on valid selected options
     testOn.checkLengthElements({ wrapper, selector: '.vs__selected', all: true }, 1)
     testOn.existTextValue({ wrapper, selector: '.vs__selected' }, options[1].name)
 
-    /// Select option item
+    /// Select fist option item
     await clickTrigger({ wrapper, selector: '.vs__dropdown-option' })
 
-    /// Set emitted value
+    /// Update model value
     await wrapper.setProps({ ...props, modelValue: [options[2]] })
 
-    /// Check actual selected elements
+    ///  Test on valid selected options
     expectedEmitValue(wrapper, [options[1], options[0]], 1)
   })
 
