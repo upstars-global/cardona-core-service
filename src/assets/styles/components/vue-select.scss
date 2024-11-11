@@ -45,6 +45,9 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
   margin-top: 0;
 }
 .vs--disabled {
+  .vs__clear {
+    opacity: 0;
+  }
   .vs__open-indicator {
     background-color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
   }
