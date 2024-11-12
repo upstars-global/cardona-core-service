@@ -49,15 +49,6 @@ describe('CheckFieldGroup.vue', () => {
     })
   })
 
-  // it('Renders is valid render of disabled state', () => {
-  //   const wrapper = getMountCheckGroupField({
-  //     ...defaultProps,
-  //     field: {
-  //       ...defaultProps.field,
-  //       options: options.map(option => ({ ...option, disabled: true })),
-  //     },
-  //   })
-
     const inputs = getWrapperElement({ wrapper, selector: selectorInput, all: true }) as Array<VueWrapper>
 
     Array.from(inputs).forEach(input => {
