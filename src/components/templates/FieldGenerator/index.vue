@@ -14,8 +14,8 @@ const props = withDefaults(defineProps<{
   withLabel?: boolean
   withInfo?: boolean
   disabled?: boolean
-  size?: string // TODO: refactor sizes,
-
+  size?: string // TODO: refactor sizes
+  validateOnSubmit?: boolean
 }>(),
 {
   withLabel: true,
@@ -109,7 +109,7 @@ const canUpdate = computed<boolean>(() =>
       :validate-on-blur="false"
       :validate-on-change="false"
       :validate-on-input="false"
-      validate-on-model-update
+      :validate-on-model-update="!validateOnSubmit"
     >
       <template #default="{ errorMessage }">
         <div :class="{ 'd-flex align-center': isCheckTypeWithInfo }">
