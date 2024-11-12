@@ -9,7 +9,7 @@ import {
   checkImmediateFetchOnEmptyOptions,
   checkLoadingStateInput,
   checkOptionSearchActions, checkOptionsLength,
-  checkPlaceholderStatesAndFilter, defaultPropsSelect, field,
+  checkPlaceholderStatesAndFilter, defaultPropsSelect, field, openDropDownMenuOfSelector,
   options,
   setMountComponentSelect,
 } from '../shared-tests/select-field'
@@ -68,13 +68,15 @@ describe('MultiSelectField', () => {
   it('Check valid options length', async () => {
     const wrapper = getMountMultiSelectField(props)
 
-    checkOptionsLength(wrapper, field)
+    await checkOptionsLength(wrapper, field)
   })
 
   it('Select and unselect option item ', async () => {
     props.modelValue = [options[0], options[1]]
 
     const wrapper = getMountMultiSelectField(props)
+
+    await openDropDownMenuOfSelector(wrapper)
 
     /// Click for deselect option item
     await clickTrigger({ wrapper, selector: '.vs__deselect' })

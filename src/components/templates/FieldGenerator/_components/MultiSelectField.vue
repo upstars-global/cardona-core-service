@@ -83,13 +83,6 @@ const onSearch = debounce(async (search: string, loading: Function) => {
     loading(false)
   }
 }, 250)
-
-const dropdownShouldOpen = ({ noDrop, open, mutableLoading }) => {
-  if (process.env.NODE_ENV === 'test')
-    return () => true
-
-  return noDrop ? false : open && !mutableLoading
-}
 </script>
 
 <template>
@@ -105,7 +98,6 @@ const dropdownShouldOpen = ({ noDrop, open, mutableLoading }) => {
       :disabled="disabled"
       :append-to-body="field.appendToBody"
       :calculate-position="withPopper(field.calculatePositionCb)"
-      :dropdown-should-open="dropdownShouldOpen"
       @search="onSearch"
     >
       <template #no-options="{ loading, search }">

@@ -30,6 +30,10 @@ export const setMountComponentSelect = (component: Component) => (props: unknown
   },
 })
 
+export const openDropDownMenuOfSelector = async (wrapper: VueWrapper) => {
+  await wrapper.find('.vs__dropdown-toggle').trigger('mousedown')
+}
+
 export const defaultPropsSelect = {
   modelValue: null,
   field,
@@ -61,6 +65,8 @@ export const checkOptionSearchActions = async (wrapper: VueWrapper, { options, f
 
   /// Check call fetch cation
   expect(field.fetchOptions).toHaveBeenCalledWith(searchQuery)
+
+  await openDropDownMenuOfSelector(wrapper)
 
   /// Check filtered of options by search value
   testOn.checkLengthElements({ wrapper, selector: '.vs__dropdown-option', all: true }, 1)
@@ -97,7 +103,8 @@ export const checkImmediateFetchOnEmptyOptions = async (wrapper: VueWrapper, { o
   expect(wrapper.vm.isLoading).toBe(false)
 }
 
-export const checkOptionsLength = (wrapper: VueWrapper, field: SelectField) => {
+export const checkOptionsLength = async (wrapper: VueWrapper, field: SelectField) => {
+  await openDropDownMenuOfSelector(wrapper)
   testOn.checkLengthElements({ wrapper, selector: '.vs__dropdown-option', all: true }, field.options.length)
 }
 
