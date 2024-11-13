@@ -155,7 +155,7 @@ const listNotSelected = computed(() => {
                 class="d-flex align-center"
               >
                 <p
-                  class="text-h6 text-button mb-0 font-weight-medium"
+                  class="text-h6 text-button mb-0 font-weight-medium filter-label"
                   :class="{ 'font-small-3': isSmallBlock }"
                 >
                   {{ filter.label }}
@@ -277,5 +277,9 @@ const listNotSelected = computed(() => {
       }
     }
   }
+}
+
+.filter-label {
+  text-transform: none !important;
 }
 </style>
