@@ -180,6 +180,7 @@ const routerToUpdatePageId = item => {
 
 // Table
 const items = ref([])
+const isInitialState = ref(true)
 
 watch(
   () => items.value,
@@ -193,6 +194,8 @@ watch(
 const selectedFields = ref<TableField[]>([...fields])
 
 const isLoadingList = computed(() => {
+  if (isInitialState.value)
+    return true
   const indexSymbolNextDash = entityName.indexOf('-') + 1
 
   const entityNameForLoad = entityName.replace(
@@ -585,6 +588,7 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
 
 onBeforeMount(async () => {
   await getList()
+  isInitialState.value = false
 })
 
 onUnmounted(() => {
