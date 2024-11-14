@@ -19,8 +19,6 @@ const emits = defineEmits<{
   (e: 'update:modelValue', string: NumberOrString): void
 }>()
 
-const attrs = useAttrs()
-
 const getPositiveNumbers = (value: NumberOrString): NumberOrString =>
   props.field.withPositiveNumbers ? toPositiveNumbers(value) : value
 
