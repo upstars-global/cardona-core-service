@@ -172,7 +172,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
 }
 
 .selected-option-value {
-  color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+  color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
 }
 
 // Tag/Multi Select
@@ -385,6 +385,10 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
     .vs__open-indicator {
       background-color: rgb(var(--v-theme-primary));
       opacity: 0.5;
+    }
+
+    .selected-option-value {
+      color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
     }
   }
 }
