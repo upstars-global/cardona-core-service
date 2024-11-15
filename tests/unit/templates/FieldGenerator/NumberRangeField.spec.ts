@@ -1,4 +1,5 @@
 import { beforeEach, describe, it } from 'vitest'
+import { mapValues } from 'lodash'
 import { setMountComponentSelect } from '../shared-tests/select-field'
 import NumberRangeField from '../../../../src/components/templates/FieldGenerator/_components/NumberRangeField.vue'
 import { getWrapperElement } from '../../utils'
@@ -7,8 +8,6 @@ import {
   testDefaultStateErrorAndDisabled, testOnUpdatedValue,
   testRenderContentItems,
 } from '../shared-tests/number-field'
-import { expectedEmitValue } from '../shared-tests/general'
-import { testOn } from '../shared-tests/test-case-generator'
 
 const getMountNumberRangeField = setMountComponentSelect(NumberRangeField)
 
@@ -49,39 +48,32 @@ describe('NumberRangeField', () => {
   })
 
   it('Is working update model value ', async () => {
+    const valueToSet = { from: '11', to: '22' }
+
     const wrapper = getMountNumberRangeField(props)
-    const testValue = { from: 10, to: 12 }
 
-    await wrapper.setValue(testValue)
-    expectedEmitValue(wrapper, testValue)
-
-    await wrapper.setProps({ modelValue: testValue })
-    inputRangeTestIds.map(key => {
-      const wrapperInput = getWrapperElement({ wrapper, testId: key })
-
-      testOn.inputAttributeValueToBe({ wrapper: wrapperInput, selector: 'input' }, testValue[key].toString())
-    })
+    await testOnUpdatedValue(wrapper, { valueToSet, expectedValue: valueToSet })
   })
 
   it('Check on only integer numbers ', async () => {
     props.field.isIntegerNumbers = true
 
-    const initialValue = '123.12'
-    const updatedValue = initialValue.replace('.', '')
+    const valueToSet = { from: '11.11', to: '22.22' }
+    const expectedValue = mapValues(valueToSet, value => value.replace('.', ''))
 
     const wrapper = getMountNumberRangeField(props)
 
-    await testOnUpdatedValue(wrapper, { initialValue, updatedValue })
+    await testOnUpdatedValue(wrapper, { valueToSet, expectedValue })
   })
 
   it('Check on only positive numbers ', async () => {
     props.field.withPositiveNumbers = true
 
-    const initialValue = '-123'
-    const updatedValue = initialValue.replace('-', '')
+    const valueToSet = { from: '-11', to: '-22' }
+    const expectedValue = mapValues(valueToSet, value => value.replace('-', ''))
 
     const wrapper = getMountNumberRangeField(props)
 
-    await testOnUpdatedValue(wrapper, { initialValue, updatedValue })
+    await testOnUpdatedValue(wrapper, { valueToSet, expectedValue })
   })
 })

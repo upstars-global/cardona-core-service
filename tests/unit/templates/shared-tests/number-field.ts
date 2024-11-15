@@ -19,21 +19,21 @@ export const testRenderContentItems = async (wrapper: VueWrapper, { placeholder,
   testOn.equalTextValue({ wrapper, selector: '.v-text-field__suffix__text' }, props.field.append)
 }
 
-export const testOnUpdatedValue = async (wrapper: VueWrapper, { initialValue, updatedValue }) => {
+export const testOnUpdatedValue = async (wrapper: VueWrapper, { valueToSet, expectedValue }) => {
   const getInput = (testId: string) => wrapper.find(getSelectorTestId(testId)).find('input')
 
   const from = getInput('from')
   const to = getInput('to')
 
   /// Update input value for input from
-  await from.setValue(initialValue)
+  await from.setValue(valueToSet['from'])
 
   /// Update props with saving state input from
   await wrapper.setProps({ modelValue: wrapper.emitted()['update:modelValue'][0][0] })
 
   /// Update input value for input to
-  await to.setValue(initialValue)
+  await to.setValue(valueToSet['to'])
 
   /// Check on expected  value
-  expectedEmitValue(wrapper, { from: updatedValue, to: updatedValue }, 1)
+  expectedEmitValue(wrapper, expectedValue, 1)
 }
