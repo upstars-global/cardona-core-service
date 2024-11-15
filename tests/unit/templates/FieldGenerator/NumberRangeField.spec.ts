@@ -4,6 +4,7 @@ import { setMountComponentSelect } from '../shared-tests/select-field'
 import NumberRangeField from '../../../../src/components/templates/FieldGenerator/_components/NumberRangeField.vue'
 import { getWrapperElement } from '../../utils'
 import {
+  removeDot, removeMinus,
   testActiveErrorAndDisabled,
   testDefaultStateErrorAndDisabled, testOnUpdatedValue,
   testRenderContentItems,
@@ -34,9 +35,9 @@ describe('NumberRangeField', () => {
     const wrapper = getMountNumberRangeField(props)
     const inputsRange = inputRangeTestIds.map(testId => getWrapperElement({ wrapper, testId }))
 
-    await testRenderContentItems(inputsRange[0], { props, placeholder: `${field.placeholder} From` })
+    testRenderContentItems(inputsRange[0], {props, placeholder: `${field.placeholder} From`})
 
-    await testRenderContentItems(inputsRange[1], { props, placeholder: `${field.placeholder} To` })
+    testRenderContentItems(inputsRange[1], {props, placeholder: `${field.placeholder} To`})
 
     /// Checking inputs with default states error and disabled
     inputsRange.forEach(testDefaultStateErrorAndDisabled)
@@ -59,7 +60,7 @@ describe('NumberRangeField', () => {
     props.field.isIntegerNumbers = true
 
     const valueToSet = { from: '11.11', to: '22.22' }
-    const expectedValue = mapValues(valueToSet, value => value.replace('.', ''))
+    const expectedValue = mapValues(valueToSet, removeDot)
 
     const wrapper = getMountNumberRangeField(props)
 
@@ -70,7 +71,7 @@ describe('NumberRangeField', () => {
     props.field.withPositiveNumbers = true
 
     const valueToSet = { from: '-11', to: '-22' }
-    const expectedValue = mapValues(valueToSet, value => value.replace('-', ''))
+    const expectedValue = mapValues(valueToSet, removeMinus)
 
     const wrapper = getMountNumberRangeField(props)
 

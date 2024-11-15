@@ -2,8 +2,14 @@ import { beforeEach, describe, it } from 'vitest'
 import NumberField from '../../../../src/components/templates/FieldGenerator/_components/NumberField.vue'
 import { setMountComponentSelect } from '../shared-tests/select-field'
 import { testOn } from '../shared-tests/test-case-generator'
-import { IconsList } from '../../../../src/@model/enums/icons'
 import { expectedEmitValue } from '../shared-tests/general'
+import {
+  removeDot,
+  removeMinus,
+  testActiveErrorAndDisabled,
+  testDefaultStateErrorAndDisabled,
+  testRenderContentItems,
+} from '../shared-tests/number-field'
 
 const getMountNumberField = setMountComponentSelect(NumberField)
 
@@ -28,26 +34,20 @@ describe('NumberField', () => {
   it('Check render content items ', async () => {
     const wrapper = getMountNumberField(props)
 
-    testOn.isEqualPlaceholder({ wrapper, selector: 'input' }, props.field.placeholder)
-    testOn.equalTextValue({ wrapper, selector: '.v-text-field__suffix__text' }, props.field.append)
+    testRenderContentItems(wrapper, { props, placeholder: field.placeholder })
 
-    testOn.notExistClasses({ wrapper, selector: '.v-field' }, 'v-field--disabled')
-    testOn.notExistElement({ wrapper, selector: '.v-field__append-inner i' })
-
-    // Make input disabled and with error
+    testDefaultStateErrorAndDisabled(wrapper)
 
     await wrapper.setProps({
       disabled: true,
       errors: true,
     })
 
-    // Check render elements with updated props
-    testOn.existClass({ wrapper, selector: '.v-field' }, 'v-field--disabled')
-    testOn.existClass({ wrapper, selector: '.v-field__append-inner i' }, IconsList.InfoIcon)
+    testActiveErrorAndDisabled(wrapper)
   })
 
   it('Is working update model value ', async () => {
-    const testValue = 123
+    const testValue = '123'
     const wrapper = getMountNumberField(props)
 
     await wrapper.setValue(testValue)
@@ -56,7 +56,7 @@ describe('NumberField', () => {
 
     await wrapper.setProps({ modelValue: testValue })
 
-    testOn.inputAttributeValueToBe({ wrapper, selector: 'input' }, testValue.toString())
+    testOn.inputAttributeValueToBe({ wrapper, selector: 'input' }, testValue)
   })
 
   it('Check on only integer numbers ', async () => {
@@ -67,7 +67,7 @@ describe('NumberField', () => {
     const wrapper = getMountNumberField(props)
 
     await wrapper.find('input').setValue(testValue)
-    expectedEmitValue(wrapper, testValue.replace('.', ''))
+    expectedEmitValue(wrapper, removeDot(testValue))
   })
 
   it('Check on only positive numbers ', async () => {
@@ -78,6 +78,6 @@ describe('NumberField', () => {
     const wrapper = getMountNumberField(props)
 
     await wrapper.find('input').setValue(testValue)
-    expectedEmitValue(wrapper, testValue.replace('-', ''))
+    expectedEmitValue(wrapper, removeMinus(testValue))
   })
 })

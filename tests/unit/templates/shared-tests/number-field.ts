@@ -4,6 +4,9 @@ import { getSelectorTestId } from '../../utils'
 import { expectedEmitValue } from './general'
 import { testOn } from './test-case-generator'
 
+export const removeMinus = (value: string): string => value.replace('-', '')
+export const removeDot = (value: string): string => value.replace('.', '')
+
 export const testActiveErrorAndDisabled = (wrapper: VueWrapper) => {
   testOn.existClass({ wrapper, selector: '.v-field' }, 'v-field--disabled')
   testOn.existClass({ wrapper, selector: '.v-field__append-inner i' }, IconsList.InfoIcon)
@@ -14,7 +17,7 @@ export const testDefaultStateErrorAndDisabled = (wrapper: VueWrapper) => {
   testOn.notExistElement({ wrapper, selector: '.v-field__append-inner i' })
 }
 
-export const testRenderContentItems = async (wrapper: VueWrapper, { placeholder, props }) => {
+export const testRenderContentItems = (wrapper: VueWrapper, { placeholder, props }) => {
   testOn.isEqualPlaceholder({ wrapper, selector: 'input' }, placeholder)
   testOn.equalTextValue({ wrapper, selector: '.v-text-field__suffix__text' }, props.field.append)
 }
