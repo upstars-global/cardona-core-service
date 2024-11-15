@@ -308,13 +308,6 @@ const mockUploadFile = async () => {
           <VRow class="mt-1">
             <VCol cols="4">
               <FieldGenerator
-                v-model="formData.dateBtn"
-                :disabled="isDisabledField"
-              />
-            </VCol>
-
-            <VCol cols="4">
-              <FieldGenerator
                 v-model="formData.time"
                 :disabled="isDisabledField"
               />

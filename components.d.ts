@@ -411,7 +411,6 @@ declare module 'vue' {
     FilesUpload: typeof import('./src/components/FilesUpload/FilesUpload.vue')['default']
     FiltersBlock: typeof import('./src/components/FiltersBlock/index.vue')['default']
     FilterSelector: typeof import('./src/components/FiltersBlock/_components/FilterSelector.vue')['default']
-    FormDateField: typeof import('./src/components/templates/FieldGenerator/_components/FormDateField.vue')['default']
     GridView: typeof import('./src/components/UploadImage/GridView.vue')['default']
     GroupFragmentSettings: typeof import('./src/components/permitionsForm/GroupFragmentSettings.vue')['default']
     GroupFragmentSettingsTable: typeof import('./src/components/permitionsForm/GroupFragmentSettingsTable.vue')['default']
