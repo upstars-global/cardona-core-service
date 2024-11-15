@@ -60,6 +60,7 @@ const placeHolderRange = computed(() => ({
       :disabled="disabled"
       :errors="errors"
       class="number-base-field__item"
+      data-test-id="from"
     />
 
     <span class="mx-1"> – </span>
@@ -71,6 +72,7 @@ const placeHolderRange = computed(() => ({
       :disabled="disabled"
       :errors="errors"
       class="number-base-field__item"
+      data-test-id="to"
     />
   </div>
 </template>
