@@ -1,5 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { IconsList } from '../../../../src/@model/enums/icons'
+import { getSelectorTestId } from '../../utils'
 import { expectedEmitValue } from './general'
 import { testOn } from './test-case-generator'
 
@@ -18,22 +19,21 @@ export const testRenderContentItems = async (wrapper: VueWrapper, { placeholder,
   testOn.equalTextValue({ wrapper, selector: '.v-text-field__suffix__text' }, props.field.append)
 }
 
-export const testUpdateModelValue = async (wrapper, testValue) => {
-  await wrapper.setValue(testValue)
-  expectedEmitValue(wrapper, testValue)
+export const testOnUpdatedValue = async (wrapper: VueWrapper, { initialValue, updatedValue }) => {
+  const getInput = (testId: string) => wrapper.find(getSelectorTestId(testId)).find('input')
 
-  await wrapper.setProps({ modelValue: testValue })
-  testOn.inputAttributeValueToBe({ wrapper, selector: 'input' }, testValue)
-}
+  const from = getInput('from')
+  const to = getInput('to')
 
-export const testOnlyIntegerNumbers = (wrapper: VueWrapper, testValue: string) => {
-  // await wrapper.find('input').setValue(testValue)
-  expectedEmitValue(wrapper, testValue.replace('.', ''))
-}
+  /// Update input value for input from
+  await from.setValue(initialValue)
 
-export const testOnlyPositiveNumbers = async (wrapper: VueWrapper) => {
-  const testValue = '-123'
+  /// Update props with saving state input from
+  await wrapper.setProps({ modelValue: wrapper.emitted()['update:modelValue'][0][0] })
 
-  await wrapper.find('input').setValue(testValue)
-  expectedEmitValue(wrapper, testValue.replace('-', ''))
+  /// Update input value for input to
+  await to.setValue(initialValue)
+
+  /// Check on expected  value
+  expectedEmitValue(wrapper, { from: updatedValue, to: updatedValue }, 1)
 }
