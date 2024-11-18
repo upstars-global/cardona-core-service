@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { createStore } from 'vuex'
 import type { UseEntityType } from '../../../../src/components/templates/BaseSection/index.vue'
 import BaseSection from '../../../../src/components/templates/BaseSection/index.vue'
 import { BaseSectionConfig } from '../../../../src/@model/templates/baseList'
@@ -11,22 +10,10 @@ import { mockModal } from '../../mocks/modal-provide-config'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { getSelectorTestId } from '../../utils'
 
-const mockStore = createStore({
-  getters: {
-    isLoadingEndpoint: vi.fn(() => false),
-    isErrorEndpoint: vi.fn(() => false),
-  },
-  actions: {
-    readEntity: vi.fn(() =>
-      Promise.resolve({
-        id: '123',
-        name: 'Test Entity',
-      }),
-    ),
-  },
-})
+vi.mock('path/to/generateEntityUrl', () => ({
+  generateEntityUrl: vi.fn(() => '/mock-entity-url'),
+}))
 
-// Mock vue-router
 vi.mock('vue-router', async importOriginal => {
   const actual = await importOriginal()
 
@@ -47,7 +34,6 @@ const mountComponent = (props = {}, global = {}) =>
   mount(BaseSection, {
     props,
     global: {
-      plugins: [mockStore],
       stubs: {
         VBtn: { template: '<button><slot /></button>' },
         VProgressCircular: { template: '<div class="progress"></div>' },
@@ -119,5 +105,38 @@ describe('BaseSection.vue', () => {
 
     await wrapper.find(getSelectorTestId('stay-button')).trigger('click')
     expect(onSubmitMock).toHaveBeenCalledWith(true)
+  })
+
+  it('triggers remove modal on remove button click', async () => {
+    const wrapper = mountComponent({
+      pageType: PageType.Update,
+      useEntity: useMockForm,
+      config: sectionConfig,
+    })
+
+    const modalSpy = vi.spyOn(mockModal, 'showModal')
+
+    await wrapper.vm.onClickRemove()
+
+    expect(modalSpy).toHaveBeenCalledWith('form-item-remove-modal')
+  })
+  it('validates form and handles errors correctly', async () => {
+    const wrapper = mountComponent({
+      pageType: PageType.Update,
+      useEntity: useMockForm,
+      config: sectionConfig,
+    })
+
+    const formRefMock = {
+      validate: vi.fn(() => Promise.resolve({ valid: false })),
+      getErrors: vi.fn(() => ({ isActive: { isNotEmpty: true } })),
+    }
+
+    wrapper.vm.formRef = formRefMock
+
+    const validateResult = await wrapper.vm.validate()
+
+    expect(validateResult).toBe(false)
+    expect(formRefMock.validate).toHaveBeenCalled()
   })
 })

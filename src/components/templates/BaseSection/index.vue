@@ -312,6 +312,7 @@ defineExpose({
       <div
         v-if="isLoadingPage && pageType"
         class="position-absolute base-section__loading d-flex"
+        data-test-id="loading"
       >
         <VProgressCircular
           indeterminate
