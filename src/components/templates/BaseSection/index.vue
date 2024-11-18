@@ -294,6 +294,7 @@ defineExpose({
     v-if="form"
     ref="formRef"
     class="base-section"
+    data-test-id="base-section"
     @submit.prevent
   >
     <div class="position-relative">
