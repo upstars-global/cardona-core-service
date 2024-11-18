@@ -111,111 +111,147 @@ vi.mock('froala-editor', () => ({
 }))
 
 describe('TextEditorWysiwyg.vue', () => {
-  it('Renders correctly and initializes Froala', async () => {
-    const wrapper = mountTextEditor(
-      defaultProps,
-      defaultGlobalConfig,
-    )
+  describe('TextEditorWysiwyg.vue', () => {
+    it('Renders correctly and initializes Froala', async () => {
+      const wrapper = mountTextEditor(
+        defaultProps,
+        defaultGlobalConfig,
+      )
 
-    expect(wrapper.exists()).toBe(true)
-    expect(FroalaEditor.DefineIcon).toHaveBeenCalled()
-    expect(FroalaEditor.RegisterCommand).toHaveBeenCalled()
-    await wrapper.setProps({ modelValue: '{{Test}}' })
-    console.log(wrapper.html())
-  })
+      // Check if the component exists in the DOM
+      expect(wrapper.exists()).toBe(true)
 
-  it('Handles variable updates correctly', async () => {
-    const wrapper = mountTextEditor(
-      defaultProps,
-      defaultGlobalConfig,
-    )
+      // Verify if Froala methods are called during initialization
+      expect(FroalaEditor.DefineIcon).toHaveBeenCalled()
+      expect(FroalaEditor.RegisterCommand).toHaveBeenCalled()
 
-    await wrapper.setProps({ localisationParameters: { var1: 'UpdatedValue1' } })
-    expect(mockDispatch).toHaveBeenCalledWith(expect.anything(), { var1: 'UpdatedValue1' })
-  })
-
-  it('Calls modal to insert image', async () => {
-    const wrapper = mountTextEditor(
-      defaultProps,
-      defaultGlobalConfig,
-    )
-
-    wrapper.vm.globalEditor = {
-      image: {
-        insert: vi.fn(),
-        hideProgressBar: vi.fn(),
-      },
-    }
-
-    wrapper.vm.insertImages({ publicPath: '/path/to/image.jpg', fileName: 'image.jpg' })
-
-    await nextTick()
-
-    expect(mockModal.hideModal).toHaveBeenCalledWith('gallery-modal')
-    expect(wrapper.vm.globalEditor.image.insert).toHaveBeenCalledWith(
-      '/path/to/image.jpg',
-      true,
-      { name: 'image.jpg', id: 'image.jpg' },
-      '',
-      { link: '/path/to/image.jpg' },
-    )
-    expect(wrapper.vm.globalEditor.image.hideProgressBar).toHaveBeenCalledWith(true)
-  })
-
-  it('Handles variable key selection for editing', async () => {
-    const wrapper = mountTextEditor(
-      defaultProps,
-      defaultGlobalConfig,
-    )
-
-    wrapper.vm.setVariableKeySelect('var1')
-
-    expect(wrapper.vm.variableKeySelect).toBe('var1')
-
-    await nextTick()
-    expect(mockModal.showModal).toHaveBeenCalledWith('variable-modal')
-  })
-
-  it('Disables editing when disabled prop is true', async () => {
-    const wrapper = mountTextEditor(
-      { ...defaultProps, disabled: true },
-      defaultGlobalConfig,
-    )
-
-    wrapper.vm.globalEditor = {
-      edit: { off: vi.fn() },
-    }
-    wrapper.vm.config.events.initialized.call(wrapper.vm.globalEditor)
-
-    await nextTick()
-
-    expect(wrapper.vm.globalEditor).toBeDefined()
-    expect(wrapper.vm.globalEditor.edit.off).toHaveBeenCalled()
-    expect(wrapper.find('.editor-wrap').classes()).toContain('disabled')
-  })
-
-  it('Emits update:modelValue when content changes', async () => {
-    const wrapper = mountTextEditor(
-      defaultProps,
-      defaultGlobalConfig,
-    )
-
-    const newContent = '<p>Updated content</p>'
-
-    const contentChangedEvent = wrapper.vm.config.events.contentChanged
-
-    contentChangedEvent.call({
-      html: {
-        get: () => newContent,
-      },
+      // Update props and log the output for debugging
+      await wrapper.setProps({ modelValue: '{{Test}}' })
+      console.log(wrapper.html())
     })
 
-    await nextTick()
+    it('Handles variable updates correctly', async () => {
+      const wrapper = mountTextEditor(
+        defaultProps,
+        defaultGlobalConfig,
+      )
 
-    testOn.isCalledEmittedEvent({
-      wrapper,
+      // Simulate updating the localisationParameters prop
+      await wrapper.setProps({ localisationParameters: { var1: 'UpdatedValue1' } })
+
+      // Check if the Vuex action was dispatched with the correct payload
+      expect(mockDispatch).toHaveBeenCalledWith(expect.anything(), { var1: 'UpdatedValue1' })
     })
 
-    testOn.isEqualEmittedValue({ wrapper }, [[newContent]])
+    it('Calls modal to insert image', async () => {
+      const wrapper = mountTextEditor(
+        defaultProps,
+        defaultGlobalConfig,
+      )
+
+      // Mock the globalEditor object for the Froala editor
+      wrapper.vm.globalEditor = {
+        image: {
+          insert: vi.fn(),
+          hideProgressBar: vi.fn(),
+        },
+      }
+
+      // Simulate the insertImages method
+      wrapper.vm.insertImages({ publicPath: '/path/to/image.jpg', fileName: 'image.jpg' })
+
+      // Wait for the DOM to update
+      await nextTick()
+
+      // Verify if the modal was closed
+      expect(mockModal.hideModal).toHaveBeenCalledWith('gallery-modal')
+
+      // Verify if the image was inserted correctly
+      expect(wrapper.vm.globalEditor.image.insert).toHaveBeenCalledWith(
+        '/path/to/image.jpg',
+        true,
+        { name: 'image.jpg', id: 'image.jpg' },
+        '',
+        { link: '/path/to/image.jpg' },
+      )
+
+      // Check if the progress bar was hidden
+      expect(wrapper.vm.globalEditor.image.hideProgressBar).toHaveBeenCalledWith(true)
+    })
+
+    it('Handles variable key selection for editing', async () => {
+      // Mount the component
+      const wrapper = mountTextEditor(
+        defaultProps,
+        defaultGlobalConfig,
+      )
+
+      // Simulate selecting a variable key
+      wrapper.vm.setVariableKeySelect('var1')
+
+      // Check if the selected key is set correctly
+      expect(wrapper.vm.variableKeySelect).toBe('var1')
+
+      // Wait for the DOM to update
+      await nextTick()
+
+      // Verify if the modal was opened
+      expect(mockModal.showModal).toHaveBeenCalledWith('variable-modal')
+    })
+
+    it('Disables editing when disabled prop is true', async () => {
+      const wrapper = mountTextEditor(
+        { ...defaultProps, disabled: true },
+        defaultGlobalConfig,
+      )
+
+      // Mock the globalEditor object
+      wrapper.vm.globalEditor = {
+        edit: { off: vi.fn() },
+      }
+
+      // Simulate the initialization event for Froala
+      wrapper.vm.config.events.initialized.call(wrapper.vm.globalEditor)
+
+      // Wait for the DOM to update
+      await nextTick()
+
+      // Verify if the editor's edit mode was disabled
+      expect(wrapper.vm.globalEditor).toBeDefined()
+      expect(wrapper.vm.globalEditor.edit.off).toHaveBeenCalled()
+
+      // Check if the wrapper has the "disabled" class
+      expect(wrapper.find('.editor-wrap').classes()).toContain('disabled')
+    })
+
+    it('Emits update:modelValue when content changes', async () => {
+      const wrapper = mountTextEditor(
+        defaultProps,
+        defaultGlobalConfig,
+      )
+
+      // Define the new content to be set
+      const newContent = '<p>Updated content</p>'
+
+      // Simulate the contentChanged event from Froala
+      const contentChangedEvent = wrapper.vm.config.events.contentChanged
+
+      contentChangedEvent.call({
+        html: {
+          get: () => newContent,
+        },
+      })
+
+      // Wait for the DOM to update
+      await nextTick()
+
+      // Verify if the `update:modelValue` event was emitted
+      testOn.isCalledEmittedEvent({
+        wrapper,
+      })
+
+      // Check if the emitted value matches the new content
+      testOn.isEqualEmittedValue({ wrapper }, [[newContent]])
+    })
   })
 })
