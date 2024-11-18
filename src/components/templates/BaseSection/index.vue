@@ -2,7 +2,7 @@
 import { computed, inject, nextTick, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
-import store from '../../../store'
+import { useStore } from 'vuex'
 import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
 import { basePermissions } from '../../../helpers/base-permissions'
 import { PageType } from '../../../@model/templates/baseSection'
@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<{
 )
 
 const modal = inject('modal')
-
+const store = useStore()
 const route = useRoute()
 const router = useRouter()
 
