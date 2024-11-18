@@ -75,6 +75,7 @@ const canUpdate = computed<boolean>(() =>
     v-if="canView"
     :id="`${modelValue?.key}-field`"
     class="mb-0 field-generator"
+    data-test-id="field-generator"
     :class="formGroupClasses"
   >
     <VLabel
@@ -136,6 +137,7 @@ const canUpdate = computed<boolean>(() =>
                   v-if="withInfo && modelValue.info"
                   :icon="IconsList.InfoIcon"
                   v-bind="props"
+                  data-test-id="info-with-type-check"
                   class="check-type tooltip-icon ml-1 align-text-top text-grey-500"
                 />
               </template>
@@ -158,6 +160,7 @@ const canUpdate = computed<boolean>(() =>
         <span
           v-else-if="modelValue.description"
           class="mt-1 text-color-mute text-body-2"
+          data-test-id="description"
           :class="{
             'check-description': isCheckType,
           }"
