@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createStore } from 'vuex'
 import { mount } from '@vue/test-utils'
 import FroalaEditor from 'froala-editor'
+import { nextTick } from 'vue'
 import TextEditor from '../../../../src/components/TextEditorWysiwyg/index.vue'
 
 let mockDispatch
@@ -10,6 +11,7 @@ const mockModal = {
   registerModal: vi.fn(),
   showModal: vi.fn(),
   hideModal: vi.fn(),
+  unregisterModal: vi.fn(),
 }
 
 const mockStore = createStore({
@@ -85,7 +87,11 @@ vi.mock('froala-editor', () => ({
       isActive: vi.fn(() => false),
     },
     events: {
-      on: vi.fn(),
+      on: vi.fn((event, callback) => {
+        if (event === 'initialized') {
+          callback()
+        }
+      }),
       trigger: vi.fn(),
     },
   },
@@ -97,7 +103,7 @@ const MockFroala = {
 }
 
 describe('TextEditorWysiwyg.vue', () => {
-  it('renders correctly and initializes Froala', () => {
+  it('Renders correctly and initializes Froala', async () => {
     const wrapper = mount(TextEditor, {
       props: {
         modelValue: '<p>Initial content</p>',
@@ -118,49 +124,127 @@ describe('TextEditorWysiwyg.vue', () => {
     expect(wrapper.exists()).toBe(true)
     expect(FroalaEditor.DefineIcon).toHaveBeenCalled()
     expect(FroalaEditor.RegisterCommand).toHaveBeenCalled()
+    await wrapper.setProps({ modelValue: '{{Test}}' })
     console.log(wrapper.html())
   })
 
-  //
-  // it('handles content changes correctly', async () => {
-  //   const wrapper = mount(TextEditor, {
-  //     props: {
-  //       modelValue: '<p>Initial content</p>',
-  //     },
-  //     global: {
-  //       plugins: [mockStore],
-  //     },
-  //   })
-  //
-  //   FroalaEditor.html.get.mockReturnValue('<p>Updated content</p>')
-  //   FroalaEditor.events.trigger('contentChanged')
-  //   await wrapper.vm.$nextTick()
-  //
-  //   expect(wrapper.emitted('update:modelValue')).toBeTruthy()
-  //   expect(wrapper.emitted('update:modelValue')[0][0]).toBe('<p>Updated content</p>')
-  // })
-  //
-  // it('inserts images correctly', async () => {
-  //   const wrapper = mount(TextEditor, {
-  //     props: {
-  //       modelValue: '<p>Initial content</p>',
-  //     },
-  //     global: {
-  //       plugins: [mockStore],
-  //     },
-  //   })
-  //
-  //   const publicPath = '/mock/path/to/image.jpg'
-  //   const fileName = 'image.jpg'
-  //
-  //   await wrapper.vm.insertImages({ publicPath, fileName })
-  //
-  //   expect(FroalaEditor.image.insert).toHaveBeenCalledWith(
-  //     publicPath,
-  //     true,
-  //     { name: fileName, id: fileName },
-  //     '',
-  //     { link: publicPath },
-  //   )
-  // })
+  it('Handles variable updates correctly', async () => {
+    const wrapper = mount(TextEditor, {
+      props: {
+        modelValue: '<p>Initial content</p>',
+        optionsVariable: ['var1', 'var2'],
+        localisationParameters: { var1: 'Value1', var2: 'Value2' },
+      },
+      global: {
+        plugins: [mockStore],
+        provide: {
+          modal: mockModal,
+        },
+        stubs: {
+          Froala: MockFroala,
+        },
+      },
+    })
+
+    await wrapper.setProps({ localisationParameters: { var1: 'UpdatedValue1' } })
+
+    expect(mockDispatch).toHaveBeenCalledWith('textEditor/setVariableTextBuffer', {
+      var1: 'UpdatedValue1',
+    })
+  })
+  it('Calls modal to insert image', async () => {
+    const wrapper = mount(TextEditor, {
+      props: {
+        modelValue: '<p>Initial content</p>',
+        optionsVariable: ['var1', 'var2'],
+      },
+      global: {
+        plugins: [mockStore],
+        provide: {
+          modal: mockModal,
+        },
+        stubs: {
+          Froala: MockFroala,
+        },
+      },
+    })
+
+    wrapper.vm.globalEditor = {
+      image: {
+        insert: vi.fn(),
+        hideProgressBar: vi.fn(),
+      },
+    }
+
+    wrapper.vm.insertImages({ publicPath: '/path/to/image.jpg', fileName: 'image.jpg' })
+
+    await nextTick()
+
+    expect(mockModal.hideModal).toHaveBeenCalledWith('gallery-modal')
+
+    expect(wrapper.vm.globalEditor.image.insert).toHaveBeenCalledWith(
+      '/path/to/image.jpg',
+      true,
+      { name: 'image.jpg', id: 'image.jpg' },
+      '',
+      { link: '/path/to/image.jpg' },
+    )
+
+    expect(wrapper.vm.globalEditor.image.hideProgressBar).toHaveBeenCalledWith(true)
+  })
+  it('Handles variable key selection for editing', async () => {
+    const wrapper = mount(TextEditor, {
+      props: {
+        modelValue: '<p>Initial content</p>',
+        optionsVariable: ['var1', 'var2'],
+      },
+      global: {
+        plugins: [mockStore],
+        provide: {
+          modal: mockModal,
+        },
+        stubs: {
+          Froala: MockFroala,
+        },
+      },
+    })
+
+    wrapper.vm.setVariableKeySelect('var1')
+
+    expect(wrapper.vm.variableKeySelect).toBe('var1')
+
+    await nextTick()
+    expect(mockModal.showModal).toHaveBeenCalledWith('variable-modal')
+  })
+  it('Disables editing when disabled prop is true', async () => {
+    const wrapper = mount(TextEditor, {
+      props: {
+        modelValue: '<p>Initial content</p>',
+        optionsVariable: ['var1', 'var2'],
+        disabled: true,
+      },
+      global: {
+        plugins: [mockStore],
+        provide: {
+          modal: mockModal,
+        },
+        stubs: {
+          Froala: MockFroala,
+        },
+      },
+    })
+
+    wrapper.vm.globalEditor = {
+      edit: {
+        off: vi.fn(),
+      },
+    }
+    wrapper.vm.config.events.initialized.call(wrapper.vm.globalEditor)
+
+    await nextTick()
+
+    expect(wrapper.vm.globalEditor).toBeDefined()
+    expect(wrapper.vm.globalEditor.edit.off).toHaveBeenCalled()
+    expect(wrapper.find('.editor-wrap').classes()).includes('disabled')
+  })
 })
