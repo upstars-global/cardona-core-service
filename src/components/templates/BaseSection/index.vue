@@ -330,7 +330,7 @@ defineExpose({
           <VBtn
             class="mr-4"
             :color="VColors.Primary"
-            data-testid="create-button"
+            data-test-id="create-button"
             :disabled="isLoadingPage"
             @click="onSubmit(false)"
           >
@@ -341,7 +341,7 @@ defineExpose({
             class="mr-4"
             :variant="VVariants.Outlined"
             :color="VColors.Secondary"
-            data-testid="stay-button"
+            data-test-id="stay-button"
             :disabled="isLoadingPage"
             @click="onSubmit(true)"
           >
@@ -353,7 +353,7 @@ defineExpose({
           <VBtn
             class="mr-4"
             :color="VColors.Primary"
-            data-testid="save-button"
+            data-test-id="save-button"
             :disabled="isDisableSubmit || isLoadingPage"
             @click="onSubmit(false)"
           >
@@ -362,10 +362,9 @@ defineExpose({
         </template>
 
         <VBtn
-          v-if="isExistsListPage"
           :variant="VVariants.Outlined"
           :color="VColors.Secondary"
-          data-testid="cancel-button"
+          data-test-id="cancel-button"
           @click.prevent="onClickCancel"
         >
           {{ $t('action.cancel') }}
@@ -382,6 +381,7 @@ defineExpose({
       v-if="!config?.withoutDeleteModal"
       :remove-modal-id="removeModalId"
       :entity-name="entityName"
+      data-test-id="remove-modal"
       @on-click-modal-ok="confirmRemoveModal"
     />
   </Form>

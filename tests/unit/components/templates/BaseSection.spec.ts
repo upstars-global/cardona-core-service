@@ -1,4 +1,4 @@
-import { describe, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createStore } from 'vuex'
 import type { UseEntityType } from '../../../../src/components/templates/BaseSection/index.vue'
@@ -9,6 +9,7 @@ import { i18n } from '../../../../src/plugins/i18n'
 import { PageType } from '../../../../src/@model/templates/baseSection'
 import { mockModal } from '../../mocks/modal-provide-config'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
+import { getSelectorTestId } from '../../utils'
 
 const mockStore = createStore({
   getters: {
@@ -77,7 +78,7 @@ class MockForm {
 
 const sectionConfig = new BaseSectionConfig({})
 
-const useCohortsForm = (): UseEntityType<MockForm> => {
+const useMockForm = (): UseEntityType<MockForm> => {
   const EntityFormClass = MockForm
 
   return {
@@ -90,7 +91,7 @@ describe('BaseSection.vue', () => {
   it('Renders correctly when form is present', async () => {
     const wrapper = mountComponent({
       pageType: PageType.Create,
-      useEntity: useCohortsForm,
+      useEntity: useMockForm,
       config: sectionConfig,
       withReadAction: false,
     })
@@ -98,5 +99,25 @@ describe('BaseSection.vue', () => {
     await wrapper.vm.$nextTick()
 
     testOn.existElement({ wrapper, testId: 'base-section' })
+  })
+
+  it('Calls onSubmit with false when "Create and Exit" button is clicked', async () => {
+    const onSubmitMock = vi.fn()
+
+    const wrapper = mountComponent({
+      pageType: PageType.Create,
+      useEntity: useMockForm,
+      config: sectionConfig,
+      withReadAction: false,
+    })
+
+    wrapper.vm.onSubmit = onSubmitMock
+
+    await wrapper.find(getSelectorTestId('create-button')).trigger('click')
+
+    expect(onSubmitMock).toHaveBeenCalledWith(false)
+
+    await wrapper.find(getSelectorTestId('stay-button')).trigger('click')
+    expect(onSubmitMock).toHaveBeenCalledWith(true)
   })
 })
