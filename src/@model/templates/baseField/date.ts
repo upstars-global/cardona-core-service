@@ -20,6 +20,7 @@ export interface IDateBaseField extends IBaseField {
   readonly isFilter?: boolean
   readonly maxDateTo?: Date | string
   readonly allowFutureDate?: boolean
+  readonly keys?: string[]
 }
 
 export class DateBaseField extends BaseField implements IDateBaseField {
