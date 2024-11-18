@@ -354,6 +354,7 @@ const onSaveChanges = () => {
       <Froala
         v-model:value="content"
         tag="textarea"
+        data-test-id="text-editor"
         :config="config"
       />
 
