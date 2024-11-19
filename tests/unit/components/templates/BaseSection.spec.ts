@@ -349,4 +349,32 @@ describe('BaseSection.vue', () => {
       name: 'mock-formList',
     })
   })
+
+  it('Activates correct tab and scrolls to field with error', async () => {
+    const mainTabElement = document.createElement('div')
+
+    mainTabElement.setAttribute('data-tab', 'main')
+
+    const fieldErrorElement = document.createElement('input')
+
+    fieldErrorElement.setAttribute('id', 'field-error')
+
+    mainTabElement.appendChild(fieldErrorElement)
+    document.body.appendChild(mainTabElement)
+
+    const wrapper = mountComponent({
+      pageType: PageType.Create,
+      useEntity: useMockForm,
+      config: sectionConfig,
+    })
+
+    await wrapper.vm.setTabError('field-error')
+
+    const activeTab = document.querySelector('[data-tab="main"]')
+
+    expect(activeTab).not.toBeNull()
+    expect(activeTab!.getAttribute('data-tab')).toBe('main')
+
+    document.body.removeChild(mainTabElement)
+  })
 })
