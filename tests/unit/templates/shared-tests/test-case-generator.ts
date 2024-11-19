@@ -239,6 +239,7 @@ export const testOn = {
     methodExpect: ExpectMethods.ToBeTruthy,
     property: { name: WrapperProperties.Emitted, value: EventEmittersNames.Hide },
   }),
+
   isCalledEmitEvent: (wrapper: VueWrapper, actionEmit: string) => {
     testCaseGenerator({
       methodExpect: ExpectMethods.ToBeTruthy,
