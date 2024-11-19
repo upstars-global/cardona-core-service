@@ -50,7 +50,7 @@ vi.mock('vue-router', async importOriginal => {
     })),
     useRouter: vi.fn(() => ({
       push: vi.fn(),
-      replace: vi.fn(),
+      go: vi.fn(),
     })),
   }
 })
@@ -196,5 +196,29 @@ describe('BaseSection.vue', () => {
     expect(wrapper.exists()).toBe(true)
 
     expect(wrapper.find(getSelectorTestId('loading')).exists()).toBe(true)
+  })
+
+  it('Calls onClickCancel when cancel button is clicked', async () => {
+    const wrapper = mountComponent({
+      pageType: PageType.Update,
+      useEntity: useMockForm,
+      config: sectionConfig,
+      withReadAction: false,
+    })
+
+    const onClickCancelMock = vi.fn()
+
+    wrapper.vm.onClickCancel = onClickCancelMock
+
+    /// Here using this code or set time out without this variant does't work
+    await wrapper.vm.$forceUpdate()
+
+    const cancelButton = wrapper.find('[data-test-id="cancel-button"]')
+
+    expect(cancelButton.exists()).toBe(true)
+
+    await cancelButton.trigger('click')
+
+    expect(onClickCancelMock).toHaveBeenCalled()
   })
 })
