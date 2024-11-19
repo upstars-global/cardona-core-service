@@ -49,6 +49,7 @@ export enum InputAttributes {
   Src = 'src',
   Alt = 'alt',
   MaxLength = 'maxlength',
+  Style = 'style',
 
   // THIS WILL NEED IN FUTURE
   // Height = 'height',
@@ -82,6 +83,7 @@ export enum ExpectMethods {
   ToBeLessThan = 'toBeLessThan',
   ToHaveBeenCalledWith = 'toHaveBeenCalledWith',
   ToHaveBeenCalled = 'toHaveBeenCalled',
+  ToMatchObject = 'toMatchObject',
 }
 
 type WrapperPropertyValues = EventEmittersNames | EventEmittersNames | string | number
@@ -237,6 +239,7 @@ export const testOn = {
     methodExpect: ExpectMethods.ToBeTruthy,
     property: { name: WrapperProperties.Emitted, value: EventEmittersNames.Hide },
   }),
+
   isCalledEmitEvent: (wrapper: VueWrapper, actionEmit: string) => {
     testCaseGenerator({
       methodExpect: ExpectMethods.ToBeTruthy,
@@ -252,5 +255,16 @@ export const testOn = {
   inputTypeToBe: testCaseGenerator({
     methodExpect: ExpectMethods.ToBe,
     property: { name: WrapperProperties.Attributes, value: InputAttributes.Type },
+  }),
+
+  includePropertyStyle: testCaseGenerator({
+    methodExpect: ExpectMethods.ToMatchObject,
+    property: { name: WrapperProperties.Element, value: InputAttributes.Style, callable: false },
+  }),
+
+  notIncludePropertyStyle: testCaseGenerator({
+    methodExpect: ExpectMethods.ToMatchObject,
+    property: { name: WrapperProperties.Element, value: InputAttributes.Style, callable: false },
+    shouldInvert: true,
   }),
 }

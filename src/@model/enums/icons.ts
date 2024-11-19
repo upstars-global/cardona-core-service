@@ -195,6 +195,7 @@ export enum IconsList {
   PenToolIcon = 'PenToolIcon',
   PercentIcon = 'PercentIcon',
   PercentCircleIcon = 'tabler-circle-percentage',
+  DiscountIcon = 'tabler-discount',
   PhoneCallIcon = 'PhoneCallIcon',
   PhoneForwardedIcon = 'PhoneForwardedIcon',
   PhoneIncomingIcon = 'PhoneIncomingIcon',
