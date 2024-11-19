@@ -9,7 +9,7 @@ import { SwitchBaseField } from '../../../../src/@model/templates/baseField'
 import { i18n } from '../../../../src/plugins/i18n'
 import { mockModal } from '../../mocks/modal-provide-config'
 import { PageType } from '../../../../src/@model/templates/baseSection'
-import { getSelectorTestId, setMountComponent } from '../../utils'
+import { clickTrigger, getSelectorTestId, setMountComponent } from '../../utils'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { basePermissions } from '../../../../src/helpers/base-permissions'
 import { useRedirectToNotFoundPage } from '../../../../src/helpers/router'
@@ -223,8 +223,6 @@ describe('BaseSection.vue', () => {
       })],
     })
 
-    expect(wrapper.exists()).toBe(true)
-
     expect(wrapper.find(getSelectorTestId('loading')).exists()).toBe(true)
     expect(wrapper.find('[data-test-id="save-button"]').attributes('disabled')).toBeDefined()
   })
@@ -263,11 +261,16 @@ describe('BaseSection.vue', () => {
       withReadAction: false,
     })
 
-    const cancelButton = wrapper.find('[data-test-id="cancel-button"]')
+    const cancelButtonConfig = { wrapper, testId: 'cancel-button' }
 
-    expect(cancelButton.exists()).toBe(true)
+    const cancelButton = wrapper.find(getSelectorTestId('cancel-button'))
+
+    testOn.existElement(cancelButtonConfig)
+
+    await clickTrigger(cancelButtonConfig)
 
     await cancelButton.trigger('click')
+
     await flushPromises()
 
     expect(mockRouter.push).toHaveBeenCalledWith({ name: 'mock-formList' })
@@ -302,7 +305,7 @@ describe('BaseSection.vue', () => {
       config,
     })
 
-    const slotContent = wrapper.find('[data-test-id="slot-content"]')
+    const slotContent = wrapper.find(getSelectorTestId('slot-content'))
 
     expect(slotContent.exists()).toBe(true)
 
