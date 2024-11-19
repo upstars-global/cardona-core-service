@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises } from '@vue/test-utils'
 import { createStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import type { UseEntityType } from '../../../../src/components/templates/BaseSection/index.vue'
@@ -9,10 +9,12 @@ import { SwitchBaseField } from '../../../../src/@model/templates/baseField'
 import { i18n } from '../../../../src/plugins/i18n'
 import { mockModal } from '../../mocks/modal-provide-config'
 import { PageType } from '../../../../src/@model/templates/baseSection'
-import { getSelectorTestId } from '../../utils'
+import { getSelectorTestId, setMountComponent } from '../../utils'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { basePermissions } from '../../../../src/helpers/base-permissions'
 import { useRedirectToNotFoundPage } from '../../../../src/helpers/router'
+
+const getMountBaseSection = setMountComponent(BaseSection)
 
 class MockForm {
   readonly id?: string
@@ -115,27 +117,24 @@ vi.mock('vue-router', async importOriginal => {
 })
 
 const mountComponent = (props = {}, global = {}, slots = {}) =>
-  mount(BaseSection, {
-    props: {
-      config: sectionConfig,
-      useEntity: useMockForm,
-      ...props,
+  getMountBaseSection({
+    config: sectionConfig,
+    useEntity: useMockForm,
+    ...props,
+  }, {
+    plugins: [mockStore],
+    stubs: {
+      VBtn: { template: '<button><slot /></button>' },
     },
-    global: {
-      plugins: [mockStore],
-      stubs: {
-        VBtn: { template: '<button><slot /></button>' },
-      },
-      provide: { modal: mockModal },
-      ...global,
-    },
-    slots: {
-      default: `<template #default="{ form }">
+    provide: { modal: mockModal },
+    ...global,
+  }, {
+    default: `<template #default="{ form }">
                   <FieldGenerator v-model="form.isActive" />
                 </template>`,
-      ...slots,
-    },
-  })
+    ...slots,
+  },
+  )
 
 let mockRouter
 beforeEach(() => {
