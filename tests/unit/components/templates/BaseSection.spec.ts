@@ -163,11 +163,10 @@ describe('BaseSection.vue', () => {
     const buttonCreate = wrapper.find(getSelectorTestId('create-button'))
 
     await buttonCreate.trigger('click')
-    console.log(buttonCreate.attributes(), '!!!')
     expect(onSubmitMock).toHaveBeenCalled()
   })
 
-  it('triggers remove modal on remove button click', async () => {
+  it('Triggers remove modal on remove button click', async () => {
     const wrapper = mountComponent({
       pageType: PageType.Update,
       useEntity: useMockForm,
@@ -180,7 +179,7 @@ describe('BaseSection.vue', () => {
 
     expect(modalSpy).toHaveBeenCalledWith('form-item-remove-modal')
   })
-  it('validates form and handles errors correctly', async () => {
+  it('Validates form and handles errors correctly', async () => {
     const wrapper = mountComponent({
       pageType: PageType.Update,
       useEntity: useMockForm,
@@ -276,7 +275,7 @@ describe('BaseSection.vue', () => {
 
     expect(mockRouter.push).toHaveBeenCalledWith({ name: 'mock-formList' })
   })
-  it('calls basePermissions and passes correct slot props', () => {
+  it('Calls basePermissions and passes correct slot props', () => {
     const config = new BaseSectionConfig()
 
     const wrapper = mount(BaseSection, {
@@ -323,5 +322,57 @@ describe('BaseSection.vue', () => {
     expect(slotContent.attributes('data-can-update-seo')).toBe('false')
     expect(slotContent.attributes('data-can-remove')).toBe('false')
     expect(slotContent.attributes('data-can-view-seo')).toBe('true')
+  })
+
+  it('Calls onSave and handles success correctly', async () => {
+    const mockStoreDispatch = vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
+
+    const wrapper = mountComponent({
+      pageType: PageType.Create,
+      useEntity: useMockForm,
+      config: sectionConfig,
+    })
+
+    wrapper.vm.transformedForm = { id: '123' }
+    await wrapper.vm.onSave()
+
+    expect(mockStoreDispatch).toHaveBeenCalledWith('baseStoreCore/createEntity', {
+      type: 'mock-form',
+      data: {
+        form: { id: '123' },
+        formRef: wrapper.vm.formRef,
+      },
+    })
+
+    expect(pushMock).toHaveBeenCalledWith({
+      name: 'mock-formList',
+    })
+  })
+
+  it('Disables submit button based on isDisableSubmit computed value', () => {
+    const wrapper = mountComponent({
+      pageType: PageType.Update,
+      useEntity: useMockForm,
+      config: sectionConfig,
+      withReadAction: false,
+    },
+    {
+      plugins: [createStore({
+        state: {
+          errorUrls: [],
+        },
+        getters: {
+          isLoadingEndpoint: () => vi.fn(() => true),
+          isLoadingPage: vi.fn(() => true),
+          abilityCan: () => true,
+          isErrorEndpoint: () => vi.fn(() => false),
+        },
+        actions: {
+          resetErrorUrls: vi.fn(),
+        },
+      })],
+    })
+
+    expect(wrapper.find('[data-test-id="save-button"]').attributes('disabled')).toBeDefined()
   })
 })
