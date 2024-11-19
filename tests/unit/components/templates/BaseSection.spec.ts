@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises } from '@vue/test-utils'
 import { createStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -9,7 +10,7 @@ import { SwitchBaseField } from '../../../../src/@model/templates/baseField'
 import { i18n } from '../../../../src/plugins/i18n'
 import { mockModal } from '../../mocks/modal-provide-config'
 import { PageType } from '../../../../src/@model/templates/baseSection'
-import { clickTrigger, getSelectorTestId, setMountComponent } from '../../utils'
+import { clickTrigger, getSelectorTestId, getWrapperElement, setMountComponent } from '../../utils'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { basePermissions } from '../../../../src/helpers/base-permissions'
 import { useRedirectToNotFoundPage } from '../../../../src/helpers/router'
@@ -143,19 +144,24 @@ beforeEach(() => {
 
 describe('BaseSection.vue', () => {
   it('Renders correctly when form is present', async () => {
+    /// Mount the component with required props
     const wrapper = mountComponent({
       pageType: PageType.Create,
       withReadAction: false,
     })
 
+    /// Wait for Vue lifecycle hooks to complete
     await wrapper.vm.$nextTick()
 
+    /// Check that the main base section renders successfully
     testOn.existElement({ wrapper, testId: 'base-section' })
   })
 
   it('Calls onSubmit with false when "Create and Exit" button is clicked', async () => {
+    /// Mock the onSubmit function
     const onSubmitMock = vi.fn()
 
+    /// Mount the component and inject the mocked function
     const wrapper = mountComponent({
       pageType: PageType.Create,
       withReadAction: false,
@@ -163,31 +169,41 @@ describe('BaseSection.vue', () => {
 
     wrapper.vm.onSubmit = onSubmitMock
 
+    /// Check that save button is not rendered
     testOn.notExistElement({ wrapper, testId: 'save-button' })
 
+    /// Trigger click on "Create and Exit" button
     const buttonCreate = wrapper.find(getSelectorTestId('create-button'))
 
     await buttonCreate.trigger('click')
+
+    /// Verify that the mocked function was called
     expect(onSubmitMock).toHaveBeenCalled()
   })
 
   it('Triggers remove modal on remove button click', async () => {
+    /// Mount the component in update mode
     const wrapper = mountComponent({
       pageType: PageType.Update,
-
     })
 
+    /// Spy on the modal show method
     const modalSpy = vi.spyOn(mockModal, 'showModal')
 
+    /// Trigger the onClickRemove method
     await wrapper.vm.onClickRemove()
 
+    /// Verify that the modal is shown with the correct ID
     expect(modalSpy).toHaveBeenCalledWith('form-item-remove-modal')
   })
+
   it('Validates form and handles errors correctly', async () => {
+    /// Mount the component in update mode
     const wrapper = mountComponent({
       pageType: PageType.Update,
     })
 
+    /// Mock the form validation methods
     const formRefMock = {
       validate: vi.fn(() => Promise.resolve({ valid: false })),
       getErrors: vi.fn(() => ({ isActive: { isNotEmpty: true } })),
@@ -195,18 +211,20 @@ describe('BaseSection.vue', () => {
 
     wrapper.vm.formRef = formRefMock
 
+    /// Call the validate method
     const validateResult = await wrapper.vm.validate()
 
+    /// Verify that the validation fails and the mocked method is called
     expect(validateResult).toBe(false)
     expect(formRefMock.validate).toHaveBeenCalled()
   })
 
   it('Shows loading state when isLoading is true', () => {
+    /// Mount the component with mock store indicating loading state
     const wrapper = mountComponent({
       pageType: PageType.Update,
       withReadAction: false,
-    },
-    {
+    }, {
       plugins: [createStore({
         state: {
           errorUrls: [],
@@ -223,71 +241,68 @@ describe('BaseSection.vue', () => {
       })],
     })
 
-    expect(wrapper.find(getSelectorTestId('loading')).exists()).toBe(true)
-    expect(wrapper.find('[data-test-id="save-button"]').attributes('disabled')).toBeDefined()
+    /// Verify that the loading indicator is shown
+    testOn.existElement({ wrapper, testId: 'loading' })
+
+    /// Check that the save button is disabled during loading
+    testOn.isDisabledElement({ wrapper, testId: 'save-button' })
   })
 
   it('Calls onClickCancel when cancel button is clicked', async () => {
+    /// Mount the component with "backToTheHistoryLast" set to true
     const wrapper = mountComponent({
       pageType: PageType.Update,
-      useEntity: useMockForm,
       config: new BaseSectionConfig({
         backToTheHistoryLast: true,
       }),
       withReadAction: false,
     })
 
+    /// Mock the onClickCancel method
     const onClickCancelMock = vi.fn()
 
     wrapper.vm.onClickCancel = onClickCancelMock
 
-    const cancelButton = wrapper.find('[data-test-id="cancel-button"]')
+    /// Trigger the cancel button click
+    await clickTrigger({ wrapper, testId: 'cancel-button' })
 
-    expect(cancelButton.exists()).toBe(true)
-
-    await cancelButton.trigger('click')
     await flushPromises()
 
+    /// Verify that the router navigates back
     expect(mockRouter.go).toHaveBeenCalledWith(-1)
+
+    /// Ensure that push method was not called
     expect(mockRouter.push).not.toHaveBeenCalled()
   })
+
   it('Calls router.push with correct arguments when backToTheHistoryLast is false', async () => {
+    /// Mount the component with "backToTheHistoryLast" set to false
     const wrapper = mountComponent({
       pageType: PageType.Update,
-      useEntity: useMockForm,
       config: new BaseSectionConfig({
         backToTheHistoryLast: false,
       }),
       withReadAction: false,
     })
 
-    const cancelButtonConfig = { wrapper, testId: 'cancel-button' }
-
-    const cancelButton = wrapper.find(getSelectorTestId('cancel-button'))
-
-    testOn.existElement(cancelButtonConfig)
-
-    await clickTrigger(cancelButtonConfig)
-
-    await cancelButton.trigger('click')
+    /// Trigger the cancel button click
+    await clickTrigger({ wrapper, testId: 'cancel-button' })
 
     await flushPromises()
 
+    /// Verify that the router pushes to the correct route
     expect(mockRouter.push).toHaveBeenCalledWith({ name: 'mock-formList' })
   })
-  it('Calls basePermissions and passes correct slot props', () => {
-    const config = new BaseSectionConfig()
 
+  it('Calls basePermissions and passes correct slot props', () => {
+    /// Mount the component with default slot
     const wrapper = mountComponent({
       pageType: PageType.Update,
-      useEntity: useMockForm,
       config: new BaseSectionConfig({
         backToTheHistoryLast: false,
       }),
       withReadAction: false,
-    },
-    {},
-    {
+    }, {}, {
       default: `<template #default="{ canCreateSeo, canUpdate, canUpdateSeo, canRemove, canViewSeo }">
           <div
             data-test-id="slot-content"
@@ -300,14 +315,16 @@ describe('BaseSection.vue', () => {
         </template>`,
     })
 
+    /// Verify that basePermissions was called with correct arguments
     expect(basePermissions).toHaveBeenCalledWith({
       entityName: 'mock-form',
-      config,
+      config: sectionConfig,
     })
 
-    const slotContent = wrapper.find(getSelectorTestId('slot-content'))
+    /// Verify the slot props passed correctly
+    const slotContent = getWrapperElement({ wrapper, testId: 'slot-content' }) as VueWrapper
 
-    expect(slotContent.exists()).toBe(true)
+    testOn.existElement({ wrapper: slotContent })
 
     expect(slotContent.attributes('data-can-create-seo')).toBe('true')
     expect(slotContent.attributes('data-can-update')).toBe('true')
@@ -317,16 +334,21 @@ describe('BaseSection.vue', () => {
   })
 
   it('Calls onSave and handles success correctly', async () => {
+    /// Spy on the store dispatch method
     const mockStoreDispatch = vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
 
+    /// Mount the component in create mode
     const wrapper = mountComponent({
       pageType: PageType.Create,
-
     })
 
+    /// Mock transformed form data
     wrapper.vm.transformedForm = { id: '123' }
+
+    /// Call the onSave method
     await wrapper.vm.onSave()
 
+    /// Verify that the correct dispatch action is called
     expect(mockStoreDispatch).toHaveBeenCalledWith('baseStoreCore/createEntity', {
       type: 'mock-form',
       data: {
@@ -335,12 +357,14 @@ describe('BaseSection.vue', () => {
       },
     })
 
+    /// Verify that the router navigates to the list page
     expect(pushMock).toHaveBeenCalledWith({
       name: 'mock-formList',
     })
   })
 
   it('Activates correct tab and scrolls to field with error', async () => {
+    /// Create mock DOM elements for testing tab activation
     const mainTabElement = document.createElement('div')
 
     mainTabElement.setAttribute('data-tab', 'main')
@@ -352,25 +376,32 @@ describe('BaseSection.vue', () => {
     mainTabElement.appendChild(fieldErrorElement)
     document.body.appendChild(mainTabElement)
 
+    /// Mount the component
     const wrapper = mountComponent({
       pageType: PageType.Create,
-
     })
 
+    /// Trigger the setTabError method
     await wrapper.vm.setTabError('field-error')
 
+    /// Verify that the correct tab is activated
     const activeTab = document.querySelector('[data-tab="main"]')
 
     expect(activeTab).not.toBeNull()
     expect(activeTab!.getAttribute('data-tab')).toBe('main')
 
+    /// Cleanup
     document.body.removeChild(mainTabElement)
   })
+
   it('Redirects to not found page when entity fetch fails', async () => {
+    /// Spy on the store dispatch method to simulate rejection
     const dispatchSpy = vi.spyOn(mockStore, 'dispatch').mockRejectedValueOnce({ type: 'NOT_FOUND' })
 
+    /// Provide the mocked redirect method
     const redirectToNotFoundPage = useRedirectToNotFoundPage(mockRouter)
 
+    /// Mount the component in update mode
     mountComponent(
       {
         pageType: PageType.Update,
@@ -382,13 +413,16 @@ describe('BaseSection.vue', () => {
       },
     )
 
+    /// Wait for Vue lifecycle hooks to complete
     await flushPromises()
 
+    /// Verify that the correct action is dispatched
     expect(dispatchSpy).toHaveBeenCalledWith(
       'baseStoreCore/readEntity',
       expect.objectContaining({ id: '123' }),
     )
 
+    /// Verify that the router navigates to the not found page
     expect(pushMock).toHaveBeenCalledWith({ name: 'NotFound' })
   })
 })
