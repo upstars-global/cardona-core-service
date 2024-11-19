@@ -75,7 +75,9 @@ const mockStore = createStore({
     isErrorEndpoint: () => vi.fn(() => false),
   },
   actions: {
-    resetErrorUrls: vi.fn(),
+    'resetErrorUrls': vi.fn(),
+    'baseStoreCore/readEntity': vi.fn(() => Promise.resolve()),
+    'baseStoreCore/createEntity': vi.fn(() => Promise.resolve()),
   },
 })
 
