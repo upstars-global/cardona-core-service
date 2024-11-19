@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -13,6 +13,32 @@ import { getSelectorTestId } from '../../utils'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { basePermissions } from '../../../../src/helpers/base-permissions'
 import { useRedirectToNotFoundPage } from '../../../../src/helpers/router'
+
+class MockForm {
+  readonly id?: string
+  readonly isActive: SwitchBaseField
+
+  constructor(data: { id?: string; isActive: boolean }) {
+    this.id = data?.id
+    this.isActive = new SwitchBaseField({
+      key: 'isActive',
+      value: data?.isActive,
+      label: i18n.t('userStatuses.active'),
+    })
+  }
+}
+
+const sectionConfig = new BaseSectionConfig({})
+
+const useMockForm = (): UseEntityType<MockForm> => {
+  const EntityFormClass = MockForm
+
+  return {
+    entityName: 'mock-form',
+    EntityFormClass,
+    loadingEndpointArr: ['/test-endpoint'],
+  }
+}
 
 vi.mock('path/to/generateEntityUrl', () => ({
   generateEntityUrl: vi.fn(() => '/mock-entity-url'),
@@ -88,7 +114,11 @@ vi.mock('vue-router', async importOriginal => {
 
 const mountComponent = (props = {}, global = {}, slots = {}) =>
   mount(BaseSection, {
-    props,
+    props: {
+      config: sectionConfig,
+      useEntity: useMockForm,
+      ...props,
+    },
     global: {
       plugins: [mockStore],
       stubs: {
@@ -105,38 +135,15 @@ const mountComponent = (props = {}, global = {}, slots = {}) =>
     },
   })
 
-class MockForm {
-  readonly id?: string
-  readonly isActive: SwitchBaseField
-
-  constructor(data: { id?: string; isActive: boolean }) {
-    this.id = data?.id
-    this.isActive = new SwitchBaseField({
-      key: 'isActive',
-      value: data?.isActive,
-      label: i18n.t('userStatuses.active'),
-    })
-  }
-}
-
-const sectionConfig = new BaseSectionConfig({})
-
-const useMockForm = (): UseEntityType<MockForm> => {
-  const EntityFormClass = MockForm
-
-  return {
-    entityName: 'mock-form',
-    EntityFormClass,
-    loadingEndpointArr: ['/test-endpoint'],
-  }
-}
+let mockRouter
+beforeEach(() => {
+  mockRouter = useRouter()
+})
 
 describe('BaseSection.vue', () => {
   it('Renders correctly when form is present', async () => {
     const wrapper = mountComponent({
       pageType: PageType.Create,
-      useEntity: useMockForm,
-      config: sectionConfig,
       withReadAction: false,
     })
 
@@ -150,11 +157,7 @@ describe('BaseSection.vue', () => {
 
     const wrapper = mountComponent({
       pageType: PageType.Create,
-      useEntity: useMockForm,
-      config: sectionConfig,
       withReadAction: false,
-    }, {
-      plugins: [mockStore],
     })
 
     wrapper.vm.onSubmit = onSubmitMock
@@ -170,8 +173,7 @@ describe('BaseSection.vue', () => {
   it('Triggers remove modal on remove button click', async () => {
     const wrapper = mountComponent({
       pageType: PageType.Update,
-      useEntity: useMockForm,
-      config: sectionConfig,
+
     })
 
     const modalSpy = vi.spyOn(mockModal, 'showModal')
@@ -183,8 +185,6 @@ describe('BaseSection.vue', () => {
   it('Validates form and handles errors correctly', async () => {
     const wrapper = mountComponent({
       pageType: PageType.Update,
-      useEntity: useMockForm,
-      config: sectionConfig,
     })
 
     const formRefMock = {
@@ -203,8 +203,6 @@ describe('BaseSection.vue', () => {
   it('Shows loading state when isLoading is true', () => {
     const wrapper = mountComponent({
       pageType: PageType.Update,
-      useEntity: useMockForm,
-      config: sectionConfig,
       withReadAction: false,
     },
     {
@@ -231,8 +229,6 @@ describe('BaseSection.vue', () => {
   })
 
   it('Calls onClickCancel when cancel button is clicked', async () => {
-    const mockRouter = useRouter()
-
     const wrapper = mountComponent({
       pageType: PageType.Update,
       useEntity: useMockForm,
@@ -257,8 +253,6 @@ describe('BaseSection.vue', () => {
     expect(mockRouter.push).not.toHaveBeenCalled()
   })
   it('Calls router.push with correct arguments when backToTheHistoryLast is false', async () => {
-    const mockRouter = useRouter()
-
     const wrapper = mountComponent({
       pageType: PageType.Update,
       useEntity: useMockForm,
@@ -280,24 +274,17 @@ describe('BaseSection.vue', () => {
   it('Calls basePermissions and passes correct slot props', () => {
     const config = new BaseSectionConfig()
 
-    const wrapper = mount(BaseSection, {
-      props: {
-        pageType: PageType.Update,
-        useEntity: useMockForm,
-        config: new BaseSectionConfig({
-          backToTheHistoryLast: false,
-        }),
-        withReadAction: false,
-      },
-      global: {
-        plugins: [mockStore],
-        stubs: {
-          VBtn: { template: '<button><slot /></button>' },
-        },
-        provide: { modal: mockModal },
-      },
-      slots: {
-        default: `<template #default="{ canCreateSeo, canUpdate, canUpdateSeo, canRemove, canViewSeo }">
+    const wrapper = mountComponent({
+      pageType: PageType.Update,
+      useEntity: useMockForm,
+      config: new BaseSectionConfig({
+        backToTheHistoryLast: false,
+      }),
+      withReadAction: false,
+    },
+    {},
+    {
+      default: `<template #default="{ canCreateSeo, canUpdate, canUpdateSeo, canRemove, canViewSeo }">
           <div
             data-test-id="slot-content"
             :data-can-create-seo="canCreateSeo"
@@ -307,7 +294,6 @@ describe('BaseSection.vue', () => {
             :data-can-view-seo="canViewSeo"
           />
         </template>`,
-      },
     })
 
     expect(basePermissions).toHaveBeenCalledWith({
@@ -331,8 +317,7 @@ describe('BaseSection.vue', () => {
 
     const wrapper = mountComponent({
       pageType: PageType.Create,
-      useEntity: useMockForm,
-      config: sectionConfig,
+
     })
 
     wrapper.vm.transformedForm = { id: '123' }
@@ -365,8 +350,7 @@ describe('BaseSection.vue', () => {
 
     const wrapper = mountComponent({
       pageType: PageType.Create,
-      useEntity: useMockForm,
-      config: sectionConfig,
+
     })
 
     await wrapper.vm.setTabError('field-error')
@@ -381,15 +365,11 @@ describe('BaseSection.vue', () => {
   it('Redirects to not found page when entity fetch fails', async () => {
     const dispatchSpy = vi.spyOn(mockStore, 'dispatch').mockRejectedValueOnce({ type: 'NOT_FOUND' })
 
-    const mockRouter = useRouter()
-
     const redirectToNotFoundPage = useRedirectToNotFoundPage(mockRouter)
 
     mountComponent(
       {
         pageType: PageType.Update,
-        useEntity: useMockForm,
-        config: new BaseSectionConfig(),
       },
       {
         provide: {
