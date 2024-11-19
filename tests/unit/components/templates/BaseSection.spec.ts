@@ -12,6 +12,7 @@ import { PageType } from '../../../../src/@model/templates/baseSection'
 import { getSelectorTestId } from '../../utils'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { basePermissions } from '../../../../src/helpers/base-permissions'
+import { useRedirectToNotFoundPage } from '../../../../src/helpers/router'
 
 vi.mock('path/to/generateEntityUrl', () => ({
   generateEntityUrl: vi.fn(() => '/mock-entity-url'),
@@ -376,5 +377,34 @@ describe('BaseSection.vue', () => {
     expect(activeTab!.getAttribute('data-tab')).toBe('main')
 
     document.body.removeChild(mainTabElement)
+  })
+  it('Redirects to not found page when entity fetch fails', async () => {
+    const dispatchSpy = vi.spyOn(mockStore, 'dispatch').mockRejectedValueOnce({ type: 'NOT_FOUND' })
+
+    const mockRouter = useRouter()
+
+    const redirectToNotFoundPage = useRedirectToNotFoundPage(mockRouter)
+
+    mountComponent(
+      {
+        pageType: PageType.Update,
+        useEntity: useMockForm,
+        config: new BaseSectionConfig(),
+      },
+      {
+        provide: {
+          redirectToNotFoundPage,
+        },
+      },
+    )
+
+    await flushPromises()
+
+    expect(dispatchSpy).toHaveBeenCalledWith(
+      'baseStoreCore/readEntity',
+      expect.objectContaining({ id: '123' }),
+    )
+
+    expect(pushMock).toHaveBeenCalledWith({ name: 'NotFound' })
   })
 })
