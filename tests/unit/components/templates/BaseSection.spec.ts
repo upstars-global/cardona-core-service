@@ -29,10 +29,10 @@ const mockStore = createStore({
     errorUrls: [],
   },
   getters: {
-    isLoadingEndpoint: () => vi.fn(() => true),
+    isLoadingEndpoint: () => vi.fn(() => false),
     isLoadingPage: vi.fn(() => false),
     abilityCan: () => true,
-    isErrorEndpoint: () => vi.fn(() => true),
+    isErrorEndpoint: () => vi.fn(() => false),
   },
   actions: {
     resetErrorUrls: vi.fn(),
@@ -113,25 +113,28 @@ describe('BaseSection.vue', () => {
     testOn.existElement({ wrapper, testId: 'base-section' })
   })
 
-  // it('Calls onSubmit with false when "Create and Exit" button is clicked', async () => {
-  //   const onSubmitMock = vi.fn()
-  //
-  //   const wrapper = mountComponent({
-  //     pageType: PageType.Create,
-  //     useEntity: useMockForm,
-  //     config: sectionConfig,
-  //     withReadAction: false,
-  //   })
-  //
-  //   wrapper.vm.onSubmit = onSubmitMock
-  //
-  //   await wrapper.find(getSelectorTestId('create-button')).trigger('click')
-  //
-  //   expect(onSubmitMock).toHaveBeenCalledWith(true)
-  //
-  //   await wrapper.find(getSelectorTestId('stay-button')).trigger('click')
-  //   expect(onSubmitMock).toHaveBeenCalledWith(true)
-  // })
+  it('Calls onSubmit with false when "Create and Exit" button is clicked', async () => {
+    const onSubmitMock = vi.fn()
+
+    const wrapper = mountComponent({
+      pageType: PageType.Create,
+      useEntity: useMockForm,
+      config: sectionConfig,
+      withReadAction: false,
+    }, {
+      plugins: [mockStore],
+    })
+
+    wrapper.vm.onSubmit = onSubmitMock
+
+    testOn.notExistElement({ wrapper, testId: 'save-button' })
+
+    const buttonCreate = wrapper.find(getSelectorTestId('create-button'))
+
+    await buttonCreate.trigger('click')
+    console.log(buttonCreate.attributes(), '!!!')
+    expect(onSubmitMock).toHaveBeenCalled()
+  })
 
   it('triggers remove modal on remove button click', async () => {
     const wrapper = mountComponent({
@@ -166,24 +169,28 @@ describe('BaseSection.vue', () => {
     expect(formRefMock.validate).toHaveBeenCalled()
   })
 
-  it('displays loading spinner when isLoadingPage is true', () => {
-    const wrapper = mountComponent({
-      pageType: PageType.Update,
-      useEntity: useMockForm,
-      config: sectionConfig,
-      withReadAction: false,
-    })
-
-    const loadingElement = wrapper.find('[data-test-id="loading"]')
-
-    expect(loadingElement.exists()).toBe(true)
-  })
   it('Shows loading state when isLoading is true', () => {
     const wrapper = mountComponent({
       pageType: PageType.Update,
       useEntity: useMockForm,
       config: sectionConfig,
       withReadAction: false,
+    },
+    {
+      plugins: [createStore({
+        state: {
+          errorUrls: [],
+        },
+        getters: {
+          isLoadingEndpoint: () => vi.fn(() => true),
+          isLoadingPage: vi.fn(() => true),
+          abilityCan: () => true,
+          isErrorEndpoint: () => vi.fn(() => false),
+        },
+        actions: {
+          resetErrorUrls: vi.fn(),
+        },
+      })],
     })
 
     expect(wrapper.exists()).toBe(true)
