@@ -226,6 +226,7 @@ describe('BaseSection.vue', () => {
     expect(wrapper.exists()).toBe(true)
 
     expect(wrapper.find(getSelectorTestId('loading')).exists()).toBe(true)
+    expect(wrapper.find('[data-test-id="save-button"]').attributes('disabled')).toBeDefined()
   })
 
   it('Calls onClickCancel when cancel button is clicked', async () => {
@@ -347,32 +348,5 @@ describe('BaseSection.vue', () => {
     expect(pushMock).toHaveBeenCalledWith({
       name: 'mock-formList',
     })
-  })
-
-  it('Disables submit button based on isDisableSubmit computed value', () => {
-    const wrapper = mountComponent({
-      pageType: PageType.Update,
-      useEntity: useMockForm,
-      config: sectionConfig,
-      withReadAction: false,
-    },
-    {
-      plugins: [createStore({
-        state: {
-          errorUrls: [],
-        },
-        getters: {
-          isLoadingEndpoint: () => vi.fn(() => true),
-          isLoadingPage: vi.fn(() => true),
-          abilityCan: () => true,
-          isErrorEndpoint: () => vi.fn(() => false),
-        },
-        actions: {
-          resetErrorUrls: vi.fn(),
-        },
-      })],
-    })
-
-    expect(wrapper.find('[data-test-id="save-button"]').attributes('disabled')).toBeDefined()
   })
 })
