@@ -3,7 +3,7 @@ import { computed, inject, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue
 import type { TranslateResult } from 'vue-i18n'
 import { IconsList } from '../../@model/enums/icons'
 import { ModalSizes, VColors, VVariants } from '../../@model/vuetify'
-import { IS_ATTACH } from '../../utils/constants'
+import { IS_TEST_ENV } from '../../utils/constants'
 
 interface Props {
   id: string
@@ -60,7 +60,7 @@ const onHide = (value: boolean) => {
 
 const enhancedAttrs = computed(() => ({
   ...attrs,
-  attach: IS_ATTACH ? true : attrs.attach,
+  attach: IS_TEST_ENV ? true : attrs.attach,
 }))
 </script>
 
