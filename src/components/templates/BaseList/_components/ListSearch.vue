@@ -57,6 +57,7 @@ const searchQuery = computed({
           v-model="searchQuery"
           :prepend-inner-icon="IconsList.SearchIcon"
           :placeholder="config.searchPlaceholder"
+          data-test-id="search-input"
           class="search bg-surface"
         />
 
