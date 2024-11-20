@@ -4,6 +4,7 @@ import { pickBy } from 'lodash'
 import { ExportFormat } from '../../../../@model/templates/baseList'
 import { IconsList } from '../../../../@model/enums/icons'
 import { VColors, VVariants } from '../../../../@model/vuetify'
+import { IS_ATTACH } from '../../../../utils/constants'
 
 interface Props {
   formatOfExports?: Array<ExportFormat>
@@ -30,7 +31,7 @@ const isOneTypeExport = computed(() => props.formatOfExports.length === 1)
 </script>
 
 <template>
-  <VMenu>
+  <VMenu :attach="IS_ATTACH">
     <template #activator="{ props }">
       <VBtn
         :variant="VVariants.Outlined"
