@@ -6,12 +6,11 @@ import { IconsList } from '../../../../@model/enums/icons'
 import { VColors, VVariants } from '../../../../@model/vuetify'
 
 interface Props {
-  disabled: boolean
   formatOfExports?: Array<ExportFormat>
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  formatOfExports: [ExportFormat.JSON, ExportFormat.JSON]
+  formatOfExports: [ExportFormat.JSON, ExportFormat.JSON],
 })
 
 const emits = defineEmits<{
@@ -38,6 +37,7 @@ const isOneTypeExport = computed(() => props.formatOfExports.length === 1)
         :color="VColors.Secondary"
         v-bind="isOneTypeExport ? {} : props"
         :prepend-icon="IconsList.UploadIcon"
+        data-test-id="menu-activator"
         @click="isOneTypeExport && onClick(formatOfExports[0])"
       >
         {{ $t('action.export') }}
@@ -47,6 +47,7 @@ const isOneTypeExport = computed(() => props.formatOfExports.length === 1)
       <VListItem
         v-for="(value, key) in actualExportFormats"
         :key="value"
+        :data-test-id="`export-${value}`"
         @click="onClick(value)"
       >
         {{ key }}
