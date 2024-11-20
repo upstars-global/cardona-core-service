@@ -2,7 +2,7 @@
 import { computed, inject, nextTick, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
-import store from '../../../store'
+import { useStore } from 'vuex'
 import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
 import { basePermissions } from '../../../helpers/base-permissions'
 import { PageType } from '../../../@model/templates/baseSection'
@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<{
 )
 
 const modal = inject('modal')
-
+const store = useStore()
 const route = useRoute()
 const router = useRouter()
 
@@ -294,6 +294,7 @@ defineExpose({
     v-if="form"
     ref="formRef"
     class="base-section"
+    data-test-id="base-section"
     @submit.prevent
   >
     <div class="position-relative">
@@ -311,6 +312,7 @@ defineExpose({
       <div
         v-if="isLoadingPage && pageType"
         class="position-absolute base-section__loading d-flex"
+        data-test-id="loading"
       >
         <VProgressCircular
           indeterminate
@@ -329,7 +331,7 @@ defineExpose({
           <VBtn
             class="mr-4"
             :color="VColors.Primary"
-            data-testid="create-button"
+            data-test-id="create-button"
             :disabled="isLoadingPage"
             @click="onSubmit(false)"
           >
@@ -340,7 +342,7 @@ defineExpose({
             class="mr-4"
             :variant="VVariants.Outlined"
             :color="VColors.Secondary"
-            data-testid="stay-button"
+            data-test-id="stay-button"
             :disabled="isLoadingPage"
             @click="onSubmit(true)"
           >
@@ -352,7 +354,7 @@ defineExpose({
           <VBtn
             class="mr-4"
             :color="VColors.Primary"
-            data-testid="save-button"
+            data-test-id="save-button"
             :disabled="isDisableSubmit || isLoadingPage"
             @click="onSubmit(false)"
           >
@@ -361,10 +363,9 @@ defineExpose({
         </template>
 
         <VBtn
-          v-if="isExistsListPage"
           :variant="VVariants.Outlined"
           :color="VColors.Secondary"
-          data-testid="cancel-button"
+          data-test-id="cancel-button"
           @click.prevent="onClickCancel"
         >
           {{ $t('action.cancel') }}
@@ -381,6 +382,7 @@ defineExpose({
       v-if="!config?.withoutDeleteModal"
       :remove-modal-id="removeModalId"
       :entity-name="entityName"
+      data-test-id="remove-modal"
       @on-click-modal-ok="confirmRemoveModal"
     />
   </Form>
