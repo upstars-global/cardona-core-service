@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import ConditionsField from '../../../../src/components/templates/FieldGenerator/_components/ConditionsField.vue'
-import {getSelectorTestId, getWrapperElement, setMountComponent} from '../../utils'
+import { getSelectorTestId, getWrapperElement, setMountComponent } from '../../utils'
 import { onDisabledInput, testOnValidPlaceholder } from '../shared-tests/text-input-fields'
 import en from '../../../../src/plugins/i18n/locales/en.json'
 import { testOn } from '../shared-tests/test-case-generator'
@@ -80,7 +80,7 @@ describe('ConditionsField.vue', () => {
     const wrapper = getMountConditionsField({ ...defaultProps, disabled: true }) as VueWrapper
 
     onDisabledInput({ wrapper, selector: 'textarea' })
-    testOn.existClass({ wrapper, selector: '.v-row' }, 'pointer-events-none')
+    testOn.existClass({ wrapper, testId: 'condition-variable-item' }, 'pointer-events-none')
 
     const conditionItem = getVariableItemElement(wrapper)
 
