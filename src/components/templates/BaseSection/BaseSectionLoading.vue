@@ -5,19 +5,21 @@ defineProps<{ loading: boolean }>()
 </script>
 
 <template>
-  <Transition name="fade">
-    <div
-      v-if="loading"
-      class="loader-overlay"
-    >
-      <VProgressCircular
-        indeterminate
-        size="64"
-        :color="VColors.Primary"
-      />
-    </div>
-  </Transition>
-  <slot v-if="!loading" />
+  <div>
+    <Transition name="fade">
+      <div
+        v-if="loading"
+        class="loader-overlay"
+      >
+        <VProgressCircular
+          indeterminate
+          size="64"
+          :color="VColors.Primary"
+        />
+      </div>
+    </Transition>
+    <slot v-if="!loading" />
+  </div>
 </template>
 
 <style scoped lang="scss">
