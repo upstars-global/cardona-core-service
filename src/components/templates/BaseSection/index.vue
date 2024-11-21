@@ -291,8 +291,9 @@ defineExpose({
 </script>
 
 <template>
-  <BaseSectionLoading :loading="!isLoadingPage && form">
+  <BaseSectionLoading :loading="!isLoadingPage">
     <Form
+      v-if="form"
       ref="formRef"
       class="base-section"
       data-test-id="base-section"
