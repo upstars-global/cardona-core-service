@@ -247,6 +247,10 @@ export const testOn = {
     })({ wrapper })
   },
 
+  isCalledEmitEventValue: (wrapper: VueWrapper, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+    expect(wrapper.emitted(event)[index || 0][0]).includes(value)
+  },
+
   checkedElementToBe: testCaseGenerator({
     methodExpect: ExpectMethods.ToBe,
     property: { name: WrapperProperties.Element, value: InputAttributes.Checked, callable: false },
