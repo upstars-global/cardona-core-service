@@ -1,17 +1,40 @@
-import { beforeEach, describe, it } from 'vitest'
+import { beforeAll, beforeEach, describe, it, vi } from 'vitest'
 import ListSearch from '../../../../../../src/components/templates/BaseList/_components/ListSearch.vue'
-import { getSelectorTestId, setMountComponent } from '../../../../utils'
+import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../../utils'
 import { testOn } from '../../../../templates/shared-tests/test-case-generator'
 import { IconsList } from '../../../../../../src/@model/enums/icons'
+import { i18n } from '../../../../../../src/plugins/i18n'
+import { ExportFormat } from '../../../../../../src/@model/templates/baseList'
+import { FilterType } from '../../../../../../src/@model/filter'
 
 const getMountListSearch = setMountComponent(ListSearch)
+
+// vi.mock('vue-router', () => ({
+//   useRouter: vi.fn(() => ({
+//     push: vi.fn(),
+//   })),
+//   useRoute: vi.fn(() => ({
+//     name: 'MockRoute',
+//   })),
+//   RouterLink: {
+//     template: '<a :href="to.path"><slot /></a>',
+//     props: ['to'],
+//   },
+// }))
+
+const filterList = [
+  {
+    type: FilterType.DemoType,
+    key: 'demo',
+  },
+]
 
 const defaultProps = {
   config: {
     withSearch: true,
     searchPlaceholder: 'Search...',
-    filterList: [],
-    formatOfExports: [],
+    filterList,
+    formatOfExports: [ExportFormat.JSON],
     small: false,
   },
   modelValue: '',
@@ -28,6 +51,14 @@ const defaultProps = {
 }
 
 let props
+
+beforeAll(() => {
+  global.ResizeObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+})
 
 beforeEach(() => {
   props = defaultProps
@@ -81,10 +112,86 @@ describe('ListSearch.vue', () => {
     })
   })
 
-  /// TODO test cases
-  /// Tender and call action on default slot content right-search-btn
-  /// Check on exist export format selector and call event export-format-selected
-  /// Render content on config.filterList?.isNotEmpty like sepa
-  // rate test on render content  (isOpenFilterBlock, config?.small)
-  /// Call event on update value of v-model="searchQuery"
+  it('Render and call action on default slot content right-search-btn ', async () => {
+    props.rightSearchBtn = {
+      canCreate: true,
+      createPage: 'MockCreatePage',
+    }
+
+    const wrapper = getMountListSearch(props)
+
+    testOn.existElement({ wrapper, testId: 'right-search-btn' })
+
+    testOn.equalTextValue({ wrapper, testId: 'right-search-btn-text' }, i18n.t('action.create'))
+
+    /// Test on call event
+  })
+
+  it('Render export format selector ', async () => {
+    props.exportSelector = { canShow: true }
+
+    const wrapper = getMountListSearch(props)
+
+    const wrapeprParams = { wrapper, testId: 'menu-activator' }
+
+    testOn.existElement(wrapeprParams)
+
+    await clickTrigger(wrapeprParams)
+
+    testOn.isCalledEmitEvent(wrapper, 'on-export-format-selected')
+  })
+
+  it('Check functionality of button filter', async () => {
+    props.selectedFilters = [{}, {}]
+
+    const wrapper = getMountListSearch(props)
+
+    testOn.equalTextValue({ wrapper, testId: 'filter-count' }, props.selectedFilters.length.toString())
+    testOn.equalTextValue({ wrapper, testId: 'filter-btn-text' }, i18n.t('common.filter._'))
+
+    await clickTrigger({ wrapper, testId: 'filter-btn' })
+
+    /// Check call event
+    testOn.isCalledEmitEvent(wrapper, 'on-click-filter')
+
+    /// Update props value of isOpenFilterBlock
+    await wrapper.setProps({ isOpenFilterBlock: true })
+
+    /// Check exist class
+    testOn.existClass({ wrapper, testId: 'filter-btn' }, 'v-btn--active')
+  })
+
+  it('Render content on config small', async () => {
+    const wrapper = getMountListSearch(props)
+
+    /// Check state content without config small
+    testOn.existElement({ wrapper, testId: 'filter-btn-text' })
+    testOn.notExistClasses({ wrapper, testId: 'filter-btn' }, 'filter-btn--small')
+
+    await wrapper.setProps({ config: { ...props.config, small: true } })
+
+    /// Check after set config small true
+    testOn.notExistElement({ wrapper, testId: 'filter-btn-text' })
+    testOn.existClass({ wrapper, testId: 'filter-btn' }, 'filter-btn--small')
+  })
+
+  it('Check call event on update search input ', async () => {
+    vi.useFakeTimers()
+
+    const newValue = 'Updated search input'
+
+    const wrapper = getMountListSearch(props)
+
+    testOn.existElement({ wrapper, testId: 'search-input' })
+
+    await wrapper.find('input').setValue(newValue)
+
+    /// Init fake timer on 0.5 sec
+    vi.advanceTimersByTime(500)
+
+    testOn.isEqualEmittedValue({ wrapper }, [[newValue]])
+
+    /// Remove fake timer
+    vi.useRealTimers()
+  })
 })
