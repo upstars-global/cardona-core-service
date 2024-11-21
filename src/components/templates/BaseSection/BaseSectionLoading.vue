@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VColors } from '@/@model/vuetify'
+import { VColors } from '../../../@model/vuetify'
 
 defineProps<{ loading: boolean }>()
 </script>
