@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, it, vi } from 'vitest'
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import ListSearch from '../../../../../../src/components/templates/BaseList/_components/ListSearch.vue'
 import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../../utils'
 import { testOn } from '../../../../templates/shared-tests/test-case-generator'
@@ -8,19 +8,6 @@ import { ExportFormat } from '../../../../../../src/@model/templates/baseList'
 import { FilterType } from '../../../../../../src/@model/filter'
 
 const getMountListSearch = setMountComponent(ListSearch)
-
-// vi.mock('vue-router', () => ({
-//   useRouter: vi.fn(() => ({
-//     push: vi.fn(),
-//   })),
-//   useRoute: vi.fn(() => ({
-//     name: 'MockRoute',
-//   })),
-//   RouterLink: {
-//     template: '<a :href="to.path"><slot /></a>',
-//     props: ['to'],
-//   },
-// }))
 
 const filterList = [
   {
@@ -124,7 +111,7 @@ describe('ListSearch.vue', () => {
 
     testOn.equalTextValue({ wrapper, testId: 'right-search-btn-text' }, i18n.t('action.create'))
 
-    /// Test on call event
+    expect(wrapper.props().rightSearchBtn.createPage).toBe(props.rightSearchBtn.createPage)
   })
 
   it('Render export format selector ', async () => {
