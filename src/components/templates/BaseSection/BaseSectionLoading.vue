@@ -14,6 +14,7 @@ defineProps<{ loading: boolean }>()
         <VProgressCircular
           indeterminate
           size="64"
+          data-test-id="loader"
           :color="VColors.Primary"
         />
       </div>
