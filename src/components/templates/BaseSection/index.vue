@@ -2,8 +2,8 @@
 import { computed, inject, nextTick, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
-import { IconsList } from '../../../@model/enums/icons'
 import { useStore } from 'vuex'
+import { IconsList } from '../../../@model/enums/icons'
 import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
 import { basePermissions } from '../../../helpers/base-permissions'
 import { PageType } from '../../../@model/templates/baseSection'
@@ -376,7 +376,7 @@ defineExpose({
           </VBtn>
 
           <VBtn
-            v-if="isExistsListPage"
+            v-if="isExistsListPage || props.config.backToTheHistoryLast"
             :variant="VVariants.Outlined"
             :color="VColors.Secondary"
             data-test-id="cancel-button"

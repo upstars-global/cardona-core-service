@@ -3,6 +3,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises } from '@vue/test-utils'
 import { createStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router/auto'
 import type { UseEntityType } from '../../../../src/components/templates/BaseSection/index.vue'
 import BaseSection from '../../../../src/components/templates/BaseSection/index.vue'
 import { BaseSectionConfig } from '../../../../src/@model/templates/baseList'
@@ -16,6 +17,15 @@ import { basePermissions } from '../../../../src/helpers/base-permissions'
 import { useRedirectToNotFoundPage } from '../../../../src/helpers/router'
 
 const getMountBaseSection = setMountComponent(BaseSection)
+
+const routes = [
+  { path: '/mock-form-list', name: 'mock-formList', component: { template: '<div>Mock Form List</div>' } },
+]
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+})
 
 class MockForm {
   readonly id?: string
@@ -94,6 +104,7 @@ vi.mock('vue-router', async importOriginal => {
     ...actual,
     useRoute: vi.fn(() => ({
       params: { id: '123' },
+      routes,
       name: 'TestRoute',
       options: {
         history: {
@@ -123,7 +134,7 @@ const mountComponent = (props = {}, global = {}, slots = {}) =>
     useEntity: useMockForm,
     ...props,
   }, {
-    plugins: [mockStore],
+    plugins: [mockStore, router],
     stubs: {
       VBtn: { template: '<button><slot /></button>' },
     },
@@ -283,12 +294,14 @@ describe('BaseSection.vue', () => {
         backToTheHistoryLast: false,
       }),
       withReadAction: false,
+    }, {
+      mocks: {
+        isExistsListPage: true,
+      },
     })
 
     /// Trigger the cancel button click
     await clickTrigger({ wrapper, testId: 'cancel-button' })
-
-    await flushPromises()
 
     /// Verify that the router pushes to the correct route
     expect(mockRouter.push).toHaveBeenCalledWith({ name: 'mock-formList' })
