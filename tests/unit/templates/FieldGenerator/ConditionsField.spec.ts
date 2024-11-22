@@ -1,4 +1,4 @@
-import { describe, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises } from '@vue/test-utils'
 import { nextTick } from 'vue'
@@ -47,23 +47,23 @@ describe('ConditionsField.vue', () => {
     testOnValidPlaceholder(textarea, defaultProps.field.placeholder)
   })
 
-  // it('Renders correctly with default props', async () => {
-  //   const wrapper = getMountConditionsField(defaultProps) as VueWrapper
-  //   const textarea = getWrapperElement({ wrapper, selector: baseSelector })
-  //
-  //   testOn.existElement({ wrapper: textarea })
-  //   testOn.inputAttributeValueToBe({ wrapper: textarea }, defaultProps.modelValue)
-  //
-  //   expect(defaultProps.field.fetchOptions).toHaveBeenCalled()
-  //
-  //   await wrapper.vm.$nextTick()
-  //
-  //   testOn.checkLengthElements({ wrapper, testId: 'condition-variable-item', all: true }, conditions.length)
-  //
-  //   conditions.forEach((conditionText, index) => {
-  //     testOn.equalTextValue({ wrapper, testId: `variable-value-${index}` }, conditionText)
-  //   })
-  // })
+  it('Renders correctly with default props', async () => {
+    const wrapper = getMountConditionsField(defaultProps) as VueWrapper
+    const textarea = getWrapperElement({ wrapper, selector: baseSelector })
+
+    testOn.existElement({ wrapper: textarea })
+    testOn.inputAttributeValueToBe({ wrapper: textarea }, defaultProps.modelValue)
+
+    expect(defaultProps.field.fetchOptions).toHaveBeenCalled()
+
+    await wrapper.vm.$nextTick()
+
+    testOn.checkLengthElements({ wrapper, testId: 'condition-variable-item', all: true }, conditions.length)
+
+    conditions.forEach((conditionText, index) => {
+      testOn.equalTextValue({ wrapper, testId: `variable-value-${index}` }, conditionText)
+    })
+  })
 
   it('Updates the modelValue when a variable is clicked', async () => {
     const wrapper = getMountConditionsField(defaultProps) as VueWrapper
