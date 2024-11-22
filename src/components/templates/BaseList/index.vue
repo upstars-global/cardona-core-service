@@ -657,7 +657,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     <ListSearch
       v-if="!config.hideSearchBlock"
       v-model.trim="searchQuery"
-      class="pb-6"
+      class="pb-6 list-search"
       :right-search-btn="{
         canCreate: isShownCreateBtn,
         createPage: CreatePageName,
