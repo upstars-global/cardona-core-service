@@ -25,11 +25,11 @@ defineProps<{ loading: boolean }>()
 
 <style scoped lang="scss">
 .loader-overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 10rem);
   background-color: white;
   display: flex;
   justify-content: center;
