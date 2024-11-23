@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import ItemActions from '../../../../../../src/components/templates/BaseList/_components/fields/ItemActions.vue'
 import { clickTrigger, setMountComponent } from '../../../../utils'
@@ -33,14 +33,6 @@ let props
 
 beforeEach(() => {
   props = defaultProps
-})
-
-beforeAll(() => {
-  global.ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  }
 })
 
 const openActions = async (wrapper: VueWrapper) => {
