@@ -96,7 +96,7 @@ const onCreateCopy = () => {
         data-test-id="status-toggle"
         @click="emits('on-toggle-status', item)"
       >
-        <VListItemTitle data-test-id="status-toggle-text">
+        <VListItemTitle>
           {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
         </VListItemTitle>
       </VListItem>

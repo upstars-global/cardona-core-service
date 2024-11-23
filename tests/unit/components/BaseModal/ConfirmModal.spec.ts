@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 import ConfirmModal from '../../../../src/components/BaseModal/ConfirmModal.vue'
 import { clickTrigger, setMountComponent } from '../../utils'
 import { ModalSizes } from '../../../../src/@model/vuetify'
@@ -23,6 +23,13 @@ const defaultProps = {
 const globalConfig = { provide: { modal: mockModal } }
 
 describe('ConfirmModal', () => {
+  beforeAll(() => {
+    global.ResizeObserver = class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+  })
   it('Opens modal and renders correct content', async () => {
     const wrapper = getMountConfirmModal(defaultProps, globalConfig)
 

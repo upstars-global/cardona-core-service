@@ -1,4 +1,4 @@
-import { describe, it } from 'vitest'
+import { beforeAll, describe, it } from 'vitest'
 import ConfirmationModal from '../../../../src/components/BaseModal/ConfirmationModal.vue'
 import { clickTrigger, setMountComponent } from '../../utils'
 import { ModalSizes } from '../../../../src/@model/vuetify'
@@ -28,6 +28,13 @@ const testIdConfirmBtn = 'btn-confirm'
 const btnLoadingClass = 'v-btn--loading'
 
 describe('ConfirmationModal', () => {
+  beforeAll(() => {
+    global.ResizeObserver = class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+  })
   it('Opens modal and renders correct content', async () => {
     const wrapper = getMountConfirmationModal(defaultProps, globalConfig)
 
