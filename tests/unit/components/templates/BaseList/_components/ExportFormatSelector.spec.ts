@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, it } from 'vitest'
+import { beforeEach, describe, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import ExportFormatSelector from '../../../../../../src/components/templates/BaseList/_components/ExportFormatSelector.vue'
 import { clickTrigger, getWrapperElement, setMountComponent } from '../../../../utils'
@@ -19,14 +19,6 @@ let props
 
 beforeEach(() => {
   props = defaultProps
-})
-
-beforeAll(() => {
-  global.ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  }
 })
 
 describe('ExportButton.vue', () => {

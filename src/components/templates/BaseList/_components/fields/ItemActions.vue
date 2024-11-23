@@ -5,6 +5,7 @@ import type { IBaseListConfig } from '../../../../../@model/templates/baseList'
 import { BaseListActionsSlots } from '../../../../../@model/templates/baseList'
 import { IconsList } from '../../../../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../../../../@model/vuetify'
+import { IS_TEST_ENV } from '@/utils/constants'
 
 interface Props {
   item: any
@@ -59,7 +60,10 @@ const onCreateCopy = () => {
 </script>
 
 <template>
-  <VMenu v-if="isShowActions">
+  <VMenu
+    v-if="isShowActions"
+    :attach="IS_TEST_ENV"
+  >
     <template #activator="{ props }">
       <VBtn
         v-bind="props"
@@ -67,6 +71,7 @@ const onCreateCopy = () => {
         :color="VColors.Secondary"
         :variant="VVariants.Text"
         :size="VSizes.Small"
+        data-test-id="activator"
       >
         <VIcon
           :icon="IconsList.MoreVerticalIcon"
@@ -75,7 +80,10 @@ const onCreateCopy = () => {
       </VBtn>
     </template>
 
-    <VList class="actions-list">
+    <VList
+      class="actions-list"
+      data-test-id="actions-list"
+    >
       <slot
         v-if="existSlot(BaseListActionsSlots.PrependActionItem)"
         :name="BaseListActionsSlots.PrependActionItem"
@@ -85,9 +93,10 @@ const onCreateCopy = () => {
       <VListItem
         v-if="canUpdate && config.withDeactivation"
         :prepend-icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
+        data-test-id="status-toggle"
         @click="emits('on-toggle-status', item)"
       >
-        <VListItemTitle>
+        <VListItemTitle data-test-id="status-toggle-text">
           {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
         </VListItemTitle>
       </VListItem>
@@ -95,6 +104,7 @@ const onCreateCopy = () => {
       <VListItem
         v-if="canShowEdit"
         :prepend-icon="IconsList.EditIcon"
+        data-test-id="edit"
         @click="onUpdateItem"
       >
         <VListItemTitle>
@@ -104,6 +114,7 @@ const onCreateCopy = () => {
 
       <VListItem
         v-if="canCreate && config.createFromCopy"
+        data-test-id="copy"
         @click="onCreateCopy"
       >
         <template #prepend>
@@ -117,6 +128,7 @@ const onCreateCopy = () => {
       <VListItem
         v-if="canRemoveItem"
         class="text-error hover-text-error"
+        data-test-id="remove"
         @click="emits('on-remove', item)"
       >
         <template #prepend>
