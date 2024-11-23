@@ -4,6 +4,7 @@ import ItemActions from '../../../../../../src/components/templates/BaseList/_co
 import { clickTrigger, setMountComponent } from '../../../../utils'
 import { testOn } from '../../../../templates/shared-tests/test-case-generator'
 import { i18n } from '../../../../../../src/plugins/i18n'
+import { BaseListActionsSlots } from '../../../../../../src/@model/templates/baseList'
 
 const getMountItemActions = setMountComponent(ItemActions)
 const pushMock = vi.fn()
@@ -46,6 +47,8 @@ const openActions = async (wrapper: VueWrapper) => {
   await clickTrigger({ wrapper, testId: 'activator' })
 }
 
+const getTestTitle = (buttonName: string) => `Render button "${buttonName}" by condition and call action with correct params`
+
 describe('ItemActions.vue', () => {
   it('Open actions menu by trigger', async () => {
     const wrapper = getMountItemActions(props)
@@ -57,7 +60,7 @@ describe('ItemActions.vue', () => {
     testOn.existElement({ wrapper, testId: 'actions-list' })
   })
 
-  it('Click on toggle status', async () => {
+  it(getTestTitle('Toggle status'), async () => {
     props = { ...props, canUpdate: true, config: { withDeactivation: true } }
 
     const wrapper = getMountItemActions(props)
@@ -71,7 +74,7 @@ describe('ItemActions.vue', () => {
     testOn.isCalledEmitEventValue(wrapper, { event: 'on-toggle-status', value: props.item })
   })
 
-  it('Render status text', async () => {
+  it('Render valid text button of toggle status by field isActive', async () => {
     props = { ...props, canUpdate: true, config: { withDeactivation: true } }
     props.item.isActive = false
 
@@ -88,7 +91,7 @@ describe('ItemActions.vue', () => {
     testOn.equalTextValue({ wrapper, testId: 'status-toggle-text' }, i18n.t('action.deactivate'))
   })
 
-  it('Click on update', async () => {
+  it(getTestTitle('Update'), async () => {
     props = { ...props, canUpdate: true, canUpdateSeo: true, canUpdateItem: true }
 
     const wrapper = getMountItemActions(props)
@@ -102,7 +105,7 @@ describe('ItemActions.vue', () => {
     expect(pushMock).toHaveBeenCalled()
   })
 
-  it('Click on update', async () => {
+  it(getTestTitle('Make a copy'), async () => {
     props = { ...props, canCreate: true, config: { createFromCopy: true } }
 
     const wrapper = getMountItemActions(props)
@@ -116,7 +119,7 @@ describe('ItemActions.vue', () => {
     expect(pushMock).toHaveBeenLastCalledWith({ name: props.createPageName, params: { id: props.item.id } })
   })
 
-  it('Click on remove', async () => {
+  it(getTestTitle('Remove'), async () => {
     props = { ...props, canCreate: true, config: { createFromCopy: true } }
 
     const wrapper = getMountItemActions(props)
@@ -128,5 +131,26 @@ describe('ItemActions.vue', () => {
     await clickTrigger({ wrapper, testId: 'remove' })
 
     testOn.isCalledEmitEventValue(wrapper, { event: 'on-remove', value: props.item })
+  })
+
+  it('Is correct render slots with params', async () => {
+    props = { ...props, canCreate: true, config: { createFromCopy: true } }
+
+    const global = {}
+
+    const slots = {
+      [BaseListActionsSlots.PrependActionItem]: `<div data-test-id="${BaseListActionsSlots.PrependActionItem}">${props.item}</div>`,
+      [BaseListActionsSlots.AppendActionItem]: `<div data-test-id="${BaseListActionsSlots.AppendActionItem}">${props.item}</div>`,
+    }
+
+    const wrapper = getMountItemActions(props, global, slots)
+
+    await openActions(wrapper)
+
+    /// Check slots
+    Object.values(BaseListActionsSlots).forEach((slotKey: BaseListActionsSlots) => {
+      testOn.existElement({ wrapper, testId: slotKey })
+      testOn.existTextValue({ wrapper, testId: slotKey }, props.item)
+    })
   })
 })
