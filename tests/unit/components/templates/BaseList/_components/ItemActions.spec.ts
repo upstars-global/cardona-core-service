@@ -1,0 +1,132 @@
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { VueWrapper } from '@vue/test-utils'
+import ItemActions from '../../../../../../src/components/templates/BaseList/_components/fields/ItemActions.vue'
+import { clickTrigger, setMountComponent } from '../../../../utils'
+import { testOn } from '../../../../templates/shared-tests/test-case-generator'
+import { i18n } from '../../../../../../src/plugins/i18n'
+
+const getMountItemActions = setMountComponent(ItemActions)
+const pushMock = vi.fn()
+
+vi.mock('vue-router', () => {
+  return {
+    useRouter: vi.fn(() => ({
+      push: pushMock,
+    })),
+  }
+})
+
+const defaultProps = {
+  item: { id: '123', name: 'Mock name' },
+  createPageName: 'Create page name',
+  config: {},
+  canUpdate: false,
+  canUpdateItem: false,
+  canUpdateSeo: false,
+  canCreate: false,
+  getUpdateRoute: item => item,
+  canRemoveItem: true,
+}
+
+let props
+
+beforeEach(() => {
+  props = defaultProps
+})
+
+beforeAll(() => {
+  global.ResizeObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+})
+
+const openActions = async (wrapper: VueWrapper) => {
+  await clickTrigger({ wrapper, testId: 'activator' })
+}
+
+describe('ItemActions.vue', () => {
+  it('Open actions menu by trigger', async () => {
+    const wrapper = getMountItemActions(props)
+
+    testOn.notExistElement({ wrapper, testId: 'actions-list' })
+
+    await openActions(wrapper)
+
+    testOn.existElement({ wrapper, testId: 'actions-list' })
+  })
+
+  it('Click on toggle status', async () => {
+    props = { ...props, canUpdate: true, config: { withDeactivation: true } }
+
+    const wrapper = getMountItemActions(props)
+
+    await openActions(wrapper)
+
+    testOn.existElement({ wrapper, testId: 'status-toggle' })
+
+    await clickTrigger({ wrapper, testId: 'status-toggle' })
+
+    testOn.isCalledEmitEventValue(wrapper, { event: 'on-toggle-status', value: props.item })
+  })
+
+  it('Render status text', async () => {
+    props = { ...props, canUpdate: true, config: { withDeactivation: true } }
+    props.item.isActive = false
+
+    const wrapper = getMountItemActions(props)
+
+    await openActions(wrapper)
+
+    /// Status is false
+    testOn.equalTextValue({ wrapper, testId: 'status-toggle-text' }, i18n.t('action.activate'))
+
+    await wrapper.setProps({ item: { ...props.item, isActive: true } })
+
+    /// Status is true
+    testOn.equalTextValue({ wrapper, testId: 'status-toggle-text' }, i18n.t('action.deactivate'))
+  })
+
+  it('Click on update', async () => {
+    props = { ...props, canUpdate: true, canUpdateSeo: true, canUpdateItem: true }
+
+    const wrapper = getMountItemActions(props)
+
+    await openActions(wrapper)
+
+    testOn.existElement({ wrapper, testId: 'edit' })
+
+    await clickTrigger({ wrapper, testId: 'edit' })
+
+    expect(pushMock).toHaveBeenCalled()
+  })
+
+  it('Click on update', async () => {
+    props = { ...props, canCreate: true, config: { createFromCopy: true } }
+
+    const wrapper = getMountItemActions(props)
+
+    await openActions(wrapper)
+
+    testOn.existElement({ wrapper, testId: 'copy' })
+
+    await clickTrigger({ wrapper, testId: 'copy' })
+
+    expect(pushMock).toHaveBeenLastCalledWith({ name: props.createPageName, params: { id: props.item.id } })
+  })
+
+  it('Click on remove', async () => {
+    props = { ...props, canCreate: true, config: { createFromCopy: true } }
+
+    const wrapper = getMountItemActions(props)
+
+    await openActions(wrapper)
+
+    testOn.existElement({ wrapper, testId: 'remove' })
+
+    await clickTrigger({ wrapper, testId: 'remove' })
+
+    testOn.isCalledEmitEventValue(wrapper, { event: 'on-remove', value: props.item })
+  })
+})
