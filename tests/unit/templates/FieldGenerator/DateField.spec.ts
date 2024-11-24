@@ -45,8 +45,6 @@ describe('DateField.vue', () => {
 
     await dayOfCalendar.trigger('click')
 
-    actionBeforeCheckValue && console.log(expectedValue)
-
     testOnCallEventEmitAndEqualValue(wrapper, expectedValue)
   }
 

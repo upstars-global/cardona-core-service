@@ -68,16 +68,20 @@ onMounted(() => {
       <VListItem
         v-for="item in filledList"
         :key="item.key"
-        :data-test-id="item.key"
+        :data-test-id="`select-item-${item.key}`"
         @click="onToggleActive(item)"
       >
         <template #append>
           <VIcon
             v-if="selectedKeys.includes(item.key)"
             :icon="IconsList.CheckIcon"
+            data-test-id="check-icon"
           />
         </template>
-        <VListItemTitle class="text-color-base">
+        <VListItemTitle
+          class="text-color-base"
+          data-test-id="title"
+        >
           {{ item.title }}
         </VListItemTitle>
       </VListItem>
