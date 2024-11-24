@@ -38,7 +38,7 @@ beforeAll(() => {
     disconnect() {}
   }
 })
-describe('MultipleActions.vue', () => {
+describe('TableFields.vue', () => {
   beforeEach(() => {
     props = defaultProps
   })
@@ -86,5 +86,25 @@ describe('MultipleActions.vue', () => {
     testOn.isCalledEmitEventValue(wrapper, { event: 'update:modelValue', value: mockDataList[0] })
   })
 
-  /// Test on updated props modelValue
+  it('Updated modelValue with correct render', async () => {
+    const wrapper = getMountTableFields(props)
+
+    await clickTrigger({ wrapper, testId: 'activator' })
+
+    /// Check that in other items there is no icon
+    props.list.forEach(item => {
+      const wrapperSelectedItem = getWrapperElement({ wrapper, testId: `select-item-${item.key}` })
+
+      testOn.notExistElement({ wrapper: wrapperSelectedItem, selector: 'i' })
+    })
+
+    const wrapperSelectedItem = getWrapperElement({ wrapper, testId: `select-item-${mockDataList[2].key}` })
+
+    await wrapper.setProps({ modelValue: [mockDataList[2]] })
+
+    /// Check that selected item has icon
+    testOn.existClass({ wrapper: wrapperSelectedItem, selector: 'i' }, IconsList.CheckIcon)
+  })
+
+  /// TODO Create methods for the test cases which are duplicated
 })
