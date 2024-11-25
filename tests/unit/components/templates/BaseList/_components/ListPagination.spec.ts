@@ -1,7 +1,8 @@
-import { beforeEach, describe, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { computed, ref } from 'vue'
 import ListPagination from '../../../../../../src/components/templates/BaseList/_components/ListPagination.vue'
-import { setMountComponent } from '../../../../utils'
+import { clickTrigger, setMountComponent } from '../../../../utils'
+import { testOn } from '../../../../templates/shared-tests/test-case-generator'
 
 const getMountListPagination = setMountComponent(ListPagination)
 
@@ -46,7 +47,7 @@ const getPaginationConfig = ({ total, perPage, currentPage }) => ({
   },
 })
 
-// const activeClassMarker = 'v-pagination__item--is-active'
+const activeClassMarker = 'v-pagination__item--is-active'
 
 const defaultProps = {
   paginationConfig: getPaginationConfig({ total: 100, perPage: 10, currentPage: 1 }),
@@ -61,16 +62,26 @@ beforeEach(() => {
   props = defaultProps
 })
 
+// console.log(getPaginationConfig({ total: 100, perPage: 10, currentPage: 2 }), '***')
+//
+// props.paginationConfig = getPaginationConfig({ total: 100, perPage: 10, currentPage: 2 })
+// props.modelValue = 1
+// props.dataMeta = { from: 1, to: 10, of: 100 }
+
 describe('ListPagination.vue', () => {
-  it('Render base elements', async () => {
-    // console.log(getPaginationConfig({ total: 100, perPage: 10, currentPage: 2 }), '***')
-
-    props.paginationConfig = getPaginationConfig({ total: 100, perPage: 10, currentPage: 2 })
-    props.modelValue = 2
-    props.dataMeta = { from: 11, to: 20, of: 100 }
-
+  it('Render base elements', () => {
     const wrapper = getMountListPagination(props)
 
-    console.log(wrapper.html(), 111)
+    testOn.existElement({ wrapper, selector: `.${activeClassMarker}` })
+    testOn.equalTextValue({ wrapper, selector: `.${activeClassMarker}` }, props.modelValue.toString())
+  })
+
+  it('Check on call event model value', async () => {
+    const wrapper = getMountListPagination(props)
+
+    await clickTrigger({ wrapper, testId: `page-${2}` })
+
+    // testOn.isCalledEmitEventValue(wrapper, { event: 'update:modelValue', value: '2', index: 0 })
+    expect(wrapper.emitted('update:modelValue')[0][0]).toBe(2) /// TODO FIX test
   })
 })
