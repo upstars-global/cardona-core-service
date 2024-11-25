@@ -57,16 +57,6 @@ vi.mock('../../../../src/helpers/base-permissions', () => ({
   })),
 }))
 
-global.ResizeObserver = class {
-  constructor(callback) {
-    this.callback = callback
-  }
-
-  observe() {}
-  unobserve() {}
-  disconnect() {}
-}
-
 const mockStore = createStore({
   state: {
     errorUrls: [],
