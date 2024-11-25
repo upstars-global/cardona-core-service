@@ -19,7 +19,7 @@ const emits = defineEmits<Emits>()
 
 <template>
   <div class="table-settings w-100 align-center justify-space-between pa-4">
-    <span>
+    <span data-test-id="number-selected">
       {{ $t('common.numberOfSelected', { number: numberSelectedItems }) }}
     </span>
 
@@ -29,6 +29,7 @@ const emits = defineEmits<Emits>()
           :variant="VVariants.Outlined"
           :color="VColors.Secondary"
           :size="VSizes.Small"
+          data-test-id="activate"
           @click="emits('on-activate')"
         >
           {{ $t('action.activate') }}
@@ -38,6 +39,7 @@ const emits = defineEmits<Emits>()
           :variant="VVariants.Outlined"
           :color="VColors.Secondary"
           :size="VSizes.Small"
+          data-test-id="deactivate"
           @click="emits('on-deactivate')"
         >
           {{ $t('action.deactivate') }}
@@ -48,6 +50,7 @@ const emits = defineEmits<Emits>()
           :variant="VVariants.Outlined"
           :color="VColors.Error"
           :size="VSizes.Small"
+          data-test-id="remove"
           @click="emits('on-remove')"
         >
           {{ $t('action.remove') }}

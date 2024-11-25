@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import RemoveModal from '../../../../src/components/BaseModal/RemoveModal.vue'
-import {clickTrigger, getSelectorTestId, getWrapperElement, setMountComponent, setValue} from '../../utils'
+import { clickTrigger, getSelectorTestId, getWrapperElement, setMountComponent, setValue } from '../../utils'
 import { ModalSizes } from '../../../../src/@model/vuetify'
 import { i18n } from '../../../../src/plugins/i18n'
 import { mockModal } from '../../mocks/modal-provide-config'
@@ -9,7 +9,7 @@ import { testOn } from '../../templates/shared-tests/test-case-generator'
 import {
   callActionShowForInternalBaseModal,
   isEqualModalDescription,
-  isEqualModalTitle
+  isEqualModalTitle,
 } from '../../templates/shared-tests/modal'
 import { testOnValidPlaceholder } from '../../templates/shared-tests/text-input-fields'
 
@@ -59,6 +59,7 @@ describe('ConfirmationModal', () => {
     await callActionShowForInternalBaseModal(wrapper)
 
     const cancelButton = wrapper.find(getSelectorTestId('btn-cancel'))
+
     await cancelButton.trigger('click')
 
     expect(wrapper.emitted('on-close-modal')).toBeTruthy()
