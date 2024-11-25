@@ -57,6 +57,7 @@ const searchQuery = computed({
           v-model="searchQuery"
           :prepend-inner-icon="IconsList.SearchIcon"
           :placeholder="config.searchPlaceholder"
+          data-test-id="search-input"
           class="search bg-surface"
         />
 
@@ -66,6 +67,7 @@ const searchQuery = computed({
           :color="VColors.Secondary"
           :active="isOpenFilterBlock"
           class="filter-btn"
+          data-test-id="filter-btn"
           :class="{ 'filter-btn--small': config?.small }"
           @click="onFilterButtonClick"
         >
@@ -73,6 +75,7 @@ const searchQuery = computed({
           <span
             v-if="!config.small"
             class="align-middle ml-1"
+            data-test-id="filter-btn-text"
           >
             {{ $t('common.filter._') }}
           </span>
@@ -80,6 +83,7 @@ const searchQuery = computed({
           <span
             v-if="selectedFilters?.isNotEmpty"
             class="align-middle ml-1"
+            data-test-id="filter-count"
           >
             {{ selectedFilters.length }}
           </span>
@@ -87,6 +91,7 @@ const searchQuery = computed({
 
         <ExportFormatSelector
           v-if="exportSelector.canShow"
+          data-test-id="export-format-selector"
           :disabled="exportSelector.disable"
           :format-of-exports="config.formatOfExports"
           @export-format-selected="onExportFormatSelected"
@@ -102,8 +107,12 @@ const searchQuery = computed({
             :to="{ name: rightSearchBtn.createPage }"
             :prepend-icon="IconsList.PlusIcon"
             :color="VColors.Primary"
+            data-test-id="right-search-btn"
           >
-            <span class="text-nowrap">
+            <span
+              data-test-id="right-search-btn-text"
+              class="text-nowrap"
+            >
               {{ $t('action.create') }}
             </span>
           </VBtn>
