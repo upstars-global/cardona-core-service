@@ -147,6 +147,8 @@ const validate = async () => {
   return valid
 }
 
+const existFieldName = (fieldName: string, form: unknown) => Object.keys(form).some(key => fieldName.includes(key) || fieldName === key)
+
 const setTabError = (fieldName: string) => {
   const fieldElement: HTMLElement | null = document.getElementById(`${fieldName}-field`)
   let tabName = ''
@@ -156,11 +158,11 @@ const setTabError = (fieldName: string) => {
 
     if (windowElement)
       tabName = windowElement.dataset.tab!
-    else if (form.value.hasOwnProperty(fieldName))
+    else if (existFieldName(fieldName, form.value))
       tabName = FormTabs.Main
-    else if (form.value.seo?.hasOwnProperty(fieldName))
+    else if (existFieldName(fieldName, form.value.seo))
       tabName = FormTabs.Seo
-    else if (form.value.fieldTranslations?.hasOwnProperty(fieldName))
+    else if (existFieldName(fieldName, form.value.fieldTranslations))
       tabName = FormTabs.Localization
 
     const tabButton: HTMLElement | null = document.querySelector(
