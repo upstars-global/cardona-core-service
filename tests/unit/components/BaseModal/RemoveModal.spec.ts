@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import RemoveModal from '../../../../src/components/BaseModal/RemoveModal.vue'
 import { clickTrigger, getSelectorTestId, getWrapperElement, setMountComponent, setValue } from '../../utils'
@@ -25,14 +25,6 @@ const defaultProps = {
 const globalConfig = { provide: { modal: mockModal } }
 
 describe('ConfirmationModal', () => {
-  beforeAll(() => {
-    global.ResizeObserver = class {
-      observe() {}
-      unobserve() {}
-      disconnect() {}
-    }
-  })
-
   it('Opens modal and renders correct content', async () => {
     const wrapper = getMountConfirmModal(defaultProps, globalConfig)
 
