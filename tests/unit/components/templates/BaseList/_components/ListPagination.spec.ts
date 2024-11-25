@@ -11,8 +11,8 @@ const getPaginationConfig = ({ total, perPage, currentPage }) => ({
   linkGen: (pageNum: number) => `page=${pageNum}`,
   currentPage: ref(currentPage),
   perPageOptions,
-  perPage: ref(10),
-  total: ref(10),
+  perPage: ref(perPage),
+  total: ref(total),
   setupDataMeta: (refTable: any) =>
     computed(() => {
       const start = (currentPage - 1) * perPage + 1
@@ -63,6 +63,12 @@ beforeEach(() => {
 
 describe('ListPagination.vue', () => {
   it('Render base elements', async () => {
+    // console.log(getPaginationConfig({ total: 100, perPage: 10, currentPage: 2 }), '***')
+
+    props.paginationConfig = getPaginationConfig({ total: 100, perPage: 10, currentPage: 2 })
+    props.modelValue = 2
+    props.dataMeta = { from: 11, to: 20, of: 100 }
+
     const wrapper = getMountListPagination(props)
 
     console.log(wrapper.html(), 111)
