@@ -1,4 +1,5 @@
 import { beforeAll, beforeEach, describe, it, vi } from 'vitest'
+import type { VueWrapper } from '@vue/test-utils'
 import TableFields from '../../../../../../src/components/templates/BaseList/_components/TableFields.vue'
 import { clickTrigger, getWrapperElement, setMountComponent } from '../../../../utils'
 import { testOn } from '../../../../templates/shared-tests/test-case-generator'
@@ -6,6 +7,7 @@ import { IconsList } from '../../../../../../src/@model/enums/icons'
 
 const getMountTableFields = setMountComponent(TableFields)
 
+// Mock the vue-router
 vi.mock('vue-router', async importOriginal => {
   const actual = await importOriginal()
 
@@ -17,6 +19,7 @@ vi.mock('vue-router', async importOriginal => {
   }
 })
 
+// Mock data for the table fields
 const mockDataList = [
   { key: 'id', title: 'some ID' },
   { key: 'name', title: 'some Name' },
@@ -29,6 +32,16 @@ const defaultProps = {
   modelValue: [],
 }
 
+const findSelectItem = (wrapper: VueWrapper, key: string) =>
+  getWrapperElement({ wrapper, testId: `select-item-${key}` })
+
+const checkSelectedIcon = (wrapper, key, shouldExist) => {
+  const wrapperSelectedItem = findSelectItem(wrapper, key)
+  const assertion = shouldExist ? testOn.existClass : testOn.notExistElement
+
+  assertion({ wrapper: wrapperSelectedItem, selector: 'i' }, IconsList.CheckIcon)
+}
+
 let props
 
 beforeAll(() => {
@@ -38,21 +51,28 @@ beforeAll(() => {
     disconnect() {}
   }
 })
+
 describe('TableFields.vue', () => {
+  // Reset props before each test
   beforeEach(() => {
-    props = defaultProps
+    props = { ...defaultProps }
   })
+
   it('Renders correctly base elements', async () => {
     const wrapper = getMountTableFields(props)
 
+    // Verify the activator button exists
     testOn.existElement({ wrapper, testId: 'activator' })
 
+    // Trigger the activator to open the dropdown
     await clickTrigger({ wrapper, testId: 'activator' })
 
-    defaultProps.list.forEach(item => {
+    // Verify all items in the list are rendered with correct titles
+    mockDataList.forEach(item => {
       testOn.existTextValue({ wrapper, testId: `select-item-${item.key}` }, item.title)
     })
   })
+
   it('Renders correctly selected elements', async () => {
     props.modelValue = [mockDataList[0]]
 
@@ -60,51 +80,46 @@ describe('TableFields.vue', () => {
 
     await clickTrigger({ wrapper, testId: 'activator' })
 
-    /// Find selected item
-    const wrapperSelectedItem = getWrapperElement({ wrapper, testId: 'select-item-id' })
+    // Check the selected item has an icon
+    checkSelectedIcon(wrapper, 'id', true)
 
-    /// Check that selected item has icon
-    testOn.existClass({ wrapper: wrapperSelectedItem, selector: 'i' }, IconsList.CheckIcon)
-
-    /// Check that in other items there is no icon
-    props.list.slice(1).forEach(item => {
-      const wrapperSelectedItem = getWrapperElement({ wrapper, testId: `select-item-${item.key}` })
-
-      testOn.notExistElement({ wrapper: wrapperSelectedItem, selector: 'i' })
+    // Verify other items do not have icons
+    mockDataList.slice(1).forEach(item => {
+      checkSelectedIcon(wrapper, item.key, false)
     })
-
-    /// Reset props
-    props.modelValue = []
   })
+
   it('Check on call event update:modelValue with correct params', async () => {
     const wrapper = getMountTableFields(props)
 
+    // Open the dropdown
     await clickTrigger({ wrapper, testId: 'activator' })
 
+    // Select an item
     await clickTrigger({ wrapper, testId: 'select-item-id' })
 
-    testOn.isCalledEmitEventValue(wrapper, { event: 'update:modelValue', value: mockDataList[0] })
+    // Verify that the event is emitted with the correct value
+    testOn.isCalledEmitEventValue(wrapper, {
+      event: 'update:modelValue',
+      value: mockDataList[0],
+    })
   })
 
   it('Updated modelValue with correct render', async () => {
     const wrapper = getMountTableFields(props)
 
+    // Open the dropdown
     await clickTrigger({ wrapper, testId: 'activator' })
 
-    /// Check that in other items there is no icon
-    props.list.forEach(item => {
-      const wrapperSelectedItem = getWrapperElement({ wrapper, testId: `select-item-${item.key}` })
-
-      testOn.notExistElement({ wrapper: wrapperSelectedItem, selector: 'i' })
+    // Verify no icons exist initially
+    mockDataList.forEach(item => {
+      checkSelectedIcon(wrapper, item.key, false)
     })
 
-    const wrapperSelectedItem = getWrapperElement({ wrapper, testId: `select-item-${mockDataList[2].key}` })
-
+    // Update modelValue with a new selection
     await wrapper.setProps({ modelValue: [mockDataList[2]] })
 
-    /// Check that selected item has icon
-    testOn.existClass({ wrapper: wrapperSelectedItem, selector: 'i' }, IconsList.CheckIcon)
+    // Verify the newly selected item has an icon
+    checkSelectedIcon(wrapper, mockDataList[2].key, true)
   })
-
-  /// TODO Create methods for the test cases which are duplicated
 })
