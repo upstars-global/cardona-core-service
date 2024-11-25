@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, it, vi } from 'vitest'
+import { beforeEach, describe, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import TableFields from '../../../../../../src/components/templates/BaseList/_components/TableFields.vue'
 import { clickTrigger, getWrapperElement, setMountComponent } from '../../../../utils'
@@ -43,14 +43,6 @@ const checkSelectedIcon = (wrapper, key, shouldExist) => {
 }
 
 let props
-
-beforeAll(() => {
-  global.ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  }
-})
 
 describe('TableFields.vue', () => {
   // Reset props before each test
