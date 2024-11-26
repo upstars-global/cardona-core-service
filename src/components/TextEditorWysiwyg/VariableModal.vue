@@ -57,7 +57,7 @@ const deleteForm = () => {
             class="variable-box"
             :color="VColors.Secondary"
           >
-            {{ `{ ${keyVar} }` }}
+            {{ `{${keyVar}` + '}' }}
           </VChip>
         </VCol>
         <VCol
