@@ -31,7 +31,7 @@ jobs:
 
       - name: Set cache dependencies
         if: steps.yarn-cache.outputs.cache-hit == 'true'
-        run: yarn config set cache-folder steps.yarn-cache-dir-path.outputs.dir
+        run: yarn config set cache-folder $GITHUB_OUTPUT
 
       - name: Unit Tests
         run: npm run test:unit
