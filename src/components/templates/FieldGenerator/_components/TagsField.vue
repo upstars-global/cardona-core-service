@@ -2,7 +2,6 @@
 import { computed, ref } from 'vue'
 import type { TagsBaseField } from '../../../../@model/templates/baseField'
 import { IconsList } from '../../../../@model/enums/icons'
-import { VColors } from '../../../../@model/vuetify'
 import AppTextField from '@core/components/app-form-elements/AppTextField.vue'
 
 const props = defineProps<{
@@ -107,6 +106,9 @@ const appendInnerIcon = computed(() => {
     input {
       min-width: 10rem;
     }
+  }
+  :deep(.v-field--disabled) {
+    color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
   }
 }
 </style>
