@@ -7,20 +7,24 @@ jobs:
   deploy-core-service-production:
     runs-on: ubuntu-latest
     environment: production
+    container:
+      image: node:22 # Используем контейнер с Node.js и Yarn
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Cache Node Modules
+        uses: actions/cache@v3
         with:
-          node-version: "latest"
-          cache: "npm"
+          path: |
+            ~/.npm
+            .yarn/cache
+            node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-      - name: Install yarn
-        run: npm i -g yarn
-
-      - name: Yarn install
+      - name: Install dependencies
         run: yarn install
 
       - name: Unit Tests
