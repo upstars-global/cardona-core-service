@@ -37,16 +37,14 @@ const previewImage = computed(() => props.imagePath + previewAdditionalParams.va
       :id="`${id}-image-detail`"
       :size="ModalSizes.FullScreen"
     >
-      <template #default>
-        <div class="d-flex justify-center align-center pa-5">
-          <img
-            data-test-id="image-detail"
-            :src="imagePath"
-            alt="full img"
-            class="full-size-img"
-          >
-        </div>
-      </template>
+      <div class="d-flex justify-center align-center pa-5">
+        <img
+          data-test-id="image-detail"
+          :src="imagePath"
+          alt="full img"
+          class="full-size-img"
+        >
+      </div>
     </BaseModal>
   </div>
 </template>
