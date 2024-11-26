@@ -31,19 +31,23 @@ const previewImage = computed(() => props.imagePath + previewAdditionalParams.va
     <ImageField
       :image-path="previewImage"
       :size="size"
+      data-test-id="image-preview"
       @click.stop="modal.showModal(`${id}-image-detail`)"
     />
     <BaseModal
       :id="`${id}-image-detail`"
       :size="ModalSizes.FullScreen"
     >
-      <div class="d-flex justify-center align-center pa-5">
-        <img
-          :src="imagePath"
-          alt="full img"
-          class="full-size-img"
-        >
-      </div>
+      <template #default>
+        <div class="d-flex justify-center align-center pa-5">
+          <img
+            data-test-id="image-detail"
+            :src="imagePath"
+            alt="full img"
+            class="full-size-img"
+          >
+        </div>
+      </template>
     </BaseModal>
   </div>
 </template>
