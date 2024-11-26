@@ -4,6 +4,7 @@ import ImageField from '../../../../../../../src/components/templates/BaseList/_
 import { setMountComponent } from '../../../../../utils'
 import { testOn } from '../../../../../templates/shared-tests/test-case-generator'
 import { ListSize } from '../../../../../../../src/@model/templates/tableFields'
+import { checkImagePathForImageField } from '../../../../../templates/shared-tests/image-field'
 
 const getMountImageField = setMountComponent(ImageField)
 
@@ -33,7 +34,7 @@ describe('TableFields.vue', () => {
     const wrapper = getMountImageField(props)
 
     /// Check put image path in background-image style
-    testOn.includePropertyStyle({ wrapper }, { 'background-image': `url(${props.imagePath})` })
+    checkImagePathForImageField(wrapper, props.imagePath)
   })
 
   it('Check on set size for image', async () => {

@@ -1,19 +1,25 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import ImageDetailField from '../../../../../../../src/components/templates/BaseList/_components/fields/ImageDetailField.vue'
-import { clickTrigger, setMountComponent } from '../../../../../utils'
+import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../../../utils'
 import { mockModal } from '../../../../../mocks/modal-provide-config'
 import {
   callActionShowForInternalBaseModal,
 } from '../../../../../templates/shared-tests/modal'
 import { testOn } from '../../../../../templates/shared-tests/test-case-generator'
 import { ListSize } from '../../../../../../../src/@model/templates/tableFields'
+import {
+  checkImagePathForImageField,
+  checkImageSize,
+  imageBlockTestId,
+  imagePath,
+} from '../../../../../templates/shared-tests/image-field'
 
 const getMountImageDetailField = setMountComponent(ImageDetailField)
 
 const defaultProps = {
-  id: 'test-id',
-  imagePath: 'https://some-image-path.com',
+  id: 'some-id',
+  imagePath,
 
   /// Other props
   // compressionForPreview,
@@ -22,11 +28,8 @@ const defaultProps = {
 
 let props
 
+const imageDetailTestId = 'image-detail'
 const global = { provide: { modal: mockModal } }
-
-const checkImageSize = (wrapper: VueWrapper, size: ListSize) => {
-  testOn.existClass({ wrapper, testId: 'image-preview' }, `img-block--${size}`)
-}
 
 describe('TableFields.vue', () => {
   beforeEach(() => {
@@ -36,10 +39,10 @@ describe('TableFields.vue', () => {
   it('Renders correctly base elements', async () => {
     const wrapper = getMountImageDetailField(props, global)
 
-    await clickTrigger({ wrapper, testId: 'image-preview' })
+    await clickTrigger({ wrapper, testId: imageBlockTestId })
 
     // Check that image detail has not existed
-    testOn.notExistElement({ wrapper, testId: 'image-detail' })
+    testOn.notExistElement({ wrapper, testId: imageDetailTestId })
 
     /// Check on valid call action showModal
     expect(mockModal.showModal).toHaveBeenCalledWith(`${props.id}-image-detail`)
@@ -47,7 +50,7 @@ describe('TableFields.vue', () => {
     await callActionShowForInternalBaseModal(wrapper)
 
     /// Check that image detail exists
-    testOn.existElement({ wrapper, testId: 'image-detail' })
+    testOn.existElement({ wrapper, testId: imageDetailTestId })
   })
 
   it('Check set compression for preview ', async () => {
@@ -56,13 +59,9 @@ describe('TableFields.vue', () => {
     const wrapper = getMountImageDetailField(props, global)
 
     /// Check on compression for preview
-    testOn.includePropertyStyle({
-      wrapper,
-      testId: 'image-preview',
-    },
-    {
-      'background-image': `url(${props.imagePath}?ar=${props.compressionForPreview})`,
-    })
+    const imagePreviewWrapper: VueWrapper = wrapper.find(getSelectorTestId(imageBlockTestId))
+
+    checkImagePathForImageField(imagePreviewWrapper, `${props.imagePath}?ar=${props.compressionForPreview}`)
   })
 
   it('Check set size for preview ', async () => {
@@ -84,6 +83,6 @@ describe('TableFields.vue', () => {
 
     const wrapper = getMountImageDetailField(props, global)
 
-    testOn.notExistElement({ wrapper, testId: 'image-preview' })
+    testOn.notExistElement({ wrapper, testId: imageBlockTestId })
   })
 })

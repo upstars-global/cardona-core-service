@@ -31,7 +31,6 @@ const previewImage = computed(() => props.imagePath + previewAdditionalParams.va
     <ImageField
       :image-path="previewImage"
       :size="size"
-      data-test-id="image-preview"
       @click.stop="modal.showModal(`${id}-image-detail`)"
     />
     <BaseModal
