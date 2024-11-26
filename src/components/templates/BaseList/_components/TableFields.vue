@@ -5,6 +5,7 @@ import { TableField } from '../../../../@model/templates/tableFields'
 import { getListStorage, setStorage } from '../../../../helpers/storage'
 import { VColors, VVariants } from '../../../../@model/vuetify'
 import { IconsList } from '../../../../@model/enums/icons'
+import { IS_TEST_ENV } from '../../../../utils/constants'
 
 const props = defineProps<{
   entityName: string
@@ -50,29 +51,40 @@ onMounted(() => {
 </script>
 
 <template>
-  <VBtn
-    :variant="VVariants.Text"
-    :color="VColors.Secondary"
-    density="compact"
-    icon
-  >
-    <VIcon :icon="IconsList.SettingsIcon" />
-    <VMenu activator="parent">
-      <VList>
-        <VListItem
-          v-for="item in filledList"
-          :key="item.key"
-          @click="onToggleActive(item)"
+  <VMenu :attach="IS_TEST_ENV">
+    <template #activator="{ props }">
+      <VBtn
+        :variant="VVariants.Text"
+        :color="VColors.Secondary"
+        density="compact"
+        v-bind="props"
+        :icon="IconsList.SettingsIcon"
+        data-test-id="activator"
+      >
+        <VIcon :icon="IconsList.SettingsIcon" />
+      </VBtn>
+    </template>
+    <VList>
+      <VListItem
+        v-for="item in filledList"
+        :key="item.key"
+        :data-test-id="`select-item-${item.key}`"
+        @click="onToggleActive(item)"
+      >
+        <template #append>
+          <VIcon
+            v-if="selectedKeys.includes(item.key)"
+            :icon="IconsList.CheckIcon"
+            data-test-id="check-icon"
+          />
+        </template>
+        <VListItemTitle
+          class="text-color-base"
+          data-test-id="title"
         >
-          <template #append>
-            <VIcon
-              v-if="selectedKeys.includes(item.key)"
-              icon="tabler-check"
-            />
-          </template>
-          <VListItemTitle class="text-color-base">{{ item.title }}</VListItemTitle>
-        </VListItem>
-      </VList>
-    </VMenu>
-  </VBtn>
+          {{ item.title }}
+        </VListItemTitle>
+      </VListItem>
+    </VList>
+  </VMenu>
 </template>
