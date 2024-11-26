@@ -13,6 +13,7 @@ import ConfirmModal from '../../../components/BaseModal/ConfirmModal.vue'
 import { ModalsId } from '../../..//@model/modalsId'
 import { useRedirectToNotFoundPage } from '../../../helpers/router'
 import { FormTabs } from '../../../@model/enums/formTabs'
+import BaseSectionLoading from './BaseSectionLoading.vue'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean
@@ -290,113 +291,104 @@ defineExpose({
 </script>
 
 <template>
-  <Form
-    v-if="form"
-    ref="formRef"
-    class="base-section"
-    data-test-id="base-section"
-    @submit.prevent
-  >
-    <div class="position-relative">
-      <slot
-        :entity-id="entityId"
-        :entity-name="entityName"
-        :form="form"
-        :can-update="canUpdate"
-        :can-remove="canRemove"
-        :can-view-seo="canViewSeo"
-        :can-create-seo="canCreateSeo"
-        :can-update-seo="canUpdateSeo"
-        :on-click-remove="onClickRemove"
-      />
-      <div
-        v-if="isLoadingPage && pageType"
-        class="position-absolute base-section__loading d-flex"
-        data-test-id="loading"
+  <BaseSectionLoading :loading="isLoadingPage">
+    <template #default>
+      <Form
+        v-if="form"
+        ref="formRef"
+        class="base-section"
+        data-test-id="base-section"
+        @submit.prevent
       >
-        <VProgressCircular
-          indeterminate
-          class="ma-auto"
-        />
-      </div>
-    </div>
-    <slot
-      v-if="pageType"
-      name="actions"
-      :form="form"
-      :loading="isLoadingPage"
-    >
-      <div class="d-flex align-center mt-5">
-        <template v-if="isCreatePage">
-          <VBtn
-            class="mr-4"
-            :color="VColors.Primary"
-            data-test-id="create-button"
-            :disabled="isLoadingPage"
-            @click="onSubmit(false)"
+        <div class="position-relative">
+          <slot
+            :entity-id="entityId"
+            :entity-name="entityName"
+            :form="form"
+            :can-update="canUpdate"
+            :can-remove="canRemove"
+            :can-view-seo="canViewSeo"
+            :can-create-seo="canCreateSeo"
+            :can-update-seo="canUpdateSeo"
+            :on-click-remove="onClickRemove"
+          />
+          <div
+            v-if="isLoadingPage && pageType"
+            class="position-absolute base-section__loading d-flex"
+            data-test-id="loading"
           >
-            {{ $t('action.createAndExit') }}
-          </VBtn>
-
-          <VBtn
-            class="mr-4"
-            :variant="VVariants.Outlined"
-            :color="VColors.Secondary"
-            data-test-id="stay-button"
-            :disabled="isLoadingPage"
-            @click="onSubmit(true)"
-          >
-            {{ $t('action.createAndStay') }}
-          </VBtn>
-        </template>
-
-        <template v-if="isUpdatePage">
-          <VBtn
-            class="mr-4"
-            :color="VColors.Primary"
-            data-test-id="save-button"
-            :disabled="isDisableSubmit || isLoadingPage"
-            @click="onSubmit(false)"
-          >
-            {{ $t('action.save') }}
-          </VBtn>
-        </template>
-
-        <VBtn
-          :variant="VVariants.Outlined"
-          :color="VColors.Secondary"
-          data-test-id="cancel-button"
-          @click.prevent="onClickCancel"
+            <VProgressCircular
+              indeterminate
+              class="ma-auto"
+            />
+          </div>
+        </div>
+        <slot
+          v-if="pageType"
+          name="actions"
+          :form="form"
+          :loading="isLoadingPage"
         >
-          {{ $t('action.cancel') }}
-        </VBtn>
-      </div>
-    </slot>
+          <div class="d-flex align-center mt-5">
+            <template v-if="isCreatePage">
+              <VBtn
+                class="mr-4"
+                :color="VColors.Primary"
+                data-test-id="create-button"
+                :disabled="isLoadingPage"
+                @click="onSubmit(false)"
+              >
+                {{ $t('action.createAndExit') }}
+              </VBtn>
 
-    <ConfirmModal
-      v-if="!config?.withoutConfirmModal"
-      :modal-id="ModalsId.ConfirmModal"
-      @on-click-modal-ok="onSave"
-    />
-    <RemoveModal
-      v-if="!config?.withoutDeleteModal"
-      :remove-modal-id="removeModalId"
-      :entity-name="entityName"
-      data-test-id="remove-modal"
-      @on-click-modal-ok="confirmRemoveModal"
-    />
-  </Form>
+              <VBtn
+                class="mr-4"
+                :variant="VVariants.Outlined"
+                :color="VColors.Secondary"
+                data-test-id="stay-button"
+                :disabled="isLoadingPage"
+                @click="onSubmit(true)"
+              >
+                {{ $t('action.createAndStay') }}
+              </VBtn>
+            </template>
+
+            <template v-if="isUpdatePage">
+              <VBtn
+                class="mr-4"
+                :color="VColors.Primary"
+                data-test-id="save-button"
+                :disabled="isDisableSubmit || isLoadingPage"
+                @click="onSubmit(false)"
+              >
+                {{ $t('action.save') }}
+              </VBtn>
+            </template>
+
+            <VBtn
+              :variant="VVariants.Outlined"
+              :color="VColors.Secondary"
+              data-test-id="cancel-button"
+              @click.prevent="onClickCancel"
+            >
+              {{ $t('action.cancel') }}
+            </VBtn>
+          </div>
+        </slot>
+
+        <ConfirmModal
+          v-if="!config?.withoutConfirmModal"
+          :modal-id="ModalsId.ConfirmModal"
+          @on-click-modal-ok="onSave"
+        />
+        <RemoveModal
+          v-if="!config?.withoutDeleteModal"
+          :remove-modal-id="removeModalId"
+          :entity-name="entityName"
+          data-test-id="remove-modal"
+          @on-click-modal-ok="confirmRemoveModal"
+        />
+      </Form>
+    </template>
+  </BaseSectionLoading>
 </template>
-
-<style lang="scss" scoped>
-.base-section {
-  &__loading {
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: rgb(var(--v-theme-surface), var(--v-medium-emphasis-opacity));
-    z-index: 5;
-  }
-}
-</style>
