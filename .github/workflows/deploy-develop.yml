@@ -29,8 +29,11 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
 
+      - name: Set cache dependencies
+        if: steps.yarn-cache.outputs.cache-hit == 'true'
+        run: yarn config set cache-folder steps.yarn-cache-dir-path.outputs.dir
+
       - name: Unit Tests
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: npm run test:unit
 
       - name: Build
