@@ -5,7 +5,7 @@ export const imagePath = 'https://some-image-path.com'
 
 export const imageBlockTestId = 'image-block'
 
-export const checkImageSize = (wrapper, size) => {
+export const checkImageSize = (wrapper: VueWrapper, size) => {
   testOn.existClass({ wrapper, testId: 'image-block' }, `img-block--${size}`)
 }
 

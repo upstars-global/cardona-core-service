@@ -41,8 +41,17 @@ describe('TableFields.vue', () => {
 
     await clickTrigger({ wrapper, testId: imageBlockTestId })
 
-    // Check that image detail has not existed
+    /// Check that image detail has not existed
     testOn.notExistElement({ wrapper, testId: imageDetailTestId })
+
+    /// Check path
+    const imagePreviewWrapper: VueWrapper = wrapper.find(getSelectorTestId(imageBlockTestId))
+
+    checkImagePathForImageField(imagePreviewWrapper, props.imagePath)
+  })
+
+  it('Open modal with detail image ', async () => {
+    const wrapper = getMountImageDetailField(props, global)
 
     /// Check on valid call action showModal
     expect(mockModal.showModal).toHaveBeenCalledWith(`${props.id}-image-detail`)
