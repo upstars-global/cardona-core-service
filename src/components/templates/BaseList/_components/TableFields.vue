@@ -5,7 +5,7 @@ import { TableField } from '../../../../@model/templates/tableFields'
 import { getListStorage, setStorage } from '../../../../helpers/storage'
 import { VColors, VVariants } from '../../../../@model/vuetify'
 import { IconsList } from '../../../../@model/enums/icons'
-import { IS_TEST_ENV } from '@/utils/constants'
+import { IS_TEST_ENV } from '../../../../utils/constants'
 
 const props = defineProps<{
   entityName: string
