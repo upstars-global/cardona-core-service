@@ -263,4 +263,9 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
   max-height: 30rem;
   transition: max-height 1s;
 }
+
+:deep(.v-chip--disabled) {
+  color: rgb(var(--v-theme-grey-500)) !important;
+  opacity: 1;
+}
 </style>
