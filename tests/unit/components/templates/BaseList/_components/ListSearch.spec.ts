@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import ListSearch from '../../../../../../src/components/templates/BaseList/_components/ListSearch.vue'
 import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../../utils'
 import { testOn } from '../../../../templates/shared-tests/test-case-generator'
@@ -38,14 +38,6 @@ const defaultProps = {
 }
 
 let props
-
-beforeAll(() => {
-  global.ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  }
-})
 
 beforeEach(() => {
   props = defaultProps

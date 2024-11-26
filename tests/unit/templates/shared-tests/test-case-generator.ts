@@ -248,7 +248,7 @@ export const testOn = {
   },
 
   isCalledEmitEventValue: (wrapper: VueWrapper, { event, value, index }: { event: string; value: unknown; index?: number }) => {
-    expect(wrapper.emitted(event)[index || 0][0]).includes(value)
+    expect(wrapper.emitted(event)[index || 0][0]).to.deep.include(value)
   },
 
   checkedElementToBe: testCaseGenerator({
