@@ -7,31 +7,18 @@ jobs:
   deploy-core-service-development:
     runs-on: ubuntu-latest
     environment: develop
-    container:
-      image: node:22 # Используем контейнер с Node.js и Yarn
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v4
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version: '22'
+          cache: 'yarn'
 
-      - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
-
-      - name: Set cache dependencies
-        if: steps.yarn-cache.outputs.cache-hit == 'true'
-        run: yarn config set cache-folder $GITHUB_OUTPUT
+      - name: Install project dependencies
+        run: yarn
 
       - name: Unit Tests
         run: npm run test:unit
