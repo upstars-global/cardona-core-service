@@ -239,11 +239,16 @@ export const testOn = {
     methodExpect: ExpectMethods.ToBeTruthy,
     property: { name: WrapperProperties.Emitted, value: EventEmittersNames.Hide },
   }),
+
   isCalledEmitEvent: (wrapper: VueWrapper, actionEmit: string) => {
     testCaseGenerator({
       methodExpect: ExpectMethods.ToBeTruthy,
       property: { name: WrapperProperties.Emitted, value: actionEmit },
     })({ wrapper })
+  },
+
+  isCalledEmitEventValue: (wrapper: VueWrapper, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+    expect(wrapper.emitted(event)[index || 0][0]).to.deep.include(value)
   },
 
   checkedElementToBe: testCaseGenerator({

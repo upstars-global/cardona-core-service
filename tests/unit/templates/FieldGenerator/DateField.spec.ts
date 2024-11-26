@@ -45,8 +45,6 @@ describe('DateField.vue', () => {
 
     await dayOfCalendar.trigger('click')
 
-    actionBeforeCheckValue && console.log(expectedValue)
-
     testOnCallEventEmitAndEqualValue(wrapper, expectedValue)
   }
 
@@ -106,8 +104,6 @@ describe('DateField.vue', () => {
   })
 
   it('Updates in filter mode with empty from value', async () => {
-    const dateTo = moment().format()
-
     await testChangeInputValue(
       {
         inputKey: 'from',
@@ -115,7 +111,7 @@ describe('DateField.vue', () => {
         dateRange: { from: '', to: '' },
         valueOfSet: '2024-11-12T11:00:00.000Z',
       },
-      `2024-11-12T11:00:00.000Z to ${dateTo}`,
+      `2024-11-12T11:00:00.000Z to ${moment().format().split('T')[0]}`, /// Set only date without time because don't need to check time
     )
   })
 
