@@ -106,14 +106,21 @@ const onSearch = debounce(async (search: string, loading: Function) => {
           {{ name }}
         </span>
 
-        <VIcon
-          v-if="field.withCopyId"
-          :icon="IconsList.CopyIcon"
-          class="cursor-pointer text-primary"
-          size="16"
-          @click.stop="copyToClipboard(id)"
-          @mousedown.stop
-        />
+        <div v-if="field.withCopyId">
+          <VIcon
+            :icon="IconsList.CopyIcon"
+            class="cursor-pointer text-primary"
+            size="16"
+            @click.stop="copyToClipboard(id)"
+            @mousedown.stop
+          />
+
+          <VTooltip
+            location="bottom"
+            :text="$t('component.multiSelect.copyId')"
+            activator="parent"
+          />
+        </div>
       </template>
 
       <template #no-options="{ loading, search }">

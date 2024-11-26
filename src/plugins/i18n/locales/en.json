@@ -469,6 +469,9 @@
       "allowedCountries": "Allowed countries",
       "placeholder": "Search by Country and Region",
       "description": "If no countries are selected, then all countries are allowed"
+    },
+    "multiSelect": {
+      "copyId": "Copy ID"
     }
   },
   "page": {
