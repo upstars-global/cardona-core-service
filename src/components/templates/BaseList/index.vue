@@ -119,6 +119,7 @@ const fetchActionName: string = props.config?.withCustomFetchList
 
 const fetchReportActionName = 'baseStoreCore/fetchReport'
 const updateActionName = 'baseStoreCore/updateEntity'
+const toggleStatusActionName = 'baseStoreCore/toggleStatusEntity'
 
 const deleteActionName = props.config?.withCustomDelete
   ? `${moduleName}/deleteEntity`
@@ -333,7 +334,11 @@ const getUpdateRoute = ({ id }): Location => {
 }
 
 const onClickToggleStatus = async ({ id, isActive }) => {
-  await store.dispatch(updateActionName, {
+  const actionName = props.config.withDeactivationBySpecificAction
+    ? toggleStatusActionName
+    : updateActionName
+
+  await store.dispatch(actionName, {
     type: entityName,
     data: { form: { id, isActive: !isActive } },
     customApiPrefix: props.config?.customApiPrefix,
