@@ -67,16 +67,6 @@ vi.mock('../../../../src/helpers/base-permissions', () => ({
   })),
 }))
 
-global.ResizeObserver = class {
-  constructor(callback) {
-    this.callback = callback
-  }
-
-  observe() {}
-  unobserve() {}
-  disconnect() {}
-}
-
 const mockStore = createStore({
   state: {
     errorUrls: [],
@@ -252,11 +242,11 @@ describe('BaseSection.vue', () => {
       })],
     })
 
-    /// Verify that the loading indicator is shown
-    testOn.existElement({ wrapper, testId: 'loading' })
+    /// Check that the loader is rendered
+    testOn.existElement({ wrapper, testId: 'loader' })
 
-    /// Check that the save button is disabled during loading
-    testOn.isDisabledElement({ wrapper, testId: 'save-button' })
+    /// Check that the main base section is not rendered
+    testOn.notExistElement({ wrapper, testId: 'base-section' })
   })
 
   it('Calls onClickCancel when cancel button is clicked', async () => {

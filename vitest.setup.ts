@@ -33,3 +33,9 @@ vi.mock('./src/helpers/clipboard', () => ({
 }))
 
 config.global.plugins = [vuetify, getI18n()]
+
+global.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}

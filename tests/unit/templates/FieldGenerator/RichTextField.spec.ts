@@ -127,7 +127,6 @@ describe('TextEditorWysiwyg.vue', () => {
 
       // Update props and log the output for debugging
       await wrapper.setProps({ modelValue: '{{Test}}' })
-      console.log(wrapper.html())
     })
 
     it('Handles variable updates correctly', async () => {
