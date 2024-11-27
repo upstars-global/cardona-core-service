@@ -216,6 +216,7 @@ const isLoadingList = computed(() => {
     : store.getters.isLoadingEndpoint([
       listUrl,
       `${entityUrl}/update`,
+      `${entityUrl}/active/switch`,
       `${entityUrl}/delete`,
       ...props.config.loadingEndpointArr!,
     ])
