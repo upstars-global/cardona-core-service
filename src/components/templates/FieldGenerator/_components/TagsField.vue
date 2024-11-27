@@ -108,7 +108,7 @@ const appendInnerIcon = computed(() => {
     }
   }
   :deep(.v-field--disabled) {
-    color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+    opacity: var(--v-muted-placeholder-opacity);
   }
 }
 </style>
