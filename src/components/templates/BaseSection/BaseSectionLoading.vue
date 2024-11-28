@@ -19,7 +19,10 @@ defineProps<{ loading: boolean }>()
         />
       </div>
     </Transition>
-    <div v-show="!loading">
+    <div
+      v-show="!loading"
+      data-test-id="not-active-loader-content"
+    >
       <slot />
     </div>
   </div>
