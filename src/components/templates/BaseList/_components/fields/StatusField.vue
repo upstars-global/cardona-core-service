@@ -91,8 +91,12 @@ const actualVariant = computed(() => {
     :color="color"
     :variant="actualVariant"
     :label="!rounded"
+    data-test-id="status-field"
   >
-    <span class="lh-normal">
+    <span
+      class="lh-normal"
+      data-test-id="status-field-text"
+    >
       {{ value }}
     </span>
   </VChip>
