@@ -2,9 +2,10 @@ import { beforeEach, describe, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import StatusWithDateField from '../../../../../../../src/components/templates/BaseList/_components/fields/StatusWithDateField.vue'
 import { setMountComponent } from '../../../../../utils'
-import { testOn } from '../../../../../templates/shared-tests/test-case-generator'
 import { VColors, VVariants } from '../../../../../../../src/@model/vuetify'
+import { getTestCases } from '../../../../../templates/shared-tests/date-and-dateTimeField'
 import { fullDate } from '../../../../../../../src/utils/date'
+import { testOn } from '../../../../../templates/shared-tests/test-case-generator'
 
 const getMountStatusWithDateField = setMountComponent(StatusWithDateField)
 
@@ -30,6 +31,22 @@ describe('StatusWithDateField.vue', () => {
     props = { ...defaultProps }
   })
 
+  /// Run test list test cased for DateField in component
+
+  getTestCases(fullDate).forEach(({ description, props: propsValue, expectedDate }) => {
+    it(description, () => {
+      props.item.updatedAt = propsValue.date
+
+      /// Set to wrapper variable wrapper of component DateField which is using in StatusWithDateField
+      const wrapper = getDateFieldWrapper(getMountStatusWithDateField(props))
+
+      if (expectedDate instanceof Date)
+        testOn.equalTextValue({ wrapper }, fullDate(expectedDate))
+      else
+        testOn.equalTextValue({ wrapper }, expectedDate)
+    })
+  })
+
   it('Check render elements byDefaultProps from test ', () => {
     const wrapper = getMountStatusWithDateField(props)
 
@@ -38,23 +55,5 @@ describe('StatusWithDateField.vue', () => {
 
     testOn.existClass({ wrapper, testId: testIds.statusField }, `v-chip--variant-${VVariants.Tonal}`)
     testOn.equalTextValue({ wrapper, testId: testIds.statusFieldText }, 'Active')
-
-    /// Check render date field
-
-    const dateFieldWrapper = getDateFieldWrapper(wrapper)
-
-    testOn.existElement({ wrapper: dateFieldWrapper })
-    testOn.equalTextValue({ wrapper: dateFieldWrapper }, fullDate(new Date(props.item.updatedAt)))
-  })
-
-  it('Test on empty params of date ', () => {
-    props.item.updatedAt = null
-
-    const wrapper = getMountStatusWithDateField(props)
-
-    const dateFieldWrapper = getDateFieldWrapper(wrapper)
-
-    testOn.existElement({ wrapper: dateFieldWrapper })
-    testOn.equalTextValue({ wrapper: dateFieldWrapper }, '-')
   })
 })
