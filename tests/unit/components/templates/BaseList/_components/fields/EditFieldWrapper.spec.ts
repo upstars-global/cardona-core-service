@@ -44,7 +44,11 @@ const isActiveEditMode = (wrapper: VueWrapper) => {
   testOn.existElement({ wrapper, testId: testIds.actionButtons })
 }
 
-const updateValueSlotInEditMode = async (wrapper: VueWrapper, action: CallableFunction) => {
+const updateValueSlotInEditMode = async (action: CallableFunction) => {
+  props.isEdit = true
+
+  const wrapper = getMountEditFieldWrapper(props, {}, mockedSlot)
+
   const updatedValue = 'New value'
 
   /// Find input in slot
@@ -59,7 +63,7 @@ const updateValueSlotInEditMode = async (wrapper: VueWrapper, action: CallableFu
   /// Check that input is updated
   testOn.inputAttributeValueToBe({ wrapper: inputWrapper }, updatedValue)
 
-  action({ updatedValue })
+  action({ wrapper, updatedValue })
 }
 
 describe('EditFieldWrapper.vue', () => {
@@ -110,11 +114,7 @@ describe('EditFieldWrapper.vue', () => {
   })
 
   it('Check update value from edit mode and set read mode after accept', async () => {
-    props.isEdit = true
-
-    const wrapper = getMountEditFieldWrapper(props, {}, mockedSlot)
-
-    await updateValueSlotInEditMode(wrapper, async ({ updatedValue }) => {
+    await updateValueSlotInEditMode(async ({ wrapper, updatedValue }) => {
       /// Click on accept update
       await clickTrigger({ wrapper, testId: testIds.acceptUpdateButton })
 
@@ -126,11 +126,7 @@ describe('EditFieldWrapper.vue', () => {
     })
   })
   it('Check on call event and value after cancel ', async () => {
-    props.isEdit = true
-
-    const wrapper = getMountEditFieldWrapper(props, {}, mockedSlot)
-
-    await updateValueSlotInEditMode(wrapper, async () => {
+    await updateValueSlotInEditMode(async ({ wrapper }) => {
       /// Click on  cancel update
       await clickTrigger({ wrapper, testId: testIds.cancelUpdateButton })
 
