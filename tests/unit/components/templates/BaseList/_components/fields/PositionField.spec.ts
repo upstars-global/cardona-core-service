@@ -17,16 +17,20 @@ const defaultProps = {
 
 let props
 
-const positionTextTestId = 'position-read-text'
-const editIconTestId = 'position-edit-icon'
-const positionInputTestId = 'position-input'
-const savePositionTestId = 'position-save-button'
-const cancelPositionTestId = 'position-cancel-button'
+const testIds = {
+  positionText: 'position-read-text',
+  editIcon: 'position-edit-icon',
+  positionInput: 'position-input',
+  savePosition: 'position-save-button',
+  cancelPosition: 'position-cancel-button',
+}
+
+const positionInputSelector = `${getSelectorTestId(testIds.positionInput)} input`
 
 const testOnSavePosition = async (wrapper: VueWrapper, { newPosition, actionForSave }: { newPosition: number; actionForSave: () => void }) => {
-  await clickTrigger({ wrapper, testId: editIconTestId })
+  await clickTrigger({ wrapper, testId: testIds.editIcon })
 
-  await wrapper.find(`${getSelectorTestId(positionInputTestId)} input`).setValue(newPosition)
+  await wrapper.find(positionInputSelector).setValue(newPosition)
 
   await actionForSave()
 
@@ -34,41 +38,42 @@ const testOnSavePosition = async (wrapper: VueWrapper, { newPosition, actionForS
 
   await wrapper.setProps({ position: newPosition })
 
-  testOn.existTextValue({ wrapper, testId: positionTextTestId }, newPosition.toString())
+  testOn.existTextValue({ wrapper, testId: testIds.positionText }, newPosition.toString())
 }
 
 const setTestFormEditElements = (testOnMethod: Function) => (wrapper: VueWrapper) => {
-  const editModeElements = [positionInputTestId, savePositionTestId, cancelPositionTestId]
+  const editModeElements = [testIds.positionInput, testIds.savePosition, testIds.cancelPosition]
 
   editModeElements.forEach(testId => {
     testOnMethod({ wrapper, testId })
   })
 }
 
-const existElementsForEditMode = setTestFormEditElements(testOn.existElement)
+const renderElementsForEditMode = setTestFormEditElements(testOn.existElement)
 
-const absentElementsForEditMode = setTestFormEditElements(testOn.notExistElement)
+const notRenderedElementsForEditMode = setTestFormEditElements(testOn.notExistElement)
 
 describe('PositionField.vue', () => {
   beforeEach(() => {
     props = { ...defaultProps }
   })
 
-  it('Renders correctly base elements by default states ', () => {
+  it('Rendered elements in default state ', () => {
     const wrapper = getMountPositionField(props)
 
-    testOn.existClass({ wrapper, testId: editIconTestId, selector: 'i' }, IconsList.EditIcon)
-    testOn.existTextValue({ wrapper, testId: positionTextTestId }, props.position.toString())
+    testOn.existClass({ wrapper, testId: testIds.editIcon, selector: 'i' }, IconsList.EditIcon)
+    testOn.existTextValue({ wrapper, testId: testIds.positionText }, props.position.toString())
 
-    absentElementsForEditMode(wrapper)
+    notRenderedElementsForEditMode(wrapper)
   })
 
-  it('Check on click edit position', async () => {
+  it('Check activation edit mode ', async () => {
     const wrapper = getMountPositionField(props)
 
-    await clickTrigger({ wrapper, testId: editIconTestId })
+    await clickTrigger({ wrapper, testId: testIds.editIcon })
 
-    existElementsForEditMode(wrapper)
+    /// Check that exist input for edit position
+    renderElementsForEditMode(wrapper)
   })
 
   it('Check on change position and save', async () => {
@@ -76,23 +81,27 @@ describe('PositionField.vue', () => {
 
     await testOnSavePosition(wrapper, {
       newPosition: 2,
-      actionForSave: async () => await clickTrigger({ wrapper, testId: savePositionTestId }),
+      actionForSave: async () => {
+        /// Save position by click on button
+        await clickTrigger({ wrapper, testId: testIds.savePosition })
+      },
     })
   })
 
   it('Check on change position and cancel', async () => {
     const wrapper = getMountPositionField(props)
 
-    await clickTrigger({ wrapper, testId: editIconTestId })
+    await clickTrigger({ wrapper, testId: testIds.editIcon })
 
     const newPosition = 2
 
-    await wrapper.find(`${getSelectorTestId(positionInputTestId)} input`).setValue(newPosition)
+    /// Update position input value
+    await wrapper.find(positionInputSelector).setValue(newPosition)
 
-    await clickTrigger({ wrapper, testId: cancelPositionTestId })
+    /// Cancel by click on button
+    await clickTrigger({ wrapper, testId: testIds.cancelPosition })
 
-    /// Not exists elements
-    absentElementsForEditMode(wrapper)
+    notRenderedElementsForEditMode(wrapper)
   })
 
   it('Check on change position and save by click "Enter" ', async () => {
@@ -101,44 +110,46 @@ describe('PositionField.vue', () => {
     await testOnSavePosition(wrapper, {
       newPosition: 2,
       actionForSave: async () => {
-        await wrapper.find(`${getSelectorTestId(positionInputTestId)} input`).trigger('keyup.enter')
+        /// Save position  by "Enter"
+        await wrapper.find(positionInputSelector).trigger('keyup.enter')
       },
     })
   })
 
-  it('Check on change position and cancel', async () => {
+  it('Check on cancel saving position and by click "Esc"', async () => {
     const wrapper = getMountPositionField(props)
 
-    await clickTrigger({ wrapper, testId: editIconTestId })
+    await clickTrigger({ wrapper, testId: testIds.editIcon })
 
     const newPosition = 2
 
-    const input = wrapper.find(`${getSelectorTestId(positionInputTestId)} input`)
+    const input = wrapper.find(positionInputSelector)
 
     await input.setValue(newPosition)
 
+    /// Cancel by "Esc"
     await input.trigger('keyup.esc')
 
-    /// Not exists elements
-    absentElementsForEditMode(wrapper)
+    notRenderedElementsForEditMode(wrapper)
   })
 
-  it('Render component when cant update position', () => {
+  it('Render component when update position is forbidden', async () => {
     props.canUpdate = false
 
     const wrapper = getMountPositionField(props)
 
-    testOn.notExistElement({ wrapper, testId: editIconTestId })
+    /// Check that not exist icon for action edit
+    testOn.notExistElement({ wrapper, testId: testIds.editIcon })
   })
-  it('Render element with props size: small', async () => {
+
+  it('Render element with active small size', async () => {
     props.size = ListSize.SM
 
     const wrapper = getMountPositionField(props)
 
-    await clickTrigger({ wrapper, testId: editIconTestId })
+    await clickTrigger({ wrapper, testId: testIds.editIcon })
 
+    /// Check that exist class on Size.SM
     testOn.existClass({ wrapper, selector: '.app-text-field' }, 'app-text-field--small')
   })
-
-  /// TODO decompose dublicated logic and rename test titles
 })
