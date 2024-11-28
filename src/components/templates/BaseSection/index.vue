@@ -297,111 +297,111 @@ defineExpose({
 <template>
   <BaseSectionLoading :loading="isLoadingPage">
     <template #default>
-
-        <VAlert
-          v-if="isReadMode"
-          :icon="IconsList.EyeIcon"
-          :variant="VVariants.Tonal"
-          class="mb-6 px-4 py-2 font-weight-bolder"
-          :color="VColors.Info"
-          :text="$t('component.baseSection.readModeAlert')"
-        />
-  <Form
-    v-if="form"
-    ref="formRef"
-    class="base-section"
-    data-test-id="base-section"
-    @submit.prevent
-  >
-    <div class="position-relative">
-      <slot
-        :entity-id="entityId"
-        :entity-name="entityName"
-        :form="form"
-        :can-update="canUpdate"
-        :can-remove="canRemove"
-        :can-view-seo="canViewSeo"
-        :can-create-seo="canCreateSeo"
-        :can-update-seo="canUpdateSeo"
-        :on-click-remove="onClickRemove"
+      <VAlert
+        v-if="isReadMode"
+        :icon="IconsList.EyeIcon"
+        :variant="VVariants.Tonal"
+        class="mb-6 px-4 py-2 font-weight-bolder"
+        :color="VColors.Info"
+        :text="$t('component.baseSection.readModeAlert')"
       />
-      <div
-        v-if="isLoadingPage && pageType"
-        class="position-absolute base-section__loading d-flex"
-        data-test-id="loading"
+
+      <Form
+        v-if="form"
+        ref="formRef"
+        class="base-section"
+        data-test-id="base-section"
+        @submit.prevent
       >
-        <VProgressCircular
-          indeterminate
-          class="ma-auto"
+        <div class="position-relative">
+          <slot
+            :entity-id="entityId"
+            :entity-name="entityName"
+            :form="form"
+            :can-update="canUpdate"
+            :can-remove="canRemove"
+            :can-view-seo="canViewSeo"
+            :can-create-seo="canCreateSeo"
+            :can-update-seo="canUpdateSeo"
+            :on-click-remove="onClickRemove"
+          />
+          <div
+            v-if="isLoadingPage && pageType"
+            class="position-absolute base-section__loading d-flex"
+            data-test-id="loading"
+          >
+            <VProgressCircular
+              indeterminate
+              class="ma-auto"
+            />
+          </div>
+        </div>
+        <slot
+          v-if="pageType"
+          name="actions"
+          :form="form"
+          :loading="isLoadingPage"
+        >
+          <div class="d-flex align-center mt-5">
+            <template v-if="isCreatePage">
+              <VBtn
+                class="mr-4"
+                :color="VColors.Primary"
+                data-test-id="create-button"
+                :disabled="isLoadingPage"
+                @click="onSubmit(false)"
+              >
+                {{ $t('action.createAndExit') }}
+              </VBtn>
+
+              <VBtn
+                class="mr-4"
+                :variant="VVariants.Outlined"
+                :color="VColors.Secondary"
+                data-test-id="stay-button"
+                :disabled="isLoadingPage"
+                @click="onSubmit(true)"
+              >
+                {{ $t('action.createAndStay') }}
+              </VBtn>
+            </template>
+
+            <VBtn
+              v-if="isShowSaveBtn"
+              class="mr-4"
+              :color="VColors.Primary"
+              data-test-id="save-button"
+              :disabled="isDisableSubmit || isLoadingPage"
+              @click="onSubmit(false)"
+            >
+              {{ $t('action.save') }}
+            </VBtn>
+
+            <VBtn
+              v-if="isExistsListPage || props.config.backToTheHistoryLast"
+              :variant="VVariants.Outlined"
+              :color="VColors.Secondary"
+              data-test-id="cancel-button"
+              @click.prevent="onClickCancel"
+            >
+              {{ $t('action.cancel') }}
+            </VBtn>
+          </div>
+        </slot>
+
+        <ConfirmModal
+          v-if="!config?.withoutConfirmModal"
+          :modal-id="ModalsId.ConfirmModal"
+          @on-click-modal-ok="onSave"
         />
-      </div>
-    </div>
-    <slot
-      v-if="pageType"
-      name="actions"
-      :form="form"
-      :loading="isLoadingPage"
-    >
-      <div class="d-flex align-center mt-5">
-        <template v-if="isCreatePage">
-          <VBtn
-            class="mr-4"
-            :color="VColors.Primary"
-            data-test-id="create-button"
-            :disabled="isLoadingPage"
-            @click="onSubmit(false)"
-          >
-            {{ $t('action.createAndExit') }}
-          </VBtn>
-
-          <VBtn
-            class="mr-4"
-            :variant="VVariants.Outlined"
-            :color="VColors.Secondary"
-            data-test-id="stay-button"
-            :disabled="isLoadingPage"
-            @click="onSubmit(true)"
-          >
-            {{ $t('action.createAndStay') }}
-          </VBtn>
-        </template>
-
-        <VBtn
-          v-if="isShowSaveBtn"
-          class="mr-4"
-          :color="VColors.Primary"
-          data-test-id="save-button"
-          :disabled="isDisableSubmit || isLoadingPage"
-          @click="onSubmit(false)"
-        >
-          {{ $t('action.save') }}
-        </VBtn>
-
-        <VBtn
-          v-if="isExistsListPage || props.config.backToTheHistoryLast"
-          :variant="VVariants.Outlined"
-          :color="VColors.Secondary"
-          data-test-id="cancel-button"
-          @click.prevent="onClickCancel"
-        >
-          {{ $t('action.cancel') }}
-        </VBtn>
-      </div>
-    </slot>
-
-    <ConfirmModal
-      v-if="!config?.withoutConfirmModal"
-      :modal-id="ModalsId.ConfirmModal"
-      @on-click-modal-ok="onSave"
-    />
-    <RemoveModal
-      v-if="!config?.withoutDeleteModal"
-      :remove-modal-id="removeModalId"
-      :entity-name="entityName"
-      data-test-id="remove-modal"
-      @on-click-modal-ok="confirmRemoveModal"
-    />
-  </Form>
+        <RemoveModal
+          v-if="!config?.withoutDeleteModal"
+          :remove-modal-id="removeModalId"
+          :entity-name="entityName"
+          data-test-id="remove-modal"
+          @on-click-modal-ok="confirmRemoveModal"
+        />
+      </Form>
     </template>
   </BaseSectionLoading>
 </template>
