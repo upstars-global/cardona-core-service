@@ -14,7 +14,6 @@ const defaultProps = {
 }
 
 const testIds = {
-  wrapper: 'editable-wrapper',
   readableValue: 'readable-value',
   editIcon: 'edit-icon',
   actionButtons: 'action-buttons',
@@ -44,7 +43,7 @@ const isActiveEditMode = (wrapper: VueWrapper) => {
   testOn.existElement({ wrapper, testId: testIds.actionButtons })
 }
 
-const updateValueSlotInEditMode = async (action: CallableFunction) => {
+const updateValueSlotInEditMode = async (props, action: CallableFunction) => {
   props.isEdit = true
 
   const wrapper = getMountEditFieldWrapper(props, {}, mockedSlot)
@@ -114,7 +113,7 @@ describe('EditFieldWrapper.vue', () => {
   })
 
   it('Check update value from edit mode and set read mode after accept', async () => {
-    await updateValueSlotInEditMode(async ({ wrapper, updatedValue }) => {
+    await updateValueSlotInEditMode(props, async ({ wrapper, updatedValue }) => {
       /// Click on accept update
       await clickTrigger({ wrapper, testId: testIds.acceptUpdateButton })
 
@@ -126,7 +125,7 @@ describe('EditFieldWrapper.vue', () => {
     })
   })
   it('Check on call event and value after cancel ', async () => {
-    await updateValueSlotInEditMode(async ({ wrapper }) => {
+    await updateValueSlotInEditMode(props, async ({ wrapper }) => {
       /// Click on  cancel update
       await clickTrigger({ wrapper, testId: testIds.cancelUpdateButton })
 
@@ -135,6 +134,29 @@ describe('EditFieldWrapper.vue', () => {
 
       /// Check that read mode is active and edit is deactivate
       isActiveReadMode(wrapper)
+    })
+  })
+  it('Check possibility to edit and canEdit is false', async () => {
+    props.canEdit = false
+
+    const wrapper = getMountEditFieldWrapper(props)
+
+    /// Check that edit icon is not exist
+    testOn.notExistElement({ wrapper, testId: testIds.editIcon })
+  })
+
+  it('Disable accept update by props disableAcceptUpdate', async () => {
+    props.disableAcceptUpdate = true
+
+    await updateValueSlotInEditMode(props, async ({ wrapper, updatedValue }) => {
+      /// Click on accept update
+      await clickTrigger({ wrapper, testId: testIds.acceptUpdateButton })
+
+      /// Check that input is updated in parent component
+      testOn.isCalledEmitEventValue(wrapper, { event: 'accept-change', value: updatedValue })
+
+      /// Check that edit mode is active because accept update is disabled
+      isActiveEditMode(wrapper)
     })
   })
 })
