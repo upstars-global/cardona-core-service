@@ -8,7 +8,7 @@ defineProps<{ loading: boolean }>()
   <div>
     <Transition name="fade">
       <div
-        v-if="loading"
+        v-show="loading"
         class="loader-overlay"
       >
         <VProgressCircular
@@ -19,7 +19,9 @@ defineProps<{ loading: boolean }>()
         />
       </div>
     </Transition>
-    <slot v-if="!loading" />
+    <div v-show="!loading">
+      <slot />
+    </div>
   </div>
 </template>
 
