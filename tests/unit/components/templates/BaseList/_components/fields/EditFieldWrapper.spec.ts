@@ -24,6 +24,16 @@ const testIds = {
 
 let props
 
+const mockedSlot = {
+  input: `<template #input="{ inputValue, updateValue }">
+        <input
+          data-test-id="input-in-slot"
+          :value="inputValue"
+          @input="updateValue($event.target.value)"
+        />
+      </template>`,
+}
+
 const isActiveReadMode = (wrapper: VueWrapper) => {
   testOn.existElement({ wrapper, testId: testIds.editIcon })
   testOn.notExistElement({ wrapper, testId: testIds.actionButtons })
@@ -32,6 +42,24 @@ const isActiveReadMode = (wrapper: VueWrapper) => {
 const isActiveEditMode = (wrapper: VueWrapper) => {
   testOn.notExistElement({ wrapper, testId: testIds.editIcon })
   testOn.existElement({ wrapper, testId: testIds.actionButtons })
+}
+
+const updateValueSlotInEditMode = async (wrapper: VueWrapper, action: CallableFunction) => {
+  const updatedValue = 'New value'
+
+  /// Find input in slot
+  const inputWrapper: VueWrapper = wrapper.find(getSelectorTestId('input-in-slot'))
+
+  /// Check that input has value from props
+  testOn.inputAttributeValueToBe({ wrapper: inputWrapper }, props.value)
+
+  /// Update value in input
+  await inputWrapper.setValue(updatedValue)
+
+  /// Check that input is updated
+  testOn.inputAttributeValueToBe({ wrapper: inputWrapper }, updatedValue)
+
+  action({ updatedValue })
 }
 
 describe('EditFieldWrapper.vue', () => {
@@ -84,79 +112,33 @@ describe('EditFieldWrapper.vue', () => {
   it('Check update value from edit mode and set read mode after accept', async () => {
     props.isEdit = true
 
-    const global = {}
+    const wrapper = getMountEditFieldWrapper(props, {}, mockedSlot)
 
-    const slot = {
-      input: `<template #input="{ inputValue, updateValue }">
-        <input
-          data-test-id="input-in-slot"
-          :value="inputValue"
-          @input="updateValue($event.target.value)"
-        />
-      </template>`,
-    }
+    await updateValueSlotInEditMode(wrapper, async ({ updatedValue }) => {
+      /// Click on accept update
+      await clickTrigger({ wrapper, testId: testIds.acceptUpdateButton })
 
-    const updatedValue = 'New value'
-    const wrapper = getMountEditFieldWrapper(props, global, slot)
+      /// Check that input is updated in parent component
+      testOn.isCalledEmitEventValue(wrapper, { event: 'accept-change', value: updatedValue })
 
-    /// Find input in slot
-    const inputWrapper: VueWrapper = wrapper.find(getSelectorTestId('input-in-slot'))
-
-    /// Check that input has value from props
-    testOn.inputAttributeValueToBe({ wrapper: inputWrapper }, props.value)
-
-    /// Update value in input
-    await inputWrapper.setValue(updatedValue)
-
-    /// Check that input is updated
-    testOn.inputAttributeValueToBe({ wrapper: inputWrapper }, updatedValue)
-
-    /// Accept update
-    await clickTrigger({ wrapper, testId: testIds.acceptUpdateButton })
-
-    /// Check that input is updated in parent component
-    testOn.isCalledEmitEventValue(wrapper, { event: 'accept-change', value: updatedValue })
-
-    /// Check that read mode is active and edit is deactivate
-    isActiveReadMode(wrapper)
+      /// Check that read mode is active and edit is deactivate
+      isActiveReadMode(wrapper)
+    })
   })
   it('Check on call event and value after cancel ', async () => {
     props.isEdit = true
 
-    const global = {}
+    const wrapper = getMountEditFieldWrapper(props, {}, mockedSlot)
 
-    const slot = {
-      input: `<template #input="{ inputValue, updateValue }">
-        <input
-          data-test-id="input-in-slot"
-          :value="inputValue"
-          @input="updateValue($event.target.value)"
-        />
-      </template>`,
-    }
+    await updateValueSlotInEditMode(wrapper, async () => {
+      /// Click on  cancel update
+      await clickTrigger({ wrapper, testId: testIds.cancelUpdateButton })
 
-    const updatedValue = 'New value'
-    const wrapper = getMountEditFieldWrapper(props, global, slot)
+      /// Check that input is updated in parent component
+      testOn.isCalledEmitEventValue(wrapper, { event: 'reject-change', value: props.value })
 
-    /// Find input in slot
-    const inputWrapper: VueWrapper = wrapper.find(getSelectorTestId('input-in-slot'))
-
-    /// Check that input has value from props
-    testOn.inputAttributeValueToBe({ wrapper: inputWrapper }, props.value)
-
-    /// Update value in input
-    await inputWrapper.setValue(updatedValue)
-
-    /// Check that input is updated
-    testOn.inputAttributeValueToBe({ wrapper: inputWrapper }, updatedValue)
-
-    /// Accept update
-    await clickTrigger({ wrapper, testId: testIds.cancelUpdateButton })
-
-    /// Check that input is updated in parent component
-    testOn.isCalledEmitEventValue(wrapper, { event: 'reject-change', value: props.value })
-
-    /// Check that read mode is active and edit is deactivate
-    isActiveReadMode(wrapper)
+      /// Check that read mode is active and edit is deactivate
+      isActiveReadMode(wrapper)
+    })
   })
 })
