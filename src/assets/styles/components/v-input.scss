@@ -30,11 +30,6 @@
       }
     }
   }
-
-  .v-field--variant-outlined .v-field__outline__start, .v-field--variant-outlined .v-field__outline__notch::before, .v-field--variant-outlined .v-field__outline__notch::after, .v-field--variant-outlined .v-field__outline__end {
-    border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
-    opacity: 1;
-  }
 }
 .v-field__input input::placeholder,
 input.v-field__input::placeholder,
@@ -57,6 +52,7 @@ input[type="number"] {
     .v-input {
       height: 2rem;
       .v-field__input {
+        font-size: 1rem;
         padding: 0.375rem 0.75rem;
         line-height: 1.25rem;
         min-height: 1.25rem;
