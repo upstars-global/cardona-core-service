@@ -42,6 +42,7 @@ const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyF
           v-if="isExistsRoute"
           :to="getUpdateRoute(item)"
           class="d-flex align-center"
+          data-test-id="link"
           @click.stop
         >
           {{ itemName }}
@@ -51,6 +52,7 @@ const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyF
             :color="VColors.Info"
             label
             class="font-weight-semi-bold ml-1"
+            data-test-id="you-info"
           >
             {{ $t('common.you') }}
           </VChip>
@@ -59,6 +61,7 @@ const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyF
         <p
           v-else
           class="mb-0 text-primary"
+          data-test-id="name"
         >
           {{ itemName }}
         </p>
@@ -69,6 +72,7 @@ const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyF
       <span class="mr-1">ID</span>
       <Component
         :is="currentComponent"
+        data-test-id="copy-field"
         :value="itemId"
       /></span>
   </div>
