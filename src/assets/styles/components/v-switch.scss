@@ -13,5 +13,9 @@
       background-color: rgb(var(--v-theme-grey-900), var(--v-switch-disabled-track-opacity)) !important;
       border: none !important;
     }
+
+    .v-switch__thumb {
+      background: rgba(var(--v-theme-grey-500));
+    }
   }
 }
