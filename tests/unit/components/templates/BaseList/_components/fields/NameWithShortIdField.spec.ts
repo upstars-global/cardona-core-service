@@ -1,15 +1,16 @@
 import { beforeEach, describe, it, vi } from 'vitest'
-import NameWithIdField from '../../../../../../../src/components/templates/BaseList/_components/fields/NameWithIdField.vue'
+import NameWithShortIdField from '../../../../../../../src/components/templates/BaseList/_components/fields/NameWithShortIdField.vue'
 import { setMountComponent } from '../../../../../utils'
 import {
   checkBaseTestCaseForNameWithId,
   defaultProps,
-  mockStore, testIds,
+  mockStore,
+  testIds,
 } from '../../../../../templates/shared-tests/name-with-short-id'
-import { testOn } from '../../../../../templates/shared-tests/test-case-generator'
 import { getShortString } from '../../../../../../../src/helpers'
+import { testOn } from '../../../../../templates/shared-tests/test-case-generator'
 
-const getMountNameWithIdField = setMountComponent(NameWithIdField)
+const getMountNameWithShortIdField = setMountComponent(NameWithShortIdField)
 
 vi.mock('vuex', async importOriginal => {
   const original = await importOriginal()
@@ -22,26 +23,19 @@ vi.mock('vuex', async importOriginal => {
 
 let props
 
-describe('NameWithField.vue', () => {
+describe('NameWithShortIdField.vue', () => {
   beforeEach(() => {
     props = { ...defaultProps }
   })
 
-  checkBaseTestCaseForNameWithId(getMountNameWithIdField)
+  /// Run test which are common for NameWithIdField and NameWithShortIdField
+  checkBaseTestCaseForNameWithId(getMountNameWithShortIdField)
 
   it('Renders content in default state', () => {
-    const wrapper = getMountNameWithIdField(props)
+    const wrapper = getMountNameWithShortIdField(props)
 
     testOn.existTextValue({ wrapper, testId: testIds.link }, props.item.name)
-    testOn.existTextValue({ wrapper, testId: testIds.copyField }, props.item.id.toString())
-  })
-
-  it('Is render component with short if', async () => {
-    props.isShort = true
-
-    const wrapper = getMountNameWithIdField(props)
-
-    testOn.existTextValue({ wrapper, testId: testIds.copyField }, getShortString(props.item.id))
+    testOn.existTextValue({ wrapper, testId: testIds.copyField }, getShortString(props.item.id.toString()))
   })
 
   it('Correct render slot content ', () => {
@@ -53,9 +47,11 @@ describe('NameWithField.vue', () => {
 
     const global = {}
 
-    const wrapper = getMountNameWithIdField(props, global, slot)
+    const wrapper = getMountNameWithShortIdField(props, global, slot)
 
     testOn.existTextValue({ wrapper, testId: testIds.slotContent }, slotText)
-    testOn.existTextValue({ wrapper, testId: testIds.copyField }, props.item.id.toString())
+
+    /// Check that the id content is displayed
+    testOn.existTextValue({ wrapper, testId: testIds.copyField }, getShortString(props.item.id.toString()))
   })
 })
