@@ -5,7 +5,7 @@ defineProps<{ loading: boolean }>()
 </script>
 
 <template>
-  <div>
+  <div class="main-section-container">
     <Transition name="fade">
       <div
         v-show="loading"
@@ -29,15 +29,23 @@ defineProps<{ loading: boolean }>()
 </template>
 
 <style scoped lang="scss">
+.main-section-container {
+  position: relative;
+}
+
 .loader-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: calc(100vh - 10rem);
+  height: 90vh;
   background-color: rgb(var(--v-theme-surface));
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  z-index: 9999;
 }
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
