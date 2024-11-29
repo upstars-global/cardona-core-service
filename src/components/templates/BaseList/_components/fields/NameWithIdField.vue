@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { _RouteLocationBase } from 'vue-router'
-import store from '../../../../../store'
+import { useStore } from 'vuex'
 import CopyField from '../../../../../components/templates/BaseList/_components/fields/CopyField.vue'
 import CopyShortField from '../../../../../components/templates/BaseList/_components/fields/CopyShortField.vue'
 import { VColors } from '../../../../../@model/vuetify'
@@ -12,6 +12,8 @@ const props = defineProps<{
   isShowYou?: boolean
   isShort?: boolean
 }>()
+
+const store = useStore()
 
 const isYou = computed(() => {
   return props.isShowYou && props.item.id.toString() === store.getters.userInfo.id.toString()
@@ -52,7 +54,7 @@ const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyF
             :color="VColors.Info"
             label
             class="font-weight-semi-bold ml-1"
-            data-test-id="you-info"
+            data-test-id="badge-you"
           >
             {{ $t('common.you') }}
           </VChip>
