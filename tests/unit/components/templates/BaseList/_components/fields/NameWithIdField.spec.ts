@@ -72,7 +72,7 @@ describe('NameWithField.vue', () => {
 
     /// Check that the badge has the necessary classes
     expectedClasses.forEach(expectedClass => {
-      testOn.existClasses({ wrapper, testId: 'badge-you' }, expectedClass)
+      testOn.existClass({ wrapper, testId: 'badge-you' }, expectedClass)
     })
 
     /// Make id not equal to user id from store
