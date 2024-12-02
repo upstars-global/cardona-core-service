@@ -157,6 +157,7 @@ const onChangeCheckboxTable = (
 </script>
 
 <template>
+  {{ props }}
   <VExpansionPanels
     v-model="panel"
     multiple
