@@ -255,6 +255,10 @@ export const testOn = {
     expect(wrapper.emitted(event)[index || 0][0]).toBe(value)
   },
 
+  isCalledEmitEventValueToBe: (wrapper: VueWrapper, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+    expect(wrapper.emitted(event)[index || 0][0]).toBe(value)
+  },
+
   checkedElementToBe: testCaseGenerator({
     methodExpect: ExpectMethods.ToBe,
     property: { name: WrapperProperties.Element, value: InputAttributes.Checked, callable: false },
