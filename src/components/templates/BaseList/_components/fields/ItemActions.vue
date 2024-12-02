@@ -91,7 +91,7 @@ const onCreateCopy = () => {
       />
 
       <VListItem
-        v-if="canUpdate && config.withDeactivation"
+        v-if="canUpdate && (config.withDeactivation || config.withDeactivationBySpecificAction)"
         :prepend-icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
         data-test-id="status-toggle"
         @click="emits('on-toggle-status', item)"

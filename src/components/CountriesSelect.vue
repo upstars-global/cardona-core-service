@@ -227,6 +227,7 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
               v-for="(region, index) in value"
               :key="`${key}_${region.name}`"
               closable
+              :disabled="disabled"
               label
               :color="region.code === region.countryCode ? VColors.Error : VColors.Primary"
               :class="{ 'order-1': region.code === region.countryCode }"
@@ -249,7 +250,7 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
   border-color: rgba(var(--v-theme-primary));
   .v-btn {
     font-size: $typography-body-2-font-size !important;
-    text-weight: 500 !important;
+    font-weight: 500 !important;
     border-right-color: rgba(var(--v-theme-primary));
   }
 }
