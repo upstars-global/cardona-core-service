@@ -11,6 +11,7 @@ const statusClass = computed(() => (props.isActive ? 'active' : 'inactive'))
 <template>
   <div
     class="circle-status"
+    data-test-id="pill-status"
     :class="statusClass"
   />
 </template>
