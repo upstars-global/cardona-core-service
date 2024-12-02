@@ -17,7 +17,7 @@ class WSService {
 
   static readonly maxTimeReconnect: number = 60000
   static async connect(channel) {
-    if (!checkIsLoggedIn() && !channel && location.hostname === 'localhost')
+    if (!checkIsLoggedIn() && !channel || location.hostname === 'localhost')
       return
     this.Channel = channel
 
