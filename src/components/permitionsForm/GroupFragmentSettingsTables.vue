@@ -7,6 +7,7 @@ import { VColors } from '../../@model/vuetify'
 const props = defineProps<{
   title: string
   tables: PermissionUpdatableTableList[]
+  disabled: boolean
 }>()
 
 const checkeds = ref(props.tables.map(() => false))
@@ -41,7 +42,7 @@ watch(checked, val => {
               <VSwitch
                 v-model="checked"
                 :readonly="checked"
-                :disabled="checked"
+                :disabled="disabled || checked"
                 :color="VColors.Primary"
                 :label="$t('permission.fullAccess')"
                 @click.stop
@@ -66,6 +67,7 @@ watch(checked, val => {
               :title="item.title"
               not-header
               :checked-table="checked"
+              :disabled="disabled"
               @update-all-checked="(val) => updateAllChecked(index, val)"
               @change="$emit('change')"
             />

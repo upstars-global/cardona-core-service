@@ -1,6 +1,5 @@
 import { describe, it } from 'vitest'
 
-import type { VueWrapper } from '@vue/test-utils'
 import CheckGroupField from '../../../../src/components/templates/FieldGenerator/_components/CheckGroupField.vue'
 
 import { getWrapperElement, setMountComponent } from '../../utils'
@@ -8,9 +7,9 @@ import { getWrapperElement, setMountComponent } from '../../utils'
 import {
   selectorInput,
   testEmitData,
-  testOnValidLabel,
 } from '../shared-tests/checkbox-field'
 import { testOn } from '../shared-tests/test-case-generator'
+import { onDisabledInput } from '../shared-tests/text-input-fields'
 
 const getMountCheckGroupField = setMountComponent(CheckGroupField)
 
@@ -44,25 +43,19 @@ describe('CheckFieldGroup.vue', () => {
     const wrapper = getMountCheckGroupField(defaultProps)
     const labels = getWrapperElement({ wrapper, selector: 'label', all: true })
 
-    Array.from(labels).forEach((wrapper, index) => {
-      testOnValidLabel(wrapper, `Option ${index + 1}`)
+    Array.from(labels).forEach((labelWrapper, index) => {
+      testOn.existTextValue({ wrapper: labelWrapper }, `Option ${index + 1}`)
     })
   })
 
-  it('Renders is valid render of disabled state', () => {
-    const wrapper = getMountCheckGroupField({
-      ...defaultProps,
-      field: {
-        ...defaultProps.field,
-        options: options.map(option => ({ ...option, disabled: true })),
-      },
-    })
+  it('Check disabled state', async () => {
+    const wrapper = getMountCheckGroupField(defaultProps)
 
-    const inputs = getWrapperElement({ wrapper, selector: selectorInput, all: true }) as Array<VueWrapper>
+    testOn.isNotDisabledElement({ wrapper, selector: selectorInput })
 
-    Array.from(inputs).forEach(input => {
-      testOn.isDisabledElement({ wrapper: input })
-    })
+    await wrapper.setProps({ disabled: true })
+
+    onDisabledInput({ wrapper, selector: selectorInput })
   })
 
   it('Emits an update event when a checkbox is selected', async () => {

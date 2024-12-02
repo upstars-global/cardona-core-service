@@ -10,6 +10,7 @@ interface Props {
   permissions: PermissionUpdatableTable[]
   notHeader?: boolean
   checkedTable?: boolean
+  disabled: boolean
 }
 interface Emits {
   (event: 'updateAllChecked', payload: boolean): void
@@ -179,7 +180,7 @@ const onChangeCheckboxTable = (
             <VSwitch
               v-model="checked"
               :readonly="checked"
-              :disabled="checked"
+              :disabled="disabled || checked"
               :color="VColors.Primary"
               :label="$t('permission.fullAccess')"
             />
@@ -235,9 +236,13 @@ const onChangeCheckboxTable = (
                         <VCheckbox
                           v-if="!tableItem.notAccessLevel?.includes(Number(tableColumn.key))"
                           :model-value="+tableItem.access >= +tableColumn.key"
+                          :disabled="disabled"
                           @update:model-value="onChangeCheckboxTable(tableItem, Number(tableColumn.key), $event)"
                         />
-                        <span v-else class="text-color-base"> - </span>
+                        <span
+                          v-else
+                          class="text-color-base"
+                        > - </span>
                       </div>
                     </template>
                   </td>
@@ -264,6 +269,7 @@ const onChangeCheckboxTable = (
                 :model-value="switchItem.access > 0"
                 class="ml-0"
                 :label="$t(`permission.${switchItem.target}`)"
+                :disabled="disabled"
                 @update:model-value="onChangeSwitch(switchItem, $event)"
               />
             </VRow>
