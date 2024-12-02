@@ -158,7 +158,6 @@ const onChangeCheckboxTable = (
 </script>
 
 <template>
-  {{ props }}
   <VExpansionPanels
     v-model="panel"
     multiple
@@ -209,6 +208,7 @@ const onChangeCheckboxTable = (
               v-if="tableItems.length"
               responsive
               caption-top
+              data-test-id="permission-table"
               class="group-fragment-setting-table"
             >
               <thead>
@@ -240,7 +240,8 @@ const onChangeCheckboxTable = (
                   >
                     <span
                       v-if="index === 0"
-                      class="font-weight-regular text-color-base"
+                      class="font-weight-regular text-color-base tests"
+                      :data-test-id="`permission-with-checkbox-${tableItem.target}`"
                     >
                       {{ $t(`permission.${tableItem.target}`) }}
                     </span>
@@ -248,7 +249,7 @@ const onChangeCheckboxTable = (
                       <div class="d-flex justify-center">
                         <VCheckbox
                           v-if="!tableItem.notAccessLevel?.includes(Number(tableColumn.key))"
-                          data-test-id="access-checkbox"
+                          :data-test-id="`permission-checkbox-${tableItem.target}-${tableColumn.key}`"
                           :model-value="+tableItem.access >= +tableColumn.key"
                           :disabled="disabled"
                           @update:model-value="onChangeCheckboxTable(tableItem, Number(tableColumn.key), $event)"
@@ -256,6 +257,7 @@ const onChangeCheckboxTable = (
                         <span
                           v-else
                           class="text-color-base"
+                          :data-test-id="`empty-${tableItem.target}-${tableColumn.key}`"
                         > - </span>
                       </div>
                     </template>
@@ -280,7 +282,7 @@ const onChangeCheckboxTable = (
               :class="{ 'pb-1 border-bottom': index !== switchItems.length - 1 }"
             >
               <VSwitch
-                data-test-id="permission-by-switch"
+                :data-test-id="`permission-switch-${switchItem.target}`"
                 :model-value="switchItem.access > 0"
                 class="ml-0"
                 :label="$t(`permission.${switchItem.target}`)"
