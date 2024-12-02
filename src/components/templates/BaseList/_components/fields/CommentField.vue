@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IS_TEST_ENV } from '@/utils/constants'
+import { IS_TEST_ENV } from '../../../../../utils/constants'
 
 defineProps<{
   value?: string
