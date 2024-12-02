@@ -9,27 +9,28 @@ interface CopyAndShortValueTestsConfig {
   value: string
   componentName: string
   selectorActivationCopy: string
+  isShortByDefault?: boolean
 }
+
+const getExpectedValue = (value, isShortByDefault: boolean) => isShortByDefault ? getShortString(value) : value
 
 export const copyAndShortValueTests = (
   getMountComponent: Function,
-  { value, componentName, selectorActivationCopy }: CopyAndShortValueTestsConfig) => {
-  it(`renders correctly with value in ${componentName}`, () => {
+  { value, componentName, selectorActivationCopy, isShortByDefault }: CopyAndShortValueTestsConfig) => {
+  it(`Renders correctly with value in ${componentName}`, () => {
     const wrapper = getMountComponent({ value })
 
-    testOn.existTextValue({ wrapper }, value)
+    testOn.existTextValue({ wrapper }, getExpectedValue(value, isShortByDefault))
   })
 
-  it(`renders the short value when isShort is true in ${componentName}`, () => {
-    const wrapper = getMountComponent({
-      value,
-      isShort: true,
-    })
+  it(`Renders the short value when isShort is true in ${componentName}`, () => {
+    const props = isShortByDefault ? { value } : { value, isShort: true }
+    const wrapper = getMountComponent(props)
 
     testOn.existTextValue({ wrapper }, getShortString(value))
   })
 
-  it(`calls copyToClipboard with the correct value when clicked in ${componentName}`, async () => {
+  it(`Calls copyToClipboard with the correct value when clicked in ${componentName}`, async () => {
     const wrapper = getMountComponent({ value })
 
     await wrapper.find(selectorActivationCopy).trigger('click')
