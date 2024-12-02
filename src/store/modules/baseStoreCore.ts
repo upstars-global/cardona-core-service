@@ -177,6 +177,25 @@ export default {
       )
     },
 
+    async toggleStatusEntity(
+      { rootGetters },
+      payload: { type: string; data: { form: any; formRef: any }; customApiPrefix: string },
+    ) {
+      return await ApiService.request(
+        {
+          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+            payload.type,
+          )}.Active.Switch`,
+          data: {
+            ...payload.data.form,
+            id: payload.data.form?.id,
+            project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
+          },
+        },
+        { withSuccessToast: true, formRef: payload.data.formRef, entityName: payload.type },
+      )
+    },
+
     async multipleUpdateEntity(
       { rootGetters },
       payload: {
