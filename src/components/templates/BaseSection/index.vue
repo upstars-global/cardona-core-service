@@ -3,6 +3,7 @@ import { computed, inject, nextTick, onBeforeMount, onBeforeUnmount, ref, watch 
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
 import { useStore } from 'vuex'
+import { IconsList } from '../../../@model/enums/icons'
 import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
 import { basePermissions } from '../../../helpers/base-permissions'
 import { PageType } from '../../../@model/templates/baseSection'
@@ -193,6 +194,9 @@ const isCreateOrUpdateSeo = computed(
   () => (isCreatePage && canCreateSeo) || (isUpdatePage && canUpdateSeo),
 )
 
+const isShowSaveBtn = computed<boolean>(() => isUpdatePage && (canUpdate || canUpdateSeo))
+const isReadMode = computed<boolean>(() => isUpdatePage && !canUpdate && !canUpdateSeo)
+
 const onSubmit = async (isStay: boolean) => {
   if (!(await validate()) || isExistsEndpointsWithError.value)
     return
@@ -293,6 +297,15 @@ defineExpose({
 <template>
   <BaseSectionLoading :loading="isLoadingPage">
     <template #default>
+      <VAlert
+        v-if="isReadMode"
+        :icon="IconsList.EyeIcon"
+        :variant="VVariants.Tonal"
+        class="mb-6 px-4 py-2 font-weight-bolder"
+        :color="VColors.Info"
+        :text="$t('component.baseSection.readModeAlert')"
+      />
+
       <Form
         v-if="form"
         ref="formRef"
@@ -353,19 +366,19 @@ defineExpose({
               </VBtn>
             </template>
 
-            <template v-if="isUpdatePage">
-              <VBtn
-                class="mr-4"
-                :color="VColors.Primary"
-                data-test-id="save-button"
-                :disabled="isDisableSubmit || isLoadingPage"
-                @click="onSubmit(false)"
-              >
-                {{ $t('action.save') }}
-              </VBtn>
-            </template>
+            <VBtn
+              v-if="isShowSaveBtn"
+              class="mr-4"
+              :color="VColors.Primary"
+              data-test-id="save-button"
+              :disabled="isDisableSubmit || isLoadingPage"
+              @click="onSubmit(false)"
+            >
+              {{ $t('action.save') }}
+            </VBtn>
 
             <VBtn
+              v-if="isExistsListPage || props.config.backToTheHistoryLast"
               :variant="VVariants.Outlined"
               :color="VColors.Secondary"
               data-test-id="cancel-button"

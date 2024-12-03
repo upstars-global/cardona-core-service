@@ -14,6 +14,7 @@ const props = withDefaults(
     modelValue: string
     field: DateBaseField
     errors?: boolean
+    disabled: boolean
   }>(),
   {
     modelValue: '',
@@ -157,6 +158,7 @@ const configTo = computed(() => {
       ...field.config,
     }"
     data-test-id="single-picker"
+    :disabled="disabled"
   />
   <div
     v-else
@@ -169,6 +171,7 @@ const configTo = computed(() => {
       :config="configFrom"
       :placeholder="$t('common.dateFrom')"
       data-test-id="from"
+      :disabled="disabled"
       @update:model-value="(val) => setRangeDate(val)"
     />
     <span class="mx-2"> – </span>
@@ -180,6 +183,7 @@ const configTo = computed(() => {
       :config="configTo"
       :placeholder="$t('common.dateTo')"
       data-test-id="to"
+      :disabled="disabled"
       @update:model-value="(val) => setRangeDate(val, false)"
     />
   </div>

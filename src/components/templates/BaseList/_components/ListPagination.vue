@@ -53,6 +53,8 @@ const setActivePage = (item: VPaginationItem) => {
 }
 
 const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
+
+const getDataTestId = (buttonText: VPaginationItem): string => isEllipsis(buttonText) ? 'ellipsis' : `page-${getNumberOfPage(buttonText)}`
 </script>
 
 <template>
@@ -65,7 +67,10 @@ const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
       sm="4"
       class="d-flex align-center justify-start justify-content-sm-start px-0"
     >
-      <span class="text-body-1 text-medium-emphasis	text-no-wrap">
+      <span
+        class="text-body-1 text-medium-emphasis	text-no-wrap"
+        data-test-id="pagination-meta"
+      >
         {{ $t('pagination.showing', dataMeta) }}
       </span>
     </VCol>
@@ -91,6 +96,7 @@ const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
             class="pagination--button"
             rounded="circle"
             :disabled="isEllipsis(item)"
+            :data-test-id="getDataTestId(item)"
             @click="setActivePage(item)"
           >
             {{ getNumberOfPage(item) }}

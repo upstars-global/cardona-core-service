@@ -62,18 +62,21 @@ const updateValue = (value: unknown): void => {
 <template>
   <div
     class="editable-wrapper"
+    data-test-id="editable-wrapper"
     :class="{ 'editable-wrapper--open': openEdit }"
     @click.stop
   >
     <div
       v-if="!openEdit"
       class="d-flex justify-content-center align-center"
+      data-test-id="readable-value"
     >
       <div
         v-if="canEdit"
         class="icon-edit-wrapper mr-1"
       >
         <VIcon
+          data-test-id="edit-icon"
           :icon="IconsList.EditIcon"
           :color="VColors.Primary"
           @click.stop="setEditMode(true)"
@@ -93,8 +96,12 @@ const updateValue = (value: unknown): void => {
         :update-value="updateValue"
         :input-value="acceptedValue"
       />
-      <div class="action-buttons d-flex align-center gap-1 pl-1">
+      <div
+        class="action-buttons d-flex align-center gap-1 pl-1"
+        data-test-id="action-buttons"
+      >
         <VBtn
+          data-test-id="accept-update-button"
           class="cursor-pointer text-success v-btn--rectangle"
           variant="text"
           :size="VSizes.Medium"
@@ -103,6 +110,7 @@ const updateValue = (value: unknown): void => {
           <VIcon :icon="IconsList.CheckIcon" />
         </VBtn>
         <VBtn
+          data-test-id="cancel-update-button"
           class="cursor-pointer text-error v-btn--rectangle"
           variant="text"
           :size="VSizes.Medium"
