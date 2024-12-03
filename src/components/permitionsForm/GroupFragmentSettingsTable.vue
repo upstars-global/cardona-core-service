@@ -4,7 +4,7 @@ import type { TranslateResult } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 import { VColors } from '../../@model/vuetify'
 import type { PermissionUpdatableTable } from '../../@model/permission'
-import { IS_TEST_ENV } from '@/utils/constants'
+import { IS_TEST_ENV } from '../../utils/constants'
 
 interface Props {
   title: TranslateResult
