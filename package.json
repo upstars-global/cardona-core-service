@@ -1,6 +1,6 @@
 {
-  "name": "vuexy-vuejs-admin-template",
-  "version": "9.0.2",
+  "name": "cardona-core-service",
+  "version": "3.2.21",
   "private": true,
   "scripts": {
     "dev": "vite",
