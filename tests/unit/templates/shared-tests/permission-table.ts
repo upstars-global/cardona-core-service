@@ -7,6 +7,9 @@ export const testIds = {
   switchAll: 'switch-all',
   switchTestExport: 'permission-switch-test-export',
   checkboxOnAccessRemove: 'permission-checkbox-test-4',
+  checkboxOnAccessUpdate: 'permission-checkbox-test-3',
+  checkboxOnAccessCreate: 'permission-checkbox-test-2',
+  checkboxOnAccessView: 'permission-checkbox-test-1',
 }
 
 export const switchAllIsDisabled = (wrapper: VueWrapper) => {
