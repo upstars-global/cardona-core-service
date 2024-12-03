@@ -1,4 +1,5 @@
 import { beforeEach, describe, it, vi } from 'vitest'
+import { cloneDeep } from 'lodash'
 import GroupFragmentSettingsTable from '../../../../src/components/permitionsForm/GroupFragmentSettingsTable.vue'
 import { getSelectorTestId, getWrapperElement, setMountComponent, setValue } from '../../utils'
 import type { PermissionInput, PermissionUpdatableTable } from '../../../../src/@model/permission'
@@ -50,7 +51,7 @@ let props
 
 describe('GroupFragmentSettingsTable.vue', () => {
   beforeEach(() => {
-    props = { ...defaultProps }
+    props = cloneDeep(defaultProps)
   })
 
   it('Renders correctly base elements', () => {
@@ -102,7 +103,7 @@ describe('GroupFragmentSettingsTable.vue', () => {
     })
   })
 
-  it('Switch all is disabled by condition', async () => {
+  it('Switch all is disabled by checked checkbox', async () => {
     const wrapper = getMountGroupFragmentSettingsTable(props, {
       stubs: {
         VExpansionPanel: { template: '<div data-test-id="explanation-panel"><slot /></div>' },
@@ -118,6 +119,21 @@ describe('GroupFragmentSettingsTable.vue', () => {
     await setValue(checkboxWrapper, false)
 
     /// Check that switch all is not disabled
+    testOn.notExistClasses({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
+  })
+  it('Switch all is disabled by switch', async () => {
+    const wrapper = getMountGroupFragmentSettingsTable(props, {
+      stubs: {
+        VExpansionPanel: { template: '<div data-test-id="explanation-panel"><slot /></div>' },
+      },
+    })
+
+    testOn.existClass({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
+
+    const switchWrapper = getWrapperElement({ wrapper, selector: `${getSelectorTestId('permission-switch-test-export')} input` })
+
+    await setValue(switchWrapper, false)
+
     testOn.notExistClasses({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
   })
 })
