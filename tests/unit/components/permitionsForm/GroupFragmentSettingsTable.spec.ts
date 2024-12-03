@@ -1,23 +1,45 @@
-import { beforeEach, describe, it } from 'vitest'
+import { beforeEach, describe, it, vi } from 'vitest'
 import GroupFragmentSettingsTable from '../../../../src/components/permitionsForm/GroupFragmentSettingsTable.vue'
-import { getSelectorTestId, setMountComponent, setValue } from '../../utils'
-import type { PermissionUpdatableTable } from '../../../../src/@model/permission'
+import { getSelectorTestId, getWrapperElement, setMountComponent, setValue } from '../../utils'
+import type { PermissionInput, PermissionUpdatableTable } from '../../../../src/@model/permission'
 import { AllPermission } from '../../../../src/@model/permission'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { i18n } from '../../../../src/plugins/i18n'
 
 const getMountGroupFragmentSettingsTable = setMountComponent(GroupFragmentSettingsTable)
 
-const permissions = new AllPermission([
-  { access: 4, target: 'demo' },
-  { access: 1, target: 'demo-report' },
-  { access: 3, target: 'demo-seo' },
-]).allPermission.demoPage
+const permissionsConfig: Array<PermissionInput> = [
+  { access: 4, target: 'test' },
+  { access: 1, target: 'test-export' },
+  { access: 3, target: 'test-seo' },
+]
+
+const getPermissionsProps = (data: Array<PermissionInput>) => new AllPermission(data).allPermission.demoPage
+
+vi.mock('@permissions', () => ({
+  default: {
+    demoPage: [
+      {
+        type: 'table',
+        target: 'test',
+      },
+      {
+        type: 'switch',
+        target: 'test-export',
+      },
+      {
+        type: 'table',
+        target: 'test-seo',
+        notAccessLevel: [4],
+      },
+    ] as PermissionUpdatableTable[],
+  },
+}))
 
 const PERMISSION_KEYS = [1, 2, 3, 4]
 
 const defaultProps = {
-  permissions,
+  permissions: getPermissionsProps(permissionsConfig),
   title: 'Access control',
   notHeader: false,
   checkedTable: false,
@@ -80,17 +102,22 @@ describe('GroupFragmentSettingsTable.vue', () => {
     })
   })
 
-  it('Call action on change state switch all', async () => {
+  it('Switch all is disabled by condition', async () => {
     const wrapper = getMountGroupFragmentSettingsTable(props, {
       stubs: {
         VExpansionPanel: { template: '<div data-test-id="explanation-panel"><slot /></div>' },
       },
     })
 
-    const switchAllWrapper = wrapper.find(`${getSelectorTestId('switch-all')} input`)
+    /// All permissions are checked
+    testOn.existClass({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
 
-    await setValue(switchAllWrapper, true)
+    /// Uncheck some check checkbox
+    const checkboxWrapper = getWrapperElement({ wrapper, selector: `${getSelectorTestId('permission-checkbox-test-1')} input` })
 
-    // console.log(wrapper.emitted()['updateAllChecked'])
+    await setValue(checkboxWrapper, false)
+
+    /// Check that switch all is not disabled
+    testOn.notExistClasses({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
   })
 })
