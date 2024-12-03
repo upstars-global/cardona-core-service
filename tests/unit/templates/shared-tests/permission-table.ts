@@ -32,3 +32,22 @@ export const permissionsConfig: Array<PermissionInput> = [
   { access: 1, target: 'test-export' },
   { access: 3, target: 'test-seo' },
 ]
+export const mockPermissions = {
+  default: {
+    demoPage: [
+      {
+        type: 'table',
+        target: 'test',
+      },
+      {
+        type: 'switch',
+        target: 'test-export',
+      },
+      {
+        type: 'table',
+        target: 'test-seo',
+        notAccessLevel: [4],
+      },
+    ],
+  },
+}

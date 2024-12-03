@@ -1,10 +1,9 @@
 import { beforeEach, describe, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 import { setMountComponent } from '../../utils'
-import type { PermissionInput, PermissionUpdatableTable } from '../../../../src/@model/permission'
-import { AllPermission } from '../../../../src/@model/permission'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import {
+  mockPermissions,
   permissionsConfig,
   testIds, updateValueForPermissionInput,
 } from '../../templates/shared-tests/permission-table'
@@ -16,27 +15,7 @@ const getMountGroupFragmentSettingsTable = props => setMountComponent(GroupFragm
   },
 })
 
-const getPermissionsProps = (data: Array<PermissionInput>) => new AllPermission(data).allPermission.demoPage
-
-vi.mock('@permissions', () => ({
-  default: {
-    demoPage: [
-      {
-        type: 'table',
-        target: 'test',
-      },
-      {
-        type: 'switch',
-        target: 'test-export',
-      },
-      {
-        type: 'table',
-        target: 'test-seo',
-        notAccessLevel: [4],
-      },
-    ] as PermissionUpdatableTable[],
-  },
-}))
+vi.mock('@permissions', () => (mockPermissions))
 
 const defaultProps = {
   permissions: permissionsConfig,
@@ -48,7 +27,7 @@ const defaultProps = {
 
 let props
 
-describe('GroupFragmentSettingsTable.vue', () => {
+describe('GroupFragmentSettings.vue', () => {
   beforeEach(() => {
     props = cloneDeep(defaultProps)
   })
@@ -61,14 +40,60 @@ describe('GroupFragmentSettingsTable.vue', () => {
     testOn.existElement({ wrapper, testId: 'permission-table' })
   })
   it('Call event on on change checkbox permission', async () => {
-    const wrapper = getMountGroupFragmentSettingsTable(props)
-
-    await updateValueForPermissionInput({ wrapper, testId: testIds.checkboxOnAccessRemove }, false)
+    /// Ids check box on each permission level
+    const idsCheckboxes = [
+      testIds.checkboxOnAccessRemove,
+      testIds.checkboxOnAccessUpdate,
+      testIds.checkboxOnAccessCreate,
+      testIds.checkboxOnAccessView,
+    ]
 
     const expectedValue = cloneDeep(permissionsConfig)[0]
+    const wrapper = getMountGroupFragmentSettingsTable(props)
 
-    expectedValue.access = 3
+    /// Check call event and value for each change state of checkbox
+    for (const testId of idsCheckboxes) {
+      const index = idsCheckboxes.indexOf(testId)
 
-    testOn.isCalledEmitEventValue(wrapper, { event: 'updatePermissions', value: expectedValue, index: 0 })
+      await updateValueForPermissionInput({ wrapper, testId }, false)
+      expectedValue.access -= 1
+      testOn.isCalledEmitEventValue(wrapper, { event: 'updatePermissions', value: expectedValue, index })
+    }
+
+    /// Mac check call event and value on set state switch all
+    await updateValueForPermissionInput({ wrapper, testId: testIds.switchAll }, true)
+
+    const quantityOfChangesOfCheckbox = idsCheckboxes.length
+
+    // Check that user will have full access in group of permission
+    testOn.isCalledEmitEventValue(wrapper, { event: 'updatePermissions', value: permissionsConfig[0], index: quantityOfChangesOfCheckbox })
+  })
+
+  it('Call event on on change checkbox permission', async () => {
+    const forAccessLevelValue = 3
+
+    mockPermissions.default.demoPage[1].forAccessLevelValue = forAccessLevelValue
+    vi.mock('@permissions', () => mockPermissions)
+
+    const expectedValue = cloneDeep(permissionsConfig)[1]
+
+    expectedValue.access = forAccessLevelValue
+
+    const wrapper = getMountGroupFragmentSettingsTable(props)
+
+    /// Remove access for permission
+    await updateValueForPermissionInput({ wrapper, testId: testIds.switchTestExport }, false)
+
+    expectedValue.access -= forAccessLevelValue
+
+    testOn.isCalledEmitEventValue(wrapper, { event: 'updatePermissions', value: expectedValue })
+
+    /// Return access for permission
+
+    await updateValueForPermissionInput({ wrapper, testId: testIds.switchTestExport }, true)
+
+    expectedValue.access += forAccessLevelValue
+
+    testOn.isCalledEmitEventValue(wrapper, { event: 'updatePermissions', value: expectedValue, index: 1 })
   })
 })
