@@ -1,13 +1,18 @@
 import { beforeEach, describe, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
+import type { VueWrapper } from '@vue/test-utils'
 import GroupFragmentSettingsTable from '../../../../src/components/permitionsForm/GroupFragmentSettingsTable.vue'
-import { getSelectorTestId, getWrapperElement, setMountComponent, setValue } from '../../utils'
+import { getSelectorTestId, setMountComponent, setValue } from '../../utils'
 import type { PermissionInput, PermissionUpdatableTable } from '../../../../src/@model/permission'
 import { AllPermission } from '../../../../src/@model/permission'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { i18n } from '../../../../src/plugins/i18n'
 
-const getMountGroupFragmentSettingsTable = setMountComponent(GroupFragmentSettingsTable)
+const getMountGroupFragmentSettingsTable = props => setMountComponent(GroupFragmentSettingsTable)(props, {
+  stubs: {
+    VExpansionPanel: { template: '<div data-test-id="explanation-panel"><slot /></div>' },
+  },
+})
 
 const permissionsConfig: Array<PermissionInput> = [
   { access: 4, target: 'test' },
@@ -37,6 +42,26 @@ vi.mock('@permissions', () => ({
   },
 }))
 
+const testIds = {
+  switchAll: 'switch-all',
+  switchTestExport: 'permission-switch-test-export',
+  checkboxOnAccessRemove: 'permission-checkbox-test-4',
+}
+
+const switchAllIsDisabled = (wrapper: VueWrapper) => {
+  testOn.existClass({ wrapper, testId: testIds.switchAll }, 'v-input--disabled')
+}
+
+const switchAllNotDisabled = (wrapper: VueWrapper) => {
+  testOn.notExistClasses({ wrapper, testId: testIds.switchAll }, 'v-input--disabled')
+}
+
+const updateValueForPermissionInput = async ({ wrapper, testId }: { wrapper: VueWrapper; testId: string }, value: boolean) => {
+  const wrapperElement = wrapper.find(`${getSelectorTestId(testId)} input`)
+
+  await setValue(wrapperElement, value)
+}
+
 const PERMISSION_KEYS = [1, 2, 3, 4]
 
 const defaultProps = {
@@ -55,23 +80,15 @@ describe('GroupFragmentSettingsTable.vue', () => {
   })
 
   it('Renders correctly base elements', () => {
-    const wrapper = getMountGroupFragmentSettingsTable(props, {
-      stubs: {
-        VExpansionPanel: { template: '<div data-test-id="explanation-panel"><slot /></div>' },
-      },
-    })
+    const wrapper = getMountGroupFragmentSettingsTable(props)
 
     testOn.equalTextValue({ wrapper, testId: 'collapse-title' }, props.title)
-    testOn.existElement({ wrapper, testId: 'switch-all' })
+    testOn.existElement({ wrapper, testId: testIds.switchAll })
     testOn.existElement({ wrapper, testId: 'permission-table' })
   })
 
   it('Renders in table checkboxes or temp by permission', () => {
-    const wrapper = getMountGroupFragmentSettingsTable(props, {
-      stubs: {
-        VExpansionPanel: { template: '<div data-test-id="explanation-panel"><slot /></div>' },
-      },
-    })
+    const wrapper = getMountGroupFragmentSettingsTable(props)
 
     props.permissions.filter(i => i.type === 'table').forEach((permission: PermissionUpdatableTable) => {
       PERMISSION_KEYS.forEach(key => {
@@ -90,11 +107,7 @@ describe('GroupFragmentSettingsTable.vue', () => {
   })
 
   it('Renders switch of permission', () => {
-    const wrapper = getMountGroupFragmentSettingsTable(props, {
-      stubs: {
-        VExpansionPanel: { template: '<div data-test-id="explanation-panel"><slot /></div>' },
-      },
-    })
+    const wrapper = getMountGroupFragmentSettingsTable(props)
 
     const switchOfPermission = props.permissions.filter(i => i.type === 'switch')
 
@@ -104,64 +117,69 @@ describe('GroupFragmentSettingsTable.vue', () => {
   })
 
   it('Switch all is disabled by checked checkbox', async () => {
-    const wrapper = getMountGroupFragmentSettingsTable(props, {
-      stubs: {
-        VExpansionPanel: { template: '<div data-test-id="explanation-panel"><slot /></div>' },
-      },
-    })
+    const wrapper = getMountGroupFragmentSettingsTable(props)
 
     /// All permissions are checked
-    testOn.existClass({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
+    switchAllIsDisabled(wrapper)
 
-    /// Uncheck some check checkbox
-    const checkboxWrapper = getWrapperElement({ wrapper, selector: `${getSelectorTestId('permission-checkbox-test-1')} input` })
-
-    await setValue(checkboxWrapper, false)
+    await updateValueForPermissionInput({ wrapper, testId: 'permission-checkbox-test-1' }, false)
 
     /// Check that switch all is not disabled
-    testOn.notExistClasses({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
+    switchAllNotDisabled(wrapper)
   })
 
   it('Switch all is disabled by switch', async () => {
-    const wrapper = getMountGroupFragmentSettingsTable(props, {
-      stubs: {
-        VExpansionPanel: { template: '<div data-test-id="explanation-panel"><slot /></div>' },
-      },
-    })
+    const wrapper = getMountGroupFragmentSettingsTable(props)
 
-    testOn.existClass({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
+    switchAllIsDisabled(wrapper)
 
-    const switchWrapper = getWrapperElement({ wrapper, selector: `${getSelectorTestId('permission-switch-test-export')} input` })
+    await updateValueForPermissionInput({ wrapper, testId: testIds.switchTestExport }, false)
 
-    await setValue(switchWrapper, false)
-
-    testOn.notExistClasses({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
+    switchAllNotDisabled(wrapper)
   })
 
   it('Switch all is disabled after set value true', async () => {
-    const wrapper = getMountGroupFragmentSettingsTable(props, {
-      stubs: {
-        VExpansionPanel: { template: '<div data-test-id="explanation-panel"><slot /></div>' },
-      },
-    })
+    const wrapper = getMountGroupFragmentSettingsTable(props)
 
     /// Check base state
-    testOn.existClass({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
+    switchAllIsDisabled(wrapper)
 
-    /// Make switch all unckecked
-    const switchWrapper = getWrapperElement({ wrapper, selector: `${getSelectorTestId('permission-switch-test-export')} input` })
-
-    await setValue(switchWrapper, false)
+    /// Make switch all unchecked
+    await updateValueForPermissionInput({ wrapper, testId: testIds.switchTestExport }, false)
 
     /// Check that switch all is disabled
-    testOn.notExistClasses({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
+    switchAllNotDisabled(wrapper)
 
     /// Make switch all checked
-    const switchAllWrapper = getWrapperElement({ wrapper, selector: `${getSelectorTestId('switch-all')} input` })
 
-    await setValue(switchAllWrapper, true)
+    await updateValueForPermissionInput({ wrapper, testId: testIds.switchAll }, true)
 
     /// Check that switch all is disabled
-    testOn.existClass({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
+    switchAllIsDisabled(wrapper)
+  })
+
+  it('Call event on set value permission checkbox', async () => {
+    const wrapper = getMountGroupFragmentSettingsTable(props)
+
+    /// Initial state has checked all
+    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'updateAllChecked', value: true })
+
+    /// Uncheck one of the checkboxes
+    await updateValueForPermissionInput({ wrapper, testId: testIds.checkboxOnAccessRemove }, false)
+
+    /// Check that the event is called with the value false
+    testOn.isCalledEmitEvent(wrapper, 'change')
+
+    /// Check that the event is called with the value false because one of the checkboxes is unchecked
+    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'updateAllChecked', value: false, index: 1 })
+
+    /// Make unchecked checkbox checked
+    await updateValueForPermissionInput({ wrapper, testId: testIds.checkboxOnAccessRemove }, true)
+
+    /// Check that the event is called
+    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'change', value: undefined, index: 2 })
+
+    /// Check that the event is called with the value true because all checkboxes are checked
+    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'updateAllChecked', value: true, index: 2 })
   })
 })
