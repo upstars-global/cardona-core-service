@@ -1,24 +1,23 @@
 import { beforeEach, describe, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
-import type { VueWrapper } from '@vue/test-utils'
 import GroupFragmentSettingsTable from '../../../../src/components/permitionsForm/GroupFragmentSettingsTable.vue'
-import { getSelectorTestId, setMountComponent, setValue } from '../../utils'
+import { setMountComponent } from '../../utils'
 import type { PermissionInput, PermissionUpdatableTable } from '../../../../src/@model/permission'
 import { AllPermission } from '../../../../src/@model/permission'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { i18n } from '../../../../src/plugins/i18n'
+import {
+  PERMISSION_KEYS,
+  permissionsConfig,
+  switchAllIsDisabled, switchAllNotDisabled,
+  testIds, updateValueForPermissionInput,
+} from '../../templates/shared-tests/permission-table'
 
 const getMountGroupFragmentSettingsTable = props => setMountComponent(GroupFragmentSettingsTable)(props, {
   stubs: {
     VExpansionPanel: { template: '<div data-test-id="explanation-panel"><slot /></div>' },
   },
 })
-
-const permissionsConfig: Array<PermissionInput> = [
-  { access: 4, target: 'test' },
-  { access: 1, target: 'test-export' },
-  { access: 3, target: 'test-seo' },
-]
 
 const getPermissionsProps = (data: Array<PermissionInput>) => new AllPermission(data).allPermission.demoPage
 
@@ -41,28 +40,6 @@ vi.mock('@permissions', () => ({
     ] as PermissionUpdatableTable[],
   },
 }))
-
-const testIds = {
-  switchAll: 'switch-all',
-  switchTestExport: 'permission-switch-test-export',
-  checkboxOnAccessRemove: 'permission-checkbox-test-4',
-}
-
-const switchAllIsDisabled = (wrapper: VueWrapper) => {
-  testOn.existClass({ wrapper, testId: testIds.switchAll }, 'v-input--disabled')
-}
-
-const switchAllNotDisabled = (wrapper: VueWrapper) => {
-  testOn.notExistClasses({ wrapper, testId: testIds.switchAll }, 'v-input--disabled')
-}
-
-const updateValueForPermissionInput = async ({ wrapper, testId }: { wrapper: VueWrapper; testId: string }, value: boolean) => {
-  const wrapperElement = wrapper.find(`${getSelectorTestId(testId)} input`)
-
-  await setValue(wrapperElement, value)
-}
-
-const PERMISSION_KEYS = [1, 2, 3, 4]
 
 const defaultProps = {
   permissions: getPermissionsProps(permissionsConfig),
