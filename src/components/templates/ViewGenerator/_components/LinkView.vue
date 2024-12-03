@@ -39,8 +39,8 @@ const openModal = () => {
   <p
     v-else
     data-test-id="title"
-    class="text-primary mb-0 cursor-pointer"
-    :class="{ 'text-muted': !canUpdate }"
+    class="mb-0 cursor-pointer"
+    :class="{ 'text-primary': canUpdate }"
     @click="openModal"
   >
     {{ item.value.title }}
