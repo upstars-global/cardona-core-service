@@ -121,6 +121,7 @@ describe('GroupFragmentSettingsTable.vue', () => {
     /// Check that switch all is not disabled
     testOn.notExistClasses({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
   })
+
   it('Switch all is disabled by switch', async () => {
     const wrapper = getMountGroupFragmentSettingsTable(props, {
       stubs: {
@@ -135,5 +136,32 @@ describe('GroupFragmentSettingsTable.vue', () => {
     await setValue(switchWrapper, false)
 
     testOn.notExistClasses({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
+  })
+
+  it('Switch all is disabled after set value true', async () => {
+    const wrapper = getMountGroupFragmentSettingsTable(props, {
+      stubs: {
+        VExpansionPanel: { template: '<div data-test-id="explanation-panel"><slot /></div>' },
+      },
+    })
+
+    /// Check base state
+    testOn.existClass({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
+
+    /// Make switch all unckecked
+    const switchWrapper = getWrapperElement({ wrapper, selector: `${getSelectorTestId('permission-switch-test-export')} input` })
+
+    await setValue(switchWrapper, false)
+
+    /// Check that switch all is disabled
+    testOn.notExistClasses({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
+
+    /// Make switch all checked
+    const switchAllWrapper = getWrapperElement({ wrapper, selector: `${getSelectorTestId('switch-all')} input` })
+
+    await setValue(switchAllWrapper, true)
+
+    /// Check that switch all is disabled
+    testOn.existClass({ wrapper, testId: 'switch-all' }, 'v-input--disabled')
   })
 })
