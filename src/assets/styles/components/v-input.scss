@@ -7,6 +7,11 @@
     padding-bottom: 0.5rem;
   }
 }
+.v-input--error {
+  .v-field--variant-outlined .v-field__outline__start, .v-field--variant-outlined .v-field__outline__notch::before, .v-field--variant-outlined .v-field__outline__notch::after, .v-field--variant-outlined .v-field__outline__end {
+    border-color: rgb(var(--v-theme-error)) !important;
+  }
+}
 .v-input {
   .v-text-field__suffix {
     opacity: 1;
@@ -28,11 +33,6 @@
       input.v-field__input {
         color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
       }
-    }
-  }
-  .v-input--error {
-    .v-field--variant-outlined .v-field__outline__start, .v-field--variant-outlined .v-field__outline__notch::before, .v-field--variant-outlined .v-field__outline__notch::after, .v-field--variant-outlined .v-field__outline__end {
-      border-color: rgb(var(--v-theme-error)) !important;
     }
   }
   .v-field--variant-outlined .v-field__outline__start, .v-field--variant-outlined .v-field__outline__notch::before, .v-field--variant-outlined .v-field__outline__notch::after, .v-field--variant-outlined .v-field__outline__end {
