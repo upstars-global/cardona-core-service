@@ -8,7 +8,7 @@ import type { TranslationForm } from './translations'
 import {
   CheckBaseField, CheckGroupBaseField,
   ConditionsBaseField,
-  DateBaseField, FormDateBaseField, MultiSelectBaseField,
+  DateBaseField, MultiSelectBaseField,
   NumberBaseField, NumberRangeBaseField, PasswordBaseField, PhoneBaseField, RadioBaseField, RatesBaseField,
   SelectBaseField, SwitchBaseField, TagsBaseField, TextBaseField,
   TextareaBaseField,
@@ -196,7 +196,6 @@ export class DemoForm {
   readonly dateTimeRange: DateBaseField
   readonly dateTime: DateBaseField
   readonly time: TimeBaseField
-  readonly dateBtn: FormDateBaseField
   readonly textarea?: TextareaBaseField
   readonly textareaWithAutoHeight?: TextareaBaseField
   readonly textareaWithCounter: TextareaBaseField
@@ -401,12 +400,6 @@ export class DemoForm {
       key: 'time',
       value: data?.time,
       label: i18n.t('page.demo.timeField'),
-    })
-    this.dateBtn = new FormDateBaseField({
-      key: 'dateBtn',
-      value: data?.dateBtn,
-      label: i18n.t('page.demo.dateBtnField'),
-      buttonOnly: true,
     })
     this.nonClearableSelect = new SelectBaseField({
       key: 'nonClearableSelect',

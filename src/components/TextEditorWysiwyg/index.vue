@@ -339,6 +339,7 @@ const onSaveChanges = () => {
       :value="variableTextBuffer[variableKeySelect]"
       :key-var="variableKeySelect"
       :modal-id="modalId"
+      :disabled="disabled"
       @update-value="updateVariableTextByKey"
       @close-modal="variableKeyUnselect"
       @delete-key="deleteVariableTextByKey"
@@ -354,6 +355,7 @@ const onSaveChanges = () => {
       <Froala
         v-model:value="content"
         tag="textarea"
+        data-test-id="text-editor"
         :config="config"
       />
 

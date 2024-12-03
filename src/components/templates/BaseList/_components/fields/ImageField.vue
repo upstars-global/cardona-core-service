@@ -11,6 +11,7 @@ withDefaults(defineProps<{
 
 <template>
   <div
+    data-test-id="image-block"
     class="img-block"
     :class="[`img-block--${size}`]"
     :style="`background-image: url(${imagePath});`"

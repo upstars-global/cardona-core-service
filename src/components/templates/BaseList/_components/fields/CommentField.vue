@@ -1,19 +1,28 @@
 <script setup lang="ts">
+import { IS_TEST_ENV } from '../../../../../utils/constants'
+
 defineProps<{
   value?: string
 }>()
 </script>
 
 <template>
-  <div class="comment-text">
+  <div
+    class="comment-text"
+    data-test-id="comment-text"
+  >
     {{ value ? value : '-' }}
 
     <VTooltip
       v-if="value"
+      :attach="IS_TEST_ENV"
       activator="parent"
       location="bottom"
     >
-      <div class="comment-text__tooltip text-body-1">
+      <div
+        class="comment-text__tooltip text-body-1"
+        data-test-id="comment-text-tooltip"
+      >
         {{ value }}
       </div>
     </VTooltip>
