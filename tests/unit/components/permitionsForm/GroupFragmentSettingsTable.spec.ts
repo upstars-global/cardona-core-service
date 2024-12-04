@@ -7,10 +7,12 @@ import { AllPermission } from '../../../../src/@model/permission'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { i18n } from '../../../../src/plugins/i18n'
 import {
-  PERMISSION_KEYS,
+  checkExistPermissionCheckbox,
+  elementIsDisabled,
+  elementNotDisabled,
   permissionsConfig,
-  switchAllIsDisabled, switchAllNotDisabled,
-  testIds, updateValueForPermissionInput,
+  runTestForPermissionLevelItem, switchAllIsDisabled,
+  switchAllNotDisabled, testIds, updateValueForPermissionInput,
 } from '../../templates/shared-tests/permission-table'
 
 const getMountGroupFragmentSettingsTable = props => setMountComponent(GroupFragmentSettingsTable)(props, {
@@ -64,23 +66,38 @@ describe('GroupFragmentSettingsTable.vue', () => {
     testOn.existElement({ wrapper, testId: 'permission-table' })
   })
 
+  it('Check component render on disabled state', async () => {
+    const wrapper = getMountGroupFragmentSettingsTable(props)
+
+    /// Check that all checkboxes are disabled
+    runTestForPermissionLevelItem(props.permissions, (permission, key) => {
+      const existCheckBox = !permission.notAccessLevel?.includes(Number(key))
+
+      const testId = `permission-checkbox-${permission.target}-${key}`
+
+      if (existCheckBox)
+        elementNotDisabled(wrapper, testId)
+    })
+
+    await wrapper.setProps({ disabled: true })
+
+    switchAllIsDisabled(wrapper)
+
+    /// Check that all checkboxes are disabled
+    runTestForPermissionLevelItem(props.permissions, (permission, key) => {
+      const existCheckBox = !permission.notAccessLevel?.includes(Number(key))
+
+      const testId = `permission-checkbox-${permission.target}-${key}`
+
+      if (existCheckBox)
+        elementIsDisabled(wrapper, testId)
+    })
+  })
+
   it('Renders in table checkboxes or temp by permission', () => {
     const wrapper = getMountGroupFragmentSettingsTable(props)
 
-    props.permissions.filter(i => i.type === 'table').forEach((permission: PermissionUpdatableTable) => {
-      PERMISSION_KEYS.forEach(key => {
-        const existCheckBox = !permission.notAccessLevel?.includes(Number(key))
-
-        const testId = existCheckBox
-          ? `permission-checkbox-${permission.target}-${key}`
-          : `empty-${permission.target}-${key}`
-
-        testOn.existElement({
-          wrapper,
-          testId,
-        })
-      })
-    })
+    checkExistPermissionCheckbox(wrapper, props.permissions)
   })
 
   it('Renders switch of permission', () => {

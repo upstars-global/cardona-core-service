@@ -38,7 +38,10 @@ watch(checked, val => {
       >
         <VExpansionPanelTitle class="py-4">
           <div class="d-flex justify-space-between w-100 align-center">
-            <span class="lead collapse-title text-body-1 font-weight-medium text-color-base">{{ title }}</span>
+            <span
+              class="lead collapse-title text-body-1 font-weight-medium text-color-base"
+              data-test-id="permission-group-title"
+            >{{ title }}</span>
             <div
               class="pr-8"
               @click.stop

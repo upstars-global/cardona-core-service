@@ -2,10 +2,14 @@ import { beforeEach, describe, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 import { setMountComponent } from '../../utils'
 import {
-  PERMISSION_KEYS, mockPermissions, permissionsConfig, switchAllIsDisabled, updateValueForPermissionInput,
+  checkExistPermissionCheckbox,
+  mockPermissions,
+  permissionsConfig,
+  switchAllIsDisabled,
+  updateValueForPermissionInput,
 } from '../../templates/shared-tests/permission-table'
 import GroupFragmentSettingsTables from '../../../../src/components/permitionsForm/GroupFragmentSettingsTables.vue'
-import type { PermissionInput, PermissionUpdatableTable } from '../../../../src/@model/permission'
+import type { PermissionInput } from '../../../../src/@model/permission'
 import { AllPermission } from '../../../../src/@model/permission'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 
@@ -45,24 +49,17 @@ describe('GroupFragmentSettings.vue', () => {
     props = cloneDeep(defaultProps)
   })
 
-  it('Renders correctly base elements by props', () => {
+  it('Renders correctly base elements', () => {
+    const wrapper = getMountGroupFragmentSettingsTables(props)
+
+    testOn.equalTextValue({ wrapper, testId: 'permission-group-title' }, props.title)
+  })
+
+  it('Renders correctly permission group checkboxes', () => {
     const wrapper = getMountGroupFragmentSettingsTables(props)
 
     props.tables.forEach(table => {
-      table.permissions.filter(i => i.type === 'table').forEach((permission: PermissionUpdatableTable) => {
-        PERMISSION_KEYS.forEach(key => {
-          const existCheckBox = !permission.notAccessLevel?.includes(Number(key))
-
-          const testId = existCheckBox
-            ? `permission-checkbox-${permission.target}-${key}`
-            : `empty-${permission.target}-${key}`
-
-          testOn.existElement({
-            wrapper,
-            testId,
-          })
-        })
-      })
+      checkExistPermissionCheckbox(wrapper, table.permissions)
     })
   })
 
