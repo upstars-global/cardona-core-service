@@ -5,7 +5,7 @@ import {
   checkExistPermissionCheckbox,
   mockPermissions,
   permissionsConfig,
-  switchAllIsDisabled,
+  switchAllIsDisabled, testCheckboxDisabledState,
   updateValueForPermissionInput,
 } from '../../templates/shared-tests/permission-table'
 import GroupFragmentSettingsTables from '../../../../src/components/permitionsForm/GroupFragmentSettingsTables.vue'
@@ -49,10 +49,22 @@ describe('GroupFragmentSettings.vue', () => {
     props = cloneDeep(defaultProps)
   })
 
-  it('Renders correctly base elements', () => {
+  it('Renders correctly base elements', async () => {
     const wrapper = getMountGroupFragmentSettingsTables(props)
 
     testOn.equalTextValue({ wrapper, testId: 'permission-group-title' }, props.title)
+
+    props.tables.forEach(table => {
+      testCheckboxDisabledState(wrapper, { permissions: table.permissions, isDisabled: false })
+    })
+
+    await wrapper.setProps({
+      disabled: true,
+    })
+
+    props.tables.forEach(table => {
+      testCheckboxDisabledState(wrapper, { permissions: table.permissions, isDisabled: true })
+    })
   })
 
   it('Renders correctly permission group checkboxes', () => {

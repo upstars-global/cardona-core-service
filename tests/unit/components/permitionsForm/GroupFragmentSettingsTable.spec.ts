@@ -8,11 +8,8 @@ import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { i18n } from '../../../../src/plugins/i18n'
 import {
   checkExistPermissionCheckbox,
-  elementIsDisabled,
-  elementNotDisabled,
-  permissionsConfig,
-  runTestForPermissionLevelItem, switchAllIsDisabled,
-  switchAllNotDisabled, testIds, updateValueForPermissionInput,
+  permissionsConfig, switchAllIsDisabled,
+  switchAllNotDisabled, testCheckboxDisabledState, testIds, updateValueForPermissionInput,
 } from '../../templates/shared-tests/permission-table'
 
 const getMountGroupFragmentSettingsTable = props => setMountComponent(GroupFragmentSettingsTable)(props, {
@@ -70,28 +67,14 @@ describe('GroupFragmentSettingsTable.vue', () => {
     const wrapper = getMountGroupFragmentSettingsTable(props)
 
     /// Check that all checkboxes are disabled
-    runTestForPermissionLevelItem(props.permissions, (permission, key) => {
-      const existCheckBox = !permission.notAccessLevel?.includes(Number(key))
-
-      const testId = `permission-checkbox-${permission.target}-${key}`
-
-      if (existCheckBox)
-        elementNotDisabled(wrapper, testId)
-    })
+    testCheckboxDisabledState(wrapper, { permissions: props.permissions, isDisabled: false })
 
     await wrapper.setProps({ disabled: true })
 
     switchAllIsDisabled(wrapper)
 
     /// Check that all checkboxes are disabled
-    runTestForPermissionLevelItem(props.permissions, (permission, key) => {
-      const existCheckBox = !permission.notAccessLevel?.includes(Number(key))
-
-      const testId = `permission-checkbox-${permission.target}-${key}`
-
-      if (existCheckBox)
-        elementIsDisabled(wrapper, testId)
-    })
+    testCheckboxDisabledState(wrapper, { permissions: props.permissions, isDisabled: true })
   })
 
   it('Renders in table checkboxes or temp by permission', () => {

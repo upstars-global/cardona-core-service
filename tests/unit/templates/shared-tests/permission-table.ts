@@ -98,3 +98,14 @@ export const checkExistPermissionCheckbox = (wrapper: VueWrapper, permissions) =
     })
   })
 }
+
+export const testCheckboxDisabledState = (wrapper: VueWrapper, { permissions, isDisabled }) => {
+  runTestForPermissionLevelItem(permissions, (permission, key) => {
+    const existCheckBox = !permission.notAccessLevel?.includes(Number(key))
+
+    const testId = `permission-checkbox-${permission.target}-${key}`
+
+    if (existCheckBox)
+      isDisabled ? elementIsDisabled(wrapper, testId) : elementNotDisabled(wrapper, testId)
+  })
+}
