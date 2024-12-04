@@ -2,11 +2,12 @@ import { beforeEach, describe, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 import { setMountComponent } from '../../utils'
 import {
-  mockPermissions, permissionsConfig,
+  PERMISSION_KEYS, mockPermissions, permissionsConfig,
 } from '../../templates/shared-tests/permission-table'
 import GroupFragmentSettingsTables from '../../../../src/components/permitionsForm/GroupFragmentSettingsTables.vue'
-import type { PermissionInput } from '../../../../src/@model/permission'
+import type { PermissionInput, PermissionUpdatableTable } from '../../../../src/@model/permission'
 import { AllPermission } from '../../../../src/@model/permission'
+import { testOn } from '../../templates/shared-tests/test-case-generator'
 
 const getMountGroupFragmentSettingsTables = props => setMountComponent(GroupFragmentSettingsTables)(props, {
   stubs: {
@@ -42,9 +43,24 @@ describe('GroupFragmentSettings.vue', () => {
     props = cloneDeep(defaultProps)
   })
 
-  it('Renders correctly base elements', () => {
+  it('Renders correctly base elements by props', () => {
     const wrapper = getMountGroupFragmentSettingsTables(props)
 
-    console.log(wrapper.html())
+    props.tables.forEach(table => {
+      table.permissions.filter(i => i.type === 'table').forEach((permission: PermissionUpdatableTable) => {
+        PERMISSION_KEYS.forEach(key => {
+          const existCheckBox = !permission.notAccessLevel?.includes(Number(key))
+
+          const testId = existCheckBox
+            ? `permission-checkbox-${permission.target}-${key}`
+            : `empty-${permission.target}-${key}`
+
+          testOn.existElement({
+            wrapper,
+            testId,
+          })
+        })
+      })
+    })
   })
 })

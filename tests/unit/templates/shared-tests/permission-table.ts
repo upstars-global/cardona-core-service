@@ -44,6 +44,11 @@ export const permissionsConfig: Array<PermissionInput> = [
   ...permissionsGroupConfig.flat(1),
 ]
 
+const getMockPermissionGroup = items => items.map(item => ({
+  target: item.target,
+  type: item.target.includes('export') ? 'switch' : 'table',
+}))
+
 export const mockPermissions = {
   default: {
     demoPage: [
@@ -61,23 +66,8 @@ export const mockPermissions = {
         notAccessLevel: [4],
       },
     ],
-    group1: [
-      ...permissionsGroupConfig[0].map(item => ({
-        target: item.target,
-        type: item.target.includes('export') ? 'switch' : 'table',
-      })),
-    ],
-    group2: [
-      ...permissionsGroupConfig[1].map(item => ({
-        target: item.target,
-        type: item.target.includes('export') ? 'switch' : 'table',
-      })),
-    ],
-    group3: [
-      ...permissionsGroupConfig[2].map(item => ({
-        target: item.target,
-        type: item.target.includes('export') ? 'switch' : 'table',
-      })),
-    ],
+    group1: getMockPermissionGroup(permissionsGroupConfig[0]),
+    group2: getMockPermissionGroup(permissionsGroupConfig[1]),
+    group3: getMockPermissionGroup(permissionsGroupConfig[2]),
   },
 }
