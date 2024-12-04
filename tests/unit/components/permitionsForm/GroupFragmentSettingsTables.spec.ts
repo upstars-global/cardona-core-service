@@ -2,10 +2,11 @@ import { beforeEach, describe, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 import { setMountComponent } from '../../utils'
 import {
-  mockPermissions,
-  permissionsConfig,
+  mockPermissions, permissionsConfig,
 } from '../../templates/shared-tests/permission-table'
 import GroupFragmentSettingsTables from '../../../../src/components/permitionsForm/GroupFragmentSettingsTables.vue'
+import type { PermissionInput } from '../../../../src/@model/permission'
+import { AllPermission } from '../../../../src/@model/permission'
 
 const getMountGroupFragmentSettingsTables = props => setMountComponent(GroupFragmentSettingsTables)(props, {
   stubs: {
@@ -15,9 +16,23 @@ const getMountGroupFragmentSettingsTables = props => setMountComponent(GroupFrag
 
 vi.mock('@permissions', () => (mockPermissions))
 
-const defaultProps = {
-  permissions: permissionsConfig,
+const getPermissionsProps = (data: Array<PermissionInput>) => new AllPermission(data).allPermission
 
+const defaultProps = {
+  tables: [
+    {
+      title: 'Group-1',
+      permissions: getPermissionsProps(permissionsConfig).group1,
+    },
+    {
+      title: 'Group-2',
+      permissions: getPermissionsProps(permissionsConfig).group2,
+    },
+    {
+      title: 'Group-3',
+      permissions: getPermissionsProps(permissionsConfig).group3,
+    },
+  ],
 }
 
 let props
@@ -29,5 +44,7 @@ describe('GroupFragmentSettings.vue', () => {
 
   it('Renders correctly base elements', () => {
     const wrapper = getMountGroupFragmentSettingsTables(props)
+
+    console.log(wrapper.html())
   })
 })

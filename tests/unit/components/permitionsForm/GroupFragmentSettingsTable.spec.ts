@@ -19,11 +19,11 @@ const getMountGroupFragmentSettingsTable = props => setMountComponent(GroupFragm
   },
 })
 
-const getPermissionsProps = (data: Array<PermissionInput>) => new AllPermission(data).allPermission.demoPage
+const getPermissionsProps = (data: Array<PermissionInput>) => new AllPermission(data).allPermission.test
 
 vi.mock('@permissions', () => ({
   default: {
-    demoPage: [
+    test: [
       {
         type: 'table',
         target: 'test',

@@ -26,12 +26,24 @@ export const updateValueForPermissionInput = async ({ wrapper, testId }: { wrapp
   await setValue(wrapperElement, value)
 }
 
-export const PERMISSION_KEYS = [1, 2, 3, 4]
-export const permissionsConfig: Array<PermissionInput> = [
+const basePermissionConfig = [
   { access: 4, target: 'test' },
   { access: 1, target: 'test-export' },
   { access: 3, target: 'test-seo' },
 ]
+
+const permissionsGroupConfig = Array.from({ length: 3 }, (_, key) => (basePermissionConfig.map(item => ({
+  ...item,
+  target: `${item.target}-group-${key + 1}`,
+}))))
+
+export const PERMISSION_KEYS = [1, 2, 3, 4]
+
+export const permissionsConfig: Array<PermissionInput> = [
+  ...basePermissionConfig,
+  ...permissionsGroupConfig.flat(1),
+]
+
 export const mockPermissions = {
   default: {
     demoPage: [
@@ -48,6 +60,24 @@ export const mockPermissions = {
         target: 'test-seo',
         notAccessLevel: [4],
       },
+    ],
+    group1: [
+      ...permissionsGroupConfig[0].map(item => ({
+        target: item.target,
+        type: item.target.includes('export') ? 'switch' : 'table',
+      })),
+    ],
+    group2: [
+      ...permissionsGroupConfig[1].map(item => ({
+        target: item.target,
+        type: item.target.includes('export') ? 'switch' : 'table',
+      })),
+    ],
+    group3: [
+      ...permissionsGroupConfig[2].map(item => ({
+        target: item.target,
+        type: item.target.includes('export') ? 'switch' : 'table',
+      })),
     ],
   },
 }
