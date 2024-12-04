@@ -246,7 +246,7 @@ describe('BaseSection.vue', () => {
     testOn.existElement({ wrapper, testId: 'loader' })
 
     /// Check that the main base section is not rendered
-    testOn.notExistElement({ wrapper, testId: 'base-section' })
+    testOn.includePropertyStyle({ wrapper, testId: 'not-active-loader-content' }, { display: 'none' })
   })
 
   it('Calls onClickCancel when cancel button is clicked', async () => {

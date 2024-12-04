@@ -20,6 +20,7 @@ export interface IDateBaseField extends IBaseField {
   readonly isFilter?: boolean
   readonly maxDateTo?: Date | string
   readonly allowFutureDate?: boolean
+  readonly keys?: string[]
 }
 
 export class DateBaseField extends BaseField implements IDateBaseField {
@@ -34,6 +35,7 @@ export class DateBaseField extends BaseField implements IDateBaseField {
   readonly isFilter?: boolean
   readonly maxDateTo?: Date | string
   readonly allowFutureDate?: boolean
+  readonly keys?: string[]
 
   constructor(field: IDateBaseField) {
     super(field)
@@ -47,6 +49,7 @@ export class DateBaseField extends BaseField implements IDateBaseField {
     this.isFilter = field?.isFilter
     this.maxDateTo = field?.maxDateTo || ''
     this.allowFutureDate = field?.allowFutureDate
+    this.keys = field.keys
   }
 
   private getISODateValue(value: DateBaseFieldInputValue): string {
@@ -66,11 +69,13 @@ export class DateBaseField extends BaseField implements IDateBaseField {
       .split(this.separator)
       .map(date => getUTCISOString(date.trim()))
 
+    const keys = this.keys?.length ? this.keys : [`${key}From`, `${key}To`]
+
     return dateTo
       ? {
-          [`${key}From`]: dateFrom,
-          [`${key}To`]: dateTo,
-        }
+        [keys[0]]: dateFrom,
+        [keys[1]]: dateTo,
+      }
       : dateFrom
   }
 
