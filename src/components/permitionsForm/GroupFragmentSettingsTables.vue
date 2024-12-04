@@ -49,6 +49,7 @@ watch(checked, val => {
                 :disabled="disabled || checked"
                 :color="VColors.Primary"
                 :label="$t('permission.fullAccess')"
+                data-test-id="switch-all"
                 @click.stop
               />
             </div>

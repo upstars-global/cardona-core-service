@@ -2,7 +2,7 @@ import { beforeEach, describe, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 import { setMountComponent } from '../../utils'
 import {
-  PERMISSION_KEYS, mockPermissions, permissionsConfig,
+  PERMISSION_KEYS, mockPermissions, permissionsConfig, switchAllIsDisabled, updateValueForPermissionInput,
 } from '../../templates/shared-tests/permission-table'
 import GroupFragmentSettingsTables from '../../../../src/components/permitionsForm/GroupFragmentSettingsTables.vue'
 import type { PermissionInput, PermissionUpdatableTable } from '../../../../src/@model/permission'
@@ -20,6 +20,7 @@ vi.mock('@permissions', () => (mockPermissions))
 const getPermissionsProps = (data: Array<PermissionInput>) => new AllPermission(data).allPermission
 
 const defaultProps = {
+  title: 'Access control',
   tables: [
     {
       title: 'Group-1',
@@ -34,6 +35,7 @@ const defaultProps = {
       permissions: getPermissionsProps(permissionsConfig).group3,
     },
   ],
+  disabled: false,
 }
 
 let props
@@ -62,5 +64,24 @@ describe('GroupFragmentSettings.vue', () => {
         })
       })
     })
+  })
+
+  it('Call event on change', async () => {
+    const wrapper = getMountGroupFragmentSettingsTables(props)
+
+    /// Reset permission value
+    await updateValueForPermissionInput({ wrapper, testId: 'permission-checkbox-test-group-1-1' }, false)
+
+    /// Check that event is called
+    testOn.isCalledEmitEventValue(wrapper, { event: 'change', value: [] })
+
+    /// Set permission value for all group
+    await updateValueForPermissionInput({ wrapper, testId: 'switch-all' }, true)
+
+    /// Check that event is called
+    testOn.isCalledEmitEventValue(wrapper, { event: 'change', value: [], index: 1 })
+
+    /// Is disabled switch all
+    switchAllIsDisabled(wrapper)
   })
 })
