@@ -28,6 +28,7 @@ const showListBadges = computed(() =>
       :key="index"
       label
       :color="value.color || VColors.Secondary"
+      :data-test-id="`badge-${index}`"
     >
       <slot :value="value">
         <VIcon
@@ -35,16 +36,21 @@ const showListBadges = computed(() =>
           :icon="value.icon"
           :size="value.iconSize || 16"
           class="mr-1"
+          :data-test-id="`badge-icon-${index}`"
         />
         {{ value.name }}
       </slot>
 
-      <span v-if="value?.position">({{ value.position }})</span>
+      <span
+        v-if="value?.position"
+        :data-test-id="`badge-position-${index}`"
+      >({{ value.position }})</span>
     </VChip>
     <VChip
       v-if="isShowBadgeCount"
       label
       :color="VColors.Primary"
+      data-test-id="badge-count"
     >
       +{{ listBadges.length - countItemShowBadge }}
     </VChip>

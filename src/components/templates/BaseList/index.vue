@@ -119,6 +119,7 @@ const fetchActionName: string = props.config?.withCustomFetchList
 
 const fetchReportActionName = 'baseStoreCore/fetchReport'
 const updateActionName = 'baseStoreCore/updateEntity'
+const toggleStatusActionName = 'baseStoreCore/toggleStatusEntity'
 
 const deleteActionName = props.config?.withCustomDelete
   ? `${moduleName}/deleteEntity`
@@ -215,6 +216,7 @@ const isLoadingList = computed(() => {
     : store.getters.isLoadingEndpoint([
       listUrl,
       `${entityUrl}/update`,
+      `${entityUrl}/active/switch`,
       `${entityUrl}/delete`,
       ...props.config.loadingEndpointArr!,
     ])
@@ -327,13 +329,17 @@ onChangePagination(() => {
 const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
 
 const getUpdateRoute = ({ id }): Location => {
-  return isExistsUpdatePage && (canUpdateCb?.() ?? true) && (canUpdate || canUpdateSeo)
+  return isExistsUpdatePage && (canUpdateCb?.() ?? true)
     ? { name: UpdatePageName, params: { id } }
     : {}
 }
 
 const onClickToggleStatus = async ({ id, isActive }) => {
-  await store.dispatch(updateActionName, {
+  const actionName = props.config.withDeactivationBySpecificAction
+    ? toggleStatusActionName
+    : updateActionName
+
+  await store.dispatch(actionName, {
     type: entityName,
     data: { form: { id, isActive: !isActive } },
     customApiPrefix: props.config?.customApiPrefix,

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { inject, ref } from 'vue'
-
 import { VColors, VVariants } from '../../@model/vuetify'
 import AppTextField from '../../@core/components/app-form-elements/AppTextField.vue'
 import BaseModal from '../../components/BaseModal/index.vue'
@@ -10,6 +9,7 @@ interface Props {
   modalId: string
   value: Value
   keyVar: string
+  disabled: boolean
 }
 
 interface Emits {
@@ -78,6 +78,7 @@ const deleteForm = () => {
             >
               <AppTextField
                 v-model="formModal[itemKey]"
+                :disabled="disabled"
                 :placeholder="$t('common.banners.empty')"
               />
             </VCol>
@@ -85,18 +86,21 @@ const deleteForm = () => {
         </VCol>
       </VRow>
 
-      <footer class="d-flex align-center justify-space-between">
-        <div>
-          <VBtn
-            type="button"
-            :variant="VVariants.Outlined"
-            :color="VColors.Error"
-            class="m-0"
-            @click="deleteForm"
-          >
-            {{ $t('action.remove') }}
-          </VBtn>
-        </div>
+      <footer
+        class="d-flex align-center"
+        :class="disabled ? 'justify-end' : 'justify-space-between'"
+      >
+        <VBtn
+          v-if="!disabled"
+          type="button"
+          :variant="VVariants.Outlined"
+          :color="VColors.Error"
+          class="m-0"
+          @click="deleteForm"
+        >
+          {{ $t('action.remove') }}
+        </VBtn>
+
         <div>
           <VBtn
             type="button"
@@ -107,7 +111,9 @@ const deleteForm = () => {
           >
             {{ $t('action.cancel_2') }}
           </VBtn>
+
           <VBtn
+            v-if="!disabled"
             type="button"
             :color="VColors.Primary"
             @click="save"

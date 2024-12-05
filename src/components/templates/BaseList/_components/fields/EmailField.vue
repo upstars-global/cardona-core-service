@@ -23,6 +23,7 @@ const isExistsRoute = computed(() => {
       v-if="isExistsRoute"
       :to="getUpdateRoute(item)"
       class="d-block"
+      data-test-id="email-link"
     >
       {{ item.email }}
     </RouterLink>
@@ -30,6 +31,7 @@ const isExistsRoute = computed(() => {
     <p
       v-else
       class="mb-0 text-primary"
+      data-test-id="email-text"
     >
       {{ item.email }}
     </p>

@@ -7,7 +7,7 @@ export const selectorInput = 'input[type="checkbox"]'
 
 export const getCheckBoxElement = (wrapper: VueWrapper): BaseWrapper<Node> => getWrapperElement({ wrapper, selector: selectorInput })
 
-export const testOnValidLabel = (wrapper: VueWrapper<unknown>, value: string) => testOn.equalTextValue({ wrapper }, value)
+export const testOnValidLabel = (wrapper: VueWrapper<unknown>, value: string) => testOn.equalTextValue({ wrapper, selector: 'label' }, value)
 
 export const testEmitData = async (wrapper, value: Array<unknown>) => {
   const checkbox = getCheckBoxElement(wrapper)
