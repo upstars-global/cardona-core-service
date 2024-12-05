@@ -240,7 +240,7 @@ const onChangeCheckboxTable = (
                   >
                     <span
                       v-if="index === 0"
-                      class="font-weight-regular text-color-base tests"
+                      class="font-weight-regular text-color-base"
                       :data-test-id="`permission-with-checkbox-${tableItem.target}`"
                     >
                       {{ $t(`permission.${tableItem.target}`) }}

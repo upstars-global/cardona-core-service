@@ -39,7 +39,7 @@ describe('GroupFragmentSettings.vue', () => {
     testOn.existElement({ wrapper, testId: testIds.switchAll })
     testOn.existElement({ wrapper, testId: 'permission-table' })
   })
-  it('Call event on on change checkbox permission', async () => {
+  it('Call event on change checkbox permission', async () => {
     /// Ids check box on each permission level
     const idsCheckboxes = [
       testIds.checkboxOnAccessRemove,
@@ -60,7 +60,7 @@ describe('GroupFragmentSettings.vue', () => {
       testOn.isCalledEmitEventValue(wrapper, { event: 'updatePermissions', value: expectedValue, index })
     }
 
-    /// Mac check call event and value on set state switch all
+    /// Update value switch for all permissions
     await updateValueForPermissionInput({ wrapper, testId: testIds.switchAll }, true)
 
     const quantityOfChangesOfCheckbox = idsCheckboxes.length
@@ -69,7 +69,7 @@ describe('GroupFragmentSettings.vue', () => {
     testOn.isCalledEmitEventValue(wrapper, { event: 'updatePermissions', value: permissionsConfig[0], index: quantityOfChangesOfCheckbox })
   })
 
-  it('Call event on on change checkbox permission', async () => {
+  it('Call event on  change checkbox permission', async () => {
     const forAccessLevelValue = 3
 
     mockPermissions.default.demoPage[1].forAccessLevelValue = forAccessLevelValue
