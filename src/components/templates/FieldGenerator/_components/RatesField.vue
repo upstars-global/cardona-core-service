@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 
-// import store from '../../../../store'
 import { useStore } from 'vuex'
 import { IconsList } from '../../../../@model/enums/icons'
 import type { RatesBaseField } from '../../../../@model/templates/baseField'
@@ -67,8 +66,8 @@ watch(
 
 function setRates(): NumberBaseField[] {
   return allCurrencies.value.map(
-    (currency, index) =>
-      new NumberBaseField({
+    (currency, index) => {
+      return new NumberBaseField({
         key: currency,
         id: `${props.field.key}-${index}`,
         value: props.modelValue.find(item => item.currency === currency)?.value ?? 0,
@@ -77,7 +76,8 @@ function setRates(): NumberBaseField[] {
         validationRules: props.field.validationRules,
         append: props.append,
         withPositiveNumbers: true,
-      }),
+      })
+    },
   )
 }
 </script>
