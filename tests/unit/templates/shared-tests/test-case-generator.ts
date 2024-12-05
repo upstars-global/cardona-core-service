@@ -157,6 +157,15 @@ export const testOn = {
     methodExpect: ExpectMethods.ToContain,
   }),
 
+  existClassList: ({ wrapper, selector, testId, component }: Omit<GetWrapperElementPrams, 'all'>, classes: Array<string>) => {
+    const elementClasses
+      = getWrapperElement({ wrapper, selector, testId, component }).classes()
+
+    classes.forEach(cls => {
+      expect(elementClasses).toContain(cls)
+    })
+  },
+
   notExistClasses: testCaseGenerator({
     property: { name: WrapperProperties.Classes },
     methodExpect: ExpectMethods.ToContain,

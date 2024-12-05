@@ -140,12 +140,14 @@ const getActualField = (fields: Array<unknown>) => {
         v-if="draggable"
         class="pl-1 pr-0 c-table__header-cell"
         data-c-field="draggable"
+        data-test-id="draggable-th"
       />
       <th
         v-if="props.selectable"
         class="c-table__header-cell"
         :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
         data-c-field="selectable"
+        data-test-id="selectable-th"
       >
         <VSkeletonLoader
           v-if="isLoadingList"
@@ -157,6 +159,7 @@ const getActualField = (fields: Array<unknown>) => {
           :model-value="allSelected || someSelected"
           :indeterminate="allSelected ? false : someSelected"
           :disabled="isLoadingList"
+          data-test-id="select-all-checkbox"
           @update:model-value="selectAll"
         />
       </th>
@@ -168,6 +171,7 @@ const getActualField = (fields: Array<unknown>) => {
           v-if="column.key !== 'data-table-select'"
           class="c-table__header-cell whitespace-no-wrap text-left cursor-pointer"
           :class="cellClasses"
+          :data-test-id="`table-th-${column.key}`"
           :data-c-field="column.key"
           @click="isSortableColumn(column) && handleSorByField(column)"
         >
@@ -175,9 +179,11 @@ const getActualField = (fields: Array<unknown>) => {
             v-show="isLoadingList"
             type="text"
             class="col-table-skeleton"
+            data-test-id="skeleton-loader"
           />
           <div
             class="d-flex align-center c-table__header-title column-title"
+            data-test-id="column-title"
             :class="{
               'justify-end': column.align === AlignType.Right,
               'justify-center': column.align === AlignType.Center,
@@ -193,15 +199,18 @@ const getActualField = (fields: Array<unknown>) => {
               v-if="isSortableColumn(column)"
               class="c-table__header-cell-icon-wrapper"
               :class="{ small: props.small }"
+              :data-test-id="`sort-col-${column.key}`"
             >
               <VIcon
                 :icon="IconsList.ChevronUpIcon"
                 class="d-block c-table__header-cell-icon"
+                :data-test-id="`sort-icon-${SortDirection.desc}`"
                 :class="{ 'c-table__header-cell-icon--active': isActiveSort(column.key, SortDirection.desc) }"
               />
               <VIcon
                 :icon="IconsList.ChevronDownIcon"
                 class="d-block c-table__header-cell-icon"
+                :data-test-id="`sort-icon-${SortDirection.asc}`"
                 :class="{ 'c-table__header-cell-icon--active': isActiveSort(column.key, SortDirection.asc) }"
               />
             </div>
@@ -210,7 +219,10 @@ const getActualField = (fields: Array<unknown>) => {
       </template>
     </template>
     <template #tbody="{ items, select, toggleSelect, isSelected }">
-      <tbody v-if="isLoadingList">
+      <tbody
+        v-if="isLoadingList"
+        data-test-id="tbody-skeleton"
+      >
         <slot name="skeleton">
           <tr
             v-for="index in skeletonRows"
@@ -241,6 +253,7 @@ const getActualField = (fields: Array<unknown>) => {
         v-else
         class="dragArea list-group w-full"
         :list="items"
+        data-test-id="drag-area"
         tag="tbody"
         @change="onDragEnd"
       >
@@ -255,6 +268,7 @@ const getActualField = (fields: Array<unknown>) => {
             v-if="draggable"
             class="pl-1 pr-0 c-table__cell"
             data-c-field="draggable"
+            data-test-id="draggable-trigger"
           >
             <VIcon
               v-if="!isLoadingList"
@@ -267,9 +281,11 @@ const getActualField = (fields: Array<unknown>) => {
             class="c-table__cell"
             :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
             data-c-field="selectable"
+            data-test-id="selectable"
           >
             <VCheckbox
               :model-value="isSelected([item])"
+              data-test-id="selectable-checkbox"
               :disabled="disabledRowIds?.includes(item.raw.id)"
               @update:model-value="select([item], $event)"
               @click.stop
