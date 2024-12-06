@@ -163,9 +163,15 @@ describe('CTable', () => {
     /// Set sort direction to ASC by click
     await clickTrigger({ wrapper, testId: `sort-icon-${SortDirection.asc}` })
 
+    const emittedValueForASC = wrapper.emitted('update:sortData')[0][0]
+
+    /// Check that is emitted correct value
+    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'update:sortData', value: emittedValueForASC })
+
+    /// Update props
     await wrapper.setProps({
       ...props,
-      sortData: { key: 'isActive', order: 'ASC', isActive: true },
+      sortData: emittedValueForASC,
     })
 
     /// Check that is correct active type of sort icon (ASC)
@@ -175,9 +181,14 @@ describe('CTable', () => {
     /// Set sort direction to DESC by click
     await clickTrigger({ wrapper, testId: `sort-icon-${SortDirection.desc}` })
 
+    const emittedValueForDESC = wrapper.emitted('update:sortData')[1][0]
+
+    /// Check that is emitted correct value
+    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'update:sortData', value: emittedValueForDESC, index: 1 })
+
     await wrapper.setProps({
       ...props,
-      sortData: { key: 'isActive', order: 'DESC', isActive: true },
+      sortData: emittedValueForDESC,
     })
 
     /// Check that is correct active type of sort icon (DESC)
