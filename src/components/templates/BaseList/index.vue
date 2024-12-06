@@ -222,6 +222,7 @@ const isLoadingList = computed(() => {
     ])
 })
 
+const isEmptyAndDebouncedSearch = computed(() => isDebouncedSearch.value && items.value.isEmpty)
 const size = props.config?.small ? VSizes.Small : VSizes.Medium
 
 const emptyListText = computed(() =>
@@ -763,7 +764,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
       <CTable
         v-model:sort-data="sortData"
-        :is-loading-list="isLoadingList"
+        :is-loading-list="isLoadingList || isEmptyAndDebouncedSearch"
         :fields="selectedFields"
         :rows="items"
         :select-mode="config.selectMode"
