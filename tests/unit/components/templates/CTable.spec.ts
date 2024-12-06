@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { cloneDeep } from 'lodash'
 import CTable from '../../../../src/components/CTable/index.vue'
-import { getSelectorTestId, setMountComponent } from '../../utils'
+import { clickTrigger, getSelectorTestId, setMountComponent } from '../../utils'
 import { ListFieldType, TableField } from '../../../../src/@model/templates/tableFields'
 import type { SelectMode } from '../../../../src/@model/enums/selectMode'
 import type { SortItem } from '../../../../src/@core/types'
@@ -160,27 +160,28 @@ describe('CTable', () => {
 
     testOn.existElement({ wrapper, testId: `sort-col-${key}` })
 
+    /// Set sort direction to ASC by click
+    await clickTrigger({ wrapper, testId: `sort-icon-${SortDirection.asc}` })
+
     await wrapper.setProps({
       ...props,
-      sortData: [
-        { key, order: SortDirection.asc, isActive: true },
-      ],
+      sortData: { key: 'isActive', order: 'ASC', isActive: true },
     })
 
+    /// Check that is correct active type of sort icon (ASC)
     testOn.existClass({ wrapper, testId: `sort-icon-${SortDirection.asc}` }, 'c-table__header-cell-icon--active')
     testOn.notExistClasses({ wrapper, testId: `sort-icon-${SortDirection.desc}` }, 'c-table__header-cell-icon--active')
 
+    /// Set sort direction to DESC by click
+    await clickTrigger({ wrapper, testId: `sort-icon-${SortDirection.desc}` })
+
     await wrapper.setProps({
       ...props,
-      sortData: [
-        { key, order: SortDirection.desc, isActive: true },
-      ],
+      sortData: { key: 'isActive', order: 'DESC', isActive: true },
     })
 
+    /// Check that is correct active type of sort icon (DESC)
     testOn.notExistClasses({ wrapper, testId: `sort-icon-${SortDirection.asc}` }, 'c-table__header-cell-icon--active')
     testOn.existClass({ wrapper, testId: `sort-icon-${SortDirection.desc}` }, 'c-table__header-cell-icon--active')
-
-    //
-    // testOn.existElement({ wrapper, testId: `sort-col-${key}` })
   })
 })
