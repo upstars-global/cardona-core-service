@@ -27,9 +27,10 @@ const labelValue = computed(() => (props.isShort ? getShortString(props.value) :
 
     <VIcon
       :icon="IconsList.CopyIcon"
+      data-test-id="copy-field-icon"
       class="cursor-pointer text-color-mute"
-      @click.stop="copyToClipboard(value)"
       size="16"
+      @click.stop="copyToClipboard(value)"
     />
   </div>
 </template>
