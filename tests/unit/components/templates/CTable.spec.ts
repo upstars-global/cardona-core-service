@@ -1,37 +1,21 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, it } from 'vitest'
 import { cloneDeep } from 'lodash'
 import CTable from '../../../../src/components/CTable/index.vue'
 import { clickTrigger, getSelectorTestId, setMountComponent } from '../../utils'
 import { ListFieldType, TableField } from '../../../../src/@model/templates/tableFields'
-import type { SelectMode } from '../../../../src/@model/enums/selectMode'
-import type { SortItem } from '../../../../src/@core/types'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { SortDirection } from '../../../../src/@model/templates/baseList'
-
-const getMountCTable = setMountComponent(CTable)
 
 const mockFields = [
   new TableField({ key: 'isActive', title: 'Is active', type: ListFieldType.PillStatus }),
 ]
 
-interface Props {
-  fields: TableField[]
-  rows: Array<Record<string, unknown>>
-  class?: string
-  hover?: boolean
-  showEmpty?: boolean
-  selectMode?: SelectMode
-  selectable?: boolean
-  small?: boolean
-  draggable?: boolean
-  sortData?: SortItem[]
-  itemsPerPage: number
-  selectedItems: Array<Record<string, unknown>>
-  isLoadingList: boolean
-  disabledRowIds?: string[]
-  skeletonRows?: number
-  skeletonCols?: number
-}
+const getMountCTable = props => setMountComponent(CTable)(props, {}, {
+  ...mockFields.reduce((acc, field) => ({
+    ...acc,
+    [`cell(${field.key})`]: `<div class="default-slot-content" data-test-id="slot-${field.key}">Content</div>`,
+  }), {}),
+})
 
 const rows = mockFields.map(field => ({
   ...field,
@@ -39,7 +23,7 @@ const rows = mockFields.map(field => ({
   size: 'md',
 }))
 
-const defaultProps: Props = {
+const defaultProps = {
   fields: mockFields,
   rows,
   isLoadingList: false,
@@ -47,21 +31,7 @@ const defaultProps: Props = {
   selectedItems: [],
 }
 
-const global = {}
-
-const slots = {
-  ...mockFields.reduce((acc, field) => ({
-    ...acc,
-    [`cell(${field.key})`]: `<div class="default-slot-content" data-test-id="slot-${field.key}">Content</div>`,
-  }), {}),
-}
-
 let props
-
-// const slots = {
-//   'modal-header': '<div class="modal-header-slot">Custom Modal Header</div>',
-//   'default': '<div class="default-slot-content">Custom Modal Content</div>',
-// }
 
 describe('CTable', () => {
   beforeEach(() => {
@@ -69,7 +39,7 @@ describe('CTable', () => {
   })
 
   it('Render default state of component with slots of cell', async () => {
-    const wrapper = getMountCTable(props, global, slots)
+    const wrapper = getMountCTable(props)
 
     props.fields.forEach(field => {
       testOn.equalTextValue({ wrapper, testId: `slot-${field.key}` }, 'Content')
@@ -79,11 +49,11 @@ describe('CTable', () => {
   it('Check isLoadingList activated state of component', async () => {
     props.isLoadingList = true
 
-    const wrapper = getMountCTable(props, global, slots)
+    const wrapper = getMountCTable(props)
 
     testOn.existElement({ wrapper, testId: 'skeleton-loader' })
 
-    expect(wrapper.find(getSelectorTestId('column-title')).attributes().style).toBe('display: none !important;')
+    testOn.isEqualAttributeStyle({ wrapper, testId: 'column-title' }, 'display: none !important;')
     testOn.notExistClasses({ wrapper, testId: 'column-title' }, 'd-none')
 
     await wrapper.setProps({ ...props, draggable: true })
@@ -95,7 +65,7 @@ describe('CTable', () => {
   it('Check draggable not activated of component', async () => {
     props.draggable = true
 
-    const wrapper = getMountCTable(props, global, slots)
+    const wrapper = getMountCTable(props)
 
     testOn.existClass({ wrapper, testId: 'column-title' }, 'd-none')
 
@@ -106,7 +76,7 @@ describe('CTable', () => {
   it('Check isHover activated of component', async () => {
     props.hover = true
 
-    const wrapper = getMountCTable(props, global, slots)
+    const wrapper = getMountCTable(props)
 
     testOn.existClass({ wrapper, selector: '.c-table__row' }, 'is-hover-row')
   })
@@ -114,7 +84,7 @@ describe('CTable', () => {
   it('Check selectMode activated of component', async () => {
     props.selectable = true
 
-    const wrapper = getMountCTable(props, global, slots)
+    const wrapper = getMountCTable(props)
 
     testOn.existElement({ wrapper, testId: 'selectable-th' })
     testOn.existElement({ wrapper, testId: 'select-all-checkbox' })
@@ -124,7 +94,7 @@ describe('CTable', () => {
   it('Check small activated of component', async () => {
     props.small = true
 
-    const wrapper = getMountCTable(props, global, slots)
+    const wrapper = getMountCTable(props)
 
     props.fields.forEach(field => {
       testOn.existClassList({ wrapper, testId: `table-th-${field.key}` }, ['py-2', 'px-3'])
@@ -139,7 +109,7 @@ describe('CTable', () => {
   it('Check draggable activated of component', async () => {
     props.draggable = true
 
-    const wrapper = getMountCTable(props, global, slots)
+    const wrapper = getMountCTable(props)
 
     testOn.existElement({ wrapper, testId: 'draggable-th' })
     testOn.existElement({ wrapper, testId: 'draggable-trigger' })
@@ -157,7 +127,7 @@ describe('CTable', () => {
       { key, order: SortDirection.asc, isActive: true },
     ]
 
-    const wrapper = getMountCTable(props, global, slots)
+    const wrapper = getMountCTable(props)
 
     testOn.existElement({ wrapper, testId: `sort-col-${key}` })
 
@@ -204,7 +174,7 @@ describe('CTable', () => {
     props.isLoadingList = true
 
     /// Check skeleton rows of qunatity
-    const wrapper = getMountCTable(props, global, slots)
+    const wrapper = getMountCTable(props)
 
     testOn.checkLengthElements({ wrapper, testId: 'skeleton-row', all: true }, itemsPerPage)
 
@@ -224,7 +194,7 @@ describe('CTable', () => {
 
     props.disabledRowIds = [2, 4]
 
-    const wrapper = getMountCTable(props, global, slots)
+    const wrapper = getMountCTable(props)
 
     props.disabledRowIds.forEach(index => {
       const wrapperCheckbox = wrapper.findAll(getSelectorTestId('selectable-checkbox')).at(index)
@@ -237,7 +207,7 @@ describe('CTable', () => {
     props.skeletonRows = 125
     props.isLoadingList = true
 
-    const wrapper = getMountCTable(props, global, slots)
+    const wrapper = getMountCTable(props)
 
     testOn.checkLengthElements({ wrapper, testId: 'skeleton-row', all: true }, props.skeletonRows)
   })

@@ -207,6 +207,11 @@ export const testOn = {
     property: { name: WrapperProperties.Attributes, value: InputAttributes.Placeholder },
   }),
 
+  isEqualAttributeStyle: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBe,
+    property: { name: WrapperProperties.Attributes, value: InputAttributes.Style },
+  }),
+
   isCalledEmittedEvent: testCaseGenerator({
     methodExpect: ExpectMethods.ToBeTruthy,
     property: { name: WrapperProperties.Emitted, value: EventEmittersNames.UpdateVModel },
