@@ -227,6 +227,7 @@ const getActualField = (fields: Array<unknown>) => {
           <tr
             v-for="index in skeletonRows"
             :key="`skeleton-row_${index}`"
+            data-test-id="skeleton-row"
           >
             <td
               v-if="props.selectable"
@@ -240,6 +241,7 @@ const getActualField = (fields: Array<unknown>) => {
               v-for="(field, cellIndex) in getActualField(fields)"
               :key="`skeleton-cell_${index}_${cellIndex}`"
               class="c-table__cell"
+              data-test-id="skeleton-coll"
               :class="cellClasses"
               :data-c-field="field.key"
             >

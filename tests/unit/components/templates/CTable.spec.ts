@@ -92,7 +92,7 @@ describe('CTable', () => {
     testOn.notExistElement({ wrapper, selector: `${getSelectorTestId('draggable-trigger')} i` })
   })
 
-  it('Check isLoadingList not activated of component', async () => {
+  it('Check draggable not activated of component', async () => {
     props.draggable = true
 
     const wrapper = getMountCTable(props, global, slots)
@@ -144,7 +144,8 @@ describe('CTable', () => {
     testOn.existElement({ wrapper, testId: 'draggable-th' })
     testOn.existElement({ wrapper, testId: 'draggable-trigger' })
   })
-  it('Render sort control icon by  sort params of component', async () => {
+
+  it('Render sort control icon by sort params of component and call event', async () => {
     const { key } = props.fields[0]
 
     props.fields = props.fields.map(field => ({
@@ -194,5 +195,50 @@ describe('CTable', () => {
     /// Check that is correct active type of sort icon (DESC)
     testOn.notExistClasses({ wrapper, testId: `sort-icon-${SortDirection.asc}` }, 'c-table__header-cell-icon--active')
     testOn.existClass({ wrapper, testId: `sort-icon-${SortDirection.desc}` }, 'c-table__header-cell-icon--active')
+  })
+
+  it('Check render element of skeleton by perPage', async () => {
+    const itemsPerPage = 5
+
+    props.itemsPerPage = itemsPerPage
+    props.isLoadingList = true
+
+    /// Check skeleton rows of qunatity
+    const wrapper = getMountCTable(props, global, slots)
+
+    testOn.checkLengthElements({ wrapper, testId: 'skeleton-row', all: true }, itemsPerPage)
+
+    /// Set to large quantity of skeleton rows
+    await wrapper.setProps({ ...props, itemsPerPage: 125 })
+
+    /// Check skeleton rows is not be more than 25
+    testOn.checkLengthElements({ wrapper, testId: 'skeleton-row', all: true }, 25)
+  })
+
+  it('Check that selectable check box is disabled by disabledRowIds ', async () => {
+    props.selectable = true
+    props.rows = Array.from({ length: 5 }, (_, index) => ({
+      ...rows[0],
+      id: index,
+    }))
+
+    props.disabledRowIds = [2, 4]
+
+    const wrapper = getMountCTable(props, global, slots)
+
+    props.disabledRowIds.forEach(index => {
+      const wrapperCheckbox = wrapper.findAll(getSelectorTestId('selectable-checkbox')).at(index)
+
+      testOn.existClass({ wrapper: wrapperCheckbox }, 'v-input--disabled')
+    })
+  })
+
+  it('Render quantity of skeleton rows on loading by skeletonRows', async () => {
+    props.skeletonRows = 125
+    props.isLoadingList = true
+
+    const wrapper = getMountCTable(props, global, slots)
+
+    testOn.checkLengthElements({ wrapper, testId: 'skeleton-row', all: true }, props.skeletonRows)
   })
 })
