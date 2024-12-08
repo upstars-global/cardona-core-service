@@ -7,6 +7,7 @@ import type { MultiSelectBaseField } from '../../../../@model/templates/baseFiel
 import { i18n } from '../../../../plugins/i18n'
 import { withPopper } from '../../../../helpers/selectPopper'
 import { IconsList } from '../../../../@model/enums/icons'
+import { copyToClipboard } from '../../../../helpers/clipboard'
 
 interface MultiselectProps {
   modelValue: OptionsItem[] | string[] | number[]
@@ -100,6 +101,28 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :calculate-position="withPopper(field.calculatePositionCb)"
       @search="onSearch"
     >
+      <template #selected-option="{ id, name }">
+        <span class="mr-1">
+          {{ name }}
+        </span>
+
+        <div v-if="field.withCopyId">
+          <VIcon
+            :icon="IconsList.CopyIcon"
+            class="cursor-pointer text-primary"
+            size="16"
+            @click.stop="copyToClipboard(id)"
+            @mousedown.stop
+          />
+
+          <VTooltip
+            location="bottom"
+            :text="$t('component.multiSelect.copyId')"
+            activator="parent"
+          />
+        </div>
+      </template>
+
       <template #no-options="{ loading, search }">
         <div v-if="!search && !loading">
           {{ $t('common.enterSomething') }}
