@@ -76,6 +76,7 @@ const appendInnerIcon = computed(() => {
           :key="`tag_${tag}`"
           closable
           label
+          :color="disabled ? VColors.Secondary : VColors.Primary"
           @click:close="onDelete(index)"
         >
           {{ tag }}
