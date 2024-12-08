@@ -1,6 +1,7 @@
 import { beforeEach, describe, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 import { createStore } from 'vuex'
+import { flushPromises } from '@vue/test-utils'
 import BaseList from '../../../../../src/components/templates/BaseList/index.vue'
 import { setMountComponent } from '../../../utils'
 import { TableField } from '../../../../../src/@model/templates/tableFields'
@@ -73,6 +74,7 @@ const defaultProps = {
   config: {
     filterList: [],
     loadingEndpointArr: [],
+    loadingOnlyByList: true,
   },
 }
 
@@ -93,10 +95,12 @@ describe('BaseList', () => {
 
     mockDispatch.mockResolvedValueOnce({
       list: [{ id: 1, name: 'Item 1', type: 'Some type', status: 'Some Status' }],
-      total: 2,
+      total: 1,
     })
 
     const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
 
     console.log(wrapper.html())
   })
