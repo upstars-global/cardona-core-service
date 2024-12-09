@@ -9,6 +9,8 @@ import type { UseListType } from '../../../../../src/@model/templates/baseList'
 import { mockModal } from '../../../mocks/modal-provide-config'
 import { testOn } from '../../../templates/shared-tests/test-case-generator'
 import { FilterID } from '../../../../../src/@model/filter'
+import type { PermissionLevel } from '../../../../../src/@model/permission'
+import { AllPermission, Permission } from '../../../../../src/@model/permission'
 
 // class ListItemModel {
 //   constructor(data) {
@@ -24,12 +26,51 @@ import { FilterID } from '../../../../../src/@model/filter'
 const getMountBaseList = setMountComponent(BaseList)
 
 const mockStore = createStore({
+  state: {
+    accessLevels: ['noaccess', 'view', 'create', 'update', 'delete'],
+    userInfo: {
+      permissions: [
+        {
+          target: 'demo-demo',
+          access: 4,
+        },
+        {
+          target: 'demo-demo-report',
+          access: 1,
+        },
+        {
+          target: 'demo-demo-seo',
+          access: 3,
+        },
+      ].map((permission: any) => new Permission(permission)),
+    },
+
+    // permissions: [{ access: 4, target: 'demo-demo' }, { access: 1, target: 'demo-demo-report' }, { access: 3, target: 'demo-demo-seo' }],
+
+    permissions: new AllPermission(),
+    selectedProduct: null,
+    selectedProject: null,
+  },
   actions: {
     fetchEntityList: vi.fn(),
     fetchReport: vi.fn(),
   },
   getters: {
     isLoadingEndpoint: () => () => false,
+    userInfo: state => state.userInfo,
+    selectedProject: state => state.selectedProject,
+    selectedProduct: state => state.selectedProduct,
+    accessLevels: state => state.accessLevels,
+    abilityCan:
+      ({ accessLevels, userInfo }) =>
+        (target: string, access: number | PermissionLevel) => {
+          if (typeof access === 'string')
+            access = accessLevels.indexOf(access.toLowerCase())
+
+          const permission = userInfo.permissions.find(permission => permission.target === target)
+
+          return permission && permission.access >= access
+        },
   },
 })
 
@@ -51,7 +92,7 @@ const fields = [
 export const useList = (): UseListType => {
   return {
     ListFilterModel: FilterID,
-    entityName: 'TestList',
+    entityName: 'Demo',
     fields,
   }
 }
@@ -194,7 +235,7 @@ describe('BaseList', () => {
         customApiPrefix: undefined,
         listItemModel: undefined,
       },
-      type: 'TestList',
+      type: 'Demo',
     })
   })
 
