@@ -6,7 +6,7 @@ import { productName } from '@productConfig'
 export default {
   namespaced: true,
   actions: {
-    async fetchUsersList({ rootGetters }, inputData) {
+    async fetchEntityList({ rootGetters }, inputData) {
       const data = inputData?.data ? inputData.data : inputData
       const isMenuTypeAdmin = !rootGetters['appConfigCore/isMenuTypeMain']
 
