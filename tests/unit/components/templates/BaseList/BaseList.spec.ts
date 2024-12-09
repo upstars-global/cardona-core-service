@@ -3,10 +3,11 @@ import { cloneDeep } from 'lodash'
 import { createStore } from 'vuex'
 import { flushPromises } from '@vue/test-utils'
 import BaseList from '../../../../../src/components/templates/BaseList/index.vue'
-import { setMountComponent } from '../../../utils'
+import { getSelectorTestId, setMountComponent } from '../../../utils'
 import { TableField } from '../../../../../src/@model/templates/tableFields'
 import type { UseListType } from '../../../../../src/@model/templates/baseList'
 import { mockModal } from '../../../mocks/modal-provide-config'
+import { testOn } from '../../../templates/shared-tests/test-case-generator'
 
 // class ListItemModel {
 //   constructor(data) {
@@ -30,22 +31,22 @@ const mockStore = createStore({
   },
 })
 
-export const useList = (): UseListType => {
-  const fields = [
-    new TableField({
-      key: 'name',
-      title: 'Name Column',
-    }),
-    new TableField({
-      key: 'type',
-      title: 'Type Column',
-    }),
-    new TableField({
-      key: 'status',
-      title: 'Status Column',
-    }),
-  ]
+const fields = [
+  new TableField({
+    key: 'name',
+    title: 'Name Column',
+  }),
+  new TableField({
+    key: 'type',
+    title: 'Type Column',
+  }),
+  new TableField({
+    key: 'status',
+    title: 'Status Column',
+  }),
+]
 
+export const useList = (): UseListType => {
   return {
     entityName: 'TestList',
     fields,
@@ -68,6 +69,8 @@ vi.mock('vue-router', async importOriginal => {
     })),
   }
 })
+
+const valueOfList = [{ id: 1, name: 'Item 1', type: 'Type 1', status: 'Status 1' }]
 
 const defaultProps = {
   useList,
@@ -94,7 +97,7 @@ describe('BaseList', () => {
     const mockDispatch = vi.spyOn(mockStore, 'dispatch')
 
     mockDispatch.mockResolvedValueOnce({
-      list: [{ id: 1, name: 'Item 1', type: 'Some type', status: 'Some Status' }],
+      list: valueOfList,
       total: 1,
     })
 
@@ -102,6 +105,16 @@ describe('BaseList', () => {
 
     await flushPromises()
 
-    console.log(wrapper.html())
+    /// TD value of table
+    testOn.equalTextValue({ wrapper, selector: 'td[data-c-field="name"]' }, 'Item 1')
+    testOn.equalTextValue({ wrapper, selector: 'td[data-c-field="type"]' }, 'Type 1')
+    testOn.equalTextValue({ wrapper, selector: 'td[data-c-field="status"]' }, 'Status 1')
+
+    const columns = wrapper.findAll(getSelectorTestId('column-title'))
+
+    /// COL value of table
+    columns.forEach((column, index) => {
+      testOn.equalTextValue({ wrapper: column }, fields[index].title)
+    })
   })
 })
