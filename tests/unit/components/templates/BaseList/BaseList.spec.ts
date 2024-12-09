@@ -239,6 +239,20 @@ describe('BaseList', () => {
     })
   })
 
+  /// TODO try make check on call await store.dispatch(fetchReportActionName when not exist maxExportItems and when exist
+  /// TODO: Add tests for the following props:
+  /// - withCreateBtn
+  /// - onePermissionKey
+  /// - withCustomFetchList
+  /// - withCustomDelete
+  /// - noPermissionPrefix
+  /// - permissionKey
+  /// - customModuleName
+  /// - customApiPrefix
+  /// - customPermissionPrefix
+  /// - loadingOnlyByList
+  /// - loadingEndpointArr
+
   // it('Check params for using maxExportItems ', async () => {
   //   const maxExportItems = 100
   //   const mockDispatch = vi.spyOn(mockStore, 'dispatch')
