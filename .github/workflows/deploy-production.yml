@@ -4,7 +4,7 @@ on:
     branches:
       - master
 jobs:
-  deploy-core-service-production:
+  build:
     runs-on: ubuntu-latest
     environment: production
     container:
@@ -36,6 +36,25 @@ jobs:
       - name: Build
         run: npm run build-cf
 
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-dist
+          path: ./server/dist
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment: develop
+    needs: build
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-dist
+
       - name: Deploy app
         id: deploy
         uses: cloudflare/wrangler-action@v3
@@ -53,5 +72,3 @@ jobs:
         env:
           DEPLOYMENT_ALIAS_URL: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
         run: echo $DEPLOYMENT_ALIAS_URL
-
-
