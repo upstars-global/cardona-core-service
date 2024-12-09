@@ -91,6 +91,7 @@ const buttonSize = computed(() => {
         :formatter="formatterInput"
         class="priority-input"
         :class="{ 'app-text-field--small': isSmallSize }"
+        data-test-id="position-input"
         @keydown="onKeyDown"
         @keyup.enter="successNewPosition"
         @keyup.esc="cancelNewPosition"
@@ -100,6 +101,7 @@ const buttonSize = computed(() => {
       class="text-success mr-1 v-btn--rectangle"
       variant="text"
       :size="buttonSize"
+      data-test-id="position-save-button"
       @click.stop="successNewPosition"
     >
       <VIcon
@@ -111,6 +113,7 @@ const buttonSize = computed(() => {
       class="cursor-pointer text-error v-btn--rectangle"
       variant="text"
       :size="buttonSize"
+      data-test-id="position-cancel-button"
       @click.stop="cancelNewPosition"
     >
       <VIcon
@@ -129,9 +132,10 @@ const buttonSize = computed(() => {
       v-if="canUpdate"
       :icon="IconsList.EditIcon"
       :color="VColors.Primary"
+      data-test-id="position-edit-icon"
       class="mr-1"
     />
-    <span>{{ position }}</span>
+    <span data-test-id="position-read-text">{{ position }}</span>
   </div>
 </template>
 

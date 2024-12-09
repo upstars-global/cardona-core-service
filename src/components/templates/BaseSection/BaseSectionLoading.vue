@@ -5,10 +5,10 @@ defineProps<{ loading: boolean }>()
 </script>
 
 <template>
-  <div>
+  <div class="main-section-container">
     <Transition name="fade">
       <div
-        v-if="loading"
+        v-show="loading"
         class="loader-overlay"
       >
         <VProgressCircular
@@ -19,20 +19,40 @@ defineProps<{ loading: boolean }>()
         />
       </div>
     </Transition>
-    <slot v-if="!loading" />
+    <div
+      v-show="!loading"
+      data-test-id="not-active-loader-content"
+    >
+      <slot />
+    </div>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .loader-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: calc(100vh - 10rem);
+  height: 90vh;
   background-color: rgb(var(--v-theme-surface));
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  z-index: 9999;
 }
+
+.base-modal .loader-overlay {
+  position: relative;
+  height: auto;
+}
+</style>
+
+<style scoped lang="scss">
+.main-section-container {
+  position: relative;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;

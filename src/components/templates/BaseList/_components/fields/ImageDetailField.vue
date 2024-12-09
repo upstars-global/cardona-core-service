@@ -39,6 +39,7 @@ const previewImage = computed(() => props.imagePath + previewAdditionalParams.va
     >
       <div class="d-flex justify-center align-center pa-5">
         <img
+          data-test-id="image-detail"
           :src="imagePath"
           alt="full img"
           class="full-size-img"
