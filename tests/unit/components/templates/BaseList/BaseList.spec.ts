@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 import { createStore } from 'vuex'
 import { flushPromises } from '@vue/test-utils'
@@ -8,6 +8,7 @@ import { TableField } from '../../../../../src/@model/templates/tableFields'
 import type { UseListType } from '../../../../../src/@model/templates/baseList'
 import { mockModal } from '../../../mocks/modal-provide-config'
 import { testOn } from '../../../templates/shared-tests/test-case-generator'
+import { FilterID } from '../../../../../src/@model/filter'
 
 // class ListItemModel {
 //   constructor(data) {
@@ -25,6 +26,7 @@ const getMountBaseList = setMountComponent(BaseList)
 const mockStore = createStore({
   actions: {
     fetchEntityList: vi.fn(),
+    fetchReport: vi.fn(),
   },
   getters: {
     isLoadingEndpoint: () => () => false,
@@ -48,6 +50,7 @@ const fields = [
 
 export const useList = (): UseListType => {
   return {
+    ListFilterModel: FilterID,
     entityName: 'TestList',
     fields,
   }
@@ -69,6 +72,27 @@ vi.mock('vue-router', async importOriginal => {
     })),
   }
 })
+
+/// demo-test-list-report
+vi.mock('@permissions', () => ({
+  default: {
+    demoPage: [
+      {
+        type: 'table',
+        target: 'test',
+      },
+      {
+        type: 'switch',
+        target: 'demo-test-list-report',
+      },
+      {
+        type: 'table',
+        target: 'test-seo',
+        notAccessLevel: [4],
+      },
+    ],
+  },
+}))
 
 const valueOfList = [{ id: 1, name: 'Item 1', type: 'Type 1', status: 'Status 1' }]
 
@@ -117,4 +141,83 @@ describe('BaseList', () => {
       testOn.equalTextValue({ wrapper: column }, fields[index].title)
     })
   })
+
+  it('Test on render search input by props:  withSearch,hideSearchBlock ', async () => {
+    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
+
+    mockDispatch.mockResolvedValueOnce({
+      list: [],
+      total: 1,
+    })
+
+    props.config.withSearch = true
+
+    const wrapper = getMountBaseList(props, global)
+
+    testOn.existElement({ wrapper, testId: 'search-input' })
+
+    await wrapper.setProps({
+      ...props,
+      config: {
+        ...props.config,
+        hideSearchBlock: true,
+      },
+    })
+
+    testOn.notExistElement({ wrapper, testId: 'search-input' })
+  })
+
+  /// TODO Add test on withDeactivationBySpecificAction for ItemActions
+
+  it('Check params for using staticFilters ', async () => {
+    const filterParams = { id: 2 }
+    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
+
+    mockDispatch.mockResolvedValueOnce({
+      list: [],
+      total: 1,
+    })
+
+    props.config.staticFilters = filterParams
+
+    getMountBaseList(props, global)
+
+    await flushPromises()
+    expect(mockDispatch).toHaveBeenCalledWith('baseStoreCore/fetchEntityList', {
+      data: {
+        filter: new FilterID(filterParams),
+        page: 1,
+        perPage: 10,
+        sort: null,
+      },
+      options: {
+        customApiPrefix: undefined,
+        listItemModel: undefined,
+      },
+      type: 'TestList',
+    })
+  })
+
+  // it('Check params for using maxExportItems ', async () => {
+  //   const maxExportItems = 100
+  //   const mockDispatch = vi.spyOn(mockStore, 'dispatch')
+  //
+  //   console.log(props.config, '!!!')
+  //
+  //   mockDispatch.mockResolvedValueOnce({
+  //     list: [],
+  //     total: 101,
+  //   })
+  //
+  //   props.config.maxExportItems = maxExportItems
+  //   props.config.formatOfExports = [ExportFormat.CSV]
+  //
+  //   const wrapper = getMountBaseList(props, global)
+  //
+  //   await flushPromises()
+  //
+  //   console.log(wrapper.find('.test').html())
+  //
+  //   console.log(wrapper.html())
+  // })
 })
