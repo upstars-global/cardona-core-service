@@ -109,6 +109,10 @@ vi.mock('vue-router', async importOriginal => {
     useRouter: vi.fn(() => ({
       push: vi.fn(),
       replace: vi.fn(),
+      getRoutes: vi.fn(() => [
+        { name: 'DemoCreate', path: '/demo/create' }, // Добавляем маршрут
+        { name: 'TestRoute', path: '/test-route' },
+      ]),
     })),
     useRoute: vi.fn(() => ({
       params: {},
@@ -342,5 +346,20 @@ describe('BaseList', () => {
     await clickTrigger({ wrapper, testId: 'export-json' })
 
     expect(toastError).toHaveBeenCalled()
+  })
+
+  it('Check event on export data list', () => {
+    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
+
+    mockDispatch.mockResolvedValueOnce({
+      list: [],
+      total: 100,
+    })
+
+    props.config.withCreateBtn = true
+
+    const wrapper = getMountBaseList(props, global)
+
+    testOn.existElement({ wrapper, testId: 'right-search-btn' })
   })
 })
