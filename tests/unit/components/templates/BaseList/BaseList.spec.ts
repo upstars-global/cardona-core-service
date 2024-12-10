@@ -43,23 +43,23 @@ const mockStore = createStore({
     userInfo: {
       permissions: [
         {
-          target: 'demo-demo',
+          target: 'demo-test',
           access: 4,
         },
         {
-          target: 'demo-demo-report',
+          target: 'demo-test-report',
           access: 1,
         },
         {
-          target: 'demo-demo-seo',
+          target: 'demo-test-seo',
           access: 3,
         },
         {
-          target: 'demo-super',
+          target: 'test-super',
           access: 4,
         },
         {
-          target: 'demo-permission',
+          target: 'test-permission',
           access: 4,
         },
       ].map((permission: any) => new Permission(permission)),
@@ -105,7 +105,7 @@ const fields = [
 export const useList = (): UseListType => {
   return {
     ListFilterModel: FilterID,
-    entityName: 'Demo',
+    entityName: 'Test',
     fields,
   }
 }
@@ -119,7 +119,7 @@ vi.mock('vue-router', async importOriginal => {
       push: vi.fn(),
       replace: vi.fn(),
       getRoutes: vi.fn(() => [
-        { name: 'DemoCreate', path: '/demo/create' },
+        { name: 'TestCreate', path: '/test/create' },
         { name: 'TestRoute', path: '/test-route' },
       ]),
     })),
@@ -232,7 +232,7 @@ describe('BaseList', () => {
         customApiPrefix: undefined,
         listItemModel: undefined,
       },
-      type: 'Demo',
+      type: 'Test',
     })
   })
 
@@ -288,7 +288,7 @@ describe('BaseList', () => {
     })
 
     props.config.withCreateBtn = true
-    props.config.onePermissionKey = 'demo-super'
+    props.config.onePermissionKey = 'test-super'
     props.config.noPermissionPrefix = true
 
     const wrapper = getMountBaseList(props, global)
@@ -306,7 +306,7 @@ describe('BaseList', () => {
 
     getMountBaseList(props, global)
 
-    expect(mockDispatch.mock.calls[0][0]).toBe('entityTest/fetchDemoList')
+    expect(mockDispatch.mock.calls[0][0]).toBe('entityTest/fetchTestList')
   })
 
   it('Using props withCustomDelete', async () => {
@@ -332,7 +332,7 @@ describe('BaseList', () => {
   })
 
   it('Check access to list by prop permissionKey', () => {
-    props.config.permissionKey = 'demo-permission'
+    props.config.permissionKey = 'test-permission'
 
     const wrapper = getMountBaseList(props, global)
 
@@ -364,7 +364,7 @@ describe('BaseList', () => {
         customApiPrefix,
         listItemModel: undefined,
       },
-      type: 'Demo',
+      type: 'Test',
     })
   })
 })
