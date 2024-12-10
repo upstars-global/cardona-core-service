@@ -157,6 +157,15 @@ export const testOn = {
     methodExpect: ExpectMethods.ToContain,
   }),
 
+  existClassList: ({ wrapper, selector, testId, component }: Omit<GetWrapperElementPrams, 'all'>, classes: Array<string>) => {
+    const elementClasses
+      = getWrapperElement({ wrapper, selector, testId, component }).classes()
+
+    classes.forEach(cls => {
+      expect(elementClasses).toContain(cls)
+    })
+  },
+
   notExistClasses: testCaseGenerator({
     property: { name: WrapperProperties.Classes },
     methodExpect: ExpectMethods.ToContain,
@@ -196,6 +205,11 @@ export const testOn = {
   isEqualPlaceholder: testCaseGenerator({
     methodExpect: ExpectMethods.ToEqual,
     property: { name: WrapperProperties.Attributes, value: InputAttributes.Placeholder },
+  }),
+
+  isEqualAttributeStyle: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBe,
+    property: { name: WrapperProperties.Attributes, value: InputAttributes.Style },
   }),
 
   isCalledEmittedEvent: testCaseGenerator({
