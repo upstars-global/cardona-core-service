@@ -10,12 +10,6 @@ import { FilterID } from '../../../../../src/@model/filter'
 import useToastService from '../../../../../src/helpers/toasts'
 import { defaultProps, exportDataMock, fields, mockStore } from '../../../mocks/base-list'
 
-// class ListItemModel {
-//   constructor(data) {
-//
-//   }
-// }
-
 const getSelectorCField = (name: string) => `td[data-c-field="${name}"]`
 
 const getMountBaseList = setMountComponent(BaseList)
@@ -109,8 +103,6 @@ describe('BaseList', () => {
 
     testOn.notExistElement({ wrapper, testId: 'search-input' })
   })
-
-  /// TODO Add test on withDeactivation BySpecificAction for ItemActions
 
   it('Check params for using staticFilters ', async () => {
     const filterParams = { id: 2 }
@@ -263,4 +255,10 @@ describe('BaseList', () => {
       type: 'Test',
     })
   })
+
+  /// TODO Add test on withDeactivation BySpecificAction for ItemActions
+  /// TODO Add check on using slots also check on condition render
+  /// TODO check call event emits: rowClicked
+  /// TODO check remove item
+  /// TODO check empty state of list
 })
