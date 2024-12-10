@@ -11,17 +11,14 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "latest"
-          cache: "npm"
+          node-version: '22'
+          cache: 'yarn'
 
-      - name: Install yarn
-        run: npm i -g yarn
-
-      - name: Yarn install
-        run: yarn install
+      - name: Install project dependencies
+        run: yarn
 
       - name: Unit Tests
         run: npm run test:unit
@@ -46,5 +43,3 @@ jobs:
         env:
           DEPLOYMENT_ALIAS_URL: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
         run: echo $DEPLOYMENT_ALIAS_URL
-
-
