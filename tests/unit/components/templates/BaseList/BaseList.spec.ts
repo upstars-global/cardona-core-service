@@ -54,6 +54,10 @@ const mockStore = createStore({
           target: 'demo-demo-seo',
           access: 3,
         },
+        {
+          target: 'super-demo',
+          access: 4,
+        },
       ].map((permission: any) => new Permission(permission)),
     },
     permissions: new AllPermission(),
@@ -269,7 +273,6 @@ describe('BaseList', () => {
 
   /// TODO try make check on call await store.dispatch(fetchReportActionName when not exist maxExportItems and when exist
   /// TODO: Add tests for the following props:
-  /// - withCreateBtn
   /// - onePermissionKey
   /// - withCustomFetchList
   /// - withCustomDelete
@@ -334,6 +337,22 @@ describe('BaseList', () => {
     })
 
     props.config.withCreateBtn = true
+
+    const wrapper = getMountBaseList(props, global)
+
+    testOn.existElement({ wrapper, testId: 'right-search-btn' })
+  })
+
+  it('Checking for valid using onePermissionKey', () => {
+    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
+
+    mockDispatch.mockResolvedValueOnce({
+      list: [],
+      total: 100,
+    })
+
+    props.config.withCreateBtn = true
+    props.config.onePermissionKey = 'super-demo'
 
     const wrapper = getMountBaseList(props, global)
 
