@@ -13,6 +13,7 @@ import { FilterID } from '../../../../../src/@model/filter'
 import type { PermissionLevel } from '../../../../../src/@model/permission'
 import { AllPermission, Permission } from '../../../../../src/@model/permission'
 import useToastService from '../../../../../src/helpers/toasts'
+import { exportDataMock } from '../../../mocks/base-list'
 
 // class ListItemModel {
 //   constructor(data) {
@@ -176,31 +177,7 @@ let props
 
 describe('BaseList', () => {
   beforeEach(() => {
-    if (!window.URL.createObjectURL) {
-      Object.defineProperty(window.URL, 'createObjectURL', {
-        writable: true,
-        configurable: true,
-        value: vi.fn(() => 'mocked-url'),
-      })
-    }
-    else {
-      vi.spyOn(window.URL, 'createObjectURL').mockImplementation(() => 'mocked-url')
-    }
-
-    // Мокаем `document.createElement` только для элементов <a>
-    const originalCreateElement = document.createElement
-
-    vi.spyOn(document, 'createElement').mockImplementation(tagName => {
-      if (tagName === 'a') {
-        const anchorElement = originalCreateElement.call(document, 'a')
-
-        vi.spyOn(anchorElement, 'click').mockImplementation(() => {})
-
-        return anchorElement
-      }
-
-      return originalCreateElement.call(document, tagName)
-    })
+    exportDataMock()
     props = cloneDeep(defaultProps)
   })
 
