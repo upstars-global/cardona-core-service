@@ -20,11 +20,8 @@ import { exportDataMock } from '../../../mocks/base-list'
 //
 //   }
 // }
-// class ListFilterModel {
-//   constructor(data) {
-//
-//   }
-// }
+
+const getSelectorCField = (name: string) => `td[data-c-field="${name}"]`
 
 const getMountBaseList = setMountComponent(BaseList)
 
@@ -122,7 +119,7 @@ vi.mock('vue-router', async importOriginal => {
       push: vi.fn(),
       replace: vi.fn(),
       getRoutes: vi.fn(() => [
-        { name: 'DemoCreate', path: '/demo/create' }, // Добавляем маршрут
+        { name: 'DemoCreate', path: '/demo/create' },
         { name: 'TestRoute', path: '/test-route' },
       ]),
     })),
@@ -133,27 +130,6 @@ vi.mock('vue-router', async importOriginal => {
     })),
   }
 })
-
-/// demo-test-list-report
-vi.mock('@permissions', () => ({
-  default: {
-    demoPage: [
-      {
-        type: 'table',
-        target: 'test',
-      },
-      {
-        type: 'switch',
-        target: 'demo-test-list-report',
-      },
-      {
-        type: 'table',
-        target: 'test-seo',
-        notAccessLevel: [4],
-      },
-    ],
-  },
-}))
 
 vi.mock('../../../../../src/helpers/toasts', () => {
   const toastErrorMock = vi.fn()
@@ -185,21 +161,16 @@ const global = {
 }
 
 let props
+let mockDispatch
 
 describe('BaseList', () => {
   beforeEach(() => {
     exportDataMock()
     props = cloneDeep(defaultProps)
+    mockDispatch = vi.spyOn(mockStore, 'dispatch')
   })
 
-  //
-  // afterEach(() => {
-  //   vi.restoreAllMocks() // Очистка моков
-  // })
-
   it('Render default state of component with slots of cell', async () => {
-    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
-
     mockDispatch.mockResolvedValueOnce({
       list: valueOfList,
       total: 1,
@@ -210,9 +181,9 @@ describe('BaseList', () => {
     await flushPromises()
 
     /// TD value of table
-    testOn.equalTextValue({ wrapper, selector: 'td[data-c-field="name"]' }, 'Item 1')
-    testOn.equalTextValue({ wrapper, selector: 'td[data-c-field="type"]' }, 'Type 1')
-    testOn.equalTextValue({ wrapper, selector: 'td[data-c-field="status"]' }, 'Status 1')
+    testOn.equalTextValue({ wrapper, selector: getSelectorCField('name') }, 'Item 1')
+    testOn.equalTextValue({ wrapper, selector: getSelectorCField('type') }, 'Type 1')
+    testOn.equalTextValue({ wrapper, selector: getSelectorCField('status') }, 'Status 1')
 
     const columns = wrapper.findAll(getSelectorTestId('column-title'))
 
@@ -222,14 +193,7 @@ describe('BaseList', () => {
     })
   })
 
-  it('Test on render search input by props:  withSearch,hideSearchBlock ', async () => {
-    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
-
-    mockDispatch.mockResolvedValueOnce({
-      list: [],
-      total: 1,
-    })
-
+  it('Test on render search input by props: withSearch and hideSearchBlock ', async () => {
     props.config.withSearch = true
 
     const wrapper = getMountBaseList(props, global)
@@ -247,16 +211,10 @@ describe('BaseList', () => {
     testOn.notExistElement({ wrapper, testId: 'search-input' })
   })
 
-  /// TODO Add test on withDeactivationBySpecificAction for ItemActions
+  /// TODO Add test on withDeactivation BySpecificAction for ItemActions
 
   it('Check params for using staticFilters ', async () => {
     const filterParams = { id: 2 }
-    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
-
-    mockDispatch.mockResolvedValueOnce({
-      list: [],
-      total: 1,
-    })
 
     props.config.staticFilters = filterParams
 
@@ -281,7 +239,6 @@ describe('BaseList', () => {
   it('Check params for using maxExportItems ', async () => {
     const { toastError } = useToastService()
     const maxExportItems = 100
-    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
 
     mockDispatch.mockResolvedValueOnce({
       list: [],
@@ -303,12 +260,6 @@ describe('BaseList', () => {
 
   it('Check event on export data list', async () => {
     const { toastError } = useToastService()
-    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
-
-    mockDispatch.mockResolvedValueOnce({
-      list: [],
-      total: 100,
-    })
 
     props.config.withExport = true
 
@@ -323,13 +274,6 @@ describe('BaseList', () => {
   })
 
   it('Check event on export data list', () => {
-    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
-
-    mockDispatch.mockResolvedValueOnce({
-      list: [],
-      total: 100,
-    })
-
     props.config.withCreateBtn = true
 
     const wrapper = getMountBaseList(props, global)
@@ -338,8 +282,6 @@ describe('BaseList', () => {
   })
 
   it('Checking for valid using onePermissionKey', () => {
-    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
-
     mockDispatch.mockResolvedValueOnce({
       list: [],
       total: 100,
@@ -354,8 +296,6 @@ describe('BaseList', () => {
     testOn.existElement({ wrapper, testId: 'right-search-btn' })
   })
   it('Using props withCustomFetchList', async () => {
-    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
-
     mockDispatch.mockResolvedValueOnce({
       list: [],
       total: 100,
@@ -370,7 +310,6 @@ describe('BaseList', () => {
   })
 
   it('Using props withCustomDelete', async () => {
-    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
     const hideMock = vi.fn()
     const commentToRemove = 'Test Comment'
 
@@ -393,13 +332,6 @@ describe('BaseList', () => {
   })
 
   it('Check access to list by prop permissionKey', () => {
-    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
-
-    mockDispatch.mockResolvedValueOnce({
-      list: [],
-      total: 100,
-    })
-
     props.config.permissionKey = 'demo-permission'
 
     const wrapper = getMountBaseList(props, global)
@@ -412,12 +344,6 @@ describe('BaseList', () => {
 
   it('Check param of customApiPrefix ', async () => {
     const filterParams = { id: 2 }
-    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
-
-    mockDispatch.mockResolvedValueOnce({
-      list: [],
-      total: 1,
-    })
 
     const customApiPrefix = 'test'
 
