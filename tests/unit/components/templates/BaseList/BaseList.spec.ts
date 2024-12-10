@@ -3,14 +3,16 @@ import { cloneDeep } from 'lodash'
 import { createStore } from 'vuex'
 import { flushPromises } from '@vue/test-utils'
 import BaseList from '../../../../../src/components/templates/BaseList/index.vue'
-import { getSelectorTestId, setMountComponent } from '../../../utils'
+import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../utils'
 import { TableField } from '../../../../../src/@model/templates/tableFields'
 import type { UseListType } from '../../../../../src/@model/templates/baseList'
+import { ExportFormat } from '../../../../../src/@model/templates/baseList'
 import { mockModal } from '../../../mocks/modal-provide-config'
 import { testOn } from '../../../templates/shared-tests/test-case-generator'
 import { FilterID } from '../../../../../src/@model/filter'
 import type { PermissionLevel } from '../../../../../src/@model/permission'
 import { AllPermission, Permission } from '../../../../../src/@model/permission'
+import useToastService from '../../../../../src/helpers/toasts'
 
 // class ListItemModel {
 //   constructor(data) {
@@ -135,6 +137,19 @@ vi.mock('@permissions', () => ({
   },
 }))
 
+vi.mock('../../../../../src/helpers/toasts', () => {
+  const toastErrorMock = vi.fn()
+
+  return {
+    default: vi.fn(() => ({
+      toastError: toastErrorMock,
+      toastSuccess: vi.fn(),
+      toastErrorMessageString: vi.fn(),
+    })),
+    toastErrorMock,
+  }
+})
+
 const valueOfList = [{ id: 1, name: 'Item 1', type: 'Type 1', status: 'Status 1' }]
 
 const defaultProps = {
@@ -253,26 +268,28 @@ describe('BaseList', () => {
   /// - loadingOnlyByList
   /// - loadingEndpointArr
 
-  // it('Check params for using maxExportItems ', async () => {
-  //   const maxExportItems = 100
-  //   const mockDispatch = vi.spyOn(mockStore, 'dispatch')
-  //
-  //   console.log(props.config, '!!!')
-  //
-  //   mockDispatch.mockResolvedValueOnce({
-  //     list: [],
-  //     total: 101,
-  //   })
-  //
-  //   props.config.maxExportItems = maxExportItems
-  //   props.config.formatOfExports = [ExportFormat.CSV]
-  //
-  //   const wrapper = getMountBaseList(props, global)
-  //
-  //   await flushPromises()
-  //
-  //   console.log(wrapper.find('.test').html())
-  //
-  //   console.log(wrapper.html())
-  // })
+  it('Check params for using maxExportItems ', async () => {
+    const { toastError } = useToastService()
+    const maxExportItems = 100
+    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
+
+    mockDispatch.mockResolvedValueOnce({
+      list: [],
+      total: 101,
+    })
+
+    props.config.maxExportItems = maxExportItems
+    props.config.withExport = true
+    props.config.formatOfExports = [ExportFormat.CSV]
+
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+
+    await clickTrigger({ wrapper, testId: 'menu-activator' })
+
+    expect(toastError).toHaveBeenCalled()
+
+    console.log(wrapper.html())
+  })
 })
