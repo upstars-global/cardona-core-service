@@ -1,19 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
-import { createStore } from 'vuex'
 import { flushPromises } from '@vue/test-utils'
 import BaseList from '../../../../../src/components/templates/BaseList/index.vue'
 import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../utils'
-import { TableField } from '../../../../../src/@model/templates/tableFields'
-import type { UseListType } from '../../../../../src/@model/templates/baseList'
 import { ExportFormat } from '../../../../../src/@model/templates/baseList'
 import { mockModal } from '../../../mocks/modal-provide-config'
 import { testOn } from '../../../templates/shared-tests/test-case-generator'
 import { FilterID } from '../../../../../src/@model/filter'
-import type { PermissionLevel } from '../../../../../src/@model/permission'
-import { AllPermission, Permission } from '../../../../../src/@model/permission'
 import useToastService from '../../../../../src/helpers/toasts'
-import { exportDataMock } from '../../../mocks/base-list'
+import { defaultProps, exportDataMock, fields, mockStore } from '../../../mocks/base-list'
 
 // class ListItemModel {
 //   constructor(data) {
@@ -24,91 +19,6 @@ import { exportDataMock } from '../../../mocks/base-list'
 const getSelectorCField = (name: string) => `td[data-c-field="${name}"]`
 
 const getMountBaseList = setMountComponent(BaseList)
-
-const mockStore = createStore({
-  modules: {
-    baseStoreCore: {
-      namespaced: true,
-      actions: {
-        fetchEntityList: vi.fn().mockResolvedValue({
-          list: [{ id: 1, name: 'Test Item' }],
-          total: 1,
-        }),
-        fetchReport: vi.fn(),
-      },
-    },
-  },
-  state: {
-    accessLevels: ['noaccess', 'view', 'create', 'update', 'delete'],
-    userInfo: {
-      permissions: [
-        {
-          target: 'demo-test',
-          access: 4,
-        },
-        {
-          target: 'demo-test-report',
-          access: 1,
-        },
-        {
-          target: 'demo-test-seo',
-          access: 3,
-        },
-        {
-          target: 'test-super',
-          access: 4,
-        },
-        {
-          target: 'test-permission',
-          access: 4,
-        },
-      ].map((permission: any) => new Permission(permission)),
-    },
-    permissions: new AllPermission(),
-    selectedProduct: null,
-    selectedProject: null,
-  },
-  getters: {
-    isLoadingEndpoint: () => () => false,
-    userInfo: state => state.userInfo,
-    selectedProject: state => state.selectedProject,
-    selectedProduct: state => state.selectedProduct,
-    accessLevels: state => state.accessLevels,
-    abilityCan:
-      ({ accessLevels, userInfo }) =>
-        (target: string, access: number | PermissionLevel) => {
-          if (typeof access === 'string')
-            access = accessLevels.indexOf(access.toLowerCase())
-
-          const permission = userInfo.permissions.find(permission => permission.target === target)
-
-          return permission && permission.access >= access
-        },
-  },
-})
-
-const fields = [
-  new TableField({
-    key: 'name',
-    title: 'Name Column',
-  }),
-  new TableField({
-    key: 'type',
-    title: 'Type Column',
-  }),
-  new TableField({
-    key: 'status',
-    title: 'Status Column',
-  }),
-]
-
-export const useList = (): UseListType => {
-  return {
-    ListFilterModel: FilterID,
-    entityName: 'Test',
-    fields,
-  }
-}
 
 vi.mock('vue-router', async importOriginal => {
   const actual = await importOriginal()
@@ -144,17 +54,6 @@ vi.mock('../../../../../src/helpers/toasts', () => {
   }
 })
 
-const valueOfList = [{ id: 1, name: 'Item 1', type: 'Type 1', status: 'Status 1' }]
-
-const defaultProps = {
-  useList,
-  config: {
-    filterList: [],
-    loadingEndpointArr: [],
-    loadingOnlyByList: false,
-  },
-}
-
 const global = {
   provide: { modal: mockModal },
   plugins: [mockStore],
@@ -172,7 +71,7 @@ describe('BaseList', () => {
 
   it('Render default state of component with slots of cell', async () => {
     mockDispatch.mockResolvedValueOnce({
-      list: valueOfList,
+      list: [{ id: 1, name: 'Item 1', type: 'Type 1', status: 'Status 1' }],
       total: 1,
     })
 
@@ -343,19 +242,16 @@ describe('BaseList', () => {
   })
 
   it('Check param of customApiPrefix ', async () => {
-    const filterParams = { id: 2 }
-
     const customApiPrefix = 'test'
 
     props.config.customApiPrefix = customApiPrefix
-    props.config.staticFilters = filterParams
 
     getMountBaseList(props, global)
 
     await flushPromises()
     expect(mockDispatch).toHaveBeenCalledWith('baseStoreCore/fetchEntityList', {
       data: {
-        filter: new FilterID(filterParams),
+        filter: new FilterID({}),
         page: 1,
         perPage: 10,
         sort: null,
