@@ -273,7 +273,6 @@ describe('BaseList', () => {
 
   /// TODO try make check on call await store.dispatch(fetchReportActionName when not exist maxExportItems and when exist
   /// TODO: Add tests for the following props:
-  /// - onePermissionKey
   /// - withCustomFetchList
   /// - withCustomDelete
   /// - noPermissionPrefix
@@ -357,5 +356,20 @@ describe('BaseList', () => {
     const wrapper = getMountBaseList(props, global)
 
     testOn.existElement({ wrapper, testId: 'right-search-btn' })
+  })
+  it('Using props withCustomFetchList', async () => {
+    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
+
+    mockDispatch.mockResolvedValueOnce({
+      list: [],
+      total: 100,
+    })
+
+    props.config.customModuleName = 'entityTest'
+    props.config.withCustomFetchList = true
+
+    getMountBaseList(props, global)
+
+    expect(mockDispatch.mock.calls[0][0]).toBe('entityTest/fetchDemoList')
   })
 })
