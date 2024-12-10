@@ -7,5 +7,5 @@ defineProps<{
 </script>
 
 <template>
-  <span data-test-id="text" class="mb-0 text-color-base">{{ item.value }}</span>
+  <span data-test-id="text" class="mb-0 text-color-base">{{ item.value || '-' }}</span>
 </template>
