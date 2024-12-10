@@ -33,7 +33,10 @@ const mockStore = createStore({
     baseStoreCore: {
       namespaced: true,
       actions: {
-        fetchEntityList: vi.fn(),
+        fetchEntityList: vi.fn().mockResolvedValue({
+          list: [{ id: 1, name: 'Test Item' }],
+          total: 1,
+        }),
         fetchReport: vi.fn(),
       },
     },
@@ -273,7 +276,6 @@ describe('BaseList', () => {
 
   /// TODO try make check on call await store.dispatch(fetchReportActionName when not exist maxExportItems and when exist
   /// TODO: Add tests for the following props:
-  /// - withCustomFetchList
   /// - withCustomDelete
   /// - noPermissionPrefix
   /// - permissionKey
@@ -371,5 +373,28 @@ describe('BaseList', () => {
     getMountBaseList(props, global)
 
     expect(mockDispatch.mock.calls[0][0]).toBe('entityTest/fetchDemoList')
+  })
+
+  it('Using props withCustomDelete', async () => {
+    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
+    const hideMock = vi.fn()
+    const commentToRemove = 'Test Comment'
+
+    props.config.customModuleName = 'entityTest'
+
+    props.config.withCustomDelete = true
+
+    const wrapper = getMountBaseList(props, global)
+
+    wrapper.vm.selectedItem = { id: '123' }
+
+    await wrapper.vm.onClickModalOk({
+      hide: hideMock,
+      commentToRemove,
+    })
+
+    await flushPromises()
+
+    expect(mockDispatch.mock.calls[1][0]).toBe('entityTest/deleteEntity')
   })
 })
