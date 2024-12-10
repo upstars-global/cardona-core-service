@@ -27,6 +27,7 @@ const emits = defineEmits<{
 const openEdit = ref(false)
 
 const numberPositionComputed = ref(props.position)
+// TODO BAC-4145: try to find better solution
 const closeEditingForOthers = () => document.querySelectorAll('#position-cancel-icon').forEach(i => i.click())
 
 const onOpenEdit = () => {
