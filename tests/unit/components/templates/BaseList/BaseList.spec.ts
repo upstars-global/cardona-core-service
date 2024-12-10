@@ -58,7 +58,11 @@ const mockStore = createStore({
           access: 3,
         },
         {
-          target: 'super-demo',
+          target: 'demo-super',
+          access: 4,
+        },
+        {
+          target: 'demo-permission',
           access: 4,
         },
       ].map((permission: any) => new Permission(permission)),
@@ -171,7 +175,7 @@ const defaultProps = {
   config: {
     filterList: [],
     loadingEndpointArr: [],
-    loadingOnlyByList: true,
+    loadingOnlyByList: false,
   },
 }
 
@@ -274,17 +278,6 @@ describe('BaseList', () => {
     })
   })
 
-  /// TODO try make check on call await store.dispatch(fetchReportActionName when not exist maxExportItems and when exist
-  /// TODO: Add tests for the following props:
-  /// - withCustomDelete
-  /// - noPermissionPrefix
-  /// - permissionKey
-  /// - customModuleName
-  /// - customApiPrefix
-  /// - customPermissionPrefix
-  /// - loadingOnlyByList
-  /// - loadingEndpointArr
-
   it('Check params for using maxExportItems ', async () => {
     const { toastError } = useToastService()
     const maxExportItems = 100
@@ -353,7 +346,8 @@ describe('BaseList', () => {
     })
 
     props.config.withCreateBtn = true
-    props.config.onePermissionKey = 'super-demo'
+    props.config.onePermissionKey = 'demo-super'
+    props.config.noPermissionPrefix = true
 
     const wrapper = getMountBaseList(props, global)
 
@@ -396,5 +390,55 @@ describe('BaseList', () => {
     await flushPromises()
 
     expect(mockDispatch.mock.calls[1][0]).toBe('entityTest/deleteEntity')
+  })
+
+  it('Check access to list by prop permissionKey', () => {
+    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
+
+    mockDispatch.mockResolvedValueOnce({
+      list: [],
+      total: 100,
+    })
+
+    props.config.permissionKey = 'demo-permission'
+
+    const wrapper = getMountBaseList(props, global)
+
+    /// Check access to list from permissionKey
+    expect(wrapper.vm.canCreate).toBeTruthy()
+    expect(wrapper.vm.canUpdate).toBeTruthy()
+    expect(wrapper.vm.canRemove).toBeTruthy()
+  })
+
+  it('Check param of customApiPrefix ', async () => {
+    const filterParams = { id: 2 }
+    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
+
+    mockDispatch.mockResolvedValueOnce({
+      list: [],
+      total: 1,
+    })
+
+    const customApiPrefix = 'test'
+
+    props.config.customApiPrefix = customApiPrefix
+    props.config.staticFilters = filterParams
+
+    getMountBaseList(props, global)
+
+    await flushPromises()
+    expect(mockDispatch).toHaveBeenCalledWith('baseStoreCore/fetchEntityList', {
+      data: {
+        filter: new FilterID(filterParams),
+        page: 1,
+        perPage: 10,
+        sort: null,
+      },
+      options: {
+        customApiPrefix,
+        listItemModel: undefined,
+      },
+      type: 'Demo',
+    })
   })
 })
