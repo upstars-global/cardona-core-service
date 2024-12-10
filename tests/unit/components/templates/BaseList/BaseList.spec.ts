@@ -170,8 +170,38 @@ let props
 
 describe('BaseList', () => {
   beforeEach(() => {
+    if (!window.URL.createObjectURL) {
+      Object.defineProperty(window.URL, 'createObjectURL', {
+        writable: true,
+        configurable: true,
+        value: vi.fn(() => 'mocked-url'),
+      })
+    }
+    else {
+      vi.spyOn(window.URL, 'createObjectURL').mockImplementation(() => 'mocked-url')
+    }
+
+    // Мокаем `document.createElement` только для элементов <a>
+    const originalCreateElement = document.createElement
+
+    vi.spyOn(document, 'createElement').mockImplementation(tagName => {
+      if (tagName === 'a') {
+        const anchorElement = originalCreateElement.call(document, 'a')
+
+        vi.spyOn(anchorElement, 'click').mockImplementation(() => {})
+
+        return anchorElement
+      }
+
+      return originalCreateElement.call(document, tagName)
+    })
     props = cloneDeep(defaultProps)
   })
+
+  //
+  // afterEach(() => {
+  //   vi.restoreAllMocks() // Очистка моков
+  // })
 
   it('Render default state of component with slots of cell', async () => {
     const mockDispatch = vi.spyOn(mockStore, 'dispatch')
@@ -289,7 +319,26 @@ describe('BaseList', () => {
     await clickTrigger({ wrapper, testId: 'menu-activator' })
 
     expect(toastError).toHaveBeenCalled()
+  })
 
-    console.log(wrapper.html())
+  it('Check event on export data list', async () => {
+    const { toastError } = useToastService()
+    const mockDispatch = vi.spyOn(mockStore, 'dispatch')
+
+    mockDispatch.mockResolvedValueOnce({
+      list: [],
+      total: 100,
+    })
+
+    props.config.withExport = true
+
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+
+    await clickTrigger({ wrapper, testId: 'menu-activator' })
+    await clickTrigger({ wrapper, testId: 'export-json' })
+
+    expect(toastError).toHaveBeenCalled()
   })
 })
