@@ -28,6 +28,15 @@ import useToastService from '../../../../../src/helpers/toasts'
 const getMountBaseList = setMountComponent(BaseList)
 
 const mockStore = createStore({
+  modules: {
+    baseStoreCore: {
+      namespaced: true,
+      actions: {
+        fetchEntityList: vi.fn(),
+        fetchReport: vi.fn(),
+      },
+    },
+  },
   state: {
     accessLevels: ['noaccess', 'view', 'create', 'update', 'delete'],
     userInfo: {
@@ -46,16 +55,9 @@ const mockStore = createStore({
         },
       ].map((permission: any) => new Permission(permission)),
     },
-
-    // permissions: [{ access: 4, target: 'demo-demo' }, { access: 1, target: 'demo-demo-report' }, { access: 3, target: 'demo-demo-seo' }],
-
     permissions: new AllPermission(),
     selectedProduct: null,
     selectedProject: null,
-  },
-  actions: {
-    fetchEntityList: vi.fn(),
-    fetchReport: vi.fn(),
   },
   getters: {
     isLoadingEndpoint: () => () => false,
