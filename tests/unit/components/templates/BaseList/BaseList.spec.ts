@@ -395,8 +395,6 @@ describe('BaseList', () => {
     await flushPromises()
     await clickTrigger({ wrapper, testId: 'activator' })
 
-    /// Render slot content in ItemAction
-
     testOn.equalTextValue({ wrapper, testId: BaseListActionsSlots.AppendActionItem }, BaseListActionsSlots.AppendActionItem)
     testOn.equalTextValue({ wrapper, testId: BaseListActionsSlots.PrependActionItem }, BaseListActionsSlots.PrependActionItem)
   })
@@ -420,7 +418,7 @@ describe('BaseList', () => {
     testOn.equalTextValue({ wrapper, testId: 'empty-list' }, 'Empty text')
   })
 
-  it('Check that list  has not render pagination ', async () => {
+  it('Check that list  has not render pagination', async () => {
     mockDispatch.mockResolvedValueOnce({
       list: [],
       total: 0,
@@ -433,6 +431,40 @@ describe('BaseList', () => {
     testOn.notExistElement({ wrapper, testId: 'list-pagination' })
   })
 
-  /// TODO check call event emits: rowClicked
-  /// TODO check remove item
+  it('Check on call event rowClicked', async () => {
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+
+    await clickTrigger({ wrapper, testId: 'table-row' })
+
+    testOn.isCalledEmitEventValue(wrapper, { event: 'rowClicked', value: { id: 1, name: 'Item 1', type: 'Type 1', status: 'Status 1' } })
+  })
+  it('Check open modal remove of item list', async () => {
+    props.useList = useListForToggleStatus
+
+    const modalSpy = vi.spyOn(mockModal, 'showModal')
+
+    mockDispatch.mockResolvedValueOnce({
+      list: [{
+        id: 1,
+        name: 'Item 1',
+        type: 'Type 1',
+        status: 'Status 1',
+        isActive: true,
+      }],
+      total: 1,
+    })
+
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+    await clickTrigger({ wrapper, testId: 'activator' })
+
+    testOn.existElement({ wrapper, testId: 'remove' })
+
+    await clickTrigger({ wrapper, testId: 'remove' })
+
+    expect(modalSpy).toHaveBeenCalledWith('list-item-remove-modal')
+  })
 })
