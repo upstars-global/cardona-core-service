@@ -1004,6 +1004,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     >
       <ListPagination
         v-if="config?.pagination"
+        data-test-id="list-pagination"
         :model-value="currentPage"
         :link-gen="linkGenerator"
         :pagination-config="paginationConfig"
