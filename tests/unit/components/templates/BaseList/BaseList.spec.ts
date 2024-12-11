@@ -3,18 +3,43 @@ import { cloneDeep } from 'lodash'
 import { flushPromises } from '@vue/test-utils'
 import BaseList from '../../../../../src/components/templates/BaseList/index.vue'
 import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../utils'
-import type { UseListType } from '../../../../../src/@model/templates/baseList'
 import { ExportFormat } from '../../../../../src/@model/templates/baseList'
 import { mockModal } from '../../../mocks/modal-provide-config'
 import { testOn } from '../../../templates/shared-tests/test-case-generator'
 import { FilterID } from '../../../../../src/@model/filter'
-import { defaultProps, exportDataMock, fields, mockStore } from '../../../mocks/base-list'
-import { ListFieldType, TableField } from '../../../../../src/@model/templates/tableFields'
+import { defaultProps, exportDataMock, fields, mockStore, useListForToggleStatus } from '../../../mocks/base-list'
 import useToastService from '../../../../../src/helpers/toasts'
 
 const getSelectorCField = (name: string) => `td[data-c-field="${name}"]`
 
 const getMountBaseList = setMountComponent(BaseList)
+
+const runTestOnToggleStatus = async (props, expectedAction: string) => {
+  props.useList = useListForToggleStatus
+
+  mockDispatch.mockResolvedValueOnce({
+    list: [{
+      id: 1,
+      name: 'Item 1',
+      type: 'Type 1',
+      status: 'Status 1',
+      isActive: true,
+    }],
+    total: 1,
+  })
+
+  const wrapper = getMountBaseList(props, global)
+
+  await flushPromises()
+
+  testOn.existElement({ wrapper, testId: 'pill-status' })
+
+  await clickTrigger({ wrapper, testId: 'activator' })
+
+  await clickTrigger({ wrapper, testId: 'status-toggle' })
+
+  expect(mockDispatch.mock.calls[1][0]).toBe(expectedAction)
+}
 
 vi.mock('vue-router', async importOriginal => {
   const actual = await importOriginal()
@@ -260,92 +285,12 @@ describe('BaseList', () => {
 
   it('Toggle status by props withDeactivation', async () => {
     props.config.withDeactivation = true
-    props.useList = (): UseListType => {
-      return {
-        ListFilterModel: FilterID,
-        entityName: 'Test',
-        fields: [
-          ...fields,
-          new TableField({
-            key: 'isActive',
-            title: 'Toggle status',
-            type: ListFieldType.PillStatus,
-          }),
-          new TableField({
-            key: 'actions',
-            title: '',
-          }),
-        ],
-      }
-    }
-
-    mockDispatch.mockResolvedValueOnce({
-      list: [{
-        id: 1,
-        name: 'Item 1',
-        type: 'Type 1',
-        status: 'Status 1',
-        isActive: true,
-      }],
-      total: 1,
-    })
-
-    const wrapper = getMountBaseList(props, global)
-
-    await flushPromises()
-
-    testOn.existElement({ wrapper, testId: 'pill-status' })
-
-    await clickTrigger({ wrapper, testId: 'activator' })
-
-    await clickTrigger({ wrapper, testId: 'status-toggle' })
-
-    expect(mockDispatch.mock.calls[1][0]).toBe('baseStoreCore/updateEntity')
+    await runTestOnToggleStatus(props, 'baseStoreCore/updateEntity')
   })
 
   it('Toggle status by props withDeactivationBySpecificAction', async () => {
     props.config.withDeactivationBySpecificAction = true
-    props.useList = (): UseListType => {
-      return {
-        ListFilterModel: FilterID,
-        entityName: 'Test',
-        fields: [
-          ...fields,
-          new TableField({
-            key: 'isActive',
-            title: 'Toggle status',
-            type: ListFieldType.PillStatus,
-          }),
-          new TableField({
-            key: 'actions',
-            title: '',
-          }),
-        ],
-      }
-    }
-
-    mockDispatch.mockResolvedValueOnce({
-      list: [{
-        id: 1,
-        name: 'Item 1',
-        type: 'Type 1',
-        status: 'Status 1',
-        isActive: true,
-      }],
-      total: 1,
-    })
-
-    const wrapper = getMountBaseList(props, global)
-
-    await flushPromises()
-
-    testOn.existElement({ wrapper, testId: 'pill-status' })
-
-    await clickTrigger({ wrapper, testId: 'activator' })
-
-    await clickTrigger({ wrapper, testId: 'status-toggle' })
-
-    expect(mockDispatch.mock.calls[1][0]).toBe('baseStoreCore/toggleStatusEntity')
+    await runTestOnToggleStatus(props, 'baseStoreCore/toggleStatusEntity')
   })
 
   /// TODO Add check on using slots also check on condition render
