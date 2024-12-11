@@ -40,10 +40,16 @@ export const mockStore = createStore({
       namespaced: true,
       actions: {
         fetchEntityList: vi.fn().mockResolvedValue({
-          list: [{ id: 1, name: 'Test Item' }],
+          list: [{
+            id: 1,
+            name: 'Item 1',
+            type: 'Type 1',
+            status: 'Status 1',
+          }],
           total: 1,
         }),
         fetchReport: vi.fn(),
+        toggleStatusEntity: vi.fn(),
       },
     },
   },
