@@ -89,7 +89,10 @@ const onHide = () => {
   >
     <!-- Header -->
     <div class="content-sidebar-header d-flex justify-space-between align-center px-6 py-3 bg-light">
-      <h5 class="content-sidebar-header__title mb-0 text-h5 font-weight-medium">
+      <h5
+        class="content-sidebar-header__title mb-0 text-h5 font-weight-medium"
+        data-test-id="sidebar-title"
+      >
         {{ $t(title) }}
       </h5>
       <VIcon

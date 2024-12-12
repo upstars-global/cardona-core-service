@@ -546,6 +546,9 @@
       "create": "Demo create",
       "edit": "Demo edit",
       "sidebarTitle": "Sidebar"
+    },
+    "test": {
+      "sidebarTitle": "Test sidebar"
     }
   },
   "pagination": {
