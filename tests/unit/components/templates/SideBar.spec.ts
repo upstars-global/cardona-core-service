@@ -233,6 +233,7 @@ describe('SideBar', () => {
     testOn.existElement({ wrapper, testId: 'remove-button' })
   })
   it('Should on click remove call event "remove" and on edit call event "update"', async () => {
+    vi.useFakeTimers()
     props = {
       ...props,
       canUpdate: true,
@@ -252,18 +253,23 @@ describe('SideBar', () => {
 
     await wrapper.vm.$nextTick()
 
+    /// Simulate click on button
     await clickTrigger({ wrapper, testId: 'edit-button' })
 
-    console.log(wrapper.emitted())
+    /// Make sure that the event is called after the animation
+    vi.advanceTimersByTime(EMIT_AFTER_ANIMATION_SIDEBAR)
 
-    setTimeout(() => {
-      testOn.isCalledEmitEventValue(wrapper, { event: 'update', value: item })
-    }, EMIT_AFTER_ANIMATION_SIDEBAR)
+    testOn.isCalledEmitEvent(wrapper, 'update')
 
+    /// Simulate click on button
     await clickTrigger({ wrapper, testId: 'remove-button' })
 
-    setTimeout(() => {
-      testOn.isCalledEmitEventValue(wrapper, { event: 'remove', value: item })
-    }, EMIT_AFTER_ANIMATION_SIDEBAR)
+    /// Make sure that the event is called after the animation
+    vi.advanceTimersByTime(EMIT_AFTER_ANIMATION_SIDEBAR)
+
+    testOn.isCalledEmitEvent(wrapper, 'remove')
+
+    /// Reset time travel
+    vi.useRealTimers()
   })
 })
