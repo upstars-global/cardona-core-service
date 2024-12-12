@@ -10,6 +10,7 @@ import { convertCamelCase } from '../../../helpers'
 import { SideBarCollapseItem } from '../../../@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
 import { getStorage, setStorage } from '../../../helpers/storage'
+import { EMIT_AFTER_ANIMATION_SIDEBAR } from '../../../utils/constants'
 
 const props = defineProps<{
   item?: object
@@ -36,7 +37,6 @@ const currentPageName = route.name?.toString()
 const openBlocsKey = `${currentPageName}-${props.entityName}-suidebar-open-blocs`
 const allBlocsKey = computed(() => viewForm.value ? Object.keys(viewForm.value) : [])
 const openBlocs = ref([])
-const emitAfterAnimationSidebar = 200
 
 const viewForm = ref(null)
 
@@ -45,7 +45,7 @@ const action = (name: string, hide: Function) => {
 
   setTimeout(() => {
     emits(name)
-  }, emitAfterAnimationSidebar)
+  }, EMIT_AFTER_ANIMATION_SIDEBAR)
 }
 
 watch(

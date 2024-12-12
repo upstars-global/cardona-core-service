@@ -2,10 +2,11 @@ import { beforeEach, describe, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 
 import SideBar from '../../../../src/components/templates/SideBar/index.vue'
-import { getSelectorTestId, setMountComponent } from '../../utils'
+import { clickTrigger, getSelectorTestId, setMountComponent } from '../../utils'
 import { ViewInfo, ViewType } from '../../../../src/@model/view'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { i18n } from '../../../../src/plugins/i18n'
+import { EMIT_AFTER_ANIMATION_SIDEBAR } from '../../../../src/utils/constants'
 
 vi.mock('vue-router', async importOriginal => {
   const actual = await importOriginal()
@@ -230,5 +231,39 @@ describe('SideBar', () => {
 
     /// Check that button is rendered
     testOn.existElement({ wrapper, testId: 'remove-button' })
+  })
+  it('Should on click remove call event "remove" and on edit call event "update"', async () => {
+    props = {
+      ...props,
+      canUpdate: true,
+      canUpdateItem: true,
+      canRemoveItem: true,
+    }
+
+    const global = {
+      stubs: {
+        VNavigationDrawer: { template: '<div> <slot /> </div>' },
+      },
+    }
+
+    const wrapper = getMountSideBar(props, global)
+
+    await wrapper.setProps({ item })
+
+    await wrapper.vm.$nextTick()
+
+    await clickTrigger({ wrapper, testId: 'edit-button' })
+
+    console.log(wrapper.emitted())
+
+    setTimeout(() => {
+      testOn.isCalledEmitEventValue(wrapper, { event: 'update', value: item })
+    }, EMIT_AFTER_ANIMATION_SIDEBAR)
+
+    await clickTrigger({ wrapper, testId: 'remove-button' })
+
+    setTimeout(() => {
+      testOn.isCalledEmitEventValue(wrapper, { event: 'remove', value: item })
+    }, EMIT_AFTER_ANIMATION_SIDEBAR)
   })
 })
