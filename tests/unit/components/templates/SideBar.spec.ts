@@ -173,4 +173,62 @@ describe('SideBar', () => {
 
     testOn.equalTextValue({ wrapper, testId: 'sidebar-actions' }, 'Test sidebar actions')
   })
+
+  it('Should render correct content by slot "sidebar-action-items"', async () => {
+    props.canUpdate = true
+
+    const global = {
+      stubs: {
+        VNavigationDrawer: { template: '<div> <slot /> </div>' },
+      },
+    }
+
+    const slotValue = 'Test sidebar action items'
+
+    const slots = {
+      'sidebar-action-items': `<div data-test-id="sidebar-action-items">${slotValue}</div>`,
+    }
+
+    const wrapper = getMountSideBar(props, global, slots)
+
+    await wrapper.setProps({ item })
+
+    await wrapper.vm.$nextTick()
+
+    testOn.equalTextValue({ wrapper, testId: 'sidebar-action-items' }, slotValue)
+  })
+
+  it('Should render sidebar actions buttons by props', async () => {
+    props.canUpdate = true
+
+    const global = {
+      stubs: {
+        VNavigationDrawer: { template: '<div> <slot /> </div>' },
+      },
+    }
+
+    const wrapper = getMountSideBar(props, global)
+
+    await wrapper.setProps({ item })
+
+    await wrapper.vm.$nextTick()
+
+    testOn.existElement({ wrapper, selector: '.sidebar-actions' })
+
+    /// Check that buttons are not rendered
+    testOn.notExistElement({ wrapper, testId: 'edit-button' })
+    testOn.notExistElement({ wrapper, testId: 'remove-button' })
+
+    /// Set props for render buttons edit
+    await wrapper.setProps({ canUpdateItem: true })
+
+    /// Check that button is rendered
+    testOn.existElement({ wrapper, testId: 'edit-button' })
+
+    /// Set props for render buttons remove
+    await wrapper.setProps({ canRemoveItem: true })
+
+    /// Check that button is rendered
+    testOn.existElement({ wrapper, testId: 'remove-button' })
+  })
 })

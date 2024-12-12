@@ -197,6 +197,7 @@ const onHide = () => {
 
           <VBtn
             v-if="canUpdateItem"
+            data-test-id="edit-button"
             :variant="VVariants.Outlined"
             :color="VColors.Secondary"
             :size="VSizes.Small"
@@ -207,6 +208,7 @@ const onHide = () => {
 
           <VBtn
             v-if="canRemoveItem"
+            data-test-id="remove-button"
             :variant="VVariants.Outlined"
             :color="VColors.Error"
             :size="VSizes.Small"
