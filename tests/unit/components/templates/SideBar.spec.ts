@@ -39,7 +39,12 @@ export class SideBarModel {
   }
 }
 
-const getMountSideBar = setMountComponent(SideBar)
+const getMountSideBar = (props?: Record<string, unknown>, global = {}, slots?: Record<string, unknown>) => setMountComponent(SideBar)(props, {
+  ...global,
+  stubs: {
+    VNavigationDrawer: { template: '<div> <slot /> </div>' },
+  },
+}, slots)
 
 const item = { id: '123', name: 'Test name' }
 
@@ -58,13 +63,7 @@ describe('SideBar', () => {
   })
 
   it('Should render base elements of view generator on update item prop ', async () => {
-    const global = {
-      stubs: {
-        VNavigationDrawer: { template: '<div> <slot /> </div>' },
-      },
-    }
-
-    const wrapper = getMountSideBar(props, global)
+    const wrapper = getMountSideBar(props)
 
     await wrapper.setProps({ item })
 
@@ -79,13 +78,7 @@ describe('SideBar', () => {
   })
 
   it('Should render correct localized title of sidebar', async () => {
-    const global = {
-      stubs: {
-        VNavigationDrawer: { template: '<div> <slot /> </div>' },
-      },
-    }
-
-    const wrapper = getMountSideBar(props, global)
+    const wrapper = getMountSideBar(props)
 
     testOn.equalTextValue({ wrapper, testId: 'sidebar-title' }, i18n.t('title.test.sidebarTitle'))
   })
@@ -93,19 +86,13 @@ describe('SideBar', () => {
   /// sidebar-actions
 
   it('Should render correct content by slot "sidebar-row"', async () => {
-    const global = {
-      stubs: {
-        VNavigationDrawer: { template: '<div> <slot /> </div>' },
-      },
-    }
-
     /// Init slots by item data for more comfortable testing
     const slots = Object.keys(item).reduce((acc, key) => ({
       ...acc,
       [`sidebar-row(${key})`]: `<div data-test-id="sidebar-row-slot">Test sidebar row ${key}</div>`,
     }), {})
 
-    const wrapper = getMountSideBar(props, global, slots)
+    const wrapper = getMountSideBar(props, {}, slots)
 
     await wrapper.setProps({ item })
 
@@ -123,19 +110,13 @@ describe('SideBar', () => {
   })
 
   it('Should render correct content by slot "sidebar-value"', async () => {
-    const global = {
-      stubs: {
-        VNavigationDrawer: { template: '<div> <slot /> </div>' },
-      },
-    }
-
     /// Init slots by item data for more comfortable testing
     const slots = Object.keys(item).reduce((acc, key) => ({
       ...acc,
       [`sidebar-value(${key})`]: `<div data-test-id="sidebar-value">Test sidebar value ${key}</div>`,
     }), {})
 
-    const wrapper = getMountSideBar(props, global, slots)
+    const wrapper = getMountSideBar(props, {}, slots)
 
     await wrapper.setProps({ item })
 
@@ -156,17 +137,11 @@ describe('SideBar', () => {
   })
 
   it('Should render correct content by slot "sidebar-actions"', async () => {
-    const global = {
-      stubs: {
-        VNavigationDrawer: { template: '<div> <slot /> </div>' },
-      },
-    }
-
     const slots = {
       'sidebar-actions': '<div data-test-id="sidebar-actions">Test sidebar actions</div>',
     }
 
-    const wrapper = getMountSideBar(props, global, slots)
+    const wrapper = getMountSideBar(props, {}, slots)
 
     await wrapper.setProps({ item })
 
@@ -178,19 +153,13 @@ describe('SideBar', () => {
   it('Should render correct content by slot "sidebar-action-items"', async () => {
     props.canUpdate = true
 
-    const global = {
-      stubs: {
-        VNavigationDrawer: { template: '<div> <slot /> </div>' },
-      },
-    }
-
     const slotValue = 'Test sidebar action items'
 
     const slots = {
       'sidebar-action-items': `<div data-test-id="sidebar-action-items">${slotValue}</div>`,
     }
 
-    const wrapper = getMountSideBar(props, global, slots)
+    const wrapper = getMountSideBar(props, {}, slots)
 
     await wrapper.setProps({ item })
 
@@ -202,13 +171,7 @@ describe('SideBar', () => {
   it('Should render sidebar actions buttons by props', async () => {
     props.canUpdate = true
 
-    const global = {
-      stubs: {
-        VNavigationDrawer: { template: '<div> <slot /> </div>' },
-      },
-    }
-
-    const wrapper = getMountSideBar(props, global)
+    const wrapper = getMountSideBar(props)
 
     await wrapper.setProps({ item })
 
@@ -241,13 +204,7 @@ describe('SideBar', () => {
       canRemoveItem: true,
     }
 
-    const global = {
-      stubs: {
-        VNavigationDrawer: { template: '<div> <slot /> </div>' },
-      },
-    }
-
-    const wrapper = getMountSideBar(props, global)
+    const wrapper = getMountSideBar(props)
 
     await wrapper.setProps({ item })
 
