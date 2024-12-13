@@ -10,7 +10,7 @@ import { convertCamelCase } from '../../../helpers'
 import { SideBarCollapseItem } from '../../../@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
 import { getStorage, setStorage } from '../../../helpers/storage'
-import { EMIT_AFTER_ANIMATION_SIDEBAR } from '../../../utils/constants'
+import { EMIT_AFTER_ANIMATION_SIDEBAR, IS_TEST_ENV } from '../../../utils/constants'
 
 const props = defineProps<{
   item?: object
@@ -137,8 +137,12 @@ const onHide = () => {
             </ViewGenerator>
             <template v-else-if="viewForm[key] instanceof SideBarCollapseItem && sidebarCollapseMode">
               <div>
-                <VExpansionPanels :model-value="isOpenBlock(key)">
+                <VExpansionPanels
+                  :model-value="isOpenBlock(key)"
+                  data-test-id="collapse-item"
+                >
                   <VExpansionPanel
+                    :eager="IS_TEST_ENV"
                     :expand-icon="IconsList.ChevronRightIcon"
                     :title="`${viewForm[key].title}`"
                     :value="key"
@@ -146,6 +150,7 @@ const onHide = () => {
                   >
                     <VExpansionPanelText
                       class="px-0"
+                      :eager="IS_TEST_ENV"
                       @click.stop
                     >
                       <div
@@ -155,6 +160,7 @@ const onHide = () => {
                         <ViewGenerator
                           v-if="viewForm[key].views[groupKey] instanceof ViewInfo"
                           :key="key"
+                          :data-test-id="`collapse-item-${groupKey}`"
                           :model-value="viewForm[key].views[groupKey]"
                           :key-name="groupKey"
                           :class="`${groupKey}-view`"
@@ -178,6 +184,7 @@ const onHide = () => {
 
               <hr
                 v-if="viewForm[key].withBottomSeparator"
+                data-test-id="collapse-item-separator"
                 class="my-0"
               >
             </template>

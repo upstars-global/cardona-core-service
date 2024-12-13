@@ -7,6 +7,7 @@ import { ViewInfo, ViewType } from '../../../../src/@model/view'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { i18n } from '../../../../src/plugins/i18n'
 import { EMIT_AFTER_ANIMATION_SIDEBAR } from '../../../../src/utils/constants'
+import { SideBarCollapseItem } from '../../../../src/@model/templates/baseList'
 
 vi.mock('vue-router', async importOriginal => {
   const actual = await importOriginal()
@@ -21,7 +22,7 @@ vi.mock('vue-router', async importOriginal => {
   }
 })
 
-export class SideBarModel {
+class SideBarModel {
   readonly id: ViewInfo
   readonly name: ViewInfo
 
@@ -35,6 +36,28 @@ export class SideBarModel {
       type: ViewType.Text,
       value: data?.name,
       label: 'Name',
+    })
+  }
+}
+
+class SideBarModelWithCollapseItem {
+  collapseItem: SideBarCollapseItem
+  constructor(data: { id: string; name: string }) {
+    this.collapseItem = new SideBarCollapseItem({
+      title: 'Collapse item test title',
+      withBottomSeparator: true,
+      views: {
+        id: new ViewInfo({
+          type: ViewType.BadgeCopy,
+          value: data?.id,
+          label: 'ID',
+        }),
+        name: new ViewInfo({
+          type: ViewType.Text,
+          value: data?.name,
+          label: 'Name',
+        }),
+      },
     })
   }
 }
@@ -228,5 +251,52 @@ describe('SideBar', () => {
 
     /// Reset time travel
     vi.useRealTimers()
+  })
+  it('Should call events "update:sidebar-active" and "hide" on call method => onHide', async () => {
+    props = {
+      ...props,
+      canUpdate: true,
+      canUpdateItem: true,
+      canRemoveItem: true,
+    }
+
+    const wrapper = getMountSideBar(props)
+
+    await wrapper.setProps({ item })
+
+    await wrapper.vm.$nextTick()
+
+    /// Call method from component
+    await wrapper.vm.onHide()
+
+    /// Check call event with correct value
+    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'update:sidebar-active', value: false })
+    testOn.isCalledEmitEvent(wrapper, 'hide')
+  })
+
+  it('Should withCollapseItem', async () => {
+    props.sidebarCollapseMode = true
+
+    /// Init props with model with collapse item
+    props.sideBarModel = SideBarModelWithCollapseItem
+
+    const wrapper = getMountSideBar(props)
+
+    await wrapper.setProps({ item })
+
+    await wrapper.vm.$nextTick()
+
+    /// Create wrapper item with collapse item
+    const collapseItemWrapper = wrapper.find(getSelectorTestId('collapse-item'))
+
+    /// Check that is correct render title collapse item
+    testOn.equalTextValue({ wrapper: collapseItemWrapper, selector: '.v-expansion-panel-title' }, 'Collapse item test title')
+
+    /// Check that is correct render body collapse
+    testOn.equalTextValue({ wrapper: collapseItemWrapper, testId: 'collapse-item-id' }, 'ID 123')
+    testOn.equalTextValue({ wrapper: collapseItemWrapper, testId: 'collapse-item-name' }, 'NameTest name')
+
+    /// Check that is correct render separator
+    testOn.existElement({ wrapper, testId: 'collapse-item-separator' })
   })
 })
