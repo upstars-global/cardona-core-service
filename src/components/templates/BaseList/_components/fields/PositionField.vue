@@ -27,10 +27,12 @@ const emits = defineEmits<{
 const openEdit = ref(false)
 
 const numberPositionComputed = ref(props.position)
+const closeEditingForOthers = () => document.querySelectorAll('#position-cancel-icon').forEach(i => i.click())
 
 const onOpenEdit = () => {
   if (!props.canUpdate)
     return
+  closeEditingForOthers()
   openEdit.value = true
 }
 
@@ -113,6 +115,7 @@ const buttonSize = computed(() => {
       class="cursor-pointer text-error v-btn--rectangle"
       variant="text"
       :size="buttonSize"
+      id="position-cancel-icon"
       data-test-id="position-cancel-button"
       @click.stop="cancelNewPosition"
     >
