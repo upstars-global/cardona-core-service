@@ -174,7 +174,7 @@ const configTo = computed(() => {
       :disabled="disabled"
       @update:model-value="(val) => setRangeDate(val)"
     />
-    <span class="mx-1"> – </span>
+    <span class="mx-2"> – </span>
     <AppDateTimePicker
       :key="startedAt"
       :is-invalid="Boolean(errors)"

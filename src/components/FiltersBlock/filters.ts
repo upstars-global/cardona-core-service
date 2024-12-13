@@ -110,7 +110,7 @@ const bonusType = new SelectBaseField({
 })
 
 // Games
-const gamesType = new SelectBaseField({
+const gamesType = new MultiSelectBaseField({
   key: FilterType.GamesType,
   label: i18n.t('filters.gameType'),
   placeholder: i18n.t('placeholder.filter.gamesType'),
