@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, withDefaults, watch } from 'vue'
+import { computed, ref, watch, withDefaults } from 'vue'
 import AppTextField from '../../../../../@core/components/app-form-elements/AppTextField.vue'
 import { IconsList } from '../../../../../@model/enums/icons'
 import { getMappedValueByManyMethods, toIntegerNumbers, toPositiveNumbers } from '../../../../../helpers'
@@ -32,7 +32,8 @@ const openEdit = ref(false)
 const numberPositionComputed = ref(props.position)
 
 watch(() => props.editingId, () => {
-  if (props.editingId !== props.id) openEdit.value = false
+  if (props.editingId !== props.id)
+    openEdit.value = false
 })
 
 const onOpenEdit = () => {
@@ -118,10 +119,10 @@ const buttonSize = computed(() => {
       />
     </VBtn>
     <VBtn
+      id="position-cancel-icon"
       class="cursor-pointer text-error v-btn--rectangle"
       variant="text"
       :size="buttonSize"
-      id="position-cancel-icon"
       data-test-id="position-cancel-button"
       @click.stop="cancelNewPosition"
     >
