@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, withDefaults } from 'vue'
+import { computed, ref, withDefaults, watch } from 'vue'
 import AppTextField from '../../../../../@core/components/app-form-elements/AppTextField.vue'
 import { IconsList } from '../../../../../@model/enums/icons'
 import { getMappedValueByManyMethods, toIntegerNumbers, toPositiveNumbers } from '../../../../../helpers'
@@ -12,6 +12,8 @@ const props = withDefaults(
     position?: number
     canUpdate?: boolean
     size?: ListSize
+    editingId?: string
+    id?: string
   }>(),
   {
     position: 0,
@@ -22,18 +24,21 @@ const props = withDefaults(
 
 const emits = defineEmits<{
   (e: 'editPosition', value: number): void
+  (e: 'open-edit'): void
 }>()
 
 const openEdit = ref(false)
 
 const numberPositionComputed = ref(props.position)
-// TODO BAC-4145: try to find better solution
-const closeEditingForOthers = () => document.querySelectorAll('#position-cancel-icon').forEach(i => i.click())
+
+watch(() => props.editingId, () => {
+  if (props.editingId !== props.id) openEdit.value = false
+})
 
 const onOpenEdit = () => {
   if (!props.canUpdate)
     return
-  closeEditingForOthers()
+  emits('open-edit')
   openEdit.value = true
 }
 
