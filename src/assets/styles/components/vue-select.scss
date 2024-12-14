@@ -264,7 +264,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
 
 .vs--multiple.vs--disabled {
   .vs__selected {
-    color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+    color: rgba(var(--v-theme-grey-500));
     background-color: rgba(var(--v-theme-grey-500), var(--v-activated-opacity));
   }
 

@@ -109,5 +109,8 @@ const appendInnerIcon = computed(() => {
       min-width: 10rem;
     }
   }
+  :deep(.text-secondary) {
+    color: rgba(var(--v-theme-grey-500)) !important;
+  }
 }
 </style>
