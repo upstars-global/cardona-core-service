@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import type { PermissionUpdatableTableList } from '../../@model/permission'
 import GroupFragmentSettingsTable from '../../components/permitionsForm/GroupFragmentSettingsTable.vue'
 import { VColors } from '../../@model/vuetify'
+import { IS_TEST_ENV } from '@/utils/constants'
 
 const props = defineProps<{
   title: string
@@ -31,10 +32,16 @@ watch(checked, val => {
       v-model="panel"
       multiple
     >
-      <VExpansionPanel elevation="0">
+      <VExpansionPanel
+        elevation="0"
+        :eager="IS_TEST_ENV"
+      >
         <VExpansionPanelTitle class="py-4">
           <div class="d-flex justify-space-between w-100 align-center">
-            <span class="lead collapse-title text-body-1 font-weight-medium text-color-base">{{ title }}</span>
+            <span
+              class="lead collapse-title text-body-1 font-weight-medium text-color-base"
+              data-test-id="permission-group-title"
+            >{{ title }}</span>
             <div
               class="pr-8"
               @click.stop
@@ -45,12 +52,16 @@ watch(checked, val => {
                 :disabled="disabled || checked"
                 :color="VColors.Primary"
                 :label="$t('permission.fullAccess')"
+                data-test-id="switch-all"
                 @click.stop
               />
             </div>
           </div>
         </VExpansionPanelTitle>
-        <VExpansionPanelText class="px-0">
+        <VExpansionPanelText
+          class="px-0"
+          :eager="IS_TEST_ENV"
+        >
           <div
             v-for="(item, index) in tables"
             :key="item.title"

@@ -28,11 +28,7 @@ defineProps<{ loading: boolean }>()
   </div>
 </template>
 
-<style scoped lang="scss">
-.main-section-container {
-  position: relative;
-}
-
+<style lang="scss">
 .loader-overlay {
   position: absolute;
   top: 0;
@@ -44,6 +40,17 @@ defineProps<{ loading: boolean }>()
   justify-content: center;
   align-items: center;
   z-index: 9999;
+}
+
+.base-modal .loader-overlay {
+  position: relative;
+  height: auto;
+}
+</style>
+
+<style scoped lang="scss">
+.main-section-container {
+  position: relative;
 }
 
 .fade-enter-active,

@@ -116,7 +116,7 @@ const canUpdate = computed<boolean>(() =>
         <div :class="{ 'd-flex align-center': isCheckTypeWithInfo }">
           <Component
             :is="localValue"
-            :id="modelValue.id"
+            :id="`${modelValue.id}-field`"
             v-model="fieldModel"
             :options="options"
             :field="modelValue"
