@@ -17,18 +17,18 @@ import { FormTabs } from '../../../@model/enums/formTabs'
 import BaseSectionLoading from './BaseSectionLoading.vue'
 
 const props = withDefaults(defineProps<{
-  withReadAction?: boolean
-  config?: BaseSectionConfig
-  pageType?: PageType
-  useEntity: Function
-  localEntityData?: Record<string, unknown>
-}>(),
-{
-  useEntity: undefined,
-  withReadAction: true,
-  config: () => new BaseSectionConfig({}),
-  pageType: PageType.Create,
-},
+    withReadAction?: boolean
+    config?: BaseSectionConfig
+    pageType?: PageType
+    useEntity: Function
+    localEntityData?: Record<string, unknown>
+  }>(),
+  {
+    useEntity: undefined,
+    withReadAction: true,
+    config: () => new BaseSectionConfig({}),
+    pageType: PageType.Create,
+  },
 )
 
 const modal = inject('modal')
@@ -149,6 +149,8 @@ const validate = async () => {
   return valid
 }
 
+const existFieldName = (fieldName: string, form: unknown) => form && Object.keys(form).some(key => fieldName.includes(key))
+
 const setTabError = (fieldName: string) => {
   const fieldElement: HTMLElement | null = document.getElementById(`${fieldName}-field`)
   let tabName = ''
@@ -158,12 +160,13 @@ const setTabError = (fieldName: string) => {
 
     if (windowElement)
       tabName = windowElement.dataset.tab!
-    else if (form.value.hasOwnProperty(fieldName))
+    else if (existFieldName(fieldName, form.value))
       tabName = FormTabs.Main
-    else if (form.value.seo?.hasOwnProperty(fieldName))
+    else if (existFieldName(fieldName, form.value.seo))
       tabName = FormTabs.Seo
-    else if (form.value.fieldTranslations?.hasOwnProperty(fieldName))
+    else if (existFieldName(fieldName, form.value.fieldTranslations))
       tabName = FormTabs.Localization
+    else return
 
     const tabButton: HTMLElement | null = document.querySelector(
       `button[value=${tabName}]`,
