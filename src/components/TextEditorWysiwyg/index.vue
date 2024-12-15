@@ -194,7 +194,7 @@ const config = {
         updateVariableInContent(editor)
       }
 
-      emit('update:modelValue', contentChanged)
+      emit('update:modelValue', editor.html.get())
     },
     'commands.after': function (command) {
       if (command === 'html')
