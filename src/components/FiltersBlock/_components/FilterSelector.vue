@@ -28,6 +28,7 @@ const onChange = (filter: BaseField) => emits('selected-filters-changed', filter
         :size="size"
         :disabled="filters.isEmpty"
         :append-icon="IconsList.ChevronDownIcon"
+        data-test-id="btn-filter-select"
       >
         {{ $t('action.selectEntity') }}
       </VBtn>
@@ -36,6 +37,7 @@ const onChange = (filter: BaseField) => emits('selected-filters-changed', filter
       <VListItem
         v-for="(filter, index) in filters"
         :key="index"
+        data-test-id="filter-item"
         :link-class="{ 'px-1 py-50 font-small-3': isSmallSize }"
         @click="onChange(filter)"
       >
