@@ -25,7 +25,7 @@ const defaultProps = {
 
 let props
 
-describe('BadgesView', () => {
+describe('FilterSelector', () => {
   beforeEach(() => {
     props = cloneDeep(defaultProps)
   })
