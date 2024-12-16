@@ -2,6 +2,7 @@
 import type { BaseField } from '../../../@model/templates/baseField'
 import { IconsList } from '../../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
+import { IS_TEST_ENV } from '../../../utils/constants'
 
 const props = defineProps<{
   filters: BaseField[]
@@ -18,7 +19,7 @@ const onChange = (filter: BaseField) => emits('selected-filters-changed', filter
 </script>
 
 <template>
-  <VMenu>
+  <VMenu :attach="IS_TEST_ENV">
     <template #activator="{ props }">
       <VBtn
         :variant="VVariants.Outlined"
