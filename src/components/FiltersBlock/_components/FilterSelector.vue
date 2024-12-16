@@ -13,7 +13,7 @@ const emits = defineEmits<{
   (e: 'selected-filters-changed', filters: BaseField): void
 }>()
 
-const isSmallSize: boolean = props.size === VSizes.Small
+const linkClass = { 'px-1 py-50 font-small-3': props.size === VSizes.Small }
 
 const onChange = (filter: BaseField) => emits('selected-filters-changed', filter)
 </script>
@@ -39,7 +39,7 @@ const onChange = (filter: BaseField) => emits('selected-filters-changed', filter
         v-for="(filter, index) in filters"
         :key="index"
         data-test-id="filter-item"
-        :link-class="{ 'px-1 py-50 font-small-3': isSmallSize }"
+        :link-class="linkClass"
         @click="onChange(filter)"
       >
         {{ filter.label }}

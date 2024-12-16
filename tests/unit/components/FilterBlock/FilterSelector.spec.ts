@@ -42,9 +42,12 @@ describe('BadgesView', () => {
     })
 
     testOn.notExistElement({ wrapper, testId: 'filter-selector' })
+
+    /// Check that linkClass hasn`t any custom classes
+    testOn.isEqual({ wrapper: wrapper.vm.linkClass }, { 'px-1 py-50 font-small-3': false })
   })
 
-  it('Should render label of filters and ', async () => {
+  it('Should render label of filters ', async () => {
     props.filters = filters
 
     const wrapper = getMountFilterSelector(props)
@@ -59,5 +62,35 @@ describe('BadgesView', () => {
 
     /// Check that filter item has correct text
     testOn.existTextValue({ wrapper, testId: 'filter-item' }, filters[0].label)
+  })
+
+  it('Should call event "selected-filters-changed" with value', async () => {
+    props.filters = filters
+
+    const wrapper = getMountFilterSelector(props)
+
+    /// Open filter selector
+    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
+
+    /// Simulate click on filter item
+    await clickTrigger({ wrapper, testId: 'filter-item' })
+
+    /// Check that event is called with correct value
+    testOn.isCalledEmitEventValue(wrapper, { event: 'selected-filters-changed', value: filters[0] })
+  })
+
+  it('Should call event "selected-filters-changed" with value', async () => {
+    props.filters = filters
+    props.size = VSizes.Small
+
+    const wrapper = getMountFilterSelector(props)
+
+    testOn.existClass({ wrapper, testId: 'btn-filter-select' }, 'v-btn--size-small')
+
+    /// Open filter selector
+    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
+
+    /// Check that will be correct property class-link of filter item
+    testOn.isEqual({ wrapper: wrapper.vm.linkClass }, { 'px-1 py-50 font-small-3': true })
   })
 })
