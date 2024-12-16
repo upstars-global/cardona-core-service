@@ -29,7 +29,7 @@ const emits = defineEmits<{
 
 const openEdit = ref(false)
 
-const numberPositionComputed = ref(props.position)
+const numberPosition = ref(props.position)
 
 watch(() => props.editingId, () => {
   if (props.editingId !== props.id)
@@ -39,17 +39,18 @@ watch(() => props.editingId, () => {
 const onOpenEdit = () => {
   if (!props.canUpdate)
     return
+  numberPosition.value = props.position
   emits('open-edit')
   openEdit.value = true
 }
 
 const successNewPosition = () => {
-  emits('editPosition', numberPositionComputed.value || props.position)
+  emits('editPosition', numberPosition.value || props.position)
   openEdit.value = false
 }
 
 const cancelNewPosition = () => {
-  numberPositionComputed.value = props.position
+  numberPosition.value = props.position
   openEdit.value = false
 }
 
@@ -57,7 +58,7 @@ const disabledKeys = computed(() => [
   'e',
   '.',
   '-',
-  numberPositionComputed.value.toString().isEmpty && '0',
+  numberPosition.value.toString().isEmpty && '0',
 ])
 
 const onKeyDown = (event: KeyboardEvent) => {
@@ -93,7 +94,7 @@ const buttonSize = computed(() => {
       class="mr-1"
     >
       <AppTextField
-        v-model="numberPositionComputed"
+        v-model="numberPosition"
         :size="buttonSize"
         type="number"
         autofocus
