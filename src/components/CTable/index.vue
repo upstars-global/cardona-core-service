@@ -263,6 +263,7 @@ const getActualField = (fields: Array<unknown>) => {
           v-for="(item, index) in items"
           :key="`c-table-row_${index}`"
           class="c-table__row table-default-bg"
+          data-test-id="table-row"
           :class="compareClasses(item.raw, isSelected([item]))"
           @click="onRowClicked(item.raw)"
         >
