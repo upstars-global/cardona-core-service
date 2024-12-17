@@ -114,7 +114,7 @@ const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
 
 const fetchActionName: string = props.config?.withCustomFetchList
-  ? `${moduleName}/fetch${entityName}List`
+  ? `${moduleName}/fetchEntityList`
   : 'baseStoreCore/fetchEntityList'
 
 const fetchReportActionName = 'baseStoreCore/fetchReport'
