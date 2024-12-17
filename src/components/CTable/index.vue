@@ -329,8 +329,6 @@ const getActualField = (fields: Array<unknown>) => {
 
 <style scoped lang="scss">
 .v-data-table.c-table {
-  border-radius: 0;
-
   .c-table__header-cell {
     background: rgba(var(--v-theme-grey-800), 0.08);
     .column-title {
