@@ -59,7 +59,7 @@ onUnmounted(clock.stopTime)
               :icon="IconsList.Menu2Icon"
             />
           </VBtn>
-          <h4 class="float-left mb-0 text-h4">
+          <h4 class="float-left mb-0 text-h4 breadcrumb-title">
             {{ $t(`title.${$route.meta.title}`) }}
           </h4>
           <div class="breadcrumb-wrapper">
@@ -83,7 +83,10 @@ onUnmounted(clock.stopTime)
                     {{ $t(`title.${item.title || item.text}`) }}
                   </template>
                   <template v-else>
-                    <VIcon :icon="IconsList.HomeIcon" />
+                    <VIcon
+                      :icon="IconsList.HomeIcon"
+                      size="20"
+                    />
                   </template>
                 </RouterLink>
               </template>
@@ -112,6 +115,10 @@ onUnmounted(clock.stopTime)
 <style lang="scss" scoped>
 .time-value {
   width: 60px;
+}
+
+.breadcrumb-title {
+  color: rgb(var(--v-theme-grey-900));
 }
 
 .breadcrumb-wrapper {
