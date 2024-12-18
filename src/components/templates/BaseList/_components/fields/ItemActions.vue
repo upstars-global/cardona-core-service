@@ -39,12 +39,6 @@ const isExistsActionItemsSlot = computed(
 )
 
 const isShowActions = computed(() => {
-  console.log('isShowActions', props.canUpdate && props.canUpdateItem,
-    props.canUpdateSeo,
-    props.canCreate && props.config.createFromCopy,
-    props.canRemoveItem,
-    isExistsActionItemsSlot.value)
-
   return [
     props.canUpdate && props.canUpdateItem,
     props.canUpdateSeo,
