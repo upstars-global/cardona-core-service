@@ -3,7 +3,7 @@ import { ref, watch } from 'vue'
 import type { PermissionUpdatableTableList } from '../../@model/permission'
 import GroupFragmentSettingsTable from '../../components/permitionsForm/GroupFragmentSettingsTable.vue'
 import { VColors } from '../../@model/vuetify'
-import { IS_TEST_ENV } from '@/utils/constants'
+import { IS_TEST_ENV } from '../../utils/constants'
 
 const props = defineProps<{
   title: string

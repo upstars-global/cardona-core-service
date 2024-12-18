@@ -28,6 +28,7 @@ const valueColsCount = computed(() => 12 - props.cols)
     <VRow
       class="font-small-3"
       no-gutters
+      :data-test-id="`view-generator-row-${keyName}`"
     >
       <VCol
         :cols="cols"
@@ -38,10 +39,16 @@ const valueColsCount = computed(() => 12 - props.cols)
           v-if="modelValue.icon !== undefined"
           class="icon-block"
         >
-          <VIcon data-test-id="icon" :icon="modelValue.icon" />
+          <VIcon
+            data-test-id="icon"
+            :icon="modelValue.icon"
+          />
         </div>
 
-        <label class="mb-0 label p-0 text-body-1" data-test-id="label">{{ modelValue.label }}</label>
+        <label
+          class="mb-0 label p-0 text-body-1"
+          data-test-id="label"
+        >{{ modelValue.label }}</label>
       </VCol>
       <VCol
         :cols="valueColsCount"
@@ -62,7 +69,10 @@ const valueColsCount = computed(() => 12 - props.cols)
         </slot>
       </VCol>
     </VRow>
-    <hr data-test-id="separator"  v-if="modelValue.withSeparator">
+    <hr
+      v-if="modelValue.withSeparator"
+      data-test-id="separator"
+    >
   </div>
 </template>
 

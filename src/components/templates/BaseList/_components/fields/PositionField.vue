@@ -12,6 +12,8 @@ const props = withDefaults(
     position?: number
     canUpdate?: boolean
     size?: ListSize
+    editingId?: string
+    id?: string
   }>(),
   {
     position: 0,
@@ -22,25 +24,33 @@ const props = withDefaults(
 
 const emits = defineEmits<{
   (e: 'editPosition', value: number): void
+  (e: 'open-edit'): void
 }>()
 
 const openEdit = ref(false)
 
-const numberPositionComputed = ref(props.position)
+const numberPosition = ref(props.position)
+
+watch(() => props.editingId, () => {
+  if (props.editingId !== props.id)
+    openEdit.value = false
+})
 
 const onOpenEdit = () => {
   if (!props.canUpdate)
     return
+  numberPosition.value = props.position
+  emits('open-edit')
   openEdit.value = true
 }
 
 const successNewPosition = () => {
-  emits('editPosition', numberPositionComputed.value || props.position)
+  emits('editPosition', numberPosition.value || props.position)
   openEdit.value = false
 }
 
 const cancelNewPosition = () => {
-  numberPositionComputed.value = props.position
+  numberPosition.value = props.position
   openEdit.value = false
 }
 
@@ -48,7 +58,7 @@ const disabledKeys = computed(() => [
   'e',
   '.',
   '-',
-  numberPositionComputed.value.toString().isEmpty && '0',
+  numberPosition.value.toString().isEmpty && '0',
 ])
 
 const onKeyDown = (event: KeyboardEvent) => {
@@ -84,7 +94,7 @@ const buttonSize = computed(() => {
       class="mr-1"
     >
       <AppTextField
-        v-model="numberPositionComputed"
+        v-model="numberPosition"
         :size="buttonSize"
         type="number"
         autofocus
@@ -110,6 +120,7 @@ const buttonSize = computed(() => {
       />
     </VBtn>
     <VBtn
+      id="position-cancel-icon"
       class="cursor-pointer text-error v-btn--rectangle"
       variant="text"
       :size="buttonSize"
