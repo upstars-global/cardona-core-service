@@ -435,6 +435,9 @@ const onSaveChanges = () => {
       :deep(.fr-second-toolbar) {
         background: rgb(var(--v-theme-grey-100));
       }
+      :deep(.fr-placeholder) {
+        z-index: 2;
+      }
     }
 
     :deep(ul) {
