@@ -99,7 +99,15 @@ module.exports = {
     // Plugin: eslint-plugin-import
     'import/prefer-default-export': 'off',
     'import/newline-after-import': ['error', { count: 1 }],
-    'no-restricted-imports': ['error', 'vuetify/components'],
+    'no-restricted-imports': [
+      'error',
+      {
+        patterns: [
+          '@/.*', // Запрещает любые импорты, начинающиеся с "@/..."
+          'vuetify/components', // Запрещает импорт "vuetify/components"
+        ],
+      },
+    ],
 
     // For omitting extension for ts files
     'import/extensions': [
