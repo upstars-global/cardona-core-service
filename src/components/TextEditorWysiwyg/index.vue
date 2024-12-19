@@ -158,38 +158,30 @@ const config = {
         globalEditor.value = this
 
       const editor: any = this
+      const regex = /{{(.*?)}}/g
       const contentChanged = editor.html.get()
+      const editorVariables = [...contentChanged.matchAll(regex)].map(([variableKey]) => variableKey.replace('{{', '').replace('}}', ''))
+      const uniqueVariables = [...new Set(editorVariables)]
 
-      // Проверить последний символ content.value и сделать описание причины
-      // {{ }} - договор по указанию переменных
-      const startIndex = contentChanged.indexOf('{{')
-      const endIndex = contentChanged.indexOf('}}')
+      if (uniqueVariables.isNotEmpty) {
+        uniqueVariables.forEach((keyVar: string) => {
+          const originVar = keyVar.trim()
 
-      if (startIndex > -1 && endIndex > -1) {
-        const keyVar = contentChanged.slice(startIndex + 2, endIndex).trim()
+          if (originVar) {
+            const varFromBuffer = variableTextBuffer.value[originVar] ?? { ...defaultObjLocalisationParameters }
 
-        // что бы была возможность указать {{ }} пустые скобки и не получить пустой переменной
-        if (!keyVar)
-          return
+            setVariableByKey({ key: originVar, value: varFromBuffer })
 
-        if (variableTextBuffer.value[keyVar]) {
-          // Если данные есть в буффере то забираем их оттуда
-          // Используеться при возвращении переменной после удаления
-          setVariableByKey({ key: keyVar, value: variableTextBuffer.value[keyVar] })
-        }
-        else {
-          setVariableByKey({ key: keyVar, value: { ...defaultObjLocalisationParameters } })
-        }
+            editor.selection.save() // Сохраняем положение каретки
+            editor.html.set(
+              editor.html
+                .get(true) // Параметр true нужен для возвращения HTML вместе с положением каретки текста
+                .replaceAll(` {{${originVar}}} `, `{{${originVar}}}`)
+                .replaceAll(`{{${originVar}}}`, `&nbsp;<span class="variable-box">{${originVar}}</span>&nbsp;`),
+            )
+          }
+        })
 
-        editor.selection.save() // Сохраняем положение каретки
-        editor.html.set(
-          editor.html
-            .get(true) // Параметр true нужен для возвращения HTML вместе с положением каретки текста
-            .replace(' {{', '{{')
-            .replace('}} ', '}}')
-            .replace('{{', '&nbsp;<span class="variable-box">{')
-            .replace('}}', '}</span>&nbsp;'),
-        )
         editor.selection.restore()
         store.dispatch('textEditor/setUpdateVar', true)
 
@@ -202,7 +194,7 @@ const config = {
         updateVariableInContent(editor)
       }
 
-      emit('update:modelValue', contentChanged)
+      emit('update:modelValue', editor.html.get())
     },
     'commands.after': function (command) {
       if (command === 'html')
@@ -434,6 +426,9 @@ const onSaveChanges = () => {
       :deep(.fr-element),
       :deep(.fr-second-toolbar) {
         background: rgb(var(--v-theme-grey-100));
+      }
+      :deep(.fr-placeholder) {
+        z-index: 2;
       }
     }
 

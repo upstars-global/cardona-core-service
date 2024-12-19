@@ -62,6 +62,7 @@ const config = {
 
     .flatpickr-input {
       margin: 0 5px;
+      color: rgba(var(--v-theme-grey-500));
     }
   }
 }
