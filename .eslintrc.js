@@ -102,6 +102,12 @@ module.exports = {
     'no-restricted-imports': [
       'error',
       {
+        paths: [
+          {
+            name: 'vuetify/components',
+            message: 'Avoid importing "vuetify/components". Use Vuetify\'s auto-import feature instead.',
+          },
+        ],
         patterns: [
           {
             group: ['@/**'],
