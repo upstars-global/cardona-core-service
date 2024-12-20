@@ -68,6 +68,16 @@ const onSearch = (search: string) => emits('search', search)
 const canUpdate = computed<boolean>(() =>
   props.modelValue?.permission ? store.getters.abilityCan(props.modelValue?.permission, PermissionLevel.update) : true,
 )
+
+const allCurrencies = computed<string[]>(() => store.getters['appConfigCore/allCurrencies'])
+
+const validationLabel = computed(() => {
+  const isCurrencyLabel = allCurrencies.value.includes(props.modelValue.label)
+
+  return isCurrencyLabel ? props.modelValue.label : props.modelValue.label.toLowerCase()
+},
+
+)
 </script>
 
 <template>
@@ -105,7 +115,7 @@ const canUpdate = computed<boolean>(() =>
     <Field
       v-model="fieldModel"
       :name="modelValue.id"
-      :label="modelValue.label"
+      :label="validationLabel"
       :rules="rules"
       :validate-on-blur="false"
       :validate-on-change="false"
