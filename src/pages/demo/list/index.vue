@@ -8,8 +8,8 @@ import { FilterType } from '../../../@model/filter'
 import { IconsList } from '../../../@model/enums/icons'
 import { BaseListConfig, SortDirection } from '../../../@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
+import BtnIcon from '../../../components/templates/_components/BtnIcon.vue'
 import { ProjectFilterTypes } from '@filterConfig'
-import BtnIcon from '@/components/templates/_components/BtnIcon.vue'
 
 const { t } = useI18n()
 
