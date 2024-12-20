@@ -103,8 +103,10 @@ module.exports = {
       'error',
       {
         patterns: [
-          '@/.*', // Запрещает любые импорты, начинающиеся с "@/..."
-          'vuetify/components', // Запрещает импорт "vuetify/components"
+          {
+            group: ['@/**'],
+            message: 'Avoid using alias imports starting with "@/". Use relative paths instead.',
+          },
         ],
       },
     ],
