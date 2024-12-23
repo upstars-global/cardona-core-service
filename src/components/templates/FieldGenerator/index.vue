@@ -15,7 +15,6 @@ const props = withDefaults(defineProps<{
   withInfo?: boolean
   disabled?: boolean
   size?: string // TODO: refactor sizes
-  validateOnSubmit?: boolean
 }>(),
 {
   withLabel: true,
@@ -31,8 +30,7 @@ const store = useStore()
 
 const canView = computed<boolean>(() => {
   return props.modelValue?.permission ? store.getters.abilityCan(props.modelValue.permission, 'view') : true
-},
-)
+})
 
 const isCheckType = computed(
   () => props.modelValue instanceof SwitchBaseField || props.modelValue instanceof CheckBaseField,
@@ -68,6 +66,10 @@ const onSearch = (search: string) => emits('search', search)
 const canUpdate = computed<boolean>(() =>
   props.modelValue?.permission ? store.getters.abilityCan(props.modelValue?.permission, PermissionLevel.update) : true,
 )
+
+const notFilledDateRange = computed(() => {
+  return props.modelValue?.isRangeMode && fieldModel.value?.length && !fieldModel.value?.split(props.modelValue.separator)[1]?.length
+})
 </script>
 
 <template>
@@ -110,7 +112,7 @@ const canUpdate = computed<boolean>(() =>
       :validate-on-blur="false"
       :validate-on-change="false"
       :validate-on-input="false"
-      :validate-on-model-update="!validateOnSubmit"
+      :validate-on-model-update="!notFilledDateRange"
     >
       <template #default="{ errorMessage }">
         <div :class="{ 'd-flex align-center': isCheckTypeWithInfo }">
