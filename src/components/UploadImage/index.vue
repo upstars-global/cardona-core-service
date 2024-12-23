@@ -9,6 +9,7 @@ import { UploadFileSizes } from '../../@model/enums/uploadFileSizes'
 import RemoveModal from '../../components/BaseModal/RemoveModal.vue'
 import FilesUpload from '../FilesUpload/FilesUpload.vue'
 import { MAX_WIDTH_TOOLTIP } from '../../utils/constants'
+import { ModalsId } from '../../@model/modalsId'
 import ModalFileUpload from './ModalFileUpload.vue'
 
 interface Props {
@@ -22,6 +23,7 @@ interface Props {
   modelValue: string
   path: string
   disabled: boolean
+  modalId?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -34,6 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   value: '',
   path: '',
   disabled: false,
+  modalId: ModalsId.UploadImage,
 })
 
 const emits = defineEmits<{
@@ -73,8 +76,8 @@ const onSetPath = val => {
   emits('input-path', val)
 }
 
-const removeModalId = 'image-item-remove-modal'
-const selectModalId = 'image-item-select-modal'
+const removeModalId = `${props.modalId}-remove-modal`
+const selectModalId = `${props.modalId}-select-modal`
 
 // Remove
 const onClickRemove = async () => {

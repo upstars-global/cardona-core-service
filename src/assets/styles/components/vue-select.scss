@@ -54,6 +54,12 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
   .selected-option-value {
     color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
   }
+
+  .vs__selected-options {
+    input::placeholder {
+      color: rgba(var(--v-theme-grey-900), 0.42);
+    }
+  }
 }
 
 // Matches height of input element for consistency
@@ -256,6 +262,16 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
 
 }
 
+.vs--multiple.vs--disabled {
+  .vs__selected {
+    color: rgba(var(--v-theme-grey-500));
+    background-color: rgba(var(--v-theme-grey-500), var(--v-activated-opacity));
+  }
+
+  .vs__deselect {
+    pointer-events: none;
+  }
+}
 // Dropdown Position
 .vs__dropdown-menu {
   border: none;

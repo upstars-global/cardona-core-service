@@ -10,6 +10,7 @@ import { convertCamelCase } from '../../../helpers'
 import { SideBarCollapseItem } from '../../../@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
 import { getStorage, setStorage } from '../../../helpers/storage'
+import { EMIT_AFTER_ANIMATION_SIDEBAR, IS_TEST_ENV } from '../../../utils/constants'
 
 const props = defineProps<{
   item?: object
@@ -36,7 +37,6 @@ const currentPageName = route.name?.toString()
 const openBlocsKey = `${currentPageName}-${props.entityName}-suidebar-open-blocs`
 const allBlocsKey = computed(() => viewForm.value ? Object.keys(viewForm.value) : [])
 const openBlocs = ref([])
-const emitAfterAnimationSidebar = 200
 
 const viewForm = ref(null)
 
@@ -45,7 +45,7 @@ const action = (name: string, hide: Function) => {
 
   setTimeout(() => {
     emits(name)
-  }, emitAfterAnimationSidebar)
+  }, EMIT_AFTER_ANIMATION_SIDEBAR)
 }
 
 watch(
@@ -89,7 +89,10 @@ const onHide = () => {
   >
     <!-- Header -->
     <div class="content-sidebar-header d-flex justify-space-between align-center px-6 py-3 bg-light">
-      <h5 class="content-sidebar-header__title mb-0 text-h5 font-weight-medium">
+      <h5
+        class="content-sidebar-header__title mb-0 text-h5 font-weight-medium"
+        data-test-id="sidebar-title"
+      >
         {{ $t(title) }}
       </h5>
       <VIcon
@@ -134,8 +137,12 @@ const onHide = () => {
             </ViewGenerator>
             <template v-else-if="viewForm[key] instanceof SideBarCollapseItem && sidebarCollapseMode">
               <div>
-                <VExpansionPanels :model-value="isOpenBlock(key)">
+                <VExpansionPanels
+                  :model-value="isOpenBlock(key)"
+                  data-test-id="collapse-item"
+                >
                   <VExpansionPanel
+                    :eager="IS_TEST_ENV"
                     :expand-icon="IconsList.ChevronRightIcon"
                     :title="`${viewForm[key].title}`"
                     :value="key"
@@ -143,6 +150,7 @@ const onHide = () => {
                   >
                     <VExpansionPanelText
                       class="px-0"
+                      :eager="IS_TEST_ENV"
                       @click.stop
                     >
                       <div
@@ -152,6 +160,7 @@ const onHide = () => {
                         <ViewGenerator
                           v-if="viewForm[key].views[groupKey] instanceof ViewInfo"
                           :key="key"
+                          :data-test-id="`collapse-item-${groupKey}`"
                           :model-value="viewForm[key].views[groupKey]"
                           :key-name="groupKey"
                           :class="`${groupKey}-view`"
@@ -175,6 +184,7 @@ const onHide = () => {
 
               <hr
                 v-if="viewForm[key].withBottomSeparator"
+                data-test-id="collapse-item-separator"
                 class="my-0"
               >
             </template>
@@ -194,6 +204,7 @@ const onHide = () => {
 
           <VBtn
             v-if="canUpdateItem"
+            data-test-id="edit-button"
             :variant="VVariants.Outlined"
             :color="VColors.Secondary"
             :size="VSizes.Small"
@@ -204,6 +215,7 @@ const onHide = () => {
 
           <VBtn
             v-if="canRemoveItem"
+            data-test-id="remove-button"
             :variant="VVariants.Outlined"
             :color="VColors.Error"
             :size="VSizes.Small"
