@@ -261,7 +261,7 @@ const variableTextBufferStore = computed(() => store.state.textEditor.variableTe
     }
 
     .span-empty {
-      color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+      color: rgba(var(--v-theme-grey-900), 0.42);
     }
   }
 

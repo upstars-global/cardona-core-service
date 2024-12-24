@@ -195,7 +195,7 @@ watch(
 const selectedFields = ref<TableField[]>([...fields])
 
 const isLoadingList = computed(() => {
-  if (isInitialState.value)
+  if (isInitialState.value || isDebouncedSearch.value)
     return true
   const indexSymbolNextDash = entityName.indexOf('-') + 1
 
@@ -224,11 +224,7 @@ const isLoadingList = computed(() => {
 
 const size = props.config?.small ? VSizes.Small : VSizes.Medium
 
-const emptyListText = computed(() =>
-  searchQuery.value || hasSelectedFilters.value || isDebouncedSearch.value
-    ? t('emptyState.emptyRequest')
-    : props.config.emptyText,
-)
+const emptyListText = computed(() => searchQuery.value || hasSelectedFilters.value ? t('emptyState.emptyRequest') : props.config.emptyText)
 
 // Sort
 const sortStorageKey = `${currentPageName}-${entityName}-sort`
@@ -266,7 +262,6 @@ const {
   linkGen,
   updateTotal,
   onChangePagination,
-  removePerPage,
   removePagination,
 } = paginationConfig
 
@@ -682,6 +677,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         <slot
           name="right-search-btn"
           :can-create="canCreate"
+          :can-update="canUpdate"
           :create-page-name="CreatePageName"
         />
       </template>
@@ -1004,6 +1000,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     >
       <ListPagination
         v-if="config?.pagination"
+        data-test-id="list-pagination"
         :model-value="currentPage"
         :link-gen="linkGenerator"
         :pagination-config="paginationConfig"
