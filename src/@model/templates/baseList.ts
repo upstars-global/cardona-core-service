@@ -366,6 +366,9 @@ export interface IBaseSectionConfig {
 
   /** backToTheHistoryLast - Кнопка Cancel возвращает не предыдущую страницу, если такая есть в истории роута */
   readonly backToTheHistoryLast?: boolean
+
+  /** mapFormData - Callback для мапинга данных формы перед отправкой */
+  readonly mapFormData?: (transformedFormData: unknown, rawFormData: Ref<unknown>) => unknown
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to base section model
@@ -381,6 +384,8 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly withoutDeleteModal?: boolean
   readonly withoutConfirmModal?: boolean
   readonly backToTheHistoryLast?: boolean
+  readonly mapFormData?: (transformedFormData: unknown, rawFormData: Ref<unknown>) => unknown
+
   constructor(data: IBaseSectionConfig) {
     this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
@@ -394,6 +399,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
     this.withoutDeleteModal = data?.withoutDeleteModal || false
     this.withoutConfirmModal = data?.withoutConfirmModal || false
     this.backToTheHistoryLast = data?.backToTheHistoryLast || false
+    this.mapFormData = data?.mapFormData
   }
 }
 

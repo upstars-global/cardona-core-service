@@ -17,18 +17,18 @@ import { FormTabs } from '../../../@model/enums/formTabs'
 import BaseSectionLoading from './BaseSectionLoading.vue'
 
 const props = withDefaults(defineProps<{
-    withReadAction?: boolean
-    config?: BaseSectionConfig
-    pageType?: PageType
-    useEntity: Function
-    localEntityData?: Record<string, unknown>
-  }>(),
-  {
-    useEntity: undefined,
-    withReadAction: true,
-    config: () => new BaseSectionConfig({}),
-    pageType: PageType.Create,
-  },
+  withReadAction?: boolean
+  config?: BaseSectionConfig
+  pageType?: PageType
+  useEntity: Function
+  localEntityData?: Record<string, unknown>
+}>(),
+{
+  useEntity: undefined,
+  withReadAction: true,
+  config: () => new BaseSectionConfig({}),
+  pageType: PageType.Create,
+},
 )
 
 const modal = inject('modal')
@@ -221,7 +221,9 @@ const onSubmit = async (isStay: boolean) => {
         : null,
     }
 
-  transformedForm.value = transformFormData(formData)
+  const transformedData = transformFormData(formData)
+
+  transformedForm.value = props.config.mapFormData ? props.config.mapFormData(transformedData, form) : transformedData
 
   if (onBeforeSubmitCb && !onBeforeSubmitCb(formData))
     return
