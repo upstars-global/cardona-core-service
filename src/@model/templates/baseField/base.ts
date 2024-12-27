@@ -100,7 +100,6 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
   }
 
   async fetchOptions(search = '') {
-    this.options = []
     if (this.fetchOptionsActionName) {
       if (this.preloadOptionsByIds && this.value?.length) {
         const { list: preloadedList } = await store.dispatch(this.fetchOptionsActionName, {
