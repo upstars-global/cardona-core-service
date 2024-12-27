@@ -941,7 +941,9 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             {{ cell }} %
           </template>
           <template v-else>
-            {{ cell }}
+            <div class="default-cell-value">
+              {{ cell }}
+            </div>
           </template>
           <ItemActions
             v-if="field.key === 'actions'"
@@ -1025,6 +1027,11 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 }
 
 :deep(.c-table) {
+  .default-cell-value {
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   tr {
     td[data-c-field='actions'] {
       width: 3.5rem;
