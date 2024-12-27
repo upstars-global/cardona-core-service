@@ -86,6 +86,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
   readonly preloadOptionsByIds?: boolean
   readonly staticFilters: Record<string, string>
   readonly calculatePositionCb?: CallableFunction
+  selectedOptions?: Array<T>
 
   protected constructor(field: IASelectBaseField<T>) {
     super(field)
@@ -102,19 +103,19 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
   async fetchOptions(search = '') {
     if (this.fetchOptionsActionName) {
       if (this.preloadOptionsByIds && this.value?.length) {
-        const { list: preloadedList } = await store.dispatch(this.fetchOptionsActionName, {
+        const { list: selectedOptions } = await store.dispatch(this.fetchOptionsActionName, {
           perPage: 50,
           filter: {
-            ids: this.value,
+            ids: this.value.map(i => i?.id || i),
           },
         })
 
-        this.options = preloadedList?.map((option: string | T): OptionsItem | T =>
+        this.selectedOptions = selectedOptions?.map((option: string | T): OptionsItem | T =>
           typeof option === 'string' ? { id: option, name: option } : option,
-        )
+        ) || []
       }
 
-      const { list: mainList } = await store.dispatch(this.fetchOptionsActionName, {
+      const { list } = await store.dispatch(this.fetchOptionsActionName, {
         perPage: 50,
         filter: {
           search,
@@ -122,7 +123,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
         },
       })
 
-      this.options = [...this.options, ...mainList]
+      this.options = [...this.selectedOptions, ...list]
     }
   }
 }
