@@ -100,9 +100,9 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
     dropdownList.style.position = 'fixed'
   }
 
-  async fetchOptions(search = '') {
+  async fetchOptions(search: string) {
     if (this.fetchOptionsActionName) {
-      if (this.preloadOptionsByIds && this.value?.length) {
+      if (this.preloadOptionsByIds && this.value?.length && search === undefined) {
         const { list: selectedOptions } = await store.dispatch(this.fetchOptionsActionName, {
           perPage: 50,
           filter: {
@@ -123,7 +123,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
         },
       })
 
-      this.options = [...this.selectedOptions, ...list]
+      this.options = [...(this.selectedOptions || []), ...list]
     }
   }
 }
