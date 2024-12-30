@@ -435,6 +435,7 @@ declare module 'vue' {
     MoreBtn: typeof import('./src/@core/components/MoreBtn.vue')['default']
     MultipleActions: typeof import('./src/components/templates/BaseList/_components/MultipleActions.vue')['default']
     MultiSelectField: typeof import('./src/components/templates/FieldGenerator/_components/MultiSelectField.vue')['default']
+    NameField: typeof import('./src/components/templates/BaseList/_components/fields/NameField.vue')['default']
     NameWithIdField: typeof import('./src/components/templates/BaseList/_components/fields/NameWithIdField.vue')['default']
     NameWithShortIdField: typeof import('./src/components/templates/BaseList/_components/fields/NameWithShortIdField.vue')['default']
     NoFiles: typeof import('./src/components/UploadImage/NoFiles.vue')['default']
