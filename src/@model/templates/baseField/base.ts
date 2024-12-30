@@ -125,7 +125,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
         },
       })
 
-      this.options = [...(this.selectedOptions || []), ...list]
+      this.options = this.selectedOptions ? [...this.selectedOptions, ...list] : list
     }
   }
 }
