@@ -59,6 +59,7 @@ import ItemActions from './_components/fields/ItemActions.vue'
 import ListPagination from './_components/ListPagination.vue'
 import TableFields from './_components/TableFields.vue'
 import DateField from './_components/fields/DateField.vue'
+import NameField from './_components/fields/NameField.vue'
 
 const props = defineProps<{
   config: IBaseListConfig
@@ -841,6 +842,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               :item="item.raw"
             />
           </NameWithShortIdField>
+
+          <NameField
+            v-else-if="field.type === ListFieldType.Name"
+            :key="`${index}_${field.type}`"
+            :item="item.raw"
+            :get-update-route="getUpdateRoute"
+            :is-show-you="config.isShowYou"
+          />
 
           <EmailField
             v-else-if="field.type === ListFieldType.Email"
