@@ -117,7 +117,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
         ) || []
       }
 
-      const { list } = await store.dispatch(this.fetchOptionsActionName, {
+      const { list = [] } = await store.dispatch(this.fetchOptionsActionName, {
         perPage: 50,
         filter: {
           search,
