@@ -76,6 +76,7 @@ export interface IASelectBaseField<T> extends IBaseField {
   readonly fetchOptionsActionName?: string
   readonly staticFilters?: Record<string, string>
   readonly withCalculatePosition?: boolean
+  readonly preloadOptionsByIds?: boolean
 }
 
 export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
@@ -92,6 +93,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
     super(field)
     this.options = field.options
     this.fetchOptionsActionName = field.fetchOptionsActionName
+    this.preloadOptionsByIds = field.preloadOptionsByIds
     this.staticFilters = field.staticFilters || {}
     this.calculatePositionCb = field.withCalculatePosition ? this.calculatePosition : undefined
   }

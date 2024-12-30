@@ -8,7 +8,6 @@ import { ASelectBaseField } from './base'
 export interface IMultiSelectBaseField<T> extends IASelectBaseField<T> {
   readonly value?: T[] | SelectValue[] | null
   readonly appendToBody?: boolean
-  readonly preloadOptionsByIds?: boolean
   readonly withCopyId?: boolean
 }
 
@@ -18,14 +17,12 @@ export class MultiSelectBaseField<T extends OptionsItem = OptionsItem>
   readonly component: Component = markRaw(MultiSelectField)
   protected _value?: T[] | SelectValue[] | null
   readonly appendToBody: boolean
-  readonly preloadOptionsByIds?: boolean
   readonly withCopyId?: boolean
 
   constructor(field: IMultiSelectBaseField<T>) {
     super(field)
     this._value = field.value
     this.appendToBody = field.appendToBody ?? true
-    this.preloadOptionsByIds = field.preloadOptionsByIds
     this.withCopyId = field.withCopyId
   }
 
