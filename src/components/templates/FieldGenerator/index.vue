@@ -70,6 +70,14 @@ const canUpdate = computed<boolean>(() =>
 const notFilledDateRange = computed(() => {
   return props.modelValue?.isRangeMode && fieldModel.value?.length && !fieldModel.value?.split(props.modelValue.separator)[1]?.length
 })
+
+const allCurrencies = computed<string[]>(() => store.getters['appConfigCore/allCurrencies'])
+
+const validationLabel = computed(() => {
+  const isCurrencyLabel = allCurrencies.value.includes(props.modelValue.label)
+
+  return isCurrencyLabel ? props.modelValue.label : props.modelValue.label.toLowerCase()
+})
 </script>
 
 <template>
@@ -107,7 +115,7 @@ const notFilledDateRange = computed(() => {
     <Field
       v-model="fieldModel"
       :name="modelValue.id"
-      :label="modelValue.label"
+      :label="validationLabel"
       :rules="rules"
       :validate-on-blur="false"
       :validate-on-change="false"
