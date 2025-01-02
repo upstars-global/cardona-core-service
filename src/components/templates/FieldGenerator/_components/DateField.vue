@@ -8,7 +8,7 @@ import type { DateBaseField } from '../../../../@model/templates/baseField'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
 import { getISOStringWithoutTimezone } from '../../../../helpers/date'
 import { dateSeparators } from '../../../../@model/date'
-import { IconsList } from '@/@model/enums/icons'
+import { IconsList } from '../../../../@model/enums/icons'
 
 const props = withDefaults(
   defineProps<{
