@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { TimeBaseField } from '../../../../@model/templates/baseField'
 import { VSizes } from '../../../../@model/vuetify'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
@@ -29,6 +29,8 @@ const localModelValue = computed({
   set: value => emit('update:modelValue', value),
 })
 
+const timePickerRef = ref()
+
 const config = {
   enableTime: true,
   noCalendar: true,
@@ -42,13 +44,15 @@ const config = {
 
 <template>
   <AppDateTimePicker
+    ref="timePickerRef"
     v-model="localModelValue"
-    :prepend-inner-icon="IconsList.ClockIcon"
+    :append-inner-icon="IconsList.ClockIcon"
     :placeholder="field.placeholder || field.label"
     :disabled="disabled"
     :config="config"
     :is-invalid="errors"
     :class="{ static: config.static }"
+    @click:append-inner="timePickerRef?.refFlatPicker.fp.open()"
   />
 </template>
 
