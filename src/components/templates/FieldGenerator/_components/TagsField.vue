@@ -76,6 +76,7 @@ const appendInnerIcon = computed(() => {
           :key="`tag_${tag}`"
           closable
           label
+          :color="disabled ? VColors.Secondary : VColors.Primary"
           @click:close="onDelete(index)"
         >
           {{ tag }}
@@ -107,6 +108,9 @@ const appendInnerIcon = computed(() => {
     input {
       min-width: 10rem;
     }
+  }
+  :deep(.text-secondary) {
+    color: rgba(var(--v-theme-grey-500)) !important;
   }
 }
 </style>

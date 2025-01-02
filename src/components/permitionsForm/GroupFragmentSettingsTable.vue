@@ -4,6 +4,7 @@ import type { TranslateResult } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 import { VColors } from '../../@model/vuetify'
 import type { PermissionUpdatableTable } from '../../@model/permission'
+import { IS_TEST_ENV } from '../../utils/constants'
 
 interface Props {
   title: TranslateResult
@@ -161,7 +162,10 @@ const onChangeCheckboxTable = (
     v-model="panel"
     multiple
   >
-    <VExpansionPanel elevation="0">
+    <VExpansionPanel
+      elevation="0"
+      :eager="IS_TEST_ENV"
+    >
       <VExpansionPanelTitle
         v-if="!notHeader"
         class="py-4 text-color-base"
@@ -170,6 +174,7 @@ const onChangeCheckboxTable = (
           <h5
             v-if="title"
             class="lead collapse-title text-h5 text-body-1 font-weight-medium"
+            data-test-id="collapse-title"
           >
             {{ title }}
           </h5>
@@ -179,6 +184,7 @@ const onChangeCheckboxTable = (
           >
             <VSwitch
               v-model="checked"
+              data-test-id="switch-all"
               :readonly="checked"
               :disabled="disabled || checked"
               :color="VColors.Primary"
@@ -187,7 +193,10 @@ const onChangeCheckboxTable = (
           </div>
         </div>
       </VExpansionPanelTitle>
-      <VExpansionPanelText :class="{ 'inner-table': notHeader }">
+      <VExpansionPanelText
+        :class="{ 'inner-table': notHeader }"
+        :eager="IS_TEST_ENV"
+      >
         <Component
           :is="componentRenderer"
           :key="componentRendererName"
@@ -199,6 +208,7 @@ const onChangeCheckboxTable = (
               v-if="tableItems.length"
               responsive
               caption-top
+              data-test-id="permission-table"
               class="group-fragment-setting-table"
             >
               <thead>
@@ -209,7 +219,10 @@ const onChangeCheckboxTable = (
                     :class="{ 'text-center': tableColumn.key !== 'target' }"
                     class="px-2 header-table-th"
                   >
-                    <span class="font-weight-medium text-color-mute">
+                    <span
+                      class="font-weight-medium text-color-mute"
+                      data-test-id="col-label"
+                    >
                       {{ tableColumn.label }}
                     </span>
                   </th>
@@ -228,6 +241,7 @@ const onChangeCheckboxTable = (
                     <span
                       v-if="index === 0"
                       class="font-weight-regular text-color-base"
+                      :data-test-id="`permission-with-checkbox-${tableItem.target}`"
                     >
                       {{ $t(`permission.${tableItem.target}`) }}
                     </span>
@@ -235,6 +249,7 @@ const onChangeCheckboxTable = (
                       <div class="d-flex justify-center">
                         <VCheckbox
                           v-if="!tableItem.notAccessLevel?.includes(Number(tableColumn.key))"
+                          :data-test-id="`permission-checkbox-${tableItem.target}-${tableColumn.key}`"
                           :model-value="+tableItem.access >= +tableColumn.key"
                           :disabled="disabled"
                           @update:model-value="onChangeCheckboxTable(tableItem, Number(tableColumn.key), $event)"
@@ -242,6 +257,7 @@ const onChangeCheckboxTable = (
                         <span
                           v-else
                           class="text-color-base"
+                          :data-test-id="`empty-${tableItem.target}-${tableColumn.key}`"
                         > - </span>
                       </div>
                     </template>
@@ -266,6 +282,7 @@ const onChangeCheckboxTable = (
               :class="{ 'pb-1 border-bottom': index !== switchItems.length - 1 }"
             >
               <VSwitch
+                :data-test-id="`permission-switch-${switchItem.target}`"
                 :model-value="switchItem.access > 0"
                 class="ml-0"
                 :label="$t(`permission.${switchItem.target}`)"

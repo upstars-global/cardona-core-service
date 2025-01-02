@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { h } from 'vue'
 import { createStore } from 'vuex'
 import { Field } from 'vee-validate'
 import FieldGenerator from '../../../../src/components/templates/FieldGenerator/index.vue'
@@ -8,7 +9,7 @@ import { testOn } from '../shared-tests/test-case-generator'
 import { setMountComponent } from '../../utils'
 import { expectedEmitValue } from '../shared-tests/general'
 
-const getMountFieldGeneratgor = setMountComponent(FieldGenerator)
+const getMountFieldGenerator = setMountComponent(FieldGenerator)
 
 vi.mock('vee-validate', () => ({
   Field: {
@@ -24,7 +25,8 @@ vi.mock('vee-validate', () => ({
 
 const mockStore = createStore({
   getters: {
-    abilityCan: () => vi.fn(() => true),
+    'abilityCan': () => vi.fn(() => true),
+    'appConfigCore/allCurrencies': vi.fn(() => ['USD', 'EUR', 'CAD']),
   },
 })
 
@@ -44,9 +46,10 @@ const defaultProps = {
   },
 }
 
-const mountFieldGenerator = (props?: unknown, global: unknown = {}) => getMountFieldGeneratgor({
+const mountFieldGenerator = (props?: unknown, global: unknown = {}) => getMountFieldGenerator({
   ...defaultProps,
   ...props,
+  h,
 },
 {
   plugins: [mockStore],
