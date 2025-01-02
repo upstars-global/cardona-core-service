@@ -17,18 +17,18 @@ import { FormTabs } from '../../../@model/enums/formTabs'
 import BaseSectionLoading from './BaseSectionLoading.vue'
 
 const props = withDefaults(defineProps<{
-    withReadAction?: boolean
-    config?: BaseSectionConfig
-    pageType?: PageType
-    useEntity: Function
-    localEntityData?: Record<string, unknown>
-  }>(),
-  {
-    useEntity: undefined,
-    withReadAction: true,
-    config: () => new BaseSectionConfig({}),
-    pageType: PageType.Create,
-  },
+  withReadAction?: boolean
+  config?: BaseSectionConfig
+  pageType?: PageType
+  useEntity: Function
+  localEntityData?: Record<string, unknown>
+}>(),
+{
+  useEntity: undefined,
+  withReadAction: true,
+  config: () => new BaseSectionConfig({}),
+  pageType: PageType.Create,
+},
 )
 
 const modal = inject('modal')
@@ -42,7 +42,7 @@ const entityId: string = route.params?.id?.toString()
 const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
 
-const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb }
+const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb, onSerializeFormCb }
   = props.useEntity()
 
 const formRef = ref(null)
@@ -221,7 +221,9 @@ const onSubmit = async (isStay: boolean) => {
         : null,
     }
 
-  transformedForm.value = transformFormData(formData)
+  const transformedData = transformFormData(formData)
+
+  transformedForm.value = onSerializeFormCb ? onSerializeFormCb(transformedData, form) : transformedData
 
   if (onBeforeSubmitCb && !onBeforeSubmitCb(formData))
     return

@@ -381,6 +381,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly withoutDeleteModal?: boolean
   readonly withoutConfirmModal?: boolean
   readonly backToTheHistoryLast?: boolean
+
   constructor(data: IBaseSectionConfig) {
     this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
