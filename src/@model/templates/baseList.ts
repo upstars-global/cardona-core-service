@@ -366,6 +366,9 @@ export interface IBaseSectionConfig {
 
   /** backToTheHistoryLast - Кнопка Cancel возвращает не предыдущую страницу, если такая есть в истории роута */
   readonly backToTheHistoryLast?: boolean
+
+  /** isModalSection - Флаг для отображения секции в модалке */
+  readonly isModalSection?: boolean
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to base section model
@@ -381,7 +384,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly withoutDeleteModal?: boolean
   readonly withoutConfirmModal?: boolean
   readonly backToTheHistoryLast?: boolean
-  readonly withModalFooter?: boolean
+  readonly isModalSection?: boolean
   constructor(data: IBaseSectionConfig) {
     this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
@@ -395,7 +398,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
     this.withoutDeleteModal = data?.withoutDeleteModal || false
     this.withoutConfirmModal = data?.withoutConfirmModal || false
     this.backToTheHistoryLast = data?.backToTheHistoryLast || false
-    this.withModalFooter = data?.withModalFooter || false
+    this.isModalSection = data?.isModalSection || false
   }
 }
 

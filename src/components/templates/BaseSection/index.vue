@@ -32,6 +32,10 @@ const props = withDefaults(defineProps<{
 },
 )
 
+const emits = defineEmits<{
+  (event: 'on-click-cancel'): void
+}>()
+
 const modal = inject('modal')
 const store = useStore()
 const route = useRoute()
@@ -242,6 +246,9 @@ const onSave = async () => {
       customApiPrefix: props.config?.customApiPrefix,
     })
 
+    if (props.config.isModalSection)
+      return emits('on-click-cancel')
+
     if (isCreatePage) {
       isStaySubmit.value && data
         ? await router.push({ name: UpdatePageName, params: { id: String(data?.id) } })
@@ -258,6 +265,8 @@ const onSave = async () => {
 }
 
 const onClickCancel = () => {
+  if (props.config.isModalSection)
+    return emits('on-click-cancel')
   if (props.config.backToTheHistoryLast && router.options.history.state.back)
     return router.go(-1)
 
@@ -347,12 +356,12 @@ defineExpose({
           :loading="isLoadingPage"
         >
           <hr
-            v-if="config.withModalFooter"
+            v-if="config.isModalSection"
             class="mt-5"
           >
           <div
             class="d-flex align-center mt-5"
-            :class="{ 'px-2 mb-4 flex-row-reverse gap-4': config.withModalFooter }"
+            :class="{ 'px-2 mb-4 flex-row-reverse gap-4': config.isModalSection }"
           >
             <template v-if="isCreatePage">
               <VBtn
