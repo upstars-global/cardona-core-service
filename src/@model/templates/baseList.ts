@@ -367,7 +367,7 @@ export interface IBaseSectionConfig {
   /** backToTheHistoryLast - Кнопка Cancel возвращает не предыдущую страницу, если такая есть в истории роута */
   readonly backToTheHistoryLast?: boolean
 
-  /** isModalSection - Флаг для отображения секции в модалке */
+  /** isModalSection - Флаг для отображения секции в модалке. Нужно использовать emits on-save, on-cancel */
   readonly isModalSection?: boolean
 }
 
