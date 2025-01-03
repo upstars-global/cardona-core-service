@@ -226,7 +226,7 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
             <VChip
               v-for="(region, index) in value"
               :key="`${key}_${region.name}`"
-              closable
+              :closable="!disabled"
               :disabled="disabled"
               label
               :color="region.code === region.countryCode ? VColors.Error : VColors.Primary"
@@ -262,5 +262,10 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
 .scroll-area {
   max-height: 30rem;
   transition: max-height 1s;
+}
+
+:deep(.v-chip--disabled) {
+  color: rgba(var(--v-theme-grey-500)) !important;
+  opacity: 1;
 }
 </style>

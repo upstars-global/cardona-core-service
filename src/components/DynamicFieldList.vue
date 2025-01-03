@@ -179,6 +179,7 @@ const disableAddFiled = computed(() =>
       </VCol>
 
       <VCol
+        v-if="!disabled"
         md="1"
         class="d-flex justify-start align-self-start remove-field__wrapper py-0"
       >
@@ -197,6 +198,7 @@ const disableAddFiled = computed(() =>
     </VRow>
 
     <VBtn
+      v-if="!disabled"
       :size="VSizes.Small"
       :variant="VVariants.Outlined"
       :color="VColors.Secondary"
@@ -212,9 +214,10 @@ const disableAddFiled = computed(() =>
 </template>
 
 <style lang="scss" scoped>
-.filed-list__item {
+.filed-list__item:not(:last-child) {
   margin-bottom: 1.125rem;
 }
+
 .filed-list__delete {
   margin-top: 1.65rem;
   min-width: 2.5rem;
