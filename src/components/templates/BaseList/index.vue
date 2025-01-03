@@ -596,6 +596,10 @@ onUnmounted(() => {
   removePagination()
 })
 
+const editingId = ref<string | null>(null)
+
+const onOpenEdit = (id: string) => editingId.value = id
+
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
 
@@ -884,11 +888,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
           <PositionField
             v-else-if="field.type === ListFieldType.Priority"
-            :key="`${index}_${field.type}`"
+            :id="item.raw.id"
+            :key="item.raw.id"
             :position="cell"
             :size="field.size"
             :can-update="canUpdate"
+            :editing-id="editingId"
             @edit-position="(val) => onEditPosition(item.raw, val)"
+            @open-edit="onOpenEdit(item.raw.id)"
           />
 
           <ButtonField
