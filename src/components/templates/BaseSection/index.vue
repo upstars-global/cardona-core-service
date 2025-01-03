@@ -361,7 +361,7 @@ defineExpose({
           >
           <div
             class="d-flex align-center mt-5"
-            :class="{ 'px-2 mb-4 flex-row-reverse gap-4': config.isModalSection }"
+            :class="{ 'px-2 mt-4 mb-4 flex-row-reverse gap-4': config.isModalSection }"
           >
             <template v-if="isCreatePage">
               <VBtn
