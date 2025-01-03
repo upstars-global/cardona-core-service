@@ -99,6 +99,7 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :disabled="disabled"
       :append-to-body="field.appendToBody"
       :calculate-position="withPopper(field.calculatePositionCb)"
+      :filterable="field.filterable"
       @search="onSearch"
     >
       <template #selected-option="{ id, name }">

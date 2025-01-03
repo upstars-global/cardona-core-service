@@ -103,6 +103,7 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :clearable="field.clearable"
       :append-to-body="field.appendToBody"
       :calculate-position="withPopper(field.calculatePositionCb)"
+      :filterable="field.filterable"
       @search="onSearch"
       @open="toggleDropDownState"
       @close="toggleDropDownState"
