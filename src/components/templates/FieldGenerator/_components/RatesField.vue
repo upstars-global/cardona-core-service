@@ -119,7 +119,7 @@ function setRates(): NumberBaseField[] {
       <VCol
         v-for="(currency, index) in allCurrencies"
         :key="currency"
-        cols="2"
+        cols="12"
       >
         <FieldGenerator
           v-model="formRates[index]"
