@@ -33,7 +33,8 @@ const props = withDefaults(defineProps<{
 )
 
 const emits = defineEmits<{
-  (event: 'on-click-cancel'): void
+  (event: 'on-cancel'): void
+  (event: 'on-save'): void
 }>()
 
 const modal = inject('modal')
@@ -247,7 +248,7 @@ const onSave = async () => {
     })
 
     if (props.config.isModalSection)
-      return emits('on-click-cancel')
+      return emits('on-save')
 
     if (isCreatePage) {
       isStaySubmit.value && data
@@ -266,7 +267,7 @@ const onSave = async () => {
 
 const onClickCancel = () => {
   if (props.config.isModalSection)
-    return emits('on-click-cancel')
+    return emits('on-cancel')
   if (props.config.backToTheHistoryLast && router.options.history.state.back)
     return router.go(-1)
 
