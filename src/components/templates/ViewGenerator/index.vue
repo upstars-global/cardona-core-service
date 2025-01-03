@@ -32,7 +32,6 @@ const valueColsCount = computed(() => 12 - props.cols)
     >
       <VCol
         :cols="cols"
-        class="wrapper-label"
         data-test-id="wrapper-label"
       >
         <div
@@ -52,7 +51,7 @@ const valueColsCount = computed(() => 12 - props.cols)
       </VCol>
       <VCol
         :cols="valueColsCount"
-        class="value font-weight-medium d-flex align-items-start text-break wrapper-value font-weight-medium ma-0"
+        class="value font-weight-medium d-flex align-items-start text-break font-weight-medium ma-0"
         :class="justifyClass"
         data-test-id="wrapper-value"
       >
@@ -77,13 +76,6 @@ const valueColsCount = computed(() => 12 - props.cols)
 </template>
 
 <style lang="scss" scoped>
-.wrapper-label {
-  width: 100%;
-  max-width: 154px;
-}
-.wrapper-value {
-  width: 100%;
-}
 .icon-block {
   display: inline-block;
   width: 1rem;
