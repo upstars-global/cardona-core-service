@@ -329,14 +329,14 @@ const getUpdateRoute = ({ id }): Location => {
     : {}
 }
 
-const onClickToggleStatus = async ({ id, isActive }) => {
+const onClickToggleStatus = async ({ id, isActive, type = '' }) => {
   const actionName = props.config.withDeactivationBySpecificAction
     ? toggleStatusActionName
     : updateActionName
 
   await store.dispatch(actionName, {
     type: entityName,
-    data: { form: { id, isActive: !isActive } },
+    data: { form: { id, isActive: !isActive, type } },
     customApiPrefix: props.config?.customApiPrefix,
   })
 
