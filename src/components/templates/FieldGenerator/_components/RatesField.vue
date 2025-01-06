@@ -87,7 +87,7 @@ function setRates(): NumberBaseField[] {
     v-if="allCurrencies.isNotEmpty"
     class="full-width"
   >
-    <div class="d-flex align-center">
+    <div class="d-flex align-center label">
       <div
         class="font-small-4 font-weight-medium"
         data-test-id="label"
@@ -113,7 +113,7 @@ function setRates(): NumberBaseField[] {
     </div>
     <VRow
       v-if="formRates.length"
-      class="flex-wrap mt-1"
+      class="flex-wrap mt-1 currency-list"
       data-test-id="currency-row"
     >
       <VCol
@@ -129,3 +129,34 @@ function setRates(): NumberBaseField[] {
     </VRow>
   </div>
 </template>
+
+<style lang="scss">
+// vertical type for modal - list of currencies
+.rates-list-type {
+  .label {
+    display: none !important;
+  }
+
+  .currency-list {
+    margin-top: 0 !important;
+
+    .v-col-2 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+
+    .field-generator {
+      display: flex;
+
+      .v-label {
+        min-width: 60px;
+        margin-bottom: 0 !important;
+      }
+
+      > div {
+        width: 100%;
+      }
+    }
+  }
+}
+</style>
