@@ -26,6 +26,10 @@ export default {
       )
     },
 
+    async fetchEntityList({ rootGetters, dispatch }, inputData) {
+      return await dispatch('fetchUsersList', inputData)
+    },
+
     async updateUserPassword(_, { id, password, isProduct }: { id: string; password: string; isProduct: boolean }) {
       const product = isProduct
         ? `${
