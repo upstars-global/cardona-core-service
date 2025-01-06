@@ -15,7 +15,7 @@ import ModalFileUpload from './ModalFileUpload.vue'
 
 interface FieldConfig {
   id: string
-  rules: Record<string, any>
+  rules: Record<string, unknown>
   label: string
   name: string
 }
@@ -26,8 +26,6 @@ interface Props {
   type: string
   textBtn: string
   dropPlaceholder: string
-  isRequired: boolean
-  isError?: boolean
   modelValue: string
   path: string
   disabled: boolean
@@ -41,7 +39,6 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'banners',
   textBtn: i18n.t('uploadImg.textBtn'),
   dropPlaceholder: i18n.t('placeholder.dropFile'),
-  isRequired: false,
   value: '',
   path: '',
   disabled: false,
@@ -114,6 +111,8 @@ const onFileUpload = async file => {
     throw error
   }
 }
+
+const isRequired = computed(() => !!props.field.rules?.required)
 </script>
 
 <template>
