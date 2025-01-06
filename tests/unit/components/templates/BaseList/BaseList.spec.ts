@@ -268,7 +268,7 @@ describe('BaseList', () => {
     getMountBaseList(props, global)
 
     // Assert that the custom fetch action was dispatched
-    expect(mockDispatch.mock.calls[0][0]).toBe('entityTest/fetchTestList')
+    expect(mockDispatch.mock.calls[0][0]).toBe('entityTest/fetchEntityList')
   })
 
   it('Should call customDelete when withCustomDelete is enabled', async () => {
