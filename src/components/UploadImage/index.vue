@@ -13,6 +13,13 @@ import { MAX_WIDTH_TOOLTIP } from '../../utils/constants'
 import { ModalsId } from '../../@model/modalsId'
 import ModalFileUpload from './ModalFileUpload.vue'
 
+interface FieldConfig {
+  id: string
+  rules: Record<string, any>
+  label: string
+  name: string
+}
+
 interface Props {
   size: UploadFileSizes
   label: string
@@ -25,6 +32,7 @@ interface Props {
   path: string
   disabled: boolean
   modalId?: string
+  field: FieldConfig
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -109,19 +117,18 @@ const onFileUpload = async file => {
 </script>
 
 <template>
-  {{ urlFile }}
   <Field
     v-model="urlFile"
-    name="imagePath"
-    :label="$t('common.banners.imagePath')"
-    :rules="{ required: true }"
+    :name="field.name"
+    :label="field.label"
+    :rules="field.rules"
     :validate-on-blur="false"
     :validate-on-change="false"
     :validate-on-input="false"
     :validate-on-model-update="true"
   >
     <template #default="{ errorMessage }">
-      <div id="imagePath-field">
+      <div :id="field.id">
         <VLabel
           class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between"
           :class="{ 'field-generator-label--required': isRequired }"
