@@ -114,7 +114,7 @@ const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
 
 const fetchActionName: string = props.config?.withCustomFetchList
-  ? `${moduleName}/fetch${entityName}List`
+  ? `${moduleName}/fetchEntityList`
   : 'baseStoreCore/fetchEntityList'
 
 const fetchReportActionName = 'baseStoreCore/fetchReport'
@@ -677,6 +677,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         <slot
           name="right-search-btn"
           :can-create="canCreate"
+          :can-update="canUpdate"
           :create-page-name="CreatePageName"
         />
       </template>
@@ -999,6 +1000,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     >
       <ListPagination
         v-if="config?.pagination"
+        data-test-id="list-pagination"
         :model-value="currentPage"
         :link-gen="linkGenerator"
         :pagination-config="paginationConfig"

@@ -8,10 +8,14 @@
       opacity: 1;
     }
   }
-  &.v-input--disabled.v-input--dirty.not-checked, v-input--disabled.not-checked {
+  &.v-input--disabled.v-input--dirty.not-checked, .v-input--disabled.not-checked {
     .v-switch__track {
-      background-color: rgb(var(--v-theme-grey-900), 0.08) !important;
+      background-color: rgb(var(--v-theme-grey-900), var(--v-switch-disabled-track-opacity)) !important;
       border: none !important;
+    }
+
+    .v-switch__thumb {
+      background: rgba(var(--v-theme-grey-500));
     }
   }
 }

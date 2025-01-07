@@ -19,7 +19,7 @@ onBeforeMount(() => {
 const region = computed(() =>
   store.getters['regions/countryList']?.list?.find(
     region => region.id === props.item.value,
-  )?.name || '',
+  )?.name || '-',
 )
 </script>
 

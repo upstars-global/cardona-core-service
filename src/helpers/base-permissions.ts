@@ -1,6 +1,6 @@
+import { useStore } from 'vuex'
 import { PermissionLevel } from '../@model/permission'
 import { getPermissionKeys } from './index'
-import store from '@/store'
 import { permissionPrefix } from '@productConfig'
 
 interface PermissionsValue {
@@ -26,6 +26,8 @@ interface PermissionsParams<T> {
 }
 
 export function basePermissions<T>({ entityName, config }: PermissionsParams<T>): PermissionsValue {
+  const store = useStore()
+
   const {
     permissionKey: configPermissionKey,
     noPermissionPrefix,

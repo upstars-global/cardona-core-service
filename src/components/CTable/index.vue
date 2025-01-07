@@ -263,6 +263,7 @@ const getActualField = (fields: Array<unknown>) => {
           v-for="(item, index) in items"
           :key="`c-table-row_${index}`"
           class="c-table__row table-default-bg"
+          data-test-id="table-row"
           :class="compareClasses(item.raw, isSelected([item]))"
           @click="onRowClicked(item.raw)"
         >
@@ -328,8 +329,6 @@ const getActualField = (fields: Array<unknown>) => {
 
 <style scoped lang="scss">
 .v-data-table.c-table {
-  border-radius: 0;
-
   .c-table__header-cell {
     background: rgba(var(--v-theme-grey-800), 0.08);
     .column-title {
