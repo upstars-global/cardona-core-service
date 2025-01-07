@@ -1,12 +1,10 @@
 import { beforeEach, describe, it, vi } from 'vitest'
 
 import FiltersBlock from '../../../../src/components/FiltersBlock/index.vue'
-import { setMountComponent } from '../../utils'
+import { clickTrigger, setMountComponent } from '../../utils'
 import { VSizes } from '../../../../src/@model/vuetify'
 import { TextBaseField } from '../../../../src/@model/templates/baseField'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
-
-const getMountFiltersBlock = setMountComponent(FiltersBlock)
 
 vi.mock('vuex', async importOriginal => {
   const actual = await importOriginal()
@@ -17,6 +15,8 @@ vi.mock('vuex', async importOriginal => {
       'filtersCore/listPath': '/mocked-path',
       'filtersCore/listEntityName': 'mocked-entity',
       'filtersCore/appliedListFilters': [],
+      'abilityCan': () => vi.fn(() => true),
+      'appConfigCore/allCurrencies': ['USD', 'EUR', 'CAD'],
     },
     actions: {
       'filtersCore/fetchDefaultFilters': vi.fn(async () => [
@@ -53,12 +53,15 @@ vi.mock('vuex', async importOriginal => {
   }
 })
 
+const getMountFiltersBlock = setMountComponent(FiltersBlock)
+
 vi.mock('lodash', async importOriginal => {
   const actual = await importOriginal()
 
   return {
     debounce: (fn: Function) => fn,
     has: actual.has,
+    cloneDeep: val => val,
   }
 })
 
@@ -94,8 +97,7 @@ describe('FiltersBlock', () => {
     props = { ...defaultProps }
   })
 
-  it('Should render component with empty filters and size Md', async () => {
-    props.filters = filters
+  it('Should render component with empty filters and opened', async () => {
     props.isOpen = true
 
     const wrapper = getMountFiltersBlock(props)
@@ -104,5 +106,16 @@ describe('FiltersBlock', () => {
     testOn.notExistElement({ wrapper, selector: '.filters-block-small' })
     testOn.notExistClasses({ wrapper, testId: 'filter-title' }, 'py-4')
     testOn.notExistElement({ wrapper, testId: 'filter-row' })
+  })
+
+  it('Should select item of filter and render current field input ', async () => {
+    props.filters = filters
+    props.isOpen = true
+
+    const wrapper = getMountFiltersBlock(props)
+
+    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
+
+    await clickTrigger({ wrapper, testId: 'filter-item' })
   })
 })
