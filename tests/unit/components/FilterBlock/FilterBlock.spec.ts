@@ -4,6 +4,7 @@ import FiltersBlock from '../../../../src/components/FiltersBlock/index.vue'
 import { setMountComponent } from '../../utils'
 import { VSizes } from '../../../../src/@model/vuetify'
 import { TextBaseField } from '../../../../src/@model/templates/baseField'
+import { testOn } from '../../templates/shared-tests/test-case-generator'
 
 const getMountFiltersBlock = setMountComponent(FiltersBlock)
 
@@ -52,9 +53,14 @@ vi.mock('vuex', async importOriginal => {
   }
 })
 
-vi.mock('lodash', () => ({
-  cloneDeep: vi.fn(value => value),
-}))
+vi.mock('lodash', async importOriginal => {
+  const actual = await importOriginal()
+
+  return {
+    debounce: (fn: Function) => fn,
+    has: actual.has,
+  }
+})
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({
@@ -94,6 +100,9 @@ describe('FiltersBlock', () => {
 
     const wrapper = getMountFiltersBlock(props)
 
-    console.log(wrapper.html())
+    testOn.existClass({ wrapper, testId: 'main-wrapper' }, 'mb-6')
+    testOn.notExistElement({ wrapper, selector: '.filters-block-small' })
+    testOn.notExistClasses({ wrapper, testId: 'filter-title' }, 'py-4')
+    testOn.notExistElement({ wrapper, testId: 'filter-row' })
   })
 })

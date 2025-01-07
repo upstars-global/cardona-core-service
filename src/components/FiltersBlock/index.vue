@@ -108,6 +108,7 @@ const listNotSelected = computed(() => {
 <template>
   <VRow
     no-gutters
+    data-test-id="main-wrapper"
     :class="{ 'mb-6': isOpen }"
   >
     <VCol
@@ -118,7 +119,10 @@ const listNotSelected = computed(() => {
         v-if="isOpen"
         no-body
       >
-        <VCardItem :class="{ 'py-4': isSmallBlock }">
+        <VCardItem
+          :class="{ 'py-4': isSmallBlock }"
+          data-test-id="filter-title"
+        >
           <Component
             :is="headerTag"
             class="mb-0"
@@ -149,6 +153,7 @@ const listNotSelected = computed(() => {
               v-for="(filter, key) in selectedFilters"
               :key="key"
               class="mt-2"
+              data-test-id="filter-row"
             >
               <VCol
                 md="3"
