@@ -123,6 +123,7 @@ export enum IconsList {
   FramerIcon = 'FramerIcon',
   FrownIcon = 'FrownIcon',
   GiftIcon = ' tabler-gift',
+  FilledGiftIcon = ' tabler-gift-filled',
   GitBranchIcon = 'GitBranchIcon',
   GitCommitIcon = 'GitCommitIcon',
   GitMergeIcon = 'GitMergeIcon',
