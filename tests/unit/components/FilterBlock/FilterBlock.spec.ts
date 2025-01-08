@@ -5,6 +5,7 @@ import { clickTrigger, setMountComponent } from '../../utils'
 import { VSizes } from '../../../../src/@model/vuetify'
 import { TextBaseField } from '../../../../src/@model/templates/baseField'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
+import { i18n } from '../../../../src/plugins/i18n'
 
 vi.mock('vuex', async importOriginal => {
   const actual = await importOriginal()
@@ -20,7 +21,7 @@ vi.mock('vuex', async importOriginal => {
     },
     actions: {
       'filtersCore/fetchDefaultFilters': vi.fn(async () => [
-        { type: 'TestPage_mocked-entity', fields: ['key1', 'key2'] },
+        { type: 'TestPage_mocked-entity', fields: ['name'] },
       ]),
       'filtersCore/setDefaultFilter': vi.fn(async () => {}),
     },
@@ -106,6 +107,8 @@ describe('FiltersBlock', () => {
     testOn.notExistElement({ wrapper, selector: '.filters-block-small' })
     testOn.notExistClasses({ wrapper, testId: 'filter-title' }, 'py-4')
     testOn.notExistElement({ wrapper, testId: 'filter-row' })
+
+    // testOn.existElement({ wrapper, testId: 'filter-title', selector: 'h4' })
   })
 
   it('Should select item of filter and render current field input ', async () => {
@@ -117,5 +120,105 @@ describe('FiltersBlock', () => {
     await clickTrigger({ wrapper, testId: 'btn-filter-select' })
 
     await clickTrigger({ wrapper, testId: 'filter-item' })
+
+    testOn.existElement({ wrapper, testId: 'filter-row' })
+  })
+
+  it('Should render selected filter items in badges when filter hidden', async () => {
+    props.filters = filters
+    props.isOpen = true
+
+    const wrapper = getMountFiltersBlock(props)
+
+    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
+
+    await clickTrigger({ wrapper, testId: 'filter-item' })
+
+    testOn.existElement({ wrapper, testId: 'filter-row' })
+
+    /// Hide filter
+    await wrapper.setProps({ isOpen: false })
+
+    /// Check applied filters exist
+    testOn.existElement({ wrapper, testId: 'applied-filters-wrapper' })
+
+    /// Check applied filters items
+    testOn.checkLengthElements(
+      { wrapper, testId: 'applied-filters-item', all: true },
+      props.filters.length,
+    )
+  })
+
+  it('Should render render correct content with size small', async () => {
+    props = {
+      filters,
+      isOpen: true,
+      size: VSizes.Small,
+    }
+
+    const wrapper = getMountFiltersBlock(props)
+
+    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
+
+    await clickTrigger({ wrapper, testId: 'filter-item' })
+
+    testOn.existElement({ wrapper, selector: '.filters-block-small' })
+
+    testOn.existClass({ wrapper, testId: 'filter-title' }, 'py-4')
+
+    testOn.existElement({ wrapper, testId: 'filter-row' })
+
+    testOn.existElement({ wrapper, selector: 'h5.text-h5' })
+
+    testOn.existClass({ wrapper, selector: '.filter-label' }, 'font-small-3')
+
+    testOn.equalTextValue({ wrapper, testId: 'apply-btn' }, i18n.t('action.apply'))
+  })
+
+  it('Should remove input on click button remove ', async () => {
+    props.filters = filters
+    props.isOpen = true
+
+    const wrapper = getMountFiltersBlock(props)
+
+    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
+
+    await clickTrigger({ wrapper, testId: 'filter-item' })
+
+    testOn.existElement({ wrapper, testId: 'filter-row' })
+
+    await clickTrigger({ wrapper, selector: '.v-btn--rectangle' })
+
+    testOn.notExistElement({ wrapper, testId: 'filter-row' })
+  })
+
+  it('Should call event apply filter', async () => {
+    props.filters = filters
+    props.isOpen = true
+
+    const wrapper = getMountFiltersBlock(props)
+
+    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
+
+    await clickTrigger({ wrapper, testId: 'filter-item' })
+
+    testOn.existElement({ wrapper, testId: 'filter-row' })
+
+    await clickTrigger({ wrapper, testId: 'apply-btn' })
+
+    testOn.isCalledEmitEvent(wrapper, 'apply')
+  })
+
+  it('change-selected-filters', async () => {
+    props.filters = filters
+    props.isOpen = true
+
+    const wrapper = getMountFiltersBlock(props)
+
+    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
+
+    await clickTrigger({ wrapper, testId: 'filter-item' })
+
+    testOn.isCalledEmitEventValueToEqualDeep(wrapper, { event: 'change-selected-filters', value: [...filters] })
   })
 })
