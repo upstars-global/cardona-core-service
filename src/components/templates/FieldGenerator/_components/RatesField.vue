@@ -147,6 +147,7 @@ function setRates(): NumberBaseField[] {
 
     .field-generator {
       display: flex;
+      flex-wrap: wrap;
 
       .v-label {
         min-width: 60px;
