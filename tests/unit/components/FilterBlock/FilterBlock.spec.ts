@@ -93,6 +93,18 @@ const defaultProps = {
 
 let props
 
+const testIds = {
+  filterRow: 'filter-row',
+  filterTitle: 'filter-title',
+  applyBtn: 'apply-btn',
+}
+
+const openFiltyers = async wrapper => {
+  await clickTrigger({ wrapper, testId: 'btn-filter-select' })
+
+  await clickTrigger({ wrapper, testId: 'filter-item' })
+}
+
 describe('FiltersBlock', () => {
   beforeEach(() => {
     props = { ...defaultProps }
@@ -105,10 +117,8 @@ describe('FiltersBlock', () => {
 
     testOn.existClass({ wrapper, testId: 'main-wrapper' }, 'mb-6')
     testOn.notExistElement({ wrapper, selector: '.filters-block-small' })
-    testOn.notExistClasses({ wrapper, testId: 'filter-title' }, 'py-4')
-    testOn.notExistElement({ wrapper, testId: 'filter-row' })
-
-    // testOn.existElement({ wrapper, testId: 'filter-title', selector: 'h4' })
+    testOn.notExistClasses({ wrapper, testId: testIds.filterTitle }, 'py-4')
+    testOn.notExistElement({ wrapper, testId: testIds.filterRow })
   })
 
   it('Should select item of filter and render current field input ', async () => {
@@ -117,11 +127,9 @@ describe('FiltersBlock', () => {
 
     const wrapper = getMountFiltersBlock(props)
 
-    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
+    await openFiltyers(wrapper)
 
-    await clickTrigger({ wrapper, testId: 'filter-item' })
-
-    testOn.existElement({ wrapper, testId: 'filter-row' })
+    testOn.existElement({ wrapper, testId: testIds.filterRow })
   })
 
   it('Should render selected filter items in badges when filter hidden', async () => {
@@ -130,11 +138,9 @@ describe('FiltersBlock', () => {
 
     const wrapper = getMountFiltersBlock(props)
 
-    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
+    await openFiltyers(wrapper)
 
-    await clickTrigger({ wrapper, testId: 'filter-item' })
-
-    testOn.existElement({ wrapper, testId: 'filter-row' })
+    testOn.existElement({ wrapper, testId: testIds.filterRow })
 
     /// Hide filter
     await wrapper.setProps({ isOpen: false })
@@ -158,21 +164,38 @@ describe('FiltersBlock', () => {
 
     const wrapper = getMountFiltersBlock(props)
 
-    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
-
-    await clickTrigger({ wrapper, testId: 'filter-item' })
+    await openFiltyers(wrapper)
 
     testOn.existElement({ wrapper, selector: '.filters-block-small' })
 
-    testOn.existClass({ wrapper, testId: 'filter-title' }, 'py-4')
-
-    testOn.existElement({ wrapper, testId: 'filter-row' })
+    testOn.existClass({ wrapper, testId: testIds.filterTitle }, 'py-4')
 
     testOn.existElement({ wrapper, selector: 'h5.text-h5' })
 
     testOn.existClass({ wrapper, selector: '.filter-label' }, 'font-small-3')
 
-    testOn.equalTextValue({ wrapper, testId: 'apply-btn' }, i18n.t('action.apply'))
+    testOn.equalTextValue({ wrapper, testId: testIds.applyBtn }, i18n.t('action.apply'))
+  })
+
+  it('Should render render correct content with size which not equal small', async () => {
+    props = {
+      filters,
+      isOpen: true,
+    }
+
+    const wrapper = getMountFiltersBlock(props)
+
+    await openFiltyers(wrapper)
+
+    testOn.notExistElement({ wrapper, selector: '.filters-block-small' })
+
+    testOn.notExistClasses({ wrapper, testId: testIds.filterTitle }, 'py-4')
+
+    testOn.notExistElement({ wrapper, selector: 'h5.text-h5' })
+
+    testOn.notExistClasses({ wrapper, selector: '.filter-label' }, 'font-small-3')
+
+    testOn.equalTextValue({ wrapper, testId: testIds.applyBtn }, i18n.t('action.applyFilters'))
   })
 
   it('Should remove input on click button remove ', async () => {
@@ -181,15 +204,13 @@ describe('FiltersBlock', () => {
 
     const wrapper = getMountFiltersBlock(props)
 
-    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
+    await openFiltyers(wrapper)
 
-    await clickTrigger({ wrapper, testId: 'filter-item' })
-
-    testOn.existElement({ wrapper, testId: 'filter-row' })
+    testOn.existElement({ wrapper, testId: testIds.filterRow })
 
     await clickTrigger({ wrapper, selector: '.v-btn--rectangle' })
 
-    testOn.notExistElement({ wrapper, testId: 'filter-row' })
+    testOn.notExistElement({ wrapper, testId: testIds.filterRow })
   })
 
   it('Should call event apply filter', async () => {
@@ -198,26 +219,22 @@ describe('FiltersBlock', () => {
 
     const wrapper = getMountFiltersBlock(props)
 
-    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
+    await openFiltyers(wrapper)
 
-    await clickTrigger({ wrapper, testId: 'filter-item' })
+    testOn.existElement({ wrapper, testId: testIds.filterRow })
 
-    testOn.existElement({ wrapper, testId: 'filter-row' })
-
-    await clickTrigger({ wrapper, testId: 'apply-btn' })
+    await clickTrigger({ wrapper, testId: testIds.applyBtn })
 
     testOn.isCalledEmitEvent(wrapper, 'apply')
   })
 
-  it('change-selected-filters', async () => {
+  it('Call event change-selected-filters and should be equal with selected filtesz', async () => {
     props.filters = filters
     props.isOpen = true
 
     const wrapper = getMountFiltersBlock(props)
 
-    await clickTrigger({ wrapper, testId: 'btn-filter-select' })
-
-    await clickTrigger({ wrapper, testId: 'filter-item' })
+    await openFiltyers(wrapper)
 
     testOn.isCalledEmitEventValueToEqualDeep(wrapper, { event: 'change-selected-filters', value: [...filters] })
   })
