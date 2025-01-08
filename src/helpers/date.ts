@@ -126,9 +126,9 @@ export const formatToISOWithTimeZone = (isoDateString: string): string => {
 }
 
 export const formatSecondsToHuman = seconds => {
-  const { days, hours, minutes, seconds: secs } = moment.duration(seconds, 'seconds')._data
+  const { days, hours, minutes } = moment.duration(seconds, 'seconds')._data
 
-  return [`${days}d`, `${hours}h`, `${minutes}m`, `${secs}s`]
+  return [`${days}d`, `${hours}h`, `${minutes}m`]
     .filter(part => !part.startsWith('0'))
-    .join(' ') || '0s'
+    .join(' ') || '0m'
 }
