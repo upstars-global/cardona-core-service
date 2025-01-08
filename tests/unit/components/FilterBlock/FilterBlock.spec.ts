@@ -99,7 +99,7 @@ const testIds = {
   applyBtn: 'apply-btn',
 }
 
-const openFiltyers = async wrapper => {
+const openFilters = async wrapper => {
   await clickTrigger({ wrapper, testId: 'btn-filter-select' })
 
   await clickTrigger({ wrapper, testId: 'filter-item' })
@@ -127,7 +127,7 @@ describe('FiltersBlock', () => {
 
     const wrapper = getMountFiltersBlock(props)
 
-    await openFiltyers(wrapper)
+    await openFilters(wrapper)
 
     testOn.existElement({ wrapper, testId: testIds.filterRow })
   })
@@ -138,7 +138,7 @@ describe('FiltersBlock', () => {
 
     const wrapper = getMountFiltersBlock(props)
 
-    await openFiltyers(wrapper)
+    await openFilters(wrapper)
 
     testOn.existElement({ wrapper, testId: testIds.filterRow })
 
@@ -155,7 +155,7 @@ describe('FiltersBlock', () => {
     )
   })
 
-  it('Should render render correct content with size small', async () => {
+  it('Should render correct content with size small', async () => {
     props = {
       filters,
       isOpen: true,
@@ -164,7 +164,7 @@ describe('FiltersBlock', () => {
 
     const wrapper = getMountFiltersBlock(props)
 
-    await openFiltyers(wrapper)
+    await openFilters(wrapper)
 
     testOn.existElement({ wrapper, selector: '.filters-block-small' })
 
@@ -185,7 +185,7 @@ describe('FiltersBlock', () => {
 
     const wrapper = getMountFiltersBlock(props)
 
-    await openFiltyers(wrapper)
+    await openFilters(wrapper)
 
     testOn.notExistElement({ wrapper, selector: '.filters-block-small' })
 
@@ -204,7 +204,7 @@ describe('FiltersBlock', () => {
 
     const wrapper = getMountFiltersBlock(props)
 
-    await openFiltyers(wrapper)
+    await openFilters(wrapper)
 
     testOn.existElement({ wrapper, testId: testIds.filterRow })
 
@@ -219,7 +219,7 @@ describe('FiltersBlock', () => {
 
     const wrapper = getMountFiltersBlock(props)
 
-    await openFiltyers(wrapper)
+    await openFilters(wrapper)
 
     testOn.existElement({ wrapper, testId: testIds.filterRow })
 
@@ -228,13 +228,13 @@ describe('FiltersBlock', () => {
     testOn.isCalledEmitEvent(wrapper, 'apply')
   })
 
-  it('Call event change-selected-filters and should be equal with selected filtesz', async () => {
+  it('Call event change-selected-filters and should be equal with selected filters', async () => {
     props.filters = filters
     props.isOpen = true
 
     const wrapper = getMountFiltersBlock(props)
 
-    await openFiltyers(wrapper)
+    await openFilters(wrapper)
 
     testOn.isCalledEmitEventValueToEqualDeep(wrapper, { event: 'change-selected-filters', value: [...filters] })
   })
