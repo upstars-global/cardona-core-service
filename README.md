@@ -33,6 +33,7 @@ npm run dev
 ```sh
 npm run build
 ```
+## [Инструкция по написанию unit tests](./tests/README.md)
 
 
 ### Переход на новую версию vuexy
