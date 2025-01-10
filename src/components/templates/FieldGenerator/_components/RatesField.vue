@@ -155,7 +155,12 @@ function setRates(): NumberBaseField[] {
       }
 
       > div {
+        flex: 1;
+      }
+
+      .field-generator__error {
         width: 100%;
+        margin-left: 60px;
       }
     }
   }
