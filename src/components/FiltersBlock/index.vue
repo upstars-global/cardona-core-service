@@ -108,6 +108,7 @@ const listNotSelected = computed(() => {
 <template>
   <VRow
     no-gutters
+    data-test-id="main-wrapper"
     :class="{ 'mb-6': isOpen }"
   >
     <VCol
@@ -118,7 +119,10 @@ const listNotSelected = computed(() => {
         v-if="isOpen"
         no-body
       >
-        <VCardItem :class="{ 'py-4': isSmallBlock }">
+        <VCardItem
+          :class="{ 'py-4': isSmallBlock }"
+          data-test-id="filter-title"
+        >
           <Component
             :is="headerTag"
             class="mb-0"
@@ -149,6 +153,7 @@ const listNotSelected = computed(() => {
               v-for="(filter, key) in selectedFilters"
               :key="key"
               class="mt-2"
+              data-test-id="filter-row"
             >
               <VCol
                 md="3"
@@ -194,6 +199,7 @@ const listNotSelected = computed(() => {
               :variant="VVariants.Elevated"
               class="ml-0 px-4"
               :size="size"
+              data-test-id="apply-btn"
               @click="onApply"
             >
               {{ isSmallBlock ? $t('action.apply') : $t('action.applyFilters') }}
@@ -203,6 +209,7 @@ const listNotSelected = computed(() => {
               :variant="VVariants.Outlined"
               class="ml-0 px-4"
               :size="size"
+              data-test-id="save-by-default-btn"
               @click="onSaveByDefault"
             >
               {{ $t('action.saveByDefault') }}
@@ -223,6 +230,7 @@ const listNotSelected = computed(() => {
 
       <div
         v-else-if="selectedFilters.length"
+        data-test-id="applied-filters-wrapper"
         class="d-flex flex-wrap align-center pb-6 gap-2"
       >
         <span class="font-small-3 font-weight-bold text-body-heading">
@@ -233,9 +241,9 @@ const listNotSelected = computed(() => {
           :key="filter.key"
           label
           :color="VColors.Secondary"
+          data-test-id="applied-filters-item"
         >
           {{ filter.label }}
-
           <span v-if="Array.isArray(filter.value) && filter.value.length && filter.type !== 'sum-range'">
             ({{ filter.value.length }})
           </span>
