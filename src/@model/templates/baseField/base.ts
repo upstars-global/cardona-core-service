@@ -76,6 +76,7 @@ export interface IASelectBaseField<T> extends IBaseField {
   readonly fetchOptionsActionName?: string
   readonly staticFilters?: Record<string, string>
   readonly withCalculatePosition?: boolean
+  readonly filterable?: boolean
 }
 
 export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
@@ -85,6 +86,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
   readonly fetchOptionsActionName?: string
   readonly staticFilters: Record<string, string>
   readonly calculatePositionCb?: CallableFunction
+  readonly filterable: boolean
 
   protected constructor(field: IASelectBaseField<T>) {
     super(field)
@@ -92,6 +94,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
     this.fetchOptionsActionName = field.fetchOptionsActionName
     this.staticFilters = field.staticFilters || {}
     this.calculatePositionCb = field.withCalculatePosition ? this.calculatePosition : undefined
+    this.filterable = field.filterable ?? true
   }
 
   calculatePosition({ dropdownList }) {

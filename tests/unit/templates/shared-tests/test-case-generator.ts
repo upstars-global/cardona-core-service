@@ -269,8 +269,8 @@ export const testOn = {
     expect(wrapper.emitted(event)[index || 0][0]).toBe(value)
   },
 
-  isCalledEmitEventValueToBe: (wrapper: VueWrapper, { event, value, index }: { event: string; value: unknown; index?: number }) => {
-    expect(wrapper.emitted(event)[index || 0][0]).toBe(value)
+  isCalledEmitEventValueToEqualDeep: (wrapper: VueWrapper, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+    expect(wrapper.emitted(event)[index || 0][0]).to.deep.equal(value)
   },
 
   checkedElementToBe: testCaseGenerator({
