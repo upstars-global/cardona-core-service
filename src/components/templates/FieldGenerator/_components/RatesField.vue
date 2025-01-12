@@ -66,10 +66,10 @@ watch(
 
 function setRates(): NumberBaseField[] {
   return allCurrencies.value.map(
-    (currency, index) => {
+    currency => {
       return new NumberBaseField({
         key: currency,
-        id: `${props.field.key}-${index}`,
+        id: `${props.field.id}_${currency}`,
         value: props.modelValue.find(item => item.currency === currency)?.value ?? 0,
         label: currency,
         placeholder: props.field.placeholder,
