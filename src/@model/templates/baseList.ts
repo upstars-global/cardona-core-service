@@ -157,6 +157,9 @@ export interface IBaseListConfig {
   /** customModuleName - Пользовательский имя модуля стор */
   readonly customModuleName?: string
 
+  /** customModuleFetchName - Пользовательский имя метода модуля стора */
+  readonly customModuleFetchName?: string
+
   /** customApiPrefix - Пользовательский апи префикс (App.V2.) */
   readonly customApiPrefix?: string
 
@@ -219,6 +222,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly noPermissionPrefix?: boolean
   readonly permissionKey?: string
   readonly customModuleName?: string
+  readonly customModuleFetchName?: string
   readonly customApiPrefix?: string
   readonly customPermissionPrefix?: string
   readonly hover: boolean
@@ -265,6 +269,7 @@ export class BaseListConfig implements IBaseListConfig {
     noPermissionPrefix,
     permissionKey,
     customModuleName,
+    customModuleFetchName,
     customApiPrefix,
     customPermissionPrefix,
     hover,
@@ -310,6 +315,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.noPermissionPrefix = noPermissionPrefix
     this.permissionKey = permissionKey
     this.customModuleName = customModuleName
+    this.customModuleFetchName = customModuleFetchName
     this.customApiPrefix = customApiPrefix
     this.customPermissionPrefix = customPermissionPrefix
     this.hover = hover ?? true
@@ -374,6 +380,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly withCustomModuleName?: boolean
   readonly noPermissionPrefix?: boolean
   readonly customModuleName?: string
+  readonly customModuleFetchName?: string
   readonly customApiPrefix?: string
   readonly loadingEndpointArr: Array<string>
   readonly customPermissionPrefix?: string
