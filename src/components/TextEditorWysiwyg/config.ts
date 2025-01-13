@@ -112,6 +112,7 @@ const baseConfig = {
     tabMode: 'indent',
     tabSize: 2,
   },
+  toolbarSticky: false,
 }
 
 export default baseConfig

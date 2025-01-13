@@ -114,7 +114,7 @@ const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
 
 const fetchActionName: string = props.config?.withCustomFetchList
-  ? `${moduleName}/fetch${entityName}List`
+  ? `${moduleName}/fetchEntityList`
   : 'baseStoreCore/fetchEntityList'
 
 const fetchReportActionName = 'baseStoreCore/fetchReport'
@@ -596,6 +596,10 @@ onUnmounted(() => {
   removePagination()
 })
 
+const editingId = ref<string | null>(null)
+
+const onOpenEdit = (id: string) => editingId.value = id
+
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
 
@@ -884,11 +888,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
           <PositionField
             v-else-if="field.type === ListFieldType.Priority"
-            :key="`${index}_${field.type}`"
+            :id="item.raw.id"
+            :key="item.raw.id"
             :position="cell"
             :size="field.size"
             :can-update="canUpdate"
+            :editing-id="editingId"
             @edit-position="(val) => onEditPosition(item.raw, val)"
+            @open-edit="onOpenEdit(item.raw.id)"
           />
 
           <ButtonField
@@ -941,7 +948,9 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             {{ cell }} %
           </template>
           <template v-else>
-            {{ cell }}
+            <div class="default-cell-value">
+              {{ cell }}
+            </div>
           </template>
           <ItemActions
             v-if="field.key === 'actions'"
@@ -1025,6 +1034,11 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 }
 
 :deep(.c-table) {
+  .default-cell-value {
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   tr {
     td[data-c-field='actions'] {
       width: 3.5rem;
