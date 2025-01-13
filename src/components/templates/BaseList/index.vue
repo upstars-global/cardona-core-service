@@ -115,7 +115,7 @@ const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol
 
 const getFetchActionName = config => {
   if (config?.customModuleName)
-    return config?.customModuleFetchName || `${moduleName}/fetchEntityList`
+    return `${moduleName}/${config?.customModuleFetchName || 'fetchEntityList'}`
 
   return 'baseStoreCore/fetchEntityList'
 }
