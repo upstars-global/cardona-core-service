@@ -119,8 +119,6 @@ const fetchActionName: string = props.config?.withCustomFetchList
   ? `${moduleName}/${fetchName}`
   : 'baseStoreCore/fetchEntityList'
 
-console.log({ fetchActionName })
-
 const fetchReportActionName = 'baseStoreCore/fetchReport'
 const updateActionName = 'baseStoreCore/updateEntity'
 const toggleStatusActionName = 'baseStoreCore/toggleStatusEntity'
