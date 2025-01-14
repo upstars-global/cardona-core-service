@@ -2,6 +2,7 @@
 import type { BaseField } from '../../../@model/templates/baseField'
 import { IconsList } from '../../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
+import { IS_TEST_ENV } from '../../../utils/constants'
 
 const props = defineProps<{
   filters: BaseField[]
@@ -12,13 +13,13 @@ const emits = defineEmits<{
   (e: 'selected-filters-changed', filters: BaseField): void
 }>()
 
-const isSmallSize: boolean = props.size === VSizes.Small
+const linkClass = { 'px-1 py-50 font-small-3': props.size === VSizes.Small }
 
 const onChange = (filter: BaseField) => emits('selected-filters-changed', filter)
 </script>
 
 <template>
-  <VMenu>
+  <VMenu :attach="IS_TEST_ENV">
     <template #activator="{ props }">
       <VBtn
         :variant="VVariants.Outlined"
@@ -28,6 +29,7 @@ const onChange = (filter: BaseField) => emits('selected-filters-changed', filter
         :size="size"
         :disabled="filters.isEmpty"
         :append-icon="IconsList.ChevronDownIcon"
+        data-test-id="btn-filter-select"
       >
         {{ $t('action.selectEntity') }}
       </VBtn>
@@ -36,7 +38,8 @@ const onChange = (filter: BaseField) => emits('selected-filters-changed', filter
       <VListItem
         v-for="(filter, index) in filters"
         :key="index"
-        :link-class="{ 'px-1 py-50 font-small-3': isSmallSize }"
+        data-test-id="filter-item"
+        :link-class="linkClass"
         @click="onChange(filter)"
       >
         {{ filter.label }}

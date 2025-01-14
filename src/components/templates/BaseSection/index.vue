@@ -17,19 +17,25 @@ import { FormTabs } from '../../../@model/enums/formTabs'
 import BaseSectionLoading from './BaseSectionLoading.vue'
 
 const props = withDefaults(defineProps<{
-    withReadAction?: boolean
-    config?: BaseSectionConfig
-    pageType?: PageType
-    useEntity: Function
-    localEntityData?: Record<string, unknown>
-  }>(),
-  {
-    useEntity: undefined,
-    withReadAction: true,
-    config: () => new BaseSectionConfig({}),
-    pageType: PageType.Create,
-  },
+  withReadAction?: boolean
+  config?: BaseSectionConfig
+  pageType?: PageType
+  useEntity: Function
+  localEntityData?: Record<string, unknown>
+  entityId?: string
+}>(),
+{
+  useEntity: undefined,
+  withReadAction: true,
+  config: () => new BaseSectionConfig({}),
+  pageType: PageType.Create,
+},
 )
+
+const emits = defineEmits<{
+  (event: 'on-cancel'): void
+  (event: 'on-save'): void
+}>()
 
 const modal = inject('modal')
 const store = useStore()
@@ -38,7 +44,7 @@ const router = useRouter()
 
 const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 
-const entityId: string = route.params?.id?.toString()
+const entityId: string = props.entityId || route.params?.id?.toString()
 const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
 
@@ -241,6 +247,9 @@ const onSave = async () => {
       customApiPrefix: props.config?.customApiPrefix,
     })
 
+    if (props.config.isModalSection)
+      return emits('on-save')
+
     if (isCreatePage) {
       isStaySubmit.value && data
         ? await router.push({ name: UpdatePageName, params: { id: String(data?.id) } })
@@ -257,6 +266,8 @@ const onSave = async () => {
 }
 
 const onClickCancel = () => {
+  if (props.config.isModalSection)
+    return emits('on-cancel')
   if (props.config.backToTheHistoryLast && router.options.history.state.back)
     return router.go(-1)
 
@@ -345,7 +356,14 @@ defineExpose({
           :form="form"
           :loading="isLoadingPage"
         >
-          <div class="d-flex align-center mt-5">
+          <hr
+            v-if="config.isModalSection"
+            class="mt-5"
+          >
+          <div
+            class="d-flex align-center mt-5"
+            :class="{ 'px-2 mt-4 mb-4 flex-row-reverse gap-4': config.isModalSection }"
+          >
             <template v-if="isCreatePage">
               <VBtn
                 class="mr-4"
