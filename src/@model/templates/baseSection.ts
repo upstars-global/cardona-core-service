@@ -14,6 +14,7 @@ export interface UseEntityType<T> {
   readonly EntityFormClass: { new (data?: any): T }
   readonly onSubmitCallback?: (id: string) => void
   readonly onBeforeSubmitCb?: (formData: any) => boolean
+  readonly onSerializeFormCb?: (transformedFormData: unknown, rawFormData: Ref<unknown>) => unknown
   readonly validationErrorCb?: IValidationErrorCb
 }
 export default {}
