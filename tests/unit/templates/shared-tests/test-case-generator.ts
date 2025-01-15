@@ -253,26 +253,26 @@ export const testOn = {
     property: { name: WrapperProperties.Emitted, value: EventEmittersNames.Hide },
   }),
 
-  isCalledEmitEvent: (params: Omit<GetWrapperElementPrams, 'all'>, actionEmit: string) => {
+  isCalledEmitEvent: (params: GetWrapperElementPrams, actionEmit: string) => {
     testCaseGenerator({
       methodExpect: ExpectMethods.ToBeTruthy,
       property: { name: WrapperProperties.Emitted, value: actionEmit },
     })(params)
   },
 
-  isCalledEmitEventValue: (params: Omit<GetWrapperElementPrams, 'all'>, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+  isCalledEmitEventValue: (params: GetWrapperElementPrams, { event, value, index }: { event: string; value: unknown; index?: number }) => {
     const wrapper = getWrapperElement(params)
 
     expect(wrapper.emitted(event)[index || 0][0]).to.deep.include(value)
   },
 
-  isCalledEmitEventValueToBe: (params: Omit<GetWrapperElementPrams, 'all'>, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+  isCalledEmitEventValueToBe: (params: GetWrapperElementPrams, { event, value, index }: { event: string; value: unknown; index?: number }) => {
     const wrapper = getWrapperElement(params)
 
     expect(wrapper.emitted(event)[index || 0][0]).toBe(value)
   },
 
-  isCalledEmitEventValueToEqualDeep: (params: Omit<GetWrapperElementPrams, 'all'>, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+  isCalledEmitEventValueToEqualDeep: (params: GetWrapperElementPrams, { event, value, index }: { event: string; value: unknown; index?: number }) => {
     const wrapper = getWrapperElement(params)
 
     expect(wrapper.emitted(event)[index || 0][0]).to.deep.equal(value)
