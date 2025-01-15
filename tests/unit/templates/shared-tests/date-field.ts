@@ -6,7 +6,7 @@ import { merge } from 'lodash'
 import { getSelectorTestId, setMountComponent } from '../../utils'
 import { router } from '../../../../src/plugins/1.router'
 import DateField from '../../../../src/components/templates/FieldGenerator/_components/DateField.vue'
-import { testOn } from './test-case-generator'
+import { EventEmittersNames, testOn } from './test-case-generator'
 import { expectedEmitValue } from './general'
 
 export const getMountDateField = setMountComponent(DateField)
@@ -54,9 +54,12 @@ export const mountDateFieldWithDefaultProps = (propsOverride: Partial<typeof def
       plugins: [router],
     })
 
-export const checkEmittedValue = (wrapper: VueWrapper, expectedValue: string, emitIndex = 0) => {
+export const checkEmittedValue = (wrapper: VueWrapper, expectedValue: string, index = 0) => {
   testOn.isCalledEmittedEvent({ wrapper })
-  expectedEmitValue(wrapper, expectedValue, emitIndex)
+
+  testOn.isCalledEmitEventValue(
+    { wrapper },
+    { event: EventEmittersNames.UpdateVModel, value: expectedValue, index })
 }
 
 export const testChangeInputValue = async ({ valueOfSet = '', inputKey, dateRange, indexEmit = 0, isFilter }: OnChangeValueRangeConfig, expectedValue: string) => {

@@ -5,9 +5,8 @@ import { Field } from 'vee-validate'
 import FieldGenerator from '../../../../src/components/templates/FieldGenerator/index.vue'
 import { CheckBaseField, DummySelectBaseField, TextBaseField } from '../../../../src/@model/templates/baseField'
 import { i18n } from '../../../../src/plugins/i18n'
-import { testOn } from '../shared-tests/test-case-generator'
+import { EventEmittersNames, testOn } from '../shared-tests/test-case-generator'
 import { setMountComponent } from '../../utils'
-import { expectedEmitValue } from '../shared-tests/general'
 
 const getMountFieldGenerator = setMountComponent(FieldGenerator)
 
@@ -88,7 +87,9 @@ describe('FieldGenerator.vue', () => {
 
     await wrapper.vm.$nextTick()
 
-    expectedEmitValue(wrapper, { ...defaultProps.modelValue, value: newValue })
+    testOn.isCalledEmitEventValue(
+      { wrapper },
+      { event: EventEmittersNames.UpdateVModel, value: { ...defaultProps.modelValue, value: newValue } })
   })
 
   it('disables input when disabled prop is true', () => {
