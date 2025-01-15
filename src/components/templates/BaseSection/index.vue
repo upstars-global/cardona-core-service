@@ -48,7 +48,7 @@ const entityId: string = props.entityId || route.params?.id?.toString()
 const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
 
-const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb }
+const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb, onSerializeFormCb }
   = props.useEntity()
 
 const formRef = ref(null)
@@ -227,7 +227,9 @@ const onSubmit = async (isStay: boolean) => {
         : null,
     }
 
-  transformedForm.value = transformFormData(formData)
+  const transformedData = transformFormData(formData)
+
+  transformedForm.value = onSerializeFormCb ? onSerializeFormCb(transformedData, form) : transformedData
 
   if (onBeforeSubmitCb && !onBeforeSubmitCb(formData))
     return
