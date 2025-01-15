@@ -7,7 +7,6 @@ import { getSelectorTestId, setMountComponent } from '../../utils'
 import { router } from '../../../../src/plugins/1.router'
 import DateField from '../../../../src/components/templates/FieldGenerator/_components/DateField.vue'
 import { EventEmittersNames, testOn } from './test-case-generator'
-import { expectedEmitValue } from './general'
 
 export const getMountDateField = setMountComponent(DateField)
 
@@ -79,8 +78,7 @@ export const testChangeInputValue = async ({ valueOfSet = '', inputKey, dateRang
 }
 
 export const testOnCallEventEmitAndEqualValue = (wrapper: VueWrapper, value: string) => {
-  testOn.isCalledEmittedEvent({ wrapper })
-  expectedEmitValue(wrapper, value)
+  testOn.isCalledEmitEventValue({ wrapper }, { event: EventEmittersNames.UpdateVModel, value })
 }
 
 export const setAndCheckInputValue = async (input: DOMWrapper<HTMLInputElement>, initialValue: number, increment: number) => {
