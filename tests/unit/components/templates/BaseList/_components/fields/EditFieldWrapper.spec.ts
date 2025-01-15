@@ -96,7 +96,7 @@ describe('EditFieldWrapper.vue', () => {
     await clickTrigger({ wrapper, testId: testIds.editIcon })
 
     /// Check on call event change-mode with value true
-    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'change-mode', value: true })
+    testOn.isCalledEmitEventValueToBe({ wrapper }, { event: 'change-mode', value: true })
 
     /// Check that edit mode is active
     isActiveEditMode(wrapper)
@@ -106,7 +106,7 @@ describe('EditFieldWrapper.vue', () => {
 
     /// Check on call event change-mode with value false
 
-    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'change-mode', value: false, index: 1 })
+    testOn.isCalledEmitEventValueToBe({ wrapper }, { event: 'change-mode', value: false, index: 1 })
 
     /// Check that read mode is active
     isActiveReadMode(wrapper)

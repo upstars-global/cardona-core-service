@@ -270,7 +270,7 @@ describe('SideBar', () => {
     await wrapper.vm.onHide()
 
     /// Check call event with correct value
-    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'update:sidebar-active', value: false })
+    testOn.isCalledEmitEventValueToBe({ wrapper }, { event: 'update:sidebar-active', value: false })
     testOn.isCalledEmitEvent(wrapper, 'hide')
   })
 

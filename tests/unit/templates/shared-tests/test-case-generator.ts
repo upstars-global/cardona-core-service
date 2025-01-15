@@ -265,7 +265,9 @@ export const testOn = {
     expect(wrapper.emitted(event)[index || 0][0]).to.deep.include(value)
   },
 
-  isCalledEmitEventValueToBe: (wrapper: VueWrapper, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+  isCalledEmitEventValueToBe: (params: Omit<GetWrapperElementPrams, 'all'>, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+    const wrapper = getWrapperElement(params)
+
     expect(wrapper.emitted(event)[index || 0][0]).toBe(value)
   },
 
