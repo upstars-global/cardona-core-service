@@ -118,7 +118,7 @@ describe('EditFieldWrapper.vue', () => {
       await clickTrigger({ wrapper, testId: testIds.acceptUpdateButton })
 
       /// Check that input is updated in parent component
-      testOn.isCalledEmitEventValue(wrapper, { event: 'accept-change', value: updatedValue })
+      testOn.isCalledEmitEventValue({ wrapper }, { event: 'accept-change', value: updatedValue })
 
       /// Check that read mode is active and edit is deactivate
       isActiveReadMode(wrapper)
@@ -130,7 +130,7 @@ describe('EditFieldWrapper.vue', () => {
       await clickTrigger({ wrapper, testId: testIds.cancelUpdateButton })
 
       /// Check that input is updated in parent component
-      testOn.isCalledEmitEventValue(wrapper, { event: 'reject-change', value: props.value })
+      testOn.isCalledEmitEventValue({ wrapper }, { event: 'reject-change', value: props.value })
 
       /// Check that read mode is active and edit is deactivate
       isActiveReadMode(wrapper)
@@ -153,7 +153,7 @@ describe('EditFieldWrapper.vue', () => {
       await clickTrigger({ wrapper, testId: testIds.acceptUpdateButton })
 
       /// Check that input is updated in parent component
-      testOn.isCalledEmitEventValue(wrapper, { event: 'accept-change', value: updatedValue })
+      testOn.isCalledEmitEventValue({ wrapper }, { event: 'accept-change', value: updatedValue })
 
       /// Check that edit mode is active because accept update is disabled
       isActiveEditMode(wrapper)

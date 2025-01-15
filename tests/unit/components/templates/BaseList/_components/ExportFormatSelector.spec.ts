@@ -53,6 +53,6 @@ describe('ExportButton.vue', () => {
     await clickTrigger({ wrapper, testId: 'menu-activator' })
 
     testOn.isCalledEmitEvent(wrapper, 'exportFormatSelected')
-    testOn.isCalledEmitEventValue(wrapper, { event: 'exportFormatSelected', value: ExportFormat.XLSX })
+    testOn.isCalledEmitEventValue({ wrapper }, { event: 'exportFormatSelected', value: ExportFormat.XLSX })
   })
 })

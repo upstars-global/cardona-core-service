@@ -57,7 +57,7 @@ describe('GroupFragmentSettings.vue', () => {
 
       await updateValueForPermissionInput({ wrapper, testId }, false)
       expectedValue.access -= 1
-      testOn.isCalledEmitEventValue(wrapper, { event: 'updatePermissions', value: expectedValue, index })
+      testOn.isCalledEmitEventValue({ wrapper }, { event: 'updatePermissions', value: expectedValue, index })
     }
 
     /// Update value switch for all permissions
@@ -66,7 +66,7 @@ describe('GroupFragmentSettings.vue', () => {
     const quantityOfChangesOfCheckbox = idsCheckboxes.length
 
     // Check that user will have full access in group of permission
-    testOn.isCalledEmitEventValue(wrapper, { event: 'updatePermissions', value: permissionsConfig[0], index: quantityOfChangesOfCheckbox })
+    testOn.isCalledEmitEventValue({ wrapper }, { event: 'updatePermissions', value: permissionsConfig[0], index: quantityOfChangesOfCheckbox })
   })
 
   it('Call event on  change checkbox permission', async () => {
@@ -86,7 +86,7 @@ describe('GroupFragmentSettings.vue', () => {
 
     expectedValue.access -= forAccessLevelValue
 
-    testOn.isCalledEmitEventValue(wrapper, { event: 'updatePermissions', value: expectedValue })
+    testOn.isCalledEmitEventValue({ wrapper }, { event: 'updatePermissions', value: expectedValue })
 
     /// Return access for permission
 
@@ -94,6 +94,6 @@ describe('GroupFragmentSettings.vue', () => {
 
     expectedValue.access += forAccessLevelValue
 
-    testOn.isCalledEmitEventValue(wrapper, { event: 'updatePermissions', value: expectedValue, index: 1 })
+    testOn.isCalledEmitEventValue({ wrapper }, { event: 'updatePermissions', value: expectedValue, index: 1 })
   })
 })
