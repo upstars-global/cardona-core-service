@@ -124,3 +124,11 @@ export const getEndOfDay = () => {
 export const formatToISOWithTimeZone = (isoDateString: string): string => {
   return moment(isoDateString).format('YYYY-MM-DDTHH:mm:ss+00:00')
 }
+
+export const minutesToHumanReadable = minutes => {
+  const { days, hours, minutes: mins } = moment.duration(minutes, 'minutes')._data
+
+  return [`${days}d`, `${hours}h`, `${mins}m`]
+    .filter(part => !part.startsWith('0'))
+    .join(' ') || '0m'
+}
