@@ -157,9 +157,9 @@ export const testOn = {
     methodExpect: ExpectMethods.ToContain,
   }),
 
-  existClassList: ({ wrapper, selector, testId, component }: Omit<GetWrapperElementPrams, 'all'>, classes: Array<string>) => {
+  existClassList: (params: Omit<GetWrapperElementPrams, 'all'>, classes: Array<string>) => {
     const elementClasses
-      = getWrapperElement({ wrapper, selector, testId, component }).classes()
+      = getWrapperElement(params).classes()
 
     classes.forEach(cls => {
       expect(elementClasses).toContain(cls)
@@ -269,7 +269,9 @@ export const testOn = {
     expect(wrapper.emitted(event)[index || 0][0]).toBe(value)
   },
 
-  isCalledEmitEventValueToEqualDeep: (wrapper: VueWrapper, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+  isCalledEmitEventValueToEqualDeep: (params: Omit<GetWrapperElementPrams, 'all'>, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+    const wrapper = getWrapperElement(params)
+
     expect(wrapper.emitted(event)[index || 0][0]).to.deep.equal(value)
   },
 

@@ -236,6 +236,6 @@ describe('FiltersBlock', () => {
 
     await openFilters(wrapper)
 
-    testOn.isCalledEmitEventValueToEqualDeep(wrapper, { event: 'change-selected-filters', value: [...filters] })
+    testOn.isCalledEmitEventValueToEqualDeep({ wrapper }, { event: 'change-selected-filters', value: [...filters] })
   })
 })
