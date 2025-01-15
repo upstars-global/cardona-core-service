@@ -128,7 +128,11 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
         },
       })
 
-      this.options = this.selectedOptions ? [...this.selectedOptions, ...list] : list
+      const options = list?.map((option: string | T): OptionsItem | T =>
+        typeof option === 'string' ? { id: option, name: option } : option,
+      ) || []
+
+      this.options = this.selectedOptions ? [...this.selectedOptions, ...options] : options
     }
   }
 }
