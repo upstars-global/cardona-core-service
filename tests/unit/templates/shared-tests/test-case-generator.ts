@@ -1,6 +1,5 @@
 import { expect } from 'vitest'
 import { has } from 'lodash'
-import type { VueWrapper } from '@vue/test-utils'
 import type { GetWrapperElementPrams } from '../../utils'
 import { getWrapperElement } from '../../utils'
 
@@ -254,11 +253,11 @@ export const testOn = {
     property: { name: WrapperProperties.Emitted, value: EventEmittersNames.Hide },
   }),
 
-  isCalledEmitEvent: (wrapper: VueWrapper, actionEmit: string) => {
+  isCalledEmitEvent: (params: Omit<GetWrapperElementPrams, 'all'>, actionEmit: string) => {
     testCaseGenerator({
       methodExpect: ExpectMethods.ToBeTruthy,
       property: { name: WrapperProperties.Emitted, value: actionEmit },
-    })({ wrapper })
+    })(params)
   },
 
   isCalledEmitEventValue: (params: Omit<GetWrapperElementPrams, 'all'>, { event, value, index }: { event: string; value: unknown; index?: number }) => {

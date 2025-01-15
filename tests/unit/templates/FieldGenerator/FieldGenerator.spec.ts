@@ -127,7 +127,7 @@ describe('FieldGenerator.vue', () => {
 
     await wrapper.vm.$emit('search', 'test-search')
 
-    testOn.isCalledEmitEvent(wrapper, 'search')
+    testOn.isCalledEmitEvent({ wrapper }, 'search')
     expect(wrapper.emitted('search')[0][0]).toEqual('test-search')
   })
 

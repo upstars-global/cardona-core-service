@@ -225,7 +225,7 @@ describe('FiltersBlock', () => {
 
     await clickTrigger({ wrapper, testId: testIds.applyBtn })
 
-    testOn.isCalledEmitEvent(wrapper, 'apply')
+    testOn.isCalledEmitEvent({ wrapper }, 'apply')
   })
 
   it('Call event change-selected-filters and should be equal with selected filters', async () => {

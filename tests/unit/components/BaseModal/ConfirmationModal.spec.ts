@@ -10,7 +10,6 @@ import {
   isEqualModalDescription,
   isEqualModalTitle,
 } from '../../templates/shared-tests/modal'
-import { isCalledEmitEvent } from '../../templates/shared-tests/general'
 
 const getMountConfirmationModal = setMountComponent(ConfirmationModal)
 
@@ -53,6 +52,6 @@ describe('ConfirmationModal', () => {
     await callActionShowForInternalBaseModal(wrapper)
 
     await clickTrigger({ wrapper, testId: testIdConfirmBtn })
-    isCalledEmitEvent(wrapper, 'confirmed')
+    testOn.isCalledEmitEvent({ wrapper }, 'confirmed')
   })
 })

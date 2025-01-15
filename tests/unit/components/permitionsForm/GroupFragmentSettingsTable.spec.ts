@@ -145,7 +145,7 @@ describe('GroupFragmentSettingsTable.vue', () => {
     await updateValueForPermissionInput({ wrapper, testId: testIds.checkboxOnAccessRemove }, false)
 
     /// Check that the event is called with the value false
-    testOn.isCalledEmitEvent(wrapper, 'change')
+    testOn.isCalledEmitEvent({ wrapper }, 'change')
 
     /// Check that the event is called with the value false because one of the checkboxes is unchecked
     testOn.isCalledEmitEventValueToBe({ wrapper }, { event: 'updateAllChecked', value: false, index: 1 })
