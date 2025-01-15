@@ -76,6 +76,7 @@ export interface IASelectBaseField<T> extends IBaseField {
   readonly fetchOptionsActionName?: string
   readonly staticFilters?: Record<string, string>
   readonly withCalculatePosition?: boolean
+  readonly preloadOptionsByIds?: boolean
   readonly filterable?: boolean
 }
 
@@ -84,14 +85,17 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
   implements IASelectBaseField<T> {
   public options?: Array<T>
   readonly fetchOptionsActionName?: string
+  readonly preloadOptionsByIds?: boolean
   readonly staticFilters: Record<string, string>
   readonly calculatePositionCb?: CallableFunction
+  selectedOptions?: Array<T>
   readonly filterable: boolean
 
   protected constructor(field: IASelectBaseField<T>) {
     super(field)
     this.options = field.options
     this.fetchOptionsActionName = field.fetchOptionsActionName
+    this.preloadOptionsByIds = field.preloadOptionsByIds
     this.staticFilters = field.staticFilters || {}
     this.calculatePositionCb = field.withCalculatePosition ? this.calculatePosition : undefined
     this.filterable = field.filterable ?? true
@@ -101,9 +105,22 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
     dropdownList.style.position = 'fixed'
   }
 
-  async fetchOptions(search = '') {
+  async fetchOptions(search: string) {
     if (this.fetchOptionsActionName) {
-      const { list } = await store.dispatch(this.fetchOptionsActionName, {
+      if (this.preloadOptionsByIds && this.value?.length && search === undefined) {
+        const { list: selectedOptions } = await store.dispatch(this.fetchOptionsActionName, {
+          perPage: 50,
+          filter: {
+            ids: this.value.map(item => item?.id || item),
+          },
+        })
+
+        this.selectedOptions = selectedOptions?.map((option: string | T): OptionsItem | T =>
+          typeof option === 'string' ? { id: option, name: option } : option,
+        ) || []
+      }
+
+      const { list = [] } = await store.dispatch(this.fetchOptionsActionName, {
         perPage: 50,
         filter: {
           search,
@@ -111,9 +128,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
         },
       })
 
-      this.options = list?.map((option: string | T): OptionsItem | T =>
-        typeof option === 'string' ? { id: option, name: option } : option,
-      )
+      this.options = this.selectedOptions ? [...this.selectedOptions, ...list] : list
     }
   }
 }
