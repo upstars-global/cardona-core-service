@@ -43,6 +43,12 @@ const props = withDefaults(defineProps<Props>(), {
   path: '',
   disabled: false,
   modalId: ModalsId.UploadImage,
+  field: {
+    id: '',
+    rules: {},
+    label: '',
+    name: '',
+  },
 })
 
 const emits = defineEmits<{
