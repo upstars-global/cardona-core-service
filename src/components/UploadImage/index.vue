@@ -125,7 +125,7 @@ const isRequired = computed(() => !!props.field.rules?.required)
   <Field
     v-model="urlFile"
     :name="field.name"
-    :label="field.label"
+    :label="field.label.toLowerCase()"
     :rules="field.rules"
     :validate-on-blur="false"
     :validate-on-change="false"
