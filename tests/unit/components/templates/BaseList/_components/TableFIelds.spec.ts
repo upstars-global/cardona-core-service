@@ -91,7 +91,7 @@ describe('TableFields.vue', () => {
     await clickTrigger({ wrapper, testId: 'select-item-id' })
 
     // Verify that the event is emitted with the correct value
-    testOn.isCalledEmitEventValue(wrapper, {
+    testOn.isCalledEmitEventValue({ wrapper }, {
       event: 'update:modelValue',
       value: mockDataList[0],
     })

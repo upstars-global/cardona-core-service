@@ -2,8 +2,7 @@ import { beforeEach, describe, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import MultiSelectField from '../../../../src/components/templates/FieldGenerator/_components/MultiSelectField.vue'
 import { clickTrigger } from '../../utils'
-import { testOn } from '../shared-tests/test-case-generator'
-import { expectedEmitValue } from '../shared-tests/general'
+import { EventEmittersNames, testOn } from '../shared-tests/test-case-generator'
 import {
   checkDisabledStateByProps,
   checkImmediateFetchOnEmptyOptions,
@@ -81,7 +80,8 @@ describe('MultiSelectField', () => {
     /// Click for deselect option item
     await clickTrigger({ wrapper, selector: '.vs__deselect' })
 
-    expectedEmitValue(wrapper, [options[1]])
+    testOn.isCalledEmitEventValueToEqualDeep({ wrapper }, { event: EventEmittersNames.UpdateVModel, value: [options[1]] })
+
     await wrapper.setProps({ ...props, modelValue: [options[1]] })
 
     await nextTick()
@@ -97,7 +97,8 @@ describe('MultiSelectField', () => {
     await wrapper.setProps({ ...props, modelValue: [options[2]] })
 
     ///  Test on valid selected options
-    expectedEmitValue(wrapper, [options[1], options[0]], 1)
+    testOn.isCalledEmitEventValueToEqualDeep({ wrapper },
+      { event: EventEmittersNames.UpdateVModel, value: [options[1], options[0]], index: 1 })
   })
 
   it('Disable state by props', async () => {
