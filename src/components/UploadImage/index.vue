@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, nextTick, ref } from 'vue'
+import { Field } from 'vee-validate'
 import store from '../../store'
 import { IconsList } from '../../@model/enums/icons'
 import { ModalSizes, VColors, VSizes, VVariants } from '../../@model/vuetify'
@@ -12,18 +13,24 @@ import { MAX_WIDTH_TOOLTIP } from '../../utils/constants'
 import { ModalsId } from '../../@model/modalsId'
 import ModalFileUpload from './ModalFileUpload.vue'
 
+interface FieldConfig {
+  id: string
+  rules: Record<string, unknown>
+  label: string
+  name: string
+}
+
 interface Props {
   size: UploadFileSizes
   label: string
   type: string
   textBtn: string
   dropPlaceholder: string
-  isRequired: boolean
-  isError?: boolean
   modelValue: string
   path: string
   disabled: boolean
   modalId?: string
+  field: FieldConfig
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,11 +39,16 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'banners',
   textBtn: i18n.t('uploadImg.textBtn'),
   dropPlaceholder: i18n.t('placeholder.dropFile'),
-  isRequired: false,
   value: '',
   path: '',
   disabled: false,
   modalId: ModalsId.UploadImage,
+  field: {
+    id: '',
+    rules: {},
+    label: '',
+    name: '',
+  },
 })
 
 const emits = defineEmits<{
@@ -105,101 +117,119 @@ const onFileUpload = async file => {
     throw error
   }
 }
+
+const isRequired = computed(() => !!props.field.rules?.required)
 </script>
 
 <template>
-  <VLabel
-    class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between"
-    :class="{ 'field-generator-label--required': isRequired }"
+  <Field
+    v-model="urlFile"
+    :name="field.name"
+    :label="field.label"
+    :rules="field.rules"
+    :validate-on-blur="false"
+    :validate-on-change="false"
+    :validate-on-input="false"
+    :validate-on-model-update="true"
   >
-    {{ label }}
-  </VLabel>
-  <div
-    v-if="urlFile"
-    class="img-file-block-inner d-flex justify-center align-center"
-    :class="{ disabled }"
-  >
-    <div
-      class="img-file"
-      :style="{ backgroundImage: `url(${urlFile})` }"
-    />
-    <div
-      class="img-file-block-inner__actions gap-3"
-      :class="{ 'd-none': disabled, 'd-flex': !disabled }"
-    >
-      <VBtn
-        :size="VSizes.Small"
-        :color="VColors.Secondary"
-        :icon="IconsList.UploadIcon"
-        rounded="sm"
-        @click="openSelectModal"
-      />
-      <VBtn
-        :color="VColors.Error"
-        class="btn-icon"
-        :size="VSizes.Small"
-        :icon="IconsList.Trash2Icon"
-        rounded="sm"
-        @click="onClickRemove"
-      />
-    </div>
-  </div>
-  <FilesUpload
-    v-else
-    :text-btn="textBtn"
-    :on-submit-callback="onFileUpload"
-    :max-size-file-mb="maxSizeFileMb"
-    :on-btn-click-callback="openSelectModal"
-    :disabled="disabled"
-    :is-error="isError"
-  />
-  <BaseModal
-    :id="selectModalId"
-    :title="$t('uploadImg.selectImage')"
-    :size="ModalSizes.Medium"
-  >
-    <template #modal-header="{ title }">
-      <div class="d-flex align-center">
-        <h5 class="mb-0 text-h5">
-          {{ title }}
-        </h5>
-        <VTooltip
-          :text="$t('uploadImg.selectImageTooltip')"
-          :max-width="MAX_WIDTH_TOOLTIP"
-          class="text-body-1"
+    <template #default="{ errorMessage }">
+      <div :id="field.id">
+        <VLabel
+          class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between"
+          :class="{ 'field-generator-label--required': isRequired }"
         >
-          <template #activator="{ props }">
-            <VIcon
-              :icon="IconsList.InfoIcon"
-              v-bind="props"
-              class="ml-2 align-text-top text-grey-500"
+          {{ label }}
+        </VLabel>
+        <div
+          v-if="urlFile"
+          class="img-file-block-inner d-flex justify-center align-center"
+          :class="{ disabled }"
+        >
+          <div
+            class="img-file"
+            :style="{ backgroundImage: `url(${urlFile})` }"
+          />
+          <div
+            class="img-file-block-inner__actions gap-3"
+            :class="{ 'd-none': disabled, 'd-flex': !disabled }"
+          >
+            <VBtn
+              :size="VSizes.Small"
+              :color="VColors.Secondary"
+              :icon="IconsList.UploadIcon"
+              rounded="sm"
+              @click="openSelectModal"
             />
+            <VBtn
+              :color="VColors.Error"
+              class="btn-icon"
+              :size="VSizes.Small"
+              :icon="IconsList.Trash2Icon"
+              rounded="sm"
+              @click="onClickRemove"
+            />
+          </div>
+        </div>
+        <FilesUpload
+          v-else
+          :text-btn="textBtn"
+          :on-submit-callback="onFileUpload"
+          :max-size-file-mb="maxSizeFileMb"
+          :on-btn-click-callback="openSelectModal"
+          :disabled="disabled"
+          :is-error="errorMessage"
+        />
+        <BaseModal
+          :id="selectModalId"
+          :title="$t('uploadImg.selectImage')"
+          :size="ModalSizes.Medium"
+        >
+          <template #modal-header="{ title }">
+            <div class="d-flex align-center">
+              <h5 class="mb-0 text-h5">
+                {{ title }}
+              </h5>
+              <VTooltip
+                :text="$t('uploadImg.selectImageTooltip')"
+                :max-width="MAX_WIDTH_TOOLTIP"
+                class="text-body-1"
+              >
+                <template #activator="{ props }">
+                  <VIcon
+                    :icon="IconsList.InfoIcon"
+                    v-bind="props"
+                    class="ml-2 align-text-top text-grey-500"
+                  />
+                </template>
+              </VTooltip>
+            </div>
           </template>
-        </VTooltip>
-      </div>
-    </template>
-    <template #default>
-      <div class="transaction-modal-content--wrapper overflow-y-auto overflow-x-hidden">
-        <ModalFileUpload
-          v-model="urlFile"
-          :path="path"
-          :file="file"
-          :on-upload-image-cb="onFileUpload"
-          @set-path="onSetPath"
-          @clear="onClickRemove"
+          <template #default>
+            <div class="transaction-modal-content--wrapper overflow-y-auto overflow-x-hidden">
+              <ModalFileUpload
+                v-model="urlFile"
+                :path="path"
+                :file="file"
+                :on-upload-image-cb="onFileUpload"
+                @set-path="onSetPath"
+                @clear="onClickRemove"
+              />
+            </div>
+          </template>
+        </BaseModal>
+        <RemoveModal
+          :remove-modal-id="removeModalId"
+          :title="$t(`uploadImg.modalTitle.${props.type}`)"
+          :description="$t(`uploadImg.modalLabel.${props.type}`)"
+          :remove-btn-variant="VVariants.Outlined"
+          :cancel-btn-color="VColors.Primary"
+          :cancel-btn-variant="VVariants.Flat"
+          @on-click-modal-ok="clearFile"
         />
       </div>
+      <span class="error-message text-caption text-error mt-1">{{ errorMessage }}</span>
     </template>
-  </BaseModal>
-  <RemoveModal
-    :remove-modal-id="removeModalId"
-    :title="$t(`uploadImg.modalTitle.${props.type}`)"
-    :description="$t(`uploadImg.modalLabel.${props.type}`)"
-    :remove-btn-variant="VVariants.Outlined"
-    :cancel-btn-color="VColors.Primary"
-    :cancel-btn-variant="VVariants.Flat"
-    @on-click-modal-ok="clearFile"
-  />
+  </Field>
 </template>
 
 <style lang="scss">
