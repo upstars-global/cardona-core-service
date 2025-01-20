@@ -3,8 +3,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import TimeField from '../../../../src/components/templates/FieldGenerator/_components/TimeField.vue'
 import { setMountComponent } from '../../utils'
 import { VSizes } from '../../../../src/@model/vuetify'
-import { testOn } from '../shared-tests/test-case-generator'
-import { expectedEmitValue } from '../shared-tests/general'
+import { EventEmittersNames, testOn } from '../shared-tests/test-case-generator'
 
 const getMountTimeField = setMountComponent(TimeField)
 
@@ -37,7 +36,7 @@ describe('TimeField.vue', () => {
     const wrapper = getMountTimeField(defaultProps)
 
     await wrapper.setValue(timeValue)
-    expectedEmitValue(wrapper, timeValue)
+    testOn.isCalledEmitEventValue({ wrapper }, { event: EventEmittersNames.UpdateVModel, value: timeValue })
   })
 
   it('Render placeholder', async () => {

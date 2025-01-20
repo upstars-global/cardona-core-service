@@ -76,7 +76,7 @@ describe('FilterSelector', () => {
     await clickTrigger({ wrapper, testId: 'filter-item' })
 
     /// Check that event is called with correct value
-    testOn.isCalledEmitEventValue(wrapper, { event: 'selected-filters-changed', value: filters[0] })
+    testOn.isCalledEmitEventValue({ wrapper }, { event: 'selected-filters-changed', value: filters[0] })
   })
 
   it('Should call event "selected-filters-changed" with value', async () => {

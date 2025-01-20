@@ -63,7 +63,7 @@ describe('ItemActions.vue', () => {
 
     await clickTrigger({ wrapper, testId: 'status-toggle' })
 
-    testOn.isCalledEmitEventValue(wrapper, { event: 'on-toggle-status', value: props.item })
+    testOn.isCalledEmitEventValue({ wrapper }, { event: 'on-toggle-status', value: props.item })
   })
 
   it('Render valid text button of toggle status by field isActive', async () => {
@@ -122,7 +122,7 @@ describe('ItemActions.vue', () => {
 
     await clickTrigger({ wrapper, testId: 'remove' })
 
-    testOn.isCalledEmitEventValue(wrapper, { event: 'on-remove', value: props.item })
+    testOn.isCalledEmitEventValue({ wrapper }, { event: 'on-remove', value: props.item })
   })
 
   it('Is correct render slots with params', async () => {

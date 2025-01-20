@@ -34,7 +34,7 @@ const testOnSavePosition = async (wrapper: VueWrapper, { newPosition, actionForS
 
   await actionForSave()
 
-  testOn.isCalledEmitEventValue(wrapper, { event: 'editPosition', value: newPosition })
+  testOn.isCalledEmitEventValue({ wrapper }, { event: 'editPosition', value: newPosition })
 
   await wrapper.setProps({ position: newPosition })
 

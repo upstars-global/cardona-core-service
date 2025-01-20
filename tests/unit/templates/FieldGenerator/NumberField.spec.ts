@@ -1,8 +1,7 @@
 import { beforeEach, describe, it } from 'vitest'
 import NumberField from '../../../../src/components/templates/FieldGenerator/_components/NumberField.vue'
 import { setMountComponentSelect } from '../shared-tests/select-field'
-import { testOn } from '../shared-tests/test-case-generator'
-import { expectedEmitValue } from '../shared-tests/general'
+import { EventEmittersNames, testOn } from '../shared-tests/test-case-generator'
 import {
   removeDot,
   removeMinus,
@@ -52,7 +51,7 @@ describe('NumberField', () => {
 
     await wrapper.setValue(testValue)
 
-    expectedEmitValue(wrapper, testValue)
+    testOn.isCalledEmitEventValue({ wrapper }, { event: EventEmittersNames.UpdateVModel, value: testValue })
 
     await wrapper.setProps({ modelValue: testValue })
 
@@ -67,7 +66,7 @@ describe('NumberField', () => {
     const wrapper = getMountNumberField(props)
 
     await wrapper.find('input').setValue(testValue)
-    expectedEmitValue(wrapper, removeDot(testValue))
+    testOn.isCalledEmitEventValue({ wrapper }, { event: EventEmittersNames.UpdateVModel, value: removeDot(testValue) })
   })
 
   it('Check on only positive numbers ', async () => {
@@ -78,6 +77,6 @@ describe('NumberField', () => {
     const wrapper = getMountNumberField(props)
 
     await wrapper.find('input').setValue(testValue)
-    expectedEmitValue(wrapper, removeMinus(testValue))
+    testOn.isCalledEmitEventValue({ wrapper }, { event: EventEmittersNames.UpdateVModel, value: removeMinus(testValue) })
   })
 })

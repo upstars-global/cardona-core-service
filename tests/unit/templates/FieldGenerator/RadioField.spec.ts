@@ -2,8 +2,7 @@ import { describe, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import RadioField from '../../../../src/components/templates/FieldGenerator/_components/RadioField.vue'
 import { getWrapperElement, setMountComponent } from '../../utils'
-import { testOn } from '../shared-tests/test-case-generator'
-import { expectedEmitValue } from '../shared-tests/general'
+import { EventEmittersNames, testOn } from '../shared-tests/test-case-generator'
 
 const getMountRadioField = setMountComponent(RadioField)
 
@@ -45,6 +44,7 @@ describe('RadioField.vue', () => {
     testOn.checkedElementToBe({ wrapper: wrapper.findAll('input')[0] }, true)
 
     await wrapper.setValue(field.options[1].value)
-    await expectedEmitValue(wrapper, field.options[1].value)
+
+    testOn.isCalledEmitEventValue({ wrapper }, { event: EventEmittersNames.UpdateVModel, value: field.options[1].value })
   })
 })
