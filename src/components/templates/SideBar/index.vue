@@ -198,7 +198,7 @@ const onHide = () => {
       >
         <div
           v-if="canUpdate"
-          class="d-flex py-4 gap-4 sidebar-actions"
+          class="d-flex pl-2 py-4 gap-4 sidebar-actions"
         >
           <slot name="sidebar-action-items" />
 
