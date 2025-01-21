@@ -8,7 +8,7 @@ export default {
   namespaced: true,
 
   actions: {
-    async fetchDemoList(
+    async fetchEntityList(
       _,
       payload: {
         type: string
