@@ -9,7 +9,7 @@ import {
   isEqualModalDescription,
   isEqualModalTitle,
 } from '../../templates/shared-tests/modal'
-import { isCalledEmitEvent } from '../../templates/shared-tests/general'
+import { testOn } from '../../templates/shared-tests/test-case-generator'
 
 const getMountConfirmModal = setMountComponent(ConfirmModal)
 
@@ -39,7 +39,7 @@ describe('ConfirmModal', () => {
 
     await clickTrigger({ wrapper, testId: 'btn-add' })
 
-    isCalledEmitEvent(wrapper, 'on-click-modal-ok')
+    testOn.isCalledEmitEvent({ wrapper }, 'on-click-modal-ok')
   })
 
   it('emits "on-close-modal" on click btn close', async () => {

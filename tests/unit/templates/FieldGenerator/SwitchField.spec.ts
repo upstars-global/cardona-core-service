@@ -2,9 +2,8 @@ import { describe, it } from 'vitest'
 import SwitchField from '../../../../src/components/templates/FieldGenerator/_components/SwitchField.vue'
 import { setMountComponent } from '../../utils'
 import { VColors, VSizes } from '../../../../src/@model/vuetify'
-import { testOn } from '../shared-tests/test-case-generator'
+import { EventEmittersNames, testOn } from '../shared-tests/test-case-generator'
 import { IconsList } from '../../../../src/@model/enums/icons'
-import { expectedEmitValue } from '../shared-tests/general'
 
 const getMountSwitchField = setMountComponent(SwitchField)
 
@@ -45,12 +44,14 @@ describe('SwitchField', () => {
     /// Set value false
     await wrapper.setValue(false)
     testOn.isCalledEmittedEvent({ wrapper })
-    expectedEmitValue(wrapper, false)
+
+    testOn.isCalledEmitEventValueToEqualDeep(
+      { wrapper }, { event: EventEmittersNames.UpdateVModel, value: false })
 
     /// Set value true
     await wrapper.setValue(true)
     testOn.isCalledEmittedEvent({ wrapper })
-    expectedEmitValue(wrapper, true, 1)
+    testOn.isCalledEmitEventValueToEqualDeep({ wrapper }, { event: EventEmittersNames.UpdateVModel, value: true, index: 1 })
   })
 
   it('Check size param', async () => {

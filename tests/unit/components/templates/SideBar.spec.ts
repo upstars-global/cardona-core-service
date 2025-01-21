@@ -239,7 +239,7 @@ describe('SideBar', () => {
     /// Make sure that the event is called after the animation
     vi.advanceTimersByTime(EMIT_AFTER_ANIMATION_SIDEBAR)
 
-    testOn.isCalledEmitEvent(wrapper, 'update')
+    testOn.isCalledEmitEvent({ wrapper }, 'update')
 
     /// Simulate click on button
     await clickTrigger({ wrapper, testId: 'remove-button' })
@@ -247,7 +247,7 @@ describe('SideBar', () => {
     /// Make sure that the event is called after the animation
     vi.advanceTimersByTime(EMIT_AFTER_ANIMATION_SIDEBAR)
 
-    testOn.isCalledEmitEvent(wrapper, 'remove')
+    testOn.isCalledEmitEvent({ wrapper }, 'remove')
 
     /// Reset time travel
     vi.useRealTimers()
@@ -270,8 +270,8 @@ describe('SideBar', () => {
     await wrapper.vm.onHide()
 
     /// Check call event with correct value
-    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'update:sidebar-active', value: false })
-    testOn.isCalledEmitEvent(wrapper, 'hide')
+    testOn.isCalledEmitEventValueToBe({ wrapper }, { event: 'update:sidebar-active', value: false })
+    testOn.isCalledEmitEvent({ wrapper }, 'hide')
   })
 
   it('Should withCollapseItem', async () => {
