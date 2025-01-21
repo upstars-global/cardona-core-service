@@ -30,7 +30,7 @@ const cleaveOptions = {
 const localModelValue = computed({
   get: (): string => props.modelValue,
   set: (value: string) => {
-    const phoneWithPlus: string = localModelValue.value[0] !== '+' ? `+${value}` : value
+    const phoneWithPlus: string = value.trim() && value[0] !== '+' ? `+${value}` : value
 
     emit('update:modelValue', phoneWithPlus)
   },
