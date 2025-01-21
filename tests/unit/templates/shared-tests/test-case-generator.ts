@@ -1,6 +1,5 @@
 import { expect } from 'vitest'
 import { has } from 'lodash'
-import type { VueWrapper } from '@vue/test-utils'
 import type { GetWrapperElementPrams } from '../../utils'
 import { getWrapperElement } from '../../utils'
 
@@ -157,9 +156,9 @@ export const testOn = {
     methodExpect: ExpectMethods.ToContain,
   }),
 
-  existClassList: ({ wrapper, selector, testId, component }: Omit<GetWrapperElementPrams, 'all'>, classes: Array<string>) => {
+  existClassList: (params: Omit<GetWrapperElementPrams, 'all'>, classes: Array<string>) => {
     const elementClasses
-      = getWrapperElement({ wrapper, selector, testId, component }).classes()
+      = getWrapperElement(params).classes()
 
     classes.forEach(cls => {
       expect(elementClasses).toContain(cls)
@@ -254,22 +253,28 @@ export const testOn = {
     property: { name: WrapperProperties.Emitted, value: EventEmittersNames.Hide },
   }),
 
-  isCalledEmitEvent: (wrapper: VueWrapper, actionEmit: string) => {
+  isCalledEmitEvent: (params: GetWrapperElementPrams, actionEmit: string) => {
     testCaseGenerator({
       methodExpect: ExpectMethods.ToBeTruthy,
       property: { name: WrapperProperties.Emitted, value: actionEmit },
-    })({ wrapper })
+    })(params)
   },
 
-  isCalledEmitEventValue: (wrapper: VueWrapper, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+  isCalledEmitEventValue: (params: GetWrapperElementPrams, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+    const wrapper = getWrapperElement(params)
+
     expect(wrapper.emitted(event)[index || 0][0]).to.deep.include(value)
   },
 
-  isCalledEmitEventValueToBe: (wrapper: VueWrapper, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+  isCalledEmitEventValueToBe: (params: GetWrapperElementPrams, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+    const wrapper = getWrapperElement(params)
+
     expect(wrapper.emitted(event)[index || 0][0]).toBe(value)
   },
 
-  isCalledEmitEventValueToEqualDeep: (wrapper: VueWrapper, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+  isCalledEmitEventValueToEqualDeep: (params: GetWrapperElementPrams, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+    const wrapper = getWrapperElement(params)
+
     expect(wrapper.emitted(event)[index || 0][0]).to.deep.equal(value)
   },
 
