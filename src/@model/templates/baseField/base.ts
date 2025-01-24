@@ -111,7 +111,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
         const { list: selectedOptions } = await store.dispatch(this.fetchOptionsActionName, {
           perPage: 50,
           filter: {
-            ids: Array.isArray(this.value) ? this.value.map(item => item?.id || item) : [this.value],
+            ids: Array.isArray(this.value) ? this.value.map(item => item?.id || item) : [this.value?.id],
           },
         })
 
