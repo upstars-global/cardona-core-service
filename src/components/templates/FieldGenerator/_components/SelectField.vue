@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { debounce } from 'lodash'
 import type { OptionsItem } from '../../../../@model'
@@ -86,6 +86,36 @@ const onSearch = debounce(async (search: string, loading: Function) => {
     loading(false)
   }
 }, 250)
+
+const infiniteScroll = async (entries: IntersectionObserverEntry[]) => {
+  const [{ isIntersecting, target }] = entries
+
+  console.log('infiniteScroll', isIntersecting, target)
+  if (isIntersecting) {
+    const ul = (target as HTMLElement).offsetParent as HTMLElement
+    const scrollTop = ul.scrollTop
+
+    limit.value += 50
+    await nextTick()
+    ul.scrollTop = scrollTop
+  }
+}
+
+const observer = new IntersectionObserver(infiniteScroll)
+const limit = ref(50)
+const loadRef = ref<HTMLElement | null>(null)
+
+const onOpen = async () => {
+  toggleDropDownState()
+  console.log('onOpen')
+  await nextTick()
+  observer.observe(loadRef.value as HTMLElement)
+}
+
+const onClose = () => {
+  toggleDropDownState()
+  observer.disconnect()
+}
 </script>
 
 <template>
@@ -105,8 +135,8 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :calculate-position="withPopper(field.calculatePositionCb)"
       :filterable="field.filterable"
       @search="onSearch"
-      @open="toggleDropDownState"
-      @close="toggleDropDownState"
+      @open="onOpen"
+      @close="onClose"
     >
       <template #selected-option="{ name }">
         <div class="selected-option-value">
@@ -128,6 +158,15 @@ const onSearch = debounce(async (search: string, loading: Function) => {
           v-bind="attributes"
           :icon="IconsList.ChevronDownIcon"
         />
+      </template>
+      <template #list-footer>
+        <li
+          v-show="hasNextPage"
+          ref="loadRef"
+          class="loader"
+        >
+          Loading more options...
+        </li>
       </template>
     </VueSelect>
   </div>
