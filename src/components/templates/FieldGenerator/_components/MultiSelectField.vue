@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { debounce } from 'lodash'
+import { useToggle } from '@vueuse/core'
 import type { OptionsItem } from '../../../../@model'
 import { BSize } from '../../../../@model/bootstrap'
 import type { MultiSelectBaseField } from '../../../../@model/templates/baseField'
@@ -8,6 +9,7 @@ import { i18n } from '../../../../plugins/i18n'
 import { withPopper } from '../../../../helpers/selectPopper'
 import { IconsList } from '../../../../@model/enums/icons'
 import { copyToClipboard } from '../../../../helpers/clipboard'
+import { useInfiniteScroll } from '../../../../helpers/infiniteScroll'
 
 interface MultiselectProps {
   modelValue: OptionsItem[] | string[] | number[]
@@ -29,6 +31,7 @@ const emits = defineEmits<{
 }>()
 
 const isLoading = ref(false)
+const toggleDropDownState = useToggle()[1]
 
 const valueModel = computed<OptionsItem[]>({
   get: () =>
@@ -73,17 +76,40 @@ watch(
   { deep: true, immediate: true },
 )
 
+const searchValue = ref('')
+
 // Handlers
 const onSearch = debounce(async (search: string, loading: Function) => {
   loading(true)
 
   try {
+    searchValue.value = search
     await props.field.fetchOptions(search)
   }
   finally {
     loading(false)
+    await reInitObserver()
   }
 }, 250)
+
+const onOpen = async () => {
+  toggleDropDownState()
+  await setupObserver()
+}
+
+const onClose = () => {
+  toggleDropDownState()
+  abortObserver()
+}
+
+const showLoadMore = computed((): boolean =>
+  !!props.field.options?.length && !searchValue.value && !isLoading.value)
+
+const {
+  setupObserver,
+  reInitObserver,
+  abortObserver,
+} = useInfiniteScroll(showLoadMore.value, props.field.loadMore)
 </script>
 
 <template>
@@ -101,6 +127,8 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :calculate-position="withPopper(field.calculatePositionCb)"
       :filterable="field.filterable"
       @search="onSearch"
+      @open="onOpen"
+      @close="onClose"
     >
       <template #selected-option="{ id, name }">
         <span class="mr-1">

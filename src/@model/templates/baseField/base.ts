@@ -78,6 +78,7 @@ export interface IASelectBaseField<T> extends IBaseField {
   readonly withCalculatePosition?: boolean
   readonly preloadOptionsByIds?: boolean
   readonly filterable?: boolean
+  readonly infiniteLoading?: boolean
 }
 
 export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
@@ -90,6 +91,8 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
   readonly calculatePositionCb?: CallableFunction
   selectedOptions?: Array<T>
   readonly filterable: boolean
+  readonly infiniteLoading?: boolean
+  pageNumber: number
 
   protected constructor(field: IASelectBaseField<T>) {
     super(field)
@@ -99,13 +102,15 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
     this.staticFilters = field.staticFilters || {}
     this.calculatePositionCb = field.withCalculatePosition ? this.calculatePosition : undefined
     this.filterable = field.filterable ?? true
+    this.infiniteLoading = field.infiniteLoading
+    this.pageNumber = 1
   }
 
   calculatePosition({ dropdownList }) {
     dropdownList.style.position = 'fixed'
   }
 
-  async fetchOptions(search: string) {
+  async fetchOptions(search?: string) {
     if (this.fetchOptionsActionName) {
       if (this.preloadOptionsByIds && this.value?.length && search === undefined) {
         const { list: selectedOptions } = await store.dispatch(this.fetchOptionsActionName, {
@@ -134,6 +139,24 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
 
       this.options = this.selectedOptions ? [...this.selectedOptions, ...options] : options
     }
+  }
+
+  async loadMore() {
+    const { list = [] } = await store.dispatch(this.fetchOptionsActionName, {
+      perPage: 50,
+      pageNumber: ++this.pageNumber,
+      filter: {
+        ...this.staticFilters,
+      },
+    })
+
+    const options = list?.map((option: string | T): OptionsItem | T =>
+      typeof option === 'string' ? { id: option, name: option } : option,
+    ) || []
+
+    this.options = [...this.options, ...options]
+
+    this.pageNumber++
   }
 }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { debounce } from 'lodash'
 import type { OptionsItem } from '../../../../@model'
@@ -7,6 +7,7 @@ import { IconsList } from '../../../../@model/enums/icons'
 import type { SelectBaseField } from '../../../../@model/templates/baseField'
 import { i18n } from '../../../../plugins/i18n'
 import { withPopper } from '../../../../helpers/selectPopper'
+import { useInfiniteScroll } from '../../../../helpers/infiniteScroll'
 
 const props = withDefaults(
   defineProps<{
@@ -21,7 +22,6 @@ const props = withDefaults(
     modelValue: '',
     size: '',
     placeholder: i18n.t('placeholder.choose._') as string,
-    appendToBody: true,
   })
 
 const emits = defineEmits<{
@@ -75,47 +75,40 @@ watch(
   { deep: true, immediate: true },
 )
 
+const searchValue = ref('')
+
 // Handlers
 const onSearch = debounce(async (search: string, loading: Function) => {
   loading(true)
 
   try {
+    searchValue.value = search
     await props.field.fetchOptions(search)
   }
   finally {
     loading(false)
+    await reInitObserver()
   }
 }, 250)
 
-const infiniteScroll = async (entries: IntersectionObserverEntry[]) => {
-  const [{ isIntersecting, target }] = entries
-
-  console.log('infiniteScroll', isIntersecting, target)
-  if (isIntersecting) {
-    const ul = (target as HTMLElement).offsetParent as HTMLElement
-    const scrollTop = ul.scrollTop
-
-    limit.value += 50
-    await nextTick()
-    ul.scrollTop = scrollTop
-  }
-}
-
-const observer = new IntersectionObserver(infiniteScroll)
-const limit = ref(50)
-const loadRef = ref<HTMLElement | null>(null)
-
 const onOpen = async () => {
   toggleDropDownState()
-  console.log('onOpen')
-  await nextTick()
-  observer.observe(loadRef.value as HTMLElement)
+  await setupObserver()
 }
 
 const onClose = () => {
   toggleDropDownState()
-  observer.disconnect()
+  abortObserver()
 }
+
+const showLoadMore = computed((): boolean =>
+  !!props.field.options?.length && !searchValue.value && !isLoading.value)
+
+const {
+  setupObserver,
+  reInitObserver,
+  abortObserver,
+} = useInfiniteScroll(showLoadMore.value, props.field.loadMore)
 </script>
 
 <template>
@@ -161,7 +154,7 @@ const onClose = () => {
       </template>
       <template #list-footer>
         <li
-          v-show="hasNextPage"
+          v-show="showLoadMore"
           ref="loadRef"
           class="loader"
         >
@@ -201,5 +194,12 @@ const onClose = () => {
   :deep(.vs__selected) {
     max-width: calc(100% - 2rem);
   }
+}
+
+.loader {
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #999;
 }
 </style>
