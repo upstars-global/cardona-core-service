@@ -7,6 +7,7 @@ import { VVariants } from '../../../../@model/vuetify'
 import type { PhoneBaseField } from '../../../../@model/templates/baseField'
 import { IconsList } from '../../../../@model/enums/icons'
 import 'flag-icons/css/flag-icons.min.css'
+import { getPhoneNumberWithPlus } from '../../../../helpers'
 
 interface PhoneFieldProps {
   modelValue: string
@@ -30,9 +31,7 @@ const cleaveOptions = {
 const localModelValue = computed({
   get: (): string => props.modelValue,
   set: (value: string) => {
-    const phoneWithPlus: string = localModelValue.value[0] !== '+' ? `+${value}` : value
-
-    emit('update:modelValue', phoneWithPlus)
+    emit('update:modelValue', getPhoneNumberWithPlus(value))
   },
 })
 
