@@ -92,6 +92,8 @@ const onSearch = debounce(async (search: string, loading: Function) => {
   }
 }, 250)
 
+const loadRef = ref<HTMLElement>()
+
 const onOpen = async () => {
   toggleDropDownState()
   await setupObserver()
@@ -109,7 +111,7 @@ const {
   setupObserver,
   reInitObserver,
   abortObserver,
-} = useInfiniteScroll(showLoadMore.value, props.field.loadMore)
+} = useInfiniteScroll(showLoadMore.value, props.field.loadMore, loadRef.value as HTMLElement)
 </script>
 
 <template>
