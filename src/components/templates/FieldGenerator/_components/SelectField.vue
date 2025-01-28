@@ -105,7 +105,7 @@ const onClose = () => {
   abortObserver()
 }
 
-const isInfiniteLoadingEnabled = computed(() => props.field.infiniteLoading)
+const isInfiniteLoadingEnabled = computed((): boolean => !!props.field.infiniteLoading)
 
 const showLoadMore = computed((): boolean =>
   isInfiniteLoadingEnabled.value
