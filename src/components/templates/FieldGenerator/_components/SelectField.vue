@@ -87,8 +87,10 @@ const onSearch = debounce(async (search: string, loading: Function) => {
   }
   finally {
     loading(false)
-    if (isInfiniteLoadingEnabled.value)
-      await reInitObserver()
+    if (isInfiniteLoadingEnabled.value) {
+      abortObserver()
+      await setupObserver()
+    }
   }
 }, 250)
 
@@ -116,9 +118,8 @@ const showLoadMore = computed((): boolean =>
 
 const {
   setupObserver,
-  reInitObserver,
   abortObserver,
-} = useInfiniteScroll(showLoadMore.value, () => props.field.loadMore(), loadRef)
+} = useInfiniteScroll(props.field.loadMore.bind(props.field), loadRef)
 </script>
 
 <template>
