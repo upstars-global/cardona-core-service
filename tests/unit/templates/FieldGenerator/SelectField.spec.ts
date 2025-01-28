@@ -6,7 +6,7 @@ import {
   checkImmediateFetchOnEmptyOptions,
   checkLoadingStateInput,
   checkOptionSearchActions, checkOptionsLength,
-  checkPlaceholderStatesAndFilter, defaultPropsSelect, field,
+  checkPlaceholderStatesAndFilter, checkPreloadOptionsByIds, defaultPropsSelect, field,
   options,
   setMountComponentSelect,
 } from '../shared-tests/select-field'
@@ -85,5 +85,18 @@ describe('SelectField', () => {
     const wrapper = getMountSelectField(props)
 
     await checkDisabledStateByProps(wrapper, { selector: '.select-field' })
+  })
+
+  it('Fetch options (preload values) with correct filter.ids when value is an object', async () => {
+    const wrapper = getMountSelectField(props)
+
+    await checkPreloadOptionsByIds(wrapper, {
+      value: { id: '1', name: 'Option 1' },
+      field: {
+        ...props.field,
+        preloadOptionsByIds: true,
+      },
+      expectedIds: ['1'],
+    })
   })
 })
