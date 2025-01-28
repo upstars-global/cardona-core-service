@@ -88,7 +88,8 @@ const onSearch = debounce(async (search: string, loading: Function) => {
   }
   finally {
     loading(false)
-    await reInitObserver()
+    if (isInfiniteLoadingEnabled.value)
+      await reInitObserver()
   }
 }, 250)
 
@@ -96,7 +97,8 @@ const loadRef = ref<HTMLElement>()
 
 const onOpen = async () => {
   toggleDropDownState()
-  await setupObserver()
+  if (isInfiniteLoadingEnabled.value)
+    await setupObserver()
 }
 
 const onClose = () => {
@@ -104,14 +106,20 @@ const onClose = () => {
   abortObserver()
 }
 
+const isInfiniteLoadingEnabled = computed(() => props.field.infiniteLoading)
+
 const showLoadMore = computed((): boolean =>
-  !!props.field.options?.length && !searchValue.value && !isLoading.value)
+  isInfiniteLoadingEnabled.value
+  && !!props.field.options?.length
+  && !searchValue.value
+  && !isLoading.value,
+)
 
 const {
   setupObserver,
   reInitObserver,
   abortObserver,
-} = useInfiniteScroll(showLoadMore.value, props.field.loadMore, loadRef.value as HTMLElement)
+} = useInfiniteScroll(showLoadMore.value, () => props.field.loadMore(), loadRef)
 </script>
 
 <template>
@@ -169,6 +177,24 @@ const {
           :icon="IconsList.ChevronDownIcon"
         />
       </template>
+      <template #list-footer>
+        <li
+          v-show="showLoadMore"
+          ref="loadRef"
+          class="loader"
+        >
+          Loading more options...
+        </li>
+      </template>
     </VueSelect>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.loader {
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #999;
+}
+</style>
