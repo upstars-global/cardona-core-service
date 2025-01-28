@@ -1,6 +1,7 @@
+import type { Ref } from 'vue'
 import { nextTick } from 'vue'
 
-export const useInfiniteScroll = (loadMoreCb: Function, loadRef: HTMLElement) => {
+export const useInfiniteScroll = (loadMoreCb: Function, loadRef: Ref<HTMLElement | undefined>) => {
   const infiniteScroll = async (entries: IntersectionObserverEntry[]) => {
     const [{ isIntersecting, target }] = entries
 
@@ -18,7 +19,7 @@ export const useInfiniteScroll = (loadMoreCb: Function, loadRef: HTMLElement) =>
 
   const setupObserver = async () => {
     await nextTick()
-    observer.observe(loadRef)
+    observer.observe(loadRef.value)
   }
 
   const abortObserver = () => {
