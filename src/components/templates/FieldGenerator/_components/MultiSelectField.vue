@@ -184,7 +184,7 @@ const {
           ref="loadRef"
           class="loader"
         >
-          Loading more options...
+          {{ $t('component.select.loadingMore') }}
         </li>
       </template>
     </VueSelect>
