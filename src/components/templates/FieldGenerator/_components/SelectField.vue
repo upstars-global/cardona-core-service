@@ -167,7 +167,7 @@ const {
         <li
           v-show="showLoadMore"
           ref="loadRef"
-          class="loader"
+          class="text-color-mute text-center pt-2 pb-3"
         >
           {{ $t('component.select.loadingMore') }}
         </li>
@@ -205,12 +205,5 @@ const {
   :deep(.vs__selected) {
     max-width: calc(100% - 2rem);
   }
-}
-
-.loader {
-  padding: 10px;
-  text-align: center;
-  font-size: 14px;
-  color: #999;
 }
 </style>

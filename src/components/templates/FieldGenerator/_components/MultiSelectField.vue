@@ -31,7 +31,7 @@ const emits = defineEmits<{
 }>()
 
 const isLoading = ref(false)
-const toggleDropDownState = useToggle()[1]
+const [, toggleDropDownState] = useToggle()
 
 const valueModel = computed<OptionsItem[]>({
   get: () =>
@@ -182,7 +182,7 @@ const {
         <li
           v-show="showLoadMore"
           ref="loadRef"
-          class="loader"
+          class="text-color-mute text-center pt-2 pb-3"
         >
           {{ $t('component.select.loadingMore') }}
         </li>
@@ -190,12 +190,3 @@ const {
     </VueSelect>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.loader {
-  padding: 10px;
-  text-align: center;
-  font-size: 14px;
-  color: #999;
-}
-</style>

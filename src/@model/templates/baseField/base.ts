@@ -110,53 +110,41 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
     dropdownList.style.position = 'fixed'
   }
 
+  async getOptions(search?: string, ids?: string[]) {
+    const { list = [] } = await store.dispatch(this.fetchOptionsActionName, {
+      perPage: 50,
+      pageNumber: this.pageNumber,
+      filter: {
+        search,
+        ...this.staticFilters,
+        ids,
+      },
+    })
+
+    return list?.map((option: string | T): OptionsItem | T =>
+      typeof option === 'string' ? { id: option, name: option } : option,
+    ) || []
+  }
+
   async fetchOptions(search?: string) {
     if (this.fetchOptionsActionName) {
       if (this.preloadOptionsByIds && this.value?.length && search === undefined) {
-        const { list: selectedOptions } = await store.dispatch(this.fetchOptionsActionName, {
-          perPage: 50,
-          filter: {
-            ids: this.value.map(item => item?.id || item),
-          },
-        })
+        const ids = this.value.map((item: OptionsItem) => item?.id || item)
 
-        this.selectedOptions = selectedOptions?.map((option: string | T): OptionsItem | T =>
-          typeof option === 'string' ? { id: option, name: option } : option,
-        ) || []
+        this.selectedOptions = await this.getOptions('', ids)
       }
-
-      const { list = [] } = await store.dispatch(this.fetchOptionsActionName, {
-        perPage: 50,
-        filter: {
-          search,
-          ...this.staticFilters,
-        },
-      })
-
-      const options = list?.map((option: string | T): OptionsItem | T =>
-        typeof option === 'string' ? { id: option, name: option } : option,
-      ) || []
+      const options = await this.getOptions(search)
 
       this.options = this.selectedOptions ? [...this.selectedOptions, ...options] : options
     }
   }
 
   async loadMore() {
-    const { list = [] } = await store.dispatch(this.fetchOptionsActionName, {
-      perPage: 50,
-      pageNumber: ++this.pageNumber,
-      filter: {
-        ...this.staticFilters,
-      },
-    })
+    this.pageNumber++
 
-    const options = list?.map((option: string | T): OptionsItem | T =>
-      typeof option === 'string' ? { id: option, name: option } : option,
-    ) || []
+    const options = await this.getOptions()
 
     this.options = [...this.options, ...options]
-
-    this.pageNumber++
   }
 }
 
