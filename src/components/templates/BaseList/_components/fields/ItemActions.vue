@@ -10,6 +10,7 @@ import { IS_TEST_ENV } from '../../../../../utils/constants'
 interface Props {
   item: any
   createPageName: string
+  detailsPageName?: string
   config: IBaseListConfig
   canUpdate: boolean
   canUpdateItem: boolean
@@ -57,6 +58,10 @@ const onUpdateItem = () => {
 const onCreateCopy = () => {
   router.push({ name: props.createPageName, params: { id: props.item.id } })
 }
+
+const onClickDetails = () => {
+  router.push({ name: props.detailsPageName, params: { id: props.item.id } })
+}
 </script>
 
 <template>
@@ -98,6 +103,17 @@ const onCreateCopy = () => {
       >
         <VListItemTitle data-test-id="status-toggle-text">
           {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
+        </VListItemTitle>
+      </VListItem>
+
+      <VListItem
+        v-if="config.withDetails"
+        :prepend-icon="IconsList.EyeIcon"
+        data-test-id="details"
+        @click="onClickDetails"
+      >
+        <VListItemTitle>
+          {{ $t('action.details') }}
         </VListItemTitle>
       </VListItem>
 
