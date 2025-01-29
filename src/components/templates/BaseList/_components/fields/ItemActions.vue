@@ -51,17 +51,9 @@ const isShowActions = computed(() => {
 
 const canShowEdit = computed(() => (props.canUpdate || props.canUpdateSeo) && props.canUpdateItem)
 
-const onUpdateItem = () => {
-  router.push(props.getUpdateRoute(props.item))
-}
-
-const onCreateCopy = () => {
-  router.push({ name: props.createPageName, params: { id: props.item.id } })
-}
-
-const onClickDetails = () => {
-  router.push({ name: props.detailsPageName, params: { id: props.item.id } })
-}
+const onUpdateItem = () => router.push(props.getUpdateRoute(props.item))
+const onCreateCopy = () => router.push({ name: props.createPageName, params: { id: props.item.id } })
+const onClickDetails = () => router.push({ name: props.detailsPageName, params: { id: props.item.id } })
 </script>
 
 <template>
