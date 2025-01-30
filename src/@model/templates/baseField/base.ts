@@ -110,14 +110,13 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
     dropdownList.style.position = 'fixed'
   }
 
-  async getOptions(search?: string, ids?: string[]) {
+  async getOptions(filters: { search?: string; ids?: string[] } = {}) {
     const { list = [] } = await store.dispatch(this.fetchOptionsActionName, {
       perPage: 50,
       pageNumber: this.pageNumber,
       filter: {
-        search,
         ...this.staticFilters,
-        ids,
+        ...filters,
       },
     })
 
@@ -131,9 +130,9 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
       if (this.preloadOptionsByIds && this.value?.length && search === undefined) {
         const ids = this.value.map((item: OptionsItem) => item?.id || item)
 
-        this.selectedOptions = await this.getOptions('', ids)
+        this.selectedOptions = await this.getOptions({ ids })
       }
-      const options = await this.getOptions(search)
+      const options = await this.getOptions({ search })
 
       this.options = this.selectedOptions ? [...this.selectedOptions, ...options] : options
     }
