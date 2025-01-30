@@ -83,6 +83,20 @@ describe('ItemActions.vue', () => {
     testOn.equalTextValue({ wrapper, testId: 'status-toggle-text' }, i18n.t('action.deactivate'))
   })
 
+  it(getTestTitle('Details'), async () => {
+    props = { ...props, config: { withDetails: true } }
+
+    const wrapper = getMountItemActions(props)
+
+    await openActions(wrapper)
+
+    testOn.existElement({ wrapper, testId: 'details' })
+
+    await clickTrigger({ wrapper, testId: 'details' })
+
+    expect(pushMock).toHaveBeenCalled()
+  })
+
   it(getTestTitle('Update'), async () => {
     props = { ...props, canUpdate: true, canUpdateSeo: true, canUpdateItem: true }
 
