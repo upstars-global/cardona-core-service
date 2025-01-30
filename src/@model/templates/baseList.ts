@@ -56,9 +56,6 @@ export interface IBaseListConfig {
   /** withDeactivationBySpecificAction - Вкл/выкл возможночть активировать/деактивировать элемента листа по отдельному action в baseStoreCore */
   readonly withDeactivationBySpecificAction?: boolean
 
-  /** withDetails - Вкл/выкл возможность перейти на Details page */
-  readonly withDetails?: boolean
-
   /** withSettings - Вкл/выкл настройки таблицы */
   readonly withSettings?: boolean
 
@@ -189,7 +186,6 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withSearch?: boolean
   readonly withDeactivation?: boolean
   readonly withDeactivationBySpecificAction?: boolean
-  readonly withDetails?: boolean
   readonly withSettings?: boolean
   readonly emptyText?: string
   readonly filterList: Array<FilterListItem>
@@ -236,7 +232,6 @@ export class BaseListConfig implements IBaseListConfig {
     withSearch,
     withDeactivation,
     withDeactivationBySpecificAction,
-    withDetails,
     withSettings,
     emptyText,
     filterList,
@@ -282,7 +277,6 @@ export class BaseListConfig implements IBaseListConfig {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
     this.withDeactivationBySpecificAction = withDeactivationBySpecificAction
-    this.withDetails = withDetails
     this.withSettings = withSettings
     this.emptyText = emptyText || i18n.t('emptyState.list')
     this.filterList = filterList || []

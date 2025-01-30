@@ -6,11 +6,12 @@ import { BaseListActionsSlots } from '../../../../../@model/templates/baseList'
 import { IconsList } from '../../../../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../../../../@model/vuetify'
 import { IS_TEST_ENV } from '../../../../../utils/constants'
+import { checkExistsPage } from '@/helpers'
 
 interface Props {
   item: any
   createPageName: string
-  detailsPageName?: string
+  detailsPageName: string
   config: IBaseListConfig
   canUpdate: boolean
   canUpdateItem: boolean
@@ -50,6 +51,7 @@ const isShowActions = computed(() => {
 })
 
 const canShowEdit = computed(() => (props.canUpdate || props.canUpdateSeo) && props.canUpdateItem)
+const canShowDetails = computed(() => checkExistsPage(props.detailsPageName))
 
 const onUpdateItem = () => router.push(props.getUpdateRoute(props.item))
 const onCreateCopy = () => router.push({ name: props.createPageName, params: { id: props.item.id } })
@@ -99,7 +101,7 @@ const onClickDetails = () => router.push({ name: props.detailsPageName, params: 
       </VListItem>
 
       <VListItem
-        v-if="config.withDetails"
+        v-if="canShowDetails"
         :prepend-icon="IconsList.EyeIcon"
         data-test-id="details"
         @click="onClickDetails"
