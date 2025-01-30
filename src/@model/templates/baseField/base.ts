@@ -127,8 +127,10 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
 
   async fetchOptions(search?: string) {
     if (this.fetchOptionsActionName) {
-      if (this.preloadOptionsByIds && this.value?.length && search === undefined) {
-        const ids = this.value.map((item: OptionsItem) => item?.id || item)
+      const isExistsValue = this.value?.length || this.value?.id
+
+      if (this.preloadOptionsByIds && isExistsValue && search === undefined) {
+        const ids = Array.isArray(this.value) ? this.value.map(item => item?.id || item) : [this.value?.id || this.value]
 
         this.selectedOptions = await this.getOptions({ ids })
       }
