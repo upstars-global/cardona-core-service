@@ -100,7 +100,10 @@ const onClickDetails = () => router.push({ name: props.detailsPageName, params: 
         </VListItemTitle>
       </VListItem>
 
-      <slot :name="BaseListActionsSlots.Details">
+      <slot
+        :name="BaseListActionsSlots.Details"
+        :item="item"
+      >
         <VListItem
           v-if="canShowDetails"
           :prepend-icon="IconsList.EyeIcon"
