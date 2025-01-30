@@ -165,6 +165,7 @@ describe('ItemActions.vue', () => {
     const slots = {
       [BaseListActionsSlots.PrependActionItem]: `<div data-test-id="${BaseListActionsSlots.PrependActionItem}">${props.item}</div>`,
       [BaseListActionsSlots.AppendActionItem]: `<div data-test-id="${BaseListActionsSlots.AppendActionItem}">${props.item}</div>`,
+      [BaseListActionsSlots.Details]: `<div data-test-id="${BaseListActionsSlots.Details}">${props.item}</div>`,
     }
 
     const wrapper = getMountItemActions(props, global, slots)
