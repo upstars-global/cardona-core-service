@@ -980,6 +980,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               />
             </template>
 
+            <template #details>
+              <slot
+                :name="BaseListActionsSlots.Details"
+                :item="item"
+                :page-name="DetailsPageName"
+              />
+            </template>
+
             <template
               v-if="checkSlotExistence(BaseListActionsSlots.AppendActionItem)"
               #[BaseListActionsSlots.AppendActionItem]

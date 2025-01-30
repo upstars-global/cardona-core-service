@@ -440,4 +440,5 @@ export interface BaseListItem {
 export enum BaseListActionsSlots {
   PrependActionItem = 'prepend-action-item',
   AppendActionItem = 'append-action-item',
+  Details = 'details',
 }
