@@ -8,7 +8,7 @@ import {
   checkImmediateFetchOnEmptyOptions,
   checkLoadingStateInput,
   checkOptionSearchActions, checkOptionsLength,
-  checkPlaceholderStatesAndFilter, defaultPropsSelect, field, openDropDownMenuOfSelector,
+  checkPlaceholderStatesAndFilter, checkPreloadOptionsByIds, defaultPropsSelect, field, openDropDownMenuOfSelector,
   options,
   setMountComponentSelect,
 } from '../shared-tests/select-field'
@@ -105,5 +105,21 @@ describe('MultiSelectField', () => {
     const wrapper = getMountMultiSelectField(props)
 
     await checkDisabledStateByProps(wrapper, { selector: '.vs--multiple' })
+  })
+
+  it('Fetch options (preload values) with correct filter.ids when value is an array of objects', async () => {
+    const wrapper = getMountMultiSelectField(props)
+
+    await checkPreloadOptionsByIds(wrapper, {
+      value: [
+        { id: '1', name: 'Option 1' },
+        { id: '2', name: 'Option 2' },
+      ],
+      field: {
+        ...props.field,
+        preloadOptionsByIds: true,
+      },
+      expectedIds: ['1', '2'],
+    })
   })
 })

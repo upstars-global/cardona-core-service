@@ -175,3 +175,5 @@ export const getMappedValueByManyMethods = <T = NumberOrString>(
   value: T,
   mappedMethods: Array<Function>,
 ): T => mappedMethods.reduce((updatedValue, mappedMethod) => mappedMethod(updatedValue), value)
+
+export const getPhoneNumberWithPlus = (value: string) => value.trim() && value[0] !== '+' ? `+${value}` : value
