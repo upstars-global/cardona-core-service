@@ -65,6 +65,6 @@ export class RatesBaseField extends BaseField implements IRatesBaseField {
     if (this.isCents && !this.withString)
       return multiplication(value, 100)
 
-    return +value
+    return this.withString ? value : +value
   }
 }
