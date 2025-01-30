@@ -6,7 +6,7 @@ import { BaseListActionsSlots } from '../../../../../@model/templates/baseList'
 import { IconsList } from '../../../../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../../../../@model/vuetify'
 import { IS_TEST_ENV } from '../../../../../utils/constants'
-import { checkExistsPage } from '@/helpers'
+import { checkExistsPage } from '../../../../../../src/helpers'
 
 interface Props {
   item: any
