@@ -980,7 +980,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               />
             </template>
 
-            <template #details>
+            <template #[BaseListActionsSlots.Details]>
               <slot
                 :name="BaseListActionsSlots.Details"
                 :item="item"
