@@ -428,4 +428,34 @@ describe('BaseSection.vue', () => {
     /// Verify that the router navigates to the not found page
     expect(pushMock).toHaveBeenCalledWith({ name: 'NotFound' })
   })
+
+  it('Redirect to ListPage on successful update page', async () => {
+    /// Spy on the store dispatch method
+    const mockStoreDispatch = vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
+
+    /// Mount the component in create mode
+    const wrapper = mountComponent({
+      pageType: PageType.Update,
+    })
+
+    /// Mock transformed form data
+    wrapper.vm.transformedForm = { id: '123' }
+
+    /// Call the onSave method
+    await wrapper.vm.onSave()
+
+    // Verify that the correct dispatch action is called
+    expect(mockStoreDispatch).toHaveBeenCalledWith('baseStoreCore/updateEntity', {
+      type: 'mock-form',
+      data: {
+        form: { id: '123' },
+        formRef: wrapper.vm.formRef,
+      },
+    })
+
+    /// Verify that the router navigates to the list page
+    expect(pushMock).toHaveBeenCalledWith({
+      name: 'mock-formList',
+    })
+  })
 })
