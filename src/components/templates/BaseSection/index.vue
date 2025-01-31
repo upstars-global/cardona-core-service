@@ -237,6 +237,13 @@ const onSubmit = async (isStay: boolean) => {
   await onSave()
 }
 
+const redirectToListOrPrevPage = () => {
+  if (props.config.backToTheHistoryLast && router.options.history.state.back)
+    return router.go(-1)
+
+  return router.push({ name: ListPageName })
+}
+
 const onSave = async () => {
   modal.hideModal(ModalsId.ConfirmModal)
   try {
@@ -258,6 +265,9 @@ const onSave = async () => {
         : await router.push({ name: ListPageName })
     }
 
+    if (isUpdatePage)
+      redirectToListOrPrevPage()
+
     if (onSubmitCallback)
       await onSubmitCallback(String(transformedForm.value?.id))
   }
@@ -270,10 +280,7 @@ const onSave = async () => {
 const onClickCancel = () => {
   if (props.config.isModalSection)
     return emits('on-cancel')
-  if (props.config.backToTheHistoryLast && router.options.history.state.back)
-    return router.go(-1)
-
-  return router.push({ name: ListPageName })
+  redirectToListOrPrevPage()
 }
 
 const removeModalId = 'form-item-remove-modal'
