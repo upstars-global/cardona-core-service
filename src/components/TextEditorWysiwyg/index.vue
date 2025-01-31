@@ -11,6 +11,7 @@ import { copyToClipboard } from '../../helpers/clipboard'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
+import { useEditorCaretHandler } from './useEditorCaretHandler'
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
@@ -39,9 +40,15 @@ interface Emits {
 const modal = inject('modal')
 
 const store = useStore()
+const globalEditor = ref()
+
+const serializeToContentWithVariable = (value: string): string => value
+  .replace(/{{\s*([^{}]+?)\s*}}/g, '&nbsp;<span class="variable-box">$1</span>&nbsp;')
+
+const { saveCaretPosition, restoreCaretPosition, observeDOMChanges } = useEditorCaretHandler(globalEditor)
 
 const content = computed({
-  get: () => props.modelValue.replace(/{{\s*([^{}]+?)\s*}}/g, '&nbsp;<span class="variable-box">$1</span>&nbsp;'),
+  get: () => serializeToContentWithVariable(props.modelValue),
   set: value => {
     const caretInfo = saveCaretPosition()
 
@@ -53,74 +60,8 @@ const content = computed({
   },
 })
 
-const globalEditor = ref()
 const isUpdateVar = computed(() => store.state.textEditor.isUpdateVar)
 const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
-
-function saveCaretPosition() {
-  const selection = window.getSelection()
-  if (!selection.rangeCount)
-    return null
-
-  const range = selection.getRangeAt(0)
-  const preCaretRange = range.cloneRange()
-
-  preCaretRange.selectNodeContents(globalEditor.value.el)
-  preCaretRange.setEnd(range.startContainer, range.startOffset)
-
-  return {
-    offset: preCaretRange.toString().length,
-    container: range.startContainer,
-  }
-}
-
-function observeDOMChanges(callback) {
-  const observer = new MutationObserver(() => {
-    observer.disconnect()
-    setTimeout(callback, 0)
-  })
-
-  observer.observe(globalEditor.value.el, { childList: true, subtree: true })
-}
-
-function restoreCaretPosition(caretInfo) {
-  if (!caretInfo || !globalEditor.value)
-    return
-
-  const selection = window.getSelection()
-  const range = document.createRange()
-
-  let currentOffset = 0
-
-  function findTextNode(node) {
-    if (node.nodeType === 3) {
-      const nextOffset = currentOffset + node.textContent.length
-      if (caretInfo.offset >= currentOffset && caretInfo.offset <= nextOffset) {
-        range.setStart(node, caretInfo.offset - currentOffset)
-        range.setEnd(node, caretInfo.offset - currentOffset)
-
-        return true
-      }
-      currentOffset = nextOffset
-    }
-    else {
-      for (const child of node.childNodes) {
-        if (findTextNode(child))
-          return true
-      }
-    }
-
-    return false
-  }
-
-  // Восстанавливаем каретку после обновления DOM
-  nextTick(() => {
-    if (findTextNode(globalEditor.value.el)) {
-      selection.removeAllRanges()
-      selection.addRange(range)
-    }
-  })
-}
 
 const setVariableTextBuffer = params => {
   store.dispatch('textEditor/setVariableTextBuffer', params)
