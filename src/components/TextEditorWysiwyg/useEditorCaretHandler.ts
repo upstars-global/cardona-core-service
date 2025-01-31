@@ -69,7 +69,6 @@ export function useEditorCaretHandler(editor: Ref<any>) {
   }
 
   return {
-    serializeToContentWithVariable,
     saveCaretPosition,
     observeDOMChanges,
     restoreCaretPosition,
