@@ -156,12 +156,6 @@ FroalaEditor.RegisterCommand('gallery', {
   },
 })
 
-function getContentWithVariablesStyle(content) {
-  const regex = /{{(.*?)}}/g
-
-  console.log(content.matchAll(regex))
-}
-
 const config = {
   placeholderText: props.placeholder,
   events: {
