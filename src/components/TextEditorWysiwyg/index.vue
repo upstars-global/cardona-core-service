@@ -48,7 +48,7 @@ const content = computed({
     emit('update:modelValue', value)
 
     nextTick(() => {
-      observeDOMChanges(() => restoreCaretPosition(caretInfo)) // 3️⃣ Дожидаемся рендера и восстанавливаем каретку
+      observeDOMChanges(() => restoreCaretPosition(caretInfo)) //  Дожидаемся рендера и восстанавливаем каретку
     })
   },
 })
@@ -113,7 +113,7 @@ function restoreCaretPosition(caretInfo) {
     return false
   }
 
-  // 🔥 Восстанавливаем каретку после обновления DOM
+  // Восстанавливаем каретку после обновления DOM
   nextTick(() => {
     if (findTextNode(globalEditor.value.el)) {
       selection.removeAllRanges()
@@ -240,8 +240,6 @@ const config = {
       const editorVariables = [...contentChanged.matchAll(regex)].map(([variableKey]) => variableKey.replace('{{', '').replace('}}', ''))
       const uniqueVariables = [...new Set(editorVariables)]
 
-      console.log(editor.html.get(true))
-
       if (uniqueVariables.isNotEmpty) {
         uniqueVariables.forEach((keyVar: string) => {
           const originVar = keyVar.trim()
@@ -250,18 +248,6 @@ const config = {
             const varFromBuffer = variableTextBuffer.value[originVar] ?? { ...defaultObjLocalisationParameters }
 
             setVariableByKey({ key: originVar, value: varFromBuffer })
-            editor.selection.restore()
-            editor.selection.save() // Сохраняем положение каретки
-
-            // const caretOffset = saveCaretPosition()
-            //
-            // editor.html.set(
-            //   editor.html
-            //     .get(true) // Параметр true нужен для возвращения HTML вместе с положением каретки текста
-            //     .replaceAll(` {{${originVar}}} `, `{{${originVar}}}`)
-            //     .replaceAll(`{{${originVar}}}`, `&nbsp;<span class="variable-box">{${originVar}}</span>&nbsp;`),
-            // )
-            // restoreCaretPosition(caretOffset)
           }
         })
 
