@@ -41,9 +41,7 @@ const modal = inject('modal')
 const store = useStore()
 
 const content = computed({
-  get: () => props.modelValue.replace(/{{(.*?)}}/g, '&nbsp<span class="variable-box">$1</span>&nbsp'),
-
-  // get: () => props.modelValue,
+  get: () => props.modelValue.replace(/{{\s*([^{}]+?)\s*}}/g, '&nbsp;<span class="variable-box">$1</span>&nbsp;'),
   set: value => {
     const caretInfo = saveCaretPosition()
 
