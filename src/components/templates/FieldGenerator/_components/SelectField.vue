@@ -78,7 +78,7 @@ watch(
 const searchValue = ref('')
 
 // Handlers
-const onSearch = debounce(async (search: string, loading: Function) => {
+const onSearchDebounced = debounce(async (search: string, loading: Function) => {
   loading(true)
 
   try {
@@ -93,6 +93,11 @@ const onSearch = debounce(async (search: string, loading: Function) => {
     }
   }
 }, 250)
+
+const onSearch = (search: string, loading: Function) => {
+  searchValue.value = search
+  onSearchDebounced(search, loading)
+}
 
 const loadRef = ref<HTMLElement>()
 
