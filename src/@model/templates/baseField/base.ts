@@ -111,6 +111,9 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
   }
 
   async getOptions(filters: { search?: string; ids?: string[] } = {}) {
+    if (filters.search?.length)
+      this.pageNumber = 1
+
     const { list = [] } = await store.dispatch(this.fetchOptionsActionName, {
       perPage: 50,
       pageNumber: this.pageNumber,
