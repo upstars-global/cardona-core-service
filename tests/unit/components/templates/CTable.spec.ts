@@ -137,7 +137,7 @@ describe('CTable', () => {
     const emittedValueForASC = wrapper.emitted('update:sortData')[0][0]
 
     /// Check that is emitted correct value
-    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'update:sortData', value: emittedValueForASC })
+    testOn.isCalledEmitEventValueToBe({ wrapper }, { event: 'update:sortData', value: emittedValueForASC })
 
     /// Update props
     await wrapper.setProps({
@@ -155,7 +155,7 @@ describe('CTable', () => {
     const emittedValueForDESC = wrapper.emitted('update:sortData')[1][0]
 
     /// Check that is emitted correct value
-    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'update:sortData', value: emittedValueForDESC, index: 1 })
+    testOn.isCalledEmitEventValueToBe({ wrapper }, { event: 'update:sortData', value: emittedValueForDESC, index: 1 })
 
     await wrapper.setProps({
       ...props,

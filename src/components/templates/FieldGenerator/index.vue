@@ -175,7 +175,12 @@ const validationLabel = computed(() => {
             'check-description': isCheckType,
           }"
         >
-          {{ modelValue.description }}
+          <slot
+            name="description"
+            :description="modelValue.description"
+          >
+            {{ modelValue.description }}
+          </slot>
         </span>
       </template>
     </Field>

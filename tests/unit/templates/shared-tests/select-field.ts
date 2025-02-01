@@ -119,3 +119,26 @@ export const checkDisabledStateByProps = async (wrapper: VueWrapper, { selector 
   /// Disabled props true
   testOn.existClass({ wrapper, selector }, expectedClass)
 }
+
+export const checkPreloadOptionsByIds = async (wrapper: VueWrapper, { value, field, expectedIds }: { value: OptionsItem | OptionsItem[]; field: SelectField; expectedIds: string[] }) => {
+  expect(wrapper.vm.isLoading).toBe(false)
+
+  await wrapper.setProps({
+    modelValue: value,
+    field: {
+      ...field,
+      preloadOptionsByIds: true,
+      options: null,
+      fetchOptions: async () =>
+        new Promise(resolve => setTimeout(() => resolve(expectedIds), 100)),
+    },
+  })
+
+  await nextTick()
+  expect(wrapper.vm.isLoading).toBe(true)
+
+  await new Promise(resolve => setTimeout(resolve, 150))
+  await nextTick()
+
+  expect(wrapper.vm.isLoading).toBe(false)
+}
