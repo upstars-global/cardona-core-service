@@ -429,13 +429,25 @@ describe('BaseSection.vue', () => {
     expect(pushMock).toHaveBeenCalledWith({ name: 'NotFound' })
   })
 
-  it('Redirect to ListPage on successful update page', async () => {
+  it('Redirect to ListPage or prev page on successful update page', async () => {
+    await router.replace({ path: '/detail' })
+    await router.isReady()
+
+    // Set router config `router.options.history.state.back = true`
+    Object.defineProperty(router.options.history, 'state', {
+      value: { back: true },
+      writable: true,
+    })
+
     /// Spy on the store dispatch method
     const mockStoreDispatch = vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
 
     /// Mount the component in create mode
     const wrapper = mountComponent({
       pageType: PageType.Update,
+      config: new BaseSectionConfig({
+        backToTheHistoryLast: true,
+      }),
     })
 
     /// Mock transformed form data
@@ -454,8 +466,6 @@ describe('BaseSection.vue', () => {
     })
 
     /// Verify that the router navigates to the list page
-    expect(pushMock).toHaveBeenCalledWith({
-      name: 'mock-formList',
-    })
+    expect(mockRouter.go).toHaveBeenCalled(-1)
   })
 })
