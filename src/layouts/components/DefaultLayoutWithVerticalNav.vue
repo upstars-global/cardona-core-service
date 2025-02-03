@@ -4,7 +4,6 @@ import { ref, watch } from 'vue'
 // Components
 import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
 import AppBreadcrumb from './AppBreadcrumb.vue'
-import navItems from '@/navigation/vertical'
 
 // @layouts plugin
 import { VerticalNavLayout } from '@layouts'
@@ -26,7 +25,7 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
 </script>
 
 <template>
-  <VerticalNavLayout :nav-items="navItems">
+  <VerticalNavLayout>
     <!-- 👉 navbar -->
     <template #navbar>
       <AppBreadcrumb />
