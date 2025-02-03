@@ -97,6 +97,15 @@ export default defineConfig({
     deps: {
       inline: ['vuetify'],
     },
+    coverage: {
+      provider: 'v8',
+      reportsDirectory: 'coverage',
+      reporter: ['text', 'html'],
+      all: true,
+      exclude: ['node_modules/', 'dist/', 'tests/', 'vite.config.ts'],
+      include: ['src/components/**/*.vue'],
+      excludeNodeModules: false,
+    },
   },
   define: { 'process.env': {} },
   resolve: {
