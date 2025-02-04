@@ -1,0 +1,99 @@
+name: Deploy staging and production
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-core-service-staging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "latest"
+          cache: "npm"
+
+      - name: Install yarn
+        run: npm i -g yarn
+
+      - name: Yarn install
+        run: yarn install
+
+      - name: Unit Tests
+        run: npm run test:unit
+
+      - name: Build
+        run: npm run build-cf
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-dist
+          path: ./server/dist
+
+  deploy-core-service-staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    needs: build-core-service-staging
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-dist
+          path: ./server/build-dist
+
+      - name: Debug Artifacts
+        run: |
+          echo "Checking uploaded artifacts..."
+          ls -la ./server
+
+      - name: Deploy app
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy ./server/build-dist --project-name=cardona-core-service
+
+      - name: Print deployment-url
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: echo $DEPLOYMENT_URL
+
+  deploy-core-service-production:
+    runs-on: ubuntu-latest
+    environment: production
+    needs: build-core-service-staging
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-dist
+          path: ./server/build-dist
+
+      - name: Debug Artifacts
+        run: |
+          echo "Checking uploaded artifacts..."
+          ls -la ./server
+
+      - name: Deploy app
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy ./server/build-dist --project-name=cardona-core-service
+
+      - name: Print deployment-url
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: echo $DEPLOYMENT_URL
