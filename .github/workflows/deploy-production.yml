@@ -4,7 +4,7 @@ on:
     branches:
       - master
 jobs:
-  deploy-core-service-production:
+  build-core-service-staging:
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -29,6 +29,30 @@ jobs:
       - name: Build
         run: npm run build-cf
 
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-dist
+          path: ./server/dist
+          retention-days: 30
+
+      - name: Output artifact ID
+        run: echo 'Artifact ID is ${{ steps.artifact-upload-step.outputs.artifact-id }}'
+
+
+  deploy-core-service-staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    needs: build-core-service-staging
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-dist
+
       - name: Deploy app
         id: deploy
         uses: cloudflare/wrangler-action@v3
@@ -42,4 +66,29 @@ jobs:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
         run: echo $DEPLOYMENT_URL
 
+  deploy-core-service-production:
+    runs-on: ubuntu-latest
+    environment: production
+    needs: build-core-service-staging
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-dist
+
+      - name: Deploy app
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy ./server/dist --project-name=cardona-core-service
+
+      - name: Print deployment-url
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: echo $DEPLOYMENT_URL
 
