@@ -33,7 +33,6 @@ jobs:
         with:
           name: build-dist
           path: ./server/dist
-          overwrite: true
 
   deploy-core-service-staging:
     runs-on: ubuntu-latest
@@ -54,7 +53,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./server/dist --project-name=cardona-core-service
+          command: pages deploy ./server/build-dist --project-name=cardona-core-service
 
       - name: Print deployment-url
         env:
@@ -80,7 +79,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./server/dist --project-name=cardona-core-service
+          command: pages deploy ./server/build-dist --project-name=cardona-core-service
 
       - name: Print deployment-url
         env:
