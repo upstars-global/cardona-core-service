@@ -114,11 +114,12 @@ const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
 
 const fetchActionName: string = props.config?.withCustomFetchList
-  ? `${moduleName}/fetch${entityName}List`
+  ? `${moduleName}/fetchEntityList`
   : 'baseStoreCore/fetchEntityList'
 
 const fetchReportActionName = 'baseStoreCore/fetchReport'
 const updateActionName = 'baseStoreCore/updateEntity'
+const toggleStatusActionName = 'baseStoreCore/toggleStatusEntity'
 
 const deleteActionName = props.config?.withCustomDelete
   ? `${moduleName}/deleteEntity`
@@ -180,6 +181,7 @@ const routerToUpdatePageId = item => {
 
 // Table
 const items = ref([])
+const isInitialState = ref(true)
 
 watch(
   () => items.value,
@@ -193,6 +195,8 @@ watch(
 const selectedFields = ref<TableField[]>([...fields])
 
 const isLoadingList = computed(() => {
+  if (isInitialState.value || isDebouncedSearch.value)
+    return true
   const indexSymbolNextDash = entityName.indexOf('-') + 1
 
   const entityNameForLoad = entityName.replace(
@@ -212,6 +216,7 @@ const isLoadingList = computed(() => {
     : store.getters.isLoadingEndpoint([
       listUrl,
       `${entityUrl}/update`,
+      `${entityUrl}/active/switch`,
       `${entityUrl}/delete`,
       ...props.config.loadingEndpointArr!,
     ])
@@ -219,11 +224,7 @@ const isLoadingList = computed(() => {
 
 const size = props.config?.small ? VSizes.Small : VSizes.Medium
 
-const emptyListText = computed(() =>
-  searchQuery.value || hasSelectedFilters.value || isDebouncedSearch.value
-    ? t('emptyState.emptyRequest')
-    : props.config.emptyText,
-)
+const emptyListText = computed(() => searchQuery.value || hasSelectedFilters.value ? t('emptyState.emptyRequest') : props.config.emptyText)
 
 // Sort
 const sortStorageKey = `${currentPageName}-${entityName}-sort`
@@ -261,7 +262,6 @@ const {
   linkGen,
   updateTotal,
   onChangePagination,
-  removePerPage,
   removePagination,
 } = paginationConfig
 
@@ -324,15 +324,19 @@ onChangePagination(() => {
 const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
 
 const getUpdateRoute = ({ id }): Location => {
-  return isExistsUpdatePage && (canUpdate || canUpdateSeo)
+  return isExistsUpdatePage && (canUpdateCb?.() ?? true)
     ? { name: UpdatePageName, params: { id } }
     : {}
 }
 
-const onClickToggleStatus = async ({ id, isActive }) => {
-  await store.dispatch(updateActionName, {
+const onClickToggleStatus = async ({ id, isActive, type = '' }) => {
+  const actionName = props.config.withDeactivationBySpecificAction
+    ? toggleStatusActionName
+    : updateActionName
+
+  await store.dispatch(actionName, {
     type: entityName,
-    data: { form: { id, isActive: !isActive } },
+    data: { form: { id, isActive: !isActive, type } },
     customApiPrefix: props.config?.customApiPrefix,
   })
 
@@ -585,11 +589,16 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
 
 onBeforeMount(async () => {
   await getList()
+  isInitialState.value = false
 })
 
 onUnmounted(() => {
   removePagination()
 })
+
+const editingId = ref<string | null>(null)
+
+const onOpenEdit = (id: string) => editingId.value = id
 
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
@@ -653,7 +662,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     <ListSearch
       v-if="!config.hideSearchBlock"
       v-model.trim="searchQuery"
-      class="pb-6"
+      class="pb-6 list-search"
       :right-search-btn="{
         canCreate: isShownCreateBtn,
         createPage: CreatePageName,
@@ -672,6 +681,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         <slot
           name="right-search-btn"
           :can-create="canCreate"
+          :can-update="canUpdate"
           :create-page-name="CreatePageName"
         />
       </template>
@@ -878,11 +888,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
           <PositionField
             v-else-if="field.type === ListFieldType.Priority"
-            :key="`${index}_${field.type}`"
+            :id="item.raw.id"
+            :key="item.raw.id"
             :position="cell"
             :size="field.size"
             :can-update="canUpdate"
+            :editing-id="editingId"
             @edit-position="(val) => onEditPosition(item.raw, val)"
+            @open-edit="onOpenEdit(item.raw.id)"
           />
 
           <ButtonField
@@ -935,7 +948,9 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             {{ cell }} %
           </template>
           <template v-else>
-            {{ cell }}
+            <div class="default-cell-value">
+              {{ cell }}
+            </div>
           </template>
           <ItemActions
             v-if="field.key === 'actions'"
@@ -994,6 +1009,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     >
       <ListPagination
         v-if="config?.pagination"
+        data-test-id="list-pagination"
         :model-value="currentPage"
         :link-gen="linkGenerator"
         :pagination-config="paginationConfig"
@@ -1018,6 +1034,11 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 }
 
 :deep(.c-table) {
+  .default-cell-value {
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   tr {
     td[data-c-field='actions'] {
       width: 3.5rem;

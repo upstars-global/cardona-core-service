@@ -1,6 +1,5 @@
 import { expect } from 'vitest'
 import { has } from 'lodash'
-import type { VueWrapper } from '@vue/test-utils'
 import type { GetWrapperElementPrams } from '../../utils'
 import { getWrapperElement } from '../../utils'
 
@@ -49,6 +48,7 @@ export enum InputAttributes {
   Src = 'src',
   Alt = 'alt',
   MaxLength = 'maxlength',
+  Style = 'style',
 
   // THIS WILL NEED IN FUTURE
   // Height = 'height',
@@ -82,6 +82,7 @@ export enum ExpectMethods {
   ToBeLessThan = 'toBeLessThan',
   ToHaveBeenCalledWith = 'toHaveBeenCalledWith',
   ToHaveBeenCalled = 'toHaveBeenCalled',
+  ToMatchObject = 'toMatchObject',
 }
 
 type WrapperPropertyValues = EventEmittersNames | EventEmittersNames | string | number
@@ -155,6 +156,15 @@ export const testOn = {
     methodExpect: ExpectMethods.ToContain,
   }),
 
+  existClassList: (params: Omit<GetWrapperElementPrams, 'all'>, classes: Array<string>) => {
+    const elementClasses
+      = getWrapperElement(params).classes()
+
+    classes.forEach(cls => {
+      expect(elementClasses).toContain(cls)
+    })
+  },
+
   notExistClasses: testCaseGenerator({
     property: { name: WrapperProperties.Classes },
     methodExpect: ExpectMethods.ToContain,
@@ -194,6 +204,11 @@ export const testOn = {
   isEqualPlaceholder: testCaseGenerator({
     methodExpect: ExpectMethods.ToEqual,
     property: { name: WrapperProperties.Attributes, value: InputAttributes.Placeholder },
+  }),
+
+  isEqualAttributeStyle: testCaseGenerator({
+    methodExpect: ExpectMethods.ToBe,
+    property: { name: WrapperProperties.Attributes, value: InputAttributes.Style },
   }),
 
   isCalledEmittedEvent: testCaseGenerator({
@@ -237,11 +252,30 @@ export const testOn = {
     methodExpect: ExpectMethods.ToBeTruthy,
     property: { name: WrapperProperties.Emitted, value: EventEmittersNames.Hide },
   }),
-  isCalledEmitEvent: (wrapper: VueWrapper, actionEmit: string) => {
+
+  isCalledEmitEvent: (params: GetWrapperElementPrams, actionEmit: string) => {
     testCaseGenerator({
       methodExpect: ExpectMethods.ToBeTruthy,
       property: { name: WrapperProperties.Emitted, value: actionEmit },
-    })({ wrapper })
+    })(params)
+  },
+
+  isCalledEmitEventValue: (params: GetWrapperElementPrams, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+    const wrapper = getWrapperElement(params)
+
+    expect(wrapper.emitted(event)[index || 0][0]).to.deep.include(value)
+  },
+
+  isCalledEmitEventValueToBe: (params: GetWrapperElementPrams, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+    const wrapper = getWrapperElement(params)
+
+    expect(wrapper.emitted(event)[index || 0][0]).toBe(value)
+  },
+
+  isCalledEmitEventValueToEqualDeep: (params: GetWrapperElementPrams, { event, value, index }: { event: string; value: unknown; index?: number }) => {
+    const wrapper = getWrapperElement(params)
+
+    expect(wrapper.emitted(event)[index || 0][0]).to.deep.equal(value)
   },
 
   checkedElementToBe: testCaseGenerator({
@@ -252,5 +286,16 @@ export const testOn = {
   inputTypeToBe: testCaseGenerator({
     methodExpect: ExpectMethods.ToBe,
     property: { name: WrapperProperties.Attributes, value: InputAttributes.Type },
+  }),
+
+  includePropertyStyle: testCaseGenerator({
+    methodExpect: ExpectMethods.ToMatchObject,
+    property: { name: WrapperProperties.Element, value: InputAttributes.Style, callable: false },
+  }),
+
+  notIncludePropertyStyle: testCaseGenerator({
+    methodExpect: ExpectMethods.ToMatchObject,
+    property: { name: WrapperProperties.Element, value: InputAttributes.Style, callable: false },
+    shouldInvert: true,
   }),
 }

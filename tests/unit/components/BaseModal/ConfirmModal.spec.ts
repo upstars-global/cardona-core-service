@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import ConfirmModal from '../../../../src/components/BaseModal/ConfirmModal.vue'
 import { clickTrigger, setMountComponent } from '../../utils'
 import { ModalSizes } from '../../../../src/@model/vuetify'
@@ -9,7 +9,7 @@ import {
   isEqualModalDescription,
   isEqualModalTitle,
 } from '../../templates/shared-tests/modal'
-import { isCalledEmitEvent } from '../../templates/shared-tests/general'
+import { testOn } from '../../templates/shared-tests/test-case-generator'
 
 const getMountConfirmModal = setMountComponent(ConfirmModal)
 
@@ -23,13 +23,6 @@ const defaultProps = {
 const globalConfig = { provide: { modal: mockModal } }
 
 describe('ConfirmModal', () => {
-  beforeAll(() => {
-    global.ResizeObserver = class {
-      observe() {}
-      unobserve() {}
-      disconnect() {}
-    }
-  })
   it('Opens modal and renders correct content', async () => {
     const wrapper = getMountConfirmModal(defaultProps, globalConfig)
 
@@ -46,7 +39,7 @@ describe('ConfirmModal', () => {
 
     await clickTrigger({ wrapper, testId: 'btn-add' })
 
-    isCalledEmitEvent(wrapper, 'on-click-modal-ok')
+    testOn.isCalledEmitEvent({ wrapper }, 'on-click-modal-ok')
   })
 
   it('emits "on-close-modal" on click btn close', async () => {

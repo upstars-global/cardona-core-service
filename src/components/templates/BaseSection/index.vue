@@ -2,7 +2,8 @@
 import { computed, inject, nextTick, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
-import store from '../../../store'
+import { useStore } from 'vuex'
+import { IconsList } from '../../../@model/enums/icons'
 import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
 import { basePermissions } from '../../../helpers/base-permissions'
 import { PageType } from '../../../@model/templates/baseSection'
@@ -13,6 +14,7 @@ import ConfirmModal from '../../../components/BaseModal/ConfirmModal.vue'
 import { ModalsId } from '../../..//@model/modalsId'
 import { useRedirectToNotFoundPage } from '../../../helpers/router'
 import { FormTabs } from '../../../@model/enums/formTabs'
+import BaseSectionLoading from './BaseSectionLoading.vue'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean
@@ -20,6 +22,7 @@ const props = withDefaults(defineProps<{
   pageType?: PageType
   useEntity: Function
   localEntityData?: Record<string, unknown>
+  entityId?: string
 }>(),
 {
   useEntity: undefined,
@@ -29,18 +32,23 @@ const props = withDefaults(defineProps<{
 },
 )
 
-const modal = inject('modal')
+const emits = defineEmits<{
+  (event: 'on-cancel'): void
+  (event: 'on-save'): void
+}>()
 
+const modal = inject('modal')
+const store = useStore()
 const route = useRoute()
 const router = useRouter()
 
 const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 
-const entityId: string = route.params?.id?.toString()
+const entityId: string = props.entityId || route.params?.id?.toString()
 const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
 
-const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb }
+const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb, onSerializeFormCb }
   = props.useEntity()
 
 const formRef = ref(null)
@@ -147,6 +155,8 @@ const validate = async () => {
   return valid
 }
 
+const existFieldName = (fieldName: string, form: unknown) => form && Object.keys(form).some(key => fieldName.includes(key))
+
 const setTabError = (fieldName: string) => {
   const fieldElement: HTMLElement | null = document.getElementById(`${fieldName}-field`)
   let tabName = ''
@@ -156,12 +166,13 @@ const setTabError = (fieldName: string) => {
 
     if (windowElement)
       tabName = windowElement.dataset.tab!
-    else if (form.value.hasOwnProperty(fieldName))
+    else if (existFieldName(fieldName, form.value))
       tabName = FormTabs.Main
-    else if (form.value.seo?.hasOwnProperty(fieldName))
+    else if (existFieldName(fieldName, form.value.seo))
       tabName = FormTabs.Seo
-    else if (form.value.fieldTranslations?.hasOwnProperty(fieldName))
+    else if (existFieldName(fieldName, form.value.fieldTranslations))
       tabName = FormTabs.Localization
+    else return
 
     const tabButton: HTMLElement | null = document.querySelector(
       `button[value=${tabName}]`,
@@ -192,6 +203,9 @@ const isCreateOrUpdateSeo = computed(
   () => (isCreatePage && canCreateSeo) || (isUpdatePage && canUpdateSeo),
 )
 
+const isShowSaveBtn = computed<boolean>(() => isUpdatePage && (canUpdate || canUpdateSeo))
+const isReadMode = computed<boolean>(() => isUpdatePage && !canUpdate && !canUpdateSeo)
+
 const onSubmit = async (isStay: boolean) => {
   if (!(await validate()) || isExistsEndpointsWithError.value)
     return
@@ -213,7 +227,9 @@ const onSubmit = async (isStay: boolean) => {
         : null,
     }
 
-  transformedForm.value = transformFormData(formData)
+  const transformedData = transformFormData(formData)
+
+  transformedForm.value = onSerializeFormCb ? onSerializeFormCb(transformedData, form) : transformedData
 
   if (onBeforeSubmitCb && !onBeforeSubmitCb(formData))
     return
@@ -233,6 +249,9 @@ const onSave = async () => {
       customApiPrefix: props.config?.customApiPrefix,
     })
 
+    if (props.config.isModalSection)
+      return emits('on-save')
+
     if (isCreatePage) {
       isStaySubmit.value && data
         ? await router.push({ name: UpdatePageName, params: { id: String(data?.id) } })
@@ -248,7 +267,15 @@ const onSave = async () => {
   }
 }
 
-const onClickCancel = () => router.push({ name: ListPageName })
+const onClickCancel = () => {
+  if (props.config.isModalSection)
+    return emits('on-cancel')
+  if (props.config.backToTheHistoryLast && router.options.history.state.back)
+    return router.go(-1)
+
+  return router.push({ name: ListPageName })
+}
+
 const removeModalId = 'form-item-remove-modal'
 
 // Remove
@@ -284,111 +311,120 @@ defineExpose({
 </script>
 
 <template>
-  <Form
-    v-if="form"
-    ref="formRef"
-    class="base-section"
-    @submit.prevent
-  >
-    <div class="position-relative">
-      <slot
-        :entity-id="entityId"
-        :entity-name="entityName"
-        :form="form"
-        :can-update="canUpdate"
-        :can-remove="canRemove"
-        :can-view-seo="canViewSeo"
-        :can-create-seo="canCreateSeo"
-        :can-update-seo="canUpdateSeo"
-        :on-click-remove="onClickRemove"
+  <BaseSectionLoading :loading="isLoadingPage">
+    <template #default>
+      <VAlert
+        v-if="isReadMode"
+        :icon="IconsList.EyeIcon"
+        :variant="VVariants.Tonal"
+        class="mb-6 px-4 py-2 font-weight-bolder"
+        :color="VColors.Info"
+        :text="$t('component.baseSection.readModeAlert')"
       />
-      <div
-        v-if="isLoadingPage && pageType"
-        class="position-absolute base-section__loading d-flex"
+
+      <Form
+        v-if="form"
+        ref="formRef"
+        class="base-section"
+        data-test-id="base-section"
+        @submit.prevent
       >
-        <VProgressCircular
-          indeterminate
-          class="ma-auto"
-        />
-      </div>
-    </div>
-    <slot
-      v-if="pageType"
-      name="actions"
-      :form="form"
-      :loading="isLoadingPage"
-    >
-      <div class="d-flex align-center mt-5">
-        <template v-if="isCreatePage">
-          <VBtn
-            class="mr-4"
-            :color="VColors.Primary"
-            data-testid="create-button"
-            :disabled="isLoadingPage"
-            @click="onSubmit(false)"
+        <div class="position-relative">
+          <slot
+            :entity-id="entityId"
+            :entity-name="entityName"
+            :form="form"
+            :can-update="canUpdate"
+            :can-remove="canRemove"
+            :can-view-seo="canViewSeo"
+            :can-create-seo="canCreateSeo"
+            :can-update-seo="canUpdateSeo"
+            :on-click-remove="onClickRemove"
+          />
+          <div
+            v-if="isLoadingPage && pageType"
+            class="position-absolute base-section__loading d-flex"
+            data-test-id="loading"
           >
-            {{ $t('action.createAndExit') }}
-          </VBtn>
-
-          <VBtn
-            class="mr-4"
-            :variant="VVariants.Outlined"
-            :color="VColors.Secondary"
-            data-testid="stay-button"
-            :disabled="isLoadingPage"
-            @click="onSubmit(true)"
-          >
-            {{ $t('action.createAndStay') }}
-          </VBtn>
-        </template>
-
-        <template v-if="isUpdatePage">
-          <VBtn
-            class="mr-4"
-            :color="VColors.Primary"
-            data-testid="save-button"
-            :disabled="isDisableSubmit || isLoadingPage"
-            @click="onSubmit(false)"
-          >
-            {{ $t('action.save') }}
-          </VBtn>
-        </template>
-
-        <VBtn
-          v-if="isExistsListPage"
-          :variant="VVariants.Outlined"
-          :color="VColors.Secondary"
-          data-testid="cancel-button"
-          @click.prevent="onClickCancel"
+            <VProgressCircular
+              indeterminate
+              class="ma-auto"
+            />
+          </div>
+        </div>
+        <slot
+          v-if="pageType"
+          name="actions"
+          :form="form"
+          :loading="isLoadingPage"
         >
-          {{ $t('action.cancel') }}
-        </VBtn>
-      </div>
-    </slot>
+          <hr
+            v-if="config.isModalSection"
+            class="mt-5"
+          >
+          <div
+            class="d-flex align-center mt-5"
+            :class="{ 'px-2 mt-4 mb-4 flex-row-reverse gap-4': config.isModalSection }"
+          >
+            <template v-if="isCreatePage">
+              <VBtn
+                class="mr-4"
+                :color="VColors.Primary"
+                data-test-id="create-button"
+                :disabled="isLoadingPage"
+                @click="onSubmit(false)"
+              >
+                {{ $t('action.createAndExit') }}
+              </VBtn>
 
-    <ConfirmModal
-      v-if="!config?.withoutConfirmModal"
-      :modal-id="ModalsId.ConfirmModal"
-      @on-click-modal-ok="onSave"
-    />
-    <RemoveModal
-      v-if="!config?.withoutDeleteModal"
-      :remove-modal-id="removeModalId"
-      :entity-name="entityName"
-      @on-click-modal-ok="confirmRemoveModal"
-    />
-  </Form>
+              <VBtn
+                class="mr-4"
+                :variant="VVariants.Outlined"
+                :color="VColors.Secondary"
+                data-test-id="stay-button"
+                :disabled="isLoadingPage"
+                @click="onSubmit(true)"
+              >
+                {{ $t('action.createAndStay') }}
+              </VBtn>
+            </template>
+
+            <VBtn
+              v-if="isShowSaveBtn"
+              class="mr-4"
+              :color="VColors.Primary"
+              data-test-id="save-button"
+              :disabled="isDisableSubmit || isLoadingPage"
+              @click="onSubmit(false)"
+            >
+              {{ $t('action.save') }}
+            </VBtn>
+
+            <VBtn
+              v-if="isExistsListPage || props.config.backToTheHistoryLast"
+              :variant="VVariants.Outlined"
+              :color="VColors.Secondary"
+              data-test-id="cancel-button"
+              @click.prevent="onClickCancel"
+            >
+              {{ $t('action.cancel') }}
+            </VBtn>
+          </div>
+        </slot>
+
+        <ConfirmModal
+          v-if="!config?.withoutConfirmModal"
+          :modal-id="ModalsId.ConfirmModal"
+          @on-click-modal-ok="onSave"
+        />
+        <RemoveModal
+          v-if="!config?.withoutDeleteModal"
+          :remove-modal-id="removeModalId"
+          :entity-name="entityName"
+          data-test-id="remove-modal"
+          @on-click-modal-ok="confirmRemoveModal"
+        />
+      </Form>
+    </template>
+  </BaseSectionLoading>
 </template>
-
-<style lang="scss" scoped>
-.base-section {
-  &__loading {
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: rgb(var(--v-theme-surface), var(--v-medium-emphasis-opacity));
-    z-index: 5;
-  }
-}
-</style>

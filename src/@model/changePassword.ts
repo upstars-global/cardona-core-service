@@ -10,7 +10,7 @@ export class ChangePassword {
     this.password = new PasswordBaseField({
       key: 'password',
       label: i18n.t('placeholder.newPassword'),
-      validationRules: { required: true, password: true },
+      validationRules: { required: true, password: true, max: 255 },
       withPasswordGenerator: true,
       showPassword: true,
     })

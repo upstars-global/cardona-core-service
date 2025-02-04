@@ -1,13 +1,24 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises } from '@vue/test-utils'
 import { nextTick } from 'vue'
+import { createStore } from 'vuex'
 import ConditionsField from '../../../../src/components/templates/FieldGenerator/_components/ConditionsField.vue'
-import {getSelectorTestId, getWrapperElement, setMountComponent} from '../../utils'
+import { getSelectorTestId, getWrapperElement, setMountComponent } from '../../utils'
 import { onDisabledInput, testOnValidPlaceholder } from '../shared-tests/text-input-fields'
 import en from '../../../../src/plugins/i18n/locales/en.json'
 import { testOn } from '../shared-tests/test-case-generator'
 
-const getMountConditionsField = setMountComponent(ConditionsField)
+const mockStore = createStore({
+  getters: {
+    'abilityCan': () => vi.fn(() => true),
+    'appConfigCore/allCurrencies': vi.fn(() => ['USD', 'EUR', 'CAD']),
+  },
+})
+
+const getMountConditionsField = props => setMountComponent(ConditionsField)(props, {
+  plugins: [mockStore],
+})
 
 const conditions = Object.keys(en.component.conditions)
 
@@ -79,13 +90,15 @@ describe('ConditionsField.vue', () => {
   it('Disables input and variable clicking when disabled is true', async () => {
     const wrapper = getMountConditionsField({ ...defaultProps, disabled: true }) as VueWrapper
 
+    await flushPromises()
+
     onDisabledInput({ wrapper, selector: 'textarea' })
-    testOn.existClass({ wrapper, selector: '.v-row' }, 'pointer-events-none')
+    testOn.existClass({ wrapper, testId: 'condition-variable-item' }, 'pointer-events-none')
 
     const conditionItem = getVariableItemElement(wrapper)
 
     await conditionItem?.trigger('click')
 
-    testOn.isEqualEmittedValue({ wrapper }, undefined)
+    testOn.isEqualEmittedValue({ wrapper }, [[`${defaultProps.modelValue} ${conditions[0]}`]])
   })
 })

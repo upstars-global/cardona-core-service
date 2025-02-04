@@ -1,4 +1,4 @@
-import { beforeAll, describe, it } from 'vitest'
+import { describe, it } from 'vitest'
 import ConfirmationModal from '../../../../src/components/BaseModal/ConfirmationModal.vue'
 import { clickTrigger, setMountComponent } from '../../utils'
 import { ModalSizes } from '../../../../src/@model/vuetify'
@@ -10,7 +10,6 @@ import {
   isEqualModalDescription,
   isEqualModalTitle,
 } from '../../templates/shared-tests/modal'
-import { isCalledEmitEvent } from '../../templates/shared-tests/general'
 
 const getMountConfirmationModal = setMountComponent(ConfirmationModal)
 
@@ -28,13 +27,6 @@ const testIdConfirmBtn = 'btn-confirm'
 const btnLoadingClass = 'v-btn--loading'
 
 describe('ConfirmationModal', () => {
-  beforeAll(() => {
-    global.ResizeObserver = class {
-      observe() {}
-      unobserve() {}
-      disconnect() {}
-    }
-  })
   it('Opens modal and renders correct content', async () => {
     const wrapper = getMountConfirmationModal(defaultProps, globalConfig)
 
@@ -60,6 +52,6 @@ describe('ConfirmationModal', () => {
     await callActionShowForInternalBaseModal(wrapper)
 
     await clickTrigger({ wrapper, testId: testIdConfirmBtn })
-    isCalledEmitEvent(wrapper, 'confirmed')
+    testOn.isCalledEmitEvent({ wrapper }, 'confirmed')
   })
 })

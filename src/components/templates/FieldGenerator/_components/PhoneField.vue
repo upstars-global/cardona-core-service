@@ -7,6 +7,7 @@ import { VVariants } from '../../../../@model/vuetify'
 import type { PhoneBaseField } from '../../../../@model/templates/baseField'
 import { IconsList } from '../../../../@model/enums/icons'
 import 'flag-icons/css/flag-icons.min.css'
+import { getPhoneNumberWithPlus } from '../../../../helpers'
 
 interface PhoneFieldProps {
   modelValue: string
@@ -30,9 +31,7 @@ const cleaveOptions = {
 const localModelValue = computed({
   get: (): string => props.modelValue,
   set: (value: string) => {
-    const phoneWithPlus: string = localModelValue.value[0] !== '+' ? `+${value}` : value
-
-    emit('update:modelValue', phoneWithPlus)
+    emit('update:modelValue', getPhoneNumberWithPlus(value))
   },
 })
 
@@ -82,8 +81,8 @@ const appendInnerIcon = computed(() => {
       class="v-input pl-4"
       :append-inner-icon="appendInnerIcon"
       :class="{ 'pl-12': phoneFlag, 'v-input--error': errors }"
-      @keydown="validateValue"
       data-test-id="field-wrapper"
+      @keydown="validateValue"
     >
       <Cleave
         v-model="localModelValue"
@@ -104,6 +103,7 @@ const appendInnerIcon = computed(() => {
 .phone-field {
   &--disabled {
     background: rgb(var(--v-theme-grey-100));
+    color: rgba(var(--v-theme-grey-500));
   }
 }
 .flag {

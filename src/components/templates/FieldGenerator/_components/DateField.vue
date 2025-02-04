@@ -8,12 +8,14 @@ import type { DateBaseField } from '../../../../@model/templates/baseField'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
 import { getISOStringWithoutTimezone } from '../../../../helpers/date'
 import { dateSeparators } from '../../../../@model/date'
+import { IconsList } from '../../../../@model/enums/icons'
 
 const props = withDefaults(
   defineProps<{
     modelValue: string
     field: DateBaseField
     errors?: boolean
+    disabled: boolean
   }>(),
   {
     modelValue: '',
@@ -142,11 +144,19 @@ const configTo = computed(() => {
     maxDate: props.field?.maxDateTo || '',
   }
 })
+
+const dateFromRef = ref()
+const dateToRef = ref()
+
+const onOpenByAppendInner = dateRef => {
+  dateRef.refFlatPicker.fp.open()
+}
 </script>
 
 <template>
   <AppDateTimePicker
     v-if="!field.isRangeMode"
+    ref="dateFromRef"
     v-model="modelValue"
     :class="{ error: errors }"
     :placeholder="field.placeholder || field.label"
@@ -157,30 +167,41 @@ const configTo = computed(() => {
       ...field.config,
     }"
     data-test-id="single-picker"
+    :disabled="disabled"
+    :append-inner-icon="IconsList.CalendarIcon"
+    @click:append-inner="onOpenByAppendInner(dateFromRef)"
   />
   <div
     v-else
     class="date-time-base-field d-flex align-center"
   >
     <AppDateTimePicker
+      ref="dateFromRef"
       :is-invalid="Boolean(errors)"
       :model-value="startedAt"
       :class="{ error: errors }"
       :config="configFrom"
       :placeholder="$t('common.dateFrom')"
-      @update:model-value="(val) => setRangeDate(val)"
       data-test-id="from"
+      :disabled="disabled"
+      :append-inner-icon="IconsList.CalendarIcon"
+      @update:model-value="(val) => setRangeDate(val)"
+      @click:append-inner="onOpenByAppendInner(dateFromRef)"
     />
-    <span class="mx-1"> – </span>
+    <span class="mx-2"> – </span>
     <AppDateTimePicker
+      ref="dateToRef"
       :key="startedAt"
       :is-invalid="Boolean(errors)"
       :model-value="endedAt"
       :class="{ error: errors }"
       :config="configTo"
       :placeholder="$t('common.dateTo')"
-      @update:model-value="(val) => setRangeDate(val, false)"
       data-test-id="to"
+      :disabled="disabled"
+      :append-inner-icon="IconsList.CalendarIcon"
+      @update:model-value="(val) => setRangeDate(val, false)"
+      @click:append-inner="onOpenByAppendInner(dateToRef)"
     />
   </div>
 </template>

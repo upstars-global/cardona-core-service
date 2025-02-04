@@ -53,6 +53,9 @@ export interface IBaseListConfig {
   /** withDeactivation - Вкл/выкл возможночть активировать/деактивировать элемента листа */
   readonly withDeactivation?: boolean
 
+  /** withDeactivationBySpecificAction - Вкл/выкл возможночть активировать/деактивировать элемента листа по отдельному action в baseStoreCore */
+  readonly withDeactivationBySpecificAction?: boolean
+
   /** withSettings - Вкл/выкл настройки таблицы */
   readonly withSettings?: boolean
 
@@ -182,6 +185,7 @@ export interface IBaseListConfig {
 export class BaseListConfig implements IBaseListConfig {
   readonly withSearch?: boolean
   readonly withDeactivation?: boolean
+  readonly withDeactivationBySpecificAction?: boolean
   readonly withSettings?: boolean
   readonly emptyText?: string
   readonly filterList: Array<FilterListItem>
@@ -227,6 +231,7 @@ export class BaseListConfig implements IBaseListConfig {
   constructor({
     withSearch,
     withDeactivation,
+    withDeactivationBySpecificAction,
     withSettings,
     emptyText,
     filterList,
@@ -271,6 +276,7 @@ export class BaseListConfig implements IBaseListConfig {
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
+    this.withDeactivationBySpecificAction = withDeactivationBySpecificAction
     this.withSettings = withSettings
     this.emptyText = emptyText || i18n.t('emptyState.list')
     this.filterList = filterList || []
@@ -357,6 +363,12 @@ export interface IBaseSectionConfig {
 
   /** withoutConfirmModal - Флаг для скрытия модалки подтверждения нужно для использования BaseSection внутри модалки */
   readonly withoutConfirmModal?: boolean
+
+  /** backToTheHistoryLast - Кнопка Cancel возвращает не предыдущую страницу, если такая есть в истории роута */
+  readonly backToTheHistoryLast?: boolean
+
+  /** isModalSection - Флаг для отображения секции в модалке. Нужно использовать emits on-save, on-cancel */
+  readonly isModalSection?: boolean
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to base section model
@@ -371,6 +383,8 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly ignoreSeoPermission?: boolean
   readonly withoutDeleteModal?: boolean
   readonly withoutConfirmModal?: boolean
+  readonly backToTheHistoryLast?: boolean
+  readonly isModalSection?: boolean
   constructor(data: IBaseSectionConfig) {
     this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
@@ -383,6 +397,8 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
     this.ignoreSeoPermission = data?.ignoreSeoPermission || false
     this.withoutDeleteModal = data?.withoutDeleteModal || false
     this.withoutConfirmModal = data?.withoutConfirmModal || false
+    this.backToTheHistoryLast = data?.backToTheHistoryLast || false
+    this.isModalSection = data?.isModalSection || false
   }
 }
 

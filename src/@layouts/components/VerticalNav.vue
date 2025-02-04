@@ -266,6 +266,10 @@ const defaultRoute = { path: '/' }
     // overflow-y: auto;
   }
 
+  .ps {
+    position: static;
+  }
+
   .nav-item-title {
     overflow: hidden;
     margin-inline-end: auto;

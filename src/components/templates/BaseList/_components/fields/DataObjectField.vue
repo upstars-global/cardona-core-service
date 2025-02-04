@@ -13,13 +13,17 @@ defineProps<{
       :key="name"
       class="d-flex align-start"
     >
-      <span class="mr-1">
+      <span
+        class="mr-1"
+        :data-test-id="`key-${name}`"
+      >
         {{ `${name}:` }}
       </span>
 
       <span
         v-if="isEmptyString(value) || isNullOrUndefinedValue(value)"
         class="font-weight-medium text-color-placeholder-disabled"
+        :data-test-id="`empty-value-${name}`"
       >
         {{ String($t('common.empty')).toLowerCase() }}
       </span>
@@ -27,6 +31,7 @@ defineProps<{
       <span
         v-else
         class="font-weight-medium"
+        :data-test-id="`value-${name}`"
       >
         {{ value }}
       </span>

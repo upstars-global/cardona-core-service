@@ -30,7 +30,7 @@ const getLoaderSlug = (url: string, loaderSlug: string): string =>
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 class ApiService {
-  static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}, retryCount = 5, retryDelay = 1000) {
+  static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}, retryCount = 0, retryDelay = 1000) {
     const router = useRouter()
     const route = useRoute()
 
@@ -94,12 +94,13 @@ class ApiService {
       return data
     }
     catch (error: any) {
-      if (retryCount > 0 && (!error?.description || error?.type === 'INTERNAL')) {
-        console.log(`Request failed. Waiting ${retryDelay / 1000} sec before next try. Count: ${retryCount}`)
-        await delay(retryDelay)
-
-        return this.request(payload, config, retryCount - 1, retryDelay * 2)
-      }
+      // TODO BAC-4018
+      // if (retryCount > 0 && (!error?.description || error?.type === 'INTERNAL')) {
+      //   console.log(`Request failed. Waiting ${retryDelay / 1000} sec before next try. Count: ${retryCount}`)
+      //   await delay(retryDelay)
+      //
+      //   return this.request(payload, config, retryCount - 1, retryDelay * 2)
+      // }
 
       const isLoginPage: boolean = route?.name === 'Login'
       const isInvalidToken = isInvalidTokenError(error)

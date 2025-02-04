@@ -14,8 +14,7 @@ const props = withDefaults(defineProps<{
   withLabel?: boolean
   withInfo?: boolean
   disabled?: boolean
-  size?: string // TODO: refactor sizes,
-
+  size?: string // TODO: refactor sizes
 }>(),
 {
   withLabel: true,
@@ -31,8 +30,7 @@ const store = useStore()
 
 const canView = computed<boolean>(() => {
   return props.modelValue?.permission ? store.getters.abilityCan(props.modelValue.permission, 'view') : true
-},
-)
+})
 
 const isCheckType = computed(
   () => props.modelValue instanceof SwitchBaseField || props.modelValue instanceof CheckBaseField,
@@ -68,6 +66,18 @@ const onSearch = (search: string) => emits('search', search)
 const canUpdate = computed<boolean>(() =>
   props.modelValue?.permission ? store.getters.abilityCan(props.modelValue?.permission, PermissionLevel.update) : true,
 )
+
+const notFilledDateRange = computed(() => {
+  return props.modelValue?.isRangeMode && fieldModel.value?.length && !fieldModel.value?.split(props.modelValue.separator)[1]?.length
+})
+
+const allCurrencies = computed<string[]>(() => store.getters['appConfigCore/allCurrencies'])
+
+const validationLabel = computed(() => {
+  const isCurrencyLabel = allCurrencies.value.includes(props.modelValue.label)
+
+  return isCurrencyLabel ? props.modelValue.label : props.modelValue.label.toLowerCase()
+})
 </script>
 
 <template>
@@ -75,6 +85,7 @@ const canUpdate = computed<boolean>(() =>
     v-if="canView"
     :id="`${modelValue?.key}-field`"
     class="mb-0 field-generator"
+    data-test-id="field-generator"
     :class="formGroupClasses"
   >
     <VLabel
@@ -104,18 +115,18 @@ const canUpdate = computed<boolean>(() =>
     <Field
       v-model="fieldModel"
       :name="modelValue.id"
-      :label="modelValue.label"
+      :label="validationLabel"
       :rules="rules"
       :validate-on-blur="false"
       :validate-on-change="false"
       :validate-on-input="false"
-      validate-on-model-update
+      :validate-on-model-update="!notFilledDateRange"
     >
       <template #default="{ errorMessage }">
         <div :class="{ 'd-flex align-center': isCheckTypeWithInfo }">
           <Component
             :is="localValue"
-            :id="modelValue.id"
+            :id="`${modelValue.id}-field`"
             v-model="fieldModel"
             :options="options"
             :field="modelValue"
@@ -136,6 +147,7 @@ const canUpdate = computed<boolean>(() =>
                   v-if="withInfo && modelValue.info"
                   :icon="IconsList.InfoIcon"
                   v-bind="props"
+                  data-test-id="info-with-type-check"
                   class="check-type tooltip-icon ml-1 align-text-top text-grey-500"
                 />
               </template>
@@ -158,11 +170,17 @@ const canUpdate = computed<boolean>(() =>
         <span
           v-else-if="modelValue.description"
           class="mt-1 text-color-mute text-body-2"
+          data-test-id="description"
           :class="{
             'check-description': isCheckType,
           }"
         >
-          {{ modelValue.description }}
+          <slot
+            name="description"
+            :description="modelValue.description"
+          >
+            {{ modelValue.description }}
+          </slot>
         </span>
       </template>
     </Field>
