@@ -46,7 +46,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-dist
-          path: ./server
+          path: ./server/build-dist
 
       - name: Debug Artifacts
         run: |
@@ -78,7 +78,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-dist
-          path: ./server
+          path: ./server/build-dist
 
       - name: Debug Artifacts
         run: |
