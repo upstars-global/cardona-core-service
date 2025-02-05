@@ -1,5 +1,5 @@
 import type { Router } from 'vue-router'
-import { useCookie } from '../../@core/composable/useCookie'
+import { useCookie } from '../@core/composable/useCookie'
 import store from '@/store'
 
 export const setupGuards = (router: Router) => {

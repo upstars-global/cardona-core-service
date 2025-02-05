@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
 
 import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
@@ -13,15 +13,7 @@ import authV2MaskLight from '@images/pages/misc-mask-light.png'
 const email = ref('')
 
 const authThemeImg = useGenerateImageVariant(authV2ForgotPasswordIllustrationLight, authV2ForgotPasswordIllustrationDark)
-
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
-
-definePage({
-  meta: {
-    layout: 'blank',
-    unauthenticatedOnly: true,
-  },
-})
 </script>
 
 <template>

@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
-import { useGenerateImageVariant } from '../@core/composable/useGenerateImageVariant';
+import { ref } from 'vue'
 
 import { VForm } from 'vuetify/components/VForm'
+import { useGenerateImageVariant } from '../@core/composable/useGenerateImageVariant'
 
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
+import AuthProvider from '../pages/authentication/AuthProvider.vue'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
@@ -22,13 +21,6 @@ const imageVariant = useGenerateImageVariant(authV2RegisterIllustrationLight,
   authV2RegisterIllustrationBorderedDark, true)
 
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
-
-definePage({
-  meta: {
-    layout: 'blank',
-    unauthenticatedOnly: true,
-  },
-})
 
 const form = ref({
   username: '',

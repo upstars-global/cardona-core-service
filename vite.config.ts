@@ -3,7 +3,6 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { defineConfig } from 'vite'
-import VueDevTools from 'vite-plugin-vue-devtools'
 import Layouts from 'vite-plugin-vue-layouts'
 import vuetify from 'vite-plugin-vuetify'
 import Components from 'unplugin-vue-components/vite'
@@ -46,22 +45,6 @@ export default defineConfig({
         },
       ],
     }),
-
-    // Docs: https://github.com/antfu/unplugin-auto-import#unplugin-auto-import
-    /* AutoImport({
-      imports: ['vue', VueRouterAutoImports, '@vueuse/core', '@vueuse/math', 'vue-i18n', 'pinia'],
-      dirs: [
-        './src/@core/utils',
-        './src/@core/composable/',
-        './src/composables/',
-        './src/utils/',
-        './src/plugins/!*!/composables/!*',
-      ],
-      vueTemplate: true,
-
-      // ℹ️ Disabled to avoid confusion & accidental usage
-      ignore: ['useCookies', 'useStorage'],
-    }), */
 
     // Docs: https://github.com/intlify/bundle-tools/tree/main/packages/unplugin-vue-i18n#intlifyunplugin-vue-i18n
     VueI18nPlugin({
