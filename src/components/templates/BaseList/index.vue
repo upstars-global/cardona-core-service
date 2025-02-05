@@ -106,6 +106,7 @@ const parseEntityNameWithTabs = (entityName: string) => {
 // Pages
 const CreatePageName = pageName ? `${pageName}Create` : `${parseEntityNameWithTabs(entityName)}Create`
 const UpdatePageName = pageName ? `${pageName}Update` : `${parseEntityNameWithTabs(entityName)}Update`
+const DetailsPageName = pageName ? `${pageName}Card` : `${parseEntityNameWithTabs(entityName)}Card`
 
 const isExistsCreatePage = checkExistsPage(CreatePageName)
 const isExistsUpdatePage = checkExistsPage(UpdatePageName)
@@ -957,6 +958,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :key="item.raw"
             :item="item.raw"
             :create-page-name="CreatePageName"
+            :details-page-name="DetailsPageName"
             :can-update="canUpdate"
             :can-create="canCreate"
             :can-update-seo="canUpdateSeo"
@@ -975,6 +977,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
                 :name="BaseListActionsSlots.PrependActionItem"
                 :item="item"
                 :can-update="canUpdate"
+              />
+            </template>
+
+            <template #[BaseListActionsSlots.Details]>
+              <slot
+                :name="BaseListActionsSlots.Details"
+                :item="item"
+                :page-name="DetailsPageName"
               />
             </template>
 

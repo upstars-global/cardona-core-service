@@ -50,7 +50,7 @@ export interface IBaseListConfig {
   /** withSearch - Вкл/выкл поиск в листе */
   readonly withSearch?: boolean
 
-  /** withDeactivation - Вкл/выкл возможночть активировать/деактивировать элемента листа */
+  /** withDeactivation - Вкл/выкл возможность активировать/деактивировать элемента листа */
   readonly withDeactivation?: boolean
 
   /** withDeactivationBySpecificAction - Вкл/выкл возможночть активировать/деактивировать элемента листа по отдельному action в baseStoreCore */
@@ -440,4 +440,5 @@ export interface BaseListItem {
 export enum BaseListActionsSlots {
   PrependActionItem = 'prepend-action-item',
   AppendActionItem = 'append-action-item',
+  Details = 'details',
 }
