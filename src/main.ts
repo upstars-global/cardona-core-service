@@ -3,7 +3,6 @@ import '@/@fake-db/db'
 import './@model/validations'
 import './extensions'
 import VueFroala from './libs/froala'
-import { router } from './router'
 import { initDirectives } from '@/directives'
 import App from '@/App.vue'
 import { registerPlugins } from '@core/utils/plugins'
@@ -21,7 +20,6 @@ registerPlugins(app)
 initDirectives(app)
 app.use(VueFroala)
 app.use(vuex)
-app.use(router)
 
 // Mount vue app
 app.mount('#app')

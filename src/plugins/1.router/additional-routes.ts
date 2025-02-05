@@ -1,5 +1,5 @@
-import type { RouteRecordRaw } from 'vue-router'
-import { useCookie } from '../@core/composable/useCookie'
+import type { RouteRecordRaw } from 'vue-router/auto'
+import { useCookie } from '../../@core/composable/useCookie'
 
 // 👉 Redirects
 export const redirects: RouteRecordRaw[] = [
@@ -34,7 +34,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'login',
-    component: () => import ('../pages/login.vue'),
+    component: () => import ('../../pages/login.vue'),
     meta: {
       layout: 'blank',
       unauthenticatedOnly: true,
@@ -43,7 +43,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/register',
     name: 'register',
-    component: () => import ('../pages/register.vue'),
+    component: () => import ('../../pages/register.vue'),
     meta: {
       layout: 'blank',
       unauthenticatedOnly: true,
@@ -52,7 +52,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/forgot-password',
     name: 'forgot-password',
-    component: () => import ('../pages/forgot-password.vue'),
+    component: () => import ('../../pages/forgot-password.vue'),
     meta: {
       layout: 'blank',
       unauthenticatedOnly: true,
@@ -61,7 +61,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/demo',
     name: 'DemoList',
-    component: () => import('../pages/demo/list/index.vue'),
+    component: () => import('../../pages/demo/list/index.vue'),
     meta: {
       title: 'demo.list',
       permission: 'demo-demo',
@@ -77,7 +77,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/demo/create',
     name: 'DemoCreate',
-    component: () => import('../pages/demo/create/index.vue'),
+    component: () => import('../../pages/demo/create/index.vue'),
     meta: {
       title: 'demo.create',
       permission: 'demo-demo',
@@ -97,7 +97,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/demo/update/:id',
     name: 'DemoUpdate',
-    component: () => import('../pages/demo/update/index.vue'),
+    component: () => import('../../pages/demo/update/index.vue'),
     meta: {
       title: 'demo.edit',
       permissionGroup: 'demoPage',
