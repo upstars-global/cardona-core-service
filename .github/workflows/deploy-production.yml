@@ -1,15 +1,15 @@
-name: Deploy develop
+name: Deploy production
 on:
-  pull_request:
+  push:
     branches:
       - master
 jobs:
-  deploy-core-service-development:
+  deploy-core-service-production:
     runs-on: ubuntu-latest
-    environment: develop
+    environment: production
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -44,10 +44,5 @@ jobs:
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
         run: echo $DEPLOYMENT_URL
-
-      - name: Print pages-deployment-alias-url
-        env:
-          DEPLOYMENT_ALIAS_URL: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
-        run: echo $DEPLOYMENT_ALIAS_URL
 
 
