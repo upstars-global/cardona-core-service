@@ -92,6 +92,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: thollander/actions-comment-pull-request@v2
         with:
+          comment-id: 'cloudflare-deploy-staging-comment'
           message: |
             ## 🚀 Deploying STAGING **cardona-core-service** with ☁️ Cloudflare Pages
             
@@ -137,6 +138,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: thollander/actions-comment-pull-request@v2
         with:
+          comment-id: 'cloudflare-deploy-production-comment'
           message: |
             ## 🚀 Deploying PRODUCTION **cardona-core-service** with ☁️ Cloudflare Pages
             
