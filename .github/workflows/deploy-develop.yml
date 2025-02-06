@@ -35,9 +35,19 @@ jobs:
         with:
           cmd: test:coverage
 
+      - name: Debug Coverage Files
+        run: ls -la coverage || echo "Coverage folder not found!"
+
       - name: Report Coverage
         if: always() # Also generate the report if tests are failing
-        uses:  davelosert/vitest-coverage-report-action@v2
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          json-summary-path: coverage/coverage-summary.json
+          json-final-path: coverage/coverage-final.json
+          file-coverage-mode: all # Показывать всегда
+          working-directory: ./
+          comment-on: pr
 
       - name: Build
         run: npm run build-cf
