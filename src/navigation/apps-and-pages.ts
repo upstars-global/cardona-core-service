@@ -1,4 +1,4 @@
-import type { VerticalNavItems } from '@layouts/types'
+import type { HorizontalNavItems, VerticalNavItems } from '@layouts/types'
 
 const navItems = [
   {
@@ -11,6 +11,6 @@ const navItems = [
     to: { name: 'PermissionPage', params: { id: 'demo' } },
     icon: { icon: 'tabler-box' },
   },
-] as VerticalNavItems
+] as VerticalNavItems & HorizontalNavItems
 
 export default navItems

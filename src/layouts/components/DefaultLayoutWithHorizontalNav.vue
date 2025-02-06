@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-
-// Components
 import NavBarNotifications from '../../layouts/components/NavBarNotifications.vue'
 import NavSearchBar from '../../layouts/components/NavSearchBar.vue'
 import NavbarShortcuts from '../../layouts/components/NavbarShortcuts.vue'
@@ -10,13 +8,12 @@ import UserProfile from '../../layouts/components/UserProfile.vue'
 import NavBarI18n from '../../@core/components/I18n.vue'
 import { HorizontalNavLayout } from '../../@layouts'
 import { VNodeRenderer } from '../../@layouts/components/VNodeRenderer'
+import navItems from '../../navigation/apps-and-pages'
 import { themeConfig } from '@themeConfig'
 
-// SECTION: Loading Indicator
 const isFallbackStateActive = ref(false)
 const refLoadingIndicator = ref<any>(null)
 
-// watching if the fallback state is active and the refLoadingIndicator component is available
 watch([isFallbackStateActive, refLoadingIndicator], () => {
   if (isFallbackStateActive.value && refLoadingIndicator.value)
     refLoadingIndicator.value.fallbackHandle()
@@ -24,12 +21,10 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
   if (!isFallbackStateActive.value && refLoadingIndicator.value)
     refLoadingIndicator.value.resolveHandle()
 }, { immediate: true })
-
-// !SECTION
 </script>
 
 <template>
-  <HorizontalNavLayout>
+  <HorizontalNavLayout :nav-items="navItems">
     <!-- 👉 navbar -->
     <template #navbar>
       <RouterLink
