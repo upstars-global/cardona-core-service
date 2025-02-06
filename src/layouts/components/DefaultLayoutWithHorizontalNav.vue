@@ -8,7 +8,6 @@ import UserProfile from '../../layouts/components/UserProfile.vue'
 import NavBarI18n from '../../@core/components/I18n.vue'
 import { HorizontalNavLayout } from '../../@layouts'
 import { VNodeRenderer } from '../../@layouts/components/VNodeRenderer'
-import navItems from '../../navigation/apps-and-pages'
 import { themeConfig } from '@themeConfig'
 
 const isFallbackStateActive = ref(false)
@@ -24,7 +23,7 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
 </script>
 
 <template>
-  <HorizontalNavLayout :nav-items="navItems">
+  <HorizontalNavLayout :nav-items="[]">
     <!-- 👉 navbar -->
     <template #navbar>
       <RouterLink
