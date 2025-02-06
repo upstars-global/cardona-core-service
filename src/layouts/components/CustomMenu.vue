@@ -32,8 +32,8 @@ const logOutAction = {
   title: t('customMenu.logout'),
   icon: IconsList.LogOutIcon,
   action: async () => {
-    store.dispatch('authCore/clearAuth')
-    await router.push({ name: 'Login' })
+    await store.dispatch('authCore/clearAuth')
+    await router.push({ name: 'login' })
   },
 }
 
@@ -96,7 +96,9 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
               size="large"
               class="avatar-block"
             >
-              <h5 class="text-h5 text-body-1 first-letter text-success">{{ firstLetter }}</h5>
+              <h5 class="text-h5 text-body-1 first-letter text-success">
+                {{ firstLetter }}
+              </h5>
             </VAvatar>
           </VBadge>
           <div class="full-name ml-5">

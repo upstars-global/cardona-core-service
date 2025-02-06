@@ -7,6 +7,7 @@ import AppBreadcrumb from './AppBreadcrumb.vue'
 
 // @layouts plugin
 import { VerticalNavLayout } from '@layouts'
+import navItems from '@/navigation/apps-and-pages'
 
 // SECTION: Loading Indicator
 const isFallbackStateActive = ref(false)
@@ -25,7 +26,7 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
 </script>
 
 <template>
-  <VerticalNavLayout>
+  <VerticalNavLayout :nav-items="navItems">
     <!-- 👉 navbar -->
     <template #navbar>
       <AppBreadcrumb />

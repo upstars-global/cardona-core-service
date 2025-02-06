@@ -114,4 +114,9 @@ export const routes: RouteRecordRaw[] = [
       ],
     },
   },
+  {
+    path: '/permission/:id',
+    name: 'PermissionPage',
+    component: () => import('@/pages/permission/form/index.vue'),
+  },
 ]
