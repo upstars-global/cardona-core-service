@@ -54,9 +54,9 @@ const content = computed({
 
     const caretInfo = saveCaretPosition()
 
-    emit('update:modelValue', value)
     nextTick(() => {
-      if (canRestoreCaret)
+      emit('update:modelValue', value)
+      if (canRestoreCaret && caretInfo.offset)
         observeDOMChanges(() => restoreCaretPosition(caretInfo))
     })
   },
