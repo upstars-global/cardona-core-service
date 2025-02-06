@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type TranslateResult } from 'vue-i18n'
 import { ModalSizes, VColors, VVariants } from '../../@model/vuetify'
+import type { BaseModalDefaultPropsOfSlot } from '../../@model/modal'
 import BaseModal from './index.vue'
 
 defineProps<{
@@ -23,8 +24,11 @@ defineEmits<{
     :size="ModalSizes.Small"
     centered
   >
-    <template #default="{ action }">
-      <p class="px-6 mb-2">
+    <template #default="{ action }: BaseModalDefaultPropsOfSlot">
+      <p
+        class="px-6 mb-2"
+        data-test-id="modal-description"
+      >
         {{ description }}
       </p>
 
@@ -35,6 +39,7 @@ defineEmits<{
           :variant="VVariants.Outlined"
           :color="VColors.Secondary"
           class="mr-4"
+          data-test-id="btn-cancel"
           @click="action.hide"
         >
           {{ $t('common.cancel') }}
@@ -43,6 +48,7 @@ defineEmits<{
         <VBtn
           :color="VColors.Error"
           :loading="isLoading"
+          data-test-id="btn-confirm"
           @click="$emit('confirmed', action.hide)"
         >
           {{ actionBtnText }}

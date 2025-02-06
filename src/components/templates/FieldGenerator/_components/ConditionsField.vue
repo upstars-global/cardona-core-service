@@ -51,10 +51,7 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
       :disabled="disabled"
     />
 
-    <VRow
-      class="small"
-      :class="{ 'pointer-events-none': disabled }"
-    >
+    <VRow class="small">
       <VCol
         cols="4"
         class="font-weight-regular text-no-wrap text-body-2 text-color-base"
@@ -69,10 +66,15 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
         <div
           v-for="(variable, index) in availableVariables"
           :key="index"
-          class="variable-label  ml-2"
+          class="variable-label__wrapper  ml-2"
+          data-test-id="condition-variable-item"
+          :class="{ 'pointer-events-none': disabled, 'variable-label': !disabled }"
           @click="onClickVariable(variable)"
         >
-          <small class="text-body-1 variable-label text-color-base font-weight-medium">{{ variable }}</small>
+          <small
+            class="text-body-1 variable-label text-color-base font-weight-medium"
+            :data-test-id="`variable-value-${index}`"
+          >{{ variable }}</small>
           <VTooltip
             activator="parent"
             location="bottom"
@@ -95,5 +97,9 @@ const onClickVariable = (variable: string) => emit('update:modelValue', `${model
   &:hover {
     color: rgb(var(--v-theme-primary)) !important;
   }
+}
+
+.pointer-events-none {
+  pointer-events: none;
 }
 </style>

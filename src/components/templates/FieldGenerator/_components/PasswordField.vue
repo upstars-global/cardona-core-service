@@ -5,6 +5,7 @@ import { IconsList } from '../../../../@model/enums/icons'
 import type { PasswordBaseField } from '../../../../@model/templates/baseField'
 import { VVariants } from '../../../../@model/vuetify'
 import AppTextField from '../../../../@core/components/app-form-elements/AppTextField.vue'
+import { IS_TEST_ENV } from '../../../../utils/constants'
 
 interface Props {
   modelValue: string
@@ -57,13 +58,16 @@ const setGeneratedPassword = () => {
       @click:append-inner="togglePasswordVisibility"
     />
     <VTooltip
+      :attach="IS_TEST_ENV"
       :text="$t('common.generatePassword')"
       location="bottom"
+      data-test-id="tooltip"
     >
       <template #activator="{ props }">
         <VBtn
           v-if="field.withPasswordGenerator"
           id="generator-password"
+          data-test-id="btn-generate-password"
           :disabled="disabled"
           :variant="VVariants.Outlined"
           size="38"

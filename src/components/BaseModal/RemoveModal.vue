@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { VColors, VVariants } from '../../@model/vuetify'
 import AppTextarea from '../../@core/components/app-form-elements/AppTextarea.vue'
 import BaseModal from '../BaseModal/index.vue'
+import type { BaseModalDefaultPropsOfSlot } from '../../@model/modal'
 
 interface Props {
   entityName?: string
@@ -10,7 +11,6 @@ interface Props {
   title?: string
   description?: string
   withRemoveComment?: boolean
-  state?: boolean
   removeBtnColor: VColors
   removeBtnVariant: VVariants
   cancelBtnColor: VColors
@@ -54,16 +54,17 @@ const onCloseModal = (hide: Function) => {
     :title="title || $t(`modal.remove${entityName}.title`)"
     @hide="$emit('on-close-modal')"
   >
-    <template #default="{ action }">
+    <template #default="{ action }: BaseModalDefaultPropsOfSlot">
       <VCardText
         :class="{ 'pb-16': withRemoveComment }"
         class="d-flex flex-column pt-0"
       >
-        <span class="text-body-1">{{ description || $t(`modal.remove${entityName}.description`) }}</span>
+        <span class="text-body-1" data-test-id="modal-description">{{ description || $t(`modal.remove${entityName}.description`) }}</span>
         <AppTextarea
           v-if="withRemoveComment"
           v-model.trim="commentToRemove"
           :label="$t('common.comment')"
+          data-test-id="comment-to-remove"
           rows="3"
           :placeholder="$t('common.comment')"
         />
@@ -74,6 +75,7 @@ const onCloseModal = (hide: Function) => {
           :color="cancelBtnColor"
           :variant="cancelBtnVariant"
           @click="onCloseModal(action.hide)"
+          data-test-id="btn-cancel"
         >
           {{ $t('action.cancel') }}
         </VBtn>
@@ -81,6 +83,7 @@ const onCloseModal = (hide: Function) => {
           :color="removeBtnColor"
           :variant="removeBtnVariant"
           @click="onClickModalOk(action.hide)"
+          data-test-id="btn-remove"
         >
           {{ $t('action.remove') }}
         </VBtn>

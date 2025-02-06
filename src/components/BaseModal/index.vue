@@ -3,6 +3,7 @@ import { computed, inject, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue
 import type { TranslateResult } from 'vue-i18n'
 import { IconsList } from '../../@model/enums/icons'
 import { ModalSizes, VColors, VVariants } from '../../@model/vuetify'
+import { IS_TEST_ENV } from '../../utils/constants'
 
 interface Props {
   id: string
@@ -56,6 +57,11 @@ const onHide = (value: boolean) => {
   if (!value)
     emits('hide')
 }
+
+const enhancedAttrs = computed(() => ({
+  ...attrs,
+  attach: IS_TEST_ENV ? true : attrs.attach,
+}))
 </script>
 
 <template>
@@ -63,7 +69,7 @@ const onHide = (value: boolean) => {
     v-model="showModal"
     class="base-modal"
     :width="modalWidth"
-    v-bind="attrs"
+    v-bind="enhancedAttrs"
     @update:model-value="onHide"
   >
     <template #default>
@@ -83,6 +89,7 @@ const onHide = (value: boolean) => {
             <h5
               v-if="title"
               class="text-h5 mb-0"
+              data-test-id="modal-title"
             >
               {{ title }}
             </h5>
@@ -92,6 +99,7 @@ const onHide = (value: boolean) => {
             :variant="VVariants.Outlined"
             :color="VColors.Secondary"
             class="modal-header__close bg-surface"
+            data-test-id="btn-close"
             @click="hide"
           >
             <VIcon :icon="IconsList.XIcon" />

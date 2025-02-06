@@ -85,6 +85,9 @@ const customMessageOfRules: Record<
 
       return i18n.t(`validations.${ctx.rule?.name}`, { format })
     },
+    custom_cb(ctx: FieldValidationMetaInfo): TranslateResult {
+      return ctx.rule.params.errorMessage
+    },
   }
 
 const validatorPositive = (value: number): boolean => {
@@ -170,6 +173,8 @@ export const date_format = (value: string, args: string[]) => {
   return moment(value, format).isValid()
 }
 
+export const customCb = (value: string, args: CustomCbRule, ctx: FieldValidationMetaInfo) => args.cb(value, ctx)
+
 defineRule('positive', validatorPositive)
 defineRule('password', validatorPassword)
 defineRule('creditCard', validatorCreditCard)
@@ -180,7 +185,12 @@ defineRule('range', validatorRange)
 defineRule('range_date', rangeDate)
 defineRule('range_date_different', dateRangeDifferent)
 defineRule('date_format', date_format)
+defineRule('custom_cb', customCb)
 
+interface CustomCbRule {
+  cb: (value: string, ctx: FieldValidationMetaInfo) => boolean
+  errorMessage: TranslateResult
+}
 export interface IValidationConfig {
   required?: boolean
   email?: boolean
@@ -207,6 +217,7 @@ export interface IValidationConfig {
   range_date?: boolean | string
   range_date_different?: boolean | string
   date_format?: string
+  custom_cb?: CustomCbRule
 }
 (function () {
   configure({
@@ -214,7 +225,7 @@ export interface IValidationConfig {
       if (has(customMessageOfRules, ctx.rule?.name))
         return customMessageOfRules[ctx.rule?.name](ctx)
 
-      return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label?.toLowerCase() })
+      return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label })
     },
   })
 })()

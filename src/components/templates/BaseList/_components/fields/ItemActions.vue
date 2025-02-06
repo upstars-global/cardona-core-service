@@ -5,10 +5,13 @@ import type { IBaseListConfig } from '../../../../../@model/templates/baseList'
 import { BaseListActionsSlots } from '../../../../../@model/templates/baseList'
 import { IconsList } from '../../../../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../../../../@model/vuetify'
+import { IS_TEST_ENV } from '../../../../../utils/constants'
+import { checkExistsPage } from '../../../../../../src/helpers'
 
 interface Props {
   item: any
   createPageName: string
+  detailsPageName: string
   config: IBaseListConfig
   canUpdate: boolean
   canUpdateItem: boolean
@@ -48,18 +51,18 @@ const isShowActions = computed(() => {
 })
 
 const canShowEdit = computed(() => (props.canUpdate || props.canUpdateSeo) && props.canUpdateItem)
+const canShowDetails = computed(() => checkExistsPage(props.detailsPageName))
 
-const onUpdateItem = () => {
-  router.push(props.getUpdateRoute(props.item))
-}
-
-const onCreateCopy = () => {
-  router.push({ name: props.createPageName, params: { id: props.item.id } })
-}
+const onUpdateItem = () => router.push(props.getUpdateRoute(props.item))
+const onCreateCopy = () => router.push({ name: props.createPageName, params: { id: props.item.id } })
+const onClickDetails = () => router.push({ name: props.detailsPageName, params: { id: props.item.id } })
 </script>
 
 <template>
-  <VMenu v-if="isShowActions">
+  <VMenu
+    v-if="isShowActions"
+    :attach="IS_TEST_ENV"
+  >
     <template #activator="{ props }">
       <VBtn
         v-bind="props"
@@ -67,6 +70,7 @@ const onCreateCopy = () => {
         :color="VColors.Secondary"
         :variant="VVariants.Text"
         :size="VSizes.Small"
+        data-test-id="activator"
       >
         <VIcon
           :icon="IconsList.MoreVerticalIcon"
@@ -75,7 +79,10 @@ const onCreateCopy = () => {
       </VBtn>
     </template>
 
-    <VList class="actions-list">
+    <VList
+      class="actions-list"
+      data-test-id="actions-list"
+    >
       <slot
         v-if="existSlot(BaseListActionsSlots.PrependActionItem)"
         :name="BaseListActionsSlots.PrependActionItem"
@@ -83,18 +90,36 @@ const onCreateCopy = () => {
       />
 
       <VListItem
-        v-if="canUpdate && config.withDeactivation"
+        v-if="canUpdate && (config.withDeactivation || config.withDeactivationBySpecificAction)"
         :prepend-icon="item.isActive ? IconsList.ToggleLeftIcon : IconsList.ToggleRightIcon"
+        data-test-id="status-toggle"
         @click="emits('on-toggle-status', item)"
       >
-        <VListItemTitle>
+        <VListItemTitle data-test-id="status-toggle-text">
           {{ item.isActive ? $t('action.deactivate') : $t('action.activate') }}
         </VListItemTitle>
       </VListItem>
 
+      <slot
+        :name="BaseListActionsSlots.Details"
+        :item="item"
+      >
+        <VListItem
+          v-if="canShowDetails"
+          :prepend-icon="IconsList.EyeIcon"
+          data-test-id="details"
+          @click="onClickDetails"
+        >
+          <VListItemTitle>
+            {{ $t('action.details') }}
+          </VListItemTitle>
+        </VListItem>
+      </slot>
+
       <VListItem
         v-if="canShowEdit"
         :prepend-icon="IconsList.EditIcon"
+        data-test-id="edit"
         @click="onUpdateItem"
       >
         <VListItemTitle>
@@ -104,6 +129,7 @@ const onCreateCopy = () => {
 
       <VListItem
         v-if="canCreate && config.createFromCopy"
+        data-test-id="copy"
         @click="onCreateCopy"
       >
         <template #prepend>
@@ -117,6 +143,7 @@ const onCreateCopy = () => {
       <VListItem
         v-if="canRemoveItem"
         class="text-error hover-text-error"
+        data-test-id="remove"
         @click="emits('on-remove', item)"
       >
         <template #prepend>

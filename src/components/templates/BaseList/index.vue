@@ -96,9 +96,17 @@ const {
   ListItemModel,
 } = props.useList()
 
+const parseEntityNameWithTabs = (entityName: string) => {
+  // Removes the #tabName from entityName
+  // Example: "Tournaments#tabName" -> "Tournaments"
+  // This helps save different settings for the same entity across different tabs
+  return entityName.replace(/#\w+/, '').replace('..', '.')
+}
+
 // Pages
-const CreatePageName = pageName ? `${pageName}Create` : `${entityName}Create`
-const UpdatePageName = pageName ? `${pageName}Update` : `${entityName}Update`
+const CreatePageName = pageName ? `${pageName}Create` : `${parseEntityNameWithTabs(entityName)}Create`
+const UpdatePageName = pageName ? `${pageName}Update` : `${parseEntityNameWithTabs(entityName)}Update`
+const DetailsPageName = pageName ? `${pageName}Card` : `${parseEntityNameWithTabs(entityName)}Card`
 
 const isExistsCreatePage = checkExistsPage(CreatePageName)
 const isExistsUpdatePage = checkExistsPage(UpdatePageName)
@@ -107,11 +115,12 @@ const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
 
 const fetchActionName: string = props.config?.withCustomFetchList
-  ? `${moduleName}/fetch${entityName}List`
+  ? `${moduleName}/fetchEntityList`
   : 'baseStoreCore/fetchEntityList'
 
 const fetchReportActionName = 'baseStoreCore/fetchReport'
 const updateActionName = 'baseStoreCore/updateEntity'
+const toggleStatusActionName = 'baseStoreCore/toggleStatusEntity'
 
 const deleteActionName = props.config?.withCustomDelete
   ? `${moduleName}/deleteEntity`
@@ -173,6 +182,7 @@ const routerToUpdatePageId = item => {
 
 // Table
 const items = ref([])
+const isInitialState = ref(true)
 
 watch(
   () => items.value,
@@ -186,6 +196,8 @@ watch(
 const selectedFields = ref<TableField[]>([...fields])
 
 const isLoadingList = computed(() => {
+  if (isInitialState.value || isDebouncedSearch.value)
+    return true
   const indexSymbolNextDash = entityName.indexOf('-') + 1
 
   const entityNameForLoad = entityName.replace(
@@ -205,6 +217,7 @@ const isLoadingList = computed(() => {
     : store.getters.isLoadingEndpoint([
       listUrl,
       `${entityUrl}/update`,
+      `${entityUrl}/active/switch`,
       `${entityUrl}/delete`,
       ...props.config.loadingEndpointArr!,
     ])
@@ -212,11 +225,7 @@ const isLoadingList = computed(() => {
 
 const size = props.config?.small ? VSizes.Small : VSizes.Medium
 
-const emptyListText = computed(() =>
-  searchQuery.value || hasSelectedFilters.value
-    ? t('emptyState.emptyRequest')
-    : props.config.emptyText,
-)
+const emptyListText = computed(() => searchQuery.value || hasSelectedFilters.value ? t('emptyState.emptyRequest') : props.config.emptyText)
 
 // Sort
 const sortStorageKey = `${currentPageName}-${entityName}-sort`
@@ -254,7 +263,6 @@ const {
   linkGen,
   updateTotal,
   onChangePagination,
-  removePerPage,
   removePagination,
 } = paginationConfig
 
@@ -280,6 +288,8 @@ const mapSortData = () => {
 
 // Fetch list
 const getList = async () => {
+  isDebouncedSearch.value = false
+
   const filter = setRequestFilters()
   const sort = mapSortData()
 
@@ -315,15 +325,19 @@ onChangePagination(() => {
 const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
 
 const getUpdateRoute = ({ id }): Location => {
-  return isExistsUpdatePage && (canUpdate || canUpdateSeo)
+  return isExistsUpdatePage && (canUpdateCb?.() ?? true)
     ? { name: UpdatePageName, params: { id } }
     : {}
 }
 
-const onClickToggleStatus = async ({ id, isActive }) => {
-  await store.dispatch(updateActionName, {
+const onClickToggleStatus = async ({ id, isActive, type = '' }) => {
+  const actionName = props.config.withDeactivationBySpecificAction
+    ? toggleStatusActionName
+    : updateActionName
+
+  await store.dispatch(actionName, {
     type: entityName,
-    data: { form: { id, isActive: !isActive } },
+    data: { form: { id, isActive: !isActive, type } },
     customApiPrefix: props.config?.customApiPrefix,
   })
 
@@ -342,8 +356,12 @@ const onEditPosition = async ({ id }: { id: string }, position: number) => {
 
 // Search
 const debouncedSearch = debounce(reFetchList, 300)
+const isDebouncedSearch = ref(false)
 
-watch(() => searchQuery.value, debouncedSearch)
+watch(() => searchQuery.value, () => {
+  isDebouncedSearch.value = true
+  debouncedSearch()
+})
 
 // Export
 
@@ -570,20 +588,18 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
   await reFetchList()
 }
 
-const parseEntityNameWithTabs = (entityName: string) => {
-  // Removes the #tabName from entityName
-  // Example: "Tournaments#tabName" -> "Tournaments"
-  // This helps save different settings for the same entity across different tabs
-  return entityName.replace(/#\w+/, '').replace('..', '.')
-}
-
 onBeforeMount(async () => {
   await getList()
+  isInitialState.value = false
 })
 
 onUnmounted(() => {
   removePagination()
 })
+
+const editingId = ref<string | null>(null)
+
+const onOpenEdit = (id: string) => editingId.value = id
 
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
@@ -647,7 +663,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     <ListSearch
       v-if="!config.hideSearchBlock"
       v-model.trim="searchQuery"
-      class="pb-6"
+      class="pb-6 list-search"
       :right-search-btn="{
         canCreate: isShownCreateBtn,
         createPage: CreatePageName,
@@ -666,6 +682,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         <slot
           name="right-search-btn"
           :can-create="canCreate"
+          :can-update="canUpdate"
           :create-page-name="CreatePageName"
         />
       </template>
@@ -789,6 +806,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           <SumAndCurrency
             v-else-if="field.type === ListFieldType.SumAndCurrency"
             :key="`${index}_${field.type}`"
+            :align="field.align"
             :data="{
               amount: cell,
               currency: item.raw.currency,
@@ -812,6 +830,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             <slot
               :name="`${field.key}-nameWithIdTitle`"
               :item="item.raw"
+              :can-update="canUpdate"
             />
           </NameWithIdField>
 
@@ -870,11 +889,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
           <PositionField
             v-else-if="field.type === ListFieldType.Priority"
-            :key="`${index}_${field.type}`"
+            :id="item.raw.id"
+            :key="item.raw.id"
             :position="cell"
             :size="field.size"
             :can-update="canUpdate"
+            :editing-id="editingId"
             @edit-position="(val) => onEditPosition(item.raw, val)"
+            @open-edit="onOpenEdit(item.raw.id)"
           />
 
           <ButtonField
@@ -927,13 +949,16 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             {{ cell }} %
           </template>
           <template v-else>
-            {{ cell }}
+            <div class="default-cell-value">
+              {{ cell }}
+            </div>
           </template>
           <ItemActions
             v-if="field.key === 'actions'"
             :key="item.raw"
             :item="item.raw"
             :create-page-name="CreatePageName"
+            :details-page-name="DetailsPageName"
             :can-update="canUpdate"
             :can-create="canCreate"
             :can-update-seo="canUpdateSeo"
@@ -951,6 +976,15 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               <slot
                 :name="BaseListActionsSlots.PrependActionItem"
                 :item="item"
+                :can-update="canUpdate"
+              />
+            </template>
+
+            <template #[BaseListActionsSlots.Details]>
+              <slot
+                :name="BaseListActionsSlots.Details"
+                :item="item"
+                :page-name="DetailsPageName"
               />
             </template>
 
@@ -962,13 +996,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
                 :name="BaseListActionsSlots.AppendActionItem"
                 :item="item"
                 :can-update="canUpdate"
+                :can-create="canCreate"
               />
             </template>
           </ItemActions>
         </template>
 
         <template #empty>
-          <div class="d-flex flex-column justify-center align-center p-2 text-color-mute">
+          <div class="d-flex flex-column justify-center align-center p-2 text-color-mute empty-state-wrapper">
             <slot name="empty">
               <span>
                 {{ emptyListText }}
@@ -978,9 +1013,13 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         </template>
       </CTable>
     </VCard>
-    <div :class="config.small ? 'pt-4' : 'pt-8'">
+    <div
+      v-if="items.isNotEmpty"
+      :class="config.small ? 'pt-4' : 'pt-8'"
+    >
       <ListPagination
         v-if="config?.pagination"
+        data-test-id="list-pagination"
         :model-value="currentPage"
         :link-gen="linkGenerator"
         :pagination-config="paginationConfig"
@@ -1005,6 +1044,11 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 }
 
 :deep(.c-table) {
+  .default-cell-value {
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   tr {
     td[data-c-field='actions'] {
       width: 3.5rem;
@@ -1014,5 +1058,9 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       padding: 0 !important;
     }
   }
+}
+
+.empty-state-wrapper {
+  height: 5.2rem;
 }
 </style>

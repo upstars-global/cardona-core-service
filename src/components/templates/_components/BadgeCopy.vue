@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<{
   variant?: string
   label?: string
   isViewLabel?: boolean
+  rounded: boolean
   isShort?: boolean
   maxLengthForShort?: number
 }>(), {
@@ -28,7 +29,7 @@ const valueShort = computed(() => {
   <div>
     <template v-if="value">
       <VChip
-        label
+        :label="!rounded"
         class="cursor-pointer overflow-hidden copy-badge"
         @click="copyToClipboard(value)"
       >

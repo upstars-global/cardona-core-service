@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useAttrs } from 'vue'
+import { computed } from 'vue'
 import type { NumberBaseField } from '../../../../@model/templates/baseField'
 import type { NumberOrString } from '../../../../@model'
 import { toIntegerNumbers, toPositiveNumbers } from '../../../../helpers'
@@ -18,8 +18,6 @@ const props = withDefaults(defineProps<Props>(), { modelValue: '' })
 const emits = defineEmits<{
   (e: 'update:modelValue', string: NumberOrString): void
 }>()
-
-const attrs = useAttrs()
 
 const getPositiveNumbers = (value: NumberOrString): NumberOrString =>
   props.field.withPositiveNumbers ? toPositiveNumbers(value) : value

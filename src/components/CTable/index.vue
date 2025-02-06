@@ -65,7 +65,14 @@ const onDragEnd = (event: { moved: object }) => {
 
 const cellClasses = computed(() => props.small ? 'py-2 px-3' : 'py-3 px-4')
 const maxSkeletonRows = 25
-const skeletonRows = computed(() => props.skeletonRows ? props.skeletonRows : props.itemsPerPage > maxSkeletonRows ? +maxSkeletonRows : +props.itemsPerPage)
+
+const skeletonRows = computed(() =>
+  props.skeletonRows
+    ? props.skeletonRows
+    : !props.itemsPerPage || props.itemsPerPage > maxSkeletonRows
+      ? +maxSkeletonRows
+      : +props.itemsPerPage)
+
 const emptyColspan = computed(() => props.selectable ? props.fields.length + 1 : props.fields.length)
 const isSortableColumn = (column: TableField): boolean => props.fields?.find(item => item?.key === column?.key)?.sortable
 
@@ -78,7 +85,6 @@ const sortParams = ref(props.sortData?.map(item => ({
 const handleSorByField = ({ key }: { key: string }) => {
   const itemIndex = sortParams.value.findIndex(item => item?.key === key)
 
-  console.log(sortParams.value, itemIndex, key)
   if (itemIndex !== -1) {
     if (sortParams.value[itemIndex].order === 'DESC') {
       emits('update:sortData', [])
@@ -134,12 +140,14 @@ const getActualField = (fields: Array<unknown>) => {
         v-if="draggable"
         class="pl-1 pr-0 c-table__header-cell"
         data-c-field="draggable"
+        data-test-id="draggable-th"
       />
       <th
         v-if="props.selectable"
         class="c-table__header-cell"
         :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
         data-c-field="selectable"
+        data-test-id="selectable-th"
       >
         <VSkeletonLoader
           v-if="isLoadingList"
@@ -151,6 +159,7 @@ const getActualField = (fields: Array<unknown>) => {
           :model-value="allSelected || someSelected"
           :indeterminate="allSelected ? false : someSelected"
           :disabled="isLoadingList"
+          data-test-id="select-all-checkbox"
           @update:model-value="selectAll"
         />
       </th>
@@ -162,6 +171,7 @@ const getActualField = (fields: Array<unknown>) => {
           v-if="column.key !== 'data-table-select'"
           class="c-table__header-cell whitespace-no-wrap text-left cursor-pointer"
           :class="cellClasses"
+          :data-test-id="`table-th-${column.key}`"
           :data-c-field="column.key"
           @click="isSortableColumn(column) && handleSorByField(column)"
         >
@@ -169,9 +179,11 @@ const getActualField = (fields: Array<unknown>) => {
             v-show="isLoadingList"
             type="text"
             class="col-table-skeleton"
+            data-test-id="skeleton-loader"
           />
           <div
             class="d-flex align-center c-table__header-title column-title"
+            data-test-id="column-title"
             :class="{
               'justify-end': column.align === AlignType.Right,
               'justify-center': column.align === AlignType.Center,
@@ -187,15 +199,18 @@ const getActualField = (fields: Array<unknown>) => {
               v-if="isSortableColumn(column)"
               class="c-table__header-cell-icon-wrapper"
               :class="{ small: props.small }"
+              :data-test-id="`sort-col-${column.key}`"
             >
               <VIcon
                 :icon="IconsList.ChevronUpIcon"
                 class="d-block c-table__header-cell-icon"
+                :data-test-id="`sort-icon-${SortDirection.desc}`"
                 :class="{ 'c-table__header-cell-icon--active': isActiveSort(column.key, SortDirection.desc) }"
               />
               <VIcon
                 :icon="IconsList.ChevronDownIcon"
                 class="d-block c-table__header-cell-icon"
+                :data-test-id="`sort-icon-${SortDirection.asc}`"
                 :class="{ 'c-table__header-cell-icon--active': isActiveSort(column.key, SortDirection.asc) }"
               />
             </div>
@@ -204,11 +219,15 @@ const getActualField = (fields: Array<unknown>) => {
       </template>
     </template>
     <template #tbody="{ items, select, toggleSelect, isSelected }">
-      <tbody v-if="isLoadingList">
+      <tbody
+        v-if="isLoadingList"
+        data-test-id="tbody-skeleton"
+      >
         <slot name="skeleton">
           <tr
             v-for="index in skeletonRows"
             :key="`skeleton-row_${index}`"
+            data-test-id="skeleton-row"
           >
             <td
               v-if="props.selectable"
@@ -222,6 +241,7 @@ const getActualField = (fields: Array<unknown>) => {
               v-for="(field, cellIndex) in getActualField(fields)"
               :key="`skeleton-cell_${index}_${cellIndex}`"
               class="c-table__cell"
+              data-test-id="skeleton-coll"
               :class="cellClasses"
               :data-c-field="field.key"
             >
@@ -235,6 +255,7 @@ const getActualField = (fields: Array<unknown>) => {
         v-else
         class="dragArea list-group w-full"
         :list="items"
+        data-test-id="drag-area"
         tag="tbody"
         @change="onDragEnd"
       >
@@ -242,6 +263,7 @@ const getActualField = (fields: Array<unknown>) => {
           v-for="(item, index) in items"
           :key="`c-table-row_${index}`"
           class="c-table__row table-default-bg"
+          data-test-id="table-row"
           :class="compareClasses(item.raw, isSelected([item]))"
           @click="onRowClicked(item.raw)"
         >
@@ -249,6 +271,7 @@ const getActualField = (fields: Array<unknown>) => {
             v-if="draggable"
             class="pl-1 pr-0 c-table__cell"
             data-c-field="draggable"
+            data-test-id="draggable-trigger"
           >
             <VIcon
               v-if="!isLoadingList"
@@ -261,9 +284,11 @@ const getActualField = (fields: Array<unknown>) => {
             class="c-table__cell"
             :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
             data-c-field="selectable"
+            data-test-id="selectable"
           >
             <VCheckbox
               :model-value="isSelected([item])"
+              data-test-id="selectable-checkbox"
               :disabled="disabledRowIds?.includes(item.raw.id)"
               @update:model-value="select([item], $event)"
               @click.stop
@@ -304,8 +329,6 @@ const getActualField = (fields: Array<unknown>) => {
 
 <style scoped lang="scss">
 .v-data-table.c-table {
-  border-radius: 0;
-
   .c-table__header-cell {
     background: rgba(var(--v-theme-grey-800), 0.08);
     .column-title {

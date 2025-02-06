@@ -57,3 +57,11 @@ defineExpose({
     </VTextarea>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.app-textarea {
+  :deep(.v-field--disabled) {
+    opacity: var(--v-muted-placeholder-opacity);
+  }
+}
+</style>

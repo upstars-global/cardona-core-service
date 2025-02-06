@@ -45,6 +45,11 @@ const onSearch = (search: string) => emits('search', search)
     :class="selectClasses"
     @search="onSearch"
   >
+    <template #selected-option="{ name }">
+      <div class="selected-option-value">
+        {{ name }}
+      </div>
+    </template>
     <template #no-options="{ loading, search }">
       <div v-if="!search && !loading">
         {{ $t('common.enterSomething') }}
@@ -63,3 +68,12 @@ const onSearch = (search: string) => emits('search', search)
     </template>
   </VueSelect>
 </template>
+
+<style lang="scss" scoped>
+.selected-option-value {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+}
+</style>

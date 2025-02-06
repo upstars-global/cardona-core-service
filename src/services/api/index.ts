@@ -27,8 +27,10 @@ const isInvalidTokenError = (error): boolean => error?.toString()?.includes(INVA
 const getLoaderSlug = (url: string, loaderSlug: string): string =>
   loaderSlug ? `${url}${loaderSlug}` : url
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
 class ApiService {
-  static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}) {
+  static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}, retryCount = 0, retryDelay = 1000) {
     const router = useRouter()
     const route = useRoute()
 
@@ -83,7 +85,7 @@ class ApiService {
         responseType,
       } as AxiosRequestConfig)
 
-      if (data.error)
+      if (data.error || (!data.data && !url.includes('report')))
         throw data.error
 
       if (withSuccessToast)
@@ -92,11 +94,19 @@ class ApiService {
       return data
     }
     catch (error: any) {
+      // TODO BAC-4018
+      // if (retryCount > 0 && (!error?.description || error?.type === 'INTERNAL')) {
+      //   console.log(`Request failed. Waiting ${retryDelay / 1000} sec before next try. Count: ${retryCount}`)
+      //   await delay(retryDelay)
+      //
+      //   return this.request(payload, config, retryCount - 1, retryDelay * 2)
+      // }
+
       const isLoginPage: boolean = route?.name === 'Login'
       const isInvalidToken = isInvalidTokenError(error)
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', TOKEN_INVALID]
 
-      if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error.type) || isInvalidToken) {
+      if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error?.type) || isInvalidToken) {
         toastError(TOKEN_INVALID)
         store.dispatch('authCore/clearAuth')
 
@@ -106,7 +116,7 @@ class ApiService {
 
       store.dispatch('addErrorUrl', url)
 
-      const notVisibleErrorToast = !withErrorNotFound && error.type === 'NOT_FOUND'
+      const notVisibleErrorToast = !withErrorNotFound && error?.type === 'NOT_FOUND'
       if (!notVisibleErrorToast) {
         if (withErrorToast)
           this.showError(error, entity, formRef, withErrorDescriptionToast)
@@ -157,7 +167,7 @@ class ApiService {
     else if (withErrorDescriptionToast && error.description) {
       toastErrorMessageString(error.description)
     }
-    else if (error.type) {
+    else if (error?.type) {
       toastError(error.type, {
         defaultText: error.description,
       })

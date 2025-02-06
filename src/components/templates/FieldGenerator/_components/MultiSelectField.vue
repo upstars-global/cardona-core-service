@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { debounce } from 'lodash'
+import { useToggle } from '@vueuse/core'
 import type { OptionsItem } from '../../../../@model'
 import { BSize } from '../../../../@model/bootstrap'
 import type { MultiSelectBaseField } from '../../../../@model/templates/baseField'
 import { i18n } from '../../../../plugins/i18n'
 import { withPopper } from '../../../../helpers/selectPopper'
 import { IconsList } from '../../../../@model/enums/icons'
+import { copyToClipboard } from '../../../../helpers/clipboard'
+import { useInfiniteScroll } from '../../../../helpers/infiniteScroll'
 
 interface MultiselectProps {
   modelValue: OptionsItem[] | string[] | number[]
@@ -28,6 +31,7 @@ const emits = defineEmits<{
 }>()
 
 const isLoading = ref(false)
+const [, toggleDropDownState] = useToggle()
 
 const valueModel = computed<OptionsItem[]>({
   get: () =>
@@ -72,17 +76,51 @@ watch(
   { deep: true, immediate: true },
 )
 
+const searchValue = ref('')
+
 // Handlers
 const onSearch = debounce(async (search: string, loading: Function) => {
   loading(true)
 
   try {
+    searchValue.value = search
     await props.field.fetchOptions(search)
   }
   finally {
     loading(false)
+    if (isInfiniteLoadingEnabled.value) {
+      abortObserver()
+      await setupObserver()
+    }
   }
 }, 250)
+
+const loadRef = ref<HTMLElement>()
+
+const onOpen = async () => {
+  toggleDropDownState()
+  if (isInfiniteLoadingEnabled.value)
+    await setupObserver()
+}
+
+const onClose = () => {
+  toggleDropDownState()
+  abortObserver()
+}
+
+const isInfiniteLoadingEnabled = computed((): boolean => !!props.field.infiniteLoading)
+
+const showLoadMore = computed((): boolean =>
+  isInfiniteLoadingEnabled.value
+  && !!props.field.options?.length
+  && !searchValue.value
+  && !isLoading.value,
+)
+
+const {
+  setupObserver,
+  abortObserver,
+} = useInfiniteScroll(props.field.loadMore.bind(props.field), loadRef)
 </script>
 
 <template>
@@ -98,8 +136,33 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :disabled="disabled"
       :append-to-body="field.appendToBody"
       :calculate-position="withPopper(field.calculatePositionCb)"
+      :filterable="field.filterable"
       @search="onSearch"
+      @open="onOpen"
+      @close="onClose"
     >
+      <template #selected-option="{ id, name }">
+        <span class="mr-1">
+          {{ name }}
+        </span>
+
+        <div v-if="field.withCopyId">
+          <VIcon
+            :icon="IconsList.CopyIcon"
+            class="cursor-pointer text-primary"
+            size="16"
+            @click.stop="copyToClipboard(id)"
+            @mousedown.stop
+          />
+
+          <VTooltip
+            location="bottom"
+            :text="$t('component.multiSelect.copyId')"
+            activator="parent"
+          />
+        </div>
+      </template>
+
       <template #no-options="{ loading, search }">
         <div v-if="!search && !loading">
           {{ $t('common.enterSomething') }}
@@ -114,6 +177,15 @@ const onSearch = debounce(async (search: string, loading: Function) => {
           v-bind="attributes"
           :icon="IconsList.ChevronDownIcon"
         />
+      </template>
+      <template #list-footer>
+        <li
+          v-show="showLoadMore"
+          ref="loadRef"
+          class="text-color-mute text-center pt-2 pb-3"
+        >
+          {{ $t('component.select.loadingMore') }}
+        </li>
       </template>
     </VueSelect>
   </div>

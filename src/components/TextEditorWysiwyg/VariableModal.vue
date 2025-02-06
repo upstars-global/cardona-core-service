@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { inject, ref } from 'vue'
-
 import { VColors, VVariants } from '../../@model/vuetify'
 import AppTextField from '../../@core/components/app-form-elements/AppTextField.vue'
 import BaseModal from '../../components/BaseModal/index.vue'
@@ -10,6 +9,7 @@ interface Props {
   modalId: string
   value: Value
   keyVar: string
+  disabled: boolean
 }
 
 interface Emits {
@@ -49,66 +49,77 @@ const deleteForm = () => {
     :title="$t('common.banners.variableTitle')"
     @hide="onHideModal"
   >
-    <div class="full-width pa-4 px-6 variable-modal">
-      <VRow class="full-width flex-nowrap">
-        <VCol cols="4">
-          <VChip
-            label
-            class="variable-box"
-            :color="VColors.Secondary"
-          >
-            {{ `{ ${keyVar} }` }}
-          </VChip>
-        </VCol>
-        <VCol
-          cols="8"
-          class="mb-3 pr-0"
-        >
-          <VRow
-            v-for="itemKey in Object.keys(formModal)"
-            :key="itemKey"
-            class="flex-nowrap align-center justify-content-end"
-          >
-            <VCol class="font-small-3">
-              {{ itemKey }}
-            </VCol>
-            <VCol
-              cols="10"
-              class="pr-0"
+    <div class="full-width variable-modal">
+      <div class="py-3 px-6">
+        <VRow class="full-width flex-nowrap">
+          <VCol cols="4">
+            <VChip
+              label
+              class="variable-box"
+              :color="VColors.Secondary"
             >
-              <AppTextField
-                v-model="formModal[itemKey]"
-                :placeholder="$t('common.banners.empty')"
-              />
-            </VCol>
-          </VRow>
-        </VCol>
-      </VRow>
+              {{ `{${keyVar}` + '}' }}
+            </VChip>
+          </VCol>
 
-      <footer class="d-flex align-center justify-space-between">
-        <div>
-          <VBtn
-            type="button"
-            :variant="VVariants.Outlined"
-            :color="VColors.Error"
-            class="m-0"
-            @click="deleteForm"
+          <VCol
+            cols="8"
+            class="mb-3 pr-0"
           >
-            {{ $t('action.remove') }}
-          </VBtn>
-        </div>
+            <VRow
+              v-for="itemKey in Object.keys(formModal)"
+              :key="itemKey"
+              class="flex-nowrap align-center justify-content-end"
+            >
+              <VCol class="font-small-3">
+                {{ itemKey }}
+              </VCol>
+              <VCol
+                cols="10"
+                class="pr-0"
+              >
+                <AppTextField
+                  v-model="formModal[itemKey]"
+                  :disabled="disabled"
+                  :placeholder="$t('common.banners.empty')"
+                />
+              </VCol>
+            </VRow>
+          </VCol>
+        </VRow>
+      </div>
+
+      <hr class="ma-0">
+
+      <footer
+        class="d-flex align-center px-6 py-4"
+        :class="disabled ? 'justify-end' : 'justify-space-between'"
+      >
+        <VBtn
+          v-if="!disabled"
+          type="button"
+          :variant="VVariants.Outlined"
+          :color="VColors.Error"
+          class="m-0"
+          @click="deleteForm"
+        >
+          {{ $t('action.remove') }}
+        </VBtn>
+
         <div>
           <VBtn
             type="button"
             :variant="VVariants.Outlined"
             :color="VColors.Secondary"
-            class="mr-2"
             @click="closed"
           >
             {{ $t('action.cancel_2') }}
           </VBtn>
+
           <VBtn
+            v-if="!disabled"
             type="button"
+            class="ml-2"
             :color="VColors.Primary"
             @click="save"
           >
@@ -124,7 +135,7 @@ const deleteForm = () => {
 
 <style lang="scss" scoped>
 .variable-box {
-  margin-top: 0.571rem;
+  margin-bottom: 0.571rem;
 }
 
 .variable-modal {

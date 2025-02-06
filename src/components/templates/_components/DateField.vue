@@ -11,7 +11,10 @@ const fullDate = computed(() =>
 </script>
 
 <template>
-  <span v-if="!date">-</span>
+  <span
+    v-if="!date"
+    data-test-if="date-field-empty"
+  >-</span>
   <span
     v-else
     :key="fullDate.getTime()"

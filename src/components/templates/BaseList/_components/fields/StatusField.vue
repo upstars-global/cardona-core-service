@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { convertUpperCaseFirstSymbol } from '../../../../../helpers'
-import { VVariants } from '../../../../../@model/vuetify'
+import { VColors, VVariants } from '../../../../../@model/vuetify'
 
 interface IStatusWithVariantReplace {
 
@@ -16,6 +16,7 @@ type ValueType = string | IStatusWithVariantReplace
 const props = defineProps<{
   value: ValueType
   variant: VVariants
+  rounded: boolean
 }>()
 
 enum StatusVariants {
@@ -77,7 +78,10 @@ const value = computed(() => {
 })
 
 const color = computed(() => {
-  return typeof props.value === 'string' ? StatusVariants[props.value] : props.value?.variant
+  if (typeof props.value === 'string')
+    return StatusVariants[props.value] || VColors.Secondary
+
+  return props.value?.variant
 })
 
 const actualVariant = computed(() => {
@@ -89,9 +93,13 @@ const actualVariant = computed(() => {
   <VChip
     :color="color"
     :variant="actualVariant"
-    label
+    :label="!rounded"
+    data-test-id="status-field"
   >
-    <span class="lh-normal">
+    <span
+      class="lh-normal"
+      data-test-id="status-field-text"
+    >
       {{ value }}
     </span>
   </VChip>
