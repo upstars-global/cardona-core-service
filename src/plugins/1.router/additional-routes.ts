@@ -17,9 +17,6 @@ export const redirects: RouteRecordRaw[] = [
       if (userRole === 'client')
         return { name: 'access-control' }
 
-      // if (userRole)
-      //   return { name: 'DemoList' }
-
       return { name: 'login', query: to.query }
     },
   },
