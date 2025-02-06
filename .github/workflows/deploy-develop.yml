@@ -89,7 +89,6 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: thollander/actions-comment-pull-request@v2
         with:
-          comment-id: 'cloudflare-deploy-comment'
           message: |
             ## 🚀 Deploying **cardona-core-service** with ☁️ Cloudflare Pages
             
@@ -97,10 +96,10 @@ jobs:
             |---------------|------------------|
             | **Status:** | ✅ Deploy successful! |
             | **Preview URL:** | [🔗 ${{ env.DEPLOYMENT_URL }}](${{ env.DEPLOYMENT_URL }}) |
-            | **Branch URL:** | [🔗 ${{ env.DEPLOYMENT_BRANCH_URL }}](${{ env.DEPLOYMENT_BRANCH_URL }}) |
+            | **Branch URL:** | [🔗 ${{ env.DEPLOYMENT_ALIAS_URL }}](${{ env.DEPLOYMENT_ALIAS_URL }}) |
             |---------------|------------------|
-            | **Branch DEVELOP URL:** | [🔗 ${{ steps.deploy-develop.outputs.pages-deployment-alias-url }}](${{ steps.deploy-develop.outputs.pages-deployment-alias-url }}) |
+            | **Branch DEVELOP URL:** [🔗 ${{ env.DEPLOYMENT_DEVELOP_ALIAS_URL }}](${{ env.DEPLOYMENT_DEVELOP_ALIAS_URL }}) |
             | **Deployment Time:** | 🕒 `${{ env.date }}` |
-
+          comment-tag: cloudflare_deploy_comment
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

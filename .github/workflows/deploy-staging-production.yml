@@ -92,7 +92,6 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: thollander/actions-comment-pull-request@v2
         with:
-          comment-id: 'cloudflare-deploy-staging-comment'
           message: |
             ## 🚀 Deploying STAGING **cardona-core-service** with ☁️ Cloudflare Pages
             
@@ -102,7 +101,7 @@ jobs:
             | **Branch STAGING URL:** | [🔗 ${{ steps.deploy-staging.outputs.pages-deployment-alias-url }}](${{ steps.deploy-staging.outputs.pages-deployment-alias-url }}) |
             |---------------|------------------|
             | **Deployment Time:** | 🕒 `${{ env.date }}` |
-
+          comment-tag: cloudflare-deploy-staging-comment
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-core-service-production:
@@ -138,7 +137,6 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: thollander/actions-comment-pull-request@v2
         with:
-          comment-id: 'cloudflare-deploy-production-comment'
           message: |
             ## 🚀 Deploying PRODUCTION **cardona-core-service** with ☁️ Cloudflare Pages
             
@@ -147,5 +145,5 @@ jobs:
             | **Status:** | ✅ Deploy successful! |
             | **Branch PRODUCTION URL:** | [🔗 ${{ steps.deploy-production.outputs.pages-deployment-alias-url }}](${{ steps.deploy-production.outputs.pages-deployment-alias-url }}) |
             | **Deployment Time:** | 🕒 `${{ env.date }}` |
-
+          comment-tag: cloudflare-deploy-production-comment
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
