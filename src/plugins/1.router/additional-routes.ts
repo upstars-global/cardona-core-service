@@ -13,7 +13,7 @@ export const redirects: RouteRecordRaw[] = [
       const userRole = userData.value?.role
 
       if (userRole)
-        return 'DemoList'
+        return { path: '/demo' }
 
       return { name: 'login', query: to.query }
     },
