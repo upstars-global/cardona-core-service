@@ -90,7 +90,7 @@ jobs:
             | **Preview URL:** | [🔗 ${{ steps.deploy.outputs.deployment-url }}](${{ steps.deploy.outputs.deployment-url }}) |
             | **Branch Preview URL:** | [🔗 ${{ steps.deploy.outputs.pages-deployment-alias-url }}](${{ steps.deploy.outputs.pages-deployment-alias-url }}) |
             |---------------|------------------|
-            | **Preview DEVELOP URL:** | [🔗 ${{ steps.deploy-develop.outputs.deployment-url }}](${{ steps.deploy-develop.outputs.deployment-url }}) |
+            | **Branch DEVELOP URL:** | [🔗 ${{ steps.deploy-develop.outputs.pages-deployment-alias-url }}](${{ steps.deploy-develop.outputs.pages-deployment-alias-url }}) |
             | **Deployment Time:** | 🕒 `${{ env.date }}` |
 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

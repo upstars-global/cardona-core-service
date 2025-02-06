@@ -37,6 +37,13 @@ jobs:
       - name: Report Coverage
         if: always() # Also generate the report if tests are failing
         uses:  davelosert/vitest-coverage-report-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          json-summary-path: coverage/coverage-summary.json
+          json-final-path: coverage/coverage-final.json
+          file-coverage-mode: all # Показывать всегда
+          working-directory: ./
+          comment-on: commit
 
       - name: Build
         run: npm run build-cf
@@ -74,6 +81,29 @@ jobs:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
         run: echo $DEPLOYMENT_URL
 
+      - name: Get Deployment URL and Deployment Timestamp
+        id: get-deploy-url
+        run: |
+          echo "DEPLOYMENT_STAGING_URL=${{ steps.deploy-staging.outputs.deployment-url }}" >> $GITHUB_ENV
+          echo "DEPLOYMENT_STAGING_ALIAS_URL=${{ steps.deploy-staging.outputs.pages-deployment-alias-url }}" >> $GITHUB_ENV
+          echo "date=$(date -u)" >> $GITHUB_ENV
+
+      - name: Comment PR with Deployment Table
+        if: github.event_name == 'pull_request'
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            ## 🚀 Deploying STAGING **cardona-core-service** with ☁️ Cloudflare Pages
+            
+            | **Latest commit:** | `${{ github.sha }}` |
+            |---------------|------------------|
+            | **Status:** | ✅ Deploy successful! |
+            | **Branch STAGING URL:** | [🔗 ${{ steps.deploy-staging.outputs.pages-deployment-alias-url }}](${{ steps.deploy-staging.outputs.pages-deployment-alias-url }}) |
+            |---------------|------------------|
+            | **Deployment Time:** | 🕒 `${{ env.date }}` |
+
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   deploy-core-service-production:
     runs-on: ubuntu-latest
     environment: production
@@ -96,7 +126,24 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./server/build-dist --project-name=cardona-core-service
 
-      - name: Print deployment-url
-        env:
-          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
-        run: echo $DEPLOYMENT_URL
+      - name: Get Deployment URL and Deployment Timestamp
+        id: get-deploy-url
+        run: |
+          echo "DEPLOYMENT_PRODUCTION_URL=${{ steps.deploy-production.outputs.deployment-url }}" >> $GITHUB_ENV
+          echo "DEPLOYMENT_PRODUCTION_ALIAS_URL=${{ steps.deploy-production.outputs.pages-deployment-alias-url }}" >> $GITHUB_ENV
+          echo "date=$(date -u)" >> $GITHUB_ENV
+
+      - name: Comment PR with Deployment Table
+        if: github.event_name == 'pull_request'
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            ## 🚀 Deploying PRODUCTION **cardona-core-service** with ☁️ Cloudflare Pages
+            
+            | **Latest commit:** | `${{ github.sha }}` |
+            |---------------|------------------|
+            | **Status:** | ✅ Deploy successful! |
+            | **Branch PRODUCTION URL:** | [🔗 ${{ steps.deploy-production.outputs.pages-deployment-alias-url }}](${{ steps.deploy-production.outputs.pages-deployment-alias-url }}) |
+            | **Deployment Time:** | 🕒 `${{ env.date }}` |
+
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
