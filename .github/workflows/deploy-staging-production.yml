@@ -6,24 +6,37 @@ on:
 jobs:
   build-core-service-staging:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 23 ]
+
+    permissions:
+      # Required to checkout the code
+      contents: read
+      # Required to put a comment into the pull-request
+      pull-requests: write
+
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
         with:
-          node-version: "latest"
-          cache: "npm"
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
 
-      - name: Install yarn
-        run: npm i -g yarn
+      - name: Install yarn & install dependencies
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
 
-      - name: Yarn install
-        run: yarn install
+      - name: Test
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: test:coverage
 
-      - name: Unit Tests
-        run: npm run test:unit
+      - name: Report Coverage
+        if: always() # Also generate the report if tests are failing
+        uses:  davelosert/vitest-coverage-report-action@v2
 
       - name: Build
         run: npm run build-cf
@@ -53,13 +66,13 @@ jobs:
           echo "Checking uploaded artifacts..."
           ls -la ./server
 
-      - name: Deploy app
-        id: deploy
+      - name: Deploy app staging
+        id: deploy-staging
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./server/build-dist --project-name=cardona-core-service
+          command: pages deploy ./server/build-dist --project-name=cardona-core-service --branch=staging
 
       - name: Print deployment-url
         env:
@@ -85,8 +98,8 @@ jobs:
           echo "Checking uploaded artifacts..."
           ls -la ./server
 
-      - name: Deploy app
-        id: deploy
+      - name: Deploy app production
+        id: deploy-production
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
