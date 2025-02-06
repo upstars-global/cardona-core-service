@@ -26,6 +26,9 @@ jobs:
       - name: Unit Tests
         run: npm run test:unit
 
+      - name: Code coverage
+        run: npm run test:coverage
+
       - name: Build
         run: npm run build-cf
 
