@@ -99,7 +99,7 @@ export default defineConfig({
     },
     coverage: {
       provider: 'v8',
-      reporter: ['text'],
+      reporter: ['text', 'json-summary', 'json'],
       all: true,
       exclude: [
         'node_modules/',
@@ -120,6 +120,7 @@ export default defineConfig({
         'src/pages/error',
       ],
       excludeNodeModules: false,
+      reportOnFailure: true,
     },
   },
   define: { 'process.env': {} },
