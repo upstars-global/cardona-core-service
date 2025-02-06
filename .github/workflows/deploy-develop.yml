@@ -75,6 +75,14 @@ jobs:
           echo "DEPLOYMENT_ALIAS_URL=${{ steps.deploy.outputs.pages-deployment-alias-url }}" >> $GITHUB_ENV
           echo "DEPLOYMENT_DEVELOP_URL=${{ steps.deploy-develop.outputs.deployment-url }}" >> $GITHUB_ENV
           echo "DEPLOYMENT_DEVELOP_ALIAS_URL=${{ steps.deploy-develop.outputs.pages-deployment-alias-url }}" >> $GITHUB_ENV
+          # Получаем текущую ветку и заменяем `/` на `-`
+          BRANCH_NAME=$(echo "${{ github.ref_name }}" | tr '/' '-')
+
+          # Получаем базовый домен из deployment-url (убираем поддомен перед первым ".")
+          BASE_DOMAIN=$(echo "${{ steps.deploy.outputs.deployment-url }}" | sed -E 's|^[^.]+\.||')
+
+          # Формируем правильный URL для ветки
+          echo "DEPLOYMENT_BRANCH_URL=https://$BRANCH_NAME.$BASE_DOMAIN" >> $GITHUB_ENV
           echo "date=$(date -u)" >> $GITHUB_ENV
 
       - name: Comment PR with Deployment Table
@@ -88,8 +96,8 @@ jobs:
             | **Latest commit:** | `${{ github.sha }}` |
             |---------------|------------------|
             | **Status:** | ✅ Deploy successful! |
-            | **Preview URL:** | [🔗 ${{ steps.deploy.outputs.deployment-url }}](${{ steps.deploy.outputs.deployment-url }}) |
-            | **Branch Preview URL:** | [🔗 ${{ steps.deploy.outputs.pages-deployment-alias-url }}](${{ steps.deploy.outputs.pages-deployment-alias-url }}) |
+            | **Preview URL:** | [🔗 ${{ env.DEPLOYMENT_URL }}](${{ env.DEPLOYMENT_URL }}) |
+            | **Branch URL:** | [🔗 ${{ env.DEPLOYMENT_BRANCH_URL }}](${{ env.DEPLOYMENT_BRANCH_URL }}) |
             |---------------|------------------|
             | **Branch DEVELOP URL:** | [🔗 ${{ steps.deploy-develop.outputs.pages-deployment-alias-url }}](${{ steps.deploy-develop.outputs.pages-deployment-alias-url }}) |
             | **Deployment Time:** | 🕒 `${{ env.date }}` |
