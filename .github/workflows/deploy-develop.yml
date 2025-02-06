@@ -7,27 +7,27 @@ jobs:
   deploy-core-service-development:
     runs-on: ubuntu-latest
     environment: develop
+    strategy:
+      matrix:
+        node-version: [ 23 ]
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
         with:
-          node-version: "latest"
-          cache: "npm"
-
-      - name: Install yarn
-        run: npm i -g yarn
-
-      - name: Yarn install
-        run: yarn install
-
-      - name: Unit Tests
-        run: npm run test:unit
-
-      - name: Code coverage
-        run: npm run test:coverage
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+      - name: Install yarn & install dependencies
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+      - name: Test
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: test:coverage
+      - name: Report Coverage
+        if: always() # Also generate the report if tests are failing
+        uses:  davelosert/vitest-coverage-report-action@v2
 
       - name: Build
         run: npm run build-cf
@@ -39,6 +39,14 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./server/dist --project-name=cardona-core-service
+
+      - name: Deploy app develop
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy ./server/dist --project-name=cardona-core-service --branch=develop
 
       - name: Print deployment-url
         env:
