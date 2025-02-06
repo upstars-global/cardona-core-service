@@ -75,19 +75,12 @@ jobs:
           echo "DEPLOYMENT_ALIAS_URL=${{ steps.deploy.outputs.pages-deployment-alias-url }}" >> $GITHUB_ENV
           echo "DEPLOYMENT_DEVELOP_URL=${{ steps.deploy-develop.outputs.deployment-url }}" >> $GITHUB_ENV
           echo "DEPLOYMENT_DEVELOP_ALIAS_URL=${{ steps.deploy-develop.outputs.pages-deployment-alias-url }}" >> $GITHUB_ENV
-          # Получаем текущую ветку и заменяем `/` на `-`
-          BRANCH_NAME=$(echo "${{ github.ref_name }}" | tr '/' '-')
-
-          # Получаем базовый домен из deployment-url (убираем поддомен перед первым ".")
-          BASE_DOMAIN=$(echo "${{ steps.deploy.outputs.deployment-url }}" | sed -E 's|^[^.]+\.||')
-
-          # Формируем правильный URL для ветки
-          echo "DEPLOYMENT_BRANCH_URL=https://$BRANCH_NAME.$BASE_DOMAIN" >> $GITHUB_ENV
           echo "date=$(date -u)" >> $GITHUB_ENV
 
       - name: Comment PR with Deployment Table
         if: github.event_name == 'pull_request'
         uses: thollander/actions-comment-pull-request@v2
+        id: deployment_table
         with:
           message: |
             ## 🚀 Deploying **cardona-core-service** with ☁️ Cloudflare Pages
@@ -101,6 +94,11 @@ jobs:
             | **Branch DEVELOP URL:** | [🔗 ${{ env.DEPLOYMENT_DEVELOP_ALIAS_URL }}](${{ env.DEPLOYMENT_DEVELOP_ALIAS_URL }}) |
             | **Deployment Time:** | 🕒 `${{ env.date }}` |
 
-          comment-tag: cloudflare_deploy_comment
+          comment_tag: cloudflare_deploy_comment
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check outputs Comment Deployment Table
+        run: |
+          echo "id : ${{ steps.deployment_table.outputs.id }}"
+          echo "body : ${{ steps.deployment_table.outputs.body }}"
+          echo "html-url : ${{ steps.deployment_table.outputs.html-url }}"
 
