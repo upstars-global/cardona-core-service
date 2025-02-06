@@ -33,7 +33,7 @@ const logOutAction = {
   icon: IconsList.LogOutIcon,
   action: async () => {
     await store.dispatch('authCore/clearAuth')
-    await router.push({ name: 'login' })
+    await router.push({ name: 'Login' })
   },
 }
 

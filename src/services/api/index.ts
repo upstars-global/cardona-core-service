@@ -102,7 +102,7 @@ class ApiService {
       //   return this.request(payload, config, retryCount - 1, retryDelay * 2)
       // }
 
-      const isLoginPage: boolean = route?.name === 'login'
+      const isLoginPage: boolean = route?.name === 'Login'
       const isInvalidToken = isInvalidTokenError(error)
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', TOKEN_INVALID]
 
@@ -111,7 +111,7 @@ class ApiService {
         store.dispatch('authCore/clearAuth')
 
         if (!isLoginPage)
-          router.push({ name: 'login' })
+          router.push({ name: 'Login' })
       }
 
       store.dispatch('addErrorUrl', url)
