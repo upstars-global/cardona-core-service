@@ -4,7 +4,7 @@ import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { IconsList } from '../../../../@model/enums/icons'
 import type { RatesBaseField } from '../../../../@model/templates/baseField'
-import { NumberBaseField } from '../../../../@model/templates/baseField'
+import { NumberBaseField, TextBaseField } from '../../../../@model/templates/baseField'
 import FieldGenerator from '../index.vue'
 import type { RatesValueItem } from '../../../../@model/templates/baseField/rates'
 import { MAX_WIDTH_TOOLTIP } from '../../../..//utils/constants'
@@ -65,11 +65,13 @@ watch(
 )
 
 function setRates(): NumberBaseField[] {
+  const field = props.field.withString ? TextBaseField : NumberBaseField
+
   return allCurrencies.value.map(
     (currency, index) => {
-      return new NumberBaseField({
+      return new field({
         key: currency,
-        id: `${props.field.key}-${index}`,
+        id: `${props.field.id}_${currency}`,
         value: props.modelValue.find(item => item.currency === currency)?.value ?? 0,
         label: currency,
         placeholder: props.field.placeholder,
