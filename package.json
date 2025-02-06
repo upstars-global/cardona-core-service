@@ -13,7 +13,8 @@
     "lint": "eslint . -c .eslintrc.cjs --fix --rulesdir eslint-internal-rules/ --ext .ts,.js,.cjs,.vue,.tsx,.jsx",
     "msw:init": "msw init public/ --save",
     "postinstall": "npm run build:icons && npm run msw:init",
-    "test:unit": "vitest --environment jsdom"
+    "test:unit": "vitest --environment jsdom",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@casl/ability": "^6.5.0",
@@ -105,8 +106,10 @@
     "@videojs-player/vue": "^1.0.0",
     "@vitejs/plugin-vue": "^4.4.0",
     "@vitejs/plugin-vue-jsx": "^3.0.2",
+    "@vitest/coverage-v8": "^2.0.5",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/test-utils": "^2.4.6",
+    "c8": "^10.1.3",
     "eslint": "^8.51.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-import-resolver-typescript": "^3.6.1",
