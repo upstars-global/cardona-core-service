@@ -97,7 +97,7 @@ export default defineConfig({
     deps: {
       inline: ['vuetify'],
     },
-    reporters: process.env.GITHUB_ACTIONS ? ['dot', 'github-actions'] : ['dot'],
+    reporters: ['dot', 'github-actions'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json-summary', 'json'],
