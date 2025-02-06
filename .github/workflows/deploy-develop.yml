@@ -98,8 +98,9 @@ jobs:
             | **Preview URL:** | [🔗 ${{ env.DEPLOYMENT_URL }}](${{ env.DEPLOYMENT_URL }}) |
             | **Branch URL:** | [🔗 ${{ env.DEPLOYMENT_ALIAS_URL }}](${{ env.DEPLOYMENT_ALIAS_URL }}) |
             |---------------|------------------|
-            | **Branch DEVELOP URL:** [🔗 ${{ env.DEPLOYMENT_DEVELOP_ALIAS_URL }}](${{ env.DEPLOYMENT_DEVELOP_ALIAS_URL }}) |
+            | **Branch DEVELOP URL:** | [🔗 ${{ env.DEPLOYMENT_DEVELOP_ALIAS_URL }}](${{ env.DEPLOYMENT_DEVELOP_ALIAS_URL }}) |
             | **Deployment Time:** | 🕒 `${{ env.date }}` |
+
           comment-tag: cloudflare_deploy_comment
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
