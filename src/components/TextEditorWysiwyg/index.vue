@@ -50,11 +50,14 @@ const { saveCaretPosition, restoreCaretPosition, observeDOMChanges } = useEditor
 const content = computed({
   get: () => serializeToContentWithVariable(props.modelValue),
   set: value => {
+    const canRestoreCaret = props.modelValue.length < value.length
+
     const caretInfo = saveCaretPosition()
 
+    emit('update:modelValue', value)
     nextTick(() => {
-      emit('update:modelValue', value)
-      observeDOMChanges(() => restoreCaretPosition(caretInfo))
+      if (canRestoreCaret)
+        observeDOMChanges(() => restoreCaretPosition(caretInfo))
     })
   },
 })
