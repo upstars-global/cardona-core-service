@@ -43,7 +43,7 @@ const store = useStore()
 const globalEditor = ref()
 
 const serializeToContentWithVariable = (value: string): string => value
-  .replace(/{{\s*([^{}]+?)\s*}}/g, '&nbsp;<span class="variable-box">$1</span>&nbsp;')
+  .replace(/{{\s*([^{}]+?)\s*}}/g, '&nbsp;<span class="variable-box">{$1}</span>&nbsp;')
 
 const { saveCaretPosition, restoreCaretPosition, observeDOMChanges } = useEditorCaretHandler(globalEditor)
 
@@ -52,10 +52,9 @@ const content = computed({
   set: value => {
     const caretInfo = saveCaretPosition()
 
-    emit('update:modelValue', value)
-
     nextTick(() => {
-      observeDOMChanges(() => restoreCaretPosition(caretInfo)) //  Дожидаемся рендера и восстанавливаем каретку
+      emit('update:modelValue', value)
+      observeDOMChanges(() => restoreCaretPosition(caretInfo))
     })
   },
 })

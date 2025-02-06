@@ -68,9 +68,76 @@ export function useEditorCaretHandler(editor: Ref<any>) {
     })
   }
 
+  const getCursorPosition = () => {
+    if (!editorEntity.value)
+      return null
+
+    const editor = editorEntity.value
+    const selection = editor.selection.get()
+
+    if (!selection)
+      return null
+
+    const range = selection.getRangeAt(0)
+    const preCaretRange = range.cloneRange()
+
+    preCaretRange.selectNodeContents(editor.el)
+    preCaretRange.setEnd(range.startContainer, range.startOffset)
+
+    const tempDiv = document.createElement('div')
+
+    tempDiv.appendChild(preCaretRange.cloneContents())
+
+    return tempDiv.innerHTML.length // Возвращает индекс курсора в HTML
+  }
+
+  const setCursorPosition = (position: number) => {
+    if (!editorEntity.value)
+      return
+
+    const editor = editorEntity.value
+    const selection = window.getSelection()
+    const range = document.createRange()
+
+    let currentOffset = 0
+
+    function findTextNode(node) {
+      if (node.nodeType === 3) {
+        const nextOffset = currentOffset + node.textContent.length
+
+        if (position >= currentOffset && position <= nextOffset) {
+          range.setStart(node, position - currentOffset)
+          range.setEnd(node, position - currentOffset)
+
+          return true
+        }
+
+        currentOffset = nextOffset
+      }
+      else {
+        for (const child of node.childNodes) {
+          if (findTextNode(child))
+            return true
+        }
+      }
+
+      return false
+    }
+
+    // 🔥 Вставляем каретку в нужное место после загрузки контента
+    nextTick(() => {
+      if (findTextNode(editor.el)) {
+        selection.removeAllRanges()
+        selection.addRange(range)
+      }
+    })
+  }
+
   return {
+    setCursorPosition,
     saveCaretPosition,
     observeDOMChanges,
     restoreCaretPosition,
+    getCursorPosition,
   }
 }
