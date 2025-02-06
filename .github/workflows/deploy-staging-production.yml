@@ -61,11 +61,6 @@ jobs:
           name: build-dist
           path: ./server/build-dist
 
-      - name: Debug Artifacts
-        run: |
-          echo "Checking uploaded artifacts..."
-          ls -la ./server
-
       - name: Deploy app staging
         id: deploy-staging
         uses: cloudflare/wrangler-action@v3
@@ -92,11 +87,6 @@ jobs:
         with:
           name: build-dist
           path: ./server/build-dist
-
-      - name: Debug Artifacts
-        run: |
-          echo "Checking uploaded artifacts..."
-          ls -la ./server
 
       - name: Deploy app production
         id: deploy-production
