@@ -41,7 +41,7 @@ jobs:
           command: pages deploy ./server/dist --project-name=cardona-core-service
 
       - name: Deploy app develop
-        id: deploy
+        id: deploy-develop
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
