@@ -31,6 +31,13 @@ const router = useRouter()
 
 const ability = useAbility()
 
+definePage({
+  meta: {
+    layout: 'blank',
+    unauthenticatedOnly: true,
+  },
+})
+
 const errors = ref<Record<string, string | undefined>>({
   email: undefined,
   password: undefined,

@@ -32,15 +32,6 @@ export const redirects: RouteRecordRaw[] = [
 
 export const routes: RouteRecordRaw[] = [
   {
-    path: '/login',
-    name: 'login',
-    component: () => import ('../../pages/login.vue'),
-    meta: {
-      layout: 'blank',
-      unauthenticatedOnly: true,
-    },
-  },
-  {
     path: '/register',
     name: 'register',
     component: () => import ('../../pages/register.vue'),
