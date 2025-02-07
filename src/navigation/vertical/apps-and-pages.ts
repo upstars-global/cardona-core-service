@@ -4,7 +4,7 @@ const navItems = [
   {
     title: 'page.demo._',
     icon: { icon: 'tabler-box' },
-    to: 'DemoList',
+    to: { name: 'DemoList' },
   },
   {
     title: 'page.groupFragment.demoPage',
