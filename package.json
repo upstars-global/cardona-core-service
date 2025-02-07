@@ -13,7 +13,7 @@
     "lint": "eslint . -c .eslintrc.cjs --fix --rulesdir eslint-internal-rules/ --ext .ts,.js,.cjs,.vue,.tsx,.jsx",
     "msw:init": "msw init public/ --save",
     "postinstall": "npm run build:icons && npm run msw:init",
-    "test:unit": "vitest --environment jsdom",
+    "test:unit": "vitest --environment jsdom"
   },
   "dependencies": {
     "@casl/ability": "^6.5.0",
