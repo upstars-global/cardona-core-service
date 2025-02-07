@@ -376,6 +376,7 @@ export class DemoForm {
       key: 'date',
       value: data?.date,
       label: i18n.t('page.demo.dateField'),
+      validationRules: { required: true },
     })
     this.dateRange = new DateBaseField({
       key: 'dateRange',

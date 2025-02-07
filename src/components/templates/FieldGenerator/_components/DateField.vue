@@ -158,6 +158,7 @@ const onOpenByAppendInner = dateRef => {
     v-if="!field.isRangeMode"
     ref="dateFromRef"
     v-model="modelValue"
+    :is-invalid="Boolean(errors)"
     :class="{ error: errors }"
     :placeholder="field.placeholder || field.label"
     :config="{

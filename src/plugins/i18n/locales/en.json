@@ -475,6 +475,9 @@
     },
     "baseSection": {
       "readModeAlert": "You are currently in reading mode, which means that interactive features are limited. Please contact your administrator for full access."
+    },
+    "select": {
+      "loadingMore": "Loading more options..."
     }
   },
   "page": {
@@ -729,6 +732,7 @@
     "addAll": "Add all ({total})",
     "addToCategory": "Add to category",
     "edit": "Edit",
+    "details": "Details",
     "makeCopy": "Make a copy",
     "save": "Save",
     "remove": "Remove",

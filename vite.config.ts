@@ -75,6 +75,32 @@ export default defineConfig({
     deps: {
       inline: ['vuetify'],
     },
+    reporters: ['dot', 'github-actions'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json-summary', 'json'],
+      all: true,
+      exclude: [
+        'node_modules/',
+        'dist/',
+        'tests/',
+        'vite.config.ts',
+        'src/@core/*',
+        'src/plugins/*',
+        'src/views/*',
+        'src/pages/*',
+        '@fake-db',
+        'src/components/dialogs/*',
+        'views',
+      ],
+      include: [
+        'src/**/*.vue',
+        'src/pages/demo',
+        'src/pages/error',
+      ],
+      excludeNodeModules: false,
+      reportOnFailure: true,
+    },
   },
   define: { 'process.env': {} },
   resolve: {
