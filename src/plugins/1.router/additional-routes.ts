@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from 'vue-router/auto'
-import { useCookie } from '../../@core/composable/useCookie'
 
 // 👉 Redirects
 export const redirects: RouteRecordRaw[] = [
@@ -8,17 +7,7 @@ export const redirects: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'index',
-    redirect: to => {
-      const userData = useCookie<Record<string, unknown> | null | undefined>('userData')
-      const userRole = userData.value?.role
-
-      console.log('userRole: ', userRole)
-
-      if (userRole)
-        return { path: '/demo' }
-
-      return { name: 'login', query: to.query }
-    },
+    redirect: to => ({ path: '/demo', query: to.query }),
   },
   {
     path: '/pages/user-profile',

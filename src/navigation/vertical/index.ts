@@ -1,6 +1,6 @@
 import type { VerticalNavItems } from '@layouts/types'
 
-const navItems = [
+export default [
   {
     title: 'page.demo._',
     icon: { icon: 'tabler-box' },
@@ -12,5 +12,3 @@ const navItems = [
     icon: { icon: 'tabler-box' },
   },
 ] as VerticalNavItems
-
-export default navItems

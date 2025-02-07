@@ -111,7 +111,7 @@ class ApiService {
         store.dispatch('authCore/clearAuth')
 
         if (!isLoginPage)
-          router.push({ name: 'login' })
+          router.push('/login')
       }
 
       store.dispatch('addErrorUrl', url)

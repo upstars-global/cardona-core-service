@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
-import navItems from '../../navigation/vertical/apps-and-pages'
 import AppBreadcrumb from './AppBreadcrumb.vue'
+import navItems from '@/navigation/vertical/'
 import { VerticalNavLayout } from '@layouts'
 
 const isFallbackStateActive = ref(false)

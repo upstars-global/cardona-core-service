@@ -92,7 +92,7 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
               <VCol cols="12">
                 <RouterLink
                   class="d-flex align-center justify-center"
-                  :to="{ name: 'login' }"
+                  to="/login"
                 >
                   <VIcon
                     icon="tabler-chevron-left"

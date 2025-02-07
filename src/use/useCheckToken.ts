@@ -6,8 +6,6 @@ import useToastService from 'cardona-core-service/src/helpers/toasts'
 const { toastError } = useToastService()
 
 export function useCheckToken() {
-  console.log('useCheckToken from cure')
-
   const store = useStore()
   const router = useRouter()
 
@@ -16,7 +14,7 @@ export function useCheckToken() {
   const actionOnBrokenToken = async (withToast = false) => {
     withToast && toastError(TOKEN_INVALID)
     await store.dispatch('authCore/clearAuth')
-    await router.push({ name: 'login' })
+    await router.push('/login')
   }
 
   const isValidLocalStorageValue = async (): Promise<boolean> => {
