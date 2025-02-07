@@ -12,6 +12,8 @@ export const redirects: RouteRecordRaw[] = [
       const userData = useCookie<Record<string, unknown> | null | undefined>('userData')
       const userRole = userData.value?.role
 
+      console.log('userRole: ', userRole)
+
       if (userRole)
         return { path: '/demo' }
 
