@@ -3,7 +3,6 @@ import { clearAuthTokens, setAuthTokens } from 'axios-jwt'
 import ApiService from '../../services/api'
 import type { ILoginData } from '../../@model/auth'
 import { checkIsLoggedIn } from '../../helpers/token-auth'
-import { useCookie } from '@core/composable/useCookie'
 
 export default {
   namespaced: true,
@@ -55,8 +54,8 @@ export default {
     },
 
     clearAuth({ commit, dispatch }) {
-      useCookie('userData').value = null
-      useCookie('accessToken').value = null
+      // useCookie('userData').value = null
+      // useCookie('accessToken').value = null
       clearAuthTokens()
       commit('SET_AUTH', false)
       dispatch('filtersCore/clearLocalDefaultFilters', null, { root: true })
