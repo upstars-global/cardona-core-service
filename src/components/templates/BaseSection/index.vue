@@ -48,7 +48,7 @@ const entityId: string = props.entityId || route.params?.id?.toString()
 const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
 
-const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb, onSerializeFormCb }
+const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb, onSerializeFormCb, validationErrorCb }
   = props.useEntity()
 
 const formRef = ref(null)
@@ -244,7 +244,7 @@ const onSave = async () => {
       type: entityName,
       data: {
         form: transformedForm.value,
-        formRef: formRef.value,
+        formRef: { ...formRef.value, validationErrorCb },
       },
       customApiPrefix: props.config?.customApiPrefix,
     })

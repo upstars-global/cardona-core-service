@@ -137,4 +137,14 @@ describe('DateField.vue', () => {
       ' to 2024-11-12T11:00:00.000Z',
     )
   })
+
+  it('Should add class errors for invalid field', async () => {
+    const wrapper = mountDateFieldWithDefaultProps({
+      field: { config: { static: true }, isRangeMode: false },
+      modelValue: '',
+      errors: true,
+    })
+
+    testOn.existClassList({ wrapper, testId: 'single-picker' }, ['v-input--error', 'error'])
+  })
 })
