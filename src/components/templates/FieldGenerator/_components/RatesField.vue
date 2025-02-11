@@ -71,7 +71,7 @@ function setRates(): NumberBaseField[] {
     (currency, index) => {
       return new field({
         key: currency,
-        id: `${props.field.key}-${index}`,
+        id: `${props.field.id}_${currency}`,
         value: props.modelValue.find(item => item.currency === currency)?.value ?? 0,
         label: currency,
         placeholder: props.field.placeholder,

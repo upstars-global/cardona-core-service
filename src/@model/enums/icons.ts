@@ -24,7 +24,7 @@ export enum IconsList {
   ArrowUpRightIcon = 'tabler-arrow-up-right',
   ArrowUpIcon = 'ArrowUpIcon',
   AtIcon = 'tabler-at',
-  AwardIcon = 'AwardIcon',
+  AwardIcon = 'tabler-award',
   BarChart2Icon = 'BarChart2Icon',
   BarChartIcon = 'BarChartIcon',
   BatteryChargingIcon = 'BatteryChargingIcon',

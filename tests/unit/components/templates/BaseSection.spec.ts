@@ -351,12 +351,14 @@ describe('BaseSection.vue', () => {
     /// Call the onSave method
     await wrapper.vm.onSave()
 
-    /// Verify that the correct dispatch action is called
+    /// Verify that the correct dispatch action is called //
     expect(mockStoreDispatch).toHaveBeenCalledWith('baseStoreCore/createEntity', {
       type: 'mock-form',
       data: {
         form: { id: '123' },
-        formRef: wrapper.vm.formRef,
+        formRef: {
+          validationErrorCb: undefined,
+        },
       },
     })
 
