@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, nextTick, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, inject, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
 import { useStore } from 'vuex'
@@ -13,8 +13,8 @@ import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import ConfirmModal from '../../../components/BaseModal/ConfirmModal.vue'
 import { ModalsId } from '../../..//@model/modalsId'
 import { useRedirectToNotFoundPage } from '../../../helpers/router'
-import { FormTabs } from '../../../@model/enums/formTabs'
 import BaseSectionLoading from './BaseSectionLoading.vue'
+import { setTabError } from './сomposables/tabs'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean
@@ -150,42 +150,9 @@ const validate = async () => {
   )
 
   if (fieldName)
-    setTabError(fieldName)
+    setTabError(fieldName, form)
 
   return valid
-}
-
-const existFieldName = (fieldName: string, form: unknown) => form && Object.keys(form).some(key => fieldName.includes(key))
-
-const setTabError = (fieldName: string) => {
-  const fieldElement: HTMLElement | null = document.getElementById(`${fieldName}-field`)
-  let tabName = ''
-
-  if (fieldElement) {
-    const windowElement: HTMLElement | null = fieldElement.closest('div[data-tab]')
-
-    if (windowElement)
-      tabName = windowElement.dataset.tab!
-    else if (existFieldName(fieldName, form.value))
-      tabName = FormTabs.Main
-    else if (existFieldName(fieldName, form.value.seo))
-      tabName = FormTabs.Seo
-    else if (existFieldName(fieldName, form.value.fieldTranslations))
-      tabName = FormTabs.Localization
-    else return
-
-    const tabButton: HTMLElement | null = document.querySelector(
-      `button[value=${tabName}]`,
-    )
-
-    tabButton && tabButton.click()
-
-    nextTick(() => {
-      fieldElement.scrollIntoView({
-        block: 'start',
-      })
-    })
-  }
 }
 
 const isDisableSubmit = computed(() => [isLoadingPage.value, isDisableSubmitBtn.value, isExistsEndpointsWithError.value].some(Boolean))
@@ -273,7 +240,7 @@ const onSave = async () => {
   }
   catch (e) {
     if (e?.validationErrors?.[0])
-      setTabError(e.validationErrors[0]?.field)
+      setTabError(e.validationErrors[0]?.field, form)
   }
 }
 
