@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
 import { useStore } from 'vuex'
 import { IconsList } from '../../../@model/enums/icons'
-import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
+import { checkExistsPage, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
 import { basePermissions } from '../../../helpers/base-permissions'
 import { PageType } from '../../../@model/templates/baseSection'
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
@@ -15,6 +15,7 @@ import { ModalsId } from '../../..//@model/modalsId'
 import { useRedirectToNotFoundPage } from '../../../helpers/router'
 import BaseSectionLoading from './BaseSectionLoading.vue'
 import { setTabError } from './сomposables/tabs'
+import { generateEntityUrl } from './сomposables/entity'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean
@@ -68,23 +69,11 @@ const updateActionName = `${moduleName}/updateEntity`
 const deleteActionName = `${moduleName}/deleteEntity`
 
 // Permissions
-
 const { canCreateSeo, canUpdate, canUpdateSeo, canRemove, canViewSeo }
   = basePermissions<BaseSectionConfig>({ entityName, config: props.config })
 
-const generateEntityUrl = () => {
-  const indexSymbolNextDash = entityName.indexOf('-') + 1
-
-  const entityNameForLoad = entityName.replace(
-    entityName[indexSymbolNextDash],
-    entityName[indexSymbolNextDash].toLowerCase(),
-  )
-
-  return convertCamelCase(entityNameForLoad, '/')
-}
-
 const isLoadingPage = computed(() => {
-  const entityUrl = generateEntityUrl()
+  const entityUrl = generateEntityUrl(entityName)
 
   return store.getters.isLoadingEndpoint([
     `${entityUrl}/create`,
@@ -99,7 +88,7 @@ const isDisableSubmitBtn = computed(() => {
 })
 
 const isExistsEndpointsWithError = computed(() => {
-  const entityUrl = generateEntityUrl()
+  const entityUrl = generateEntityUrl(entityName)
 
   return store.getters.isErrorEndpoint([
     `${entityUrl}/read`,
