@@ -204,7 +204,7 @@ const config = {
               parent.replaceChild(beforeText, node)
               parent.insertBefore(span, beforeText.nextSibling)
               parent.insertBefore(afterText, span.nextSibling)
-              lastInsertedSpan = span
+              lastInsertedSpan = afterText // Устанавливаем курсор после переменной
               updated = true
             }
           }
@@ -218,7 +218,7 @@ const config = {
 
         editor.$el.find('[id="isPasted"]').removeAttr('id')
 
-        // Восстанавление курсора после изменений
+        // Восстановление курсора после изменений за пределами span
         if (lastInsertedSpan) {
           const newRange = document.createRange()
 
@@ -295,7 +295,7 @@ const findNoUseVarAndDelete = () => {
     return
   const regex = /<span class="variable-box">\{(.*?)\}<\/span>/g
 
-  const text = ref(globalEditor.value.html.get(true))
+  const text = ref(globalEditor.value.html.get(true).replaceAll('&nbsp;', ''))
   let match
   let isUpdateCursor = false
 
