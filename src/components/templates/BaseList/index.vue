@@ -20,8 +20,6 @@ import {
   NumberRangeBaseField,
   SelectBaseField,
 } from '../../../@model/templates/baseField'
-import type { PaginationResult } from '../../../use/pagination'
-import usePagination from '../../../use/pagination'
 import type { TableField } from '../../../@model/templates/tableFields'
 import { ListFieldType } from '../../../@model/templates/tableFields'
 import { basePermissions } from '../../../helpers/base-permissions'
@@ -41,6 +39,8 @@ import StatementField from '../../../components/templates/_components/StatementF
 import DateWithSecondsField from '../../../components/templates/_components/DateWithSecondsField.vue'
 import SumAndCurrency from '../../../components/templates/_components/SumAndCurrency.vue'
 import StatusField from '../../../components/templates/_components/StatusField.vue'
+import usePagination from './сomposables/pagination'
+import type { PaginationResult } from './сomposables/pagination'
 import MultipleActions from './_components/MultipleActions.vue'
 import ListSearch from './_components/ListSearch.vue'
 import PillStatusField from './_components/fields/PillStatusField.vue'
