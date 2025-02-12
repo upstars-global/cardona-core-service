@@ -5,9 +5,9 @@ import { useStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
-import { BaseListActionsSlots, ExportFormat } from '../../../@model/templates/baseList'
+import { BaseListActionsSlots } from '../../../@model/templates/baseList'
 import CTable from '../../CTable/index.vue'
-import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
+import type { ExportFormat, FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
@@ -60,6 +60,7 @@ import ListPagination from './_components/ListPagination.vue'
 import TableFields from './_components/TableFields.vue'
 import DateField from './_components/fields/DateField.vue'
 import { mapSortData } from './сomposables/sorting'
+import { downloadReport } from './сomposables/export'
 
 const props = defineProps<{
   config: IBaseListConfig
@@ -430,25 +431,7 @@ const onExportFormatSelected = async (format: ExportFormat) => {
     customApiPrefix: props.config?.customApiPrefix,
   })
 
-  const fakeLink: HTMLElement = document.createElement('a')
-
-  const downloadUrl = window.URL.createObjectURL(new Blob([report]))
-
-  if (format === ExportFormat.XLSX) {
-    fakeLink.setAttribute(
-      'href',
-      downloadUrl,
-    )
-  }
-  else {
-    fakeLink.setAttribute(
-      'href',
-      `data:${downloadUrl};charset=utf-8,${encodeURIComponent(report)}`,
-    )
-  }
-  fakeLink.setAttribute('target', '_blank')
-  fakeLink.setAttribute('download', `${entityName}Report.${format}`)
-  fakeLink.click()
+  downloadReport(report, entityName, format)
 }
 
 // Filters
