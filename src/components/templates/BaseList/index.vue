@@ -59,6 +59,7 @@ import ItemActions from './_components/fields/ItemActions.vue'
 import ListPagination from './_components/ListPagination.vue'
 import TableFields from './_components/TableFields.vue'
 import DateField from './_components/fields/DateField.vue'
+import { mapSortData } from './сomposables/sorting'
 
 const props = defineProps<{
   config: IBaseListConfig
@@ -277,21 +278,12 @@ const linkGenerator = (page: number) => {
   return linkGen(page)
 }
 
-const mapSortData = () => {
-  return sortData.value.isEmpty
-    ? null
-    : sortData.value.map(item => {
-      if (item.key)
-        return new ListSort({ sortBy: item.key, sortDesc: item.order })
-    })
-}
-
 // Fetch list
 const getList = async () => {
   isDebouncedSearch.value = false
 
   const filter = setRequestFilters()
-  const sort = mapSortData()
+  const sort = mapSortData(sortData.value)
 
   const { list, total } = await store.dispatch(fetchActionName, {
     type: parseEntityNameWithTabs(entityName),
