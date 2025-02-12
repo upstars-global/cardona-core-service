@@ -11,7 +11,6 @@ import { copyToClipboard } from '../../helpers/clipboard'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
-import { useEditorCaretHandler } from './useEditorCaretHandler'
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
@@ -40,28 +39,15 @@ interface Emits {
 const modal = inject('modal')
 
 const store = useStore()
-const globalEditor = ref()
-
-const serializeToContentWithVariable = (value: string): string => value
-  .replace(/{{\s*([^{}]+?)\s*}}/g, '&nbsp;<span class="variable-box">{$1}</span>&nbsp;')
-
-const { saveCaretPosition, restoreCaretPosition, observeDOMChanges } = useEditorCaretHandler(globalEditor)
 
 const content = computed({
-  get: () => serializeToContentWithVariable(props.modelValue),
+  get: () => props.modelValue,
   set: value => {
-    const canRestoreCaret = props.modelValue.length < value.length
-
-    const caretInfo = saveCaretPosition()
-
-    nextTick(() => {
-      emit('update:modelValue', value)
-      if (canRestoreCaret && caretInfo.offset)
-        observeDOMChanges(() => restoreCaretPosition(caretInfo))
-    })
+    emit('update:modelValue', value)
   },
 })
 
+const globalEditor = ref()
 const isUpdateVar = computed(() => store.state.textEditor.isUpdateVar)
 const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
 
@@ -172,35 +158,83 @@ const config = {
         globalEditor.value = this
 
       const editor: any = this
+      let contentChanged = editor.html.get()
       const regex = /{{(.*?)}}/g
-      const contentChanged = editor.html.get(true)
-      const editorVariables = [...contentChanged.matchAll(regex)].map(([variableKey]) => variableKey.replace('{{', '').replace('}}', ''))
-      const uniqueVariables = [...new Set(editorVariables)]
 
-      if (uniqueVariables.isNotEmpty) {
+      contentChanged = contentChanged.replace(/(\S*)}}(\s*){{/g, '{{$1}} $2{{')
+
+      // Поиск всех переменных
+      const uniqueVariables = Array.from(new Set(
+        [...contentChanged.matchAll(regex)].map(([_, variableKey]) => variableKey.trim()),
+      ))
+
+      if (uniqueVariables.length > 0) {
+        // Сохранение точной позиции курсора
+        const selection = window.getSelection()
+        let range = null
+        if (selection?.rangeCount > 0)
+          range = selection.getRangeAt(0).cloneRange()
+
+        let updated = false
+        let lastInsertedSpan = null
+
         uniqueVariables.forEach((keyVar: string) => {
-          const originVar = keyVar.trim()
+          if (!keyVar)
+            return
 
-          if (originVar) {
-            const varFromBuffer = variableTextBuffer.value[originVar] ?? { ...defaultObjLocalisationParameters }
+          const varFromBuffer = variableTextBuffer.value[keyVar] ?? { ...defaultObjLocalisationParameters }
 
-            setVariableByKey({ key: originVar, value: varFromBuffer })
+          setVariableByKey({ key: keyVar, value: varFromBuffer })
+
+          // Обновление текста без полной перерисовки
+          const walker = document.createTreeWalker(editor.$el[0], NodeFilter.SHOW_TEXT, null)
+          while (walker.nextNode()) {
+            const node = walker.currentNode
+            if (node.nodeValue?.includes(`{{${keyVar}}}`)) {
+              const span = document.createElement('span')
+
+              span.className = 'variable-box'
+              span.innerHTML = `{${keyVar}}`
+
+              const parent = node.parentNode!
+              const index = node.nodeValue.indexOf(`{{${keyVar}}}`)
+              const beforeText = document.createTextNode(`${node.nodeValue.slice(0, index)}\u00A0`)
+              const afterText = document.createTextNode(`\u00A0${node.nodeValue.slice(index + `{{${keyVar}}}`.length)}`)
+
+              parent.replaceChild(beforeText, node)
+              parent.insertBefore(span, beforeText.nextSibling)
+              parent.insertBefore(afterText, span.nextSibling)
+              lastInsertedSpan = span
+              updated = true
+            }
           }
         })
 
-        editor.selection.restore()
-        store.dispatch('textEditor/setUpdateVar', true)
+        if (updated) {
+          store.dispatch('textEditor/setUpdateVar', true)
+          emit('update:modelValue', editor.html.get())
+          editor.events.trigger('contentChanged') // Тригер на обновление контента
+        }
 
-        // TODO: Delete id="isPasted" in copy text html
-        editor.selection.save()
-        editor.html.set(editor.html.get(true).replace(/id="isPasted"/g, ''))
-        editor.selection.restore()
+        editor.$el.find('[id="isPasted"]').removeAttr('id')
+
+        // Восстанавление курсора после изменений
+        if (lastInsertedSpan) {
+          const newRange = document.createRange()
+
+          newRange.setStartAfter(lastInsertedSpan)
+          newRange.setEndAfter(lastInsertedSpan)
+          selection?.removeAllRanges()
+          selection?.addRange(newRange)
+        }
+        else if (range) {
+          selection?.removeAllRanges()
+          selection?.addRange(range)
+        }
       }
       else {
         updateVariableInContent(editor)
       }
-
-      emit('update:modelValue', editor.html.get())
     },
     'commands.after': function (command) {
       if (command === 'html')
