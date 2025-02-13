@@ -7,19 +7,13 @@ import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
 import { BaseListActionsSlots } from '../../../@model/templates/baseList'
 import CTable from '../../CTable/index.vue'
-import type { ExportFormat, FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
+import type { ExportFormat, IBaseListConfig } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
 import { ListSort, SortedItem } from '../../../@model'
 import { useFilters } from '../../../components/FiltersBlock/useFilters'
-import {
-  BaseField,
-  DateBaseField,
-  MultiSelectBaseField,
-  NumberRangeBaseField,
-  SelectBaseField,
-} from '../../../@model/templates/baseField'
+import type { BaseField } from '../../../@model/templates/baseField'
 import type { TableField } from '../../../@model/templates/tableFields'
 import { ListFieldType } from '../../../@model/templates/tableFields'
 import { basePermissions } from '../../../helpers/base-permissions'
@@ -61,6 +55,7 @@ import TableFields from './_components/TableFields.vue'
 import DateField from './_components/fields/DateField.vue'
 import { mapSortData } from './сomposables/sorting'
 import { downloadReport } from './сomposables/export'
+import { transformFilters } from './сomposables/filters'
 
 const props = defineProps<{
   config: IBaseListConfig
@@ -362,32 +357,7 @@ const setRequestFilters = (): PayloadFilters => {
   if (!ListFilterModel)
     return {}
 
-  const appliedFiltersData = appliedFilters.value.reduce((acc, filter) => {
-    const { key, trackBy = 'name' }: FilterListItem = props.config?.filterList.find(
-      ({ type }: FilterListItem) => type === filter.key,
-    )
-
-    if (filter instanceof SelectBaseField) {
-      acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
-    }
-    else if (filter instanceof MultiSelectBaseField) {
-      acc[key] = filter.transformField({ trackBy })
-    }
-    else if (filter instanceof DateBaseField || filter instanceof NumberRangeBaseField) {
-      const transformedFilterValue = filter.transformField(key)
-
-      if (!transformedFilterValue)
-        return acc
-      else if (typeof transformedFilterValue === 'string')
-        acc[key] = transformedFilterValue
-      else acc = { ...acc, ...transformedFilterValue }
-    }
-    else if (filter instanceof BaseField) {
-      acc[key] = filter.transformField()
-    }
-
-    return acc
-  }, {})
+  const appliedFiltersData = transformFilters(appliedFilters.value, props.config)
 
   const filtersData = new ListFilterModel({
     ...props.config?.staticFilters,
