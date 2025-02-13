@@ -55,6 +55,7 @@ const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitC
 const formRef = ref(null)
 const ListPageName: string = pageName ? `${pageName}List` : `${entityName}List`
 const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Update`
+const entityUrl = generateEntityUrl(entityName)
 
 const isExistsListPage = checkExistsPage(ListPageName)
 
@@ -72,29 +73,21 @@ const deleteActionName = `${moduleName}/deleteEntity`
 const { canCreateSeo, canUpdate, canUpdateSeo, canRemove, canViewSeo }
   = basePermissions<BaseSectionConfig>({ entityName, config: props.config })
 
-const isLoadingPage = computed(() => {
-  const entityUrl = generateEntityUrl(entityName)
-
-  return store.getters.isLoadingEndpoint([
-    `${entityUrl}/create`,
-    `${entityUrl}/read`,
-    `${entityUrl}/update`,
-    `${entityUrl}/delete`,
-  ])
-})
+const isLoadingPage = computed(() => store.getters.isLoadingEndpoint([
+  `${entityUrl}/create`,
+  `${entityUrl}/read`,
+  `${entityUrl}/update`,
+  `${entityUrl}/delete`,
+]))
 
 const isDisableSubmitBtn = computed(() => {
   return store.getters.isLoadingEndpoint(props.config.loadingEndpointArr)
 })
 
-const isExistsEndpointsWithError = computed(() => {
-  const entityUrl = generateEntityUrl(entityName)
-
-  return store.getters.isErrorEndpoint([
-    `${entityUrl}/read`,
-    ...props.config.loadingEndpointArr,
-  ])
-})
+const isExistsEndpointsWithError = computed(() => store.getters.isErrorEndpoint([
+  `${entityUrl}/read`,
+  ...props.config.loadingEndpointArr,
+]))
 
 const form = ref()
 
