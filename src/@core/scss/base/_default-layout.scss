@@ -1,8 +1,7 @@
 @use "@core/scss/base/placeholders";
 @use "@core/scss/base/variables";
 
-.layout-vertical-nav,
-.layout-horizontal-nav {
+.layout-vertical-nav {
   ol,
   ul {
     list-style: none;

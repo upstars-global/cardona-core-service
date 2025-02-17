@@ -1,6 +1,6 @@
-import type { VNode, Component } from 'vue';
+import type { Component, VNode } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
-import type { AppContentLayoutNav, ContentWidth, FooterType, HorizontalNavType, NavbarType } from '@layouts/enums'
+import type { AppContentLayoutNav, ContentWidth, FooterType, NavbarType } from '@layouts/enums'
 
 export interface LayoutConfig {
   app: {
@@ -26,10 +26,6 @@ export interface LayoutConfig {
   verticalNav: {
     isVerticalNavCollapsed: boolean
     defaultNavItemIconProps: unknown
-  }
-  horizontalNav: {
-    type: typeof HorizontalNavType[keyof typeof HorizontalNavType]
-    transition: string | Component
   }
   icons: {
     chevronDown: any
@@ -94,7 +90,6 @@ export interface NavGroup extends Partial<AclProperties> {
 }
 
 export declare type VerticalNavItems = (NavLink | NavGroup | NavSectionTitle)[]
-export declare type HorizontalNavItems = (NavLink | NavGroup)[]
 
 // 👉 Components ========================
 
