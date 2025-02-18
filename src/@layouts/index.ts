@@ -34,9 +34,6 @@ export const createLayouts = (userConfig: PartialDeep<LayoutConfig>): Plugin => 
       navbarType: cookieRef('navbarType', userConfig.navbar?.type ?? layoutConfig.navbar.type).value,
       isNavbarBlurEnabled: cookieRef('isNavbarBlurEnabled', userConfig.navbar?.navbarBlur ?? layoutConfig.navbar.navbarBlur).value,
       isVerticalNavCollapsed: cookieRef('isVerticalNavCollapsed', userConfig.verticalNav?.isVerticalNavCollapsed ?? layoutConfig.verticalNav.isVerticalNavCollapsed).value,
-
-      // isAppRTL: userConfig.app?.isRTL ?? config.app.isRTL,
-      horizontalNavType: cookieRef('horizontalNavType', userConfig.horizontalNav?.type ?? layoutConfig.horizontalNav.type).value,
     })
 
     // _setDirAttr(config.app.isRTL ? 'rtl' : 'ltr')

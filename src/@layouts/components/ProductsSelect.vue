@@ -95,7 +95,7 @@ const canSelect = computed(() => products.value.length > 1)
         class="brand-logo text-primary select-item text-uppercase"
         :class="{ 'text-info': isDynamicDomain }"
       >
-        {{ selectedProduct.name }}
+        {{ selectedProduct?.name }}
       </span>
     </RouterLink>
   </div>
