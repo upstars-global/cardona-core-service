@@ -110,6 +110,7 @@ const DetailsPageName = pageName ? `${pageName}Card` : `${parseEntityNameWithTab
 
 const isExistsCreatePage = checkExistsPage(CreatePageName)
 const isExistsUpdatePage = checkExistsPage(UpdatePageName)
+const isExistsDetailsPage = checkExistsPage(DetailsPageName)
 
 // Action names
 const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
@@ -328,6 +329,10 @@ const getUpdateRoute = ({ id }): Location => {
   return isExistsUpdatePage && (canUpdateCb?.() ?? true)
     ? { name: UpdatePageName, params: { id } }
     : {}
+}
+
+const getDetailsRoute = ({ id }): Location => {
+  return isExistsDetailsPage ? { name: DetailsPageName, params: { id } } : {}
 }
 
 const onClickToggleStatus = async ({ id, isActive, type = '' }) => {
@@ -825,6 +830,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :key="`${index}_${field.type}`"
             :item="item.raw"
             :get-update-route="getUpdateRoute"
+            :get-details-route="getDetailsRoute"
             :is-show-you="config.isShowYou"
           >
             <slot
@@ -839,6 +845,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :key="`${index}_${field.type}`"
             :item="item.raw"
             :get-update-route="getUpdateRoute"
+            :get-details-route="getDetailsRoute"
             :is-show-you="config.isShowYou"
           >
             <slot
