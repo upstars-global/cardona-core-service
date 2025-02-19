@@ -463,7 +463,7 @@ describe('BaseSection.vue', () => {
       type: 'mock-form',
       data: {
         form: { id: '123' },
-        formRef: wrapper.vm.formRef,
+        formRef: { validationErrorCb: undefined },
       },
     })
 

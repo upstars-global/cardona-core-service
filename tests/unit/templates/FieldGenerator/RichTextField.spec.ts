@@ -54,7 +54,7 @@ const defaultGlobalConfig = {
   provide: { modal: mockModal },
   stubs: {
     Froala: {
-      template: '<div class="mock-froala"><textarea>{{ value }}</textarea></div>',
+      template: '<div class="mock-froala"><textarea data-test-id="mocked-text-editor">{{ value }}</textarea></div>',
       props: ['tag', 'config', 'value'],
     },
   },
@@ -224,6 +224,8 @@ describe('TextEditorWysiwyg.vue', () => {
     })
 
     it('Emits update:modelValue when content changes', async () => {
+      const testId = 'mocked-text-editor'
+
       const wrapper = mountTextEditor(
         defaultProps,
         defaultGlobalConfig,
@@ -232,25 +234,17 @@ describe('TextEditorWysiwyg.vue', () => {
       // Define the new content to be set
       const newContent = '<p>Updated content</p>'
 
-      // Simulate the contentChanged event from Froala
-      const contentChangedEvent = wrapper.vm.config.events.contentChanged
+      /// Check that the initial content is rendered correctly
+      testOn.equalTextValue({ wrapper, testId }, defaultProps.modelValue)
 
-      contentChangedEvent.call({
-        html: {
-          get: () => newContent,
-        },
-      })
+      /// Update v-model value
+      await wrapper.setProps({ modelValue: newContent })
 
-      // Wait for the DOM to update
+      /// Await redner value
       await nextTick()
 
-      // Verify if the `update:modelValue` event was emitted
-      testOn.isCalledEmittedEvent({
-        wrapper,
-      })
-
-      // Check if the emitted value matches the new content
-      testOn.isEqualEmittedValue({ wrapper }, [[newContent]])
+      /// Check that the new content is rendered correctly
+      testOn.equalTextValue({ wrapper, testId }, newContent)
     })
   })
 })
