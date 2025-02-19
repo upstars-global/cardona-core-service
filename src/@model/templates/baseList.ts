@@ -18,15 +18,20 @@ export interface IOptionsBaseFetch {
   readonly customApiPrefix?: string
 }
 
-export interface UseListType {
+export interface UseListType<
+  ItemModel extends object = object,
+  ListFilterModel extends object = object,
+  SideBarModel extends object = object,
+> {
   readonly entityName: string
   readonly pageName?: string
   readonly fields: Array<TableField>
-  readonly ListFilterModel?: Function
-  readonly SideBarModel?: Function
-  readonly beforeRemoveCallback?: Function
-  readonly ListItemModel?: Function
-  readonly canRemoveCb?: (item: Record<string, unknown>) => boolean
+  readonly ListFilterModel?: new (...args: any[]) => ListFilterModel
+  readonly SideBarModel?: new (...args: any[]) => SideBarModel
+  readonly beforeRemoveCallback?: (item: ItemModel) => boolean
+  readonly ListItemModel?: new (...args: any[]) => ItemModel
+  readonly canUpdateCb?: (item: ItemModel) => boolean
+  readonly canRemoveCb?: (item: ItemModel) => boolean
 }
 
 export interface FilterListItem {

@@ -8,13 +8,16 @@ export enum PageType {
 
 export type IValidationErrorCb = (entity: string, payload: IValidationError) => { localeKey: string; fieldKey?: string; toastOptions?: object }
 
-export interface UseEntityType<T> {
+export interface UseEntityType<FormModel> {
   readonly entityName: string
   readonly pageName?: string
-  readonly EntityFormClass: { new (data?: any): T }
+  readonly EntityFormClass?: new (...args: any[]) => FormModel
   readonly onSubmitCallback?: (id: string) => void
-  readonly onBeforeSubmitCb?: (formData: any) => boolean
-  readonly onSerializeFormCb?: (transformedFormData: unknown, rawFormData: Ref<unknown>) => unknown
+  readonly onBeforeSubmitCb?: (formData: FormModel) => boolean
+  readonly onSerializeFormCb?: (
+    transformedFormData: Partial<Record<keyof FormModel, unknown>>,
+    rawFormData: Ref<FormModel>
+  ) => Record<string, unknown>
   readonly validationErrorCb?: IValidationErrorCb
 }
 export default {}
