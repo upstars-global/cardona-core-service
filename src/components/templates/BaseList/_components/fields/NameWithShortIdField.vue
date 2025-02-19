@@ -5,6 +5,7 @@ withDefaults(
   defineProps<{
     item: object
     getUpdateRoute?: Function
+    getDetailsRoute?: Function
     isShowYou?: boolean
   }>(),
   {
@@ -17,6 +18,7 @@ withDefaults(
   <NameWithIdField
     :item="item"
     :get-update-route="getUpdateRoute"
+    :get-details-route="getDetailsRoute"
     :is-show-you="isShowYou"
     is-short
   >
