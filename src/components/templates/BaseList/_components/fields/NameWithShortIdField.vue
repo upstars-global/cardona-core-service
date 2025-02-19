@@ -1,17 +1,12 @@
 <script lang="ts" setup>
 import NameWithIdField from './NameWithIdField.vue'
 
-withDefaults(
-  defineProps<{
-    item: object
-    getUpdateRoute?: Function
-    getDetailsRoute?: Function
-    isShowYou?: boolean
-  }>(),
-  {
-    getUpdateRoute: () => () => ({}),
-  },
-)
+defineProps<{
+  item: object
+  getUpdateRoute?: (item: Record<string, any>) => Location
+  getDetailsRoute?: (item: Record<string, any>) => Location
+  isShowYou?: boolean
+}>()
 </script>
 
 <template>

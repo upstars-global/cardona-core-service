@@ -23,12 +23,9 @@ const itemId = computed(() => props.item?.id)
 
 const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyField))
 
-const updateRouteExists = computed((): boolean => !!props?.getUpdateRoute(props.item)?.name)
-const detailsRouteExists = computed((): boolean => !!props?.getDetailsRoute(props.item)?.name)
-
-const routePath = computed((): Location => detailsRouteExists.value
-  ? props.getDetailsRoute(props.item)
-  : props.getUpdateRoute(props.item))
+const routePath = computed((): Location | null => {
+  return props.getDetailsRoute?.(props.item) ?? props.getUpdateRoute?.(props.item) ?? null
+})
 </script>
 
 <template>
@@ -36,7 +33,7 @@ const routePath = computed((): Location => detailsRouteExists.value
     <div class="name-with-id-field__name">
       <slot>
         <RouterLink
-          v-if="detailsRouteExists || updateRouteExists"
+          v-if="routePath"
           :to="routePath"
           class="d-flex align-center"
           data-test-id="link"
@@ -71,13 +68,15 @@ const routePath = computed((): Location => detailsRouteExists.value
         :is="currentComponent"
         data-test-id="copy-field"
         :value="itemId"
-      /></span>
+      />
+    </span>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .name-with-id-field {
   margin-bottom: 1px;
+
   &__name {
     padding-bottom: 2px;
   }
