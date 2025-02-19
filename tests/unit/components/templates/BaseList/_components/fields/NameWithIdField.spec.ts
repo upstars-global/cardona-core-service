@@ -1,65 +1,105 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { shallowMount } from '@vue/test-utils'
 import NameWithIdField from '../../../../../../../src/components/templates/BaseList/_components/fields/NameWithIdField.vue'
+import { setMountComponent } from '../../../../../utils'
+import {
+  checkBaseTestCaseForNameWithId,
+  defaultProps,
+  mockStore,
+  testIds,
+} from '../../../../../templates/shared-tests/name-with-short-id'
+import { testOn } from '../../../../../templates/shared-tests/test-case-generator'
+import { getShortString } from '../../../../../../../src/helpers'
+
+const getMountNameWithIdField = setMountComponent(NameWithIdField)
 
 vi.mock('vuex', async importOriginal => {
-  const actual = await importOriginal()
+  const original = await importOriginal()
 
   return {
-    ...actual,
-    useStore: () => ({ getters: { userInfo: { id: 'dummy' } } }),
+    ...original,
+    useStore: () => mockStore,
   }
 })
 
-describe('NameWithIdField - routePath computed', () => {
-  let props: {
-    item: Record<string, any>
-    getUpdateRoute?: (item: Record<string, any>) => any
-    getDetailsRoute?: (item: Record<string, any>) => any
-    isShowYou?: boolean
-    isShort?: boolean
-  }
+let props
 
+describe('NameWithField.vue', () => {
   beforeEach(() => {
-    props = {
-      item: { id: '123', name: 'Test' },
-      getUpdateRoute: undefined,
-      getDetailsRoute: undefined,
-      isShowYou: false,
-      isShort: false,
+    props = { ...defaultProps }
+  })
+
+  checkBaseTestCaseForNameWithId(getMountNameWithIdField)
+
+  it('Renders content in default state', () => {
+    const wrapper = getMountNameWithIdField(props)
+
+    testOn.existTextValue({ wrapper, testId: testIds.link }, props.item.name)
+    testOn.existTextValue({ wrapper, testId: testIds.copyField }, props.item.id.toString())
+  })
+
+  it('Is render component with short if', async () => {
+    props.isShort = true
+
+    const wrapper = getMountNameWithIdField(props)
+
+    testOn.existTextValue({ wrapper, testId: testIds.copyField }, getShortString(props.item.id))
+  })
+
+  it('Correct render slot content ', () => {
+    const slotText = 'Slot content'
+
+    const slot = {
+      default: `<div data-test-id="slot-content">${slotText}</div>`,
     }
+
+    const global = {}
+    const wrapper = getMountNameWithIdField(props, global, slot)
+
+    testOn.existTextValue({ wrapper, testId: testIds.slotContent }, slotText)
+    testOn.existTextValue({ wrapper, testId: testIds.copyField }, props.item.id.toString())
   })
 
-  it('returns details route if provided', () => {
-    props.getDetailsRoute = item => ({
-      name: `${item.name}Card`,
-      params: { id: item.id },
-      path: `/card/${item.id}`,
-    })
+  // Новые тесты для проверки routePath:
 
-    const wrapper = shallowMount(NameWithIdField, { props })
+  it('Returns details route if available', () => {
+    const testProps = {
+      ...props,
+      getDetailsRoute: item => ({
+        name: `${item.name}Card`,
+        params: { id: item.id },
+        path: `/card/${item.id}`,
+      }),
+    }
 
-    expect(wrapper.vm.routePath).toEqual(props.getDetailsRoute(props.item))
+    const wrapper = getMountNameWithIdField(testProps)
+
+    expect(wrapper.vm.routePath).toEqual(testProps.getDetailsRoute(testProps.item))
   })
 
-  it('returns update route if details route is missing', () => {
-    props.getDetailsRoute = undefined
-    props.getUpdateRoute = item => ({
-      name: `${item.name}Update`,
-      params: { id: item.id },
-      path: `/update/${item.id}`,
-    })
+  it('Returns update route if details route is missing', () => {
+    const testProps = {
+      ...props,
+      getDetailsRoute: undefined,
+      getUpdateRoute: item => ({
+        name: `${item.name}Update`,
+        params: { id: item.id },
+        path: `/update/${item.id}`,
+      }),
+    }
 
-    const wrapper = shallowMount(NameWithIdField, { props })
+    const wrapper = getMountNameWithIdField(testProps)
 
-    expect(wrapper.vm.routePath).toEqual(props.getUpdateRoute(props.item))
+    expect(wrapper.vm.routePath).toEqual(testProps.getUpdateRoute(testProps.item))
   })
 
-  it('returns null if both routes are missing', () => {
-    props.getDetailsRoute = undefined
-    props.getUpdateRoute = undefined
+  it('Returns null if both routes are missing', () => {
+    const testProps = {
+      ...props,
+      getDetailsRoute: undefined,
+      getUpdateRoute: undefined,
+    }
 
-    const wrapper = shallowMount(NameWithIdField, { props })
+    const wrapper = getMountNameWithIdField(testProps)
 
     expect(wrapper.vm.routePath).toBeNull()
   })
