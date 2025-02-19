@@ -59,8 +59,6 @@ describe('NameWithField.vue', () => {
     testOn.existTextValue({ wrapper, testId: testIds.copyField }, props.item.id.toString())
   })
 
-  // Новые тесты для проверки routePath:
-
   it('Returns details route if available', () => {
     const testProps = {
       ...props,
