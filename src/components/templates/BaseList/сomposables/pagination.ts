@@ -2,7 +2,7 @@ import type { ComputedRef, Ref } from 'vue'
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { omit } from 'lodash'
-import { getStorage, setStorage } from '../helpers/storage'
+import { getStorage, setStorage } from '../../../../helpers/storage'
 
 interface PaginationConfig {
   defaultCurrentPage?: number

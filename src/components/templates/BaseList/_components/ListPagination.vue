@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { VSizes, VVariants } from '../../../../@model/vuetify'
-import type { PaginationResult } from '@/use/pagination'
+import type { PaginationResult } from '../сomposables/pagination'
 
 interface Props {
   paginationConfig: PaginationResult
