@@ -175,7 +175,9 @@ class ApiService {
           field = `${field}_${params.currency}`
 
         formRef?.setErrors({
-          [field]: i18n.te(`validations.${localizationKey}`) ? i18n.t(`validations.${localizationKey}`) : i18n.t(localizationKey),
+          [field]: i18n.te(`validations.${localizationKey}`)
+            ? i18n.t(`validations.${localizationKey}`, options)
+            : i18n.t(localizationKey, options),
         })
 
         toastError(localizationKey, { field, defaultCode: 'field_ALREADY_EXISTS', ...options })
