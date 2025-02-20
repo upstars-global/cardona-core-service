@@ -400,7 +400,7 @@ defineExpose({
               <VBtn
                 class="mr-4"
                 :color="VColors.Primary"
-                data-test-id="save-button"
+                data-test-id="saveAndExit-button"
                 :disabled="isDisableSubmit || isLoadingPage"
                 @click="onSubmit(false)"
               >
@@ -410,7 +410,7 @@ defineExpose({
                 class="mr-4"
                 :color="VColors.Secondary"
                 :variant="VVariants.Outlined"
-                data-test-id="save-button"
+                data-test-id="saveAndStay-button"
                 :disabled="isDisableSubmit || isLoadingPage"
                 @click="onSubmit(true)"
               >
