@@ -234,7 +234,7 @@ const onSubmit = async (isStay: boolean) => {
   if (onBeforeSubmitCb && !onBeforeSubmitCb(formData))
     return
 
-  await onSave()
+  await onSave(isStay)
 }
 
 const redirectToListOrPrevPage = () => {
@@ -244,7 +244,7 @@ const redirectToListOrPrevPage = () => {
   return router.push({ name: ListPageName })
 }
 
-const onSave = async () => {
+const onSave = async (isStay?: boolean) => {
   modal.hideModal(ModalsId.ConfirmModal)
   try {
     const data = await store.dispatch(actionName.value, {
@@ -265,7 +265,7 @@ const onSave = async () => {
         : await router.push({ name: ListPageName })
     }
 
-    if (isUpdatePage)
+    if (isUpdatePage && !isStay)
       redirectToListOrPrevPage()
 
     if (onSubmitCallback)
@@ -396,16 +396,27 @@ defineExpose({
               </VBtn>
             </template>
 
-            <VBtn
-              v-if="isShowSaveBtn"
-              class="mr-4"
-              :color="VColors.Primary"
-              data-test-id="save-button"
-              :disabled="isDisableSubmit || isLoadingPage"
-              @click="onSubmit(false)"
-            >
-              {{ $t('action.save') }}
-            </VBtn>
+            <template v-if="isShowSaveBtn">
+              <VBtn
+                class="mr-4"
+                :color="VColors.Primary"
+                data-test-id="save-button"
+                :disabled="isDisableSubmit || isLoadingPage"
+                @click="onSubmit(false)"
+              >
+                {{ $t('action.saveAndExit') }}
+              </VBtn>
+              <VBtn
+                class="mr-4"
+                :color="VColors.Secondary"
+                :variant="VVariants.Outlined"
+                data-test-id="save-button"
+                :disabled="isDisableSubmit || isLoadingPage"
+                @click="onSubmit(true)"
+              >
+                {{ $t('action.saveAndStay') }}
+              </VBtn>
+            </template>
 
             <VBtn
               v-if="isExistsListPage || props.config.backToTheHistoryLast"
