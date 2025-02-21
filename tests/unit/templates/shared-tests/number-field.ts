@@ -1,8 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { IconsList } from '../../../../src/@model/enums/icons'
 import { getSelectorTestId } from '../../utils'
-import { expectedEmitValue } from './general'
-import { testOn } from './test-case-generator'
+import { EventEmittersNames, testOn } from './test-case-generator'
 
 export const removeMinus = (value: string): string => value.replace('-', '')
 export const removeDot = (value: string): string => value.replace('.', '')
@@ -38,5 +37,5 @@ export const testOnUpdatedValue = async (wrapper: VueWrapper, { valueToSet, expe
   await to.setValue(valueToSet['to'])
 
   /// Check on expected  value
-  expectedEmitValue(wrapper, expectedValue, 1)
+  testOn.isCalledEmitEventValue({ wrapper }, { event: EventEmittersNames.UpdateVModel, value: expectedValue, index: 1 })
 }

@@ -351,12 +351,14 @@ describe('BaseSection.vue', () => {
     /// Call the onSave method
     await wrapper.vm.onSave()
 
-    /// Verify that the correct dispatch action is called
+    /// Verify that the correct dispatch action is called //
     expect(mockStoreDispatch).toHaveBeenCalledWith('baseStoreCore/createEntity', {
       type: 'mock-form',
       data: {
         form: { id: '123' },
-        formRef: wrapper.vm.formRef,
+        formRef: {
+          validationErrorCb: undefined,
+        },
       },
     })
 
@@ -427,5 +429,45 @@ describe('BaseSection.vue', () => {
 
     /// Verify that the router navigates to the not found page
     expect(pushMock).toHaveBeenCalledWith({ name: 'NotFound' })
+  })
+
+  it('Redirect to ListPage or prev page on successful update page', async () => {
+    await router.replace({ path: '/detail' })
+    await router.isReady()
+
+    // Set router config `router.options.history.state.back = true`
+    Object.defineProperty(router.options.history, 'state', {
+      value: { back: true },
+      writable: true,
+    })
+
+    /// Spy on the store dispatch method
+    const mockStoreDispatch = vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
+
+    /// Mount the component in create mode
+    const wrapper = mountComponent({
+      pageType: PageType.Update,
+      config: new BaseSectionConfig({
+        backToTheHistoryLast: true,
+      }),
+    })
+
+    /// Mock transformed form data
+    wrapper.vm.transformedForm = { id: '123' }
+
+    /// Call the onSave method
+    await wrapper.vm.onSave()
+
+    // Verify that the correct dispatch action is called
+    expect(mockStoreDispatch).toHaveBeenCalledWith('baseStoreCore/updateEntity', {
+      type: 'mock-form',
+      data: {
+        form: { id: '123' },
+        formRef: { validationErrorCb: undefined },
+      },
+    })
+
+    /// Verify that the router navigates to the list page
+    expect(mockRouter.go).toHaveBeenCalled(-1)
   })
 })

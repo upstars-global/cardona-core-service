@@ -82,13 +82,13 @@ describe('GroupFragmentSettings.vue', () => {
     await updateValueForPermissionInput({ wrapper, testId: 'permission-checkbox-test-group-1-1' }, false)
 
     /// Check that event is called
-    testOn.isCalledEmitEventValue(wrapper, { event: 'change', value: [] })
+    testOn.isCalledEmitEventValue({ wrapper }, { event: 'change', value: [] })
 
     /// Set permission value for all group
     await updateValueForPermissionInput({ wrapper, testId: 'switch-all' }, true)
 
     /// Check that event is called
-    testOn.isCalledEmitEventValue(wrapper, { event: 'change', value: [], index: 1 })
+    testOn.isCalledEmitEventValue({ wrapper }, { event: 'change', value: [], index: 1 })
 
     /// Is disabled switch all
     switchAllIsDisabled(wrapper)

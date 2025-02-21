@@ -5,6 +5,7 @@ import { clickTrigger, setMountComponent } from '../../../../utils'
 import { testOn } from '../../../../templates/shared-tests/test-case-generator'
 import { i18n } from '../../../../../../src/plugins/i18n'
 import { BaseListActionsSlots } from '../../../../../../src/@model/templates/baseList'
+import { checkExistsPage } from '../../../../../../src/helpers'
 
 const getMountItemActions = setMountComponent(ItemActions)
 const pushMock = vi.fn()
@@ -17,9 +18,14 @@ vi.mock('vue-router', () => {
   }
 })
 
+vi.mock('@/helpers', () => ({
+  checkExistsPage: vi.fn(),
+}))
+
 const defaultProps = {
   item: { id: '123', name: 'Mock name' },
   createPageName: 'Create page name',
+  detailsPageName: 'Details page name',
   config: {},
   canUpdate: false,
   canUpdateItem: false,
@@ -63,7 +69,7 @@ describe('ItemActions.vue', () => {
 
     await clickTrigger({ wrapper, testId: 'status-toggle' })
 
-    testOn.isCalledEmitEventValue(wrapper, { event: 'on-toggle-status', value: props.item })
+    testOn.isCalledEmitEventValue({ wrapper }, { event: 'on-toggle-status', value: props.item })
   })
 
   it('Render valid text button of toggle status by field isActive', async () => {
@@ -81,6 +87,32 @@ describe('ItemActions.vue', () => {
 
     /// Status is true
     testOn.equalTextValue({ wrapper, testId: 'status-toggle-text' }, i18n.t('action.deactivate'))
+  })
+
+  it(getTestTitle('Details (Card page exists)'), async () => {
+    props = { ...props }
+    checkExistsPage.mockReturnValue(true)
+
+    const wrapper = getMountItemActions(props)
+
+    await openActions(wrapper)
+
+    testOn.existElement({ wrapper, testId: 'details' })
+
+    await clickTrigger({ wrapper, testId: 'details' })
+
+    expect(pushMock).toHaveBeenCalledWith({ name: props.detailsPageName, params: { id: props.item.id } })
+  })
+
+  it(getTestTitle('Details (Card page does not exists'), async () => {
+    props = { ...props }
+    checkExistsPage.mockReturnValue(false)
+
+    const wrapper = getMountItemActions(props)
+
+    await openActions(wrapper)
+
+    testOn.notExistElement({ wrapper, testId: 'details' })
   })
 
   it(getTestTitle('Update'), async () => {
@@ -122,7 +154,7 @@ describe('ItemActions.vue', () => {
 
     await clickTrigger({ wrapper, testId: 'remove' })
 
-    testOn.isCalledEmitEventValue(wrapper, { event: 'on-remove', value: props.item })
+    testOn.isCalledEmitEventValue({ wrapper }, { event: 'on-remove', value: props.item })
   })
 
   it('Is correct render slots with params', async () => {
@@ -133,6 +165,7 @@ describe('ItemActions.vue', () => {
     const slots = {
       [BaseListActionsSlots.PrependActionItem]: `<div data-test-id="${BaseListActionsSlots.PrependActionItem}">${props.item}</div>`,
       [BaseListActionsSlots.AppendActionItem]: `<div data-test-id="${BaseListActionsSlots.AppendActionItem}">${props.item}</div>`,
+      [BaseListActionsSlots.Details]: `<div data-test-id="${BaseListActionsSlots.Details}">${props.item}</div>`,
     }
 
     const wrapper = getMountItemActions(props, global, slots)

@@ -7,6 +7,7 @@ import { IconsList } from '../../../../@model/enums/icons'
 import type { SelectBaseField } from '../../../../@model/templates/baseField'
 import { i18n } from '../../../../plugins/i18n'
 import { withPopper } from '../../../../helpers/selectPopper'
+import { useInfiniteScroll } from '../../../../helpers/infiniteScroll'
 
 const props = withDefaults(
   defineProps<{
@@ -21,7 +22,6 @@ const props = withDefaults(
     modelValue: '',
     size: '',
     placeholder: i18n.t('placeholder.choose._') as string,
-    appendToBody: true,
   })
 
 const emits = defineEmits<{
@@ -75,17 +75,56 @@ watch(
   { deep: true, immediate: true },
 )
 
+const searchValue = ref('')
+
 // Handlers
-const onSearch = debounce(async (search: string, loading: Function) => {
+const onSearchDebounced = debounce(async (search: string, loading: Function) => {
   loading(true)
 
   try {
+    searchValue.value = search
     await props.field.fetchOptions(search)
   }
   finally {
     loading(false)
+    if (isInfiniteLoadingEnabled.value) {
+      abortObserver()
+      await setupObserver()
+    }
   }
 }, 250)
+
+const onSearch = (search: string, loading: Function) => {
+  searchValue.value = search
+  onSearchDebounced(search, loading)
+}
+
+const loadRef = ref<HTMLElement>()
+
+const onOpen = async () => {
+  toggleDropDownState()
+  if (isInfiniteLoadingEnabled.value)
+    await setupObserver()
+}
+
+const onClose = () => {
+  toggleDropDownState()
+  abortObserver()
+}
+
+const isInfiniteLoadingEnabled = computed((): boolean => !!props.field.infiniteLoading)
+
+const showLoadMore = computed((): boolean =>
+  isInfiniteLoadingEnabled.value
+  && !!props.field.options?.length
+  && !searchValue.value
+  && !isLoading.value,
+)
+
+const {
+  setupObserver,
+  abortObserver,
+} = useInfiniteScroll(props.field.loadMore.bind(props.field), loadRef)
 </script>
 
 <template>
@@ -103,9 +142,10 @@ const onSearch = debounce(async (search: string, loading: Function) => {
       :clearable="field.clearable"
       :append-to-body="field.appendToBody"
       :calculate-position="withPopper(field.calculatePositionCb)"
+      :filterable="field.filterable"
       @search="onSearch"
-      @open="toggleDropDownState"
-      @close="toggleDropDownState"
+      @open="onOpen"
+      @close="onClose"
     >
       <template #selected-option="{ name }">
         <div class="selected-option-value">
@@ -127,6 +167,15 @@ const onSearch = debounce(async (search: string, loading: Function) => {
           v-bind="attributes"
           :icon="IconsList.ChevronDownIcon"
         />
+      </template>
+      <template #list-footer>
+        <li
+          v-show="showLoadMore"
+          ref="loadRef"
+          class="text-color-mute text-center pt-2 pb-3"
+        >
+          {{ $t('component.select.loadingMore') }}
+        </li>
       </template>
     </VueSelect>
   </div>

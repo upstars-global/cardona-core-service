@@ -268,7 +268,7 @@ describe('BaseList', () => {
     getMountBaseList(props, global)
 
     // Assert that the custom fetch action was dispatched
-    expect(mockDispatch.mock.calls[0][0]).toBe('entityTest/fetchTestList')
+    expect(mockDispatch.mock.calls[0][0]).toBe('entityTest/fetchEntityList')
   })
 
   it('Should call customDelete when withCustomDelete is enabled', async () => {
@@ -499,7 +499,7 @@ describe('BaseList', () => {
     await clickTrigger({ wrapper, testId: 'table-row' })
 
     // Verify that the rowClicked event was emitted with the correct payload
-    testOn.isCalledEmitEventValue(wrapper, { event: 'rowClicked', value: { id: 1, name: 'Item 1', type: 'Type 1', status: 'Status 1' } })
+    testOn.isCalledEmitEventValue({ wrapper }, { event: 'rowClicked', value: { id: 1, name: 'Item 1', type: 'Type 1', status: 'Status 1' } })
   })
 
   it('Should open the remove modal when the remove button is clicked', async () => {

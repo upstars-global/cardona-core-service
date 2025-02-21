@@ -67,5 +67,5 @@ export interface IValidationError {
   readonly code: string
   readonly field: string
   readonly template: string
-  readonly params: object
+  readonly params: Record<string, string>
 }

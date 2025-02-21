@@ -4,7 +4,7 @@ import RatesField from '../../../../src/components/templates/FieldGenerator/_com
 import { setMountComponent } from '../../utils'
 import { RatesBaseField } from '../../../../src/@model/templates/baseField'
 import { testOn } from '../shared-tests/test-case-generator'
-import type { RatesValueItem } from '../../../../src/@model/templates/baseField/rates'
+import type { IRatesBaseField, RatesValueItem } from '../../../../src/@model/templates/baseField/rates'
 import { textOnEqualDataAndValueInput } from '../shared-tests/rates'
 
 const getMountRatesField = setMountComponent(RatesField)
@@ -32,14 +32,23 @@ describe('RatesField.vue', () => {
     { currency: 'CAD', value: 30 },
   ]
 
+  const modelValueWithValueText = [
+    { currency: 'USD', value: '10 + 10spins' },
+    { currency: 'EUR', value: '20 + 20spins' },
+    { currency: 'CAD', value: '30 + 30spins' },
+  ]
+
+  const getRatesField = (params?: IRatesBaseField) => new RatesBaseField({
+    key: 'rate',
+    label: 'Exchange Rates',
+    placeholder: 'Enter rate',
+    validationRules: {},
+    ...params,
+  })
+
   const defaultProps = {
     modelValue,
-    field: new RatesBaseField({
-      key: 'rate',
-      label: 'Exchange Rates',
-      placeholder: 'Enter rate',
-      validationRules: {},
-    }),
+    field: getRatesField(),
     disabled: false,
     append: '%',
   }
@@ -92,5 +101,32 @@ describe('RatesField.vue', () => {
     }
 
     textOnEqualDataAndValueInput(wrapper, updatedModelValue)
+  })
+
+  it('Should allow set string value into RatesField', async () => {
+    const props = {
+      modelValue: modelValueWithValueText,
+      field: getRatesField({ withString: true }),
+      disabled: false,
+      append: '%',
+    }
+
+    const wrapper = getMountRatesField(props) as VueWrapper
+
+    textOnEqualDataAndValueInput(wrapper, modelValueWithValueText)
+  })
+  it('Should be empty input value if withString false', async () => {
+    const expectedValue = modelValueWithValueText.map(item => ({ ...item, value: '' }))
+
+    const props = {
+      modelValue: modelValueWithValueText,
+      field: getRatesField(),
+      disabled: false,
+      append: '%',
+    }
+
+    const wrapper = getMountRatesField(props) as VueWrapper
+
+    textOnEqualDataAndValueInput(wrapper, expectedValue)
   })
 })

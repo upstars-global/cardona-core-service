@@ -1,8 +1,8 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { describe, it } from 'vitest'
 import { nextTick } from 'vue'
 import moment from 'moment'
-import { testOn } from '../shared-tests/test-case-generator'
+import { EventEmittersNames, testOn } from '../shared-tests/test-case-generator'
 import 'flatpickr/dist/flatpickr.css'
 import {
   checkEmittedValue,
@@ -66,7 +66,7 @@ describe('DateField.vue', () => {
 
     await dayOfCalendar.trigger('click')
 
-    expect(wrapper.emitted()['update:modelValue'][0][0]).includes(datePickerButton)
+    testOn.isCalledEmitEventValue({ wrapper }, { event: EventEmittersNames.UpdateVModel, value: datePickerButton })
   })
 
   it('Change value on click button day on calendar ', async () => {
@@ -136,5 +136,15 @@ describe('DateField.vue', () => {
       },
       ' to 2024-11-12T11:00:00.000Z',
     )
+  })
+
+  it('Should add class errors for invalid field', async () => {
+    const wrapper = mountDateFieldWithDefaultProps({
+      field: { config: { static: true }, isRangeMode: false },
+      modelValue: '',
+      errors: true,
+    })
+
+    testOn.existClassList({ wrapper, testId: 'single-picker' }, ['v-input--error', 'error'])
   })
 })

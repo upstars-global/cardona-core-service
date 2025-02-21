@@ -117,7 +117,7 @@ describe('ListSearch.vue', () => {
 
     await clickTrigger(wrapeprParams)
 
-    testOn.isCalledEmitEvent(wrapper, 'on-export-format-selected')
+    testOn.isCalledEmitEvent({ wrapper }, 'on-export-format-selected')
   })
 
   it('Check functionality of button filter', async () => {
@@ -131,7 +131,7 @@ describe('ListSearch.vue', () => {
     await clickTrigger({ wrapper, testId: 'filter-btn' })
 
     /// Check call event
-    testOn.isCalledEmitEvent(wrapper, 'on-click-filter')
+    testOn.isCalledEmitEvent({ wrapper }, 'on-click-filter')
 
     /// Update props value of isOpenFilterBlock
     await wrapper.setProps({ isOpenFilterBlock: true })

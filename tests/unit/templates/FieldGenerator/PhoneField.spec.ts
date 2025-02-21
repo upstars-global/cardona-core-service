@@ -2,9 +2,8 @@ import { describe, it } from 'vitest'
 import { nextTick } from 'vue'
 import PhoneField from '../../../../src/components/templates/FieldGenerator/_components/PhoneField.vue'
 import { setMountComponent } from '../../utils'
-import { testOn } from '../shared-tests/test-case-generator'
+import { EventEmittersNames, testOn } from '../shared-tests/test-case-generator'
 import { testOnCallEventEmitAndEqualValue } from '../shared-tests/date-field'
-import { expectedEmitValue } from '../shared-tests/general'
 
 const getMountPhoneField = setMountComponent(PhoneField)
 
@@ -52,7 +51,13 @@ describe('PhoneField.vue', () => {
     await nextTick()
 
     await wrapper.setProps({ modelValue: `+${countryCodes[1].code}` })
-    expectedEmitValue(wrapper, `+${countryCodes[1].code}`, 1)
+
+    testOn.isCalledEmitEventValue(
+      { wrapper }, {
+        event: EventEmittersNames.UpdateVModel,
+        value: `+${countryCodes[1].code}`,
+        index: 1,
+      })
   })
 
   it('State on focus input and on blur ', async () => {

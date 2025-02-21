@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { allPhoneCodesWithFlags } from '../../../helpers/countries'
 import type { PhoneBaseField } from '../../../@model/templates/baseField'
+import { getPhoneNumberWithPlus } from '../../../helpers'
 
 interface PhoneFieldProps {
   value: string
@@ -25,9 +26,7 @@ const cleaveOptions = {
 const modelValue = computed({
   get: (): string => props.value,
   set: (value: string) => {
-    const phoneWithPlus: string = modelValue.value[0] !== '+' ? `+${value}` : value
-
-    emit('input', phoneWithPlus)
+    emit('input', getPhoneNumberWithPlus(value))
   },
 })
 

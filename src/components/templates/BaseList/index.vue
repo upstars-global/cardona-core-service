@@ -106,6 +106,7 @@ const parseEntityNameWithTabs = (entityName: string) => {
 // Pages
 const CreatePageName = pageName ? `${pageName}Create` : `${parseEntityNameWithTabs(entityName)}Create`
 const UpdatePageName = pageName ? `${pageName}Update` : `${parseEntityNameWithTabs(entityName)}Update`
+const DetailsPageName = pageName ? `${pageName}Card` : `${parseEntityNameWithTabs(entityName)}Card`
 
 const isExistsCreatePage = checkExistsPage(CreatePageName)
 const isExistsUpdatePage = checkExistsPage(UpdatePageName)
@@ -114,7 +115,7 @@ const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
 
 const fetchActionName: string = props.config?.withCustomFetchList
-  ? `${moduleName}/fetch${entityName}List`
+  ? `${moduleName}/fetchEntityList`
   : 'baseStoreCore/fetchEntityList'
 
 const fetchReportActionName = 'baseStoreCore/fetchReport'
@@ -329,14 +330,14 @@ const getUpdateRoute = ({ id }): Location => {
     : {}
 }
 
-const onClickToggleStatus = async ({ id, isActive }) => {
+const onClickToggleStatus = async ({ id, isActive, type = '' }) => {
   const actionName = props.config.withDeactivationBySpecificAction
     ? toggleStatusActionName
     : updateActionName
 
   await store.dispatch(actionName, {
     type: entityName,
-    data: { form: { id, isActive: !isActive } },
+    data: { form: { id, isActive: !isActive, type } },
     customApiPrefix: props.config?.customApiPrefix,
   })
 
@@ -595,6 +596,10 @@ onBeforeMount(async () => {
 onUnmounted(() => {
   removePagination()
 })
+
+const editingId = ref<string | null>(null)
+
+const onOpenEdit = (id: string) => editingId.value = id
 
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
@@ -884,11 +889,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
           <PositionField
             v-else-if="field.type === ListFieldType.Priority"
-            :key="`${index}_${field.type}`"
+            :id="item.raw.id"
+            :key="item.raw.id"
             :position="cell"
             :size="field.size"
             :can-update="canUpdate"
+            :editing-id="editingId"
             @edit-position="(val) => onEditPosition(item.raw, val)"
+            @open-edit="onOpenEdit(item.raw.id)"
           />
 
           <ButtonField
@@ -941,13 +949,16 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             {{ cell }} %
           </template>
           <template v-else>
-            {{ cell }}
+            <div class="default-cell-value">
+              {{ cell }}
+            </div>
           </template>
           <ItemActions
             v-if="field.key === 'actions'"
             :key="item.raw"
             :item="item.raw"
             :create-page-name="CreatePageName"
+            :details-page-name="DetailsPageName"
             :can-update="canUpdate"
             :can-create="canCreate"
             :can-update-seo="canUpdateSeo"
@@ -966,6 +977,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
                 :name="BaseListActionsSlots.PrependActionItem"
                 :item="item"
                 :can-update="canUpdate"
+              />
+            </template>
+
+            <template #[BaseListActionsSlots.Details]>
+              <slot
+                :name="BaseListActionsSlots.Details"
+                :item="item"
+                :page-name="DetailsPageName"
               />
             </template>
 
@@ -1025,6 +1044,11 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 }
 
 :deep(.c-table) {
+  .default-cell-value {
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   tr {
     td[data-c-field='actions'] {
       width: 3.5rem;

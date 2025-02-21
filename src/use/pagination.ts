@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref } from 'vue'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { omit } from 'lodash'
 import { getStorage, setStorage } from '../helpers/storage'
@@ -61,10 +61,14 @@ export default function usePagination(
 
   const perPage = ref(Number(perPageValue))
 
+  const isLastPage = computed(() => currentPage.value === numberOfPages.value)
+
   const setupDataMeta = (localItemsCount: number) => {
+    const actualItemsCount = perPage.value > localItemsCount ? +perPageValue : +localItemsCount
+
     return {
       from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
-      to: perPage.value * (currentPage.value - 1) + localItemsCount,
+      to: isLastPage.value ? total.value : perPage.value * (currentPage.value - 1) + actualItemsCount,
       of: total.value,
     }
   }

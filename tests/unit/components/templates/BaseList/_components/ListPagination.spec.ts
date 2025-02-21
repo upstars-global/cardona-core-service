@@ -98,7 +98,7 @@ describe('ListPagination.vue', () => {
 
     await clickTrigger({ wrapper, testId: `page-${2}` })
 
-    testOn.isCalledEmitEventValueToBe(wrapper, { event: 'update:modelValue', value: 2, index: 0 })
+    testOn.isCalledEmitEventValueToBe({ wrapper }, { event: 'update:modelValue', value: 2, index: 0 })
   })
 
   it('Check correct render count button number page', () => {

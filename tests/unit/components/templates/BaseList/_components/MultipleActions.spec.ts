@@ -45,7 +45,7 @@ describe('MultipleActions.vue', () => {
       await clickTrigger(wrapperButton)
 
       /// Check call event emit after click
-      testOn.isCalledEmitEvent(wrapper, `on-${id}`)
+      testOn.isCalledEmitEvent({ wrapper }, `on-${id}`)
     }
   })
 

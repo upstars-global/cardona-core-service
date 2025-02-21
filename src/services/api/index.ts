@@ -154,14 +154,31 @@ class ApiService {
     }
 
     if (error.validationErrors) {
-      error.validationErrors.forEach(({ code, field }: IValidationError) => {
-        const localizationKey = `${entity}_${field}_${code}`
+      error.validationErrors.forEach(({ code, field, params, template }: IValidationError) => {
+        let localizationKey = `${entity}_${field}_${code}`
+        const { validationErrorCb } = formRef
+        let options = {}
+
+        if (validationErrorCb) {
+          const { localeKey, fieldKey, toastOptions } = validationErrorCb(entity, { code, field, params, template })
+
+          localizationKey = localeKey
+
+          if (fieldKey)
+            field = fieldKey
+
+          if (toastOptions)
+            options = toastOptions
+        }
+
+        if (params.currency)
+          field = `${field}_${params.currency}`
 
         formRef?.setErrors({
-          [field]: i18n.t(`validations.${localizationKey}`),
+          [field]: i18n.te(`validations.${localizationKey}`) ? i18n.t(`validations.${localizationKey}`) : i18n.t(localizationKey),
         })
 
-        toastError(localizationKey, { field, defaultCode: 'field_ALREADY_EXISTS' })
+        toastError(localizationKey, { field, defaultCode: 'field_ALREADY_EXISTS', ...options })
       })
     }
     else if (withErrorDescriptionToast && error.description) {
