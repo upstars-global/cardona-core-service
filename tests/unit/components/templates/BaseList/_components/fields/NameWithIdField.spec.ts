@@ -99,6 +99,6 @@ describe('NameWithField.vue', () => {
 
     const wrapper = getMountNameWithIdField(testProps)
 
-    expect(wrapper.vm.routePath).toBeNull()
+    expect(wrapper.vm.routePath).toEqual({})
   })
 })
