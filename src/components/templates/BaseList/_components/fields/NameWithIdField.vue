@@ -24,7 +24,13 @@ const itemId = computed(() => props.item?.id)
 const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyField))
 
 const routePath = computed((): Location | null => {
-  return props.getDetailsRoute?.(props.item) ?? props.getUpdateRoute?.(props.item) ?? null
+  if (props.getDetailsRoute?.(props.item)?.name)
+    return props.getDetailsRoute?.(props.item)
+
+  if (props.getUpdateRoute?.(props.item)?.name)
+    return props.getUpdateRoute?.(props.item)
+
+  return {}
 })
 </script>
 
@@ -33,7 +39,7 @@ const routePath = computed((): Location | null => {
     <div class="name-with-id-field__name">
       <slot>
         <RouterLink
-          v-if="routePath"
+          v-if="routePath?.name"
           :to="routePath"
           class="d-flex align-center"
           data-test-id="link"
