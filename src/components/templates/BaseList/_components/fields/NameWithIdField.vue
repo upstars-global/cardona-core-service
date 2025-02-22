@@ -23,7 +23,7 @@ const itemId = computed(() => props.item?.id)
 
 const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyField))
 
-const routePath = computed((): Location | null => {
+const routePath = computed((): Location | Record<string, never> => {
   if (props.getDetailsRoute?.(props.item)?.name)
     return props.getDetailsRoute?.(props.item)
 
