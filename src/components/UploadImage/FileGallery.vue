@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NoFiles from '../UploadImage/NoFiles.vue'
-import usePagination from '../../use/pagination'
+import usePagination from '../templates/BaseList/сomposables/pagination'
 import store from '../../store'
 import AppTextField from '../../@core/components/app-form-elements/AppTextField.vue'
 import { IconsList } from '../../@model/enums/icons'
