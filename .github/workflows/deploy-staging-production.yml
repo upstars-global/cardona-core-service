@@ -45,6 +45,13 @@ jobs:
           working-directory: ./
           comment-on: commit
 
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          REPO_URL: "${{ github.server_url }}/${{ github.repository }}"
+        run: npx semantic-release
+
       - name: Build
         run: npm run build-cf
 
@@ -114,15 +121,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "yarn"
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
         with:
@@ -143,14 +141,6 @@ jobs:
           echo "DEPLOYMENT_PRODUCTION_URL=${{ steps.deploy-production.outputs.deployment-url }}" >> $GITHUB_ENV
           echo "DEPLOYMENT_PRODUCTION_ALIAS_URL=${{ steps.deploy-production.outputs.pages-deployment-alias-url }}" >> $GITHUB_ENV
           echo "date=$(date -u)" >> $GITHUB_ENV
-          echo "🔹 REPO_URL=${{ github.server_url }}/${{ github.repository }}"
-
-      - name: Run semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          REPO_URL: "${{ github.server_url }}/${{ github.repository }}"
-        run: npx semantic-release
 
       - name: Comment PR with Deployment Table
         if: github.event_name == 'pull_request'
