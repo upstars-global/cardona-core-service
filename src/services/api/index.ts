@@ -156,7 +156,7 @@ class ApiService {
     if (error.validationErrors) {
       error.validationErrors.forEach(({ code, field, params, template }: IValidationError) => {
         let localizationKey = `${entity}_${field}_${code}`
-        const { validationErrorCb } = formRef
+        const validationErrorCb = formRef?.validationErrorCb
         let options = {}
 
         if (validationErrorCb) {
