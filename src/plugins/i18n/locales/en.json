@@ -728,6 +728,8 @@
     "create": "Create",
     "createAndExit": "Create and exit",
     "createAndStay": "Create and stay",
+    "saveAndExit": "Save and exit",
+    "saveAndStay": "Save and stay",
     "add": "Add",
     "addAll": "Add all ({total})",
     "addToCategory": "Add to category",
