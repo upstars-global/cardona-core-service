@@ -1,6 +1,6 @@
 {
   "name": "cardona-core-service",
-  "version": "9.0.4",
+  "version": "3.2.80",
   "private": true,
   "scripts": {
     "dev": "vite",
