@@ -12,7 +12,7 @@ jobs:
 
     permissions:
       # Required to checkout the code
-      contents: write
+      contents: read
       # Required to put a comment into the pull-request
       pull-requests: write
 
@@ -44,13 +44,6 @@ jobs:
           file-coverage-mode: all # Показывать всегда
           working-directory: ./
           comment-on: commit
-
-      - name: Run semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          REPO_URL: "${{ github.server_url }}/${{ github.repository }}"
-        run: npx semantic-release
 
       - name: Build
         run: npm run build-cf
