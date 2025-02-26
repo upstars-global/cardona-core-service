@@ -49,6 +49,7 @@ defineProps<{ loading: boolean }>()
 
   &.fade-enter-active,
   &.fade-leave-active {
+    transition: all 0s ease;
     display: none;
   }
 }
