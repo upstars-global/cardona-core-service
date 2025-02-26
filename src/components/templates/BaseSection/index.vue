@@ -155,7 +155,14 @@ const validate = async () => {
   return valid
 }
 
-const existFieldName = (fieldName: string, form: unknown) => form && Object.keys(form).some(key => fieldName.includes(key))
+const existFieldName = (fieldName: string, form: unknown): boolean => {
+  if (!form || typeof form !== 'object')
+    return false
+
+  return Object.entries(form).some(([key, value]) =>
+    fieldName.includes(key) || (typeof value === 'object' && existFieldName(fieldName, value)),
+  )
+}
 
 const setTabError = (fieldName: string) => {
   const fieldElement: HTMLElement | null = document.getElementById(`${fieldName}-field`)
