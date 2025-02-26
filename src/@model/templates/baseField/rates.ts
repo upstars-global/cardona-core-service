@@ -15,6 +15,7 @@ export interface IRatesBaseField extends IBaseField {
   readonly isCents?: boolean
   readonly trackBy?: string
   readonly withString?: boolean
+  readonly isIntegerNumbers?: boolean
 }
 
 export class RatesBaseField extends BaseField implements IRatesBaseField {
@@ -23,12 +24,14 @@ export class RatesBaseField extends BaseField implements IRatesBaseField {
   readonly trackBy: string
   readonly isCents: boolean
   readonly withString?: boolean
+  readonly isIntegerNumbers?: boolean
 
   constructor(field: IRatesBaseField) {
     super(field)
     this.trackBy = field.trackBy ?? 'value'
     this.isCents = field.isCents ?? true
     this.withString = field.withString
+    this.isIntegerNumbers = field.isIntegerNumbers
     this._value = field.value?.map(item => ({
       currency: item.currency,
       value: this.getInitialValue(item[this.trackBy]),
