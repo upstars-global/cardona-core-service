@@ -436,6 +436,34 @@ describe('BaseSection.vue', () => {
     expect(pushMock).toHaveBeenCalledWith({ name: 'NotFound' })
   })
 
+  it('test', async () => {
+    await router.isReady()
+
+    /// Spy on the store dispatch method
+    vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
+
+    /// Mount the component in create mode
+    const wrapper = mountComponent({
+      pageType: PageType.Update,
+      config: new BaseSectionConfig({
+        backToTheHistoryLast: true,
+        isModalSection: true,
+      }),
+    })
+
+    await flushPromises()
+
+    const saveAndStayButton = wrapper.find(getSelectorTestId('saveAndExit-button'))
+
+    expect(saveAndStayButton.exists()).toBe(true)
+
+    // In the modal section, text of the "Save and stay" button should be "Save"
+    expect(saveAndStayButton.text()).toBe('Save')
+
+    // In the modal section, the "Save and stay" button should not be displayed
+    expect(wrapper.find(getSelectorTestId('saveAndStay-button')).exists()).toBe(false)
+  })
+
   it('Check actions of router on  click buttons "Save and stay",  "Save and exit"', async () => {
     await router.replace({ path: '/detail' })
     await router.isReady()
