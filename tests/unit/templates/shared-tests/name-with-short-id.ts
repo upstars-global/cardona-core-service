@@ -33,7 +33,7 @@ export const checkBaseTestCaseForNameWithId = mountMethod => {
     testOn.notExistElement({ wrapper, testId: testIds.name })
 
     /// Reset props getUpdateRoute
-    await wrapper.setProps({ getUpdateRoute: null })
+    await wrapper.setProps({ getUpdateRoute: null, getDetailRoute: null })
 
     /// Check render content name without link
     testOn.existTextValue({ wrapper, testId: testIds.name }, defaultProps.item.name)

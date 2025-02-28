@@ -76,6 +76,14 @@ jobs:
           echo "DEPLOYMENT_DEVELOP_URL=${{ steps.deploy-develop.outputs.deployment-url }}" >> $GITHUB_ENV
           echo "DEPLOYMENT_DEVELOP_ALIAS_URL=${{ steps.deploy-develop.outputs.pages-deployment-alias-url }}" >> $GITHUB_ENV
           echo "date=$(date -u)" >> $GITHUB_ENV
+          echo "🔹 REPO_URL=${{ github.server_url }}/${{ github.repository }}"
+
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          REPO_URL: "${{ github.server_url }}/${{ github.repository }}"
+        run: npx semantic-release
 
       - name: Comment PR with Deployment Table
         if: github.event_name == 'pull_request'
