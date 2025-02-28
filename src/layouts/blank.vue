@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { ref, watch } from 'vue'
 
-import { useSkins } from '../@core/composable/useSkins';
+import { useSkins } from '../@core/composable/useSkins'
 
 const { injectSkinClasses } = useSkins()
 
@@ -20,7 +20,6 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
   if (!isFallbackStateActive.value && refLoadingIndicator.value)
     refLoadingIndicator.value.resolveHandle()
 }, { immediate: true })
-// !SECTION
 </script>
 
 <template>
