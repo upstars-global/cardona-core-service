@@ -9,6 +9,7 @@ interface Props {
   isEdit?: boolean
   canEdit?: boolean
   disableAcceptUpdate?: boolean
+  rightPositionIconEdit?: boolean
 }
 interface Emits {
   (event: 'change-mode', payload: boolean): void
@@ -76,6 +77,7 @@ const updateValue = (value: unknown): void => {
         class="icon-edit-wrapper mr-1"
       >
         <VIcon
+          v-if="!rightPositionIconEdit"
           data-test-id="edit-icon"
           :icon="IconsList.EditIcon"
           :color="VColors.Primary"
@@ -85,6 +87,18 @@ const updateValue = (value: unknown): void => {
       <slot :value="value">
         {{ value }}
       </slot>
+      <div
+        v-if="canEdit"
+        class="icon-edit-wrapper ml-1"
+      >
+        <VIcon
+          v-if="rightPositionIconEdit"
+          data-test-id="edit-icon"
+          :icon="IconsList.EditIcon"
+          :color="VColors.Primary"
+          @click.stop="setEditMode(true)"
+        />
+      </div>
     </div>
 
     <div
