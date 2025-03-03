@@ -47,6 +47,7 @@ const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 const entityId: string = props.entityId || route.params?.id?.toString()
 const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
+const isModal = props.config?.isModalSection
 
 const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb, onSerializeFormCb, validationErrorCb }
   = props.useEntity()
@@ -155,7 +156,14 @@ const validate = async () => {
   return valid
 }
 
-const existFieldName = (fieldName: string, form: unknown) => form && Object.keys(form).some(key => fieldName.includes(key))
+const existFieldName = (fieldName: string, form: unknown): boolean => {
+  if (!form || typeof form !== 'object')
+    return false
+
+  return Object.entries(form).some(([key, value]) =>
+    fieldName.includes(key) || (typeof value === 'object' && existFieldName(fieldName, value)),
+  )
+}
 
 const setTabError = (fieldName: string) => {
   const fieldElement: HTMLElement | null = document.getElementById(`${fieldName}-field`)
@@ -234,7 +242,7 @@ const onSubmit = async (isStay: boolean) => {
   if (onBeforeSubmitCb && !onBeforeSubmitCb(formData))
     return
 
-  await onSave()
+  await onSave(isStay)
 }
 
 const redirectToListOrPrevPage = () => {
@@ -244,7 +252,7 @@ const redirectToListOrPrevPage = () => {
   return router.push({ name: ListPageName })
 }
 
-const onSave = async () => {
+const onSave = async (isStay?: boolean) => {
   modal.hideModal(ModalsId.ConfirmModal)
   try {
     const data = await store.dispatch(actionName.value, {
@@ -256,7 +264,7 @@ const onSave = async () => {
       customApiPrefix: props.config?.customApiPrefix,
     })
 
-    if (props.config.isModalSection)
+    if (isModal)
       return emits('on-save')
 
     if (isCreatePage) {
@@ -265,7 +273,7 @@ const onSave = async () => {
         : await router.push({ name: ListPageName })
     }
 
-    if (isUpdatePage)
+    if (isUpdatePage && !isStay)
       redirectToListOrPrevPage()
 
     if (onSubmitCallback)
@@ -278,7 +286,7 @@ const onSave = async () => {
 }
 
 const onClickCancel = () => {
-  if (props.config.isModalSection)
+  if (isModal)
     return emits('on-cancel')
   redirectToListOrPrevPage()
 }
@@ -396,16 +404,28 @@ defineExpose({
               </VBtn>
             </template>
 
-            <VBtn
-              v-if="isShowSaveBtn"
-              class="mr-4"
-              :color="VColors.Primary"
-              data-test-id="save-button"
-              :disabled="isDisableSubmit || isLoadingPage"
-              @click="onSubmit(false)"
-            >
-              {{ $t('action.save') }}
-            </VBtn>
+            <template v-if="isShowSaveBtn">
+              <VBtn
+                class="mr-4"
+                :color="VColors.Primary"
+                data-test-id="saveAndExit-button"
+                :disabled="isDisableSubmit || isLoadingPage"
+                @click="onSubmit(false)"
+              >
+                {{ isModal ? $t('action.save') : $t('action.saveAndExit') }}
+              </VBtn>
+              <VBtn
+                v-if="!isModal"
+                class="mr-4"
+                :color="VColors.Secondary"
+                :variant="VVariants.Outlined"
+                data-test-id="saveAndStay-button"
+                :disabled="isDisableSubmit || isLoadingPage"
+                @click="onSubmit(true)"
+              >
+                {{ $t('action.saveAndStay') }}
+              </VBtn>
+            </template>
 
             <VBtn
               v-if="isExistsListPage || props.config.backToTheHistoryLast"

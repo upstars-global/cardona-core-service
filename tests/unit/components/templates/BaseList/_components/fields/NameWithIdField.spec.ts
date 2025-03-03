@@ -1,10 +1,11 @@
-import { beforeEach, describe, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import NameWithIdField from '../../../../../../../src/components/templates/BaseList/_components/fields/NameWithIdField.vue'
 import { setMountComponent } from '../../../../../utils'
 import {
   checkBaseTestCaseForNameWithId,
   defaultProps,
-  mockStore, testIds,
+  mockStore,
+  testIds,
 } from '../../../../../templates/shared-tests/name-with-short-id'
 import { testOn } from '../../../../../templates/shared-tests/test-case-generator'
 import { getShortString } from '../../../../../../../src/helpers'
@@ -52,10 +53,52 @@ describe('NameWithField.vue', () => {
     }
 
     const global = {}
-
     const wrapper = getMountNameWithIdField(props, global, slot)
 
     testOn.existTextValue({ wrapper, testId: testIds.slotContent }, slotText)
     testOn.existTextValue({ wrapper, testId: testIds.copyField }, props.item.id.toString())
+  })
+
+  it('Returns details route if available', () => {
+    const testProps = {
+      ...props,
+      getDetailsRoute: item => ({
+        name: `${item.name}Card`,
+        params: { id: item.id },
+        path: `/card/${item.id}`,
+      }),
+    }
+
+    const wrapper = getMountNameWithIdField(testProps)
+
+    expect(wrapper.vm.routePath).toEqual(testProps.getDetailsRoute(testProps.item))
+  })
+
+  it('Returns update route if details route is missing', () => {
+    const testProps = {
+      ...props,
+      getDetailsRoute: undefined,
+      getUpdateRoute: item => ({
+        name: `${item.name}Update`,
+        params: { id: item.id },
+        path: `/update/${item.id}`,
+      }),
+    }
+
+    const wrapper = getMountNameWithIdField(testProps)
+
+    expect(wrapper.vm.routePath).toEqual(testProps.getUpdateRoute(testProps.item))
+  })
+
+  it('Returns null if both routes are missing', () => {
+    const testProps = {
+      ...props,
+      getDetailsRoute: undefined,
+      getUpdateRoute: undefined,
+    }
+
+    const wrapper = getMountNameWithIdField(testProps)
+
+    expect(wrapper.vm.routePath).toEqual({})
   })
 })
