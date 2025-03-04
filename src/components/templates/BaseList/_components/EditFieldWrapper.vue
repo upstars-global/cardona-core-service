@@ -140,7 +140,7 @@ const updateValue = (value: unknown): void => {
 <style lang="scss" scoped>
 .editable-wrapper {
   &--open {
-    width: 16.75rem;
+    //width: 16.75rem;
   }
 }
 </style>
