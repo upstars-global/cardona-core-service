@@ -32,13 +32,7 @@ export const getISOStringWithoutTimezone = (isoString: string | Date): string =>
   return new Date(utcStringWithoutTimezone).toISOString()
 }
 
-export const getStartOfDayDate = (): Date => {
-  const now = new Date()
-
-  now.setHours(0, 0, 0, 0)
-
-  return now
-}
+export const getStartOfDayDate = (): Date => new Date(new Date().setHours(0, 0, 0, 0))
 
 export const isISODate = (dateString: string | Date): boolean => {
   const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/
