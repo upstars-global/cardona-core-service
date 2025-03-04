@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Install @octokit/auth-app
+        run: yarn add @octokit/auth-app
+
       - name: Debug environment variables
         run: echo "🔹 REPO_URL=${{ github.server_url }}/${{ github.repository }}"
 
