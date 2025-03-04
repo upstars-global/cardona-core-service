@@ -97,6 +97,7 @@ const options = [
 ]
 
 mock.onPost('/api/v2/options/list').reply(() => [200, { data: options }])
+mock.onPost('/api/v2/users/filters/list').reply(() => [200, { data: [] }])
 
 const conditions = [
   'ltp',
