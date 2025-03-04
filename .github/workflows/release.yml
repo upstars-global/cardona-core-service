@@ -45,9 +45,9 @@ jobs:
           const { readFileSync } = require("fs");
           (async () => {
             const auth = createAppAuth({
-              appId: secrets.GH_APP_ID,
+              appId: "${{ secrets.GH_APP_ID }}",
               privateKey: readFileSync("private-key.pem", "utf8"),
-              installationId: secrets.GH_INSTALLATION_ID
+              installationId: "${{ secrets.GH_INSTALLATION_ID }}"
             });
             const installationAuthentication = await auth({ type: "installation" });
             console.log(installationAuthentication.token);
