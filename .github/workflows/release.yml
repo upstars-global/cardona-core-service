@@ -59,7 +59,7 @@ jobs:
 
       - name: Run semantic-release
         env:
-          GITHUB_TOKEN: ${{ env.GH_TOKEN_APP }}
+          GH_TOKEN_APP: ${{ env.GH_TOKEN_APP }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           REPO_URL: "${{ github.server_url }}/${{ github.repository }}"
         run: npx semantic-release
