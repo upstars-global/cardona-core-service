@@ -47,6 +47,7 @@ const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 const entityId: string = props.entityId || route.params?.id?.toString()
 const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
+const isModal = props.config?.isModalSection
 
 const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb, onSerializeFormCb, validationErrorCb }
   = props.useEntity()
@@ -263,7 +264,7 @@ const onSave = async (isStay?: boolean) => {
       customApiPrefix: props.config?.customApiPrefix,
     })
 
-    if (props.config.isModalSection)
+    if (isModal)
       return emits('on-save')
 
     if (isCreatePage) {
@@ -291,7 +292,7 @@ const onSave = async (isStay?: boolean) => {
 }
 
 const onClickCancel = () => {
-  if (props.config.isModalSection)
+  if (isModal)
     return emits('on-cancel')
   redirectToListOrPrevPage()
 }
@@ -417,9 +418,10 @@ defineExpose({
                 :disabled="isDisableSubmit || isLoadingPage"
                 @click="onSubmit(false)"
               >
-                {{ $t('action.saveAndExit') }}
+                {{ isModal ? $t('action.save') : $t('action.saveAndExit') }}
               </VBtn>
               <VBtn
+                v-if="!isModal"
                 class="mr-4"
                 :color="VColors.Secondary"
                 :variant="VVariants.Outlined"

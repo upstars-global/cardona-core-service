@@ -30,12 +30,36 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Install @octokit/auth-app
+        run: yarn add @octokit/auth-app
+
       - name: Debug environment variables
         run: echo "🔹 REPO_URL=${{ github.server_url }}/${{ github.repository }}"
 
+      - name: Get GitHub App Token
+        id: app_token
+        run: |
+          echo "${{ secrets.GH_APP_PRIVATE_KEY }}" > private-key.pem
+          TOKEN=$(node <<EOF
+          const { createAppAuth } = require("@octokit/auth-app");
+          const { readFileSync } = require("fs");
+          (async () => {
+            const auth = createAppAuth({
+              appId: "${{ secrets.GH_APP_ID }}",
+              privateKey: readFileSync("private-key.pem", "utf8"),
+              installationId: "${{ secrets.GH_INSTALLATION_ID }}"
+            });
+            const installationAuthentication = await auth({ type: "installation" });
+            console.log(installationAuthentication.token);
+          })();
+          EOF
+          )
+          echo "::add-mask::$TOKEN"
+          echo "GH_TOKEN_APP=$TOKEN" >> $GITHUB_ENV
+
       - name: Run semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ env.GH_TOKEN_APP }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           REPO_URL: "${{ github.server_url }}/${{ github.repository }}"
         run: npx semantic-release
