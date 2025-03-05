@@ -10,6 +10,7 @@ interface Props {
   canEdit?: boolean
   disableAcceptUpdate?: boolean
   rightPositionIconEdit?: boolean
+  iconEdit: 'hover' | 'show'
 }
 interface Emits {
   (event: 'change-mode', payload: boolean): void
@@ -20,6 +21,7 @@ interface Emits {
 const props = withDefaults(defineProps<Props>(), {
   canEdit: true,
   disableAcceptUpdate: false,
+  iconEdit: 'show',
 })
 
 const emits = defineEmits<Emits>()
@@ -70,14 +72,19 @@ const updateValue = (value: unknown): void => {
     <div
       v-if="!openEdit"
       class="d-flex justify-content-center align-center"
+      :class="{ 'flex-row-reverse': rightPositionIconEdit }"
       data-test-id="readable-value"
     >
       <div
         v-if="canEdit"
-        class="icon-edit-wrapper mr-1"
+        class="icon-edit-wrapper"
+        :class="{
+          'show-on-hover': iconEdit === 'hover',
+          'pr-1': !rightPositionIconEdit,
+          'pl-1': rightPositionIconEdit,
+        }"
       >
         <VIcon
-          v-if="!rightPositionIconEdit"
           data-test-id="edit-icon"
           :icon="IconsList.EditIcon"
           :color="VColors.Primary"
@@ -87,18 +94,6 @@ const updateValue = (value: unknown): void => {
       <slot :value="value">
         {{ value }}
       </slot>
-      <div
-        v-if="canEdit"
-        class="icon-edit-wrapper ml-1"
-      >
-        <VIcon
-          v-if="rightPositionIconEdit"
-          data-test-id="edit-icon"
-          :icon="IconsList.EditIcon"
-          :color="VColors.Primary"
-          @click.stop="setEditMode(true)"
-        />
-      </div>
     </div>
 
     <div
@@ -139,6 +134,17 @@ const updateValue = (value: unknown): void => {
 
 <style lang="scss" scoped>
 .editable-wrapper {
+  * > {
+    transition: all 1.3s ease-in-out;
+  }
+  .icon-edit-wrapper.show-on-hover {
+    opacity: 0;
+  }
+  &:hover{
+    .icon-edit-wrapper.show-on-hover {
+      opacity: 1;
+    }
+  }
   &--open {
     //width: 16.75rem;
   }
