@@ -278,6 +278,12 @@ const onSave = async (isStay?: boolean) => {
 
     if (onSubmitCallback)
       await onSubmitCallback(String(transformedForm.value?.id))
+
+    if (props.config?.initializeWithUpdate) {
+      const newDataForm = data?.data || data
+
+      form.value = new EntityFormClass(newDataForm)
+    }
   }
   catch (e) {
     if (e?.validationErrors?.[0])
