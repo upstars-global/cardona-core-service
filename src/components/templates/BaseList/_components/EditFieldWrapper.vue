@@ -134,9 +134,6 @@ const updateValue = (value: unknown): void => {
 
 <style lang="scss" scoped>
 .editable-wrapper {
-  * > {
-    transition: all 1.3s ease-in-out;
-  }
   .icon-edit-wrapper.show-on-hover {
     opacity: 0;
   }
@@ -144,9 +141,6 @@ const updateValue = (value: unknown): void => {
     .icon-edit-wrapper.show-on-hover {
       opacity: 1;
     }
-  }
-  &--open {
-    //width: 16.75rem;
   }
 }
 </style>
