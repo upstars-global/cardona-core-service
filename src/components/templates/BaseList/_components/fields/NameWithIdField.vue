@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { _RouteLocationBase } from 'vue-router'
 import { useStore } from 'vuex'
 import CopyField from '../../../../../components/templates/BaseList/_components/fields/CopyField.vue'
 import CopyShortField from '../../../../../components/templates/BaseList/_components/fields/CopyShortField.vue'
@@ -9,31 +8,30 @@ import { VColors } from '../../../../../@model/vuetify'
 const props = defineProps<{
   item: Record<string, any>
   getUpdateRoute?: (item: Record<string, any>) => Location
+  getDetailsRoute?: (item: Record<string, any>) => Location
   isShowYou?: boolean
   isShort?: boolean
 }>()
 
 const store = useStore()
 
-const isYou = computed(() => {
-  return props.isShowYou && props.item.id.toString() === store.getters.userInfo.id.toString()
-})
+const isYou = computed(() => props.isShowYou && props.item.id.toString() === store.getters.userInfo.id.toString())
 
-const isExistsRoute = computed(() => {
-  if (!props?.getUpdateRoute)
-    return false
-  const { name }: _RouteLocationBase = props?.getUpdateRoute(props.item)
-
-  return !!name
-})
-
-const itemName = computed<string>(
-  () => props.item.name || props.item.userName || props.item.title,
-)
+const itemName = computed<string>(() => props.item.name || props.item.userName || props.item.title)
 
 const itemId = computed(() => props.item?.id)
 
 const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyField))
+
+const routePath = computed((): Location | Record<string, never> => {
+  if (props.getDetailsRoute?.(props.item)?.name)
+    return props.getDetailsRoute?.(props.item)
+
+  if (props.getUpdateRoute?.(props.item)?.name)
+    return props.getUpdateRoute?.(props.item)
+
+  return {}
+})
 </script>
 
 <template>
@@ -41,8 +39,8 @@ const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyF
     <div class="name-with-id-field__name">
       <slot>
         <RouterLink
-          v-if="isExistsRoute"
-          :to="getUpdateRoute(item)"
+          v-if="routePath?.name"
+          :to="routePath"
           class="d-flex align-center"
           data-test-id="link"
           @click.stop
@@ -76,13 +74,15 @@ const currentComponent = computed(() => (props?.isShort ? CopyShortField : CopyF
         :is="currentComponent"
         data-test-id="copy-field"
         :value="itemId"
-      /></span>
+      />
+    </span>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .name-with-id-field {
   margin-bottom: 1px;
+
   &__name {
     padding-bottom: 2px;
   }

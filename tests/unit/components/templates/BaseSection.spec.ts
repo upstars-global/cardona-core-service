@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises } from '@vue/test-utils'
 import { createStore } from 'vuex'
@@ -147,6 +147,11 @@ const mountComponent = (props = {}, global = {}, slots = {}) =>
 let mockRouter
 beforeEach(() => {
   mockRouter = useRouter()
+})
+
+afterEach(() => {
+  // Сбрасываем все вызовы моков после каждого теста
+  vi.clearAllMocks()
 })
 
 describe('BaseSection.vue', () => {
@@ -437,7 +442,35 @@ describe('BaseSection.vue', () => {
     expect(pushMock).toHaveBeenCalledWith({ name: 'NotFound' })
   })
 
-  it('Redirect to ListPage or prev page on successful update page', async () => {
+  it('test', async () => {
+    await router.isReady()
+
+    /// Spy on the store dispatch method
+    vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
+
+    /// Mount the component in create mode
+    const wrapper = mountComponent({
+      pageType: PageType.Update,
+      config: new BaseSectionConfig({
+        backToTheHistoryLast: true,
+        isModalSection: true,
+      }),
+    })
+
+    await flushPromises()
+
+    const saveAndStayButton = wrapper.find(getSelectorTestId('saveAndExit-button'))
+
+    expect(saveAndStayButton.exists()).toBe(true)
+
+    // In the modal section, text of the "Save and stay" button should be "Save"
+    expect(saveAndStayButton.text()).toBe('Save')
+
+    // In the modal section, the "Save and stay" button should not be displayed
+    expect(wrapper.find(getSelectorTestId('saveAndStay-button')).exists()).toBe(false)
+  })
+
+  it('Check actions of router on  click buttons "Save and stay",  "Save and exit"', async () => {
     await router.replace({ path: '/detail' })
     await router.isReady()
 
@@ -448,7 +481,7 @@ describe('BaseSection.vue', () => {
     })
 
     /// Spy on the store dispatch method
-    const mockStoreDispatch = vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
+    vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
 
     /// Mount the component in create mode
     const wrapper = mountComponent({
@@ -458,21 +491,18 @@ describe('BaseSection.vue', () => {
       }),
     })
 
-    /// Mock transformed form data
-    wrapper.vm.transformedForm = { id: '123' }
+    await flushPromises()
 
-    /// Call the onSave method
-    await wrapper.vm.onSave()
+    /// Check that will not be any redirect after update
+    await clickTrigger({ wrapper, testId: 'saveAndStay-button' })
 
-    expect(mockStoreDispatch).toHaveBeenCalledWith('baseStoreCore/updateEntity', {
-      type: 'mock-form',
-      data: {
-        form: { id: '123' },
-        formRef: { validationErrorCb: undefined },
-      },
-    })
+    expect(mockRouter.go).not.toHaveBeenCalledWith(-1)
+    expect(mockRouter.push).not.toHaveBeenCalled()
 
-    /// Verify that the router navigates to the list page
-    expect(mockRouter.go).toHaveBeenCalled(-1)
+    /// Check that will be redirect after update
+
+    await clickTrigger({ wrapper, testId: 'saveAndExit-button' })
+
+    expect(mockRouter.go).toHaveBeenCalledWith(-1)
   })
 })
