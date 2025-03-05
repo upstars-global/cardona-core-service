@@ -496,12 +496,16 @@ describe('BaseSection.vue', () => {
     /// Check that will not be any redirect after update
     await clickTrigger({ wrapper, testId: 'saveAndStay-button' })
 
+    await flushPromises()
+
     expect(mockRouter.go).not.toHaveBeenCalledWith(-1)
     expect(mockRouter.push).not.toHaveBeenCalled()
 
     /// Check that will be redirect after update
 
     await clickTrigger({ wrapper, testId: 'saveAndExit-button' })
+
+    await flushPromises()
 
     expect(mockRouter.go).toHaveBeenCalledWith(-1)
   })
