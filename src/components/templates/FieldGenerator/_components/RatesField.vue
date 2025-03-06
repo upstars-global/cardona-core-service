@@ -78,6 +78,7 @@ function setRates(): NumberBaseField[] {
         validationRules: props.field.validationRules,
         append: props.append,
         withPositiveNumbers: true,
+        isIntegerNumbers: props.field.isIntegerNumbers,
       })
     },
   )

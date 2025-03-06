@@ -15,6 +15,7 @@ import { clickTrigger, getSelectorTestId, getWrapperElement, setMountComponent }
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { basePermissions } from '../../../../src/helpers/base-permissions'
 import { useRedirectToNotFoundPage } from '../../../../src/helpers/router'
+import { setTabError } from '../../../../src/components/templates/BaseSection/сomposables/tabs'
 
 const getMountBaseSection = setMountComponent(BaseSection)
 
@@ -81,6 +82,7 @@ const mockStore = createStore({
     'resetErrorUrls': vi.fn(),
     'baseStoreCore/readEntity': vi.fn(() => Promise.resolve()),
     'baseStoreCore/createEntity': vi.fn(() => Promise.resolve()),
+    'baseStoreCore/updateEntity': vi.fn(() => Promise.resolve()),
   },
 })
 
@@ -117,6 +119,10 @@ vi.mock('vue-router', async importOriginal => {
     })),
   }
 })
+
+vi.mock('../../../../src/components/templates/BaseSection/сomposables/tabs', () => ({
+  setTabError: vi.fn(),
+}))
 
 const mountComponent = (props = {}, global = {}, slots = {}) =>
   getMountBaseSection({
@@ -391,17 +397,17 @@ describe('BaseSection.vue', () => {
       pageType: PageType.Create,
     })
 
-    /// Trigger the setTabError method
-    await wrapper.vm.setTabError('field-error')
+    const formRefMock = {
+      validate: vi.fn(() => Promise.resolve({ valid: false })),
+      getErrors: vi.fn(() => ({ isActive: { isNotEmpty: true } })),
+    }
 
-    /// Verify that the correct tab is activated
-    const activeTab = document.querySelector('[data-tab="main"]')
+    wrapper.vm.formRef = formRefMock
 
-    expect(activeTab).not.toBeNull()
-    expect(activeTab!.getAttribute('data-tab')).toBe('main')
+    /// Call the validate method
+    await wrapper.vm.validate()
 
-    /// Cleanup
-    document.body.removeChild(mainTabElement)
+    expect(setTabError).toHaveBeenCalled()
   })
 
   it('Redirects to not found page when entity fetch fails', async () => {
@@ -490,12 +496,16 @@ describe('BaseSection.vue', () => {
     /// Check that will not be any redirect after update
     await clickTrigger({ wrapper, testId: 'saveAndStay-button' })
 
+    await flushPromises()
+
     expect(mockRouter.go).not.toHaveBeenCalledWith(-1)
     expect(mockRouter.push).not.toHaveBeenCalled()
 
     /// Check that will be redirect after update
 
     await clickTrigger({ wrapper, testId: 'saveAndExit-button' })
+
+    await flushPromises()
 
     expect(mockRouter.go).toHaveBeenCalledWith(-1)
   })
