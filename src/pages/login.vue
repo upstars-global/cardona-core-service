@@ -9,7 +9,7 @@ import { $api } from '../utils/api'
 
 import { useAbility } from '../plugins/casl/composables/useAbility'
 
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
+import AuthProvider from '../pages/authentication/AuthProvider.vue'
 import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
 import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-login-illustration-bordered-dark.png'
 import authV2LoginIllustrationBorderedLight from '@images/pages/auth-v2-login-illustration-bordered-light.png'
@@ -24,19 +24,19 @@ const authThemeImg = useGenerateImageVariant(authV2LoginIllustrationLight, authV
 
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
 
-definePage({
-  meta: {
-    layout: 'blank',
-    unauthenticatedOnly: true,
-  },
-})
-
 const isPasswordVisible = ref(false)
 
 const route = useRoute()
 const router = useRouter()
 
 const ability = useAbility()
+
+definePage({
+  meta: {
+    layout: 'blank',
+    unauthenticatedOnly: true,
+  },
+})
 
 const errors = ref<Record<string, string | undefined>>({
   email: undefined,
