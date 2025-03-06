@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, inject, nextTick, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, inject, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
 import { useStore } from 'vuex'
 import { IconsList } from '../../../@model/enums/icons'
-import { checkExistsPage, convertCamelCase, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
+import { checkExistsPage, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
 import { basePermissions } from '../../../helpers/base-permissions'
 import { PageType } from '../../../@model/templates/baseSection'
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
@@ -13,8 +13,9 @@ import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import ConfirmModal from '../../../components/BaseModal/ConfirmModal.vue'
 import { ModalsId } from '../../..//@model/modalsId'
 import { useRedirectToNotFoundPage } from '../../../helpers/router'
-import { FormTabs } from '../../../@model/enums/formTabs'
 import BaseSectionLoading from './BaseSectionLoading.vue'
+import { setTabError } from './сomposables/tabs'
+import { generateEntityUrl } from './сomposables/entity'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean
@@ -55,6 +56,7 @@ const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitC
 const formRef = ref(null)
 const ListPageName: string = pageName ? `${pageName}List` : `${entityName}List`
 const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Update`
+const entityUrl = generateEntityUrl(entityName)
 
 const isExistsListPage = checkExistsPage(ListPageName)
 
@@ -69,44 +71,24 @@ const updateActionName = `${moduleName}/updateEntity`
 const deleteActionName = `${moduleName}/deleteEntity`
 
 // Permissions
-
 const { canCreateSeo, canUpdate, canUpdateSeo, canRemove, canViewSeo }
   = basePermissions<BaseSectionConfig>({ entityName, config: props.config })
 
-const generateEntityUrl = () => {
-  const indexSymbolNextDash = entityName.indexOf('-') + 1
-
-  const entityNameForLoad = entityName.replace(
-    entityName[indexSymbolNextDash],
-    entityName[indexSymbolNextDash].toLowerCase(),
-  )
-
-  return convertCamelCase(entityNameForLoad, '/')
-}
-
-const isLoadingPage = computed(() => {
-  const entityUrl = generateEntityUrl()
-
-  return store.getters.isLoadingEndpoint([
-    `${entityUrl}/create`,
-    `${entityUrl}/read`,
-    `${entityUrl}/update`,
-    `${entityUrl}/delete`,
-  ])
-})
+const isLoadingPage = computed(() => store.getters.isLoadingEndpoint([
+  `${entityUrl}/create`,
+  `${entityUrl}/read`,
+  `${entityUrl}/update`,
+  `${entityUrl}/delete`,
+]))
 
 const isDisableSubmitBtn = computed(() => {
   return store.getters.isLoadingEndpoint(props.config.loadingEndpointArr)
 })
 
-const isExistsEndpointsWithError = computed(() => {
-  const entityUrl = generateEntityUrl()
-
-  return store.getters.isErrorEndpoint([
-    `${entityUrl}/read`,
-    ...props.config.loadingEndpointArr,
-  ])
-})
+const isExistsEndpointsWithError = computed(() => store.getters.isErrorEndpoint([
+  `${entityUrl}/read`,
+  ...props.config.loadingEndpointArr,
+]))
 
 const form = ref()
 
@@ -151,49 +133,9 @@ const validate = async () => {
   )
 
   if (fieldName)
-    setTabError(fieldName)
+    setTabError(fieldName, form)
 
   return valid
-}
-
-const existFieldName = (fieldName: string, form: unknown): boolean => {
-  if (!form || typeof form !== 'object')
-    return false
-
-  return Object.entries(form).some(([key, value]) =>
-    fieldName.includes(key) || (typeof value === 'object' && existFieldName(fieldName, value)),
-  )
-}
-
-const setTabError = (fieldName: string) => {
-  const fieldElement: HTMLElement | null = document.getElementById(`${fieldName}-field`)
-  let tabName = ''
-
-  if (fieldElement) {
-    const windowElement: HTMLElement | null = fieldElement.closest('div[data-tab]')
-
-    if (windowElement)
-      tabName = windowElement.dataset.tab!
-    else if (existFieldName(fieldName, form.value))
-      tabName = FormTabs.Main
-    else if (existFieldName(fieldName, form.value.seo))
-      tabName = FormTabs.Seo
-    else if (existFieldName(fieldName, form.value.fieldTranslations))
-      tabName = FormTabs.Localization
-    else return
-
-    const tabButton: HTMLElement | null = document.querySelector(
-      `button[value=${tabName}]`,
-    )
-
-    tabButton && tabButton.click()
-
-    nextTick(() => {
-      fieldElement.scrollIntoView({
-        block: 'start',
-      })
-    })
-  }
 }
 
 const isDisableSubmit = computed(() => [isLoadingPage.value, isDisableSubmitBtn.value, isExistsEndpointsWithError.value].some(Boolean))
@@ -278,10 +220,16 @@ const onSave = async (isStay?: boolean) => {
 
     if (onSubmitCallback)
       await onSubmitCallback(String(transformedForm.value?.id))
+
+    if (props.config?.initializeWithUpdate) {
+      const newDataForm = data?.data || data
+
+      form.value = new EntityFormClass(newDataForm)
+    }
   }
   catch (e) {
     if (e?.validationErrors?.[0])
-      setTabError(e.validationErrors[0]?.field)
+      setTabError(e.validationErrors[0]?.field, form)
   }
 }
 
