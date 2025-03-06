@@ -9,8 +9,7 @@ interface Props {
   isEdit?: boolean
   canEdit?: boolean
   disableAcceptUpdate?: boolean
-  rightPositionIconEdit?: boolean
-  iconEdit: 'hover' | 'show'
+  editIconOnHover?: boolean
 }
 interface Emits {
   (event: 'change-mode', payload: boolean): void
@@ -75,13 +74,14 @@ const updateValue = (value: unknown): void => {
       :class="{ 'flex-row-reverse': rightPositionIconEdit }"
       data-test-id="readable-value"
     >
+      <slot :value="value">
+        {{ value }}
+      </slot>
       <div
         v-if="canEdit"
-        class="icon-edit-wrapper"
+        class="icon-edit-wrapper pl-1"
         :class="{
-          'show-on-hover': iconEdit === 'hover',
-          'pr-1': !rightPositionIconEdit,
-          'pl-1': rightPositionIconEdit,
+          'show-on-hover': editIconOnHover,
         }"
       >
         <VIcon
@@ -91,9 +91,6 @@ const updateValue = (value: unknown): void => {
           @click.stop="setEditMode(true)"
         />
       </div>
-      <slot :value="value">
-        {{ value }}
-      </slot>
     </div>
 
     <div
@@ -136,6 +133,9 @@ const updateValue = (value: unknown): void => {
 .editable-wrapper {
   .icon-edit-wrapper.show-on-hover {
     opacity: 0;
+    &:hover{
+      opacity: 1;
+    }
   }
   &:hover{
     .icon-edit-wrapper.show-on-hover {
