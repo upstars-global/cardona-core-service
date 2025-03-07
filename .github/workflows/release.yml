@@ -63,13 +63,3 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           REPO_URL: "${{ github.server_url }}/${{ github.repository }}"
         run: npx semantic-release
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore(release): auto release [skip ci]"
-          branch: auto-release-pr
-          base: master
-          title: "Automated Release PR"
-          body: "This PR contains an automated release from semantic-release."
