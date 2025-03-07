@@ -4,9 +4,9 @@ import moment from 'moment'
 import en from 'flatpickr/dist/l10n/default.js'
 import { Russian as ru } from 'flatpickr/dist/l10n/ru.js'
 import { useI18n } from 'vue-i18n'
+import { getStartOfDayDate } from '../../../../helpers/date'
 import type { DateBaseField } from '../../../../@model/templates/baseField'
 import AppDateTimePicker from '../../../../@core/components/app-form-elements/AppDateTimePicker.vue'
-import { getISOStringWithoutTimezone } from '../../../../helpers/date'
 import { dateSeparators } from '../../../../@model/date'
 import { IconsList } from '../../../../@model/enums/icons'
 
@@ -124,7 +124,7 @@ const setRangeDate = (value, isStartDate = true) => {
 const configFrom = computed(() => {
   return {
     ...flatPickrConfig.value,
-    minDate: props.field.isStartDateNow,
+    minDate: props.field.isStartDateNow && getStartOfDayDate(),
     maxDate: endedAt.value || props.field.allowFutureDate || new Date(),
     mode: 'single',
     defaultHour: 0,
@@ -163,7 +163,7 @@ const onOpenByAppendInner = dateRef => {
     :placeholder="field.placeholder || field.label"
     :config="{
       ...flatPickrConfig,
-      minDate: field.isStartDateNow && getISOStringWithoutTimezone(new Date()),
+      minDate: field.isStartDateNow && getStartOfDayDate(),
       mode: field.isRangeMode ? 'range' : 'single',
       ...field.config,
     }"

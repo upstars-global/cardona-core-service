@@ -4,6 +4,7 @@ import FlatPickr from 'vue-flatpickr-component'
 import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
 import AppDateTimePicker from '../../../../src/@core/components/app-form-elements/AppDateTimePicker.vue'
+import { getStartOfDayDate } from '../../../../src/helpers/date'
 
 // Мокаем Flatpickr и Vuetify тему
 vi.mock('vue-flatpickr-component', () => ({
@@ -40,6 +41,24 @@ describe('AppDateTimePicker', () => {
     })
 
     expect(wrapper.findComponent(FlatPickr).exists()).toBe(true)
+  })
+
+  it('sets minDate to start of the day when isStartDateNow is true', () => {
+    const wrapper = mount(AppDateTimePicker, {
+      props: {
+        modelValue: '2023-01-01',
+        field: {
+          isStartDateNow: true,
+          withTime: false,
+          isRangeMode: false,
+          config: {},
+        },
+      },
+    })
+
+    const config = wrapper.findComponent(FlatPickr).props('config')
+
+    expect(config.minDate).toEqual(getStartOfDayDate())
   })
 
   it('emits update:modelValue when date is selected', async () => {
