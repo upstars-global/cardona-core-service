@@ -15,7 +15,6 @@ function finalizeContext (context) {
 export default {
   branches: [ "master" ],
   preset: "conventionalcommits",
-  repositoryUrl: "https://x-access-token:${process.env.GH_TOKEN_APP}@github.com/upstars-global/cardona-core-service",
   plugins: [
     [ "@semantic-release/commit-analyzer", {
       releaseRules: [
