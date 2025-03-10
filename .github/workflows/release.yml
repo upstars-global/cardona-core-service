@@ -55,11 +55,11 @@ jobs:
           EOF
           )
           echo "::add-mask::$TOKEN"
-          echo "GH_TOKEN_APP=$TOKEN" >> $GITHUB_ENV
+          echo "GITHUB_TOKEN=$TOKEN" >> $GITHUB_ENV
 
       - name: Run semantic-release
         env:
-          GITHUB_TOKEN: ${{ env.GH_TOKEN_APP }}
+          GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           REPO_URL: "${{ github.server_url }}/${{ github.repository }}"
         run: npx semantic-release

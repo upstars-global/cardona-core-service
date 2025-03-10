@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, ref, watch } from 'vue'
+import { computed, inject, onBeforeMount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { sortBy } from 'lodash'
 import type { RegionInfo } from '../@model/regions'
-import { VColors, VSizes } from '../@model/vuetify'
+import { VColors, VSizes, VVariants } from '../@model/vuetify'
 import { IconsList } from '../@model/enums/icons'
 import { withPopper } from '../helpers/selectPopper'
+import { ModalsIds } from '../@model/enums/modal'
+import RemoveModal from './BaseModal/RemoveModal.vue'
 
 const props = defineProps<{
   modelValue: Array<string>
@@ -21,6 +23,7 @@ const emits = defineEmits<{
 const { t } = useI18n()
 const store = useStore()
 const collator = new Intl.Collator('en')
+const modal = inject('modal')
 
 enum countriesType {
   Ban = 'ban',
@@ -151,6 +154,14 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
 
   updateValue()
 }
+
+const onConfirmRemoveAll = ({ hide }: { hide: Function }) => {
+  selectedCountriesVisible.value.clear()
+
+  hide()
+
+  updateValue()
+}
 </script>
 
 <template>
@@ -177,10 +188,22 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
     </VBtnToggle>
 
     <div class="mt-4">
-      <VLabel class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between">
+      <VLabel class="mb-1 field-generator-label text-body-2 text-high-emphasis d-flex justify-space-between">
         <span>
           {{ countriesRadioLabel }}
         </span>
+
+        <VBtn
+          v-if="selectedCountriesVisible.size"
+          :color="VColors.Error"
+          :variant="VVariants.Tonal"
+          :size="VSizes.Small"
+          @click="modal.showModal(ModalsIds.RemoveAllCountries)"
+        >
+          <VIcon :icon="IconsList.XIcon" />
+
+          {{ $t('action.removeAll') }}
+        </VBtn>
       </VLabel>
 
       <VueSelect
@@ -239,6 +262,13 @@ const onDeleteRegion = (key: string, index: number, code: string, countryCode: s
         </div>
       </PerfectScrollbar>
     </div>
+
+    <RemoveModal
+      :remove-modal-id="ModalsIds.RemoveAllCountries"
+      :title="$t('component.countriesSelect.removeAllModal.title')"
+      :description="$t('component.countriesSelect.removeAllModal.description')"
+      @on-click-modal-ok="onConfirmRemoveAll"
+    />
   </div>
 </template>
 
