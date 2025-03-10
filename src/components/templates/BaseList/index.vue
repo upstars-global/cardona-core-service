@@ -5,23 +5,15 @@ import { useStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
-import { BaseListActionsSlots, ExportFormat } from '../../../@model/templates/baseList'
+import { BaseListActionsSlots } from '../../../@model/templates/baseList'
 import CTable from '../../CTable/index.vue'
-import type { FilterListItem, IBaseListConfig } from '../../../@model/templates/baseList'
+import type { ExportFormat, IBaseListConfig } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
 import { ListSort, SortedItem } from '../../../@model'
 import { useFilters } from '../../../components/FiltersBlock/useFilters'
-import {
-  BaseField,
-  DateBaseField,
-  MultiSelectBaseField,
-  NumberRangeBaseField,
-  SelectBaseField,
-} from '../../../@model/templates/baseField'
-import type { PaginationResult } from '../../../use/pagination'
-import usePagination from '../../../use/pagination'
+import type { BaseField } from '../../../@model/templates/baseField'
 import type { TableField } from '../../../@model/templates/tableFields'
 import { ListFieldType } from '../../../@model/templates/tableFields'
 import { basePermissions } from '../../../helpers/base-permissions'
@@ -41,6 +33,8 @@ import StatementField from '../../../components/templates/_components/StatementF
 import DateWithSecondsField from '../../../components/templates/_components/DateWithSecondsField.vue'
 import SumAndCurrency from '../../../components/templates/_components/SumAndCurrency.vue'
 import StatusField from '../../../components/templates/_components/StatusField.vue'
+import usePagination from './сomposables/pagination'
+import type { PaginationResult } from './сomposables/pagination'
 import MultipleActions from './_components/MultipleActions.vue'
 import ListSearch from './_components/ListSearch.vue'
 import PillStatusField from './_components/fields/PillStatusField.vue'
@@ -59,6 +53,9 @@ import ItemActions from './_components/fields/ItemActions.vue'
 import ListPagination from './_components/ListPagination.vue'
 import TableFields from './_components/TableFields.vue'
 import DateField from './_components/fields/DateField.vue'
+import { mapSortData } from './сomposables/sorting'
+import { downloadReport } from './сomposables/export'
+import { transformFilters } from './сomposables/filters'
 
 const props = defineProps<{
   config: IBaseListConfig
@@ -278,21 +275,12 @@ const linkGenerator = (page: number) => {
   return linkGen(page)
 }
 
-const mapSortData = () => {
-  return sortData.value.isEmpty
-    ? null
-    : sortData.value.map(item => {
-      if (item.key)
-        return new ListSort({ sortBy: item.key, sortDesc: item.order })
-    })
-}
-
 // Fetch list
 const getList = async () => {
   isDebouncedSearch.value = false
 
   const filter = setRequestFilters()
-  const sort = mapSortData()
+  const sort = mapSortData(sortData.value)
 
   const { list, total } = await store.dispatch(fetchActionName, {
     type: parseEntityNameWithTabs(entityName),
@@ -374,32 +362,7 @@ const setRequestFilters = (): PayloadFilters => {
   if (!ListFilterModel)
     return {}
 
-  const appliedFiltersData = appliedFilters.value.reduce((acc, filter) => {
-    const { key, trackBy = 'name' }: FilterListItem = props.config?.filterList.find(
-      ({ type }: FilterListItem) => type === filter.key,
-    )
-
-    if (filter instanceof SelectBaseField) {
-      acc[key] = filter.transformField({ trackBy, isStringDefaultValue: false })
-    }
-    else if (filter instanceof MultiSelectBaseField) {
-      acc[key] = filter.transformField({ trackBy })
-    }
-    else if (filter instanceof DateBaseField || filter instanceof NumberRangeBaseField) {
-      const transformedFilterValue = filter.transformField(key)
-
-      if (!transformedFilterValue)
-        return acc
-      else if (typeof transformedFilterValue === 'string')
-        acc[key] = transformedFilterValue
-      else acc = { ...acc, ...transformedFilterValue }
-    }
-    else if (filter instanceof BaseField) {
-      acc[key] = filter.transformField()
-    }
-
-    return acc
-  }, {})
+  const appliedFiltersData = transformFilters(appliedFilters.value, props.config)
 
   const filtersData = new ListFilterModel({
     ...props.config?.staticFilters,
@@ -443,25 +406,7 @@ const onExportFormatSelected = async (format: ExportFormat) => {
     customApiPrefix: props.config?.customApiPrefix,
   })
 
-  const fakeLink: HTMLElement = document.createElement('a')
-
-  const downloadUrl = window.URL.createObjectURL(new Blob([report]))
-
-  if (format === ExportFormat.XLSX) {
-    fakeLink.setAttribute(
-      'href',
-      downloadUrl,
-    )
-  }
-  else {
-    fakeLink.setAttribute(
-      'href',
-      `data:${downloadUrl};charset=utf-8,${encodeURIComponent(report)}`,
-    )
-  }
-  fakeLink.setAttribute('target', '_blank')
-  fakeLink.setAttribute('download', `${entityName}Report.${format}`)
-  fakeLink.click()
+  downloadReport(report, entityName, format)
 }
 
 // Filters
