@@ -45,6 +45,13 @@ defineProps<{ loading: boolean }>()
 .base-modal .loader-overlay {
   position: relative;
   height: auto;
+  margin: 100px auto;
+
+  &.fade-enter-active,
+  &.fade-leave-active {
+    transition: all 0s ease;
+    display: none;
+  }
 }
 </style>
 
