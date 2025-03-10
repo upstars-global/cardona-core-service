@@ -468,7 +468,11 @@
       "bannedCountries": "Banned countries",
       "allowedCountries": "Allowed countries",
       "placeholder": "Search by Country and Region",
-      "description": "If no countries are selected, then all countries are allowed"
+      "description": "If no countries are selected, then all countries are allowed",
+      "removeAllModal": {
+        "title": "Remove all countries",
+        "description": "Are you sure you want to remove all countries?"
+      }
     },
     "multiSelect": {
       "copyId": "Copy ID"
@@ -739,7 +743,8 @@
     "save": "Save",
     "remove": "Remove",
     "delete": "Delete",
-    "removeAll": "Remove all ({total})",
+    "removeAll": "Remove all",
+    "removeAllWithTotal": "Remove all ({total})",
     "removeSelected": "Remove selected",
     "cancel": "Cancel",
     "cancel_2": "Cancel",

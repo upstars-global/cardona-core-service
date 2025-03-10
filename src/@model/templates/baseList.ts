@@ -374,6 +374,9 @@ export interface IBaseSectionConfig {
 
   /** isModalSection - Флаг для отображения секции в модалке. Нужно использовать emits on-save, on-cancel */
   readonly isModalSection?: boolean
+
+  /** initializeWithUpdate - Флаг для инициализации данных формы на основе update response  */
+  readonly initializeWithUpdate?: boolean
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to base section model
@@ -390,6 +393,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly withoutConfirmModal?: boolean
   readonly backToTheHistoryLast?: boolean
   readonly isModalSection?: boolean
+  readonly initializeWithUpdate: boolean
   constructor(data: IBaseSectionConfig) {
     this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
@@ -404,6 +408,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
     this.withoutConfirmModal = data?.withoutConfirmModal || false
     this.backToTheHistoryLast = data?.backToTheHistoryLast || false
     this.isModalSection = data?.isModalSection || false
+    this.initializeWithUpdate = data?.initializeWithUpdate || false
   }
 }
 

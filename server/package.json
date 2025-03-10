@@ -7,5 +7,8 @@
     "dev": "nitro dev",
     "prepare": "nitro prepare",
     "preview": "node .output/server/index.mjs"
+  },
+  "dependencies": {
+    "@octokit/auth-app": "^7.1.5"
   }
 }
