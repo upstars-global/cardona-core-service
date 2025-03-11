@@ -131,15 +131,15 @@ const updateValue = (value: unknown): void => {
 
 <style lang="scss" scoped>
 .editable-wrapper {
+  position: relative;
   .icon-edit-wrapper.show-on-hover {
-    opacity: 0;
-    &:hover{
-      opacity: 1;
-    }
+    display: none;
   }
   &:hover{
     .icon-edit-wrapper.show-on-hover {
-      opacity: 1;
+      position: absolute;
+      display: block;
+      right: -1.5rem;
     }
   }
 }
