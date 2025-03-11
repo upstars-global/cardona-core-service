@@ -5,7 +5,6 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import { getPascalCaseRouteName } from 'unplugin-vue-router'
 import VueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
-import VueDevTools from 'vite-plugin-vue-devtools'
 import Layouts from 'vite-plugin-vue-layouts'
 import vuetify from 'vite-plugin-vuetify'
 import Components from 'unplugin-vue-components/vite'
@@ -23,10 +22,6 @@ export default defineConfig({
           .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
           .toLowerCase()
       },
-      beforeWriteFiles: root => {
-        root.insert('/apps/email/:filter', '/src/pages/apps/email/index.vue')
-        root.insert('/apps/email/:label', '/src/pages/apps/email/index.vue')
-      },
       exclude: ['**/demo', '**/permission'],
     }),
     vue({
@@ -36,7 +31,6 @@ export default defineConfig({
         },
       },
     }),
-    VueDevTools(),
     vueJsx(),
 
     // Docs: https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin
@@ -64,22 +58,6 @@ export default defineConfig({
         },
       ],
     }),
-
-    // Docs: https://github.com/antfu/unplugin-auto-import#unplugin-auto-import
-    /* AutoImport({
-      imports: ['vue', VueRouterAutoImports, '@vueuse/core', '@vueuse/math', 'vue-i18n', 'pinia'],
-      dirs: [
-        './src/@core/utils',
-        './src/@core/composable/',
-        './src/composables/',
-        './src/utils/',
-        './src/plugins/!*!/composables/!*',
-      ],
-      vueTemplate: true,
-
-      // ℹ️ Disabled to avoid confusion & accidental usage
-      ignore: ['useCookies', 'useStorage'],
-    }), */
 
     // Docs: https://github.com/intlify/bundle-tools/tree/main/packages/unplugin-vue-i18n#intlifyunplugin-vue-i18n
     VueI18nPlugin({

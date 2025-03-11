@@ -45,9 +45,6 @@ export const useLayoutConfigStore = defineStore('layoutConfig', () => {
     }
   })
 
-  // 👉 Horizontal Nav Type
-  const horizontalNavType = ref(layoutConfig.horizontalNav.type)
-
   // 👉 Footer Type
   const footerType = ref(layoutConfig.footer.type)
 
@@ -68,7 +65,6 @@ export const useLayoutConfigStore = defineStore('layoutConfig', () => {
           && appContentLayoutNav.value === 'vertical'
           && !isLessThanOverlayNavBreakpoint.value,
       },
-      { [`horizontal-nav-${horizontalNavType.value}`]: appContentLayoutNav.value === 'horizontal' },
       `layout-content-width-${appContentWidth.value}`,
       { 'layout-overlay-nav': isLessThanOverlayNavBreakpoint.value },
       { 'window-scrolled': unref(windowScrollY) },
@@ -113,7 +109,6 @@ export const useLayoutConfigStore = defineStore('layoutConfig', () => {
     navbarType,
     isNavbarBlurEnabled,
     isVerticalNavCollapsed,
-    horizontalNavType,
     footerType,
     isLessThanOverlayNavBreakpoint,
     isAppRTL,
