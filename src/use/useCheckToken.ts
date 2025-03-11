@@ -14,7 +14,7 @@ export function useCheckToken() {
   const actionOnBrokenToken = async (withToast = false) => {
     withToast && toastError(TOKEN_INVALID)
     await store.dispatch('authCore/clearAuth')
-    await router.push({ name: 'Login' })
+    await router.push('/login')
   }
 
   const isValidLocalStorageValue = async (): Promise<boolean> => {
