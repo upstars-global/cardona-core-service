@@ -25,10 +25,6 @@ export const defineThemeConfig = (userConfig: UserThemeConfig): { themeConfig: U
         isVerticalNavCollapsed: userConfig.verticalNav.isVerticalNavCollapsed,
         defaultNavItemIconProps: userConfig.verticalNav.defaultNavItemIconProps,
       },
-      horizontalNav: {
-        type: userConfig.horizontalNav.type,
-        transition: userConfig.horizontalNav.transition,
-      },
       icons: {
         chevronDown: userConfig.icons.chevronDown,
         chevronRight: userConfig.icons.chevronRight,
