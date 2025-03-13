@@ -22,5 +22,5 @@ jobs:
           fetch-depth: 0
 
       - name: Run semantic-release
-        run: git tag -a v3.2.96 -m "Release v3.2.96" && git push --tags https://x-access-token:${{ secrets.SUPER_TOKEN }}@github.com/upstars-global/cardona-core-service HEAD:master
+        run: git config --global user.email "o.miha@gmail.com" && git config --global user.name "O.Miha" && git tag -a v3.2.96 -m "Release v3.2.96" && git push --tags https://x-access-token:${{ secrets.SUPER_TOKEN }}@github.com/upstars-global/cardona-core-service HEAD:master
 
