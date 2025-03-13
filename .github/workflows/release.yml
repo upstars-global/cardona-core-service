@@ -21,6 +21,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run semantic-release
-        run: git config --global user.email "o.miha@gmail.com" && git config --global user.name "O.Miha" && git tag -a v3.2.96 -m "Release v3.2.96" && git push --tags https://x-access-token:${{ secrets.SUPER_TOKEN }}@github.com/upstars-global/cardona-core-service HEAD:master
+      - name: Get GitHub App Token
+        id: app_token
+        run: |
+          echo "${{ secrets.GH_APP_PRIVATE_KEY }}" > private-key.pem
+          TOKEN=$(node <<EOF
+          const { createAppAuth } = require("@octokit/auth-app");
+          const { readFileSync } = require("fs");
+          (async () => {
+            const auth = createAppAuth({
+              appId: "${{ secrets.GH_APP_ID }}",
+              privateKey: readFileSync("private-key.pem", "utf8"),
+              installationId: "${{ secrets.GH_INSTALLATION_ID }}"
+            });
+            const installationAuthentication = await auth({ type: "installation" });
+            console.log(installationAuthentication.token);
+          })();
+          EOF
+          )
+          echo "::add-mask::$TOKEN"
+          echo "GITHUB_TOKEN=$TOKEN" >> $GITHUB_ENV
 
+
+      - name: Run semantic-release
+        run: git config --global user.email "o.miha@gmail.com" && git config --global user.name "O.Miha" && git tag -a v3.2.96 -m "Release v3.2.96" && git push --tags https://x-access-token:${{ env.GITHUB_TOKEN }}@github.com/upstars-global/cardona-core-service HEAD:master
