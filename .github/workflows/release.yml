@@ -21,24 +21,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.14.0
-          cache: "yarn"
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Install @octokit/auth-app
-        run: yarn add @octokit/auth-app
-
-      - name: Debug environment variables
-        run: echo "🔹 REPO_URL=${{ github.server_url }}/${{ github.repository }}"
-
       - name: Run semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.SUPER_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          REPO_URL: "${{ github.server_url }}/${{ github.repository }}"
-        run: npx semantic-release
+        run: git tag -a v3.2.96 -m "Release v3.2.96" && git push --tags https://x-access-token:${{ secrets.SUPER_TOKEN }}@github.com/upstars-global/cardona-core-service HEAD:master
+
