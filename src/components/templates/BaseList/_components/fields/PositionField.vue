@@ -23,7 +23,7 @@ const props = withDefaults(
 )
 
 const emits = defineEmits<{
-  (e: 'editPosition', value: number): void
+  (e: 'editPosition', value: number, changeEditState: (state: boolean) => void): void
   (e: 'open-edit'): void
 }>()
 
@@ -45,7 +45,7 @@ const onOpenEdit = () => {
 }
 
 const successNewPosition = () => {
-  emits('editPosition', numberPosition.value || props.position)
+  emits('editPosition', numberPosition.value || props.position, changeEditState)
   openEdit.value = false
 }
 
@@ -81,6 +81,10 @@ const isSmallSize = computed(() => props.size === ListSize.SM)
 const buttonSize = computed(() => {
   return isSmallSize.value ? VSizes.Small : VSizes.Medium
 })
+
+const changeEditState = (state: boolean): void => {
+  openEdit.value = state
+}
 </script>
 
 <template>
@@ -137,15 +141,22 @@ const buttonSize = computed(() => {
     v-else
     class="d-flex align-center"
     :class="{ 'position-text-block': canUpdate }"
-    @click.stop="onOpenEdit"
   >
-    <VIcon
-      v-if="canUpdate"
-      :icon="IconsList.EditIcon"
-      :color="VColors.Primary"
-      data-test-id="position-edit-icon"
-      class="mr-1"
-    />
+    <slot
+      name="edit-position-icon"
+      :can-update="canUpdate"
+      :on-open-edit="onOpenEdit"
+    >
+      <VIcon
+        v-if="canUpdate"
+        :icon="IconsList.EditIcon"
+        :color="VColors.Primary"
+        data-test-id="position-edit-icon"
+        class="mr-1"
+        @click.stop="onOpenEdit"
+      />
+    </slot>
+
     <span data-test-id="position-read-text">{{ position }}</span>
   </div>
 </template>

@@ -1,15 +1,13 @@
 <script setup lang="tsx">
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n'
 
-import { useGenerateImageVariant } from '../composable/useGenerateImageVariant';
+import { useDebounceFn, useStorage } from '@vueuse/core'
 
-import { useDebounceFn } from '@vueuse/core';
+import { computed, nextTick, ref, watch } from 'vue'
 
-import { ref, watch, computed, nextTick } from 'vue';
-
-import { useStorage } from '@vueuse/core'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useTheme } from 'vuetify'
+import { useGenerateImageVariant } from '../composable/useGenerateImageVariant'
 import { staticPrimaryColor } from '@/plugins/vuetify/theme'
 import { Direction, Layout, Skins, Theme } from '@core/enums'
 import { useConfigStore } from '@core/stores/config'
@@ -76,7 +74,6 @@ const systemTheme = useGenerateImageVariant(systemThemeLight, systemThemeDark)
 const defaultSkin = useGenerateImageVariant(defaultSkinLight, defaultSkinDark)
 const borderSkin = useGenerateImageVariant(borderSkinLight, borderSkinDark)
 const collapsed = useGenerateImageVariant(collapsedLight, collapsedDark)
-const compact = useGenerateImageVariant(compactLight, compactDark)
 const compactContent = useGenerateImageVariant(compactLight, compactDark)
 const wideContent = useGenerateImageVariant(wideLight, wideDark)
 const ltrImg = useGenerateImageVariant(ltrLight, ltrDark)
@@ -117,7 +114,7 @@ const themeSkin = computed(() => {
 })
 
 // 👉 Layout
-const currentLayout = ref<'vertical' | 'collapsed' | 'horizontal'>(configStore.isVerticalNavCollapsed ? 'collapsed' : configStore.appContentLayoutNav)
+const currentLayout = ref<'vertical' | 'collapsed'>(configStore.isVerticalNavCollapsed ? 'collapsed' : configStore.appContentLayoutNav)
 
 const layouts = computed(() => {
   return [
@@ -130,11 +127,6 @@ const layouts = computed(() => {
       bgImage: collapsed.value,
       value: Layout.Collapsed,
       label: 'Collapsed',
-    },
-    {
-      bgImage: compact.value,
-      value: Layout.Horizontal,
-      label: 'Horizontal',
     },
   ]
 })
