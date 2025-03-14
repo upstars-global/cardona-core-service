@@ -13,9 +13,9 @@ import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import ConfirmModal from '../../../components/BaseModal/ConfirmModal.vue'
 import { ModalsId } from '../../..//@model/modalsId'
 import { useRedirectToNotFoundPage } from '../../../helpers/router'
+import { setTabError } from './composables/tabs'
+import { generateEntityUrl } from './composables/entity'
 import BaseSectionLoading from './BaseSectionLoading.vue'
-import { setTabError } from './сomposables/tabs'
-import { generateEntityUrl } from './сomposables/entity'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean

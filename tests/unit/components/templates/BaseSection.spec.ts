@@ -15,7 +15,7 @@ import { clickTrigger, getSelectorTestId, getWrapperElement, setMountComponent }
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { basePermissions } from '../../../../src/helpers/base-permissions'
 import { useRedirectToNotFoundPage } from '../../../../src/helpers/router'
-import { setTabError } from '../../../../src/components/templates/BaseSection/сomposables/tabs'
+import { setTabError } from '../../../../src/components/templates/BaseSection/composables/tabs'
 
 const getMountBaseSection = setMountComponent(BaseSection)
 
@@ -120,7 +120,7 @@ vi.mock('vue-router', async importOriginal => {
   }
 })
 
-vi.mock('../../../../src/components/templates/BaseSection/сomposables/tabs', () => ({
+vi.mock('../../../../src/components/templates/BaseSection/composables/tabs', () => ({
   setTabError: vi.fn(),
 }))
 

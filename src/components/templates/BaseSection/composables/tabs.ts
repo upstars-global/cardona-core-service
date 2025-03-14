@@ -6,9 +6,16 @@ const existFieldName = (fieldName: string, form: unknown): boolean => {
   if (!form || typeof form !== 'object')
     return false
 
-  return Object.entries(form).some(([key, value]) =>
-    fieldName.includes(key) || (typeof value === 'object' && existFieldName(fieldName, value)),
-  )
+  return Object.entries(form).some(([key, value]) => {
+    if (fieldName.includes(key))
+      return true
+
+    // На случай если нужный ключ находится внутри объекта
+    if (typeof value === 'object' && value !== null)
+      return Object.keys(value).some(innerKey => fieldName.includes(innerKey))
+
+    return false
+  })
 }
 
 export const setTabError = (fieldName: string, form: Ref<Record<string, unknown>>) => {
