@@ -212,7 +212,7 @@ const onSave = async (isStay?: boolean) => {
     if (isCreatePage) {
       isStaySubmit.value && data
         ? await router.push({ name: UpdatePageName, params: { id: String(data?.id) } })
-        : await router.push({ name: ListPageName })
+        : redirectToListOrPrevPage()
     }
 
     if (isUpdatePage && !isStay)
