@@ -120,7 +120,7 @@ vi.mock('vue-router', async importOriginal => {
   }
 })
 
-vi.mock('../../../../src/components/templates/BaseSection/сomposables/tabs', () => ({
+vi.mock('../../../../src/components/templates/BaseSection/composables/tabs', () => ({
   setTabError: vi.fn(),
 }))
 
