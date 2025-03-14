@@ -1,6 +1,6 @@
 {
   "name": "cardona-core-service",
-  "version": "3.2.91",
+  "version": "3.3.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -22,6 +22,7 @@
     "@floating-ui/dom": "1.5.3",
     "@iconify-json/fa": "^1.1.5",
     "@iconify-json/tabler": "^1.1.96",
+    "@octokit/auth-app": "^7.1.5",
     "@popperjs/core": "^2.11.8",
     "@sindresorhus/is": "^6.0.1",
     "@tiptap/extension-highlight": "^2.1.12",

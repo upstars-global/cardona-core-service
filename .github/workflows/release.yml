@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -63,3 +64,6 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           REPO_URL: "${{ github.server_url }}/${{ github.repository }}"
         run: npx semantic-release
+
+#      - name: Run semantic-release
+#        run: git config --global user.email "o.miha@gmail.com" && git config --global user.name "O.Miha" && git tag -a v3.2.97 -m "Release v3.2.97" && git push --tags https://x-access-token:${{ env.GITHUB_TOKEN }}@github.com/upstars-global/cardona-core-service HEAD:master
