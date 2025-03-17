@@ -19,10 +19,18 @@ const localModelValue = computed({
 </script>
 
 <template>
-  <VCheckbox
-    v-model="localModelValue"
-    :disabled="disabled"
-    :label="field.label"
-    class="base-checkbox"
-  />
+  <VLabel class="text-color-base cursor-pointer overflow-visible select-none">
+    <VCheckbox
+      v-model="localModelValue"
+      :disabled="disabled"
+      class="base-checkbox"
+    />
+    <span>{{ field.label }}</span>
+  </VLabel>
 </template>
+
+<style scoped lang="scss">
+.select-none {
+  user-select: none;
+}
+</style>
