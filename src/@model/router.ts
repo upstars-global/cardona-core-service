@@ -1,4 +1,4 @@
-interface IRouterConfig {
+export interface IRouterConfig {
   name: string
   sectionName?: string
   withoutSectionNameInUrl?: boolean
