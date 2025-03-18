@@ -390,7 +390,7 @@ defineExpose({
         <ConfirmModal
           v-if="!config?.withoutConfirmModal"
           :modal-id="ModalsId.ConfirmModal"
-          @on-click-modal-ok="onSave"
+          @on-click-modal-ok="onSave(isStaySubmit)"
         />
         <RemoveModal
           v-if="!config?.withoutDeleteModal"
