@@ -124,7 +124,7 @@ const isRequired = computed(() => !!props.field.rules?.required)
 <template>
   <Field
     v-model="urlFile"
-    :name="field.name"
+    :name="field.id"
     :label="field.label.toLowerCase()"
     :rules="field.rules"
     :validate-on-blur="false"
@@ -133,7 +133,7 @@ const isRequired = computed(() => !!props.field.rules?.required)
     :validate-on-model-update="true"
   >
     <template #default="{ errorMessage }">
-      <div :id="field.id">
+      <div :id="`${field.id}-field`">
         <VLabel
           class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between"
           :class="{ 'field-generator-label--required': isRequired }"
