@@ -1,4 +1,4 @@
-import type { RouterConfig } from '../@model/router'
+import type { IRouterConfig } from '../@model/router'
 import { convertCamelCase } from '../helpers/index'
 import { permissionPrefix } from '@productConfig'
 
@@ -12,10 +12,10 @@ export const useRedirectToNotFoundPage = router => async (errorType: string): Pr
   return false
 }
 
-export default function sectionRouterGenerator(sectionConfigs: Array<RouterConfig>) {
+export default function sectionRouterGenerator(sectionConfigs: Array<IRouterConfig>) {
   const arrRouters: Array<any> = []
 
-  sectionConfigs.forEach((sectionConfig: RouterConfig) => {
+  sectionConfigs.forEach((sectionConfig: IRouterConfig) => {
     let importSTR = sectionConfig.isConvertName
       ? convertCamelCase(sectionConfig.name, '/')
       : sectionConfig.name
