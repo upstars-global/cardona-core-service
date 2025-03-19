@@ -19,10 +19,12 @@ const localModelValue = computed({
 </script>
 
 <template>
-  <VCheckbox
-    v-model="localModelValue"
-    :disabled="disabled"
-    :label="field.label"
-    class="base-checkbox"
-  />
+  <div>
+    <VCheckbox
+      v-model="localModelValue"
+      :disabled="disabled"
+      :label="field.label"
+      class="base-checkbox"
+    />
+  </div>
 </template>
