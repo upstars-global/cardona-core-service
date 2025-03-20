@@ -55,6 +55,7 @@ const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitC
 
 const formRef = ref(null)
 const ListPageName: string = pageName ? `${pageName}List` : `${entityName}List`
+const CreatePageName: string = pageName ? `${pageName}Create` : `${entityName}Create`
 const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Update`
 const entityUrl = generateEntityUrl(entityName)
 
@@ -188,8 +189,14 @@ const onSubmit = async (isStay: boolean) => {
 }
 
 const redirectToListOrPrevPage = () => {
-  if (props.config.backToTheHistoryLast && router.options.history.state.back)
-    return router.go(-1)
+  const backRoute = router.options.history.state.back
+
+  if (props.config.backToTheHistoryLast && backRoute) {
+    const createPagePath = generateEntityUrl(CreatePageName)
+    const step = isUpdatePage && typeof backRoute === 'string' && backRoute.includes(createPagePath) ? -2 : -1
+
+    return router.go(step)
+  }
 
   return router.push({ name: ListPageName })
 }
@@ -212,7 +219,7 @@ const onSave = async (isStay?: boolean) => {
     if (isCreatePage) {
       isStaySubmit.value && data
         ? await router.push({ name: UpdatePageName, params: { id: String(data?.id) } })
-        : await router.push({ name: ListPageName })
+        : redirectToListOrPrevPage()
     }
 
     if (isUpdatePage && !isStay)
