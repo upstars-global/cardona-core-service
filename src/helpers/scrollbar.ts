@@ -5,17 +5,13 @@ export const scrollToBottom = (selector: string): void => {
     scrollEl.scrollTop = scrollEl.scrollHeight
 }
 
-export const scrollToElement = (selector: string) => {
+export const scrollToElement = (selector: string, offsetY = 0) => {
   const element = document.querySelector(selector)
   if (element) {
-    const elementRect = element.getBoundingClientRect()
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight
-    const scrollY = window.scrollY || window.pageYOffset
-
-    const offsetY = elementRect.top + elementRect.height / 2 - windowHeight / 2
+    const elementTop = element.getBoundingClientRect().top + window.scrollY
 
     window.scrollTo({
-      top: scrollY + offsetY,
+      top: elementTop - offsetY,
       behavior: 'smooth',
     })
   }
