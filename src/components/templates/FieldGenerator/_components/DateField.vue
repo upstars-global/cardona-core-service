@@ -129,6 +129,7 @@ const configFrom = computed(() => {
     mode: 'single',
     defaultHour: 0,
     defaultMinute: 0,
+    allowInput: true,
     ...props.field.config,
   }
 })
@@ -142,6 +143,7 @@ const configTo = computed(() => {
     defaultHour: 23,
     defaultMinute: 59,
     maxDate: props.field?.maxDateTo || '',
+    allowInput: true,
   }
 })
 
@@ -165,6 +167,7 @@ const onOpenByAppendInner = dateRef => {
       ...flatPickrConfig,
       minDate: field.isStartDateNow && getStartOfDayDate(),
       mode: field.isRangeMode ? 'range' : 'single',
+      allowInput: true,
       ...field.config,
     }"
     data-test-id="single-picker"
