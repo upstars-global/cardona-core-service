@@ -220,7 +220,7 @@ const onSave = async (isStay?: boolean) => {
     if (onSubmitCallback)
       await onSubmitCallback(String(transformedForm.value?.id))
 
-    if (props.config?.initializeWithUpdate)
+    if (props.config?.initializeWithUpdate && isStay)
       await onFetchFormData()
   }
   catch (e) {
