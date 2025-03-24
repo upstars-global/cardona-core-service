@@ -669,7 +669,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           </span>
 
           <VueSelect
-            :model-value="perPage"
+            v-model="perPage"
             :options="perPageOptions"
             class="per-page-selector d-inline-block"
             :dir="store.getters['appConfigCore/dirOption']"
