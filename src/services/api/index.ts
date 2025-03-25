@@ -75,7 +75,7 @@ class ApiService {
       if (cachedResponse) {
         const cachedData = await cachedResponse.json()
 
-        if (this.checkCacheRelevance(cachedData.createdAt))
+        if (this.checkCacheRelevance(cachedData.cachedAt))
           return cachedData
 
         await cacheStore.delete(cacheRequest)
@@ -224,7 +224,7 @@ class ApiService {
 
   private static async setCache(cacheRequest: Request, data: Record<string, unknown>, headers: RequestHeaders) {
     const cacheStore = await caches.open(CACHE_NAME)
-    const cacheData = new Response(JSON.stringify({ ...data, createdAt: Date.now() }), { headers })
+    const cacheData = new Response(JSON.stringify({ ...data, cachedAt: Date.now() }), { headers })
 
     await cacheStore.put(cacheRequest, cacheData)
   }
