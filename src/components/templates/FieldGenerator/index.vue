@@ -7,6 +7,7 @@ import { CheckBaseField, RatesBaseField, SwitchBaseField } from '../../../@model
 import { IconsList } from '../../../@model/enums/icons'
 import { MAX_WIDTH_TOOLTIP } from '../../../utils/constants'
 import { PermissionLevel } from '../../../@model/permission'
+import { FieldGeneratorSlots } from '../../../@model/templates/baseField/base'
 
 const props = withDefaults(defineProps<{
   modelValue: BaseField
@@ -160,7 +161,7 @@ const validationLabel = computed(() => {
           class="field-generator__error text-error text-caption mt-1"
         >
           <slot
-            name="errorMessage"
+            :name="FieldGeneratorSlots.ErrorMessage"
             :message="errorMessage"
           >
             {{ errorMessage }}
@@ -176,7 +177,7 @@ const validationLabel = computed(() => {
           }"
         >
           <slot
-            name="description"
+            :name="FieldGeneratorSlots.Description"
             :description="modelValue.description"
           >
             {{ modelValue.description }}
