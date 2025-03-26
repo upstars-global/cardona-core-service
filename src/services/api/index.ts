@@ -22,8 +22,7 @@ const INVALID_TOKEN_ERROR = 'TypeError: Failed to execute \'setRequestHeader\' o
 const CACHE_NAME = 'app-cache'
 const CACHE_PHRASE = 'Dictionaries'
 
-// const CACHE_EXPIRY_TIME = 86400000; // TODO: 1 day in milliseconds, uncomment after testing
-const CACHE_EXPIRY_TIME = 60000 // TODO: 1 minute in milliseconds for testing, remove after test
+const CACHE_EXPIRY_TIME = 86400000 // 1 day in milliseconds
 
 const { toastSuccess, toastError, toastErrorMessageString } = useToastService()
 
