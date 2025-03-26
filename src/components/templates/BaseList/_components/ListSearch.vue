@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { debounce } from 'lodash'
 import { IconsList } from '../../../../@model/enums/icons'
 import type { IBaseListConfig } from '../../../../@model/templates/baseList'
+import { BaseListSlots } from '../../../../@model/templates/baseList'
 import AppTextField from '../../../../@core/components/app-form-elements/AppTextField.vue'
 import { VColors, VVariants } from '../../../../@model/vuetify'
 import ExportFormatSelector from '../../../../components/templates/BaseList/_components/ExportFormatSelector.vue'
@@ -50,7 +51,7 @@ const searchQuery = computed({
   <VRow no-gutters>
     <VCol>
       <div class="d-flex gap-4 align-center justify-end">
-        <slot name="left-search-btn" />
+        <slot :name="BaseListSlots.LeftSearchBtn" />
 
         <AppTextField
           v-if="config.withSearch"
@@ -98,7 +99,7 @@ const searchQuery = computed({
         />
 
         <slot
-          name="right-search-btn"
+          :name="BaseListSlots.RightSearchBtn"
           :can-create="rightSearchBtn.canCreate"
           :create-page-name="rightSearchBtn.createPage"
         >

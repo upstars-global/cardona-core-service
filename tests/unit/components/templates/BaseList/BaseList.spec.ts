@@ -4,7 +4,7 @@ import { flushPromises } from '@vue/test-utils'
 import { h } from 'vue'
 import BaseList from '../../../../../src/components/templates/BaseList/index.vue'
 import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../utils'
-import { BaseListActionsSlots, ExportFormat } from '../../../../../src/@model/templates/baseList'
+import { BaseListSlots, ExportFormat } from '../../../../../src/@model/templates/baseList'
 import { mockModal } from '../../../mocks/modal-provide-config'
 import { testOn } from '../../../templates/shared-tests/test-case-generator'
 import { FilterID } from '../../../../../src/@model/filter'
@@ -421,8 +421,8 @@ describe('BaseList', () => {
   it('Should update entity status with additional slots when withDeactivation is enabled', async () => {
     // Define additional action slots
     const slots = {
-      [BaseListActionsSlots.AppendActionItem]: `<div data-test-id="${BaseListActionsSlots.AppendActionItem}">${BaseListActionsSlots.AppendActionItem}</div>`,
-      [BaseListActionsSlots.PrependActionItem]: `<div data-test-id="${BaseListActionsSlots.PrependActionItem}">${BaseListActionsSlots.PrependActionItem}</div>`,
+      [BaseListSlots.AppendActionItem]: `<div data-test-id="${BaseListSlots.AppendActionItem}">${BaseListSlots.AppendActionItem}</div>`,
+      [BaseListSlots.PrependActionItem]: `<div data-test-id="${BaseListSlots.PrependActionItem}">${BaseListSlots.PrependActionItem}</div>`,
     }
 
     // Enable status toggling feature in props
@@ -448,8 +448,8 @@ describe('BaseList', () => {
     await clickTrigger({ wrapper, testId: 'activator' })
 
     // Verify that the additional action slots are rendered correctly
-    testOn.equalTextValue({ wrapper, testId: BaseListActionsSlots.AppendActionItem }, BaseListActionsSlots.AppendActionItem)
-    testOn.equalTextValue({ wrapper, testId: BaseListActionsSlots.PrependActionItem }, BaseListActionsSlots.PrependActionItem)
+    testOn.equalTextValue({ wrapper, testId: BaseListSlots.AppendActionItem }, BaseListSlots.AppendActionItem)
+    testOn.equalTextValue({ wrapper, testId: BaseListSlots.PrependActionItem }, BaseListSlots.PrependActionItem)
   })
 
   it('Should display the empty slot when there is no data', async () => {
