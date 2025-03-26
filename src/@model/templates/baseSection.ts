@@ -20,4 +20,7 @@ export interface UseEntityType<FormModel> {
   ) => Record<string, unknown>
   readonly validationErrorCb?: IValidationErrorCb
 }
-export default {}
+
+export enum BaseSectionSlots {
+  Actions = 'actions',
+}

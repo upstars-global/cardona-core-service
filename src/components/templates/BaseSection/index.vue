@@ -6,7 +6,7 @@ import { useStore } from 'vuex'
 import { IconsList } from '../../../@model/enums/icons'
 import { checkExistsPage, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
 import { basePermissions } from '../../../helpers/base-permissions'
-import { PageType } from '../../../@model/templates/baseSection'
+import { BaseSectionSlots, PageType } from '../../../@model/templates/baseSection'
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
 import { VColors, VVariants } from '../../../@model/vuetify'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
@@ -324,7 +324,7 @@ defineExpose({
         </div>
         <slot
           v-if="pageType"
-          name="actions"
+          :name="BaseSectionSlots.Actions"
           :form="form"
           :loading="isLoadingPage"
         >
