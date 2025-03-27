@@ -173,11 +173,7 @@ describe('ItemActions.vue', () => {
     await openActions(wrapper)
 
     /// Check slots
-    Object.values([
-      BaseListSlots.PrependActionItem,
-      BaseListSlots.AppendActionItem,
-      BaseListSlots.DetailsActionItem,
-    ]).forEach((slotKey: BaseListSlots) => {
+    Object.keys(slots).forEach(slotKey => {
       testOn.existElement({ wrapper, testId: slotKey })
       testOn.existTextValue({ wrapper, testId: slotKey }, props.item)
     })
