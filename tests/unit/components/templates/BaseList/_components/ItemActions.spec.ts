@@ -97,9 +97,9 @@ describe('ItemActions.vue', () => {
 
     await openActions(wrapper)
 
-    testOn.existElement({ wrapper, testId: 'details' })
+    testOn.existElement({ wrapper, testId: BaseListSlots.DetailsActionItem })
 
-    await clickTrigger({ wrapper, testId: 'details' })
+    await clickTrigger({ wrapper, testId: BaseListSlots.DetailsActionItem })
 
     expect(pushMock).toHaveBeenCalledWith({ name: props.detailsPageName, params: { id: props.item.id } })
   })
@@ -112,7 +112,7 @@ describe('ItemActions.vue', () => {
 
     await openActions(wrapper)
 
-    testOn.notExistElement({ wrapper, testId: 'details' })
+    testOn.notExistElement({ wrapper, testId: BaseListSlots.DetailsActionItem })
   })
 
   it(getTestTitle('Update'), async () => {
