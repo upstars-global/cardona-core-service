@@ -5,7 +5,7 @@ import { useStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
-import { BaseListActionsSlots } from '../../../@model/templates/baseList'
+import { BaseListSlots } from '../../../@model/templates/baseList'
 import CTable from '../../CTable/index.vue'
 import type { ExportFormat, IBaseListConfig } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
@@ -563,7 +563,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       @on-click-modal-ok="onClickModalOk"
     />
     <slot
-      name="table-header"
+      :name="BaseListSlots.TableHeader"
       :selected-items="selectedItems"
       :total="total"
       :search="searchQuery"
@@ -585,7 +585,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     >
       <template #sidebar-actions="{ form }">
         <slot
-          name="sidebar-actions"
+          :name="BaseListSlots.SidebarActions"
           :form="form"
           :item="selectedItem"
         />
@@ -593,7 +593,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
       <template #sidebar-action-items="{ form }">
         <slot
-          name="sidebar-action-items"
+          :name="BaseListSlots.SidebarActionItems"
           :form="form"
           :item="selectedItem"
         />
@@ -630,14 +630,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     >
       <template #right-search-btn>
         <slot
-          name="right-search-btn"
+          :name="BaseListSlots.RightSearchBtn"
           :can-create="canCreate"
           :can-update="canUpdate"
           :create-page-name="CreatePageName"
         />
       </template>
       <template #left-search-btn>
-        <slot name="left-search-btn" />
+        <slot :name="BaseListSlots.LeftSearchBtn" />
       </template>
     </ListSearch>
 
@@ -651,7 +651,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       @change-selected-filters="onChangeSelectedFilters"
     />
 
-    <slot name="custom-filter" />
+    <slot :name="BaseListSlots.CustomFilter" />
 
     <VCard class="table-card-settings">
       <div
@@ -688,7 +688,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
         <!-- Table field settings -->
         <div class="d-flex align-center justify-end">
-          <slot name="table-field-setting" />
+          <slot :name="BaseListSlots.TableFieldSetting" />
 
           <TableFields
             v-model="selectedFields"
@@ -706,7 +706,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         @on-remove="onClickDeleteMultiple"
       >
         <slot
-          name="multiple-actions"
+          :name="BaseListSlots.MultipleActions"
           :selected-items="selectedItems"
           :can-update="canUpdate"
         />
@@ -922,30 +922,30 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             @on-toggle-status="onClickToggleStatus"
           >
             <template
-              v-if="checkSlotExistence(BaseListActionsSlots.PrependActionItem)"
-              #[BaseListActionsSlots.PrependActionItem]
+              v-if="checkSlotExistence(BaseListSlots.PrependActionItem)"
+              #[BaseListSlots.PrependActionItem]
             >
               <slot
-                :name="BaseListActionsSlots.PrependActionItem"
+                :name="BaseListSlots.PrependActionItem"
                 :item="item"
                 :can-update="canUpdate"
               />
             </template>
 
-            <template #[BaseListActionsSlots.Details]>
+            <template #[BaseListSlots.DetailsActionItem]>
               <slot
-                :name="BaseListActionsSlots.Details"
+                :name="BaseListSlots.DetailsActionItem"
                 :item="item"
                 :page-name="DetailsPageName"
               />
             </template>
 
             <template
-              v-if="checkSlotExistence(BaseListActionsSlots.AppendActionItem)"
-              #[BaseListActionsSlots.AppendActionItem]
+              v-if="checkSlotExistence(BaseListSlots.AppendActionItem)"
+              #[BaseListSlots.AppendActionItem]
             >
               <slot
-                :name="BaseListActionsSlots.AppendActionItem"
+                :name="BaseListSlots.AppendActionItem"
                 :item="item"
                 :can-update="canUpdate"
                 :can-create="canCreate"
@@ -956,7 +956,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
         <template #empty>
           <div class="d-flex flex-column justify-center align-center p-2 text-color-mute empty-state-wrapper">
-            <slot name="empty">
+            <slot :name="BaseListSlots.Empty">
               <span>
                 {{ emptyListText }}
               </span>

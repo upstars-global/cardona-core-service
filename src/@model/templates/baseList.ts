@@ -447,8 +447,17 @@ export interface BaseListItem {
   rowVariant?: BColors | BLightColors
 }
 
-export enum BaseListActionsSlots {
+export enum BaseListSlots {
+  TableHeader = 'table-header',
+  SidebarActions = 'sidebar-actions',
+  SidebarActionItems = 'sidebar-action-items',
+  RightSearchBtn = 'right-search-btn',
+  LeftSearchBtn = 'left-search-btn',
+  CustomFilter = 'custom-filter',
+  MultipleActions = 'multiple-actions',
+  TableFieldSetting = 'table-field-setting',
+  Empty = 'empty',
   PrependActionItem = 'prepend-action-item',
   AppendActionItem = 'append-action-item',
-  Details = 'details',
+  DetailsActionItem = 'details-action-item',
 }
