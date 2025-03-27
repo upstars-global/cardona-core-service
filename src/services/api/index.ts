@@ -19,6 +19,10 @@ import type {
 import { i18n } from '@/plugins/i18n'
 
 const INVALID_TOKEN_ERROR = 'TypeError: Failed to execute \'setRequestHeader\' on \'XMLHttpRequest\': String contains non ISO-8859-1 code point.'
+const CACHE_NAME = 'app-cache'
+const CACHE_PHRASE = 'Dictionaries'
+
+const CACHE_EXPIRY_TIME = 86400000 // 1 day in milliseconds
 
 const { toastSuccess, toastError, toastErrorMessageString } = useToastService()
 
@@ -28,6 +32,8 @@ const getLoaderSlug = (url: string, loaderSlug: string): string =>
   loaderSlug ? `${url}${loaderSlug}` : url
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
+interface RequestHeaders { 'Content-Type': string }
 
 class ApiService {
   static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}, retryCount = 0, retryDelay = 1000) {
@@ -49,6 +55,7 @@ class ApiService {
       rejectError = true,
       loaderSlug = '',
       responseType = 'json',
+      cache = payload.type.includes(CACHE_PHRASE),
     } = config
 
     const convertedType: Array<string> = payload.type
@@ -58,6 +65,21 @@ class ApiService {
 
     const entity: string = entityName || convertedType[2]
     const url: string = convertedType.join('/')
+    const cacheRequest = new Request(url)
+
+    if (cache) {
+      const cacheStore = await caches.open(CACHE_NAME)
+      const cachedResponse = await cacheStore.match(cacheRequest)
+
+      if (cachedResponse) {
+        const cachedData = await cachedResponse.json()
+
+        if (this.checkCacheRelevance(cachedData.cachedAt))
+          return cachedData
+
+        await cacheStore.delete(cacheRequest)
+      }
+    }
 
     try {
       if (withLoader)
@@ -65,7 +87,7 @@ class ApiService {
 
       const axiosInstance: AxiosInstance = newAxiosInstance ? axios.create() : axios
 
-      const headers: { 'Content-Type': string } = {
+      const headers: RequestHeaders = {
         'Content-Type': contentType,
       }
 
@@ -90,6 +112,9 @@ class ApiService {
 
       if (withSuccessToast)
         toastSuccess(url, { defaultDescription: successToastDescription })
+
+      if (cache)
+        await this.setCache(cacheRequest, data, headers)
 
       return data
     }
@@ -194,6 +219,17 @@ class ApiService {
     else if (error.isAxiosError) {
       toastError('axiosError')
     }
+  }
+
+  private static async setCache(cacheRequest: Request, data: Record<string, unknown>, headers: RequestHeaders) {
+    const cacheStore = await caches.open(CACHE_NAME)
+    const cacheData = new Response(JSON.stringify({ ...data, cachedAt: Date.now() }), { headers })
+
+    await cacheStore.put(cacheRequest, cacheData)
+  }
+
+  private static checkCacheRelevance(timestamp = 0): boolean {
+    return Date.now() - timestamp < CACHE_EXPIRY_TIME
   }
 }
 
