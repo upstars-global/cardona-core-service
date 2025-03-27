@@ -54,6 +54,7 @@ export interface IApiServiceConfig {
   readonly rejectError?: boolean
   readonly loaderSlug?: string
   readonly responseType?: 'json' | 'blob'
+  readonly cache?: boolean
 }
 
 // Response error
