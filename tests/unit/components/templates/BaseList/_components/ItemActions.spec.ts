@@ -4,7 +4,7 @@ import ItemActions from '../../../../../../src/components/templates/BaseList/_co
 import { clickTrigger, setMountComponent } from '../../../../utils'
 import { testOn } from '../../../../templates/shared-tests/test-case-generator'
 import { i18n } from '../../../../../../src/plugins/i18n'
-import { BaseListActionsSlots } from '../../../../../../src/@model/templates/baseList'
+import { BaseListSlots } from '../../../../../../src/@model/templates/baseList'
 import { checkExistsPage } from '../../../../../../src/helpers'
 
 const getMountItemActions = setMountComponent(ItemActions)
@@ -97,9 +97,9 @@ describe('ItemActions.vue', () => {
 
     await openActions(wrapper)
 
-    testOn.existElement({ wrapper, testId: 'details' })
+    testOn.existElement({ wrapper, testId: BaseListSlots.DetailsActionItem })
 
-    await clickTrigger({ wrapper, testId: 'details' })
+    await clickTrigger({ wrapper, testId: BaseListSlots.DetailsActionItem })
 
     expect(pushMock).toHaveBeenCalledWith({ name: props.detailsPageName, params: { id: props.item.id } })
   })
@@ -112,7 +112,7 @@ describe('ItemActions.vue', () => {
 
     await openActions(wrapper)
 
-    testOn.notExistElement({ wrapper, testId: 'details' })
+    testOn.notExistElement({ wrapper, testId: BaseListSlots.DetailsActionItem })
   })
 
   it(getTestTitle('Update'), async () => {
@@ -163,9 +163,9 @@ describe('ItemActions.vue', () => {
     const global = {}
 
     const slots = {
-      [BaseListActionsSlots.PrependActionItem]: `<div data-test-id="${BaseListActionsSlots.PrependActionItem}">${props.item}</div>`,
-      [BaseListActionsSlots.AppendActionItem]: `<div data-test-id="${BaseListActionsSlots.AppendActionItem}">${props.item}</div>`,
-      [BaseListActionsSlots.Details]: `<div data-test-id="${BaseListActionsSlots.Details}">${props.item}</div>`,
+      [BaseListSlots.PrependActionItem]: `<div data-test-id="${BaseListSlots.PrependActionItem}">${props.item}</div>`,
+      [BaseListSlots.AppendActionItem]: `<div data-test-id="${BaseListSlots.AppendActionItem}">${props.item}</div>`,
+      [BaseListSlots.DetailsActionItem]: `<div data-test-id="${BaseListSlots.DetailsActionItem}">${props.item}</div>`,
     }
 
     const wrapper = getMountItemActions(props, global, slots)
@@ -173,7 +173,7 @@ describe('ItemActions.vue', () => {
     await openActions(wrapper)
 
     /// Check slots
-    Object.values(BaseListActionsSlots).forEach((slotKey: BaseListActionsSlots) => {
+    Object.keys(slots).forEach(slotKey => {
       testOn.existElement({ wrapper, testId: slotKey })
       testOn.existTextValue({ wrapper, testId: slotKey }, props.item)
     })

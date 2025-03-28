@@ -2,7 +2,7 @@
 import { computed, useSlots } from 'vue'
 import { useRouter } from 'vue-router'
 import type { IBaseListConfig } from '../../../../../@model/templates/baseList'
-import { BaseListActionsSlots } from '../../../../../@model/templates/baseList'
+import { BaseListSlots } from '../../../../../@model/templates/baseList'
 import { IconsList } from '../../../../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../../../../@model/vuetify'
 import { IS_TEST_ENV } from '../../../../../utils/constants'
@@ -32,11 +32,11 @@ const emits = defineEmits<Emits>()
 const router = useRouter()
 const slots = useSlots()
 
-const existSlot = (slotKey: BaseListActionsSlots) => !!slots[slotKey]
+const existSlot = (slotKey: BaseListSlots) => !!slots[slotKey]
 
 const isExistsActionItemsSlot = computed(
   () => {
-    return [BaseListActionsSlots.PrependActionItem, BaseListActionsSlots.AppendActionItem].some(slotName => !!slots[slotName] && !!slots[slotName]()[0].children.length)
+    return [BaseListSlots.PrependActionItem, BaseListSlots.AppendActionItem].some(slotName => !!slots[slotName] && !!slots[slotName]()[0].children.length)
   },
 )
 
@@ -84,8 +84,8 @@ const onClickDetails = () => router.push({ name: props.detailsPageName, params: 
       data-test-id="actions-list"
     >
       <slot
-        v-if="existSlot(BaseListActionsSlots.PrependActionItem)"
-        :name="BaseListActionsSlots.PrependActionItem"
+        v-if="existSlot(BaseListSlots.PrependActionItem)"
+        :name="BaseListSlots.PrependActionItem"
         :item="item"
       />
 
@@ -101,13 +101,13 @@ const onClickDetails = () => router.push({ name: props.detailsPageName, params: 
       </VListItem>
 
       <slot
-        :name="BaseListActionsSlots.Details"
+        :name="BaseListSlots.DetailsActionItem"
         :item="item"
       >
         <VListItem
           v-if="canShowDetails"
           :prepend-icon="IconsList.EyeIcon"
-          data-test-id="details"
+          :data-test-id="BaseListSlots.DetailsActionItem"
           @click="onClickDetails"
         >
           <VListItemTitle>
@@ -155,8 +155,8 @@ const onClickDetails = () => router.push({ name: props.detailsPageName, params: 
       </VListItem>
 
       <slot
-        v-if="existSlot(BaseListActionsSlots.AppendActionItem)"
-        :name="BaseListActionsSlots.AppendActionItem"
+        v-if="existSlot(BaseListSlots.AppendActionItem)"
+        :name="BaseListSlots.AppendActionItem"
         :item="item"
       />
     </VList>

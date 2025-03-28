@@ -6,7 +6,7 @@ import { useStore } from 'vuex'
 import { IconsList } from '../../../@model/enums/icons'
 import { checkExistsPage, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
 import { basePermissions } from '../../../helpers/base-permissions'
-import { PageType } from '../../../@model/templates/baseSection'
+import { BaseSectionSlots, PageType } from '../../../@model/templates/baseSection'
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
 import { VColors, VVariants } from '../../../@model/vuetify'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
@@ -55,6 +55,7 @@ const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitC
 
 const formRef = ref(null)
 const ListPageName: string = pageName ? `${pageName}List` : `${entityName}List`
+const CreatePageName: string = pageName ? `${pageName}Create` : `${entityName}Create`
 const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Update`
 const entityUrl = generateEntityUrl(entityName)
 
@@ -187,8 +188,14 @@ const onSubmit = async (isStay: boolean) => {
 }
 
 const redirectToListOrPrevPage = () => {
-  if (props.config.backToTheHistoryLast && router.options.history.state.back)
-    return router.go(-1)
+  const backRoute = router.options.history.state.back
+
+  if (props.config.backToTheHistoryLast && backRoute) {
+    const createPagePath = generateEntityUrl(CreatePageName)
+    const step = isUpdatePage && typeof backRoute === 'string' && backRoute.includes(createPagePath) ? -2 : -1
+
+    return router.go(step)
+  }
 
   return router.push({ name: ListPageName })
 }
@@ -211,7 +218,7 @@ const onSave = async (isStay?: boolean) => {
     if (isCreatePage) {
       isStaySubmit.value && data
         ? await router.push({ name: UpdatePageName, params: { id: String(data?.id) } })
-        : await router.push({ name: ListPageName })
+        : redirectToListOrPrevPage()
     }
 
     if (isUpdatePage && !isStay)
@@ -313,7 +320,7 @@ defineExpose({
         </div>
         <slot
           v-if="pageType"
-          name="actions"
+          :name="BaseSectionSlots.Actions"
           :form="form"
           :loading="isLoadingPage"
         >
