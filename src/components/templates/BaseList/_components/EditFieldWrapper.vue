@@ -37,12 +37,12 @@ watch(
   },
 )
 
+const editableValue = ref<unknown>(cloneDeep(props.value))
+const acceptedValue = ref<unknown>(cloneDeep(props.value))
+
 watch(() => props.value, value => {
   !openEdit.value && (editableValue.value = cloneDeep(value))
 })
-
-const editableValue = ref<unknown>(cloneDeep(props.value))
-const acceptedValue = ref<unknown>(cloneDeep(props.value))
 
 const setEditMode = (value: boolean) => {
   openEdit.value = value
