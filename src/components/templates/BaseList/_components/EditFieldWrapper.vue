@@ -10,6 +10,7 @@ interface Props {
   canEdit?: boolean
   disableAcceptUpdate?: boolean
   editIconOnHover?: boolean
+  hovered?: boolean
 }
 interface Emits {
   (event: 'change-mode', payload: boolean): void
@@ -32,8 +33,13 @@ watch(
     if (props.disableAcceptUpdate)
       return
     openEdit.value = value
+    emits('reject-change', editableValue.value)
   },
 )
+
+watch(() => props.value, value => {
+  !openEdit.value && (editableValue.value = cloneDeep(value))
+})
 
 const editableValue = ref<unknown>(cloneDeep(props.value))
 const acceptedValue = ref<unknown>(cloneDeep(props.value))
@@ -44,9 +50,9 @@ const setEditMode = (value: boolean) => {
 }
 
 const setUpdate = (): void => {
-  editableValue.value = cloneDeep(acceptedValue.value)
   if (!props.disableAcceptUpdate)
     setEditMode(false)
+  editableValue.value = cloneDeep(acceptedValue.value)
   emits('accept-change', editableValue.value)
 }
 
@@ -71,18 +77,15 @@ const updateValue = (value: unknown): void => {
     <div
       v-if="!openEdit"
       class="d-flex justify-content-center align-center"
-      :class="{ 'flex-row-reverse': rightPositionIconEdit }"
       data-test-id="readable-value"
     >
       <slot :value="value">
         {{ value }}
       </slot>
       <div
-        v-if="canEdit"
-        class="icon-edit-wrapper pl-1"
-        :class="{
-          'show-on-hover': editIconOnHover,
-        }"
+        v-if="!editIconOnHover && canEdit || (canEdit && editIconOnHover && hovered)"
+        class="pl-1"
+        :class="{ 'icon-edit-wrapper': editIconOnHover }"
       >
         <VIcon
           data-test-id="edit-icon"
@@ -132,15 +135,10 @@ const updateValue = (value: unknown): void => {
 <style lang="scss" scoped>
 .editable-wrapper {
   position: relative;
-  .icon-edit-wrapper.show-on-hover {
-    display: none;
-  }
-  &:hover{
-    .icon-edit-wrapper.show-on-hover {
-      position: absolute;
-      display: block;
-      right: -1.5rem;
-    }
+  .icon-edit-wrapper {
+    position: absolute;
+    display: block;
+    right: -1.5rem;
   }
 }
 </style>
