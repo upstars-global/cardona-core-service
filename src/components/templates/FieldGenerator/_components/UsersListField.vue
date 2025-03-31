@@ -24,7 +24,6 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: () => [],
-  withErrorIcon: true,
 })
 
 const emits = defineEmits<Emits>()
