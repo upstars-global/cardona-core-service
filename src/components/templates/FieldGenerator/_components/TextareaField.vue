@@ -10,10 +10,12 @@ interface TextareaFieldProps {
   field: TextareaBaseField
   disabled?: boolean
   errors?: boolean
+  withErrorIcon?: boolean
 }
 
 const props = withDefaults(defineProps<TextareaFieldProps>(), {
   modelValue: '',
+  withErrorIcon: true,
 })
 
 const emit = defineEmits<{
@@ -38,7 +40,7 @@ const autoHeight = computed(() => props.field?.autoHeight
   : {})
 
 const appendInnerIcon = computed(() => {
-  if (props.errors)
+  if (props.withErrorIcon && props.errors)
     return IconsList.InfoIcon
 
   return null
@@ -99,8 +101,8 @@ const handleKeydown = (event: KeyboardEvent) => {
     v-bind="autoHeight"
     class="text-area"
     :class="{ 'app-textarea__counter': field.maxLength }"
-    @keydown="handleKeydown"
     data-test-id="textarea-field"
+    @keydown="handleKeydown"
   />
 </template>
 
