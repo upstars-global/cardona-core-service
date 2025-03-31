@@ -189,11 +189,12 @@ const onSubmit = async (isStay: boolean) => {
 }
 
 const redirectToListOrPrevPage = () => {
-  const backRoute = router.options.history.state.back
+  const cleanPath = (path = '') => path.replaceAll('/', '').toUpperCase() || ''
+  const backRoute = cleanPath(router.options.history.state.back)
 
   if (props.config.backToTheHistoryLast && backRoute) {
-    const createPagePath = generateEntityUrl(CreatePageName)
-    const step = isUpdatePage && typeof backRoute === 'string' && backRoute.includes(createPagePath) ? -2 : -1
+    const createPagePath = cleanPath(generateEntityUrl(CreatePageName))
+    const step = isUpdatePage && backRoute.includes(createPagePath) ? -2 : -1
 
     return router.go(step)
   }
