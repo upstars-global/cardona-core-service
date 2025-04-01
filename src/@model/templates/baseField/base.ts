@@ -79,6 +79,7 @@ export interface IASelectBaseField<T> extends IBaseField {
   readonly preloadOptionsByIds?: boolean
   readonly filterable?: boolean
   readonly infiniteLoading?: boolean
+  readonly localeKey?: string
 }
 
 export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
@@ -92,6 +93,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
   selectedOptions?: Array<T>
   readonly filterable: boolean
   readonly infiniteLoading?: boolean
+  readonly localeKey: string
   pageNumber: number
 
   protected constructor(field: IASelectBaseField<T>) {
@@ -103,6 +105,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
     this.calculatePositionCb = field.withCalculatePosition ? this.calculatePosition : undefined
     this.filterable = field.filterable ?? true
     this.infiniteLoading = field.infiniteLoading
+    this.localeKey = field?.localeKey || ''
     this.pageNumber = 1
   }
 
