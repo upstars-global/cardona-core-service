@@ -43,9 +43,16 @@ const valueModel = computed<OptionsItem>({
       ? props.field.options?.find((option: OptionsItem) => option.id === props.modelValue)
       : props.modelValue
 
-    return props.field.localeKey ? getOptionWithLocalKey(res) : res
+    return props.field.localeKey && res
+      ? {
+        ...res,
+        name: i18n.t(`options.${props.field.localeKey}.${res.name}`),
+        }
+      : res
   },
-  set: (item: object) => emits('update:modelValue', item),
+  set: (item: OptionsItem) => {
+    emits('update:modelValue', item.id)
+  },
 })
 
 const selectClasses = computed(() => {
@@ -68,9 +75,10 @@ const options = computed(() => {
     ? props.field.options.filter((option: OptionsItem) => option.id !== valueModel.value?.id)
     : []
 
-  return props.field.localeKey ? filteredOptions.map(getOptionWithLocalKey) : filteredOptions
-},
-)
+  return props.field.localeKey
+    ? filteredOptions.map(getOptionWithLocalKey)
+    : filteredOptions
+})
 
 watch(
   () => props.field.options,
