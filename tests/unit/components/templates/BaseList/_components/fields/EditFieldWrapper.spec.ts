@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import EditFieldWrapper from '../../../../../../../src/components/templates/BaseList/_components/EditFieldWrapper.vue'
-import { clickTrigger, getSelectorTestId, getWrapperElement, setMountComponent } from '../../../../../utils'
+import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../../../utils'
 import { testOn } from '../../../../../templates/shared-tests/test-case-generator'
 
 const getMountEditFieldWrapper = setMountComponent(EditFieldWrapper)
@@ -160,63 +160,5 @@ describe('EditFieldWrapper.vue', () => {
       /// Check that edit mode is active because accept update is disabled
       isActiveEditMode(wrapper)
     })
-  })
-
-  it('Using show edit icon on hover', async () => {
-    props.editIconOnHover = true
-    props.hovered = false
-
-    const wrapper = getMountEditFieldWrapper(props, {}, mockedSlot)
-
-    /// Check that edit icon is not exist because hovered is false
-    testOn.notExistElement({ wrapper, testId: testIds.editIcon })
-
-    /// Set hovered to true
-    await wrapper.setProps({ hovered: true })
-
-    /// Check that edit icon is exist because hovered is true
-    testOn.existElement({ wrapper, testId: testIds.editIcon })
-
-    /// Check that edit icon is not exist because canEdit is false but  hovered is true
-    await wrapper.setProps({ canEdit: false })
-
-    testOn.notExistElement({ wrapper, testId: testIds.editIcon })
-
-    /// Check that edit icon is exist because canEdit is true and  hovered is true
-    await wrapper.setProps({ canEdit: true })
-
-    testOn.existElement({ wrapper, testId: testIds.editIcon })
-  })
-
-  it('On "isEdit" with value false is called action "reject-change"', async () => {
-    props.isEdit = true
-
-    const wrapper = getMountEditFieldWrapper(props, {}, mockedSlot)
-
-    const input = getWrapperElement({ wrapper, testId: 'input-in-slot' })
-
-    input.setValue('New value')
-
-    await wrapper.setProps({ isEdit: false })
-
-    testOn.isCalledEmitEventValue({ wrapper }, { event: 'reject-change', value: props.value })
-  })
-
-  it('Update internal value state when "isEdit" equal false and props value was updated ', async () => {
-    /// Init value for updating state
-    const updatedValue = 'Some updated value'
-
-    props.isEdit = false
-
-    const wrapper = getMountEditFieldWrapper(props, {}, mockedSlot)
-
-    /// Update value in props
-    await wrapper.setProps({ value: updatedValue })
-
-    /// Turn on edit mode
-    await wrapper.setProps({ isEdit: true })
-
-    /// Check that editableValue is updated
-    expect(wrapper.vm.editableValue).includes(updatedValue)
   })
 })

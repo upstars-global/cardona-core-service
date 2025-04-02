@@ -9,8 +9,6 @@ interface Props {
   isEdit?: boolean
   canEdit?: boolean
   disableAcceptUpdate?: boolean
-  editIconOnHover?: boolean
-  hovered?: boolean
 }
 interface Emits {
   (event: 'change-mode', payload: boolean): void
@@ -21,7 +19,6 @@ interface Emits {
 const props = withDefaults(defineProps<Props>(), {
   canEdit: true,
   disableAcceptUpdate: false,
-  iconEdit: 'show',
 })
 
 const emits = defineEmits<Emits>()
@@ -83,9 +80,8 @@ const updateValue = (value: unknown): void => {
         {{ value }}
       </slot>
       <div
-        v-if="!editIconOnHover && canEdit || (canEdit && editIconOnHover && hovered)"
-        class="pl-1"
-        :class="{ 'icon-edit-wrapper': editIconOnHover }"
+        v-if="canEdit"
+        class="icon-edit-wrapper pl-1"
       >
         <VIcon
           data-test-id="edit-icon"
@@ -131,14 +127,3 @@ const updateValue = (value: unknown): void => {
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.editable-wrapper {
-  position: relative;
-  .icon-edit-wrapper {
-    position: absolute;
-    display: block;
-    right: -1.5rem;
-  }
-}
-</style>
