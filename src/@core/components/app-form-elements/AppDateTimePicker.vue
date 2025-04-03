@@ -136,7 +136,6 @@ const onAppendClick = (event: MouseEvent) => {
 }
 
 defineExpose({ refFlatPicker })
-console.log({ fieldProps })
 </script>
 
 <template>
