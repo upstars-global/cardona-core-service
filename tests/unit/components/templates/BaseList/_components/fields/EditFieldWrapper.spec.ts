@@ -11,6 +11,8 @@ const defaultProps = {
   isEdit: false,
   canEdit: true,
   disableAcceptUpdate: false,
+  hovered: false,
+  editIconOnHover: false,
 }
 
 const testIds = {

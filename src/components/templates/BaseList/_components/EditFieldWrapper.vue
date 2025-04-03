@@ -9,7 +9,6 @@ interface Props {
   isEdit?: boolean
   canEdit?: boolean
   disableAcceptUpdate?: boolean
-  editIconOnHover?: boolean
 }
 interface Emits {
   (event: 'change-mode', payload: boolean): void
@@ -20,7 +19,6 @@ interface Emits {
 const props = withDefaults(defineProps<Props>(), {
   canEdit: true,
   disableAcceptUpdate: false,
-  iconEdit: 'show',
 })
 
 const emits = defineEmits<Emits>()
@@ -32,11 +30,16 @@ watch(
     if (props.disableAcceptUpdate)
       return
     openEdit.value = value
+    emits('reject-change', editableValue.value)
   },
 )
 
 const editableValue = ref<unknown>(cloneDeep(props.value))
 const acceptedValue = ref<unknown>(cloneDeep(props.value))
+
+watch(() => props.value, value => {
+  !openEdit.value && (editableValue.value = cloneDeep(value))
+})
 
 const setEditMode = (value: boolean) => {
   openEdit.value = value
@@ -44,9 +47,9 @@ const setEditMode = (value: boolean) => {
 }
 
 const setUpdate = (): void => {
-  editableValue.value = cloneDeep(acceptedValue.value)
   if (!props.disableAcceptUpdate)
     setEditMode(false)
+  editableValue.value = cloneDeep(acceptedValue.value)
   emits('accept-change', editableValue.value)
 }
 
@@ -71,7 +74,6 @@ const updateValue = (value: unknown): void => {
     <div
       v-if="!openEdit"
       class="d-flex justify-content-center align-center"
-      :class="{ 'flex-row-reverse': rightPositionIconEdit }"
       data-test-id="readable-value"
     >
       <slot :value="value">
@@ -80,9 +82,6 @@ const updateValue = (value: unknown): void => {
       <div
         v-if="canEdit"
         class="icon-edit-wrapper pl-1"
-        :class="{
-          'show-on-hover': editIconOnHover,
-        }"
       >
         <VIcon
           data-test-id="edit-icon"
@@ -128,19 +127,3 @@ const updateValue = (value: unknown): void => {
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.editable-wrapper {
-  position: relative;
-  .icon-edit-wrapper.show-on-hover {
-    display: none;
-  }
-  &:hover{
-    .icon-edit-wrapper.show-on-hover {
-      position: absolute;
-      display: block;
-      right: -1.5rem;
-    }
-  }
-}
-</style>
