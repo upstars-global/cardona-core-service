@@ -1,7 +1,11 @@
 <script lang="ts" setup>
 import CopyField from './CopyField.vue'
 
-defineProps<{ value: string }>()
+withDefaults(
+  defineProps<{ value: string | number }>(), {
+    value: '',
+  },
+)
 </script>
 
 <template>
