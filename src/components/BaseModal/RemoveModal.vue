@@ -11,10 +11,10 @@ interface Props {
   title?: string
   description?: string
   withRemoveComment?: boolean
-  removeBtnColor: VColors
-  removeBtnVariant: VVariants
-  cancelBtnColor: VColors
-  cancelBtnVariant: VVariants
+  removeBtnColor?: VColors
+  removeBtnVariant?: VVariants
+  cancelBtnColor?: VColors
+  cancelBtnVariant?: VVariants
 }
 
 interface OnCLickModalOkPayload {
@@ -59,7 +59,10 @@ const onCloseModal = (hide: Function) => {
         :class="{ 'pb-16': withRemoveComment }"
         class="d-flex flex-column pt-0"
       >
-        <span class="text-body-1" data-test-id="modal-description">{{ description || $t(`modal.remove${entityName}.description`) }}</span>
+        <span
+          class="text-body-1"
+          data-test-id="modal-description"
+        >{{ description || $t(`modal.remove${entityName}.description`) }}</span>
         <AppTextarea
           v-if="withRemoveComment"
           v-model.trim="commentToRemove"
@@ -74,16 +77,16 @@ const onCloseModal = (hide: Function) => {
         <VBtn
           :color="cancelBtnColor"
           :variant="cancelBtnVariant"
-          @click="onCloseModal(action.hide)"
           data-test-id="btn-cancel"
+          @click="onCloseModal(action.hide)"
         >
           {{ $t('action.cancel') }}
         </VBtn>
         <VBtn
           :color="removeBtnColor"
           :variant="removeBtnVariant"
-          @click="onClickModalOk(action.hide)"
           data-test-id="btn-remove"
+          @click="onClickModalOk(action.hide)"
         >
           {{ $t('action.remove') }}
         </VBtn>
