@@ -2,7 +2,6 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import type { TextareaBaseField } from '../../../../@model/templates/baseField'
 import AppTextarea from '../../../../@core/components/app-form-elements/AppTextarea.vue'
-import { IconsList } from '../../../../@model/enums/icons'
 
 interface TextareaFieldProps {
   modelValue?: string
@@ -10,12 +9,10 @@ interface TextareaFieldProps {
   field: TextareaBaseField
   disabled?: boolean
   errors?: boolean
-  withErrorIcon?: boolean
 }
 
 const props = withDefaults(defineProps<TextareaFieldProps>(), {
   modelValue: '',
-  withErrorIcon: true,
 })
 
 const emit = defineEmits<{
@@ -38,13 +35,6 @@ const localModelValue = computed({
 const autoHeight = computed(() => props.field?.autoHeight
   ? AUTO_HEIGHT_PARAMS
   : {})
-
-const appendInnerIcon = computed(() => {
-  if (props.withErrorIcon && props.errors)
-    return IconsList.InfoIcon
-
-  return null
-})
 
 const textareaField = ref(null)
 
@@ -95,7 +85,6 @@ const handleKeydown = (event: KeyboardEvent) => {
     :counter="field.maxLength"
     :maxlength="field.maxLength"
     :disabled="disabled"
-    :append-inner-icon="appendInnerIcon"
     :persistent-counter="field.maxLength"
     :hide-details="!field.maxLength"
     v-bind="autoHeight"

@@ -15,7 +15,6 @@ interface Props {
   field: UsersListBaseField
   errors?: boolean
   disabled?: boolean
-  withErrorIcon?: boolean
 }
 
 interface Emits {
@@ -92,7 +91,6 @@ const pickerOpts = {
       :field="field"
       :errors="errors"
       :disabled="disabled"
-      :with-error-icon="withErrorIcon"
     />
     <div class="d-flex justify-end mt-2">
       <VBtn
