@@ -15,7 +15,7 @@ export interface ISelectBaseField<T> extends IASelectBaseField<T> {
   readonly appendToBody?: boolean
 }
 
-export class SelectBaseField<T extends OptionsItem | string = OptionsItem | string>
+export class SelectBaseField<T extends OptionsItem = OptionsItem>
   extends ASelectBaseField<T>
   implements ISelectBaseField<T> {
   readonly component: Component = markRaw(SelectField)

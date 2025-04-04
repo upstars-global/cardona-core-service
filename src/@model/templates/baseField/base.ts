@@ -3,8 +3,8 @@ import type { TranslateResult } from 'vue-i18n'
 import store from '../../../store'
 import type { IValidationConfig } from '../../../@model/validations'
 import type { OptionsItem } from '../../../@model'
+import { i18n } from '../../../plugins/i18n'
 import type { PermissionType } from '@permissions'
-import { i18n } from '@/plugins/i18n'
 
 export interface IBaseField {
   readonly key: string
@@ -86,7 +86,7 @@ export interface IASelectBaseField<T> extends IBaseField {
 export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsItem | string>
   extends BaseField
   implements IASelectBaseField<T> {
-  public options?: Array<T> | null
+  public options?: Array<T | OptionsItem>
   readonly fetchOptionsActionName?: string
   readonly preloadOptionsByIds?: boolean
   readonly staticFilters: Record<string, string>
@@ -123,10 +123,12 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     return value
   }
 
-  private getOptionItems(list: string[] | OptionsItem[]): OptionsItem[] | null {
-    return list?.map((option: string | T): OptionsItem =>
-      typeof option === 'string' ? { id: option, name: this.getOptionName(option) } : option,
-    ) || null
+  private getOptionItems(list: T[] | undefined): OptionsItem[] | undefined {
+    return list?.map((option: T | OptionsItem): OptionsItem =>
+      typeof option === 'string'
+        ? { id: option, name: this.getOptionName(option) }
+        : { ...option, name: this.getOptionName(option.name) },
+    )
   }
 
   async getOptions(filters: { search?: string; ids?: string[] } = {}) {
