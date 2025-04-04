@@ -509,4 +509,40 @@ describe('BaseSection.vue', () => {
 
     expect(mockRouter.go).toHaveBeenCalledWith(-1)
   })
+
+  it('Check call action read entity after click on "save and stay"', async () => {
+    const dispatchSpy = vi.spyOn(mockStore, 'dispatch')
+
+    await router.replace({ path: '/detail' })
+    await router.isReady()
+
+    // Set router config `router.options.history.state.back = true`
+    Object.defineProperty(router.options.history, 'state', {
+      value: { back: true },
+      writable: true,
+    })
+
+    /// Spy on the store dispatch method
+    vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
+
+    /// Mount the component in create mode
+    const wrapper = mountComponent({
+      pageType: PageType.Update,
+      config: new BaseSectionConfig({
+        backToTheHistoryLast: true,
+        initializeWithUpdate: true,
+      }),
+    })
+
+    await flushPromises()
+
+    await clickTrigger({ wrapper, testId: 'saveAndStay-button' })
+
+    await flushPromises()
+
+    expect(dispatchSpy).toHaveBeenCalledWith(
+      'baseStoreCore/readEntity',
+      expect.objectContaining({ id: '123' }),
+    )
+  })
 })

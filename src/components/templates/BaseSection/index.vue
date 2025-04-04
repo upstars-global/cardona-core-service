@@ -93,36 +93,35 @@ const isExistsEndpointsWithError = computed(() => store.getters.isErrorEndpoint(
 
 const form = ref()
 
-if (props.withReadAction && entityId) {
-  onBeforeMount(async () => {
-    try {
-      const receivedEntity = await store.dispatch(readActionName, {
-        type: entityName,
-        id: entityId,
-        customApiPrefix: props.config?.customApiPrefix,
-      })
+const onFetchFormData = async () => {
+  try {
+    const receivedEntity = await store.dispatch(readActionName, {
+      type: entityName,
+      id: entityId,
+      customApiPrefix: props.config?.customApiPrefix,
+    })
 
-      if (isCreatePage) {
-        receivedEntity.id = null
-        await router.replace({ name: route.name, params: { id: '' } })
-      }
+    if (isCreatePage) {
+      receivedEntity.id = null
+      await router.replace({ name: route.name, params: { id: '' } })
+    }
 
-      await store.dispatch('textEditor/setVariableTextBuffer', receivedEntity.localisationParameters)
-      form.value = new EntityFormClass(receivedEntity)
-    }
-    catch (error) {
-      await redirectToNotFoundPage(error.type)
-    }
-  })
+    await store.dispatch('textEditor/setVariableTextBuffer', receivedEntity.localisationParameters)
+    form.value = new EntityFormClass(receivedEntity)
+  }
+  catch (error) {
+    await redirectToNotFoundPage(error.type)
+  }
 }
 
-else if (props.localEntityData) {
+if (props.withReadAction && entityId)
+  onBeforeMount(onFetchFormData)
+
+else if (props.localEntityData)
   form.value = new EntityFormClass(props.localEntityData)
-}
 
-else {
+else
   form.value = new EntityFormClass()
-}
 
 const validate = async () => {
   const { valid } = await formRef.value.validate()
@@ -189,11 +188,12 @@ const onSubmit = async (isStay: boolean) => {
 }
 
 const redirectToListOrPrevPage = () => {
+  const cleanPath = (path = '') => path?.replaceAll('/', '').toUpperCase() || ''
   const backRoute = router.options.history.state.back
 
   if (props.config.backToTheHistoryLast && backRoute) {
-    const createPagePath = generateEntityUrl(CreatePageName)
-    const step = isUpdatePage && typeof backRoute === 'string' && backRoute.includes(createPagePath) ? -2 : -1
+    const createPagePath = cleanPath(generateEntityUrl(CreatePageName))
+    const step = isUpdatePage && typeof backRoute === 'string' && cleanPath(backRoute).includes(createPagePath) ? -2 : -1
 
     return router.go(step)
   }
@@ -228,11 +228,8 @@ const onSave = async (isStay?: boolean) => {
     if (onSubmitCallback)
       await onSubmitCallback(String(transformedForm.value?.id))
 
-    if (props.config?.initializeWithUpdate) {
-      const newDataForm = data?.data || data
-
-      form.value = new EntityFormClass(newDataForm)
-    }
+    if (props.config?.initializeWithUpdate && isStay && isUpdatePage)
+      await onFetchFormData()
   }
   catch (e) {
     if (e?.validationErrors?.[0])
