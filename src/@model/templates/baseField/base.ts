@@ -115,7 +115,6 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
   }
 
   private getOptionName(value: string): string {
-    console.log(`options.${this.localeKey}.${value}`)
     if (this.localeKey)
       return i18n.t(`options.${this.localeKey}.${value}`)
     if (i18n.te(`options.${value}`))
