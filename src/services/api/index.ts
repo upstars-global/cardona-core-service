@@ -127,6 +127,9 @@ class ApiService {
       //   return this.request(payload, config, retryCount - 1, retryDelay * 2)
       // }
 
+      if (error?.type === 'NOT_FOUND')
+        return router.push('/not-found')
+
       const isLoginPage: boolean = route?.name === 'Login' || route?.name === 'login'
       const isInvalidToken = isInvalidTokenError(error)
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', TOKEN_INVALID]
