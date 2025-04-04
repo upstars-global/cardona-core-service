@@ -32,27 +32,12 @@ const isMultiple = false
 const isLoading = ref(false)
 const [isOpenDropDown, toggleDropDownState] = useToggle()
 
-const getOptionWithLocalKey = (option: OptionsItem) => ({
-  ...option,
-  name: i18n.t(`options.${props.field.localeKey}.${option.name}`),
-})
-
 const valueModel = computed<OptionsItem>({
-  get: () => {
-    const res = typeof props.modelValue === 'string' || typeof props.modelValue === 'number'
+  get: () =>
+    typeof props.modelValue === 'string' || typeof props.modelValue === 'number'
       ? props.field.options?.find((option: OptionsItem) => option.id === props.modelValue)
-      : props.modelValue
-
-    return props.field.localeKey && res
-      ? {
-        ...res,
-        name: i18n.t(`options.${props.field.localeKey}.${res.name}`),
-        }
-      : res
-  },
-  set: (item: OptionsItem) => {
-    emits('update:modelValue', item.id)
-  },
+      : props.modelValue,
+  set: (item: object) => emits('update:modelValue', item),
 })
 
 const selectClasses = computed(() => {
@@ -70,15 +55,11 @@ const selectClasses = computed(() => {
 })
 
 // Options
-const options = computed(() => {
-  const filteredOptions = props.field.options
+const options = computed(() =>
+  props.field.options
     ? props.field.options.filter((option: OptionsItem) => option.id !== valueModel.value?.id)
-    : []
-
-  return props.field.localeKey
-    ? filteredOptions.map(getOptionWithLocalKey)
-    : filteredOptions
-})
+    : [],
+)
 
 watch(
   () => props.field.options,
@@ -148,7 +129,6 @@ const {
 
 <template>
   <div>
-    {{ valueModel }}
     <VueSelect
       v-model="valueModel"
       :placeholder="placeholder"
