@@ -1,9 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { VColors, VVariants } from '../../@model/vuetify'
 import AppTextarea from '../../@core/components/app-form-elements/AppTextarea.vue'
 import BaseModal from '../BaseModal/index.vue'
 import type { BaseModalDefaultPropsOfSlot } from '../../@model/modal'
+
+const props = withDefaults(defineProps<Props>(), {
+  removeBtnColor: VColors.Error,
+  removeBtnVariant: VVariants.Flat,
+  cancelBtnColor: VColors.Secondary,
+  cancelBtnVariant: VVariants.Outlined,
+})
+
+const emits = defineEmits<Emits>()
+
+const { t, te } = useI18n()
 
 interface Props {
   entityName?: string
@@ -27,15 +39,6 @@ interface Emits {
   (event: 'on-close-modal'): void
 }
 
-withDefaults(defineProps<Props>(), {
-  removeBtnColor: VColors.Error,
-  removeBtnVariant: VVariants.Flat,
-  cancelBtnColor: VColors.Secondary,
-  cancelBtnVariant: VVariants.Outlined,
-})
-
-const emits = defineEmits<Emits>()
-
 const commentToRemove = ref()
 
 const onClickModalOk = async (hide: Function) => {
@@ -46,12 +49,19 @@ const onCloseModal = (hide: Function) => {
   emits('on-close-modal')
   hide()
 }
+
+const modalTitle = computed(() => {
+  const localeKey = `modal.remove${props.entityName}.title`
+  const translatedTitle = te(localeKey) ? t(localeKey) : ''
+
+  return props.title || translatedTitle
+})
 </script>
 
 <template>
   <BaseModal
     :id="removeModalId"
-    :title="title || $t(`modal.remove${entityName}.title`)"
+    :title="modalTitle"
     @hide="$emit('on-close-modal')"
   >
     <template #default="{ action }: BaseModalDefaultPropsOfSlot">
