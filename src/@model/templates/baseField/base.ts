@@ -83,10 +83,10 @@ export interface IASelectBaseField<T> extends IBaseField {
   readonly localeKey?: string
 }
 
-export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
+export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsItem | string>
   extends BaseField
   implements IASelectBaseField<T> {
-  public options?: Array<T>
+  public options?: Array<T> | null
   readonly fetchOptionsActionName?: string
   readonly preloadOptionsByIds?: boolean
   readonly staticFilters: Record<string, string>
@@ -100,7 +100,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
   protected constructor(field: IASelectBaseField<T>) {
     super(field)
     this.localeKey = field?.localeKey || ''
-    this.options = this.getOptionItems(field?.options || [])
+    this.options = this.getOptionItems(field?.options)
     this.fetchOptionsActionName = field.fetchOptionsActionName
     this.preloadOptionsByIds = field.preloadOptionsByIds
     this.staticFilters = field.staticFilters || {}
@@ -123,10 +123,10 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
     return value
   }
 
-  private getOptionItems(list: string[] | OptionsItem[]): OptionsItem[] {
+  private getOptionItems(list: string[] | OptionsItem[]): OptionsItem[] | null {
     return list?.map((option: string | T): OptionsItem =>
       typeof option === 'string' ? { id: option, name: this.getOptionName(option) } : option,
-    ) || []
+    ) || null
   }
 
   async getOptions(filters: { search?: string; ids?: string[] } = {}) {
