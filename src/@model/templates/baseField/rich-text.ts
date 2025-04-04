@@ -14,7 +14,7 @@ export class RichTextBaseField extends BaseField implements IRichTextBaseField {
 
   constructor(field: IRichTextBaseField) {
     super(field)
-    this._value = field.value
+    this._value = field.value ?? ''
   }
 
   transformField() {
