@@ -26,7 +26,13 @@ interface Emits {
   (event: 'on-remove', payload: any): void
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  canUpdate: false,
+  canUpdateItem: false,
+  canUpdateSeo: false,
+  canCreate: false,
+})
+
 const emits = defineEmits<Emits>()
 
 const router = useRouter()

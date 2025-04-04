@@ -123,7 +123,7 @@ const onHide = () => {
               :model-value="viewForm[key]"
               :key-name="key"
               :class="`${key}-view`"
-              cols="4"
+              :cols="4"
             >
               <template
                 v-if="checkSlotExistence(`sidebar-value(${key})`)"
@@ -164,7 +164,7 @@ const onHide = () => {
                           :model-value="viewForm[key].views[groupKey]"
                           :key-name="groupKey"
                           :class="`${groupKey}-view`"
-                          cols="4"
+                          :cols="4"
                         >
                           <template
                             v-if="checkSlotExistence(`sidebar-value(${groupKey})`)"
