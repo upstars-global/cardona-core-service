@@ -529,8 +529,8 @@
     },
     "404": {
       "statusCode": "404",
-      "title": "Page Not Found ⚠️",
-      "description": "We couldn't find the page you are looking for️.",
+      "title": "Page not found",
+      "description": "We couldn’t find the page you are looking for.",
       "backToHome": "Back to Home"
     },
     "groupFragment": {
@@ -551,6 +551,7 @@
   "title": {
     "seo": "Seo",
     "localization": "Localization",
+    "backoffice": "Backoffice",
     "demo": {
       "list": "Demo list",
       "create": "Demo create",
