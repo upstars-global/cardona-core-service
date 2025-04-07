@@ -162,7 +162,6 @@ const onOpenByAppendInner = dateRef => {
     ref="dateFromRef"
     v-model="modelValue"
     :is-invalid="Boolean(errors)"
-    class="small-screen-adaptation"
     :class="{ error: errors }"
     :placeholder="field.placeholder || field.label"
     :config="{
@@ -189,7 +188,6 @@ const onOpenByAppendInner = dateRef => {
       :config="configFrom"
       :placeholder="$t('common.dateFrom')"
       data-test-id="from"
-      class="small-screen-adaptation"
       :disabled="disabled"
       :append-inner-icon="IconsList.CalendarIcon"
       @update:model-value="(val) => setRangeDate(val)"
@@ -203,7 +201,6 @@ const onOpenByAppendInner = dateRef => {
       :model-value="endedAt"
       :class="{ error: errors }"
       :config="configTo"
-      class="small-screen-adaptation"
       :placeholder="$t('common.dateTo')"
       data-test-id="to"
       :disabled="disabled"
