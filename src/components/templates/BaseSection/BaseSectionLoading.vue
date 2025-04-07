@@ -15,6 +15,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const overlayWrapper = ref<HTMLElement | null>(null)
 const spinnerY = ref(0)
+const scrollTop = ref(0)
+const shouldLockScroll = ref(false)
 
 const updateSpinnerPosition = () => {
   const scrollY = window.scrollY || window.pageYOffset
@@ -29,7 +31,15 @@ const updateSpinnerPosition = () => {
   spinnerY.value = relativeY
 }
 
-const scrollTop = ref(0)
+const checkNeedLockScroll = () => {
+  if (!overlayWrapper.value)
+    return
+
+  const contentHeight = overlayWrapper.value.scrollHeight
+  const viewportHeight = window.innerHeight
+
+  shouldLockScroll.value = contentHeight > viewportHeight
+}
 
 const lockScroll = () => {
   scrollTop.value = window.scrollY
@@ -52,15 +62,21 @@ const unlockScroll = () => {
 watch(() => props.loading, async value => {
   if (value) {
     await nextTick()
-    lockScroll()
-    updateSpinnerPosition()
-    window.addEventListener('scroll', updateSpinnerPosition)
-    window.addEventListener('resize', updateSpinnerPosition)
+    checkNeedLockScroll()
+
+    if (shouldLockScroll.value) {
+      lockScroll()
+      updateSpinnerPosition()
+      window.addEventListener('scroll', updateSpinnerPosition)
+      window.addEventListener('resize', updateSpinnerPosition)
+    }
   }
   else {
-    unlockScroll()
-    window.removeEventListener('scroll', updateSpinnerPosition)
-    window.removeEventListener('resize', updateSpinnerPosition)
+    if (shouldLockScroll.value) {
+      unlockScroll()
+      window.removeEventListener('scroll', updateSpinnerPosition)
+      window.removeEventListener('resize', updateSpinnerPosition)
+    }
   }
 })
 </script>
@@ -76,6 +92,8 @@ watch(() => props.loading, async value => {
     <div
       v-if="props.loading"
       class="custom-overlay"
+      data-test-id="loader"
+      :class="{ 'custom-overlay--center': !shouldLockScroll }"
       :style="{ backgroundColor: `rgba(255,255,255,${props.opacity})` }"
     >
       <VProgressCircular
@@ -84,7 +102,7 @@ watch(() => props.loading, async value => {
         indeterminate
         :color="VColors.Primary"
         class="custom-spinner"
-        :style="{ top: `${spinnerY}px` }"
+        :style="shouldLockScroll ? { top: `${spinnerY}px` } : {}"
       />
     </div>
   </div>
@@ -96,6 +114,13 @@ watch(() => props.loading, async value => {
   inset: 0;
   z-index: 10;
 }
+
+.custom-overlay--center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .custom-spinner {
   position: absolute;
   left: 50%;
