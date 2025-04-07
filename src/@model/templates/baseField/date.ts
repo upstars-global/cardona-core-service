@@ -21,6 +21,13 @@ export interface IDateBaseField extends IBaseField {
   readonly maxDateTo?: Date | string
   readonly allowFutureDate?: boolean
   readonly keys?: string[]
+  readonly position?: DataPickerPosition
+}
+
+enum DataPickerPosition {
+  Above = 'above',
+  Below = 'below',
+  Auto = 'auto',
 }
 
 export class DateBaseField extends BaseField implements IDateBaseField {
@@ -36,6 +43,7 @@ export class DateBaseField extends BaseField implements IDateBaseField {
   readonly maxDateTo?: Date | string
   readonly allowFutureDate?: boolean
   readonly keys?: string[]
+  readonly position?: DataPickerPosition
 
   constructor(field: IDateBaseField) {
     super(field)
@@ -50,6 +58,7 @@ export class DateBaseField extends BaseField implements IDateBaseField {
     this.maxDateTo = field?.maxDateTo || ''
     this.allowFutureDate = field?.allowFutureDate
     this.keys = field.keys
+    this.position = field?.position || DataPickerPosition.Auto
   }
 
   private getISODateValue(value: DateBaseFieldInputValue): string {

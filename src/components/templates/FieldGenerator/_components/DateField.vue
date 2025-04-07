@@ -42,6 +42,7 @@ const flatPickrConfig = computed(() => ({
   time_24hr: true,
   defaultHour: 0,
   minuteIncrement: 1,
+  position: props.field.position,
 }))
 
 const separator = ref(` ${dateSeparators[locale.value]} `)
@@ -161,6 +162,7 @@ const onOpenByAppendInner = dateRef => {
     ref="dateFromRef"
     v-model="modelValue"
     :is-invalid="Boolean(errors)"
+    class="small-screen-adaptation"
     :class="{ error: errors }"
     :placeholder="field.placeholder || field.label"
     :config="{
@@ -187,6 +189,7 @@ const onOpenByAppendInner = dateRef => {
       :config="configFrom"
       :placeholder="$t('common.dateFrom')"
       data-test-id="from"
+      class="small-screen-adaptation"
       :disabled="disabled"
       :append-inner-icon="IconsList.CalendarIcon"
       @update:model-value="(val) => setRangeDate(val)"
@@ -200,6 +203,7 @@ const onOpenByAppendInner = dateRef => {
       :model-value="endedAt"
       :class="{ error: errors }"
       :config="configTo"
+      class="small-screen-adaptation"
       :placeholder="$t('common.dateTo')"
       data-test-id="to"
       :disabled="disabled"
@@ -220,6 +224,14 @@ const onOpenByAppendInner = dateRef => {
   .v-field__outline {
     color: rgb(var(--v-theme-error));
     --v-field-border-opacity: 1;
+  }
+}
+</style>
+
+<style lang="scss">
+@media (max-height: 750px) {
+  .flatpickr-calendar.arrowTop {
+    margin-top: -50px;
   }
 }
 </style>

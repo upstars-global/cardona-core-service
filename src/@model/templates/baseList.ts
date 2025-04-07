@@ -185,6 +185,9 @@ export interface IBaseListConfig {
 
   /** hideSearchBlock - Скрывать полностью верхний блок с поиском, фильтром, создании айтема */
   readonly hideSearchBlock?: boolean
+
+  /** closeFilterOnPagination - Закрывать фильтр во время переключения пагинации */
+  readonly closeFilterOnPagination?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
