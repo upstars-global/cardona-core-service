@@ -279,7 +279,7 @@ defineExpose({
 
 <template>
   <BaseSectionLoading
-    :loading="isLoadingPage"
+    :loading="isLoadingPage || isDisableSubmitBtn"
     :fullscreen-background="!config.isModalSection"
   >
     <template #default>
