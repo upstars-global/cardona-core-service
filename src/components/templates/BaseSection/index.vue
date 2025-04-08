@@ -278,7 +278,10 @@ defineExpose({
 </script>
 
 <template>
-  <BaseSectionLoading :loading="isLoadingPage">
+  <BaseSectionLoading
+    :loading="isLoadingPage"
+    :fullscreen-background="!config.isModalSection"
+  >
     <template #default>
       <VAlert
         v-if="isReadMode"
