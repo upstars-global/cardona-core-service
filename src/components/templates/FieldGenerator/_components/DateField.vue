@@ -42,6 +42,7 @@ const flatPickrConfig = computed(() => ({
   time_24hr: true,
   defaultHour: 0,
   minuteIncrement: 1,
+  position: props.field.position,
 }))
 
 const separator = ref(` ${dateSeparators[locale.value]} `)
@@ -220,6 +221,14 @@ const onOpenByAppendInner = dateRef => {
   .v-field__outline {
     color: rgb(var(--v-theme-error));
     --v-field-border-opacity: 1;
+  }
+}
+</style>
+
+<style lang="scss">
+@media (max-height: 750px) {
+  .flatpickr-calendar.arrowTop {
+    margin-top: -50px;
   }
 }
 </style>
