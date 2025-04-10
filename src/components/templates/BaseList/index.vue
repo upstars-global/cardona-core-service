@@ -308,6 +308,8 @@ const getList = async () => {
 const reFetchList = () => getList()
 
 onChangePagination(() => {
+  if (props.config.closeFilterOnPagination)
+    isFiltersShown.value = false
   reFetchList()
 })
 
