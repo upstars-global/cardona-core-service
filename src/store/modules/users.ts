@@ -1,4 +1,5 @@
 import ApiService from '../../services/api'
+import type { IRequestListPayload } from '../../@model'
 import { ListData } from '../../@model'
 import { UserInfo } from '../../@model/users'
 import { productName } from '@productConfig'
@@ -6,28 +7,27 @@ import { productName } from '@productConfig'
 export default {
   namespaced: true,
   actions: {
-    async fetchUsersList({ rootGetters }, inputData) {
-      const data = inputData?.data ? inputData.data : inputData
+    async fetchUsersList({ rootGetters }, payload: IRequestListPayload) {
       const isMenuTypeAdmin = !rootGetters['appConfigCore/isMenuTypeMain']
 
       return new ListData(
         await ApiService.request({
           type: 'App.V2.Users.List',
           pagination: {
-            pageNumber: data?.page || 1,
-            perPage: data?.perPage || 20,
+            pageNumber: payload?.pagination?.pageNumber || 1,
+            perPage: payload?.pagination?.perPage || 20,
           },
           filter: {
             productIds: isMenuTypeAdmin ? [] : [rootGetters['productCore/productId']],
-            ...data?.filter,
+            ...payload?.filter,
           },
         }),
         UserInfo,
       )
     },
 
-    async fetchEntityList({ rootGetters, dispatch }, inputData) {
-      return await dispatch('fetchUsersList', inputData)
+    async fetchEntityList({ rootGetters, dispatch }, payload: IRequestListPayload) {
+      return await dispatch('fetchUsersList', payload)
     },
 
     async updateUserPassword(_, { id, password, isProduct }: { id: string; password: string; isProduct: boolean }) {

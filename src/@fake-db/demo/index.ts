@@ -9,7 +9,7 @@ mock.onPost('/api/v2/demo/list').reply(({ data }) => {
 
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve([200, { data: filteredList.slice(0, pagination.perPage), pagination: { total: filteredList.length, perPage: pagination.perPage, pageNumber: pagination.page } }])
+      resolve([200, { data: filteredList.slice(0, pagination.perPage), pagination: { total: filteredList.length, perPage: pagination.perPage, pageNumber: pagination.pageNumber } }])
     }, 200)
   })
 })

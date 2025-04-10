@@ -2,7 +2,7 @@ import type { Component } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import store from '../../../store'
 import type { IValidationConfig } from '../../../@model/validations'
-import type { OptionsItem } from '../../../@model'
+import type { IRequestListPayload, OptionsItem } from '../../../@model'
 import type { PermissionType } from '@permissions'
 
 export interface IBaseField {
@@ -114,16 +114,19 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
     if (filters.search?.length)
       this.pageNumber = 1
 
-    const { list = [] } = await store.dispatch(this.fetchOptionsActionName, {
-      perPage: 50,
-      pageNumber: this.pageNumber,
-      filter: {
-        ...this.staticFilters,
-        ...filters,
-      },
-    })
+    const { list = [] }: { list: Array<string> } = await store.dispatch(
+      this.fetchOptionsActionName as string, {
+        pagination: {
+          perPage: 50,
+          pageNumber: this.pageNumber,
+        },
+        filter: {
+          ...this.staticFilters,
+          ...filters,
+        } as IRequestListPayload,
+      })
 
-    return list?.map((option: string | T): OptionsItem | T =>
+    return list.map((option: string | T): OptionsItem | T =>
       typeof option === 'string' ? { id: option, name: option } : option,
     ) || []
   }

@@ -52,26 +52,18 @@ export default {
   namespaced: true,
 
   actions: {
-    async fetchEntityList(
-      { commit, rootGetters },
-      payload: {
-        type: string
-        data: IRequestListPayload
-
-        // options: IOptionsBaseFetch
-      },
-    ) {
+    async fetchEntityList({ commit, rootGetters }, payload: IRequestListPayload) {
       return new ListData(
         await ApiService.request({
-          type: `${payload.options.customApiPrefix || ApiTypePrefix}${transformNameToType(
-            payload.type,
-          )}.List`,
+          type: `${
+            payload.options.customApiPrefix || ApiTypePrefix
+          }${transformNameToType(payload.type || '')}.List`,
           pagination: {
-            pageNumber: payload.data?.page || 1,
-            perPage: payload.data?.perPage || 10,
+            pageNumber: payload.pagination?.pageNumber || 1,
+            perPage: payload.pagination?.perPage || 10,
           },
-          sort: payload.data?.sort,
-          filter: combineFilter(payload.data?.filter, rootGetters.selectedProject?.alias),
+          sort: payload?.sort,
+          filter: combineFilter(payload?.filter, rootGetters.selectedProject?.alias),
         }),
         payload.options?.listItemModel,
       )
