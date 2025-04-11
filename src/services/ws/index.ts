@@ -3,6 +3,7 @@ import store from '../../store'
 import { checkIsLoggedIn } from '../../helpers/token-auth'
 import { messageTypes } from './config'
 import { WSTypePrefix } from '@productConfig'
+import { Centrifuge } from 'centrifuge';
 
 const DEFAULT_TIME_RECONNECT = 1000
 const RECONNECTION_TIME_MULTIPLIER = 2
@@ -17,7 +18,7 @@ class WSService {
 
   static readonly maxTimeReconnect: number = 60000
   static async connect(channel) {
-    if (!checkIsLoggedIn() && !channel || location.hostname === 'localhost')
+    if (!checkIsLoggedIn() && !channel)
       return
     this.Channel = channel
 
@@ -25,46 +26,90 @@ class WSService {
       return
 
     const { accessToken } = await store.dispatch('authCore/refreshAuth', getRefreshToken())
-    const url = `wss://${location.host || location.hostname}/ws?jwt=${accessToken}`
+    const url = `ws://${location.host || location.hostname}/ws?jwt=${accessToken}`
+    // wss://centrifugo-staging-service.eqr.svc.cluster.local
+    const client = await new Centrifuge('ws://centrifugo-staging-service.eqr.svc.cluster.local', {
+      token: accessToken
+    });
+    console.log(client)
 
-    this.ws = await new WebSocket(url)
+    client.on('error', function(ctx) {
+      console.log(ctx);
+    });
 
-    this.ws.onopen = () => {
-      this.timeReconnect = DEFAULT_TIME_RECONNECT
-      this.sendObj([messageTypes.SUBSCRIBE, this.Channel.Ping])
+    client.on('subscribed', function(ctx) {
+      // Called when subscribed to a server-side channel upon Client moving to
+      // connected state or during connection lifetime if server sends Subscribe
+      // push message.
+      console.log('subscribed to server-side channel', ctx.channel);
+    });
 
-      if (this.WSListSubscribe.size) {
-        this.WSListSubscribe.forEach(event => {
-          this.send(event)
-        })
-      }
-    }
+    client.on('subscribing', function(ctx) {
+      // Called when existing connection lost (Client reconnects) or Client
+      // explicitly disconnected. Client continue keeping server-side subscription
+      // registry with stream position information where applicable.
+      console.log('subscribing to server-side channel', ctx.channel);
+    });
 
-    this.ws.onmessage = event => {
-      this.parseData(JSON.parse(event.data) as Array<any>)
-    }
+    client.on('unsubscribed', function(ctx) {
+      // Called when server sent unsubscribe push or server-side subscription
+      // previously existed in SDK registry disappeared upon Client reconnect.
+      console.log('unsubscribed from server-side channel', ctx.channel);
+    });
 
-    this.ws.onclose = async event => {
-      this.ws?.close()
-      this.ws = null
-      if (
-        event.wasClean
-        && (this.timeReconnect !== DEFAULT_TIME_RECONNECT || event.code === 1000)
-      ) {
-        this.WSListSubscribe.clear()
-      }
-      else {
-        this.timeReconnect *= RECONNECTION_TIME_MULTIPLIER
-        if (this.timeReconnect > this.maxTimeReconnect)
-          this.timeReconnect = DEFAULT_TIME_RECONNECT
-        setTimeout(() => this.connect(channel), this.timeReconnect)
-      }
-      console.log(`Код: ${event.code} причина: ${event.reason}`)
-    }
+    client.on('publication', function(ctx) {
+      // Called when server sends Publication over server-side subscription.
 
-    this.ws.onerror = error => {
-      console.log(error)
-    }
+      this.parseData(JSON.parse(ctx.data) as Array<any>);
+      console.log('publication receive from server-side channel', ctx.channel, ctx.data);
+    });
+
+    client.connect();
+
+    client.on('connected', function(ctx) {
+      const sub = client.newSubscription('development/payouts-feed');
+    });
+
+
+    this.ws = centrifuge
+    // this.ws = await new WebSocket(url)
+    //
+    // this.ws.onopen = () => {
+    //   this.timeReconnect = DEFAULT_TIME_RECONNECT
+    //   this.sendObj([messageTypes.SUBSCRIBE, this.Channel.Ping])
+    //
+    //   if (this.WSListSubscribe.size) {
+    //     this.WSListSubscribe.forEach(event => {
+    //       this.send(event)
+    //     })
+    //   }
+    // }
+    //
+    // this.ws.onmessage = event => {
+    //   this.parseData(JSON.parse(event.data) as Array<any>)
+    // }
+    //
+    // this.ws.onclose = async event => {
+    //   this.ws?.close()
+    //   this.ws = null
+    //   if (
+    //     event.wasClean
+    //     && (this.timeReconnect !== DEFAULT_TIME_RECONNECT || event.code === 1000)
+    //   ) {
+    //     this.WSListSubscribe.clear()
+    //   }
+    //   else {
+    //     this.timeReconnect *= RECONNECTION_TIME_MULTIPLIER
+    //     if (this.timeReconnect > this.maxTimeReconnect)
+    //       this.timeReconnect = DEFAULT_TIME_RECONNECT
+    //     setTimeout(() => this.connect(channel), this.timeReconnect)
+    //   }
+    //   console.log(`Код: ${event.code} причина: ${event.reason}`)
+    // }
+    //
+    // this.ws.onerror = error => {
+    //   console.log(error)
+    // }
   }
 
   static disconnect = () => {
@@ -74,16 +119,19 @@ class WSService {
   static send(text) {
     if (!this.ws)
       return
-
-    if (this.ws.readyState === 1)
-      this.ws.send(text)
-    else
-      setTimeout(() => this.send(text), DEFAULT_TIME_RECONNECT)
+    this.ws.send(text)
+    // if (this.ws.readyState === 1)
+    //   this.ws.send(text)
+    // else
+    //   setTimeout(() => this.send(text), DEFAULT_TIME_RECONNECT)
+    console.log(text)
   }
 
   static sendObj(message) {
     if (!this.ws)
       return
+
+    console.log(message)
     this.send(JSON.stringify(message))
   }
 
@@ -91,10 +139,12 @@ class WSService {
     if (!this.ws)
       return
 
-    const message = JSON.stringify([messageTypes.SUBSCRIBE, WSTypePrefix + channel])
+    this.ws.newSubscription('development/payouts-feed');
 
-    this.WSListSubscribe.add(message)
-    this.send(message)
+    // const message = JSON.stringify([messageTypes.SUBSCRIBE, WSTypePrefix + channel])
+    //
+    // this.WSListSubscribe.add(message)
+    // this.send(message)
   }
 
   static unsubscribe(channel) {
