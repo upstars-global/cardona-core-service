@@ -3,9 +3,9 @@ import type { SortDirection } from './templates/baseList'
 import type { SortItem } from '@core/types'
 
 export interface PaginationData {
-  readonly pageNumber?: number
-  readonly perPage?: number
-  readonly total?: number
+  pageNumber: number
+  perPage: number
+  total: number
 }
 
 export interface IRequestListPayload {

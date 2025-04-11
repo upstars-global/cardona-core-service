@@ -58,10 +58,7 @@ export default {
           type: `${
             payload.options.customApiPrefix || ApiTypePrefix
           }${transformNameToType(payload.type || '')}.List`,
-          pagination: {
-            pageNumber: payload.pagination?.pageNumber || 1,
-            perPage: payload.pagination?.perPage || 10,
-          },
+          pagination: payload.pagination,
           sort: payload?.sort,
           filter: combineFilter(payload?.filter, rootGetters.selectedProject?.alias),
         }),
@@ -79,7 +76,7 @@ export default {
         )}.List.Report`,
         sort: payload.data?.sort,
         pagination: {
-          pageNumber: payload.data?.page || 1,
+          pageNumber: 1,
           perPage: payload.data?.perPage,
         },
         filter: combineFilter(payload.data?.filter, rootGetters.selectedProject?.alias),

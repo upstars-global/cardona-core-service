@@ -12,10 +12,7 @@ export default {
       return new ListData(
         await ApiService.request({
           type: `${ApiTypePrefix}${transformNameToType(payload.type || '')}.List`,
-          pagination: {
-            pageNumber: payload.pagination?.pageNumber || 1,
-            perPage: payload.pagination?.perPage || 10,
-          },
+          pagination: payload.pagination,
           filter: {
             ...payload?.filter,
           },
