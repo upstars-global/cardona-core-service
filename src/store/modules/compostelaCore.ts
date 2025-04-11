@@ -34,11 +34,10 @@ export default {
       const data = await ApiService.request({
         type: 'App.V2.Compostela.Images.List',
         pagination: {
-          pageNumber: payload.pagination.pageNumber,
-          perPage: payload.pagination.perPage,
+          ...payload.pagination,
         },
         filter: {
-          path: payload.filter?.path?.search,
+          ...payload.filter,
         },
       })
 

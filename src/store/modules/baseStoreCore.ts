@@ -58,7 +58,7 @@ export default {
           type: `${
             payload.options.customApiPrefix || ApiTypePrefix
           }${transformNameToType(payload.type || '')}.List`,
-          pagination: payload.pagination,
+          pagination: { ...payload.pagination },
           sort: payload?.sort,
           filter: combineFilter(payload?.filter, rootGetters.selectedProject?.alias),
         }),

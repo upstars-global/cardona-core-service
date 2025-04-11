@@ -10,12 +10,11 @@ export default {
     async fetchUsersList({ rootGetters }, payload: IRequestListPayload) {
       const isMenuTypeAdmin = !rootGetters['appConfigCore/isMenuTypeMain']
 
-      return new ListData(
+      return new ListData<UserInfo>(
         await ApiService.request({
           type: 'App.V2.Users.List',
           pagination: {
-            pageNumber: payload?.pagination?.pageNumber || 1,
-            perPage: payload?.pagination?.perPage || 20,
+            ...payload.pagination,
           },
           filter: {
             productIds: isMenuTypeAdmin ? [] : [rootGetters['productCore/productId']],

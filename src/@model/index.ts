@@ -14,7 +14,6 @@ export interface IRequestListPayload {
   type?: string
   id?: string
   filter?: Record<string, unknown>
-  data?: Record<string, unknown>
   options: {
     customApiPrefix?: string
     listItemModel?: { new (item: unknown): object }
