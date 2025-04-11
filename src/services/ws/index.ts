@@ -28,7 +28,7 @@ class WSService {
     const { accessToken } = await store.dispatch('authCore/refreshAuth', getRefreshToken())
     const url = `wss://${location.host || location.hostname}/ws?jwt=${accessToken}`
     // wss://centrifugo-staging-service.eqr.svc.cluster.local
-    const client = await new Centrifuge('ws://centrifugo-staging-service.eqr.svc.cluster.local', {
+    const client = await new Centrifuge('wss://centrifugo-staging-service.eqr.svc.cluster.local', {
       token: accessToken
     });
     console.log(client)
