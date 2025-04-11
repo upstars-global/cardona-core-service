@@ -13,7 +13,7 @@ interface Props {
   onSubmitCallback?: Function
   onBtnClickCallback?: Function
   textBtn: string
-  isError: boolean
+  isError?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {

@@ -12,10 +12,12 @@ interface IStatusWithVariantReplace {
 
 type ValueType = string | IStatusWithVariantReplace
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   value: ValueType
-  variant: VVariants
-}>()
+  variant?: VVariants
+}>(), {
+  variant: VVariants.Tonal,
+})
 
 const value = computed(() => {
   const status = typeof props.value === 'string' ? props.value : props.value?.status
@@ -29,20 +31,19 @@ const color = computed(() => {
 
   return props.value?.variant
 })
-
-const actualVariant = computed(() => {
-  return props.variant || VVariants.Tonal
-})
 </script>
 
 <template>
   <VChip
     :color="color"
-    :variant="actualVariant"
+    :variant="variant"
     data-test-id="status-field"
     label
   >
-    <span class="lh-normal" data-test-id="status-field-value">
+    <span
+      class="lh-normal"
+      data-test-id="status-field-value"
+    >
       {{ value }}
     </span>
   </VChip>
