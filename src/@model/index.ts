@@ -5,7 +5,7 @@ import type { SortItem } from '@core/types'
 export interface PaginationData {
   pageNumber: number
   perPage: number
-  total: number
+  total?: number
 }
 
 export interface IRequestListPayload {
