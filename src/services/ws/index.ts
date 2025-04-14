@@ -26,10 +26,13 @@ class WSService {
       return
 
     const { accessToken } = await store.dispatch('authCore/refreshAuth', getRefreshToken())
-    const url = `wss://${location.host || location.hostname}/ws?jwt=${accessToken}`
-    // wss://centrifugo-staging-service.eqr.svc.cluster.local
-    const client = await new Centrifuge('wss://centrifugo-staging-service.eqr.svc.cluster.local', {
-      token: accessToken
+    //const url = `wss://${location.host || location.hostname}/ws?jwt=${accessToken}`
+    //wss://centrifugo-staging-service.eqr.svc.cluster.local/connection/websocket
+
+    console.log(accessToken);
+    const client = new Centrifuge(`ws://centrifugo-staging-service.eqr.svc.cluster.local/connection/websocket`, {
+      token: accessToken,
+      debug: true
     });
     console.log(client)
 
@@ -60,19 +63,19 @@ class WSService {
     client.on('publication', function(ctx) {
       // Called when server sends Publication over server-side subscription.
 
-      this.parseData(JSON.parse(ctx.data) as Array<any>);
       console.log('publication receive from server-side channel', ctx.channel, ctx.data);
+      this.parseData(JSON.parse(ctx.data) as Array<any>);
     });
 
     client.connect();
 
     client.on('connected', function(ctx) {
-      const sub = client.newSubscription('development/payouts-feed');
+      console.log(ctx);
+      console.log('development/payouts-feed');
+      client.newSubscription('development/payouts-feed');
     });
-
-
-    this.ws = centrifuge
-    // this.ws = await new WebSocket(url)
+    this.ws = client
+    // await new WebSocket(url)
     //
     // this.ws.onopen = () => {
     //   this.timeReconnect = DEFAULT_TIME_RECONNECT
@@ -139,7 +142,7 @@ class WSService {
     if (!this.ws)
       return
 
-    this.ws.newSubscription('development/payouts-feed');
+    // this.ws.newSubscription('development/payouts-feed');
 
     // const message = JSON.stringify([messageTypes.SUBSCRIBE, WSTypePrefix + channel])
     //
@@ -151,10 +154,10 @@ class WSService {
     if (!this.ws)
       return
 
-    const message = JSON.stringify([messageTypes.UNSUBSCRIBE, WSTypePrefix + channel])
-
-    this.WSListSubscribe.delete(message)
-    this.send(message)
+    // const message = JSON.stringify([messageTypes.UNSUBSCRIBE, WSTypePrefix + channel])
+    //
+    // this.WSListSubscribe.delete(message)
+    // this.send(message)
   }
 
   static async parseData(messageArray: Array<any>) {
