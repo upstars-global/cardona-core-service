@@ -174,7 +174,7 @@ describe('FiltersBlock', () => {
 
     testOn.existClass({ wrapper, selector: '.filter-label' }, 'font-small-3')
 
-    testOn.equalTextValue({ wrapper, testId: testIds.applyBtn }, i18n.t('action.apply'))
+    testOn.equalTextValue({ wrapper, testId: testIds.applyBtn }, i18n.t('action.applyFilters'))
   })
 
   it('Should render render correct content with size which not equal small', async () => {

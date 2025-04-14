@@ -1,72 +1,57 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { VColors } from '../../../@model/vuetify'
 
-defineProps<{ loading: boolean }>()
+interface Props {
+  loading: boolean
+  fullscreenBackground?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), { fullscreenBackground: false })
+
+const canShowSlot = computed(() => {
+  if (props.fullscreenBackground)
+    return !props.loading
+
+  return true
+})
 </script>
 
 <template>
-  <div class="main-section-container">
-    <Transition name="fade">
-      <div
-        v-show="loading"
-        class="loader-overlay"
-      >
-        <VProgressCircular
-          indeterminate
-          size="64"
-          data-test-id="loader"
-          :color="VColors.Primary"
-        />
-      </div>
-    </Transition>
+  <div class="position-relative">
+    <slot v-if="canShowSlot" />
+
     <div
-      v-show="!loading"
-      data-test-id="not-active-loader-content"
+      v-if="props.loading"
+      class="custom-overlay d-flex justify-center align-center"
+      data-test-id="loader"
+      :class="{
+        'custom-overlay--fullscreen': fullscreenBackground,
+      }"
     >
-      <slot />
+      <VProgressCircular
+        size="40"
+        indeterminate
+        :color="VColors.Primary"
+      />
     </div>
   </div>
 </template>
 
-<style lang="scss">
-.loader-overlay {
+<style scoped>
+.custom-overlay {
   position: absolute;
+  inset: 0;
+  z-index: 10;
+  background-color: white;
+
+}
+
+.custom-overlay--fullscreen {
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
+  bottom: 0;
   height: 90vh;
-  background-color: rgb(var(--v-theme-surface));
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.base-modal .loader-overlay {
-  position: relative;
-  height: auto;
-  margin: 100px auto;
-
-  &.fade-enter-active,
-  &.fade-leave-active {
-    transition: all 0s ease;
-    display: none;
-  }
-}
-</style>
-
-<style scoped lang="scss">
-.main-section-container {
-  position: relative;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>

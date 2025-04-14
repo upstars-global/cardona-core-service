@@ -202,7 +202,7 @@ const listNotSelected = computed(() => {
               data-test-id="apply-btn"
               @click="onApply"
             >
-              {{ isSmallBlock ? $t('action.apply') : $t('action.applyFilters') }}
+              {{ $t('action.applyFilters') }}
             </VBtn>
             <VBtn
               :color="VColors.Secondary"

@@ -278,7 +278,10 @@ defineExpose({
 </script>
 
 <template>
-  <BaseSectionLoading :loading="isLoadingPage">
+  <BaseSectionLoading
+    :loading="isLoadingPage || isDisableSubmitBtn"
+    :fullscreen-background="!config.isModalSection"
+  >
     <template #default>
       <VAlert
         v-if="isReadMode"
@@ -308,16 +311,6 @@ defineExpose({
             :can-update-seo="canUpdateSeo"
             :on-click-remove="onClickRemove"
           />
-          <div
-            v-if="isLoadingPage && pageType"
-            class="position-absolute base-section__loading d-flex"
-            data-test-id="loading"
-          >
-            <VProgressCircular
-              indeterminate
-              class="ma-auto"
-            />
-          </div>
         </div>
         <slot
           v-if="pageType"
