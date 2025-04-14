@@ -30,7 +30,7 @@ class WSService {
     //wss://centrifugo-staging-service.eqr.svc.cluster.local/connection/websocket
 
     console.log(accessToken);
-    const client = new Centrifuge(`wss://centrifugo-staging-service.eqr.svc.cluster.local/connection/websocket`, {
+    const client = new Centrifuge(`wss://${location.host || location.hostname}/ws`, {
       token: accessToken,
       debug: true
     });
