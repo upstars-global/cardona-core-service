@@ -19,7 +19,9 @@ const canShowSlot = computed(() => {
 
 <template>
   <div class="position-relative">
-    <slot v-if="canShowSlot" />
+    <div v-show="canShowSlot">
+      <slot />
+    </div>
 
     <div
       v-if="props.loading"
