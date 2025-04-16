@@ -180,7 +180,7 @@ defineExpose({ refFlatPicker })
                 v-if="!isInlinePicker"
                 v-bind="compAttrs"
                 ref="refFlatPicker"
-                :model-value="modelValue"
+                :model-value="modelValue || ''"
                 :placeholder="props.placeholder"
                 :readonly="isReadonly.value"
                 class="flat-picker-custom-style"
@@ -189,10 +189,10 @@ defineExpose({ refFlatPicker })
                 :class="{
                   'flat-picker-custom-style--static': config?.static,
                 }"
+                data-test-id="flat-picker"
                 @on-open="toggleCalendar(true)"
                 @on-close="toggleCalendar(false)"
                 @update:model-value="emitModelValue"
-                data-test-id="flat-picker"
               />
 
               <!-- simple input for inline prop -->
