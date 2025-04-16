@@ -117,7 +117,7 @@ class WSService {
   static async parseData( message ) {
     if (!message?.channel) return
 
-    const channel = message?.channel.replace('development/', '').replace('staging/', '').replace('production/', '').replace('-feed', '')
+    const channel = message?.channel.replace('-feed', '')
     const type = message?.data?.type
     const data = message?.data
 
