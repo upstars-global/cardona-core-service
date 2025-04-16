@@ -115,18 +115,15 @@ class WSService {
   }
 
   static async parseData( message ) {
-    if(!message?.channel) return
+    if (!message?.channel) return
 
     const channel = message?.channel.replace('development/', '').replace('staging/', '').replace('production/', '').replace('-feed', '')
     const type = message?.data?.type
-    const data = message?.data?.data && {
-      ...message.data.data,
-      project: message.data.project,
-    }
+    const data = message?.data
 
-    if(type !== TyperRequest.Deleted) {
+    if (type === TyperRequest.Created || type === TyperRequest.Updated) {
       await store.dispatch(`${channel}/setWSData`, data)
-    } else {
+    } else if (type === TyperRequest.Deleted) {
       await store.dispatch(`${channel}/deleteWSData`, data)
     }
   }
