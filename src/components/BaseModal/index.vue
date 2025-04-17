@@ -9,8 +9,8 @@ interface Props {
   id: string
   title?: string | TranslateResult
   state?: boolean
-  width: string
-  size: ModalSizes
+  width?: string
+  size?: ModalSizes
   modalHeaderClass?: string
 }
 
