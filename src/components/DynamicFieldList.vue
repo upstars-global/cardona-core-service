@@ -153,13 +153,18 @@ const disableAddFiled = computed(() =>
         v-if="isBaseField(row)"
         class="py-0"
       >
-        <FieldGenerator
-          v-model="rows[rowIndex]"
-          :options="filteredOptions"
-          :with-info="false"
-          :disabled="disabled"
-          @search="fetchSelectOptions"
-        />
+        <slot
+          :field="rows[rowIndex]"
+          :index="rowIndex"
+        >
+          <FieldGenerator
+            v-model="rows[rowIndex]"
+            :options="filteredOptions"
+            :with-info="false"
+            :disabled="disabled"
+            @search="fetchSelectOptions"
+          />
+        </slot>
       </VCol>
 
       <VCol
@@ -169,13 +174,19 @@ const disableAddFiled = computed(() =>
         class="py-0"
         md="4"
       >
-        <FieldGenerator
-          v-model="rows[rowIndex][key]"
-          :options="filteredOptions"
-          :disabled="disabled"
-          :with-info="false"
-          @search="fetchSelectOptions"
-        />
+        <slot
+          :key="key"
+          :field="rows[rowIndex][key]"
+          :index="rowIndex"
+        >
+          <FieldGenerator
+            v-model="rows[rowIndex][key]"
+            :options="filteredOptions"
+            :disabled="disabled"
+            :with-info="false"
+            @search="fetchSelectOptions"
+          />
+        </slot>
       </VCol>
 
       <VCol
