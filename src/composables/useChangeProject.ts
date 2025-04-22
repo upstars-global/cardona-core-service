@@ -12,15 +12,24 @@ export const useChangeProject = () => {
 
   const selectedProject = computed(() => store.getters.selectedProject)
 
-  const changeProject = (project: ProjectInfoInput) => {
+  const navigationOnProjectChanges = (project: ProjectInfoInput) => {
+    const featureRoot = route?.meta?.breadcrumb?.[0]?.to?.name
+
+    if (route?.params?.id && featureRoot)
+      return router.push({ name: featureRoot, params: { ...route.params, project: project.alias } })
+
+    return router.push({ params: { ...route.params, project: project.alias } })
+  }
+
+  const changeProject = async (project: ProjectInfoInput) => {
     const isSameProject: boolean = selectedProject.value?.id === project.id
 
     setStorage(storageKeys.selectedProjectId, project.id)
 
-    if (!isSameProject)
-      router.push({ params: { ...route.params, project: project.alias } })
-
-    store.dispatch('setSelectedProject', project)
+    if (!isSameProject) {
+      await navigationOnProjectChanges(project)
+      await store.dispatch('setSelectedProject', project)
+    }
   }
 
   return { changeProject }
