@@ -39,6 +39,7 @@ export default {
     permissions: new AllPermission(),
     selectedProduct: null,
     selectedProject: null,
+    priorityProject: null,
   },
 
   getters: {
@@ -47,7 +48,7 @@ export default {
     userProjects: ({ userInfo }) => userInfo.projects,
     userProducts: ({ userInfo }) => userInfo.products,
 
-    selectedProject: ({ selectedProject }, { userProjects }): ProjectInfoInput => {
+    selectedProject: ({ selectedProject, priorityProject }, { userProjects }): ProjectInfoInput => {
       const defaultProject: ProjectInfoInput = userProjects[0]
 
       const projectIdFromStorage: string | null = localStorage.getItem(
@@ -58,7 +59,7 @@ export default {
         ({ id }) => id === Number(projectIdFromStorage),
       )
 
-      return selectedProject || selectedProjectInfo || defaultProject
+      return priorityProject || selectedProject || selectedProjectInfo || defaultProject
     },
 
     selectedProduct: ({ selectedProduct }) => selectedProduct,
@@ -123,6 +124,9 @@ export default {
     },
     SET_SELECTED_PRODUCT(state, product: OptionsItem) {
       state.selectedProduct = product
+    },
+    SET_PRIORITY_PROJECT(state, project: string) {
+      state.priorityProject = project
     },
   },
 
