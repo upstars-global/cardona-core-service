@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<{
   variant?: string
   label?: string
   isViewLabel?: boolean
-  rounded: boolean
+  rounded?: boolean
   isShort?: boolean
   maxLengthForShort?: number
 }>(), {

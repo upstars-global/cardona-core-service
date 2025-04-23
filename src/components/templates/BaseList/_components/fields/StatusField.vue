@@ -13,11 +13,13 @@ interface IStatusWithVariantReplace {
 
 type ValueType = string | IStatusWithVariantReplace
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   value: ValueType
-  variant: VVariants
-  rounded: boolean
-}>()
+  variant?: VVariants
+  rounded?: boolean
+}>(), {
+  variant: VVariants.Tonal,
+})
 
 enum StatusVariants {
 
