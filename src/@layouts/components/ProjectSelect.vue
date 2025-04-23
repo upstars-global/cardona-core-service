@@ -9,7 +9,11 @@ const store = useStore()
 const { changeProject } = useChangeProject()
 
 const selectProject = computed({
-  get: () => store.getters.selectedProject,
+  get: () => {
+    return store.state.user.priorityProject?.alias
+      ? store.state.user.selectedProject
+      : store.getters.selectedProject
+  },
   set: val => {
     changeProject(val)
   },

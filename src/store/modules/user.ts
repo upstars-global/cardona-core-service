@@ -59,7 +59,7 @@ export default {
         ({ id }) => id === Number(projectIdFromStorage),
       )
 
-      return priorityProject || selectedProject || selectedProjectInfo || defaultProject
+      return priorityProject?.alias || selectedProject || selectedProjectInfo || defaultProject
     },
 
     selectedProduct: ({ selectedProduct }) => selectedProduct,
@@ -125,8 +125,8 @@ export default {
     SET_SELECTED_PRODUCT(state, product: OptionsItem) {
       state.selectedProduct = product
     },
-    SET_PRIORITY_PROJECT(state, project: string) {
-      state.priorityProject = project
+    SET_PRIORITY_PROJECT(state, alias) {
+      state.priorityProject = { alias }
     },
   },
 
