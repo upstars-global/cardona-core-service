@@ -3,6 +3,7 @@ import type { TranslateResult } from 'vue-i18n'
 import store from '../../../store'
 import type { IValidationConfig } from '../../../@model/validations'
 import type { OptionsItem } from '../../../@model'
+import { i18n } from '../../../plugins/i18n'
 import type { PermissionType } from '@permissions'
 
 export interface IBaseField {
@@ -79,12 +80,13 @@ export interface IASelectBaseField<T> extends IBaseField {
   readonly preloadOptionsByIds?: boolean
   readonly filterable?: boolean
   readonly infiniteLoading?: boolean
+  readonly localeKey?: string
 }
 
-export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
+export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsItem | string>
   extends BaseField
   implements IASelectBaseField<T> {
-  public options?: Array<T>
+  public options?: Array<T | OptionsItem>
   readonly fetchOptionsActionName?: string
   readonly preloadOptionsByIds?: boolean
   readonly staticFilters: Record<string, string>
@@ -92,11 +94,13 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
   selectedOptions?: Array<T>
   readonly filterable: boolean
   readonly infiniteLoading?: boolean
+  readonly localeKey: string
   pageNumber: number
 
   protected constructor(field: IASelectBaseField<T>) {
     super(field)
-    this.options = field.options
+    this.localeKey = field?.localeKey || ''
+    this.options = this.getOptionItems(field?.options)
     this.fetchOptionsActionName = field.fetchOptionsActionName
     this.preloadOptionsByIds = field.preloadOptionsByIds
     this.staticFilters = field.staticFilters || {}
@@ -108,6 +112,23 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
 
   calculatePosition({ dropdownList }) {
     dropdownList.style.position = 'fixed'
+  }
+
+  private getOptionName(value: string): string {
+    if (this.localeKey)
+      return i18n.t(`options.${this.localeKey}.${value}`)
+    if (i18n.te(`options.${value}`))
+      return i18n.t(`options.${value}`)
+
+    return value
+  }
+
+  private getOptionItems(list: T[] | undefined): OptionsItem[] | undefined {
+    return list?.map((option: T | OptionsItem): OptionsItem =>
+      typeof option === 'string'
+        ? { id: option, name: this.getOptionName(option) }
+        : { ...option, name: this.getOptionName(option.name) },
+    )
   }
 
   async getOptions(filters: { search?: string; ids?: string[] } = {}) {
@@ -123,9 +144,7 @@ export abstract class ASelectBaseField<T extends OptionsItem = OptionsItem>
       },
     })
 
-    return list?.map((option: string | T): OptionsItem | T =>
-      typeof option === 'string' ? { id: option, name: option } : option,
-    ) || []
+    return this.getOptionItems(list)
   }
 
   async fetchOptions(search?: string) {
