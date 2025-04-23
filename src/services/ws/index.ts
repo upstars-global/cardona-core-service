@@ -1,82 +1,90 @@
 import { getAccessToken, getRefreshToken } from 'axios-jwt'
+import { Centrifuge } from 'centrifuge'
 import store from '../../store'
 import { checkIsLoggedIn } from '../../helpers/token-auth'
 import { messageTypes } from './config'
-import { Centrifuge } from 'centrifuge'
 
 export enum TyperRequest {
   Updated = 'updated',
   Created = 'created',
-  Deleted = 'deleted'
+  Deleted = 'deleted',
 }
 
 class WSService {
   static ws: null | Centrifuge = null
   static WSListSubscribe: Set<string> = new Set()
+  static WSchannel: null
 
-  static readonly maxTimeReconnect: number = 60000
   static async connect(channel) {
+    this.WSchannel = channel
     if (!checkIsLoggedIn() || !getAccessToken())
       return
 
-    // ws://localhost:63650/connection/websocket (lens link port)
+    // ws://localhost:56316/connection/websocket (lens link port)
     // wss://${location.host || location.hostname}/ws
     const client = new Centrifuge(`wss://${location.host || location.hostname}/ws`, {
       token: getAccessToken(),
       debug: true,
     })
-    if(channel) {
-      //Subscribe channel
-      for (var keyChannel in channel) {
-        client.newSubscription(channel[keyChannel])
-          .on('publication', function(ctx) {
-            WSService.parseData(ctx);
-          });
+
+    if (channel) {
+      // Subscribe channel
+      for (const keyChannel in channel) {
+        const sub = client.newSubscription(channel[keyChannel])
+          .on('publication', ctx => {
+            WSService.parseData(ctx)
+          })
       }
     }
 
-    client.on('error', async function(ctx) {
+    client.on('error', async ctx => {
       console.log(ctx?.error?.message ? `ERROR: ${ctx?.error?.message} / Type: ${ctx?.type}` : ctx)
       await store.dispatch('authCore/refreshAuth', getRefreshToken())
+
+      if (ctx?.error?.code === 109 || ctx?.error?.message === 'token expired') {
+        if (WSService.WSchannel)
+          WSService.connect(WSService.WSchannel)
+      }
     })
 
-    client.on('subscribed', function(ctx) {
+    client.on('subscribed', ctx => {
       console.log('subscribed to server-side channel', ctx.channel)
     })
 
-    client.on('subscribing', function(ctx) {
+    client.on('subscribing', ctx => {
       console.log('subscribing to server-side channel', ctx.channel)
     })
 
-    client.on('unsubscribed', function(ctx) {
+    client.on('unsubscribed', ctx => {
       console.log('unsubscribed from server-side channel', ctx.channel)
     })
 
-    client.on('publication', function(ctx) {
+    client.on('publication', ctx => {
       console.log('publication receive from server-side channel', ctx)
       WSService.parseData(JSON.parse(ctx.data))
     })
 
-    client.on('connecting', function(ctx) {
+    client.on('connecting', ctx => {
       console.log('connecting', ctx)
-    });
+    })
 
-    client.on('connected', function(ctx) {
+    client.on('connected', ctx => {
       if (WSService.WSListSubscribe?.size) {
         WSService.WSListSubscribe.forEach(subChannel => {
           client?._subs?.[subChannel]?.subscribe()
         })
       }
-    });
+    })
 
-    client.connect();
+    client.connect()
 
     this.ws = client
+
     return client
   }
 
   static disconnect = () => {
-    this.ws?.disconnect();
+    this.ws?.disconnect()
   }
 
   static send(text) {
@@ -99,7 +107,8 @@ class WSService {
       // If the connection is not established, we will try to connect again
       setTimeout(() => {
         WSService.ws?._subs?.[channel]?.subscribe()
-      }, 500);
+      }, 500)
+
       return
     }
 
@@ -114,18 +123,22 @@ class WSService {
     this.WSListSubscribe.delete(channel)
   }
 
-  static async parseData( message ) {
-    if (!message?.channel) return
+  static async parseData(message) {
+    if (!message?.channel)
+      return
 
     const channel = message?.channel.replace('-feed', '')
     const type = message?.data?.type
     const data = message?.data
 
-    if (type === TyperRequest.Created || type === TyperRequest.Updated) {
+    console.log(type)
+
+    if (type === TyperRequest.Created)
+      await store.dispatch(`${channel}/createWSData`, data)
+    else if (type === TyperRequest.Updated)
       await store.dispatch(`${channel}/setWSData`, data)
-    } else if (type === TyperRequest.Deleted) {
+    else if (type === TyperRequest.Deleted)
       await store.dispatch(`${channel}/deleteWSData`, data)
-    }
   }
 }
 
