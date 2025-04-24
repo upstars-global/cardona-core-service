@@ -51,15 +51,21 @@ export default {
     selectedProject: ({ selectedProject, priorityProject }, { userProjects }): ProjectInfoInput => {
       const defaultProject: ProjectInfoInput = userProjects[0]
 
-      const projectIdFromStorage: string | null = localStorage.getItem(
-        storageKeys.selectedProjectId,
-      )
+      const projectIdFromStorage: string | null = localStorage.getItem(storageKeys.selectedProjectId)
 
-      const selectedProjectInfo: ProjectInfoInput = userProjects.find(
-        ({ id }) => id === Number(projectIdFromStorage),
-      )
+      const selectedProjectInfo: ProjectInfoInput = userProjects.find(({ id }) => id === Number(projectIdFromStorage))
 
-      return priorityProject?.alias || selectedProject || selectedProjectInfo || defaultProject
+      return priorityProject || selectedProject || selectedProjectInfo || defaultProject
+    },
+
+    selectedProjectWithoutPriority: ({ selectedProject, priorityProject }, { userProjects }): ProjectInfoInput => {
+      const defaultProject: ProjectInfoInput = userProjects[0]
+
+      const projectIdFromStorage: string | null = localStorage.getItem(storageKeys.selectedProjectId)
+
+      const selectedProjectInfo: ProjectInfoInput = userProjects.find(({ id }) => id === Number(projectIdFromStorage))
+
+      return selectedProject || selectedProjectInfo || defaultProject
     },
 
     selectedProduct: ({ selectedProduct }) => selectedProduct,
@@ -125,8 +131,9 @@ export default {
     SET_SELECTED_PRODUCT(state, product: OptionsItem) {
       state.selectedProduct = product
     },
-    SET_PRIORITY_PROJECT(state, alias) {
-      state.priorityProject = { alias }
+    SET_PRIORITY_PROJECT(state, project) {
+      state.priorityProject = state.userInfo.projects.find(({ alias }) => alias === project.alias) || null
+      console.log('priorityProject', state.priorityProject)
     },
   },
 
