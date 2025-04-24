@@ -133,7 +133,6 @@ export default {
     },
     SET_PRIORITY_PROJECT(state, project) {
       state.priorityProject = state.userInfo.projects.find(({ alias }) => alias === project.alias) || null
-      console.log('priorityProject', state.priorityProject)
     },
   },
 
