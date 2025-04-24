@@ -131,7 +131,7 @@ export default {
     SET_SELECTED_PRODUCT(state, product: OptionsItem) {
       state.selectedProduct = product
     },
-    SET_PRIORITY_PROJECT(state, project) {
+    SET_PRIORITY_PROJECT(state, project: ProjectInfoInput) {
       state.priorityProject = state.userInfo.projects.find(({ alias }) => alias === project.alias) || null
     },
   },
