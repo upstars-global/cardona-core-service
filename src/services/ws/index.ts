@@ -25,6 +25,10 @@ class WSService {
     const client = new Centrifuge(`wss://${location.host || location.hostname}/ws`, {
       token: getAccessToken(),
       debug: true,
+      async onRefresh(ctx, cb) {
+        await store.dispatch('authCore/refreshAuth', getRefreshToken())
+        cb({ token: getAccessToken() })
+      },
     })
 
     if (channel) {
