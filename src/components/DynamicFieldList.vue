@@ -16,8 +16,10 @@ const props = withDefaults(defineProps<{
   required?: boolean
   allowAddWithEmpty?: boolean
   hideLabelOnEmptyList?: boolean
+  fieldCol?: number | string
 }>(),
 {
+  fieldCol: 4,
   hideLabelOnEmptyList: true,
   required: false,
 })
@@ -172,12 +174,13 @@ const disableAddFiled = computed(() =>
         v-else
         :key="idx"
         class="py-0"
-        md="4"
+        :md="fieldCol"
       >
         <slot
           :key="key"
+          :name="`field-${key}`"
+          :row-index="rowIndex"
           :field="rows[rowIndex][key]"
-          :index="rowIndex"
         >
           <FieldGenerator
             v-model="rows[rowIndex][key]"
