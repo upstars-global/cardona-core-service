@@ -15,20 +15,30 @@ class WSService {
   static WSListSubscribe: Set<string> = new Set()
   static WSchannel: null
 
-  static async connect(channel) {
+  static async connect(channel, needRefresh = false) {
     this.WSchannel = channel
-    if (!checkIsLoggedIn() || !getAccessToken())
+    if (!checkIsLoggedIn() || !getAccessToken() || !getRefreshToken())
       return
+
+    async function getToken() {
+      const data: {
+        accessToken: string
+        refreshToken: string
+      } = await store.dispatch('authCore/refreshAuth', getRefreshToken())
+
+      return data?.accessToken
+    }
+
+    let refreshAuthToken = null
+    if (needRefresh)
+      refreshAuthToken = await getToken()
 
     // ws://localhost:56316/connection/websocket (lens link port)
     // wss://${location.host || location.hostname}/ws
     const client = new Centrifuge(`wss://${location.host || location.hostname}/ws`, {
-      token: getAccessToken(),
       debug: true,
-      async onRefresh(ctx, cb) {
-        await store.dispatch('authCore/refreshAuth', getRefreshToken())
-        cb({ token: getAccessToken() })
-      },
+      token: refreshAuthToken || getAccessToken(),
+      getToken,
     })
 
     if (channel) {
@@ -43,11 +53,12 @@ class WSService {
 
     client.on('error', async ctx => {
       console.log(ctx?.error?.message ? `ERROR: ${ctx?.error?.message} / Type: ${ctx?.type}` : ctx)
-      await store.dispatch('authCore/refreshAuth', getRefreshToken())
 
       if (ctx?.error?.code === 109 || ctx?.error?.message === 'token expired') {
-        if (WSService.WSchannel)
-          WSService.connect(WSService.WSchannel)
+        if (WSService.WSchannel) {
+          WSService.disconnect()
+          WSService.connect(WSService.WSchannel, true)
+        }
       }
     })
 
@@ -68,7 +79,7 @@ class WSService {
       WSService.parseData(JSON.parse(ctx.data))
     })
 
-    client.on('connecting', ctx => {
+    client.on('connecting', async ctx => {
       console.log('connecting', ctx)
     })
 
