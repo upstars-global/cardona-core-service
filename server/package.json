@@ -9,6 +9,7 @@
     "preview": "node .output/server/index.mjs"
   },
   "dependencies": {
-    "@octokit/auth-app": "^7.1.5"
+    "@octokit/auth-app": "^7.1.5",
+    "centrifuge": "^5.3.4"
   }
 }

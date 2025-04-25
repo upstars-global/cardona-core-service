@@ -7,7 +7,7 @@ withDefaults(defineProps<{
     amount: number
     currency: string
   }
-  align: AlignType
+  align?: AlignType
 }>(), {
   align: AlignType.Right,
 })
@@ -38,14 +38,17 @@ withDefaults(defineProps<{
       data-test-id="data-remainder"
       class="text-color-mute"
     >
-      <span class="pl-1 remainder-label"  data-test-id="data-remainder-label">
+      <span
+        class="pl-1 remainder-label"
+        data-test-id="data-remainder-label"
+      >
         {{ $t('common.remainder') }}
       </span>
 
       <span
         :key="data.remainder"
-        data-test-id="data-remainder-value"
         v-currency="data.remainder"
+        data-test-id="data-remainder-value"
         class="px-1"
       />
       <span>

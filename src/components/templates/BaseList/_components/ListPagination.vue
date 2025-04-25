@@ -8,7 +8,7 @@ interface Props {
   linkGen?: Function
   dataMeta: { from: number; to: number; of: number }
   modelValue: number
-  small: boolean
+  small?: boolean
 }
 
 interface VPaginationItem {

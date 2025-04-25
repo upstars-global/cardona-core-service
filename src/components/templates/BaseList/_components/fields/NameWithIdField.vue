@@ -73,7 +73,7 @@ const routePath = computed((): Location | Record<string, never> => {
       <Component
         :is="currentComponent"
         data-test-id="copy-field"
-        :value="itemId"
+        :value="itemId?.toString() || ''"
       />
     </span>
   </div>
