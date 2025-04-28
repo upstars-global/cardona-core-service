@@ -75,7 +75,7 @@ const updateValue = (value: unknown): void => {
   >
     <div
       v-if="!openEdit"
-      class="d-flex justify-content-center align-start"
+      class="d-flex justify-content-center align-center"
       data-test-id="readable-value"
     >
       <slot :value="value">
@@ -96,7 +96,7 @@ const updateValue = (value: unknown): void => {
 
     <div
       v-else
-      class="d-flex justify-content-center align-items-center"
+      class="d-flex justify-content-center align-start"
     >
       <slot
         name="input"
