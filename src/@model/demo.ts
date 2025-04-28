@@ -21,6 +21,7 @@ import type { BColors, BLightColors } from './bootstrap'
 import { BaseDatePeriod } from './date'
 import { SeoForm } from './seo'
 import { getTranslationForm } from './translations'
+import { CurrencyBaseField } from '@/@model/templates/baseField/currency'
 
 export interface PhoneAndCountry {
   phone: string
@@ -208,10 +209,20 @@ export class DemoForm {
   readonly conditions: ConditionsBaseField
   public usersList: UsersListBaseField
   public phoneList: Array<PhoneAndCountryFieldListItem>
+  public testCurrency: CurrencyBaseField
 
   constructor(data: any) {
     this.id = data?.id
     this.image = data?.image
+    this.testCurrency = new CurrencyBaseField({
+      key: 'testCurrency',
+      value: { currency: 'DOL', value: '123' },
+      label: i18n.t('page.demo.testCurrencyField'),
+      validationRules: { required: true },
+      isIntegerNumbers: true,
+      withPositiveNumbers: true,
+      isCents: false,
+    })
     this.switch = new SwitchBaseField({
       key: 'switch',
       value: data?.switch,
