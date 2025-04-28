@@ -3,21 +3,16 @@ import type { SortDirection } from './templates/baseList'
 import type { SortItem } from '@core/types'
 
 export interface PaginationData {
-  pageNumber: number
-  perPage: number
-  total?: number
+  readonly pageNumber: number
+  readonly perPage?: number
+  readonly total?: number
 }
 
-export interface IRequestListPayload {
-  pagination: PaginationData
-  sort?: Array<IListSort>
-  type?: string
-  id?: string
-  filter?: Record<string, unknown>
-  options: {
-    customApiPrefix?: string
-    listItemModel?: { new (item: unknown): object }
-  }
+export interface IRequestListPayload<T = any> {
+  readonly page?: number
+  readonly perPage?: number
+  readonly sort?: Array<IListSort>
+  readonly filter?: T
 }
 
 export interface IListSort {
