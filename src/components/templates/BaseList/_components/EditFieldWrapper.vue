@@ -112,7 +112,7 @@ const updateValue = (value: unknown): void => {
           class="cursor-pointer text-success v-btn--rectangle"
           variant="text"
           :size="VSizes.Medium"
-          :disabled="!allowEmpty && !acceptedValue"
+          :disabled="!allowEmpty && !value"
           @click.stop="setUpdate"
         >
           <VIcon :icon="IconsList.CheckIcon" />
