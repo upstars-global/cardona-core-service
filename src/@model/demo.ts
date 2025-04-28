@@ -217,7 +217,7 @@ export class DemoForm {
     this.testCurrency = new CurrencyBaseField({
       key: 'testCurrency',
       value: { currency: 'DOL', value: '123' },
-      label: i18n.t('page.demo.testCurrencyField'),
+      label: 'DOL',
       validationRules: { required: true },
       isIntegerNumbers: true,
       withPositiveNumbers: true,

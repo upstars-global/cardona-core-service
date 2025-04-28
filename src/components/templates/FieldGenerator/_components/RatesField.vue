@@ -3,8 +3,8 @@ import { computed, ref, watch } from 'vue'
 
 import { useStore } from 'vuex'
 import { IconsList } from '../../../../@model/enums/icons'
-import type { RatesBaseField } from '../../../../@model/templates/baseField'
-import { NumberBaseField, TextBaseField } from '../../../../@model/templates/baseField'
+import type { NumberBaseField, RatesBaseField } from '../../../../@model/templates/baseField'
+import { CurrencyBaseField } from '../../../../@model/templates/baseField'
 import FieldGenerator from '../index.vue'
 import type { RatesValueItem } from '../../../../@model/templates/baseField/rates'
 import { MAX_WIDTH_TOOLTIP } from '../../../..//utils/constants'
@@ -65,23 +65,38 @@ watch(
 )
 
 function setRates(): NumberBaseField[] {
-  const field = props.field.withString ? TextBaseField : NumberBaseField
+  const field = CurrencyBaseField
 
   return allCurrencies.value.map(
     (currency, index) => {
       return new field({
+        ...props.field,
+        label: currency,
         key: currency,
         id: `${props.field.id}_${currency}`,
         value: props.modelValue.find(item => item.currency === currency)?.value ?? 0,
-        label: currency,
-        placeholder: props.field.placeholder,
-        validationRules: props.field.validationRules,
-        append: props.append,
-        withPositiveNumbers: true,
-        isIntegerNumbers: props.field.isIntegerNumbers,
       })
     },
   )
+
+  // const field = props.field.withString ? TextBaseField : NumberBaseField
+  //
+  // return allCurrencies.value.map(
+  //   (currency, index) => {
+  //     return new field({
+  //       ...props.field,
+  //       key: currency,
+  //       id: `${props.field.id}_${currency}`,
+  //       value: props.modelValue.find(item => item.currency === currency)?.value ?? 0,
+  //       label: currency,
+  //       placeholder: props.field.placeholder,
+  //       validationRules: props.field.validationRules,
+  //       append: props.append,
+  //       withPositiveNumbers: true,
+  //       isIntegerNumbers: props.field.isIntegerNumbers,
+  //     })
+  //   },
+  // )
 }
 </script>
 

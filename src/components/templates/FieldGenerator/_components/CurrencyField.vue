@@ -31,7 +31,7 @@ function setRate(): NumberBaseField | TextBaseField {
     key: props.modelValue.currency,
     id: `${props.field.id}_${props.modelValue.currency}`,
     value: props.modelValue?.value ?? 0,
-    label: props.modelValue.currency,
+    label: '',
     placeholder: props.field.placeholder,
     validationRules: props.field.validationRules,
     append: props.append,
