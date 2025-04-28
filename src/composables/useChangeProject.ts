@@ -15,10 +15,18 @@ export const useChangeProject = () => {
   const navigationOnProjectChanges = (project: ProjectInfoInput) => {
     const featureRoot = route?.meta?.breadcrumb?.[0]?.to?.name
 
-    if (route?.params?.id && featureRoot)
-      return router.push({ name: featureRoot, params: { ...route.params, project: project.alias } })
+    if (route?.params?.id && featureRoot) {
+      return router.push({
+        name: featureRoot,
+        params: { ...route.params, project: project.alias },
+        query: { ...route.query },
+      })
+    }
 
-    return router.push({ params: { ...route.params, project: project.alias } })
+    return router.push({
+      params: { ...route.params, project: project.alias },
+      query: { ...route.query },
+    })
   }
 
   const changeProject = async (project: ProjectInfoInput) => {
