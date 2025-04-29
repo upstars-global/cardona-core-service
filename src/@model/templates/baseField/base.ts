@@ -2,7 +2,7 @@ import type { Component } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import store from '../../../store'
 import type { IValidationConfig } from '../../../@model/validations'
-import type { IRequestListPayload, OptionsItem } from '../../../@model'
+import type { OptionsItem } from '../../../@model'
 import { i18n } from '../../../plugins/i18n'
 import type { PermissionType } from '@permissions'
 
@@ -135,17 +135,14 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     if (filters.search?.length)
       this.pageNumber = 1
 
-    const { list = [] }: { list: Array<string> } = await store.dispatch(
-      this.fetchOptionsActionName as string, {
-        pagination: {
-          perPage: 50,
-          pageNumber: this.pageNumber,
-        },
-        filter: {
-          ...this.staticFilters,
-          ...filters,
-        } as IRequestListPayload,
-      })
+    const { list = [] } = await store.dispatch(this.fetchOptionsActionName, {
+      perPage: 50,
+      pageNumber: this.pageNumber,
+      filter: {
+        ...this.staticFilters,
+        ...filters,
+      },
+    })
 
     return this.getOptionItems(list)
   }
