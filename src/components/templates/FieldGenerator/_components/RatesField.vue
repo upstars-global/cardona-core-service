@@ -55,10 +55,7 @@ watch(
   () => {
     emit(
       'update:modelValue',
-      formRates.value.map((item: NumberBaseField) => ({
-        currency: item.key,
-        value: item.value,
-      })),
+      formRates.value.map((item: NumberBaseField) => item.value),
     )
   },
   { deep: true, immediate: true },
@@ -70,11 +67,15 @@ function setRates(): NumberBaseField[] {
   return allCurrencies.value.map(
     (currency, index) => {
       return new field({
-        ...props.field,
         label: currency,
         key: currency,
         id: `${props.field.id}_${currency}`,
-        value: props.modelValue.find(item => item.currency === currency)?.value ?? 0,
+        value: props.modelValue.find(item => item.currency === currency),
+        placeholder: props.field.placeholder,
+        withPositiveNumbers: true,
+        isIntegerNumbers: props.field.isIntegerNumbers,
+        withString: props.field.withString,
+        isCents: props.field?.isCents ?? true,
       })
     },
   )

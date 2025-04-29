@@ -161,6 +161,7 @@ const mockUploadFile = async () => {
           </VRow>
           <VRow>
             <VCol>
+              {{ formData.rates.value }}
               <FieldGenerator
                 v-model="formData.rates"
                 :disabled="isDisabledField"

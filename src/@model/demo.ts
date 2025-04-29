@@ -222,7 +222,6 @@ export class DemoForm {
       isIntegerNumbers: true,
       withPositiveNumbers: true,
       isCents: false,
-      withString: true,
     })
     this.switch = new SwitchBaseField({
       key: 'switch',
@@ -312,6 +311,7 @@ export class DemoForm {
       label: i18n.t('page.demo.rates'),
       placeholder: '0.00',
       trackBy: 'bet',
+      isCents: false,
       validationRules: { required: true },
     })
     this.phone = new PhoneBaseField({

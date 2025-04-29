@@ -20,7 +20,7 @@ export class CurrencyBaseField extends BaseField {
     this.isIntegerNumbers = data.isIntegerNumbers
     this._value = {
       ...data.value,
-      value: this.getInitialValue(data.value?.[this.trackBy]),
+      value: this.getInitialValue(data.value[this.trackBy]),
     }
   }
 
@@ -30,7 +30,7 @@ export class CurrencyBaseField extends BaseField {
 
     return {
       currency: this._value.currency,
-      [this.trackBy]: this.getTransformedValue(this._value.value),
+      [this.trackBy]: this.getTransformedValue(this._value?.value),
     }
   }
 
