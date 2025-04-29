@@ -1,6 +1,5 @@
 import ApiService, { ContentType } from '../../services/api'
 import { LoadFile } from '../../@model/compostela'
-import type { IRequestListPayload } from '@/@model'
 
 export default {
   namespaced: true,
@@ -30,14 +29,18 @@ export default {
       return new LoadFile(data)
     },
 
-    async getImagesList(_, payload: IRequestListPayload) {
+    async getImagesList(
+      { commit },
+      { pageNumber, perPage, search }: { pageNumber: number; perPage: number; search: string },
+    ) {
       const data = await ApiService.request({
         type: 'App.V2.Compostela.Images.List',
         pagination: {
-          ...payload.pagination,
+          pageNumber,
+          perPage,
         },
         filter: {
-          ...payload.filter,
+          path: search,
         },
       })
 
@@ -60,12 +63,8 @@ export default {
         search,
       }: { path: string; pageNumber: number; perPage: number; search: string },
     ) {
-      if (search) {
-        return dispatch('getImagesList', {
-          pagination: { pageNumber, perPage },
-          filter: { path: { search } },
-        })
-      }
+      if (search)
+        return dispatch('getImagesList', { pageNumber, perPage, search })
 
       return await ApiService.request({
         type: 'App.V2.Compostela.Structure.List',
