@@ -3,7 +3,6 @@ import { markRaw } from 'vue'
 import RatesField from '../../../components/templates/FieldGenerator/_components/RatesField.vue'
 import type { IBaseField } from './base'
 import { BaseField } from './base'
-import { multiplication } from '@/helpers/math-operations'
 
 export interface RatesValueItem {
   readonly currency: string
@@ -56,9 +55,6 @@ export class RatesBaseField extends BaseField implements IRatesBaseField {
 
     if (!value)
       return null
-
-    if (this.isCents && !this.withString)
-      return multiplication(value, 100)
 
     return this.withString ? value : +value
   }
