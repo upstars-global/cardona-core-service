@@ -216,12 +216,13 @@ export class DemoForm {
     this.image = data?.image
     this.testCurrency = new CurrencyBaseField({
       key: 'testCurrency',
-      value: { currency: 'DOL', value: '123' },
-      label: 'DOL',
+      value: { currency: 'USD', value: 123 },
+      label: 'USD',
       validationRules: { required: true },
       isIntegerNumbers: true,
       withPositiveNumbers: true,
       isCents: false,
+      withString: true,
     })
     this.switch = new SwitchBaseField({
       key: 'switch',

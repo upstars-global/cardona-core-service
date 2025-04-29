@@ -1,65 +1,37 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-
+import { computed } from 'vue'
 import type { RatesBaseField } from '../../../../@model/templates/baseField'
-import { NumberBaseField, TextBaseField } from '../../../../@model/templates/baseField'
-import FieldGenerator from '../index.vue'
 import type { RatesValueItem } from '../../../../@model/templates/baseField/rates'
+import TextField from '../../../../components/templates/FieldGenerator/_components/TextField.vue'
+import NumberField from '../../../../components/templates/FieldGenerator/_components/NumberField.vue'
 
-const props = withDefaults(
-  defineProps<{
-    modelValue: RatesValueItem
-    field: RatesBaseField
-    disabled?: boolean
-    append?: string
-  }>(),
-  {
-    append: '',
-  },
-)
-
-const emit = defineEmits<{
-  (event: 'update:modelValue', value: RatesValueItem): void
+const props = defineProps<{
+  modelValue: RatesValueItem
+  field: RatesBaseField
+  errors?: boolean
+  disabled?: boolean
 }>()
 
-const currencyField = ref<NumberBaseField | TextBaseField>(setRate())
+const emit = defineEmits<{
+  (event: 'update:modelValue', value: Required<RatesValueItem>): void
+}>()
 
-function setRate(): NumberBaseField | TextBaseField {
-  const field = props.field.withString ? TextBaseField : NumberBaseField
-
-  return new field({
-    key: props.modelValue.currency,
-    id: `${props.field.id}_${props.modelValue.currency}`,
-    value: props.modelValue?.value ?? 0,
-    label: '',
-    placeholder: props.field.placeholder,
-    validationRules: props.field.validationRules,
-    append: props.append,
-    withPositiveNumbers: true,
-    isIntegerNumbers: props.field.isIntegerNumbers,
-  })
-}
-
-watch(
-  () => currencyField,
-  () => {
-    emit(
-      'update:modelValue',
-      {
-        currency: currencyField.value.key,
-        value: currencyField.value.value,
-      },
-    )
+const internalValue = computed({
+  get: () => props.modelValue.value,
+  set: (value: RatesValueItem) => {
+    emit('update:modelValue', { value, currency: props.modelValue.currency })
   },
-  { deep: true, immediate: true },
-)
+})
+
+const component = computed(() => props.field.withString ? TextField : NumberField)
 </script>
 
 <template>
-  <div>
-    <FieldGenerator
-      v-model="currencyField"
-      :disabled="disabled"
-    />
-  </div>
+  <component
+    :is="component"
+    v-model="internalValue"
+    :field="field"
+    :errors="errors"
+    :disabled="disabled"
+  />
 </template>
