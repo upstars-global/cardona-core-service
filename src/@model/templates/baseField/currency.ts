@@ -1,8 +1,8 @@
 import { markRaw } from 'vue'
 import type { RatesValueItem } from '../../../@model/templates/baseField/rates'
 import CurrencyField from '../../../components/templates/FieldGenerator/_components/CurrencyField.vue'
-import { division, multiplication } from '@/helpers/math-operations'
-import { BaseField } from '@/@model/templates/baseField/base'
+import { division, multiplication } from '../../../helpers/math-operations'
+import { BaseField } from '../../../@model/templates/baseField/base'
 
 export class CurrencyBaseField extends BaseField {
   readonly component: Component = markRaw(CurrencyField)
