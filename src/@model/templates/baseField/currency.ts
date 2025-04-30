@@ -1,41 +1,35 @@
 import { markRaw } from 'vue'
-import type { IRatesBaseField, RatesValueItem } from '../../../@model/templates/baseField/rates'
+import type { IRatesBaseField } from '../../../@model/templates/baseField/rates'
 import CurrencyField from '../../../components/templates/FieldGenerator/_components/CurrencyField.vue'
 import { division, multiplication } from '../../../helpers/math-operations'
 import { BaseField } from '../../../@model/templates/baseField/base'
 
+export type CurrencyValue = number | string
 export interface ICurrencyBaseField extends IRatesBaseField {
-  value: RatesValueItem
+  value: CurrencyValue
 }
 
 export class CurrencyBaseField extends BaseField {
   readonly component: Component = markRaw(CurrencyField)
-  protected _value?: Required<RatesValueItem>
+  protected _value?: CurrencyValue
   readonly isCents?: boolean
-  readonly trackBy?: string
   readonly withString?: boolean
   readonly isIntegerNumbers?: boolean
+  readonly withPositiveNumbers?: boolean
 
   constructor(data: ICurrencyBaseField) {
     super(data)
-    this.trackBy = data.trackBy ?? 'value'
     this.isCents = data.isCents ?? true
     this.withString = data.withString
     this.isIntegerNumbers = data.isIntegerNumbers
-    this._value = {
-      ...data.value,
-      value: this.getInitialValue(data.value[this.trackBy]),
-    }
+    this._value = this.getInitialValue(data.value)
   }
 
-  transformField(): RatesValueItem {
+  transformField(): CurrencyValue {
     if (!this._value)
-      return { currency: '', value: Number.NaN }
+      return ''
 
-    return {
-      currency: this._value.currency,
-      [this.trackBy]: this.getTransformedValue(this._value?.value),
-    }
+    return this.getTransformedValue(this._value)
   }
 
   protected getInitialValue(value: number): number {

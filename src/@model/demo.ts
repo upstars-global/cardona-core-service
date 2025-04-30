@@ -307,11 +307,9 @@ export class DemoForm {
     this.currency = new CurrencyBaseField({
       key: 'currency',
       placeholder: '0.0',
-      value: { currency: 'USD', value: 123 },
+      value: 123,
       label: 'USD',
       validationRules: { required: true },
-      isIntegerNumbers: true,
-      withPositiveNumbers: true,
       info: 'This is currency field, with logic of rates field',
     })
     this.phone = new PhoneBaseField({
