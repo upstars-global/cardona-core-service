@@ -29,13 +29,15 @@ export const useChangeProject = () => {
     })
   }
 
-  const changeProject = async (project: ProjectInfoInput) => {
+  const changeProject = async (project: ProjectInfoInput, withoutNavigation: boolean) => {
     const isSameProject: boolean = selectedProject.value?.id === project.id
 
     setStorage(storageKeys.selectedProjectId, project.id)
 
     if (!isSameProject) {
-      await navigationOnProjectChanges(project)
+      if (!withoutNavigation)
+        await navigationOnProjectChanges(project)
+
       await store.dispatch('setSelectedProject', project)
     }
   }
