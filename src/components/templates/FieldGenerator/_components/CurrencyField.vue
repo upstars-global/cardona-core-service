@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { RatesBaseField } from '../../../../@model/templates/baseField'
+import type { CurrencyBaseField } from '../../../../@model/templates/baseField'
 import TextField from '../../../../components/templates/FieldGenerator/_components/TextField.vue'
 import NumberField from '../../../../components/templates/FieldGenerator/_components/NumberField.vue'
 import type { CurrencyValue } from '../../../../@model/templates/baseField/currency'
 
 const props = defineProps<{
   modelValue: CurrencyValue
-  field: RatesBaseField
+  field: CurrencyBaseField
   errors?: boolean
   disabled?: boolean
 }>()
