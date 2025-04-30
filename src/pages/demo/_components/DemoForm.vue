@@ -90,10 +90,6 @@ const mockUploadFile = async () => {
           <VRow>
             <VCol cols="4">
               <FieldGenerator
-                v-model="formData.testCurrency"
-                :disabled="isDisabledField"
-              />
-              <FieldGenerator
                 v-model="formData.text"
                 :disabled="isDisabledField"
               />
@@ -149,6 +145,12 @@ const mockUploadFile = async () => {
                 :disabled="isDisabledField"
               />
             </VCol>
+            <VCol cols="4">
+              <FieldGenerator
+                v-model="formData.currency"
+                :disabled="isDisabledField"
+              />
+            </VCol>
           </VRow>
 
           <VRow>
@@ -161,7 +163,6 @@ const mockUploadFile = async () => {
           </VRow>
           <VRow>
             <VCol>
-              {{ formData.rates.value }}
               <FieldGenerator
                 v-model="formData.rates"
                 :disabled="isDisabledField"

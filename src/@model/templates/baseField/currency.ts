@@ -1,8 +1,12 @@
 import { markRaw } from 'vue'
-import type { RatesValueItem } from '../../../@model/templates/baseField/rates'
+import type { IRatesBaseField, RatesValueItem } from '../../../@model/templates/baseField/rates'
 import CurrencyField from '../../../components/templates/FieldGenerator/_components/CurrencyField.vue'
 import { division, multiplication } from '../../../helpers/math-operations'
 import { BaseField } from '../../../@model/templates/baseField/base'
+
+export interface ICurrencyBaseField extends IRatesBaseField {
+  value: RatesValueItem
+}
 
 export class CurrencyBaseField extends BaseField {
   readonly component: Component = markRaw(CurrencyField)
@@ -12,7 +16,7 @@ export class CurrencyBaseField extends BaseField {
   readonly withString?: boolean
   readonly isIntegerNumbers?: boolean
 
-  constructor(data: any) {
+  constructor(data: ICurrencyBaseField) {
     super(data)
     this.trackBy = data.trackBy ?? 'value'
     this.isCents = data.isCents ?? true

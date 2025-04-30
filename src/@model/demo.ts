@@ -209,20 +209,11 @@ export class DemoForm {
   readonly conditions: ConditionsBaseField
   public usersList: UsersListBaseField
   public phoneList: Array<PhoneAndCountryFieldListItem>
-  public testCurrency: CurrencyBaseField
+  public currency: CurrencyBaseField
 
   constructor(data: any) {
     this.id = data?.id
     this.image = data?.image
-    this.testCurrency = new CurrencyBaseField({
-      key: 'testCurrency',
-      value: { currency: 'USD', value: 123 },
-      label: 'USD',
-      validationRules: { required: true },
-      isIntegerNumbers: true,
-      withPositiveNumbers: true,
-      isCents: false,
-    })
     this.switch = new SwitchBaseField({
       key: 'switch',
       value: data?.switch,
@@ -311,8 +302,17 @@ export class DemoForm {
       label: i18n.t('page.demo.rates'),
       placeholder: '0.00',
       trackBy: 'bet',
-      isCents: false,
       validationRules: { required: true },
+    })
+    this.currency = new CurrencyBaseField({
+      key: 'currency',
+      placeholder: '0.0',
+      value: { currency: 'USD', value: 123 },
+      label: 'USD',
+      validationRules: { required: true },
+      isIntegerNumbers: true,
+      withPositiveNumbers: true,
+      info: 'This is currency field, with logic of rates field',
     })
     this.phone = new PhoneBaseField({
       key: 'phone',
