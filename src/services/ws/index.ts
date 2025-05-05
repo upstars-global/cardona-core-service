@@ -144,9 +144,9 @@ class WSService {
 
     const channel = message?.channel.replace('-feed', '')
     const type = message?.data?.type
-    const data = message?.data
+    const data = message?.data || []
 
-    console.log(type)
+    console.debug('WSService.parseData', message)
 
     if (type === TyperRequest.Created)
       await store.dispatch(`${channel}/createWSData`, data)
