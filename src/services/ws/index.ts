@@ -144,7 +144,7 @@ class WSService {
 
     const channel = message?.channel.replace('-feed', '')
     const type = message?.data?.type
-    const data = message?.data || []
+    const data = message?.data
 
     console.debug('WSService.parseData', message)
 
