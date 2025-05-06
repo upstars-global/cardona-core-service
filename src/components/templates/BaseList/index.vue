@@ -261,7 +261,6 @@ const {
   linkGen,
   updateTotal,
   onChangePagination,
-  removePagination,
 } = paginationConfig
 
 const itemsPerPage = computed(() => props.config?.pagination ? perPage.value : items.value.length)
