@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, onBeforeMount, onUnmounted, ref, useSlots, watch } from 'vue'
+import { computed, inject, onBeforeMount, ref, useSlots, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
@@ -543,10 +543,6 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
 onBeforeMount(async () => {
   await getList()
   isInitialState.value = false
-})
-
-onUnmounted(() => {
-  removePagination()
 })
 
 const editingId = ref<string | null>(null)
