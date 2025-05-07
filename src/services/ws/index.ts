@@ -146,7 +146,7 @@ class WSService {
     const type = message?.data?.type
     const data = message?.data
 
-    console.log(type)
+    console.debug('WSService.parseData', message)
 
     if (type === TyperRequest.Created)
       await store.dispatch(`${channel}/createWSData`, data)
