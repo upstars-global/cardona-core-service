@@ -4,8 +4,8 @@ import { useStore } from 'vuex'
 import CopyField from '../../../../../components/templates/BaseList/_components/fields/CopyField.vue'
 import CopyShortField from '../../../../../components/templates/BaseList/_components/fields/CopyShortField.vue'
 import { VColors } from '../../../../../@model/vuetify'
-import { IconsList } from '@/@model/enums/icons'
-import { copyToClipboard } from '@/helpers/clipboard'
+import { IconsList } from '../../../../../@model/enums/icons'
+import { copyToClipboard } from '../../../../../helpers/clipboard'
 
 const props = defineProps<{
   item: Record<string, any>
