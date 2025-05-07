@@ -4,6 +4,8 @@ import { useStore } from 'vuex'
 import CopyField from '../../../../../components/templates/BaseList/_components/fields/CopyField.vue'
 import CopyShortField from '../../../../../components/templates/BaseList/_components/fields/CopyShortField.vue'
 import { VColors } from '../../../../../@model/vuetify'
+import { IconsList } from '@/@model/enums/icons'
+import { copyToClipboard } from '@/helpers/clipboard'
 
 const props = defineProps<{
   item: Record<string, any>
@@ -38,33 +40,42 @@ const routePath = computed((): Location | Record<string, never> => {
   <div class="name-with-id-field white-space-nowrap">
     <div class="name-with-id-field__name">
       <slot>
-        <RouterLink
-          v-if="routePath?.name"
-          :to="routePath"
-          class="d-flex align-center"
-          data-test-id="link"
-          @click.stop
-        >
-          {{ itemName }}
-
-          <VChip
-            v-if="isYou"
-            :color="VColors.Info"
-            label
-            class="font-weight-semi-bold ml-1"
-            data-test-id="badge-you"
+        <div class="d-flex align-center">
+          <RouterLink
+            v-if="routePath?.name"
+            :to="routePath"
+            class="d-flex align-center"
+            data-test-id="link"
+            @click.stop
           >
-            {{ $t('common.you') }}
-          </VChip>
-        </RouterLink>
+            {{ itemName }}
 
-        <p
-          v-else
-          class="mb-0 text-primary"
-          data-test-id="name"
-        >
-          {{ itemName }}
-        </p>
+            <VChip
+              v-if="isYou"
+              :color="VColors.Info"
+              label
+              class="font-weight-semi-bold ml-1"
+              data-test-id="badge-you"
+            >
+              {{ $t('common.you') }}
+            </VChip>
+          </RouterLink>
+
+          <p
+            v-else
+            class="mb-0 text-primary"
+            data-test-id="name"
+          >
+            {{ itemName }}
+          </p>
+
+          <VIcon
+            :icon="IconsList.CopyIcon"
+            class="text-color-mute ml-1 cursor-pointer"
+            size="16"
+            @click.stop="copyToClipboard(itemName)"
+          />
+        </div>
       </slot>
     </div>
 
