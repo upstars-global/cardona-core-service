@@ -9,6 +9,7 @@ interface Props {
   isEdit?: boolean
   canEdit?: boolean
   disableAcceptUpdate?: boolean
+  allowEmpty?: boolean
 }
 interface Emits {
   (event: 'change-mode', payload: boolean): void
@@ -19,6 +20,7 @@ interface Emits {
 const props = withDefaults(defineProps<Props>(), {
   canEdit: true,
   disableAcceptUpdate: false,
+  allowEmpty: true,
 })
 
 const emits = defineEmits<Emits>()
@@ -94,7 +96,7 @@ const updateValue = (value: unknown): void => {
 
     <div
       v-else
-      class="d-flex justify-content-center align-items-center"
+      class="d-flex justify-content-center align-start"
     >
       <slot
         name="input"
@@ -110,6 +112,7 @@ const updateValue = (value: unknown): void => {
           class="cursor-pointer text-success v-btn--rectangle"
           variant="text"
           :size="VSizes.Medium"
+          :disabled="!allowEmpty && !value"
           @click.stop="setUpdate"
         >
           <VIcon :icon="IconsList.CheckIcon" />

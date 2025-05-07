@@ -39,6 +39,7 @@ export default {
     permissions: new AllPermission(),
     selectedProduct: null,
     selectedProject: null,
+    priorityProject: null,
   },
 
   getters: {
@@ -47,16 +48,22 @@ export default {
     userProjects: ({ userInfo }) => userInfo.projects,
     userProducts: ({ userInfo }) => userInfo.products,
 
-    selectedProject: ({ selectedProject }, { userProjects }): ProjectInfoInput => {
+    selectedProject: ({ selectedProject, priorityProject }, { userProjects }): ProjectInfoInput => {
       const defaultProject: ProjectInfoInput = userProjects[0]
 
-      const projectIdFromStorage: string | null = localStorage.getItem(
-        storageKeys.selectedProjectId,
-      )
+      const projectIdFromStorage: string | null = localStorage.getItem(storageKeys.selectedProjectId)
 
-      const selectedProjectInfo: ProjectInfoInput = userProjects.find(
-        ({ id }) => id === Number(projectIdFromStorage),
-      )
+      const selectedProjectInfo: ProjectInfoInput = userProjects.find(({ id }) => id === Number(projectIdFromStorage))
+
+      return priorityProject || selectedProject || selectedProjectInfo || defaultProject
+    },
+
+    selectedProjectWithoutPriority: ({ selectedProject, priorityProject }, { userProjects }): ProjectInfoInput => {
+      const defaultProject: ProjectInfoInput = userProjects[0]
+
+      const projectIdFromStorage: string | null = localStorage.getItem(storageKeys.selectedProjectId)
+
+      const selectedProjectInfo: ProjectInfoInput = userProjects.find(({ id }) => id === Number(projectIdFromStorage))
 
       return selectedProject || selectedProjectInfo || defaultProject
     },
@@ -123,6 +130,9 @@ export default {
     },
     SET_SELECTED_PRODUCT(state, product: OptionsItem) {
       state.selectedProduct = product
+    },
+    SET_PRIORITY_PROJECT(state, project: ProjectInfoInput) {
+      state.priorityProject = state.userInfo.projects.find(({ alias }) => alias === project.alias) || null
     },
   },
 
