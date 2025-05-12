@@ -423,12 +423,14 @@ export enum ExportFormat {
   JSON = 'json',
   CSV = 'csv',
   XLSX = 'xlsx',
+  XML = 'xml',
 }
 
 export enum DownloadFormat {
   json = 'application/json',
   csv = 'text/csv',
   xlsx = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  xml = 'application/xml',
 }
 
 export interface ISideBarCollapseItem {

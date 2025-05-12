@@ -16,8 +16,10 @@ const props = withDefaults(defineProps<{
   required?: boolean
   allowAddWithEmpty?: boolean
   hideLabelOnEmptyList?: boolean
+  fieldCol?: number | string
 }>(),
 {
+  fieldCol: 4,
   hideLabelOnEmptyList: true,
   required: false,
 })
@@ -153,13 +155,18 @@ const disableAddFiled = computed(() =>
         v-if="isBaseField(row)"
         class="py-0"
       >
-        <FieldGenerator
-          v-model="rows[rowIndex]"
-          :options="filteredOptions"
-          :with-info="false"
-          :disabled="disabled"
-          @search="fetchSelectOptions"
-        />
+        <slot
+          :field="rows[rowIndex]"
+          :index="rowIndex"
+        >
+          <FieldGenerator
+            v-model="rows[rowIndex]"
+            :options="filteredOptions"
+            :with-info="false"
+            :disabled="disabled"
+            @search="fetchSelectOptions"
+          />
+        </slot>
       </VCol>
 
       <VCol
@@ -167,15 +174,22 @@ const disableAddFiled = computed(() =>
         v-else
         :key="idx"
         class="py-0"
-        md="4"
+        :md="fieldCol"
       >
-        <FieldGenerator
-          v-model="rows[rowIndex][key]"
-          :options="filteredOptions"
-          :disabled="disabled"
-          :with-info="false"
-          @search="fetchSelectOptions"
-        />
+        <slot
+          :key="key"
+          :name="`field-${key}`"
+          :row-index="rowIndex"
+          :field="rows[rowIndex][key]"
+        >
+          <FieldGenerator
+            v-model="rows[rowIndex][key]"
+            :options="filteredOptions"
+            :disabled="disabled"
+            :with-info="false"
+            @search="fetchSelectOptions"
+          />
+        </slot>
       </VCol>
 
       <VCol
