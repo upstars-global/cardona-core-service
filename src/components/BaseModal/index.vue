@@ -75,7 +75,7 @@ const enhancedAttrs = computed(() => ({
     <template #default>
       <VCard class="modal-card">
         <div
-          class="modal-header with-absolute px-6 py-3 d-flex align-end justify-space-between"
+          class="modal-header with-absolute px-6 pt-3 d-flex align-end justify-space-between"
           :class="{
             'without-header-title': !title,
             [modalHeaderClass]: modalHeaderClass,

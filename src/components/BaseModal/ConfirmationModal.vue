@@ -26,15 +26,15 @@ defineEmits<{
   >
     <template #default="{ action }: BaseModalDefaultPropsOfSlot">
       <p
-        class="px-6 mb-2"
+        class="pa-6 mb-0"
         data-test-id="modal-description"
       >
         {{ description }}
       </p>
 
-      <hr class="my-4">
+      <hr class="ma-0">
 
-      <div class="px-6 pb-4 d-flex justify-end">
+      <div class="px-6 py-4 d-flex justify-end">
         <VBtn
           :variant="VVariants.Outlined"
           :color="VColors.Secondary"

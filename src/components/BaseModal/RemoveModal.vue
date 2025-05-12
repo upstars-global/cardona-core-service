@@ -65,10 +65,7 @@ const modalTitle = computed(() => {
     @hide="$emit('on-close-modal')"
   >
     <template #default="{ action }: BaseModalDefaultPropsOfSlot">
-      <VCardText
-        :class="{ 'pb-16': withRemoveComment }"
-        class="d-flex flex-column pt-0"
-      >
+      <VCardText class="d-flex flex-column py-6">
         <span
           class="text-body-1"
           data-test-id="modal-description"
@@ -82,8 +79,8 @@ const modalTitle = computed(() => {
           :placeholder="$t('common.comment')"
         />
       </VCardText>
-      <hr>
-      <VCardText class="d-flex justify-end gap-3 flex-wrap pt-0 pb-4">
+      <hr class="ma-0">
+      <VCardText class="d-flex justify-end gap-3 flex-wrap py-4">
         <VBtn
           :color="cancelBtnColor"
           :variant="cancelBtnVariant"
