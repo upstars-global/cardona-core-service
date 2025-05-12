@@ -40,6 +40,7 @@
     "axios": "1.4.0",
     "axios-jwt": "^2.0.1",
     "axios-mock-adapter": "1.21.4",
+    "centrifuge": "^5.3.4",
     "chart.js": "^4.4.0",
     "cookie-es": "^1.0.0",
     "countries-list": "^2.6.1",

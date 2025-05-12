@@ -145,6 +145,12 @@ const mockUploadFile = async () => {
                 :disabled="isDisabledField"
               />
             </VCol>
+            <VCol cols="4">
+              <FieldGenerator
+                v-model="formData.currency"
+                :disabled="isDisabledField"
+              />
+            </VCol>
           </VRow>
 
           <VRow>
