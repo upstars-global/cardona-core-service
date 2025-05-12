@@ -30,8 +30,8 @@ const props = withDefaults(defineProps<Props>(), {
 defineEmits<Emits>()
 
 enum Action {
-  Accept = 'accept',
-  Cancel = 'cancel',
+  Accept = 'on-accept',
+  Cancel = 'on-cancel',
 }
 
 interface Emits {
@@ -59,7 +59,7 @@ const acceptButtonConfig = computed(() => ({
 
 const cancelButtonConfig = computed(() => ({
   ...defaultCancelProps,
-  ...props.accept,
+  ...props.cancel,
 }))
 </script>
 
