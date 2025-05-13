@@ -64,7 +64,7 @@ const cancelButtonConfig = computed(() => ({
 </script>
 
 <template>
-  <hr class="my-4">
+  <hr class="ma-0 mb-4">
   <div class="px-6 pb-4 d-flex justify-end items-center">
     <VBtn
       v-bind="cancelButtonConfig"
