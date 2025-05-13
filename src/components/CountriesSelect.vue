@@ -59,14 +59,6 @@ const countriesRadioLabel = computed(() => {
   return radioLabels[countriesRadioModel.value]
 })
 
-const hasCountryCode = (codeList: string[], countryCode: string): boolean => {
-  return codeList.some(code => {
-    const [country] = code.split('-')
-
-    return country === countryCode
-  })
-}
-
 const regionsSet = computed(() => new Set(Object.values(regions.value).map(item => item.code)))
 const selectedCountriesList = computed(() => [...selectedCountriesVisible.value.values()].flat(1).map(item => item.code))
 
