@@ -130,6 +130,7 @@ const enhancedAttrs = computed(() => ({
           <slot
             name="modal-footer"
             :action="{ show, hide }"
+            :payload="payload"
           />
         </div>
       </VCard>

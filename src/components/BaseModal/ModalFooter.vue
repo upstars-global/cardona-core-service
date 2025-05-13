@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { VColors, VVariants } from '../../@model/vuetify'
 
 defineOptions({ name: 'ModalFooter' })
@@ -14,16 +15,20 @@ const props = withDefaults(defineProps<Props>(), {
     color: VColors.Secondary,
     variant: VVariants.Outlined,
     disabled: false,
+    isLoading: false,
   }),
 })
 
 defineEmits<Emits>()
+
+const { t } = useI18n()
 
 interface ButtonConfig {
   label?: string
   variant?: VVariants
   color?: VColors
   disabled?: boolean
+  isLoading?: boolean
 }
 
 interface Props {
@@ -45,13 +50,15 @@ const defaultAcceptProps = {
   label: '',
   color: VColors.Primary,
   disabled: false,
+  isLoading: false,
 }
 
 const defaultCancelProps = {
-  label: '',
+  label: t('common.cancel'),
   color: VColors.Secondary,
   variant: VVariants.Outlined,
   disabled: false,
+  isLoading: false,
 }
 
 const acceptButtonConfig = computed(() => ({
@@ -70,6 +77,7 @@ const cancelButtonConfig = computed(() => ({
   <div class="px-6 pb-4 d-flex justify-end items-center">
     <VBtn
       v-bind="cancelButtonConfig"
+      :loading="cancelButtonConfig.isLoading"
       @click="$emit(Action.Cancel)"
     >
       {{ cancelButtonConfig?.label }}
@@ -77,6 +85,7 @@ const cancelButtonConfig = computed(() => ({
     <VBtn
       class="ml-4"
       v-bind="acceptButtonConfig"
+      :loading="acceptButtonConfig.isLoading"
       @click="$emit(Action.Accept)"
     >
       {{ acceptButtonConfig?.label }}
