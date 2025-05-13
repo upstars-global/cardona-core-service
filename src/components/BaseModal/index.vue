@@ -12,6 +12,7 @@ interface Props {
   width?: string
   size?: ModalSizes
   modalHeaderClass?: string
+  modalBodyClass?: string
 }
 
 interface Emits {
@@ -20,7 +21,15 @@ interface Emits {
 }
 defineOptions({ name: 'BaseModal' })
 
-const props = withDefaults(defineProps<Props>(), { title: '', width: '', size: ModalSizes.Small, modalHeaderClass: '' })
+const props = withDefaults(
+  defineProps<Props>(),
+  {
+    title: '',
+    width: '',
+    size: ModalSizes.Small,
+    modalHeaderClass: '',
+    modalBodyClass: '',
+  })
 
 const emits = defineEmits<Emits>()
 
@@ -105,10 +114,21 @@ const enhancedAttrs = computed(() => ({
             <VIcon :icon="IconsList.XIcon" />
           </VBtn>
         </div>
-        <slot
-          :action="{ show, hide }"
-          :payload="payload"
-        />
+        <div
+          class="base-modal__body pa-6"
+          :class="modalBodyClass"
+        >
+          <slot
+            :action="{ show, hide }"
+            :payload="payload"
+          />
+        </div>
+        <div class="base-modal__footer">
+          <slot
+            name="modal-footer"
+            :action="{ show, hide }"
+          />
+        </div>
       </VCard>
     </template>
   </VDialog>

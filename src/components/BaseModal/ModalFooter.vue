@@ -2,17 +2,7 @@
 import { computed } from 'vue'
 import { VColors, VVariants } from '../../@model/vuetify'
 
-interface ButtonConfig {
-  label?: string
-  variant?: VVariants
-  color?: VColors
-  disabled?: boolean
-}
-
-interface Props {
-  accept: ButtonConfig
-  cancel: ButtonConfig
-}
+defineOptions({ name: 'ModalFooter' })
 
 const props = withDefaults(defineProps<Props>(), {
   accept: () => ({
@@ -28,6 +18,18 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 defineEmits<Emits>()
+
+interface ButtonConfig {
+  label?: string
+  variant?: VVariants
+  color?: VColors
+  disabled?: boolean
+}
+
+interface Props {
+  accept: ButtonConfig
+  cancel: ButtonConfig
+}
 
 enum Action {
   Accept = 'on-accept',
