@@ -115,8 +115,11 @@ const enhancedAttrs = computed(() => ({
           </VBtn>
         </div>
         <div
-          class="base-modal__body pa-6"
-          :class="modalBodyClass"
+          class="base-modal__body"
+          :class="{
+            'pa-6': !modalBodyClass,
+            [modalBodyClass]: modalBodyClass,
+          }"
         >
           <slot
             :action="{ show, hide }"
