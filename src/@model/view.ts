@@ -115,7 +115,7 @@ export class ViewInfo {
   readonly withSearch?: boolean
 
   constructor(data: IViewInfo) {
-    this.type = markRaw(data?.type)
+    this.type = markRaw(data.type || {})
     this.value = data?.value
     this.label = data?.label
     this.description = data?.description
