@@ -27,6 +27,8 @@ export default {
         type: 'App.V2.Auth.Google',
         data: {
           code,
+
+          // isLocal: true, // TODO: For test from localhost
         },
       })
 
