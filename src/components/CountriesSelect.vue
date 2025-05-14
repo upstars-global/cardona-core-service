@@ -208,7 +208,7 @@ const keyID = Date.now()
 
     <div class="mt-4">
       <div class="mb-1 field-generator-label text-body-2 text-high-emphasis d-flex justify-space-between align-baseline">
-        <span>
+        <span :class="{ required }">
           {{ countriesRadioLabel }}
         </span>
 
@@ -319,5 +319,11 @@ const keyID = Date.now()
 :deep(.v-chip--disabled) {
   color: rgba(var(--v-theme-grey-500)) !important;
   opacity: 1;
+}
+
+.required:after {
+  content: "*";
+  color: rgb(var(--v-theme-error));
+  margin-left: 0.25rem;
 }
 </style>
