@@ -17,6 +17,7 @@ const props = defineProps<{
   allowedOnly?: boolean
   bannedOnly?: boolean
   excludeCountries?: string[]
+  required?: boolean
 }>()
 
 const emits = defineEmits<{
@@ -241,7 +242,10 @@ const singleMode = computed(() => props.allowedOnly || props.bannedOnly)
       </VueSelect>
     </div>
 
-    <span class="text-sm text-color-mute mt-1">
+    <span
+      v-if="!required"
+      class="text-sm text-color-mute mt-1"
+    >
       {{ $t('component.countriesSelect.description') }}
     </span>
 
