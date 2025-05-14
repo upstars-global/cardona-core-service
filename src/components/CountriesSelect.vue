@@ -177,6 +177,8 @@ const onConfirmRemoveAll = ({ hide }: { hide: Function }) => {
 }
 
 const singleMode = computed(() => props.allowedOnly || props.bannedOnly)
+
+const keyID = Date.now()
 </script>
 
 <template>
@@ -215,7 +217,7 @@ const singleMode = computed(() => props.allowedOnly || props.bannedOnly)
           :color="VColors.Error"
           :variant="VVariants.Tonal"
           :size="VSizes.Small"
-          @click="modal.showModal(ModalsIds.RemoveAllCountries)"
+          @click="modal.showModal(ModalsIds.RemoveAllCountries + keyID)"
         >
           <VIcon :icon="IconsList.XIcon" />
 
@@ -284,7 +286,7 @@ const singleMode = computed(() => props.allowedOnly || props.bannedOnly)
     </div>
 
     <RemoveModal
-      :remove-modal-id="ModalsIds.RemoveAllCountries"
+      :remove-modal-id="ModalsIds.RemoveAllCountries + keyID"
       :title="$t('component.countriesSelect.removeAllModal.title')"
       :description="$t('component.countriesSelect.removeAllModal.description')"
       @on-click-modal-ok="onConfirmRemoveAll"
