@@ -78,6 +78,7 @@ const cancelButtonConfig = computed(() => ({
     <VBtn
       v-bind="cancelButtonConfig"
       :loading="cancelButtonConfig.isLoading"
+      data-test-id="btn-cancel"
       @click="$emit(Action.Cancel)"
     >
       {{ cancelButtonConfig?.label }}
@@ -86,6 +87,7 @@ const cancelButtonConfig = computed(() => ({
       class="ml-4"
       v-bind="acceptButtonConfig"
       :loading="acceptButtonConfig.isLoading"
+      data-test-id="btn-accept"
       @click="$emit(Action.Accept)"
     >
       {{ acceptButtonConfig?.label }}
