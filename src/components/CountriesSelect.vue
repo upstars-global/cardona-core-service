@@ -178,7 +178,7 @@ const onConfirmRemoveAll = ({ hide }: { hide: Function }) => {
 
 const singleMode = computed(() => props.allowedOnly || props.bannedOnly)
 
-const keyID = Date.now()
+const keyID = Math.random()
 </script>
 
 <template>
