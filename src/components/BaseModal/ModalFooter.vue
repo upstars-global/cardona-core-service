@@ -28,7 +28,7 @@ interface ButtonConfig {
   variant?: VVariants
   color?: VColors
   disabled?: boolean
-  isLoading?: boolean
+  loading?: boolean
 }
 
 interface Props {
@@ -50,7 +50,7 @@ const defaultAcceptProps = {
   label: '',
   color: VColors.Primary,
   disabled: false,
-  isLoading: false,
+  loading: false,
 }
 
 const defaultCancelProps = {
@@ -58,7 +58,7 @@ const defaultCancelProps = {
   color: VColors.Secondary,
   variant: VVariants.Outlined,
   disabled: false,
-  isLoading: false,
+  loading: false,
 }
 
 const acceptButtonConfig = computed(() => ({
@@ -77,7 +77,6 @@ const cancelButtonConfig = computed(() => ({
   <div class="px-6 pb-4 d-flex justify-end items-center">
     <VBtn
       v-bind="cancelButtonConfig"
-      :loading="cancelButtonConfig.isLoading"
       data-test-id="btn-cancel"
       @click="$emit(Action.Cancel)"
     >
@@ -86,7 +85,6 @@ const cancelButtonConfig = computed(() => ({
     <VBtn
       class="ml-4"
       v-bind="acceptButtonConfig"
-      :loading="acceptButtonConfig.isLoading"
       data-test-id="btn-accept"
       @click="$emit(Action.Accept)"
     >
