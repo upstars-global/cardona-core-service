@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { VColors, VVariants } from '../../@model/vuetify'
 
 defineOptions({ name: 'ModalFooter' })
@@ -20,8 +19,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 defineEmits<Emits>()
-
-const { t } = useI18n()
 
 interface ButtonConfig {
   label?: string
@@ -54,7 +51,6 @@ const defaultAcceptProps = {
 }
 
 const defaultCancelProps = {
-  label: t('common.cancel'),
   color: VColors.Secondary,
   variant: VVariants.Outlined,
   disabled: false,
@@ -80,7 +76,7 @@ const cancelButtonConfig = computed(() => ({
       data-test-id="btn-cancel"
       @click="$emit(Action.Cancel)"
     >
-      {{ cancelButtonConfig?.label }}
+      {{ cancelButtonConfig?.label || $t('action.cancel') }}
     </VBtn>
     <VBtn
       class="ml-4"
