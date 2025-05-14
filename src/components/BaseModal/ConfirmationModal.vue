@@ -39,7 +39,7 @@ defineEmits<{
           color: VColors.Error,
           label: actionBtnText,
           disabled: isLoading,
-          isLoading,
+          loading: isLoading,
         }"
         @on-cancel="action.hide"
         @on-accept="$emit('confirmed', action.hide)"
