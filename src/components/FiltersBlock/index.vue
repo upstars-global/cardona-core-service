@@ -120,39 +120,39 @@ const listNotSelected = computed(() => {
         no-body
       >
         <VCardItem
-          :class="{ 'py-4': isSmallBlock }"
+          class="py-4"
           data-test-id="filter-title"
         >
-          <Component
-            :is="headerTag"
-            class="mb-0"
-            :class="{ 'text-h5': isSmallBlock, 'text-h4': !isSmallBlock }"
-          >
-            {{ $t('common.filter.filtrate') }}
-          </Component>
-        </VCardItem>
-        <hr class="my-0">
-
-        <VCardText>
-          <VCol class="pl-0 pr-0">
-            <VRow no-gutters>
-              <VCol
-                cols="12"
-                md="3"
-                class="mb-md-0 mb-2"
+          <VRow justify="space-between">
+            <VCol>
+              <Component
+                :is="headerTag"
+                class="mb-0"
+                :class="{ 'text-h5': isSmallBlock, 'text-h4': !isSmallBlock }"
               >
-                <FilterSelector
-                  :filters="listNotSelected"
-                  :size="size"
-                  @selected-filters-changed="onChange"
-                />
-              </VCol>
-            </VRow>
+                {{ $t('common.filter.filtrate') }}
+              </Component>
+            </VCol>
+            <VCol class="d-flex justify-end">
+              <FilterSelector
+                :filters="listNotSelected"
+                :size="size"
+                @selected-filters-changed="onChange"
+              />
+            </VCol>
+          </VRow>
+        </VCardItem>
+        <div
+          v-if="selectedFilters.isNotEmpty"
+          class="block-with-selected-filter-items"
+        >
+          <hr class="my-0">
 
+          <VCardText class="py-4">
             <VRow
               v-for="(filter, key) in selectedFilters"
               :key="key"
-              class="mt-2"
+              :class="{ 'mt-2': index }"
               data-test-id="filter-row"
             >
               <VCol
@@ -178,7 +178,7 @@ const listNotSelected = computed(() => {
                   class="field-generator mr-4 full-width"
                 />
                 <VBtn
-                  :variant="VVariants.Outlined"
+                  :variant="VVariants.Text"
                   :color="VColors.Error"
                   class="v-btn--rectangle"
                   :size="size"
@@ -188,44 +188,44 @@ const listNotSelected = computed(() => {
                 </VBtn>
               </VCol>
             </VRow>
-          </VCol>
-        </VCardText>
+          </VCardText>
 
-        <hr>
-        <VCardActions class="px-5 py-4">
-          <div class="d-flex w-100 gap-4">
-            <VBtn
-              :color="VColors.Success"
-              :variant="VVariants.Elevated"
-              class="ml-0 px-4"
-              :size="size"
-              data-test-id="apply-btn"
-              @click="onApply"
-            >
-              {{ $t('action.applyFilters') }}
-            </VBtn>
-            <VBtn
-              :color="VColors.Secondary"
-              :variant="VVariants.Outlined"
-              class="ml-0 px-4"
-              :size="size"
-              data-test-id="save-by-default-btn"
-              @click="onSaveByDefault"
-            >
-              {{ $t('action.saveByDefault') }}
-            </VBtn>
+          <hr class="my-0">
+          <VCardActions class="px-6 py-4">
+            <div class="d-flex w-100 gap-4">
+              <VBtn
+                :color="VColors.Success"
+                :variant="VVariants.Elevated"
+                class="ml-0 px-4"
+                :size="size"
+                data-test-id="apply-btn"
+                @click="onApply"
+              >
+                {{ $t('action.applyFilters') }}
+              </VBtn>
+              <VBtn
+                :color="VColors.Secondary"
+                :variant="VVariants.Outlined"
+                class="ml-0 px-4"
+                :size="size"
+                data-test-id="save-by-default-btn"
+                @click="onSaveByDefault"
+              >
+                {{ $t('action.saveByDefault') }}
+              </VBtn>
 
-            <VBtn
-              :color="VColors.Error"
-              :variant="VVariants.Outlined"
-              class="white-space-nowrap ml-auto px-4"
-              :size="size"
-              @click="onClearAll"
-            >
-              {{ $t('action.clearAll') }}
-            </VBtn>
-          </div>
-        </VCardActions>
+              <VBtn
+                :color="VColors.Error"
+                :variant="VVariants.Outlined"
+                class="white-space-nowrap ml-auto px-4"
+                :size="size"
+                @click="onClearAll"
+              >
+                {{ $t('action.clearAll') }}
+              </VBtn>
+            </div>
+          </VCardActions>
+        </div>
       </VCard>
 
       <div
@@ -242,11 +242,22 @@ const listNotSelected = computed(() => {
           label
           :color="VColors.Secondary"
           data-test-id="applied-filters-item"
+          closable
+          @click:close="onRemoveFilter(filter)"
         >
           {{ filter.label }}
           <span v-if="Array.isArray(filter.value) && filter.value.length && filter.type !== 'sum-range'">
             ({{ filter.value.length }})
           </span>
+        </VChip>
+        <VChip
+          v-if="selectedFilters.length > 5"
+          label
+          :color="VColors.Error"
+          data-test-id="remove-all-filters"
+          @click="onClearAll"
+        >
+          Clear all
         </VChip>
       </div>
     </VCol>
