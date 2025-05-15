@@ -257,7 +257,7 @@ const listNotSelected = computed(() => {
           data-test-id="remove-all-filters"
           @click="onClearAll"
         >
-          Clear all
+          {{ $t('action.clearAll') }}
         </VChip>
       </div>
     </VCol>
