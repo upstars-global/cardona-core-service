@@ -63,7 +63,7 @@ export default {
       if (search) {
         return dispatch('getImagesList', {
           pagination: { pageNumber, perPage },
-          filter: { path: { search } },
+          filter: { path: search },
         })
       }
 
