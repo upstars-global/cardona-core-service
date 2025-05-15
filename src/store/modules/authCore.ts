@@ -23,6 +23,7 @@ export default {
 
   actions: {
     async googleAuth({ commit, dispatch }, code: string) {
+      console.log('googleAuth')
       try {
         const { data }: { data: IAuthTokens } = await ApiService.request({
           type: 'App.V2.Auth.Google',
