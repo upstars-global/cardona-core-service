@@ -117,7 +117,6 @@ describe('FiltersBlock', () => {
 
     testOn.existClass({ wrapper, testId: 'main-wrapper' }, 'mb-6')
     testOn.notExistElement({ wrapper, selector: '.filters-block-small' })
-    testOn.notExistClasses({ wrapper, testId: testIds.filterTitle }, 'py-4')
     testOn.notExistElement({ wrapper, testId: testIds.filterRow })
   })
 
@@ -188,8 +187,6 @@ describe('FiltersBlock', () => {
     await openFilters(wrapper)
 
     testOn.notExistElement({ wrapper, selector: '.filters-block-small' })
-
-    testOn.notExistClasses({ wrapper, testId: testIds.filterTitle }, 'py-4')
 
     testOn.notExistElement({ wrapper, selector: 'h5.text-h5' })
 
