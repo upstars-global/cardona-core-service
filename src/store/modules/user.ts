@@ -1,4 +1,3 @@
-import { storageKeys } from '../../configs/storage'
 import type { ProjectInfoInput } from '../../@model/project'
 import { ProjectInfo } from '../../@model/project'
 import { UserInfo } from '../../@model/users'
@@ -51,21 +50,13 @@ export default {
     selectedProject: ({ selectedProject, priorityProject }, { userProjects }): ProjectInfoInput => {
       const defaultProject: ProjectInfoInput = userProjects[0]
 
-      const projectIdFromStorage: string | null = localStorage.getItem(storageKeys.selectedProjectId)
-
-      const selectedProjectInfo: ProjectInfoInput = userProjects.find(({ id }) => id === Number(projectIdFromStorage))
-
-      return priorityProject || selectedProject || selectedProjectInfo || defaultProject
+      return priorityProject || selectedProject || defaultProject
     },
 
     selectedProjectWithoutPriority: ({ selectedProject, priorityProject }, { userProjects }): ProjectInfoInput => {
       const defaultProject: ProjectInfoInput = userProjects[0]
 
-      const projectIdFromStorage: string | null = localStorage.getItem(storageKeys.selectedProjectId)
-
-      const selectedProjectInfo: ProjectInfoInput = userProjects.find(({ id }) => id === Number(projectIdFromStorage))
-
-      return selectedProject || selectedProjectInfo || defaultProject
+      return selectedProject || defaultProject
     },
 
     selectedProduct: ({ selectedProduct }) => selectedProduct,
