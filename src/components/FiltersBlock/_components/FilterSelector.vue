@@ -31,7 +31,7 @@ const onChange = (filter: BaseField) => emits('selected-filters-changed', filter
         :append-icon="IconsList.ChevronDownIcon"
         data-test-id="btn-filter-select"
       >
-        {{ $t('action.selectEntity') }}
+        {{ $t('action.addFilter') }}
       </VBtn>
     </template>
     <VList>
