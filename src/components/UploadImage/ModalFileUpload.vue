@@ -43,8 +43,11 @@ const currentTab = ref(tabs.new)
 </script>
 
 <template>
-  <div class="px-6 pb-6 overflow-hidden tabs-file-upload">
-    <VTabs v-model="currentTab">
+  <div class="overflow-hidden tabs-file-upload">
+    <VTabs
+      v-model="currentTab"
+      class="modal-tab--buttons"
+    >
       <VTab :value="tabs.new">
         {{ $t('uploadImg.downloadNew') }}
       </VTab>

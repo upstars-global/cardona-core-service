@@ -39,7 +39,7 @@ describe('ConfirmationModal', () => {
 
     await callActionShowForInternalBaseModal(wrapper)
 
-    const cancelButton = wrapper.find(getSelectorTestId('btn-remove'))
+    const cancelButton = wrapper.find(getSelectorTestId('btn-accept'))
 
     await cancelButton.trigger('click')
     expect(wrapper.emitted('on-click-modal-ok')).toBeTruthy()
@@ -81,7 +81,7 @@ describe('ConfirmationModal', () => {
 
     testOn.inputAttributeValueToBe({ wrapper: commentTextarea }, textInputValue)
 
-    await clickTrigger({ wrapper, testId: 'btn-remove' })
+    await clickTrigger({ wrapper, testId: 'btn-accept' })
 
     const emitted = wrapper.emitted('on-click-modal-ok')
 

@@ -37,7 +37,7 @@ describe('ConfirmModal', () => {
 
     await callActionShowForInternalBaseModal(wrapper)
 
-    await clickTrigger({ wrapper, testId: 'btn-add' })
+    await clickTrigger({ wrapper, testId: 'btn-accept' })
 
     testOn.isCalledEmitEvent({ wrapper }, 'on-click-modal-ok')
   })

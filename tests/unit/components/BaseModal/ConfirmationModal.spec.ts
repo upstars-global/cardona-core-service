@@ -23,7 +23,7 @@ const defaultProps = {
 }
 
 const globalConfig = { provide: { modal: mockModal } }
-const testIdConfirmBtn = 'btn-confirm'
+const testIdConfirmBtn = 'btn-accept'
 const btnLoadingClass = 'v-btn--loading'
 
 describe('ConfirmationModal', () => {

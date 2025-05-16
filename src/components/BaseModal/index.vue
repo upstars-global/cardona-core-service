@@ -12,6 +12,7 @@ interface Props {
   width?: string
   size?: ModalSizes
   modalHeaderClass?: string
+  modalBodyClass?: string
 }
 
 interface Emits {
@@ -20,7 +21,15 @@ interface Emits {
 }
 defineOptions({ name: 'BaseModal' })
 
-const props = withDefaults(defineProps<Props>(), { title: '', width: '', size: ModalSizes.Small, modalHeaderClass: '' })
+const props = withDefaults(
+  defineProps<Props>(),
+  {
+    title: '',
+    width: '',
+    size: ModalSizes.Small,
+    modalHeaderClass: '',
+    modalBodyClass: '',
+  })
 
 const emits = defineEmits<Emits>()
 
@@ -75,7 +84,7 @@ const enhancedAttrs = computed(() => ({
     <template #default>
       <VCard class="modal-card">
         <div
-          class="modal-header with-absolute px-6 py-3 d-flex align-end justify-space-between"
+          class="modal-header with-absolute px-6 pt-6 d-flex align-end justify-space-between"
           :class="{
             'without-header-title': !title,
             [modalHeaderClass]: modalHeaderClass,
@@ -105,10 +114,25 @@ const enhancedAttrs = computed(() => ({
             <VIcon :icon="IconsList.XIcon" />
           </VBtn>
         </div>
-        <slot
-          :action="{ show, hide }"
-          :payload="payload"
-        />
+        <div
+          class="base-modal__body"
+          :class="{
+            'pa-6': !modalBodyClass,
+            [modalBodyClass]: modalBodyClass,
+          }"
+        >
+          <slot
+            :action="{ show, hide }"
+            :payload="payload"
+          />
+        </div>
+        <div class="base-modal__footer">
+          <slot
+            name="modal-footer"
+            :action="{ show, hide }"
+            :payload="payload"
+          />
+        </div>
       </VCard>
     </template>
   </VDialog>
