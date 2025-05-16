@@ -964,7 +964,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     </VCard>
     <div
       v-if="items.isNotEmpty && config.pagination"
-      :class="config.small ? 'pt-4' : 'pt-8'"
+      class="pt-6"
     >
       <ListPagination
         data-test-id="list-pagination"
