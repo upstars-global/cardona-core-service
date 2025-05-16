@@ -36,17 +36,24 @@ export default function useToastService() {
     })
   }
 
-  const toastError = (code, options: ToastOptions = defaultOptions) => {
-    const message = i18n.te(`toast.error.${code}`)
-      ? `toast.error.${code}`
-      : options?.defaultText
-        ? options.defaultText
-        : `toast.error.${options.defaultCode}`
+  function safeTe(key: string): boolean {
+    const translated = i18n.t(key, {}, { default: '' })
+
+    return translated !== '' && translated !== key
+  }
+
+  const toastError = (code: string, options: ToastOptions = defaultOptions) => {
+    const fullKey = `toast.error.${code}`
+    const fallbackKey = `toast.error.${options?.defaultCode}`
+
+    const message = safeTe(fullKey)
+      ? i18n.t(fullKey, options)
+      : options?.defaultText || i18n.t(fallbackKey, options)
 
     toast({
       component: ToastificationContent,
       props: {
-        title: i18n.t(message, options),
+        title: message,
         icon: IconsList.AlertTriangleIcon,
         variant: 'error',
       },
