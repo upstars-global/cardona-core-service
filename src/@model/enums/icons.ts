@@ -314,5 +314,6 @@ export enum IconsList {
   ZoomMoneyIcon = 'tabler-zoom-money',
   AtSignIcon = 'tabler-at',
   NoAccessIcon = 'tabler-lock',
+  Sitemap = 'tabler-sitemap',
 }
 export default {}
