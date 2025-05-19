@@ -179,6 +179,10 @@ const onConfirmRemoveAll = ({ hide }: { hide: Function }) => {
 const singleMode = computed(() => props.allowedOnly || props.bannedOnly)
 
 const keyID = Math.random()
+
+defineExpose({
+  selectedCountriesVisibleView,
+})
 </script>
 
 <template>
