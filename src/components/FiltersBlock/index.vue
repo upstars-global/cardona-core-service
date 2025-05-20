@@ -152,12 +152,12 @@ const listNotSelected = computed(() => {
             <VRow
               v-for="(filter, key) in selectedFilters"
               :key="key"
-              :class="{ 'mt-2': index }"
+              :class="{ 'pt-4': key }"
               data-test-id="filter-row"
             >
               <VCol
                 md="3"
-                class="d-flex align-center"
+                class="d-flex align-center py-0"
               >
                 <p
                   class="text-h6 text-button mb-0 font-weight-medium filter-label"
@@ -169,7 +169,7 @@ const listNotSelected = computed(() => {
 
               <VCol
                 md="9"
-                class="d-flex align-center"
+                class="d-flex align-center py-0"
               >
                 <FieldGenerator
                   v-model="selectedFilters[key]"
