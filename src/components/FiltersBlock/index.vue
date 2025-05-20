@@ -211,7 +211,7 @@ const listNotSelected = computed(() => {
                 data-test-id="save-by-default-btn"
                 @click="onSaveByDefault"
               >
-                {{ $t('action.saveByDefault') }}
+                {{ $t('action.saveAsDefault') }}
               </VBtn>
 
               <VBtn
