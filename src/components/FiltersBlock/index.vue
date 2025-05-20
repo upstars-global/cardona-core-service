@@ -146,9 +146,9 @@ const listNotSelected = computed(() => {
           v-if="selectedFilters.isNotEmpty"
           class="block-with-selected-filter-items"
         >
-          <hr class="my-0">
+          <hr class="my-0 mb-3">
 
-          <VCardText class="py-4">
+          <div class="pa-4 px-6">
             <VRow
               v-for="(filter, key) in selectedFilters"
               :key="key"
@@ -181,16 +181,16 @@ const listNotSelected = computed(() => {
                   :variant="VVariants.Text"
                   :color="VColors.Error"
                   class="v-btn--rectangle"
-                  :size="size"
+                  :size="40"
                   @click="onRemoveFilter(filter)"
                 >
                   <VIcon :icon="IconsList.Trash2Icon" />
                 </VBtn>
               </VCol>
             </VRow>
-          </VCardText>
+          </div>
 
-          <hr class="my-0">
+          <hr class="my-0 mt-3">
           <VCardActions class="px-6 py-4">
             <div class="d-flex w-100 gap-4">
               <VBtn
