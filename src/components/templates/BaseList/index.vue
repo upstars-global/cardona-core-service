@@ -963,11 +963,10 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       </CTable>
     </VCard>
     <div
-      v-if="items.isNotEmpty"
-      :class="config.small ? 'pt-4' : 'pt-8'"
+      v-if="items.isNotEmpty && config.pagination"
+      class="pt-6"
     >
       <ListPagination
-        v-if="config?.pagination"
         data-test-id="list-pagination"
         :model-value="currentPage"
         :link-gen="linkGenerator"
