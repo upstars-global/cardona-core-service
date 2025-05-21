@@ -315,5 +315,6 @@ export enum IconsList {
   AtSignIcon = 'tabler-at',
   NoAccessIcon = 'tabler-lock',
   Sitemap = 'tabler-sitemap',
+  CategoryPlus = 'tabler-category-plus',
 }
 export default {}
