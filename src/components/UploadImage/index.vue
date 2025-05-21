@@ -183,6 +183,8 @@ const isRequired = computed(() => !!props.field.rules?.required)
           :id="selectModalId"
           :title="$t('uploadImg.selectImage')"
           :size="ModalSizes.Medium"
+          modal-body-class="pa-6 pt-0"
+          width="850px"
         >
           <template #modal-header="{ title }">
             <div class="d-flex align-center">

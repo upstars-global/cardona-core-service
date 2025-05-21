@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { inject, ref } from 'vue'
-import { VColors, VVariants } from '../../@model/vuetify'
+import { ModalSizes, VColors, VVariants } from '../../@model/vuetify'
 import AppTextField from '../../@core/components/app-form-elements/AppTextField.vue'
 import BaseModal from '../../components/BaseModal/index.vue'
 
@@ -47,10 +47,12 @@ const deleteForm = () => {
   <BaseModal
     :id="modalId"
     :title="$t('common.banners.variableTitle')"
+    :width="ModalSizes.Flex"
+    modal-body-class="pa-0"
     @hide="onHideModal"
   >
     <div class="full-width variable-modal">
-      <div class="py-3 px-6">
+      <div class="pa-6">
         <VRow class="full-width flex-nowrap">
           <VCol cols="4">
             <VChip
@@ -92,7 +94,7 @@ const deleteForm = () => {
       <hr class="ma-0">
 
       <footer
-        class="d-flex align-center px-6 py-4"
+        class="d-flex align-center py-4 px-6 "
         :class="disabled ? 'justify-end' : 'justify-space-between'"
       >
         <VBtn
@@ -119,7 +121,7 @@ const deleteForm = () => {
           <VBtn
             v-if="!disabled"
             type="button"
-            class="ml-2"
+            class="ml-4"
             :color="VColors.Primary"
             @click="save"
           >
