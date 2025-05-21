@@ -261,7 +261,7 @@ defineExpose({
     >
       <PerfectScrollbar
         class="scroll-area"
-        :options="{ wheelPropagation: false }"
+        :options="{ wheelPropagation: false, suppressScrollX: true }"
       >
         <div
           v-for="[key, value] in selectedCountriesVisibleView"
