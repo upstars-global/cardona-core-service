@@ -22,22 +22,43 @@ export default {
   },
 
   actions: {
-    async login({ commit, dispatch }, authData: ILoginData) {
+    async googleAuth({ commit, dispatch }, code: string) {
+      try {
+        const { data }: { data: IAuthTokens } = await ApiService.request({
+          type: 'App.V2.Auth.Google',
+          data: {
+            code,
+
+            // isLocal: true, // TODO: For test from localhost
+          },
+        })
+
+        await dispatch('setAuth', data)
+      }
+      catch {}
+    },
+
+    async login({ dispatch }, authData: ILoginData) {
       try {
         const { data }: { data: IAuthTokens } = await ApiService.request({
           type: 'App.V2.Auth',
           data: authData,
         })
 
+        await dispatch('setAuth', data)
+      }
+      catch {}
+    },
+
+    async setAuth({ commit, dispatch }, data: IAuthTokens) {
+      try {
         setAuthTokens(data)
 
         commit('SET_AUTH', true)
 
         await dispatch('fetchCurrentUser', {}, { root: true })
       }
-      catch {
-
-      }
+      catch {}
     },
 
     async refreshAuth(context, refreshToken: string): Promise<IAuthTokens> {
