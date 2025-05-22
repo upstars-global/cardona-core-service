@@ -9,6 +9,7 @@ export const themes: Record<string, ThemeDefinition> = {
     dark: false,
     colors: {
       'primary': staticPrimaryColor, /// !TODO ADD ALSO TO DARK
+      'primary-300': '#A9A2F6',
       'on-primary': '#fff',
       'secondary': '#787A80', /// !TODO ADD ALSO TO DARK
       'on-secondary': '#fff',
