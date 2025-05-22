@@ -123,15 +123,14 @@ const listNotSelected = computed(() => {
           class="py-4"
           data-test-id="filter-title"
         >
-          <VRow justify="space-between">
+          <VRow
+            justify="space-between"
+            align="center"
+          >
             <VCol>
-              <Component
-                :is="headerTag"
-                class="mb-0"
-                :class="{ 'text-h5': isSmallBlock, 'text-h4': !isSmallBlock }"
-              >
+              <h4 class="mb-0 text-h5">
                 {{ $t('common.filter.filtrate') }}
-              </Component>
+              </h4>
             </VCol>
             <VCol class="d-flex justify-end">
               <FilterSelector
