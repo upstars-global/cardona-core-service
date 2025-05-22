@@ -17,6 +17,7 @@ const props = defineProps<{
   allowedOnly?: boolean
   bannedOnly?: boolean
   excludeCountries?: string[]
+  customLabel?: string
   required?: boolean
 }>()
 
@@ -213,7 +214,7 @@ defineExpose({
     <div class="mt-4">
       <div class="mb-1 field-generator-label text-body-2 text-high-emphasis d-flex justify-space-between align-baseline">
         <span :class="{ required }">
-          {{ countriesRadioLabel }}
+          {{ customLabel ? customLabel : countriesRadioLabel }}
         </span>
 
         <VBtn
@@ -261,7 +262,7 @@ defineExpose({
     >
       <PerfectScrollbar
         class="scroll-area"
-        :options="{ wheelPropagation: false, suppressScrollX: true }"
+        :options="{ wheelPropagation: false }"
       >
         <div
           v-for="[key, value] in selectedCountriesVisibleView"
