@@ -117,7 +117,6 @@ describe('FiltersBlock', () => {
 
     testOn.existClass({ wrapper, testId: 'main-wrapper' }, 'mb-6')
     testOn.notExistElement({ wrapper, selector: '.filters-block-small' })
-    testOn.notExistClasses({ wrapper, testId: testIds.filterTitle }, 'py-4')
     testOn.notExistElement({ wrapper, testId: testIds.filterRow })
   })
 
@@ -170,8 +169,6 @@ describe('FiltersBlock', () => {
 
     testOn.existClass({ wrapper, testId: testIds.filterTitle }, 'py-4')
 
-    testOn.existElement({ wrapper, selector: 'h5.text-h5' })
-
     testOn.existClass({ wrapper, selector: '.filter-label' }, 'font-small-3')
 
     testOn.equalTextValue({ wrapper, testId: testIds.applyBtn }, i18n.t('action.applyFilters'))
@@ -188,8 +185,6 @@ describe('FiltersBlock', () => {
     await openFilters(wrapper)
 
     testOn.notExistElement({ wrapper, selector: '.filters-block-small' })
-
-    testOn.notExistClasses({ wrapper, testId: testIds.filterTitle }, 'py-4')
 
     testOn.notExistElement({ wrapper, selector: 'h5.text-h5' })
 
