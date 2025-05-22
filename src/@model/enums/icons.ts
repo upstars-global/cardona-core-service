@@ -317,6 +317,6 @@ export enum IconsList {
   Sitemap = 'tabler-sitemap',
   CategoryPlus = 'tabler-category-plus',
   FileTypeXml = 'tabler-file-type-xml',
-  SettingSearch = 'settings-search',
+  SettingSearch = 'tabler-settings-search',
 }
 export default {}
