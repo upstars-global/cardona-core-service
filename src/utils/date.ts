@@ -1,8 +1,11 @@
 export const dateFormat = (
-    date: Date,
-    options?: Intl.DateTimeFormatOptions,
-    locales = 'uk'
+  date: Date,
+  options?: Intl.DateTimeFormatOptions,
+  locales = 'uk',
 ): string => {
+  if (!date?.toLocaleDateString)
+    return ''
+
   return date.toLocaleDateString(locales, { ...options, timeZone: 'UTC' })
 }
 

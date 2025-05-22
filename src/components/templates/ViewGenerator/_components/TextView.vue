@@ -7,5 +7,17 @@ defineProps<{
 </script>
 
 <template>
-  <span data-test-id="text" class="mb-0 text-color-base">{{ item.value || '-' }}</span>
+  <div>
+    <span
+      data-test-id="text"
+      class="mb-0 text-color-base"
+    >
+      {{ item.value || '-' }}
+    </span>
+
+    <slot
+      name="copy-btn"
+      :value="item.value"
+    />
+  </div>
 </template>
