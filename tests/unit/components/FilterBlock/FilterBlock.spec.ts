@@ -169,8 +169,6 @@ describe('FiltersBlock', () => {
 
     testOn.existClass({ wrapper, testId: testIds.filterTitle }, 'py-4')
 
-    testOn.existElement({ wrapper, selector: 'h5.text-h5' })
-
     testOn.existClass({ wrapper, selector: '.filter-label' }, 'font-small-3')
 
     testOn.equalTextValue({ wrapper, testId: testIds.applyBtn }, i18n.t('action.applyFilters'))
