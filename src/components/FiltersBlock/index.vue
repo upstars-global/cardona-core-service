@@ -33,7 +33,6 @@ const keyStorage = `${pageName}_${props.entityName}`
 const selectedFilters = ref<BaseField[]>([])
 
 const isSmallBlock: boolean = props.size === VSizes.Small
-const headerTag: string = isSmallBlock ? 'h5' : 'h4'
 
 const onChange = (filter: BaseField) => selectedFilters.value.push(cloneDeep(filter))
 
