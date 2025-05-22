@@ -316,5 +316,6 @@ export enum IconsList {
   NoAccessIcon = 'tabler-lock',
   Sitemap = 'tabler-sitemap',
   CategoryPlus = 'tabler-category-plus',
+  FileTypeXml = 'tabler-file-type-xml'
 }
 export default {}
