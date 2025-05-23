@@ -15,6 +15,15 @@ const selectProject = computed({
 
 const projects = computed(() => store.getters.userInfo.projects)
 const cantSelect = computed(() => projects.value.length < 2)
+
+const projectIconByText = (publicName, title) => {
+  if (publicName)
+    return publicName[0].toUpperCase()
+  if (title)
+    return title[0].toUpperCase()
+
+  return ''
+}
 </script>
 
 <template>
@@ -43,7 +52,7 @@ const cantSelect = computed(() => projects.value.length < 2)
             v-else
             class="project-logo project-logo-no-ico d-flex align-center justify-center text-color-base"
           >
-            {{ publicName[0].toUpperCase() }}
+            {{ projectIconByText(publicName, title) }}
           </div>
           <span class="text-expanded text-color-base">{{ publicName || title }}</span>
         </div>
@@ -60,7 +69,7 @@ const cantSelect = computed(() => projects.value.length < 2)
             v-else
             class="project-logo project-logo-no-ico d-flex align-center justify-center text-color-base"
           >
-            {{ publicName[0].toUpperCase() }}
+            {{ projectIconByText(publicName, title) }}
           </div>
           <span class="text-expanded">{{ publicName || title }}</span>
           <VIcon
