@@ -16,7 +16,7 @@ const selectProject = computed({
 const projects = computed(() => store.getters.userInfo.projects)
 const cantSelect = computed(() => projects.value.length < 2)
 
-const projectIconByText = (publicName, title) => {
+const projectIconByText = (publicName: string, title: string) => {
   if (publicName)
     return publicName[0].toUpperCase()
   if (title)
