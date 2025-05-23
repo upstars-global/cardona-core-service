@@ -124,7 +124,7 @@ const showLoadMore = computed((): boolean =>
 const {
   setupObserver,
   abortObserver,
-} = useInfiniteScroll(props.field.loadMore.bind(props.field), loadRef)
+} = useInfiniteScroll(props.field.loadMore?.bind(props.field), loadRef)
 </script>
 
 <template>
