@@ -1,5 +1,6 @@
 import type { Router } from 'vue-router'
 import { useCookie } from '../../@core/composable/useCookie'
+import { useLocaleStore } from '../../store/piniaModules/locale'
 import store from '@/store'
 
 export const setupGuards = (router: Router) => {
@@ -15,6 +16,8 @@ export const setupGuards = (router: Router) => {
     const permissionGroup = to.meta.permissionGroup
     const isAllPermissions = to.meta.isAllPermissions
 
+    const localeStore = useLocaleStore()
+
     if (to.meta.public)
       return
 
@@ -27,7 +30,7 @@ export const setupGuards = (router: Router) => {
     if (isLoggedIn && store.getters.userInfo.isEmpty) {
       await store.dispatch('fetchCurrentUser')
       await Promise.all([
-        store.dispatch('localeCore/getLocalesList'),
+        localeStore.getLocalesList(),
         store.dispatch('appConfigCore/fetchConfig'),
       ])
     }
