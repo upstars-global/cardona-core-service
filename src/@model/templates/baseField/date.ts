@@ -24,7 +24,7 @@ export interface IDateBaseField extends IBaseField {
   readonly position?: DataPickerPosition
 }
 
-enum DataPickerPosition {
+export enum DataPickerPosition {
   Above = 'above',
   Below = 'below',
   Auto = 'auto',
