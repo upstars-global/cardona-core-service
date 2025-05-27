@@ -225,7 +225,7 @@ defineExpose({
           :size="VSizes.Small"
           @click="modal.showModal(ModalsIds.RemoveAllCountries + keyID)"
         >
-          <VIcon :icon="IconsList.XIcon" />
+          <VIcon :icon="IconsList.PlaylistX" />
 
           {{ $t('action.removeAll') }}
         </VBtn>
