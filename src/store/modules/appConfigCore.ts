@@ -86,7 +86,10 @@ export default {
   },
   actions: {
     async fetchConfig({ commit, state, rootGetters }) {
-      if (!state?.defaultCurrency?.length && !state?.currencies?.length && rootGetters.userInfo?.projects?.length) {
+      if (!state.defaultCurrency[rootGetters.selectedProject?.id]
+        && !state.currencies[rootGetters.selectedProject?.id]
+        && rootGetters.userInfo?.projects.isNotEmpty)
+      {
         rootGetters.userInfo.projects.forEach(async (project) => {
           try {
             const { data } = await ApiService.request({
