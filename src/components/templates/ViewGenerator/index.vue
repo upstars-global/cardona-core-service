@@ -2,6 +2,8 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import type { ViewInfo, ViewJustifyContent } from '../../../@model/view'
+import { IconsList } from '../../../@model/enums/icons'
+import { copyToClipboard } from '../../../helpers/clipboard'
 
 const props = defineProps<{
   modelValue: ViewInfo
@@ -64,7 +66,20 @@ const valueColsCount = computed(() => 12 - props.cols)
             :item="modelValue"
             class="label-view"
             data-test-id="view-generator-component"
-          />
+          >
+            <template
+              v-if="modelValue.withCopy"
+              #copy-btn="{ value }"
+            >
+              <VIcon
+                :icon="IconsList.CopyIcon"
+                data-test-id="copy-view-icon"
+                class="cursor-pointer ml-1 text-color-mute"
+                size="16"
+                @click.stop="copyToClipboard(value)"
+              />
+            </template>
+          </Component>
         </slot>
       </VCol>
     </VRow>
