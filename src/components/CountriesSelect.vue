@@ -18,6 +18,7 @@ const props = defineProps<{
   bannedOnly?: boolean
   excludeCountries?: string[]
   customLabel?: string
+  customDescription?: string
   required?: boolean
 }>()
 
@@ -253,7 +254,7 @@ defineExpose({
       v-if="!required"
       class="text-sm text-color-mute mt-1"
     >
-      {{ $t('component.countriesSelect.description') }}
+      {{ customDescription || $t('component.countriesSelect.description') }}
     </span>
 
     <div
