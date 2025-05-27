@@ -21,15 +21,21 @@ export default {
         type: $themeConfig.layout.footer.type,
       },
     } */
-    defaultCurrency: '',
-    currencies: [],
+    defaultCurrency: {},
+    currencies: {},
     menuType: MenuType.main,
   },
   getters: {
     typeMenu: ({ layout }) => layout.menu.type,
     dirOption: ({ layout }) => (layout.isRTL ? 'rtl' : 'ltr'),
-    allCurrencies: ({ currencies }) => currencies,
-    defaultCurrency: ({ defaultCurrency }) => defaultCurrency,
+    allCurrencies: ({ currencies }, getters, rootGetters ) => {
+      const selectedProject = rootGetters.user?.selectedProject || rootGetters.userInfo?.projects?.[0]
+      return currencies?.[selectedProject?.id] || []
+    },
+    defaultCurrency: ({ defaultCurrency }, getters, rootGetters) => {
+      const selectedProject = rootGetters.user?.selectedProject || rootGetters.userInfo?.projects?.[0]
+      return defaultCurrency?.[selectedProject?.id] || ''
+    },
     isMenuTypeMain(state) { return state.menuType === MenuType.main },
   },
   mutations: {
@@ -70,9 +76,9 @@ export default {
     UPDATE_FOOTER_CONFIG(state, obj) {
       Object.assign(state.layout.footer, obj)
     },
-    UPDATE_CURRENCY(state, { defaultCurrency, currencies }) {
-      state.defaultCurrency = defaultCurrency
-      state.currencies = currencies
+    UPDATE_CURRENCY(state, { id, defaultCurrency, currencies }) {
+      state.defaultCurrency[id] = defaultCurrency
+      state.currencies[id] = currencies
     },
     UPDATE_MENU_TYPE(state, menuType) {
       state.menuType = menuType
@@ -80,18 +86,20 @@ export default {
   },
   actions: {
     async fetchConfig({ commit, state, rootGetters }) {
-      if (!state?.defaultCurrency && !state?.currencies?.length) {
-        try {
-          const { data } = await ApiService.request({
-            type: 'App.V2.Projects.Config.Read',
-            data: {
-              id: rootGetters.selectedProject.id,
-            },
-          })
+      if (!state?.defaultCurrency?.length && !state?.currencies?.length && rootGetters.userInfo?.projects?.length) {
+        rootGetters.userInfo.projects.forEach(async (project) => {
+          try {
+            const { data } = await ApiService.request({
+              type: 'App.V2.Projects.Config.Read',
+              data: {
+                id: project.id,
+              },
+            })
 
-          commit('UPDATE_CURRENCY', data)
-        }
-        catch (e) {}
+            commit('UPDATE_CURRENCY', {...data, id: project.id })
+          }
+          catch (e) {}
+        })
       }
     },
     onToggleMenuType({ commit, getters }) {
