@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import type { CheckBaseField } from '../../../../@model/templates/baseField'
 
 const props = defineProps<{
-  modelValue: boolean
+  modelValue?: boolean
   field: CheckBaseField
   disabled: boolean
 }>()

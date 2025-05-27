@@ -16,21 +16,21 @@ import ModalFileUpload from './ModalFileUpload.vue'
 interface FieldConfig {
   id: string
   rules: Record<string, unknown>
-  label: string
+  label?: string
   name: string
 }
 
 interface Props {
-  size: UploadFileSizes
-  label: string
-  type: string
-  textBtn: string
-  dropPlaceholder: string
-  modelValue: string
-  path: string
-  disabled: boolean
+  size?: UploadFileSizes
+  label?: string
+  type?: string
+  textBtn?: string
+  dropPlaceholder?: string
+  modelValue?: string
+  path?: string
+  disabled?: boolean
   modalId?: string
-  field: FieldConfig
+  field?: FieldConfig
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -43,12 +43,12 @@ const props = withDefaults(defineProps<Props>(), {
   path: '',
   disabled: false,
   modalId: ModalsId.UploadImage,
-  field: {
+  field: () => ({
     id: '',
     rules: {},
     label: '',
     name: '',
-  },
+  }),
 })
 
 const emits = defineEmits<{
