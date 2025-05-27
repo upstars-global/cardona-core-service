@@ -24,5 +24,14 @@ const region = computed(() =>
 </script>
 
 <template>
-  <span>{{ region }}</span>
+  <div>
+    <span>
+      {{ region }}
+    </span>
+
+    <slot
+      name="copy-btn"
+      :value="region"
+    />
+  </div>
 </template>
