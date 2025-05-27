@@ -318,5 +318,6 @@ export enum IconsList {
   CategoryPlus = 'tabler-category-plus',
   FileTypeXml = 'tabler-file-type-xml',
   SettingSearch = 'tabler-settings-search',
+  PlaylistX = 'tabler-playlist-x',
 }
 export default {}
