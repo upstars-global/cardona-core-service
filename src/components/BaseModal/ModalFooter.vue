@@ -18,7 +18,12 @@ const props = withDefaults(defineProps<Props>(), {
   }),
 })
 
-defineEmits<Emits>()
+enum Action {
+  Accept = 'onAccept',
+  Cancel = 'onCancel',
+}
+
+defineEmits([Action.Accept, Action.Cancel])
 
 interface ButtonConfig {
   label?: string
@@ -33,15 +38,7 @@ interface Props {
   cancel: ButtonConfig
 }
 
-enum Action {
-  Accept = 'on-accept',
-  Cancel = 'on-cancel',
-}
 
-interface Emits {
-  (event: Action.Accept): void
-  (event: Action.Cancel): void
-}
 
 const defaultAcceptProps = {
   label: '',
