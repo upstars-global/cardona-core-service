@@ -102,7 +102,7 @@ export default {
               data: {
                 id: project.id,
               },
-            }).catch(e => e).then(values => {
+            }, { withErrorToast: false }).catch(e => e).then(values => {
               if (!(values instanceof Error)) {
                 commit('UPDATE_CURRENCY', {...values.data, id: project.id })
               }
