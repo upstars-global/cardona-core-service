@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { fullDate as fullDateDirective } from '../../../utils/date'
 
 const props = defineProps<{
   date?: string | Date
@@ -18,7 +19,7 @@ const fullDate = computed(() =>
     >-</span>
     <span
       v-else
-      :key="fullDate.getTime()|| 'invalid-date'"
+      :key="fullDate.getTime() || 'invalid-date'"
       v-full-date="fullDate"
       class="white-space-nowrap"
     />
