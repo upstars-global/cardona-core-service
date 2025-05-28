@@ -1,5 +1,8 @@
 import ApiService from '../../services/api'
 import { MenuType } from '../../@model/enums/menuType'
+import { ListData } from 'cardona-core-service/src/@model'
+import { PayoutsListItem } from '@model/payouts'
+import { ProjectInfo } from '@model/project'
 
 export default {
   namespaced: true,
@@ -30,11 +33,13 @@ export default {
     dirOption: ({ layout }) => (layout.isRTL ? 'rtl' : 'ltr'),
     allCurrencies: ({ currencies }, getters, rootGetters ) => {
       const selectedProject = rootGetters.user?.selectedProject || rootGetters.userInfo?.projects?.[0]
-      return currencies?.[selectedProject?.id] || []
+      return currencies?.[selectedProject?.id]
+      || Object.values(currencies).isNotEmpty ? Object.values(currencies)[0] : ['USD']
     },
     defaultCurrency: ({ defaultCurrency }, getters, rootGetters) => {
       const selectedProject = rootGetters.user?.selectedProject || rootGetters.userInfo?.projects?.[0]
-      return defaultCurrency?.[selectedProject?.id] || ''
+      return defaultCurrency?.[selectedProject?.id]
+      || Object.values(defaultCurrency).isNotEmpty ? Object.values(defaultCurrency)[0] : 'USD'
     },
     isMenuTypeMain(state) { return state.menuType === MenuType.main },
   },
@@ -90,19 +95,20 @@ export default {
         && !state.currencies[rootGetters.selectedProject?.id]
         && rootGetters.userInfo?.projects.isNotEmpty)
       {
-        rootGetters.userInfo.projects.forEach(async (project) => {
-          try {
-            const { data } = await ApiService.request({
+        await Promise.all(
+          rootGetters.userInfo.projects?.map(async (project: ProjectInfo) => {
+            return ApiService.request({
               type: 'App.V2.Projects.Config.Read',
               data: {
                 id: project.id,
               },
+            }).catch(e => e).then(values => {
+              if (!(values instanceof Error)) {
+                commit('UPDATE_CURRENCY', {...values.data, id: project.id })
+              }
             })
-
-            commit('UPDATE_CURRENCY', {...data, id: project.id })
-          }
-          catch (e) {}
-        })
+          })
+        )
       }
     },
     onToggleMenuType({ commit, getters }) {
