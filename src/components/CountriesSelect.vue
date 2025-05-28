@@ -224,6 +224,7 @@ defineExpose({
           :variant="VVariants.Tonal"
           :size="VSizes.Small"
           @click="modal.showModal(ModalsIds.RemoveAllCountries + keyID)"
+          :disabled="disabled"
         >
           <VIcon :icon="IconsList.PlaylistX" />
 
