@@ -11,14 +11,21 @@ const fullDate = computed(() =>
 </script>
 
 <template>
-  <span
-    v-if="!date"
-    data-test-if="date-field-empty"
-  >-</span>
-  <span
-    v-else
-    :key="fullDate?.getTime() || 'invalid-date'"
-    v-full-date="fullDate"
-    class="white-space-nowrap"
-  />
+  <div>
+    <span
+      v-if="!date"
+      data-test-if="date-field-empty"
+    >-</span>
+    <span
+      v-else
+      :key="fullDate.getTime()|| 'invalid-date'"
+      v-full-date="fullDate"
+      class="white-space-nowrap"
+    />
+
+    <slot
+      name="copy-btn"
+      :value="fullDateDirective(fullDate)"
+    />
+  </div>
 </template>
