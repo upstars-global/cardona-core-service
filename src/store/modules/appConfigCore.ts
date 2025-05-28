@@ -34,12 +34,12 @@ export default {
     allCurrencies: ({ currencies }, getters, rootGetters ) => {
       const selectedProject = rootGetters.user?.selectedProject || rootGetters.userInfo?.projects?.[0]
       return currencies?.[selectedProject?.id]
-      || Object.values(currencies).isNotEmpty ? Object.values(currencies)[0] : ['USD']
+        || (Object.values(currencies).isNotEmpty ? Object.values(currencies)[0] : ['USD'])
     },
     defaultCurrency: ({ defaultCurrency }, getters, rootGetters) => {
       const selectedProject = rootGetters.user?.selectedProject || rootGetters.userInfo?.projects?.[0]
       return defaultCurrency?.[selectedProject?.id]
-      || Object.values(defaultCurrency).isNotEmpty ? Object.values(defaultCurrency)[0] : 'USD'
+        || (Object.values(defaultCurrency).isNotEmpty ? Object.values(defaultCurrency)[0] : 'USD')
     },
     isMenuTypeMain(state) { return state.menuType === MenuType.main },
   },
