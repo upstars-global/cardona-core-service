@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ViewInfo } from '../../../../@model/view'
-import { useLocaleStore } from '../../../../store/piniaModules/locale'
+import { useLocaleStore } from '../../../../stores/locale'
 
 const props = defineProps<{
   item: ViewInfo
