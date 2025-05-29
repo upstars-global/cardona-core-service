@@ -8,5 +8,14 @@ defineProps<{
 </script>
 
 <template>
-  <DateField :date="item.value" />
+  <div>
+    <DateField :date="item.value">
+      <template #copy-btn="{ value }">
+        <slot
+          name="copy-btn"
+          :value="value"
+        />
+      </template>
+    </DateField>
+  </div>
 </template>

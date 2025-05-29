@@ -13,5 +13,14 @@ const locale = computed(() => localeStore.allLocales[props.item.value])
 </script>
 
 <template>
-  <span>{{ locale }}</span>
+  <div>
+    <span>
+      {{ locale }}
+    </span>
+
+    <slot
+      name="copy-btn"
+      :value="locale"
+    />
+  </div>
 </template>
