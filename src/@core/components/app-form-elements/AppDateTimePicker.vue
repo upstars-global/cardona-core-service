@@ -391,11 +391,6 @@ input[altinputclass="inlinePicker"] {
     font-weight: 300;
   }
 
-  &.open {
-    // Open calendar above overlay
-    z-index: 2401;
-  }
-
   &.hasTime.open {
     .flatpickr-time {
       border-color: rgba(var(--v-border-color), var(--v-border-opacity));
