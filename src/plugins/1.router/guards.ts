@@ -1,6 +1,6 @@
 import type { Router } from 'vue-router'
 import { useCookie } from '../../@core/composable/useCookie'
-import { useLocaleStore } from '../../store/piniaModules/locale'
+import { useLocaleStore } from '../../stores/locale'
 import store from '@/store'
 
 export const setupGuards = (router: Router) => {
@@ -30,7 +30,7 @@ export const setupGuards = (router: Router) => {
     if (isLoggedIn && store.getters.userInfo.isEmpty) {
       await store.dispatch('fetchCurrentUser')
       await Promise.all([
-        localeStore.getLocalesList(),
+        localeStore.fetchLocalesList(),
         store.dispatch('appConfigCore/fetchConfig'),
       ])
     }
