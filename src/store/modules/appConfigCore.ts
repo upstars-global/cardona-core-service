@@ -95,20 +95,18 @@ export default {
         && !state.currencies[rootGetters.selectedProject?.id]
         && rootGetters.userInfo?.projects.isNotEmpty)
       {
-        await Promise.all(
-          rootGetters.userInfo.projects?.map(async (project: ProjectInfo) => {
-            return ApiService.request({
-              type: 'App.V2.Projects.Config.Read',
-              data: {
-                id: project.id,
-              },
-            }, { withErrorToast: false }).catch(e => e).then(values => {
-              if (!(values instanceof Error)) {
-                commit('UPDATE_CURRENCY', {...values.data, id: project.id })
-              }
-            })
+        rootGetters.userInfo.projects?.forEach((project: ProjectInfo) => {
+          ApiService.request({
+            type: 'App.V2.Projects.Config.Read',
+            data: {
+              id: project.id,
+            },
+          }, { withErrorToast: false }).catch(e => e).then(values => {
+            if (!(values instanceof Error)) {
+              commit('UPDATE_CURRENCY', {...values.data, id: project.id })
+            }
           })
-        )
+        })
       }
     },
     onToggleMenuType({ commit, getters }) {
