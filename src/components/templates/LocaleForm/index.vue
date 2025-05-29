@@ -12,7 +12,7 @@ import {
 import TextEditorWysiwyg from '../../TextEditorWysiwyg/index.vue'
 import InputTextWrapper from '../../templates/LocaleForm/_components/InputTextWrapper.vue'
 import CheckField from '../../templates/FieldGenerator/_components/CheckField.vue'
-import { useLocaleStore } from '../../../store/piniaModules/locale'
+import { useLocaleStore } from '../../../stores/locale'
 
 interface Props {
   modelValue: TranslationForm
