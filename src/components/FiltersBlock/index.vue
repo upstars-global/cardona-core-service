@@ -11,12 +11,14 @@ import type { BaseField } from '../../@model/templates/baseField'
 import type { IDefaultFilter } from '../../@model/filter'
 import FilterSelector from './_components/FilterSelector.vue'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   entityName: string
   filters: BaseField[]
   isOpen?: boolean
   size?: VSizes
-}>()
+}>(), {
+  size: VSizes.Medium,
+})
 
 const emits = defineEmits<{
   (e: 'apply'): void
