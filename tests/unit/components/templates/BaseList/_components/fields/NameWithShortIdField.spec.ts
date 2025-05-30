@@ -4,6 +4,7 @@ import { setMountComponent } from '../../../../../utils'
 import {
   checkBaseTestCaseForNameWithId,
   defaultProps,
+  global,
   mockStore,
   testIds,
 } from '../../../../../templates/shared-tests/name-with-short-id'
@@ -22,14 +23,6 @@ vi.mock('vuex', async importOriginal => {
 })
 
 let props
-
-const global = {
-  components: {
-    RouterLink: {
-      template: '<a><slot /></a>',
-    },
-  },
-}
 
 describe('NameWithShortIdField.vue', () => {
   beforeEach(() => {

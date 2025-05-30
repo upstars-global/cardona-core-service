@@ -3,6 +3,7 @@ import NameWithIdField from '../../../../../../../src/components/templates/BaseL
 import { setMountComponent } from '../../../../../utils'
 import {
   checkBaseTestCaseForNameWithId,
+  global,
   defaultProps,
   mockStore,
   testIds,
@@ -22,14 +23,6 @@ vi.mock('vuex', async importOriginal => {
 })
 
 let props
-
-const global = {
-  components: {
-    RouterLink: {
-      template: '<a><slot /></a>',
-    },
-  },
-}
 
 describe('NameWithField.vue', () => {
   beforeEach(() => {

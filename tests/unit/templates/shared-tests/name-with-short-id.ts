@@ -26,7 +26,7 @@ export const testIds = {
   slotContent: 'slot-content',
 }
 
-const global = {
+export const global = {
   components: {
     RouterLink: {
       template: '<a><slot /></a>',
