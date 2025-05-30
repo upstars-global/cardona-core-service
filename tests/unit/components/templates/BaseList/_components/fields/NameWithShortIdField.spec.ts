@@ -4,6 +4,7 @@ import { setMountComponent } from '../../../../../utils'
 import {
   checkBaseTestCaseForNameWithId,
   defaultProps,
+  global,
   mockStore,
   testIds,
 } from '../../../../../templates/shared-tests/name-with-short-id'
@@ -32,7 +33,7 @@ describe('NameWithShortIdField.vue', () => {
   checkBaseTestCaseForNameWithId(getMountNameWithShortIdField)
 
   it('Renders content in default state', () => {
-    const wrapper = getMountNameWithShortIdField(props)
+    const wrapper = getMountNameWithShortIdField(props, global)
 
     testOn.existTextValue({ wrapper, testId: testIds.link }, props.item.name)
     testOn.existTextValue({ wrapper, testId: testIds.copyField }, getShortString(props.item.id.toString()))
@@ -44,8 +45,6 @@ describe('NameWithShortIdField.vue', () => {
     const slot = {
       default: `<div data-test-id="slot-content">${slotText}</div>`,
     }
-
-    const global = {}
 
     const wrapper = getMountNameWithShortIdField(props, global, slot)
 

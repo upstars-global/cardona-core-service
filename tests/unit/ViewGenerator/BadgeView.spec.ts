@@ -16,6 +16,6 @@ describe('BadgeView', () => {
 
     testOn.existElement({ wrapper, testId })
     testOn.equalTextValue({ wrapper }, mockViewInfo.value)
-    testOn.existClass({ wrapper, testId }, 'v-chip--variant-light-primary')
+    testOn.existClass({ wrapper, testId }, 'v-chip--variant-tonal')
   })
 })

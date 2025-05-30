@@ -10,11 +10,12 @@ interface RichTextProps {
   field: RichTextBaseField
   disabled?: boolean
   errors?: boolean
-  onInput: Function
+  onInput?: Function
 }
 
 const props = withDefaults(defineProps<RichTextProps>(), {
   modelValue: '',
+  onInput: () => ({}),
 })
 
 const emit = defineEmits<{

@@ -6,7 +6,7 @@ import { VColors } from '../../../../@model/vuetify'
 import AppTextField from '@core/components/app-form-elements/AppTextField.vue'
 
 const props = defineProps<{
-  modelValue: Array<string>
+  modelValue?: Array<string>
   field: TagsBaseField
   errors: boolean
   disabled: boolean
@@ -54,6 +54,8 @@ const appendInnerIcon = computed(() => {
 
   return null
 })
+
+const errorTextField = computed(() => Boolean(props.errors || duplicateTagsList.value?.length))
 </script>
 
 <template>
@@ -62,7 +64,7 @@ const appendInnerIcon = computed(() => {
       v-model.trim="inputValue"
       :disabled="disabled"
       :placeholder="field.placeholder || field.label"
-      :error="errors || duplicateTagsList.length"
+      :error="errorTextField"
       :append-inner-icon="appendInnerIcon"
       autocomplete="off"
       :autofocus="false"

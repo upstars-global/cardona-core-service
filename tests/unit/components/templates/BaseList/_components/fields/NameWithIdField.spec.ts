@@ -3,6 +3,7 @@ import NameWithIdField from '../../../../../../../src/components/templates/BaseL
 import { setMountComponent } from '../../../../../utils'
 import {
   checkBaseTestCaseForNameWithId,
+  global,
   defaultProps,
   mockStore,
   testIds,
@@ -31,7 +32,7 @@ describe('NameWithField.vue', () => {
   checkBaseTestCaseForNameWithId(getMountNameWithIdField)
 
   it('Renders content in default state', () => {
-    const wrapper = getMountNameWithIdField(props)
+    const wrapper = getMountNameWithIdField(props, global)
 
     testOn.existTextValue({ wrapper, testId: testIds.link }, props.item.name)
     testOn.existTextValue({ wrapper, testId: testIds.copyField }, props.item.id.toString())
@@ -40,7 +41,7 @@ describe('NameWithField.vue', () => {
   it('Is render component with short if', async () => {
     props.isShort = true
 
-    const wrapper = getMountNameWithIdField(props)
+    const wrapper = getMountNameWithIdField(props, global)
 
     testOn.existTextValue({ wrapper, testId: testIds.copyField }, getShortString(props.item.id))
   })
@@ -52,7 +53,6 @@ describe('NameWithField.vue', () => {
       default: `<div data-test-id="slot-content">${slotText}</div>`,
     }
 
-    const global = {}
     const wrapper = getMountNameWithIdField(props, global, slot)
 
     testOn.existTextValue({ wrapper, testId: testIds.slotContent }, slotText)
@@ -69,7 +69,7 @@ describe('NameWithField.vue', () => {
       }),
     }
 
-    const wrapper = getMountNameWithIdField(testProps)
+    const wrapper = getMountNameWithIdField(testProps, global)
 
     expect(wrapper.vm.routePath).toEqual(testProps.getDetailsRoute(testProps.item))
   })
@@ -85,7 +85,7 @@ describe('NameWithField.vue', () => {
       }),
     }
 
-    const wrapper = getMountNameWithIdField(testProps)
+    const wrapper = getMountNameWithIdField(testProps, global)
 
     expect(wrapper.vm.routePath).toEqual(testProps.getUpdateRoute(testProps.item))
   })
@@ -97,7 +97,7 @@ describe('NameWithField.vue', () => {
       getUpdateRoute: undefined,
     }
 
-    const wrapper = getMountNameWithIdField(testProps)
+    const wrapper = getMountNameWithIdField(testProps, global)
 
     expect(wrapper.vm.routePath).toEqual({})
   })

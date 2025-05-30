@@ -11,7 +11,7 @@ interface Props {
   permissions: PermissionUpdatableTable[]
   notHeader?: boolean
   checkedTable?: boolean
-  disabled: boolean
+  disabled?: boolean
 }
 interface Emits {
   (event: 'updateAllChecked', payload: boolean): void
