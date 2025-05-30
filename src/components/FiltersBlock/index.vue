@@ -15,7 +15,7 @@ const props = defineProps<{
   entityName: string
   filters: BaseField[]
   isOpen?: boolean
-  size: VSizes
+  size?: VSizes
 }>()
 
 const emits = defineEmits<{

@@ -159,6 +159,7 @@ describe('FiltersBlock', () => {
       filters,
       isOpen: true,
       size: VSizes.Small,
+      entityName: 'Test',
     }
 
     const wrapper = getMountFiltersBlock(props)
@@ -178,6 +179,7 @@ describe('FiltersBlock', () => {
     props = {
       filters,
       isOpen: true,
+      entityName: 'Test',
     }
 
     const wrapper = getMountFiltersBlock(props)

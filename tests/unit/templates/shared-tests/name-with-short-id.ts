@@ -26,9 +26,17 @@ export const testIds = {
   slotContent: 'slot-content',
 }
 
+const global = {
+  components: {
+    RouterLink: {
+      template: '<a><slot /></a>',
+    },
+  },
+}
+
 export const checkBaseTestCaseForNameWithId = mountMethod => {
   it('Not show Link when not exist route ', async () => {
-    const wrapper = mountMethod(defaultProps)
+    const wrapper = mountMethod(defaultProps, global)
 
     testOn.notExistElement({ wrapper, testId: testIds.name })
 
@@ -42,7 +50,7 @@ export const checkBaseTestCaseForNameWithId = mountMethod => {
   it('Is render content with props isShowYou', async () => {
     defaultProps.isShowYou = true
 
-    const wrapper = mountMethod(defaultProps)
+    const wrapper = mountMethod(defaultProps, global)
 
     /// When id is equal to сгккуте user id from store
     testOn.existTextValue({ wrapper, testId: testIds.badgeYou }, i18n.t('common.you'))
