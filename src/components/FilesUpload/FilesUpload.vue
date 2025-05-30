@@ -84,6 +84,8 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
     ref="dropZoneRef"
     class="files-upload d-flex align-center justify-center text-medium-emphasis"
     :class="[props.size, { 'files-upload--over-drop': isOverDropZone, disabled, 'error': isError }]"
+    @dragover.prevent
+    @drop.prevent
   >
     <slot
       name="default"

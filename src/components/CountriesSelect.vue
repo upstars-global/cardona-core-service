@@ -18,6 +18,7 @@ const props = defineProps<{
   bannedOnly?: boolean
   excludeCountries?: string[]
   customLabel?: string
+  customDescription?: string
   required?: boolean
 }>()
 
@@ -223,8 +224,9 @@ defineExpose({
           :variant="VVariants.Tonal"
           :size="VSizes.Small"
           @click="modal.showModal(ModalsIds.RemoveAllCountries + keyID)"
+          :disabled="disabled"
         >
-          <VIcon :icon="IconsList.XIcon" />
+          <VIcon :icon="IconsList.PlaylistX" />
 
           {{ $t('action.removeAll') }}
         </VBtn>
@@ -253,7 +255,7 @@ defineExpose({
       v-if="!required"
       class="text-sm text-color-mute mt-1"
     >
-      {{ $t('component.countriesSelect.description') }}
+      {{ customDescription || $t('component.countriesSelect.description') }}
     </span>
 
     <div

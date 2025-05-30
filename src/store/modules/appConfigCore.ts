@@ -1,5 +1,8 @@
 import ApiService from '../../services/api'
 import { MenuType } from '../../@model/enums/menuType'
+import { ListData } from 'cardona-core-service/src/@model'
+import { PayoutsListItem } from '@model/payouts'
+import { ProjectInfo } from '@model/project'
 
 export default {
   namespaced: true,
@@ -21,15 +24,23 @@ export default {
         type: $themeConfig.layout.footer.type,
       },
     } */
-    defaultCurrency: '',
-    currencies: [],
+    defaultCurrency: {},
+    currencies: {},
     menuType: MenuType.main,
   },
   getters: {
     typeMenu: ({ layout }) => layout.menu.type,
     dirOption: ({ layout }) => (layout.isRTL ? 'rtl' : 'ltr'),
-    allCurrencies: ({ currencies }) => currencies,
-    defaultCurrency: ({ defaultCurrency }) => defaultCurrency,
+    allCurrencies: ({ currencies }, getters, rootGetters ) => {
+      const selectedProject = rootGetters.user?.selectedProject || rootGetters.userInfo?.projects?.[0]
+      return currencies?.[selectedProject?.id]
+        || (Object.values(currencies).isNotEmpty ? Object.values(currencies)[0] : ['USD'])
+    },
+    defaultCurrency: ({ defaultCurrency }, getters, rootGetters) => {
+      const selectedProject = rootGetters.user?.selectedProject || rootGetters.userInfo?.projects?.[0]
+      return defaultCurrency?.[selectedProject?.id]
+        || (Object.values(defaultCurrency).isNotEmpty ? Object.values(defaultCurrency)[0] : 'USD')
+    },
     isMenuTypeMain(state) { return state.menuType === MenuType.main },
   },
   mutations: {
@@ -70,9 +81,9 @@ export default {
     UPDATE_FOOTER_CONFIG(state, obj) {
       Object.assign(state.layout.footer, obj)
     },
-    UPDATE_CURRENCY(state, { defaultCurrency, currencies }) {
-      state.defaultCurrency = defaultCurrency
-      state.currencies = currencies
+    UPDATE_CURRENCY(state, { id, defaultCurrency, currencies }) {
+      state.defaultCurrency[id] = defaultCurrency
+      state.currencies[id] = currencies
     },
     UPDATE_MENU_TYPE(state, menuType) {
       state.menuType = menuType
@@ -80,18 +91,22 @@ export default {
   },
   actions: {
     async fetchConfig({ commit, state, rootGetters }) {
-      if (!state?.defaultCurrency && !state?.currencies?.length) {
-        try {
-          const { data } = await ApiService.request({
+      if (!state.defaultCurrency[rootGetters.selectedProject?.id]
+        && !state.currencies[rootGetters.selectedProject?.id]
+        && rootGetters.userInfo?.projects.isNotEmpty)
+      {
+        rootGetters.userInfo.projects?.forEach((project: ProjectInfo) => {
+          ApiService.request({
             type: 'App.V2.Projects.Config.Read',
             data: {
-              id: rootGetters.selectedProject.id,
+              id: project.id,
             },
+          }, { withErrorToast: false }).catch(e => e).then(values => {
+            if (!(values instanceof Error)) {
+              commit('UPDATE_CURRENCY', {...values.data, id: project.id })
+            }
           })
-
-          commit('UPDATE_CURRENCY', data)
-        }
-        catch (e) {}
+        })
       }
     },
     onToggleMenuType({ commit, getters }) {
