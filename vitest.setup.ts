@@ -1,5 +1,6 @@
 import { vi } from 'vitest'
 import { config } from '@vue/test-utils'
+import { createPinia } from 'pinia'
 
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -8,6 +9,8 @@ import { dayDateDirective, fullDateDirective, fullDateWithSecondsDirective } fro
 import { currency } from './src/directives/currency'
 import { getI18n } from './src/plugins/i18n'
 import './src/extensions/index'
+
+const pinia = createPinia()
 
 const projectDirective = {
   'day-date': dayDateDirective,
@@ -32,7 +35,7 @@ vi.mock('./src/helpers/clipboard', () => ({
   copyToClipboard: vi.fn(),
 }))
 
-config.global.plugins = [vuetify, getI18n()]
+config.global.plugins = [vuetify, getI18n(), pinia]
 
 global.ResizeObserver = class {
   observe() {}

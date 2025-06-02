@@ -12,6 +12,7 @@ import {
 import TextEditorWysiwyg from '../../TextEditorWysiwyg/index.vue'
 import InputTextWrapper from '../../templates/LocaleForm/_components/InputTextWrapper.vue'
 import CheckField from '../../templates/FieldGenerator/_components/CheckField.vue'
+import { useLocaleStore } from '../../../stores/locale'
 
 interface Props {
   modelValue: TranslationForm
@@ -32,11 +33,12 @@ const emits = defineEmits<{
 }>()
 
 const store = useStore()
+const localeStore = useLocaleStore()
 
 const selectEditeInput = ref('')
 const selectedProject = computed(() => store.getters.selectedProject)
 const mainLocale = computed<string>(() => selectedProject.value?.mainLocale || 'ru')
-const allLocales = computed(() => store.getters['localeCore/allLocalesKeys'])
+const allLocales = computed(() => localeStore.allLocales)
 const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
 const variables = computed(() => store.state.textEditor.variableTextBuffer)
 
