@@ -26,8 +26,7 @@ const onSuccess = async () => {
   const form = transformFormData(passwordFormRef.value.form)
   if (!await passwordFormRef.value.validate())
     return
-
-  const payload = { id: props.id, password: form.password.value, isProduct: props.isProduct }
+  const payload = { id: props.id, password: form.password, isProduct: props.isProduct }
 
   await store.dispatch('users/updateUserPassword', payload)
 
