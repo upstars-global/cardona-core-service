@@ -4,7 +4,6 @@ import { createStore } from 'vuex'
 import appConfigCore from './modules/appConfigCore'
 import verticalMenuCore from './modules/verticalMenuCore'
 import breakpointCore from './modules/breakpointCore'
-import localeCore from './modules/localeCore'
 import baseStoreCore from './modules/baseStoreCore'
 import productCore from './modules/productCore'
 import filtersCore from './modules/filtersCore'
@@ -28,7 +27,6 @@ const store = createStore({
     appConfigCore,
     verticalMenuCore,
     breakpointCore,
-    localeCore,
     baseStoreCore,
     productCore,
     filtersCore,
