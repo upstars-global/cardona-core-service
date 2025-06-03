@@ -7,6 +7,7 @@ import { AllPermission, Permission } from '../../@model/permission'
 import ApiService from '../../services/api'
 import type { PermissionGroup } from '../../@model/enums/permissions'
 import { productsName } from '../../configs/productsName'
+import { storageKeys } from '../../configs/storage'
 import { productName } from '@productConfig'
 
 export const fetchCurrentUser = async () => {
@@ -50,13 +51,21 @@ export default {
     selectedProject: ({ selectedProject, priorityProject }, { userProjects }): ProjectInfoInput => {
       const defaultProject: ProjectInfoInput = userProjects[0]
 
-      return priorityProject || selectedProject || defaultProject
+      const projectIdFromStorage: string | null = sessionStorage.getItem(storageKeys.selectedProjectId)
+
+      const selectedProjectInfo: ProjectInfoInput = userProjects.find(({ id }) => id === Number(projectIdFromStorage))
+
+      return priorityProject || selectedProject || selectedProjectInfo || defaultProject
     },
 
     selectedProjectWithoutPriority: ({ selectedProject, priorityProject }, { userProjects }): ProjectInfoInput => {
       const defaultProject: ProjectInfoInput = userProjects[0]
 
-      return selectedProject || defaultProject
+      const projectIdFromStorage: string | null = sessionStorage.getItem(storageKeys.selectedProjectId)
+
+      const selectedProjectInfo: ProjectInfoInput = userProjects.find(({ id }) => id === Number(projectIdFromStorage))
+
+      return selectedProject || selectedProjectInfo || defaultProject
     },
 
     selectedProduct: ({ selectedProduct }) => selectedProduct,
