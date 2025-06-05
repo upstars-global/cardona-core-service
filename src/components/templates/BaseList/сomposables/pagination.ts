@@ -140,7 +140,7 @@ export default function usePagination(
   }
 
   if (isUseRouter) {
-    watch(() => route, () => {
+    watch(() => route.query, () => {
       currentPage.value = Number(route.query.page) || 1
       perPage.value = Number(route.query.perPage) || perPageFromStorage || defaultPerPage
     })
