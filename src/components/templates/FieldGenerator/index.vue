@@ -135,7 +135,7 @@ const validationLabel = computed(() => {
             :placeholder="modelValue.placeholder"
             :size="size"
             v-bind="{ ...$attrs }"
-            :errors="!!errorMessage"
+            :errors="Boolean(errorMessage)"
             @search="onSearch"
           />
           <div v-if="isCheckTypeWithInfo">

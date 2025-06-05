@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import type { CheckGroupBaseField } from '../../../../@model/templates/baseField'
 
 const props = defineProps<{
-  modelValue: boolean
+  modelValue?: string[]
   field: CheckGroupBaseField
   disabled: boolean
 }>()
@@ -19,16 +19,18 @@ const localModelValue = computed({
 </script>
 
 <template>
-  <VCheckbox
-    v-for="option in field.options"
-    :key="option.id"
-    v-model="localModelValue"
-    :value="option.id"
-    :disabled="disabled"
-    :name="`check-group-field-${field.key}`"
-    :label="option.name"
-    class="check-fields mt-75 text-color-mute"
-  />
+ <div>
+   <VCheckbox
+     v-for="option in field.options"
+     :key="option.id"
+     v-model="localModelValue"
+     :value="option.id"
+     :disabled="disabled"
+     :name="`check-group-field-${field.key}`"
+     :label="option.name"
+     class="check-fields mt-75 text-color-mute"
+   />
+ </div>
 </template>
 
 <style scoped lang="scss">

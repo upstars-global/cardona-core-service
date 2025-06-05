@@ -10,14 +10,14 @@ const mockViewInfo = {
 const getMountCommentView = setMountComponent(CommentView)
 const testId = 'comment'
 
-describe('BadgeView', () => {
+describe('CommentView', () => {
   it('Renders when value exist ', () => {
     const wrapper = getMountCommentView({ item: mockViewInfo })
 
     testOn.equalTextValue({ wrapper, testId }, mockViewInfo.value)
   })
   it('Renders when value not exist ', () => {
-    const wrapper = getMountCommentView({ item: '' })
+    const wrapper = getMountCommentView({ item: { value: '' } })
 
     testOn.notExistTextValue({ wrapper, testId }, mockViewInfo.value)
     testOn.equalTextValue({ wrapper, testId }, '-')

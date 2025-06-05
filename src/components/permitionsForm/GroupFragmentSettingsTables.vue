@@ -8,7 +8,7 @@ import { IS_TEST_ENV } from '../../utils/constants'
 const props = defineProps<{
   title: string
   tables: PermissionUpdatableTableList[]
-  disabled: boolean
+  disabled?: boolean
 }>()
 
 const checkeds = ref(props.tables.map(() => false))
