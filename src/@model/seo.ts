@@ -7,6 +7,8 @@ export interface SeoData {
   readonly description?: string
 }
 
+const DEFAULT_META_TITLE = ' '
+
 export class SeoForm {
   readonly metaTitle: TextBaseField
   readonly metaDescription: TextareaBaseField
@@ -15,7 +17,7 @@ export class SeoForm {
   constructor(data?: SeoData) {
     this.metaTitle = new TextBaseField({
       key: 'metaTitle',
-      value: data?.metaTitle || '',
+      value: data?.metaTitle || DEFAULT_META_TITLE,
       label: i18n.t('seo.metaTitle'),
       isLocalization: true,
     })
