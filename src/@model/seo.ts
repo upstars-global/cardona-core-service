@@ -7,7 +7,7 @@ export interface SeoData {
   readonly description?: string
 }
 
-const DEFAULT_META_TITLE = ' '
+const DEFAULT_META_TITLE = '&nbsp;'
 
 export class SeoForm {
   readonly metaTitle: TextBaseField
