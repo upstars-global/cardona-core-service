@@ -33,7 +33,7 @@ defineEmits<{
     <template #modal-footer="{ action } : BaseModalDefaultPropsOfSlot">
       <ModalFooter
         :cancel="{
-          label: $t('common.cancel'),
+          label: $t('action.cancel'),
         }"
         :accept="{
           color: VColors.Error,

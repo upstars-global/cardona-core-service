@@ -7,7 +7,7 @@ import BaseModal from '../../components/BaseModal/index.vue'
 type Value = Record<string, unknown>
 interface Props {
   modalId: string
-  value: Value
+  value?: Value
   keyVar: string
   disabled: boolean
 }
@@ -18,7 +18,9 @@ interface Emits {
   (event: 'delete-key'): void
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  value: () => ({}),
+})
 const emit = defineEmits<Emits>()
 const formModal = ref(props.value)
 const modal = inject('modal')

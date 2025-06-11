@@ -14,7 +14,7 @@ const fullDate = computed(() =>
   <span v-if="!date">-</span>
   <span
     v-else
-    :key="fullDate.getTime()"
+    :key="fullDate.getTime() || 'invalid-date'"
     v-full-date-with-seconds="fullDate"
     class="white-space-nowrap"
   />

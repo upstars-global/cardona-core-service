@@ -14,7 +14,7 @@ import { testOn } from '../../templates/shared-tests/test-case-generator'
 const getMountConfirmModal = setMountComponent(ConfirmModal)
 
 const defaultProps = {
-  id: 'test-modal',
+  modalId: 'test-modal',
   size: ModalSizes.Small,
   title: i18n.t('modal.addAllGames.title'),
   description: i18n.t('modal.addAllGames.description'),
