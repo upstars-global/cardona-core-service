@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { CheckBaseField } from '../../../../@model/templates/baseField'
-
-const props = defineProps<{
-  modelValue: boolean
+interface Props {
+  modelValue?: boolean
   field: CheckBaseField
-  disabled: boolean
-}>()
+  disabled?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  disabled: false,
+})
 
 const emits = defineEmits<{
   (e: 'update:modelValue', value: boolean): void

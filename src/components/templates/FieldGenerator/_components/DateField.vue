@@ -15,10 +15,11 @@ const props = withDefaults(
     modelValue: string
     field: DateBaseField
     errors?: boolean
-    disabled: boolean
+    disabled?: boolean
   }>(),
   {
     modelValue: '',
+    disabled: false,
   },
 )
 

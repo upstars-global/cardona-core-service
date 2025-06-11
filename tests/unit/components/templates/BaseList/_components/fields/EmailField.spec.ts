@@ -1,9 +1,14 @@
 import { beforeEach, describe, it } from 'vitest'
+import { RouterLinkStub } from '@vue/test-utils'
 import EmailField from '../../../../../../../src/components/templates/BaseList/_components/fields/EmailField.vue'
 import { setMountComponent } from '../../../../../utils'
 import { testOn } from '../../../../../templates/shared-tests/test-case-generator'
 
-const getMountEmailField = setMountComponent(EmailField)
+const getMountEmailField = props => setMountComponent(EmailField)(props, {
+  stubs: {
+    RouterLink: RouterLinkStub,
+  },
+})
 
 const defaultProps = {
   item: { id: '0123456789', name: 'Detail', email: 'test@test.com' },

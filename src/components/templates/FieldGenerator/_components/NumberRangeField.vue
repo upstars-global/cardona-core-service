@@ -11,7 +11,7 @@ interface NumberRangeValue {
 }
 
 interface Props {
-  modelValue: NumberRangeValue
+  modelValue?: NumberRangeValue
   field?: NumberBaseField
   errors?: boolean
   disabled?: boolean
