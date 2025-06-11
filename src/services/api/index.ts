@@ -6,6 +6,7 @@ import store from '../../store'
 import useToastService from '../../helpers/toasts'
 import { convertCamelCase } from '../../helpers'
 import { TOKEN_INVALID } from '../../utils/constants'
+import useLoaderStore from '../../stores/loader'
 import {
   ContentType,
   Method,
@@ -17,6 +18,8 @@ import type {
   IValidationError,
 } from './config'
 import { i18n } from '@/plugins/i18n'
+
+const loaderStore = useLoaderStore()
 
 const INVALID_TOKEN_ERROR = 'TypeError: Failed to execute \'setRequestHeader\' on \'XMLHttpRequest\': String contains non ISO-8859-1 code point.'
 const CACHE_NAME = 'app-cache'
@@ -83,7 +86,7 @@ class ApiService {
 
     try {
       if (withLoader)
-        store.dispatch('loaderOn', getLoaderSlug(url, loaderSlug))
+        loaderStore.setLoaderOn(getLoaderSlug(url, loaderSlug))
 
       const axiosInstance: AxiosInstance = newAxiosInstance ? axios.create() : axios
 
@@ -153,7 +156,7 @@ class ApiService {
       return rejectError ? Promise.reject(error) : undefined
     }
     finally {
-      store.dispatch('loaderOff', getLoaderSlug(url, loaderSlug))
+      loaderStore.setLoaderOff()
     }
   }
 

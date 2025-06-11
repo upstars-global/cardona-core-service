@@ -1,11 +1,11 @@
-const getMappedUrl = (url: string) => url.replace(/\/api\/v\d+\//, '')
+import { defineStore } from 'pinia'
+import { getMappedUrl } from '../helpers/index'
 
-export default {
-  state: {
-    globalLoader: false,
-    loadingEndpoints: [],
-  },
-
+export const useLoaderStore = defineStore('loader', {
+  state: () => ({
+    globalLoader: false as boolean,
+    loadingEndpoints: [] as Array<string>,
+  }),
   getters: {
     isLoadingEndpoint:
       ({ loadingEndpoints }) =>
@@ -24,26 +24,15 @@ export default {
             : loadingEndpoints.some(loadingUrl => getMappedUrl(loadingUrl) === getMappedUrl(url))
         },
   },
-
-  mutations: {
-    SET_LOADING(state, url) {
-      state.globalLoader = true
-      state.loadingEndpoints.push(url)
-    },
-
-    CANCEL_LOADING(state, url) {
-      state.globalLoader = false
-      state.loadingEndpoints = state.loadingEndpoints.filter(item => item !== url)
-    },
-  },
-
   actions: {
-    loaderOn({ commit }, url: string) {
-      commit('SET_LOADING', url)
+    setLoaderOn(url: string) {
+      this.globalLoader = true
+      this.loadingEndpoints.push(url)
     },
 
-    loaderOff({ commit }, url: string) {
-      commit('CANCEL_LOADING', url)
+    setLoaderOff(url: string) {
+      this.globalLoader = false
+      this.loadingEndpoints = this.loadingEndpoints.filter(item => item !== url)
     },
   },
-}
+})
