@@ -6,7 +6,8 @@ import store from '../../store'
 import useToastService from '../../helpers/toasts'
 import { convertCamelCase } from '../../helpers'
 import { TOKEN_INVALID } from '../../utils/constants'
-import useLoaderStore from '../../stores/loader'
+import { useLoaderStore } from '../../stores/loader'
+import { i18n } from '../../plugins/i18n/index'
 import {
   ContentType,
   Method,
@@ -17,7 +18,6 @@ import type {
   IResponseError,
   IValidationError,
 } from './config'
-import { i18n } from '@/plugins/i18n'
 
 const loaderStore = useLoaderStore()
 
