@@ -19,8 +19,6 @@ import type {
   IValidationError,
 } from './config'
 
-const loaderStore = useLoaderStore()
-
 const INVALID_TOKEN_ERROR = 'TypeError: Failed to execute \'setRequestHeader\' on \'XMLHttpRequest\': String contains non ISO-8859-1 code point.'
 const CACHE_NAME = 'app-cache'
 const CACHE_PHRASE = 'Dictionaries'
@@ -34,12 +32,11 @@ const isInvalidTokenError = (error): boolean => error?.toString()?.includes(INVA
 const getLoaderSlug = (url: string, loaderSlug: string): string =>
   loaderSlug ? `${url}${loaderSlug}` : url
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-
 interface RequestHeaders { 'Content-Type': string }
 
 class ApiService {
   static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}, retryCount = 0, retryDelay = 1000) {
+    const loaderStore = useLoaderStore()
     const router = useRouter()
     const route = useRoute()
 
