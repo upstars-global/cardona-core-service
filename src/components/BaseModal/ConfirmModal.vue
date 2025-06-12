@@ -52,7 +52,7 @@ const getButtonConfirm = (text: string) => text || props.confirmBtnText
     <template #modal-footer="{ action, payload }">
       <ModalFooter
         :cancel="{
-          label: $t('common.cancel'),
+          label: $t('action.cancel'),
         }"
         :accept="{
           color: VColors.Primary,

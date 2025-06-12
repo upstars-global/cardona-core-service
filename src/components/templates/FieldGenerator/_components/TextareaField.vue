@@ -85,7 +85,7 @@ const handleKeydown = (event: KeyboardEvent) => {
     :counter="field.maxLength"
     :maxlength="field.maxLength"
     :disabled="disabled"
-    :persistent-counter="field.maxLength"
+    :persistent-counter="Boolean(field.maxLength)"
     :hide-details="!field.maxLength"
     v-bind="autoHeight"
     class="text-area"

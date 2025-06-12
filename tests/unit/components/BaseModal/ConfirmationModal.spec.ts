@@ -14,7 +14,7 @@ import {
 const getMountConfirmationModal = setMountComponent(ConfirmationModal)
 
 const defaultProps = {
-  id: 'test-modal',
+  modalId: 'test-modal',
   size: ModalSizes.Small,
   title: i18n.t('modal.addAllGames.title'),
   description: i18n.t('modal.addAllGames.description'),

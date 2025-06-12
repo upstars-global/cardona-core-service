@@ -99,7 +99,6 @@ const changeEditState = (state: boolean): void => {
     >
       <AppTextField
         v-model="numberPosition"
-        :size="buttonSize"
         type="number"
         autofocus
         :formatter="formatterInput"

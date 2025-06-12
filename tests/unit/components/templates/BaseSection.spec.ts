@@ -19,6 +19,10 @@ import { setTabError } from '../../../../src/components/templates/BaseSection/co
 
 const getMountBaseSection = setMountComponent(BaseSection)
 
+const FieldGeneratorStub = {
+  template: '<div class="field-generator-stub" />',
+}
+
 const routes = [
   { path: '/mock-form-list', name: 'mock-formList', component: { template: '<div>Mock Form List</div>' } },
 ]
@@ -80,6 +84,7 @@ const mockStore = createStore({
   },
   actions: {
     'resetErrorUrls': vi.fn(),
+    'textEditor/setVariableTextBuffer': vi.fn(() => Promise.resolve()),
     'baseStoreCore/readEntity': vi.fn(() => Promise.resolve()),
     'baseStoreCore/createEntity': vi.fn(() => Promise.resolve()),
     'baseStoreCore/updateEntity': vi.fn(() => Promise.resolve()),
@@ -134,8 +139,11 @@ const mountComponent = (props = {}, global = {}, slots = {}) =>
     stubs: {
       VBtn: { template: '<button><slot /></button>' },
     },
-    provide: { modal: mockModal },
     ...global,
+    provide: { modal: mockModal },
+    components: {
+      FieldGenerator: FieldGeneratorStub,
+    },
   }, {
     default: `<template #default="{ form }">
                   <FieldGenerator v-model="form.isActive" />
