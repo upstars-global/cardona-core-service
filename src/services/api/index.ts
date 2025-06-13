@@ -93,11 +93,11 @@ class ApiService {
 
       const body: FormData | any
         = contentType === ContentType.FormData && payload.formData
-          ? this.createFormData(payload.formData)
-          : JSON.stringify({
-            ...payload,
-            requestId: uuidv4(),
-          })
+        ? this.createFormData(payload.formData)
+        : JSON.stringify({
+          ...payload,
+          requestId: uuidv4(),
+        })
 
       const { data }: any = await axiosInstance({
         url,
@@ -153,7 +153,7 @@ class ApiService {
       return rejectError ? Promise.reject(error) : undefined
     }
     finally {
-      loaderStore.setLoaderOff()
+      loaderStore.setLoaderOff(getLoaderSlug(url, loaderSlug))
     }
   }
 
