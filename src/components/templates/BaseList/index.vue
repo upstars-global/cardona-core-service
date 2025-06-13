@@ -33,6 +33,7 @@ import StatementField from '../../../components/templates/_components/StatementF
 import DateWithSecondsField from '../../../components/templates/_components/DateWithSecondsField.vue'
 import SumAndCurrency from '../../../components/templates/_components/SumAndCurrency.vue'
 import StatusField from '../../../components/templates/_components/StatusField.vue'
+import { useLoaderStore } from '../../../stores/loader'
 import usePagination from './сomposables/pagination'
 import type { PaginationResult } from './сomposables/pagination'
 import MultipleActions from './_components/MultipleActions.vue'
@@ -73,6 +74,7 @@ const modal = inject('modal')
 const slots = useSlots()
 
 const store = useStore()
+const loaderStore = useLoaderStore()
 const { t } = useI18n()
 
 const router = useRouter()
@@ -208,11 +210,11 @@ const isLoadingList = computed(() => {
   const listUrl = `${entityUrl}/list`
 
   return props.config.loadingOnlyByList
-    ? store.getters.isLoadingEndpoint([
+    ? loaderStore.isLoadingEndpoint([
       listUrl,
       ...props.config.loadingEndpointArr!,
     ])
-    : store.getters.isLoadingEndpoint([
+    : loaderStore.isLoadingEndpoint([
       listUrl,
       `${entityUrl}/update`,
       `${entityUrl}/active/switch`,
