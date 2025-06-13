@@ -29,7 +29,7 @@ export default {
           data: {
             code,
 
-            // isLocal: true, // TODO: For test from localhost
+            // isLocal: true, // TODO: Parameter for testing from localhost, also need to merge branch google-auth-local
           },
         })
 
