@@ -52,7 +52,12 @@ const onClickLink = () => {
     :class="linkSizeClass"
   >
     <span class="link-title">
-      {{ value.title }}
+      <slot
+        name="title"
+        :action="{ openLink: onClickLink, copy: copyToClipboard }"
+      >
+        {{ value.title }}
+      </slot>
     </span>
 
     <VIcon
