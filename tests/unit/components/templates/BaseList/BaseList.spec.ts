@@ -97,6 +97,11 @@ vi.mock('../../../../../src/helpers/toasts', () => {
 const global = {
   provide: { modal: mockModal },
   plugins: [mockStore],
+  components: {
+    VueSelect: {
+      template: '<select><slot /></select>',
+    },
+  },
 }
 
 let props
