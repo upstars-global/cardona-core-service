@@ -8,6 +8,7 @@ import type { LocaleVariable } from '../../@model/translations'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import { copyToClipboard } from '../../helpers/clipboard'
+import { useTextEditorStore } from '../../stores/textEditor'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
@@ -39,6 +40,7 @@ interface Emits {
 const modal = inject('modal')
 
 const store = useStore()
+const textEditorStore = useTextEditorStore()
 
 const content = computed({
   get: () => props.modelValue,
@@ -48,19 +50,19 @@ const content = computed({
 })
 
 const globalEditor = ref()
-const isUpdateVar = computed(() => store.state.textEditor.isUpdateVar)
-const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
+const isUpdateVar = computed(() => textEditorStore.isUpdateVar)
+const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
 
 const setVariableTextBuffer = params => {
-  store.dispatch('textEditor/setVariableTextBuffer', params)
+  textEditorStore.setVariableTextBuffer(params)
 }
 
 const setVariableByKey = ({ key, value }) => {
-  store.dispatch('textEditor/setVariableByKey', { key, value })
+  textEditorStore.setVariableByKey({ key, value })
 }
 
 const removeVariableValueByKey = key => {
-  store.dispatch('textEditor/removeVariableValueByKey', key)
+  textEditorStore.removeVariableValueByKey(key)
 }
 
 watch(
@@ -68,7 +70,7 @@ watch(
   () => {
     if (isUpdateVar.value) {
       findNoUseVarAndDelete()
-      store.dispatch('textEditor/setUpdateVar', false)
+      textEditorStore.setUpdateVar(false)
     }
   },
 )
@@ -77,8 +79,8 @@ const variableTextBuffer = computed({
   get: () => {
     return variableTextBufferStore.value
   },
-  set: val => {
-    store.dispatch('textEditor/setVariableTextBuffer', val)
+  set: value => {
+    setVariableTextBuffer(value)
   },
 })
 
@@ -211,7 +213,7 @@ const config = {
         })
 
         if (updated) {
-          store.dispatch('textEditor/setUpdateVar', true)
+          textEditorStore.setUpdateVar(true)
           emit('update:modelValue', editor.html.get())
           editor.events.trigger('contentChanged') // Тригер на обновление контента
         }
@@ -353,7 +355,7 @@ const deleteVariableTextByKey = () => {
   removeVariableValueByKey(variableKeySelect.value)
   emit('remove-variable', variableKeySelect.value)
   variableKeySelect.value = ''
-  store.dispatch('textEditor/setUpdateVar', true)
+  textEditorStore.setUpdateVar(true)
 }
 
 const isCodeViewActive = ref(false)
