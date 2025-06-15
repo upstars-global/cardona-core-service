@@ -13,6 +13,7 @@ const props = withDefaults(defineProps<{
   modelValue: DynamicField[]
   templateField: Function
   disabled?: boolean
+  disabledAddBtn?: boolean
   required?: boolean
   allowAddWithEmpty?: boolean
   hideLabelOnEmptyList?: boolean
@@ -122,6 +123,7 @@ const disableAddFiled = computed(() =>
     props.disabled,
     !props.allowAddWithEmpty && isDisabled.value,
     isSelectItemNotEmpty.value,
+    props.disabledAddBtn,
   ].some(Boolean),
 )
 </script>
