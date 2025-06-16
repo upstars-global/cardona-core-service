@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createStore } from 'vuex'
-import { getSelectorTestId, setMountComponentWithGlobal } from '../utils'
+import { nextTick } from 'vue'
+import { clickTrigger, getSelectorTestId, setMountComponentWithGlobal } from '../utils'
 import DynamicFieldList from '../../../src/components/DynamicFieldList.vue'
 import type { BaseField } from '../../../src/@model/templates/baseField'
 import { SelectBaseField, TextBaseField } from '../../../src/@model/templates/baseField'
@@ -61,6 +62,7 @@ const templateField = (data?: { text: string; select: string | OptionsItem }): {
 })
 
 const getTemplateFields = (length: number, templateMethod: CallableFunction) => Array.from({ length }).fill(null).map(() => templateMethod())
+const getSingleField = (value?: string) => (new TextBaseField({ key: 'text', id: Math.random().toString(), value, label: 'Text single label' }))
 
 const defaultProps = {
   templateField,
@@ -104,9 +106,7 @@ describe('DynamicFieldList', () => {
   })
 
   it('Should render single field', async () => {
-    const getSingleField = () => (new TextBaseField({ key: 'text', id: Math.random().toString(), value: 'Text value', label: 'Text single label' }))
-
-    props.modelValue = getTemplateFields(5, getSingleField) as TextBaseField[]
+    props.modelValue = getTemplateFields(5, () => getSingleField('Text value')) as TextBaseField[]
 
     const wrapper = getMountComponent(props)
 
@@ -124,5 +124,33 @@ describe('DynamicFieldList', () => {
 
     /// Exist button add
     testOn.existElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonAdd)}` })
+  })
+
+  it('Should remove item of list ', async () => {
+    const AMOUNT_FIELDS = 5
+    const REMOVE_FIELD_INDEX = 1
+
+    /// Init model value
+    props.modelValue = getTemplateFields(AMOUNT_FIELDS, getSingleField) as TextBaseField[]
+
+    /// Set uniq label for each field to easer identification list's state
+    props.modelValue.forEach((field, index) => {
+      field.label = `item-${index}`
+    })
+
+    const wrapper = getMountComponent(props)
+
+    expect(wrapper.findAll('.filed-list__item').length).toBe(AMOUNT_FIELDS)
+    await clickTrigger({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonRemove(REMOVE_FIELD_INDEX))}` })
+
+    await nextTick()
+
+    expect(wrapper.findAll('.filed-list__item').length).toBe(AMOUNT_FIELDS - 1)
+
+    /// Get field on new potion
+    const wrapperOnNewPositionOFList = wrapper.findAll('.filed-list__item')[REMOVE_FIELD_INDEX]
+
+    // Check that field on new position has correct label
+    testOn.existTextValue({ wrapper: wrapperOnNewPositionOFList, selector: 'label' }, 'item-2')
   })
 })
