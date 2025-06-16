@@ -1,13 +1,16 @@
-import { beforeEach, describe, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createStore } from 'vuex'
 import { getSelectorTestId, setMountComponentWithGlobal } from '../utils'
 import DynamicFieldList from '../../../src/components/DynamicFieldList.vue'
+import type { BaseField } from '../../../src/@model/templates/baseField'
 import { SelectBaseField, TextBaseField } from '../../../src/@model/templates/baseField'
 import type { OptionsItem } from '../../../src/@model'
 import { testOn } from '../templates/shared-tests/test-case-generator'
 
+type DynamicField = BaseField | Record<string, BaseField>
+
 interface Props {
-  modelValue: { text: TextBaseField; select: SelectBaseField }[]
+  modelValue: DynamicField
   templateField: Function
   disabled?: boolean
   required?: boolean
@@ -39,11 +42,13 @@ const templateField = (data?: { text: string; select: string | OptionsItem }): {
 } => ({
   text: new TextBaseField({
     key: 'text',
+    id: Math.random().toString(),
     value: data?.text,
     label: 'Some label',
   }),
   select: new SelectBaseField({
     key: 'select',
+    id: Math.random().toString(),
     value: data?.select,
     label: 'Some select',
     options: Array
@@ -54,6 +59,8 @@ const templateField = (data?: { text: string; select: string | OptionsItem }): {
       })),
   }),
 })
+
+const getTemplateFields = (length: number, templateMethod: CallableFunction) => Array.from({ length }).fill(null).map(() => templateMethod())
 
 const defaultProps = {
   templateField,
@@ -67,7 +74,7 @@ export const dataTestIds = {
   label: (index: number) => `label-${index}`,
   rowCol: (row: number, col: number) => `row-${row}-col-${col}`,
   field: (row: number, key: string) => `field-${row}-${key}`,
-  buttonRemove: 'button-remove',
+  buttonRemove: (index: number) => `button-remove-${index}`,
   buttonAdd: 'button-add',
 } as const
 
@@ -78,11 +85,44 @@ beforeEach(() => {
 })
 
 describe('DynamicFieldList', () => {
-  it('Should render base state', async () => {
+  it('Should render label each field', async () => {
+    props.modelValue = getTemplateFields(5, templateField)
+
     const wrapper = getMountComponent(props)
 
-    console.log(wrapper.html())
-    testOn.existTextValue({ wrapper, selector: `${getSelectorTestId('field-0-text')} label` }, props.modelValue[0].text.label)
-    testOn.existTextValue({ wrapper, selector: `${getSelectorTestId('field-0-select')} label` }, props.modelValue[0].select.label)
+    /// Check that render each label of each field
+    props.modelValue.forEach((field, index) => {
+      testOn.existTextValue({ wrapper, selector: `${getSelectorTestId(dataTestIds.field(index, 'text'))} label` }, field.text.label)
+      testOn.existTextValue({ wrapper, selector: `${getSelectorTestId(dataTestIds.field(index, 'select'))} label` }, field.select.label)
+
+      /// Check that exist button remove
+      testOn.existElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonRemove(index))}` })
+    })
+
+    /// Exist Button add
+    testOn.existElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonAdd)}` })
+  })
+
+  it('Should render single field', async () => {
+    const getSingleField = () => (new TextBaseField({ key: 'text', id: Math.random().toString(), value: 'Text value', label: 'Text single label' }))
+
+    props.modelValue = getTemplateFields(5, getSingleField) as TextBaseField[]
+
+    const wrapper = getMountComponent(props)
+
+    /// Run test for each field
+    props.modelValue.forEach((field, index) => {
+      /// Check that is rendering label of field
+      testOn.existTextValue({ wrapper, selector: `${getSelectorTestId(dataTestIds.singleField(index))}` }, field.label)
+
+      /// Check actual value for input
+      expect(wrapper.find(`${getSelectorTestId(dataTestIds.singleField(index))} input`).element.value).toBe(field.value)
+
+      /// Check that exist button remove
+      testOn.existElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonRemove(index))}` })
+    })
+
+    /// Exist button add
+    testOn.existElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonAdd)}` })
   })
 })

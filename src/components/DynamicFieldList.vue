@@ -140,7 +140,7 @@ const disableAddFiled = computed(() =>
         :data-test-id="`label-${index}`"
       >
         <template v-if="!rows.length">
-         111 <label v-show="!index">{{ item?.label }}</label>
+          <label v-show="!index">{{ item?.label }}</label>
         </template>
       </VCol>
 
@@ -209,7 +209,7 @@ const disableAddFiled = computed(() =>
           :class="{ 'cursor-default': disabled }"
           :disabled="disabled"
           @click="onRemove(rowIndex)"
-          data-test-id="button-remove"
+          :data-test-id="`button-remove-${rowIndex}`"
         >
           <VIcon :icon="IconsList.Trash2Icon" />
         </VBtn>
