@@ -12,13 +12,13 @@ export class ChangePassword {
       label: i18n.t('placeholder.newPassword'),
       validationRules: { required: true, password: true, max: 255 },
       withPasswordGenerator: true,
-      showPassword: true,
+      showPassword: false,
     })
     this.repeatPassword = new PasswordBaseField({
       key: 'repeatPassword',
       label: i18n.t('placeholder.repeatPassword'),
       validationRules: { required: true, confirmed: '@password' },
-      showPassword: true,
+      showPassword: false,
     })
   }
 }

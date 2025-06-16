@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { type TranslateResult } from 'vue-i18n'
-import { ModalSizes, VColors, VVariants } from '../../@model/vuetify'
+import { ModalSizes, VColors } from '../../@model/vuetify'
 import type { BaseModalDefaultPropsOfSlot } from '../../@model/modal'
 import BaseModal from './index.vue'
+import ModalFooter from './ModalFooter.vue'
 
 defineProps<{
   modalId: string
@@ -24,36 +25,25 @@ defineEmits<{
     :size="ModalSizes.Small"
     centered
   >
-    <template #default="{ action }: BaseModalDefaultPropsOfSlot">
-      <p
-        class="px-6 mb-2"
-        data-test-id="modal-description"
-      >
+    <template #default>
+      <p data-test-id="modal-description">
         {{ description }}
       </p>
-
-      <hr class="my-4">
-
-      <div class="px-6 pb-4 d-flex justify-end">
-        <VBtn
-          :variant="VVariants.Outlined"
-          :color="VColors.Secondary"
-          class="mr-4"
-          data-test-id="btn-cancel"
-          @click="action.hide"
-        >
-          {{ $t('common.cancel') }}
-        </VBtn>
-
-        <VBtn
-          :color="VColors.Error"
-          :loading="isLoading"
-          data-test-id="btn-confirm"
-          @click="$emit('confirmed', action.hide)"
-        >
-          {{ actionBtnText }}
-        </VBtn>
-      </div>
+    </template>
+    <template #modal-footer="{ action } : BaseModalDefaultPropsOfSlot">
+      <ModalFooter
+        :cancel="{
+          label: $t('action.cancel'),
+        }"
+        :accept="{
+          color: VColors.Error,
+          label: actionBtnText,
+          disabled: isLoading,
+          loading: isLoading,
+        }"
+        @on-cancel="action.hide"
+        @on-accept="$emit('confirmed', action.hide)"
+      />
     </template>
   </BaseModal>
 </template>

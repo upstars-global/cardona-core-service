@@ -1,15 +1,26 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ViewInfo } from '../../../../@model/view'
-import store from '../../../../store'
+import { useLocaleStore } from '../../../../stores/locale'
 
 const props = defineProps<{
   item: ViewInfo
 }>()
 
-const locale = computed(() => store.getters['localeCore/allLocalesKeys'][props.item.value])
+const localeStore = useLocaleStore()
+
+const locale = computed(() => localeStore.allLocales[props.item.value])
 </script>
 
 <template>
-  <span>{{ locale }}</span>
+  <div>
+    <span>
+      {{ locale }}
+    </span>
+
+    <slot
+      name="copy-btn"
+      :value="locale"
+    />
+  </div>
 </template>

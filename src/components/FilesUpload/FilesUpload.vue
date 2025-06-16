@@ -6,10 +6,10 @@ import useToastService from '../../helpers/toasts'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 
 interface Props {
-  size: UploadFileSizes
-  disabled: boolean
-  dataTypes: string[]
-  maxSizeFileMb: number
+  size?: UploadFileSizes
+  disabled?: boolean
+  dataTypes?: string[]
+  maxSizeFileMb?: number
   onSubmitCallback?: Function
   onBtnClickCallback?: Function
   textBtn: string
@@ -19,13 +19,13 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   size: UploadFileSizes.md,
   disabled: false,
-  dataTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'],
+  dataTypes: () => ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'],
   maxSizeFileMb: 10,
   textBtn: 'Upload file',
 })
 
 const emits = defineEmits<{
-  uploadedFiles: [files: any]
+  uploadedFiles: [files: File]
 }>()
 
 const { toastError } = useToastService()
@@ -84,6 +84,8 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
     ref="dropZoneRef"
     class="files-upload d-flex align-center justify-center text-medium-emphasis"
     :class="[props.size, { 'files-upload--over-drop': isOverDropZone, disabled, 'error': isError }]"
+    @dragover.prevent
+    @drop.prevent
   >
     <slot
       name="default"

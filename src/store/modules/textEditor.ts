@@ -15,7 +15,10 @@ export default {
       state.variableTextBuffer = variableTextBuffer
     },
     SET_VARIABLE_BY_KEY(state, { key, value }) {
-      state.variableTextBuffer[key] = value
+      state.variableTextBuffer = {
+        ...state.variableTextBuffer,
+        [key]: value,
+      }
     },
     REMOVE_VARIABLE_VALUE_BY_KEY(state, key) {
       state.variableTextBuffer = omit(state.variableTextBuffer, [key])

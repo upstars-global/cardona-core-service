@@ -14,10 +14,17 @@ import RemoveModal from './BaseModal/RemoveModal.vue'
 const props = defineProps<{
   modelValue: Array<string>
   disabled?: boolean
+  allowedOnly?: boolean
+  bannedOnly?: boolean
+  excludeCountries?: string[]
+  customLabel?: string
+  customDescription?: string
+  required?: boolean
 }>()
 
 const emits = defineEmits<{
   (e: 'update:modelValue', value: string[]): void
+  (e: 'update:type', value: countriesType): void
 }>()
 
 const { t } = useI18n()
@@ -35,6 +42,10 @@ const selectedCountries = ref([])
 const selectedCountriesVisible = ref(new Map())
 const regions = ref({})
 
+watch(countriesRadioModel, newValue => {
+  emits('update:type', newValue)
+})
+
 const selectedCountriesVisibleView = computed(() => Object.values([...selectedCountriesVisible.value]).sort(([country1], [country2]) => collator.compare(country1, country2)))
 
 const optionsRadioCountries = computed(() => [
@@ -50,14 +61,6 @@ const countriesRadioLabel = computed(() => {
 
   return radioLabels[countriesRadioModel.value]
 })
-
-const hasCountryCode = (codeList: string[], countryCode: string): boolean => {
-  return codeList.some(code => {
-    const [country] = code.split('-')
-
-    return country === countryCode
-  })
-}
 
 const regionsSet = computed(() => new Set(Object.values(regions.value).map(item => item.code)))
 const selectedCountriesList = computed(() => [...selectedCountriesVisible.value.values()].flat(1).map(item => item.code))
@@ -92,12 +95,24 @@ onBeforeMount(async () => {
     countriesRadioModel.value = countriesType.Ban
     selectedCountries.value = []
   }
+
+  if (props.allowedOnly)
+    countriesRadioModel.value = countriesType.Allow
+  else if (props.bannedOnly)
+    countriesRadioModel.value = countriesType.Ban
 })
 
 const regionsOptions = computed(() => {
   const list = [...regionsSet.value.difference(new Set(selectedCountriesList.value))]
 
-  return list.map(code => regions.value[code])
+  return list
+    .map(code => regions.value[code])
+    .filter(region => {
+      if (props.excludeCountries?.length)
+        return !props.excludeCountries.includes(region.code)
+
+      return true
+    })
 })
 
 watch(() => countriesRadioModel.value, () => {
@@ -162,35 +177,45 @@ const onConfirmRemoveAll = ({ hide }: { hide: Function }) => {
 
   updateValue()
 }
+
+const singleMode = computed(() => props.allowedOnly || props.bannedOnly)
+
+const keyID = Math.random()
+
+defineExpose({
+  selectedCountriesVisibleView,
+})
 </script>
 
 <template>
   <div>
-    <hr class="mb-6 mt-0">
-    <VBtnToggle
-      v-model="countriesRadioModel"
-      :disabled="disabled"
-      divided
-      mandatory
-      color="primary"
-      variant="outlined"
-      :size="VSizes.Small"
-      class="select-countries-radio"
-    >
-      <VBtn
-        v-for="({ text, value }) in optionsRadioCountries"
-        :key="value"
-        :value="value"
-        :text="text"
-        class="text-primary"
+    <div v-if="!singleMode">
+      <hr class="mb-6 mt-0">
+      <VBtnToggle
+        v-model="countriesRadioModel"
         :disabled="disabled"
-      />
-    </VBtnToggle>
+        divided
+        mandatory
+        color="primary"
+        variant="outlined"
+        :size="VSizes.Small"
+        class="select-countries-radio"
+      >
+        <VBtn
+          v-for="({ text, value }) in optionsRadioCountries"
+          :key="value"
+          :value="value"
+          :text="text"
+          class="text-primary"
+          :disabled="disabled"
+        />
+      </VBtnToggle>
+    </div>
 
     <div class="mt-4">
-      <VLabel class="mb-1 field-generator-label text-body-2 text-high-emphasis d-flex justify-space-between">
-        <span>
-          {{ countriesRadioLabel }}
+      <div class="mb-1 field-generator-label text-body-2 text-high-emphasis d-flex justify-space-between align-baseline">
+        <span :class="{ required }">
+          {{ customLabel ? customLabel : countriesRadioLabel }}
         </span>
 
         <VBtn
@@ -198,13 +223,14 @@ const onConfirmRemoveAll = ({ hide }: { hide: Function }) => {
           :color="VColors.Error"
           :variant="VVariants.Tonal"
           :size="VSizes.Small"
-          @click="modal.showModal(ModalsIds.RemoveAllCountries)"
+          @click="modal.showModal(ModalsIds.RemoveAllCountries + keyID)"
+          :disabled="disabled"
         >
-          <VIcon :icon="IconsList.XIcon" />
+          <VIcon :icon="IconsList.PlaylistX" />
 
           {{ $t('action.removeAll') }}
         </VBtn>
-      </VLabel>
+      </div>
 
       <VueSelect
         ref="selectRef"
@@ -225,8 +251,11 @@ const onConfirmRemoveAll = ({ hide }: { hide: Function }) => {
       </VueSelect>
     </div>
 
-    <span class="text-sm text-color-mute mt-1">
-      {{ $t('component.countriesSelect.description') }}
+    <span
+      v-if="!required"
+      class="text-sm text-color-mute mt-1"
+    >
+      {{ customDescription || $t('component.countriesSelect.description') }}
     </span>
 
     <div
@@ -235,7 +264,7 @@ const onConfirmRemoveAll = ({ hide }: { hide: Function }) => {
     >
       <PerfectScrollbar
         class="scroll-area"
-        :options="{ wheelPropagation: false }"
+        :options="{ wheelPropagation: false, suppressScrollX: true }"
       >
         <div
           v-for="[key, value] in selectedCountriesVisibleView"
@@ -264,7 +293,7 @@ const onConfirmRemoveAll = ({ hide }: { hide: Function }) => {
     </div>
 
     <RemoveModal
-      :remove-modal-id="ModalsIds.RemoveAllCountries"
+      :remove-modal-id="ModalsIds.RemoveAllCountries + keyID"
       :title="$t('component.countriesSelect.removeAllModal.title')"
       :description="$t('component.countriesSelect.removeAllModal.description')"
       @on-click-modal-ok="onConfirmRemoveAll"
@@ -297,5 +326,11 @@ const onConfirmRemoveAll = ({ hide }: { hide: Function }) => {
 :deep(.v-chip--disabled) {
   color: rgba(var(--v-theme-grey-500)) !important;
   opacity: 1;
+}
+
+.required:after {
+  content: "*";
+  color: rgb(var(--v-theme-error));
+  margin-left: 0.25rem;
 }
 </style>

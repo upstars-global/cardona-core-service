@@ -1,4 +1,3 @@
-import { storageKeys } from '../../configs/storage'
 import type { ProjectInfoInput } from '../../@model/project'
 import { ProjectInfo } from '../../@model/project'
 import { UserInfo } from '../../@model/users'
@@ -39,6 +38,7 @@ export default {
     permissions: new AllPermission(),
     selectedProduct: null,
     selectedProject: null,
+    priorityProject: null,
   },
 
   getters: {
@@ -47,18 +47,16 @@ export default {
     userProjects: ({ userInfo }) => userInfo.projects,
     userProducts: ({ userInfo }) => userInfo.products,
 
-    selectedProject: ({ selectedProject }, { userProjects }): ProjectInfoInput => {
+    selectedProject: ({ selectedProject, priorityProject }, { userProjects }): ProjectInfoInput => {
       const defaultProject: ProjectInfoInput = userProjects[0]
 
-      const projectIdFromStorage: string | null = localStorage.getItem(
-        storageKeys.selectedProjectId,
-      )
+      return priorityProject || selectedProject || defaultProject
+    },
 
-      const selectedProjectInfo: ProjectInfoInput = userProjects.find(
-        ({ id }) => id === Number(projectIdFromStorage),
-      )
+    selectedProjectWithoutPriority: ({ selectedProject, priorityProject }, { userProjects }): ProjectInfoInput => {
+      const defaultProject: ProjectInfoInput = userProjects[0]
 
-      return selectedProject || selectedProjectInfo || defaultProject
+      return selectedProject || defaultProject
     },
 
     selectedProduct: ({ selectedProduct }) => selectedProduct,
@@ -123,6 +121,9 @@ export default {
     },
     SET_SELECTED_PRODUCT(state, product: OptionsItem) {
       state.selectedProduct = product
+    },
+    SET_PRIORITY_PROJECT(state, project: ProjectInfoInput) {
+      state.priorityProject = state.userInfo.projects.find(({ alias }) => alias === project.alias) || null
     },
   },
 

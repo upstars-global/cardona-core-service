@@ -97,6 +97,11 @@ vi.mock('../../../../../src/helpers/toasts', () => {
 const global = {
   provide: { modal: mockModal },
   plugins: [mockStore],
+  components: {
+    VueSelect: {
+      template: '<select><slot /></select>',
+    },
+  },
 }
 
 let props
@@ -168,17 +173,17 @@ describe('BaseList', () => {
 
     // Assert that dispatch was called with the correct parameters
     expect(mockDispatch).toHaveBeenCalledWith('baseStoreCore/fetchEntityList', {
-      type: 'Test',
-      filter: new FilterID(filterParams),
-      pagination: {
-        pageNumber: 1,
+      data: {
+        filter: new FilterID(filterParams),
+        page: 1,
         perPage: 10,
+        sort: null,
       },
-      sort: null,
       options: {
         customApiPrefix: undefined,
         listItemModel: undefined,
       },
+      type: 'Test',
     })
   })
 
@@ -320,17 +325,17 @@ describe('BaseList', () => {
 
     // Assert that the customApiPrefix was included in the dispatch call
     expect(mockDispatch).toHaveBeenCalledWith('baseStoreCore/fetchEntityList', {
-      type: 'Test',
-      filter: new FilterID({}),
-      pagination: {
-        pageNumber: 1,
+      data: {
+        filter: new FilterID({}),
+        page: 1,
         perPage: 10,
+        sort: null,
       },
-      sort: null,
       options: {
         customApiPrefix,
         listItemModel: undefined,
       },
+      type: 'Test',
     })
   })
 

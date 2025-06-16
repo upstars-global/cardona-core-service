@@ -36,9 +36,16 @@ export const exportDataMock = () => {
 
 export const mockStore = createStore({
   modules: {
+    entityTest: {
+      namespaced: true,
+      actions: {
+        deleteEntity: vi.fn(),
+      },
+    },
     baseStoreCore: {
       namespaced: true,
       actions: {
+        updateEntity: vi.fn(),
         fetchEntityList: vi.fn().mockResolvedValue({
           list: [{
             id: 1,

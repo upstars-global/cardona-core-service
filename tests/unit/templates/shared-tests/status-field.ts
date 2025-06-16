@@ -16,8 +16,6 @@ export const runTestCaseForStatusField = (describeTitle, mountMethod) => {
 
       testOn.equalTextValue({ wrapper }, 'Unknown status')
 
-      console.log(currentElement.wrapper.html())
-
       testOn.existClass(currentElement, `text-${VColors.Secondary}`)
 
       testOn.existClass(currentElement, `v-chip--variant-${VVariants.Outlined}`)

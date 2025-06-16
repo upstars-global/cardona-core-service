@@ -14,7 +14,7 @@ import { testOn } from '../../templates/shared-tests/test-case-generator'
 const getMountConfirmModal = setMountComponent(ConfirmModal)
 
 const defaultProps = {
-  id: 'test-modal',
+  modalId: 'test-modal',
   size: ModalSizes.Small,
   title: i18n.t('modal.addAllGames.title'),
   description: i18n.t('modal.addAllGames.description'),
@@ -37,7 +37,7 @@ describe('ConfirmModal', () => {
 
     await callActionShowForInternalBaseModal(wrapper)
 
-    await clickTrigger({ wrapper, testId: 'btn-add' })
+    await clickTrigger({ wrapper, testId: 'btn-accept' })
 
     testOn.isCalledEmitEvent({ wrapper }, 'on-click-modal-ok')
   })

@@ -101,6 +101,7 @@ interface IViewInfo {
   readonly withSeparator?: boolean
   readonly permission?: PermissionType
   readonly withSearch?: boolean
+  readonly withCopy?: boolean
 }
 
 // TODO: Delete T = {} All project https://upstars.atlassian.net/browse/BAC-1177
@@ -113,9 +114,10 @@ export class ViewInfo {
   readonly withSeparator?: boolean
   readonly permission?: PermissionType
   readonly withSearch?: boolean
+  readonly withCopy?: boolean
 
   constructor(data: IViewInfo) {
-    this.type = markRaw(data?.type)
+    this.type = markRaw(data.type || {})
     this.value = data?.value
     this.label = data?.label
     this.description = data?.description
@@ -123,5 +125,6 @@ export class ViewInfo {
     this.withSeparator = data?.withSeparator
     this.withSearch = data?.withSearch
     this.permission = data?.permission
+    this.withCopy = data?.withCopy
   }
 }

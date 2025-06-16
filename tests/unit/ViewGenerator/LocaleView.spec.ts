@@ -10,15 +10,10 @@ const allLocalesKeys = {
 
 const getMountLocaleView = setMountComponent(LocaleView)
 
-vi.mock('../../../src/store', () => ({
-  default: {
-    getters: {
-      'localeCore/allLocalesKeys': {
-        en: 'English',
-        fr: 'French',
-      },
-    },
-  },
+vi.mock('../../../src/stores/locale.ts', () => ({
+  useLocaleStore: () => ({
+    allLocales: { en: 'English', fr: 'French' },
+  }),
 }))
 
 describe('LocaleView.vue', () => {

@@ -68,7 +68,7 @@ function setRates(): NumberBaseField[] {
   const field = props.field.withString ? TextBaseField : NumberBaseField
 
   return allCurrencies.value.map(
-    (currency, index) => {
+    (currency) => {
       return new field({
         key: currency,
         id: `${props.field.id}_${currency}`,

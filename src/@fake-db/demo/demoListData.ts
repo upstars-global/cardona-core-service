@@ -16,6 +16,7 @@ export const entityData = {
   minute: 12,
   minutesRange: { from: 12, to: 34 },
   sumRange: { from: 100, to: 500 },
+  currency: { currency: 'USD', bet: 500 },
   rates: [
     { currency: 'AUD', bet: 100 },
     { currency: 'NZD', bet: 200 },

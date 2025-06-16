@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { IconsList } from '../../../../@model/enums/icons'
 
 const props = defineProps<{
-  modelValue: object
+  modelValue?: object
   options: Array<any>
   errors: boolean
   size: string // TODO: refactor sizes

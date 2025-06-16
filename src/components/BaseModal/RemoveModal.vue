@@ -5,6 +5,7 @@ import { VColors, VVariants } from '../../@model/vuetify'
 import AppTextarea from '../../@core/components/app-form-elements/AppTextarea.vue'
 import BaseModal from '../BaseModal/index.vue'
 import type { BaseModalDefaultPropsOfSlot } from '../../@model/modal'
+import ModalFooter from './ModalFooter.vue'
 
 const props = withDefaults(defineProps<Props>(), {
   removeBtnColor: VColors.Error,
@@ -65,10 +66,7 @@ const modalTitle = computed(() => {
     @hide="$emit('on-close-modal')"
   >
     <template #default="{ action }: BaseModalDefaultPropsOfSlot">
-      <VCardText
-        :class="{ 'pb-16': withRemoveComment }"
-        class="d-flex flex-column pt-0"
-      >
+      <div class="d-flex flex-column">
         <span
           class="text-body-1"
           data-test-id="modal-description"
@@ -76,31 +74,26 @@ const modalTitle = computed(() => {
         <AppTextarea
           v-if="withRemoveComment"
           v-model.trim="commentToRemove"
+          class="mt-6"
           :label="$t('common.comment')"
           data-test-id="comment-to-remove"
           rows="3"
           :placeholder="$t('common.comment')"
         />
-      </VCardText>
-      <hr>
-      <VCardText class="d-flex justify-end gap-3 flex-wrap pt-0 pb-4">
-        <VBtn
-          :color="cancelBtnColor"
-          :variant="cancelBtnVariant"
-          data-test-id="btn-cancel"
-          @click="onCloseModal(action.hide)"
-        >
-          {{ $t('action.cancel') }}
-        </VBtn>
-        <VBtn
-          :color="removeBtnColor"
-          :variant="removeBtnVariant"
-          data-test-id="btn-remove"
-          @click="onClickModalOk(action.hide)"
-        >
-          {{ $t('action.remove') }}
-        </VBtn>
-      </VCardText>
+      </div>
+    </template>
+    <template #modal-footer="{ action } : BaseModalDefaultPropsOfSlot">
+      <ModalFooter
+        :cancel="{
+          label: $t('action.cancel'),
+        }"
+        :accept="{
+          color: VColors.Error,
+          label: $t('action.remove'),
+        }"
+        @on-cancel="onCloseModal(action.hide)"
+        @on-accept="onClickModalOk(action.hide)"
+      />
     </template>
   </BaseModal>
 </template>

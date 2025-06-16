@@ -5,10 +5,11 @@ import { useSection } from '../../@model/changePassword'
 import BaseModal from '../BaseModal/index.vue'
 import FieldGenerator from '../templates/FieldGenerator/index.vue'
 import BaseSection from '../templates/BaseSection/index.vue'
+import ModalFooter from '../BaseModal/ModalFooter.vue'
 import { ModalsId } from '../../@model/modalsId'
-import { VColors, VVariants } from '../../@model/vuetify'
-import type { BaseField } from '../../@model/templates/baseField'
 import { BaseSectionConfig } from '../../@model/templates/baseList'
+import { PageType } from 'cardona-core-service/src/@model/templates/baseSection'
+import { transformFormData } from 'cardona-core-service/src/helpers'
 
 const props = withDefaults(defineProps<{
   id: string | number
@@ -21,11 +22,11 @@ const modal = inject('modal')
 const store = useStore()
 const passwordFormRef = ref()
 
-const onSuccess = async (form: Record<string, BaseField>) => {
+const onSuccess = async () => {
+  const form = transformFormData(passwordFormRef.value.form)
   if (!await passwordFormRef.value.validate())
     return
-
-  const payload = { id: props.id, password: form.password.value, isProduct: props.isProduct }
+  const payload = { id: props.id, password: form.password, isProduct: props.isProduct }
 
   await store.dispatch('users/updateUserPassword', payload)
 
@@ -46,13 +47,15 @@ const baseSectionConfig = new BaseSectionConfig({
   <BaseModal
     :id="ModalsId.ChangePassword"
     :title="$t('modal.changePassword.title')"
+    width="31.25rem"
   >
     <BaseSection
       ref="passwordFormRef"
       :use-entity="useSection"
       :config="baseSectionConfig"
       :with-read-action="false"
-      class="px-6 py-6 password-change"
+      :page-type="PageType.Empty"
+      class="password-change"
     >
       <template #default="{ form }">
         <FieldGenerator v-model="form.password" />
@@ -62,28 +65,21 @@ const baseSectionConfig = new BaseSectionConfig({
           class="repeat-password"
         />
       </template>
-      <template #actions="{ form }">
-        <div class="d-flex justify-end gap-2 mt-6">
-          <VBtn
-            :variant="VVariants.Outlined"
-            :color="VColors.Secondary"
-            :text="$t('action.cancel')"
-            @click="onCloseModal"
-          />
-          <VBtn
-            :text="$t('action.save')"
-            @click="onSuccess(form)"
-          />
-        </div>
-      </template>
     </BaseSection>
+    <template #modal-footer>
+      <ModalFooter
+        :accept="{
+          label: $t('action.save'),
+        }"
+        @on-cancel="onCloseModal"
+        @on-accept="onSuccess"
+      />
+    </template>
   </BaseModal>
 </template>
 
 <style lang="scss" scoped>
 .password-change {
-  width: 31.25rem;
-
   .repeat-password {
     padding-right: 2.825rem;
     padding-top: 0.5rem;

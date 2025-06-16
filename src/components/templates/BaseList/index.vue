@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, onBeforeMount, onUnmounted, ref, useSlots, watch } from 'vue'
+import { computed, inject, onBeforeMount, ref, useSlots, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
@@ -11,7 +11,6 @@ import type { ExportFormat, IBaseListConfig } from '../../../@model/templates/ba
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
-import type { IRequestListPayload } from '../../../@model'
 import { ListSort, SortedItem } from '../../../@model'
 import { useFilters } from '../../../components/FiltersBlock/useFilters'
 import type { BaseField } from '../../../@model/templates/baseField'
@@ -262,7 +261,6 @@ const {
   linkGen,
   updateTotal,
   onChangePagination,
-  removePagination,
 } = paginationConfig
 
 const itemsPerPage = computed(() => props.config?.pagination ? perPage.value : items.value.length)
@@ -285,17 +283,17 @@ const getList = async () => {
 
   const { list, total } = await store.dispatch(fetchActionName, {
     type: parseEntityNameWithTabs(entityName),
-    pagination: {
-      pageNumber: currentPage.value,
+    data: {
       perPage: perPage.value,
+      page: currentPage.value,
+      filter,
+      sort,
     },
-    filter,
-    sort,
     options: {
       listItemModel: ListItemModel,
       customApiPrefix: props.config?.customApiPrefix,
     },
-  } as IRequestListPayload)
+  })
 
   items.value = list
 
@@ -326,14 +324,14 @@ const getDetailsRoute = ({ id }): Location => {
   return isExistsDetailsPage ? { name: DetailsPageName, params: { id } } : {}
 }
 
-const onClickToggleStatus = async ({ id, isActive, type = '' }) => {
+const onClickToggleStatus = async ({ id, isActive }) => {
   const actionName = props.config.withDeactivationBySpecificAction
     ? toggleStatusActionName
     : updateActionName
 
   await store.dispatch(actionName, {
     type: entityName,
-    data: { form: { id, isActive: !isActive, type } },
+    data: { form: { id, isActive: !isActive } },
     customApiPrefix: props.config?.customApiPrefix,
   })
 
@@ -459,7 +457,10 @@ const onRowSelected = items => (selectedItems.value = items)
 // Multiple actions
 const onClickToggleStatusMultiple = async (isActive: boolean) => {
   const data: Array<{ id: string; isActive: boolean }> = selectedItems.value.map(
-    ({ id }: { id: string }) => ({ id, isActive }),
+    ({ id }: { id: string }) => ({
+      id,
+      isActive,
+    }),
   )
 
   await store.dispatch(multipleUpdateActionName, {
@@ -505,7 +506,7 @@ const onDragChanged = async e => {
     itemId: id,
     newIndex: e.newIndex,
     oldIndex: e.oldIndex,
-    pageNumber: currentPage.value,
+    page: currentPage.value,
     perPage: perPage.value,
   })
 }
@@ -541,10 +542,6 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
 onBeforeMount(async () => {
   await getList()
   isInitialState.value = false
-})
-
-onUnmounted(() => {
-  removePagination()
 })
 
 const editingId = ref<string | null>(null)
@@ -966,11 +963,10 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       </CTable>
     </VCard>
     <div
-      v-if="items.isNotEmpty"
-      :class="config.small ? 'pt-4' : 'pt-8'"
+      v-if="items.isNotEmpty && config.pagination"
+      class="pt-6"
     >
       <ListPagination
-        v-if="config?.pagination"
         data-test-id="list-pagination"
         :model-value="currentPage"
         :link-gen="linkGenerator"
