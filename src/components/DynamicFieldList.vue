@@ -129,7 +129,7 @@ const disableAddFiled = computed(() =>
 <template>
   <div>
     <VRow v-if="templateField && !hideLabelOnEmptyList">
-      <VCol v-if="isBaseField(templateField)">
+      <VCol v-if="isBaseField(templateField)" data-test-id="single-field-label">
         <label>{{ templateField?.label }}</label>
       </VCol>
 
@@ -137,9 +137,10 @@ const disableAddFiled = computed(() =>
         v-for="(item, index) in Object.values(templateField)"
         v-else
         :key="index"
+        :data-test-id="`label-${index}`"
       >
         <template v-if="!rows.length">
-          <label v-show="!index">{{ item?.label }}</label>
+         111 <label v-show="!index">{{ item?.label }}</label>
         </template>
       </VCol>
 
@@ -165,6 +166,7 @@ const disableAddFiled = computed(() =>
             :with-info="false"
             :disabled="disabled"
             @search="fetchSelectOptions"
+            :data-test-id="`single-field-${rowIndex}`"
           />
         </slot>
       </VCol>
@@ -174,6 +176,7 @@ const disableAddFiled = computed(() =>
         v-else
         :key="idx"
         class="py-0"
+        :data-test-id="`row-${rowIndex}-col-${idx}`"
         :md="fieldCol"
       >
         <slot
@@ -188,6 +191,7 @@ const disableAddFiled = computed(() =>
             :disabled="disabled"
             :with-info="false"
             @search="fetchSelectOptions"
+            :data-test-id="`field-${rowIndex}-${key}`"
           />
         </slot>
       </VCol>
@@ -205,6 +209,7 @@ const disableAddFiled = computed(() =>
           :class="{ 'cursor-default': disabled }"
           :disabled="disabled"
           @click="onRemove(rowIndex)"
+          data-test-id="button-remove"
         >
           <VIcon :icon="IconsList.Trash2Icon" />
         </VBtn>
@@ -219,6 +224,7 @@ const disableAddFiled = computed(() =>
       class="mt-50"
       :disabled="disableAddFiled"
       @click="onAdd"
+      data-test-id="button-add"
     >
       <VIcon :icon="IconsList.PlusIcon" />
 
