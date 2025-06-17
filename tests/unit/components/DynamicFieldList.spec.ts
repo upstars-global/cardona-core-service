@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createStore } from 'vuex'
 import { nextTick } from 'vue'
-import { clickTrigger, getSelectorTestId, setMountComponentWithGlobal } from '../utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { clickTrigger, getSelectorTestId, getWrapperElement, setMountComponentWithGlobal } from '../utils'
 import DynamicFieldList from '../../../src/components/DynamicFieldList.vue'
 import type { BaseField } from '../../../src/@model/templates/baseField'
 import { SelectBaseField, TextBaseField } from '../../../src/@model/templates/baseField'
@@ -164,6 +165,12 @@ describe('DynamicFieldList', () => {
     /// Trigger click action on add new field
     await clickTrigger({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonAdd)}` })
 
+    /// Check chat is called actual event
+    testOn.isCalledEmitEvent({ wrapper }, 'on-add-item')
+
+    /// Check that item from event emmit has correct field keys
+    expect(Object.keys(wrapper.emitted()['on-add-item'][0][0].item)).eqls(['text', 'select'])
+
     await nextTick()
 
     const allFields = wrapper.findAll('.filed-list__item')
@@ -225,7 +232,7 @@ describe('DynamicFieldList', () => {
     })
   })
 
-  it('Should not render button remove on "required" props', async () => {
+  it('Should not render button remove on "required" props', () => {
     props.modelValue = getTemplateFields(5, templateField)
     props.required = true
 
@@ -234,10 +241,30 @@ describe('DynamicFieldList', () => {
 
     /// Run by row
     allFields.forEach((field, rowIndex) => {
-
       /// Check that button remove exist not in first element
       if (!rowIndex)
         testOn.notExistElement({ wrapper: field, testId: dataTestIds.buttonRemove(rowIndex) })
     })
+  })
+
+  it('Should call "update:model-value"', async () => {
+    props.modelValue = getTemplateFields(5, templateField)
+
+    const wrapper = getMountComponent(props)
+    const allFields = wrapper.findAll('.filed-list__item')
+
+    const SOME_VALUE = 'Some changed text value'
+    const someFieldWrapper = allFields[0]
+
+    const input = getWrapperElement({ wrapper: someFieldWrapper, selector: 'input' }) as VueWrapper
+
+    await input.setValue(SOME_VALUE)
+
+    wrapper.vm.$emit('update:model-value', wrapper.vm.modelValue)
+
+    // Set event handler value
+    const expectedValue = wrapper.emitted()['update:model-value'][0][0][0].text.value
+
+    expect(expectedValue).toBe(SOME_VALUE)
   })
 })
