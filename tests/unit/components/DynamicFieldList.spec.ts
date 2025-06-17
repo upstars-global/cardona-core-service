@@ -38,10 +38,7 @@ const getMountComponent = setMountComponentWithGlobal<Props>(DynamicFieldList, {
   },
 })
 
-const templateField = (data?: { text: string; select: string | OptionsItem }): {
-  text: TextBaseField
-  select: SelectBaseField
-} => ({
+const templateField = (data?: { text: string; select: string | OptionsItem }) => ({
   text: new TextBaseField({
     key: 'text',
     id: Math.random().toString(),
@@ -53,17 +50,15 @@ const templateField = (data?: { text: string; select: string | OptionsItem }): {
     id: Math.random().toString(),
     value: data?.select,
     label: 'Some select',
-    options: Array
-      .from({ length: 3 })
-      .map((_, index) => ({
-        id: `${index + 1}`,
-        name: `Option ${index + 1}`,
-      })),
+    options: Array.from({ length: 3 }, (_, index) => ({
+      id: `${index + 1}`,
+      name: `Option ${index + 1}`,
+    })),
   }),
 })
 
-const getTemplateFields = (length: number, templateMethod: CallableFunction) => Array.from({ length }).fill(null).map(() => templateMethod())
-const getSingleField = (value?: string) => (new TextBaseField({ key: 'text', id: Math.random().toString(), value, label: 'Text single label' }))
+const getTemplateFields = (count: number, fn: CallableFunction) => Array.from({ length: count }, () => fn())
+const getSingleField = (value?: string) => new TextBaseField({ key: 'text', id: Math.random().toString(), value, label: 'Text single label' })
 
 const defaultProps = {
   templateField,
@@ -84,187 +79,144 @@ export const dataTestIds = {
 let props: Props
 
 beforeEach(() => {
-  props = defaultProps
+  props = { ...defaultProps }
 })
 
 describe('DynamicFieldList', () => {
-  it('Should render label each field', async () => {
+  it('renders multiple fields with labels and remove buttons', async () => {
     props.modelValue = getTemplateFields(5, templateField)
 
     const wrapper = getMountComponent(props)
 
-    /// Check that render each label of each field
-    props.modelValue.forEach((field, index) => {
-      testOn.existTextValue({ wrapper, selector: `${getSelectorTestId(dataTestIds.field(index, 'text'))} label` }, field.text.label)
-      testOn.existTextValue({ wrapper, selector: `${getSelectorTestId(dataTestIds.field(index, 'select'))} label` }, field.select.label)
-
-      /// Check that exist button remove
-      testOn.existElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonRemove(index))}` })
+    props.modelValue.forEach((field, i) => {
+      testOn.existTextValue({ wrapper, selector: `${getSelectorTestId(dataTestIds.field(i, 'text'))} label` }, field.text.label)
+      testOn.existTextValue({ wrapper, selector: `${getSelectorTestId(dataTestIds.field(i, 'select'))} label` }, field.select.label)
+      testOn.existElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonRemove(i))}` })
     })
 
-    /// Exist Button add
-    testOn.existElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonAdd)}` })
+    testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonAdd) })
   })
 
-  it('Should render single field', async () => {
+  it('renders single field correctly', async () => {
     props.modelValue = getTemplateFields(5, () => getSingleField('Text value')) as TextBaseField[]
 
     const wrapper = getMountComponent(props)
 
-    /// Run test for each field
-    props.modelValue.forEach((field, index) => {
-      /// Check that is rendering label of field
-      testOn.existTextValue({ wrapper, selector: `${getSelectorTestId(dataTestIds.singleField(index))}` }, field.label)
-
-      /// Check actual value for input
-      expect(wrapper.find(`${getSelectorTestId(dataTestIds.singleField(index))} input`).element.value).toBe(field.value)
-
-      /// Check that exist button remove
-      testOn.existElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonRemove(index))}` })
+    props.modelValue.forEach((field, i) => {
+      testOn.existTextValue({ wrapper, selector: getSelectorTestId(dataTestIds.singleField(i)) }, field.label)
+      expect(wrapper.find(`${getSelectorTestId(dataTestIds.singleField(i))} input`).element.value).toBe(field.value)
+      testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonRemove(i)) })
     })
 
-    /// Exist button add
-    testOn.existElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonAdd)}` })
+    testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonAdd) })
   })
 
-  it('Should remove item of list ', async () => {
-    const AMOUNT_FIELDS = 5
-    const REMOVE_FIELD_INDEX = 1
+  it('removes item from list', async () => {
+    const fieldsCount = 5
+    const fieldToRemoveIndex = 1
 
-    /// Init model value
-    props.modelValue = getTemplateFields(AMOUNT_FIELDS, getSingleField) as TextBaseField[]
-
-    /// Set uniq label for each field to easer identification list's state
-    props.modelValue.forEach((field, index) => {
-      field.label = `item-${index}`
-    })
+    props.modelValue = getTemplateFields(fieldsCount, getSingleField) as TextBaseField[]
+    props.modelValue.forEach((f, i) => (f.label = `item-${i}`))
 
     const wrapper = getMountComponent(props)
 
-    expect(wrapper.findAll('.filed-list__item').length).toBe(AMOUNT_FIELDS)
-    await clickTrigger({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonRemove(REMOVE_FIELD_INDEX))}` })
+    expect(wrapper.findAll('.filed-list__item')).toHaveLength(fieldsCount)
 
+    await clickTrigger({ wrapper, selector: getSelectorTestId(dataTestIds.buttonRemove(fieldToRemoveIndex)) })
     await nextTick()
 
-    expect(wrapper.findAll('.filed-list__item').length).toBe(AMOUNT_FIELDS - 1)
+    expect(wrapper.findAll('.filed-list__item')).toHaveLength(fieldsCount - 1)
 
-    /// Get field on new potion
-    const wrapperOnNewPositionOFList = wrapper.findAll('.filed-list__item')[REMOVE_FIELD_INDEX]
+    const updatedField = wrapper.findAll('.filed-list__item')[fieldToRemoveIndex]
 
-    // Check that field on new position has correct label
-    testOn.existTextValue({ wrapper: wrapperOnNewPositionOFList, selector: 'label' }, 'item-2')
+    testOn.existTextValue({ wrapper: updatedField, selector: 'label' }, 'item-2')
   })
 
-  it('Should add item list ', async () => {
-    const FIELD_LENGTH_START: number = props.modelValue?.length
+  it('adds a new item to the list', async () => {
+    const initialFieldsLength = props.modelValue.length
 
     props.allowAddWithEmpty = true
 
     const wrapper = getMountComponent(props)
 
-    /// Trigger click action on add new field
-    await clickTrigger({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonAdd)}` })
+    await clickTrigger({ wrapper, selector: getSelectorTestId(dataTestIds.buttonAdd) })
 
-    /// Check chat is called actual event
     testOn.isCalledEmitEvent({ wrapper }, 'on-add-item')
-
-    /// Check that item from event emmit has correct field keys
-    expect(Object.keys(wrapper.emitted()['on-add-item'][0][0].item)).eqls(['text', 'select'])
+    expect(Object.keys(wrapper.emitted()['on-add-item'][0][0].item)).toEqual(['text', 'select'])
 
     await nextTick()
 
     const allFields = wrapper.findAll('.filed-list__item')
 
-    /// Check that amount of fields is on one
-    expect(allFields.length).toBe(FIELD_LENGTH_START + 1)
+    expect(allFields).toHaveLength(initialFieldsLength + 1)
 
-    const actualIndex = allFields.length - 1
+    const newIndex = allFields.length - 1
 
-    /// Check that added field in right
-    testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.field(actualIndex, 'text')) })
-    testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.field(actualIndex, 'select')) })
+    testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.field(newIndex, 'text')) })
+    testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.field(newIndex, 'select')) })
   })
 
-  it('Should render valid disabled state', async () => {
-    const FIELD_LENGTH_START: number = props.modelValue?.length
-
+  it('renders disabled state properly', async () => {
     props.disabled = true
     props.allowAddWithEmpty = true
 
     const wrapper = getMountComponent(props)
 
-    /// Check that button add is not rendering
-    testOn.notExistElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonAdd)}` })
+    testOn.notExistElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonAdd) })
 
     const allFields = wrapper.findAll('.filed-list__item')
 
-    /// Check that amount of fields exist
-    expect(allFields.length).toBe(FIELD_LENGTH_START)
+    expect(allFields).toHaveLength(props.modelValue.length)
 
-    /// Check a test case for each row's fields
-    allFields.forEach((field, index) => {
-      /// Check that button remove is not rendering
-      testOn.notExistElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonRemove(index))}` })
-
-      /// Check that field input is disabled
+    allFields.forEach((field, i) => {
+      testOn.notExistElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonRemove(i)) })
       testOn.isDisabledElement({ wrapper: field, selector: 'input' })
     })
-    props.disabled = false
   })
 
-  it('Should render correct col', () => {
+  it('renders correct column classes', () => {
     props.modelValue = getTemplateFields(5, templateField)
-
-    /// Set custom vol for each field
     props.fieldCol = 2
 
     const wrapper = getMountComponent(props)
     const allFields = wrapper.findAll('.filed-list__item')
 
-    /// Run by row
-    allFields.forEach((field, rowIndex) => {
-      /// Run by cull
-      Object.keys(templateField()).forEach((_, colIndex) => {
-        /// Check exist actual col value
-        testOn.existClass({ wrapper: field, selector: `${getSelectorTestId(dataTestIds.rowCol(rowIndex, colIndex))}` }, 'v-col-md-2')
-        testOn.existClass({ wrapper: field, selector: `${getSelectorTestId(dataTestIds.rowCol(rowIndex, colIndex))}` }, 'v-col-md-2')
+    allFields.forEach((field, row) => {
+      Object.keys(templateField()).forEach((_, col) => {
+        const selector = getSelectorTestId(dataTestIds.rowCol(row, col))
+
+        testOn.existClass({ wrapper: field, selector }, 'v-col-md-2')
       })
     })
   })
 
-  it('Should not render button remove on "required" props', () => {
+  it('hides remove button when required is true', () => {
     props.modelValue = getTemplateFields(5, templateField)
     props.required = true
 
     const wrapper = getMountComponent(props)
     const allFields = wrapper.findAll('.filed-list__item')
 
-    /// Run by row
-    allFields.forEach((field, rowIndex) => {
-      /// Check that button remove exist not in first element
-      if (!rowIndex)
-        testOn.notExistElement({ wrapper: field, testId: dataTestIds.buttonRemove(rowIndex) })
+    allFields.forEach((field, i) => {
+      if (i === 0)
+        testOn.notExistElement({ wrapper: field, testId: dataTestIds.buttonRemove(i) })
     })
   })
 
-  it('Should call "update:model-value"', async () => {
+  it('emits updated model value when input changes', async () => {
     props.modelValue = getTemplateFields(5, templateField)
 
     const wrapper = getMountComponent(props)
-    const allFields = wrapper.findAll('.filed-list__item')
+    const targetField = wrapper.findAll('.filed-list__item')[0]
 
-    const SOME_VALUE = 'Some changed text value'
-    const someFieldWrapper = allFields[0]
+    const input = getWrapperElement({ wrapper: targetField, selector: 'input' }) as VueWrapper
 
-    const input = getWrapperElement({ wrapper: someFieldWrapper, selector: 'input' }) as VueWrapper
-
-    await input.setValue(SOME_VALUE)
+    await input.setValue('Some changed text value')
 
     wrapper.vm.$emit('update:model-value', wrapper.vm.modelValue)
 
-    // Set event handler value
-    const expectedValue = wrapper.emitted()['update:model-value'][0][0][0].text.value
+    const emittedValue = wrapper.emitted()['update:model-value'][0][0][0].text.value
 
-    expect(expectedValue).toBe(SOME_VALUE)
+    expect(emittedValue).toBe('Some changed text value')
   })
 })
