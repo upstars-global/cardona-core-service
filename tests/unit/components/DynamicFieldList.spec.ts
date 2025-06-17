@@ -194,13 +194,50 @@ describe('DynamicFieldList', () => {
     /// Check that amount of fields exist
     expect(allFields.length).toBe(FIELD_LENGTH_START)
 
-    /// Check test case for each row's fields
+    /// Check a test case for each row's fields
     allFields.forEach((field, index) => {
       /// Check that button remove is not rendering
       testOn.notExistElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonRemove(index))}` })
 
       /// Check that field input is disabled
       testOn.isDisabledElement({ wrapper: field, selector: 'input' })
+    })
+    props.disabled = false
+  })
+
+  it('Should render correct col', () => {
+    props.modelValue = getTemplateFields(5, templateField)
+
+    /// Set custom vol for each field
+    props.fieldCol = 2
+
+    const wrapper = getMountComponent(props)
+    const allFields = wrapper.findAll('.filed-list__item')
+
+    /// Run by row
+    allFields.forEach((field, rowIndex) => {
+      /// Run by cull
+      Object.keys(templateField()).forEach((_, colIndex) => {
+        /// Check exist actual col value
+        testOn.existClass({ wrapper: field, selector: `${getSelectorTestId(dataTestIds.rowCol(rowIndex, colIndex))}` }, 'v-col-md-2')
+        testOn.existClass({ wrapper: field, selector: `${getSelectorTestId(dataTestIds.rowCol(rowIndex, colIndex))}` }, 'v-col-md-2')
+      })
+    })
+  })
+
+  it('Should not render button remove on "required" props', async () => {
+    props.modelValue = getTemplateFields(5, templateField)
+    props.required = true
+
+    const wrapper = getMountComponent(props)
+    const allFields = wrapper.findAll('.filed-list__item')
+
+    /// Run by row
+    allFields.forEach((field, rowIndex) => {
+
+      /// Check that button remove exist not in first element
+      if (!rowIndex)
+        testOn.notExistElement({ wrapper: field, testId: dataTestIds.buttonRemove(rowIndex) })
     })
   })
 })
