@@ -153,4 +153,54 @@ describe('DynamicFieldList', () => {
     // Check that field on new position has correct label
     testOn.existTextValue({ wrapper: wrapperOnNewPositionOFList, selector: 'label' }, 'item-2')
   })
+
+  it('Should add item list ', async () => {
+    const FIELD_LENGTH_START: number = props.modelValue?.length
+
+    props.allowAddWithEmpty = true
+
+    const wrapper = getMountComponent(props)
+
+    /// Trigger click action on add new field
+    await clickTrigger({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonAdd)}` })
+
+    await nextTick()
+
+    const allFields = wrapper.findAll('.filed-list__item')
+
+    /// Check that amount of fields is on one
+    expect(allFields.length).toBe(FIELD_LENGTH_START + 1)
+
+    const actualIndex = allFields.length - 1
+
+    /// Check that added field in right
+    testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.field(actualIndex, 'text')) })
+    testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.field(actualIndex, 'select')) })
+  })
+
+  it('Should render valid disabled state', async () => {
+    const FIELD_LENGTH_START: number = props.modelValue?.length
+
+    props.disabled = true
+    props.allowAddWithEmpty = true
+
+    const wrapper = getMountComponent(props)
+
+    /// Check that button add is not rendering
+    testOn.notExistElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonAdd)}` })
+
+    const allFields = wrapper.findAll('.filed-list__item')
+
+    /// Check that amount of fields exist
+    expect(allFields.length).toBe(FIELD_LENGTH_START)
+
+    /// Check test case for each row's fields
+    allFields.forEach((field, index) => {
+      /// Check that button remove is not rendering
+      testOn.notExistElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonRemove(index))}` })
+
+      /// Check that field input is disabled
+      testOn.isDisabledElement({ wrapper: field, selector: 'input' })
+    })
+  })
 })
