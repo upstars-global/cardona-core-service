@@ -3,7 +3,10 @@ import { useRouter } from 'vue-router'
 import { isObject } from '../@core/utils/helpers'
 import { BaseField, DateBaseField, NumberRangeBaseField } from '../@model/templates/baseField'
 import type { NumberOrString, OptionsItem } from '../@model'
+import { useTextEditorStore } from '../stores/textEditor'
 import store from '@/store'
+
+const textEditorStore = useTextEditorStore()
 
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
 export const trimEdges = (value: string): string => value.trimEnd().trimStart()
@@ -37,7 +40,7 @@ export const transformFormData = (form): object => {
         })
       }
       else if (key === 'localisationParameters') {
-        valueDataInner = store.state.textEditor.variableTextBuffer
+        valueDataInner = textEditorStore.variableTextBuffer
       }
       else {
         Object.keys(valueData).forEach(keyInner => {
