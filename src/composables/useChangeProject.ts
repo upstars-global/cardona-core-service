@@ -1,16 +1,12 @@
-import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
-import { setStorage } from '../helpers/storage'
 import { storageKeys } from '../configs/storage'
-import type { ProjectInfoInput } from '@/@model/project'
+import type { ProjectInfoInput } from '../@model/project'
 
 export const useChangeProject = () => {
   const store = useStore()
   const route = useRoute()
   const router = useRouter()
-
-  const selectedProject = computed(() => store.getters.selectedProject)
 
   const navigationOnProjectChanges = (project: ProjectInfoInput) => {
     const featureRoot = route?.meta?.breadcrumb?.[0]?.to?.name
@@ -30,7 +26,7 @@ export const useChangeProject = () => {
   }
 
   const changeProject = async (project: ProjectInfoInput, withoutNavigation: boolean) => {
-    setStorage(storageKeys.selectedProjectId, project.id)
+    sessionStorage.setItem(storageKeys.selectedProjectId, project.id)
     await store.dispatch('setSelectedProject', project)
 
     if (!withoutNavigation)
