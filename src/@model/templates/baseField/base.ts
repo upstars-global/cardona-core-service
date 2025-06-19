@@ -131,8 +131,11 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     )
   }
 
-  async getOptions(filters: { search?: string; ids?: string[] } = {}) {
-    if (filters.search?.length)
+  private async fetchOptionList(
+    filters: { search?: string; ids?: string[] } = {},
+    resetPage = false,
+  ): Promise<OptionsItem[] | undefined> {
+    if (resetPage)
       this.pageNumber = 1
 
     const { list = [] } = await store.dispatch(this.fetchOptionsActionName, {
@@ -145,6 +148,16 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     })
 
     return this.getOptionItems(list)
+  }
+
+  async getOptions(filters: { search?: string; ids?: string[] } = {}) {
+    const resetPage = !!filters.search?.length
+
+    return await this.fetchOptionList(filters, resetPage)
+  }
+
+  async reinitOptions(filters?: { search?: string; ids?: string[] } = {}) {
+    return await this.fetchOptionList(filters, true)
   }
 
   async fetchOptions(search?: string) {
