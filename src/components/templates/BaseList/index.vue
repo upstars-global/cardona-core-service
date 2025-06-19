@@ -688,6 +688,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           <slot
             :name="BaseListSlots.TableFieldSetting"
             :selected-items="selectedItems"
+            :items="items"
           />
 
           <TableFields
