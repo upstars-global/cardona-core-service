@@ -41,42 +41,6 @@ const getActionName = (string: string): string => [
   'delete',
 ].find(action => string.toLowerCase().includes(action)) || ''
 
-export const cleanTypePrefix = (str: string): string => {
-  return str.replace(/^App\.V\d+\./, '')
-}
-export const cleanSuffixAction = (str: string): string => {
-  return str.replace(/\.(Create|Update|Delete)$/, '')
-}
-
-export const transformTypeToName = (type: string): string => {
-  let result = ''
-
-  for (let i = 0; i < type.length; i++) {
-    const char = type[i]
-
-    if (char === '.') {
-      const nextChar = type[i + 1]
-      if (nextChar) {
-        result += nextChar.toUpperCase() === nextChar
-          ? nextChar
-          : nextChar.toUpperCase()
-        i++ // пропускаємо наступний символ, бо вже використали
-      }
-    }
-    else if (i === 0) {
-      result += char.toLowerCase()
-    }
-    else if (char.toUpperCase() === char && char.toLowerCase() !== char) {
-      result += `-${char.toLowerCase()}`
-    }
-    else {
-      result += char
-    }
-  }
-
-  return result
-}
-
 class ApiService {
   static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}, retryCount = 0, retryDelay = 1000) {
     const router = useRouter()
