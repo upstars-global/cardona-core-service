@@ -157,10 +157,11 @@ class ApiService {
       if (withSuccessToast) {
         const entityName = transformTypeToName(cleanSuffixAction(cleanTypePrefix(payload.type)))
         const action = getActionName(payload.type)
-        const toastTitle = action && i18n.te(`entities.${entityName}`) ? i18n.te('entities.action', { entityName, action }) : url
+        const toastTitle = action && i18n.te(`entities.${entityName}`)
+          ? i18n.t(`entities.action.${action}`, { entityName: i18n.t(`entities.${entityName}`) })
+          : url
 
-        console.log(toastTitle)
-        toastSuccess(toastTitle, { defaultDescription: successToastDescription })
+        toastSuccess(toastTitle, { defaultDescription: successToastDescription, isCustomTitle: true, })
       }
 
       if (cache)
