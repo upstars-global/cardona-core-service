@@ -135,11 +135,11 @@ class ApiService {
 
       const body: FormData | any
         = contentType === ContentType.FormData && payload.formData
-          ? this.createFormData(payload.formData)
-          : JSON.stringify({
-            ...payload,
-            requestId: uuidv4(),
-          })
+        ? this.createFormData(payload.formData)
+        : JSON.stringify({
+          ...payload,
+          requestId: uuidv4(),
+        })
 
       const { data }: any = await axiosInstance({
         url,
@@ -149,19 +149,16 @@ class ApiService {
         responseType,
       } as AxiosRequestConfig)
 
-      console.log(transformTypeToName(cleanSuffixAction(cleanTypePrefix(payload.type))), getActionName(payload.type))
-
       if (data.error || (!data.data && !url.includes('report')))
         throw data.error
 
       if (withSuccessToast) {
-        const entityName = transformTypeToName(cleanSuffixAction(cleanTypePrefix(payload.type)))
         const action = getActionName(payload.type)
-        const toastTitle = action && i18n.te(`entities.${entityName}`)
-          ? i18n.t(`entities.action.${action}`, { entityName: i18n.t(`entities.${entityName}`) })
+        const toastTitle = action && i18n.te(`entities.${entity}`)
+          ? action
           : url
 
-        toastSuccess(toastTitle, { defaultDescription: successToastDescription, isCustomTitle: true, })
+        toastSuccess(action, { defaultDescription: successToastDescription, entityName: i18n.t(`entities.${entityName}`), })
       }
 
       if (cache)
