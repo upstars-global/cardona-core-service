@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises } from '@vue/test-utils'
 import { createStore } from 'vuex'
@@ -16,6 +17,7 @@ import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { basePermissions } from '../../../../src/helpers/base-permissions'
 import { useRedirectToNotFoundPage } from '../../../../src/helpers/router'
 import { setTabError } from '../../../../src/components/templates/BaseSection/composables/tabs'
+import * as loaderStoreModule from '../../../../src/stores/loader'
 
 const getMountBaseSection = setMountComponent(BaseSection)
 
@@ -72,12 +74,13 @@ vi.mock('../../../../src/helpers/base-permissions', () => ({
   })),
 }))
 
+
 const mockStore = createStore({
   state: {
     errorUrls: [],
   },
   getters: {
-    isLoadingEndpoint: () => vi.fn(() => false),
+    // isLoadingEndpoint: () => vi.fn(() => false),
     isLoadingPage: vi.fn(() => false),
     abilityCan: () => true,
     isErrorEndpoint: () => vi.fn(() => false),
@@ -155,6 +158,7 @@ const mountComponent = (props = {}, global = {}, slots = {}) =>
 let mockRouter
 beforeEach(() => {
   mockRouter = useRouter()
+  setActivePinia(createPinia())
 })
 
 afterEach(() => {
@@ -240,29 +244,23 @@ describe('BaseSection.vue', () => {
   })
 
   it('Shows loading state when isLoading is true', () => {
-    /// Mount the component with mock store indicating loading state
+    // Init test Pinia
+    setActivePinia(createPinia())
+
+    /// Mocking loader state
+    const loaderStoreSpy = vi.spyOn(loaderStoreModule, 'useLoaderStore').mockReturnValue({
+      isLoadingEndpoint: () => true,
+    })
+
+    // Монтируем компонент
     const wrapper = mountComponent({
       pageType: PageType.Update,
       withReadAction: false,
-    }, {
-      plugins: [createStore({
-        state: {
-          errorUrls: [],
-        },
-        getters: {
-          isLoadingEndpoint: () => vi.fn(() => true),
-          isLoadingPage: vi.fn(() => true),
-          abilityCan: () => true,
-          isErrorEndpoint: () => vi.fn(() => false),
-        },
-        actions: {
-          resetErrorUrls: vi.fn(),
-        },
-      })],
     })
 
-    /// Check that the loader was rendered
+    // Check render loader
     testOn.existElement({ wrapper, testId: 'loader' })
+    loaderStoreSpy.mockRestore()
   })
 
   it('Calls onClickCancel when cancel button is clicked', async () => {
@@ -516,7 +514,10 @@ describe('BaseSection.vue', () => {
   })
 
   it('Check call action read entity after click on "save and stay"', async () => {
-    const dispatchSpy = vi.spyOn(mockStore, 'dispatch')
+    // Spy and mock dispatch once
+    const dispatchSpy = vi
+      .spyOn(mockStore, 'dispatch')
+      .mockResolvedValueOnce({ id: '456' })
 
     await router.replace({ path: '/detail' })
     await router.isReady()
@@ -527,10 +528,7 @@ describe('BaseSection.vue', () => {
       writable: true,
     })
 
-    /// Spy on the store dispatch method
-    vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
-
-    /// Mount the component in create mode
+    /// Mount the component in update mode
     const wrapper = mountComponent({
       pageType: PageType.Update,
       config: new BaseSectionConfig({
@@ -539,12 +537,16 @@ describe('BaseSection.vue', () => {
       }),
     })
 
+    const loaderStore = loaderStoreModule.useLoaderStore()
+
     await flushPromises()
 
+    // Click on button save and stay
     await clickTrigger({ wrapper, testId: 'saveAndStay-button' })
-
+    loaderStore.setLoaderOn('mock-form/update')
     await flushPromises()
 
+    // Check request on read entity after update
     expect(dispatchSpy).toHaveBeenCalledWith(
       'baseStoreCore/readEntity',
       expect.objectContaining({ id: '123' }),

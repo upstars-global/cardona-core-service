@@ -6,6 +6,8 @@ import store from '../../store'
 import useToastService from '../../helpers/toasts'
 import { convertCamelCase } from '../../helpers'
 import { TOKEN_INVALID } from '../../utils/constants'
+import { useLoaderStore } from '../../stores/loader'
+import { i18n } from '../../plugins/i18n/index'
 import {
   ContentType,
   Method,
@@ -16,7 +18,6 @@ import type {
   IResponseError,
   IValidationError,
 } from './config'
-import { i18n } from '@/plugins/i18n'
 
 const INVALID_TOKEN_ERROR = 'TypeError: Failed to execute \'setRequestHeader\' on \'XMLHttpRequest\': String contains non ISO-8859-1 code point.'
 const CACHE_NAME = 'app-cache'
@@ -31,12 +32,11 @@ const isInvalidTokenError = (error): boolean => error?.toString()?.includes(INVA
 const getLoaderSlug = (url: string, loaderSlug: string): string =>
   loaderSlug ? `${url}${loaderSlug}` : url
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-
 interface RequestHeaders { 'Content-Type': string }
 
 class ApiService {
   static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}, retryCount = 0, retryDelay = 1000) {
+    const loaderStore = useLoaderStore()
     const router = useRouter()
     const route = useRoute()
 
@@ -83,7 +83,7 @@ class ApiService {
 
     try {
       if (withLoader)
-        store.dispatch('loaderOn', getLoaderSlug(url, loaderSlug))
+        loaderStore.setLoaderOn(getLoaderSlug(url, loaderSlug))
 
       const axiosInstance: AxiosInstance = newAxiosInstance ? axios.create() : axios
 
@@ -93,11 +93,11 @@ class ApiService {
 
       const body: FormData | any
         = contentType === ContentType.FormData && payload.formData
-          ? this.createFormData(payload.formData)
-          : JSON.stringify({
-            ...payload,
-            requestId: uuidv4(),
-          })
+        ? this.createFormData(payload.formData)
+        : JSON.stringify({
+          ...payload,
+          requestId: uuidv4(),
+        })
 
       const { data }: any = await axiosInstance({
         url,
@@ -153,7 +153,7 @@ class ApiService {
       return rejectError ? Promise.reject(error) : undefined
     }
     finally {
-      store.dispatch('loaderOff', getLoaderSlug(url, loaderSlug))
+      loaderStore.setLoaderOff(getLoaderSlug(url, loaderSlug))
     }
   }
 
