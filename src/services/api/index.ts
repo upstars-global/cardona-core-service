@@ -39,7 +39,11 @@ const getActionName = (string: string): string => [
   'create',
   'update',
   'delete',
-].find(action => string.toLowerCase().includes(action)) || ''
+  'active.switch',
+].find(action => string
+  .toLowerCase()
+  .includes(action))
+  ?.replace('.', '_') || ''
 
 class ApiService {
   static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}, retryCount = 0, retryDelay = 1000) {
