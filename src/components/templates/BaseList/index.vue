@@ -732,6 +732,12 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"
       >
+        <template #sub-header="{ columns }">
+          <slot
+            name="sub-header"
+            :columns="columns"
+          />
+        </template>
         <template
           v-for="(fieldItem, index) in selectedFields"
           :key="`base-list_cell-${fieldItem.key}`"

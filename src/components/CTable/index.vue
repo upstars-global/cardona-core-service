@@ -217,6 +217,10 @@ const getActualField = (fields: Array<unknown>) => {
           </div>
         </th>
       </template>
+      <slot
+        name="sub-header"
+        :columns="columns"
+      />
     </template>
     <template #tbody="{ items, select, toggleSelect, isSelected }">
       <tbody
