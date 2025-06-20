@@ -65,9 +65,14 @@ const modalTitle = computed(() => {
   return props.title || translatedTitle
 })
 
-const modalDescription = computed(() => props.description
-  || t('modal.remove.description', { entityName: localizedEntityName.value })
-  || t(`modal.remove${props.entityName}.description`))
+const modalDescription = computed(() => {
+  if (props.description)
+    return props.description
+
+  return localizedEntityName.value
+    ? t('modal.remove.description', { entityName: localizedEntityName.value })
+    : t(`modal.remove${props.entityName}.description`)
+})
 </script>
 
 <template>

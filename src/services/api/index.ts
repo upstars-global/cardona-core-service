@@ -99,11 +99,11 @@ class ApiService {
 
       const body: FormData | any
         = contentType === ContentType.FormData && payload.formData
-        ? this.createFormData(payload.formData)
-        : JSON.stringify({
-          ...payload,
-          requestId: uuidv4(),
-        })
+          ? this.createFormData(payload.formData)
+          : JSON.stringify({
+            ...payload,
+            requestId: uuidv4(),
+          })
 
       const { data }: any = await axiosInstance({
         url,
@@ -118,11 +118,15 @@ class ApiService {
 
       if (withSuccessToast) {
         const action = getActionName(payload.type)
+
         const toastTitle = action && i18n.te(`entities.${entity}`)
           ? action
           : url
 
-        toastSuccess(action, { defaultDescription: successToastDescription, entityName: i18n.t(`entities.${entityName}`), })
+        toastSuccess(toastTitle, {
+          defaultDescription: successToastDescription,
+          entityName: i18n.t(`entities.${entityName}`),
+        })
       }
 
       if (cache)
