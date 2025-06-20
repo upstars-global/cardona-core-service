@@ -51,12 +51,23 @@ const onCloseModal = (hide: Function) => {
   hide()
 }
 
+const localizedEntityName = computed(() => te(`entities.${props.entityName}`) ? t(`entities.${props.entityName}`).toLowerCase() : '')
+
 const modalTitle = computed(() => {
   const localeKey = `modal.remove${props.entityName}.title`
-  const translatedTitle = te(localeKey) ? t(localeKey) : ''
+
+  const translatedTitle = localizedEntityName.value
+    ? t('modal.remove.title', { entityName: localizedEntityName.value })
+    : te(localeKey)
+      ? t(localeKey)
+      : ''
 
   return props.title || translatedTitle
 })
+
+const modalDescription = computed(() => props.description
+  || t('modal.remove.description', { entityName: localizedEntityName })
+  || t(`modal.remove${props.entityName}.description`))
 </script>
 
 <template>
@@ -70,7 +81,7 @@ const modalTitle = computed(() => {
         <span
           class="text-body-1"
           data-test-id="modal-description"
-        >{{ description || $t(`modal.remove${entityName}.description`) }}</span>
+        >{{ modalDescription }}</span>
         <AppTextarea
           v-if="withRemoveComment"
           v-model.trim="commentToRemove"
