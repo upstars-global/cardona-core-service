@@ -6,12 +6,12 @@ import type { NumberOrString, OptionsItem } from '../@model'
 import { useTextEditorStore } from '../stores/textEditor'
 import store from '@/store'
 
-const textEditorStore = useTextEditorStore()
-
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
 export const trimEdges = (value: string): string => value.trimEnd().trimStart()
 
 export const transformFormData = (form): object => {
+  const textEditorStore = useTextEditorStore()
+
   return Object.entries(form).reduce((acc, [key, valueData]: [string, any]) => {
     if (valueData instanceof DateBaseField || valueData instanceof NumberRangeBaseField) {
       const transformedValue = valueData.transformField()
