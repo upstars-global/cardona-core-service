@@ -78,4 +78,18 @@ describe('InnerBlankLink', () => {
 
     expect(window.open).toHaveBeenCalledWith(link, '_blank')
   })
+
+  it('Should render title slot content', () => {
+    const link = 'https://example.com'
+    const router = useRouter()
+
+    router.resolve = vi.fn().mockReturnValue({ href: link })
+
+    const wrapper = getMountInnerBlankLink({ value }, {}, {
+      title: `<div data-test-id="title-slot">${value.title}</div>`,
+    })
+
+    /// Test on render slot content
+    testOn.existTextValue({ wrapper, testId: 'title-slot' }, value.title)
+  })
 })
