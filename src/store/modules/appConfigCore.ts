@@ -1,8 +1,6 @@
-import ApiService from '../../services/api'
+import type { ProjectInfo } from '@model/project'
 import { MenuType } from '../../@model/enums/menuType'
-import { ListData } from 'cardona-core-service/src/@model'
-import { PayoutsListItem } from '@model/payouts'
-import { ProjectInfo } from '@model/project'
+import ApiService from '../../services/api'
 
 export default {
   namespaced: true,
@@ -31,13 +29,15 @@ export default {
   getters: {
     typeMenu: ({ layout }) => layout.menu.type,
     dirOption: ({ layout }) => (layout.isRTL ? 'rtl' : 'ltr'),
-    allCurrencies: ({ currencies }, getters, rootGetters ) => {
-      const selectedProject = rootGetters.user?.selectedProject || rootGetters.userInfo?.projects?.[0]
+    allCurrencies: ({ currencies }, getters, _, rootGetters) => {
+      const selectedProject = rootGetters.selectedProject || rootGetters.userInfo?.projects?.[0]
+
       return currencies?.[selectedProject?.id]
         || (Object.values(currencies).isNotEmpty ? Object.values(currencies)[0] : ['USD'])
     },
     defaultCurrency: ({ defaultCurrency }, getters, rootGetters) => {
       const selectedProject = rootGetters.user?.selectedProject || rootGetters.userInfo?.projects?.[0]
+
       return defaultCurrency?.[selectedProject?.id]
         || (Object.values(defaultCurrency).isNotEmpty ? Object.values(defaultCurrency)[0] : 'USD')
     },
@@ -93,8 +93,7 @@ export default {
     async fetchConfig({ commit, state, rootGetters }) {
       if (!state.defaultCurrency[rootGetters.selectedProject?.id]
         && !state.currencies[rootGetters.selectedProject?.id]
-        && rootGetters.userInfo?.projects.isNotEmpty)
-      {
+        && rootGetters.userInfo?.projects.isNotEmpty) {
         rootGetters.userInfo.projects?.forEach((project: ProjectInfo) => {
           ApiService.request({
             type: 'App.V2.Projects.Config.Read',
@@ -102,9 +101,8 @@ export default {
               id: project.id,
             },
           }, { withErrorToast: false }).catch(e => e).then(values => {
-            if (!(values instanceof Error)) {
-              commit('UPDATE_CURRENCY', {...values.data, id: project.id })
-            }
+            if (!(values instanceof Error))
+              commit('UPDATE_CURRENCY', { ...values.data, id: project.id })
           })
         })
       }
