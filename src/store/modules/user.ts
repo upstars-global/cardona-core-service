@@ -38,7 +38,7 @@ export default {
     userInfo: new UserInfo(),
     permissions: new AllPermission(),
     selectedProduct: null,
-    selectedProject: null,
+    selectedProject: {},
     priorityProject: null,
   },
 
