@@ -20,7 +20,7 @@ const field = {
 }
 
 const defaultProps = {
-  modelValue: '',
+  modelValue: { from: '', to: '' },
   field,
 }
 
