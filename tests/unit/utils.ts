@@ -6,6 +6,8 @@ export const getConfig = (props: Record<string, unknown>, global?: Record<string
 
 export const setMountComponent = (component: unknown) => (props: unknown, global = {}, slots?: Record<string, unknown>) => mount(component, getConfig(props, global, slots))
 
+export const setMountComponentWithGlobal = <T>(component: unknown, global = {}) => (props: T, slots?: Record<string, unknown>) => setMountComponent(component)(props, global, slots)
+
 export const getComponentFromWrapper = (
   wrapper: VueWrapper,
   name: string,
