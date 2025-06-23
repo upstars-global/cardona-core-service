@@ -685,7 +685,11 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
         <!-- Table field settings -->
         <div class="d-flex align-center justify-end">
-          <slot :name="BaseListSlots.TableFieldSetting" />
+          <slot
+            :name="BaseListSlots.TableFieldSetting"
+            :selected-items="selectedItems"
+            :items="items"
+          />
 
           <TableFields
             v-model="selectedFields"

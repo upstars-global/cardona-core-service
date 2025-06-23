@@ -319,6 +319,8 @@ defineExpose({
           :name="BaseSectionSlots.Actions"
           :form="form"
           :loading="isLoadingPage"
+          :cancel="onClickCancel"
+          :submit="onSubmit"
         >
           <hr
             v-if="config.isModalSection"
