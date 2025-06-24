@@ -352,7 +352,15 @@ const toggleExpand = (id: string) => {
             v-if="showExpand && expanded.includes(item.raw.id)"
             :key="`${item.raw.id}-expand`"
           >
-
+            <!-- [START] Add for similar col and cell in table  -->
+            <td v-if="props.selectable" />
+            <td
+              v-if="props.selectable"
+              class="c-table-expand__cell"
+              :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
+              data-c-expand-field="selectable"
+            />
+            <!-- [END] Add for similar col and cell in table -->
             <td
               v-for="field in fields"
               :key="`c-table-expand-cell_${index}_${field.key}`"

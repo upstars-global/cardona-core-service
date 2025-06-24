@@ -744,17 +744,18 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           :key="`base-list_cell-${fieldItem.key}`"
           #[`cellExpand(${fieldItem.key})`]="{ field, item, cell, toggleExpand, isExpanded }"
         >
+          <!--          If don't use slot of expand apply components and slot of base row  -->
           <slot
-            v-if="checkSlotExistence(`cellExpand(${fieldItem.key})`)"
-            :name="`cellExpand(${fieldItem.key})`"
+            v-if="checkSlotExistence(`cell(${fieldItem.key})`) || checkSlotExistence(`cell(${fieldItem.key})`)"
+            :name="checkSlotExistence(`cellExpand(${fieldItem.key})`) ? `cellExpand(${fieldItem.key})` : `cell(${fieldItem.key})`"
             :field="field"
             :item="item.raw"
             :cell="cell"
             :value="item.value"
             :get-update-route="getUpdateRoute"
             :index="getIndexByItemFromList(item.value)"
-            :toggleExpand="toggleExpand"
-            :isExpanded="isExpanded"
+            :toggle-expand="toggleExpand"
+            :is-expanded="isExpanded"
             @click.stop
           />
           <StatusField
@@ -978,8 +979,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :value="item.value"
             :get-update-route="getUpdateRoute"
             :index="getIndexByItemFromList(item.value)"
-            :toggleExpand="toggleExpand"
-            :isExpanded="isExpanded"
+            :toggle-expand="toggleExpand"
+            :is-expanded="isExpanded"
             @click.stop
           />
           <StatusField
