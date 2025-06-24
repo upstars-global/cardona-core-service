@@ -188,6 +188,9 @@ export interface IBaseListConfig {
 
   /** closeFilterOnPagination - Закрывать фильтр во время переключения пагинации */
   readonly closeFilterOnPagination?: boolean
+
+  /** showExpand - Показівать выпаадшку (expand) для строки спсика */
+  readonly showExpand?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -236,6 +239,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly loadingEndpointArr: Array<string>
   readonly hideSearchBlock?: boolean
   readonly closeFilterOnPagination?: boolean
+  readonly showExpand?: boolean
 
   constructor({
     withSearch,
@@ -283,6 +287,7 @@ export class BaseListConfig implements IBaseListConfig {
     loadingEndpointArr,
     hideSearchBlock,
     closeFilterOnPagination,
+    showExpand,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -329,6 +334,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.loadingEndpointArr = loadingEndpointArr ?? []
     this.hideSearchBlock = hideSearchBlock
     this.closeFilterOnPagination = closeFilterOnPagination
+    this.showExpand = showExpand
   }
 }
 

@@ -723,6 +723,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :small="config.small"
         :draggable="canDraggable"
         :hover="config.hover"
+        :show-expand="config.showExpand"
         :skeleton-rows="config.skeletonRows"
         :skeleton-cols="config.skeletonCols"
         :selected-items="selectedItems"
@@ -738,10 +739,18 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :columns="columns"
           />
         </template>
+        <template #expanded-row="{ item, toggleExpand, isExpanded }">
+          <slot
+            name="expanded-row"
+            :item="item"
+            :toggle-expand="toggleExpand"
+            :is-expanded="isExpanded"
+          />
+        </template>
         <template
           v-for="(fieldItem, index) in selectedFields"
           :key="`base-list_cell-${fieldItem.key}`"
-          #[`cell(${fieldItem.key})`]="{ field, item, cell }"
+          #[`cell(${fieldItem.key})`]="{ field, item, cell, toggleExpand, isExpanded }"
         >
           <slot
             v-if="checkSlotExistence(`cell(${fieldItem.key})`)"
@@ -752,6 +761,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :value="item.value"
             :get-update-route="getUpdateRoute"
             :index="getIndexByItemFromList(item.value)"
+            :toggleExpand="toggleExpand"
+            :isExpanded="isExpanded"
             @click.stop
           />
           <StatusField

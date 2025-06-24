@@ -13,6 +13,10 @@ export const useDemoList = (): UseListType => {
 
   const fields = [
     new TableField({
+      key: 'expand',
+      title: i18n.t('page.demo.expand'),
+    }),
+    new TableField({
       key: 'isActive',
       title: i18n.t('common.status'),
       type: ListFieldType.PillStatus,

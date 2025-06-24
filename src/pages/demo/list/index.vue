@@ -58,6 +58,7 @@ const listConfig = new BaseListConfig({
       key: 'sumRange',
     },
   ],
+  showExpand: true,
 })
 
 const getUpdateRoute = ({ id }): _RouteLocationBase => ({ name: 'DemoUpdate', params: { id } })
@@ -78,11 +79,24 @@ const setButtonState = (key: string): void => {
     :config="listConfig"
     class="demo-list mr-md-1 mr-sm-0"
   >
+    <template #expanded-row="{ item }">
+      <VAlert
+        class="pa-2 my-2"
+        :variant="VVariants.Outlined"
+      >
+        {{ item }}
+      </VAlert>
+    </template>
     <template #table-field-setting>
       <VIcon
         :icon="IconsList.BookIcon"
         class="mr-1"
       />
+    </template>
+    <template #cell(expand)="{ item, isExpanded, toggleExpand }">
+      <VBtn @click.stop="toggleExpand(item.id)" :variant="VVariants.Outlined" :size="42">
+        <VIcon :icon="isExpanded ? IconsList.ChevronUpIcon : IconsList.ChevronDownIcon" />
+      </VBtn>
     </template>
     <template #cell(winBack)="{ item }">
       <SumAndCurrency
