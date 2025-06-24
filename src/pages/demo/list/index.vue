@@ -79,14 +79,14 @@ const setButtonState = (key: string): void => {
     :config="listConfig"
     class="demo-list mr-md-1 mr-sm-0"
   >
-    <template #expanded-row="{ item }">
-      <VAlert
-        class="pa-2 my-2"
-        :variant="VVariants.Outlined"
-      >
-        {{ item }}
-      </VAlert>
-    </template>
+    <!--    <template #expanded-row="{ item }"> -->
+    <!--      <VAlert -->
+    <!--        class="pa-2 my-2" -->
+    <!--        :variant="VVariants.Outlined" -->
+    <!--      > -->
+    <!--        {{ item }} -->
+    <!--      </VAlert> -->
+    <!--    </template> -->
     <template #table-field-setting>
       <VIcon
         :icon="IconsList.BookIcon"
@@ -94,7 +94,20 @@ const setButtonState = (key: string): void => {
       />
     </template>
     <template #cell(expand)="{ item, isExpanded, toggleExpand }">
-      <VBtn @click.stop="toggleExpand(item.id)" :variant="VVariants.Outlined" :size="42">
+      <VBtn
+        :variant="VVariants.Outlined"
+        :size="42"
+        @click.stop="toggleExpand(item.id)"
+      >
+        <VIcon :icon="isExpanded ? IconsList.ChevronUpIcon : IconsList.ChevronDownIcon" />
+      </VBtn>
+    </template>
+    <template #cellExpand(expand)="{ item, isExpanded, toggleExpand }">
+      <VBtn
+        :variant="VVariants.Outlined"
+        :size="42"
+        @click.stop="toggleExpand(item.id)"
+      >
         <VIcon :icon="isExpanded ? IconsList.ChevronUpIcon : IconsList.ChevronDownIcon" />
       </VBtn>
     </template>

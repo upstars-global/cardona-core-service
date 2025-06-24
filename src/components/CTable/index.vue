@@ -340,7 +340,7 @@ const toggleExpand = (id: string) => {
                 :item="item"
                 :cell="item.raw[field.key]"
                 :toggle-expand="toggleExpand"
-                :isExpanded="expanded.includes(item.raw.id)"
+                :is-expanded="expanded.includes(item.raw.id)"
               >
                 {{ item.raw[field.key] }}
               </slot>
@@ -352,17 +352,23 @@ const toggleExpand = (id: string) => {
             v-if="showExpand && expanded.includes(item.raw.id)"
             :key="`${item.raw.id}-expand`"
           >
+
             <td
-              :colspan="fields.length + (draggable ? 1 : 0) + (props.selectable ? 1 : 0) + 1"
-              class="bg-gray-100 p-4"
+              v-for="field in fields"
+              :key="`c-table-expand-cell_${index}_${field.key}`"
+              class="c-table-expand__cell text-body-1 whitespace-no-wrap"
+              :class="cellClasses"
+              :data-c-expand-field="field.key"
             >
               <slot
-                name="expanded-row"
+                :name="`cellExpand(${field.key})`"
+                :field="field"
                 :item="item"
+                :cell="item.raw[field.key]"
                 :toggle-expand="toggleExpand"
-                :isExpanded="expanded.includes(item.raw.id)"
+                :is-expanded="expanded.includes(item.raw.id)"
               >
-                {{ item }}
+                {{ item.raw[field.key] }}
               </slot>
             </td>
           </tr>
