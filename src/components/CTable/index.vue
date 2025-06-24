@@ -237,32 +237,32 @@ const toggleExpand = (id: string) => {
         v-if="isLoadingList"
         data-test-id="tbody-skeleton"
       >
-        <slot name="skeleton">
-          <tr
-            v-for="index in skeletonRows"
-            :key="`skeleton-row_${index}`"
-            data-test-id="skeleton-row"
+      <slot name="skeleton">
+        <tr
+          v-for="index in skeletonRows"
+          :key="`skeleton-row_${index}`"
+          data-test-id="skeleton-row"
+        >
+          <td
+            v-if="props.selectable"
+            class="c-table__cell"
+            :class="cellClasses"
+            data-c-field="selectable"
           >
-            <td
-              v-if="props.selectable"
-              class="c-table__cell"
-              :class="cellClasses"
-              data-c-field="selectable"
-            >
-              <VSkeletonLoader type="text" />
-            </td>
-            <td
-              v-for="(field, cellIndex) in getActualField(fields)"
-              :key="`skeleton-cell_${index}_${cellIndex}`"
-              class="c-table__cell"
-              data-test-id="skeleton-coll"
-              :class="cellClasses"
-              :data-c-field="field.key"
-            >
-              <VSkeletonLoader type="text" />
-            </td>
-          </tr>
-        </slot>
+            <VSkeletonLoader type="text" />
+          </td>
+          <td
+            v-for="(field, cellIndex) in getActualField(fields)"
+            :key="`skeleton-cell_${index}_${cellIndex}`"
+            class="c-table__cell"
+            data-test-id="skeleton-coll"
+            :class="cellClasses"
+            :data-c-field="field.key"
+          >
+            <VSkeletonLoader type="text" />
+          </td>
+        </tr>
+      </slot>
       </tbody>
       <Component
         :is="tableWrapperComponent"
@@ -348,38 +348,41 @@ const toggleExpand = (id: string) => {
           </tr>
 
           <!-- Expand row -->
-          <tr
-            v-if="showExpand && expanded.includes(item.raw.id)"
-            :key="`${item.raw.id}-expand`"
-          >
-            <!-- [START] Add for similar col and cell in table  -->
-            <td v-if="props.selectable" />
-            <td
-              v-if="props.selectable"
-              class="c-table-expand__cell"
-              :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
-              data-c-expand-field="selectable"
-            />
-            <!-- [END] Add for similar col and cell in table -->
-            <td
-              v-for="field in fields"
-              :key="`c-table-expand-cell_${index}_${field.key}`"
-              class="c-table-expand__cell text-body-1 whitespace-no-wrap"
-              :class="cellClasses"
-              :data-c-expand-field="field.key"
+          <template v-for="raw in item.raw?.groups">
+            <tr
+              v-if="showExpand && expanded.includes(item.raw.id)"
+              :key="`${item.raw.id}-expand`"
             >
-              <slot
-                :name="`cellExpand(${field.key})`"
-                :field="field"
-                :item="item"
-                :cell="item.raw[field.key]"
-                :toggle-expand="toggleExpand"
-                :is-expanded="expanded.includes(item.raw.id)"
+
+              <!-- [START] Add for similar col and cell in table  -->
+              <td v-if="props.selectable" />
+              <td
+                v-if="props.selectable"
+                class="c-table-expand__cell"
+                :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
+                data-c-expand-field="selectable"
+              />
+              <!-- [END] Add for similar col and cell in table -->
+              <td
+                v-for="field in fields"
+                :key="`c-table-expand-cell_${index}_${field.key}`"
+                class="c-table-expand__cell text-body-1 whitespace-no-wrap"
+                :class="cellClasses"
+                :data-c-expand-field="field.key"
               >
-                {{ item.raw[field.key] }}
-              </slot>
-            </td>
-          </tr>
+                <slot
+                  :name="`cellExpand(${field.key})`"
+                  :field="field"
+                  :item="{ ...item, raw, value: raw}"
+                  :cell="raw[field.key]"
+                  :toggle-expand="toggleExpand"
+                  :is-expanded="expanded.includes(item.raw.id)"
+                >
+                  {{ raw[field.key] }}
+                </slot>
+              </td>
+            </tr>
+          </template>
         </template>
       </Component>
 

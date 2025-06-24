@@ -189,7 +189,7 @@ export interface IBaseListConfig {
   /** closeFilterOnPagination - Закрывать фильтр во время переключения пагинации */
   readonly closeFilterOnPagination?: boolean
 
-  /** showExpand - Показівать выпаадшку (expand) для строки спсика */
+  /** showExpand - Показівать выпаадшку (expand) для строки спсика для этого надо поместить данные в поле groups  */
   readonly showExpand?: boolean
 }
 
