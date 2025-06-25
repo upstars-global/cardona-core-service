@@ -10,6 +10,7 @@ import { withPopper } from '../../../../helpers/selectPopper'
 import { IconsList } from '../../../../@model/enums/icons'
 import { copyToClipboard } from '../../../../helpers/clipboard'
 import { useInfiniteScroll } from '../../../../helpers/infiniteScroll'
+import { FieldGeneratorSlots } from '../../../../@model/templates/baseField/base'
 
 interface MultiselectProps {
   modelValue: OptionsItem[] | string[] | number[]
@@ -143,7 +144,9 @@ const {
     >
       <template #selected-option="{ id, name }">
         <span class="mr-1">
-          {{ name }}
+          <slot :name="FieldGeneratorSlots.SelectedOptionName">
+            {{ name }}
+          </slot>
         </span>
 
         <div v-if="field.withCopyId">
