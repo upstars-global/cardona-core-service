@@ -253,7 +253,7 @@ export default {
             project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
           },
         },
-        { withSuccessToast: true },
+        { withSuccessToast: true, entityName: payload.type },
       )
     },
   },
