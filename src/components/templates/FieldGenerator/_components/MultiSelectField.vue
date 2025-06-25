@@ -144,7 +144,11 @@ const {
     >
       <template #selected-option="{ id, name }">
         <span class="mr-1">
-          <slot :name="FieldGeneratorSlots.SelectedOptionName">
+          <slot
+            :id="id"
+            :option-name="name"
+            :name="FieldGeneratorSlots.SelectedOptionName"
+          >
             {{ name }}
           </slot>
         </span>

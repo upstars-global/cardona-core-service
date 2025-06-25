@@ -138,8 +138,12 @@ const validationLabel = computed(() => {
             :errors="Boolean(errorMessage)"
             @search="onSearch"
           >
-            <template #[FieldGeneratorSlots.SelectedOptionName]>
-              <slot :name="FieldGeneratorSlots.SelectedOptionName" />
+            <template #[FieldGeneratorSlots.SelectedOptionName]="{ id, optionName }">
+              <slot
+                :id
+                :name="FieldGeneratorSlots.SelectedOptionName"
+                :option-name="optionName"
+              />
             </template>
           </Component>
 
