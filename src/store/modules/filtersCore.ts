@@ -15,6 +15,10 @@ export default {
     listPath: ({ listPath }): string => listPath,
     appliedListFilters: ({ listFilters }): Array<BaseField> => listFilters,
     defaultFilters: ({ defaultFilters }): IDefaultFilter[] => defaultFilters,
+    isExistsEntityDefaultFilters: ({ defaultFilters }) =>
+      (keyStorage: string): boolean =>
+        defaultFilters.some((filterData: IDefaultFilter) =>
+          filterData.type === keyStorage && filterData.fields.isNotEmpty),
   },
   mutations: {
     SET_LIST_ENTITY_NAME(state, entityName = '') {
