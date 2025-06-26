@@ -70,11 +70,12 @@ onMounted(() => {
         :key="item.key"
         :data-test-id="`select-item-${item.key}`"
         @click="onToggleActive(item)"
+        :disabled="item.alwaysVisible"
       >
         <template #append>
           <VIcon
             v-if="selectedKeys.includes(item.key)"
-            :icon="IconsList.CheckIcon"
+            :icon="item.alwaysVisible ? IconsList.LockIcon : IconsList.CheckIcon"
             data-test-id="check-icon"
           />
         </template>

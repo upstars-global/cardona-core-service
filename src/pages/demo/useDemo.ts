@@ -20,6 +20,7 @@ export const useDemoList = (): UseListType => {
       key: 'isActive',
       title: i18n.t('common.status'),
       type: ListFieldType.PillStatus,
+      alwaysVisible: true,
     }),
     new TableField({
       key: 'status',
