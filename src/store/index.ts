@@ -11,7 +11,6 @@ import authCore from './modules/authCore'
 import compostelaCore from './modules/compostelaCore'
 import user from './modules/user'
 import users from './modules/users'
-import loader from './modules/loader'
 import baseSectionErrors from './modules/baseSectionErrors'
 import tags from './modules/tags'
 import demo from './modules/demo'
@@ -34,7 +33,6 @@ const store = createStore({
     compostelaCore,
     user,
     users,
-    loader,
     baseSectionErrors,
     tags,
     demo,
