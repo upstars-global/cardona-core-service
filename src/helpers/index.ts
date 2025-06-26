@@ -6,6 +6,7 @@ import type { NumberOrString, OptionsItem } from '../@model'
 import { useTextEditorStore } from '../stores/textEditor'
 import store from '@/store'
 
+export const getMappedUrl = (url: string) => url.replace(/\/api\/v\d+\//, '')
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
 export const trimEdges = (value: string): string => value.trimEnd().trimStart()
 

@@ -13,6 +13,7 @@ import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import ConfirmModal from '../../../components/BaseModal/ConfirmModal.vue'
 import { ModalsId } from '../../..//@model/modalsId'
 import { useRedirectToNotFoundPage } from '../../../helpers/router'
+import { useLoaderStore } from '../../../stores/loader'
 import { useTextEditorStore } from '../../../stores/textEditor'
 import { setTabError } from './composables/tabs'
 import { generateEntityUrl } from './composables/entity'
@@ -41,6 +42,7 @@ const emits = defineEmits<{
 
 const modal = inject('modal')
 const store = useStore()
+const loaderStore = useLoaderStore()
 const route = useRoute()
 const router = useRouter()
 const textEditorStore = useTextEditorStore()
@@ -77,7 +79,7 @@ const deleteActionName = `${moduleName}/deleteEntity`
 const { canCreateSeo, canUpdate, canUpdateSeo, canRemove, canViewSeo }
   = basePermissions<BaseSectionConfig>({ entityName, config: props.config })
 
-const isLoadingPage = computed(() => store.getters.isLoadingEndpoint([
+const isLoadingPage = computed(() => loaderStore.isLoadingEndpoint([
   `${entityUrl}/create`,
   `${entityUrl}/read`,
   `${entityUrl}/update`,
@@ -85,7 +87,7 @@ const isLoadingPage = computed(() => store.getters.isLoadingEndpoint([
 ]))
 
 const isDisableSubmitBtn = computed(() => {
-  return store.getters.isLoadingEndpoint(props.config.loadingEndpointArr)
+  return loaderStore.isLoadingEndpoint(props.config.loadingEndpointArr)
 })
 
 const isExistsEndpointsWithError = computed(() => store.getters.isErrorEndpoint([
