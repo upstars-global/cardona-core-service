@@ -137,7 +137,16 @@ const validationLabel = computed(() => {
             v-bind="{ ...$attrs }"
             :errors="Boolean(errorMessage)"
             @search="onSearch"
-          />
+          >
+            <template #[FieldGeneratorSlots.SelectedOptionName]="{ id, optionName }">
+              <slot
+                :id="id"
+                :name="FieldGeneratorSlots.SelectedOptionName"
+                :option-name="optionName"
+              />
+            </template>
+          </Component>
+
           <div v-if="isCheckTypeWithInfo">
             <VTooltip
               :text="modelValue.info"
