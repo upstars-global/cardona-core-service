@@ -648,7 +648,15 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       :size="size"
       @apply="reFetchList"
       @change-selected-filters="onChangeSelectedFilters"
-    />
+    >
+      <template
+        v-for="filter in filters"
+        :key="`filter-field-${filter.key}`"
+        #[`filter(${filter.key})`]="{ selectedFilters, size, index }"
+      >
+        <slot :name="`filter(${filter.key})`" :selectedFilters="selectedFilters" :size="size" :index="index" />
+      </template>
+    </FiltersBlock>
 
     <slot :name="BaseListSlots.CustomFilter" />
 
