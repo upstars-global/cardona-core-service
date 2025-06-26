@@ -50,7 +50,7 @@ const searchQuery = computed({
 <template>
   <VRow no-gutters>
     <VCol>
-      <div class="d-flex gap-4 align-center justify-end">
+      <div class="d-flex gap-4 align-center justify-end list-search-row">
         <slot :name="BaseListSlots.LeftSearchBtn" />
 
         <AppTextField
