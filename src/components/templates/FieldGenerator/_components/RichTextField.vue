@@ -4,6 +4,7 @@ import { useStore } from 'vuex'
 import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg/index.vue'
 import { filterString } from '../../../../helpers/text-editor'
 import type { RichTextBaseField } from '../../../../@model/templates/baseField'
+import { useTextEditorStore } from '../../../../stores/textEditor'
 
 interface RichTextProps {
   modelValue: string | number
@@ -23,8 +24,10 @@ const emit = defineEmits<{
 }>()
 
 const store = useStore()
+const textEditorStore = useTextEditorStore()
+
 const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
-const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
+const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
 
 const localModelValue = computed({
   get: () => props.modelValue,
