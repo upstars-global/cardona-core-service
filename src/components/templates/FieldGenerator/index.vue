@@ -140,7 +140,7 @@ const validationLabel = computed(() => {
           >
             <template #[FieldGeneratorSlots.SelectedOptionName]="{ id, optionName }">
               <slot
-                :id
+                :id="id"
                 :name="FieldGeneratorSlots.SelectedOptionName"
                 :option-name="optionName"
               />
