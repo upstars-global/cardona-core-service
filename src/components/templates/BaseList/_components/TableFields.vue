@@ -43,6 +43,8 @@ const onToggleActive = (data: TableField) => {
 }
 
 onMounted(() => {
+
+  /// TODO make save only keys but not all fields' data
   const list = getListStorage(TableField)(keyStorage)
 
   if (list.isNotEmpty)
