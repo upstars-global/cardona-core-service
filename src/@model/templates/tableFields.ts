@@ -5,6 +5,7 @@ interface TableFieldInput {
   readonly type?: ListFieldType
   readonly size?: ListSize
   readonly align?: AlignType
+  readonly alwaysVisible?: boolean
 }
 
 export class TableField implements TableFieldInput {
@@ -14,6 +15,7 @@ export class TableField implements TableFieldInput {
   readonly type?: ListFieldType
   readonly size?: ListSize
   readonly align?: AlignType
+  readonly alwaysVisible?: boolean
 
   constructor(data: TableFieldInput) {
     this.key = data.key
@@ -22,6 +24,7 @@ export class TableField implements TableFieldInput {
     this.type = data?.type
     this.size = data?.size || ListSize.MD
     this.align = data?.align
+    this.alwaysVisible = data?.alwaysVisible || false
   }
 }
 
