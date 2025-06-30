@@ -16,6 +16,7 @@ vi.mock('vuex', async importOriginal => {
       'filtersCore/listPath': '/mocked-path',
       'filtersCore/listEntityName': 'mocked-entity',
       'filtersCore/appliedListFilters': [],
+      'filtersCore/isExistsEntityDefaultFilters': () => () => true,
       'abilityCan': () => vi.fn(() => true),
       'appConfigCore/allCurrencies': ['USD', 'EUR', 'CAD'],
     },
