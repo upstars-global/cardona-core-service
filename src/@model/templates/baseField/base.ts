@@ -217,9 +217,3 @@ export abstract class ANumberBaseField extends ATextBaseField implements IANumbe
     this.isIntegerNumbers = field.isIntegerNumbers
   }
 }
-
-export enum FieldGeneratorSlots {
-  ErrorMessage = 'error-message',
-  Description = 'description',
-  SelectedOptionName = 'selected-option-name',
-}

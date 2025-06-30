@@ -3,11 +3,10 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { Field } from 'vee-validate'
 import type { BaseField } from '../../../@model/templates/baseField'
-import { CheckBaseField, RatesBaseField, SwitchBaseField } from '../../../@model/templates/baseField'
+import { CheckBaseField, FieldGeneratorSlots, RatesBaseField, SwitchBaseField } from '../../../@model/templates/baseField'
 import { IconsList } from '../../../@model/enums/icons'
 import { MAX_WIDTH_TOOLTIP } from '../../../utils/constants'
 import { PermissionLevel } from '../../../@model/permission'
-import { FieldGeneratorSlots } from '../../../@model/templates/baseField/base'
 
 const props = withDefaults(defineProps<{
   modelValue: BaseField

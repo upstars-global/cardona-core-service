@@ -78,3 +78,9 @@ export {
   TagsBaseField,
   CurrencyBaseField,
 }
+
+export enum FieldGeneratorSlots {
+  ErrorMessage = 'error-message',
+  Description = 'description',
+  SelectedOptionName = 'selected-option-name',
+}

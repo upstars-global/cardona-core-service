@@ -10,7 +10,7 @@ import { withPopper } from '../../../../helpers/selectPopper'
 import { IconsList } from '../../../../@model/enums/icons'
 import { copyToClipboard } from '../../../../helpers/clipboard'
 import { useInfiniteScroll } from '../../../../helpers/infiniteScroll'
-import { FieldGeneratorSlots } from '../../../../@model/templates/baseField/base'
+import { FieldGeneratorSlots } from '../../../../@model/templates/baseField'
 
 interface MultiselectProps {
   modelValue: OptionsItem[] | string[] | number[]
