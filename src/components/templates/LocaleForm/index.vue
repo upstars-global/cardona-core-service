@@ -42,6 +42,7 @@ const selectedProject = computed(() => store.getters.selectedProject)
 const mainLocale = computed<string>(() => selectedProject.value?.mainLocale || 'ru')
 const allLocales = computed(() => localeStore.allLocales)
 const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
+const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
 
 const isMainLocale = (locale: string): boolean => locale === mainLocale.value
 
@@ -96,8 +97,6 @@ const getValue = (locale: string, key: string): string => {
 const watchOptions = { immediate: true, deep: true }
 
 watch(() => variableTextBufferStore, handleVariablesChange, watchOptions)
-
-const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
 </script>
 
 <template>
