@@ -13,6 +13,7 @@ import TextEditorWysiwyg from '../../TextEditorWysiwyg/index.vue'
 import InputTextWrapper from '../../templates/LocaleForm/_components/InputTextWrapper.vue'
 import CheckField from '../../templates/FieldGenerator/_components/CheckField.vue'
 import { useLocaleStore } from '../../../stores/locale'
+import { useTextEditorStore } from '../../../stores/textEditor'
 
 interface Props {
   modelValue: TranslationForm
@@ -34,13 +35,14 @@ const emits = defineEmits<{
 
 const store = useStore()
 const localeStore = useLocaleStore()
+const textEditorStore = useTextEditorStore()
 
 const selectEditeInput = ref('')
 const selectedProject = computed(() => store.getters.selectedProject)
 const mainLocale = computed<string>(() => selectedProject.value?.mainLocale || 'ru')
 const allLocales = computed(() => localeStore.allLocales)
 const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
-const variables = computed(() => store.state.textEditor.variableTextBuffer)
+const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
 
 const isMainLocale = (locale: string): boolean => locale === mainLocale.value
 
@@ -80,7 +82,7 @@ const handleVariablesChange = () => {
   if (!allString)
     return
   const localeKeyInText = getVariablesFromLocale(allString)
-  const excessKeyVariable = getExcessKeyVariable(localeKeyInText, variables.value)
+  const excessKeyVariable = getExcessKeyVariable(localeKeyInText, variableTextBufferStore.value)
 
   props!.modelValue.metaTitle = cleanMetaTitle(
     props!.modelValue.metaTitle || {},
@@ -94,9 +96,7 @@ const getValue = (locale: string, key: string): string => {
 
 const watchOptions = { immediate: true, deep: true }
 
-watch(() => variables, handleVariablesChange, watchOptions)
-
-const variableTextBufferStore = computed(() => store.state.textEditor.variableTextBuffer)
+watch(() => variableTextBufferStore, handleVariablesChange, watchOptions)
 </script>
 
 <template>

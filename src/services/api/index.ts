@@ -34,6 +34,16 @@ const getLoaderSlug = (url: string, loaderSlug: string): string =>
 
 interface RequestHeaders { 'Content-Type': string }
 
+const getActionName = (string: string): string => [
+  'create',
+  'update',
+  'delete',
+  'active.switch',
+].find(action => string
+  .toLowerCase()
+  .includes(action))
+  ?.replace('.', '_') || ''
+
 class ApiService {
   static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}, retryCount = 0, retryDelay = 1000) {
     const loaderStore = useLoaderStore()
@@ -110,8 +120,18 @@ class ApiService {
       if (data.error || (!data.data && !url.includes('report')))
         throw data.error
 
-      if (withSuccessToast)
-        toastSuccess(url, { defaultDescription: successToastDescription })
+      if (withSuccessToast) {
+        const action = getActionName(payload.type)
+
+        const toastTitle = action && i18n.te(`entities.${entity}`)
+          ? action
+          : url
+
+        toastSuccess(toastTitle, {
+          defaultDescription: successToastDescription,
+          entityName: i18n.t(`entities.${entityName}`),
+        })
+      }
 
       if (cache)
         await this.setCache(cacheRequest, data, headers)

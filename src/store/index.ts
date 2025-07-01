@@ -15,7 +15,6 @@ import baseSectionErrors from './modules/baseSectionErrors'
 import tags from './modules/tags'
 import demo from './modules/demo'
 import permissions from './modules/permissions'
-import textEditor from './modules/textEditor'
 import conditions from './modules/conditions'
 
 // TODO import ecommerceStoreModuleCore from '../views/apps/e-commerce/eCommerceStoreModule'
@@ -37,7 +36,6 @@ const store = createStore({
     tags,
     demo,
     permissions,
-    textEditor,
     conditions,
     app,
 
