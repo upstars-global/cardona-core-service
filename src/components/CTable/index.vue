@@ -227,10 +227,6 @@ const toggleExpand = (id: string) => {
           </div>
         </th>
       </template>
-      <slot
-        name="sub-header"
-        :columns="columns"
-      />
     </template>
     <template #tbody="{ items, select, toggleSelect, isSelected }">
       <tbody
