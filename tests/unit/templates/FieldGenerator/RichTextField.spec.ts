@@ -7,25 +7,23 @@ import { mockModal } from '../../mocks/modal-provide-config'
 import { setMountComponent } from '../../utils'
 import { testOn } from '../shared-tests/test-case-generator'
 
-let mockDispatch
+/// Create mocked method body
+const setVariableTextBufferMock = vi.fn()
+
+vi.mock('../../../../src/stores/textEditor', () => ({
+  useTextEditorStore: () => ({
+    variableTextBuffer: {
+      variable1: 'Value 1',
+      variable2: 'Value 2',
+    },
+
+    /// Set mocked body method into mocked store
+    setVariableTextBuffer: setVariableTextBufferMock,
+  }),
+}))
 
 const mockStoreConfig = {
   modules: {
-    textEditor: {
-      namespaced: true,
-      state: {
-        isUpdateVar: false,
-        variableTextBuffer: {
-          variable1: 'Value 1',
-          variable2: 'Value 2',
-        },
-      },
-      actions: {
-        setVariableTextBuffer: vi.fn(),
-        setVariableByKey: vi.fn(),
-        removeVariableValueByKey: vi.fn(),
-      },
-    },
     appConfigCore: {
       namespaced: true,
       getters: {
@@ -70,7 +68,8 @@ vi.mock('vuex', async importOriginal => {
 })
 
 beforeEach(() => {
-  mockDispatch = vi.spyOn(mockStoreConfig.modules.textEditor.actions, 'setVariableTextBuffer')
+  /// Reset state mocked method before run each test
+  setVariableTextBufferMock.mockReset()
 })
 
 vi.mock('froala-editor', () => ({
@@ -139,7 +138,7 @@ describe('TextEditorWysiwyg.vue', () => {
       await wrapper.setProps({ localisationParameters: { var1: 'UpdatedValue1' } })
 
       // Check if the Vuex action was dispatched with the correct payload
-      expect(mockDispatch).toHaveBeenCalledWith(expect.anything(), { var1: 'UpdatedValue1' })
+      expect(setVariableTextBufferMock).toHaveBeenLastCalledWith({ var1: 'UpdatedValue1' })
     })
 
     it('Calls modal to insert image', async () => {

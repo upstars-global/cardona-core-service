@@ -14,6 +14,7 @@ import ConfirmModal from '../../../components/BaseModal/ConfirmModal.vue'
 import { ModalsId } from '../../..//@model/modalsId'
 import { useRedirectToNotFoundPage } from '../../../helpers/router'
 import { useLoaderStore } from '../../../stores/loader'
+import { useTextEditorStore } from '../../../stores/textEditor'
 import { setTabError } from './composables/tabs'
 import { generateEntityUrl } from './composables/entity'
 import BaseSectionLoading from './BaseSectionLoading.vue'
@@ -44,6 +45,7 @@ const store = useStore()
 const loaderStore = useLoaderStore()
 const route = useRoute()
 const router = useRouter()
+const textEditorStore = useTextEditorStore()
 
 const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 
@@ -108,7 +110,7 @@ const onFetchFormData = async () => {
       await router.replace({ name: route.name, params: { id: '' } })
     }
 
-    await store.dispatch('textEditor/setVariableTextBuffer', receivedEntity.localisationParameters)
+    textEditorStore.setVariableTextBuffer(receivedEntity.localisationParameters)
     form.value = new EntityFormClass(receivedEntity)
   }
   catch (error) {
@@ -269,7 +271,7 @@ watch(() => formRef.value?.values, () => {
 
 onBeforeUnmount(() => {
   store.dispatch('resetErrorUrls')
-  store.dispatch('textEditor/setVariableTextBuffer', {})
+  textEditorStore.setVariableTextBuffer({})
 })
 
 defineExpose({
