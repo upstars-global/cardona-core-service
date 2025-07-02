@@ -36,6 +36,8 @@ const selectedFilters = ref<BaseField[]>([])
 
 const isSmallBlock: boolean = props.size === VSizes.Small
 
+const isExistsEntityDefaultFilters = computed<boolean>(() => store.getters['filtersCore/isExistsEntityDefaultFilters'](keyStorage))
+
 const onChange = (filter: BaseField) => selectedFilters.value.push(cloneDeep(filter))
 
 const onApply = () => {
@@ -143,59 +145,63 @@ const listNotSelected = computed(() => {
           </VRow>
         </VCardItem>
         <div
-          v-if="selectedFilters.isNotEmpty"
+          v-if="selectedFilters.isNotEmpty || isExistsEntityDefaultFilters"
           class="block-with-selected-filter-items"
         >
-          <hr class="my-0 mb-3">
+          <template v-if="selectedFilters.isNotEmpty">
+            <hr class="my-0 mb-3">
 
-          <div class="pa-4 px-6">
-            <VRow
-              v-for="(filter, key) in selectedFilters"
-              :key="key"
-              :class="{ 'pt-4': key }"
-              data-test-id="filter-row"
-            >
-              <VCol
-                md="3"
-                class="d-flex align-center py-0"
+            <div class="pa-4 px-6">
+              <VRow
+                v-for="(filter, key) in selectedFilters"
+                :key="key"
+                :class="{ 'pt-4': key }"
+                data-test-id="filter-row"
               >
-                <p
-                  class="text-h6 text-button mb-0 font-weight-medium filter-label"
-                  :class="{ 'font-small-3': isSmallBlock }"
+                <VCol
+                  md="3"
+                  class="d-flex align-center py-0"
                 >
-                  {{ filter.label }}
-                </p>
-              </VCol>
+                  <p
+                    class="text-h6 text-button mb-0 font-weight-medium filter-label"
+                    :class="{ 'font-small-3': isSmallBlock }"
+                  >
+                    {{ filter.label }}
+                  </p>
+                </VCol>
 
-              <VCol
-                md="9"
-                class="d-flex align-center py-0"
-              >
-                <slot :name="`filter(${selectedFilters[key].key})`" :index="key" :selectedFilters="selectedFilters" :size="size">
-                  <FieldGenerator
-                    v-model="selectedFilters[key]"
-                    :with-label="false"
-                    :size="size"
-                    class="field-generator mr-4 full-width"
-                  />
-                </slot>
-                <VBtn
-                  :variant="VVariants.Text"
-                  :color="VColors.Error"
-                  class="v-btn--rectangle"
-                  :size="40"
-                  @click="onRemoveFilter(filter)"
+                <VCol
+                  md="9"
+                  class="d-flex align-center py-0"
                 >
-                  <VIcon :icon="IconsList.Trash2Icon" />
-                </VBtn>
-              </VCol>
-            </VRow>
-          </div>
+                  <slot :name="`filter(${selectedFilters[key].key})`" :index="key" :selectedFilters="selectedFilters" :size="size">
+                    <FieldGenerator
+                      v-model="selectedFilters[key]"
+                      :with-label="false"
+                      :size="size"
+                      class="field-generator mr-4 full-width"
+                    />
+                  </slot>
+                  <VBtn
+                    :variant="VVariants.Text"
+                    :color="VColors.Error"
+                    class="v-btn--rectangle"
+                    :size="40"
+                    @click="onRemoveFilter(filter)"
+                  >
+                    <VIcon :icon="IconsList.Trash2Icon" />
+                  </VBtn>
+                </VCol>
+              </VRow>
+            </div>
+          </template>
 
           <hr class="my-0 mt-3">
+
           <VCardActions class="px-6 py-4">
             <div class="d-flex w-100 gap-4">
               <VBtn
+                :disabled="selectedFilters.isEmpty"
                 :color="VColors.Success"
                 :variant="VVariants.Elevated"
                 class="ml-0 px-4"
@@ -205,6 +211,7 @@ const listNotSelected = computed(() => {
               >
                 {{ $t('action.applyFilters') }}
               </VBtn>
+
               <VBtn
                 :color="VColors.Secondary"
                 :variant="VVariants.Outlined"
@@ -217,6 +224,7 @@ const listNotSelected = computed(() => {
               </VBtn>
 
               <VBtn
+                :disabled="selectedFilters.isEmpty"
                 :color="VColors.Error"
                 :variant="VVariants.Outlined"
                 class="white-space-nowrap ml-auto px-4"
