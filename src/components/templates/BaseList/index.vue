@@ -11,6 +11,7 @@ import type { ExportFormat, IBaseListConfig } from '../../../@model/templates/ba
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
+import type { IRequestListPayload } from '../../../@model'
 import { ListSort, SortedItem } from '../../../@model'
 import { useFilters } from '../../../components/FiltersBlock/useFilters'
 import type { BaseField } from '../../../@model/templates/baseField'
@@ -285,17 +286,17 @@ const getList = async () => {
 
   const { list, total } = await store.dispatch(fetchActionName, {
     type: parseEntityNameWithTabs(entityName),
-    data: {
+    pagination: {
+      pageNumber: currentPage.value,
       perPage: perPage.value,
-      page: currentPage.value,
-      filter,
-      sort,
     },
+    filter,
+    sort,
     options: {
       listItemModel: ListItemModel,
       customApiPrefix: props.config?.customApiPrefix,
     },
-  })
+  } as IRequestListPayload)
 
   items.value = list
 
@@ -459,10 +460,7 @@ const onRowSelected = items => (selectedItems.value = items)
 // Multiple actions
 const onClickToggleStatusMultiple = async (isActive: boolean) => {
   const data: Array<{ id: string; isActive: boolean }> = selectedItems.value.map(
-    ({ id }: { id: string }) => ({
-      id,
-      isActive,
-    }),
+    ({ id }: { id: string }) => ({ id, isActive }),
   )
 
   await store.dispatch(multipleUpdateActionName, {
@@ -508,7 +506,7 @@ const onDragChanged = async e => {
     itemId: id,
     newIndex: e.newIndex,
     oldIndex: e.oldIndex,
-    page: currentPage.value,
+    pageNumber: currentPage.value,
     perPage: perPage.value,
   })
 }
