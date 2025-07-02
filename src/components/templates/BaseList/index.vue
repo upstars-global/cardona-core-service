@@ -748,6 +748,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           :key="`base-list_cell-${fieldItem.key}`"
           #[`cellExpand(${fieldItem.key})`]="{ field, item, cell, toggleExpand, isExpanded }"
         >
+          <!--          TODO https://upstars.atlassian.net/browse/BAC-5670 -->
           <!--          If don't use slot of expand apply components and slot of base row  -->
           <slot
             v-if="checkSlotExistence(`cell(${fieldItem.key})`) || checkSlotExistence(`cell(${fieldItem.key})`)"
@@ -969,6 +970,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           </ItemActions>
         </template>
 
+        <!--          TODO https://upstars.atlassian.net/browse/BAC-5670 -->
         <template
           v-for="(fieldItem, index) in selectedFields"
           :key="`base-list_cell-${fieldItem.key}`"
