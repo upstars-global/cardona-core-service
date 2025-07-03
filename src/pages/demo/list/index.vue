@@ -58,6 +58,7 @@ const listConfig = new BaseListConfig({
       key: 'sumRange',
     },
   ],
+  showExpand: true,
 })
 
 const getUpdateRoute = ({ id }): _RouteLocationBase => ({ name: 'DemoUpdate', params: { id } })
@@ -83,6 +84,19 @@ const setButtonState = (key: string): void => {
         :icon="IconsList.BookIcon"
         class="mr-1"
       />
+    </template>
+    <template #cell(expand)="{ item, isExpanded, toggleExpand }">
+      <VBtn
+        :variant="VVariants.Outlined"
+        :size="42"
+        @click.stop="toggleExpand(item.id)"
+      >
+        <VIcon :icon="isExpanded ? IconsList.ChevronUpIcon : IconsList.ChevronDownIcon" />
+      </VBtn>
+    </template>
+    <template #cellExpand(expand)>
+      <!--      It need for not render expand button into expand -->
+      <div />
     </template>
     <template #cell(winBack)="{ item }">
       <SumAndCurrency

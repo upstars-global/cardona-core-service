@@ -487,6 +487,7 @@
   "page": {
     "demo": {
       "_": "Demo",
+      "expand": "Expand",
       "fields": "Fields",
       "input": "Input",
       "check": "Check",

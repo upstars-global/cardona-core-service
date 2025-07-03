@@ -46,6 +46,7 @@ export const themes: Record<string, ThemeDefinition> = {
     },
 
     variables: {
+      'table-bg': '#EFEFF0',
       'code-color': '#d400ff',
       'overlay-scrim-background': '#4C4E64',
       'tooltip-background': grey800,
@@ -108,6 +109,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'skin-bordered-surface': '#2f3349',
     },
     variables: {
+      'table-bg': '#3D4155',
       'code-color': '#d400ff',
       'overlay-scrim-background': '#101121',
       'tooltip-background': '#5E6692',
