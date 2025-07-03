@@ -309,20 +309,6 @@ const toggleExpand = (id: string) => {
               />
             </td>
 
-            <!-- Coll expand -->
-            <!--            <td v-if="showExpand"> -->
-            <!--              <VBtn -->
-            <!--                icon -->
-            <!--                size="small" -->
-            <!--                variant="text" -->
-            <!--                @click.stop="toggleExpand(item.raw.id)" -->
-            <!--              > -->
-            <!--                <VIcon> -->
-            <!--                  {{ expanded.includes(item.raw.id) ? IconsList.ChevronUpIcon : IconsList.ChevronDownIcon }} -->
-            <!--                </VIcon> -->
-            <!--              </VBtn> -->
-            <!--            </td> -->
-
             <td
               v-for="field in fields"
               :key="`c-table-cell_${index}_${field.key}`"
