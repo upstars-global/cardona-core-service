@@ -653,7 +653,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     <slot :name="BaseListSlots.CustomFilter" />
     <div
       v-if="config.withTopPagination && items.isNotEmpty && config.pagination"
-      class="py-6"
+      class="mb-6"
+      :class="{ 'mt-6': config.filterList?.isEmpty && config.hideSearchBlock }"
     >
       <ListPagination
         data-test-id="list-pagination"

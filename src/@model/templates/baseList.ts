@@ -334,7 +334,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.loadingEndpointArr = loadingEndpointArr ?? []
     this.hideSearchBlock = hideSearchBlock
     this.closeFilterOnPagination = closeFilterOnPagination
-    this.withTopPagination = closeFilterOnPagination
+    this.withTopPagination = withTopPagination
   }
 }
 
