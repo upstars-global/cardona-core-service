@@ -188,6 +188,9 @@ export interface IBaseListConfig {
 
   /** closeFilterOnPagination - Закрывать фильтр во время переключения пагинации */
   readonly closeFilterOnPagination?: boolean
+
+  /** withTopPagination - Показывть пагинацию вверху страницы */
+  readonly withTopPagination?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -236,6 +239,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly loadingEndpointArr: Array<string>
   readonly hideSearchBlock?: boolean
   readonly closeFilterOnPagination?: boolean
+  readonly withTopPagination?: boolean
 
   constructor({
     withSearch,
@@ -283,6 +287,7 @@ export class BaseListConfig implements IBaseListConfig {
     loadingEndpointArr,
     hideSearchBlock,
     closeFilterOnPagination,
+                withTopPagination,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -329,6 +334,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.loadingEndpointArr = loadingEndpointArr ?? []
     this.hideSearchBlock = hideSearchBlock
     this.closeFilterOnPagination = closeFilterOnPagination
+    this.withTopPagination = closeFilterOnPagination
   }
 }
 
