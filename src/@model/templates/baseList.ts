@@ -189,6 +189,9 @@ export interface IBaseListConfig {
   /** closeFilterOnPagination - Закрывать фильтр во время переключения пагинации */
   readonly closeFilterOnPagination?: boolean
 
+  /** withTopPagination - Показывть пагинацию вверху страницы */
+  readonly withTopPagination?: boolean
+
   /** showExpand - Показывать выпаадшку (expand) для строки спсика для этого надо поместить данные в поле groups  */
   readonly showExpand?: boolean
 }
@@ -240,6 +243,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly hideSearchBlock?: boolean
   readonly closeFilterOnPagination?: boolean
   readonly showExpand?: boolean
+  readonly withTopPagination?: boolean
 
   constructor({
     withSearch,
@@ -288,6 +292,7 @@ export class BaseListConfig implements IBaseListConfig {
     hideSearchBlock,
     closeFilterOnPagination,
     showExpand,
+                withTopPagination,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -335,6 +340,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.hideSearchBlock = hideSearchBlock
     this.closeFilterOnPagination = closeFilterOnPagination
     this.showExpand = showExpand
+    this.withTopPagination = withTopPagination
   }
 }
 
