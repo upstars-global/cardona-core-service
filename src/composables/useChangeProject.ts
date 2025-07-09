@@ -25,7 +25,7 @@ export const useChangeProject = () => {
     })
   }
 
-  const changeProject = async (project: ProjectInfoInput, withoutNavigation: boolean) => {
+  const changeProject = async (project: ProjectInfoInput, withoutNavigation?: boolean) => {
     sessionStorage.setItem(storageKeys.selectedProjectId, project.id)
     await store.dispatch('setSelectedProject', project)
 
