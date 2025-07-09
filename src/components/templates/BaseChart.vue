@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
-import { Chart } from 'chart.js'
+import {
+  BarController,
+  BarElement,
+  CategoryScale,
+  Chart,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from 'chart.js'
 import type { ChartData, ChartOptions } from 'chart.js'
 import type { AllowedChartType } from '../../@model/templates/chart'
 
@@ -15,6 +24,16 @@ const props = withDefaults(
       responsive: true,
     } as ChartOptions<AllowedChartType>),
   },
+)
+
+Chart.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  BarController,
+  Title,
+  Tooltip,
+  Legend,
 )
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
@@ -42,7 +61,6 @@ onMounted(renderChart)
 watch(
   () => [props.type, props.chartData, props.chartOptions],
   renderChart,
-  { deep: true },
 )
 </script>
 
