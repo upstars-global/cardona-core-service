@@ -93,6 +93,7 @@ const searchQuery = computed({
         <ExportFormatSelector
           v-if="exportSelector.canShow"
           data-test-id="export-format-selector"
+          :small="config.small"
           :disabled="exportSelector.disable"
           :format-of-exports="config.formatOfExports"
           @export-format-selected="onExportFormatSelected"
