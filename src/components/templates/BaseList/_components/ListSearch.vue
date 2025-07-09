@@ -50,7 +50,7 @@ const searchQuery = computed({
 <template>
   <VRow no-gutters>
     <VCol>
-      <div class="d-flex gap-4 align-center justify-end">
+      <div class="d-flex gap-4 align-center justify-end list-search-row">
         <slot :name="BaseListSlots.LeftSearchBtn" />
 
         <AppTextField
@@ -93,6 +93,7 @@ const searchQuery = computed({
         <ExportFormatSelector
           v-if="exportSelector.canShow"
           data-test-id="export-format-selector"
+          :small="config.small"
           :disabled="exportSelector.disable"
           :format-of-exports="config.formatOfExports"
           @export-format-selected="onExportFormatSelected"

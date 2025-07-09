@@ -174,12 +174,14 @@ const listNotSelected = computed(() => {
                   md="9"
                   class="d-flex align-center py-0"
                 >
-                  <FieldGenerator
-                    v-model="selectedFilters[key]"
-                    :with-label="false"
-                    :size="size"
-                    class="field-generator mr-4 full-width"
-                  />
+                  <slot :name="`filter(${selectedFilters[key].key})`" :index="key" :selectedFilters="selectedFilters" :size="size">
+                    <FieldGenerator
+                      v-model="selectedFilters[key]"
+                      :with-label="false"
+                      :size="size"
+                      class="field-generator mr-4 full-width"
+                    />
+                  </slot>
                   <VBtn
                     :variant="VVariants.Text"
                     :color="VColors.Error"
