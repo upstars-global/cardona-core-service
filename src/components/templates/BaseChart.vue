@@ -6,7 +6,10 @@ import {
   CategoryScale,
   Chart,
   Legend,
+  LineController,
+  LineElement,
   LinearScale,
+  PointElement,
   Title,
   Tooltip,
 } from 'chart.js'
@@ -34,6 +37,9 @@ Chart.register(
   Title,
   Tooltip,
   Legend,
+  LineController,
+  LineElement,
+  PointElement,
 )
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
