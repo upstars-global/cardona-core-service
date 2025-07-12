@@ -319,5 +319,9 @@ export enum IconsList {
   FileTypeXml = 'tabler-file-type-xml',
   SettingSearch = 'tabler-settings-search',
   PlaylistX = 'tabler-playlist-x',
+  ChartHistogram = 'tabler-chart-histogram',
+  LayoutRows = 'tabler-layout-rows',
+  ChartBar = 'tabler-chart-bar',
+  ChartLine = 'tabler-chart-line',
 }
 export default {}
