@@ -191,6 +191,9 @@ export interface IBaseListConfig {
 
   /** withTopPagination - Показывть пагинацию вверху страницы */
   readonly withTopPagination?: boolean
+
+  /** showExpand - Показывать выпаадшку (expand) для строки спсика для этого надо поместить данные в поле groups  */
+  readonly showExpand?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -239,6 +242,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly loadingEndpointArr: Array<string>
   readonly hideSearchBlock?: boolean
   readonly closeFilterOnPagination?: boolean
+  readonly showExpand?: boolean
   readonly withTopPagination?: boolean
 
   constructor({
@@ -287,6 +291,7 @@ export class BaseListConfig implements IBaseListConfig {
     loadingEndpointArr,
     hideSearchBlock,
     closeFilterOnPagination,
+    showExpand,
                 withTopPagination,
   }: IBaseListConfig) {
     this.withSearch = withSearch
@@ -334,6 +339,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.loadingEndpointArr = loadingEndpointArr ?? []
     this.hideSearchBlock = hideSearchBlock
     this.closeFilterOnPagination = closeFilterOnPagination
+    this.showExpand = showExpand
     this.withTopPagination = withTopPagination
   }
 }
