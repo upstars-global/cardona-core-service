@@ -1,8 +1,8 @@
 import { StoresRegister } from '../services/stores'
 import { useDemoStore } from '../stores/demo'
 
-const registerStore = StoresRegister
+StoresRegister.setStore('demo', useDemoStore)
 
-registerStore.setStore('demo', useDemoStore)
+export const registerStore = StoresRegister
 
 export const getStore = (name: string) => registerStore.getStore(name)
