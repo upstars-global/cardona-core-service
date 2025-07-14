@@ -35,6 +35,7 @@ import SumAndCurrency from '../../../components/templates/_components/SumAndCurr
 import StatusField from '../../../components/templates/_components/StatusField.vue'
 import { useLoaderStore } from '../../../stores/loader'
 import { useBaseStoreCore } from '../../../stores/baseStoreCore'
+import {getStore} from '../../../stores/index'
 import usePagination from './сomposables/pagination'
 import type { PaginationResult } from './сomposables/pagination'
 import MultipleActions from './_components/MultipleActions.vue'
@@ -116,9 +117,9 @@ const isExistsDetailsPage = checkExistsPage(DetailsPageName)
 // Action names
 const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
 
-const fetchActionName: string = props.config?.withCustomFetchList
-  ? `${moduleName}/fetchEntityList`
-  : 'baseStoreCore/fetchEntityList'
+const fetchAction: CallableFunction = props.config?.withCustomFetchList
+  ? getStore(moduleName).fetchEntityList
+  : baseStoreCore.fetchEntityList
 
 const fetchReportActionName = 'baseStoreCore/fetchReport'
 const updateActionName = 'baseStoreCore/updateEntity'
@@ -285,7 +286,7 @@ const getList = async () => {
   const filter = setRequestFilters()
   const sort = mapSortData(sortData.value)
 
-  const { list, total } = await baseStoreCore.fetchEntityList({
+  const { list, total } = await fetchAction({
     type: parseEntityNameWithTabs(entityName),
     data: {
       perPage: perPage.value,
@@ -299,24 +300,7 @@ const getList = async () => {
     },
   })
 
-  // const res2 = await store.dispatch(fetchActionName, {
-  //   type: parseEntityNameWithTabs(entityName),
-  //   data: {
-  //     perPage: perPage.value,
-  //     page: currentPage.value,
-  //     filter,
-  //     sort,
-  //   },
-  //   options: {
-  //     listItemModel: ListItemModel,
-  //     customApiPrefix: props.config?.customApiPrefix,
-  //   },
-  // })
-
-  // const { list } = res2
-
   items.value = list
-  console.log(items.value)
   updateTotal(total)
 
   selectedItems.value = []
@@ -567,6 +551,8 @@ onBeforeMount(async () => {
 const editingId = ref<string | null>(null)
 
 const onOpenEdit = (id: string) => editingId.value = id
+
+// console.log(registerStore.getStore('demo').fetchEntityList)
 
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
