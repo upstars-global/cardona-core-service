@@ -652,7 +652,15 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       :size="size"
       @apply="reFetchList"
       @change-selected-filters="onChangeSelectedFilters"
-    />
+    >
+      <template
+        v-for="filter in filters"
+        :key="`filter-field-${filter.key}`"
+        #[`filter(${filter.key})`]="{ selectedFilters, size, index }"
+      >
+        <slot :name="`filter(${filter.key})`" :selectedFilters="selectedFilters" :size="size" :index="index" />
+      </template>
+    </FiltersBlock>
 
     <slot :name="BaseListSlots.CustomFilter" />
     <div
@@ -742,6 +750,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :small="config.small"
         :draggable="canDraggable"
         :hover="config.hover"
+        :show-expand="config.showExpand"
         :skeleton-rows="config.skeletonRows"
         :skeleton-cols="config.skeletonCols"
         :selected-items="selectedItems"
@@ -754,7 +763,235 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         <template
           v-for="(fieldItem, index) in selectedFields"
           :key="`base-list_cell-${fieldItem.key}`"
-          #[`cell(${fieldItem.key})`]="{ field, item, cell }"
+          #[`cellExpand(${fieldItem.key})`]="{ field, item, cell, toggleExpand, isExpanded }"
+        >
+          <!--          TODO https://upstars.atlassian.net/browse/BAC-5670 -->
+          <!--          If don't use slot of expand apply components and slot of base row  -->
+          <slot
+            v-if="checkSlotExistence(`cell(${fieldItem.key})`) || checkSlotExistence(`cell(${fieldItem.key})`)"
+            :name="checkSlotExistence(`cellExpand(${fieldItem.key})`) ? `cellExpand(${fieldItem.key})` : `cell(${fieldItem.key})`"
+            :field="field"
+            :item="item.raw"
+            :cell="cell"
+            :value="item.value"
+            :get-update-route="getUpdateRoute"
+            :index="getIndexByItemFromList(item.value)"
+            :toggle-expand="toggleExpand"
+            :is-expanded="isExpanded"
+            @click.stop
+          />
+          <StatusField
+            v-else-if="field.type === ListFieldType.Status"
+            :key="`${index}_${field.type}`"
+            :value="cell"
+          />
+
+          <SumAndCurrency
+            v-else-if="field.type === ListFieldType.SumAndCurrency"
+            :key="`${index}_${field.type}`"
+            :align="field.align"
+            :data="{
+              amount: cell,
+              currency: item.raw.currency,
+              remainder: item.raw.remainder,
+            }"
+          />
+
+          <PillStatusField
+            v-else-if="field.type === ListFieldType.PillStatus"
+            :key="`${index}_${field.type}`"
+            :is-active="cell"
+          />
+
+          <NameWithIdField
+            v-else-if="field.type === ListFieldType.NameWithId"
+            :key="`${index}_${field.type}`"
+            :item="item.raw"
+            :get-update-route="getUpdateRoute"
+            :get-details-route="getDetailsRoute"
+            :is-show-you="config.isShowYou"
+          >
+            <slot
+              :name="`${field.key}-nameWithIdTitle`"
+              :item="item.raw"
+              :can-update="canUpdate"
+            />
+          </NameWithIdField>
+
+          <NameWithShortIdField
+            v-else-if="field.type === ListFieldType.NameWithShortId"
+            :key="`${index}_${field.type}`"
+            :item="item.raw"
+            :get-update-route="getUpdateRoute"
+            :get-details-route="getDetailsRoute"
+            :is-show-you="config.isShowYou"
+          >
+            <slot
+              :name="`${field.key}-nameWithIdTitle`"
+              :item="item.raw"
+            />
+          </NameWithShortIdField>
+
+          <EmailField
+            v-else-if="field.type === ListFieldType.Email"
+            :key="`${index}_${field.type}`"
+            :item="item.raw"
+            :get-update-route="getUpdateRoute"
+          />
+
+          <DateField
+            v-else-if="field.type === ListFieldType.Date"
+            :key="`${index}_${field.type}`"
+            :date="cell"
+          />
+
+          <DateWithSecondsField
+            v-else-if="field.type === ListFieldType.DateWithSeconds"
+            :key="`${index}_${field.type}`"
+            :date="cell"
+          />
+
+          <StatementField
+            v-else-if="field.type === ListFieldType.Statement"
+            :key="`${index}_${field.type}`"
+            :state="cell"
+          />
+
+          <BadgesField
+            v-else-if="field.type === ListFieldType.Badges"
+            :key="`${index}_${field.type}`"
+            :list-badges="cell"
+          >
+            <template #default="{ value }">
+              <slot
+                :name="`${field.key}-badgeTitle`"
+                :item="item.raw"
+                :cell="cell"
+                :value="value"
+              />
+            </template>
+          </BadgesField>
+
+          <PositionField
+            v-else-if="field.type === ListFieldType.Priority"
+            :id="item.raw.id"
+            :key="item.raw.id"
+            :position="cell"
+            :size="field.size"
+            :can-update="canUpdate"
+            :editing-id="editingId"
+            @edit-position="(val) => onEditPosition(item.raw, val)"
+            @open-edit="onOpenEdit(item.raw.id)"
+          />
+
+          <ButtonField
+            v-else-if="field.type === ListFieldType.Button"
+            :key="`${index}_${field.type}`"
+            :btn-name="cell"
+          />
+
+          <CommentField
+            v-else-if="field.type === ListFieldType.Comment"
+            :key="`${index}_${field.type}`"
+            :value="cell"
+          />
+
+          <ImageField
+            v-else-if="field.type === ListFieldType.Image"
+            :key="`${index}_${field.type}`"
+            :image-path="cell"
+            :size="field.size"
+          />
+
+          <ImageDetailField
+            v-else-if="field.type === ListFieldType.ImageFull"
+            :id="item.raw.id"
+            :key="`${index}_${field.type}`"
+            :image-path="item.raw[field.key]?.imagePath"
+            :size="field.size"
+            :compression-for-preview="item.raw[field.key]?.compressionForPreview || 0"
+          />
+
+          <DatePeriodField
+            v-else-if="field.type === ListFieldType.Period"
+            :key="`${index}_${field.type}`"
+            :period="cell"
+          />
+
+          <CopyField
+            v-else-if="field.type === ListFieldType.Copy"
+            :key="`${index}_${field.type}`"
+            :value="cell"
+          />
+
+          <CopyShortField
+            v-else-if="field.type === ListFieldType.CopyShort"
+            :key="`${index}_${field.type}`"
+            :value="cell"
+          />
+
+          <template v-else-if="field.type === ListFieldType.Percent">
+            {{ cell }} %
+          </template>
+          <template v-else>
+            <div class="default-cell-value">
+              {{ cell }}
+            </div>
+          </template>
+          <ItemActions
+            v-if="field.key === 'actions'"
+            :key="item.raw"
+            :item="item.raw"
+            :create-page-name="CreatePageName"
+            :details-page-name="DetailsPageName"
+            :can-update="canUpdate"
+            :can-create="canCreate"
+            :can-update-seo="canUpdateSeo"
+            :can-update-item="canUpdateItem(item.raw)"
+            :can-remove-item="canRemoveItem(item.raw)"
+            :config="config"
+            :get-update-route="getUpdateRoute"
+            @on-remove="onClickRemove"
+            @on-toggle-status="onClickToggleStatus"
+          >
+            <template
+              v-if="checkSlotExistence(BaseListSlots.PrependActionItem)"
+              #[BaseListSlots.PrependActionItem]
+            >
+              <slot
+                :name="BaseListSlots.PrependActionItem"
+                :item="item"
+                :can-update="canUpdate"
+              />
+            </template>
+
+            <template #[BaseListSlots.DetailsActionItem]>
+              <slot
+                :name="BaseListSlots.DetailsActionItem"
+                :item="item"
+                :page-name="DetailsPageName"
+              />
+            </template>
+
+            <template
+              v-if="checkSlotExistence(BaseListSlots.AppendActionItem)"
+              #[BaseListSlots.AppendActionItem]
+            >
+              <slot
+                :name="BaseListSlots.AppendActionItem"
+                :item="item"
+                :can-update="canUpdate"
+                :can-create="canCreate"
+              />
+            </template>
+          </ItemActions>
+        </template>
+
+        <!--          TODO https://upstars.atlassian.net/browse/BAC-5670 -->
+        <template
+          v-for="(fieldItem, index) in selectedFields"
+          :key="`base-list_cell-${fieldItem.key}`"
+          #[`cell(${fieldItem.key})`]="{ field, item, cell, toggleExpand, isExpanded }"
         >
           <slot
             v-if="checkSlotExistence(`cell(${fieldItem.key})`)"
@@ -765,6 +1002,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :value="item.value"
             :get-update-route="getUpdateRoute"
             :index="getIndexByItemFromList(item.value)"
+            :toggle-expand="toggleExpand"
+            :is-expanded="isExpanded"
             @click.stop
           />
           <StatusField

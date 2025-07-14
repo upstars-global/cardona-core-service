@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<{
   itemsPerPage: number
   selectedItems: Array<Record<string, unknown>>
   isLoadingList: boolean
+  showExpand?: boolean
   disabledRowIds?: string[]
   skeletonRows?: number
   skeletonCols?: number
@@ -118,6 +119,15 @@ const getActualField = (fields: Array<unknown>) => {
     return fields
 
   return props.isLoadingList ? fields.slice(0, props.skeletonCols) : fields
+}
+
+const expanded = ref<string[]>([])
+
+const toggleExpand = (id: string) => {
+  if (expanded.value.includes(id))
+    expanded.value = expanded.value.filter(expandId => expandId !== id)
+  else
+    expanded.value.push(id)
 }
 </script>
 
@@ -223,32 +233,32 @@ const getActualField = (fields: Array<unknown>) => {
         v-if="isLoadingList"
         data-test-id="tbody-skeleton"
       >
-        <slot name="skeleton">
-          <tr
-            v-for="index in skeletonRows"
-            :key="`skeleton-row_${index}`"
-            data-test-id="skeleton-row"
+      <slot name="skeleton">
+        <tr
+          v-for="index in skeletonRows"
+          :key="`skeleton-row_${index}`"
+          data-test-id="skeleton-row"
+        >
+          <td
+            v-if="props.selectable"
+            class="c-table__cell"
+            :class="cellClasses"
+            data-c-field="selectable"
           >
-            <td
-              v-if="props.selectable"
-              class="c-table__cell"
-              :class="cellClasses"
-              data-c-field="selectable"
-            >
-              <VSkeletonLoader type="text" />
-            </td>
-            <td
-              v-for="(field, cellIndex) in getActualField(fields)"
-              :key="`skeleton-cell_${index}_${cellIndex}`"
-              class="c-table__cell"
-              data-test-id="skeleton-coll"
-              :class="cellClasses"
-              :data-c-field="field.key"
-            >
-              <VSkeletonLoader type="text" />
-            </td>
-          </tr>
-        </slot>
+            <VSkeletonLoader type="text" />
+          </td>
+          <td
+            v-for="(field, cellIndex) in getActualField(fields)"
+            :key="`skeleton-cell_${index}_${cellIndex}`"
+            class="c-table__cell"
+            data-test-id="skeleton-coll"
+            :class="cellClasses"
+            :data-c-field="field.key"
+          >
+            <VSkeletonLoader type="text" />
+          </td>
+        </tr>
+      </slot>
       </tbody>
       <Component
         :is="tableWrapperComponent"
@@ -259,58 +269,103 @@ const getActualField = (fields: Array<unknown>) => {
         tag="tbody"
         @change="onDragEnd"
       >
-        <tr
+        <template
           v-for="(item, index) in items"
           :key="`c-table-row_${index}`"
-          class="c-table__row table-default-bg"
-          data-test-id="table-row"
-          :class="compareClasses(item.raw, isSelected([item]))"
-          @click="onRowClicked(item.raw)"
         >
-          <td
-            v-if="draggable"
-            class="pl-1 pr-0 c-table__cell"
-            data-c-field="draggable"
-            data-test-id="draggable-trigger"
+          <!-- Main row -->
+          <tr
+            class="c-table__row table-default-bg"
+            data-test-id="table-row"
+            :class="compareClasses(item.raw, isSelected([item]))"
+            @click="onRowClicked(item.raw)"
           >
-            <VIcon
-              v-if="!isLoadingList"
-              :icon="IconsList.DragVerticalIcon"
-              class="dragging-icon"
-            />
-          </td>
-          <td
-            v-if="props.selectable"
-            class="c-table__cell"
-            :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
-            data-c-field="selectable"
-            data-test-id="selectable"
-          >
-            <VCheckbox
-              :model-value="isSelected([item])"
-              data-test-id="selectable-checkbox"
-              :disabled="disabledRowIds?.includes(item.raw.id)"
-              @update:model-value="select([item], $event)"
-              @click.stop
-            />
-          </td>
-          <td
-            v-for="field in fields"
-            :key="`c-table-cell_${index}_${field.key}`"
-            class="c-table__cell text-body-1 whitespace-no-wrap"
-            :class="cellClasses"
-            :data-c-field="field.key"
-          >
-            <slot
-              :name="`cell(${field.key})`"
-              :field="field"
-              :item="item"
-              :cell="item.raw[field.key]"
+            <td
+              v-if="draggable"
+              class="pl-1 pr-0 c-table__cell"
+              data-c-field="draggable"
+              data-test-id="draggable-trigger"
             >
-              {{ item.raw[field.key] }}
-            </slot>
-          </td>
-        </tr>
+              <VIcon
+                v-if="!isLoadingList"
+                :icon="IconsList.DragVerticalIcon"
+                class="dragging-icon"
+              />
+            </td>
+
+            <td
+              v-if="props.selectable"
+              class="c-table__cell"
+              :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
+              data-c-field="selectable"
+              data-test-id="selectable"
+            >
+              <VCheckbox
+                :model-value="isSelected([item])"
+                data-test-id="selectable-checkbox"
+                :disabled="disabledRowIds?.includes(item.raw.id)"
+                @update:model-value="select([item], $event)"
+                @click.stop
+              />
+            </td>
+
+            <td
+              v-for="field in fields"
+              :key="`c-table-cell_${index}_${field.key}`"
+              class="c-table__cell text-body-1 whitespace-no-wrap"
+              :class="cellClasses"
+              :data-c-field="field.key"
+            >
+              <slot
+                :name="`cell(${field.key})`"
+                :field="field"
+                :item="item"
+                :cell="item.raw[field.key]"
+                :toggle-expand="toggleExpand"
+                :is-expanded="expanded.includes(item.raw.id)"
+              >
+                {{ item.raw[field.key] }}
+              </slot>
+            </td>
+          </tr>
+
+          <!-- Expand row -->
+          <template v-for="raw in item.raw?.groups">
+            <tr
+              v-if="showExpand && expanded.includes(item.raw.id)"
+              :key="`${item.raw.id}-expand`"
+            >
+
+              <!-- [START] Add for similar col and cell in table  -->
+              <td v-if="props.selectable" />
+              <td
+                v-if="props.selectable"
+                class="c-table-expand__cell"
+                :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
+                data-c-expand-field="selectable"
+              />
+              <!-- [END] Add for similar col and cell in table -->
+              <td
+                v-for="field in fields"
+                :key="`c-table-expand-cell_${index}_${field.key}`"
+                class="c-table-expand__cell text-body-1 whitespace-no-wrap"
+                :class="cellClasses"
+                :data-c-expand-field="field.key"
+              >
+                <slot
+                  :name="`cellExpand(${field.key})`"
+                  :field="field"
+                  :item="{ ...item, raw, value: raw}"
+                  :cell="raw[field.key]"
+                  :toggle-expand="toggleExpand"
+                  :is-expanded="expanded.includes(item.raw.id)"
+                >
+                  {{ raw[field.key] }}
+                </slot>
+              </td>
+            </tr>
+          </template>
+        </template>
       </Component>
 
       <tr v-if="items.isEmpty && !isLoadingList">
