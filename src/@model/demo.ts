@@ -72,6 +72,7 @@ export interface IDemoListItem {
   comment: string
   rowVariant: BColors | BLightColors
   callbackData: Record<string, unknown>
+  editableField: { from: number; to: number }
 }
 
 export class DemoListItem implements BaseListItem {
@@ -110,6 +111,7 @@ export class DemoListItem implements BaseListItem {
   state: boolean
   comment: string
   rowVariant: BColors | BLightColors
+  editableField: { from: number; to: number }
 
   constructor(data: IDemoListItem) {
     this.id = data.id
@@ -139,6 +141,7 @@ export class DemoListItem implements BaseListItem {
     this.state = data.state
     this.comment = data.comment
     this.rowVariant = data?.rowVariant
+    this.editableField = data?.editableField
   }
 }
 

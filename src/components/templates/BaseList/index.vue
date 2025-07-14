@@ -34,6 +34,7 @@ import DateWithSecondsField from '../../../components/templates/_components/Date
 import SumAndCurrency from '../../../components/templates/_components/SumAndCurrency.vue'
 import StatusField from '../../../components/templates/_components/StatusField.vue'
 import { useLoaderStore } from '../../../stores/loader'
+import { useBaseStoreCore } from '../../../stores/baseStoreCore'
 import usePagination from './сomposables/pagination'
 import type { PaginationResult } from './сomposables/pagination'
 import MultipleActions from './_components/MultipleActions.vue'
@@ -73,6 +74,7 @@ const { toastError } = useToastService()
 const modal = inject('modal')
 const slots = useSlots()
 
+const baseStoreCore = useBaseStoreCore()
 const store = useStore()
 const loaderStore = useLoaderStore()
 const { t } = useI18n()
@@ -283,7 +285,7 @@ const getList = async () => {
   const filter = setRequestFilters()
   const sort = mapSortData(sortData.value)
 
-  const { list, total } = await store.dispatch(fetchActionName, {
+  const { list, total } = await baseStoreCore.fetchEntityList({
     type: parseEntityNameWithTabs(entityName),
     data: {
       perPage: perPage.value,
@@ -297,8 +299,24 @@ const getList = async () => {
     },
   })
 
-  items.value = list
+  // const res2 = await store.dispatch(fetchActionName, {
+  //   type: parseEntityNameWithTabs(entityName),
+  //   data: {
+  //     perPage: perPage.value,
+  //     page: currentPage.value,
+  //     filter,
+  //     sort,
+  //   },
+  //   options: {
+  //     listItemModel: ListItemModel,
+  //     customApiPrefix: props.config?.customApiPrefix,
+  //   },
+  // })
 
+  // const { list } = res2
+
+  items.value = list
+  console.log(items.value)
   updateTotal(total)
 
   selectedItems.value = []

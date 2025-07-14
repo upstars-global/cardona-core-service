@@ -104,7 +104,7 @@ const setButtonState = (key: string): void => {
         <template #input="{ inputValue, updateValue }">
           <NumberRangeField
             :model-value="inputValue"
-            @update:modelValue="updateValue"
+            @update:model-value="updateValue"
           />
         </template>
       </EditFieldWrapper>
@@ -180,6 +180,11 @@ const setButtonState = (key: string): void => {
 </template>
 
  <style scoped lang="scss">
+ :deep([data-c-field="editableField"]) {
+   &:has(.editable-wrapper--open) {
+   min-width: 300px;
+   }
+ }
   :deep(.code-view-editor) {
     .CodeMirror-linenumber {
       display: none;

@@ -1,6 +1,7 @@
 import type { Router } from 'vue-router'
 import { useCookie } from '../../@core/composable/useCookie'
 import { useLocaleStore } from '../../stores/locale'
+import { useUserStore } from '../../stores/user'
 import store from '@/store'
 
 export const setupGuards = (router: Router) => {
@@ -17,6 +18,7 @@ export const setupGuards = (router: Router) => {
     const isAllPermissions = to.meta.isAllPermissions
 
     const localeStore = useLocaleStore()
+    const userStore = useUserStore()
 
     if (to.meta.public)
       return
@@ -29,6 +31,8 @@ export const setupGuards = (router: Router) => {
 
     if (isLoggedIn && store.getters.userInfo.isEmpty) {
       await store.dispatch('fetchCurrentUser')
+      await userStore.fetchCurrentUser()
+
       await Promise.all([
         localeStore.fetchLocalesList(),
         store.dispatch('appConfigCore/fetchConfig'),
