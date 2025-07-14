@@ -3,6 +3,6 @@ import { useDemoStore } from '../stores/demo'
 
 StoresRegister.setStore('demo', useDemoStore)
 
-export const registerStore = StoresRegister
+export const storesRegister = StoresRegister
 
-export const getStore = (name: string) => registerStore.getStore(name)
+export const getStore = (name: string) => storesRegister.getStore(name)
