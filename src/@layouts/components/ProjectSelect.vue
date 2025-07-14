@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { useFavicon } from '@vueuse/core'
 import { IconsList } from '../../@model/enums/icons'
 import { useChangeProject } from '../../composables/useChangeProject'
 
@@ -15,6 +16,12 @@ const selectProject = computed({
 
 const projects = computed(() => store.getters.userInfo.projects)
 const cantSelect = computed(() => projects.value.length < 2)
+
+onMounted(() => {
+  const faviconPath = store.getters.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
+
+  useFavicon(faviconPath)
+})
 </script>
 
 <template>
