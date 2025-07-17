@@ -52,8 +52,6 @@ const combineFilter = (filters, project) => {
   return Object.values(filter).some(value => !isUndefined(value)) ? filter : undefined
 }
 
-// const vuexStore = useStore()
-
 export const useBaseStoreCore = defineStore('baseStoreCore', {
   actions: {
     async fetchEntityList(
@@ -65,7 +63,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       },
     ) {
       const userStore = useUserStore()
-      console.log(userStore.selectedProject?.alias)
+
       return new ListData(
         await ApiService.request({
           type: `${payload.options.customApiPrefix || ApiTypePrefix}${transformNameToType(

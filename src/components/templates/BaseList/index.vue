@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, ref, useSlots, watch } from 'vue'
-import { useStore } from 'vuex'
+import { useStore as useVuexStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
@@ -22,7 +22,8 @@ import { IconsList } from '../../../@model/enums/icons'
 import {
   checkExistsPage,
   convertCamelCase,
-  convertLowerCaseFirstSymbol, isEmptyString, isNullOrUndefinedValue,
+  isEmptyString,
+  isNullOrUndefinedValue,
 } from '../../../helpers'
 import useToastService from '../../../helpers/toasts'
 import { VSizes } from '../../../@model/vuetify'
@@ -35,7 +36,6 @@ import SumAndCurrency from '../../../components/templates/_components/SumAndCurr
 import StatusField from '../../../components/templates/_components/StatusField.vue'
 import { useLoaderStore } from '../../../stores/loader'
 import { useBaseStoreCore } from '../../../stores/baseStoreCore'
-import {getStore} from '../../../stores/index'
 import usePagination from './сomposables/pagination'
 import type { PaginationResult } from './сomposables/pagination'
 import MultipleActions from './_components/MultipleActions.vue'
@@ -76,7 +76,7 @@ const modal = inject('modal')
 const slots = useSlots()
 
 const baseStoreCore = useBaseStoreCore()
-const store = useStore()
+const store = useVuexStore()
 const loaderStore = useLoaderStore()
 const { t } = useI18n()
 
@@ -96,7 +96,10 @@ const {
   canRemoveCb,
   beforeRemoveCallback,
   ListItemModel,
+  useStore,
 } = props.useList()
+
+const customStore: ReturnType<typeof useBaseStoreCore> = useStore ? useStore() : {}
 
 const parseEntityNameWithTabs = (entityName: string) => {
   // Removes the #tabName from entityName
@@ -114,23 +117,14 @@ const isExistsCreatePage = checkExistsPage(CreatePageName)
 const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 const isExistsDetailsPage = checkExistsPage(DetailsPageName)
 
-// Action names
-const moduleName = props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
-
+// Actions
 const fetchAction: CallableFunction = props.config?.withCustomFetchList
-  ? getStore(moduleName).fetchEntityList
+  ? customStore.fetchEntityList
   : baseStoreCore.fetchEntityList
 
-const fetchReportActionName = 'baseStoreCore/fetchReport'
-const updateActionName = 'baseStoreCore/updateEntity'
-const toggleStatusActionName = 'baseStoreCore/toggleStatusEntity'
-
-const deleteActionName = props.config?.withCustomDelete
-  ? `${moduleName}/deleteEntity`
-  : 'baseStoreCore/deleteEntity'
-
-const multipleUpdateActionName = 'baseStoreCore/multipleUpdateEntity'
-const multipleDeleteActionName = 'baseStoreCore/multipleDeleteEntity'
+const deleteAction = props.config?.withCustomDelete
+  ? customStore.deleteEntity
+  : baseStoreCore.deleteEntity
 
 // Permissions
 const { canCreate, canUpdate, canUpdateSeo, canRemove, canExport }
@@ -329,11 +323,11 @@ const getDetailsRoute = ({ id }): Location => {
 }
 
 const onClickToggleStatus = async ({ id, isActive }) => {
-  const actionName = props.config.withDeactivationBySpecificAction
-    ? toggleStatusActionName
-    : updateActionName
+  const actionToggleStatus = props.config.withDeactivationBySpecificAction
+    ? baseStoreCore.toggleStatusEntity
+    : baseStoreCore.updateEntity
 
-  await store.dispatch(actionName, {
+  await actionToggleStatus({
     type: entityName,
     data: { form: { id, isActive: !isActive } },
     customApiPrefix: props.config?.customApiPrefix,
@@ -343,7 +337,7 @@ const onClickToggleStatus = async ({ id, isActive }) => {
 }
 
 const onEditPosition = async ({ id }: { id: string }, position: number) => {
-  await store.dispatch(updateActionName, {
+  await baseStoreCore.updateEntity({
     type: entityName,
     data: { form: { id, position } },
     customApiPrefix: props.config?.customApiPrefix,
@@ -398,7 +392,7 @@ const onExportFormatSelected = async (format: ExportFormat) => {
   const filter = setRequestFilters()
   const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
 
-  const report: string = await store.dispatch(fetchReportActionName, {
+  const report: string = await baseStoreCore.fetchReport({
     type: entityName,
     data: {
       filter: {
@@ -467,7 +461,7 @@ const onClickToggleStatusMultiple = async (isActive: boolean) => {
     }),
   )
 
-  await store.dispatch(multipleUpdateActionName, {
+  await baseStoreCore.multipleUpdateEntity({
     type: entityName,
     data,
   })
@@ -478,7 +472,7 @@ const onClickToggleStatusMultiple = async (isActive: boolean) => {
 const onClickDeleteMultiple = async () => {
   const ids: Array<string> = selectedItems.value.map(({ id }) => id)
 
-  await store.dispatch(multipleDeleteActionName, {
+  await baseStoreCore.multipleDeleteEntity({
     type: entityName,
     ids,
     customApiPrefix: props.config?.customApiPrefix,
@@ -497,7 +491,7 @@ const onDragChanged = async e => {
   const position: number = localItems[e.newIndex].position!
 
   if (!props.config?.withCustomDrag) {
-    await store.dispatch(updateActionName, {
+    await baseStoreCore.updateEntity({
       type: entityName,
       data: { form: { id, position } },
       customApiPrefix: props.config?.customApiPrefix,
@@ -531,7 +525,7 @@ const onClickRemove = item => {
 
 const onClickModalOk = async ({ hide, commentToRemove }) => {
   hide()
-  await store.dispatch(deleteActionName, {
+  await deleteAction({
     type: entityName,
     id: selectedItem.value.id,
     comment: commentToRemove,
@@ -551,8 +545,6 @@ onBeforeMount(async () => {
 const editingId = ref<string | null>(null)
 
 const onOpenEdit = (id: string) => editingId.value = id
-
-// console.log(registerStore.getStore('demo').fetchEntityList)
 
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
@@ -658,7 +650,12 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :key="`filter-field-${filter.key}`"
         #[`filter(${filter.key})`]="{ selectedFilters, size, index }"
       >
-        <slot :name="`filter(${filter.key})`" :selectedFilters="selectedFilters" :size="size" :index="index" />
+        <slot
+          :name="`filter(${filter.key})`"
+          :selected-filters="selectedFilters"
+          :size="size"
+          :index="index"
+        />
       </template>
     </FiltersBlock>
 

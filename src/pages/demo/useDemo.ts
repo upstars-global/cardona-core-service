@@ -3,6 +3,7 @@ import { DemoFilter, DemoForm, DemoListItem, DemoSideBar } from '../../@model/de
 import { AlignType, ListFieldType, TableField } from '../../@model/templates/tableFields'
 import type { UseEntityType } from '../../@model/templates/baseSection'
 import type { UseListType } from '../../@model/templates/baseList'
+import { useDemoStore } from '../../stores/demo'
 
 const entityName = 'Demo'
 export const useDemoList = (): UseListType => {
@@ -140,6 +141,7 @@ export const useDemoList = (): UseListType => {
     fields,
     ListFilterModel,
     SideBarModel,
+    useStore: useDemoStore,
   }
 }
 
