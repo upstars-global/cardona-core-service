@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, onBeforeMount, ref, useSlots, watch } from 'vue'
+import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
@@ -64,6 +64,7 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits<{
+  mounted: []
   rowClicked: [item: Record<string, unknown>]
   end: [item: Record<string, unknown>]
 }>()
@@ -550,6 +551,9 @@ const editingId = ref<string | null>(null)
 
 const onOpenEdit = (id: string) => editingId.value = id
 
+onMounted(() => {
+  emits('mounted')
+})
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
 
