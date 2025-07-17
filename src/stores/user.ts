@@ -1,19 +1,19 @@
-import {defineStore} from 'pinia'
+import { defineStore } from 'pinia'
 
-import type {ProjectInfoInput} from '../@model/project'
-import {ProjectInfo} from '../@model/project'
-import {UserInfo} from '../@model/users'
-import type {OptionsItem} from '../@model'
-import type {PermissionLevel} from '../@model/permission'
-import {AllPermission, Permission} from '../@model/permission'
+import type { ProjectInfoInput } from '../@model/project'
+import { ProjectInfo } from '../@model/project'
+import { UserInfo } from '../@model/users'
+import type { OptionsItem } from '../@model'
+import type { PermissionLevel } from '../@model/permission'
+import { AllPermission, Permission } from '../@model/permission'
 import ApiService from '../services/api'
-import type {PermissionGroup} from '../@model/enums/permissions'
-import {productsName} from '../configs/productsName'
-import {storageKeys} from '../configs/storage'
-import {productName} from '@productConfig'
+import type { PermissionGroup } from '../@model/enums/permissions'
+import { productsName } from '../configs/productsName'
+import { storageKeys } from '../configs/storage'
+import { productName } from '@productConfig'
 
 export const fetchCurrentUser = async () => {
-  const {data} = await ApiService.request({
+  const { data } = await ApiService.request({
     type: 'App.V2.Users.Current.Read',
   })
 
@@ -34,7 +34,6 @@ export const fetchCurrentUser = async () => {
     permissions: data.permissions.map((permission: any) => new Permission(permission)),
   })
 }
-
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -59,6 +58,7 @@ export const useUserStore = defineStore('user', {
       const defaultProject = state.userInfo.projects[0]
       const projectId = sessionStorage.getItem(storageKeys.selectedProjectId)
       const selected = state.userInfo.projects.find(p => p.id === Number(projectId))
+
       return state.priorityProject || state.selectedProject || selected || defaultProject
     },
 
@@ -66,6 +66,7 @@ export const useUserStore = defineStore('user', {
       const defaultProject = state.userInfo.projects[0]
       const projectId = sessionStorage.getItem(storageKeys.selectedProjectId)
       const selected = state.userInfo.projects.find(p => p.id === Number(projectId))
+
       return state.selectedProject || selected || defaultProject
     },
 
@@ -80,17 +81,18 @@ export const useUserStore = defineStore('user', {
     canViewVCoinInProject(state) {
       return (alias: string) => {
         const project = state.userInfo.projects.find(p => p.alias === alias)
+
         return project?.integrations?.vCoins
       }
     },
 
     abilityCan(state) {
       return (target: string, access: number | PermissionLevel) => {
-        if (typeof access === 'string') {
+        if (typeof access === 'string')
           access = state.accessLevels.indexOf(access.toLowerCase())
-        }
 
         const permission = state.userInfo.permissions.find(p => p.target === target)
+
         return permission && permission.access >= access
       }
     },
@@ -99,9 +101,8 @@ export const useUserStore = defineStore('user', {
       return (group: PermissionGroup | string[], access: number | PermissionLevel, all = false) => {
         const checkAbility = useUserStore().abilityCan
 
-        if (typeof access === 'string') {
+        if (typeof access === 'string')
           access = state.accessLevels.indexOf(access.toLowerCase())
-        }
 
         if (Array.isArray(group)) {
           return all
@@ -121,6 +122,7 @@ export const useUserStore = defineStore('user', {
   actions: {
     async fetchCurrentUser() {
       const currentUser = await fetchCurrentUser()
+
       this.userInfo = currentUser
       this.permissions.setAccessAllPermission(currentUser.permissions)
       this.selectedProduct = currentUser.products.find(p => p.name === productName) || null

@@ -64,6 +64,8 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
     ) {
       const userStore = useUserStore()
 
+      console.log('SELECTED PROJECT', userStore.selectedProject?.alias)
+
       return new ListData(
         await ApiService.request({
           type: `${payload.options.customApiPrefix || ApiTypePrefix}${transformNameToType(

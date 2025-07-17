@@ -8,6 +8,7 @@ export const useChangeProject = () => {
   const store = useStore()
   const route = useRoute()
   const router = useRouter()
+  const userStore = useUserStore()
 
   const navigationOnProjectChanges = (project: ProjectInfoInput) => {
     const featureRoot = route?.meta?.breadcrumb?.[0]?.to?.name
@@ -27,7 +28,6 @@ export const useChangeProject = () => {
   }
 
   const changeProject = async (project: ProjectInfoInput, withoutNavigation?: boolean) => {
-    const userStore = useUserStore()
 
     sessionStorage.setItem(storageKeys.selectedProjectId, project.id)
     await store.dispatch('setSelectedProject', project)
