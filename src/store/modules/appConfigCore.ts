@@ -94,9 +94,9 @@ export default {
       state.menuType = menuType
     },
     SET_VERIFIED_PROJECT(state, project) {
+      if (state.verifiedProjects.find(item => item?.id === project?.id))
+        return
       state.verifiedProjects.push(project)
-
-      // console.log(state.verifiedProjects)
     },
   },
   actions: {
