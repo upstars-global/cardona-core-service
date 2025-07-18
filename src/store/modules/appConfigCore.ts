@@ -106,24 +106,32 @@ export default {
         && !state.currencies[rootGetters.selectedProject?.id]
         && rootGetters.userInfo?.projects.isNotEmpty
       ) {
-        rootGetters.userInfo.projects?.forEach((project: ProjectInfo) => {
-          ApiService.request({
-            type: 'App.V2.Projects.Config.Read',
-            data: { id: project.id },
-          }, { withErrorToast: false })
-            .catch(e => e)
-            .then(values => {
-              const isValid
-                = !(values instanceof Error)
-                && values?.data
-                && Object.keys(values.data).length > 0
+        const projects = rootGetters.userInfo.projects
 
-              if (isValid) {
-                commit('UPDATE_CURRENCY', { ...values.data, id: project.id })
-                commit('SET_VERIFIED_PROJECT', project)
-              }
-            })
+        const requests = projects.map(async (project: ProjectInfo) => {
+          try {
+            const values = await ApiService.request({
+              type: 'App.V2.Projects.Config.Read',
+              data: { id: project.id },
+            }, { withErrorToast: false })
+
+            const isValid = values?.data && Object.keys(values.data).length > 0
+            if (isValid)
+              return { project, data: values.data }
+          }
+          catch (e) {}
+
+          return null
         })
+
+        const results = await Promise.all(requests)
+
+        results
+          .filter(Boolean)
+          .forEach(({ project, data }) => {
+            commit('UPDATE_CURRENCY', { ...data, id: project.id })
+            commit('SET_VERIFIED_PROJECT', project)
+          })
       }
     },
     onToggleMenuType({ commit, getters }) {
