@@ -99,7 +99,7 @@ const {
   useStore,
 } = props.useList()
 
-const customStore: ReturnType<typeof useBaseStoreCore> = useStore ? useStore() : {}
+const customStore: ReturnType<typeof useBaseStoreCore> = useStore ? useStore() : null
 
 const parseEntityNameWithTabs = (entityName: string) => {
   // Removes the #tabName from entityName
@@ -118,12 +118,12 @@ const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 const isExistsDetailsPage = checkExistsPage(DetailsPageName)
 
 // Actions
-const fetchAction: CallableFunction = props.config?.withCustomFetchList
-  ? customStore.fetchEntityList
+const fetchAction: CallableFunction = useStore
+  ? customStore?.fetchEntityList
   : baseStoreCore.fetchEntityList
 
 const deleteAction = props.config?.withCustomDelete
-  ? customStore.deleteEntity
+  ? customStore?.deleteEntity
   : baseStoreCore.deleteEntity
 
 // Permissions
