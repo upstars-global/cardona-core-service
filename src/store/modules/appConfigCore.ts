@@ -90,9 +90,6 @@ export default {
     UPDATE_MENU_TYPE(state, menuType) {
       state.menuType = menuType
     },
-    UPDATE_MENU_TYPE(state, menuType) {
-      state.menuType = menuType
-    },
     SET_VERIFIED_PROJECT(state, project) {
       if (state.verifiedProjects.find(item => item?.id === project?.id))
         return
