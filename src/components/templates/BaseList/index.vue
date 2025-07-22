@@ -122,7 +122,7 @@ const fetchAction: CallableFunction = useStore
   ? customStore?.fetchEntityList
   : baseStoreCore.fetchEntityList
 
-const deleteAction = props.config?.withCustomDelete
+const deleteAction = useStore
   ? customStore?.deleteEntity
   : baseStoreCore.deleteEntity
 
