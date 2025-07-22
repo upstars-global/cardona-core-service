@@ -1,7 +1,9 @@
 <script setup>
 import { computed, onMounted, onUnmounted } from 'vue'
-
+import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import { useTitle } from '@vueuse/core'
+import { useStore } from 'vuex'
 
 import { IconsList } from '../../@model/enums/icons'
 import { VVariants } from '../../@model/vuetify'
@@ -9,6 +11,9 @@ import { useClockUtc } from '../../use/useClockUtc'
 import { useLayoutConfigStore } from '@layouts/stores/config'
 
 const route = useRoute()
+const store = useStore()
+
+const { t } = useI18n()
 
 const allBreadcrumb = computed(() => {
   const breadcrumbs = route.meta.breadcrumb
@@ -28,6 +33,11 @@ const time = computed(() => clock.time.value)
 
 onMounted(clock.runTime)
 onUnmounted(clock.stopTime)
+
+const pageTitle = computed(() => t(`title.${route.meta.title}`))
+const breadCrumbTitle = computed(() => `${pageTitle.value} | ${store.getters.selectedProject.name} | Backoffice`)
+
+useTitle(breadCrumbTitle)
 </script>
 
 <template>
@@ -60,7 +70,7 @@ onUnmounted(clock.stopTime)
             />
           </VBtn>
           <h4 class="float-left mb-0 text-h4 breadcrumb-title">
-            {{ $t(`title.${$route.meta.title}`) }}
+            {{ pageTitle }}
           </h4>
           <div class="breadcrumb-wrapper">
             <VBreadcrumbs
