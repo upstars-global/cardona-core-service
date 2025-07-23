@@ -30,6 +30,7 @@ export const fetchCurrentUser = async () => {
     projects: data.projects.map((project: any) => new ProjectInfo(project)),
     products: data.products.map((product: any) => product as OptionsItem),
     permissions: data.permissions.map((permission: any) => new Permission(permission)),
+    picture: data?.picture || '',
   })
 }
 export default {

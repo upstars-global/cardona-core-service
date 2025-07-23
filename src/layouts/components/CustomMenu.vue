@@ -24,6 +24,8 @@ const userName = computed(() => {
   return store.getters.userInfo?.userName || 'No name'
 })
 
+const userAvatar = computed(() => store.getters.userInfo?.picture || '')
+
 const firstLetter = computed(() => {
   return userName.value[0].toUpperCase()
 })
@@ -69,6 +71,8 @@ const superAdminMenu = computed(() => {
 const customMenuActions = computed((): Array<{ title: TranslateResult; icon: IconsList; action?: Function }> => {
   return canAllAdminSection.value ? [superAdminMenu.value, changeMode.value] : [changeMode.value]
 })
+
+
 </script>
 
 <template>
@@ -96,7 +100,8 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
               size="large"
               class="avatar-block"
             >
-              <h5 class="text-h5 text-body-1 first-letter text-success">
+              <VImg :src="userAvatar" cover v-if="userAvatar" class="object-contain" />
+              <h5 v-else class="text-h5 text-body-1 first-letter text-success">
                 {{ firstLetter }}
               </h5>
             </VAvatar>
