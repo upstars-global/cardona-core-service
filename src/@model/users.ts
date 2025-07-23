@@ -25,6 +25,7 @@ export interface IUserInfo {
   readonly isPermissionAllUsers?: boolean
   readonly password?: string
   readonly productIds?: number[]
+  readonly picture?: string
 }
 
 export class UserInfo implements IUserInfo {
@@ -44,6 +45,7 @@ export class UserInfo implements IUserInfo {
   readonly isPermissionAllUsers?: boolean
   readonly password: string
   readonly productIds: number[]
+  readonly picture: string
 
   constructor(data?: IUserInfo) {
     this.id = Number(data?.id) || 0
@@ -62,6 +64,7 @@ export class UserInfo implements IUserInfo {
     this.isPermissionAllUsers = data?.isPermissionAllUsers
     this.password = data?.password || ''
     this.productIds = data?.productIds || []
+    this.picture = data?.picture || ''
   }
 
   get fullName() {
