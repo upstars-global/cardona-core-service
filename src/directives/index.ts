@@ -1,9 +1,11 @@
 import { dayDateDirective, fullDateDirective, fullDateWithSecondsDirective } from './date'
 import { currency } from './currency'
+import number from './number'
 
 export const initDirectives = app => {
   app.directive('day-date', dayDateDirective)
   app.directive('full-date', fullDateDirective)
   app.directive('full-date-with-seconds', fullDateWithSecondsDirective)
   app.directive('currency', currency)
+  app.directive('number', number)
 }
