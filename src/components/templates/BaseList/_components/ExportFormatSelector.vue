@@ -3,11 +3,12 @@ import { computed } from 'vue'
 import { pickBy } from 'lodash'
 import { ExportFormat } from '../../../../@model/templates/baseList'
 import { IconsList } from '../../../../@model/enums/icons'
-import { VColors, VVariants } from '../../../../@model/vuetify'
+import { VColors, VSizes, VVariants } from '../../../../@model/vuetify'
 import { IS_TEST_ENV } from '../../../../utils/constants'
 
 interface Props {
   formatOfExports?: Array<ExportFormat>
+  small?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,28 +32,31 @@ const isOneTypeExport = computed(() => props.formatOfExports.length === 1)
 </script>
 
 <template>
-  <VMenu :attach="IS_TEST_ENV">
-    <template #activator="{ props }">
-      <VBtn
-        :variant="VVariants.Outlined"
-        :color="VColors.Secondary"
-        v-bind="isOneTypeExport ? {} : props"
-        :prepend-icon="IconsList.UploadIcon"
-        data-test-id="menu-activator"
-        @click="isOneTypeExport && onClick(formatOfExports[0])"
-      >
-        {{ $t('action.export') }}
-      </VBtn>
-    </template>
-    <VList v-if="!isOneTypeExport">
-      <VListItem
-        v-for="(value, key) in actualExportFormats"
-        :key="value"
-        :data-test-id="`export-${value}`"
-        @click="onClick(value)"
-      >
-        {{ key }}
-      </VListItem>
-    </VList>
-  </VMenu>
+  <div>
+    <VMenu :attach="IS_TEST_ENV">
+      <template #activator="{ props }">
+        <VBtn
+          :size="small ? VSizes.Small : VSizes.Medium"
+          :variant="VVariants.Outlined"
+          :color="VColors.Secondary"
+          v-bind="isOneTypeExport ? {} : props"
+          :prepend-icon="IconsList.UploadIcon"
+          data-test-id="menu-activator"
+          @click="isOneTypeExport && onClick(formatOfExports[0])"
+        >
+          {{ $t('action.export') }}
+        </VBtn>
+      </template>
+      <VList v-if="!isOneTypeExport">
+        <VListItem
+          v-for="(value, key) in actualExportFormats"
+          :key="value"
+          :data-test-id="`export-${value}`"
+          @click="onClick(value)"
+        >
+          {{ key }}
+        </VListItem>
+      </VList>
+    </VMenu>
+  </div>
 </template>
