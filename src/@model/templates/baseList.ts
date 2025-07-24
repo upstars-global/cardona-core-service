@@ -194,6 +194,9 @@ export interface IBaseListConfig {
 
   /** showExpand - Показывать выпаадшку (expand) для строки спсика для этого надо поместить данные в поле groups  */
   readonly showExpand?: boolean
+
+  /** saveSort - Flag для сохранния сортировки в local storage  */
+  readonly saveSort?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -244,6 +247,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly closeFilterOnPagination?: boolean
   readonly showExpand?: boolean
   readonly withTopPagination?: boolean
+  readonly saveSort?: boolean
 
   constructor({
     withSearch,
@@ -292,7 +296,8 @@ export class BaseListConfig implements IBaseListConfig {
     hideSearchBlock,
     closeFilterOnPagination,
     showExpand,
-                withTopPagination,
+    withTopPagination,
+    saveSort,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -341,6 +346,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.closeFilterOnPagination = closeFilterOnPagination
     this.showExpand = showExpand
     this.withTopPagination = withTopPagination
+    this.saveSort = saveSort ?? true
   }
 }
 

@@ -237,9 +237,11 @@ const sortDir = sortFromStorage?.order || props.config.staticSorts?.order
 const sortData = ref(sortBy && sortDir ? [{ key: sortBy, order: sortDir }] as SortItem[] : [])
 
 watch(() => sortData.value, async ([newSortData]) => {
-  newSortData
-    ? setStorage(sortStorageKey, newSortData)
-    : removeStorageItem(sortStorageKey)
+  if (props.config.saveSort) {
+    newSortData
+      ? setStorage(sortStorageKey, newSortData)
+      : removeStorageItem(sortStorageKey)
+  }
   await getList()
 })
 
