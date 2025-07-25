@@ -14,9 +14,11 @@ class WSService {
   static ws: null | Centrifuge = null
   static WSListSubscribe: Set<string> = new Set()
   static WSchannel: null
+  static stores: Record<string, any> = {}
 
-  static async connect(channel, needRefresh = false) {
+  static async connect(channel, needRefresh = false, stores: Record<string, any>) {
     this.WSchannel = channel
+    this.stores = stores
     if (!checkIsLoggedIn() || !getAccessToken() || !getRefreshToken())
       return
 
@@ -35,7 +37,7 @@ class WSService {
 
     // ws://localhost:56316/connection/websocket (lens link port)
     // wss://${location.host || location.hostname}/ws
-    const client = new Centrifuge(`wss://${location.host || location.hostname}/ws`, {
+    const client = new Centrifuge('ws://localhost:56316/connection/websocket', {
       debug: true,
       token: refreshAuthToken || getAccessToken(),
       getToken,
@@ -142,18 +144,22 @@ class WSService {
     if (!message?.channel)
       return
 
-    const channel = message?.channel.replace('-feed', '')
+    // const channel = message?.channel.replace('-feed', '')
     const type = message?.data?.type
     const data = message?.data
 
     console.debug('WSService.parseData', message)
 
+    if (!this.stores[message?.channel])
+      return
+    const actualStore = this.stores[message?.channel] || {}
+
     if (type === TyperRequest.Created)
-      await store.dispatch(`${channel}/createWSData`, data)
+      await actualStore.createWSData(data)
     else if (type === TyperRequest.Updated)
-      await store.dispatch(`${channel}/setWSData`, data)
+      await actualStore.setWSData(data)
     else if (type === TyperRequest.Deleted)
-      await store.dispatch(`${channel}/deleteWSData`, data)
+      await actualStore.deleteWSData(data)
   }
 }
 
