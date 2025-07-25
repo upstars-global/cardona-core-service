@@ -126,3 +126,11 @@ html.custom-scroll {
 .modal-tab--buttons {
   margin: 1rem 0 1.5rem !important;
 }
+
+body {
+  background-color: rgb(var(--v-theme-surface)) !important;
+  .v-application {
+    background-color: rgb(var(--v-theme-surface)) !important;
+  }
+}
+
