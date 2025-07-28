@@ -81,6 +81,25 @@ export const getChartConfig = (options: { chartType: AllowedChartType; isPercent
           hoverRadius: 5,
         },
       },
+
+      onHover: (event, activeElements, chart) => {
+        if (activeElements.length) {
+          const dataIndex = activeElements[0].index
+
+          const newActive = chart.data.datasets.map((_, datasetIndex) => ({
+            datasetIndex,
+            index: dataIndex,
+          }))
+
+          chart.setActiveElements(newActive)
+          chart.tooltip.setActiveElements(newActive)
+        }
+        else {
+          chart.setActiveElements([])
+          chart.tooltip.setActiveElements([])
+        }
+      },
+
       scales: {
         x: {
           grid: {
