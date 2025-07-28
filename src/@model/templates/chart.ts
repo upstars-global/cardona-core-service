@@ -16,7 +16,6 @@ export const getChartConfig = (options: { chartType: AllowedChartType; isPercent
   const tooltip = {
     mode: 'index',
     intersect: true,
-    position: 'nearest',
   }
 
   const legend = {
