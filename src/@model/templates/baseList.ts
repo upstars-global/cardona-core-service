@@ -197,6 +197,9 @@ export interface IBaseListConfig {
 
   /** saveSort - Flag для сохранния сортировки в local storage  */
   readonly saveSort?: boolean
+
+  /** disableLoading - Flag для блокирования loading state  */
+  readonly disableLoading?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -248,6 +251,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly showExpand?: boolean
   readonly withTopPagination?: boolean
   readonly saveSort?: boolean
+  readonly disableLoading?: boolean
 
   constructor({
     withSearch,
@@ -298,6 +302,7 @@ export class BaseListConfig implements IBaseListConfig {
     showExpand,
     withTopPagination,
     saveSort,
+    disableLoading,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -347,6 +352,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.showExpand = showExpand
     this.withTopPagination = withTopPagination
     this.saveSort = saveSort ?? true
+    this.disableLoading = disableLoading
   }
 }
 

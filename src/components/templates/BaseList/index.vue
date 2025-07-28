@@ -197,6 +197,8 @@ watch(
 const selectedFields = ref<TableField[]>([...fields])
 
 const isLoadingList = computed(() => {
+  if (props.config.disableLoading)
+    return false
   if (isInitialState.value || isDebouncedSearch.value)
     return true
   const indexSymbolNextDash = entityName.indexOf('-') + 1
@@ -660,7 +662,12 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :key="`filter-field-${filter.key}`"
         #[`filter(${filter.key})`]="{ selectedFilters, size, index }"
       >
-        <slot :name="`filter(${filter.key})`" :selectedFilters="selectedFilters" :size="size" :index="index" />
+        <slot
+          :name="`filter(${filter.key})`"
+          :selected-filters="selectedFilters"
+          :size="size"
+          :index="index"
+        />
       </template>
     </FiltersBlock>
 
