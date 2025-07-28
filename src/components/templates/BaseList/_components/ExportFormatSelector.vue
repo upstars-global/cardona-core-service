@@ -45,7 +45,7 @@ const isOneTypeExport = computed(() => props.formatOfExports.length === 1)
           data-test-id="menu-activator"
           @click="isOneTypeExport && onClick(formatOfExports[0])"
         >
-          <span class="px-1">
+          <span class="pr-1">
             <VIcon
               v-if="!isLoadingExport"
               :icon="IconsList.UploadIcon"
