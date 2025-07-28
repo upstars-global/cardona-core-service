@@ -21,6 +21,7 @@ const props = withDefaults(
     type: AllowedChartType
     chartData: ChartData<AllowedChartType>
     chartOptions?: ChartOptions<AllowedChartType>
+    externalTooltipCb: Function
   }>(),
   {
     chartOptions: () => ({
@@ -42,7 +43,9 @@ Chart.register(
   PointElement,
 )
 
+const chartContainer = ref<HTMLElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+const tooltipEl = ref<HTMLElement | null>(null)
 let chartInstance: Chart | null = null
 
 const renderChart = () => {
@@ -53,11 +56,21 @@ const renderChart = () => {
     chartInstance?.destroy()
 
   chartInstance = new Chart(
-    canvasRef.value.getContext('2d') as CanvasRenderingContext2D,
+    canvasRef.value!.getContext('2d')!,
     {
       type: props.type,
       data: props.chartData,
-      options: props.chartOptions,
+      options: {
+        ...props.chartOptions,
+        plugins: {
+          ...props.chartOptions?.plugins,
+          tooltip: {
+            ...props.chartOptions?.plugins?.tooltip,
+            enabled: !props.externalTooltipCb,
+            external: context => props.externalTooltipCb && props.externalTooltipCb(context, tooltipEl, chartContainer.value!),
+          },
+        },
+      },
     },
   )
 }
@@ -71,5 +84,22 @@ watch(
 </script>
 
 <template>
-  <canvas ref="canvasRef" />
+  <div
+    ref="chartContainer"
+    class="chart-container"
+  >
+    <canvas ref="canvasRef" />
+
+    <div
+      ref="tooltipEl"
+      class="custom-tooltip"
+    />
+  </div>
 </template>
+
+<style lang="scss" scoped>
+.chart-container {
+  position: relative;
+  overflow: visible;
+}
+</style>
