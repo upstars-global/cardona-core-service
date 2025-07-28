@@ -241,7 +241,7 @@ const listNotSelected = computed(() => {
       <div
         v-else-if="selectedFilters.length"
         data-test-id="applied-filters-wrapper"
-        class="d-flex flex-wrap align-center pb-6 gap-2"
+        class="applied-filters-wrapper d-flex flex-wrap align-center pb-6 gap-2"
       >
         <span class="font-small-3 font-weight-bold text-body-heading">
           {{ $t('common.filter.appliedFilters') }}

@@ -196,6 +196,21 @@ watch(
 
 const selectedFields = ref<TableField[]>([...fields])
 
+const isLoadingExport = computed(() => {
+  const indexSymbolNextDash = entityName.indexOf('-') + 1
+
+  const entityNameForLoad = entityName.replace(
+    entityName[indexSymbolNextDash],
+    entityName[indexSymbolNextDash].toLowerCase(),
+  )
+
+  const entityUrl: string = parseEntityNameWithTabs(convertCamelCase(entityNameForLoad, '/'))
+
+  const listUrl = `${entityUrl}/list/report`
+  return loaderStore.isLoadingEndpoint([
+    listUrl])
+})
+
 const isLoadingList = computed(() => {
   if (props.config.disableLoading)
     return false
@@ -211,19 +226,18 @@ const isLoadingList = computed(() => {
   const entityUrl: string = parseEntityNameWithTabs(convertCamelCase(entityNameForLoad, '/'))
 
   const listUrl = `${entityUrl}/list`
-
   return props.config.loadingOnlyByList
     ? loaderStore.isLoadingEndpoint([
       listUrl,
       ...props.config.loadingEndpointArr!,
-    ])
+    ]).filter((path) => !path.includes('/report'))
     : loaderStore.isLoadingEndpoint([
       listUrl,
       `${entityUrl}/update`,
       `${entityUrl}/active/switch`,
       `${entityUrl}/delete`,
       ...props.config.loadingEndpointArr!,
-    ])
+    ].filter((path) => !path.includes('/report')))
 })
 
 const size = props.config?.small ? VSizes.Small : VSizes.Medium
@@ -563,6 +577,9 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
 <template>
   <div class="d-flex flex-column">
+    <h1>
+      {{[isLoadingExport]}}
+    </h1>
     <RemoveModal
       :config="config"
       :remove-modal-id="removeModalId"
@@ -630,6 +647,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         canShow: !!(config.withExport && canExport),
         disable: !total,
       }"
+      :isLoadingExport="isLoadingExport"
       :config="config"
       :is-open-filter-block="isOpenFilterBlock"
       @on-click-filter="isFiltersShown = !isFiltersShown"

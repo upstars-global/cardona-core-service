@@ -9,9 +9,11 @@ import { IS_TEST_ENV } from '../../../../utils/constants'
 interface Props {
   formatOfExports?: Array<ExportFormat>
   small?: boolean
+  isLoadingExport?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  isLoadingExport: false,
   formatOfExports: [ExportFormat.JSON, ExportFormat.JSON],
 })
 
@@ -40,11 +42,20 @@ const isOneTypeExport = computed(() => props.formatOfExports.length === 1)
           :variant="VVariants.Outlined"
           :color="VColors.Secondary"
           v-bind="isOneTypeExport ? {} : props"
-          :prepend-icon="IconsList.UploadIcon"
           data-test-id="menu-activator"
           @click="isOneTypeExport && onClick(formatOfExports[0])"
         >
-          {{ $t('action.export') }}
+          <span class="px-1">
+            <VIcon
+              v-if="!isLoadingExport"
+              :icon="IconsList.UploadIcon"
+            />
+            <VProgressCircular
+              v-else
+              indeterminate
+              :size="20"
+            />
+          </span> {{ $t('action.export') }}
         </VBtn>
       </template>
       <VList v-if="!isOneTypeExport">

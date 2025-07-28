@@ -13,6 +13,7 @@ interface Props {
   config: IBaseListConfig
   modelValue: string
   selectedFilters: Array<BaseField>
+  isLoadingExport: boolean
   exportSelector: {
     canShow: boolean
     disable: boolean
@@ -89,11 +90,12 @@ const searchQuery = computed({
             {{ selectedFilters.length }}
           </span>
         </VBtn>
-
         <ExportFormatSelector
           v-if="exportSelector.canShow"
           data-test-id="export-format-selector"
           :small="config.small"
+          :isLoadingExport="isLoadingExport"
+          :exportSelector="exportSelector"
           :disabled="exportSelector.disable"
           :format-of-exports="config.formatOfExports"
           @export-format-selected="onExportFormatSelected"
