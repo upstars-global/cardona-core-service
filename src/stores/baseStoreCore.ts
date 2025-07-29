@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { isUndefined } from 'lodash'
-import { useStore as useVuexStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useRedirectToNotFoundPage } from '../helpers/router'
 import ApiService from '../services/api'
@@ -10,6 +9,7 @@ import { convertLowerCaseFirstSymbol } from '../helpers'
 import { productsName } from '../configs/productsName'
 import { ExportFormat } from '../@model/templates/baseList'
 import { ApiTypePrefix, productName } from '@productConfig'
+import store from '@/store'
 
 const isSymbolIsDash = (symbol: string): boolean => symbol === '-'
 
@@ -56,8 +56,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
         options: { customApiPrefix?: string; listItemModel?: any }
       },
     ): Promise<ListData> {
-      const vuex = useVuexStore()
-      const projectAlias = vuex.getters.selectedProject?.alias
+      const projectAlias = store.getters.selectedProject?.alias
 
       const response = await ApiService.request({
         type: `${payload.options.customApiPrefix || ApiTypePrefix}${transformNameToType(
@@ -77,8 +76,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
     async fetchReport(
       payload: { type: string; data: IRequestListPayload; customApiPrefix?: string },
     ): Promise<Blob | string> {
-      const vuex = useVuexStore()
-      const projectAlias = vuex.getters.selectedProject?.alias
+      const projectAlias = store.getters.selectedProject?.alias
 
       const response = await ApiService.request(
         {
@@ -108,8 +106,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       id: string
       customApiPrefix?: string
     }): Promise<any> {
-      const vuex = useVuexStore()
-      const projectAlias = vuex.getters.selectedProject?.alias
+      const projectAlias = store.getters.selectedProject?.alias
       const router = useRouter()
       const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 
@@ -136,8 +133,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
     },
 
     async fetchTypes(type: string): Promise<any> {
-      const vuex = useVuexStore()
-      const projectAlias = vuex.getters.selectedProject?.alias
+      const projectAlias = store.getters.selectedProject?.alias
 
       return ApiService.request({
         type: `${ApiTypePrefix + transformNameToType(type)}.Types.List`,
@@ -152,8 +148,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       data: { form: any; formRef: any }
       customApiPrefix?: string
     }): Promise<any> {
-      const vuex = useVuexStore()
-      const projectAlias = vuex.getters.selectedProject?.alias
+      const projectAlias = store.getters.selectedProject?.alias
       const productId = vuex.getters['productCore/productId']
 
       const { data } = await ApiService.request(
@@ -183,8 +178,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       data: { form: any; formRef: any }
       customApiPrefix?: string
     }): Promise<any> {
-      const vuex = useVuexStore()
-      const projectAlias = vuex.getters.selectedProject?.alias
+      const projectAlias = store.getters.selectedProject?.alias
       const productId = vuex.getters['productCore/productId']
 
       return ApiService.request(
@@ -212,8 +206,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       data: { form: any; formRef: any }
       customApiPrefix?: string
     }): Promise<any> {
-      const vuex = useVuexStore()
-      const projectAlias = vuex.getters.selectedProject?.alias
+      const projectAlias = store.getters.selectedProject?.alias
 
       return ApiService.request(
         {
@@ -239,8 +232,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       data: Array<{ id: string; isActive: boolean }>
       customApiPrefix?: string
     }): Promise<any> {
-      const vuex = useVuexStore()
-      const projectAlias = vuex.getters.selectedProject?.alias
+      const projectAlias = store.getters.selectedProject?.alias
       const entityKey = convertLowerCaseFirstSymbol(payload.type)
 
       return ApiService.request(
@@ -263,8 +255,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       comment: string
       customApiPrefix?: string
     }): Promise<any> {
-      const vuex = useVuexStore()
-      const projectAlias = vuex.getters.selectedProject?.alias
+      const projectAlias = store.getters.selectedProject?.alias
 
       return ApiService.request(
         {
@@ -286,8 +277,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       ids: string[]
       customApiPrefix?: string
     }): Promise<any> {
-      const vuex = useVuexStore()
-      const projectAlias = vuex.getters.selectedProject?.alias
+      const projectAlias = store.getters.selectedProject?.alias
 
       return ApiService.request(
         {
