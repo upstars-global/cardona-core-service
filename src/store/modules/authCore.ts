@@ -4,7 +4,6 @@ import ApiService from '../../services/api'
 import type { ILoginData } from '../../@model/auth'
 import { checkIsLoggedIn } from '../../helpers/token-auth'
 import { useCookie } from '../../@core/composable/useCookie'
-import { useUserStore } from '../../stores/user'
 
 export default {
   namespaced: true,
@@ -52,15 +51,12 @@ export default {
     },
 
     async setAuth({ commit, dispatch }, data: IAuthTokens) {
-      const userStore = useUserStore()
-
       try {
         setAuthTokens(data)
 
         commit('SET_AUTH', true)
 
         await dispatch('fetchCurrentUser', {}, { root: true })
-        await userStore.fetchCurrentUser()
       }
       catch {}
     },

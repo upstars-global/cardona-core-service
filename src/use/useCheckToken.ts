@@ -2,7 +2,6 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { TOKEN_INVALID } from 'cardona-core-service/src/utils/constants'
 import useToastService from 'cardona-core-service/src/helpers/toasts'
-import { useUserStore } from '../stores/user'
 
 const { toastError } = useToastService()
 
@@ -32,11 +31,8 @@ export function useCheckToken() {
   }
 
   const checkOnActualToken = async () => {
-    const userStore = useUserStore()
-
     try {
       await store.dispatch('fetchCurrentUser')
-      await userStore.fetchCurrentUser()
     }
     catch {
       await actionOnBrokenToken()

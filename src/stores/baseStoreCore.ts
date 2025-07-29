@@ -1,26 +1,21 @@
-import { isUndefined } from 'lodash'
-import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
-import { useRedirectToNotFoundPage } from '../helpers/router'
-import ApiService from '../services/api'
-import type { IRequestListPayload } from '../@model'
-import { ListData } from '../@model'
-
-// TODO import { ExportFormat, IOptionsBaseFetch } from '../../components/templates/BaseList/model'
-import { convertLowerCaseFirstSymbol } from '../helpers'
-import { productsName } from '../configs/productsName'
-import type { IOptionsBaseFetch } from '../@model/templates/baseList'
-import { ExportFormat } from '../@model/templates/baseList'
-import { useUserStore } from '../stores/user'
-import { useProductStore } from '../stores/productCore'
+import { isUndefined } from 'lodash'
+import { useStore as useVuexStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import { useRedirectToNotFoundPage } from '@/helpers/router'
+import ApiService from '@/services/api'
+import type { IRequestListPayload } from '@/@model'
+import { ListData } from '@/@model'
+import { convertLowerCaseFirstSymbol } from '@/helpers'
+import { productsName } from '@/configs/productsName'
+import { ExportFormat } from '@/@model/templates/baseList'
 import { ApiTypePrefix, productName } from '@productConfig'
 
 const isSymbolIsDash = (symbol: string): boolean => symbol === '-'
 
-export const transformNameToType = (type: string): string => {
-  return [...type]
+export const transformNameToType = (type: string): string =>
+  [...type]
     .map((item, index) => {
-      // First symbol
       if (index === 0) {
         return item.toUpperCase()
       }
@@ -28,28 +23,28 @@ export const transformNameToType = (type: string): string => {
         return ''
       }
       else if (item.toUpperCase() === item) {
-        if (isSymbolIsDash(type[index - 1]))
-          return item
-
-        return `.${item}`
+        // preserve uppercase after dash
+        return isSymbolIsDash(type[index - 1]) ? item : `.${item}`
       }
       else {
         return item
       }
     })
     .join('')
-}
 
 // @ts-expect-error
 const isNeocoreProduct = productName === productsName.neocore
 
-const combineFilter = (filters, project) => {
+const combineFilter = (
+  filters: Record<string, any> = {},
+  projectAlias?: string,
+): Record<string, any> | undefined => {
   const filter = {
     ...filters,
-    project: isNeocoreProduct ? project : undefined,
+    project: isNeocoreProduct ? projectAlias : undefined,
   }
 
-  return Object.values(filter).some(value => !isUndefined(value)) ? filter : undefined
+  return Object.values(filter).some(v => !isUndefined(v)) ? filter : undefined
 }
 
 export const useBaseStoreCore = defineStore('baseStoreCore', {
@@ -58,59 +53,66 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       payload: {
         type: string
         data: IRequestListPayload
-        options: IOptionsBaseFetch
-
+        options: { customApiPrefix?: string; listItemModel?: any }
       },
-    ) {
-      const userStore = useUserStore()
+    ): Promise<ListData> {
+      const vuex = useVuexStore()
+      const projectAlias = vuex.getters['productCore/selectedProject']?.alias
 
-      console.log('SELECTED PROJECT', userStore.selectedProject?.alias)
+      const response = await ApiService.request({
+        type: `${payload.options.customApiPrefix || ApiTypePrefix}${transformNameToType(
+          payload.type,
+        )}.List`,
+        pagination: {
+          pageNumber: payload.data.page ?? 1,
+          perPage: payload.data.perPage ?? 10,
+        },
+        sort: payload.data.sort,
+        filter: combineFilter(payload.data.filter, projectAlias),
+      })
 
-      return new ListData(
-        await ApiService.request({
-          type: `${payload.options.customApiPrefix || ApiTypePrefix}${transformNameToType(
-            payload.type,
-          )}.List`,
-          pagination: {
-            pageNumber: payload.data?.page || 1,
-            perPage: payload.data?.perPage || 10,
-          },
-          sort: payload.data?.sort,
-          filter: combineFilter(payload.data?.filter, userStore.selectedProject?.alias),
-        }),
-        payload.options?.listItemModel,
-      )
+      return new ListData(response, payload.options.listItemModel)
     },
 
     async fetchReport(
-      payload: { type: string; data: IRequestListPayload; customApiPrefix: string },
-    ) {
-      const userStore = useUserStore()
+      payload: { type: string; data: IRequestListPayload; customApiPrefix?: string },
+    ): Promise<Blob | string> {
+      const vuex = useVuexStore()
+      const projectAlias = vuex.getters['productCore/selectedProject']?.alias
 
-      const response = await ApiService.request({
-        type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
-          payload.type,
-        )}.List.Report`,
-        sort: payload.data?.sort,
-        pagination: {
-          pageNumber: payload.data?.page || 1,
-          perPage: payload.data?.perPage,
+      const response = await ApiService.request(
+        {
+          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+            payload.type,
+          )}.List.Report`,
+          sort: payload.data.sort,
+          pagination: {
+            pageNumber: payload.data.page ?? 1,
+            perPage: payload.data.perPage,
+          },
+          filter: combineFilter(payload.data.filter, projectAlias),
         },
-        filter: combineFilter(payload.data?.filter, userStore.selectedProject?.alias),
-      }, {
-        responseType: payload.data.filter.format === ExportFormat.XLSX ? 'blob' : 'json',
-      })
+        {
+          responseType:
+            payload.data.filter.format === ExportFormat.XLSX ? 'blob' : 'json',
+        },
+      )
 
-      return payload.data.filter.format === ExportFormat.JSON ? JSON.stringify(response) : response
+      return payload.data.filter.format === ExportFormat.JSON
+        ? JSON.stringify(response)
+        : response
     },
 
-    async readEntity(
-      payload: { type: string; id: string; customApiPrefix: string },
-    ) {
-      const userStore = useUserStore()
-
+    async readEntity(payload: {
+      type: string
+      id: string
+      customApiPrefix?: string
+    }): Promise<any> {
+      const vuex = useVuexStore()
+      const projectAlias = vuex.getters['productCore/selectedProject']?.alias
       const router = useRouter()
       const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
+
       try {
         const { data } = await ApiService.request({
           type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
@@ -118,14 +120,14 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
           )}.Read`,
           data: {
             id: payload.id,
-            project: isNeocoreProduct ? userStore.selectedProject?.alias : '',
+            project: isNeocoreProduct ? projectAlias : '',
           },
         })
 
         return data
       }
-      catch (error) {
-        const wasRedirect: boolean = await redirectToNotFoundPage(error.type)
+      catch (error: any) {
+        const wasRedirect = await redirectToNotFoundPage(error.type)
         if (wasRedirect)
           return
 
@@ -133,22 +135,26 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       }
     },
 
-    async fetchTypes(type: string) {
-      const userStore = useUserStore()
+    async fetchTypes(type: string): Promise<any> {
+      const vuex = useVuexStore()
+      const projectAlias = vuex.getters['productCore/selectedProject']?.alias
 
-      return await ApiService.request({
+      return ApiService.request({
         type: `${ApiTypePrefix + transformNameToType(type)}.Types.List`,
         data: {
-          project: isNeocoreProduct ? userStore.selectedProject?.alias : '',
+          project: isNeocoreProduct ? projectAlias : '',
         },
       })
     },
 
-    async createEntity(
-      payload: { type: string; data: { form: any; formRef: any }; customApiPrefix: string },
-    ) {
-      const userStore = useUserStore()
-      const productStore = useProductStore()
+    async createEntity(payload: {
+      type: string
+      data: { form: any; formRef: any }
+      customApiPrefix?: string
+    }): Promise<any> {
+      const vuex = useVuexStore()
+      const projectAlias = vuex.getters['productCore/selectedProject']?.alias
+      const productId = vuex.getters['productCore/productId']
 
       const { data } = await ApiService.request(
         {
@@ -157,77 +163,93 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
           )}.Create`,
           data: {
             ...payload.data.form,
-            id: payload.data.form?.id,
-            project: isNeocoreProduct ? userStore.selectedProject?.alias : '',
-            productId: productStore.productId,
+            id: payload.data.form.id,
+            project: isNeocoreProduct ? projectAlias : '',
+            productId,
           },
         },
-        { withSuccessToast: true, formRef: payload.data.formRef, entityName: payload.type },
+        {
+          withSuccessToast: true,
+          formRef: payload.data.formRef,
+          entityName: payload.type,
+        },
       )
 
       return data
     },
 
-    async updateEntity(
-      payload: { type: string; data: { form: any; formRef: any }; customApiPrefix: string },
-    ) {
-      const userStore = useUserStore()
-      const productStore = useProductStore()
+    async updateEntity(payload: {
+      type: string
+      data: { form: any; formRef: any }
+      customApiPrefix?: string
+    }): Promise<any> {
+      const vuex = useVuexStore()
+      const projectAlias = vuex.getters['productCore/selectedProject']?.alias
+      const productId = vuex.getters['productCore/productId']
 
-      return await ApiService.request(
+      return ApiService.request(
         {
           type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
             payload.type,
           )}.Update`,
           data: {
             ...payload.data.form,
-            id: payload.data.form?.id,
-            productId: productStore.productId,
-            project: isNeocoreProduct ? userStore.selectedProject?.alias : '',
+            id: payload.data.form.id,
+            productId,
+            project: isNeocoreProduct ? projectAlias : '',
           },
         },
-        { withSuccessToast: true, formRef: payload.data.formRef, entityName: payload.type },
+        {
+          withSuccessToast: true,
+          formRef: payload.data.formRef,
+          entityName: payload.type,
+        },
       )
     },
 
-    async toggleStatusEntity(
-      payload: { type: string; data: { form: any; formRef: any }; customApiPrefix: string },
-    ) {
-      const userStore = useUserStore()
+    async toggleStatusEntity(payload: {
+      type: string
+      data: { form: any; formRef: any }
+      customApiPrefix?: string
+    }): Promise<any> {
+      const vuex = useVuexStore()
+      const projectAlias = vuex.getters['productCore/selectedProject']?.alias
 
-      return await ApiService.request(
+      return ApiService.request(
         {
           type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
             payload.type,
           )}.Active.Switch`,
           data: {
             ...payload.data.form,
-            id: payload.data.form?.id,
-            project: isNeocoreProduct ? userStore.selectedProject?.alias : '',
+            id: payload.data.form.id,
+            project: isNeocoreProduct ? projectAlias : '',
           },
         },
-        { withSuccessToast: true, formRef: payload.data.formRef, entityName: payload.type },
+        {
+          withSuccessToast: true,
+          formRef: payload.data.formRef,
+          entityName: payload.type,
+        },
       )
     },
 
-    async multipleUpdateEntity(
-      payload: {
-        type: string
-        data: Array<{ id: string; isActive: boolean }>
-        customApiPrefix: string
-      },
-    ) {
-      const userStore = useUserStore()
+    async multipleUpdateEntity(payload: {
+      type: string
+      data: Array<{ id: string; isActive: boolean }>
+      customApiPrefix?: string
+    }): Promise<any> {
+      const vuex = useVuexStore()
+      const projectAlias = vuex.getters['productCore/selectedProject']?.alias
+      const entityKey = convertLowerCaseFirstSymbol(payload.type)
 
-      const entityKey: string = convertLowerCaseFirstSymbol(payload.type)
-
-      return await ApiService.request(
+      return ApiService.request(
         {
           type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
             payload.type,
           )}.Update.Multiple`,
           data: {
-            project: isNeocoreProduct ? userStore.selectedProject?.alias : '',
+            project: isNeocoreProduct ? projectAlias : '',
             [entityKey]: payload.data,
           },
         },
@@ -235,12 +257,16 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       )
     },
 
-    async deleteEntity(
-      payload: { type: string; id: string; comment: string; customApiPrefix },
-    ) {
-      const userStore = useUserStore()
+    async deleteEntity(payload: {
+      type: string
+      id: string
+      comment: string
+      customApiPrefix?: string
+    }): Promise<any> {
+      const vuex = useVuexStore()
+      const projectAlias = vuex.getters['productCore/selectedProject']?.alias
 
-      return await ApiService.request(
+      return ApiService.request(
         {
           type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
             payload.type,
@@ -248,31 +274,33 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
           data: {
             id: payload.id,
             comment: payload.comment,
-            project: isNeocoreProduct ? userStore.selectedProject?.alias : '',
+            project: isNeocoreProduct ? projectAlias : '',
           },
         },
         { withSuccessToast: true, entityName: payload.type },
       )
     },
 
-    async multipleDeleteEntity(
-      payload: { type: string; ids: Array<string>; customApiPrefix: string },
-    ) {
-      const userStore = useUserStore()
+    async multipleDeleteEntity(payload: {
+      type: string
+      ids: string[]
+      customApiPrefix?: string
+    }): Promise<any> {
+      const vuex = useVuexStore()
+      const projectAlias = vuex.getters['productCore/selectedProject']?.alias
 
-      return await ApiService.request(
+      return ApiService.request(
         {
           type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
             payload.type,
           )}.Delete.Multiple`,
           data: {
             ids: payload.ids,
-            project: isNeocoreProduct ? userStore.selectedProject?.alias : '',
+            project: isNeocoreProduct ? projectAlias : '',
           },
         },
         { withSuccessToast: true },
       )
     },
   },
-
 })
