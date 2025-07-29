@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, onBeforeMount, ref, useSlots, watch } from 'vue'
+import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
@@ -64,6 +64,7 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits<{
+  mounted: []
   rowClicked: [item: Record<string, unknown>]
   end: [item: Record<string, unknown>]
 }>()
@@ -195,32 +196,50 @@ watch(
 
 const selectedFields = ref<TableField[]>([...fields])
 
+const normalizedEntityName = computed(() => {
+  const index = entityName.indexOf('-') + 1
+  if (index <= 0)
+    return entityName
+
+  return entityName.replace(
+    entityName[index],
+    entityName[index].toLowerCase(),
+  )
+})
+
+const entityUrl = computed(() => {
+  return parseEntityNameWithTabs(convertCamelCase(normalizedEntityName.value, '/'))
+})
+
+const isLoadingExport = computed(() => {
+  const listUrl = `${entityUrl.value}/list/report`
+
+  return loaderStore.isLoadingEndpoint([listUrl])
+})
+
 const isLoadingList = computed(() => {
+  if (props.config.disableLoading)
+    return false
+
   if (isInitialState.value || isDebouncedSearch.value)
     return true
-  const indexSymbolNextDash = entityName.indexOf('-') + 1
 
-  const entityNameForLoad = entityName.replace(
-    entityName[indexSymbolNextDash],
-    entityName[indexSymbolNextDash].toLowerCase(),
-  )
+  const listUrl = `${entityUrl.value}/list`
 
-  const entityUrl: string = parseEntityNameWithTabs(convertCamelCase(entityNameForLoad, '/'))
-
-  const listUrl = `${entityUrl}/list`
-
-  return props.config.loadingOnlyByList
-    ? loaderStore.isLoadingEndpoint([
+  if (props.config.loadingOnlyByList) {
+    return loaderStore.isLoadingEndpointFullPath([
       listUrl,
-      ...props.config.loadingEndpointArr!,
+      ...(props.config.loadingEndpointArr ?? []),
     ])
-    : loaderStore.isLoadingEndpoint([
-      listUrl,
-      `${entityUrl}/update`,
-      `${entityUrl}/active/switch`,
-      `${entityUrl}/delete`,
-      ...props.config.loadingEndpointArr!,
-    ])
+  }
+
+  return loaderStore.isLoadingEndpointFullPath([
+    listUrl,
+    `${entityUrl.value}/update`,
+    `${entityUrl.value}/active/switch`,
+    `${entityUrl.value}/delete`,
+    ...(props.config.loadingEndpointArr ?? []),
+  ])
 })
 
 const size = props.config?.small ? VSizes.Small : VSizes.Medium
@@ -236,9 +255,11 @@ const sortDir = sortFromStorage?.order || props.config.staticSorts?.order
 const sortData = ref(sortBy && sortDir ? [{ key: sortBy, order: sortDir }] as SortItem[] : [])
 
 watch(() => sortData.value, async ([newSortData]) => {
-  newSortData
-    ? setStorage(sortStorageKey, newSortData)
-    : removeStorageItem(sortStorageKey)
+  if (props.config.saveSort) {
+    newSortData
+      ? setStorage(sortStorageKey, newSortData)
+      : removeStorageItem(sortStorageKey)
+  }
   await getList()
 })
 
@@ -550,6 +571,9 @@ const editingId = ref<string | null>(null)
 
 const onOpenEdit = (id: string) => editingId.value = id
 
+onMounted(() => {
+  emits('mounted')
+})
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
 
@@ -622,6 +646,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         canShow: !!(config.withExport && canExport),
         disable: !total,
       }"
+      :is-loading-export="isLoadingExport"
       :config="config"
       :is-open-filter-block="isOpenFilterBlock"
       @on-click-filter="isFiltersShown = !isFiltersShown"
@@ -654,7 +679,12 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :key="`filter-field-${filter.key}`"
         #[`filter(${filter.key})`]="{ selectedFilters, size, index }"
       >
-        <slot :name="`filter(${filter.key})`" :selectedFilters="selectedFilters" :size="size" :index="index" />
+        <slot
+          :name="`filter(${filter.key})`"
+          :selected-filters="selectedFilters"
+          :size="size"
+          :index="index"
+        />
       </template>
     </FiltersBlock>
 

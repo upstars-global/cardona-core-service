@@ -25,6 +25,7 @@ export default {
     defaultCurrency: {},
     currencies: {},
     menuType: MenuType.main,
+    verifiedProjects: [],
   },
   getters: {
     typeMenu: ({ layout }) => layout.menu.type,
@@ -42,6 +43,7 @@ export default {
         || (Object.values(defaultCurrency).isNotEmpty ? Object.values(defaultCurrency)[0] : 'USD')
     },
     isMenuTypeMain(state) { return state.menuType === MenuType.main },
+    verifiedProjects: ({ verifiedProjects }) => verifiedProjects,
   },
   mutations: {
     TOGGLE_RTL(state) {
@@ -88,23 +90,45 @@ export default {
     UPDATE_MENU_TYPE(state, menuType) {
       state.menuType = menuType
     },
+    SET_VERIFIED_PROJECT(state, project) {
+      if (state.verifiedProjects.find(item => item?.id === project?.id))
+        return
+      state.verifiedProjects.push(project)
+    },
   },
   actions: {
     async fetchConfig({ commit, state, rootGetters }) {
-      if (!state.defaultCurrency[rootGetters.selectedProject?.id]
+      if (
+        !state.defaultCurrency[rootGetters.selectedProject?.id]
         && !state.currencies[rootGetters.selectedProject?.id]
-        && rootGetters.userInfo?.projects.isNotEmpty) {
-        rootGetters.userInfo.projects?.forEach((project: ProjectInfo) => {
-          ApiService.request({
-            type: 'App.V2.Projects.Config.Read',
-            data: {
-              id: project.id,
-            },
-          }, { withErrorToast: false }).catch(e => e).then(values => {
-            if (!(values instanceof Error))
-              commit('UPDATE_CURRENCY', { ...values.data, id: project.id })
-          })
+        && rootGetters.userInfo?.projects.isNotEmpty
+      ) {
+        const projects = rootGetters.userInfo.projects
+
+        const requests = projects.map(async (project: ProjectInfo) => {
+          try {
+            const values = await ApiService.request({
+              type: 'App.V2.Projects.Config.Read',
+              data: { id: project.id },
+            }, { withErrorToast: false })
+
+            const isValid = values?.data && Object.keys(values.data).length > 0
+            if (isValid)
+              return { project, data: values.data }
+          }
+          catch (e) {}
+
+          return null
         })
+
+        const results = await Promise.all(requests)
+
+        results
+          .filter(Boolean)
+          .forEach(({ project, data }) => {
+            commit('UPDATE_CURRENCY', { ...data, id: project.id })
+            commit('SET_VERIFIED_PROJECT', project)
+          })
       }
     },
     onToggleMenuType({ commit, getters }) {
