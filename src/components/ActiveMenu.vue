@@ -64,7 +64,7 @@ const isSelectedOption = (item: OptionsItem): boolean => props.selectedItem.id =
   .v-list-item-title {
     display: flex;
     justify-content: space-between;
-    color: #ffffff;
+    color: rgba(var(--v-theme-surface));
   }
 }
 </style>
