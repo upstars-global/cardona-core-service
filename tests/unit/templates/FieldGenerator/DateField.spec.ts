@@ -119,10 +119,11 @@ describe('DateField.vue', () => {
     await testChangeInputValue(
       {
         inputKey: 'from',
+        valueOfSet: '2025-01-01T10:00:00.000Z',
         isFilter: true,
         dateRange: { from: '2024-11-11T11:00:00.000Z', to: '2024-11-12T11:00:00.000Z' },
       },
-      `${moment(1432252800).format()} to 2024-11-12T11:00:00.000Z`,
+      '2025-01-01T10:00:00.000Z to 2024-11-12T11:00:00.000Z',
     )
   })
 
