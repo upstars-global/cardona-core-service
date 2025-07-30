@@ -1,5 +1,6 @@
 import { getAccessToken, getRefreshToken } from 'axios-jwt'
 import { Centrifuge } from 'centrifuge'
+import { has } from 'lodash'
 import store from '../../store'
 import { checkIsLoggedIn } from '../../helpers/token-auth'
 import { messageTypes } from './config'
@@ -16,7 +17,7 @@ class WSService {
   static WSchannel: null
   static stores: Record<string, any> = {}
 
-  static async connect(channel, needRefresh = false, stores: Record<string, any>) {
+  static async connect(channel, { needRefresh, stores }: { needRefresh: boolean; stores: Record<string, any> }) {
     this.WSchannel = channel
     this.stores = stores
     if (!checkIsLoggedIn() || !getAccessToken() || !getRefreshToken())
@@ -59,7 +60,7 @@ class WSService {
       if (ctx?.error?.code === 109 || ctx?.error?.message === 'token expired') {
         if (WSService.WSchannel) {
           WSService.disconnect()
-          WSService.connect(WSService.WSchannel, true)
+          WSService.connect(WSService.WSchannel, { stores, needRefresh: true })
         }
       }
     })
@@ -150,9 +151,9 @@ class WSService {
 
     console.debug('WSService.parseData', message)
 
-    if (!this.stores[message?.channel])
+    if (!has(this.stores, message?.channel))
       return
-    const actualStore = this.stores[message?.channel] || {}
+    const actualStore = this.stores[message?.channel]
 
     if (type === TyperRequest.Created)
       await actualStore.createWSData(data)
