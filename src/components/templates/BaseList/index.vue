@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, onBeforeMount, ref, useSlots, watch } from 'vue'
+import { computed, inject, onBeforeMount, ref, useSlots, watch, onMounted } from 'vue'
 import { useStore as useVuexStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
