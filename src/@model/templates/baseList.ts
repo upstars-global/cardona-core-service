@@ -163,9 +163,6 @@ export interface IBaseListConfig {
   /** permissionKey - Пользовательский доступ */
   readonly permissionKey?: string
 
-  // /** customModuleName - Пользовательский имя модуля стор */
-  // readonly customModuleName?: string
-
   /** customApiPrefix - Пользовательский апи префикс (App.V2.) */
   readonly customApiPrefix?: string
 
@@ -198,6 +195,12 @@ export interface IBaseListConfig {
 
   /** showExpand - Показывать выпаадшку (expand) для строки спсика для этого надо поместить данные в поле groups  */
   readonly showExpand?: boolean
+
+  /** saveSort - Flag для сохранния сортировки в local storage  */
+  readonly saveSort?: boolean
+
+  /** disableLoading - Flag для блокирования loading state  */
+  readonly disableLoading?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -236,8 +239,6 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withCustomDelete?: boolean
   readonly noPermissionPrefix?: boolean
   readonly permissionKey?: string
-
-  // readonly customModuleName?: string
   readonly customApiPrefix?: string
   readonly customPermissionPrefix?: string
   readonly hover: boolean
@@ -249,6 +250,8 @@ export class BaseListConfig implements IBaseListConfig {
   readonly closeFilterOnPagination?: boolean
   readonly showExpand?: boolean
   readonly withTopPagination?: boolean
+  readonly saveSort?: boolean
+  readonly disableLoading?: boolean
 
   constructor({
     withSearch,
@@ -297,6 +300,8 @@ export class BaseListConfig implements IBaseListConfig {
     closeFilterOnPagination,
     showExpand,
     withTopPagination,
+    saveSort,
+    disableLoading,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -344,6 +349,8 @@ export class BaseListConfig implements IBaseListConfig {
     this.closeFilterOnPagination = closeFilterOnPagination
     this.showExpand = showExpand
     this.withTopPagination = withTopPagination
+    this.saveSort = saveSort ?? true
+    this.disableLoading = disableLoading
   }
 }
 
