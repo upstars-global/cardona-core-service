@@ -17,7 +17,7 @@ class WSService {
   static WSchannel: null
   static stores: Record<string, any> = {}
 
-  static async connect(channel, { needRefresh, stores }: { needRefresh: boolean; stores: Record<string, any> }) {
+  static async connect(channel, { needRefresh, stores }: { needRefresh?: boolean; stores: Record<string, any> }) {
     this.WSchannel = channel
     this.stores = stores
     if (!checkIsLoggedIn() || !getAccessToken() || !getRefreshToken())
