@@ -76,51 +76,47 @@ watch(
   }, { immediate: true },
 )
 
-const setRangeDate = (value, isStartDate = true) => {
-  if (isStartDate) {
+// Normalize the input date to ISO string format
+// If withTime is true, preserve time; otherwise, start from midnight
+const normalizeDate = (date: string | Date | number | null | undefined): string => {
+  if (!date)
+    return ''
+  const dateMoment = moment(date)
+
+  return props.field.withTime ? dateMoment.toISOString() : dateMoment.startOf('day').toISOString()
+}
+
+// Handle setting either start or end of a date range
+const setRangeDate = (value: string, isStartDate = true) => {
+  const isFilter = props.field.isFilter
+
+  // Update the appropriate local state
+  if (isStartDate)
     startedAt.value = value
-    if (endedAt.value) {
-      if (!value) {
-        const startedAtValue = props.field.isFilter ? moment(1432252800).format() : ''
-
-        emit('update:modelValue', startedAtValue + separator.value + endedAt.value)
-
-        return
-      }
-      emit('update:modelValue', value + separator.value + endedAt.value)
-    }
-    else {
-      if (!value) {
-        emit('update:modelValue', '')
-
-        return
-      }
-      const endedAtValue = props.field.isFilter ? moment().format() : ''
-
-      emit('update:modelValue', value + separator.value + endedAtValue)
-    }
-  }
-  else {
+  else
     endedAt.value = value
-    if (startedAt.value) {
-      emit('update:modelValue', startedAt.value + separator.value + value)
-      if (!value) {
-        const endedAtValue = props.field.isFilter ? moment().format() : ''
 
-        emit('update:modelValue', startedAt.value + separator.value + endedAtValue)
-      }
-    }
-    else {
-      if (!value) {
-        emit('update:modelValue', '')
+  // Capture raw values for both sides of the range
+  const rawStart = startedAt.value
+  const rawEnd = endedAt.value
 
-        return
-      }
-      const startedAtValue = props.field.isFilter ? moment(1432252800).format() : ''
+  // Fallback default values when one of the sides is missing
+  const defaultStart = isFilter ? normalizeDate(1432252800) : ''
+  const defaultEnd = isFilter ? moment().toISOString() : ''
 
-      emit('update:modelValue', startedAtValue + separator.value + value)
-    }
+  // Build normalized values with fallback logic
+  const start = normalizeDate(rawStart || (isStartDate ? '' : defaultStart))
+  const end = normalizeDate(rawEnd || (!isStartDate ? '' : defaultEnd))
+
+  // Emit empty value if both sides are empty
+  if (!start && !end) {
+    emit('update:modelValue', '')
+
+    return
   }
+
+  // Emit the final formatted range
+  emit('update:modelValue', `${start}${separator.value}${end}`)
 }
 
 const configFrom = computed(() => {
