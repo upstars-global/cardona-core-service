@@ -38,6 +38,19 @@ export const getChartConfig = (options: { chartType: AllowedChartType; isPercent
     },
   }
 
+  const yTicks = {
+    callback: (value: number) => ticksCallback(value, isPercent),
+  }
+
+  const grid = {
+    display: true,
+    color: '#E9E9F0',
+  }
+
+  const border = {
+    dash: [4, 4],
+  }
+
   const chartsOptions: Record<AllowedChartType, ChartOptions<AllowedChartType>> = {
     [ChartTypes.Bar]: {
       responsive: true,
@@ -50,13 +63,18 @@ export const getChartConfig = (options: { chartType: AllowedChartType; isPercent
         x: {
           stacked: true,
           ticks: xTicks,
+          grid,
+          border,
         },
         y: {
           stacked: true,
-          ticks: {
-            callback: (value: number) => ticksCallback(value, isPercent),
-          },
+          ticks: yTicks,
+          grid,
+          border,
         },
+      },
+      hover: {
+        mode: null,
       },
     },
 
@@ -102,19 +120,14 @@ export const getChartConfig = (options: { chartType: AllowedChartType; isPercent
 
       scales: {
         x: {
-          grid: {
-            display: false,
-          },
           ticks: xTicks,
+          grid,
+          border,
         },
         y: {
-          grid: {
-            borderDash: [4, 4],
-            color: '#E9ECEF',
-          },
-          ticks: {
-            callback: (value: number) => ticksCallback(value, isPercent),
-          },
+          ticks: yTicks,
+          grid,
+          border,
         },
       },
     },
