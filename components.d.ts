@@ -420,6 +420,7 @@ declare module 'vue' {
     ListPagination: typeof import('./src/components/templates/BaseList/_components/ListPagination.vue')['default']
     ListSearch: typeof import('./src/components/templates/BaseList/_components/ListSearch.vue')['default']
     ListView: typeof import('./src/components/UploadImage/ListView.vue')['default']
+    LoadingDots: typeof import('./src/components/LoadingDots.vue')['default']
     LocaleForm: typeof import('./src/components/templates/LocaleForm/index.vue')['default']
     LocaleView: typeof import('./src/components/templates/ViewGenerator/_components/LocaleView.vue')['default']
     ModalFileUpload: typeof import('./src/components/UploadImage/ModalFileUpload.vue')['default']
