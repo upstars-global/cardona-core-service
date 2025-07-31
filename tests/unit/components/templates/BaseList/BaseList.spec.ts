@@ -33,37 +33,6 @@ const getUpdatePropsConfig = (updatedConfig, props) => ({
   },
 })
 
-// Function to test toggling the status of an entity
-const runTestOnToggleStatus = async (props, expectedAction: string) => {
-  props.useList = useListForToggleStatus
-
-  // Mock the dispatch response with a sample list item
-  mockDispatch.mockResolvedValueOnce({
-    list: [{
-      id: 1,
-      name: 'Item 1',
-      type: 'Type 1',
-      status: 'Status 1',
-      isActive: true,
-    }],
-    total: 1,
-  })
-
-  const wrapper = getMountBaseList(props, global)
-
-  await flushPromises()
-
-  // Verify that the pill-status element exists
-  testOn.existElement({ wrapper, testId: 'pill-status' })
-
-  // Simulate user interactions to toggle status
-  await clickTrigger({ wrapper, testId: 'activator' })
-  await clickTrigger({ wrapper, testId: 'status-toggle' })
-
-  // Assert that the correct action was dispatched
-  // expect(mockDispatch.mock.calls[1][0]).toBe(expectedAction)
-}
-
 // Mock vue-router before importing components that depend on it
 vi.mock('vue-router', async importOriginal => {
   const actual = await importOriginal()
@@ -121,6 +90,34 @@ const mockBaseStoreCore = {
   fetchReport,
   toggleStatusEntity,
   deleteEntity,
+}
+
+// Function to test toggling the status of an entity
+const runActionToggleState = async (props) => {
+  props.useList = useListForToggleStatus
+
+  // Mock the dispatch response with a sample list item
+  mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
+    list: [{
+      id: 1,
+      name: 'Item 1',
+      type: 'Type 1',
+      status: 'Status 1',
+      isActive: true,
+    }],
+    total: 1,
+  })
+
+  const wrapper = getMountBaseList(props, global)
+
+  await flushPromises()
+
+  // Verify that the pill-status element exists
+  testOn.existElement({ wrapper, testId: 'pill-status' })
+
+  // Simulate user interactions to toggle status
+  await clickTrigger({ wrapper, testId: 'activator' })
+  await clickTrigger({ wrapper, testId: 'status-toggle' })
 }
 
 export const mockCustomStore = {
@@ -396,7 +393,9 @@ describe('BaseList', () => {
     props.config.withDeactivation = true
 
     // Run the status toggle test with the expected action
-    await runTestOnToggleStatus(props, 'baseStoreCore/updateEntity')
+    await runActionToggleState(props)
+    expect(mockBaseStoreCore.updateEntity).toHaveBeenCalled()
+    mockBaseStoreCore.updateEntity.mockReset()
   })
 
   it('Should toggle entity status using a specific action when withDeactivationBySpecificAction is enabled', async () => {
@@ -404,7 +403,9 @@ describe('BaseList', () => {
     props.config.withDeactivationBySpecificAction = true
 
     // Run the status toggle test with the specific expected action
-    await runTestOnToggleStatus(props, 'baseStoreCore/toggleStatusEntity')
+    await runActionToggleState(props)
+    expect(mockBaseStoreCore.toggleStatusEntity).toHaveBeenCalled()
+    mockBaseStoreCore.updateEntity.mockReset()
   })
 
   it('Should correctly render slot contents', async () => {
