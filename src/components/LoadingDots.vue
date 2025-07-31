@@ -14,6 +14,7 @@ const props = withDefaults(defineProps<{
 
 const dotSpacing = computed(() => props.size * 0.8)
 const bgClass = computed(() => `bg-${props.color}`)
+const heightBlock = computed(() => `${props.size * props.pulseScale}px`)
 </script>
 
 <template>
@@ -23,6 +24,7 @@ const bgClass = computed(() => `bg-${props.color}`)
       '--dot-size': `${size}px`,
       '--dot-spacing': `${dotSpacing}px`,
       '--pulse-scale': pulseScale,
+      'height': heightBlock,
     }"
   >
     <span
