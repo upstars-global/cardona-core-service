@@ -76,8 +76,6 @@ watch(
   }, { immediate: true },
 )
 
-// Normalize the input date to ISO string format
-// If withTime is true, preserve time; otherwise, start from midnight
 const normalizeDate = (date: string | Date | number | null | undefined): string => {
   if (!date)
     return ''
@@ -96,26 +94,27 @@ const setRangeDate = (value: string, isStartDate = true) => {
   else
     endedAt.value = value
 
-  // Capture raw values for both sides of the range
   const rawStart = startedAt.value
   const rawEnd = endedAt.value
 
-  // Fallback default values when one of the sides is missing
-  const defaultStart = isFilter ? normalizeDate(1432252800) : ''
-  const defaultEnd = isFilter ? moment().toISOString() : ''
+  const defaultStart = normalizeDate(1432252800)
+  const defaultEnd = moment().toISOString()
 
-  // Build normalized values with fallback logic
-  const start = normalizeDate(rawStart || (isStartDate ? '' : defaultStart))
-  const end = normalizeDate(rawEnd || (!isStartDate ? '' : defaultEnd))
+  let start = normalizeDate(
+    rawStart || (isFilter ? defaultStart : ''),
+  )
+  const end = normalizeDate(rawEnd || (!isStartDate ? '' : (isFilter ? defaultEnd : '')))
 
-  // Emit empty value if both sides are empty
+  // 🛠 If in filter mode and start > end — fallback start to defaultStart
+  if (isFilter && start && end && moment(start).isAfter(end))
+    start = defaultStart
+
+  // If both are empty — emit empty
   if (!start && !end) {
     emit('update:modelValue', '')
 
     return
   }
-
-  // Emit the final formatted range
   emit('update:modelValue', `${start}${separator.value}${end}`)
 }
 
