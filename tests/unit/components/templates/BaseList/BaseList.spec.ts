@@ -8,7 +8,14 @@ import { BaseListSlots, ExportFormat } from '../../../../../src/@model/templates
 import { mockModal } from '../../../mocks/modal-provide-config'
 import { testOn } from '../../../templates/shared-tests/test-case-generator'
 import { FilterID } from '../../../../../src/@model/filter'
-import { defaultProps, exportDataMock, fields, mockStore, useListForToggleStatus } from '../../../mocks/base-list'
+import {
+  defaultProps,
+  exportDataMock,
+  fields,
+  mockStore,
+  useListForCustomStore,
+  useListForToggleStatus,
+} from '../../../mocks/base-list'
 import useToastService from '../../../../../src/helpers/toasts'
 
 // Helper function to select table cells based on data attribute
@@ -25,37 +32,6 @@ const getUpdatePropsConfig = (updatedConfig, props) => ({
     ...updatedConfig,
   },
 })
-
-// Function to test toggling the status of an entity
-const runTestOnToggleStatus = async (props, expectedAction: string) => {
-  props.useList = useListForToggleStatus
-
-  // Mock the dispatch response with a sample list item
-  mockDispatch.mockResolvedValueOnce({
-    list: [{
-      id: 1,
-      name: 'Item 1',
-      type: 'Type 1',
-      status: 'Status 1',
-      isActive: true,
-    }],
-    total: 1,
-  })
-
-  const wrapper = getMountBaseList(props, global)
-
-  await flushPromises()
-
-  // Verify that the pill-status element exists
-  testOn.existElement({ wrapper, testId: 'pill-status' })
-
-  // Simulate user interactions to toggle status
-  await clickTrigger({ wrapper, testId: 'activator' })
-  await clickTrigger({ wrapper, testId: 'status-toggle' })
-
-  // Assert that the correct action was dispatched
-  expect(mockDispatch.mock.calls[1][0]).toBe(expectedAction)
-}
 
 // Mock vue-router before importing components that depend on it
 vi.mock('vue-router', async importOriginal => {
@@ -92,6 +68,78 @@ vi.mock('../../../../../src/helpers/toasts', () => {
     toastErrorMock,
   }
 })
+
+export const fetchEntityList = vi.fn().mockResolvedValue({
+  list: [{
+    id: 1,
+    name: 'Item 1',
+    type: 'Type 1',
+    status: 'Status 1',
+  }],
+  total: 1,
+})
+
+const updateEntity = vi.fn()
+const fetchReport = vi.fn()
+const toggleStatusEntity = vi.fn()
+const deleteEntity = vi.fn()
+
+const mockBaseStoreCore = {
+  fetchEntityList,
+  updateEntity,
+  fetchReport,
+  toggleStatusEntity,
+  deleteEntity,
+}
+
+// Function to test toggling the status of an entity
+const runActionToggleState = async (props) => {
+  props.useList = useListForToggleStatus
+
+  // Mock the dispatch response with a sample list item
+  mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
+    list: [{
+      id: 1,
+      name: 'Item 1',
+      type: 'Type 1',
+      status: 'Status 1',
+      isActive: true,
+    }],
+    total: 1,
+  })
+
+  const wrapper = getMountBaseList(props, global)
+
+  await flushPromises()
+
+  // Verify that the pill-status element exists
+  testOn.existElement({ wrapper, testId: 'pill-status' })
+
+  // Simulate user interactions to toggle status
+  await clickTrigger({ wrapper, testId: 'activator' })
+  await clickTrigger({ wrapper, testId: 'status-toggle' })
+}
+
+export const mockCustomStore = {
+  fetchEntityList: vi.fn().mockResolvedValue({
+    list: [],
+    total: 101,
+  }),
+  updateEntity: vi.fn(),
+  fetchReport: vi.fn(),
+  toggleStatusEntity: vi.fn(),
+  deleteEntity: vi.fn(),
+}
+
+export const mockUseBaseStoreCore = () => {
+  vi.mock('@/stores/baseStoreCore', () => ({
+    useBaseStoreCore: () => ({
+      ...mockBaseStoreCore,
+      isLoading: false,
+      selectedItems: [],
+    }),
+  }))
+}
 
 // Global configuration for mounting the component, including plugins and providers
 const global = {
@@ -172,7 +220,7 @@ describe('BaseList', () => {
     await flushPromises()
 
     // Assert that dispatch was called with the correct parameters
-    expect(mockDispatch).toHaveBeenCalledWith('baseStoreCore/fetchEntityList', {
+    expect(mockBaseStoreCore.fetchEntityList).toHaveBeenCalledWith({
       data: {
         filter: new FilterID(filterParams),
         page: 1,
@@ -192,7 +240,7 @@ describe('BaseList', () => {
     const maxExportItems = 100
 
     // Mock dispatch response indicating export limit exceeded
-    mockDispatch.mockResolvedValueOnce({
+    mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
       list: [],
       total: 101,
     })
@@ -273,7 +321,7 @@ describe('BaseList', () => {
     getMountBaseList(props, global)
 
     // Assert that the custom fetch action was dispatched
-    expect(mockDispatch.mock.calls[0][0]).toBe('entityTest/fetchEntityList')
+    expect(mockBaseStoreCore.fetchEntityList).toHaveBeenCalled()
   })
 
   it('Should call customDelete when withCustomDelete is enabled', async () => {
@@ -281,8 +329,9 @@ describe('BaseList', () => {
     const commentToRemove = 'Test Comment'
 
     // Configure custom delete settings in props
-    props.config.customModuleName = 'entityTest'
+    // props.config.customModuleName = 'entityTest'
     props.config.withCustomDelete = true
+    props.useList = useListForCustomStore(mockCustomStore)
 
     const wrapper = getMountBaseList(props, global)
 
@@ -298,7 +347,7 @@ describe('BaseList', () => {
     await flushPromises()
 
     // Assert that the custom delete action was dispatched
-    expect(mockDispatch.mock.calls[1][0]).toBe('entityTest/deleteEntity')
+    expect(mockCustomStore.deleteEntity).toHaveBeenCalled()
   })
 
   it('Should provide access to actions based on permissionKey', () => {
@@ -324,7 +373,7 @@ describe('BaseList', () => {
     await flushPromises()
 
     // Assert that the customApiPrefix was included in the dispatch call
-    expect(mockDispatch).toHaveBeenCalledWith('baseStoreCore/fetchEntityList', {
+    expect(mockBaseStoreCore.fetchEntityList).toHaveBeenCalledWith({
       data: {
         filter: new FilterID({}),
         page: 1,
@@ -344,7 +393,9 @@ describe('BaseList', () => {
     props.config.withDeactivation = true
 
     // Run the status toggle test with the expected action
-    await runTestOnToggleStatus(props, 'baseStoreCore/updateEntity')
+    await runActionToggleState(props)
+    expect(mockBaseStoreCore.updateEntity).toHaveBeenCalled()
+    mockBaseStoreCore.updateEntity.mockReset()
   })
 
   it('Should toggle entity status using a specific action when withDeactivationBySpecificAction is enabled', async () => {
@@ -352,7 +403,9 @@ describe('BaseList', () => {
     props.config.withDeactivationBySpecificAction = true
 
     // Run the status toggle test with the specific expected action
-    await runTestOnToggleStatus(props, 'baseStoreCore/toggleStatusEntity')
+    await runActionToggleState(props)
+    expect(mockBaseStoreCore.toggleStatusEntity).toHaveBeenCalled()
+    mockBaseStoreCore.updateEntity.mockReset()
   })
 
   it('Should correctly render slot contents', async () => {
@@ -467,7 +520,7 @@ describe('BaseList', () => {
     props.useList = useListForToggleStatus
 
     // Mock dispatch response with no list items
-    mockDispatch.mockResolvedValueOnce({
+    mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
       list: [],
       total: 0,
     })
