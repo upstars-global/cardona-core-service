@@ -76,51 +76,46 @@ watch(
   }, { immediate: true },
 )
 
-const setRangeDate = (value, isStartDate = true) => {
-  if (isStartDate) {
+const normalizeDate = (date: string | Date | number | null | undefined): string => {
+  if (!date)
+    return ''
+  const dateMoment = moment(date)
+
+  return props.field.withTime ? dateMoment.toISOString() : dateMoment.startOf('day').toISOString()
+}
+
+// Handle setting either start or end of a date range
+const setRangeDate = (value: string, isStartDate = true) => {
+  const isFilter = props.field.isFilter
+
+  // Update the appropriate local state
+  if (isStartDate)
     startedAt.value = value
-    if (endedAt.value) {
-      if (!value) {
-        const startedAtValue = props.field.isFilter ? moment(1432252800).format() : ''
-
-        emit('update:modelValue', startedAtValue + separator.value + endedAt.value)
-
-        return
-      }
-      emit('update:modelValue', value + separator.value + endedAt.value)
-    }
-    else {
-      if (!value) {
-        emit('update:modelValue', '')
-
-        return
-      }
-      const endedAtValue = props.field.isFilter ? moment().format() : ''
-
-      emit('update:modelValue', value + separator.value + endedAtValue)
-    }
-  }
-  else {
+  else
     endedAt.value = value
-    if (startedAt.value) {
-      emit('update:modelValue', startedAt.value + separator.value + value)
-      if (!value) {
-        const endedAtValue = props.field.isFilter ? moment().format() : ''
 
-        emit('update:modelValue', startedAt.value + separator.value + endedAtValue)
-      }
-    }
-    else {
-      if (!value) {
-        emit('update:modelValue', '')
+  const rawStart = startedAt.value
+  const rawEnd = endedAt.value
 
-        return
-      }
-      const startedAtValue = props.field.isFilter ? moment(1432252800).format() : ''
+  const defaultStart = normalizeDate(1432252800)
+  const defaultEnd = moment().toISOString()
 
-      emit('update:modelValue', startedAtValue + separator.value + value)
-    }
+  let start = normalizeDate(
+    rawStart || (isFilter ? defaultStart : ''),
+  )
+  const end = normalizeDate(rawEnd || (!isStartDate ? '' : (isFilter ? defaultEnd : '')))
+
+  // 🛠 If in filter mode and start > end — fallback start to defaultStart
+  if (isFilter && start && end && moment(start).isAfter(end))
+    start = defaultStart
+
+  // If both are empty — emit empty
+  if (!start && !end) {
+    emit('update:modelValue', '')
+
+    return
   }
+  emit('update:modelValue', `${start}${separator.value}${end}`)
 }
 
 const configFrom = computed(() => {
