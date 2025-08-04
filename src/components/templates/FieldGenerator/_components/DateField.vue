@@ -76,45 +76,62 @@ watch(
   }, { immediate: true },
 )
 
-const normalizeDate = (date: string | Date | number | null | undefined): string => {
+const normalizeDate = (
+  date: string | Date | number | null | undefined,
+  isEnd = false,
+): string => {
   if (!date)
     return ''
-  const dateMoment = moment(date)
+  const m = moment(date)
 
-  return props.field.withTime ? dateMoment.toISOString() : dateMoment.startOf('day').toISOString()
+  if (props.field.withTime)
+    return m.toISOString()
+
+  if (!props.field.isFilter)
+    return m.toISOString()
+
+  return isEnd
+    ? m.endOf('day').toISOString()
+    : m.startOf('day').toISOString()
 }
 
-// Handle setting either start or end of a date range
 const setRangeDate = (value: string, isStartDate = true) => {
   const isFilter = props.field.isFilter
 
-  // Update the appropriate local state
+  // Update correct value
   if (isStartDate)
     startedAt.value = value
-  else
-    endedAt.value = value
+  else endedAt.value = value
 
   const rawStart = startedAt.value
   const rawEnd = endedAt.value
 
-  const defaultStart = normalizeDate(1432252800)
-  const defaultEnd = moment().toISOString()
+  const defaultStart = normalizeDate(1432252800, false)
+  const defaultEnd = normalizeDate(moment(), true)
 
+  // Resolve normalized values
   let start = normalizeDate(
     rawStart || (isFilter ? defaultStart : ''),
+    false,
   )
-  const end = normalizeDate(rawEnd || (!isStartDate ? '' : (isFilter ? defaultEnd : '')))
 
-  // 🛠 If in filter mode and start > end — fallback start to defaultStart
+  const end = normalizeDate(
+    rawEnd || (isFilter ? defaultEnd : ''),
+    true,
+  )
+
+  // Auto-fix invalid range in filter mode
   if (isFilter && start && end && moment(start).isAfter(end))
     start = defaultStart
 
-  // If both are empty — emit empty
+  // Emit empty if both empty
   if (!start && !end) {
     emit('update:modelValue', '')
 
     return
   }
+
+  // Emit valid range
   emit('update:modelValue', `${start}${separator.value}${end}`)
 }
 
