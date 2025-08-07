@@ -149,7 +149,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       customApiPrefix?: string
     }): Promise<any> {
       const projectAlias = store.getters.selectedProject?.alias
-      const productId = vuex.getters['productCore/productId']
+      const productId = store.getters['productCore/productId']
 
       const { data } = await ApiService.request(
         {
@@ -179,7 +179,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       customApiPrefix?: string
     }): Promise<any> {
       const projectAlias = store.getters.selectedProject?.alias
-      const productId = vuex.getters['productCore/productId']
+      const productId = store.getters['productCore/productId']
 
       return ApiService.request(
         {
