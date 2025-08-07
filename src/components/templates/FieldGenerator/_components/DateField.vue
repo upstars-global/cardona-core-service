@@ -76,51 +76,51 @@ watch(
   }, { immediate: true },
 )
 
+const normalizeDateTime = (date: string | Date | number | null | undefined, isEndDate = false): string => {
+  // If dtae is empty and it's a filter - use default value
+  if (!date && props.field.isFilter) {
+    const defaultValue = isEndDate ? moment() : moment(1432252800)
+
+    return props.field.withTime
+      ? defaultValue.toISOString()
+      : (isEndDate ? defaultValue.endOf('day').toISOString() : defaultValue.startOf('day').toISOString())
+  }
+
+  // If date is empty and it's not a filter, return empty string
+  if (!date)
+    return ''
+
+  // Calculate moment date
+  const dateMoment = moment(date)
+  if (props.field.withTime)
+    return dateMoment.toISOString()
+
+  return isEndDate ? dateMoment.endOf('day').toISOString() : dateMoment.startOf('day').toISOString()
+}
+
 const setRangeDate = (value, isStartDate = true) => {
-  if (isStartDate) {
+  /// Update the value in the model
+  if (isStartDate)
     startedAt.value = value
-    if (endedAt.value) {
-      if (!value) {
-        const startedAtValue = props.field.isFilter ? moment(1432252800).format() : ''
-
-        emit('update:modelValue', startedAtValue + separator.value + endedAt.value)
-
-        return
-      }
-      emit('update:modelValue', value + separator.value + endedAt.value)
-    }
-    else {
-      if (!value) {
-        emit('update:modelValue', '')
-
-        return
-      }
-      const endedAtValue = props.field.isFilter ? moment().format() : ''
-
-      emit('update:modelValue', value + separator.value + endedAtValue)
-    }
-  }
-  else {
+  else
     endedAt.value = value
-    if (startedAt.value) {
-      emit('update:modelValue', startedAt.value + separator.value + value)
-      if (!value) {
-        const endedAtValue = props.field.isFilter ? moment().format() : ''
 
-        emit('update:modelValue', startedAt.value + separator.value + endedAtValue)
-      }
-    }
-    else {
-      if (!value) {
-        emit('update:modelValue', '')
+  // Get the current values based on whether it's a start or end date
+  const currentStart = isStartDate ? value : startedAt.value
+  const currentEnd = isStartDate ? endedAt.value : value
 
-        return
-      }
-      const startedAtValue = props.field.isFilter ? moment(1432252800).format() : ''
+  // If both start and end dates are empty, emit an empty string
+  if (!currentStart && !currentEnd) {
+    emit('update:modelValue', '')
 
-      emit('update:modelValue', startedAtValue + separator.value + value)
-    }
+    return
   }
+
+  // Calculate normalized start and end dates
+  const resultStart = normalizeDateTime(currentStart, false)
+  const resultEnd = normalizeDateTime(currentEnd, true)
+
+  emit('update:modelValue', resultStart + separator.value + resultEnd)
 }
 
 const configFrom = computed(() => {
