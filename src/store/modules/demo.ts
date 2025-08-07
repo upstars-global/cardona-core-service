@@ -8,22 +8,13 @@ export default {
   namespaced: true,
 
   actions: {
-    async fetchEntityList(
-      _,
-      payload: {
-        type: string
-        data: IRequestListPayload
-      },
-    ) {
+    async fetchEntityList(_, payload: IRequestListPayload) {
       return new ListData(
         await ApiService.request({
-          type: `${ApiTypePrefix}${transformNameToType(payload.type)}.List`,
-          pagination: {
-            pageNumber: payload.data?.page || 1,
-            perPage: payload.data?.perPage || 10,
-          },
+          type: `${ApiTypePrefix}${transformNameToType(payload.type || '')}.List`,
+          pagination: payload.pagination,
           filter: {
-            ...payload?.data.filter,
+            ...payload?.filter,
           },
         }),
       )
