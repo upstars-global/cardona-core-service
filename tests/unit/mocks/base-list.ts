@@ -35,31 +35,6 @@ export const exportDataMock = () => {
 }
 
 export const mockStore = createStore({
-  modules: {
-    entityTest: {
-      namespaced: true,
-      actions: {
-        deleteEntity: vi.fn(),
-      },
-    },
-    baseStoreCore: {
-      namespaced: true,
-      actions: {
-        updateEntity: vi.fn(),
-        fetchEntityList: vi.fn().mockResolvedValue({
-          list: [{
-            id: 1,
-            name: 'Item 1',
-            type: 'Type 1',
-            status: 'Status 1',
-          }],
-          total: 1,
-        }),
-        fetchReport: vi.fn(),
-        toggleStatusEntity: vi.fn(),
-      },
-    },
-  },
   state: {
     accessLevels: ['noaccess', 'view', 'create', 'update', 'delete'],
     userInfo: {
@@ -143,6 +118,26 @@ export const defaultProps = {
 
 export const useListForToggleStatus = () => {
   return {
+    ListFilterModel: FilterID,
+    entityName: 'Test',
+    fields: [
+      ...fields,
+      new TableField({
+        key: 'isActive',
+        title: 'Toggle status',
+        type: ListFieldType.PillStatus,
+      }),
+      new TableField({
+        key: 'actions',
+        title: '',
+      }),
+    ],
+  }
+}
+
+export const useListForCustomStore = customStore => () => {
+  return {
+    useStore: () => customStore,
     ListFilterModel: FilterID,
     entityName: 'Test',
     fields: [
