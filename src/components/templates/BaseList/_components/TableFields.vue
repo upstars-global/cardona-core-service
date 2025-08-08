@@ -2,7 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { TableField } from '../../../../@model/templates/tableFields'
-import { getListStorage, setStorage } from '../../../../helpers/storage'
+import { getListStorage, getStorage, removeStorageItem, setStorage } from '../../../../helpers/storage'
 import { VColors, VVariants } from '../../../../@model/vuetify'
 import { IconsList } from '../../../../@model/enums/icons'
 import { IS_TEST_ENV } from '../../../../utils/constants'
@@ -15,16 +15,26 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   (e: 'update:modelValue', data: TableField[]): void
+  (e: 'clearSort'): void
 }>()
 
 const route = useRoute()
 const keyStorage = `${route.name?.toString()}-${props.entityName}-list-fields`
+const sortStorageKey = `${route.name?.toString()}-${props.entityName}-sort`
 const filledList = computed(() => props.list.filter(item => item.title.isNotEmpty))
 const selectedKeys = computed(() => props.modelValue.map(item => item.key))
 const allTableKeys = computed(() => props.list.map(({ key }) => key))
 
 const getTableListAfterToggle = (hasKey: boolean, data: TableField) => {
   return hasKey ? props.modelValue.filter(item => item.key !== data.key) : [...props.modelValue, data]
+}
+
+const removeKeySortListStore = (data: TableField) => {
+  const sortList: string | null = getStorage(sortStorageKey)
+  if (sortList && JSON.parse(sortList)?.key === data.key) {
+    removeStorageItem(sortStorageKey)
+    emits('clearSort')
+  }
 }
 
 const sortByDefaultTableFields = (tableList: TableField[]) =>
@@ -35,6 +45,8 @@ const sortByDefaultTableFields = (tableList: TableField[]) =>
   }, [])
 
 const onToggleActive = (data: TableField) => {
+  if (selectedKeys.value.includes(data.key))
+    removeKeySortListStore(data)
   const tableList = getTableListAfterToggle(selectedKeys.value.includes(data.key), data)
   const selectedTableList = sortByDefaultTableFields(tableList)
 
@@ -43,7 +55,6 @@ const onToggleActive = (data: TableField) => {
 }
 
 onMounted(() => {
-
   /// TODO make save only keys but not all fields' data
   const list = getListStorage(TableField)(keyStorage)
 
@@ -71,8 +82,8 @@ onMounted(() => {
         v-for="item in filledList"
         :key="item.key"
         :data-test-id="`select-item-${item.key}`"
-        @click="onToggleActive(item)"
         :disabled="item.alwaysVisible"
+        @click="onToggleActive(item)"
       >
         <template #append>
           <VIcon
