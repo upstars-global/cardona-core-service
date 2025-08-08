@@ -307,7 +307,7 @@ const getList = async () => {
   const { list, total } = await store.dispatch(fetchActionName, {
     type: parseEntityNameWithTabs(entityName),
     data: {
-      perPage: perPage.value,
+      perPage: 500,
       page: currentPage.value,
       filter,
       sort,

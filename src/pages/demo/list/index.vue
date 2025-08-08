@@ -14,7 +14,6 @@ import { ProjectFilterTypes } from '@filterConfig'
 const { t } = useI18n()
 
 const listConfig = new BaseListConfig({
-  withSettings: true,
   withCustomFetchList: true,
   withSearch: true,
   createFromCopy: true,
@@ -59,6 +58,7 @@ const listConfig = new BaseListConfig({
     },
   ],
   showExpand: true,
+  pagination: false,
 })
 
 const getUpdateRoute = ({ id }): _RouteLocationBase => ({ name: 'DemoUpdate', params: { id } })
