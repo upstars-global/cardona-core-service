@@ -110,7 +110,11 @@ const onFetchFormData = async () => {
 
       const forProject = route.query?.forProject || ''
 
-      await router.replace({ name: route.name, params: { id: '' }, query: forProject ? route.query : {} })
+      await router.replace({
+        name: route.name,
+        params: { id: '', type: '' },
+        query: forProject ? route.query : {},
+      })
     }
 
     textEditorStore.setVariableTextBuffer(receivedEntity.localisationParameters)
