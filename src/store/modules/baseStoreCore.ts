@@ -139,6 +139,12 @@ export default {
       { rootGetters },
       payload: { type: string; data: { form: any; formRef: any }; customApiPrefix: string },
     ) {
+      const actualProject = payload.data.form?.project
+        ? payload.data.form?.project
+        : isNeocoreProduct
+          ? rootGetters.selectedProject?.alias
+          : ''
+
       const { data } = await ApiService.request(
         {
           type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
@@ -147,7 +153,7 @@ export default {
           data: {
             ...payload.data.form,
             id: payload.data.form?.id,
-            project: isNeocoreProduct ? rootGetters.selectedProject?.alias : '',
+            project: actualProject,
             productId: rootGetters['productCore/productId'],
           },
         },
