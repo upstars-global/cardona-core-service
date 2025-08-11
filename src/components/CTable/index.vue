@@ -13,7 +13,7 @@ import { SortDirection } from '../../@model/templates/baseList'
 import {
   getOptimizedList,
   isLastIndex,
-  useWindowScrollObserver,
+  useScrollObserver,
 } from '@/use/useScrollObservable'
 
 const props = withDefaults(defineProps<{
@@ -135,30 +135,22 @@ const toggleExpand = (id: string) => {
     expanded.value.push(id)
 }
 
-// const scrollObserver = useScrollObserver({
-//   target: computed(() => cTable.value?.$el ?? null),
-//   scrollableSelector: '.v-table__wrapper',
-//   bottomThreshold: 2,
-// })
-//
-// watch(() => props.rows.length, () => scrollObserver.reinitialize())
-
 const SLICE_SIZE = 50
 
-const winScroll = useWindowScrollObserver(2)
+const scrollObserver = useScrollObserver({ mode: 'window' })
 const actualIndexSlice = ref(0)
 
-watch(() => winScroll.isTop.value, (isTop: boolean) => {
+watch(() => scrollObserver.isTop.value, (isTop: boolean) => {
   if (isTop && actualIndexSlice.value) {
     actualIndexSlice.value = actualIndexSlice.value - 1
-    winScroll.scrollToPercent (50)
+    scrollObserver.scrollToPercent (50)
   }
 })
-watch(() => winScroll.isBottom.value, (isBottom: boolean) => {
-  console.log(isLastIndex(props.rows, actualIndexSlice.value, SLICE_SIZE))
+
+watch(() => scrollObserver.isBottom.value, (isBottom: boolean) => {
   if (isBottom && !isLastIndex(props.rows, actualIndexSlice.value, SLICE_SIZE)) {
     actualIndexSlice.value = actualIndexSlice.value + 1
-    winScroll.scrollToPercent (50)
+    scrollObserver.scrollToPercent (50)
   }
 })
 </script>
