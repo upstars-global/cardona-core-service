@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
@@ -10,6 +10,11 @@ import type { SelectMode } from '../../@model/enums/selectMode'
 import { AlignType } from '../../@model/templates/tableFields'
 import { IconsList } from '../../@model/enums/icons'
 import { SortDirection } from '../../@model/templates/baseList'
+import {
+  getOptimizedList,
+  isLastIndex,
+  useWindowScrollObserver,
+} from '@/use/useScrollObservable'
 
 const props = withDefaults(defineProps<{
   fields: TableField[]
@@ -129,6 +134,33 @@ const toggleExpand = (id: string) => {
   else
     expanded.value.push(id)
 }
+
+// const scrollObserver = useScrollObserver({
+//   target: computed(() => cTable.value?.$el ?? null),
+//   scrollableSelector: '.v-table__wrapper',
+//   bottomThreshold: 2,
+// })
+//
+// watch(() => props.rows.length, () => scrollObserver.reinitialize())
+
+const SLICE_SIZE = 50
+
+const winScroll = useWindowScrollObserver(2)
+const actualIndexSlice = ref(0)
+
+watch(() => winScroll.isTop.value, (isTop: boolean) => {
+  if (isTop && actualIndexSlice.value) {
+    actualIndexSlice.value = actualIndexSlice.value - 1
+    winScroll.scrollToPercent (50)
+  }
+})
+watch(() => winScroll.isBottom.value, (isBottom: boolean) => {
+  console.log(isLastIndex(props.rows, actualIndexSlice.value, SLICE_SIZE))
+  if (isBottom && !isLastIndex(props.rows, actualIndexSlice.value, SLICE_SIZE)) {
+    actualIndexSlice.value = actualIndexSlice.value + 1
+    winScroll.scrollToPercent (50)
+  }
+})
 </script>
 
 <template>
@@ -233,32 +265,32 @@ const toggleExpand = (id: string) => {
         v-if="isLoadingList"
         data-test-id="tbody-skeleton"
       >
-      <slot name="skeleton">
-        <tr
-          v-for="index in skeletonRows"
-          :key="`skeleton-row_${index}`"
-          data-test-id="skeleton-row"
-        >
-          <td
-            v-if="props.selectable"
-            class="c-table__cell"
-            :class="cellClasses"
-            data-c-field="selectable"
+        <slot name="skeleton">
+          <tr
+            v-for="index in skeletonRows"
+            :key="`skeleton-row_${index}`"
+            data-test-id="skeleton-row"
           >
-            <VSkeletonLoader type="text" />
-          </td>
-          <td
-            v-for="(field, cellIndex) in getActualField(fields)"
-            :key="`skeleton-cell_${index}_${cellIndex}`"
-            class="c-table__cell"
-            data-test-id="skeleton-coll"
-            :class="cellClasses"
-            :data-c-field="field.key"
-          >
-            <VSkeletonLoader type="text" />
-          </td>
-        </tr>
-      </slot>
+            <td
+              v-if="props.selectable"
+              class="c-table__cell"
+              :class="cellClasses"
+              data-c-field="selectable"
+            >
+              <VSkeletonLoader type="text" />
+            </td>
+            <td
+              v-for="(field, cellIndex) in getActualField(fields)"
+              :key="`skeleton-cell_${index}_${cellIndex}`"
+              class="c-table__cell"
+              data-test-id="skeleton-coll"
+              :class="cellClasses"
+              :data-c-field="field.key"
+            >
+              <VSkeletonLoader type="text" />
+            </td>
+          </tr>
+        </slot>
       </tbody>
       <Component
         :is="tableWrapperComponent"
@@ -270,7 +302,7 @@ const toggleExpand = (id: string) => {
         @change="onDragEnd"
       >
         <template
-          v-for="(item, index) in items"
+          v-for="(item, index) in getOptimizedList(items, actualIndexSlice, SLICE_SIZE)"
           :key="`c-table-row_${index}`"
         >
           <!-- Main row -->
@@ -335,7 +367,6 @@ const toggleExpand = (id: string) => {
               v-if="showExpand && expanded.includes(item.raw.id)"
               :key="`${item.raw.id}-expand`"
             >
-
               <!-- [START] Add for similar col and cell in table  -->
               <td v-if="props.selectable" />
               <td
@@ -355,7 +386,7 @@ const toggleExpand = (id: string) => {
                 <slot
                   :name="`cellExpand(${field.key})`"
                   :field="field"
-                  :item="{ ...item, raw, value: raw}"
+                  :item="{ ...item, raw, value: raw }"
                   :cell="raw[field.key]"
                   :toggle-expand="toggleExpand"
                   :is-expanded="expanded.includes(item.raw.id)"
@@ -486,4 +517,8 @@ tbody {
     margin-inline: auto;
   }
 }
+
+//.c-table {
+//  height: 70vh;
+//}
 </style>
