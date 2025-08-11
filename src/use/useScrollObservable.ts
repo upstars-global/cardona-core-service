@@ -57,14 +57,12 @@ export function useScrollObserver(arg?: string | Options): Return {
     if (opts.mode === 'window')
       return getWindowEl()
 
-    // element mode:
     if (opts.root?.value) {
       return opts.selector
         ? (opts.root.value.querySelector(opts.selector) as HTMLElement | null)
         : opts.root.value
     }
 
-    // якщо root не заданий — шукаємо в document
     return opts.selector ? (document.querySelector(opts.selector) as HTMLElement | null) : null
   }
 
@@ -120,7 +118,6 @@ export function useScrollObserver(arg?: string | Options): Return {
 
   const reinitialize = () => attach()
 
-  // ---- helpers ----
   const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n))
 
   function scrollToPercent(
@@ -151,7 +148,6 @@ export function useScrollObserver(arg?: string | Options): Return {
     if (!target)
       return
 
-    // Обчислити offset до контейнера (для element mode)
     const getOffsetTopWithin = (el: HTMLElement, within: HTMLElement) => {
       let y = 0
       let node: HTMLElement | null = el
@@ -174,11 +170,9 @@ export function useScrollObserver(arg?: string | Options): Return {
       scrollEl.scrollTo({ top: topPx, behavior: smooth ? 'smooth' : 'auto' })
   }
 
-  // lifecycle
   onMounted(attach)
   onBeforeUnmount(detach)
 
-  // якщо root змінюється (наприклад, VDataTable перемонтувався) — перевішуємо
   watch(() => opts.root?.value, () => queueMicrotask(attach))
 
   return {
@@ -194,32 +188,4 @@ export function useScrollObserver(arg?: string | Options): Return {
     scrollToSelector,
     reinitialize,
   }
-}
-
-// Composable for getting a range of items based on the visible index and range size
-export function getRange(index: number, range: number): { start: number; end: number } {
-  const start = index * range
-  const end = start + range
-
-  return { start, end }
-}
-
-export const getOptimizedList = <T>(
-  list: T[],
-  visibleIndex: number,
-  range: number,
-) => {
-  const { start, end } = getRange(visibleIndex, range)
-
-  return list.slice(start, end)
-}
-
-export const isLastIndex = <T>(
-  list: T[],
-  visibleIndex: number,
-  range: number,
-) => {
-  const { end } = getRange(visibleIndex, range)
-
-  return end >= list.length
 }

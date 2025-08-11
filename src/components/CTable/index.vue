@@ -11,10 +11,8 @@ import { AlignType } from '../../@model/templates/tableFields'
 import { IconsList } from '../../@model/enums/icons'
 import { SortDirection } from '../../@model/templates/baseList'
 import {
-  getOptimizedList,
-  isLastIndex,
   useScrollObserver,
-} from '@/use/useScrollObservable'
+} from '../../use/useScrollObservable'
 
 const props = withDefaults(defineProps<{
   fields: TableField[]
@@ -137,6 +135,17 @@ const toggleExpand = (id: string) => {
 
 const SLICE_SIZE = 50
 
+const getRange = (index: number, range: number): { start: number; end: number } => ({
+  start: index * range,
+  end: (index + 1) * range,
+})
+
+ const isLastIndex = <T>(
+  list: T[],
+  visibleIndex: number,
+  range: number,
+) => getRange(visibleIndex, range).end >= list.length
+
 const scrollObserver = useScrollObserver({ mode: 'window' })
 const actualIndexSlice = ref(0)
 
@@ -153,6 +162,18 @@ watch(() => scrollObserver.isBottom.value, (isBottom: boolean) => {
     scrollObserver.scrollToPercent (50)
   }
 })
+
+
+ const getOptimizedList = <T>(
+  list: T[],
+) => {
+  const { start, end } = getRange(actualIndexSlice.value,SLICE_SIZE)
+
+  return list.slice(start, end)
+}
+
+const USE_OPTIMIZE = true;
+const getItems = (items) => USE_OPTIMIZE ? getOptimizedList(items) : items
 </script>
 
 <template>
@@ -294,7 +315,7 @@ watch(() => scrollObserver.isBottom.value, (isBottom: boolean) => {
         @change="onDragEnd"
       >
         <template
-          v-for="(item, index) in getOptimizedList(items, actualIndexSlice, SLICE_SIZE)"
+          v-for="(item, index) in getItems(items)"
           :key="`c-table-row_${index}`"
         >
           <!-- Main row -->
