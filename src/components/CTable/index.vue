@@ -32,6 +32,7 @@ const props = withDefaults(defineProps<{
   disabledRowIds?: string[]
   skeletonRows?: number
   skeletonCols?: number
+  scrollPagination?: { perPage: number }
 }>(), {
   disabledRowIds: [],
 })
@@ -133,8 +134,6 @@ const toggleExpand = (id: string) => {
     expanded.value.push(id)
 }
 
-const SLICE_SIZE = 50
-
 const getRange = (index: number, range: number): { start: number; end: number } => ({
   start: index * range,
   end: (index + 1) * range,
@@ -148,18 +147,19 @@ const getRange = (index: number, range: number): { start: number; end: number } 
 
 const scrollObserver = useScrollObserver({ mode: 'window' })
 const actualIndexSlice = ref(0)
+const perPageOnScroll = computed(() => props.scrollPagination?.perPage)
 
 watch(() => scrollObserver.isTop.value, (isTop: boolean) => {
   if (isTop && actualIndexSlice.value) {
     actualIndexSlice.value = actualIndexSlice.value - 1
-    scrollObserver.scrollToPercent (15)
+    scrollObserver.scrollToPercent (15, {from: 'top'})
   }
 })
 
 watch(() => scrollObserver.isBottom.value, (isBottom: boolean) => {
-  if (isBottom && !isLastIndex(props.rows, actualIndexSlice.value, SLICE_SIZE)) {
+  if (isBottom && !isLastIndex(props.rows, actualIndexSlice.value, perPageOnScroll.value)) {
     actualIndexSlice.value = actualIndexSlice.value + 1
-    scrollObserver.scrollToPercent (85)
+    scrollObserver.scrollToPercent (15, {from: 'bottom'})
   }
 })
 
@@ -167,16 +167,15 @@ watch(() => scrollObserver.isBottom.value, (isBottom: boolean) => {
  const getOptimizedList = <T>(
   list: T[],
 ) => {
-  const { start, end } = getRange(actualIndexSlice.value,SLICE_SIZE)
-
+  const { start, end } = getRange(actualIndexSlice.value, perPageOnScroll.value)
   return list.slice(start, end)
 }
 
-const USE_OPTIMIZE = true;
-const getItems = (items) => USE_OPTIMIZE ? getOptimizedList(items) : items
+const getItems = (items) => perPageOnScroll.value ? getOptimizedList(items) : items
 </script>
 
 <template>
+  <span style="position: fixed">{{[scrollObserver.isBottom, scrollObserver.isTop]}}</span>
   <VDataTable
     ref="cTable"
     :model-value="selectedItems"

@@ -24,6 +24,7 @@ const listConfig = new BaseListConfig({
   selectable: true,
   searchPlaceholder: t('placeholder.search._'),
   draggable: true,
+  scrollPagination: { perPage: 50 },
   staticSorts: {
     key: 'shortId',
     order: SortDirection.asc,
@@ -118,7 +119,7 @@ const setButtonState = (key: string): void => {
         <template #input="{ inputValue, updateValue }">
           <NumberRangeField
             :model-value="inputValue"
-            @update:modelValue="updateValue"
+            @update:model-value="updateValue"
           />
         </template>
       </EditFieldWrapper>
