@@ -145,19 +145,19 @@ const getRange = (index: number, range: number): { start: number; end: number } 
   range: number,
 ) => getRange(visibleIndex, range).end >= list.length
 
+const perPageOnScroll = computed(() => props.scrollPagination?.perPage)
 const scrollObserver = useScrollObserver({ mode: 'window' })
 const actualIndexSlice = ref(0)
-const perPageOnScroll = computed(() => props.scrollPagination?.perPage)
 
 watch(() => scrollObserver.isTop.value, (isTop: boolean) => {
-  if (isTop && actualIndexSlice.value) {
+  if (perPageOnScroll.value && isTop && actualIndexSlice.value) {
     actualIndexSlice.value = actualIndexSlice.value - 1
     scrollObserver.scrollToPercent (15, {from: 'top'})
   }
 })
 
 watch(() => scrollObserver.isBottom.value, (isBottom: boolean) => {
-  if (isBottom && !isLastIndex(props.rows, actualIndexSlice.value, perPageOnScroll.value)) {
+  if (perPageOnScroll.value && isBottom && !isLastIndex(props.rows, actualIndexSlice.value, perPageOnScroll.value)) {
     actualIndexSlice.value = actualIndexSlice.value + 1
     scrollObserver.scrollToPercent (15, {from: 'bottom'})
   }
@@ -175,7 +175,6 @@ const getItems = (items) => perPageOnScroll.value ? getOptimizedList(items) : it
 </script>
 
 <template>
-  <span style="position: fixed">{{[scrollObserver.isBottom, scrollObserver.isTop]}}</span>
   <VDataTable
     ref="cTable"
     :model-value="selectedItems"
