@@ -14,6 +14,9 @@ import {
   useScrollObserver,
 } from '../../use/useScrollObservable'
 
+const PER_PAGE_ON_SCROLL = 50
+const SCROLL_PERCENT = 15
+
 const props = withDefaults(defineProps<{
   fields: TableField[]
   rows: Array<Record<string, unknown>>
@@ -32,7 +35,7 @@ const props = withDefaults(defineProps<{
   disabledRowIds?: string[]
   skeletonRows?: number
   skeletonCols?: number
-  scrollPagination?: { perPage: number }
+  scrollPagination?: { perPage: number, scrollTop?: number; scrollBottom?: number } | boolean
 }>(), {
   disabledRowIds: [],
 })
@@ -145,21 +148,26 @@ const getRange = (index: number, range: number): { start: number; end: number } 
   range: number,
 ) => getRange(visibleIndex, range).end >= list.length
 
-const perPageOnScroll = computed(() => props.scrollPagination?.perPage)
+const isActiveScrollPagination = computed(() => props.scrollPagination?.perPage || props.scrollPagination === true )
+
+const perPageOnScroll = computed(() => {
+  if (typeof props.scrollPagination === 'boolean') return PER_PAGE_ON_SCROLL
+  return props.scrollPagination?.perPage
+})
 const scrollObserver = useScrollObserver({ mode: 'window' })
 const actualIndexSlice = ref(0)
 
 watch(() => scrollObserver.isTop.value, (isTop: boolean) => {
-  if (perPageOnScroll.value && isTop && actualIndexSlice.value) {
+  if (isActiveScrollPagination.value && isTop && actualIndexSlice.value) {
     actualIndexSlice.value = actualIndexSlice.value - 1
-    scrollObserver.scrollToPercent (15, {from: 'top'})
+    scrollObserver.scrollToPercent (props.scrollPagination?.scrollTop || SCROLL_PERCENT, {from: 'top'})
   }
 })
 
 watch(() => scrollObserver.isBottom.value, (isBottom: boolean) => {
-  if (perPageOnScroll.value && isBottom && !isLastIndex(props.rows, actualIndexSlice.value, perPageOnScroll.value)) {
+  if (isActiveScrollPagination.value && isBottom && !isLastIndex(props.rows, actualIndexSlice.value, perPageOnScroll.value)) {
     actualIndexSlice.value = actualIndexSlice.value + 1
-    scrollObserver.scrollToPercent (15, {from: 'bottom'})
+    scrollObserver.scrollToPercent (props.scrollPagination?.scrollBottom || SCROLL_PERCENT, {from: 'bottom'})
   }
 })
 
@@ -171,7 +179,7 @@ watch(() => scrollObserver.isBottom.value, (isBottom: boolean) => {
   return list.slice(start, end)
 }
 
-const getItems = (items) => perPageOnScroll.value ? getOptimizedList(items) : items
+const getItems = (items) => isActiveScrollPagination.value ? getOptimizedList(items) : items
 </script>
 
 <template>

@@ -203,7 +203,7 @@ export interface IBaseListConfig {
   readonly disableLoading?: boolean
 
   /* scrollPagination - Params что бы рендерить список частями для отработки локальной пагинации по scroll */
-  readonly scrollPagination?: { perPage: number }
+  readonly scrollPagination?: boolean | { perPage: number; scrollTop?: number; scrollBottom?: number }
 }
 
 export class BaseListConfig implements IBaseListConfig {

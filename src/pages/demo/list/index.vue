@@ -24,7 +24,6 @@ const listConfig = new BaseListConfig({
   selectable: true,
   searchPlaceholder: t('placeholder.search._'),
   draggable: true,
-  scrollPagination: { perPage: 50 },
   staticSorts: {
     key: 'shortId',
     order: SortDirection.asc,
