@@ -152,14 +152,14 @@ const actualIndexSlice = ref(0)
 watch(() => scrollObserver.isTop.value, (isTop: boolean) => {
   if (isTop && actualIndexSlice.value) {
     actualIndexSlice.value = actualIndexSlice.value - 1
-    scrollObserver.scrollToPercent (50)
+    scrollObserver.scrollToPercent (15)
   }
 })
 
 watch(() => scrollObserver.isBottom.value, (isBottom: boolean) => {
   if (isBottom && !isLastIndex(props.rows, actualIndexSlice.value, SLICE_SIZE)) {
     actualIndexSlice.value = actualIndexSlice.value + 1
-    scrollObserver.scrollToPercent (50)
+    scrollObserver.scrollToPercent (85)
   }
 })
 
