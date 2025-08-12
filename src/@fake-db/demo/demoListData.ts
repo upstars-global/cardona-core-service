@@ -216,7 +216,7 @@ export const tagsList: Array<IDemoTypeItem> = [
   },
 ]
 
-const baseListData2 = [
+const baseListData = [
   {
     id: '632c39448e03b2dab20c8a77',
     shortId: '632c39448e03b2dab20c8a77',
@@ -656,15 +656,17 @@ const baseListData2 = [
   },
 ]
 
-const baseListData = Array.from({ length: 200 }).fill(baseListData2[0]).map((item, index) => ({
-  ...item,
-  id: `Index: [${index + 1}] = ${uuidv4()}`,
-  shortId: `Index: ${index + 1} ${uuidv4()}`,
-  partnerCode: `partner-${uuidv4().slice(0, 8)}`,
-  name: `Name ${uuidv4().slice(0, 5)}`,
-  nameWithShortId: `Name ${uuidv4().slice(0, 5)}`,
-}))
+/* Using for test scroll observer with large list */
 
-// const replaceIdsInList = items => items.map(item => ({ ...item, id: uuidv4() }))
-// export const listData = [...baseListData, ...replaceIdsInList(baseListData), ...replaceIdsInList(baseListData), ...replaceIdsInList(baseListData)]
-export const listData = baseListData
+// const baseListDataLarge = Array.from({ length: 200 }).fill(baseListData[0]).map((item, index) => ({
+//   ...item,
+//   id: `Index: [${index + 1}] = ${uuidv4()}`,
+//   shortId: `Index: ${index + 1} ${uuidv4()}`,
+//   partnerCode: `partner-${uuidv4().slice(0, 8)}`,
+//   name: `Name ${uuidv4().slice(0, 5)}`,
+//   nameWithShortId: `Name ${uuidv4().slice(0, 5)}`,
+// }))
+// export const listData = baseListDataLarge
+
+const replaceIdsInList = items => items.map(item => ({ ...item, id: uuidv4() }))
+export const listData = [...baseListData, ...replaceIdsInList(baseListData), ...replaceIdsInList(baseListData), ...replaceIdsInList(baseListData)]
