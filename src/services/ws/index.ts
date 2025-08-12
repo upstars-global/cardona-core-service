@@ -1,5 +1,6 @@
 import { getAccessToken, getRefreshToken } from 'axios-jwt'
 import { Centrifuge } from 'centrifuge'
+import { has } from 'lodash'
 import store from '../../store'
 import { checkIsLoggedIn } from '../../helpers/token-auth'
 import { messageTypes } from './config'
@@ -14,9 +15,11 @@ class WSService {
   static ws: null | Centrifuge = null
   static WSListSubscribe: Set<string> = new Set()
   static WSchannel: null
+  static stores: Record<string, any> = {}
 
-  static async connect(channel, needRefresh = false) {
+  static async connect(channel, { needRefresh, stores }: { needRefresh?: boolean; stores: Record<string, any> }) {
     this.WSchannel = channel
+    this.stores = stores
     if (!checkIsLoggedIn() || !getAccessToken() || !getRefreshToken())
       return
 
@@ -57,7 +60,7 @@ class WSService {
       if (ctx?.error?.code === 109 || ctx?.error?.message === 'token expired') {
         if (WSService.WSchannel) {
           WSService.disconnect()
-          WSService.connect(WSService.WSchannel, true)
+          WSService.connect(WSService.WSchannel, { stores, needRefresh: true })
         }
       }
     })
@@ -142,18 +145,22 @@ class WSService {
     if (!message?.channel)
       return
 
-    const channel = message?.channel.replace('-feed', '')
+    // const channel = message?.channel.replace('-feed', '')
     const type = message?.data?.type
     const data = message?.data
 
     console.debug('WSService.parseData', message)
 
+    if (!has(this.stores, message?.channel))
+      return
+    const actualStore = this.stores[message?.channel]
+
     if (type === TyperRequest.Created)
-      await store.dispatch(`${channel}/createWSData`, data)
+      await actualStore.createWSData(data)
     else if (type === TyperRequest.Updated)
-      await store.dispatch(`${channel}/setWSData`, data)
+      await actualStore.setWSData(data)
     else if (type === TyperRequest.Deleted)
-      await store.dispatch(`${channel}/deleteWSData`, data)
+      await actualStore.deleteWSData(data)
   }
 }
 

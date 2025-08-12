@@ -59,7 +59,6 @@ const listConfig = new BaseListConfig({
     },
   ],
   showExpand: true,
-  pagination: false,
 })
 
 const getUpdateRoute = ({ id }): _RouteLocationBase => ({ name: 'DemoUpdate', params: { id } })
@@ -195,6 +194,11 @@ const setButtonState = (key: string): void => {
 </template>
 
  <style scoped lang="scss">
+ :deep([data-c-field="editableField"]) {
+   &:has(.editable-wrapper--open) {
+   min-width: 300px;
+   }
+ }
   :deep(.code-view-editor) {
     .CodeMirror-linenumber {
       display: none;

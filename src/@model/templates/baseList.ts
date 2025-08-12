@@ -8,6 +8,7 @@ import { SelectMode } from '../../@model/enums/selectMode'
 import type { SortItem } from '../../@core/types'
 import type { TableField } from './tableFields'
 import type { ProjectFilterTypes } from '@filterConfig'
+import type { useBaseStoreCore } from '../../stores/baseStoreCore'
 
 export enum SortDirection {
   asc = 'asc',
@@ -17,6 +18,8 @@ export interface IOptionsBaseFetch {
   readonly listItemModel?: { new (item: unknown): unknown }
   readonly customApiPrefix?: string
 }
+
+export type BaseListStore = ReturnType<typeof useBaseStoreCore>
 
 export interface UseListType<
   ItemModel extends object = object,
@@ -32,6 +35,7 @@ export interface UseListType<
   readonly ListItemModel?: new (...args: any[]) => ItemModel
   readonly canUpdateCb?: (item: ItemModel) => boolean
   readonly canRemoveCb?: (item: ItemModel) => boolean
+  readonly useStore?: BaseListStore
 }
 
 export interface FilterListItem {
@@ -159,9 +163,6 @@ export interface IBaseListConfig {
   /** permissionKey - Пользовательский доступ */
   readonly permissionKey?: string
 
-  /** customModuleName - Пользовательский имя модуля стор */
-  readonly customModuleName?: string
-
   /** customApiPrefix - Пользовательский апи префикс (App.V2.) */
   readonly customApiPrefix?: string
 
@@ -241,7 +242,6 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withCustomDelete?: boolean
   readonly noPermissionPrefix?: boolean
   readonly permissionKey?: string
-  readonly customModuleName?: string
   readonly customApiPrefix?: string
   readonly customPermissionPrefix?: string
   readonly hover: boolean
@@ -293,7 +293,6 @@ export class BaseListConfig implements IBaseListConfig {
     withCustomDelete,
     noPermissionPrefix,
     permissionKey,
-    customModuleName,
     customApiPrefix,
     customPermissionPrefix,
     hover,
@@ -344,7 +343,6 @@ export class BaseListConfig implements IBaseListConfig {
     this.withCustomDelete = withCustomDelete
     this.noPermissionPrefix = noPermissionPrefix
     this.permissionKey = permissionKey
-    this.customModuleName = customModuleName
     this.customApiPrefix = customApiPrefix
     this.customPermissionPrefix = customPermissionPrefix
     this.hover = hover ?? true

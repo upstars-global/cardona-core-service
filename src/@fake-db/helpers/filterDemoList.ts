@@ -1,7 +1,7 @@
 import moment from 'moment'
 import type { IDemoFilter } from '../../@model/demo'
 
-export const filterDemoList = (list: Array<any>, filter: IDemoFilter) => {
+export const filterDemoList = (list: Array<any>, filter: IDemoFilter = {}) => {
   const { search, createdFrom, createdTo, tagsIds, type, gameId, isActive } = filter
   let result = list
   if (search) {
