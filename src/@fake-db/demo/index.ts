@@ -5,6 +5,8 @@ import { entityData, listData } from '../../@fake-db/demo/demoListData'
 // List
 mock.onPost('/api/v2/demo/list').reply(({ data }) => {
   const { filter, pagination } = JSON.parse(data)
+
+
   const filteredList = filterDemoList(listData, filter)
 
   return new Promise(resolve => {
