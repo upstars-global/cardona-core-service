@@ -304,7 +304,7 @@ const getList = async () => {
   const { list, total } = await fetchAction({
     type: parseEntityNameWithTabs(entityName),
     data: {
-      perPage: 500,
+      perPage: perPage.value,
       page: currentPage.value,
       filter,
       sort,
