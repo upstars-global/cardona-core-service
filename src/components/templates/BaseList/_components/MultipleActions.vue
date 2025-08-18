@@ -2,11 +2,12 @@
 import { computed, inject } from 'vue'
 import { VColors, VSizes, VVariants } from '../../../../@model/vuetify'
 import { i18n } from '../../../../plugins/i18n'
-import { ModalsId } from '../../../../@model/ModalsId'
+import { ModalsId } from '../../../../@model/modalsId'
 import ConfirmModal from '../../../../../src/components/BaseModal/ConfirmationModal.vue'
+import { MultipleActions } from '../../../../@model/enums/multipleActions'
 
 interface Props {
-  action?: 'remove' | 'toggleStatus'
+  action?: MultipleActions
   numberSelectedItems: number
   canRemove: boolean
   entityName: string
@@ -20,8 +21,8 @@ interface Emits {
 
 const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
-const isToggleStatus = computed(() => !props.action || props.action === 'toggleStatus')
-const isRemove = computed(() => !props.action || props.action === 'remove')
+const isToggleStatus = computed(() => !props.action || props.action === MultipleActions.ToggleStatus)
+const isRemove = computed(() => !props.action || props.action === MultipleActions.Remove)
 
 const modal = inject('modal')
 

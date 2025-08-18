@@ -7,6 +7,7 @@ import type { BColors, BLightColors } from '../bootstrap' // TODO remove
 import { SelectMode } from '../../@model/enums/selectMode'
 import type { SortItem } from '../../@core/types'
 import type { useBaseStoreCore } from '../../stores/baseStoreCore'
+import type { MultipleActions } from '../../@model/enums/multipleActions'
 import type { TableField } from './tableFields'
 import type { ProjectFilterTypes } from '@filterConfig'
 
@@ -222,7 +223,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withExport?: boolean
   readonly formatOfExports?: Array<ExportFormat>
   readonly maxExportItems?: number
-  readonly withMultipleActions?: boolean | 'remove' | 'toggleStatus'
+  readonly withMultipleActions?: boolean | MultipleActions
   readonly sidebar?: boolean
   readonly cbShowSidebar?: Function
   readonly sidebarCollapseMode?: boolean
