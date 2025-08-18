@@ -536,8 +536,4 @@ tbody {
     margin-inline: auto;
   }
 }
-
-//.c-table {
-//  height: 70vh;
-//}
 </style>
