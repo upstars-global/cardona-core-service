@@ -920,10 +920,6 @@
     },
     "removeDemo": {
       "title": "Remove demo",
-      "description": "Are you sure you want to remove the demo?"
-    },
-    "Demo": {
-      "title": "Remove demo",
       "titleMultiple": "Remove demos",
       "description": "Are you sure you want to remove selected demo?",
       "descriptionMultiple": "Are you sure you want to remove selected demos?"

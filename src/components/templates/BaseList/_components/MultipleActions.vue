@@ -25,8 +25,8 @@ const isRemove = computed(() => !props.action || props.action === 'remove')
 
 const modal = inject('modal')
 
-const multipleRemoveTitle = computed(() => props.numberSelectedItems > 1 ? i18n.t(`modal.${props.entityName}.titleMultiple`) : i18n.t(`modal.${props.entityName}.title`))
-const multipleRemoveDescription = computed(() => props.numberSelectedItems > 1 ? i18n.t(`modal.${props.entityName}.descriptionMultiple`) : i18n.t(`modal.${props.entityName}.description`))
+const multipleRemoveTitle = computed(() => props.numberSelectedItems > 1 ? i18n.t(`modal.remove${props.entityName}.titleMultiple`) : i18n.t(`modal.remove${props.entityName}.title`))
+const multipleRemoveDescription = computed(() => props.numberSelectedItems > 1 ? i18n.t(`modal.remove${props.entityName}.descriptionMultiple`) : i18n.t(`modal.remove${props.entityName}.description`))
 
 const onRemove = () => {
   modal.showModal(ModalsId.MultipleRemoveList)
