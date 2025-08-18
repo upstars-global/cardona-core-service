@@ -749,6 +749,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       </div>
       <MultipleActions
         v-else-if="config.withMultipleActions && selectedItems.isNotEmpty"
+        v-bind="{ action: typeof config.withMultipleActions !== 'boolean' ? config.withMultipleActions : '' }"
         :entity-name="entityName"
         :number-selected-items="selectedItems.length"
         :can-remove="canRemove"

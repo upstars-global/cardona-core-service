@@ -6,6 +6,7 @@ import { ModalsId } from '../../../../@model/ModalsId'
 import ConfirmModal from '../../../../../src/components/BaseModal/ConfirmationModal.vue'
 
 interface Props {
+  action?: 'remove' | 'toggleStatus'
   numberSelectedItems: number
   canRemove: boolean
   entityName: string
@@ -18,8 +19,9 @@ interface Emits {
 }
 
 const props = defineProps<Props>()
-
 const emits = defineEmits<Emits>()
+const isToggleStatus = computed(() => !props.action || props.action === 'toggleStatus')
+const isRemove = computed(() => !props.action || props.action === 'remove')
 
 const modal = inject('modal')
 
@@ -47,6 +49,7 @@ const onRemove = () => {
     <div class="d-flex gap-4">
       <slot>
         <VBtn
+          v-if="isToggleStatus"
           :variant="VVariants.Outlined"
           :color="VColors.Secondary"
           :size="VSizes.Small"
@@ -57,6 +60,7 @@ const onRemove = () => {
         </VBtn>
 
         <VBtn
+          v-if="isToggleStatus"
           :variant="VVariants.Outlined"
           :color="VColors.Secondary"
           :size="VSizes.Small"
@@ -67,7 +71,7 @@ const onRemove = () => {
         </VBtn>
 
         <VBtn
-          v-if="canRemove"
+          v-if="canRemove && isRemove"
           :variant="VVariants.Outlined"
           :color="VColors.Error"
           :size="VSizes.Small"

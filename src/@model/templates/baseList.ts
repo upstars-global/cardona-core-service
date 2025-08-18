@@ -6,9 +6,9 @@ import type { ViewInfo } from '../view'
 import type { BColors, BLightColors } from '../bootstrap' // TODO remove
 import { SelectMode } from '../../@model/enums/selectMode'
 import type { SortItem } from '../../@core/types'
+import type { useBaseStoreCore } from '../../stores/baseStoreCore'
 import type { TableField } from './tableFields'
 import type { ProjectFilterTypes } from '@filterConfig'
-import type { useBaseStoreCore } from '../../stores/baseStoreCore'
 
 export enum SortDirection {
   asc = 'asc',
@@ -113,7 +113,7 @@ export interface IBaseListConfig {
   readonly maxExportItems?: number
 
   /** withMultipleActions - Вкл/выкл действие с несколькими элементами */
-  readonly withMultipleActions?: boolean
+  readonly withMultipleActions?: boolean | 'remove' | 'toggleStatus'
 
   /** sidebar - Вкл/выкл sidebar для элемента */
   readonly sidebar?: boolean
@@ -222,7 +222,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withExport?: boolean
   readonly formatOfExports?: Array<ExportFormat>
   readonly maxExportItems?: number
-  readonly withMultipleActions?: boolean
+  readonly withMultipleActions?: boolean | 'remove' | 'toggleStatus'
   readonly sidebar?: boolean
   readonly cbShowSidebar?: Function
   readonly sidebarCollapseMode?: boolean
