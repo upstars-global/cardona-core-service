@@ -114,7 +114,7 @@ export interface IBaseListConfig {
   readonly maxExportItems?: number
 
   /** withMultipleActions - Вкл/выкл действие с несколькими элементами */
-  readonly withMultipleActions?: boolean | 'remove' | 'toggleStatus'
+  readonly withMultipleActions?: boolean | MultipleActions
 
   /** sidebar - Вкл/выкл sidebar для элемента */
   readonly sidebar?: boolean
