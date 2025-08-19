@@ -12,6 +12,17 @@ import {
 import { TransactionType } from '../../@model/enums/playersTransactions'
 import type { RadioOption } from '../../@model/templates/baseField/radio'
 import { getEndOfDay } from '../../helpers/date'
+import { useUsersStore } from '../../stores/users'
+import { useLoggingStore } from '@/stores/logging'
+import { useSegmentsStore } from '@/stores/segments'
+import { useBonusesStore } from '@/stores/bonuses'
+import { useGamesProducersStore } from '@/stores/games/index'
+import { useGamesStore } from '@/stores/games/producers'
+import { useGiftsStore } from '@/stores/gifts'
+import { useBettingsStore } from '@/stores/bettings'
+import { fetchProjectsList } from '@/stores/projects'
+
+// import { useGiftsStore } from '@/stores/gifts'
 
 // Options
 export const stateOptions: RadioOption[] = [
@@ -70,28 +81,28 @@ const admin = new SelectBaseField({
   key: FilterType.Admin,
   label: i18n.t('common.admin._'),
   placeholder: i18n.t('placeholder.filter.admin'),
-  fetchOptionsActionName: 'users/fetchUsersList',
+  fetchOptionsAction: useUsersStore().fetchUsersList,
 })
 
 const action = new SelectBaseField({
   key: FilterType.Action,
   label: i18n.t('page.logging.action'),
   placeholder: i18n.t('placeholder.filter.action'),
-  fetchOptionsActionName: 'logging/fetchLogActions',
+  fetchOptionsAction: useLoggingStore().fetchLogActions,
 })
 
 const bannerStrategy = new SelectBaseField({
   key: FilterType.BannerStrategy,
   label: i18n.t('common.showTo'),
   placeholder: i18n.t('placeholder.filter.bannerStrategy'),
-  fetchOptionsActionName: 'segments/fetchSegmentsStrategyList',
+  fetchOptionsAction: useSegmentsStore().fetchSegmentsStrategyList,
 })
 
 const entityType = new SelectBaseField({
   key: FilterType.EntityType,
   label: i18n.t('common.entity'),
   placeholder: i18n.t('placeholder.filter.entityType'),
-  fetchOptionsActionName: 'logging/fetchLogEntityList',
+  fetchOptionsAction: useLoggingStore().fetchLogEntityList,
 })
 
 // Bonuses
@@ -99,14 +110,14 @@ const bonusStatus = new SelectBaseField({
   key: FilterType.BonusStatus,
   label: i18n.t('common.bonuses.status'),
   placeholder: i18n.t('common.bonuses.status'),
-  fetchOptionsActionName: 'bonuses/fetchBonusesStatusList',
+  fetchOptionsAction: useBonusesStore().fetchBonusesStatusList,
 })
 
 const bonusType = new SelectBaseField({
   key: FilterType.BonusType,
   label: i18n.t('common.bonuses.type'),
   placeholder: i18n.t('common.bonuses.type'),
-  fetchOptionsActionName: 'bonuses/fetchBonusesTypeList',
+  fetchOptionsAction: useBonusesStore().fetchBonusesTypeList,
 })
 
 // Games
@@ -114,14 +125,14 @@ const gamesType = new MultiSelectBaseField({
   key: FilterType.GamesType,
   label: i18n.t('filters.gameType'),
   placeholder: i18n.t('placeholder.filter.gamesType'),
-  fetchOptionsActionName: 'games/fetchGamesTypes',
+  fetchOptionsAction: useGamesStore().fetchGamesTypes,
 })
 
 const gamesRunners = new SelectBaseField({
   key: FilterType.GamesRunners,
   label: i18n.t('filters.runner'),
   placeholder: i18n.t('placeholder.filter.gamesRunners'),
-  fetchOptionsActionName: 'games/fetchGamesRunners',
+  fetchOptionsAction: useGamesStore().fetchGamesRunners,
 })
 
 // Gifts
@@ -129,14 +140,14 @@ const giftsStatus = new SelectBaseField({
   key: FilterType.GiftsStatus,
   label: i18n.t('common.gifts.status'),
   placeholder: i18n.t('common.gifts.status'),
-  fetchOptionsActionName: 'gifts/fetchGiftsStatusList',
+  fetchOptionsAction: useGiftsStore().fetchGiftsStatusList,
 })
 
 const giftsType = new SelectBaseField({
   key: FilterType.GiftsType,
   label: i18n.t('common.gifts.type'),
   placeholder: i18n.t('common.gifts.type'),
-  fetchOptionsActionName: 'gifts/fetchGiftsTypeList',
+  fetchOptionsAction: useGiftsStore().fetchGiftsTypeList,
 })
 
 // Betting history
@@ -144,28 +155,28 @@ const bettingHistoryStatus = new SelectBaseField({
   key: FilterType.BettingHistoryStatus,
   label: i18n.t('common.betting.status'),
   placeholder: i18n.t('common.betting.status'),
-  fetchOptionsActionName: 'betting/fetchBettingHistoryStatusList',
+  fetchOptionsAction: useBettingsStore().fetchBettingHistoryStatusList,
 })
 
 const bettingHistoryType = new SelectBaseField({
   key: FilterType.BettingHistoryType,
   label: i18n.t('common.betting.type'),
   placeholder: i18n.t('common.betting.type'),
-  fetchOptionsActionName: 'betting/fetchBettingHistoryTypeList',
+  fetchOptionsAction: useBettingsStore().fetchBettingHistoryTypeList,
 })
 
 const bettingHistoryBonusType = new SelectBaseField({
   key: FilterType.BettingHistoryBonusType,
   label: i18n.t('common.betting.bonusType'),
   placeholder: i18n.t('common.betting.bonusType'),
-  fetchOptionsActionName: 'betting/fetchBettingHistoryBonusTypeList',
+  fetchOptionsAction: useBettingsStore().fetchBettingHistoryTypeList,
 })
 
 const bettingHistoryEventType = new SelectBaseField({
   key: FilterType.BettingHistoryEventType,
   label: i18n.t('common.betting.eventType'),
   placeholder: i18n.t('common.betting.eventType'),
-  fetchOptionsActionName: 'betting/fetchBettingHistoryEventTypeList',
+  fetchOptionsAction: useBettingsStore().fetchBettingHistoryEventTypeList
 })
 
 // ---------------------------------------------------------------------------
@@ -174,49 +185,50 @@ const group = new MultiSelectBaseField<GroupData>({
   key: FilterType.Group,
   label: i18n.t('common.groups.list'),
   placeholder: i18n.t('placeholder.filter.group'),
-  fetchOptionsActionName: 'groups/fetchGroupsList',
+  fetchOptionsAction: 'groups/fetchGroupsList',
 })
 
 const project = new MultiSelectBaseField<ProjectInfo>({
   key: FilterType.Project,
   label: i18n.t('common.project.list'),
   placeholder: i18n.t('placeholder.filter.project'),
-  fetchOptionsActionName: 'projects/fetchProjectsList',
+  fetchOptionsAction: fetchProjectsList().fetchProjectsList,
 })
 
 const gamesProducers = new MultiSelectBaseField({
   key: FilterType.GamesProducers,
   label: i18n.t('filters.gamesProducers'),
   placeholder: i18n.t('placeholder.filter.gamesProducers'),
-  fetchOptionsActionName: 'gamesProducers/fetchGamesProducersList',
+  fetchOptionsAction: 'gamesProducers/fetchGamesProducersList',
+  fetchOptionsAction: useGamesProducersStore().fetchGamesProducersList,
 })
 
 const transactionsStatuses = new MultiSelectBaseField({
   key: FilterType.TransactionsStatuses,
   label: i18n.t('common.status'),
   placeholder: i18n.t('placeholder.filter.status'),
-  fetchOptionsActionName: 'playersTransactions/fetchTransactionsStatuses',
+  fetchOptionsAction: 'playersTransactions/fetchTransactionsStatuses',
 })
 
 const balancesReasons = new MultiSelectBaseField({
   key: FilterType.BalancesReasons,
   label: i18n.t('common.reason'),
   placeholder: i18n.t('placeholder.filter.reason'),
-  fetchOptionsActionName: 'balance/fetchBalancesReasonsList',
+  fetchOptionsAction: 'balance/fetchBalancesReasonsList',
 })
 
 const tagNames = new MultiSelectBaseField({
   key: 'tagNames',
   label: i18n.t('common.tags'),
   placeholder: i18n.t('placeholder.filter.tags'),
-  fetchOptionsActionName: 'tags/fetchTags',
+  fetchOptionsAction: 'tags/fetchTags',
 })
 
 const segments = new MultiSelectBaseField({
   key: FilterType.Segments,
   label: i18n.t('common.segments'),
   placeholder: i18n.t('common.segments'),
-  fetchOptionsActionName: 'segments/fetchList',
+  fetchOptionsAction: 'segments/fetchList',
 })
 
 // ---------------------------------------------------------------------------
