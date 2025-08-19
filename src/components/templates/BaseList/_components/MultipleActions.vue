@@ -7,7 +7,7 @@ import ConfirmModal from '../../../../../src/components/BaseModal/ConfirmationMo
 import { MultipleActions } from '../../../../@model/enums/multipleActions'
 
 interface Props {
-  action?: MultipleActions
+  action?: MultipleActions | null
   numberSelectedItems: number
   canRemove: boolean
   entityName: string
