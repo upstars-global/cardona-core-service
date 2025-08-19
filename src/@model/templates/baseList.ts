@@ -20,6 +20,7 @@ export interface IOptionsBaseFetch {
 }
 
 export type BaseListStore = ReturnType<typeof useBaseStoreCore>
+type ScrollPagination = boolean | { perPage: number; scrollTop?: number; scrollBottom?: number }
 
 export interface UseListType<
   ItemModel extends object = object,
@@ -203,7 +204,7 @@ export interface IBaseListConfig {
   readonly disableLoading?: boolean
 
   /* scrollPagination - Params что бы рендерить список частями для отработки локальной пагинации по scroll */
-  readonly scrollPagination?: boolean | { perPage: number; scrollTop?: number; scrollBottom?: number }
+  readonly scrollPagination?: ScrollPagination
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -255,7 +256,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withTopPagination?: boolean
   readonly saveSort?: boolean
   readonly disableLoading?: boolean
-  readonly scrollPagination?: { perPage: number }
+  readonly scrollPagination?: ScrollPagination
 
   constructor({
     withSearch,
