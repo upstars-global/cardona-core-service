@@ -128,7 +128,7 @@ const deleteAction = useStore
   : baseStoreCore.deleteEntity
 
 const multipleDeleteAction = useStore
-  ? customStore?.deleteEntity
+  ? customStore?.multipleDeleteEntity
   : baseStoreCore.multipleDeleteEntity
 
 // Permissions
