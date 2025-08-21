@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ActionField: typeof import('./src/components/templates/BaseList/_components/fields/ActionField.vue')['default']
+    ActiveMenu: typeof import('./src/components/ActiveMenu.vue')['default']
     AppAutocomplete: typeof import('./src/@core/components/app-form-elements/AppAutocomplete.vue')['default']
     AppBarSearch: typeof import('./src/@core/components/AppBarSearch.vue')['default']
     AppCardActions: typeof import('./src/@core/components/cards/AppCardActions.vue')['default']
@@ -29,6 +30,7 @@ declare module 'vue' {
     BadgeShortCopyView: typeof import('./src/components/templates/ViewGenerator/_components/BadgeShortCopyView.vue')['default']
     BadgesView: typeof import('./src/components/templates/ViewGenerator/_components/BadgesView.vue')['default']
     BadgeView: typeof import('./src/components/templates/ViewGenerator/_components/BadgeView.vue')['default']
+    BaseChart: typeof import('./src/components/templates/BaseChart.vue')['default']
     BaseList: typeof import('./src/components/templates/BaseList/index.vue')['default']
     BaseModal: typeof import('./src/components/BaseModal/index.vue')['default']
     BaseSection: typeof import('./src/components/templates/BaseSection/index.vue')['default']

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
@@ -10,6 +10,12 @@ import type { SelectMode } from '../../@model/enums/selectMode'
 import { AlignType } from '../../@model/templates/tableFields'
 import { IconsList } from '../../@model/enums/icons'
 import { SortDirection } from '../../@model/templates/baseList'
+import {
+  useScrollObserver,
+} from '../../use/useScrollObservable'
+
+const PER_PAGE_ON_SCROLL = 50
+const SCROLL_PERCENT = 15
 
 const props = withDefaults(defineProps<{
   fields: TableField[]
@@ -29,6 +35,7 @@ const props = withDefaults(defineProps<{
   disabledRowIds?: string[]
   skeletonRows?: number
   skeletonCols?: number
+  scrollPagination?: { perPage: number, scrollTop?: number; scrollBottom?: number } | boolean
 }>(), {
   disabledRowIds: [],
 })
@@ -129,6 +136,50 @@ const toggleExpand = (id: string) => {
   else
     expanded.value.push(id)
 }
+
+const getRange = (index: number, range: number): { start: number; end: number } => ({
+  start: index * range,
+  end: (index + 1) * range,
+})
+
+ const isLastIndex = <T>(
+  list: T[],
+  visibleIndex: number,
+  range: number,
+) => getRange(visibleIndex, range).end >= list.length
+
+const isActiveScrollPagination = computed(() => props.scrollPagination?.perPage || props.scrollPagination === true )
+
+const perPageOnScroll = computed(() => {
+  if (typeof props.scrollPagination === 'boolean') return PER_PAGE_ON_SCROLL
+  return props.scrollPagination?.perPage
+})
+const scrollObserver = useScrollObserver({ mode: 'window' })
+const actualIndexSlice = ref(0)
+
+watch(() => scrollObserver.isTop.value, (isTop: boolean) => {
+  if (isActiveScrollPagination.value && isTop && actualIndexSlice.value) {
+    actualIndexSlice.value = actualIndexSlice.value - 1
+    scrollObserver.scrollToPercent (props.scrollPagination?.scrollTop || SCROLL_PERCENT, {from: 'top'})
+  }
+})
+
+watch(() => scrollObserver.isBottom.value, (isBottom: boolean) => {
+  if (isActiveScrollPagination.value && isBottom && !isLastIndex(props.rows, actualIndexSlice.value, perPageOnScroll.value)) {
+    actualIndexSlice.value = actualIndexSlice.value + 1
+    scrollObserver.scrollToPercent (props.scrollPagination?.scrollBottom || SCROLL_PERCENT, {from: 'bottom'})
+  }
+})
+
+
+ const getOptimizedList = <T>(
+  list: T[],
+) => {
+  const { start, end } = getRange(actualIndexSlice.value, perPageOnScroll.value)
+  return list.slice(start, end)
+}
+
+const getItems = (items) => isActiveScrollPagination.value ? getOptimizedList(items) : items
 </script>
 
 <template>
@@ -233,32 +284,32 @@ const toggleExpand = (id: string) => {
         v-if="isLoadingList"
         data-test-id="tbody-skeleton"
       >
-      <slot name="skeleton">
-        <tr
-          v-for="index in skeletonRows"
-          :key="`skeleton-row_${index}`"
-          data-test-id="skeleton-row"
-        >
-          <td
-            v-if="props.selectable"
-            class="c-table__cell"
-            :class="cellClasses"
-            data-c-field="selectable"
+        <slot name="skeleton">
+          <tr
+            v-for="index in skeletonRows"
+            :key="`skeleton-row_${index}`"
+            data-test-id="skeleton-row"
           >
-            <VSkeletonLoader type="text" />
-          </td>
-          <td
-            v-for="(field, cellIndex) in getActualField(fields)"
-            :key="`skeleton-cell_${index}_${cellIndex}`"
-            class="c-table__cell"
-            data-test-id="skeleton-coll"
-            :class="cellClasses"
-            :data-c-field="field.key"
-          >
-            <VSkeletonLoader type="text" />
-          </td>
-        </tr>
-      </slot>
+            <td
+              v-if="props.selectable"
+              class="c-table__cell"
+              :class="cellClasses"
+              data-c-field="selectable"
+            >
+              <VSkeletonLoader type="text" />
+            </td>
+            <td
+              v-for="(field, cellIndex) in getActualField(fields)"
+              :key="`skeleton-cell_${index}_${cellIndex}`"
+              class="c-table__cell"
+              data-test-id="skeleton-coll"
+              :class="cellClasses"
+              :data-c-field="field.key"
+            >
+              <VSkeletonLoader type="text" />
+            </td>
+          </tr>
+        </slot>
       </tbody>
       <Component
         :is="tableWrapperComponent"
@@ -270,7 +321,7 @@ const toggleExpand = (id: string) => {
         @change="onDragEnd"
       >
         <template
-          v-for="(item, index) in items"
+          v-for="(item, index) in getItems(items)"
           :key="`c-table-row_${index}`"
         >
           <!-- Main row -->
@@ -335,7 +386,6 @@ const toggleExpand = (id: string) => {
               v-if="showExpand && expanded.includes(item.raw.id)"
               :key="`${item.raw.id}-expand`"
             >
-
               <!-- [START] Add for similar col and cell in table  -->
               <td v-if="props.selectable" />
               <td
@@ -355,7 +405,7 @@ const toggleExpand = (id: string) => {
                 <slot
                   :name="`cellExpand(${field.key})`"
                   :field="field"
-                  :item="{ ...item, raw, value: raw}"
+                  :item="{ ...item, raw, value: raw }"
                   :cell="raw[field.key]"
                   :toggle-expand="toggleExpand"
                   :is-expanded="expanded.includes(item.raw.id)"

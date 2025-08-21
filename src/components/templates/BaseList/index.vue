@@ -778,6 +778,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :selected-items="selectedItems"
         :items-per-page="itemsPerPage"
         :disabled-row-ids="disableRowIds"
+        :scroll-pagination="config?.scrollPagination"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"

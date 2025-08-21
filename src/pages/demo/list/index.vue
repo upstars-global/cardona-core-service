@@ -14,6 +14,7 @@ import { ProjectFilterTypes } from '@filterConfig'
 const { t } = useI18n()
 
 const listConfig = new BaseListConfig({
+  withCustomFetchList: true,
   withSettings: true,
   withSearch: true,
   createFromCopy: true,
