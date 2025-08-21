@@ -21,6 +21,9 @@ import { useGamesStore } from '@/stores/games/producers'
 import { useGiftsStore } from '@/stores/gifts'
 import { useBettingsStore } from '@/stores/bettings'
 import { fetchProjectsList } from '@/stores/projects'
+import { usePlayersTransactionsStore } from '@/stores/player/transaction'
+import { useBalanceStore } from '@/stores/balance'
+import { useTagsStore } from '@/stores/tags'
 
 // import { useGiftsStore } from '@/stores/gifts'
 
@@ -207,28 +210,28 @@ const transactionsStatuses = new MultiSelectBaseField({
   key: FilterType.TransactionsStatuses,
   label: i18n.t('common.status'),
   placeholder: i18n.t('placeholder.filter.status'),
-  fetchOptionsAction: 'playersTransactions/fetchTransactionsStatuses',
+  fetchOptionsAction: usePlayersTransactionsStore().fetchTransactionsStatuses,
 })
 
 const balancesReasons = new MultiSelectBaseField({
   key: FilterType.BalancesReasons,
   label: i18n.t('common.reason'),
   placeholder: i18n.t('placeholder.filter.reason'),
-  fetchOptionsAction: 'balance/fetchBalancesReasonsList',
+  fetchOptionsAction: useBalanceStore().fetchBalancesReasonsList,
 })
 
 const tagNames = new MultiSelectBaseField({
   key: 'tagNames',
   label: i18n.t('common.tags'),
   placeholder: i18n.t('placeholder.filter.tags'),
-  fetchOptionsAction: 'tags/fetchTags',
+  fetchOptionsAction: useTagsStore().fetchTags,
 })
 
 const segments = new MultiSelectBaseField({
   key: FilterType.Segments,
   label: i18n.t('common.segments'),
   placeholder: i18n.t('common.segments'),
-  fetchOptionsAction: 'segments/fetchList',
+  fetchOptionsAction: useSegmentsStore().fetchList,
 })
 
 // ---------------------------------------------------------------------------
