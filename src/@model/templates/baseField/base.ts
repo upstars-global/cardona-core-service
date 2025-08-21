@@ -1,6 +1,5 @@
 import type { Component } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
-import store from '../../../store'
 import type { IValidationConfig } from '../../../@model/validations'
 import type { OptionsItem } from '../../../@model'
 import { i18n } from '../../../plugins/i18n'
@@ -74,7 +73,7 @@ export interface ITransformFieldOptions {
 
 export interface IASelectBaseField<T> extends IBaseField {
   readonly options?: Array<T>
-  readonly fetchOptionsActionName?: string
+  readonly fetchOptionsAction?: CallableFunction
   readonly staticFilters?: Record<string, string>
   readonly withCalculatePosition?: boolean
   readonly preloadOptionsByIds?: boolean
@@ -87,7 +86,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
   extends BaseField
   implements IASelectBaseField<T> {
   public options?: Array<T | OptionsItem>
-  readonly fetchOptionsActionName?: string
+  readonly fetchOptionsAction?: CallableFunction
   readonly preloadOptionsByIds?: boolean
   readonly staticFilters: Record<string, string>
   readonly calculatePositionCb?: CallableFunction
@@ -101,7 +100,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     super(field)
     this.localeKey = field?.localeKey || ''
     this.options = this.getOptionItems(field?.options)
-    this.fetchOptionsActionName = field.fetchOptionsActionName
+    this.fetchOptionsAction = field.fetchOptionsAction
     this.preloadOptionsByIds = field.preloadOptionsByIds
     this.staticFilters = field.staticFilters || {}
     this.calculatePositionCb = field.withCalculatePosition ? this.calculatePosition : undefined
@@ -138,7 +137,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     if (resetPage)
       this.pageNumber = 1
 
-    const { list = [] } = await store.dispatch(this.fetchOptionsActionName, {
+    const { list = [] } = await this.fetchOptionsAction({
       perPage: 50,
       pageNumber: this.pageNumber,
       filter: {
@@ -161,7 +160,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
   }
 
   async fetchOptions(search?: string) {
-    if (this.fetchOptionsActionName) {
+    if (this.fetchOptionsAction) {
       const isExistsValue = this.value?.length || this.value?.id
 
       if (this.preloadOptionsByIds && isExistsValue && search === undefined) {
