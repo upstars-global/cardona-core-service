@@ -66,8 +66,10 @@ const onClickLink = () => {
       :size="iconSize"
       @click.stop="onClickLink"
     />
+
     <VIcon
       v-if="copyElement"
+      class="text-color-mute ml-2"
       data-test-id="icon-copy"
       :icon="IconsList.CopyIcon"
       :size="iconSize"
