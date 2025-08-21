@@ -74,7 +74,6 @@ vi.mock('../../../../src/helpers/base-permissions', () => ({
   })),
 }))
 
-
 const mockStore = createStore({
   state: {
     errorUrls: [],
@@ -218,7 +217,7 @@ describe('BaseSection.vue', () => {
     await wrapper.vm.onClickRemove()
 
     /// Verify that the modal is shown with the correct ID
-    expect(modalSpy).toHaveBeenCalledWith('form-item-remove-modal')
+    expect(modalSpy).toHaveBeenCalledWith('form-item-remove-modal-mock-form')
   })
 
   it('Validates form and handles errors correctly', async () => {
