@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, onBeforeMount, ref, useSlots, watch, onMounted } from 'vue'
+import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
 import { useStore as useVuexStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
@@ -126,6 +126,10 @@ const fetchAction: CallableFunction = useStore
 const deleteAction = useStore
   ? customStore?.deleteEntity
   : baseStoreCore.deleteEntity
+
+const multipleDeleteAction = useStore
+  ? customStore?.multipleDeleteEntity
+  : baseStoreCore.multipleDeleteEntity
 
 // Permissions
 const { canCreate, canUpdate, canUpdateSeo, canRemove, canExport }
@@ -492,10 +496,14 @@ const onClickToggleStatusMultiple = async (isActive: boolean) => {
 
 const onClickDeleteMultiple = async () => {
   const ids: Array<string> = selectedItems.value.map(({ id }) => id)
+  const isOneMoreId = ids.length > 1
 
-  await baseStoreCore.multipleDeleteEntity({
+  const action: CallableFunction = isOneMoreId ? multipleDeleteAction : deleteAction
+  const params = isOneMoreId ? { ids } : { id: ids[0] }
+
+  await action({
     type: entityName,
-    ids,
+    ...params,
     customApiPrefix: props.config?.customApiPrefix,
   })
 
@@ -749,6 +757,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       </div>
       <MultipleActions
         v-else-if="config.withMultipleActions && selectedItems.isNotEmpty"
+        :action="typeof config.withMultipleActions !== 'boolean' ? config.withMultipleActions : null"
+        :entity-name="entityName"
         :number-selected-items="selectedItems.length"
         :can-remove="canRemove"
         @on-activate="onClickToggleStatusMultiple(true)"

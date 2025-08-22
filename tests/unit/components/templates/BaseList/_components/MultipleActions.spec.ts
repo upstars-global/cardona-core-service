@@ -1,9 +1,12 @@
-import { beforeEach, describe, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import MultipleActions from '../../../../../../src/components/templates/BaseList/_components/MultipleActions.vue'
 import { clickTrigger, getWrapperElement, setMountComponent } from '../../../../utils'
 import { testOn } from '../../../../templates/shared-tests/test-case-generator'
 import { i18n } from '../../../../../../src/plugins/i18n'
 import { VColors, VSizes, VVariants } from '../../../../../../src/@model/vuetify'
+import { mockModal } from '../../../../mocks/modal-provide-config'
+import { ModalsId } from '../../../../../../src/@model/modalsId'
+import { MultipleActions as MultipleActionsEnum } from '../../../../../../src/@model/enums/multipleActions'
 
 const getMountMultipleActions = setMountComponent(MultipleActions)
 
@@ -16,13 +19,17 @@ let props
 
 const getTestIdButtons = (canRemove: boolean) => ['activate', 'deactivate', canRemove && 'remove'].filter(Boolean)
 
+const global = {
+  provide: { modal: mockModal },
+}
+
 beforeEach(() => {
   props = defaultProps
 })
 
 describe('MultipleActions.vue', () => {
   it('Renders correctly base elements', () => {
-    const wrapper = getMountMultipleActions(props)
+    const wrapper = getMountMultipleActions(props, global)
 
     const testIdButtons = getTestIdButtons(props.canRemove)
 
@@ -35,7 +42,7 @@ describe('MultipleActions.vue', () => {
   })
 
   it('Call correct actions', async () => {
-    const wrapper = getMountMultipleActions(props)
+    const wrapper = getMountMultipleActions(props, global)
 
     const testIdButtons = getTestIdButtons(props.canRemove)
 
@@ -50,7 +57,7 @@ describe('MultipleActions.vue', () => {
   })
 
   it('Check quantity button by props canRemove', async () => {
-    const wrapper = getMountMultipleActions(props)
+    const wrapper = getMountMultipleActions(props, global)
 
     const params = { wrapper, selector: 'button', all: true }
 
@@ -65,7 +72,7 @@ describe('MultipleActions.vue', () => {
   })
 
   it('Check number selected', async () => {
-    const wrapper = getMountMultipleActions(props)
+    const wrapper = getMountMultipleActions(props, global)
 
     const testId = 'number-selected'
 
@@ -81,7 +88,7 @@ describe('MultipleActions.vue', () => {
   it('Check style params all buttons', async () => {
     props.canRemove = true
 
-    const wrapper = getMountMultipleActions(props)
+    const wrapper = getMountMultipleActions(props, global)
 
     /// Check all button
     getTestIdButtons(props.canRemove).forEach((id: string) => {
@@ -93,5 +100,31 @@ describe('MultipleActions.vue', () => {
 
       testOn.existClass({ wrapper, testId: id }, `v-btn--size-${VSizes.Small}`)
     })
+  })
+
+  it('Show confirm modal on click remove and exist only remove', async () => {
+    props.canRemove = true
+    props.action = MultipleActionsEnum.Remove
+
+    const wrapper = getMountMultipleActions(props, global)
+    const modalSpy = vi.spyOn(mockModal, 'showModal')
+
+    testOn.notExistElement({ wrapper, testId: 'activate' })
+    testOn.notExistElement({ wrapper, testId: 'deactivate' })
+
+    await clickTrigger({ wrapper, testId: 'remove' })
+
+    expect(modalSpy).toHaveBeenCalledWith(ModalsId.MultipleRemoveList)
+  })
+
+  it('Render all actions', async () => {
+    props.action = null
+    props.canRemove = true
+
+    const wrapper = getMountMultipleActions(props, global)
+
+    testOn.existElement({ wrapper, testId: 'activate' })
+    testOn.existElement({ wrapper, testId: 'deactivate' })
+    testOn.existElement({ wrapper, testId: 'remove' })
   })
 })

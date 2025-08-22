@@ -83,10 +83,12 @@ const updateEntity = vi.fn()
 const fetchReport = vi.fn()
 const toggleStatusEntity = vi.fn()
 const deleteEntity = vi.fn()
+const multipleDeleteEntity = vi.fn()
 
 const mockBaseStoreCore = {
   fetchEntityList,
   updateEntity,
+  multipleDeleteEntity,
   fetchReport,
   toggleStatusEntity,
   deleteEntity,
@@ -594,5 +596,42 @@ describe('BaseList', () => {
 
     // Assert that the modal was opened with the correct identifier
     expect(modalSpy).toHaveBeenCalledWith('list-item-remove-modal')
+  })
+
+  it('should call multipleDeleteEntity when multiple items are selected one more', async () => {
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+
+    wrapper.vm.selectedItems = [{ id: 'item1' }, { id: 'item2' }]
+
+    await wrapper.vm.onClickDeleteMultiple()
+
+    expect(mockBaseStoreCore.multipleDeleteEntity).toHaveBeenCalledWith({
+      type: 'Test',
+      ids: ['item1', 'item2'],
+      customApiPrefix: undefined,
+    })
+    mockBaseStoreCore.multipleDeleteEntity.mockReset()
+    wrapper.vm.selectedItems = []
+  })
+
+  it('should call deleteEntity when multiple items are selected one', async () => {
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+
+    wrapper.vm.selectedItems = [{ id: 'item1' }]
+
+    await wrapper.vm.onClickDeleteMultiple()
+
+    expect(mockBaseStoreCore.deleteEntity).toHaveBeenCalledWith({
+      type: 'Test',
+      id: 'item1',
+      customApiPrefix: undefined,
+    })
+
+    mockBaseStoreCore.deleteEntity.mockReset()
+    wrapper.vm.selectedItems = []
   })
 })
