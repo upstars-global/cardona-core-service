@@ -112,7 +112,7 @@ const onFetchFormData = async () => {
 
       await router.replace({
         name: route.name,
-        params: { id: '', type: '' },
+        params: { id: '' },
         query: forProject ? route.query : {},
       })
     }

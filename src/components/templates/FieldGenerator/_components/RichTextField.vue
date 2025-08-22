@@ -48,6 +48,7 @@ const onRemoveVariable = (localeVariables: string): void => {
       :disabled="disabled"
       :options-variable="allCurrencies"
       :localisation-parameters="variableTextBufferStore"
+      :config="field.config"
       @remove-variable="onRemoveVariable"
     />
   </div>
