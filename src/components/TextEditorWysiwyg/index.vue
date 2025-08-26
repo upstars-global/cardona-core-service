@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   localisationParameters: () => ({}),
   disabled: false,
   placeholder: '', // getI18n.t('common.description') as string
+  config: () => ({}),
 })
 
 const emit = defineEmits<Emits>()
@@ -29,6 +30,7 @@ interface Props {
   localisationParameters: LocaleVariable
   readonly placeholder?: TranslateResult
   disabled?: boolean
+  config?: Record<string, unknown>
 }
 
 interface Emits {
@@ -268,6 +270,7 @@ const config = {
     },
   },
   ...baseConfig,
+  ...props.config,
 }
 
 const newVariableText = ref({})
