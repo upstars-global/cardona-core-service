@@ -254,7 +254,7 @@ const onClickCancel = () => {
   redirectToListOrPrevPage()
 }
 
-const removeModalId = 'form-item-remove-modal'
+const removeModalId = `form-item-remove-modal-${entityName}`
 
 // Remove
 const onClickRemove = async () => {
