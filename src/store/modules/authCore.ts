@@ -70,7 +70,7 @@ export default {
               refreshToken,
             },
           },
-          { newAxiosInstance: true, withSuccessToast: false },
+          { newAxiosInstance: true, withErrorToast: false },
         )
 
         return data
