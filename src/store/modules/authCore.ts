@@ -62,17 +62,22 @@ export default {
     },
 
     async refreshAuth(context, refreshToken: string): Promise<IAuthTokens> {
-      const { data }: { data: IAuthTokens } = await ApiService.request(
-        {
-          type: 'App.V2.Auth.Refresh',
-          data: {
-            refreshToken,
+      try {
+        const { data }: { data: IAuthTokens } = await ApiService.request(
+          {
+            type: 'App.V2.Auth.Refresh',
+            data: {
+              refreshToken,
+            },
           },
-        },
-        { newAxiosInstance: true },
-      )
+          { newAxiosInstance: true, withSuccessToast: false },
+        )
 
-      return data
+        return data
+      }
+      catch {
+        return ''
+      }
     },
 
     clearAuth({ commit, dispatch }) {
