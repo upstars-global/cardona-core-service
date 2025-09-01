@@ -492,3 +492,9 @@ export enum BaseListSlots {
   AppendActionItem = 'append-action-item',
   DetailsActionItem = 'details-action-item',
 }
+
+export interface ProjectsFilterOption {
+  id: string
+  alias: string
+  title: string
+}
