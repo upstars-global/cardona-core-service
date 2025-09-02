@@ -724,9 +724,11 @@ describe('BaseList', () => {
     const pf = wrapper.findComponent(ProjectsFilter)
 
     await pf.vm.$emit('update:modelValue', ['alpha'])
+
     await flushPromises()
 
     await pf.vm.$emit('update:modelValue', ['alpha'])
+
     await flushPromises()
 
     const args = mockBaseStoreCore.fetchEntityList.mock.calls.at(-1)?.[0]
