@@ -82,6 +82,18 @@ export const mockStore = createStore({
           return permission && permission.access >= access
         },
   },
+
+  modules: {
+    appConfigCore: {
+      namespaced: true,
+      getters: {
+        verifiedProjects: () => ([
+          { id: 'p1', alias: 'alpha', name: 'Project A' },
+          { id: 'p2', alias: 'beta', name: 'Project B' },
+        ]),
+      },
+    },
+  },
 })
 
 export const fields = [
