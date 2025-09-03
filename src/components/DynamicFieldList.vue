@@ -90,7 +90,7 @@ const fetchStartSelect = async rows => {
   const [row]: Array<BaseField> = rows
 
   if (row) {
-    const selectFieldItem = Object.values(row).find(field => field?.fetchOptionsAction())
+    const selectFieldItem = Object.values(row).find(field => field?.fetchOptionsAction && field?.fetchOptionsAction())
 
     if (selectFieldItem) {
       selectField.value = selectFieldItem
