@@ -442,7 +442,7 @@ const userProjects = computed<ProjectsFilterOption[]>(() => store.getters['appCo
   title: name,
 })))
 
-const projectsFilter = ref<string[]>(store.getters.selectedProject.alias)
+const projectsFilter = ref<string[]>([store.getters.selectedProject.alias])
 
 // Filters
 const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
