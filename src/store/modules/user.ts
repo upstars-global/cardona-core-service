@@ -139,9 +139,12 @@ export default {
 
   actions: {
     async fetchCurrentUser({ commit }) {
-      const currentUser: UserInfo = await fetchCurrentUser()
+      try {
+        const currentUser: UserInfo = await fetchCurrentUser()
 
-      commit('SET_USER_INFO', currentUser)
+        commit('SET_USER_INFO', currentUser)
+      }
+      catch {}
     },
 
     setSelectedProduct({ commit }, product: OptionsItem) {
