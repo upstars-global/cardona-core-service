@@ -397,40 +397,20 @@ const wagerLimitRange = new NumberRangeBaseField({
 export default {
   admin,
   group,
-
-  // project,
-  // bonusStatus,
-  // giftsStatus,
-  // bonusType,
-  // giftsType,
   status,
   hidden,
-
-  /*  bannerStrategy,
-  action, */
   paymentSystem,
   entryId,
   giftId,
   giftName,
-
-  // entityType,
   sumRange,
   initialSumRange,
   winBackSumRange,
   realSumRange,
   wagerLimitRange,
-
-  // balancesReasons,
   demoType,
-
-  // Games
-  // gamesType,
-  // gamesProducers,
-  // gamesRunners,
   gameForBonuses,
   availableWithBonuses,
-
-  // Date
   date,
   dateRangeCreative,
   dateRangeApproved,
@@ -438,23 +418,34 @@ export default {
   dateRangeIssued,
   dateRangeExpired,
   dateRangeProcessing,
-
-  // Transactions
-  // transactionsStatuses,
   dateRangeActivated,
   dateRangeUsed,
+  bettingHistoryIsBonus,
+  bettingDateCreative,
+  gameId,
 
+  // project,
+  // bonusStatus,
+  // giftsStatus,
+  // bonusType,
+  // giftsType,
+  // bannerStrategy,
+  // action,
+  // entityType,
+  // balancesReasons,
+  // Games
+  // gamesType,
+  // gamesProducers,
+  // gamesRunners,
+  // Date
+  // Transactions
+  // transactionsStatuses,
   // tagNames,
-
   // Betting history
   // bettingHistoryStatus,
   // bettingHistoryEventType,
   // bettingHistoryBonusType,
   // bettingHistoryType,
-  bettingHistoryIsBonus,
-  bettingDateCreative,
-  gameId,
-
   // Segments
   // segments,
 }
