@@ -164,6 +164,8 @@ describe('BaseList', () => {
     exportDataMock()
     props = cloneDeep(defaultProps)
     mockDispatch = vi.spyOn(mockStore, 'dispatch')
+
+    mockStore.state.selectedProject = { id: 'p1', alias: 'alpha', name: 'Project A' }
   })
 
   it('Should render the default state with cell slots', async () => {
@@ -680,7 +682,7 @@ describe('BaseList', () => {
 
     const args = mockBaseStoreCore.fetchEntityList.mock.calls.at(-1)?.[0]
 
-    expect(args?.data?.filter?.projects).toEqual(['alpha', 'beta'])
+    expect(args?.data?.filter?.projects).toEqual(['alpha'])
   })
 
   it('Should refetch list when project is toggled (add/remove)', async () => {
@@ -752,7 +754,7 @@ describe('BaseList', () => {
     const chipB = chips.find(c => c.text().includes('Project B'))!
 
     expect(chipA.props('color')).toBe('primary')
-    expect(chipB.props('color')).toBe('primary')
+    expect(chipB.props('color')).toBe('secondary')
 
     const icons = wrapper.findAllComponents({ name: 'VIcon' })
 
