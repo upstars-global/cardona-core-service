@@ -1,3 +1,5 @@
+// Remove after resolve task https://upstars.atlassian.net/browse/BAC-6078
+
 export enum StatusVariants {
 
   // Secondary

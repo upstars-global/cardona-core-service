@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<{
   variant: VVariants.Tonal,
 })
 
+// Remove after resolve task https://upstars.atlassian.net/browse/BAC-6078
 // enum StatusVariants {
 //
 //   // Secondary
@@ -80,6 +81,7 @@ const value = computed(() => {
 })
 
 const color = computed(() => {
+  // Remove after resolve task https://upstars.atlassian.net/browse/BAC-6078
   // if (typeof props.value === 'string')
   //   return StatusVariants[props.value] || VColors.Secondary
 
