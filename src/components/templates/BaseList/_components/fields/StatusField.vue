@@ -21,57 +21,57 @@ const props = withDefaults(defineProps<{
   variant: VVariants.Tonal,
 })
 
-enum StatusVariants {
-
-  // Secondary
-  initial = 'secondary',
-  New = 'secondary',
-  new = 'secondary',
-  waiting = 'secondary',
-  received = 'secondary',
-  updating = 'secondary',
-  reporting = 'secondary',
-  draft = 'secondary',
-
-  // Success
-  active = 'success',
-  activated = 'success',
-  finished = 'success',
-  approved = 'success',
-  read = 'success',
-  Confirmed = 'success',
-  wager = 'success',
-  'wager_done' = 'success',
-  creation = 'success',
-
-  // Warning
-  inactive = 'warning',
-  'in progress' = 'warning',
-  pending = 'warning',
-  're-check' = 'warning',
-  Processing = 'warning',
-  Waiting = 'warning',
-  'wait_activation' = 'warning',
-  processing = 'warning',
-  used = 'warning',
-
-  // Danger
-  delete = 'error',
-  expired = 'error',
-  rejected = 'error',
-  Canceled = 'error',
-  Error = 'error',
-  'Canceled by user' = 'error',
-  'Marbella cancel processing' = 'error',
-  removed = 'error',
-  canceled = 'error',
-  lost = 'error',
-  cancelled = 'error',
-  'erased_by_withdraw' = 'error',
-  deleting = 'error',
-
-  // TODO: Add status variant here
-}
+// enum StatusVariants {
+//
+//   // Secondary
+//   initial = 'secondary',
+//   New = 'secondary',
+//   new = 'secondary',
+//   waiting = 'secondary',
+//   received = 'secondary',
+//   updating = 'secondary',
+//   reporting = 'secondary',
+//   draft = 'secondary',
+//
+//   // Success
+//   active = 'success',
+//   activated = 'success',
+//   finished = 'success',
+//   approved = 'success',
+//   read = 'success',
+//   Confirmed = 'success',
+//   wager = 'success',
+//   'wager_done' = 'success',
+//   creation = 'success',
+//
+//   // Warning
+//   inactive = 'warning',
+//   'in progress' = 'warning',
+//   pending = 'warning',
+//   're-check' = 'warning',
+//   Processing = 'warning',
+//   Waiting = 'warning',
+//   'wait_activation' = 'warning',
+//   processing = 'warning',
+//   used = 'warning',
+//
+//   // Danger
+//   delete = 'error',
+//   expired = 'error',
+//   rejected = 'error',
+//   Canceled = 'error',
+//   Error = 'error',
+//   'Canceled by user' = 'error',
+//   'Marbella cancel processing' = 'error',
+//   removed = 'error',
+//   canceled = 'error',
+//   lost = 'error',
+//   cancelled = 'error',
+//   'erased_by_withdraw' = 'error',
+//   deleting = 'error',
+//
+//   // TODO: Add status variant here
+// }
 
 const value = computed(() => {
   const status = typeof props.value === 'string' ? props.value : props.value?.status
@@ -80,10 +80,10 @@ const value = computed(() => {
 })
 
 const color = computed(() => {
-  if (typeof props.value === 'string')
-    return StatusVariants[props.value] || VColors.Secondary
+  // if (typeof props.value === 'string')
+  //   return StatusVariants[props.value] || VColors.Secondary
 
-  return props.value?.variant
+  return props.value?.variant || VColors.Secondary
 })
 
 const actualVariant = computed(() => {
