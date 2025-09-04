@@ -1,6 +1,5 @@
 import { i18n } from '../../plugins/i18n'
 import type { GroupData } from '../../@model/group'
-import type { ProjectInfo } from '../../@model/project'
 import { FilterType } from '../../@model/filter'
 import {
   DateBaseField,
@@ -12,6 +11,20 @@ import {
 import { TransactionType } from '../../@model/enums/playersTransactions'
 import type { RadioOption } from '../../@model/templates/baseField/radio'
 import { getEndOfDay } from '../../helpers/date'
+import { useUsersStore } from '../../stores/users'
+
+// import { useLoggingStore } from '@/stores/logging'
+// import { useSegmentsStore } from '@/stores/segments'
+// import { useBonusesStore } from '@/stores/bonuses'
+// import { useGamesProducersStore } from '@/stores/games/index'
+// import { useGamesStore } from '@/stores/games/producers'
+// import { useGiftsStore } from '@/stores/gifts'
+// import { useBettingsStore } from '@/stores/bettings'
+// import { fetchProjectsList } from '@/stores/projects'
+// import { usePlayersTransactionsStore } from '@/stores/player/transaction'
+// import { useBalanceStore } from '@/stores/balance'
+// import { useTagsStore } from '@/stores/tags'
+// import { useGiftsStore } from '@/stores/gifts'
 
 // Options
 export const stateOptions: RadioOption[] = [
@@ -70,103 +83,104 @@ const admin = new SelectBaseField({
   key: FilterType.Admin,
   label: i18n.t('common.admin._'),
   placeholder: i18n.t('placeholder.filter.admin'),
-  fetchOptionsActionName: 'users/fetchUsersList',
+  fetchOptionsAction: useUsersStore().fetchUsersList,
 })
 
-const action = new SelectBaseField({
-  key: FilterType.Action,
-  label: i18n.t('page.logging.action'),
-  placeholder: i18n.t('placeholder.filter.action'),
-  fetchOptionsActionName: 'logging/fetchLogActions',
-})
+// const action = new SelectBaseField({
+//   key: FilterType.Action,
+//   label: i18n.t('page.logging.action'),
+//   placeholder: i18n.t('placeholder.filter.action'),
+//   fetchOptionsAction: useLoggingStore().fetchLogActions,
+// })
 
-const bannerStrategy = new SelectBaseField({
-  key: FilterType.BannerStrategy,
-  label: i18n.t('common.showTo'),
-  placeholder: i18n.t('placeholder.filter.bannerStrategy'),
-  fetchOptionsActionName: 'segments/fetchSegmentsStrategyList',
-})
+// const bannerStrategy = new SelectBaseField({
+//   key: FilterType.BannerStrategy,
+//   label: i18n.t('common.showTo'),
+//   placeholder: i18n.t('placeholder.filter.bannerStrategy'),
+//   fetchOptionsAction: useSegmentsStore().fetchSegmentsStrategyList,
+// })
 
-const entityType = new SelectBaseField({
-  key: FilterType.EntityType,
-  label: i18n.t('common.entity'),
-  placeholder: i18n.t('placeholder.filter.entityType'),
-  fetchOptionsActionName: 'logging/fetchLogEntityList',
-})
+// const entityType = new SelectBaseField({
+//   key: FilterType.EntityType,
+//   label: i18n.t('common.entity'),
+//   placeholder: i18n.t('placeholder.filter.entityType'),
+//   fetchOptionsAction: useLoggingStore().fetchLogEntityList,
+// })
 
 // Bonuses
-const bonusStatus = new SelectBaseField({
-  key: FilterType.BonusStatus,
-  label: i18n.t('common.bonuses.status'),
-  placeholder: i18n.t('common.bonuses.status'),
-  fetchOptionsActionName: 'bonuses/fetchBonusesStatusList',
-})
-
-const bonusType = new SelectBaseField({
-  key: FilterType.BonusType,
-  label: i18n.t('common.bonuses.type'),
-  placeholder: i18n.t('common.bonuses.type'),
-  fetchOptionsActionName: 'bonuses/fetchBonusesTypeList',
-})
+// const bonusStatus = new SelectBaseField({
+//   key: FilterType.BonusStatus,
+//   label: i18n.t('common.bonuses.status'),
+//   placeholder: i18n.t('common.bonuses.status'),
+//   fetchOptionsAction: useBonusesStore().fetchBonusesStatusList,
+// })
+//
+// const bonusType = new SelectBaseField({
+//   key: FilterType.BonusType,
+//   label: i18n.t('common.bonuses.type'),
+//   placeholder: i18n.t('common.bonuses.type'),
+//   fetchOptionsAction: useBonusesStore().fetchBonusesTypeList,
+// })
 
 // Games
-const gamesType = new MultiSelectBaseField({
-  key: FilterType.GamesType,
-  label: i18n.t('filters.gameType'),
-  placeholder: i18n.t('placeholder.filter.gamesType'),
-  fetchOptionsActionName: 'games/fetchGamesTypes',
-})
+// const gamesType = new MultiSelectBaseField({
+//   key: FilterType.GamesType,
+//   label: i18n.t('filters.gameType'),
+//   placeholder: i18n.t('placeholder.filter.gamesType'),
+//   fetchOptionsAction: useGamesStore().fetchGamesTypes,
+// })
+//
+// const gamesRunners = new SelectBaseField({
+//   key: FilterType.GamesRunners,
+//   label: i18n.t('filters.runner'),
+//   placeholder: i18n.t('placeholder.filter.gamesRunners'),
+//   fetchOptionsAction: useGamesStore().fetchGamesRunners,
+// })
+//
+// // Gifts
+// const giftsStatus = new SelectBaseField({
+//   key: FilterType.GiftsStatus,
+//   label: i18n.t('common.gifts.status'),
+//   placeholder: i18n.t('common.gifts.status'),
+//   fetchOptionsAction: useGiftsStore().fetchGiftsStatusList,
+// })
 
-const gamesRunners = new SelectBaseField({
-  key: FilterType.GamesRunners,
-  label: i18n.t('filters.runner'),
-  placeholder: i18n.t('placeholder.filter.gamesRunners'),
-  fetchOptionsActionName: 'games/fetchGamesRunners',
-})
-
-// Gifts
-const giftsStatus = new SelectBaseField({
-  key: FilterType.GiftsStatus,
-  label: i18n.t('common.gifts.status'),
-  placeholder: i18n.t('common.gifts.status'),
-  fetchOptionsActionName: 'gifts/fetchGiftsStatusList',
-})
-
-const giftsType = new SelectBaseField({
-  key: FilterType.GiftsType,
-  label: i18n.t('common.gifts.type'),
-  placeholder: i18n.t('common.gifts.type'),
-  fetchOptionsActionName: 'gifts/fetchGiftsTypeList',
-})
+// const giftsType = new SelectBaseField({
+//   key: FilterType.GiftsType,
+//   label: i18n.t('common.gifts.type'),
+//   placeholder: i18n.t('common.gifts.type'),
+//   fetchOptionsAction: useGiftsStore().fetchGiftsTypeList,
+// })
+//
 
 // Betting history
-const bettingHistoryStatus = new SelectBaseField({
-  key: FilterType.BettingHistoryStatus,
-  label: i18n.t('common.betting.status'),
-  placeholder: i18n.t('common.betting.status'),
-  fetchOptionsActionName: 'betting/fetchBettingHistoryStatusList',
-})
+// const bettingHistoryStatus = new SelectBaseField({
+//   key: FilterType.BettingHistoryStatus,
+//   label: i18n.t('common.betting.status'),
+//   placeholder: i18n.t('common.betting.status'),
+//   fetchOptionsAction: useBettingsStore().fetchBettingHistoryStatusList,
+// })
 
-const bettingHistoryType = new SelectBaseField({
-  key: FilterType.BettingHistoryType,
-  label: i18n.t('common.betting.type'),
-  placeholder: i18n.t('common.betting.type'),
-  fetchOptionsActionName: 'betting/fetchBettingHistoryTypeList',
-})
+// const bettingHistoryType = new SelectBaseField({
+//   key: FilterType.BettingHistoryType,
+//   label: i18n.t('common.betting.type'),
+//   placeholder: i18n.t('common.betting.type'),
+//   etchOptionsAction: useBettingsStore().fetchBettingHistoryTypeList,
+// })
 
-const bettingHistoryBonusType = new SelectBaseField({
-  key: FilterType.BettingHistoryBonusType,
-  label: i18n.t('common.betting.bonusType'),
-  placeholder: i18n.t('common.betting.bonusType'),
-  fetchOptionsActionName: 'betting/fetchBettingHistoryBonusTypeList',
-})
+// const bettingHistoryBonusType = new SelectBaseField({
+//   key: FilterType.BettingHistoryBonusType,
+//   label: i18n.t('common.betting.bonusType'),
+//   placeholder: i18n.t('common.betting.bonusType'),
+//   fetchOptionsAction: useBettingsStore().fetchBettingHistoryTypeList,
+// })
 
-const bettingHistoryEventType = new SelectBaseField({
-  key: FilterType.BettingHistoryEventType,
-  label: i18n.t('common.betting.eventType'),
-  placeholder: i18n.t('common.betting.eventType'),
-  fetchOptionsActionName: 'betting/fetchBettingHistoryEventTypeList',
-})
+// const bettingHistoryEventType = new SelectBaseField({
+//   key: FilterType.BettingHistoryEventType,
+//   label: i18n.t('common.betting.eventType'),
+//   placeholder: i18n.t('common.betting.eventType'),
+//   fetchOptionsAction: useBettingsStore().fetchBettingHistoryEventTypeList,
+// })
 
 // ---------------------------------------------------------------------------
 // TODO: MultiSelect
@@ -174,50 +188,51 @@ const group = new MultiSelectBaseField<GroupData>({
   key: FilterType.Group,
   label: i18n.t('common.groups.list'),
   placeholder: i18n.t('placeholder.filter.group'),
-  fetchOptionsActionName: 'groups/fetchGroupsList',
+  fetchOptionsAction: 'groups/fetchGroupsList',
 })
 
-const project = new MultiSelectBaseField<ProjectInfo>({
-  key: FilterType.Project,
-  label: i18n.t('common.project.list'),
-  placeholder: i18n.t('placeholder.filter.project'),
-  fetchOptionsActionName: 'projects/fetchProjectsList',
-})
+// const project = new MultiSelectBaseField<ProjectInfo>({
+//   key: FilterType.Project,
+//   label: i18n.t('common.project.list'),
+//   placeholder: i18n.t('placeholder.filter.project'),
+//   fetchOptionsAction: fetchProjectsList().fetchProjectsList,
+// })
 
-const gamesProducers = new MultiSelectBaseField({
-  key: FilterType.GamesProducers,
-  label: i18n.t('filters.gamesProducers'),
-  placeholder: i18n.t('placeholder.filter.gamesProducers'),
-  fetchOptionsActionName: 'gamesProducers/fetchGamesProducersList',
-})
+// const gamesProducers = new MultiSelectBaseField({
+//   key: FilterType.GamesProducers,
+//   label: i18n.t('filters.gamesProducers'),
+//   placeholder: i18n.t('placeholder.filter.gamesProducers'),
+//   fetchOptionsAction: 'gamesProducers/fetchGamesProducersList',
+//   fetchOptionsAction: useGamesProducersStore().fetchGamesProducersList,
+// })
 
-const transactionsStatuses = new MultiSelectBaseField({
-  key: FilterType.TransactionsStatuses,
-  label: i18n.t('common.status'),
-  placeholder: i18n.t('placeholder.filter.status'),
-  fetchOptionsActionName: 'playersTransactions/fetchTransactionsStatuses',
-})
+// const transactionsStatuses = new MultiSelectBaseField({
+//   key: FilterType.TransactionsStatuses,
+//   label: i18n.t('common.status'),
+//   placeholder: i18n.t('placeholder.filter.status'),
+//   fetchOptionsAction: usePlayersTransactionsStore().fetchTransactionsStatuses,
+// })
 
-const balancesReasons = new MultiSelectBaseField({
-  key: FilterType.BalancesReasons,
-  label: i18n.t('common.reason'),
-  placeholder: i18n.t('placeholder.filter.reason'),
-  fetchOptionsActionName: 'balance/fetchBalancesReasonsList',
-})
+// const balancesReasons = new MultiSelectBaseField({
+//   key: FilterType.BalancesReasons,
+//   label: i18n.t('common.reason'),
+//   placeholder: i18n.t('placeholder.filter.reason'),
+//   fetchOptionsAction: useBalanceStore().fetchBalancesReasonsList,
+// })
 
-const tagNames = new MultiSelectBaseField({
-  key: 'tagNames',
-  label: i18n.t('common.tags'),
-  placeholder: i18n.t('placeholder.filter.tags'),
-  fetchOptionsActionName: 'tags/fetchTags',
-})
+// const tagNames = new MultiSelectBaseField({
+//   key: 'tagNames',
+//   label: i18n.t('common.tags'),
+//   placeholder: i18n.t('placeholder.filter.tags'),
+//   fetchOptionsAction: useTagsStore().fetchTags,
+// })
 
-const segments = new MultiSelectBaseField({
-  key: FilterType.Segments,
-  label: i18n.t('common.segments'),
-  placeholder: i18n.t('common.segments'),
-  fetchOptionsActionName: 'segments/fetchList',
-})
+// const segments = new MultiSelectBaseField({
+//   key: FilterType.Segments,
+//   label: i18n.t('common.segments'),
+//   placeholder: i18n.t('common.segments'),
+//   fetchOptionsAction: useSegmentsStore().fetchList,
+// })
 
 // ---------------------------------------------------------------------------
 // TODO: Date
@@ -382,36 +397,20 @@ const wagerLimitRange = new NumberRangeBaseField({
 export default {
   admin,
   group,
-  project,
-  bonusStatus,
-  giftsStatus,
-  bonusType,
-  giftsType,
   status,
   hidden,
-  bannerStrategy,
-  action,
   paymentSystem,
   entryId,
   giftId,
   giftName,
-  entityType,
   sumRange,
   initialSumRange,
   winBackSumRange,
   realSumRange,
   wagerLimitRange,
-  balancesReasons,
   demoType,
-
-  // Games
-  gamesType,
-  gamesProducers,
-  gamesRunners,
   gameForBonuses,
   availableWithBonuses,
-
-  // Date
   date,
   dateRangeCreative,
   dateRangeApproved,
@@ -419,22 +418,34 @@ export default {
   dateRangeIssued,
   dateRangeExpired,
   dateRangeProcessing,
-
-  // Transactions
-  transactionsStatuses,
   dateRangeActivated,
   dateRangeUsed,
-  tagNames,
-
-  // Betting history
-  bettingHistoryStatus,
-  bettingHistoryEventType,
-  bettingHistoryBonusType,
-  bettingHistoryType,
   bettingHistoryIsBonus,
   bettingDateCreative,
   gameId,
 
+  // project,
+  // bonusStatus,
+  // giftsStatus,
+  // bonusType,
+  // giftsType,
+  // bannerStrategy,
+  // action,
+  // entityType,
+  // balancesReasons,
+  // Games
+  // gamesType,
+  // gamesProducers,
+  // gamesRunners,
+  // Date
+  // Transactions
+  // transactionsStatuses,
+  // tagNames,
+  // Betting history
+  // bettingHistoryStatus,
+  // bettingHistoryEventType,
+  // bettingHistoryBonusType,
+  // bettingHistoryType,
   // Segments
-  segments,
+  // segments,
 }
