@@ -78,6 +78,9 @@ export interface IBaseListConfig {
   /** staticFilters - Статический фильтр например playerId. Всегда отправляется в АПИ */
   readonly staticFilters?: StaticFilters
 
+  /** withProjectsFilter - Вкл/выкл фильтр по проектам  */
+  readonly withProjectsFilter?: boolean
+
   /** staticSorts - Статический сортировка таблицы field: 'position', dir: SortDirection.asc, */
   readonly staticSorts?: SortItem
 
@@ -212,6 +215,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly emptyText?: string
   readonly filterList: Array<FilterListItem>
   readonly staticFilters: StaticFilters
+  readonly withProjectsFilter?: boolean
   readonly staticSorts?: SortItem
   readonly selectMode?: SelectMode
   readonly selectable?: boolean
@@ -262,6 +266,7 @@ export class BaseListConfig implements IBaseListConfig {
     emptyText,
     filterList,
     staticFilters,
+    withProjectsFilter,
     staticSorts,
     selectMode,
     selectable,
@@ -311,6 +316,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.emptyText = emptyText || i18n.t('emptyState.list')
     this.filterList = filterList || []
     this.staticFilters = staticFilters || {}
+    this.withProjectsFilter = withProjectsFilter
     this.staticSorts = staticSorts
     this.selectMode = selectMode || SelectMode.Page
     this.selectable = selectable
@@ -491,4 +497,10 @@ export enum BaseListSlots {
   PrependActionItem = 'prepend-action-item',
   AppendActionItem = 'append-action-item',
   DetailsActionItem = 'details-action-item',
+}
+
+export interface ProjectsFilterOption {
+  id: string
+  alias: string
+  title: string
 }

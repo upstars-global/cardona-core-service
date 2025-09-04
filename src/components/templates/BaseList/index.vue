@@ -6,8 +6,8 @@ import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
 import { BaseListSlots } from '../../../@model/templates/baseList'
+import type { ExportFormat, IBaseListConfig, ProjectsFilterOption } from '../../../@model/templates/baseList'
 import CTable from '../../CTable/index.vue'
-import type { ExportFormat, IBaseListConfig } from '../../../@model/templates/baseList'
 import type { PayloadFilters } from '../../../@model/filter'
 import RemoveModal from '../../../components/BaseModal/RemoveModal.vue'
 import { getStorage, removeStorageItem, setStorage } from '../../../helpers/storage'
@@ -56,6 +56,7 @@ import ItemActions from './_components/fields/ItemActions.vue'
 import ListPagination from './_components/ListPagination.vue'
 import TableFields from './_components/TableFields.vue'
 import DateField from './_components/fields/DateField.vue'
+import ProjectsFilter from './_components/ProjectsFilter.vue'
 import { mapSortData } from './сomposables/sorting'
 import { downloadReport } from './сomposables/export'
 import { transformFilters } from './сomposables/filters'
@@ -392,6 +393,7 @@ const setRequestFilters = (): PayloadFilters => {
     ...props.config?.staticFilters,
     search: searchQuery.value,
     ...appliedFiltersData,
+    projects: props.config.withProjectsFilter ? projectsFilter.value : undefined,
   })
 
   for (const key in filtersData) {
@@ -432,6 +434,15 @@ const onExportFormatSelected = async (format: ExportFormat) => {
 
   downloadReport(report, entityName, format)
 }
+
+// Projects filters
+const userProjects = computed<ProjectsFilterOption[]>(() => store.getters['appConfigCore/verifiedProjects'].map(({ id, alias, name }) => ({
+  id,
+  alias,
+  title: name,
+})))
+
+const projectsFilter = ref<string[]>([store.getters.selectedProject.alias])
 
 // Filters
 const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
@@ -669,6 +680,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       </template>
     </ListSearch>
 
+    <ProjectsFilter
+      v-if="config.withProjectsFilter"
+      v-model="projectsFilter"
+      :projects="userProjects"
+      class="mb-6"
+      @update:model-value="reFetchList"
+    />
+
     <FiltersBlock
       v-if="config.filterList?.isNotEmpty"
       :is-open="isOpenFilterBlock"
@@ -693,6 +712,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     </FiltersBlock>
 
     <slot :name="BaseListSlots.CustomFilter" />
+
     <div
       v-if="config.withTopPagination && items.isNotEmpty && config.pagination"
       class="mb-6"
