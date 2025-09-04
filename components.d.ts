@@ -442,6 +442,7 @@ declare module 'vue' {
     PhoneField: typeof import('./src/components/templates/_components/PhoneField.vue')['default']
     PillStatusField: typeof import('./src/components/templates/BaseList/_components/fields/PillStatusField.vue')['default']
     PositionField: typeof import('./src/components/templates/BaseList/_components/fields/PositionField.vue')['default']
+    ProjectsFilter: typeof import('./src/components/templates/BaseList/_components/ProjectsFilter.vue')['default']
     RadioField: typeof import('./src/components/templates/FieldGenerator/_components/RadioField.vue')['default']
     RatesField: typeof import('./src/components/templates/FieldGenerator/_components/RatesField.vue')['default']
     RegionView: typeof import('./src/components/templates/ViewGenerator/_components/RegionView.vue')['default']
