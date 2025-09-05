@@ -389,7 +389,7 @@ const setRequestFilters = (): PayloadFilters => {
 
   const appliedFiltersData = transformFilters(appliedFilters.value, props.config)
 
-  const projectFilterFiledParams = props.config.withProjectsFilter ? { project: projectsFilter.value } : {}
+  const projectFilterFiledParams = props.config.withProjectsFilter ? { projects: projectsFilter.value } : {}
 
   const filtersData = new ListFilterModel({
     ...props.config?.staticFilters,
