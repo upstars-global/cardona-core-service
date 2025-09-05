@@ -3,6 +3,7 @@ import { cloneDeep } from 'lodash'
 import { flushPromises } from '@vue/test-utils'
 import { h } from 'vue'
 import BaseList from '../../../../../src/components/templates/BaseList/index.vue'
+import ProjectsFilter from '../../../../../src/components/templates/BaseList/_components/ProjectsFilter.vue'
 import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../utils'
 import { BaseListSlots, ExportFormat } from '../../../../../src/@model/templates/baseList'
 import { mockModal } from '../../../mocks/modal-provide-config'
@@ -95,7 +96,7 @@ const mockBaseStoreCore = {
 }
 
 // Function to test toggling the status of an entity
-const runActionToggleState = async (props) => {
+const runActionToggleState = async props => {
   props.useList = useListForToggleStatus
 
   // Mock the dispatch response with a sample list item
@@ -163,6 +164,8 @@ describe('BaseList', () => {
     exportDataMock()
     props = cloneDeep(defaultProps)
     mockDispatch = vi.spyOn(mockStore, 'dispatch')
+
+    mockStore.state.selectedProject = { id: 'p1', alias: 'alpha', name: 'Project A' }
   })
 
   it('Should render the default state with cell slots', async () => {
@@ -633,5 +636,157 @@ describe('BaseList', () => {
 
     mockBaseStoreCore.deleteEntity.mockReset()
     wrapper.vm.selectedItems = []
+  })
+
+  it('Should render ProjectsFilter when withProjectsFilter is true', async () => {
+    props.config.withProjectsFilter = true
+
+    mockDispatch.mockResolvedValueOnce({ list: [], total: 0 })
+
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+
+    expect(wrapper.findComponent(ProjectsFilter).exists()).toBe(true)
+
+    expect(wrapper.text()).toContain('Project A')
+    expect(wrapper.text()).toContain('Project B')
+  })
+
+  it('Should not render ProjectsFilter when withProjectsFilter is false', async () => {
+    props.config.withProjectsFilter = false
+    mockDispatch.mockResolvedValueOnce({ list: [], total: 0 })
+
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+
+    expect(wrapper.findComponent(ProjectsFilter).exists()).toBe(false)
+  })
+
+  it('Should pass projects aliases from store on first fetch when withProjectsFilter is true', async () => {
+    props.config.withProjectsFilter = true
+
+    props.useList = () => ({
+      ListFilterModel: class PassthroughFilter {
+        constructor(data?: any) { Object.assign(this, data) }
+      },
+      entityName: 'Test',
+      fields,
+    })
+
+    mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({ list: [], total: 0 })
+
+    getMountBaseList(props, global)
+    await flushPromises()
+
+    const args = mockBaseStoreCore.fetchEntityList.mock.calls.at(-1)?.[0]
+
+    expect(args?.data?.filter?.projects).toEqual(['alpha'])
+  })
+
+  it('Should refetch list when project is toggled (add/remove)', async () => {
+    props.config.withProjectsFilter = true
+    mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({ list: [], total: 0 })
+
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+
+    const pf = wrapper.findComponent(ProjectsFilter)
+
+    mockBaseStoreCore.fetchEntityList.mockClear()
+    await pf.vm.$emit('update:modelValue', ['alpha', 'beta'])
+    await flushPromises()
+    expect(mockBaseStoreCore.fetchEntityList).toHaveBeenCalledTimes(1)
+
+    mockBaseStoreCore.fetchEntityList.mockClear()
+    await pf.vm.$emit('update:modelValue', ['alpha'])
+    await flushPromises()
+    expect(mockBaseStoreCore.fetchEntityList).toHaveBeenCalledTimes(1)
+  })
+
+  it('Should not allow deselecting the last remaining project', async () => {
+    props.config.withProjectsFilter = true
+
+    props.useList = () => ({
+      ListFilterModel: class PassthroughFilter {
+        constructor(data?: any) { Object.assign(this, data) }
+      },
+      entityName: 'Test',
+      fields,
+    })
+
+    mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({ list: [], total: 0 })
+
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+
+    const pf = wrapper.findComponent(ProjectsFilter)
+
+    await pf.vm.$emit('update:modelValue', ['alpha'])
+
+    await flushPromises()
+
+    await pf.vm.$emit('update:modelValue', ['alpha'])
+
+    await flushPromises()
+
+    const args = mockBaseStoreCore.fetchEntityList.mock.calls.at(-1)?.[0]
+
+    expect(args?.data?.filter?.projects).toEqual(['alpha'])
+  })
+
+  it('Should reflect chip active/inactive state (color & icon)', async () => {
+    props.config.withProjectsFilter = true
+    mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({ list: [], total: 0 })
+
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+
+    const chips = wrapper.findAllComponents({ name: 'VChip' })
+
+    expect(chips.length).toBeGreaterThan(0)
+
+    const chipA = chips.find(c => c.text().includes('Project A'))!
+    const chipB = chips.find(c => c.text().includes('Project B'))!
+
+    expect(chipA.props('color')).toBe('primary')
+    expect(chipB.props('color')).toBe('secondary')
+
+    const icons = wrapper.findAllComponents({ name: 'VIcon' })
+
+    expect(icons.some(i => i.props('icon')?.toLowerCase().includes('eye'))).toBe(true)
+
+    const pf = wrapper.findComponent(ProjectsFilter)
+
+    await pf.vm.$emit('update:modelValue', ['beta'])
+    await flushPromises()
+
+    const chipA2 = wrapper.findAllComponents({ name: 'VChip' }).find(c => c.text().includes('Project A'))!
+    const chipB2 = wrapper.findAllComponents({ name: 'VChip' }).find(c => c.text().includes('Project B'))!
+
+    expect(chipA2.props('color')).toBe('secondary') // неактивный
+    expect(chipB2.props('color')).toBe('primary') // активный
+  })
+
+  it('Should refetch list when projects selection changes', async () => {
+    props.config.withProjectsFilter = true
+    mockDispatch.mockResolvedValueOnce({ list: [], total: 0 })
+
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+
+    const pf = wrapper.findComponent(ProjectsFilter)
+
+    mockBaseStoreCore.fetchEntityList.mockClear()
+
+    await pf.vm.$emit('update:modelValue', ['beta'])
+    await flushPromises()
+
+    expect(mockBaseStoreCore.fetchEntityList).toHaveBeenCalled()
   })
 })
