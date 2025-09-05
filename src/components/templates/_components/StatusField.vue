@@ -25,9 +25,6 @@ const value = computed(() => {
 })
 
 const color = computed(() => {
-  // if (typeof props.value === 'string')
-  //   return StatusVariants[props.value] || VColors.Secondary
-
   return props.value?.variant
 })
 </script>
