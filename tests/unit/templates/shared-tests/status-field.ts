@@ -1,22 +1,41 @@
 import { describe, it } from 'vitest'
-import { VColors, VVariants } from '../../../../src/@model/vuetify'
+import { VVariants } from '../../../../src/@model/vuetify'
+import { StatusWithVariant } from '../../../../src/@model/view'
+import { convertUpperCaseFirstSymbol } from '../../../../src/helpers'
 import { getWrapperWithId, testOn } from './test-case-generator'
 
 const testIdStatusField = 'status-field'
 
+export enum MockStatuses {
+  hold = 'hold',
+  active = 'active',
+  inProgress = 'inProgress',
+  removed = 'remove',
+}
+
+export enum MockStatusVariants {
+  hold = 'secondary',
+  active = 'success',
+  inProgress = 'warning',
+  removed = 'error',
+}
+
 export const runTestCaseForStatusField = (describeTitle, mountMethod) => {
   describe(describeTitle, () => {
     it('Renders correctly when the status is not in the StatusVariants enum', () => {
+      const currentStatus = MockStatuses.active
+      const value = new StatusWithVariant(currentStatus, MockStatusVariants[currentStatus])
+
       const wrapper = mountMethod({
-        value: 'unknown_status',
+        value,
         variant: VVariants.Outlined,
       })
 
       const currentElement = getWrapperWithId({ wrapper, testId: testIdStatusField })
 
-      testOn.equalTextValue({ wrapper }, 'Unknown status')
+      testOn.equalTextValue({ wrapper }, convertUpperCaseFirstSymbol(value.status))
 
-      testOn.existClass(currentElement, `text-${VColors.Secondary}`)
+      testOn.existClass(currentElement, `text-${value.variant}`)
 
       testOn.existClass(currentElement, `v-chip--variant-${VVariants.Outlined}`)
     })

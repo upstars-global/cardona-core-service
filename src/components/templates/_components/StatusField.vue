@@ -2,8 +2,7 @@
 import { computed } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { convertUpperCaseFirstSymbol } from '../../../helpers'
-import { VColors, VVariants } from '../../../@model/vuetify'
-import { StatusVariants } from '../../../@model/enums/statusField'
+import { VVariants } from '../../../@model/vuetify'
 
 interface IStatusWithVariantReplace {
   status: TranslateResult
@@ -26,9 +25,6 @@ const value = computed(() => {
 })
 
 const color = computed(() => {
-  if (typeof props.value === 'string')
-    return StatusVariants[props.value] || VColors.Secondary
-
   return props.value?.variant
 })
 </script>
