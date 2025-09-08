@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useStore } from 'vuex'
 import { UploadFileSizes } from '../../@model/enums/uploadFileSizes'
 import FileUpload from '../../components/FilesUpload/FilesUpload.vue'
 import BaseModal from '../BaseModal/index.vue'
@@ -10,22 +9,14 @@ defineOptions({
   name: 'ModalVideoUpload',
 })
 
-const { getters } = useStore()
 const videoUploadStore = useVideoUploadStore()
 
 const setFile = (file: File) => {
-  const params = {
-    name: file.name,
-    description: file.name,
-    size: file.size,
-    project: getters.selectedProject?.alias,
-  }
-
-  videoUploadStore.upload(params)
+  videoUploadStore.upload(file)
   console.log(file)
 }
 
-const fileMaxSize = 100 * 1024 // 100 MB
+const fileMaxSize = 100 // 100 MB
 const ACCEPT_TITLE = 'MP4'
 
 const SUPPORTED_VIDEO_FORMATS: string[] = [

@@ -10,7 +10,7 @@ import { IconsList } from '../../@model/enums/icons'
 import { copyToClipboard } from '../../helpers/clipboard'
 import { useTextEditorStore } from '../../stores/textEditor'
 import { ModalsIds } from '../../@model/enums/modal'
-import ModalFileUpload from './ModalVideoUpload.vue'
+import ModalVideoUpload from './ModalVideoUpload.vue'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
@@ -416,7 +416,7 @@ const onSaveChanges = () => {
       @close-modal="variableKeyUnselect"
       @delete-key="deleteVariableTextByKey"
     />
-    <ModalFileUpload />
+    <ModalVideoUpload />
     <ModalImageUpload
       :modal-id="galleryModalId"
       @insert="insertImages"
