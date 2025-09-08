@@ -1,14 +1,27 @@
 <script setup lang="ts">
+import { useStore } from 'vuex'
 import { UploadFileSizes } from '../../@model/enums/uploadFileSizes'
 import FileUpload from '../../components/FilesUpload/FilesUpload.vue'
 import BaseModal from '../BaseModal/index.vue'
 import { ModalsIds } from '../../@model/enums/modal'
+import { useVideoUploadStore } from '../../stores/uploadVideo'
 
 defineOptions({
   name: 'ModalVideoUpload',
 })
 
+const { getters } = useStore()
+const videoUploadStore = useVideoUploadStore()
+
 const setFile = (file: File) => {
+  const params = {
+    name: file.name,
+    description: file.name,
+    size: file.size,
+    project: getters.selectedProject?.alias,
+  }
+
+  videoUploadStore.upload(params)
   console.log(file)
 }
 
@@ -16,15 +29,15 @@ const fileMaxSize = 100 * 1024 // 100 MB
 const ACCEPT_TITLE = 'MP4'
 
 const SUPPORTED_VIDEO_FORMATS: string[] = [
-  'video/mp4', // .mp4 (H.264 + AAC) — найширше підтримується
-  'video/webm', // .webm (VP8/VP9 + Vorbis/Opus) — добре підтримується в сучасних браузерах
-  'video/ogg', // .ogv (Theora + Vorbis) — менш популярний, але ще підтримується
-  'video/x-matroska', // .mkv — частково підтримується (наприклад, Chrome, Firefox)
-  'video/quicktime', // .mov — частково підтримується (особливо в Safari)
-  'video/3gpp', // .3gp — підтримується на мобільних пристроях
-  'video/x-msvideo', // .avi — підтримка обмежена (не рекомендовано)
-  'application/vnd.apple.mpegurl', // .m3u8 (HLS) — підтримується Safari, частково Chrome (через MediaSource)
-  'video/mp2t', // .ts (Transport Stream — використовується в HLS)
+  'video/mp4',
+  'video/quicktime',
+  'video/x-msvideo',
+  'video/x-ms-wmv',
+  'video/mpeg',
+  'video/ogg',
+  'video/webm',
+  'video/x-flv',
+  'application/octet-stream',
 ]
 </script>
 
