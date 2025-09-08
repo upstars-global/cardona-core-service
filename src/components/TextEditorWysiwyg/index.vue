@@ -9,6 +9,8 @@ import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import { copyToClipboard } from '../../helpers/clipboard'
 import { useTextEditorStore } from '../../stores/textEditor'
+import { ModalsIds } from '../../@model/enums/modal'
+import ModalFileUpload from './ModalVideoUpload.vue'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
@@ -131,6 +133,39 @@ const insertImages = ({ publicPath, fileName }: { publicPath: string; fileName: 
   globalEditor.value.image.hideProgressBar(true)
 }
 
+FroalaEditor.DefineIcon('clear', { NAME: 'remove', SVG_KEY: 'remove' })
+FroalaEditor.RegisterCommand('clear', {
+  title: 'Clear HTML',
+  focus: false,
+  undo: true,
+  refreshAfterCallback: true,
+  callback() {
+    this.html.set('')
+    this.events.focus()
+  },
+})
+
+// FroalaEditor.DefineIcon('magicIcon', { NAME: 'folder', SVG_KEY: 'imageManager' })
+// FroalaEditor.RegisterCommand('magicButton', {
+//   title: 'Magic',
+//   icon: 'magicIcon',
+// })
+FroalaEditor.DefineIcon('uploadVimeo', { NAME: 'video', SVG_KEY: 'insertVideo' })
+FroalaEditor.RegisterCommand('uploadVimeo', {
+  title: 'Upload video to Vimeo ',
+  focus: false,
+  undo: false,
+  refreshAfterCallback: false,
+  callback() {
+    const text = this.html.get(true)
+
+    this.html.set(text)
+    globalEditor.value = this
+    nextTick(() => {
+      modal.showModal(ModalsIds.UploadVideo)
+    })
+  },
+})
 FroalaEditor.DefineIcon('gallery', { NAME: 'folder', SVG_KEY: 'imageManager' })
 FroalaEditor.RegisterCommand('gallery', {
   title: 'Gallery',
@@ -381,6 +416,7 @@ const onSaveChanges = () => {
       @close-modal="variableKeyUnselect"
       @delete-key="deleteVariableTextByKey"
     />
+    <ModalFileUpload />
     <ModalImageUpload
       :modal-id="galleryModalId"
       @insert="insertImages"

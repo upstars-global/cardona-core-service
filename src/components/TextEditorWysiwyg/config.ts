@@ -77,6 +77,7 @@ const baseConfig = {
         'insertLink',
         'insertImage',
         'gallery',
+        'uploadVimeo',
         'insertVideo',
         'insertTable',
         'emoticons',
