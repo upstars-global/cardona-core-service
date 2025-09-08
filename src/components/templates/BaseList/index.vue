@@ -389,11 +389,13 @@ const setRequestFilters = (): PayloadFilters => {
 
   const appliedFiltersData = transformFilters(appliedFilters.value, props.config)
 
+  const projectFilterFiledParams = props.config.withProjectsFilter ? { projects: projectsFilter.value } : {}
+
   const filtersData = new ListFilterModel({
     ...props.config?.staticFilters,
     search: searchQuery.value,
     ...appliedFiltersData,
-    projects: props.config.withProjectsFilter ? projectsFilter.value : undefined,
+    ...projectFilterFiledParams,
   })
 
   for (const key in filtersData) {
