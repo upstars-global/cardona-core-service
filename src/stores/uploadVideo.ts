@@ -6,7 +6,7 @@ import store from '@/store'
 export interface UploadVideoPayload {
   title: string
   description: string
-  fielSize: number
+  fileSize: number
   project: string
 }
 
