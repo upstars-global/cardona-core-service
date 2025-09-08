@@ -9,13 +9,18 @@ export interface UploadVideoPayload {
 }
 export const useVideoUploadStore = defineStore('videoUpload', {
   actions: {
-    async upload(payload: UploadVideoPayload) {
+    async getUploadUrl(payload: UploadVideoPayload) {
       const { data } = await ApiService.request({
         type: 'App.V2.Vimeo.UploadUrl',
         data: payload,
       })
 
-      console.log(data)
+      return data
+    },
+    async upload(payload: UploadVideoPayload) {
+      const { data: uploadUrlData } = await this.getUploadUrl(payload)
+
+      console.log(uploadUrlData)
     },
   },
 })
