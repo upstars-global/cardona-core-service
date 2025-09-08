@@ -10,24 +10,56 @@ defineOptions({
   name: 'Constructor',
 })
 
-const code = ref(`class User {
-  name: string
-  age: number
+const code = ref(`export class MetaForm {
+  readonly id?: string
+  readonly title: TextBaseField
+  readonly path: TextBaseField
+  readonly keywords: TextareaBaseField
+  readonly description: TextareaBaseField
+  readonly canonicalUrl: TextBaseField
 
-  constructor(data: Partial<User>) {
-    Object.assign(this, data)
-  }
-
-  greet() {
-    return 'Hi, ' + this.name
+  constructor(data: Partial<MetaData>) {
+    this.id = data?.id
+    this.title = new TextBaseField({
+      key: 'title',
+      value: data?.title,
+      label: i18n.t('page.meta.name'),
+      validationRules: { required: true }
+    })
+    this.path = new TextBaseField({
+      key: 'path',
+      value: data?.path || '/',
+      label: i18n.t('page.meta.path'),
+    })
+    this.description = new TextareaBaseField({
+      key: 'description',
+      value: data?.description,
+      label: i18n.t('page.meta.description'),
+    })
+    this.keywords = new TextareaBaseField({
+      key: 'keywords',
+      value: data?.keywords,
+      label: i18n.t('page.meta.keywords'),
+      placeholder: i18n.t('page.meta.keywordsPlaceholder'),
+    })
+    this.canonicalUrl = new TextBaseField({
+      key: 'canonicalUrl',
+      value: data?.canonicalUrl || getSelectedProjectUrl(),
+      label: i18n.t('page.meta.canonicalUrl'),
+    })
   }
 }`)
 
-const parsed = ref<any[]>([])
-const className = ref('')
+const parsedFields = ref<any[]>([])
+const className = ref('MetaForm')
 const output = ref('')
 
+// доступні типи полів
+const FIELD_CLASSES = ['TextBaseField', 'TextareaBaseField', 'SelectBaseField']
+
 function parseCode() {
+  parsedFields.value = []
+
   const ast = recast.parse(code.value, {
     parser: {
       parse: (source: string) =>
@@ -39,44 +71,65 @@ function parseCode() {
   })
 
   traverse(ast, {
-    ClassDeclaration(path) {
-      className.value = path.node.id.name
-      parsed.value = []
+    AssignmentExpression(path) {
+      if (
+        t.isMemberExpression(path.node.left)
+        && t.isThisExpression(path.node.left.object)
+        && t.isIdentifier(path.node.left.property)
+      ) {
+        const fieldName = path.node.left.property.name
 
-      for (const member of path.node.body.body) {
-        if (t.isClassProperty(member)) {
-          parsed.value.push({
-            kind: 'property',
-            name: (member.key as t.Identifier).name,
-            type: member.typeAnnotation
-              ? recast.print(member.typeAnnotation.typeAnnotation).code
-              : 'any',
-          })
-        }
-        else if (t.isClassMethod(member)) {
-          parsed.value.push({
-            kind: 'method',
-            name: (member.key as t.Identifier).name,
-            params: member.params.map(p => (p as t.Identifier).name),
-          })
+        if (
+          t.isNewExpression(path.node.right)
+          && t.isIdentifier(path.node.right.callee)
+          && FIELD_CLASSES.includes(path.node.right.callee.name)
+        ) {
+          const fieldType = path.node.right.callee.name
+          const argsNode = path.node.right.arguments[0]
+
+          if (t.isObjectExpression(argsNode)) {
+            const args: Record<string, string> = {}
+
+            argsNode.properties.forEach(prop => {
+              if (t.isObjectProperty(prop) && t.isIdentifier(prop.key))
+                args[prop.key.name] = recast.print(prop.value).code
+            })
+
+            parsedFields.value.push({
+              name: fieldName,
+              className: fieldType,
+              args,
+            })
+          }
         }
       }
     },
   })
 }
+
 function updateCode() {
-  const body = parsed.value.map(item => {
-    if (item.kind === 'property')
-      return `  ${item.name}: ${item.type};`
-    else
-      return `  ${item.name}(${item.params.join(', ')}) {\n    // ...\n  }`
+  const constructorLines = parsedFields.value.map(field => {
+    const args = Object.entries(field.args)
+      .map(([key, value]) => `      ${key}: ${value},`)
+      .join('\n')
+
+    return `    this.${field.name} = new ${field.className}({\n${args}\n    })`
   })
 
-  const result = `class ${className.value} {\n${body.join('\n')}\n}`
+  const result = `
+export class ${className.value} {
+  readonly id?: string
+${parsedFields.value.map(f => `  readonly ${f.name}: ${f.className}`).join('\n')}
+
+  constructor(data: Partial<MetaData>) {
+    this.id = data?.id
+${constructorLines.join('\n')}
+  }
+}
+  `.trim()
 
   output.value = result
 }
-
 </script>
 
 <template>
@@ -89,33 +142,79 @@ function updateCode() {
       <h2>Редактор класу</h2>
       <textarea
         v-model="code"
-        rows="12"
-        cols="60"
+        rows="16"
+        cols="80"
+        class="w-100 mb-4"
       />
-      <VBtn @click="parseCode">
+      <VBtn
+        class="mr-2"
+        @click="parseCode"
+      >
         Розпарсити
       </VBtn>
+      {{parsedFields}}
+      <div v-if="parsedFields.length">
+        <h3 class="mt-4">
+          Поля
+        </h3>
+        <div
+          v-for="(field, i) in parsedFields"
+          :key="i"
+          class="mb-4 pa-2 border rounded"
+          style="border: 1px solid #ccc;"
+        >
+          <strong>{{ field.name }}</strong>
 
-      <div v-if="parsed.length">
-        <h3>Клас: {{ className }}</h3>
-        <ul>
-          <li
-            v-for="(item, i) in parsed"
-            :key="i"
+          <div class="d-flex align-center mb-2">
+            <label style="width: 120px;">Тип поля</label>
+            <select v-model="field.className">
+              <option
+                v-for="cls in FIELD_CLASSES"
+                :key="cls"
+                :value="cls"
+              >
+                {{ cls }}
+              </option>
+            </select>
+          </div>
+
+          <div
+            v-for="(value, key) in field.args"
+            :key="key"
+            class="d-flex align-center mb-2"
           >
-            <template v-if="item.kind === 'property'">
-              🧩 {{ item.name }}: {{ item.type }}
-            </template>
-            <template v-else>
-              ⚙️ {{ item.name }}({{ item.params.join(', ') }})
-            </template>
-          </li>
-        </ul>
-        <VBtn @click="updateCode">
+            <label style="width: 120px;">{{ key }}</label>
+            <input
+              v-model="field.args[key]"
+              type="text"
+              class="flex-grow-1"
+              style="flex: 1;"
+            >
+          </div>
+        </div>
+
+        <VBtn
+          class="mt-2"
+          @click="updateCode"
+        >
           Згенерувати код
         </VBtn>
-        <pre>{{ output }}</pre>
+
+        <h3 class="mt-4">
+          Результат
+        </h3>
+        <pre class="code-output">{{ output }}</pre>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.code-output {
+  background-color: #f6f8fa;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+</style>
