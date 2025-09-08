@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { VColors } from '../../@model/vuetify'
+
 defineOptions({
   name: 'Constructor',
 })
@@ -6,6 +8,12 @@ defineOptions({
 
 <template>
   <div>
-    Constructor
+    <VToolbar
+      title="Constructor"
+      :color="VColors.Primary"
+    />
+    <div class="pa-4">
+      body
+    </div>
   </div>
 </template>
