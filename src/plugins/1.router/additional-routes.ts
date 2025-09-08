@@ -102,3 +102,20 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('@/pages/permission/form/index.vue'),
   },
 ]
+
+export const constructor = [
+  {
+    path: '/constructor',
+    name: 'Constructor',
+    component: () => import('@/pages/constructor/index.vue'),
+    meta: {
+      title: 'Constructor',
+      breadcrumb: [
+        {
+          title: 'Constructor',
+          active: true,
+        },
+      ],
+    },
+  },
+]

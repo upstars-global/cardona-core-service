@@ -42,6 +42,7 @@ declare module 'vue-router/auto/routes' {
     '$error': RouteRecordInfo<'$error', '/:error(.*)', { error: ParamValue<true> }, { error: ParamValue<false> }>,
     'access-control': RouteRecordInfo<'access-control', '/access-control', Record<never, never>, Record<never, never>>,
     'authentication-auth-provider': RouteRecordInfo<'authentication-auth-provider', '/authentication/AuthProvider', Record<never, never>, Record<never, never>>,
+    'constructor': RouteRecordInfo<'constructor', '/constructor', Record<never, never>, Record<never, never>>,
     'error404': RouteRecordInfo<'error404', '/error/404', Record<never, never>, Record<never, never>>,
     'forgot-password': RouteRecordInfo<'forgot-password', '/forgot-password', Record<never, never>, Record<never, never>>,
     'login': RouteRecordInfo<'login', '/login', Record<never, never>, Record<never, never>>,
