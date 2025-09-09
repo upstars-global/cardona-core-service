@@ -10,6 +10,8 @@ import { IconsList } from '../../@model/enums/icons'
 import { copyToClipboard } from '../../helpers/clipboard'
 import { useTextEditorStore } from '../../stores/textEditor'
 import { ModalsIds } from '../../@model/enums/modal'
+
+// import { useVideoUploadStore } from '../../stores/uploadVideo'
 import ModalVideoUpload from './ModalVideoUpload.vue'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
@@ -26,6 +28,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>()
 
+// function delay(ms: number): Promise<void> {
+//   return new Promise(resolve => setTimeout(resolve, ms))
+// }
 interface Props {
   modelValue: string
   optionsVariable: Array<string>
@@ -44,6 +49,8 @@ interface Emits {
 const modal = inject('modal')
 
 const store = useStore()
+
+// const videoUploadStore = useVideoUploadStore()
 const textEditorStore = useTextEditorStore()
 
 const content = computed({
@@ -278,6 +285,25 @@ const config = {
     'commands.after': function (command) {
       if (command === 'html')
         isCodeViewActive.value = this.codeView.isActive()
+    },
+    'video.beforeUpload': function (files: File[]) {
+      const file = files[0]
+      if (!file)
+        return false
+
+      // const videoUri = await videoUploadStore.upload(file)
+      // const embedUrl = `https://player.vimeo.com/video${videoUri.replace('/videos', '')}`
+      //   delay(2000).then(() => {
+      //
+      //   })
+      const embedUrl = 'https://player.vimeo.com/video/1117064525'
+
+      console.log(embedUrl)
+
+      // this.html.insert(`<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`)
+      globalEditor.value.html.set(`<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`)
+
+      return false
     },
     'image.beforeUpload': function (images: any[]) {
       Array.from(images).forEach(async file => {
