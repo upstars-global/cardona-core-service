@@ -22,11 +22,13 @@ const code = ref(`interface IMetaData {
 const parsedFields = ref<any[]>([])
 const className = ref('MetaForm')
 const output = ref('')
+const interfaceFieldTypes = ref<Record<string, string>>({})
 
 const FIELD_CLASSES = ['TextBaseField', 'TextareaBaseField', 'SelectBaseField']
 
 function parseCode() {
   parsedFields.value = []
+  interfaceFieldTypes.value = {}
 
   const ast = recast.parse(code.value, {
     parser: {
@@ -45,16 +47,44 @@ function parseCode() {
       path.node.body.body.forEach(prop => {
         if (t.isTSPropertySignature(prop) && t.isIdentifier(prop.key)) {
           const name = prop.key.name
+          const typeAnnotation = prop.typeAnnotation?.typeAnnotation
 
-          parsedFields.value.push({
-            name,
-            className: 'TextBaseField',
-            args: {
-              key: `'${name}'`,
-              value: `data?.${name}`,
-              label: `i18n.t('page.meta.${name}')`,
-            },
-          })
+          let type = 'any'
+          if (t.isTSStringKeyword(typeAnnotation))
+            type = 'string'
+          else if (t.isTSBooleanKeyword(typeAnnotation))
+            type = 'boolean'
+          else if (t.isTSNumberKeyword(typeAnnotation))
+            type = 'number'
+          else if (t.isTSTypeReference(typeAnnotation) && t.isIdentifier(typeAnnotation.typeName))
+            type = typeAnnotation.typeName.name
+
+          interfaceFieldTypes.value[name] = type
+
+          if (name === 'id') {
+            parsedFields.value.push({
+              name,
+              className: 'raw',
+              args: {
+                raw: 'if (data?.id) this.id = data.id',
+              },
+              readonly: true,
+              rawType: type,
+            })
+          }
+          else {
+            parsedFields.value.push({
+              name,
+              className: 'TextBaseField',
+              args: {
+                key: `'${name}'`,
+                value: `data?.${name}`,
+                label: `i18n.t('page.meta.${name}')`,
+              },
+              readonly: false,
+              rawType: type,
+            })
+          }
         }
       })
     },
@@ -63,6 +93,9 @@ function parseCode() {
 
 function updateCode() {
   const constructorLines = parsedFields.value.map(field => {
+    if (field.className === 'raw')
+      return `    ${field.args.raw}`
+
     const args = Object.entries(field.args)
       .map(([key, value]) => `      ${key}: ${value},`)
       .join('\n')
@@ -72,7 +105,7 @@ function updateCode() {
 
   const result = `
 export class ${className.value} {
-${parsedFields.value.map(f => `  readonly ${f.name}: ${f.className}`).join('\n')}
+${parsedFields.value.map(f => `  readonly ${f.name}: ${f.className === 'raw' ? f.rawType : f.className}`).join('\n')}
 
   constructor(data: I${className.value}) {
 ${constructorLines.join('\n')}
@@ -80,6 +113,13 @@ ${constructorLines.join('\n')}
 }`.trim()
 
   output.value = result
+}
+
+function convertToRaw(field: any) {
+  field.className = 'raw'
+  field.args = {
+    raw: `this.${field.name} = data?.${field.name}`,
+  }
 }
 </script>
 
@@ -114,18 +154,31 @@ ${constructorLines.join('\n')}
           :key="i"
           class="mb-4 pa-2 border rounded"
         >
-          <div class="d-flex align-center">
-            <VChip
-              label
-              :color="VColors.Info"
-              class="mr-2"
+          <div class="d-flex align-center justify-space-between">
+            <div class="d-flex align-center">
+              <VChip
+                label
+                :color="VColors.Info"
+                class="mr-2"
+              >
+                {{ field.name }}
+              </VChip>
+              <VSelect
+                v-if="!field.readonly"
+                v-model="field.className"
+                :items="FIELD_CLASSES"
+                class="mr-2"
+              />
+            </div>
+            <VBtn
+              v-if="!field.readonly"
+              size="x-small"
+              color="warning"
+              variant="outlined"
+              @click="convertToRaw(field)"
             >
-              {{ field.name }}
-            </VChip>
-            <VSelect
-              v-model="field.className"
-              :items="FIELD_CLASSES"
-            />
+              До простого value
+            </VBtn>
           </div>
 
           <div
