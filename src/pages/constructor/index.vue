@@ -140,7 +140,7 @@ ${constructorLines.join('\n')}
     />
     <div class="pa-4">
       <h2>Редактор класу</h2>
-      <textarea
+      <VTextarea
         v-model="code"
         rows="16"
         cols="80"
@@ -152,7 +152,6 @@ ${constructorLines.join('\n')}
       >
         Розпарсити
       </VBtn>
-      {{parsedFields}}
       <div v-if="parsedFields.length">
         <h3 class="mt-4">
           Поля
@@ -161,21 +160,24 @@ ${constructorLines.join('\n')}
           v-for="(field, i) in parsedFields"
           :key="i"
           class="mb-4 pa-2 border rounded"
-          style="border: 1px solid #ccc;"
         >
-          <strong>{{ field.name }}</strong>
-
-          <div class="d-flex align-center mb-2">
-            <label style="width: 120px;">Тип поля</label>
-            <select v-model="field.className">
-              <option
-                v-for="cls in FIELD_CLASSES"
-                :key="cls"
-                :value="cls"
+          <div class="d-flex align-center">
+            <div>
+              <VChip
+                label
+                :color="VColors.Info"
+                class="mr-2"
               >
-                {{ cls }}
-              </option>
-            </select>
+                {{ field.name }}
+              </VChip>
+            </div>
+
+            <div class="d-flex align-center mb-2">
+              <VSelect
+                v-model="field.className"
+                :items="FIELD_CLASSES"
+              />
+            </div>
           </div>
 
           <div
@@ -183,13 +185,18 @@ ${constructorLines.join('\n')}
             :key="key"
             class="d-flex align-center mb-2"
           >
-            <label style="width: 120px;">{{ key }}</label>
-            <input
-              v-model="field.args[key]"
-              type="text"
-              class="flex-grow-1"
-              style="flex: 1;"
-            >
+            <div class="d-flex">
+              <div>
+                <VChip
+                  label
+                  :color="VColors.Info"
+                  class="mr-2"
+                >
+                  {{ key }}
+                </VChip>
+              </div>
+              <div>{{ field.args[key] }}</div>
+            </div>
           </div>
         </div>
 
