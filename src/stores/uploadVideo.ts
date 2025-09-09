@@ -61,15 +61,20 @@ export const useVideoUploadStore = defineStore('videoUpload', {
       this.setProgressState(true, key)
       this.setProgressPercent(0, key)
 
-      const uploadUrlData = await this.getUploadUrl(params)
+      try {
+        const uploadUrlData = await this.getUploadUrl(params)
 
-      await this.uploadVideoToVimeo({
-        file,
-        uploadLink: uploadUrlData.uploadUrl,
-        key,
-      })
+        await this.uploadVideoToVimeo({
+          file,
+          uploadLink: uploadUrlData.uploadUrl,
+          key,
+        })
 
-      return uploadUrlData.videoId
+        return uploadUrlData.videoId
+      }
+      catch {
+        this.setProgressState(false, key)
+      }
     },
     async uploadVideoToVimeo({ file, uploadLink, key }: UploadVideoToVimeoPayload) {
       return new Promise((resolve, reject) => {
