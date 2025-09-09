@@ -69,7 +69,7 @@ export const useVideoUploadStore = defineStore('videoUpload', {
 
       await uploadVideoToVimeo(file, uploadUrlData.uploadUrl)
 
-      console.log(uploadUrlData)
+      return uploadUrlData.videoId
     },
   },
 })

@@ -264,10 +264,8 @@ const config = {
       if (!file)
         return false
 
-      videoUploadStore.upload(file).then((videoUri: string) => {
-        const embedUrl = `https://player.vimeo.com/video${videoUri.replace('/videos', '')}`
-
-        // const embedUrl = 'https://player.vimeo.com/video/1117064525'
+      videoUploadStore.upload(file).then((videoId: string) => {
+        const embedUrl = `https://player.vimeo.com/video/${videoId}`
         const iFrame = `<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`
 
         content.value += iFrame
