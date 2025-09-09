@@ -3,7 +3,7 @@ import * as parser from '@babel/parser'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import * as recast from 'recast'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { VColors } from '../../@model/vuetify'
 
 defineOptions({
@@ -23,6 +23,7 @@ const parsedFields = ref<any[]>([])
 const className = ref('MetaForm')
 const output = ref('')
 const interfaceFieldTypes = ref<Record<string, string>>({})
+const i18nPrefix = ref('meta')
 
 const FIELD_CLASSES = ['TextBaseField', 'TextareaBaseField', 'SelectBaseField']
 
@@ -79,7 +80,7 @@ function parseCode() {
               args: {
                 key: `'${name}'`,
                 value: `data?.${name}`,
-                label: `i18n.t('page.meta.${name}')`,
+                label: `i18n.t('page.${i18nPrefix.value}.${name}')`,
               },
               readonly: false,
               rawType: type,
@@ -90,6 +91,13 @@ function parseCode() {
     },
   })
 }
+
+watch(i18nPrefix, newPrefix => {
+  parsedFields.value.forEach(field => {
+    if (!field.readonly && field.args.label?.startsWith('i18n.t'))
+      field.args.label = `i18n.t('page.${newPrefix}.${field.name}')`
+  })
+})
 
 function updateCode() {
   const constructorLines = parsedFields.value.map(field => {
@@ -131,6 +139,23 @@ function convertToRaw(field: any) {
     />
     <div class="pa-4">
       <h2>Редактор класу з інтерфейсу</h2>
+
+      <div class="d-flex align-center mb-4">
+        <div
+          class="mr-2"
+          style="min-width: 200px;"
+        >
+          Префікс i18n
+        </div>
+        <VTextField
+          v-model="i18nPrefix"
+          placeholder="meta"
+          hide-details
+          density="compact"
+          variant="outlined"
+        />
+      </div>
+
       <VTextarea
         v-model="code"
         rows="16"
