@@ -6,9 +6,7 @@ import * as recast from 'recast'
 import { ref, watch } from 'vue'
 import { VColors } from '../../@model/vuetify'
 
-defineOptions({
-  name: 'Constructor',
-})
+defineOptions({ name: 'Constructor' })
 
 const VALIDATION_RULES = [
   'required',
@@ -91,6 +89,7 @@ function parseCode() {
               },
               readonly: true,
               rawType: type,
+              isRaw: true,
             })
           }
           else {
@@ -104,6 +103,7 @@ function parseCode() {
               },
               readonly: false,
               rawType: type,
+              isRaw: false,
               extra: {
                 placeholder: false,
                 info: false,
@@ -159,6 +159,33 @@ function updateExtras(field: any) {
   }
 }
 
+function convertToRaw(field: any) {
+  field.className = 'raw'
+  field.args = {
+    raw: `this.${field.name} = data?.${field.name}`,
+  }
+  field.isRaw = true
+  delete field.extra
+}
+
+function convertToBase(field: any) {
+  field.className = 'TextBaseField'
+  field.args = {
+    key: `'${field.name}'`,
+    value: `data?.${field.name}`,
+    label: `i18n.t('page.${i18nPrefix.value}.${field.name}')`,
+  }
+  field.extra = {
+    placeholder: false,
+    info: false,
+    validationRules: false,
+    selectedRules: [],
+    rulesParams: {},
+  }
+  field.isRaw = false
+  updateExtras(field)
+}
+
 function updateCode() {
   const constructorLines = parsedFields.value.map(field => {
     if (field.className === 'raw')
@@ -181,14 +208,6 @@ ${constructorLines.join('\n')}
 }`.trim()
 
   output.value = result
-}
-
-function convertToRaw(field: any) {
-  field.className = 'raw'
-  field.args = {
-    raw: `this.${field.name} = data?.${field.name}`,
-  }
-  delete field.extra
 }
 </script>
 
@@ -243,30 +262,22 @@ function convertToRaw(field: any) {
           <!-- LEFT -->
           <div class="flex-grow-1 pr-4 border-right">
             <div class="d-flex align-center justify-space-between">
-              <div class="d-flex align-center">
+              <div class="d-flex align-center mb-2">
                 <VChip
                   label
-                  :color="VColors.Info"
-                  class="mr-2"
+                  :color="field.isRaw ? VColors.Secondary : VColors.Warning"
+                  class="my-2 mr-2"
                 >
                   {{ field.name }}
                 </VChip>
+
                 <VSelect
-                  v-if="!field.readonly"
+                  v-if="!field.readonly && !field.isRaw"
                   v-model="field.className"
                   :items="FIELD_CLASSES"
                   class="mr-2"
                 />
               </div>
-              <VBtn
-                v-if="!field.readonly"
-                size="x-small"
-                color="warning"
-                variant="outlined"
-                @click="convertToRaw(field)"
-              >
-                До простого value
-              </VBtn>
             </div>
 
             <div
@@ -274,7 +285,7 @@ function convertToRaw(field: any) {
               :key="key"
               class="d-flex align-center mb-2"
             >
-              <div class="d-flex">
+              <div class="d-flex w-100">
                 <VChip
                   label
                   :color="VColors.Info"
@@ -288,33 +299,40 @@ function convertToRaw(field: any) {
           </div>
 
           <!-- RIGHT -->
-          <div
-            v-if="field.extra"
-            style="min-width: 320px;"
-          >
+          <div style="min-width: 320px;">
             <VCheckbox
-              v-model="field.extra.placeholder"
-              label="placeholder"
-              density="compact"
+              v-if="!field.readonly"
+              v-model="field.isRaw"
+              label="Raw value"
               hide-details
-              class="mr-2"
-              @change="() => updateExtras(field)"
-            />
-            <VCheckbox
-              v-model="field.extra.info"
-              label="info"
               density="compact"
-              hide-details
-              class="mr-2"
-              @change="() => updateExtras(field)"
+              @change="field.isRaw ? convertToRaw(field) : convertToBase(field)"
             />
-            <VCheckbox
-              v-model="field.extra.validationRules"
-              label="validationRules"
-              density="compact"
-              hide-details
-              @change="() => updateExtras(field)"
-            />
+            <div v-if="field.extra">
+              <VCheckbox
+                v-model="field.extra.placeholder"
+                label="placeholder"
+                density="compact"
+                hide-details
+                class="mr-2"
+                @change="() => updateExtras(field)"
+              />
+              <VCheckbox
+                v-model="field.extra.info"
+                label="info"
+                density="compact"
+                hide-details
+                class="mr-2"
+                @change="() => updateExtras(field)"
+              />
+              <VCheckbox
+                v-model="field.extra.validationRules"
+                label="validationRules"
+                density="compact"
+                hide-details
+                @change="() => updateExtras(field)"
+              />
+            </div>
 
             <div
               v-if="field.extra?.validationRules"
@@ -327,7 +345,7 @@ function convertToRaw(field: any) {
                 multiple
                 density="compact"
                 hide-details
-                class="mr-2 w-100"
+                class="w-100"
                 @update:model-value="() => updateExtras(field)"
               />
 
@@ -338,7 +356,7 @@ function convertToRaw(field: any) {
                   v-model="field.extra.rulesParams[rule]"
                   :label="`Param for ${rule}`"
                   hide-details
-                  class="w-100 my-4"
+                  class="w-100 my-2"
                   @input="() => updateExtras(field)"
                 />
               </div>
