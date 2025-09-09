@@ -19,6 +19,16 @@ import {
 } from '../../../mocks/base-list'
 import useToastService from '../../../../../src/helpers/toasts'
 
+vi.mock('../../../../../src/stores/users', () => {
+  return {
+    useUsersStore: () => ({
+      fetchUsersList: vi.fn(),
+      fetchEntityList: vi.fn(),
+      updateUserPassword: vi.fn(),
+    }),
+  }
+})
+
 // Helper function to select table cells based on data attribute
 const getSelectorCField = (name: string) => `td[data-c-field="${name}"]`
 
