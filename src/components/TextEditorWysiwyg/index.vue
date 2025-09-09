@@ -9,10 +9,7 @@ import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import { copyToClipboard } from '../../helpers/clipboard'
 import { useTextEditorStore } from '../../stores/textEditor'
-import { ModalsIds } from '../../@model/enums/modal'
-
-// import { useVideoUploadStore } from '../../stores/uploadVideo'
-import ModalVideoUpload from './ModalVideoUpload.vue'
+import { useVideoUploadStore } from '../../stores/uploadVideo'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
@@ -28,9 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>()
 
-// function delay(ms: number): Promise<void> {
-//   return new Promise(resolve => setTimeout(resolve, ms))
-// }
+const editorWrapper = ref<HTMLElement | null>(null)
 interface Props {
   modelValue: string
   optionsVariable: Array<string>
@@ -49,8 +44,7 @@ interface Emits {
 const modal = inject('modal')
 
 const store = useStore()
-
-// const videoUploadStore = useVideoUploadStore()
+const videoUploadStore = useVideoUploadStore()
 const textEditorStore = useTextEditorStore()
 
 const content = computed({
@@ -152,27 +146,6 @@ FroalaEditor.RegisterCommand('clear', {
   },
 })
 
-// FroalaEditor.DefineIcon('magicIcon', { NAME: 'folder', SVG_KEY: 'imageManager' })
-// FroalaEditor.RegisterCommand('magicButton', {
-//   title: 'Magic',
-//   icon: 'magicIcon',
-// })
-FroalaEditor.DefineIcon('uploadVimeo', { NAME: 'video', SVG_KEY: 'insertVideo' })
-FroalaEditor.RegisterCommand('uploadVimeo', {
-  title: 'Upload video to Vimeo ',
-  focus: false,
-  undo: false,
-  refreshAfterCallback: false,
-  callback() {
-    const text = this.html.get(true)
-
-    this.html.set(text)
-    globalEditor.value = this
-    nextTick(() => {
-      modal.showModal(ModalsIds.UploadVideo)
-    })
-  },
-})
 FroalaEditor.DefineIcon('gallery', { NAME: 'folder', SVG_KEY: 'imageManager' })
 FroalaEditor.RegisterCommand('gallery', {
   title: 'Gallery',
@@ -293,15 +266,16 @@ const config = {
 
       // const videoUri = await videoUploadStore.upload(file)
       // const embedUrl = `https://player.vimeo.com/video${videoUri.replace('/videos', '')}`
-      //   delay(2000).then(() => {
-      //
-      //   })
-      const embedUrl = 'https://player.vimeo.com/video/1117064525'
-
-      console.log(embedUrl)
 
       // this.html.insert(`<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`)
-      globalEditor.value.html.set(`<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`)
+
+      // const embedUrl = `https://player.vimeo.com/video/1117064525`
+      //  const iFrame = `<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`
+
+      const embedUrl = 'https://player.vimeo.com/video/1117064525'
+      const iFrame = `<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`
+
+      content.value += iFrame
 
       return false
     },
@@ -442,12 +416,12 @@ const onSaveChanges = () => {
       @close-modal="variableKeyUnselect"
       @delete-key="deleteVariableTextByKey"
     />
-    <ModalVideoUpload />
     <ModalImageUpload
       :modal-id="galleryModalId"
       @insert="insertImages"
     />
     <div
+      ref="editorWrapper"
       class="editor-wrap"
       :class="{ disabled }"
     >
