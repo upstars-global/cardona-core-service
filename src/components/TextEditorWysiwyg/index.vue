@@ -264,18 +264,14 @@ const config = {
       if (!file)
         return false
 
-      // const videoUri = await videoUploadStore.upload(file)
-      // const embedUrl = `https://player.vimeo.com/video${videoUri.replace('/videos', '')}`
+      videoUploadStore.upload(file).then((videoUri: string) => {
+        const embedUrl = `https://player.vimeo.com/video${videoUri.replace('/videos', '')}`
 
-      // this.html.insert(`<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`)
+        // const embedUrl = 'https://player.vimeo.com/video/1117064525'
+        const iFrame = `<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`
 
-      // const embedUrl = `https://player.vimeo.com/video/1117064525`
-      //  const iFrame = `<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`
-
-      const embedUrl = 'https://player.vimeo.com/video/1117064525'
-      const iFrame = `<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`
-
-      content.value += iFrame
+        content.value += iFrame
+      })
 
       return false
     },
