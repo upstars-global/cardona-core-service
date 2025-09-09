@@ -22,7 +22,7 @@ const CHUNK_SIZE = 1024 * 1024
 const uploadVideoToVimeo = async (file: File, uploadLink: string) => {
   return new Promise((resolve, reject) => {
     const upload = new tus.Upload(file, {
-      endpoint: uploadLink,
+      uploadUrl: uploadLink,
       chunkSize: CHUNK_SIZE,
       metadata: {
         filename: file.name,
