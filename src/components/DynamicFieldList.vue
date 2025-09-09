@@ -10,20 +10,20 @@ import { VColors, VSizes, VVariants } from '../@model/vuetify'
 type DynamicField = BaseField | Record<string, BaseField>
 
 const props = withDefaults(defineProps<{
-  modelValue: DynamicField[]
-  templateField: Function
-  disabled?: boolean
-  disabledAddBtn?: boolean
-  required?: boolean
-  allowAddWithEmpty?: boolean
-  hideLabelOnEmptyList?: boolean
-  fieldCol?: number | string
-}>(),
-{
-  fieldCol: 4,
-  hideLabelOnEmptyList: true,
-  required: false,
-})
+    modelValue: DynamicField[]
+    templateField: Function
+    disabled?: boolean
+    disabledAddBtn?: boolean
+    required?: boolean
+    allowAddWithEmpty?: boolean
+    hideLabelOnEmptyList?: boolean
+    fieldCol?: number | string
+  }>(),
+  {
+    fieldCol: 4,
+    hideLabelOnEmptyList: true,
+    required: false,
+  })
 
 const emits = defineEmits<{
   (event: 'update:model-value', value: Record<string, string>): void
@@ -90,7 +90,7 @@ const fetchStartSelect = async rows => {
   const [row]: Array<BaseField> = rows
 
   if (row) {
-    const selectFieldItem = Object.values(row).find(field => field?.fetchOptionsActionName)
+    const selectFieldItem = Object.values(row).find(field => field?.fetchOptionsAction && field?.fetchOptionsAction())
 
     if (selectFieldItem) {
       selectField.value = selectFieldItem
