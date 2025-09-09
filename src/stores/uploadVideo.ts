@@ -58,6 +58,9 @@ export const useVideoUploadStore = defineStore('videoUpload', {
         project: store.getters.selectedProject?.alias,
       }
 
+      this.setProgressState(true, key)
+      this.setProgressPercent(0, key)
+
       const uploadUrlData = await this.getUploadUrl(params)
 
       await this.uploadVideoToVimeo({
@@ -69,9 +72,6 @@ export const useVideoUploadStore = defineStore('videoUpload', {
       return uploadUrlData.videoId
     },
     async uploadVideoToVimeo({ file, uploadLink, key }: UploadVideoToVimeoPayload) {
-      this.setProgressState(true, key)
-      this.setProgressPercent(0, key)
-
       return new Promise((resolve, reject) => {
         const upload = new tus.Upload(file, {
           uploadUrl: uploadLink,
@@ -82,22 +82,18 @@ export const useVideoUploadStore = defineStore('videoUpload', {
           },
           onError: error => {
             this.setProgressState(false, key)
-            console.error('Upload failed:', error)
             reject(error)
           },
           onProgress: (bytesUploaded, bytesTotal) => {
             const percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2)
 
             this.setProgressPercent(Number(percentage), key)
-
-            console.log(`Uploaded ${percentage}%`)
           },
           onSuccess: () => {
             this.setProgressPercent(100, key)
             setTimeout(() => {
               this.setProgressState(false, key)
             }, 200)
-            console.log('Upload completed:', upload.url)
             resolve(upload.url)
           },
         })

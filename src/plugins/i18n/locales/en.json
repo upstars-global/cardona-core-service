@@ -344,6 +344,7 @@
     "settings": "Settings",
     "editableField": "Editable field",
     "addTags": "Add tags...",
+    "uploadVideo": "Upload video",
     "phone": {
       "_": "Phone",
       "list": "Phones"

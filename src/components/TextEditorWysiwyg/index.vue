@@ -431,10 +431,18 @@ const onSaveChanges = () => {
         v-if="videoUploadStore.getProgressState(editorKey)"
         class="py-4"
       >
+        <span>
+          {{ $t('common.uploadVideo') }}
+        </span>
         <VProgressLinear
           :model-value="videoUploadStore.getProgressPercent(editorKey)"
           :max="100"
-        />
+          height="12"
+        >
+          <template #default="{ value }">
+            <span class="text-sm">{{ Math.ceil(value) }}%</span>
+          </template>
+        </VProgressLinear>
       </div>
       <VBtn
         v-if="isCodeViewActive"
