@@ -10,51 +10,19 @@ defineOptions({
   name: 'Constructor',
 })
 
-const code = ref(`export class MetaForm {
-  readonly id?: string
-  readonly title: TextBaseField
-  readonly path: TextBaseField
-  readonly keywords: TextareaBaseField
-  readonly description: TextareaBaseField
-  readonly canonicalUrl: TextBaseField
-
-  constructor(data: Partial<MetaData>) {
-    this.id = data?.id
-    this.title = new TextBaseField({
-      key: 'title',
-      value: data?.title,
-      label: i18n.t('page.meta.name'),
-      validationRules: { required: true }
-    })
-    this.path = new TextBaseField({
-      key: 'path',
-      value: data?.path || '/',
-      label: i18n.t('page.meta.path'),
-    })
-    this.description = new TextareaBaseField({
-      key: 'description',
-      value: data?.description,
-      label: i18n.t('page.meta.description'),
-    })
-    this.keywords = new TextareaBaseField({
-      key: 'keywords',
-      value: data?.keywords,
-      label: i18n.t('page.meta.keywords'),
-      placeholder: i18n.t('page.meta.keywordsPlaceholder'),
-    })
-    this.canonicalUrl = new TextBaseField({
-      key: 'canonicalUrl',
-      value: data?.canonicalUrl || getSelectedProjectUrl(),
-      label: i18n.t('page.meta.canonicalUrl'),
-    })
-  }
+const code = ref(`interface IMetaData {
+  id?: string
+  title: string
+  path: string
+  keywords: string
+  description: string
+  canonicalUrl: string
 }`)
 
 const parsedFields = ref<any[]>([])
 const className = ref('MetaForm')
 const output = ref('')
 
-// доступні типи полів
 const FIELD_CLASSES = ['TextBaseField', 'TextareaBaseField', 'SelectBaseField']
 
 function parseCode() {
@@ -71,38 +39,24 @@ function parseCode() {
   })
 
   traverse(ast, {
-    AssignmentExpression(path) {
-      if (
-        t.isMemberExpression(path.node.left)
-        && t.isThisExpression(path.node.left.object)
-        && t.isIdentifier(path.node.left.property)
-      ) {
-        const fieldName = path.node.left.property.name
+    TSInterfaceDeclaration(path) {
+      className.value = path.node.id.name.replace(/^I/, '') || 'GeneratedClass'
 
-        if (
-          t.isNewExpression(path.node.right)
-          && t.isIdentifier(path.node.right.callee)
-          && FIELD_CLASSES.includes(path.node.right.callee.name)
-        ) {
-          const fieldType = path.node.right.callee.name
-          const argsNode = path.node.right.arguments[0]
+      path.node.body.body.forEach(prop => {
+        if (t.isTSPropertySignature(prop) && t.isIdentifier(prop.key)) {
+          const name = prop.key.name
 
-          if (t.isObjectExpression(argsNode)) {
-            const args: Record<string, string> = {}
-
-            argsNode.properties.forEach(prop => {
-              if (t.isObjectProperty(prop) && t.isIdentifier(prop.key))
-                args[prop.key.name] = recast.print(prop.value).code
-            })
-
-            parsedFields.value.push({
-              name: fieldName,
-              className: fieldType,
-              args,
-            })
-          }
+          parsedFields.value.push({
+            name,
+            className: 'TextBaseField',
+            args: {
+              key: `'${name}'`,
+              value: `data?.${name}`,
+              label: `i18n.t('page.meta.${name}')`,
+            },
+          })
         }
-      }
+      })
     },
   })
 }
@@ -118,15 +72,12 @@ function updateCode() {
 
   const result = `
 export class ${className.value} {
-  readonly id?: string
 ${parsedFields.value.map(f => `  readonly ${f.name}: ${f.className}`).join('\n')}
 
-  constructor(data: Partial<MetaData>) {
-    this.id = data?.id
+  constructor(data: I${className.value}) {
 ${constructorLines.join('\n')}
   }
-}
-  `.trim()
+}`.trim()
 
   output.value = result
 }
@@ -139,7 +90,7 @@ ${constructorLines.join('\n')}
       :color="VColors.Primary"
     />
     <div class="pa-4">
-      <h2>Редактор класу</h2>
+      <h2>Редактор класу з інтерфейсу</h2>
       <VTextarea
         v-model="code"
         rows="16"
@@ -152,32 +103,29 @@ ${constructorLines.join('\n')}
       >
         Розпарсити
       </VBtn>
+
       <div v-if="parsedFields.length">
         <h3 class="mt-4">
           Поля
         </h3>
+
         <div
           v-for="(field, i) in parsedFields"
           :key="i"
           class="mb-4 pa-2 border rounded"
         >
           <div class="d-flex align-center">
-            <div>
-              <VChip
-                label
-                :color="VColors.Info"
-                class="mr-2"
-              >
-                {{ field.name }}
-              </VChip>
-            </div>
-
-            <div class="d-flex align-center mb-2">
-              <VSelect
-                v-model="field.className"
-                :items="FIELD_CLASSES"
-              />
-            </div>
+            <VChip
+              label
+              :color="VColors.Info"
+              class="mr-2"
+            >
+              {{ field.name }}
+            </VChip>
+            <VSelect
+              v-model="field.className"
+              :items="FIELD_CLASSES"
+            />
           </div>
 
           <div
@@ -186,16 +134,14 @@ ${constructorLines.join('\n')}
             class="d-flex align-center mb-2"
           >
             <div class="d-flex">
-              <div>
-                <VChip
-                  label
-                  :color="VColors.Info"
-                  class="mr-2"
-                >
-                  {{ key }}
-                </VChip>
-              </div>
-              <div>{{ field.args[key] }}</div>
+              <VChip
+                label
+                :color="VColors.Info"
+                class="mr-2"
+              >
+                {{ key }}
+              </VChip>
+              <div>{{ value }}</div>
             </div>
           </div>
         </div>
