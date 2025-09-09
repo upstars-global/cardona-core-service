@@ -10,6 +10,26 @@ defineOptions({
   name: 'Constructor',
 })
 
+const VALIDATION_RULES = [
+  'required',
+  'email',
+  'min',
+  'max',
+  'min_value',
+  'max_value',
+  'confirmed',
+  'regex',
+  'between',
+  'alpha',
+  'integer',
+  'digits',
+  'alpha_dash',
+  'alpha_num',
+  'length',
+]
+
+const RULES_WITH_PARAMS = ['min', 'max', 'min_value', 'max_value', 'length', 'regex']
+
 const code = ref(`interface IMetaData {
   id?: string
   title: string
@@ -71,7 +91,6 @@ function parseCode() {
               },
               readonly: true,
               rawType: type,
-              extra: { },
             })
           }
           else {
@@ -85,7 +104,13 @@ function parseCode() {
               },
               readonly: false,
               rawType: type,
-              extra: { placeholder: false, info: false, validationRules: false },
+              extra: {
+                placeholder: false,
+                info: false,
+                validationRules: false,
+                selectedRules: [],
+                rulesParams: {},
+              },
             })
           }
         }
@@ -98,12 +123,7 @@ watch(i18nPrefix, newPrefix => {
   parsedFields.value.forEach(field => {
     if (!field.readonly && field.args.label?.startsWith('i18n.t')) {
       field.args.label = `i18n.t('page.${newPrefix}.${field.name}')`
-      if (field.extra.placeholder)
-        field.args.placeholder = `i18n.t('page.${newPrefix}.${field.name}Placeholder')`
-      if (field.extra.info)
-        field.args.info = `i18n.t('page.${newPrefix}.${field.name}Info')`
-      if (field.extra.validationRules)
-        field.args.validationRules = '{ required: true }'
+      updateExtras(field)
     }
   })
 })
@@ -111,6 +131,9 @@ watch(i18nPrefix, newPrefix => {
 function updateExtras(field: any) {
   const prefix = i18nPrefix.value
   const name = field.name
+
+  if (!field.extra)
+    return
 
   if (field.extra.placeholder)
     field.args.placeholder = `i18n.t('page.${prefix}.${name}Placeholder')`
@@ -122,10 +145,18 @@ function updateExtras(field: any) {
   else
     delete field.args.info
 
-  if (field.extra.validationRules)
-    field.args.validationRules = '{ required: true }'
-  else
+  if (field.extra.validationRules && field.extra.selectedRules.length > 0) {
+    const rules = field.extra.selectedRules.map(rule => {
+      const param = field.extra.rulesParams[rule]
+
+      return param ? `${rule}: ${param}` : `${rule}: true`
+    }).join(', ')
+
+    field.args.validationRules = `{ ${rules} }`
+  }
+  else {
     delete field.args.validationRules
+  }
 }
 
 function updateCode() {
@@ -157,6 +188,7 @@ function convertToRaw(field: any) {
   field.args = {
     raw: `this.${field.name} = data?.${field.name}`,
   }
+  delete field.extra
 }
 </script>
 
@@ -206,38 +238,59 @@ function convertToRaw(field: any) {
         <div
           v-for="(field, i) in parsedFields"
           :key="i"
-          class="mb-4 pa-2 border rounded"
+          class="mb-4 pa-2 border rounded d-flex"
         >
-          <div class="d-flex align-center justify-space-between">
-            <div class="d-flex align-center">
-              <VChip
-                label
-                :color="VColors.Info"
-                class="mr-2"
-              >
-                {{ field.name }}
-              </VChip>
-              <VSelect
+          <!-- LEFT -->
+          <div class="flex-grow-1 pr-4 border-right">
+            <div class="d-flex align-center justify-space-between">
+              <div class="d-flex align-center">
+                <VChip
+                  label
+                  :color="VColors.Info"
+                  class="mr-2"
+                >
+                  {{ field.name }}
+                </VChip>
+                <VSelect
+                  v-if="!field.readonly"
+                  v-model="field.className"
+                  :items="FIELD_CLASSES"
+                  class="mr-2"
+                />
+              </div>
+              <VBtn
                 v-if="!field.readonly"
-                v-model="field.className"
-                :items="FIELD_CLASSES"
-                class="mr-2"
-              />
+                size="x-small"
+                color="warning"
+                variant="outlined"
+                @click="convertToRaw(field)"
+              >
+                До простого value
+              </VBtn>
             </div>
-            <VBtn
-              v-if="!field.readonly"
-              size="x-small"
-              color="warning"
-              variant="outlined"
-              @click="convertToRaw(field)"
+
+            <div
+              v-for="(value, key) in field.args"
+              :key="key"
+              class="d-flex align-center mb-2"
             >
-              До простого value
-            </VBtn>
+              <div class="d-flex">
+                <VChip
+                  label
+                  :color="VColors.Info"
+                  class="mr-2"
+                >
+                  {{ key }}
+                </VChip>
+                <div>{{ value }}</div>
+              </div>
+            </div>
           </div>
 
+          <!-- RIGHT -->
           <div
-            v-if="!field.readonly"
-            class="d-flex align-center mb-2"
+            v-if="field.extra"
+            style="min-width: 320px;"
           >
             <VCheckbox
               v-model="field.extra.placeholder"
@@ -262,22 +315,33 @@ function convertToRaw(field: any) {
               hide-details
               @change="() => updateExtras(field)"
             />
-          </div>
 
-          <div
-            v-for="(value, key) in field.args"
-            :key="key"
-            class="d-flex align-center mb-2"
-          >
-            <div class="d-flex">
-              <VChip
-                label
-                :color="VColors.Info"
-                class="mr-2"
-              >
-                {{ key }}
-              </VChip>
-              <div>{{ value }}</div>
+            <div
+              v-if="field.extra?.validationRules"
+              class="mt-4"
+            >
+              <VSelect
+                v-model="field.extra.selectedRules"
+                :items="VALIDATION_RULES"
+                label="Rules"
+                multiple
+                density="compact"
+                hide-details
+                class="mr-2 w-100"
+                @update:model-value="() => updateExtras(field)"
+              />
+
+              <div class="w-100 my-4">
+                <VTextField
+                  v-for="rule in field.extra.selectedRules.filter(r => RULES_WITH_PARAMS.includes(r))"
+                  :key="rule"
+                  v-model="field.extra.rulesParams[rule]"
+                  :label="`Param for ${rule}`"
+                  hide-details
+                  class="w-100 my-4"
+                  @input="() => updateExtras(field)"
+                />
+              </div>
             </div>
           </div>
         </div>
