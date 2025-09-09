@@ -71,6 +71,7 @@ function parseCode() {
               },
               readonly: true,
               rawType: type,
+              extra: { },
             })
           }
           else {
@@ -84,6 +85,7 @@ function parseCode() {
               },
               readonly: false,
               rawType: type,
+              extra: { placeholder: false, info: false, validationRules: false },
             })
           }
         }
@@ -94,10 +96,37 @@ function parseCode() {
 
 watch(i18nPrefix, newPrefix => {
   parsedFields.value.forEach(field => {
-    if (!field.readonly && field.args.label?.startsWith('i18n.t'))
+    if (!field.readonly && field.args.label?.startsWith('i18n.t')) {
       field.args.label = `i18n.t('page.${newPrefix}.${field.name}')`
+      if (field.extra.placeholder)
+        field.args.placeholder = `i18n.t('page.${newPrefix}.${field.name}Placeholder')`
+      if (field.extra.info)
+        field.args.info = `i18n.t('page.${newPrefix}.${field.name}Info')`
+      if (field.extra.validationRules)
+        field.args.validationRules = '{ required: true }'
+    }
   })
 })
+
+function updateExtras(field: any) {
+  const prefix = i18nPrefix.value
+  const name = field.name
+
+  if (field.extra.placeholder)
+    field.args.placeholder = `i18n.t('page.${prefix}.${name}Placeholder')`
+  else
+    delete field.args.placeholder
+
+  if (field.extra.info)
+    field.args.info = `i18n.t('page.${prefix}.${name}Info')`
+  else
+    delete field.args.info
+
+  if (field.extra.validationRules)
+    field.args.validationRules = '{ required: true }'
+  else
+    delete field.args.validationRules
+}
 
 function updateCode() {
   const constructorLines = parsedFields.value.map(field => {
@@ -204,6 +233,35 @@ function convertToRaw(field: any) {
             >
               До простого value
             </VBtn>
+          </div>
+
+          <div
+            v-if="!field.readonly"
+            class="d-flex align-center mb-2"
+          >
+            <VCheckbox
+              v-model="field.extra.placeholder"
+              label="placeholder"
+              density="compact"
+              hide-details
+              class="mr-2"
+              @change="() => updateExtras(field)"
+            />
+            <VCheckbox
+              v-model="field.extra.info"
+              label="info"
+              density="compact"
+              hide-details
+              class="mr-2"
+              @change="() => updateExtras(field)"
+            />
+            <VCheckbox
+              v-model="field.extra.validationRules"
+              label="validationRules"
+              density="compact"
+              hide-details
+              @change="() => updateExtras(field)"
+            />
           </div>
 
           <div
