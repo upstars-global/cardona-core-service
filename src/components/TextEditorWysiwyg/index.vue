@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, inject, nextTick, ref, watch } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 import 'vue-froala-wysiwyg'
 import type { TranslateResult } from 'vue-i18n'
 import { useStore } from 'vuex'
@@ -42,6 +43,7 @@ interface Emits {
 }
 
 const modal = inject('modal')
+const editorKey = uuidv4()
 
 const store = useStore()
 const videoUploadStore = useVideoUploadStore()
@@ -264,7 +266,7 @@ const config = {
       if (!file)
         return false
 
-      videoUploadStore.upload(file).then((videoId: string) => {
+      videoUploadStore.upload(file, editorKey).then((videoId: string) => {
         const embedUrl = `https://player.vimeo.com/video/${videoId}`
         const iFrame = `<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`
 
@@ -425,7 +427,15 @@ const onSaveChanges = () => {
         data-test-id="text-editor"
         :config="config"
       />
-
+      <div
+        v-if="videoUploadStore.getProgressState(editorKey)"
+        class="py-4"
+      >
+        <VProgressLinear
+          :model-value="videoUploadStore.getProgressPercent(editorKey)"
+          :max="100"
+        />
+      </div>
       <VBtn
         v-if="isCodeViewActive"
         :color="VColors.Primary"
