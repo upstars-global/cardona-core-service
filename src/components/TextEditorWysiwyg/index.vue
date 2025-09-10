@@ -273,6 +273,10 @@ const config = {
         content.value += iFrame
       })
 
+      // Unfocus tooltip from button vimeo
+      document.querySelector('button[data-cmd="insertVideo').classList.toggle('fr-btn-active-popup')
+      document.querySelector('.fr-popup.fr-desktop').classList.toggle('fr-active')
+
       return false
     },
     'image.beforeUpload': function (images: any[]) {
