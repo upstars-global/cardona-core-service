@@ -1,122 +1,30 @@
 <script setup lang="ts">
-import * as parser from '@babel/parser'
-import traverse from '@babel/traverse'
-import * as t from '@babel/types'
-import * as recast from 'recast'
 import { ref, watch } from 'vue'
 import { VColors } from '../../@model/vuetify'
+import { parseInterfaceToClass } from './useFieldParser'
+import * as fieldConfigs from './fieldConfigs'
 
 defineOptions({ name: 'Constructor' })
 
 const VALIDATION_RULES = [
-  'required',
-  'email',
-  'min',
-  'max',
-  'min_value',
-  'max_value',
-  'confirmed',
-  'regex',
-  'between',
-  'alpha',
-  'integer',
-  'digits',
-  'alpha_dash',
-  'alpha_num',
-  'length',
+  'required', 'email', 'min', 'max', 'regex', 'between',
 ]
 
-const RULES_WITH_PARAMS = ['min', 'max', 'min_value', 'max_value', 'length', 'regex']
+const RULES_WITH_PARAMS = ['min', 'max', 'regex', 'between']
 
 const code = ref(`interface IMetaData {
   id?: string
   title: string
-  path: string
-  keywords: string
   description: string
-  canonicalUrl: string
 }`)
 
 const parsedFields = ref<any[]>([])
 const className = ref('MetaForm')
 const output = ref('')
-const interfaceFieldTypes = ref<Record<string, string>>({})
 const i18nPrefix = ref('meta')
 
-const FIELD_CLASSES = ['TextBaseField', 'TextareaBaseField', 'SelectBaseField']
-
 function parseCode() {
-  parsedFields.value = []
-  interfaceFieldTypes.value = {}
-
-  const ast = recast.parse(code.value, {
-    parser: {
-      parse: (source: string) =>
-        parser.parse(source, {
-          sourceType: 'module',
-          plugins: ['typescript', 'classProperties'],
-        }),
-    },
-  })
-
-  traverse(ast, {
-    TSInterfaceDeclaration(path) {
-      className.value = path.node.id.name.replace(/^I/, '') || 'GeneratedClass'
-
-      path.node.body.body.forEach(prop => {
-        if (t.isTSPropertySignature(prop) && t.isIdentifier(prop.key)) {
-          const name = prop.key.name
-          const typeAnnotation = prop.typeAnnotation?.typeAnnotation
-
-          let type = 'any'
-          if (t.isTSStringKeyword(typeAnnotation))
-            type = 'string'
-          else if (t.isTSBooleanKeyword(typeAnnotation))
-            type = 'boolean'
-          else if (t.isTSNumberKeyword(typeAnnotation))
-            type = 'number'
-          else if (t.isTSTypeReference(typeAnnotation) && t.isIdentifier(typeAnnotation.typeName))
-            type = typeAnnotation.typeName.name
-
-          interfaceFieldTypes.value[name] = type
-
-          if (name === 'id') {
-            parsedFields.value.push({
-              name,
-              className: 'raw',
-              args: {
-                raw: 'if (data?.id) this.id = data.id',
-              },
-              readonly: true,
-              rawType: type,
-              isRaw: true,
-            })
-          }
-          else {
-            parsedFields.value.push({
-              name,
-              className: 'TextBaseField',
-              args: {
-                key: `'${name}'`,
-                value: `data?.${name}`,
-                label: `i18n.t('page.${i18nPrefix.value}.${name}')`,
-              },
-              readonly: false,
-              rawType: type,
-              isRaw: false,
-              extra: {
-                placeholder: false,
-                info: false,
-                validationRules: false,
-                selectedRules: [],
-                rulesParams: {},
-              },
-            })
-          }
-        }
-      })
-    },
-  })
+  parsedFields.value = parseInterfaceToClass(code.value, fieldConfigs, { returnParsedFields: true }) as any[]
 }
 
 watch(i18nPrefix, newPrefix => {
@@ -131,19 +39,16 @@ watch(i18nPrefix, newPrefix => {
 function updateExtras(field: any) {
   const prefix = i18nPrefix.value
   const name = field.name
-
   if (!field.extra)
     return
 
   if (field.extra.placeholder)
     field.args.placeholder = `i18n.t('page.${prefix}.${name}Placeholder')`
-  else
-    delete field.args.placeholder
+  else delete field.args.placeholder
 
   if (field.extra.info)
     field.args.info = `i18n.t('page.${prefix}.${name}Info')`
-  else
-    delete field.args.info
+  else delete field.args.info
 
   if (field.extra.validationRules && field.extra.selectedRules.length > 0) {
     const rules = field.extra.selectedRules.map(rule => {
@@ -161,9 +66,7 @@ function updateExtras(field: any) {
 
 function convertToRaw(field: any) {
   field.className = 'raw'
-  field.args = {
-    raw: `this.${field.name} = data?.${field.name}`,
-  }
+  field.args = { raw: `this.${field.name} = data?.${field.name}` }
   field.isRaw = true
   delete field.extra
 }
@@ -175,6 +78,7 @@ function convertToBase(field: any) {
     value: `data?.${field.name}`,
     label: `i18n.t('page.${i18nPrefix.value}.${field.name}')`,
   }
+  field.isRaw = false
   field.extra = {
     placeholder: false,
     info: false,
@@ -182,27 +86,27 @@ function convertToBase(field: any) {
     selectedRules: [],
     rulesParams: {},
   }
-  field.isRaw = false
   updateExtras(field)
 }
 
 function updateCode() {
+  const cname = className.value
+
   const constructorLines = parsedFields.value.map(field => {
     if (field.className === 'raw')
       return `    ${field.args.raw}`
-
-    const args = Object.entries(field.args)
-      .map(([key, value]) => `      ${key}: ${value},`)
-      .join('\n')
+    const args = Object.entries(field.args).map(([k, v]) => `      ${k}: ${v},`).join('\n')
 
     return `    this.${field.name} = new ${field.className}({\n${args}\n    })`
   })
 
   const result = `
-export class ${className.value} {
-${parsedFields.value.map(f => `  readonly ${f.name}: ${f.className === 'raw' ? f.rawType : f.className}`).join('\n')}
+export class ${cname} {
+${parsedFields.value.map(f =>
+    `  readonly ${f.name}: ${f.className === 'raw' ? f.rawType : f.className}`,
+  ).join('\n')}
 
-  constructor(data: I${className.value}) {
+  constructor(data: I${cname}) {
 ${constructorLines.join('\n')}
   }
 }`.trim()
@@ -218,8 +122,6 @@ ${constructorLines.join('\n')}
       :color="VColors.Primary"
     />
     <div class="pa-4">
-      <h2>Редактор класу з інтерфейсу</h2>
-
       <div class="d-flex align-center mb-4">
         <div
           class="mr-2"
@@ -238,8 +140,7 @@ ${constructorLines.join('\n')}
 
       <VTextarea
         v-model="code"
-        rows="16"
-        cols="80"
+        rows="12"
         class="w-100 mb-4"
       />
       <VBtn
@@ -253,7 +154,6 @@ ${constructorLines.join('\n')}
         <h3 class="mt-4">
           Поля
         </h3>
-
         <div
           v-for="(field, i) in parsedFields"
           :key="i"
@@ -261,40 +161,32 @@ ${constructorLines.join('\n')}
         >
           <!-- LEFT -->
           <div class="flex-grow-1 pr-4 border-right">
-            <div class="d-flex align-center justify-space-between">
-              <div class="d-flex align-center mb-2">
-                <VChip
-                  label
-                  :color="field.isRaw ? VColors.Secondary : VColors.Warning"
-                  class="my-2 mr-2"
-                >
-                  {{ field.name }}
-                </VChip>
-
-                <VSelect
-                  v-if="!field.readonly && !field.isRaw"
-                  v-model="field.className"
-                  :items="FIELD_CLASSES"
-                  class="mr-2"
-                />
-              </div>
+            <div class="d-flex align-center mb-2">
+              <VChip
+                :color="field.isRaw ? VColors.Secondary : VColors.Warning"
+                class="my-2 mr-2"
+              >
+                {{ field.name }}
+              </VChip>
+              <VSelect
+                v-if="!field.readonly && !field.isRaw"
+                v-model="field.className"
+                :items="['TextBaseField', 'TextareaBaseField', 'SelectBaseField']"
+              />
             </div>
-
             <div
               v-for="(value, key) in field.args"
               :key="key"
               class="d-flex align-center mb-2"
             >
-              <div class="d-flex w-100">
-                <VChip
-                  label
-                  :color="VColors.Info"
-                  class="mr-2"
-                >
-                  {{ key }}
-                </VChip>
-                <div>{{ value }}</div>
-              </div>
+              <VChip
+                label
+                :color="VColors.Info"
+                class="mr-2"
+              >
+                {{ key }}
+              </VChip>
+              <div>{{ value }}</div>
             </div>
           </div>
 
@@ -304,77 +196,56 @@ ${constructorLines.join('\n')}
               v-if="!field.readonly"
               v-model="field.isRaw"
               label="Raw value"
-              hide-details
-              density="compact"
               @change="field.isRaw ? convertToRaw(field) : convertToBase(field)"
             />
             <div v-if="field.extra">
               <VCheckbox
                 v-model="field.extra.placeholder"
                 label="placeholder"
-                density="compact"
-                hide-details
-                class="mr-2"
                 @change="() => updateExtras(field)"
               />
               <VCheckbox
                 v-model="field.extra.info"
                 label="info"
-                density="compact"
-                hide-details
-                class="mr-2"
                 @change="() => updateExtras(field)"
               />
               <VCheckbox
                 v-model="field.extra.validationRules"
                 label="validationRules"
-                density="compact"
-                hide-details
                 @change="() => updateExtras(field)"
               />
             </div>
-
             <div
               v-if="field.extra?.validationRules"
-              class="mt-4"
+              class="mt-2"
             >
               <VSelect
                 v-model="field.extra.selectedRules"
                 :items="VALIDATION_RULES"
-                label="Rules"
                 multiple
-                density="compact"
-                hide-details
-                class="w-100"
-                @update:model-value="() => updateExtras(field)"
+                label="Rules"
+                @update:model-value="updateExtras(field)"
               />
-
-              <div class="w-100 my-4">
+              <div
+                v-for="rule in field.extra.selectedRules.filter(r => RULES_WITH_PARAMS.includes(r))"
+                :key="rule"
+              >
                 <VTextField
-                  v-for="rule in field.extra.selectedRules.filter(r => RULES_WITH_PARAMS.includes(r))"
-                  :key="rule"
                   v-model="field.extra.rulesParams[rule]"
                   :label="`Param for ${rule}`"
-                  hide-details
-                  class="w-100 my-2"
-                  @input="() => updateExtras(field)"
+                  @input="updateExtras(field)"
                 />
               </div>
             </div>
           </div>
         </div>
-
         <VBtn
           class="mt-2"
           @click="updateCode"
         >
           Згенерувати код
         </VBtn>
-
-        <h3 class="mt-4">
-          Результат
-        </h3>
-        <pre class="code-output">{{ output }}</pre>
+        <pre class="code-output mt-4">{{ output }}</pre>
       </div>
     </div>
   </div>
