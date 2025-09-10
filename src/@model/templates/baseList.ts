@@ -415,11 +415,12 @@ export interface IBaseSectionConfig {
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to base section model
+
+  // readonly withCustomModuleName?: boolean
+  // readonly customModuleName?: string
   readonly onePermissionKey?: string
   readonly permissionKey?: string
-  readonly withCustomModuleName?: boolean
   readonly noPermissionPrefix?: boolean
-  readonly customModuleName?: string
   readonly customApiPrefix?: string
   readonly loadingEndpointArr: Array<string>
   readonly customPermissionPrefix?: string
@@ -430,11 +431,12 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly isModalSection?: boolean
   readonly initializeWithUpdate: boolean
   constructor(data: IBaseSectionConfig) {
+
+    // this.withCustomModuleName = data?.withCustomModuleName
+    // this.customModuleName = data?.customModuleName
     this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
-    this.withCustomModuleName = data?.withCustomModuleName
     this.noPermissionPrefix = data?.noPermissionPrefix
-    this.customModuleName = data?.customModuleName
     this.customApiPrefix = data?.customApiPrefix
     this.loadingEndpointArr = data?.loadingEndpointArr || []
     this.customPermissionPrefix = data?.customPermissionPrefix

@@ -2,9 +2,9 @@
 import { computed, inject, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
-import { useStore } from 'vuex'
+import { useStore as useVuexStore } from 'vuex'
 import { IconsList } from '../../../@model/enums/icons'
-import { checkExistsPage, convertLowerCaseFirstSymbol, transformFormData } from '../../../helpers'
+import { checkExistsPage, transformFormData } from '../../../helpers'
 import { basePermissions } from '../../../helpers/base-permissions'
 import { BaseSectionSlots, PageType } from '../../../@model/templates/baseSection'
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
@@ -15,6 +15,7 @@ import { ModalsId } from '../../..//@model/modalsId'
 import { useRedirectToNotFoundPage } from '../../../helpers/router'
 import { useLoaderStore } from '../../../stores/loader'
 import { useTextEditorStore } from '../../../stores/textEditor'
+import { useBaseStoreCore } from '../../../stores/baseStoreCore'
 import { setTabError } from './composables/tabs'
 import { generateEntityUrl } from './composables/entity'
 import BaseSectionLoading from './BaseSectionLoading.vue'
@@ -41,11 +42,12 @@ const emits = defineEmits<{
 }>()
 
 const modal = inject('modal')
-const store = useStore()
+const vuexStore = useVuexStore()
 const loaderStore = useLoaderStore()
 const route = useRoute()
 const router = useRouter()
 const textEditorStore = useTextEditorStore()
+const baseStore = useBaseStoreCore()
 
 const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 
@@ -54,7 +56,7 @@ const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
 const isModal = props.config?.isModalSection
 
-const { entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb, onSerializeFormCb, validationErrorCb }
+const { useStore, entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb, onSerializeFormCb, validationErrorCb }
   = props.useEntity()
 
 const formRef = ref(null)
@@ -65,15 +67,24 @@ const entityUrl = generateEntityUrl(entityName)
 
 const isExistsListPage = checkExistsPage(ListPageName)
 
-// Action names
-const moduleName: string = props.config?.withCustomModuleName
-  ? props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
-  : 'baseStoreCore'
+const actualStore = useStore ? baseStore : useBaseStoreCore()
 
-const createActionName = `${moduleName}/createEntity`
-const readActionName = `${moduleName}/readEntity`
-const updateActionName = `${moduleName}/updateEntity`
-const deleteActionName = `${moduleName}/deleteEntity`
+// Actions
+
+const actionCreate = actualStore.createEntity
+const actionUpdate = actualStore.updateEntity
+const actionRead = actualStore.readEntity
+const actionDelete = actualStore.deleteEntity
+
+// Action names
+// const moduleName: string = props.config?.withCustomModuleName
+//   ? props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
+//   : 'baseStoreCore'
+//
+// const createActionName = `${moduleName}/createEntity`
+// const readActionName = `${moduleName}/readEntity`
+// const updateActionName = `${moduleName}/updateEntity`
+// const deleteActionName = `${moduleName}/deleteEntity`
 
 // Permissions
 const { canCreateSeo, canUpdate, canUpdateSeo, canRemove, canViewSeo }
@@ -90,7 +101,7 @@ const isDisableSubmitBtn = computed(() => {
   return loaderStore.isLoadingEndpoint(props.config.loadingEndpointArr)
 })
 
-const isExistsEndpointsWithError = computed(() => store.getters.isErrorEndpoint([
+const isExistsEndpointsWithError = computed(() => vuexStore.getters.isErrorEndpoint([
   `${entityUrl}/read`,
   ...props.config.loadingEndpointArr,
 ]))
@@ -99,7 +110,7 @@ const form = ref()
 
 const onFetchFormData = async () => {
   try {
-    const receivedEntity = await store.dispatch(readActionName, {
+    const receivedEntity = await actionRead({
       type: entityName,
       id: entityId,
       customApiPrefix: props.config?.customApiPrefix,
@@ -153,7 +164,7 @@ const isDisableSubmit = computed(() => [isLoadingPage.value, isDisableSubmitBtn.
 
 // Handlers
 const transformedForm = ref({})
-const actionName = computed(() => isCreatePage ? createActionName : updateActionName)
+const baseSectionAction = computed(() => isCreatePage ? actionCreate : actionUpdate)
 const isStaySubmit = ref(false)
 
 const isUpdateSeoOnly = computed(
@@ -215,7 +226,7 @@ const redirectToListOrPrevPage = () => {
 const onSave = async (isStay?: boolean) => {
   modal.hideModal(ModalsId.ConfirmModal)
   try {
-    const data = await store.dispatch(actionName.value, {
+    const data = await baseSectionAction.value({
       type: entityName,
       data: {
         form: transformedForm.value,
@@ -263,7 +274,7 @@ const onClickRemove = async () => {
 
 const confirmRemoveModal = async () => {
   modal.hideModal(removeModalId)
-  await store.dispatch(deleteActionName, {
+  await actionDelete({
     type: entityName,
     id: entityId,
     customApiPrefix: props.config?.customApiPrefix,
@@ -273,11 +284,11 @@ const confirmRemoveModal = async () => {
 }
 
 watch(() => formRef.value?.values, () => {
-  store.dispatch('resetErrorUrls')
+  vuexStore.dispatch('resetErrorUrls')
 }, { deep: true })
 
 onBeforeUnmount(() => {
-  store.dispatch('resetErrorUrls')
+  vuexStore.dispatch('resetErrorUrls')
   textEditorStore.setVariableTextBuffer({})
 })
 
