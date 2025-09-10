@@ -1,4 +1,4 @@
-import type { ParsedField } from './types'
+import type { ParsedField } from '../types'
 
 export function generateCode(parsedFields: ParsedField[], className: string): string {
   const constructorLines = parsedFields.map(field => {

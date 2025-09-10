@@ -1,4 +1,4 @@
-import type { ParsedField } from './types'
+import type { ParsedField } from '../types'
 
 export function updateExtras(field: ParsedField, prefix: string) {
   const name = field.name

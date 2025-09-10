@@ -2,8 +2,8 @@ import * as parser from '@babel/parser'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import * as recast from 'recast'
-import { createField } from './fieldFactory'
-import type { BaseFieldConfig } from './types'
+import { createField } from '../fieldFactory'
+import type { BaseFieldConfig } from '../types'
 
 interface ParseOptions {
   returnFields?: boolean
