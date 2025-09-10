@@ -1,4 +1,5 @@
 import { beforeEach, describe, it } from 'vitest'
+
 import type { VueWrapper } from '@vue/test-utils'
 import StatusWithDateField from '../../../../../../../src/components/templates/BaseList/_components/fields/StatusWithDateField.vue'
 import { setMountComponent } from '../../../../../utils'
@@ -6,6 +7,9 @@ import { VColors, VVariants } from '../../../../../../../src/@model/vuetify'
 import { getTestCases } from '../../../../../templates/shared-tests/date-and-dateTimeField'
 import { fullDate } from '../../../../../../../src/utils/date'
 import { testOn } from '../../../../../templates/shared-tests/test-case-generator'
+import { StatusWithVariant } from '../../../../../../../src/@model/view'
+import { MockStatusVariants, MockStatuses } from '../../../../../templates/shared-tests/status-field'
+import { convertUpperCaseFirstSymbol } from '../../../../../../../src/helpers'
 
 const getMountStatusWithDateField = setMountComponent(StatusWithDateField)
 
@@ -14,9 +18,12 @@ const testIds = {
   statusFieldText: 'status-field-text',
 }
 
+const currentStatus = MockStatuses.removed
+const value = new StatusWithVariant(currentStatus, MockStatusVariants[currentStatus])
+
 const defaultProps = {
   item: {
-    status: 'active',
+    status: value,
     variant: VVariants.Outlined,
     updatedAt: new Date('10.10.2025, 22:00'),
   },
@@ -37,7 +44,7 @@ describe('StatusWithDateField.vue', () => {
     it(description, () => {
       props.item.updatedAt = propsValue.date
 
-      /// Set to wrapper variable wrapper of component DateField which is using in StatusWithDateField
+      // Set to wrapper variable wrapper of component DateField which is using in StatusWithDateField
       const wrapper = getDateFieldWrapper(getMountStatusWithDateField(props))
 
       if (expectedDate instanceof Date)
@@ -50,10 +57,9 @@ describe('StatusWithDateField.vue', () => {
   it('Check render elements byDefaultProps from test ', () => {
     const wrapper = getMountStatusWithDateField(props)
 
-    /// Check render status of status field
-    testOn.existClass({ wrapper, testId: testIds.statusField }, `text-${VColors.Success}`)
+    testOn.existClass({ wrapper, testId: testIds.statusField }, `text-${VColors.Secondary}`)
 
     testOn.existClass({ wrapper, testId: testIds.statusField }, `v-chip--variant-${VVariants.Tonal}`)
-    testOn.equalTextValue({ wrapper, testId: testIds.statusFieldText }, 'Active')
+    testOn.equalTextValue({ wrapper, testId: testIds.statusFieldText }, convertUpperCaseFirstSymbol(currentStatus))
   })
 })
