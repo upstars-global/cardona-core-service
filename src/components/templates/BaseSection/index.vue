@@ -47,7 +47,6 @@ const loaderStore = useLoaderStore()
 const route = useRoute()
 const router = useRouter()
 const textEditorStore = useTextEditorStore()
-const baseStore = useBaseStoreCore()
 
 const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 
@@ -67,7 +66,7 @@ const entityUrl = generateEntityUrl(entityName)
 
 const isExistsListPage = checkExistsPage(ListPageName)
 
-const actualStore = useStore ? baseStore : useBaseStoreCore()
+const actualStore = useStore ? useStore() : useBaseStoreCore()
 
 // Actions
 
