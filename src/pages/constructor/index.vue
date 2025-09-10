@@ -155,6 +155,7 @@ function updateCode() {
               <div
                 v-for="rule in field.extra.selectedRules.filter(r => RULES_WITH_PARAMS.includes(r))"
                 :key="rule"
+                class="my-4"
               >
                 <VTextField
                   v-model="field.extra.rulesParams[rule]"
