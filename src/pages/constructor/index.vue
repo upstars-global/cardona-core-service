@@ -3,13 +3,13 @@ import { ref, watch } from 'vue'
 import { VColors } from '../../@model/vuetify'
 import { parseInterfaceToClass } from './useFieldParser'
 import * as fieldConfigs from './fieldConfigs'
+import { convertToBase, convertToRaw, updateExtras } from './useFields'
+import { generateCode } from './useCodeGenerator'
+import type { ParsedField } from './types'
 
 defineOptions({ name: 'Constructor' })
 
-const VALIDATION_RULES = [
-  'required', 'email', 'min', 'max', 'regex', 'between',
-]
-
+const VALIDATION_RULES = ['required', 'email', 'min', 'max', 'regex', 'between']
 const RULES_WITH_PARAMS = ['min', 'max', 'regex', 'between']
 
 const code = ref(`interface IMetaData {
@@ -18,100 +18,26 @@ const code = ref(`interface IMetaData {
   description: string
 }`)
 
-const parsedFields = ref<any[]>([])
+const parsedFields = ref<ParsedField[]>([])
 const className = ref('MetaForm')
 const output = ref('')
 const i18nPrefix = ref('meta')
 
 function parseCode() {
-  parsedFields.value = parseInterfaceToClass(code.value, fieldConfigs, { returnParsedFields: true }) as any[]
+  parsedFields.value = parseInterfaceToClass(code.value, fieldConfigs, { returnParsedFields: true }) as ParsedField[]
 }
 
 watch(i18nPrefix, newPrefix => {
   parsedFields.value.forEach(field => {
     if (!field.readonly && field.args.label?.startsWith('i18n.t')) {
       field.args.label = `i18n.t('page.${newPrefix}.${field.name}')`
-      updateExtras(field)
+      updateExtras(field, newPrefix)
     }
   })
 })
 
-function updateExtras(field: any) {
-  const prefix = i18nPrefix.value
-  const name = field.name
-  if (!field.extra)
-    return
-
-  if (field.extra.placeholder)
-    field.args.placeholder = `i18n.t('page.${prefix}.${name}Placeholder')`
-  else delete field.args.placeholder
-
-  if (field.extra.info)
-    field.args.info = `i18n.t('page.${prefix}.${name}Info')`
-  else delete field.args.info
-
-  if (field.extra.validationRules && field.extra.selectedRules.length > 0) {
-    const rules = field.extra.selectedRules.map(rule => {
-      const param = field.extra.rulesParams[rule]
-
-      return param ? `${rule}: ${param}` : `${rule}: true`
-    }).join(', ')
-
-    field.args.validationRules = `{ ${rules} }`
-  }
-  else {
-    delete field.args.validationRules
-  }
-}
-
-function convertToRaw(field: any) {
-  field.className = 'raw'
-  field.args = { raw: `this.${field.name} = data?.${field.name}` }
-  field.isRaw = true
-  delete field.extra
-}
-
-function convertToBase(field: any) {
-  field.className = 'TextBaseField'
-  field.args = {
-    key: `'${field.name}'`,
-    value: `data?.${field.name}`,
-    label: `i18n.t('page.${i18nPrefix.value}.${field.name}')`,
-  }
-  field.isRaw = false
-  field.extra = {
-    placeholder: false,
-    info: false,
-    validationRules: false,
-    selectedRules: [],
-    rulesParams: {},
-  }
-  updateExtras(field)
-}
-
 function updateCode() {
-  const cname = className.value
-
-  const constructorLines = parsedFields.value.map(field => {
-    if (field.className === 'raw')
-      return `    ${field.args.raw}`
-    const args = Object.entries(field.args).map(([k, v]) => `      ${k}: ${v},`).join('\n')
-
-    return `    this.${field.name} = new ${field.className}({\n${args}\n    })`
-  })
-
-  const result = `
-export class ${cname} {
-${parsedFields.value.map(f =>
-    `  readonly ${f.name}: ${f.className === 'raw' ? f.rawType : f.className}`,
-  ).join('\n')}
-
-  constructor(data: I${cname}) {
-${constructorLines.join('\n')}
-  }
-}`.trim()
-
-  output.value = result
+  output.value = generateCode(parsedFields.value, className.value)
 }
 </script>
 
@@ -196,23 +122,23 @@ ${constructorLines.join('\n')}
               v-if="!field.readonly"
               v-model="field.isRaw"
               label="Raw value"
-              @change="field.isRaw ? convertToRaw(field) : convertToBase(field)"
+              @change="field.isRaw ? convertToRaw(field) : convertToBase(field, i18nPrefix)"
             />
             <div v-if="field.extra">
               <VCheckbox
                 v-model="field.extra.placeholder"
                 label="placeholder"
-                @change="() => updateExtras(field)"
+                @change="() => updateExtras(field, i18nPrefix)"
               />
               <VCheckbox
                 v-model="field.extra.info"
                 label="info"
-                @change="() => updateExtras(field)"
+                @change="() => updateExtras(field, i18nPrefix)"
               />
               <VCheckbox
                 v-model="field.extra.validationRules"
                 label="validationRules"
-                @change="() => updateExtras(field)"
+                @change="() => updateExtras(field, i18nPrefix)"
               />
             </div>
             <div
@@ -224,7 +150,7 @@ ${constructorLines.join('\n')}
                 :items="VALIDATION_RULES"
                 multiple
                 label="Rules"
-                @update:model-value="updateExtras(field)"
+                @update:model-value="updateExtras(field, i18nPrefix)"
               />
               <div
                 v-for="rule in field.extra.selectedRules.filter(r => RULES_WITH_PARAMS.includes(r))"
@@ -233,7 +159,7 @@ ${constructorLines.join('\n')}
                 <VTextField
                   v-model="field.extra.rulesParams[rule]"
                   :label="`Param for ${rule}`"
-                  @input="updateExtras(field)"
+                  @input="updateExtras(field, i18nPrefix)"
                 />
               </div>
             </div>
