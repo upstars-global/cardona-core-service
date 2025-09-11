@@ -3,6 +3,7 @@ import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import * as recast from 'recast'
 import { createField } from '../fieldFactory'
+import { applyConfigOptions } from '../_composables/useFields'
 import type { BaseFieldConfig } from '../types'
 
 interface ParseOptions {
@@ -49,11 +50,9 @@ export function parseInterfaceToClass(
 
         fields.push(name)
 
-        // --- Якщо треба тільки список полів ---
         if (options.returnFields)
           return
 
-        // --- Якщо треба масив parsedFields для UI ---
         if (options.returnParsedFields) {
           if (name === 'id') {
             parsedFields.push({
@@ -66,31 +65,31 @@ export function parseInterfaceToClass(
             })
           }
           else {
-            parsedFields.push({
+            const config = fieldConfigs[name] ?? fieldConfigs.text
+
+            const field: any = {
               name,
-              className: 'TextBaseField',
+              className: config.className || 'TextBaseField',
               args: {
                 key: `'${name}'`,
                 value: `data?.${name}`,
-                label: `i18n.t('page.meta.${name}')`, // дефолт
+                label: `i18n.t('page.meta.${name}')`,
               },
               readonly: false,
               rawType: type,
               isRaw: false,
-              extra: {
-                placeholder: false,
-                info: false,
-                validationRules: false,
-                selectedRules: [],
-                rulesParams: {},
-              },
-            })
+              extra: {}, // буде заповнено з конфіга
+            }
+
+            // ⬇️ ДОДАЄМО ВСІ options З КОНФІГА В extra (наприклад, clearfix)
+            applyConfigOptions(field, config.options)
+
+            parsedFields.push(field)
           }
         }
       })
 
       if (!options.returnParsedFields && !options.returnFields) {
-        // будуємо classProperties для AST-генерації
         const classProps = props.map((prop: any) => {
           if (!t.isTSPropertySignature(prop) || !t.isIdentifier(prop.key))
             return null

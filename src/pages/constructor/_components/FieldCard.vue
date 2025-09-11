@@ -1,15 +1,33 @@
 <script setup lang="ts">
+import { watch } from 'vue'
 import { VColors } from '../../../@model/vuetify'
-import { convertToBase, convertToRaw, updateExtras } from '../_composables/useFields'
+import { applyConfigOptions, convertToBase, convertToRaw, syncConfigOptions } from '../_composables/useFields'
 import type { ParsedField } from '../types'
+import { byClass as fieldConfigsByClass } from '../fieldConfigs'
 import ValidationRulesEditor from './ValidationRulesEditor.vue'
 
-defineProps<{
+const props = defineProps<{
   field: ParsedField
   i18nPrefix: string
   VALIDATION_RULES: string[]
   RULES_WITH_PARAMS: string[]
 }>()
+
+watch(
+  () => props.field.className,
+  newClass => {
+    if (!newClass || props.field.isRaw)
+      return
+
+    const cfg = fieldConfigsByClass[newClass]
+    if (!cfg)
+      return
+
+    applyConfigOptions(props.field, cfg.options || {})
+
+    syncConfigOptions(props.field, props.i18nPrefix)
+  },
+)
 </script>
 
 <template>
@@ -54,22 +72,37 @@ defineProps<{
         label="Raw value"
         @change="field.isRaw ? convertToRaw(field) : convertToBase(field, i18nPrefix)"
       />
+
       <div v-if="field.extra">
+        <!-- базові -->
         <VCheckbox
           v-model="field.extra.placeholder"
           label="placeholder"
-          @change="() => updateExtras(field, i18nPrefix)"
+          @change="syncConfigOptions(field, i18nPrefix)"
         />
         <VCheckbox
           v-model="field.extra.info"
           label="info"
-          @change="() => updateExtras(field, i18nPrefix)"
+          @change="syncConfigOptions(field, i18nPrefix)"
         />
         <VCheckbox
           v-model="field.extra.validationRules"
           label="validationRules"
-          @change="() => updateExtras(field, i18nPrefix)"
+          @change="syncConfigOptions(field, i18nPrefix)"
         />
+
+        <!-- динамічні boolean з конфігів (наприклад, clearfix) -->
+        <div
+          v-for="(val, key) in field.extra"
+          :key="key"
+        >
+          <VCheckbox
+            v-if="typeof val === 'boolean' && !['placeholder', 'info', 'validationRules'].includes(key)"
+            v-model="field.extra[key]"
+            :label="key"
+            @change="syncConfigOptions(field, i18nPrefix)"
+          />
+        </div>
       </div>
 
       <ValidationRulesEditor
