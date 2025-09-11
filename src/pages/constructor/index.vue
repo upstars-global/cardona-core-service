@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { useClipboard } from '@vueuse/core'
 import { VColors } from '../../@model/vuetify'
 import { parseInterfaceToClass } from './_composables/useFieldParser'
 import * as fieldConfigs from './fieldConfigs'
 import { updateExtras } from './_composables/useFields'
 import { generateCode } from './_composables/useCodeGenerator'
 import type { ParsedField } from './types'
-
 import FieldCard from './_components/FieldCard.vue'
 import I18nPrefixEditor from './_components/I18nPrefixEditor.vue'
 import I18nJsonGenerator from '@/pages/constructor/_components/I18nJsonGenerator.vue'
@@ -16,6 +16,7 @@ defineOptions({ name: 'Constructor' })
 
 const VALIDATION_RULES = ['required', 'email', 'min', 'max', 'regex', 'between']
 const RULES_WITH_PARAMS = ['min', 'max', 'regex', 'between']
+const { copy } = useClipboard()
 
 const code = ref(`interface IMetaData {
   id?: string
@@ -206,8 +207,15 @@ onMounted(() => {
             elevation="1"
           >
             <VCardTitle>
-              3. Згенерований клас
-              <span class="text-grey ml-2">({{ className }})</span>
+              <div class="d-flex align-center justify-space-between">
+                <span class="text-grey ml-2"> 3. Згенерований клас ({{ className }})</span>
+                <VBtn
+                  color="success"
+                  @click="copy(output)"
+                >
+                  📋 Копіювати Class
+                </VBtn>
+              </div>
             </VCardTitle>
             <VCardText>
               <pre class="code-output">{{ output }}</pre>
