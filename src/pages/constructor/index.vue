@@ -47,8 +47,9 @@ function updateCode() {
 
 const isAutoGeneration = ref(false)
 
-watch(() => parsedFields.value, (value) => {
-  if (!isAutoGeneration.value) return
+watch(() => parsedFields.value, () => {
+  if (!isAutoGeneration.value)
+    return
   updateCode()
 }, { deep: true })
 </script>
@@ -56,52 +57,112 @@ watch(() => parsedFields.value, (value) => {
 <template>
   <div>
     <VToolbar
-      title="Constructor"
       :color="VColors.Primary"
+      title="🧩 Конструктор класу"
     />
-    <div class="pa-4">
-      <!-- i18n prefix editor -->
-      <I18nPrefixEditor v-model="i18nPrefix" />
 
-      <!-- textarea -->
-      <VTextarea
-        v-model="code"
-        rows="12"
-        class="w-100 mb-4"
-      />
-
-      <VBtn
-        class="mr-2"
-        @click="parseCode"
+    <div class="pa-6">
+      <VRow
+        align="start"
+        justify="space-between"
+        dense
       >
-        Розпарсити
-      </VBtn>
-
-      <div v-if="parsedFields.length">
-        <h3 class="mt-4">
-          Поля
-        </h3>
-        <FieldCard
-          v-for="(field, i) in parsedFields"
-          :key="i"
-          :field="field"
-          :i18n-prefix="i18nPrefix"
-          :VALIDATION_RULES="VALIDATION_RULES"
-          :RULES_WITH_PARAMS="RULES_WITH_PARAMS"
-        />
-        <VCheckbox
-          v-model="isAutoGeneration"
-          label="Auto generation"
-        />
-        <VBtn
-          v-if="!isAutoGeneration"
-          class="mt-2"
-          @click="updateCode"
+        <!-- LEFT SIDE — Керування -->
+        <VCol
+          cols="12"
+          md="6"
         >
-          Згенерувати код
-        </VBtn>
-        <pre class="code-output mt-4">{{ output }}</pre>
-      </div>
+          <!-- Вхідні дані -->
+          <VCard
+            class="mb-6"
+            elevation="1"
+          >
+            <VCardTitle>1. Вставте TypeScript інтерфейс</VCardTitle>
+            <VCardText>
+              <VTextarea
+                v-model="code"
+                rows="10"
+                label="TypeScript interface"
+                hint="Очікується інтерфейс типу: interface IMetaData { ... }"
+                persistent-hint
+                class="mb-4"
+              />
+              <I18nPrefixEditor
+                v-model="i18nPrefix"
+                class="mb-4"
+              />
+              <div class="d-flex align-center justify-space-between">
+                <VBtn
+                  color="primary"
+                  @click="() => {
+                    parseCode()
+                    updateCode()
+                  }"
+                >
+                  🔍 Розпарсити
+                </VBtn>
+                <VCheckbox
+                  v-model="isAutoGeneration"
+                  label="Автооновлення коду"
+                  class="ml-4"
+                />
+              </div>
+            </VCardText>
+          </VCard>
+
+          <!-- Поля -->
+          <VCard
+            v-if="parsedFields.length"
+            elevation="1"
+          >
+            <VCardTitle>
+              2. Редагування полів
+              <span class="text-grey ml-2">({{ parsedFields.length }} полів)</span>
+            </VCardTitle>
+
+            <VCardText>
+              <FieldCard
+                v-for="(field, i) in parsedFields"
+                :key="i"
+                :field="field"
+                :i18n-prefix="i18nPrefix"
+                :VALIDATION_RULES="VALIDATION_RULES"
+                :RULES_WITH_PARAMS="RULES_WITH_PARAMS"
+                class="mb-4"
+              />
+            </VCardText>
+
+            <VCardActions class="d-flex justify-end">
+              <VBtn
+                v-if="!isAutoGeneration"
+                color="primary"
+                @click="updateCode"
+              >
+                🚀 Згенерувати код вручну
+              </VBtn>
+            </VCardActions>
+          </VCard>
+        </VCol>
+
+        <!-- RIGHT SIDE — Код -->
+        <VCol
+          cols="12"
+          md="6"
+        >
+          <VCard
+            v-if="output"
+            elevation="1"
+          >
+            <VCardTitle>
+              3. Згенерований клас
+              <span class="text-grey ml-2">({{ className }})</span>
+            </VCardTitle>
+            <VCardText>
+              <pre class="code-output">{{ output }}</pre>
+            </VCardText>
+          </VCard>
+        </VCol>
+      </VRow>
     </div>
   </div>
 </template>
@@ -113,5 +174,7 @@ watch(() => parsedFields.value, (value) => {
   border-radius: 6px;
   overflow-x: auto;
   white-space: pre-wrap;
+  font-size: 0.9rem;
+  min-height: 400px;
 }
 </style>
