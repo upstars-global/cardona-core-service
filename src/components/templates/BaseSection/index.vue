@@ -75,16 +75,6 @@ const actionUpdate = actualStore.updateEntity
 const actionRead = actualStore.readEntity
 const actionDelete = actualStore.deleteEntity
 
-// Action names
-// const moduleName: string = props.config?.withCustomModuleName
-//   ? props.config?.customModuleName || convertLowerCaseFirstSymbol(entityName)
-//   : 'baseStoreCore'
-//
-// const createActionName = `${moduleName}/createEntity`
-// const readActionName = `${moduleName}/readEntity`
-// const updateActionName = `${moduleName}/updateEntity`
-// const deleteActionName = `${moduleName}/deleteEntity`
-
 // Permissions
 const { canCreateSeo, canUpdate, canUpdateSeo, canRemove, canViewSeo }
   = basePermissions<BaseSectionConfig>({ entityName, config: props.config })

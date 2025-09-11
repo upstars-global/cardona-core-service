@@ -415,9 +415,6 @@ export interface IBaseSectionConfig {
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to base section model
-
-  // readonly withCustomModuleName?: boolean
-  // readonly customModuleName?: string
   readonly onePermissionKey?: string
   readonly permissionKey?: string
   readonly noPermissionPrefix?: boolean
@@ -431,9 +428,6 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly isModalSection?: boolean
   readonly initializeWithUpdate: boolean
   constructor(data: IBaseSectionConfig) {
-
-    // this.withCustomModuleName = data?.withCustomModuleName
-    // this.customModuleName = data?.customModuleName
     this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
     this.noPermissionPrefix = data?.noPermissionPrefix
