@@ -28,93 +28,32 @@ export function parseInterfaceToClass(
 
   traverse(ast, {
     TSInterfaceDeclaration(path) {
-      className = `${path.node.id.name.replace(/^I/, '')}Form`
+      className = getClassName(path.node.id.name)
 
       const props = path.node.body.body
 
-      props.forEach((prop: any) => {
-        if (!t.isTSPropertySignature(prop) || !t.isIdentifier(prop.key))
-          return
-        const name = prop.key.name
+      for (const prop of props) {
+        if (!isValidProperty(prop))
+          continue
 
-        let type = 'any'
-        const typeAnnotation = prop.typeAnnotation?.typeAnnotation
-        if (t.isTSStringKeyword(typeAnnotation))
-          type = 'string'
-        else if (t.isTSBooleanKeyword(typeAnnotation))
-          type = 'boolean'
-        else if (t.isTSNumberKeyword(typeAnnotation))
-          type = 'number'
-        else if (t.isTSTypeReference(typeAnnotation) && t.isIdentifier(typeAnnotation.typeName))
-          type = typeAnnotation.typeName.name
+        const name = (prop.key as t.Identifier).name
+        const type = resolveTSType(prop.typeAnnotation?.typeAnnotation)
 
         fields.push(name)
-
         if (options.returnFields)
-          return
+          continue
 
         if (options.returnParsedFields) {
-          if (name === 'id') {
-            parsedFields.push({
-              name,
-              className: 'raw',
-              args: { raw: 'if (data?.id) this.id = data.id' },
-              readonly: true,
-              rawType: type,
-              isRaw: true,
-            })
-          }
-          else {
-            const config = fieldConfigs[name] ?? fieldConfigs.text
-
-            const field: any = {
-              name,
-              className: config.className || 'TextBaseField',
-              args: {
-                key: `'${name}'`,
-                value: `data?.${name}`,
-                label: `i18n.t('page.meta.${name}')`,
-              },
-              readonly: false,
-              rawType: type,
-              isRaw: false,
-              extra: {}, // буде заповнено з конфіга
-            }
-
-            // ⬇️ ДОДАЄМО ВСІ options З КОНФІГА В extra (наприклад, clearfix)
-            applyConfigOptions(field, config.options)
-
-            parsedFields.push(field)
-          }
-        }
-      })
-
-      if (!options.returnParsedFields && !options.returnFields) {
-        const classProps = props.map((prop: any) => {
-          if (!t.isTSPropertySignature(prop) || !t.isIdentifier(prop.key))
-            return null
-          const name = prop.key.name
-          const config = fieldConfigs[name] ?? fieldConfigs.text
-
-          config.options.key = name
-          config.options.label ||= name
-
-          const initExpression = recast.parse(createField(config)).program.body[0] as t.ExpressionStatement
-
-          const classProp = t.classProperty(
-            t.identifier(name),
-            initExpression.expression,
-            undefined,
-            null,
+          parsedFields.push(
+            name === 'id'
+              ? createRawParsedField(name, type)
+              : createParsedField(name, type, fieldConfigs),
           )
-
-          ;(classProp as any).readonly = true
-
-          return classProp
-        }).filter(Boolean) as t.ClassProperty[]
-
-        classBody = t.classBody(classProps)
+        }
       }
+
+      if (!options.returnFields && !options.returnParsedFields)
+        classBody = generateClassBody(props, fieldConfigs)
 
       path.stop()
     },
@@ -124,7 +63,6 @@ export function parseInterfaceToClass(
     return fields
   if (options.returnParsedFields)
     return parsedFields
-
   if (!classBody)
     return ''
 
@@ -136,4 +74,94 @@ export function parseInterfaceToClass(
   )
 
   return recast.print(classAst).code
+}
+function getClassName(interfaceName: string): string {
+  return `${interfaceName.replace(/^I/, '')}Form`
+}
+
+function isValidProperty(prop: any): prop is t.TSPropertySignature {
+  return t.isTSPropertySignature(prop) && t.isIdentifier(prop.key)
+}
+
+function resolveTSType(typeNode: t.TSType | undefined): string {
+  if (t.isTSStringKeyword(typeNode))
+    return 'string'
+  if (t.isTSBooleanKeyword(typeNode))
+    return 'boolean'
+  if (t.isTSNumberKeyword(typeNode))
+    return 'number'
+  if (t.isTSTypeReference(typeNode) && t.isIdentifier(typeNode.typeName))
+    return typeNode.typeName.name
+
+  return 'any'
+}
+
+function createRawParsedField(name: string, type: string) {
+  return {
+    name,
+    className: 'raw',
+    args: { raw: 'if (data?.id) this.id = data.id' },
+    readonly: true,
+    rawType: type,
+    isRaw: true,
+  }
+}
+
+function createParsedField(
+  name: string,
+  type: string,
+  fieldConfigs: Record<string, BaseFieldConfig>,
+) {
+  const config = fieldConfigs[name] ?? fieldConfigs.text
+
+  const field = {
+    name,
+    className: config.className || 'TextBaseField',
+    args: {
+      key: `'${name}'`,
+      value: `data?.${name}`,
+      label: `i18n.t('page.meta.${name}')`,
+    },
+    readonly: false,
+    rawType: type,
+    isRaw: false,
+    extra: {},
+  }
+
+  applyConfigOptions(field, config.options)
+
+  return field
+}
+
+function generateClassBody(
+  props: readonly t.TSTypeElement[],
+  fieldConfigs: Record<string, BaseFieldConfig>,
+): t.ClassBody {
+  const classProps: t.ClassProperty[] = []
+
+  for (const prop of props) {
+    if (!isValidProperty(prop))
+      continue
+
+    const name = prop.key.name
+    const config = fieldConfigs[name] ?? fieldConfigs.text
+
+    config.options.key = name
+    config.options.label ||= name
+
+    const initExpression = recast.parse(createField(config)).program.body[0] as t.ExpressionStatement
+
+    const classProp = t.classProperty(
+      t.identifier(name),
+      initExpression.expression,
+      undefined,
+      null,
+    )
+
+    ;(classProp as any).readonly = true
+
+    classProps.push(classProp)
+  }
+
+  return t.classBody(classProps)
 }

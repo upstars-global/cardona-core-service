@@ -44,6 +44,13 @@ watch(i18nPrefix, newPrefix => {
 function updateCode() {
   output.value = generateCode(parsedFields.value, className.value)
 }
+
+const isAutoGeneration = ref(false)
+
+watch(() => parsedFields.value, (value) => {
+  if (!isAutoGeneration.value) return
+  updateCode()
+}, { deep: true })
 </script>
 
 <template>
@@ -82,7 +89,12 @@ function updateCode() {
           :VALIDATION_RULES="VALIDATION_RULES"
           :RULES_WITH_PARAMS="RULES_WITH_PARAMS"
         />
+        <VCheckbox
+          v-model="isAutoGeneration"
+          label="Auto generation"
+        />
         <VBtn
+          v-if="!isAutoGeneration"
           class="mt-2"
           @click="updateCode"
         >
