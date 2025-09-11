@@ -402,6 +402,17 @@ const onSaveChanges = () => {
   globalEditor.value.codeView.toggle()
   isCodeViewActive.value = false
 }
+
+function extractVimeoIds(html: string): string[] {
+  const regex = /<iframe[^>]+src=["'](?:https?:)?\/\/(?:player\.)?vimeo\.com\/video\/(\d+)["'][^>]*><\/iframe>/g
+  const results: string[] = []
+  let match
+
+  while ((match = regex.exec(html)) !== null)
+    results.push(match[1]) // only the videoId
+
+  return results
+}
 </script>
 
 <template>

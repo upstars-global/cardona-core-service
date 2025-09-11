@@ -23,6 +23,11 @@ interface UploadVideoToVimeoPayload {
   key: string
 }
 
+interface GetStatusVideoPayload {
+  videoId: string
+  project: string
+}
+
 const CHUNK_SIZE = 1024 * 1024
 
 export const useVideoUploadStore = defineStore('videoUpload', {
@@ -105,6 +110,14 @@ export const useVideoUploadStore = defineStore('videoUpload', {
 
         upload.start()
       })
+    },
+    async getStatusVideo(payload: GetStatusVideoPayload): Promise<boolean> {
+      const { data }: { data: { status: { ok: boolean } } } = await ApiService.request({
+        type: 'App.V2.Vimeo.UploadComplete',
+        data: payload,
+      })
+
+      return data.status.ok
     },
   },
 })
