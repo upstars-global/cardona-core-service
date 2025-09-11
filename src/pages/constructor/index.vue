@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { useClipboard } from '@vueuse/core'
-import { VColors } from '../../@model/vuetify'
+import {VColors, VVariants} from '../../@model/vuetify'
 import { parseInterfaceToClass } from './_composables/useFieldParser'
 import * as fieldConfigs from './fieldConfigs'
 import { updateExtras } from './_composables/useFields'
 import { generateCode } from './_composables/useCodeGenerator'
 import type { ParsedField } from './types'
+
 import FieldCard from './_components/FieldCard.vue'
 import I18nPrefixEditor from './_components/I18nPrefixEditor.vue'
 import I18nJsonGenerator from '@/pages/constructor/_components/I18nJsonGenerator.vue'
@@ -16,7 +17,6 @@ defineOptions({ name: 'Constructor' })
 
 const VALIDATION_RULES = ['required', 'email', 'min', 'max', 'regex', 'between']
 const RULES_WITH_PARAMS = ['min', 'max', 'regex', 'between']
-const { copy } = useClipboard()
 
 const code = ref(`interface IMetaData {
   id?: string
@@ -27,7 +27,12 @@ const code = ref(`interface IMetaData {
 const parsedFields = ref<ParsedField[]>([])
 const className = ref('MetaForm')
 const output = ref('')
+const editableOutput = ref('')
 const i18nPrefix = ref('meta')
+const isAutoGeneration = ref(false)
+const localizationDrawerState = ref(false)
+
+const { copy } = useClipboard()
 
 function parseCode() {
   parsedFields.value = parseInterfaceToClass(code.value, fieldConfigs, {
@@ -46,6 +51,7 @@ watch(i18nPrefix, newPrefix => {
 
 function updateCode() {
   output.value = generateCode(parsedFields.value, className.value)
+  editableOutput.value = output.value
 }
 
 function getI18nKeys(fields: ParsedField[], prefix: string): string[] {
@@ -63,10 +69,6 @@ function getI18nKeys(fields: ParsedField[], prefix: string): string[] {
     })
 }
 
-const isAutoGeneration = ref(false)
-
-const localizationDrawerState = ref(false)
-
 const parseAndUpdate = () => {
   parseCode()
   updateCode()
@@ -75,6 +77,15 @@ const parseAndUpdate = () => {
 onMounted(() => {
   parseAndUpdate()
 })
+
+watch(
+  () => parsedFields.value,
+  () => {
+    if (isAutoGeneration.value)
+      updateCode()
+  },
+  { deep: true },
+)
 </script>
 
 <template>
@@ -86,12 +97,14 @@ onMounted(() => {
       <template #append>
         <VBtn
           :color="VColors.White"
+          :variant="VVariants.Outlined"
           @click="localizationDrawerState = !localizationDrawerState"
         >
           Update localization keys
         </VBtn>
       </template>
     </VToolbar>
+
     <VNavigationDrawer
       v-model="localizationDrawerState"
       location="bottom"
@@ -115,6 +128,7 @@ onMounted(() => {
         <I18nJsonGenerator :keys="getI18nKeys(parsedFields, i18nPrefix)" />
       </VCard>
     </VNavigationDrawer>
+
     <div class="pa-6">
       <VRow
         align="start"
@@ -126,7 +140,6 @@ onMounted(() => {
           cols="12"
           md="6"
         >
-          <!-- Вхідні дані -->
           <VCard
             class="mb-6"
             elevation="1"
@@ -142,10 +155,12 @@ onMounted(() => {
                 class="mb-4"
                 @update:model-value="parseAndUpdate"
               />
+
               <I18nPrefixEditor
                 v-model="i18nPrefix"
                 class="mb-4"
               />
+
               <div class="d-flex align-center justify-space-between">
                 <VBtn
                   color="primary"
@@ -172,7 +187,6 @@ onMounted(() => {
               2. Редагування полів
               <span class="text-grey ml-2">({{ parsedFields.length }} полів)</span>
             </VCardTitle>
-
             <VCardText>
               <FieldCard
                 v-for="(field, i) in parsedFields"
@@ -184,7 +198,6 @@ onMounted(() => {
                 class="mb-4"
               />
             </VCardText>
-
             <VCardActions class="d-flex justify-end">
               <VBtn
                 v-if="!isAutoGeneration"
@@ -197,28 +210,36 @@ onMounted(() => {
           </VCard>
         </VCol>
 
-        <!-- RIGHT SIDE — Код -->
+        <!-- RIGHT SIDE — Редагований Клас -->
         <VCol
           cols="12"
           md="6"
         >
           <VCard
-            v-if="output"
+            v-if="editableOutput"
             elevation="1"
           >
             <VCardTitle>
               <div class="d-flex align-center justify-space-between">
-                <span class="text-grey ml-2"> 3. Згенерований клас ({{ className }})</span>
+                <span class="text-grey ml-2">3. Згенерований клас ({{ className }})</span>
                 <VBtn
                   color="success"
-                  @click="copy(output)"
+                  @click="copy(editableOutput)"
                 >
                   📋 Копіювати Class
                 </VBtn>
               </div>
             </VCardTitle>
             <VCardText>
-              <pre class="code-output">{{ output }}</pre>
+              <VTextarea
+                v-model="editableOutput"
+                rows="20"
+                auto-grow
+                class="code-output"
+                label="Код класу"
+                hint="Цей код можна редагувати перед копіюванням"
+                persistent-hint
+              />
             </VCardText>
           </VCard>
         </VCol>
@@ -229,12 +250,8 @@ onMounted(() => {
 
 <style scoped>
 .code-output {
-  background-color: #f6f8fa;
-  padding: 1rem;
-  border-radius: 6px;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  font-size: 0.9rem;
-  min-height: 400px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
 }
 </style>
