@@ -44,6 +44,7 @@ declare module 'vue-router/auto/routes' {
     'authentication-auth-provider': RouteRecordInfo<'authentication-auth-provider', '/authentication/AuthProvider', Record<never, never>, Record<never, never>>,
     'constructor': RouteRecordInfo<'constructor', '/constructor', Record<never, never>, Record<never, never>>,
     'constructor-components-field-card': RouteRecordInfo<'constructor-components-field-card', '/constructor/_components/FieldCard', Record<never, never>, Record<never, never>>,
+    'constructor-components-i18n-json-generator': RouteRecordInfo<'constructor-components-i18n-json-generator', '/constructor/_components/I18nJsonGenerator', Record<never, never>, Record<never, never>>,
     'constructor-components-i18n-prefix-editor': RouteRecordInfo<'constructor-components-i18n-prefix-editor', '/constructor/_components/I18nPrefixEditor', Record<never, never>, Record<never, never>>,
     'constructor-components-validation-rules-editor': RouteRecordInfo<'constructor-components-validation-rules-editor', '/constructor/_components/ValidationRulesEditor', Record<never, never>, Record<never, never>>,
     'error404': RouteRecordInfo<'error404', '/error/404', Record<never, never>, Record<never, never>>,

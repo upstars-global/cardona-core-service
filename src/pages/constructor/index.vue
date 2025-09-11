@@ -9,6 +9,7 @@ import type { ParsedField } from './types'
 
 import FieldCard from './_components/FieldCard.vue'
 import I18nPrefixEditor from './_components/I18nPrefixEditor.vue'
+import I18nJsonGenerator from '@/pages/constructor/_components/I18nJsonGenerator.vue'
 
 defineOptions({ name: 'Constructor' })
 
@@ -45,13 +46,27 @@ function updateCode() {
   output.value = generateCode(parsedFields.value, className.value)
 }
 
+function getI18nKeys(fields: ParsedField[], prefix: string): string[] {
+  return fields
+    .filter(f => !f.readonly)
+    .flatMap(f => {
+      const base = `page.${prefix}.${f.name}`
+      const keys = [base]
+      if (f.extra?.placeholder)
+        keys.push(`${base}Placeholder`)
+      if (f.extra?.info)
+        keys.push(`${base}Info`)
+
+      return keys
+    })
+}
+
 const isAutoGeneration = ref(false)
 
-watch(() => parsedFields.value, () => {
-  if (!isAutoGeneration.value)
-    return
+const parseAndUpdate = () => {
+  parseCode()
   updateCode()
-}, { deep: true })
+}
 </script>
 
 <template>
@@ -60,7 +75,7 @@ watch(() => parsedFields.value, () => {
       :color="VColors.Primary"
       title="🧩 Конструктор класу"
     />
-
+    <I18nJsonGenerator :keys="getI18nKeys(parsedFields, i18nPrefix)" />
     <div class="pa-6">
       <VRow
         align="start"
@@ -94,10 +109,7 @@ watch(() => parsedFields.value, () => {
               <div class="d-flex align-center justify-space-between">
                 <VBtn
                   color="primary"
-                  @click="() => {
-                    parseCode()
-                    updateCode()
-                  }"
+                  @click="parseAndUpdate"
                 >
                   🔍 Розпарсити
                 </VBtn>
@@ -105,6 +117,7 @@ watch(() => parsedFields.value, () => {
                   v-model="isAutoGeneration"
                   label="Автооновлення коду"
                   class="ml-4"
+                  @update:model-value="(value) => { value ? parseAndUpdate() : null }"
                 />
               </div>
             </VCardText>
