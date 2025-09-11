@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { VColors } from '../../@model/vuetify'
 import { parseInterfaceToClass } from './_composables/useFieldParser'
 import * as fieldConfigs from './fieldConfigs'
@@ -10,6 +10,7 @@ import type { ParsedField } from './types'
 import FieldCard from './_components/FieldCard.vue'
 import I18nPrefixEditor from './_components/I18nPrefixEditor.vue'
 import I18nJsonGenerator from '@/pages/constructor/_components/I18nJsonGenerator.vue'
+import { IconsList } from '@/@model/enums/icons'
 
 defineOptions({ name: 'Constructor' })
 
@@ -63,10 +64,16 @@ function getI18nKeys(fields: ParsedField[], prefix: string): string[] {
 
 const isAutoGeneration = ref(false)
 
+const localizationDrawerState = ref(false)
+
 const parseAndUpdate = () => {
   parseCode()
   updateCode()
 }
+
+onMounted(() => {
+  parseAndUpdate()
+})
 </script>
 
 <template>
@@ -74,8 +81,39 @@ const parseAndUpdate = () => {
     <VToolbar
       :color="VColors.Primary"
       title="🧩 Конструктор класу"
-    />
-    <I18nJsonGenerator :keys="getI18nKeys(parsedFields, i18nPrefix)" />
+    >
+      <template #append>
+        <VBtn
+          :color="VColors.White"
+          @click="localizationDrawerState = !localizationDrawerState"
+        >
+          Update localization keys
+        </VBtn>
+      </template>
+    </VToolbar>
+    <VNavigationDrawer
+      v-model="localizationDrawerState"
+      location="bottom"
+      width="500"
+    >
+      <VCard min-width="500">
+        <VCardTitle>
+          <div
+            class="d-flex align-center justify-space-between"
+            style="width: 100%;"
+          >
+            <span class="text-h6">
+              Update localization keys
+            </span>
+            <VBtn
+              :icon="IconsList.XIcon"
+              @click="localizationDrawerState = false"
+            />
+          </div>
+        </VCardTitle>
+        <I18nJsonGenerator :keys="getI18nKeys(parsedFields, i18nPrefix)" />
+      </VCard>
+    </VNavigationDrawer>
     <div class="pa-6">
       <VRow
         align="start"
@@ -101,6 +139,7 @@ const parseAndUpdate = () => {
                 hint="Очікується інтерфейс типу: interface IMetaData { ... }"
                 persistent-hint
                 class="mb-4"
+                @update:model-value="parseAndUpdate"
               />
               <I18nPrefixEditor
                 v-model="i18nPrefix"

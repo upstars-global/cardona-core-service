@@ -80,8 +80,6 @@ function copyToClipboard() {
     class="pa-4"
     elevation="2"
   >
-    <VCardTitle>🌍 I18n редактор</VCardTitle>
-
     <VCardText>
       <div
         v-for="(value, key) in flatMap"
