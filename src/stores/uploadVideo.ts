@@ -124,6 +124,8 @@ export const useVideoUploadStore = defineStore('videoUpload', {
         data: payload,
       })
 
+      console.log(data.status)
+
       return data.status
     },
   },

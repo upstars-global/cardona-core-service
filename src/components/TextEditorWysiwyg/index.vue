@@ -413,6 +413,18 @@ function extractVimeoIds(html: string): string[] {
 
   return results
 }
+const videoIds = computed((): string[] => extractVimeoIds(content.value))
+
+watch(() => videoIds.value, async ids => {
+  const res = await Promise.all(ids.map(async videoId => {
+    const status = await videoUploadStore.getStatusVideo({ videoId })
+    const id = videoId
+
+    return { status, id }
+  }))
+
+  console.log(res)
+}, { immediate: true, deep: true })
 </script>
 
 <template>
