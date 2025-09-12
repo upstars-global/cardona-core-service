@@ -413,7 +413,7 @@ function extractVimeoIds(html: string): string[] {
 
   return results
 }
-const videoIds = computed((): string[] => extractVimeoIds(content.value))
+const videoIds = computed((): string[] => videoUploadStore.videoStatuses.filter(videoId => extractVimeoIds(content.value).includes(videoId)))
 
 // watch(() => videoIds.value, async ids => {
 //   const res = await Promise.all(ids.map(async videoId => {
@@ -423,9 +423,21 @@ const videoIds = computed((): string[] => extractVimeoIds(content.value))
 //     return { status, id }
 //   }))
 // }, { immediate: true, deep: true })
+
+setInterval(async () => {
+  if (videoIds.value.isEmpty)
+    return
+
+  const videoStatues = await Promise.all(videoIds.value.map(async videoId => {
+    return await videoUploadStore.getStatusVideo({ videoId })
+  }))
+
+  console.log(videoStatues)
+}, 5000)
 </script>
 
 <template>
+  {{ videoIds }}
   <div class="block-text-edite">
     <VariableModal
       :key="variableKeySelect"
