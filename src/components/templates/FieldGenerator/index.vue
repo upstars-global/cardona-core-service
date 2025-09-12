@@ -98,7 +98,6 @@ const validationLabel = computed(() => {
       </span>
       <VTooltip
         v-if="withInfo && modelValue.info"
-        :text="modelValue.info"
         :max-width="MAX_WIDTH_TOOLTIP"
       >
         <template #activator="{ props }">
@@ -108,6 +107,12 @@ const validationLabel = computed(() => {
             v-bind="props"
             class="ml-1 align-text-top text-grey-500"
           />
+        </template>
+
+        <template #default>
+          <slot :name="FieldGeneratorSlots.InfoText">
+            {{ modelValue.info }}
+          </slot>
         </template>
       </VTooltip>
     </VLabel>
