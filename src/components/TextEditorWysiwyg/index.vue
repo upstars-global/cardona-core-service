@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, inject, nextTick, ref, watch } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 import 'vue-froala-wysiwyg'
 import type { TranslateResult } from 'vue-i18n'
 import { useStore } from 'vuex'
@@ -9,6 +10,7 @@ import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import { copyToClipboard } from '../../helpers/clipboard'
 import { useTextEditorStore } from '../../stores/textEditor'
+import { useVideoUploadStore } from '../../stores/uploadVideo'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
@@ -24,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>()
 
+const editorWrapper = ref<HTMLElement | null>(null)
 interface Props {
   modelValue: string
   optionsVariable: Array<string>
@@ -40,8 +43,10 @@ interface Emits {
 }
 
 const modal = inject('modal')
+const editorKey = uuidv4()
 
 const store = useStore()
+const videoUploadStore = useVideoUploadStore()
 const textEditorStore = useTextEditorStore()
 
 const content = computed({
@@ -130,6 +135,18 @@ const insertImages = ({ publicPath, fileName }: { publicPath: string; fileName: 
 
   globalEditor.value.image.hideProgressBar(true)
 }
+
+FroalaEditor.DefineIcon('clear', { NAME: 'remove', SVG_KEY: 'remove' })
+FroalaEditor.RegisterCommand('clear', {
+  title: 'Clear HTML',
+  focus: false,
+  undo: true,
+  refreshAfterCallback: true,
+  callback() {
+    this.html.set('')
+    this.events.focus()
+  },
+})
 
 FroalaEditor.DefineIcon('gallery', { NAME: 'folder', SVG_KEY: 'imageManager' })
 FroalaEditor.RegisterCommand('gallery', {
@@ -243,6 +260,24 @@ const config = {
     'commands.after': function (command) {
       if (command === 'html')
         isCodeViewActive.value = this.codeView.isActive()
+    },
+    'video.beforeUpload': function (files: File[]) {
+      const file = files[0]
+      if (!file)
+        return false
+
+      videoUploadStore.upload(file, editorKey).then((videoId: string) => {
+        const embedUrl = `https://player.vimeo.com/video/${videoId}`
+        const iFrame = `<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`
+
+        content.value += iFrame
+      })
+
+      // Unfocus tooltip from button vimeo
+      document.querySelector('button[data-cmd="insertVideo').classList.toggle('fr-btn-active-popup')
+      document.querySelector('.fr-popup.fr-desktop').classList.toggle('fr-active')
+
+      return false
     },
     'image.beforeUpload': function (images: any[]) {
       Array.from(images).forEach(async file => {
@@ -367,9 +402,42 @@ const onSaveChanges = () => {
   globalEditor.value.codeView.toggle()
   isCodeViewActive.value = false
 }
+
+function extractVimeoIds(html: string): string[] {
+  const regex = /<iframe[^>]+src=["'](?:https?:)?\/\/(?:player\.)?vimeo\.com\/video\/(\d+)["'][^>]*><\/iframe>/g
+  const results: string[] = []
+  let match
+
+  while ((match = regex.exec(html)) !== null)
+    results.push(match[1]) // only the videoId
+
+  return results
+}
+const videoIds = computed((): string[] => videoUploadStore.videoStatuses.filter(videoId => extractVimeoIds(content.value).includes(videoId)))
+
+// watch(() => videoIds.value, async ids => {
+//   const res = await Promise.all(ids.map(async videoId => {
+//     const status = await videoUploadStore.getStatusVideo({ videoId })
+//     const id = videoId
+//
+//     return { status, id }
+//   }))
+// }, { immediate: true, deep: true })
+
+setInterval(async () => {
+  if (videoIds.value.isEmpty)
+    return
+
+  const videoStatues = await Promise.all(videoIds.value.map(async videoId => {
+    return await videoUploadStore.getStatusVideo({ videoId })
+  }))
+
+  console.log(videoStatues)
+}, 5000)
 </script>
 
 <template>
+  {{ videoIds }}
   <div class="block-text-edite">
     <VariableModal
       :key="variableKeySelect"
@@ -386,6 +454,7 @@ const onSaveChanges = () => {
       @insert="insertImages"
     />
     <div
+      ref="editorWrapper"
       class="editor-wrap"
       :class="{ disabled }"
     >
@@ -395,7 +464,23 @@ const onSaveChanges = () => {
         data-test-id="text-editor"
         :config="config"
       />
-
+      <div
+        v-if="videoUploadStore.getProgressState(editorKey)"
+        class="py-4"
+      >
+        <span>
+          {{ $t('common.uploadVideo') }}
+        </span>
+        <VProgressLinear
+          :model-value="videoUploadStore.getProgressPercent(editorKey)"
+          :max="100"
+          height="12"
+        >
+          <template #default="{ value }">
+            <span class="text-sm">{{ Math.ceil(value) }}%</span>
+          </template>
+        </VProgressLinear>
+      </div>
       <VBtn
         v-if="isCodeViewActive"
         :color="VColors.Primary"
