@@ -111,13 +111,20 @@ export const useVideoUploadStore = defineStore('videoUpload', {
         upload.start()
       })
     },
-    async getStatusVideo(payload: GetStatusVideoPayload): Promise<boolean> {
-      const { data }: { data: { status: { ok: boolean } } } = await ApiService.request({
-        type: 'App.V2.Vimeo.UploadComplete',
+    async getStatusVideo(payload: GetStatusVideoPayload): Promise<string> {
+      const { data }: { data: {
+        status: string
+        duration: number
+        thumbnail: string
+        name: string
+        embedUrl: string
+        videoUrl: string
+      } } = await ApiService.request({
+        type: 'App.V2.Vimeo.Status',
         data: payload,
       })
 
-      return data.status.ok
+      return data.status
     },
   },
 })
