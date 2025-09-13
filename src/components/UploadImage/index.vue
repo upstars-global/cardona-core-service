@@ -207,16 +207,14 @@ const isRequired = computed(() => !!props.field.rules?.required)
             </div>
           </template>
           <template #default>
-            <div class="transaction-modal-content--wrapper overflow-y-auto overflow-x-hidden">
-              <ModalFileUpload
-                v-model="urlFile"
-                :path="path"
-                :file="file"
-                :on-upload-image-cb="onFileUpload"
-                @set-path="onSetPath"
-                @clear="onClickRemove"
-              />
-            </div>
+            <ModalFileUpload
+              v-model="urlFile"
+              :path="path"
+              :file="file"
+              :on-upload-image-cb="onFileUpload"
+              @set-path="onSetPath"
+              @clear="onClickRemove"
+            />
           </template>
         </BaseModal>
         <RemoveModal
@@ -238,7 +236,6 @@ const isRequired = computed(() => !!props.field.rules?.required)
 @import '../../assets/styles/components/upload';
 
 .field-generator-label {
-
   &--required:after {
     content: "*";
     color: rgb(var(--v-theme-error));
@@ -246,9 +243,6 @@ const isRequired = computed(() => !!props.field.rules?.required)
   }
 }
 
-.transaction-modal-content--wrapper {
-  max-height: 90vh;
-}
 .img-file-block-inner {
   position: relative;
   width: 100%;
@@ -283,5 +277,10 @@ const isRequired = computed(() => !!props.field.rules?.required)
     pointer-events: none;
     opacity: 0.3;
   }
+}
+
+.list-view {
+  max-height: 71vh;
+  overflow-y: auto;
 }
 </style>
