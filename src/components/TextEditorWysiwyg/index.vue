@@ -10,7 +10,7 @@ import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import { copyToClipboard } from '../../helpers/clipboard'
 import { useTextEditorStore } from '../../stores/textEditor'
-import { useVideoUploadStore } from '../../stores/uploadVideo'
+import { VideoStatus, useVideoUploadStore } from '../../stores/uploadVideo'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
@@ -266,9 +266,9 @@ const config = {
       if (!file)
         return false
 
-      videoUploadStore.upload(file, editorKey).then((videoId: string) => {
+      videoUploadStore.upload(file, editorKey).then((videoId: string): void => {
         const embedUrl = `https://player.vimeo.com/video/${videoId}`
-        const iFrame = `<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`
+        const iFrame = `<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen data-status="${VideoStatus.Uploading}"></iframe>`
 
         content.value += iFrame
       })
@@ -409,35 +409,83 @@ function extractVimeoIds(html: string): string[] {
   let match
 
   while ((match = regex.exec(html)) !== null)
-    results.push(match[1]) // only the videoId
+    results.push(match[1])
 
   return results
 }
-const videoIds = computed((): string[] => videoUploadStore.videoStatuses.filter(videoId => extractVimeoIds(content.value).includes(videoId)))
 
-// watch(() => videoIds.value, async ids => {
-//   const res = await Promise.all(ids.map(async videoId => {
-//     const status = await videoUploadStore.getStatusVideo({ videoId })
-//     const id = videoId
-//
-//     return { status, id }
-//   }))
-// }, { immediate: true, deep: true })
-
-setInterval(async () => {
-  if (videoIds.value.isEmpty)
-    return
-
-  const videoStatues = await Promise.all(videoIds.value.map(async videoId => {
-    return await videoUploadStore.getStatusVideo({ videoId })
+const videosStatusId = computed((): { id: string; status: VideoStatus }[] => extractVimeoIds(content.value)
+  ?.map((id: string) => ({
+    status: getIframeStatus(content.value, id),
+    id,
   }))
+  ?.filter(({ status }) => status !== VideoStatus.Available))
 
-  console.log(videoStatues)
-}, 5000)
+let videoStatusInterval: null | NodeJS.Timeout = null
+
+const initCheckVideoStatusInterval = () => {
+  videoStatusInterval = setInterval(async () => {
+    if (videosStatusId.value.isEmpty)
+      return
+
+    const videoStatuses = await Promise.all(videosStatusId.value.map(async ({ id }) => {
+      return { videoId: id, status: await videoUploadStore.getStatusVideo({ videoId: id }) }
+    }))
+
+    videoStatuses.forEach(({ videoId, status }) => {
+      updateIframeStatus({
+        html: content.value,
+        videoId,
+        newStatus: status,
+      })
+    })
+  }, 5000)
+}
+
+const resetCheckVideoStatusInterval = () => {
+  if (videoStatusInterval)
+    clearInterval(videoStatusInterval)
+}
+
+function getIframeStatus(html: string, videoId: string): VideoStatus | null {
+  const regex = new RegExp(
+    `<iframe[^>]*src="[^"]*${videoId}[^"]*"[^>]*data-status="([^"]*)"[^>]*>`,
+    'i',
+  )
+
+  const match = html.match(regex)
+
+  return match ? match[1] : null
+}
+
+function updateIframeStatus({ html, videoId, newStatus }: {
+  html: string
+  videoId: string
+  newStatus: string
+},
+): string {
+  return html.replace(
+    new RegExp(
+      `<iframe([^>]*src="[^"]*${videoId}[^"]*"[^>]*)data-status="[^"]*"([^>]*)>`,
+      'i',
+    ),
+    `<iframe$1data-status="${newStatus}"$2>`,
+  )
+}
+
+watch(() => videosStatusId.value, () => {
+  if (videosStatusId.value.isEmpty && videoStatusInterval) {
+    resetCheckVideoStatusInterval()
+
+    return
+  }
+
+  initCheckVideoStatusInterval()
+})
 </script>
 
 <template>
-  {{ videoIds }}
+  {{ videosStatusId }}
   <div class="block-text-edite">
     <VariableModal
       :key="variableKeySelect"

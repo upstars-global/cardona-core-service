@@ -26,7 +26,7 @@ interface UploadVideoToVimeoPayload {
 
 interface GetStatusVideoPayload {
   videoId: string
-  project: string
+  project?: string
 }
 
 export enum VideoStatus {
@@ -78,7 +78,7 @@ export const useVideoUploadStore = defineStore('videoUpload', () => {
     return data
   }
 
-  async function upload(file: File, key: string) {
+  async function upload(file: File, key: string): Promise<string | undefined> {
     const params = {
       title: file.name,
       description: file.name,
@@ -97,10 +97,6 @@ export const useVideoUploadStore = defineStore('videoUpload', () => {
         uploadLink: uploadUrlData.uploadUrl,
         key,
       })
-
-      const status = await getStatusVideo({ videoId: uploadUrlData.videoId })
-
-      console.log({ status, videoId: uploadUrlData.videoId })
 
       return uploadUrlData.videoId
     }
@@ -140,7 +136,7 @@ export const useVideoUploadStore = defineStore('videoUpload', () => {
     })
   }
 
-  async function getStatusVideo(payload: GetStatusVideoPayload): Promise<string> {
+  async function getStatusVideo(payload: GetStatusVideoPayload): Promise<VideoStatus> {
     const { data }: { data: {
       status: VideoStatus
       duration: number
