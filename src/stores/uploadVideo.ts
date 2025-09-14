@@ -1,11 +1,8 @@
 import { defineStore } from 'pinia'
-import { useLocalStorage } from '@vueuse/core'
 import { ref } from 'vue'
 import * as tus from 'tus-js-client'
 import ApiService from '../services/api'
 import store from '@/store'
-
-// ==== Типи ====
 
 export interface UploadVideoPayload {
   title: string
@@ -50,14 +47,9 @@ export enum VideoStatus {
 
 const CHUNK_SIZE = 1024 * 1024
 
-// ==== STORE ====
-
 export const useVideoUploadStore = defineStore('videoUpload', () => {
-  const videoStatuses = useLocalStorage<string[]>('videoStatuses', [])
-
   const progress = ref(new Map<string, { state: boolean; percent: number }>())
 
-  // === Getters
   const getProgressState = (key: string): boolean | undefined => {
     return progress.value.get(key)?.state
   }
@@ -65,8 +57,6 @@ export const useVideoUploadStore = defineStore('videoUpload', () => {
   const getProgressPercent = (key: string): number | undefined => {
     return progress.value.get(key)?.percent
   }
-
-  // === Actions
 
   function setProgressState(state: boolean, key: string) {
     if (state)
@@ -163,25 +153,14 @@ export const useVideoUploadStore = defineStore('videoUpload', () => {
       data: payload,
     })
 
-    // Реактивне оновлення videoStatuses
-    if (data.status !== VideoStatus.Available && !videoStatuses.value.includes(payload.videoId))
-      videoStatuses.value.push(payload.videoId)
-    else if (data.status === VideoStatus.Available)
-      videoStatuses.value = videoStatuses.value.filter(id => id !== payload.videoId)
-
     return data.status
   }
 
   return {
-    videoStatuses,
     progress,
     getProgressState,
     getProgressPercent,
-    setProgressState,
-    setProgressPercent,
-    getUploadUrl,
     upload,
-    uploadVideoToVimeo,
     getStatusVideo,
   }
 })
