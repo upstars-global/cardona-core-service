@@ -377,9 +377,6 @@ export interface IBaseSectionConfig {
   /** noPermissionPrefix - Вкл/выкл префикс проекта (true) */
   readonly noPermissionPrefix?: boolean
 
-  /** withCustomModuleName - Вкл/выкл пользовательское имя модуля стор */
-  readonly withCustomModuleName?: boolean
-
   /** customModuleName - Пользовательское имя модуля стор */
   readonly customModuleName?: string
 
