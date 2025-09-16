@@ -1,4 +1,5 @@
 import type { IValidationError } from '../../services/api/config'
+import type { useBaseStoreCore } from '../../stores/baseStoreCore'
 
 export enum PageType {
   Create = 'create',
@@ -7,6 +8,7 @@ export enum PageType {
 }
 
 export type IValidationErrorCb = (entity: string, payload: IValidationError) => { localeKey: string; fieldKey?: string; toastOptions?: object }
+export type BaseStore = ReturnType<typeof useBaseStoreCore>
 
 export interface UseEntityType<FormModel> {
   readonly entityName: string
@@ -19,6 +21,7 @@ export interface UseEntityType<FormModel> {
     rawFormData: Ref<FormModel>
   ) => Record<string, unknown>
   readonly validationErrorCb?: IValidationErrorCb
+  readonly useStore?: BaseStore
 }
 
 export enum BaseSectionSlots {

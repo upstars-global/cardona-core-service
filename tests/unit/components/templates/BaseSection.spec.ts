@@ -15,9 +15,12 @@ import { PageType } from '../../../../src/@model/templates/baseSection'
 import { clickTrigger, getSelectorTestId, getWrapperElement, setMountComponent } from '../../utils'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { basePermissions } from '../../../../src/helpers/base-permissions'
-import { useRedirectToNotFoundPage } from '../../../../src/helpers/router'
 import { setTabError } from '../../../../src/components/templates/BaseSection/composables/tabs'
 import * as loaderStoreModule from '../../../../src/stores/loader'
+
+vi.mock('../../../../src/stores/baseStoreCore', () => ({
+  useBaseStoreCore: () => mockBaseStoreCore,
+}))
 
 const getMountBaseSection = setMountComponent(BaseSection)
 
@@ -49,6 +52,17 @@ class MockForm {
 }
 
 const sectionConfig = new BaseSectionConfig({})
+const createEntity = vi.fn()
+const updateEntity = vi.fn()
+const readEntity = vi.fn()
+const deleteEntity = vi.fn()
+
+const mockBaseStoreCore = {
+  createEntity,
+  updateEntity,
+  readEntity,
+  deleteEntity,
+}
 
 const useMockForm = (): UseEntityType<MockForm> => {
   const EntityFormClass = MockForm
@@ -79,17 +93,12 @@ const mockStore = createStore({
     errorUrls: [],
   },
   getters: {
-    // isLoadingEndpoint: () => vi.fn(() => false),
     isLoadingPage: vi.fn(() => false),
     abilityCan: () => true,
     isErrorEndpoint: () => vi.fn(() => false),
   },
   actions: {
-    'resetErrorUrls': vi.fn(),
-    'textEditor/setVariableTextBuffer': vi.fn(() => Promise.resolve()),
-    'baseStoreCore/readEntity': vi.fn(() => Promise.resolve()),
-    'baseStoreCore/createEntity': vi.fn(() => Promise.resolve()),
-    'baseStoreCore/updateEntity': vi.fn(() => Promise.resolve()),
+    resetErrorUrls: vi.fn(),
   },
 })
 
@@ -161,7 +170,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  // Сбрасываем все вызовы моков после каждого теста
+  // Reset mocks after run each test
   vi.clearAllMocks()
 })
 
@@ -350,22 +359,22 @@ describe('BaseSection.vue', () => {
   })
 
   it('Calls onSave and handles success correctly', async () => {
-    /// Spy on the store dispatch method
-    const mockStoreDispatch = vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
+    // make createEntity return success with id
+    createEntity.mockResolvedValueOnce({ id: '456' })
 
-    /// Mount the component in create mode
+    // Mount the component in create mode
     const wrapper = mountComponent({
       pageType: PageType.Create,
     })
 
-    /// Mock transformed form data
+    // Mock transformed form data
     wrapper.vm.transformedForm = { id: '123' }
 
-    /// Call the onSave method
+    // Call the onSave method
     await wrapper.vm.onSave()
 
-    /// Verify that the correct dispatch action is called //
-    expect(mockStoreDispatch).toHaveBeenCalledWith('baseStoreCore/createEntity', {
+    // Verify that createEntity from Pinia store was called
+    expect(createEntity).toHaveBeenCalledWith({
       type: 'mock-form',
       data: {
         form: { id: '123' },
@@ -375,7 +384,7 @@ describe('BaseSection.vue', () => {
       },
     })
 
-    /// Verify that the router navigates to the list page
+    // Verify that the router navigates to the list page
     expect(pushMock).toHaveBeenCalledWith({
       name: 'mock-formList',
     })
@@ -413,44 +422,35 @@ describe('BaseSection.vue', () => {
   })
 
   it('Redirects to not found page when entity fetch fails', async () => {
-    /// Spy on the store dispatch method to simulate rejection
-    const dispatchSpy = vi.spyOn(mockStore, 'dispatch').mockRejectedValueOnce({ type: 'NOT_FOUND' })
+    // Make readEntity reject with NOT_FOUND
+    readEntity.mockRejectedValueOnce({ type: 'NOT_FOUND' })
 
-    /// Provide the mocked redirect method
-    const redirectToNotFoundPage = useRedirectToNotFoundPage(mockRouter)
+    // Mount the component in update mode
+    mountComponent({
+      pageType: PageType.Update,
+    })
 
-    /// Mount the component in update mode
-    mountComponent(
-      {
-        pageType: PageType.Update,
-      },
-      {
-        provide: {
-          redirectToNotFoundPage,
-        },
-      },
-    )
-
-    /// Wait for Vue lifecycle hooks to complete
     await flushPromises()
 
-    /// Verify that the correct action is dispatched
-    expect(dispatchSpy).toHaveBeenCalledWith(
-      'baseStoreCore/readEntity',
-      expect.objectContaining({ id: '123' }),
+    // Verify that readEntity was called with correct arguments
+    expect(readEntity).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'mock-form',
+        id: '123',
+      }),
     )
 
-    /// Verify that the router navigates to the not found page
+    // Verify that the router navigates to the not found page
     expect(pushMock).toHaveBeenCalledWith({ name: 'NotFound' })
   })
 
-  it('test', async () => {
+  it('Shows correct buttons and labels in modal section', async () => {
     await router.isReady()
 
-    /// Spy on the store dispatch method
-    vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
+    // Emulate readEntity
+    readEntity.mockResolvedValueOnce({ id: '456' })
 
-    /// Mount the component in create mode
+    // Mount the component в режимі Update + isModalSection
     const wrapper = mountComponent({
       pageType: PageType.Update,
       config: new BaseSectionConfig({
@@ -461,31 +461,32 @@ describe('BaseSection.vue', () => {
 
     await flushPromises()
 
-    const saveAndStayButton = wrapper.find(getSelectorTestId('saveAndExit-button'))
+    // Find and get wrapper button "saveAndExit"
+    const saveAndExitButton = wrapper.find(getSelectorTestId('saveAndExit-button'))
 
-    expect(saveAndStayButton.exists()).toBe(true)
+    expect(saveAndExitButton.exists()).toBe(true)
 
-    // In the modal section, text of the "Save and stay" button should be "Save"
-    expect(saveAndStayButton.text()).toBe('Save')
+    // Check exist button "Save"
+    expect(saveAndExitButton.text()).toBe('Save')
 
-    // In the modal section, the "Save and stay" button should not be displayed
+    // Check that not exist button "saveAndStay" in modal
     expect(wrapper.find(getSelectorTestId('saveAndStay-button')).exists()).toBe(false)
   })
 
-  it('Check actions of router on  click buttons "Save and stay",  "Save and exit"', async () => {
+  it('Check actions of router on click buttons "Save and stay" and "Save and exit"', async () => {
     await router.replace({ path: '/detail' })
     await router.isReady()
+    readEntity.mockResolvedValueOnce({ id: '456' })
 
-    // Set router config `router.options.history.state.back = true`
+    // Emulation back history
     Object.defineProperty(router.options.history, 'state', {
       value: { back: true },
       writable: true,
     })
 
-    /// Spy on the store dispatch method
-    vi.spyOn(mockStore, 'dispatch').mockResolvedValueOnce({ id: '456' })
+    // Emulate  updateEntity
+    updateEntity.mockResolvedValue({ id: '456' })
 
-    /// Mount the component in create mode
     const wrapper = mountComponent({
       pageType: PageType.Update,
       config: new BaseSectionConfig({
@@ -495,39 +496,35 @@ describe('BaseSection.vue', () => {
 
     await flushPromises()
 
-    /// Check that will not be any redirect after update
+    // On  "Save and stay" should`nt be redirect
     await clickTrigger({ wrapper, testId: 'saveAndStay-button' })
-
     await flushPromises()
 
     expect(mockRouter.go).not.toHaveBeenCalledWith(-1)
     expect(mockRouter.push).not.toHaveBeenCalled()
 
-    /// Check that will be redirect after update
-
+    // On click "Save and exit" should be redirect on prev page
+    updateEntity.mockResolvedValueOnce({ id: '456' })
     await clickTrigger({ wrapper, testId: 'saveAndExit-button' })
-
     await flushPromises()
 
     expect(mockRouter.go).toHaveBeenCalledWith(-1)
   })
 
-  it('Check call action read entity after click on "save and stay"', async () => {
-    // Spy and mock dispatch once
-    const dispatchSpy = vi
-      .spyOn(mockStore, 'dispatch')
-      .mockResolvedValueOnce({ id: '456' })
-
+  it('Calls readEntity after click on "save and stay"', async () => {
     await router.replace({ path: '/detail' })
     await router.isReady()
+    readEntity.mockResolvedValueOnce({ id: '456' })
 
-    // Set router config `router.options.history.state.back = true`
+    // Emulation back history
     Object.defineProperty(router.options.history, 'state', {
       value: { back: true },
       writable: true,
     })
 
-    /// Mount the component in update mode
+    // Emulate  updateEntity
+    updateEntity.mockResolvedValueOnce({ id: '456' })
+
     const wrapper = mountComponent({
       pageType: PageType.Update,
       config: new BaseSectionConfig({
@@ -540,15 +537,18 @@ describe('BaseSection.vue', () => {
 
     await flushPromises()
 
-    // Click on button save and stay
+    // Click on "save and stay"
     await clickTrigger({ wrapper, testId: 'saveAndStay-button' })
     loaderStore.setLoaderOn('mock-form/update')
+
     await flushPromises()
 
-    // Check request on read entity after update
-    expect(dispatchSpy).toHaveBeenCalledWith(
-      'baseStoreCore/readEntity',
-      expect.objectContaining({ id: '123' }),
+    // Check read entity after update
+    expect(readEntity).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'mock-form',
+        id: '123',
+      }),
     )
   })
 })
