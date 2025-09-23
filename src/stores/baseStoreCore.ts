@@ -148,7 +148,12 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       data: { form: any; formRef: any }
       customApiPrefix?: string
     }): Promise<any> {
-      const projectAlias = store.getters.selectedProject?.alias
+      const actualProject = payload?.data?.form?.project
+        ? payload?.data?.form?.project
+        : isNeocoreProduct
+          ? store.getters.selectedProject?.alias
+          : ''
+
       const productId = store.getters['productCore/productId']
 
       const { data } = await ApiService.request(
@@ -159,7 +164,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
           data: {
             ...payload.data.form,
             id: payload.data.form.id,
-            project: isNeocoreProduct ? projectAlias : '',
+            project: actualProject,
             productId,
           },
         },
@@ -178,8 +183,13 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       data: { form: any; formRef: any }
       customApiPrefix?: string
     }): Promise<any> {
-      const projectAlias = store.getters.selectedProject?.alias
       const productId = store.getters['productCore/productId']
+
+      const actualProject = payload?.data?.form?.project
+        ? payload?.data?.form?.project
+        : isNeocoreProduct
+          ? store.getters.selectedProject?.alias
+          : ''
 
       return ApiService.request(
         {
@@ -190,7 +200,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
             ...payload.data.form,
             id: payload.data.form.id,
             productId,
-            project: isNeocoreProduct ? projectAlias : '',
+            project: actualProject,
           },
         },
         {
@@ -206,7 +216,11 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       data: { form: any; formRef: any }
       customApiPrefix?: string
     }): Promise<any> {
-      const projectAlias = store.getters.selectedProject?.alias
+      const actualProject = payload?.data?.form?.project
+        ? payload?.data?.form?.project
+        : isNeocoreProduct
+          ? store.getters.selectedProject?.alias
+          : ''
 
       return ApiService.request(
         {
@@ -216,7 +230,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
           data: {
             ...payload.data.form,
             id: payload.data.form.id,
-            project: isNeocoreProduct ? projectAlias : '',
+            project: actualProject,
           },
         },
         {
