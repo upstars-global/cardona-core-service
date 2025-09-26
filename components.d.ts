@@ -428,6 +428,7 @@ declare module 'vue' {
     ModalFileUpload: typeof import('./src/components/UploadImage/ModalFileUpload.vue')['default']
     ModalFooter: typeof import('./src/components/BaseModal/ModalFooter.vue')['default']
     ModalImageUpload: typeof import('./src/components/TextEditorWysiwyg/ModalImageUpload.vue')['default']
+    ModalVideoUpload: typeof import('./src/components/TextEditorWysiwyg/ModalVideoUpload.vue')['default']
     MoreBtn: typeof import('./src/@core/components/MoreBtn.vue')['default']
     MultipleActions: typeof import('./src/components/templates/BaseList/_components/MultipleActions.vue')['default']
     MultiSelectField: typeof import('./src/components/templates/FieldGenerator/_components/MultiSelectField.vue')['default']
