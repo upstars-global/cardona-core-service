@@ -265,9 +265,9 @@ onMounted(async () => {
       :files="files"
       :url-file="urlFile"
       :page="currentPage"
-      @clickDirectory="goToCatalog"
-      @clickFile="setUrlFile"
-      @scrolledBottom="scrolledBottom"
+      @click-directory="goToCatalog"
+      @click-file="setUrlFile"
+      @scrolled-bottom="scrolledBottom"
     />
 
     <ListView
@@ -276,8 +276,9 @@ onMounted(async () => {
       :files="files"
       :url-file="urlFile"
       :paginated="paginated"
-      @clickDirectory="goToCatalog"
-      @clickFile="setUrlFile"
+      class="list-view"
+      @click-directory="goToCatalog"
+      @click-file="setUrlFile"
     />
   </div>
 </template>
