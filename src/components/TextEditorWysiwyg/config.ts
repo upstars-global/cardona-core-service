@@ -4,6 +4,7 @@ const baseConfig = {
   apiKey: 'uXD2lC7D6G4D3H4H4C11dNSWXf1h1MDb1CF1PLPFf1C1EESFKVlA3C11A8E6D2B4C4G2F3C2==',
   key: 'uXD2lC7D6G4D3H4H4C11dNSWXf1h1MDb1CF1PLPFf1C1EESFKVlA3C11A8E6D2B4C4G2F3C2==',
   enter: FroalaEditor.ENTER_BR,
+  iframe: true,
   imageUpload: true,
   pluginsEnabled: [
     'image',
@@ -33,6 +34,7 @@ const baseConfig = {
     'table',
     'url',
     'wordPaste',
+    'video',
   ],
   shortcutsEnabled: ['bold', 'italic'],
   toolbarButtons: {
@@ -51,6 +53,7 @@ const baseConfig = {
         'inlineClass',
         'inlineStyle',
         'clearFormatting',
+        'insertVideo',
       ],
     },
 
@@ -94,6 +97,11 @@ const baseConfig = {
       buttonsVisible: 6,
     },
   },
+  videoInsertButtons: ['videoUpload'],
+  videoAllowedProviders: [],
+  videoMaxSize: 5 * 1000 * 1024 * 1024,
+  htmlAllowedTags: ['.*'],
+  htmlAllowedAttrs: ['.*'],
   codeBeautifierOptions: {
     end_with_newline: true,
     indent_inner_html: true,
