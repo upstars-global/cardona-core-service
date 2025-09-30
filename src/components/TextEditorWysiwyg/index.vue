@@ -272,11 +272,14 @@ const config = {
       videoUploadStore.upload(file, editorKey).then((videoId: string): void => {
         const embedUrl = `https://player.vimeo.com/video/${videoId}`
         const iFrame = `<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen data-status="${VideoStatus.Uploading}"></iframe>`
+
         content.value += iFrame
       })
+
       // Unfocus tooltip from button vimeo
       document.querySelector('button[data-cmd="insertVideo').classList.toggle('fr-btn-active-popup')
       document.querySelector('.fr-popup.fr-desktop').classList.toggle('fr-active')
+
       return false
     },
     'image.beforeUpload': function (images: any[]) {
@@ -402,54 +405,66 @@ const onSaveChanges = () => {
   globalEditor.value.codeView.toggle()
   isCodeViewActive.value = false
 }
+
 function extractVimeoIds(html: string): string[] {
   const regex = /<iframe[^>]+src=["'](?:https?:)?\/\/(?:player\.)?vimeo\.com\/video\/(\d+)["'][^>]*><\/iframe>/g
   const results: string[] = []
   let match
   while ((match = regex.exec(html)) !== null)
     results.push(match[1])
+
   return results
 }
+
 const videosStatusId = computed((): { id: string; status: VideoStatus }[] => extractVimeoIds(content.value)
   ?.map((id: string) => ({
     status: getIframeStatus(content.value, id),
     id,
   }))
   ?.filter(({ status }) => status !== VideoStatus.Available))
+
 let videoStatusInterval: null | NodeJS.Timeout = null
+
 const initCheckVideoStatusInterval = () => {
   videoStatusInterval = setInterval(async () => {
     if (videosStatusId.value.isEmpty)
       return
+
     const videoStatuses = await Promise.all(videosStatusId.value.map(async ({ id }) => {
       return { videoId: id, status: await videoUploadStore.getStatusVideo({ videoId: id }) }
     }))
+
     videoStatuses.forEach(({ videoId, status }) => {
-      updateIframeStatus({
+      const updatedContentIframe = updateIframeStatus({
         html: content.value,
         videoId,
         newStatus: status,
       })
+      content.value = updatedContentIframe
     })
   }, 5000)
 }
+
 const resetCheckVideoStatusInterval = () => {
   if (videoStatusInterval)
     clearInterval(videoStatusInterval)
 }
+
 function getIframeStatus(html: string, videoId: string): VideoStatus | null {
   const regex = new RegExp(
     `<iframe[^>]*src="[^"]*${videoId}[^"]*"[^>]*data-status="([^"]*)"[^>]*>`,
     'i',
   )
+
   const match = html.match(regex)
+
   return match ? match[1] : null
 }
 function updateIframeStatus({ html, videoId, newStatus }: {
-                              html: string
-                              videoId: string
-                              newStatus: string
-                            },
+  html: string
+  videoId: string
+  newStatus: string
+},
 ): string {
   return html.replace(
     new RegExp(
@@ -462,6 +477,7 @@ function updateIframeStatus({ html, videoId, newStatus }: {
 watch(() => videosStatusId.value, () => {
   if (videosStatusId.value.isEmpty && videoStatusInterval) {
     resetCheckVideoStatusInterval()
+
     return
   }
   initCheckVideoStatusInterval()
