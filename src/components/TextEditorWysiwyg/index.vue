@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, inject, nextTick, ref, watch } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 import 'vue-froala-wysiwyg'
 import type { TranslateResult } from 'vue-i18n'
 import { useStore } from 'vuex'
@@ -8,6 +9,7 @@ import type { LocaleVariable } from '../../@model/translations'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import { copyToClipboard } from '../../helpers/clipboard'
+import { VideoStatus, useVideoUploadStore } from '../../stores/uploadVideo'
 import { useTextEditorStore } from '../../stores/textEditor'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
@@ -24,6 +26,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>()
 
+const editorWrapper = ref<HTMLElement | null>(null)
+interface Props {
+  modelValue: string
+  optionsVariable: Array<string>
+}
 interface Props {
   modelValue: string
   optionsVariable: Array<string>
@@ -40,8 +47,10 @@ interface Emits {
 }
 
 const modal = inject('modal')
+const editorKey = uuidv4()
 
 const store = useStore()
+const videoUploadStore = useVideoUploadStore()
 const textEditorStore = useTextEditorStore()
 
 const content = computed({
@@ -130,6 +139,18 @@ const insertImages = ({ publicPath, fileName }: { publicPath: string; fileName: 
 
   globalEditor.value.image.hideProgressBar(true)
 }
+
+FroalaEditor.DefineIcon('clear', { NAME: 'remove', SVG_KEY: 'remove' })
+FroalaEditor.RegisterCommand('clear', {
+  title: 'Clear HTML',
+  focus: false,
+  undo: true,
+  refreshAfterCallback: true,
+  callback() {
+    this.html.set('')
+    this.events.focus()
+  },
+})
 
 FroalaEditor.DefineIcon('gallery', { NAME: 'folder', SVG_KEY: 'imageManager' })
 FroalaEditor.RegisterCommand('gallery', {
@@ -243,6 +264,20 @@ const config = {
     'commands.after': function (command) {
       if (command === 'html')
         isCodeViewActive.value = this.codeView.isActive()
+    },
+    'video.beforeUpload': function (files: File[]) {
+      const file = files[0]
+      if (!file)
+        return false
+      videoUploadStore.upload(file, editorKey).then((videoId: string): void => {
+        const embedUrl = `https://player.vimeo.com/video/${videoId}`
+        const iFrame = `<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen data-status="${VideoStatus.Uploading}"></iframe>`
+        content.value += iFrame
+      })
+      // Unfocus tooltip from button vimeo
+      document.querySelector('button[data-cmd="insertVideo').classList.toggle('fr-btn-active-popup')
+      document.querySelector('.fr-popup.fr-desktop').classList.toggle('fr-active')
+      return false
     },
     'image.beforeUpload': function (images: any[]) {
       Array.from(images).forEach(async file => {
@@ -367,6 +402,70 @@ const onSaveChanges = () => {
   globalEditor.value.codeView.toggle()
   isCodeViewActive.value = false
 }
+function extractVimeoIds(html: string): string[] {
+  const regex = /<iframe[^>]+src=["'](?:https?:)?\/\/(?:player\.)?vimeo\.com\/video\/(\d+)["'][^>]*><\/iframe>/g
+  const results: string[] = []
+  let match
+  while ((match = regex.exec(html)) !== null)
+    results.push(match[1])
+  return results
+}
+const videosStatusId = computed((): { id: string; status: VideoStatus }[] => extractVimeoIds(content.value)
+  ?.map((id: string) => ({
+    status: getIframeStatus(content.value, id),
+    id,
+  }))
+  ?.filter(({ status }) => status !== VideoStatus.Available))
+let videoStatusInterval: null | NodeJS.Timeout = null
+const initCheckVideoStatusInterval = () => {
+  videoStatusInterval = setInterval(async () => {
+    if (videosStatusId.value.isEmpty)
+      return
+    const videoStatuses = await Promise.all(videosStatusId.value.map(async ({ id }) => {
+      return { videoId: id, status: await videoUploadStore.getStatusVideo({ videoId: id }) }
+    }))
+    videoStatuses.forEach(({ videoId, status }) => {
+      updateIframeStatus({
+        html: content.value,
+        videoId,
+        newStatus: status,
+      })
+    })
+  }, 5000)
+}
+const resetCheckVideoStatusInterval = () => {
+  if (videoStatusInterval)
+    clearInterval(videoStatusInterval)
+}
+function getIframeStatus(html: string, videoId: string): VideoStatus | null {
+  const regex = new RegExp(
+    `<iframe[^>]*src="[^"]*${videoId}[^"]*"[^>]*data-status="([^"]*)"[^>]*>`,
+    'i',
+  )
+  const match = html.match(regex)
+  return match ? match[1] : null
+}
+function updateIframeStatus({ html, videoId, newStatus }: {
+                              html: string
+                              videoId: string
+                              newStatus: string
+                            },
+): string {
+  return html.replace(
+    new RegExp(
+      `<iframe([^>]*src="[^"]*${videoId}[^"]*"[^>]*)data-status="[^"]*"([^>]*)>`,
+      'i',
+    ),
+    `<iframe$1data-status="${newStatus}"$2>`,
+  )
+}
+watch(() => videosStatusId.value, () => {
+  if (videosStatusId.value.isEmpty && videoStatusInterval) {
+    resetCheckVideoStatusInterval()
+    return
+  }
+  initCheckVideoStatusInterval()
+})
 </script>
 
 <template>
@@ -386,6 +485,7 @@ const onSaveChanges = () => {
       @insert="insertImages"
     />
     <div
+      ref="editorWrapper"
       class="editor-wrap"
       :class="{ disabled }"
     >
@@ -395,7 +495,23 @@ const onSaveChanges = () => {
         data-test-id="text-editor"
         :config="config"
       />
-
+      <div
+        v-if="videoUploadStore.getProgressState(editorKey)"
+        class="py-4"
+      >
+        <span>
+          {{ $t('common.uploadVideo') }}
+        </span>
+        <VProgressLinear
+          :model-value="videoUploadStore.getProgressPercent(editorKey)"
+          :max="100"
+          height="12"
+        >
+          <template #default="{ value }">
+            <span class="text-sm">{{ Math.ceil(value) }}%</span>
+          </template>
+        </VProgressLinear>
+      </div>
       <VBtn
         v-if="isCodeViewActive"
         :color="VColors.Primary"
