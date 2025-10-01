@@ -9,11 +9,12 @@ import type { LocaleVariable } from '../../@model/translations'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import { copyToClipboard } from '../../helpers/clipboard'
-import { VideoStatus, useVideoUploadStore } from '../../stores/uploadVideo'
+import { useVideoUploadStore } from '../../stores/uploadVideo'
 import { useTextEditorStore } from '../../stores/textEditor'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
+import { useUploadVideoVimeo } from './_composables/useUploadVideoVimeo'
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
@@ -55,70 +56,41 @@ const textEditorStore = useTextEditorStore()
 
 const content = computed({
   get: () => props.modelValue,
-  set: value => {
-    emit('update:modelValue', value)
-  },
+  set: value => emit('update:modelValue', value),
 })
 
 const globalEditor = ref<any>()
 const isUpdateVar = computed(() => textEditorStore.isUpdateVar)
 const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
 
-const setVariableTextBuffer = params => {
-  textEditorStore.setVariableTextBuffer(params)
-}
+const setVariableTextBuffer = params => textEditorStore.setVariableTextBuffer(params)
+const setVariableByKey = ({ key, value }) => textEditorStore.setVariableByKey({ key, value })
+const removeVariableValueByKey = key => textEditorStore.removeVariableValueByKey(key)
 
-const setVariableByKey = ({ key, value }) => {
-  textEditorStore.setVariableByKey({ key, value })
-}
-
-const removeVariableValueByKey = key => {
-  textEditorStore.removeVariableValueByKey(key)
-}
-
-watch(
-  () => isUpdateVar.value,
-  () => {
-    if (isUpdateVar.value) {
-      findNoUseVarAndDelete()
-      textEditorStore.setUpdateVar(false)
-    }
-  },
-)
-
-const variableTextBuffer = computed({
-  get: () => {
-    return variableTextBufferStore.value
-  },
-  set: value => {
-    setVariableTextBuffer(value)
-  },
+watch(() => isUpdateVar.value, () => {
+  if (isUpdateVar.value) {
+    findNoUseVarAndDelete()
+    textEditorStore.setUpdateVar(false)
+  }
 })
 
-watch(
-  () => variableTextBuffer,
-  () => {
-    emit('update-localisation-parameters', variableTextBuffer.value)
-  },
-  {
-    deep: true,
-  },
-)
+const variableTextBuffer = computed({
+  get: () => variableTextBufferStore.value,
+  set: value => setVariableTextBuffer(value),
+})
 
-watch(
-  () => props.localisationParameters,
-  async () => {
-    setVariableTextBuffer(props.localisationParameters)
-  },
-  { deep: true, immediate: true },
-)
+watch(() => variableTextBuffer, () => {
+  emit('update-localisation-parameters', variableTextBuffer.value)
+}, { deep: true })
+
+watch(() => props.localisationParameters, async () => {
+  setVariableTextBuffer(props.localisationParameters)
+}, { deep: true, immediate: true })
 
 const variableKeySelect = ref('')
 const defaultObjLocalisationParameters: Record<string, any> = {}
 
-props.optionsVariable.forEach(item => {
-  defaultObjLocalisationParameters[item] = ''
-})
+props.optionsVariable.forEach(item => { defaultObjLocalisationParameters[item] = '' })
 
 const selectedProject = computed(() => store.getters.selectedProject)
 
@@ -129,14 +101,8 @@ const selectedProjectPublicName = computed(
 const galleryModalId = 'gallery-modal'
 
 const insertImages = ({ publicPath, fileName }: { publicPath: string; fileName: string }) => {
-  nextTick(() => {
-    modal?.hideModal(galleryModalId)
-  })
-
-  globalEditor.value.image.insert(publicPath, true, { name: fileName, id: fileName }, '', {
-    link: publicPath,
-  })
-
+  nextTick(() => { modal?.hideModal(galleryModalId) })
+  globalEditor.value.image.insert(publicPath, true, { name: fileName, id: fileName }, '', { link: publicPath })
   globalEditor.value.image.hideProgressBar(true)
 }
 
@@ -146,10 +112,7 @@ FroalaEditor.RegisterCommand('clear', {
   focus: false,
   undo: true,
   refreshAfterCallback: true,
-  callback() {
-    this.html.set('')
-    this.events.focus()
-  },
+  callback() { this.html.set(''); this.events.focus() },
 })
 
 FroalaEditor.DefineIcon('gallery', { NAME: 'folder', SVG_KEY: 'imageManager' })
@@ -163,13 +126,23 @@ FroalaEditor.RegisterCommand('gallery', {
 
     this.html.set(text)
     globalEditor.value = this
-    nextTick(() => {
-      modal?.showModal(galleryModalId)
-    })
+    nextTick(() => { modal?.showModal(galleryModalId) })
   },
 })
 
-const videoStatusById = ref<Record<string, VideoStatus>>({})
+const {
+  videoStatusById,
+  replaceOrInsertVideoBlock,
+  watchContent,
+  existVideoStatusWithNotAvailable,
+  handleBeforeUpload,
+} = useUploadVideoVimeo({
+  uploadFn: (file, key) => videoUploadStore.upload(file, key),
+  getStatusFn: videoId => videoUploadStore.getStatusVideo({ videoId }),
+  pollMs: 5000,
+})
+
+watchContent(content)
 
 const config = {
   placeholderText: props.placeholder,
@@ -267,20 +240,12 @@ const config = {
         updateVariableInContent(editor)
       }
     },
-    'commands.after': function (command) {
+    'commands.after': function (command: string) {
       if (command === 'html')
         isCodeViewActive.value = this.codeView.isActive()
     },
     'video.beforeUpload': function (files: File[]) {
-      const file = files[0]
-      if (!file)
-        return false
-
-      videoUploadStore.upload(file, editorKey).then((videoId: string): void => {
-        videoStatusById.value[videoId] = VideoStatus.Uploading
-        content.value = replaceOrInsertVideoBlock(content.value, videoId, VideoStatus.Uploading)
-      })
-
+      handleBeforeUpload(files, editorKey, content)
       document.querySelector('button[data-cmd="insertVideo"]')?.classList.toggle('fr-btn-active-popup')
       document.querySelector('.fr-popup.fr-desktop')?.classList.toggle('fr-active')
 
@@ -294,15 +259,9 @@ const config = {
 
         const _path = `/${selectedProjectPublicName.value}/upload/${fileName}`
         try {
-          const { publicPath } = await store.dispatch('compostelaCore/uploadFile', {
-            file,
-            path: _path,
-          })
+          const { publicPath } = await store.dispatch('compostelaCore/uploadFile', { file, path: _path })
 
-          this.image.insert(publicPath, true, { name: fileName, id: fileName }, '', {
-            link: publicPath,
-          })
-
+          this.image.insert(publicPath, true, { name: fileName, id: fileName }, '', { link: publicPath })
           this.image.hideProgressBar(true)
         }
         catch (e) {}
@@ -385,9 +344,7 @@ const updateVariableTextByKey = val => {
   // Так же обновляем буффер
 
   if (!variableKeySelect.value)
-    return
-  setVariableByKey({ key: variableKeySelect.value, value: val })
-  variableKeySelect.value = ''
+    return; setVariableByKey({ key: variableKeySelect.value, value: val }); variableKeySelect.value = ''
 }
 
 const deleteVariableTextByKey = () => {
@@ -408,95 +365,9 @@ const deleteVariableTextByKey = () => {
 }
 
 const isCodeViewActive = ref(false)
+const onSaveChanges = () => { globalEditor.value.codeView.toggle(); isCodeViewActive.value = false }
 
-const onSaveChanges = () => {
-  globalEditor.value.codeView.toggle()
-  isCodeViewActive.value = false
-}
-
-function extractVideoIds(html: string): string[] {
-  const iframeRe = /<iframe[^>]+src=["'](?:https?:)?\/\/(?:player\.)?vimeo\.com\/video\/(\d+)["'][^>]*><\/iframe>/gi
-  const placeholderRe = /<div[^>]*data-video-id=["'](\d+)["'][^>]*>.*?<\/div>/gis
-  const ids = new Set<string>()
-  let m: RegExpExecArray | null
-  while ((m = iframeRe.exec(html)) !== null) ids.add(m[1])
-  while ((m = placeholderRe.exec(html)) !== null) ids.add(m[1])
-
-  return Array.from(ids)
-}
-
-const videosToCheck = computed((): { id: string; status: VideoStatus }[] => {
-  const ids = extractVideoIds(content.value) || []
-
-  return ids
-    .map((id: string) => ({
-      id,
-      status: videoStatusById.value[id] ?? VideoStatus.Uploading,
-    }))
-    .filter(({ status }) => status !== VideoStatus.Available)
-})
-
-let videoStatusInterval: null | NodeJS.Timeout = null
-
-const initCheckVideoStatusInterval = () => {
-  if (videoStatusInterval)
-    return
-  videoStatusInterval = setInterval(async () => {
-    if (!videosToCheck.value.length)
-      return
-
-    const updates = await Promise.all(
-      videosToCheck.value.map(async ({ id }) => {
-        const status = await videoUploadStore.getStatusVideo({ videoId: id })
-
-        return { id, status }
-      }),
-    )
-
-    updates.forEach(({ id, status }) => {
-      videoStatusById.value[id] = status
-      content.value = replaceOrInsertVideoBlock(content.value, id, status)
-    })
-  }, 5000)
-}
-
-const resetCheckVideoStatusInterval = () => {
-  if (videoStatusInterval) {
-    clearInterval(videoStatusInterval)
-    videoStatusInterval = null
-  }
-}
-
-watch(
-  () => videosToCheck.value.map(v => `${v.id}:${v.status}`).join('|'),
-  () => {
-    if (!videosToCheck.value.length)
-      resetCheckVideoStatusInterval()
-    else
-      initCheckVideoStatusInterval()
-  },
-  { immediate: true },
-)
-
-const existVideoStatusWithNotAvailable = computed(() => videosToCheck.value.some(v => v.status !== VideoStatus.Available))
-
-const videoIframeHtml = (videoId: string) =>
-  `<iframe src="https://player.vimeo.com/video/${videoId}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`
-
-const videoPlaceholderHtml = (videoId: string) =>
-  `<div data-video-id="${videoId}" style="width:640px;height:360px;background-color:black;color:white;display:flex;justify-content:center;align-items:center;margin:0.1rem 0;"><div>The video is currently processed</div></div>`
-
-function replaceOrInsertVideoBlock(html: string, videoId: string, status: VideoStatus): string {
-  const iframeRe = new RegExp(`<iframe[^>]*src=["'][^"']*${videoId}[^"']*["'][^>]*>\\s*<\\/iframe>`, 'i')
-  const placeholderRe = new RegExp(`<div[^>]*data-video-id=["']${videoId}["'][^>]*>.*?<\\/div>`, 'is')
-  const block = status === VideoStatus.Available ? videoIframeHtml(videoId) : videoPlaceholderHtml(videoId)
-  if (iframeRe.test(html))
-    return html.replace(iframeRe, block)
-  if (placeholderRe.test(html))
-    return html.replace(placeholderRe, block)
-
-  return html + block
-}
+const existVideoStatusWithNotAvailable = existVideoStatusWithNotAvailable(content)
 </script>
 
 <template>
@@ -537,9 +408,7 @@ function replaceOrInsertVideoBlock(html: string, videoId: string, status: VideoS
         v-if="videoUploadStore.getProgressState(editorKey)"
         class="py-4"
       >
-        <span>
-          {{ $t('common.uploadVideo') }}
-        </span>
+        <span>{{ $t('common.uploadVideo') }}</span>
         <VProgressLinear
           :model-value="videoUploadStore.getProgressPercent(editorKey)"
           :max="100"
@@ -563,9 +432,7 @@ function replaceOrInsertVideoBlock(html: string, videoId: string, status: VideoS
           :icon="IconsList.DeviceFloppyIcon"
           :color="VColors.Primary"
         />
-        <span>
-          {{ $t('action.saveChanges') }}
-        </span>
+        <span>{{ $t('action.saveChanges') }}</span>
       </VBtn>
     </div>
 
@@ -574,9 +441,7 @@ function replaceOrInsertVideoBlock(html: string, videoId: string, status: VideoS
         :key="`block-text-edite-variable${isUpdateVar}`"
         class="d-flex flex-wrap align-center block-text-edite-variable pt-3 gap-2"
       >
-        <span class="text-body-2 mr-1">
-          {{ $t('common.editor.addedVariables') }}:
-        </span>
+        <span class="text-body-2 mr-1">{{ $t('common.editor.addedVariables') }}:</span>
         <VChip
           v-for="key in Object.keys(variableTextBuffer)"
           :key="key"
@@ -585,7 +450,7 @@ function replaceOrInsertVideoBlock(html: string, videoId: string, status: VideoS
           class="tag-variable gap-4"
           @click="setVariableKeySelect(key)"
         >
-          <span class="pr-1">{{ `{${key}\}` }} </span>
+          <span class="pr-1">{{ `{${key}\}` }}</span>
           <VIcon
             size="16"
             :icon="IconsList.CopyIcon"
@@ -601,51 +466,18 @@ function replaceOrInsertVideoBlock(html: string, videoId: string, status: VideoS
 .block-text-edite {
   .editor-wrap {
     position: relative;
-    :deep(.fr-counter) {
-      color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
-      font-size: 15px;
-    }
-    :deep(.fr-toolbar) {
-      border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
-    }
-    :deep(.fr-newline) {
-      background:  rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
-    }
-    :deep(.fr-box.fr-basic) {
-      .fr-wrapper {
-        border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
-      }
-    }
-    :deep(.fr-second-toolbar) {
-      border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
-    }
+    :deep(.fr-counter) { color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)); font-size: 15px; }
+    :deep(.fr-toolbar) { border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)); }
+    :deep(.fr-newline) { background:  rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)); }
+    :deep(.fr-box.fr-basic) { .fr-wrapper { border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)); } }
+    :deep(.fr-second-toolbar) { border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)); }
     &.disabled {
-      :deep(.fr-toolbar),
-      :deep(.fr-element),
-      :deep(.fr-second-toolbar) {
-        background: rgb(var(--v-theme-grey-100));
-      }
-      :deep(.fr-placeholder) {
-        z-index: 2;
-      }
+      :deep(.fr-toolbar), :deep(.fr-element), :deep(.fr-second-toolbar) { background: rgb(var(--v-theme-grey-100)); }
+      :deep(.fr-placeholder) { z-index: 2; }
     }
-
-    :deep(ul) {
-      margin-top: 1em;
-      margin-bottom: 1em;
-      padding-left: 40px;
-    }
-
-    .save-changes-btn {
-      position: absolute;
-      bottom: 0.375rem;
-      right: 0;
-      z-index: 99;
-    }
+    :deep(ul) { margin-top: 1em; margin-bottom: 1em; padding-left: 40px; }
+    .save-changes-btn { position: absolute; bottom: 0.375rem; right: 0; z-index: 99; }
   }
-  :deep(.variable-box) {
-    background: rgba(var(--v-theme-grey-500), var(--v-badge-opacity));
-    padding: 1px 0.285rem;
-  }
+  :deep(.variable-box) { background: rgba(var(--v-theme-grey-500), var(--v-badge-opacity)); padding: 1px 0.285rem; }
 }
 </style>
