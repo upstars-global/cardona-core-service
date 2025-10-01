@@ -1,4 +1,5 @@
-import { VideoStatus } from '@/stores/uploadVideo'
+import { type Ref, ref, watch } from 'vue'
+import { VideoStatus } from '../../../stores/uploadVideo'
 
 type UploadFn = (file: File, editorKey: string) => Promise<string>
 type GetStatusFn = (videoId: string) => Promise<VideoStatus>
@@ -92,9 +93,6 @@ export function useUploadVideoVimeo(
     return stopPolling
   }
 
-  const existVideoStatusWithNotAvailable = (contentRef: Ref<string>) =>
-    computed(() => makeVideosToCheck(contentRef.value).some(v => v.status !== VideoStatus.Available))
-
   async function handleBeforeUpload(files: File[], editorKey: string, contentRef: Ref<string>) {
     const file = files?.[0]
     if (!file)
@@ -108,12 +106,7 @@ export function useUploadVideoVimeo(
   }
 
   return {
-    videoStatusById,
-    replaceOrInsertVideoBlock,
-    extractVideoIds,
     watchContent,
-    existVideoStatusWithNotAvailable,
     handleBeforeUpload,
-    stopPolling,
   }
 }

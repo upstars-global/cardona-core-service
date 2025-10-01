@@ -131,10 +131,7 @@ FroalaEditor.RegisterCommand('gallery', {
 })
 
 const {
-  videoStatusById,
-  replaceOrInsertVideoBlock,
   watchContent,
-  existVideoStatusWithNotAvailable,
   handleBeforeUpload,
 } = useUploadVideoVimeo({
   uploadFn: (file, key) => videoUploadStore.upload(file, key),
@@ -366,18 +363,10 @@ const deleteVariableTextByKey = () => {
 
 const isCodeViewActive = ref(false)
 const onSaveChanges = () => { globalEditor.value.codeView.toggle(); isCodeViewActive.value = false }
-
-const existVideoStatusWithNotAvailable = existVideoStatusWithNotAvailable(content)
 </script>
 
 <template>
   <div class="block-text-edite">
-    <VChip
-      v-if="existVideoStatusWithNotAvailable"
-      :color="VColors.Warning"
-    >
-      Video is not available
-    </VChip>
     <VariableModal
       :key="variableKeySelect"
       :value="variableTextBuffer[variableKeySelect]"
@@ -398,7 +387,6 @@ const existVideoStatusWithNotAvailable = existVideoStatusWithNotAvailable(conten
       :class="{ disabled }"
     >
       <Froala
-        :key="existVideoStatusWithNotAvailable"
         v-model:value="content"
         tag="textarea"
         data-test-id="text-editor"
