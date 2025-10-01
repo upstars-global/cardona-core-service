@@ -1,5 +1,6 @@
 import { type Ref, ref, watch } from 'vue'
 import { VideoStatus } from '../../../stores/uploadVideo'
+import { i18n } from '@/plugins/i18n'
 
 type UploadFn = (file: File, editorKey: string) => Promise<string>
 type GetStatusFn = (videoId: string) => Promise<VideoStatus>
@@ -18,7 +19,7 @@ export function useUploadVideoVimeo(
     `<iframe src="https://player.vimeo.com/video/${videoId}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`
 
   const videoPlaceholderHtml = (videoId: string) =>
-    `<div data-video-id="${videoId}" style="width:640px;height:360px;background-color:black;color:white;display:flex;justify-content:center;align-items:center;margin:0.1rem 0;"><div>The video is currently processed</div></div>`
+    `<div data-video-id="${videoId}" style="width:640px;height:360px;background-color:black;color:white;display:flex;justify-content:center;align-items:center;margin:0.1rem 0;"><div>${i18n.t('placeholder.videoIsCurrentlyProcessed'}</div></div>`
 
   function replaceOrInsertVideoBlock(html: string, videoId: string, status: VideoStatus): string {
     const iframeRe = new RegExp(`<iframe[^>]*src=["'][^"']*${videoId}[^"']*["'][^>]*>\\s*<\\/iframe>`, 'i')
