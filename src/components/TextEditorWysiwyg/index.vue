@@ -60,7 +60,7 @@ const content = computed({
   },
 })
 
-const globalEditor = ref()
+const globalEditor = ref<any>()
 const isUpdateVar = computed(() => textEditorStore.isUpdateVar)
 const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
 
@@ -114,7 +114,7 @@ watch(
 )
 
 const variableKeySelect = ref('')
-const defaultObjLocalisationParameters = {}
+const defaultObjLocalisationParameters: Record<string, any> = {}
 
 props.optionsVariable.forEach(item => {
   defaultObjLocalisationParameters[item] = ''
@@ -130,7 +130,7 @@ const galleryModalId = 'gallery-modal'
 
 const insertImages = ({ publicPath, fileName }: { publicPath: string; fileName: string }) => {
   nextTick(() => {
-    modal.hideModal(galleryModalId)
+    modal?.hideModal(galleryModalId)
   })
 
   globalEditor.value.image.insert(publicPath, true, { name: fileName, id: fileName }, '', {
@@ -164,17 +164,18 @@ FroalaEditor.RegisterCommand('gallery', {
     this.html.set(text)
     globalEditor.value = this
     nextTick(() => {
-      modal.showModal(galleryModalId)
+      modal?.showModal(galleryModalId)
     })
   },
 })
+
+const videoStatusById = ref<Record<string, VideoStatus>>({})
 
 const config = {
   placeholderText: props.placeholder,
   events: {
     initialized() {
       globalEditor.value = this
-
       if (props.disabled)
         globalEditor.value.edit.off()
     },
@@ -196,12 +197,12 @@ const config = {
       if (uniqueVariables.length > 0) {
         // Сохранение точной позиции курсора
         const selection = window.getSelection()
-        let range = null
+        let range: Range | null = null
         if (selection?.rangeCount > 0)
           range = selection.getRangeAt(0).cloneRange()
 
         let updated = false
-        let lastInsertedSpan = null
+        let lastInsertedSpan: ChildNode | null = null
 
         uniqueVariables.forEach((keyVar: string) => {
           if (!keyVar)
@@ -214,7 +215,7 @@ const config = {
           // Обновление текста без полной перерисовки
           const walker = document.createTreeWalker(editor.$el[0], NodeFilter.SHOW_TEXT, null)
           while (walker.nextNode()) {
-            const node = walker.currentNode
+            const node = walker.currentNode as Text
             if (node.nodeValue?.includes(`{{${keyVar}}}`)) {
               const span = document.createElement('span')
 
@@ -229,7 +230,7 @@ const config = {
               parent.replaceChild(beforeText, node)
               parent.insertBefore(span, beforeText.nextSibling)
               parent.insertBefore(afterText, span.nextSibling)
-              lastInsertedSpan = afterText // Устанавливаем курсор после переменной
+              lastInsertedSpan = afterText
               updated = true
             }
           }
@@ -238,7 +239,7 @@ const config = {
         if (updated) {
           textEditorStore.setUpdateVar(true)
           emit('update:modelValue', editor.html.get())
-          editor.events.trigger('contentChanged') // Тригер на обновление контента
+          editor.events.trigger('contentChanged')
         }
 
         editor.$el.find('[id="isPasted"]').removeAttr('id')
@@ -249,10 +250,15 @@ const config = {
 
           newRange.setStartAfter(lastInsertedSpan)
           newRange.setEndAfter(lastInsertedSpan)
+
+          const selection = window.getSelection()
+
           selection?.removeAllRanges()
           selection?.addRange(newRange)
         }
         else if (range) {
+          const selection = window.getSelection()
+
           selection?.removeAllRanges()
           selection?.addRange(range)
         }
@@ -269,16 +275,14 @@ const config = {
       const file = files[0]
       if (!file)
         return false
-      videoUploadStore.upload(file, editorKey).then((videoId: string): void => {
-        const embedUrl = `https://player.vimeo.com/video/${videoId}`
-        const iFrame = `<iframe src="${embedUrl}" width="640" height="360" frameborder="0" allowfullscreen data-status="${VideoStatus.Uploading}"></iframe>`
 
-        content.value += iFrame
+      videoUploadStore.upload(file, editorKey).then((videoId: string): void => {
+        videoStatusById.value[videoId] = VideoStatus.Uploading
+        content.value = replaceOrInsertVideoBlock(content.value, videoId, VideoStatus.Uploading)
       })
 
-      // Unfocus tooltip from button vimeo
-      document.querySelector('button[data-cmd="insertVideo').classList.toggle('fr-btn-active-popup')
-      document.querySelector('.fr-popup.fr-desktop').classList.toggle('fr-active')
+      document.querySelector('button[data-cmd="insertVideo"]')?.classList.toggle('fr-btn-active-popup')
+      document.querySelector('.fr-popup.fr-desktop')?.classList.toggle('fr-active')
 
       return false
     },
@@ -315,15 +319,17 @@ const newVariableText = ref({})
 
 // Данный метод нужен для обнавления переменных из текста который пришел с АПИ
 // Так же обновления рания удаленых переменных после их возвращения в текст при помощи одиночной скобки '}'
-const updateVariableInContent = editor => {
+
+const updateVariableInContent = (editor: any) => {
   const contentChanged = editor.html.get(true)
 
   newVariableText.value = {}
   Object.keys(variableTextBuffer.value).forEach(key => {
     const variable = `<span class="variable-box">{${key}}</span>`
     if (contentChanged.includes(variable)) {
-      newVariableText.value[key] = variableTextBuffer.value[key]
-      if (!variableTextBuffer.value[key]) {
+      // @ts-expect-error
+      newVariableText.value[key] = (variableTextBuffer.value as any)[key]
+      if (!(variableTextBuffer.value as any)[key]) {
         editor.selection.restore()
         editor.selection.setAfter(editor.selection.element())
         editor.selection.restore()
@@ -339,10 +345,11 @@ const findNoUseVarAndDelete = () => {
   const regex = /<span class="variable-box">\{(.*?)\}<\/span>/g
 
   const text = ref(globalEditor.value.html.get(true).replaceAll('&nbsp;', ''))
-  let match
+  let match: RegExpExecArray | null
   let isUpdateCursor = false
 
   while ((match = regex.exec(text.value)) !== null) {
+    // @ts-expect-error
     if (globalEditor.value && !variableTextBuffer.value[match[1]]) {
       isUpdateCursor = true
       text.value = text.value
@@ -369,13 +376,14 @@ const modalId = 'variable-modal'
 const setVariableKeySelect = (key: string) => {
   variableKeySelect.value = key
   nextTick(() => {
-    modal.showModal(modalId)
+    modal?.showModal(modalId)
   })
 }
 
 const updateVariableTextByKey = val => {
   // Обнавления значения данных для переменной по ключу
   // Так же обновляем буффер
+
   if (!variableKeySelect.value)
     return
   setVariableByKey({ key: variableKeySelect.value, value: val })
@@ -406,86 +414,99 @@ const onSaveChanges = () => {
   isCodeViewActive.value = false
 }
 
-function extractVimeoIds(html: string): string[] {
-  const regex = /<iframe[^>]+src=["'](?:https?:)?\/\/(?:player\.)?vimeo\.com\/video\/(\d+)["'][^>]*><\/iframe>/g
-  const results: string[] = []
-  let match
-  while ((match = regex.exec(html)) !== null)
-    results.push(match[1])
+function extractVideoIds(html: string): string[] {
+  const iframeRe = /<iframe[^>]+src=["'](?:https?:)?\/\/(?:player\.)?vimeo\.com\/video\/(\d+)["'][^>]*><\/iframe>/gi
+  const placeholderRe = /<div[^>]*data-video-id=["'](\d+)["'][^>]*>.*?<\/div>/gis
+  const ids = new Set<string>()
+  let m: RegExpExecArray | null
+  while ((m = iframeRe.exec(html)) !== null) ids.add(m[1])
+  while ((m = placeholderRe.exec(html)) !== null) ids.add(m[1])
 
-  return results
+  return Array.from(ids)
 }
 
-const videosStatusId = computed((): { id: string; status: VideoStatus }[] => extractVimeoIds(content.value)
-  ?.map((id: string) => ({
-    status: getIframeStatus(content.value, id),
-    id,
-  }))
-  ?.filter(({ status }) => status !== VideoStatus.Available))
+const videosToCheck = computed((): { id: string; status: VideoStatus }[] => {
+  const ids = extractVideoIds(content.value) || []
+
+  return ids
+    .map((id: string) => ({
+      id,
+      status: videoStatusById.value[id] ?? VideoStatus.Uploading,
+    }))
+    .filter(({ status }) => status !== VideoStatus.Available)
+})
 
 let videoStatusInterval: null | NodeJS.Timeout = null
 
 const initCheckVideoStatusInterval = () => {
+  if (videoStatusInterval)
+    return
   videoStatusInterval = setInterval(async () => {
-    if (videosStatusId.value.isEmpty)
+    if (!videosToCheck.value.length)
       return
 
-    const videoStatuses = await Promise.all(videosStatusId.value.map(async ({ id }) => {
-      return { videoId: id, status: await videoUploadStore.getStatusVideo({ videoId: id }) }
-    }))
+    const updates = await Promise.all(
+      videosToCheck.value.map(async ({ id }) => {
+        const status = await videoUploadStore.getStatusVideo({ videoId: id })
 
-    videoStatuses.forEach(({ videoId, status }) => {
-      const updatedContentIframe = updateIframeStatus({
-        html: content.value,
-        videoId,
-        newStatus: status,
-      })
-      content.value = updatedContentIframe
+        return { id, status }
+      }),
+    )
+
+    updates.forEach(({ id, status }) => {
+      videoStatusById.value[id] = status
+      content.value = replaceOrInsertVideoBlock(content.value, id, status)
     })
   }, 5000)
 }
 
 const resetCheckVideoStatusInterval = () => {
-  if (videoStatusInterval)
+  if (videoStatusInterval) {
     clearInterval(videoStatusInterval)
-}
-
-function getIframeStatus(html: string, videoId: string): VideoStatus | null {
-  const regex = new RegExp(
-    `<iframe[^>]*src="[^"]*${videoId}[^"]*"[^>]*data-status="([^"]*)"[^>]*>`,
-    'i',
-  )
-
-  const match = html.match(regex)
-
-  return match ? match[1] : null
-}
-function updateIframeStatus({ html, videoId, newStatus }: {
-  html: string
-  videoId: string
-  newStatus: string
-},
-): string {
-  return html.replace(
-    new RegExp(
-      `<iframe([^>]*src="[^"]*${videoId}[^"]*"[^>]*)data-status="[^"]*"([^>]*)>`,
-      'i',
-    ),
-    `<iframe$1data-status="${newStatus}"$2>`,
-  )
-}
-watch(() => videosStatusId.value, () => {
-  if (videosStatusId.value.isEmpty && videoStatusInterval) {
-    resetCheckVideoStatusInterval()
-
-    return
+    videoStatusInterval = null
   }
-  initCheckVideoStatusInterval()
-})
+}
+
+watch(
+  () => videosToCheck.value.map(v => `${v.id}:${v.status}`).join('|'),
+  () => {
+    if (!videosToCheck.value.length)
+      resetCheckVideoStatusInterval()
+    else
+      initCheckVideoStatusInterval()
+  },
+  { immediate: true },
+)
+
+const existVideoStatusWithNotAvailable = computed(() => videosToCheck.value.some(v => v.status !== VideoStatus.Available))
+
+const videoIframeHtml = (videoId: string) =>
+  `<iframe src="https://player.vimeo.com/video/${videoId}" width="640" height="360" frameborder="0" allowfullscreen></iframe>`
+
+const videoPlaceholderHtml = (videoId: string) =>
+  `<div data-video-id="${videoId}" style="width:640px;height:360px;background-color:black;color:white;display:flex;justify-content:center;align-items:center;margin:0.1rem 0;"><div>The video is currently processed</div></div>`
+
+function replaceOrInsertVideoBlock(html: string, videoId: string, status: VideoStatus): string {
+  const iframeRe = new RegExp(`<iframe[^>]*src=["'][^"']*${videoId}[^"']*["'][^>]*>\\s*<\\/iframe>`, 'i')
+  const placeholderRe = new RegExp(`<div[^>]*data-video-id=["']${videoId}["'][^>]*>.*?<\\/div>`, 'is')
+  const block = status === VideoStatus.Available ? videoIframeHtml(videoId) : videoPlaceholderHtml(videoId)
+  if (iframeRe.test(html))
+    return html.replace(iframeRe, block)
+  if (placeholderRe.test(html))
+    return html.replace(placeholderRe, block)
+
+  return html + block
+}
 </script>
 
 <template>
   <div class="block-text-edite">
+    <VChip
+      v-if="existVideoStatusWithNotAvailable"
+      :color="VColors.Warning"
+    >
+      Video is not available
+    </VChip>
     <VariableModal
       :key="variableKeySelect"
       :value="variableTextBuffer[variableKeySelect]"
@@ -506,6 +527,7 @@ watch(() => videosStatusId.value, () => {
       :class="{ disabled }"
     >
       <Froala
+        :key="existVideoStatusWithNotAvailable"
         v-model:value="content"
         tag="textarea"
         data-test-id="text-editor"
@@ -541,7 +563,6 @@ watch(() => videosStatusId.value, () => {
           :icon="IconsList.DeviceFloppyIcon"
           :color="VColors.Primary"
         />
-
         <span>
           {{ $t('action.saveChanges') }}
         </span>
