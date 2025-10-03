@@ -242,6 +242,8 @@ const config = {
         isCodeViewActive.value = this.codeView.isActive()
     },
     'video.beforeUpload': function (files: File[]) {
+      if (!files[0].type.startsWith('video/'))
+        return false
       handleBeforeUpload(files, editorKey, content)
       document.querySelector('button[data-cmd="insertVideo"]')?.classList.toggle('fr-btn-active-popup')
       document.querySelector('.fr-popup.fr-desktop')?.classList.toggle('fr-active')
