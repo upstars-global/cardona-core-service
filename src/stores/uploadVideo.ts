@@ -79,6 +79,9 @@ export const useVideoUploadStore = defineStore('videoUpload', () => {
   }
 
   async function upload(file: File, key: string): Promise<string | undefined> {
+    if (!file.type.startsWith('video/'))
+      return
+
     const params = {
       title: file.name,
       description: file.name,
@@ -138,13 +141,13 @@ export const useVideoUploadStore = defineStore('videoUpload', () => {
 
   async function getStatusVideo(payload: GetStatusVideoPayload): Promise<VideoStatus> {
     const { data }: { data: {
-        status: VideoStatus
-        duration: number
-        thumbnail: string
-        name: string
-        embedUrl: string
-        videoUrl: string
-      } } = await ApiService.request({
+      status: VideoStatus
+      duration: number
+      thumbnail: string
+      name: string
+      embedUrl: string
+      videoUrl: string
+    } } = await ApiService.request({
       type: 'App.V2.Vimeo.Status',
       data: payload,
     })
