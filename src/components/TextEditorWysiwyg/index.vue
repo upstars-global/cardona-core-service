@@ -254,8 +254,11 @@ const config = {
       if (!files[0].type.startsWith('video/'))
         return false
       handleBeforeUpload(files, editorKey, content)
-      document.querySelector('button[data-cmd="insertVideo"]')?.classList.toggle('fr-btn-active-popup')
-      document.querySelector('.fr-popup.fr-desktop')?.classList.toggle('fr-active')
+
+      const editorDataId = `[data-id="${editorKey}"]`
+
+      document.querySelector(`${editorDataId} button[data-cmd="insertVideo"]`)?.classList.toggle('fr-btn-active-popup')
+      document.querySelector(`${editorDataId} .fr-popup.fr-desktop`)?.classList.toggle('fr-active')
 
       return false
     },
@@ -377,7 +380,10 @@ const onSaveChanges = () => { globalEditor.value.codeView.toggle(); isCodeViewAc
 </script>
 
 <template>
-  <div class="block-text-edite">
+  <div
+    class="block-text-edite"
+    :data-id="{ 'editor-id': editorKey }"
+  >
     <VariableModal
       :key="variableKeySelect"
       :value="variableTextBuffer[variableKeySelect]"
