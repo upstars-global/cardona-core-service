@@ -259,7 +259,6 @@ const config = {
 
       document.querySelector(`${editorDataId} button[data-cmd="insertVideo"]`)?.classList.toggle('fr-btn-active-popup')
       document.querySelector(`${editorDataId} .fr-popup.fr-desktop`)?.classList.toggle('fr-active')
-///
       return false
     },
     'image.beforeUpload': function (images: any[]) {
