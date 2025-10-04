@@ -11,10 +11,12 @@ import { IconsList } from '../../@model/enums/icons'
 import { copyToClipboard } from '../../helpers/clipboard'
 import { useVideoUploadStore } from '../../stores/uploadVideo'
 import { useTextEditorStore } from '../../stores/textEditor'
+import { PermissionLevel } from '../../@model/permission'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
 import { useUploadVideoVimeo } from './_composables/useUploadVideoVimeo'
+import { PermissionType } from '@permissions'
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
@@ -140,6 +142,13 @@ const {
 })
 
 watchContent(content)
+
+const canUploadVideo = computed(() => store.getters.abilityCan(PermissionType.BackofficeVimeo, PermissionLevel.view))
+
+watch(() => canUploadVideo.value, value => {
+  if (value)
+    baseConfig.pluginsEnabled.push('video')
+})
 
 const config = {
   placeholderText: props.placeholder,

@@ -33,7 +33,6 @@ const baseConfig = {
     'table',
     'url',
     'wordPaste',
-    'video',
   ],
   shortcutsEnabled: ['bold', 'italic'],
   toolbarButtons: {
