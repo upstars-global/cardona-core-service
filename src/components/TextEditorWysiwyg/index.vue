@@ -74,7 +74,7 @@ watch(() => isUpdateVar.value, () => {
     findNoUseVarAndDelete()
     textEditorStore.setUpdateVar(false)
   }
-}, { immediate: true })
+})
 
 const variableTextBuffer = computed({
   get: () => variableTextBufferStore.value,
@@ -148,7 +148,7 @@ const canUploadVideo = computed(() => store.getters.abilityCan(PermissionType.Ba
 watch(() => canUploadVideo.value, value => {
   if (value)
     baseConfig.pluginsEnabled.push('video')
-})
+}, { immediate: true })
 
 const config = {
   placeholderText: props.placeholder,
