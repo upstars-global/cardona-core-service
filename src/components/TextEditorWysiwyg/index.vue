@@ -74,7 +74,7 @@ watch(() => isUpdateVar.value, () => {
     findNoUseVarAndDelete()
     textEditorStore.setUpdateVar(false)
   }
-})
+}, { immediate: true })
 
 const variableTextBuffer = computed({
   get: () => variableTextBufferStore.value,
