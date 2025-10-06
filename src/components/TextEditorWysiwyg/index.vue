@@ -381,7 +381,7 @@ const onSaveChanges = () => { globalEditor.value.codeView.toggle(); isCodeViewAc
 <template>
   <div
     class="block-text-edite"
-    :data-id="{ 'editor-id': editorKey }"
+    :data-id="editorKey"
   >
     <VariableModal
       :key="variableKeySelect"
