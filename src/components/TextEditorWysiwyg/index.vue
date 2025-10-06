@@ -17,6 +17,7 @@ import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
 import { useUploadVideoVimeo } from './_composables/useUploadVideoVimeo'
 import { PermissionType } from '@permissions'
+import useToastService from '@/helpers/toasts'
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
@@ -60,6 +61,8 @@ const content = computed({
   get: () => props.modelValue,
   set: value => emit('update:modelValue', value),
 })
+
+const { toastError } = useToastService()
 
 const globalEditor = ref<any>()
 const isUpdateVar = computed(() => textEditorStore.isUpdateVar)
@@ -251,14 +254,18 @@ const config = {
         isCodeViewActive.value = this.codeView.isActive()
     },
     'video.beforeUpload': function (files: File[]) {
-      if (!files[0].type.startsWith('video/'))
+      if (!files[0].type.startsWith('video/')) {
+        toastError('upload_file_INVALID_FILE_FORMAT')
+
         return false
+      }
       handleBeforeUpload(files, editorKey, content)
 
       const editorDataId = `[data-id="${editorKey}"]`
 
       document.querySelector(`${editorDataId} button[data-cmd="insertVideo"]`)?.classList.toggle('fr-btn-active-popup')
       document.querySelector(`${editorDataId} .fr-popup.fr-desktop`)?.classList.toggle('fr-active')
+
       return false
     },
     'image.beforeUpload': function (images: any[]) {
