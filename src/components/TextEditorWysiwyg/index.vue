@@ -143,7 +143,7 @@ const {
 
 watchContent(content)
 
-const canUploadVideo = computed(() => store.getters.abilityCan(PermissionType.BackofficeVimeo, PermissionLevel.view))
+const canUploadVideo = computed(() => store.getters.abilityCan(PermissionType.BackofficeVimeo, PermissionLevel.create))
 
 watch(() => canUploadVideo.value, value => {
   if (value)
