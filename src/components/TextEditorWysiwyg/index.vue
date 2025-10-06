@@ -12,12 +12,12 @@ import { copyToClipboard } from '../../helpers/clipboard'
 import { useVideoUploadStore } from '../../stores/uploadVideo'
 import { useTextEditorStore } from '../../stores/textEditor'
 import { PermissionLevel } from '../../@model/permission'
+import useToastService from '../../helpers/toasts'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
 import { useUploadVideoVimeo } from './_composables/useUploadVideoVimeo'
 import { PermissionType } from '@permissions'
-import useToastService from '@/helpers/toasts'
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
