@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { useClipboard } from '@vueuse/core'
-import {VColors, VVariants} from '../../@model/vuetify'
+import { VColors, VVariants } from '../../@model/vuetify'
 import { parseInterfaceToClass } from './_composables/useFieldParser'
 import * as fieldConfigs from './fieldConfigs'
 import { updateExtras } from './_composables/useFields'

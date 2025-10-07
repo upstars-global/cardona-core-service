@@ -20,11 +20,9 @@ watch(
       return
 
     const cfg = fieldConfigsByClass[newClass]
-    if (!cfg)
-      return
+    if (!cfg) return
 
-    applyConfigOptions(props.field, cfg.options || {})
-
+    applyConfigOptions(props.field, cfg.options || {}, cfg.configParams)
     syncConfigOptions(props.field, props.i18nPrefix)
   },
 )
@@ -91,27 +89,45 @@ watch(
           @change="syncConfigOptions(field, i18nPrefix)"
         />
 
+        <ValidationRulesEditor
+          v-if="field.extra?.validationRules"
+          :field="field"
+          :VALIDATION_RULES="VALIDATION_RULES"
+          :RULES_WITH_PARAMS="RULES_WITH_PARAMS"
+          :i18n-prefix="i18nPrefix"
+        />
         <!-- динамічні boolean з конфігів (наприклад, clearfix) -->
         <div
           v-for="(val, key) in field.extra"
           :key="key"
         >
-          <VCheckbox
-            v-if="typeof val === 'boolean' && !['placeholder', 'info', 'validationRules'].includes(key)"
-            v-model="field.extra[key]"
-            :label="key"
-            @change="syncConfigOptions(field, i18nPrefix)"
-          />
         </div>
       </div>
-
-      <ValidationRulesEditor
-        v-if="field.extra?.validationRules"
-        :field="field"
-        :VALIDATION_RULES="VALIDATION_RULES"
-        :RULES_WITH_PARAMS="RULES_WITH_PARAMS"
-        :i18n-prefix="i18nPrefix"
-      />
+      <div
+        v-for="param in fieldConfigsByClass[field.className]?.configParams || []"
+        :key="param.key"
+        class="my-2"
+      >
+        <VCheckbox
+          v-if="param.input === 'boolean'"
+          v-model="field.extra[param.key]"
+          :label="param.key"
+          @change="syncConfigOptions(field, i18nPrefix)"
+        />
+        <VSelect
+          v-else-if="param.input === 'select'"
+          v-model="field.extra[param.key]"
+          :items="param.items"
+          :label="param.key"
+          @update:model-value="syncConfigOptions(field, i18nPrefix)"
+        />
+        <VTextField
+          v-else
+          v-model="field.extra[param.key]"
+          :label="param.key"
+          @input="syncConfigOptions(field, i18nPrefix)"
+        />
+      </div>
     </div>
   </div>
 </template>

@@ -8,6 +8,13 @@ const textConfig: BaseFieldConfig = {
     value: '',
     validationRules: { required: true },
   },
+  configParams: [
+    {
+      key: 'append',
+      input: 'text',
+      value: '',
+    },
+  ],
 }
 
 export default textConfig

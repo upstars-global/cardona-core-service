@@ -1,7 +1,7 @@
 import type { ParsedField } from '../types'
 
 const EXCLUDED_KEYS = ['key', 'label', 'value', 'validationRules']
-const SYSTEM_KEYS = ['placeholder', 'info', 'validationRules', 'selectedRules', 'rulesParams']
+export const SYSTEM_KEYS = ['placeholder', 'info', 'validationRules', 'selectedRules', 'rulesParams']
 
 const DEFAULT_EXTRA = {
   placeholder: false,
@@ -11,12 +11,12 @@ const DEFAULT_EXTRA = {
   rulesParams: {},
 }
 
-export function applyConfigOptions(field: ParsedField, configOptions: Record<string, any>) {
+export function applyConfigOptions(field: ParsedField, configOptions: Record<string, any>, configParams?: OptionField[]) {
   field.extra = { ...DEFAULT_EXTRA }
 
-  for (const [key, val] of Object.entries(configOptions || {})) {
-    if (!EXCLUDED_KEYS.includes(key))
-      field.extra[key] = val
+  for (const param of configParams || []) {
+    const { key, value } = param
+    field.extra[key] = configOptions[key] ?? value
   }
 }
 
