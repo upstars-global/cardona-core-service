@@ -135,18 +135,20 @@ FroalaEditor.RegisterCommand('gallery', {
   },
 })
 
-const {
-  watchContent,
-  handleBeforeUpload,
-} = useUploadVideoVimeo({
-  uploadFn: (file, key) => videoUploadStore.upload(file, key),
-  getStatusFn: videoId => videoUploadStore.getStatusVideo({ videoId }),
-  pollMs: 5000,
-})
-
-watchContent(content)
-
 const canUploadVideo = computed(() => store.getters.abilityCan(PermissionType.BackofficeVimeo, PermissionLevel.create))
+
+if (canUploadVideo.value) {
+  const {
+    watchContent,
+    handleBeforeUpload,
+  } = useUploadVideoVimeo({
+    uploadFn: (file, key) => videoUploadStore.upload(file, key),
+    getStatusFn: videoId => videoUploadStore.getStatusVideo({ videoId }),
+    pollMs: 5000,
+  })
+
+  watchContent(content)
+}
 
 watch(() => canUploadVideo.value, value => {
   if (value)
