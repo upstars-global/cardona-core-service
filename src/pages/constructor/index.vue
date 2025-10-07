@@ -179,35 +179,6 @@ watch(
           </VCard>
 
           <!-- Поля -->
-          <VCard
-            v-if="parsedFields.length"
-            elevation="1"
-          >
-            <VCardTitle>
-              2. Редагування полів
-              <span class="text-grey ml-2">({{ parsedFields.length }} полів)</span>
-            </VCardTitle>
-            <VCardText>
-              <FieldCard
-                v-for="(field, i) in parsedFields"
-                :key="i"
-                :field="field"
-                :i18n-prefix="i18nPrefix"
-                :VALIDATION_RULES="VALIDATION_RULES"
-                :RULES_WITH_PARAMS="RULES_WITH_PARAMS"
-                class="mb-4"
-              />
-            </VCardText>
-            <VCardActions class="d-flex justify-end">
-              <VBtn
-                v-if="!isAutoGeneration"
-                color="primary"
-                @click="updateCode"
-              >
-                🚀 Згенерувати код вручну
-              </VBtn>
-            </VCardActions>
-          </VCard>
         </VCol>
 
         <!-- RIGHT SIDE — Редагований Клас -->
@@ -241,6 +212,39 @@ watch(
                 persistent-hint
               />
             </VCardText>
+          </VCard>
+        </VCol>
+      </VRow>
+      <VRow>
+        <VCol>
+          <VCard
+            v-if="parsedFields.length"
+            elevation="1"
+          >
+            <VCardTitle>
+              2. Редагування полів
+              <span class="text-grey ml-2">({{ parsedFields.length }} полів)</span>
+            </VCardTitle>
+            <VCardText>
+              <FieldCard
+                v-for="(field, i) in parsedFields"
+                :key="i"
+                :field="field"
+                :i18n-prefix="i18nPrefix"
+                :VALIDATION_RULES="VALIDATION_RULES"
+                :RULES_WITH_PARAMS="RULES_WITH_PARAMS"
+                class="mb-4"
+              />
+            </VCardText>
+            <VCardActions class="d-flex justify-end">
+              <VBtn
+                v-if="!isAutoGeneration"
+                color="primary"
+                @click="updateCode"
+              >
+                🚀 Згенерувати код вручну
+              </VBtn>
+            </VCardActions>
           </VCard>
         </VCol>
       </VRow>
