@@ -29,7 +29,6 @@ const router = createRouter({
   },
   extendRoutes: pages => [
     ...redirects,
-    ...constructor,
     ...[
       ...pages,
       ...routes,

@@ -41,6 +41,20 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/constructor',
+    name: 'Constructor',
+    meta: {
+      title: 'Constructor',
+      breadcrumb: [
+        {
+          title: 'Constructor',
+          active: true,
+        },
+      ],
+    },
+    component: () => import('@/pages/constructor/index.vue'),
+  },
+  {
     path: '/demo',
     name: 'DemoList',
     component: () => import('../../pages/demo/list/index.vue'),
@@ -100,22 +114,5 @@ export const routes: RouteRecordRaw[] = [
     path: '/permission/:id',
     name: 'PermissionPage',
     component: () => import('@/pages/permission/form/index.vue'),
-  },
-]
-
-export const constructor = [
-  {
-    path: '/constructor',
-    name: 'Constructor',
-    component: () => import('@/pages/constructor/index.vue'),
-    meta: {
-      title: 'Constructor',
-      breadcrumb: [
-        {
-          title: 'Constructor',
-          active: true,
-        },
-      ],
-    },
   },
 ]
