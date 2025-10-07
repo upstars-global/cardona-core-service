@@ -29,7 +29,7 @@ const className = ref('MetaForm')
 const output = ref('')
 const editableOutput = ref('')
 const i18nPrefix = ref('meta')
-const isAutoGeneration = ref(false)
+const isAutoGeneration = ref(true)
 const localizationDrawerState = ref(false)
 
 const { copy } = useClipboard()
