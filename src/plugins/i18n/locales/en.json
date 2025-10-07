@@ -551,6 +551,7 @@
   },
   "title": {
     "seo": "Seo",
+    "constructor": "Constructor",
     "localization": "Localization",
     "backoffice": "Backoffice",
     "demo": {
