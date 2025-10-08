@@ -7,14 +7,22 @@ export const ChartTypes: Record<string, ChartType> = {
 } as const
 
 export type AllowedChartType = typeof ChartTypes[keyof typeof ChartTypes]
+export enum ChartInteractionMode {
+  Point = 'point',
+  Nearest = 'nearest',
+  Index = 'index',
+  Dataset = 'dataset',
+  X = 'x',
+  Y = 'y',
+}
 
 const ticksCallback = (value: number, isPercent?: boolean): string => isPercent ? `${value}%` : amountFormatter(value)
 
-export const getChartConfig = (options: { chartType: AllowedChartType; isPercent?: boolean }) => {
-  const { chartType, isPercent } = options
+export const getChartConfig = (options: { chartType: AllowedChartType; isPercent?: boolean; tooltipMode?: ChartInteractionMode }) => {
+  const { chartType, isPercent, tooltipMode = ChartInteractionMode.Index } = options
 
   const tooltip = {
-    mode: 'index',
+    mode: tooltipMode,
     intersect: true,
   }
 
