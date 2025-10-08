@@ -1,6 +1,15 @@
+export type ConfigParamValue = string | boolean | Array<{ label: string; value: string }>
+export interface ConfigParams {
+  key: string
+  input: ParamInputs
+  value: ConfigParamValue
+}
+
 export interface BaseFieldConfig {
   type: 'text' | 'textarea' | 'select'
   options: Record<string, any>
+  configParams?: Array<ConfigParams>
+  i18nKeys?: string[] // <--- ось нове
 }
 export interface ExtraOptions {
   placeholder: boolean

@@ -1,7 +1,7 @@
-import type { BaseFieldConfig } from '../types'
+import type { BaseFieldConfig, ConfigParams } from '../types'
 import { ParamInputs } from '../types'
 
-const getBaseConfigParam = (params: { key: string; input: ParamInputs; value: string | boolean | [] }) => params
+const getBaseConfigParam = (params: ConfigParams) => params
 
 export const getBooleanConfigParam = (key: string) => getBaseConfigParam({ key, input: ParamInputs.Boolean, value: false })
 export const getTextConfigParam = (key: string) => getBaseConfigParam({ key, input: ParamInputs.Text, value: '' })
@@ -11,10 +11,9 @@ export const getBaseConfig = (config: Record<string, unknown>): BaseFieldConfig 
   ...config,
   key: '',
   value: null,
+  i18nKeys: ['label', 'placeholder', 'info', 'description', 'other'],
   configParams: [
-    // getBooleanConfigParam('label'),
-    // getBooleanConfigParam('placeholder'),
-    // getBooleanConfigParam('description'),
+    ...config.options.configParams,
     getBooleanConfigParam('isLocalization'),
   ],
 })

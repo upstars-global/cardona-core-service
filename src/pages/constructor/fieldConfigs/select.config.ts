@@ -1,5 +1,5 @@
 import type { BaseFieldConfig } from '../types'
-import { getBaseConfig } from '../fieldConfigs/base.config'
+import {getBaseConfig, getBooleanConfigParam} from '../fieldConfigs/base.config'
 
 // const selectConfig: BaseFieldConfig = {
 //   type: 'select',
@@ -17,13 +17,12 @@ import { getBaseConfig } from '../fieldConfigs/base.config'
 const selectConfig: BaseFieldConfig = getBaseConfig({
   type: 'select',
   options: {
-    items: [], // масив значень { label, value }
-    multiple: false,
-    clearable: true,
-    label: '',
-    placeholder: '',
-    description: '',
+    items: [],
     validationRules: { required: false },
+    configParams: [
+      getBooleanConfigParam('multiple'),
+      getBooleanConfigParam('clearable'),
+    ],
   },
 })
 

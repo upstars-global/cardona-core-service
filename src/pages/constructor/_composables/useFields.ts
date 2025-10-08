@@ -1,4 +1,5 @@
-import type { ParsedField } from '../types'
+import type { ConfigParams, ParsedField } from '../types'
+import { byClass } from '@/pages/constructor/fieldConfigs'
 
 const EXCLUDED_KEYS = ['key', 'label', 'value', 'validationRules']
 export const SYSTEM_KEYS = ['placeholder', 'info', 'description', 'validationRules', 'selectedRules', 'rulesParams']
@@ -13,13 +14,27 @@ const DEFAULT_EXTRA = {
 }
 
 // TODO generate locale field more general
-export function applyConfigOptions(field: ParsedField, configOptions: Record<string, any>, configParams?: OptionField[]) {
+export function applyConfigOptions(
+  field: ParsedField,
+  configOptions: Record<string, any>,
+  configParams?: ConfigParams[],
+) {
   field.extra = { ...DEFAULT_EXTRA }
 
+  // 1. Ініціалізувати параметри з configParams
   for (const param of configParams || []) {
     const { key, value } = param
 
     field.extra[key] = configOptions[key] ?? value
+  }
+
+  // 2. Додатково ініціалізувати i18nKeys, якщо не існують
+  const i18nKeys = byClass[field.className]?.i18nKeys || []
+  for (const key of i18nKeys) {
+    if (key === 'label')
+      continue // не boolean
+    if (!(key in field.extra))
+      field.extra[key] = false
   }
 }
 
@@ -32,16 +47,27 @@ export function syncConfigOptions(field: ParsedField, prefix: string) {
   applyExtraToArgs(field)
 }
 
+function capitalizeSuffix(key: string): string {
+  return key === 'label' ? '' : capitalize(key)
+}
+
+function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
 function updateI18nExtras(field: ParsedField, prefix: string) {
-  const name = field.name
-  const extra = field.extra!
-  const args = field.args
+  const config = byClass[field.className]
+  const keys = config?.i18nKeys || []
+  const { extra, args, name } = field
 
-  args.label = `i18n.t('page.${prefix}.${name}')`
+  for (const key of keys) {
+    const base = `page.${prefix}.${name}${capitalizeSuffix(key)}`
 
-  toggleArg(extra.placeholder, args, 'placeholder', `i18n.t('page.${prefix}.${name}Placeholder')`)
-  toggleArg(extra.info, args, 'info', `i18n.t('page.${prefix}.${name}Info')`)
-  toggleArg(extra.description, args, 'description', `i18n.t('page.${prefix}.${name}Description')`)
+    if (key === 'label')
+      args.label = `i18n.t('${base}')`
+    else
+      toggleArg(extra[key], args, key, `i18n.t('${base}')`)
+  }
 }
 
 function updateValidationRules(field: ParsedField) {
@@ -62,13 +88,29 @@ function updateValidationRules(field: ParsedField) {
 }
 
 function applyExtraToArgs(field: ParsedField) {
-  for (const [key, val] of Object.entries(field.extra!)) {
-    if (SYSTEM_KEYS.includes(key))
+  const config = byClass[field.className]
+  const i18nKeys = config?.i18nKeys || []
+  const extra = field.extra!
+  const args = field.args
+
+  for (const [key, val] of Object.entries(extra)) {
+    // Пропускаємо системні (validationRules, selectedRules, rulesParams)
+    if (['validationRules', 'selectedRules', 'rulesParams'].includes(key))
       continue
 
-    const setArg = (v: string) => (field.args[key] = v)
-    const delArg = () => delete field.args[key]
+    const setArg = (v: string) => (args[key] = v)
+    const delArg = () => delete args[key]
 
+    if (i18nKeys.includes(key)) {
+      // Це i18n boolean поле
+      if (val === true)
+        setArg(`i18n.t('page.${field.i18nPrefix}.${field.name}${capitalize(key)}')`)
+      else
+        delArg()
+      continue
+    }
+
+    // Обробка інших типів (звичайні поля)
     switch (typeof val) {
       case 'boolean':
         val ? setArg('true') : delArg()
@@ -81,7 +123,7 @@ function applyExtraToArgs(field: ParsedField) {
         break
       default:
         if (Array.isArray(val))
-        val.length ? setArg(JSON.stringify(val)) : delArg()
+          val.length ? setArg(JSON.stringify(val)) : delArg()
     }
   }
 }

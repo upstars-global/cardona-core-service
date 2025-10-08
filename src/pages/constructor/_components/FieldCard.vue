@@ -20,7 +20,8 @@ watch(
       return
 
     const cfg = fieldConfigsByClass[newClass]
-    if (!cfg) return
+    if (!cfg)
+      return
 
     applyConfigOptions(props.field, cfg.options || {}, cfg.configParams)
     syncConfigOptions(props.field, props.i18nPrefix)
@@ -72,26 +73,19 @@ watch(
 
       <div v-if="field.extra">
         <!-- базові -->
-        <VCheckbox
-          v-model="field.extra.placeholder"
-          label="placeholder"
-          @change="syncConfigOptions(field, i18nPrefix)"
-        />
-        <VCheckbox
-          v-model="field.extra.info"
-          label="info"
-          @change="syncConfigOptions(field, i18nPrefix)"
-        />
-        <VCheckbox
-          v-model="field.extra.description"
-          label="description"
-          @change="syncConfigOptions(field, i18nPrefix)"
-        />
-        <VCheckbox
-          v-model="field.extra.validationRules"
-          label="validationRules"
-          @change="syncConfigOptions(field, i18nPrefix)"
-        />
+
+        <template
+          v-for="key in fieldConfigsByClass[field.className]?.i18nKeys || []"
+          :key="key"
+        >
+          <VCheckbox
+            v-if="key !== 'label'"
+            v-model="field.extra[key]"
+            :label="key"
+            class="my-1"
+            @change="syncConfigOptions(field, i18nPrefix)"
+          />
+        </template>
 
         <ValidationRulesEditor
           v-if="field.extra?.validationRules"
@@ -104,8 +98,7 @@ watch(
         <div
           v-for="(val, key) in field.extra"
           :key="key"
-        >
-        </div>
+        />
       </div>
       <div
         v-for="param in fieldConfigsByClass[field.className]?.configParams || []"

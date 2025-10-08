@@ -1,20 +1,17 @@
 import type { BaseFieldConfig } from '../types'
+import {getBaseConfig, getBooleanConfigParam, getTextConfigParam} from '@/pages/constructor/fieldConfigs/base.config'
 
-const textConfig: BaseFieldConfig = {
+const textConfig: BaseFieldConfig = getBaseConfig({
   type: 'text',
   options: {
-    key: '',
-    label: 'Text field',
     value: '',
     validationRules: { required: true },
+    configParams: [
+      getBooleanConfigParam('clearable'),
+      getTextConfigParam('append'),
+      getTextConfigParam('prepend'),
+    ],
   },
-  configParams: [
-    {
-      key: 'append',
-      input: 'text',
-      value: '',
-    },
-  ],
-}
+})
 
 export default textConfig
