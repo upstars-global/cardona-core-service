@@ -51,6 +51,7 @@ const baseConfig = {
         'inlineClass',
         'inlineStyle',
         'clearFormatting',
+        'insertVideo',
       ],
     },
 
@@ -94,6 +95,11 @@ const baseConfig = {
       buttonsVisible: 6,
     },
   },
+  videoInsertButtons: ['videoUpload'],
+  videoAllowedProviders: [],
+  videoMaxSize: 5 * 1000 * 1024 * 1024,
+  htmlAllowedTags: ['.*'],
+  htmlAllowedAttrs: ['.*'],
   codeBeautifierOptions: {
     end_with_newline: true,
     indent_inner_html: true,
