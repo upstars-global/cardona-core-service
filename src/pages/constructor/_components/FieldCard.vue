@@ -45,7 +45,6 @@ watch(
           :items="['TextBaseField', 'TextareaBaseField', 'SelectBaseField']"
         />
       </div>
-
       <div
         v-for="(value, key) in field.args"
         :key="key"
@@ -81,6 +80,11 @@ watch(
         <VCheckbox
           v-model="field.extra.info"
           label="info"
+          @change="syncConfigOptions(field, i18nPrefix)"
+        />
+        <VCheckbox
+          v-model="field.extra.description"
+          label="description"
           @change="syncConfigOptions(field, i18nPrefix)"
         />
         <VCheckbox

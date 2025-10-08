@@ -64,6 +64,8 @@ function getI18nKeys(fields: ParsedField[], prefix: string): string[] {
         keys.push(`${base}Placeholder`)
       if (f.extra?.info)
         keys.push(`${base}Info`)
+      if (f.extra?.description)
+        keys.push(`${base}description`)
 
       return keys
     })

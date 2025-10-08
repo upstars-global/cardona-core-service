@@ -2,7 +2,7 @@ import type { BaseFieldConfig } from './types'
 
 export function createField(config: BaseFieldConfig) {
   const { type, options } = config
-
+  console.log(type)
   switch (type) {
     case 'text':
       return `new TextBaseField(${JSON.stringify(options, null, 2)})`

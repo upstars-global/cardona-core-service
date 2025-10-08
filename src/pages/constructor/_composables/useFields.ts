@@ -1,21 +1,24 @@
 import type { ParsedField } from '../types'
 
 const EXCLUDED_KEYS = ['key', 'label', 'value', 'validationRules']
-export const SYSTEM_KEYS = ['placeholder', 'info', 'validationRules', 'selectedRules', 'rulesParams']
+export const SYSTEM_KEYS = ['placeholder', 'info', 'description', 'validationRules', 'selectedRules', 'rulesParams']
 
 const DEFAULT_EXTRA = {
   placeholder: false,
   info: false,
+  description: false,
   validationRules: false,
   selectedRules: [],
   rulesParams: {},
 }
 
+// TODO generate locale field more general
 export function applyConfigOptions(field: ParsedField, configOptions: Record<string, any>, configParams?: OptionField[]) {
   field.extra = { ...DEFAULT_EXTRA }
 
   for (const param of configParams || []) {
     const { key, value } = param
+
     field.extra[key] = configOptions[key] ?? value
   }
 }
@@ -38,6 +41,7 @@ function updateI18nExtras(field: ParsedField, prefix: string) {
 
   toggleArg(extra.placeholder, args, 'placeholder', `i18n.t('page.${prefix}.${name}Placeholder')`)
   toggleArg(extra.info, args, 'info', `i18n.t('page.${prefix}.${name}Info')`)
+  toggleArg(extra.description, args, 'description', `i18n.t('page.${prefix}.${name}Description')`)
 }
 
 function updateValidationRules(field: ParsedField) {

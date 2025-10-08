@@ -5,6 +5,7 @@ export interface BaseFieldConfig {
 export interface ExtraOptions {
   placeholder: boolean
   info: boolean
+  description: boolean
   validationRules: boolean
   selectedRules: string[]
   rulesParams: Record<string, string>
@@ -18,4 +19,10 @@ export interface ParsedField {
   rawType: string
   isRaw: boolean
   extra?: ExtraOptions
+}
+
+export enum ParamInputs {
+  Text = 'text',
+  Boolean = 'boolean',
+  Select = 'select',
 }
