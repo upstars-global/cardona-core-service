@@ -32,6 +32,7 @@ const mockStoreConfig = {
     },
   },
   getters: {
+    abilityCan: () => vi.fn(() => true),
     selectedProject: () => ({
       title: 'Mock Project',
       publicName: 'MockProject',
