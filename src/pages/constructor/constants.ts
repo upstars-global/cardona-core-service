@@ -22,3 +22,19 @@ export enum ConstructorFieldType {
 }
 
 export const FIELD_OPTIONS = Object.values(ConstructorFieldType)
+
+export const fieldsWithPlaceholder = [
+  ConstructorFieldType.UsersListBaseField,
+  ConstructorFieldType.TextareaBaseField,
+  ConstructorFieldType.NumberRangeBaseField,
+  ConstructorFieldType.NumberBaseField,
+  ConstructorFieldType.TextBaseField,
+  ConstructorFieldType.RichTextBaseField,
+  ConstructorFieldType.SelectBaseField,
+]
+
+export const fieldsWithLocalization = [
+  ConstructorFieldType.TextBaseField,
+  ConstructorFieldType.RichTextBaseField,
+  ConstructorFieldType.TextareaBaseField,
+]

@@ -3,7 +3,7 @@ import { ConstructorFieldType } from '../constants'
 import { getBaseConfig, getBooleanConfigParam, getTextConfigParam } from '../fieldConfigs/base.config'
 
 const textareaConfig: BaseFieldConfig = getBaseConfig({
-  type: ConstructorFieldType.SelectBaseField,
+  type: ConstructorFieldType.TextareaBaseField,
   options: {
     configParams: [
       getBooleanConfigParam('counter'),
