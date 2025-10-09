@@ -17,7 +17,8 @@ export enum ConstructorFieldType {
   TextBaseField = 'TextBaseField',
   TextareaBaseField = 'TextareaBaseField',
   TimeBaseField = 'TimeBaseField',
-  UsersListBaseField = 'UsersListBaseField'
+  UsersListBaseField = 'UsersListBaseField',
+  RichTextBaseField = 'RichTextBaseField',
 }
 
 export const FIELD_OPTIONS = Object.values(ConstructorFieldType)
