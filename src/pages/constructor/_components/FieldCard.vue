@@ -5,6 +5,7 @@ import { applyConfigOptions, convertToBase, convertToRaw, syncConfigOptions } fr
 import type { ParsedField } from '../types'
 import { byClass as fieldConfigsByClass } from '../fieldConfigs'
 import ValidationRulesEditor from './ValidationRulesEditor.vue'
+import { FIELD_OPTIONS } from '@/pages/constructor/constants'
 
 const props = defineProps<{
   field: ParsedField
@@ -27,6 +28,7 @@ watch(
     syncConfigOptions(props.field, props.i18nPrefix)
   },
 )
+
 </script>
 
 <template>
@@ -43,7 +45,7 @@ watch(
         <VSelect
           v-if="!field.readonly && !field.isRaw"
           v-model="field.className"
-          :items="['TextBaseField', 'TextareaBaseField', 'SelectBaseField']"
+          :items="FIELD_OPTIONS"
         />
       </div>
       <div

@@ -13,7 +13,7 @@ export const getBaseConfig = (config: Record<string, unknown>): BaseFieldConfig 
   value: null,
   i18nKeys: ['label', 'placeholder', 'info', 'description', 'other'],
   configParams: [
-    ...config.options.configParams,
+    ...config.options?.configParams || [],
     getBooleanConfigParam('isLocalization'),
   ],
 })

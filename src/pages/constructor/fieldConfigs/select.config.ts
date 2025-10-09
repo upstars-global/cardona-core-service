@@ -1,21 +1,9 @@
 import type { BaseFieldConfig } from '../types'
-import {getBaseConfig, getBooleanConfigParam} from '../fieldConfigs/base.config'
+import { getBaseConfig, getBooleanConfigParam } from '../fieldConfigs/base.config'
+import { ConstructorFieldType } from '../constants'
 
-// const selectConfig: BaseFieldConfig = {
-//   type: 'select',
-//   options: {
-//     ...baseConfig,
-//     items: [], // масив значень { label, value }
-//     multiple: false,
-//     clearable: true,
-//     validationRules: { required: false },
-//     options: [
-//       ...baseConfig.options,
-//     ],
-//   },
-// }
 const selectConfig: BaseFieldConfig = getBaseConfig({
-  type: 'select',
+  type: ConstructorFieldType.SelectBaseField,
   options: {
     items: [],
     validationRules: { required: false },

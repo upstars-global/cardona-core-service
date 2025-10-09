@@ -1,3 +1,5 @@
+import type { ConstructorFieldType } from './constants'
+
 export type ConfigParamValue = string | boolean | Array<{ label: string; value: string }>
 export interface ConfigParams {
   key: string
@@ -6,7 +8,7 @@ export interface ConfigParams {
 }
 
 export interface BaseFieldConfig {
-  type: 'text' | 'textarea' | 'select'
+  type: ConstructorFieldType
   options: Record<string, any>
   configParams?: Array<ConfigParams>
   i18nKeys?: string[] // <--- ось нове

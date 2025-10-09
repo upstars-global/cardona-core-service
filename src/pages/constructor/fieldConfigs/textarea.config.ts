@@ -1,14 +1,19 @@
 import type { BaseFieldConfig } from '../types'
+import { ConstructorFieldType } from '../constants'
+import { getBaseConfig, getBooleanConfigParam, getTextConfigParam } from '../fieldConfigs/base.config'
 
-const textareaConfig: BaseFieldConfig = {
-  type: 'textarea',
+const textareaConfig: BaseFieldConfig = getBaseConfig({
+  type: ConstructorFieldType.SelectBaseField,
   options: {
-    key: '',
-    label: 'Textarea field',
-    value: '',
-    rows: 4,
+    items: [],
     validationRules: { required: false },
+    configParams: [
+      getBooleanConfigParam('counter'),
+      getTextConfigParam('rows'),
+      getTextConfigParam('maxLength'),
+      getBooleanConfigParam('maxLength'),
+    ],
   },
-}
+})
 
 export default textareaConfig
