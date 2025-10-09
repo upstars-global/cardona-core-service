@@ -11,10 +11,7 @@ import { DataPickerPosition } from '@/@model/templates/baseField/date'
 const dateConfig: BaseFieldConfig = getBaseConfig({
   type: ConstructorFieldType.DateBaseField,
   options: {
-    items: [],
-    validationRules: { required: false },
     configParams: [
-
       getBooleanConfigParam('isRangeMode'),
       getBooleanConfigParam('isStartDateNow'),
       getBooleanConfigParam('withTime'),

@@ -5,8 +5,6 @@ import { getBaseConfig, getBooleanConfigParam, getTextConfigParam } from '../fie
 const textareaConfig: BaseFieldConfig = getBaseConfig({
   type: ConstructorFieldType.SelectBaseField,
   options: {
-    items: [],
-    validationRules: { required: false },
     configParams: [
       getBooleanConfigParam('counter'),
       getTextConfigParam('rows'),

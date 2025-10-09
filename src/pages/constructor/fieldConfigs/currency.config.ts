@@ -5,8 +5,6 @@ import { ConstructorFieldType } from '../constants'
 const currencyConfig: BaseFieldConfig = getBaseConfig({
   type: ConstructorFieldType.CurrencyField,
   options: {
-    items: [],
-    validationRules: { required: false },
     configParams: [
       getBooleanConfigParam('isCent'),
       getBooleanConfigParam('isIntegerNumbers'),

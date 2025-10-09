@@ -2,9 +2,9 @@ import { ConstructorFieldType } from '../constants'
 import type { BaseFieldConfig } from '../types'
 import numberConfig from './number.config'
 import numberRange from './numberRange.config'
-import text from './text.config'
-import textarea from './textarea.config'
-import select from './select.config'
+import textConfig from './text.config'
+import textareaConfig from './textarea.config'
+import selectConfig from './select.config'
 import checkboxConfig from './checkbox.config'
 import checkboxGroup from './checkboxGroup.config'
 import conditionConfig from './condition.config'
@@ -21,12 +21,10 @@ import tagsConfig from './tasg.config'
 import timeConfig from './time.config'
 import userListConfig from './userList.config'
 
-export { text, textarea, select }
-
 export const byClass: Record<ConstructorFieldType, BaseFieldConfig> = {
-  [ConstructorFieldType.TextBaseField]: text,
-  [ConstructorFieldType.TextareaBaseField]: textarea,
-  [ConstructorFieldType.SelectBaseField]: select,
+  [ConstructorFieldType.TextBaseField]: textConfig,
+  [ConstructorFieldType.TextareaBaseField]: textareaConfig,
+  [ConstructorFieldType.SelectBaseField]: selectConfig,
   [ConstructorFieldType.CheckBaseField]: checkboxConfig,
   [ConstructorFieldType.CheckGroupBaseField]: checkboxGroup,
   [ConstructorFieldType.ConditionsBaseField]: conditionConfig,

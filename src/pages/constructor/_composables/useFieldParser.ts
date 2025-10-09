@@ -5,6 +5,7 @@ import * as recast from 'recast'
 import { createField } from '../fieldFactory'
 import { applyConfigOptions } from '../_composables/useFields'
 import type { BaseFieldConfig } from '../types'
+import textConfig from "@/pages/constructor/fieldConfigs/text.config";
 
 interface ParseOptions {
   returnFields?: boolean
@@ -112,7 +113,7 @@ function createParsedField(
   type: string,
   fieldConfigs: Record<string, BaseFieldConfig>,
 ) {
-  const config = fieldConfigs[name] ?? fieldConfigs.text
+  const config = fieldConfigs[name] ?? textConfig
 
   const field = {
     name,

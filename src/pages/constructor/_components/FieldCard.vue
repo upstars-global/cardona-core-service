@@ -4,8 +4,8 @@ import { VColors } from '../../../@model/vuetify'
 import { applyConfigOptions, convertToBase, convertToRaw, syncConfigOptions } from '../_composables/useFields'
 import type { ParsedField } from '../types'
 import { byClass as fieldConfigsByClass } from '../fieldConfigs'
+import { FIELD_OPTIONS } from '../constants'
 import ValidationRulesEditor from './ValidationRulesEditor.vue'
-import { FIELD_OPTIONS } from '@/pages/constructor/constants'
 
 const props = defineProps<{
   field: ParsedField
@@ -28,7 +28,6 @@ watch(
     syncConfigOptions(props.field, props.i18nPrefix)
   },
 )
-
 </script>
 
 <template>
