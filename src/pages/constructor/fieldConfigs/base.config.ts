@@ -1,5 +1,6 @@
 import type { BaseFieldConfig, ConfigParams } from '../types'
 import { ParamInputs } from '../types'
+import type { ConstructorFieldType } from '@/pages/constructor/constants'
 
 const getBaseConfigParam = (params: ConfigParams) => params
 
@@ -16,4 +17,15 @@ export const getBaseConfig = (config: Record<string, unknown>): BaseFieldConfig 
     ...config.options?.configParams || [],
     getBooleanConfigParam('isLocalization'),
   ],
+})
+
+export const getNumberBaseConfig = ({ type, configParams }: { type: ConstructorFieldType; configParams?: ConfigParams[] }) => getBaseConfig({
+  type,
+  options: {
+    configParams: [
+      ...configParams || [],
+      getBooleanConfigParam('withPositiveNumbers'),
+      getBooleanConfigParam('isIntegerNumbers'),
+    ],
+  },
 })
