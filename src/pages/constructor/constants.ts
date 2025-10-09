@@ -1,5 +1,6 @@
 export enum ConstructorFieldType {
   CheckBaseField = 'CheckBaseField',
+  CurrencyField = 'CurrencyBaseField',
   CheckGroupBaseField = 'CheckGroupBaseField',
   ConditionsBaseField = 'ConditionsBaseField',
   DateBaseField = 'DateBaseField',
