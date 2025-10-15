@@ -2,16 +2,16 @@
 import { onMounted, ref, watch } from 'vue'
 import { useClipboard } from '@vueuse/core'
 import { VColors, VVariants } from '../../@model/vuetify'
+import { IconsList } from '../../@model/enums/icons'
 import { parseInterfaceToClass } from './_composables/useFieldParser'
 import * as fieldConfigs from './fieldConfigs'
 import { updateExtras } from './_composables/useFields'
 import { generateCode } from './_composables/useCodeGenerator'
 import type { ParsedField } from './types'
 
-import FieldCard from './_components/FieldCard.vue'
+import FieldCard from './_components/FieldCard/index.vue'
 import I18nPrefixEditor from './_components/I18nPrefixEditor.vue'
-import I18nJsonGenerator from '@/pages/constructor/_components/I18nJsonGenerator.vue'
-import { IconsList } from '@/@model/enums/icons'
+import I18nJsonGenerator from './_components/I18nJsonGenerator.vue'
 
 defineOptions({ name: 'Constructor' })
 
@@ -58,7 +58,6 @@ function getI18nKeys(fields: ParsedField[], prefix: string): string[] {
   return fields
     .filter(f => !f.readonly)
     .flatMap(f => {
-
       const base = `page.${prefix}.${f.name}`
       const keys = [base]
       if (f.extra?.placeholder)
