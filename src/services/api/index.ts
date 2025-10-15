@@ -219,7 +219,7 @@ class ApiService {
             options = toastOptions
         }
 
-        if (params.currency)
+        if (params?.currency)
           field = `${field}_${params.currency}`
 
         formRef?.setErrors({
