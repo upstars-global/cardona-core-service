@@ -69,7 +69,7 @@ export enum IconsList {
   CloudRainIcon = 'CloudRainIcon',
   CloudSnowIcon = 'CloudSnowIcon',
   CloudIcon = 'CloudIcon',
-  CodeIcon = 'CodeIcon',
+  CodeIcon = 'tabler-code',
   CodepenIcon = 'CodepenIcon',
   CodesandboxIcon = 'CodesandboxIcon',
   CoffeeIcon = 'CoffeeIcon',
@@ -323,5 +323,7 @@ export enum IconsList {
   LayoutRows = 'tabler-layout-rows',
   ChartBar = 'tabler-chart-bar',
   ChartLine = 'tabler-chart-line',
+  LanguageKatakana = 'tabler-language-katakana',
+  BrandTypescript = 'tabler-brand-typescript',
 }
 export default {}

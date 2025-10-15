@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
-import { useClipboard } from '@vueuse/core'
+import { onMounted, ref, useTemplateRef, watch } from 'vue'
+import { useClipboard, useResizeObserver } from '@vueuse/core'
 import { VColors, VVariants } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import { parseInterfaceToClass } from './_composables/useFieldParser'
@@ -88,6 +88,15 @@ watch(
   },
   { deep: true },
 )
+
+const sourceInterfaceRef = useTemplateRef<HTMLElement | null>('sourceInterfaceRef')
+
+useResizeObserver(sourceInterfaceRef, entries => {
+  const entry = entries[0]
+  const { width, height } = entry.contentRect
+
+  console.log({ width, height })
+})
 </script>
 
 <template>
@@ -95,7 +104,19 @@ watch(
     <VToolbar
       :color="VColors.Primary"
       title="🧩 Конструктор класу"
+      class="mb-4 bg-grey-300"
     >
+      <div class="d-flex align-center justify-start flex-grow-1">
+        <VBtn :variant="VVariants.Outlined">
+          <VIcon :icon="IconsList.BrandTypescript" />
+        </VBtn>
+        <VBtn :variant="VVariants.Outlined">
+          <VIcon :icon="IconsList.CodeIcon" />
+        </VBtn>
+        <VBtn :variant="VVariants.Outlined">
+          <VIcon :icon="IconsList.LanguageKatakana" />
+        </VBtn>
+      </div>
       <template #append>
         <VBtn
           :color="VColors.White"
@@ -136,15 +157,19 @@ watch(
         align="start"
         justify="space-between"
         dense
+        class="d-flex align-start align-stretch"
       >
-        <!-- LEFT SIDE — Керування -->
-        <VCol
+        <!-- LEFT SIDE — Source Interface -->
+        <div
+          ref="sourceInterfaceRef"
+          style="resize: horizontal; overflow: auto;"
           cols="12"
-          md="6"
+          md="4"
+          class="flex-column flex-grow-1 d-flex"
         >
           <VCard
-            class="mb-6"
             elevation="1"
+            class="flex-column flex-grow-1 d-flex"
           >
             <VCardTitle>1. Вставте TypeScript інтерфейс</VCardTitle>
             <VCardText>
@@ -181,47 +206,16 @@ watch(
           </VCard>
 
           <!-- Поля -->
-        </VCol>
-
-        <!-- RIGHT SIDE — Редагований Клас -->
+        </div>
         <VCol
           cols="12"
-          md="6"
+          md="4"
+          class="flex-column flex-grow-1 d-flex"
         >
-          <VCard
-            v-if="editableOutput"
-            elevation="1"
-          >
-            <VCardTitle>
-              <div class="d-flex align-center justify-space-between">
-                <span class="text-grey ml-2">3. Згенерований клас ({{ className }})</span>
-                <VBtn
-                  color="success"
-                  @click="copy(editableOutput)"
-                >
-                  📋 Копіювати Class
-                </VBtn>
-              </div>
-            </VCardTitle>
-            <VCardText>
-              <VTextarea
-                v-model="editableOutput"
-                rows="20"
-                auto-grow
-                class="code-output"
-                label="Код класу"
-                hint="Цей код можна редагувати перед копіюванням"
-                persistent-hint
-              />
-            </VCardText>
-          </VCard>
-        </VCol>
-      </VRow>
-      <VRow>
-        <VCol>
           <VCard
             v-if="parsedFields.length"
             elevation="1"
+            class="flex-column flex-grow-1 d-flex"
           >
             <VCardTitle>
               2. Редагування полів
@@ -247,6 +241,43 @@ watch(
                 🚀 Згенерувати код вручну
               </VBtn>
             </VCardActions>
+          </VCard>
+        </VCol>
+
+        <!-- RIGHT SIDE — Code Output -->
+        <VCol
+          cols="12"
+          md="4"
+          class="flex-column flex-grow-1 d-flex"
+        >
+          <VCard
+            v-if="editableOutput"
+            elevation="1"
+            class="flex-column flex-grow-1 d-flex"
+          >
+            <VCardTitle>
+              <div class="d-flex align-center justify-space-between">
+                <span class="text-grey ml-2">3. Згенерований клас ({{ className }})</span>
+                <VBtn
+                  color="success"
+                  @click="copy(editableOutput)"
+                >
+                  📋 Копіювати Class
+                </VBtn>
+              </div>
+            </VCardTitle>
+            <VCardText>
+              <VTextarea
+                v-model="editableOutput"
+                rows="20"
+                readonly
+                auto-grow
+                class="code-output"
+                label="Код класу"
+                hint="Цей код можна редагувати перед копіюванням"
+                persistent-hint
+              />
+            </VCardText>
           </VCard>
         </VCol>
       </VRow>
