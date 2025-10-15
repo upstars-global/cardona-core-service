@@ -58,7 +58,7 @@ function getI18nKeys(fields: ParsedField[], prefix: string): string[] {
   return fields
     .filter(f => !f.readonly)
     .flatMap(f => {
-      console.log(f)
+
       const base = `page.${prefix}.${f.name}`
       const keys = [base]
       if (f.extra?.placeholder)

@@ -9,8 +9,10 @@ export interface ConfigParams {
 
 export interface BaseFieldConfig {
   type: ConstructorFieldType
-  options: Record<string, any>
+  options: Record<string, unknown>
   configParams?: Array<ConfigParams>
+  className?: string
+  readonly?: boolean
   i18nKeys?: string[] // <--- ось нове
 }
 export interface ExtraOptions {
@@ -24,12 +26,13 @@ export interface ExtraOptions {
 
 export interface ParsedField {
   name: string
-  className: string
+  className: ConstructorFieldType | 'raw'
   args: Record<string, string>
   readonly: boolean
   rawType: string
   isRaw: boolean
   extra?: ExtraOptions
+  i18nPrefix?: string
 }
 
 export enum ParamInputs {

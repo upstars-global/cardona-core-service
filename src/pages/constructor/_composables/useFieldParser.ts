@@ -5,18 +5,27 @@ import * as recast from 'recast'
 import { createField } from '../fieldFactory'
 import { applyConfigOptions } from '../_composables/useFields'
 import type { BaseFieldConfig } from '../types'
-import textConfig from "@/pages/constructor/fieldConfigs/text.config";
+import textConfig from '../fieldConfigs/text.config'
+import type { ConstructorFieldType } from '../constants'
 
+// Optional return configuration
 interface ParseOptions {
   returnFields?: boolean
   returnParsedFields?: boolean
 }
 
+/**
+ * Parses a TypeScript interface and transforms it into:
+ * - A class declaration string
+ * - Or: an array of field names
+ * - Or: an array of ParsedField objects
+ */
 export function parseInterfaceToClass(
   code: string,
-  fieldConfigs: Record<string, BaseFieldConfig>,
+  fieldConfigs: Record<ConstructorFieldType, BaseFieldConfig>,
   options: ParseOptions = {},
 ): string | string[] | any[] {
+  // Parse input TypeScript code into AST
   const ast = parser.parse(code, {
     sourceType: 'module',
     plugins: ['typescript'],
@@ -25,8 +34,9 @@ export function parseInterfaceToClass(
   let classBody: t.ClassBody | null = null
   let className = 'GeneratedClass'
   const fields: string[] = []
-  const parsedFields: any[] = []
+  const parsedFields: unknown[] = []
 
+  // Traverse the AST to find the interface declaration
   traverse(ast, {
     TSInterfaceDeclaration(path) {
       className = getClassName(path.node.id.name)
@@ -41,9 +51,12 @@ export function parseInterfaceToClass(
         const type = resolveTSType(prop.typeAnnotation?.typeAnnotation)
 
         fields.push(name)
+
+        // Return raw field names only
         if (options.returnFields)
           continue
 
+        // Return ParsedField[] for constructor UI/editor
         if (options.returnParsedFields) {
           parsedFields.push(
             name === 'id'
@@ -53,10 +66,11 @@ export function parseInterfaceToClass(
         }
       }
 
+      // Default: generate full class
       if (!options.returnFields && !options.returnParsedFields)
         classBody = generateClassBody(props, fieldConfigs)
 
-      path.stop()
+      path.stop() // stop after first interface
     },
   })
 
@@ -67,6 +81,7 @@ export function parseInterfaceToClass(
   if (!classBody)
     return ''
 
+  // Generate the class AST and convert to code string
   const classAst = t.classDeclaration(
     t.identifier(className),
     null,
@@ -76,14 +91,18 @@ export function parseInterfaceToClass(
 
   return recast.print(classAst).code
 }
+
+// Converts interface name like "IMetaData" → "MetaDataForm"
 function getClassName(interfaceName: string): string {
   return `${interfaceName.replace(/^I/, '')}Form`
 }
 
+// Ensures that a property is a valid TS property signature
 function isValidProperty(prop: any): prop is t.TSPropertySignature {
   return t.isTSPropertySignature(prop) && t.isIdentifier(prop.key)
 }
 
+// Extracts type name from TypeScript AST node
 function resolveTSType(typeNode: t.TSType | undefined): string {
   if (t.isTSStringKeyword(typeNode))
     return 'string'
@@ -94,9 +113,10 @@ function resolveTSType(typeNode: t.TSType | undefined): string {
   if (t.isTSTypeReference(typeNode) && t.isIdentifier(typeNode.typeName))
     return typeNode.typeName.name
 
-  return 'any'
+  return 'any' // fallback
 }
 
+// Returns raw field (e.g. for `id`) with manual assignment
 function createRawParsedField(name: string, type: string) {
   return {
     name,
@@ -108,6 +128,7 @@ function createRawParsedField(name: string, type: string) {
   }
 }
 
+// Creates a ParsedField object with config and default UI bindings
 function createParsedField(
   name: string,
   type: string,
@@ -129,11 +150,13 @@ function createParsedField(
     extra: {},
   }
 
+  // Apply dynamic config options (e.g. clearable, placeholder, etc.)
   applyConfigOptions(field, config.options)
 
   return field
 }
 
+// Generates the body of a class from interface properties
 function generateClassBody(
   props: readonly t.TSTypeElement[],
   fieldConfigs: Record<string, BaseFieldConfig>,
@@ -147,9 +170,11 @@ function generateClassBody(
     const name = prop.key.name
     const config = fieldConfigs[name] ?? fieldConfigs.text
 
+    // Inject key and label into config options
     config.options.key = name
     config.options.label ||= name
 
+    // Create field expression via fieldFactory (as code string)
     const initExpression = recast.parse(createField(config)).program.body[0] as t.ExpressionStatement
 
     const classProp = t.classProperty(
@@ -159,7 +184,7 @@ function generateClassBody(
       null,
     )
 
-    ;(classProp as any).readonly = true
+    ;(classProp as t.ClassProperty).readonly = true
 
     classProps.push(classProp)
   }

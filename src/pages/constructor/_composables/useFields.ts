@@ -1,10 +1,13 @@
-import type { ConfigParams, ParsedField } from '../types'
-import { byClass } from '@/pages/constructor/fieldConfigs'
+import type { BaseFieldConfig, ConfigParams, ExtraOptions, ParsedField } from '../types'
+import { byClass } from '../fieldConfigs/index'
+import { ConstructorFieldType } from '../constants'
 
-const EXCLUDED_KEYS = ['key', 'label', 'value', 'validationRules']
+// Keys that should not be included in field.args
 export const SYSTEM_KEYS = ['placeholder', 'info', 'description', 'validationRules', 'selectedRules', 'rulesParams']
+const NON_ARG_KEYS = new Set<keyof ExtraOptions>(['validationRules', 'selectedRules', 'rulesParams'])
+const KEY_RAW = 'raw'
 
-const DEFAULT_EXTRA = {
+const DEFAULT_EXTRA: ExtraOptions = {
   placeholder: false,
   info: false,
   description: false,
@@ -13,66 +16,87 @@ const DEFAULT_EXTRA = {
   rulesParams: {},
 }
 
-// TODO generate locale field more general
+// Initializes field.extra using configParams and i18nKeys
 export function applyConfigOptions(
   field: ParsedField,
   configOptions: Record<string, any>,
   configParams?: ConfigParams[],
-) {
+): void {
   field.extra = { ...DEFAULT_EXTRA }
 
-  // 1. Ініціалізувати параметри з configParams
-  for (const param of configParams || []) {
-    const { key, value } = param
-
-    field.extra[key] = configOptions[key] ?? value
-  }
-
-  // 2. Додатково ініціалізувати i18nKeys, якщо не існують
+  for (const param of configParams || [])
+    field.extra[param.key as keyof ExtraOptions] = configOptions[param.key] ?? param.value
+  if (field.className === KEY_RAW)
+    return
   const i18nKeys = byClass[field.className]?.i18nKeys || []
   for (const key of i18nKeys) {
-    if (key === 'label')
-      continue // не boolean
-    if (!(key in field.extra))
-      field.extra[key] = false
+    if (key !== 'label' && !(key in field.extra))
+      field.extra[key as keyof ExtraOptions] = false
   }
 }
 
-export function syncConfigOptions(field: ParsedField, prefix: string) {
-  field.i18nPrefix = prefix // ✅ збереження префікса
-
+// Full sync of field.args based on field.extra and config
+export function syncConfigOptions(field: ParsedField, prefix: string): void {
+  field.i18nPrefix = prefix
   if (!field.extra)
     return
 
-  updateI18nExtras(field, prefix)
+  updateI18nExtras(field)
   updateValidationRules(field)
   applyExtraToArgs(field)
 }
 
-function capitalizeSuffix(key: string): string {
-  return key === 'label' ? '' : capitalize(key)
+// Updates only i18n and validationRules in field.args
+export function updateExtras(field: ParsedField, prefix: string): void {
+  field.i18nPrefix = prefix
+  updateI18nExtras(field)
+  updateValidationRules(field)
 }
 
-function capitalize(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1)
+// Converts field to raw mode
+export function convertToRaw(field: ParsedField): void {
+  ;(field as any).__savedExtra = field.extra
+  delete (field as any).extra
+
+  field.className = KEY_RAW
+  field.args = {
+    raw: `this.${field.name} = data?.${field.name}`,
+  }
+  field.isRaw = true
 }
 
-function updateI18nExtras(field: ParsedField, prefix: string) {
-  const config = byClass[field.className]
-  const keys = config?.i18nKeys || []
-  const { extra, args, name } = field
+// Converts field back to base mode (e.g. TextBaseField)
+export function convertToBase(field: ParsedField, prefix: string): void {
+  field.className = ConstructorFieldType.TextBaseField
+  field.args = {
+    key: `'${field.name}'`,
+    value: `data?.${field.name}`,
+  }
+  field.isRaw = false
+
+  field.extra = (field as any).__savedExtra ?? { ...DEFAULT_EXTRA }
+  syncConfigOptions(field, prefix)
+}
+
+// Generates i18n-related args based on i18nKeys and field.extra
+function updateI18nExtras(field: ParsedField): void {
+  if (field.className === KEY_RAW)
+    return
+  const config: BaseFieldConfig = byClass[field.className]
+  const keys: string[] = config?.i18nKeys || []
+  const { extra, args, name, i18nPrefix } = field
 
   for (const key of keys) {
-    const base = `page.${prefix}.${name}${capitalizeSuffix(key)}`
-
+    const base = `page.${i18nPrefix}.${name}${capitalizeSuffix(key)}`
     if (key === 'label')
       args.label = `i18n.t('${base}')`
     else
-      toggleArg(extra[key], args, key, `i18n.t('${base}')`)
+      toggleArg(extra?.[key as keyof ExtraOptions] === true, args, key, `i18n.t('${base}')`)
   }
 }
 
-function updateValidationRules(field: ParsedField) {
+// Generates validationRules arg based on selectedRules and params
+function updateValidationRules(field: ParsedField): void {
   const { extra, args } = field
 
   if (extra?.validationRules && extra.selectedRules.length > 0) {
@@ -89,30 +113,28 @@ function updateValidationRules(field: ParsedField) {
   }
 }
 
-function applyExtraToArgs(field: ParsedField) {
+// Applies all extra values (non-system, non-i18n) into field.args
+function applyExtraToArgs(field: ParsedField): void {
+  if (field.className === KEY_RAW)
+    return
   const config = byClass[field.className]
   const i18nKeys = config?.i18nKeys || []
-  const extra = field.extra!
-  const args = field.args
+  const { extra, args, name, i18nPrefix } = field
 
-  for (const [key, val] of Object.entries(extra)) {
-    // Пропускаємо системні (validationRules, selectedRules, rulesParams)
-    if (['validationRules', 'selectedRules', 'rulesParams'].includes(key))
+  for (const [key, val] of Object.entries(extra || {})) {
+    if (NON_ARG_KEYS.has(key as keyof ExtraOptions))
       continue
 
-    const setArg = (v: string) => (args[key] = v)
-    const delArg = () => delete args[key]
+    const setArg = (v: string) => { args[key] = v }
+    const delArg = () => { delete args[key] }
 
     if (i18nKeys.includes(key)) {
-      // Це i18n boolean поле
-      if (val === true)
-        setArg(`i18n.t('page.${field.i18nPrefix}.${field.name}${capitalize(key)}')`)
-      else
-        delArg()
+      val === true
+        ? setArg(`i18n.t('page.${i18nPrefix}.${name}${capitalize(key)}')`)
+        : delArg()
       continue
     }
 
-    // Обробка інших типів (звичайні поля)
     switch (typeof val) {
       case 'boolean':
         val ? setArg('true') : delArg()
@@ -130,36 +152,20 @@ function applyExtraToArgs(field: ParsedField) {
   }
 }
 
-function toggleArg(condition: boolean, args: Record<string, string>, key: string, value: string) {
+// Adds or removes a key from args depending on a condition
+function toggleArg(condition: boolean, args: Record<string, string>, key: string, value: string): void {
   if (condition)
     args[key] = value
-  else delete args[key]
+  else
+    delete args[key]
 }
 
-export function convertToRaw(field: ParsedField) {
-  ;(field as any).__savedExtra = field.extra
-  delete (field as any).extra
-
-  field.className = 'raw'
-  field.args = {
-    raw: `this.${field.name} = data?.${field.name}`,
-  }
-  field.isRaw = true
+// Capitalizes a suffix like "Placeholder" or "Description"
+function capitalizeSuffix(key: string): string {
+  return key === 'label' ? '' : capitalize(key)
 }
 
-export function convertToBase(field: ParsedField, prefix: string) {
-  field.className = 'TextBaseField'
-  field.args = {
-    key: `'${field.name}'`,
-    value: `data?.${field.name}`,
-  }
-  field.isRaw = false
-
-  field.extra = (field as any).__savedExtra ?? { ...DEFAULT_EXTRA }
-
-  syncConfigOptions(field, prefix)
-}
-export function updateExtras(field: ParsedField, prefix: string) {
-  updateI18nExtras(field, prefix)
-  updateValidationRules(field)
+// Capitalizes a string (e.g. "info" → "Info")
+function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }

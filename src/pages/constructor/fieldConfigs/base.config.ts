@@ -13,13 +13,11 @@ const canShowLocaleParams = (type: ConstructorFieldType, constructorFieldTypes: 
 const canAddPlaceholder = (type: ConstructorFieldType) => canShowLocaleParams(type, fieldsWithPlaceholder) ? 'placeholder' : ''
 const canAddIsLocalization = (type: ConstructorFieldType) => canShowLocaleParams(type, fieldsWithLocalization) ? 'isLocalization' : ''
 
-export const getBaseConfig = (config: Record<string, unknown>): BaseFieldConfig => {
+export const getBaseConfig = (config: BaseFieldConfig): BaseFieldConfig => {
   const isLocalizationConfigParam = canAddIsLocalization(config.type) ? [getBooleanConfigParam('isLocalization')] : []
 
   return {
     ...config,
-    key: '',
-    value: null,
     i18nKeys: [
       'label',
       'info',
