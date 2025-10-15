@@ -39,6 +39,8 @@ export function applyConfigOptions(
 }
 
 export function syncConfigOptions(field: ParsedField, prefix: string) {
+  field.i18nPrefix = prefix // ✅ збереження префікса
+
   if (!field.extra)
     return
 
