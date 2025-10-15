@@ -52,6 +52,7 @@ declare module 'vue-router/auto/routes' {
     'constructor-components-i18n-json-generator': RouteRecordInfo<'constructor-components-i18n-json-generator', '/constructor/_components/I18nJsonGenerator', Record<never, never>, Record<never, never>>,
     'constructor-components-i18n-prefix-editor': RouteRecordInfo<'constructor-components-i18n-prefix-editor', '/constructor/_components/I18nPrefixEditor', Record<never, never>, Record<never, never>>,
     'constructor-components-validation-rules-editor': RouteRecordInfo<'constructor-components-validation-rules-editor', '/constructor/_components/ValidationRulesEditor', Record<never, never>, Record<never, never>>,
+    'constructor-components-view-mode-selector': RouteRecordInfo<'constructor-components-view-mode-selector', '/constructor/_components/ViewModeSelector', Record<never, never>, Record<never, never>>,
     'error404': RouteRecordInfo<'error404', '/error/404', Record<never, never>, Record<never, never>>,
     'forgot-password': RouteRecordInfo<'forgot-password', '/forgot-password', Record<never, never>, Record<never, never>>,
     'login': RouteRecordInfo<'login', '/login', Record<never, never>, Record<never, never>>,
