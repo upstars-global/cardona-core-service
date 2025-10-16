@@ -96,14 +96,35 @@ watch(parsedFields, () => {
       class="mb-4 bg-grey-300"
     >
       <div class="d-flex align-center justify-start flex-grow-1">
-        <VBtn :variant="VVariants.Outlined">
-          <VIcon :icon="IconsList.BrandTypescript" />
+        <VBtn
+          class="rounded pa-0"
+          icon
+          :variant="VVariants.Outlined"
+        >
+          <VIcon
+            :icon="IconsList.BrandTypescript"
+            size="40"
+          />
         </VBtn>
-        <VBtn :variant="VVariants.Outlined">
-          <VIcon :icon="IconsList.CodeIcon" />
+        <VBtn
+          class="rounded pa-0"
+          icon
+          :variant="VVariants.Outlined"
+        >
+          <VIcon
+            :icon="IconsList.CodeIcon"
+            size="40"
+          />
         </VBtn>
-        <VBtn :variant="VVariants.Outlined">
-          <VIcon :icon="IconsList.LanguageKatakana" />
+        <VBtn
+          class="rounded pa-0"
+          icon
+          :variant="VVariants.Outlined"
+        >
+          <VIcon
+            :icon="IconsList.LanguageKatakana"
+            size="40"
+          />
         </VBtn>
       </div>
 

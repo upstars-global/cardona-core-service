@@ -43,6 +43,7 @@ declare module 'vue-router/auto/routes' {
     'access-control': RouteRecordInfo<'access-control', '/access-control', Record<never, never>, Record<never, never>>,
     'authentication-auth-provider': RouteRecordInfo<'authentication-auth-provider', '/authentication/AuthProvider', Record<never, never>, Record<never, never>>,
     'constructor': RouteRecordInfo<'constructor', '/constructor', Record<never, never>, Record<never, never>>,
+    'constructor-components-constructor-panel': RouteRecordInfo<'constructor-components-constructor-panel', '/constructor/_components/ConstructorPanel', Record<never, never>, Record<never, never>>,
     'constructor-components-field-card': RouteRecordInfo<'constructor-components-field-card', '/constructor/_components/FieldCard', Record<never, never>, Record<never, never>>,
     'constructor-components-field-card-dynamic-config-inputs': RouteRecordInfo<'constructor-components-field-card-dynamic-config-inputs', '/constructor/_components/FieldCard/DynamicConfigInputs', Record<never, never>, Record<never, never>>,
     'constructor-components-field-card-field-info-block': RouteRecordInfo<'constructor-components-field-card-field-info-block', '/constructor/_components/FieldCard/FieldInfoBlock', Record<never, never>, Record<never, never>>,
