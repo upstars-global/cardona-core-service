@@ -18,6 +18,7 @@ import type {
   IResponseError,
   IValidationError,
 } from './config'
+import { serializeType } from '@productConfig'
 
 const INVALID_TOKEN_ERROR = 'TypeError: Failed to execute \'setRequestHeader\' on \'XMLHttpRequest\': String contains non ISO-8859-1 code point.'
 const CACHE_NAME = 'app-cache'
@@ -97,17 +98,20 @@ class ApiService {
 
       const axiosInstance: AxiosInstance = newAxiosInstance ? axios.create() : axios
 
+      console.log({ contentType })
+
       const headers: RequestHeaders = {
         'Content-Type': contentType,
       }
 
       const body: FormData | any
         = contentType === ContentType.FormData && payload.formData
-        ? this.createFormData(payload.formData)
-        : JSON.stringify({
-          ...payload,
-          requestId: uuidv4(),
-        })
+          ? this.createFormData(payload.formData)
+          : JSON.stringify({
+            ...payload,
+            type: serializeType(payload.type),
+            requestId: uuidv4(),
+          })
 
       const { data }: any = await axiosInstance({
         url,
