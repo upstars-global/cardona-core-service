@@ -98,8 +98,6 @@ class ApiService {
 
       const axiosInstance: AxiosInstance = newAxiosInstance ? axios.create() : axios
 
-      console.log({ contentType })
-
       const headers: RequestHeaders = {
         'Content-Type': contentType,
       }
