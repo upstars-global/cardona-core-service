@@ -95,6 +95,8 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
   readonly infiniteLoading?: boolean
   readonly localeKey: string
   pageNumber: number
+  private prevSearch = ''
+  allowLoadMore = true
 
   protected constructor(field: IASelectBaseField<T>) {
     super(field)
@@ -137,6 +139,8 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     if (resetPage)
       this.pageNumber = 1
 
+    this.prevSearch = filters.search || ''
+
     const { list = [] } = await this.fetchOptionsAction({
       perPage: 50,
       pageNumber: this.pageNumber,
@@ -146,11 +150,15 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
       },
     })
 
+    this.allowLoadMore = list.length === 50
+
     return this.getOptionItems(list)
   }
 
   async getOptions(filters: { search?: string; ids?: string[] } = {}) {
-    const resetPage = !!filters.search?.length
+    if (!filters.search)
+      filters.search = ''
+    const resetPage = this.prevSearch !== filters.search
 
     return await this.fetchOptionList(filters, resetPage)
   }
@@ -174,10 +182,12 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     }
   }
 
-  async loadMore() {
+  async loadMore(search: string) {
+    if (!this.allowLoadMore)
+      return
     this.pageNumber++
 
-    const options = await this.getOptions()
+    const options = await this.getOptions({ search })
 
     this.options = [...this.options, ...options]
   }
