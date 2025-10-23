@@ -12,6 +12,7 @@ import type { ParsedField } from './types'
 import FieldCard from './_components/FieldCard/index.vue'
 import I18nPrefixEditor from './_components/I18nPrefixEditor.vue'
 import I18nJsonGenerator from './_components/I18nJsonGenerator.vue'
+import ConstructorPanel from './_components/ConstructorPanel.vue'
 
 defineOptions({ name: 'Constructor' })
 
@@ -93,79 +94,8 @@ watch(parsedFields, () => {
     <VToolbar
       :color="VColors.Primary"
       title="🧩 Конструктор класу"
-      class="mb-4 bg-grey-300"
+      class="mb-4"
     >
-      <div class="d-flex align-center justify-start flex-grow-1">
-        <VBtn
-          class="rounded pa-0"
-          icon
-          :variant="VVariants.Outlined"
-        >
-          <VIcon
-            :icon="IconsList.BrandTypescript"
-            size="40"
-          />
-        </VBtn>
-        <VBtn
-          class="rounded pa-0"
-          icon
-          :variant="VVariants.Outlined"
-        >
-          <VIcon
-            :icon="IconsList.CodeIcon"
-            size="40"
-          />
-        </VBtn>
-        <VBtn
-          class="rounded pa-0"
-          icon
-          :variant="VVariants.Outlined"
-        >
-          <VIcon
-            :icon="IconsList.LanguageKatakana"
-            size="40"
-          />
-        </VBtn>
-      </div>
-
-      <!-- Layout switch -->
-      <VMenu>
-        <template #activator="{ props }">
-          <VBtn
-            icon
-            v-bind="props"
-          >
-            <VIcon :icon="IconsList.GridIcon" />
-          </VBtn>
-        </template>
-        <VList>
-          <VListItem @click="viewMode = '3col'">
-            <VIcon
-              icon="mdi-view-array"
-              class="mr-2"
-            /> 3 blocks in row
-          </VListItem>
-          <VListItem @click="viewMode = '2top-1bottom'">
-            <VIcon
-              icon="mdi-view-grid-plus"
-              class="mr-2"
-            /> 2 top, 1 bottom
-          </VListItem>
-          <VListItem @click="viewMode = '1col'">
-            <VIcon
-              icon="mdi-code-tags"
-              class="mr-2"
-            /> Only code
-          </VListItem>
-          <VListItem @click="viewMode = 'vertical'">
-            <VIcon
-              icon="mdi-code-tags"
-              class="mr-2"
-            /> vertical
-          </VListItem>
-        </VList>
-      </VMenu>
-
       <template #append>
         <VBtn
           :color="VColors.White"
@@ -200,15 +130,13 @@ watch(parsedFields, () => {
       </VCard>
     </VNavigationDrawer>
 
-    <!-- Grid layout -->
     <div
       class="resizable-grid"
       :class="[`view-${viewMode}`]"
     >
       <!-- Left: Interface -->
-      <div class="resizable-panel area-interface">
-        <VCard elevation="1">
-          <VCardTitle>1. Вставте TypeScript інтерфейс</VCardTitle>
+      <div class=" area-interface">
+        <ConstructorPanel :icon="IconsList.BrandTypescript">
           <VCardText>
             <VTextarea
               v-model="code"
@@ -238,20 +166,13 @@ watch(parsedFields, () => {
               />
             </div>
           </VCardText>
-        </VCard>
+        </ConstructorPanel>
       </div>
 
       <!-- Middle: Field Editor -->
-      <div class="resizable-panel area-fields">
-        <VCard
-          v-if="parsedFields.length"
-          elevation="1"
-        >
-          <VCardTitle>
-            2. Редагування полів
-            <span class="text-grey ml-2">({{ parsedFields.length }} полів)</span>
-          </VCardTitle>
-          <VCardText>
+      <div class=" area-fields">
+        <ConstructorPanel :icon="IconsList.SettingsIcon">
+          <VCardText v-if="parsedFields.length">
             <FieldCard
               v-for="(field, i) in parsedFields"
               :key="i"
@@ -271,18 +192,14 @@ watch(parsedFields, () => {
               🚀 Згенерувати код вручну
             </VBtn>
           </VCardActions>
-        </VCard>
+        </ConstructorPanel>
       </div>
 
       <!-- Right: Output -->
-      <div class="resizable-panel area-output">
-        <VCard
-          v-if="editableOutput"
-          elevation="1"
-        >
-          <VCardTitle>
+      <div class=" area-output">
+        <ConstructorPanel :icon="IconsList.CodeIcon">
+          <VCardTitle v-if="editableOutput">
             <div class="d-flex align-center justify-space-between">
-              <span class="text-grey ml-2">3. Згенерований клас ({{ className }})</span>
               <VBtn
                 color="success"
                 @click="copy(editableOutput)"
@@ -303,7 +220,7 @@ watch(parsedFields, () => {
               persistent-hint
             />
           </VCardText>
-        </VCard>
+        </ConstructorPanel>
       </div>
     </div>
   </div>
@@ -314,92 +231,5 @@ watch(parsedFields, () => {
   font-family: 'Fira Code', monospace;
   font-size: 0.85rem;
   line-height: 1.5;
-}
-
-.resizable-panel {
-  position: relative;
-  resize: horizontal;
-  overflow: hidden;
-  min-width: 200px;
-  padding-right: 0.5rem;
-  &::after {
-    content: '↔️';
-    position: absolute;
-    bottom: -0.5rem;
-    right: 0.5rem;
-  }
-  &::-webkit-resizer {
-    position: absolute;
-    z-index: 1000;
-  }
-}
-.resizable-grid {
-  display: grid;
-  gap: 16px;
-  height: 100%;
-  grid-template-rows: auto;
-  grid-template-columns: 1fr;
-
-  &.view-3col {
-    grid-template-columns: 1.1fr 1.4fr 1fr;
-    grid-template-areas:
-      'interface fields output';
-  }
-
-  &.view-2top-1bottom {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      'interface fields'
-      'output output';
-  }
-
-  &.view-1col {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'output';
-
-    .area-interface,
-    .area-fields {
-      display: none;
-    }
-  }
-
-  .area-interface {
-    grid-area: interface;
-  }
-
-  .area-fields {
-    grid-area: fields;
-  }
-
-  .area-output {
-    grid-area: output;
-  }
-}
-.resizable-grid {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: 1fr;
-  width: 100%;
-
-  &.view-vertical {
-    grid-template-areas:
-      'interface'
-      'fields'
-      'output';
-    grid-template-rows: auto auto auto;
-  }
-
-  .area-interface {
-    grid-area: interface;
-  }
-
-  .area-fields {
-    grid-area: fields;
-  }
-
-  .area-output {
-    grid-area: output;
-  }
 }
 </style>
