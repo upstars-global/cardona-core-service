@@ -63,6 +63,7 @@ export enum IconsList {
   ClockIcon = 'tabler-clock-hour-5',
   ClockPauseIcon = 'tabler-clock-pause',
   ClockShieldIcon = 'tabler-clock-shield',
+  ClockStopIcon = 'tabler-clock-stop',
   CloudDrizzleIcon = 'CloudDrizzleIcon',
   CloudLightningIcon = 'tabler-brightness-up',
   CloudOffIcon = 'CloudOffIcon',
