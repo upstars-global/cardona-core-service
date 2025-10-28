@@ -345,6 +345,7 @@
     "editableField": "Editable field",
     "addTags": "Add tags...",
     "uploadVideo": "Upload video",
+    "columns": "Columns",
     "phone": {
       "_": "Phone",
       "list": "Phones"
