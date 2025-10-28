@@ -1299,7 +1299,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 .table-card-settings {
   :deep(.table-settings) {
     display: flex;
-    padding: 0.5rem 1.5rem;
+    padding: 0.5rem 1rem;
 
     .per-page-selector {
       min-width: 6rem;
