@@ -43,7 +43,6 @@ const onToggleActive = (data: TableField) => {
 }
 
 onMounted(() => {
-
   /// TODO make save only keys but not all fields' data
   const list = getListStorage(TableField)(keyStorage)
 
@@ -55,24 +54,32 @@ onMounted(() => {
 <template>
   <VMenu :attach="IS_TEST_ENV">
     <template #activator="{ props }">
-      <VBtn
-        :variant="VVariants.Text"
-        :color="VColors.Secondary"
-        density="compact"
-        v-bind="props"
-        :icon="IconsList.SettingsIcon"
-        data-test-id="activator"
-      >
-        <VIcon :icon="IconsList.SettingsIcon" />
-      </VBtn>
+      <div class="d-flex align-center justify-center ml-2 mr-3">
+        <VBtn
+          :variant="VVariants.Text"
+          :color="VColors.Secondary"
+          class="mr-2"
+          density="compact"
+          size="20"
+          v-bind="props"
+          :icon="IconsList.SettingsIcon"
+          data-test-id="activator"
+        >
+          <VIcon :icon="IconsList.LayoutColumns" />
+        </VBtn>
+
+        <span class="text-secondary text-body-2 font-weight-medium">
+          $t('common.columns')
+        </span>
+      </div>
     </template>
     <VList>
       <VListItem
         v-for="item in filledList"
         :key="item.key"
         :data-test-id="`select-item-${item.key}`"
-        @click="onToggleActive(item)"
         :disabled="item.alwaysVisible"
+        @click="onToggleActive(item)"
       >
         <template #append>
           <VIcon
