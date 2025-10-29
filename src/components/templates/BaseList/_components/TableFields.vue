@@ -69,7 +69,7 @@ onMounted(() => {
         </VBtn>
 
         <span class="text-secondary text-body-2 font-weight-medium">
-          $t('common.columns')
+          {{ $t('common.columns') }}
         </span>
       </div>
     </template>
