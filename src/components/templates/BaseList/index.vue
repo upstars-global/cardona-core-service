@@ -229,13 +229,13 @@ const isLoadingList = computed(() => {
   const listUrl = `${entityUrl.value}/list`
 
   if (props.config.loadingOnlyByList) {
-    return loaderStore.isLoadingEndpointFullPath([
+    return loaderStore.isLoadingEndpoint([
       listUrl,
       ...(props.config.loadingEndpointArr ?? []),
     ])
   }
 
-  return loaderStore.isLoadingEndpointFullPath([
+  return loaderStore.isLoadingEndpoint([
     listUrl,
     `${entityUrl.value}/update`,
     `${entityUrl.value}/active/switch`,
