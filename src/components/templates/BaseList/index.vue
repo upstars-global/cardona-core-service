@@ -588,6 +588,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     <slot
       :name="BaseListSlots.TableHeader"
       :selected-items="selectedItems"
+      :selected-item="selectedItem"
       :total="total"
       :search="searchQuery"
     />
