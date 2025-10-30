@@ -12,11 +12,10 @@ defineEmits(['update:modelValue'])
 
 <template>
   <div class="d-flex align-center mb-4">
-    <div
-      class="mr-2"
-      style="min-width: 200px;"
-    >
-      {{ label || 'Префікс i18n' }}
+    <div class="mr-2">
+      <span>
+        Prefix i18n
+      </span>
     </div>
     <VTextField
       :model-value="modelValue"

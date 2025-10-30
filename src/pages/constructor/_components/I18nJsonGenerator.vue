@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
 import { useClipboard } from '@vueuse/core'
+import {IconsList} from "@/@model/enums/icons";
+import {useCopyWithToast} from "@/pages/constructor/_composables/copyWithToast";
 
 const props = defineProps<{
   keys: string[]
@@ -80,18 +82,25 @@ function updateNestedObjectFromFlatMap() {
 
 function updateOutput() {
   const full = updateNestedObjectFromFlatMap()
-  const trimmed = full.page ?? full // якщо є page — беремо тільки його вміст
+  const trimmed = full.page ?? full
 
   output.value = JSON.stringify(trimmed, null, 2)
 }
 
-function copyToClipboard() {
-  copy(output.value)
-}
+const copyWithToast = useCopyWithToast()
 </script>
 
 <template>
   <VCard elevation="2">
+    <div class="d-flex justify-end pt-4 pr-6  ">
+      <VBtn
+        v-if="Object.keys(flatMap).length"
+        color="success"
+        @click="copyWithToast(output, 'constructorJsonCopied')"
+      >
+        <VIcon :icon="IconsList.CopyIcon" />
+      </VBtn>
+    </div>
     <VCardText>
       <VRow dense>
         <!-- LEFT: Inputs -->
@@ -113,7 +122,7 @@ function copyToClipboard() {
                   v-model="flatMap[key]"
                   dense
                   hide-details
-                  placeholder="Введіть переклад…"
+                  placeholder="Enter translation…"
                 />
               </VCol>
             </VRow>
@@ -129,22 +138,12 @@ function copyToClipboard() {
             v-model="output"
             auto-grow
             readonly
-            label="Згенерований JSON"
+            label="Generated JSON"
             class="code-output"
             rows="10"
           />
         </VCol>
       </VRow>
-
-      <div class="d-flex justify-end mt-4">
-        <VBtn
-          v-if="Object.keys(flatMap).length"
-          color="success"
-          @click="copyToClipboard"
-        >
-          📋 Копіювати JSON
-        </VBtn>
-      </div>
     </VCardText>
   </VCard>
 </template>

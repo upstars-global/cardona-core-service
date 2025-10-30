@@ -610,7 +610,9 @@
       "default": "Operation successful",
       "passwordCopied": "Password copied",
       "copied": "Copied",
-      "/mock/upload": "Successful upload file"
+      "/mock/upload": "Successful upload file",
+      "constructorCodeCopied": "Code copied to clipboard",
+      "constructorJsonCopied": "JSON copied to clipboard"
     },
     "error": {
       "default": "An error has occurred",

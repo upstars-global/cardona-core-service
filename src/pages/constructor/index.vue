@@ -15,6 +15,7 @@ import I18nJsonGenerator from './_components/I18nJsonGenerator.vue'
 import ConstructorPanel from './_components/ConstructorPanel.vue'
 import OrderBlocks from './_components/OrderBlocks.vue'
 import FlexModeBlocks from './_components/FlexModeBlocks.vue'
+import { useCopyWithToast } from '@/pages/constructor/_composables/copyWithToast'
 
 defineOptions({ name: 'Constructor' })
 
@@ -34,7 +35,6 @@ const editableOutput = ref('')
 const i18nPrefix = ref('meta')
 const isAutoGeneration = ref(true)
 const localizationDrawerState = ref(false)
-const viewMode = ref<'3col' | '2top-1bottom' | '1col'>('3col')
 
 const { copy } = useClipboard()
 
@@ -97,9 +97,9 @@ const blocks = ref([
 
 const getOrder = (name: string) => blocks.value.find(b => b.name === name)?.order
 const flexMode = ref('row')
+const copyWithToast = useCopyWithToast()
 </script>
 
-<!-- TODO add dragable sortable -->
 <template>
   <div>
     <VToolbar
@@ -146,7 +146,10 @@ const flexMode = ref('row')
         <I18nJsonGenerator :keys="getI18nKeys(parsedFields, i18nPrefix)" />
       </VCard>
     </VNavigationDrawer>
-    <div class="d-flex gap-4" :class="`flex-${flexMode}`">
+    <div
+      class="d-flex gap-4"
+      :class="`flex-${flexMode}`"
+    >
       <!-- Left: Interface -->
       <div
         class=" area-interface"
@@ -158,7 +161,7 @@ const flexMode = ref('row')
               v-model="code"
               rows="10"
               label="TypeScript interface"
-              hint="Очікується інтерфейс типу: interface IMetaData { ... }"
+              hint="An interface of the form interface IMetaData { ... } is expected"
               persistent-hint
               class="mb-4"
               @update:model-value="parseAndUpdate"
@@ -167,20 +170,6 @@ const flexMode = ref('row')
               v-model="i18nPrefix"
               class="mb-4"
             />
-            <div class="d-flex align-center justify-space-between">
-              <VBtn
-                color="primary"
-                @click="parseAndUpdate"
-              >
-                🔍 Розпарсити
-              </VBtn>
-              <VCheckbox
-                v-model="isAutoGeneration"
-                label="Автооновлення коду"
-                class="ml-4"
-                @update:model-value="value => value ? parseAndUpdate() : null"
-              />
-            </div>
           </VCardText>
         </ConstructorPanel>
       </div>
@@ -221,12 +210,12 @@ const flexMode = ref('row')
       >
         <ConstructorPanel :icon="IconsList.CodeIcon">
           <VCardTitle v-if="editableOutput">
-            <div class="d-flex align-center justify-space-between">
+            <div class="d-flex align-center justify-end pr-2">
               <VBtn
                 color="success"
-                @click="copy(editableOutput)"
+                @click="copyWithToast(editableOutput, 'constructorCodeCopied')"
               >
-                📋 Копіювати Class
+                <VIcon :icon="IconsList.CopyIcon" />
               </VBtn>
             </div>
           </VCardTitle>
@@ -237,8 +226,8 @@ const flexMode = ref('row')
               readonly
               auto-grow
               class="code-output"
-              label="Код класу"
-              hint="Цей код можна редагувати перед копіюванням"
+              label="Code of Class"
+              hint="This code can be edited before copying."
               persistent-hint
             />
           </VCardText>
