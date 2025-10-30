@@ -13,6 +13,8 @@ import FieldCard from './_components/FieldCard/index.vue'
 import I18nPrefixEditor from './_components/I18nPrefixEditor.vue'
 import I18nJsonGenerator from './_components/I18nJsonGenerator.vue'
 import ConstructorPanel from './_components/ConstructorPanel.vue'
+import OrderBlocks from './_components/OrderBlocks.vue'
+import FlexModeBlocks from './_components/FlexModeBlocks.vue'
 
 defineOptions({ name: 'Constructor' })
 
@@ -86,6 +88,15 @@ watch(parsedFields, () => {
   if (isAutoGeneration.value)
     updateCode()
 }, { deep: true })
+
+const blocks = ref([
+  { name: IconsList.BrandTypescript, order: 1 },
+  { name: IconsList.SettingsIcon, order: 2 },
+  { name: IconsList.CodeIcon, order: 3 },
+])
+
+const getOrder = (name: string) => blocks.value.find(b => b.name === name)?.order
+const flexMode = ref('row')
 </script>
 
 <!-- TODO add dragable sortable -->
@@ -97,6 +108,12 @@ watch(parsedFields, () => {
       class="mb-4"
     >
       <template #append>
+        <div class="mr-4">
+          <FlexModeBlocks v-model="flexMode" />
+        </div>
+        <div class="mr-8">
+          <OrderBlocks v-model="blocks" />
+        </div>
         <VBtn
           :color="VColors.White"
           :variant="VVariants.Outlined"
@@ -129,13 +146,12 @@ watch(parsedFields, () => {
         <I18nJsonGenerator :keys="getI18nKeys(parsedFields, i18nPrefix)" />
       </VCard>
     </VNavigationDrawer>
-
-    <div
-      class="resizable-grid"
-      :class="[`view-${viewMode}`]"
-    >
+    <div class="d-flex gap-4" :class="`flex-${flexMode}`">
       <!-- Left: Interface -->
-      <div class=" area-interface">
+      <div
+        class=" area-interface"
+        :style="`order: ${getOrder(IconsList.BrandTypescript)}`"
+      >
         <ConstructorPanel :icon="IconsList.BrandTypescript">
           <VCardText>
             <VTextarea
@@ -170,7 +186,10 @@ watch(parsedFields, () => {
       </div>
 
       <!-- Middle: Field Editor -->
-      <div class=" area-fields">
+      <div
+        class=" area-fields"
+        :style="`order: ${getOrder(IconsList.SettingsIcon)}`"
+      >
         <ConstructorPanel :icon="IconsList.SettingsIcon">
           <VCardText v-if="parsedFields.length">
             <FieldCard
@@ -196,7 +215,10 @@ watch(parsedFields, () => {
       </div>
 
       <!-- Right: Output -->
-      <div class=" area-output">
+      <div
+        class=" area-output"
+        :style="`order: ${getOrder(IconsList.CodeIcon)}`"
+      >
         <ConstructorPanel :icon="IconsList.CodeIcon">
           <VCardTitle v-if="editableOutput">
             <div class="d-flex align-center justify-space-between">

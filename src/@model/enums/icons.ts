@@ -325,5 +325,6 @@ export enum IconsList {
   ChartLine = 'tabler-chart-line',
   LanguageKatakana = 'tabler-language-katakana',
   BrandTypescript = 'tabler-brand-typescript',
+  LayoutColumns = 'tabler-layout-columns',
 }
 export default {}
