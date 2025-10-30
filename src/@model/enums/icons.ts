@@ -322,7 +322,7 @@ export enum IconsList {
   PlaylistX = 'tabler-playlist-x',
   ChartHistogram = 'tabler-chart-histogram',
   LayoutRows = 'tabler-layout-rows',
+  LayoutColumns = 'tabler-layout-columns',
   ChartBar = 'tabler-chart-bar',
   ChartLine = 'tabler-chart-line',
 }
-export default {}
