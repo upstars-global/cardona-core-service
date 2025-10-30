@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { useClipboard } from '@vueuse/core'
-import { VColors, VVariants } from '../../@model/vuetify'
+import {VColors, VSizes, VVariants} from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import { parseInterfaceToClass } from './_composables/useFieldParser'
 import * as fieldConfigs from './fieldConfigs'
@@ -104,7 +104,7 @@ const copyWithToast = useCopyWithToast()
   <div>
     <VToolbar
       :color="VColors.Primary"
-      title="🧩 Конструктор класу"
+      title="Class constructor"
       class="mb-4"
     >
       <template #append>
@@ -115,6 +115,7 @@ const copyWithToast = useCopyWithToast()
           <OrderBlocks v-model="blocks" />
         </div>
         <VBtn
+          :size="VSizes.Small"
           :color="VColors.White"
           :variant="VVariants.Outlined"
           @click="localizationDrawerState = !localizationDrawerState"

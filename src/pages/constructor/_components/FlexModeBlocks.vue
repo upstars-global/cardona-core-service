@@ -30,31 +30,33 @@ const getVariant = (mode: FlexMode) => mode === value.value ? VVariants.Flat : V
 </script>
 
 <template>
-  <span>Column mode</span>
-  <div>
-    <VBtn
-      :value="FlexMode.Row"
-      :variant="getVariant(FlexMode.Row)"
-      :color="VColors.Success"
-      :size="VSizes.Small"
-      @click="value = FlexMode.Row"
-    >
-      <VIcon
-        :variant="VVariants.Outlined"
-        :icon="IconsList.LayoutRows"
-      />
-    </VBtn>
-    <VBtn
-      :variant="getVariant(FlexMode.Column)"
-      :value="FlexMode.Column"
-      :color="VColors.Success"
-      :size="VSizes.Small"
-      @click="value = FlexMode.Column"
-    >
-      <VIcon
-        :variant="VVariants.Outlined"
-        :icon="IconsList.LayoutColumns"
-      />
-    </VBtn>
+  <div class="d-flex align-center">
+    <div class="pr-2">Column mode</div>
+    <div>
+      <VBtn
+        :value="FlexMode.Row"
+        :variant="getVariant(FlexMode.Row)"
+        :color="VColors.Success"
+        :size="VSizes.Small"
+        @click="value = FlexMode.Row"
+      >
+        <VIcon
+          :variant="VVariants.Outlined"
+          :icon="IconsList.LayoutRows"
+        />
+      </VBtn>
+      <VBtn
+        :variant="getVariant(FlexMode.Column)"
+        :value="FlexMode.Column"
+        :color="VColors.Success"
+        :size="VSizes.Small"
+        @click="value = FlexMode.Column"
+      >
+        <VIcon
+          :variant="VVariants.Outlined"
+          :icon="IconsList.LayoutColumns"
+        />
+      </VBtn>
+    </div>
   </div>
 </template>

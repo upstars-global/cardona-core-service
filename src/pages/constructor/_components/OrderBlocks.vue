@@ -2,6 +2,7 @@
 import { computed, defineEmits } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
+import {IconsList} from "@/@model/enums/icons";
 
 defineOptions({
   name: 'OrderBlocks',
@@ -24,22 +25,27 @@ const value = computed({
 </script>
 
 <template>
-  <span class="pl-2">Order
-    <VTooltip activator="parent">
-      Change order of blocks
-    </VTooltip></span>
+  <div class="d-flex align-center">
+    <div class="d-flex align-center pl-2">
+      <div class="pr-1">
+        Order
+      </div>
+      <VTooltip activator="parent">
+        Drag for change order of blocks
+      </VTooltip></div>
 
-  <VueDraggableNext v-model="value">
-    <VBtn
-      v-for="block in value"
-      :key="block.name"
-      class="cursor-grab ml-2"
-      :size="VSizes.Small"
-      label
-      :color="VColors.Success"
-      :variant="VVariants.Outlined"
-    >
-      <VIcon :icon="block.name" />
-    </VBtn>
-  </VueDraggableNext>
+    <VueDraggableNext v-model="value">
+      <VBtn
+        v-for="block in value"
+        :key="block.name"
+        class="cursor-grab ml-2"
+        :size="VSizes.Small"
+        label
+        :color="VColors.Success"
+        :variant="VVariants.Outlined"
+      >
+        <VIcon :icon="block.name" />
+      </VBtn>
+    </VueDraggableNext>
+  </div>
 </template>
