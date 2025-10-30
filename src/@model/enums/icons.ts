@@ -63,6 +63,7 @@ export enum IconsList {
   ClockIcon = 'tabler-clock-hour-5',
   ClockPauseIcon = 'tabler-clock-pause',
   ClockShieldIcon = 'tabler-clock-shield',
+  ClockStopIcon = 'tabler-clock-stop',
   CloudDrizzleIcon = 'CloudDrizzleIcon',
   CloudLightningIcon = 'tabler-brightness-up',
   CloudOffIcon = 'CloudOffIcon',
@@ -321,7 +322,7 @@ export enum IconsList {
   PlaylistX = 'tabler-playlist-x',
   ChartHistogram = 'tabler-chart-histogram',
   LayoutRows = 'tabler-layout-rows',
+  LayoutColumns = 'tabler-layout-columns',
   ChartBar = 'tabler-chart-bar',
   ChartLine = 'tabler-chart-line',
 }
-export default {}
