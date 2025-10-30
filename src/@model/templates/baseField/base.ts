@@ -3,6 +3,7 @@ import type { TranslateResult } from 'vue-i18n'
 import type { IValidationConfig } from '../../../@model/validations'
 import type { OptionsItem } from '../../../@model'
 import { i18n } from '../../../plugins/i18n'
+import { OPTIONS_PER_PAGE } from '../../../utils/constants'
 import type { PermissionType } from '@permissions'
 
 export interface IBaseField {
@@ -142,7 +143,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     this.prevSearch = filters.search || ''
 
     const { list = [] } = await this.fetchOptionsAction({
-      perPage: 50,
+      perPage: OPTIONS_PER_PAGE,
       pageNumber: this.pageNumber,
       filter: {
         ...this.staticFilters,
@@ -150,7 +151,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
       },
     })
 
-    this.allowLoadMore = list.length === 50
+    this.allowLoadMore = list.length === OPTIONS_PER_PAGE
 
     return this.getOptionItems(list)
   }
