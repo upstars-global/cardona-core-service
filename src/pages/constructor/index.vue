@@ -98,6 +98,7 @@ const blocks = ref([
 const getOrder = (name: string) => blocks.value.find(b => b.name === name)?.order
 const flexMode = ref('row')
 const copyWithToast = useCopyWithToast()
+//test
 </script>
 
 <template>
