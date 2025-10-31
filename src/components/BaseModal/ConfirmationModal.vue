@@ -5,13 +5,16 @@ import type { BaseModalDefaultPropsOfSlot } from '../../@model/modal'
 import BaseModal from './index.vue'
 import ModalFooter from './ModalFooter.vue'
 
-defineProps<{
+withDefaults(defineProps<{
   modalId: string
   title: TranslateResult
   description: TranslateResult
   actionBtnText: TranslateResult
+  actionBtnColor: VColors
   isLoading: boolean
-}>()
+}>(), {
+  actionBtnColor: VColors.Error,
+})
 
 defineEmits<{
   confirmed: [hide: Function]
@@ -36,7 +39,7 @@ defineEmits<{
           label: $t('action.cancel'),
         }"
         :accept="{
-          color: VColors.Error,
+          color: actionBtnColor,
           label: actionBtnText,
           disabled: isLoading,
           loading: isLoading,

@@ -1,5 +1,6 @@
 import type { ChartOptions, ChartType, ScriptableContext } from 'chart.js'
 import { amountFormatter } from '../../helpers/amount'
+import config from "@/components/TextEditorWysiwyg/config";
 
 export const ChartTypes: Record<string, ChartType> = {
   Line: 'line',
@@ -7,14 +8,22 @@ export const ChartTypes: Record<string, ChartType> = {
 } as const
 
 export type AllowedChartType = typeof ChartTypes[keyof typeof ChartTypes]
+export enum ChartInteractionMode {
+  Point = 'point',
+  Nearest = 'nearest',
+  Index = 'index',
+  Dataset = 'dataset',
+  X = 'x',
+  Y = 'y',
+}
 
 const ticksCallback = (value: number, isPercent?: boolean): string => isPercent ? `${value}%` : amountFormatter(value)
 
-export const getChartConfig = (options: { chartType: AllowedChartType; isPercent?: boolean }) => {
-  const { chartType, isPercent } = options
+export const getChartConfig = (options: { chartType: AllowedChartType; isPercent?: boolean; tooltipMode?: ChartInteractionMode; yTicksCallback?: (value: string) => string }) => {
+  const { chartType, isPercent, tooltipMode = ChartInteractionMode.Index, yTicksCallback } = options
 
   const tooltip = {
-    mode: 'index',
+    mode: tooltipMode,
     intersect: true,
   }
 
@@ -39,7 +48,7 @@ export const getChartConfig = (options: { chartType: AllowedChartType; isPercent
   }
 
   const yTicks = {
-    callback: (value: number) => ticksCallback(value, isPercent),
+    callback: (value: number) => yTicksCallback ? yTicksCallback(value) : ticksCallback(value, isPercent),
   }
 
   const grid = {
