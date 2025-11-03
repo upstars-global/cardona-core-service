@@ -3,7 +3,6 @@ import type { TranslateResult } from 'vue-i18n'
 import type { IValidationConfig } from '../../../@model/validations'
 import type { OptionsItem } from '../../../@model'
 import { i18n } from '../../../plugins/i18n'
-import { OPTIONS_PER_PAGE } from '../../../utils/constants'
 import type { PermissionType } from '@permissions'
 
 export interface IBaseField {
@@ -96,8 +95,6 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
   readonly infiniteLoading?: boolean
   readonly localeKey: string
   pageNumber: number
-  private prevSearch = ''
-  allowLoadMore = true
 
   protected constructor(field: IASelectBaseField<T>) {
     super(field)
@@ -140,10 +137,8 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     if (resetPage)
       this.pageNumber = 1
 
-    this.prevSearch = filters.search || ''
-
     const { list = [] } = await this.fetchOptionsAction({
-      perPage: OPTIONS_PER_PAGE,
+      perPage: 50,
       pageNumber: this.pageNumber,
       filter: {
         ...this.staticFilters,
@@ -151,15 +146,11 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
       },
     })
 
-    this.allowLoadMore = list.length === OPTIONS_PER_PAGE
-
     return this.getOptionItems(list)
   }
 
   async getOptions(filters: { search?: string; ids?: string[] } = {}) {
-    if (!filters.search)
-      filters.search = ''
-    const resetPage = this.prevSearch !== filters.search
+    const resetPage = !!filters.search?.length
 
     return await this.fetchOptionList(filters, resetPage)
   }
@@ -183,12 +174,10 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     }
   }
 
-  async loadMore(search: string) {
-    if (!this.allowLoadMore)
-      return
+  async loadMore() {
     this.pageNumber++
 
-    const options = await this.getOptions({ search })
+    const options = await this.getOptions()
 
     this.options = [...this.options, ...options]
   }
