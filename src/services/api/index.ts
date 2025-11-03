@@ -107,7 +107,7 @@ class ApiService {
           ? this.createFormData(payload.formData)
           : JSON.stringify({
             ...payload,
-            type: isRemovePrefix ? payload.type.replace(ApiTypePrefix, '') : ApiTypePrefix,
+            type: isRemovePrefix ? payload.type.replace(ApiTypePrefix, '') : payload.type,
             requestId: uuidv4(),
           })
 
