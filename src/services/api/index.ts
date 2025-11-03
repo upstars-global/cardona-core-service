@@ -18,7 +18,7 @@ import type {
   IResponseError,
   IValidationError,
 } from './config'
-import { ApiTypePrefix } from '@productConfig'
+import { ApiTypePrefix, isRemovePrefix } from '@productConfig'
 
 const INVALID_TOKEN_ERROR = 'TypeError: Failed to execute \'setRequestHeader\' on \'XMLHttpRequest\': String contains non ISO-8859-1 code point.'
 const CACHE_NAME = 'app-cache'
@@ -107,7 +107,7 @@ class ApiService {
           ? this.createFormData(payload.formData)
           : JSON.stringify({
             ...payload,
-            type: payload.type.replace(ApiTypePrefix, ''),
+            type: isRemovePrefix ? payload.type.replace(ApiTypePrefix, '') : ApiTypePrefix,
             requestId: uuidv4(),
           })
 
