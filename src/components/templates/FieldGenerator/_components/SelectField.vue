@@ -143,7 +143,6 @@ const {
       :append-to-body="field.appendToBody"
       :calculate-position="withPopper(field.calculatePositionCb)"
       :filterable="field.filterable"
-      :searchable="field.filterable"
       @search="onSearch"
       @open="onOpen"
       @close="onClose"
