@@ -287,6 +287,9 @@ const config = {
 
       return false
     },
+    'html.get': function (html: string) {
+      return html.replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&')
+    },
   },
   ...baseConfig,
   ...props.config,
