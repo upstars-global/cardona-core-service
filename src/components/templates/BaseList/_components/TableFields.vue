@@ -54,24 +54,24 @@ onMounted(() => {
 <template>
   <VMenu :attach="IS_TEST_ENV">
     <template #activator="{ props }">
-      <div class="d-flex align-center justify-center ml-2 mr-3">
-        <VBtn
-          :variant="VVariants.Text"
-          :color="VColors.Secondary"
+      <VBtn
+        :variant="VVariants.Text"
+        :color="VColors.Secondary"
+        v-bind="props"
+        data-test-id="activator"
+        class="pl-2 pr-3"
+        max-height="32"
+      >
+        <VIcon
           class="mr-2"
-          density="compact"
+          :icon="IconsList.LayoutColumns"
           size="20"
-          v-bind="props"
-          :icon="IconsList.SettingsIcon"
-          data-test-id="activator"
-        >
-          <VIcon :icon="IconsList.LayoutColumns" />
-        </VBtn>
+        />
 
         <span class="text-secondary text-body-2 font-weight-medium">
           {{ $t('common.columns') }}
         </span>
-      </div>
+      </VBtn>
     </template>
     <VList>
       <VListItem
