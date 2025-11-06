@@ -112,19 +112,23 @@ const onClose = () => {
   abortObserver()
 }
 
-const isInfiniteLoadingEnabled = computed((): boolean => !!props.field.infiniteLoading)
+const isInfiniteLoadingEnabled = computed((): boolean => !!props.field.infiniteLoading && props.field.allowLoadMore)
 
 const showLoadMore = computed((): boolean =>
   isInfiniteLoadingEnabled.value
   && !!props.field.options?.length
-  && !searchValue.value
   && !isLoading.value,
 )
 
 const {
   setupObserver,
   abortObserver,
-} = useInfiniteScroll(props.field.loadMore?.bind(props.field), loadRef)
+} = useInfiniteScroll(
+  () => {
+    props.field.loadMore(searchValue.value)
+  },
+  loadRef,
+)
 </script>
 
 <template>
@@ -143,7 +147,6 @@ const {
       :append-to-body="field.appendToBody"
       :calculate-position="withPopper(field.calculatePositionCb)"
       :filterable="field.filterable"
-      :searchable="field.filterable"
       @search="onSearch"
       @open="onOpen"
       @close="onClose"
