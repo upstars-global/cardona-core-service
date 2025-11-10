@@ -111,8 +111,13 @@ onUnmounted(clock.stopTime)
         </VCol>
         <VCol
           cols="1"
-          class="ml-auto d-flex align-center justify-end"
+          class="d-flex align-center justify-end notification-export-wrapper"
         >
+          <VDivider
+            class="mr-6 py-2"
+            vertical
+          />
+
           <NotificationExport />
         </VCol>
       </VRow>
