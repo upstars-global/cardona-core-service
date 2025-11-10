@@ -434,6 +434,7 @@ declare module 'vue' {
     NameWithIdField: typeof import('./src/components/templates/BaseList/_components/fields/NameWithIdField.vue')['default']
     NameWithShortIdField: typeof import('./src/components/templates/BaseList/_components/fields/NameWithShortIdField.vue')['default']
     NoFiles: typeof import('./src/components/UploadImage/NoFiles.vue')['default']
+    NotificationExport: typeof import('./src/components/NotificationExport/index.vue')['default']
     Notifications: typeof import('./src/@core/components/Notifications.vue')['default']
     NumberField: typeof import('./src/components/templates/FieldGenerator/_components/NumberField.vue')['default']
     NumberRangeField: typeof import('./src/components/templates/FieldGenerator/_components/NumberRangeField.vue')['default']

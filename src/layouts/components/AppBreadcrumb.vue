@@ -7,6 +7,7 @@ import { IconsList } from '../../@model/enums/icons'
 import { VVariants } from '../../@model/vuetify'
 import { useClockUtc } from '../../use/useClockUtc'
 import { useLayoutConfigStore } from '@layouts/stores/config'
+import NotificationExport from '@/components/NotificationExport/index.vue'
 
 const route = useRoute()
 
@@ -42,11 +43,12 @@ onUnmounted(clock.stopTime)
     >
       <VRow
         no-gutters
+        align="center"
         class="breadcrumbs-top"
       >
         <VCol
-          cols="10"
-          class="d-flex align-center"
+          cols="9"
+          class="d-flex align-center ml-auto"
         >
           <VBtn
             size="28"
@@ -106,6 +108,12 @@ onUnmounted(clock.stopTime)
           <div class="mt-1">
             UTC
           </div>
+        </VCol>
+        <VCol
+          cols="1"
+          class="ml-auto d-flex align-center justify-end"
+        >
+          <NotificationExport />
         </VCol>
       </VRow>
     </VCol>
