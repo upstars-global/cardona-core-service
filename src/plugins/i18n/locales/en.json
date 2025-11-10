@@ -961,5 +961,8 @@
     "adminSection": "Admin section",
     "darkMode": "Dark mode",
     "lightMode": "Light mode"
+  },
+  "notification": {
+    "_": "Export notifications"
   }
 }
