@@ -6,8 +6,8 @@ import { useRoute } from 'vue-router'
 import { IconsList } from '../../@model/enums/icons'
 import { VVariants } from '../../@model/vuetify'
 import { useClockUtc } from '../../use/useClockUtc'
+import NotificationExport from '../../components/NotificationExport/index.vue'
 import { useLayoutConfigStore } from '@layouts/stores/config'
-import NotificationExport from '@/components/NotificationExport/index.vue'
 
 const route = useRoute()
 
