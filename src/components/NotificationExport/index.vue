@@ -6,11 +6,13 @@ import {
   NotificationStatuses,
   getNotificationColor,
   getNotificationIcon,
-} from '@/@model/notificationExport'
+} from '../../@model/notificationExport'
 
 defineOptions({
   name: 'NotificationExport',
 })
+
+const existNewNotification = false
 </script>
 
 <template>
@@ -31,6 +33,7 @@ defineOptions({
               icon
             >
               <VBadge
+                v-if="existNewNotification"
                 :color="VColors.Primary"
                 dot
               >
@@ -39,6 +42,11 @@ defineOptions({
                   :size="20"
                 />
               </VBadge>
+              <VIcon
+                v-else
+                :icon="IconsList.BellIcon"
+                :size="20"
+              />
             </VBtn>
           </template>
         </VTooltip>
