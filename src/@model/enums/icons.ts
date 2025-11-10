@@ -116,7 +116,7 @@ export enum IconsList {
   FileMinusIcon = 'FileMinusIcon',
   FilePlusIcon = 'FilePlusIcon',
   FileTextIcon = 'FileTextIcon',
-  FileIcon = 'FileIcon',
+  FileIcon = 'tabler-file-filled',
   FilmIcon = 'FilmIcon',
   FilterIcon = 'tabler-adjustments',
   FlagIcon = 'FlagIcon',
@@ -325,4 +325,6 @@ export enum IconsList {
   LayoutColumns = 'tabler-layout-columns',
   ChartBar = 'tabler-chart-bar',
   ChartLine = 'tabler-chart-line',
+  ExclamationMark = 'tabler-exclamation-mark',
+  ArrowRight = 'tabler-arrow-right',
 }

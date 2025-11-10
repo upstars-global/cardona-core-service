@@ -963,6 +963,9 @@
     "lightMode": "Light mode"
   },
   "notification": {
-    "_": "Export notifications"
+    "_": "Export notifications",
+    "list": {
+      "_": "Your notifications",
+    }
   }
 }
