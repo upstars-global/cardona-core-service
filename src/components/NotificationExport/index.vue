@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onBeforeMount, onBeforeUnmount } from 'vue'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { Location } from '../../@model/enums/tooltipPlacement'
@@ -7,12 +8,22 @@ import {
   getNotificationColor,
   getNotificationIcon,
 } from '../../@model/notificationExport'
+import WSService from '../../services/ws'
+import { Channel } from '@/configs/wsConfig'
 
 defineOptions({
   name: 'NotificationExport',
 })
 
 const existNewNotification = false
+
+onBeforeMount(async () => {
+  await WSService.subscribe(Channel.Nitifications)
+})
+
+onBeforeUnmount(async () => {
+  await WSService.unsubscribe(Channel.Nitifications)
+})
 </script>
 
 <template>
@@ -89,22 +100,22 @@ const existNewNotification = false
 </template>
 
 <style lang="scss" scoped>
-  .notification-list {
-    width: 24.25rem;
-  }
+.notification-list {
+  width: 24.25rem;
+}
 
-  .icon-file {
-    width: 32px; height: 32px;
-    background-color: rgba(var(--v-theme-grey-100), var(--v-opacity-grey));
-    &-body {
-      background-color: rgba(var(--v-theme-grey-500), var(--v-opacity-grey));
-
-    }
-  }
-  .icon-status-wrapper {
-    width: 18px; height: 18px;
-    bottom: -4px; right: -4px;
-    border: 1px solid white;
+.icon-file {
+  width: 32px; height: 32px;
+  background-color: rgba(var(--v-theme-grey-100), var(--v-opacity-grey));
+  &-body {
+    background-color: rgba(var(--v-theme-grey-500), var(--v-opacity-grey));
 
   }
+}
+.icon-status-wrapper {
+  width: 18px; height: 18px;
+  bottom: -4px; right: -4px;
+  border: 1px solid white;
+
+}
 </style>
