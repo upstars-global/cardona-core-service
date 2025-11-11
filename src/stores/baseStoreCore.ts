@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia'
 import { isUndefined } from 'lodash'
-import { useRouter } from 'vue-router'
-import { useRedirectToNotFoundPage } from '../helpers/router'
 import ApiService from '../services/api'
 import type { IRequestListPayload } from '../@model'
 import { ListData } from '../@model'
@@ -47,6 +45,36 @@ const combineFilter = (
   return Object.values(filter).some(v => !isUndefined(v)) ? filter : undefined
 }
 
+const reportFactory = (isSpecificReport = false) => async (
+  payload: { type: string; data: IRequestListPayload; customApiPrefix?: string },
+): Promise<Blob | string> => {
+  const paramKey = isSpecificReport ? 'data' : 'filter'
+  const projectAlias = store.getters.selectedProject?.alias
+  const typeSufix = isSpecificReport ? 'Load' : ''
+
+  const response = await ApiService.request(
+    {
+      type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+        payload.type,
+      )}.${typeSufix}.List.Report`,
+      sort: payload.data.sort,
+      pagination: {
+        pageNumber: payload.data.page ?? 1,
+        perPage: payload.data.perPage,
+      },
+      [paramKey]: combineFilter(payload.data.filter, projectAlias),
+    },
+    {
+      responseType:
+        payload.data.filter.format === ExportFormat.XLSX ? 'blob' : 'json',
+    },
+  )
+
+  return payload.data.filter.format === ExportFormat.JSON
+    ? JSON.stringify(response)
+    : response
+}
+
 export const useBaseStoreCore = defineStore('baseStoreCore', {
   actions: {
     async fetchEntityList(
@@ -73,64 +101,8 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       return new ListData(response, payload.options.listItemModel)
     },
 
-    async fetchReport(
-      payload: { type: string; data: IRequestListPayload; customApiPrefix?: string },
-    ): Promise<Blob | string> {
-      const projectAlias = store.getters.selectedProject?.alias
-
-      const response = await ApiService.request(
-        {
-          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
-            payload.type,
-          )}.List.Report`,
-          sort: payload.data.sort,
-          pagination: {
-            pageNumber: payload.data.page ?? 1,
-            perPage: payload.data.perPage,
-          },
-          filter: combineFilter(payload.data.filter, projectAlias),
-        },
-        {
-          responseType:
-            payload.data.filter.format === ExportFormat.XLSX ? 'blob' : 'json',
-        },
-      )
-
-      return payload.data.filter.format === ExportFormat.JSON
-        ? JSON.stringify(response)
-        : response
-    },
-
-    async readEntity(payload: {
-      type: string
-      id: string
-      customApiPrefix?: string
-    }): Promise<any> {
-      const projectAlias = store.getters.selectedProject?.alias
-      const router = useRouter()
-      const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
-
-      try {
-        const { data } = await ApiService.request({
-          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
-            payload.type,
-          )}.Read`,
-          data: {
-            id: payload.id,
-            project: isNeocoreProduct ? projectAlias : '',
-          },
-        })
-
-        return data
-      }
-      catch (error: any) {
-        const wasRedirect = await redirectToNotFoundPage(error.type)
-        if (wasRedirect)
-          return
-
-        return Promise.reject(error)
-      }
-    },
+    fetchReport: reportFactory(),
+    specificFetchReport: reportFactory(true),
 
     async fetchTypes(type: string): Promise<any> {
       const projectAlias = store.getters.selectedProject?.alias
