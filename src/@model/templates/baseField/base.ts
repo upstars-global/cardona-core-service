@@ -1,10 +1,13 @@
 import type { Component } from 'vue'
+import { uniqBy } from 'lodash'
 import type { TranslateResult } from 'vue-i18n'
 import type { IValidationConfig } from '../../../@model/validations'
 import type { OptionsItem } from '../../../@model'
 import { i18n } from '../../../plugins/i18n'
 import { OPTIONS_PER_PAGE } from '../../../utils/constants'
 import type { PermissionType } from '@permissions'
+
+const OPTION_VALUE_KEY = 'id'
 
 export interface IBaseField {
   readonly key: string
@@ -161,10 +164,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
       filters.search = ''
     const resetPage = this.prevSearch !== filters.search
 
-    return await this.fetchOptionList({
-      ...filters,
-      ...this.staticFilters,
-    }, resetPage)
+    return await this.fetchOptionList(filters, resetPage)
   }
 
   async reinitOptions(filters?: { search?: string; ids?: string[] } = {}) {
@@ -182,7 +182,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
       }
       const options = await this.getOptions({ search })
 
-      this.options = this.selectedOptions ? [...this.selectedOptions, ...options] : options
+      this.options = this.selectedOptions ? uniqBy([...this.selectedOptions, ...options], OPTION_VALUE_KEY) : options
     }
   }
 
