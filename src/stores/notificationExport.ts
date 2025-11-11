@@ -7,7 +7,9 @@ export const useNotificationExportStore = defineStore('notification-export', {
   state: () => ({
     downloadList: [] as IDownloadListReportNotificationItem[],
   }),
-  getters: {},
+  getters: {
+    getDownloadList: (state) => state.downloadList,
+  },
   actions: {
     async createWSData(data: any) {
       console.log('Set notification: ', data)
