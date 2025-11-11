@@ -161,7 +161,10 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
       filters.search = ''
     const resetPage = this.prevSearch !== filters.search
 
-    return await this.fetchOptionList(filters, resetPage)
+    return await this.fetchOptionList({
+      ...filters,
+      ...this.staticFilters,
+    }, resetPage)
   }
 
   async reinitOptions(filters?: { search?: string; ids?: string[] } = {}) {
