@@ -24,3 +24,13 @@ const notificationStatusColor: Record<NotificationStatuses, VColors> = {
 
 export const getNotificationIcon = (status: NotificationStatuses) => notificationStatusIcons[status]
 export const getNotificationColor = (status: NotificationStatuses) => notificationStatusColor[status]
+
+export interface IDownloadListReportNotificationItem {
+  reportId: number
+  entityType: string
+  fileUid: string
+  format: string
+  ttl: string
+  status: string
+  message: string
+}
