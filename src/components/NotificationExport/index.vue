@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount, onBeforeUnmount } from 'vue'
+import { useNotificationExportStore } from 'cardona-core-service/src/stores/notificationExport'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { Location } from '../../@model/enums/tooltipPlacement'
@@ -15,14 +16,24 @@ defineOptions({
   name: 'NotificationExport',
 })
 
+const notificationExportStore = useNotificationExportStore()
 const existNewNotification = false
 
 onBeforeMount(async () => {
-  await WSService.subscribe(Channel.Nitifications)
+  WSService.subscribe(Channel.Nitifications)
+
+  const res = await notificationExportStore.fetchEntityList({
+    pagination: {
+      pageNumber: 1,
+      perPage: 5,
+    },
+  })
+
+  console.log(res)
 })
 
 onBeforeUnmount(async () => {
-  await WSService.unsubscribe(Channel.Nitifications)
+  WSService.unsubscribe(Channel.Nitifications)
 })
 </script>
 
