@@ -24,12 +24,13 @@ onBeforeMount(async () => {
   <div>
     <div
       v-if="notificationExportStore.getDownloadList.isNotEmpty"
-      class="list-wrapper"
+      class="list-wrapper pa-4"
     >
       <NotificationExportListItem
         v-for="item in notificationExportStore.getDownloadList"
         :key="item.fileUid"
         :data="item"
+        class="my-4"
       />
     </div>
     <div v-else>

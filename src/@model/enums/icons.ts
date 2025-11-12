@@ -100,7 +100,7 @@ export enum IconsList {
   DeviceFloppyIcon = 'tabler-device-floppy',
   DollarSignIcon = 'tabler-currency-dollar',
   DownloadCloudIcon = 'DownloadCloudIcon',
-  DownloadIcon = 'DownloadIcon',
+  DownloadIcon = 'tabler-download',
   DribbbleIcon = 'DribbbleIcon',
   DropletIcon = 'DropletIcon',
   Edit2Icon = 'tabler-pencil',
