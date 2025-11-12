@@ -60,6 +60,16 @@ export const useNotificationExportStore = defineStore('notification-export', {
     async deleteWSData(data: INotificationReportItem) {
       console.log('Delete notification: ', data)
     },
+    async downloadReport(reportId: number | string) {
+      console.log('Download report: ', reportId)
+
+      const result = await ApiService.request({
+        type: 'App.V2.Report.Download.File',
+        data: { project: store.getters.selectedProject?.alias, reportId },
+      })
+
+      console.log(result)
+    },
     async fetchEntityList(payload: { pagination: {
       pageNumber: number
       perPage: number

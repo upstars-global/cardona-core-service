@@ -51,7 +51,7 @@ const callToast = ({
 }: { entityName: string; reportId: string }) => {
   showToast({
     entityName,
-    downloadHandler: () => console.log('Donwload report ', reportId),
+    downloadHandler: () => notificationExportStore.downloadReport(reportId),
   })
 }
 
