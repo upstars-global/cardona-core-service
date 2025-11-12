@@ -41,3 +41,16 @@ export interface IDownloadListReportNotificationItem {
   status: string
   message: string
 }
+
+interface ReportEmitter {
+  id: number
+  username: string
+}
+
+export interface INotificationReportItem {
+  reportId: string
+  entityType: string
+  status: NotificationStatuses
+  project: string
+  emitter: ReportEmitter
+}

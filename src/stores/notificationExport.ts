@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
+import { useLocalStorage } from '@vueuse/core'
 import ApiService from '../services/api'
-import type { IDownloadListReportNotificationItem } from '../@model/notificationExport'
+import type { IDownloadListReportNotificationItem, INotificationReportItem } from '../@model/notificationExport'
 import store from '@/store'
 
 const mock = [
@@ -33,21 +34,30 @@ const mock = [
   },
 ]
 
+const notificationList = useLocalStorage<INotificationReportItem[]>('notifications', [])
 export const useNotificationExportStore = defineStore('notification-export', {
   state: () => ({
     downloadList: [] as IDownloadListReportNotificationItem[],
   }),
   getters: {
     getDownloadList: state => state.downloadList,
+    existingNotifications: () => notificationList.value.length,
+    getLastNotification: () => notificationList.value[notificationList.value.length - 1],
   },
   actions: {
-    async createWSData(data: any) {
-      console.log('Set notification: ', data)
+    addNotification(notification: INotificationReportItem) {
+      notificationList.value = [...notificationList.value, notification]
     },
-    async setWSData(data: any) {
+    resetNotifications() {
+      notificationList.value = []
+    },
+    async createWSData(data: INotificationReportItem) {
+      this.addNotification(data)
+    },
+    async setWSData(data: INotificationReportItem) {
       console.log('Update notification: ', data)
     },
-    async deleteWSData(data: any) {
+    async deleteWSData(data: INotificationReportItem) {
       console.log('Delete notification: ', data)
     },
     async fetchEntityList(payload: { pagination: {
