@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { IDownloadListReportNotificationItem } from '../../../@model/notificationExport'
+import { defineEmits } from 'vue'
+import type { IDownloadListReportNotificationItem, INotificationEmitEvent } from '../../../@model/notificationExport'
 import { IconsList } from '../../../@model/enums/icons'
 import { VSizes } from '../../../@model/vuetify'
 import NotificationExportIconStatus from './IconStatus.vue'
@@ -10,8 +11,11 @@ defineOptions({
 
 defineProps<Props>()
 
+defineEmits<INotificationEmitEvent>()
+
 interface Props {
   data: IDownloadListReportNotificationItem
+  canDownload?: boolean
 }
 </script>
 
@@ -28,11 +32,15 @@ interface Props {
         {{ data.ttl }}
       </div>
     </div>
-    <div class="list-item-actions ml-auto">
+    <div
+      v-if="canDownload"
+      class="list-item-actions ml-auto"
+    >
       <VBtn
         :size="VSizes.XSmall"
         icon
         rounded="lg"
+        @click="$emit('download-report', data.reportId)"
       >
         <VIcon :icon="IconsList.DownloadIcon" />
       </VBtn>

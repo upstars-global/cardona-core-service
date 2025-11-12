@@ -1,12 +1,19 @@
 <script setup lang="ts">
-import { onBeforeMount } from 'vue'
+import { defineEmits, onBeforeMount } from 'vue'
 import { useNotificationExportStore } from '../../../stores/notificationExport'
+import { NotificationStatuses } from '../../../@model/notificationExport'
+import type {
+  IDownloadListReportNotificationItem,
+  INotificationEmitEvent,
+} from '../../../@model/notificationExport'
 import NotificationExportListItem from './ListItem.vue'
 import NotificationExportEmptyCard from './EmptyCard.vue'
 
 defineOptions({
   name: 'NotificationExportList',
 })
+
+defineEmits<INotificationEmitEvent>()
 
 const notificationExportStore = useNotificationExportStore()
 
@@ -18,6 +25,8 @@ onBeforeMount(async () => {
     },
   })
 })
+
+const canDownload = (item: IDownloadListReportNotificationItem) => item.status === NotificationStatuses.Done
 </script>
 
 <template>
@@ -30,7 +39,9 @@ onBeforeMount(async () => {
         v-for="item in notificationExportStore.getDownloadList"
         :key="item.fileUid"
         :data="item"
+        :can-download="canDownload(item)"
         class="my-4"
+        @download-report="$emit('download-report', $event)"
       />
     </div>
     <div v-else>

@@ -60,7 +60,7 @@ export const useNotificationExportStore = defineStore('notification-export', {
     async deleteWSData(data: INotificationReportItem) {
       console.log('Delete notification: ', data)
     },
-    async downloadReport(reportId: number | string) {
+    async downloadReport(reportId: number) {
       console.log('Download report: ', reportId)
 
       const result = await ApiService.request({

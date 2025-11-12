@@ -54,3 +54,7 @@ export interface INotificationReportItem {
   project: string
   emitter: ReportEmitter
 }
+
+export interface INotificationEmitEvent {
+  (event: 'download-report', payload: number): void
+}
