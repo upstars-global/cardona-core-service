@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { IDownloadListReportNotificationItem } from '../../@model/notificationExport'
-import NotificationExportIconStatus from './iconStatus.vue'
+import type { IDownloadListReportNotificationItem } from '../../../@model/notificationExport'
+import NotificationExportIconStatus from './IconStatus.vue'
 
 defineOptions({
   name: 'NotificationExportListItem',

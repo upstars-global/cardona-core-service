@@ -4,13 +4,17 @@ import { IconsList } from '../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { Location } from '../../@model/enums/tooltipPlacement'
 import WSService from '../../services/ws'
-import NotificationExportList from './list.vue'
-import { Channel } from '@/configs/wsConfig'
+import NotificationExportList from './list/index.vue'
 
 defineOptions({
   name: 'NotificationExport',
 })
 
+// import { Channel } from '@/configs/wsConfig'
+enum Channel {
+  Payouts = 'payouts-feed',
+  Nitifications = 'notification-push',
+}
 const existNewNotification = false
 
 onBeforeMount(async () => {
@@ -24,7 +28,7 @@ onBeforeUnmount(async () => {
 
 <template>
   <div>
-    <VMenu>
+    <VMenu eager>
       <template #activator="{ props: menuProps }">
         <VTooltip
           :location="Location.Left"

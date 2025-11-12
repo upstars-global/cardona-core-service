@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { IconsList } from '../../@model/enums/icons'
-import type { NotificationStatuses } from '../../@model/notificationExport'
-import { getNotificationColor, getNotificationIcon } from '../../@model/notificationExport'
+import type { NotificationStatuses } from '../../../@model/notificationExport'
+import { getNotificationColor, getNotificationIcon } from '../../../@model/notificationExport'
+import NotificationExportIconFile from './IconFile.vue'
 
 defineOptions({
   name: 'NotificationExportIconStatus',
@@ -17,10 +17,9 @@ const icon = computed(() => getNotificationIcon(props.status))
 
 <template>
   <div class="position-relative icon-file bg-grey-100 pa-2 rounded-circle d-flex justify-center align-center">
-    <VIcon
-      class="icon-file-body"
-      :icon="IconsList.FileIcon"
-      size="18"
+    <NotificationExportIconFile
+      :icon-size="18"
+      :wrapper-size="32"
     />
     <div
       class="position-absolute icon-status-wrapper rounded-circle d-flex justify-center align-center pa-2"
@@ -39,14 +38,6 @@ const icon = computed(() => getNotificationIcon(props.status))
   width: 24.25rem;
 }
 
-.icon-file {
-  width: 32px; height: 32px;
-  background-color: rgba(var(--v-theme-grey-100), var(--v-opacity-grey));
-  &-body {
-    background-color: rgba(var(--v-theme-grey-500), var(--v-opacity-grey));
-
-  }
-}
 .icon-status-wrapper {
   width: 18px; height: 18px;
   bottom: -4px; right: -4px;

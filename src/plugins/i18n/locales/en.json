@@ -965,7 +965,8 @@
   "notification": {
     "_": "Export notifications",
     "list": {
-      "_": "Your notifications"
+      "_": "Your notifications",
+      "empty": "No export files yet. Generate one from any player or report section."
     }
   }
 }

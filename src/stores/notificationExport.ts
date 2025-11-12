@@ -8,7 +8,7 @@ export const useNotificationExportStore = defineStore('notification-export', {
     downloadList: [] as IDownloadListReportNotificationItem[],
   }),
   getters: {
-    getDownloadList: (state) => state.downloadList,
+    getDownloadList: state => state.downloadList,
   },
   actions: {
     async createWSData(data: any) {
@@ -24,13 +24,19 @@ export const useNotificationExportStore = defineStore('notification-export', {
       pageNumber: number
       perPage: number
     } }) {
-      const data = await ApiService.request({
-        type: 'App.V2.Report.Download.List',
-        pagination: payload.pagination,
-        filter: { project: store.getters.selectedProject?.alias },
-      })
+      let data = []
+      try {
+        data = await ApiService.request({
+          type: 'App.V2.Report.Download.List',
+          pagination: payload.pagination,
+          filter: { project: store.getters.selectedProject?.alias },
+        }) || []
+      }
+      catch {
+        data = []
+      }
 
-      this.downloadList = [...this.downloadList, ...data.data]
+      this.downloadList = [...this.downloadList, ...data]
 
       return this.downloadList
     },
