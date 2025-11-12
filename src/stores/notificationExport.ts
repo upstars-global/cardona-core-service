@@ -35,8 +35,7 @@ export const useNotificationExportStore = defineStore('notification-export', {
       catch {
         data = []
       }
-
-      this.downloadList = [...this.downloadList, ...data]
+      this.downloadList = [...this.downloadList, ...data.data]
 
       return this.downloadList
     },

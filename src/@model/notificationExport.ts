@@ -1,11 +1,18 @@
 import { IconsList } from './enums/icons'
 import { VColors } from './vuetify'
 
+// export enum NotificationStatuses {
+//   Waiting = 'Waiting',
+//   Loading = 'Loading...',
+//   Done = 'Done',
+//   Error = 'Error',
+// }
+
 export enum NotificationStatuses {
-  Waiting = 'Waiting',
-  Loading = 'Loading...',
-  Done = 'Done',
-  Error = 'Error',
+  Waiting = 'waiting',
+  Loading = 'loading',
+  Done = 'done',
+  Error = 'error',
 }
 
 const notificationStatusIcons: Record<NotificationStatuses, IconsList> = {

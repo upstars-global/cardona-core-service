@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { NotificationStatuses } from '../../../@model/notificationExport'
 import { getNotificationColor, getNotificationIcon } from '../../../@model/notificationExport'
 import NotificationExportIconFile from './IconFile.vue'
@@ -34,10 +35,9 @@ const icon = computed(() => getNotificationIcon(props.status))
 </template>
 
 <style lang="scss" scoped>
-.notification-list {
-  width: 24.25rem;
+.icon-file {
+  width: fit-content;
 }
-
 .icon-status-wrapper {
   width: 18px; height: 18px;
   bottom: -4px; right: -4px;
