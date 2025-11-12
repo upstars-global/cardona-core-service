@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { defineEmits, onBeforeMount } from 'vue'
+import { defineEmits, onBeforeMount, ref, useTemplateRef } from 'vue'
+import { useInfiniteScroll } from '@vueuse/core'
+import { delay } from 'lodash'
 import { useNotificationExportStore } from '../../../stores/notificationExport'
 import { NotificationStatuses } from '../../../@model/notificationExport'
 import type {
@@ -16,23 +18,58 @@ defineOptions({
 defineEmits<INotificationEmitEvent>()
 
 const notificationExportStore = useNotificationExportStore()
+const pageNumber = ref(1)
 
-onBeforeMount(async () => {
+const fetchList = async (pageNumber: number) => {
   await notificationExportStore.fetchEntityList({
     pagination: {
-      pageNumber: 1,
+      pageNumber,
       perPage: 5,
     },
   })
+}
+
+onBeforeMount(async () => {
+  await fetchList(pageNumber.value)
 })
 
 const canDownload = (item: IDownloadListReportNotificationItem) => item.status === NotificationStatuses.Done
+const notificationListWrapperRef = useTemplateRef<HTMLElement>('notificationListWrapperRef')
+
+const isLoading = ref(false)
+
+useInfiniteScroll(
+  notificationListWrapperRef,
+  async () => {
+    if (isLoading.value)
+      return
+
+    isLoading.value = true
+    pageNumber.value++
+
+    delay(async () => {
+      await fetchList(pageNumber.value)
+      isLoading.value = false
+    }, 1000)
+  },
+  {
+    distance: 10,
+
+    // canLoadMore: () => !isLoading.value,
+  },
+)
+
+onBeforeMount(async () => {
+  pageNumber.value = 1
+  await fetchList(pageNumber.value)
+})
 </script>
 
 <template>
   <div>
     <div
       v-if="notificationExportStore.getDownloadList.isNotEmpty"
+      ref="notificationListWrapperRef"
       class="list-wrapper pa-4"
     >
       <NotificationExportListItem
