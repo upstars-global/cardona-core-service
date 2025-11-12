@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { onBeforeMount, onBeforeUnmount, ref } from 'vue'
+
+// import { useI18n } from 'vue-i18n'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import WSService from '../../services/ws'
 import { Location } from '../../@model/enums/tooltipPlacement'
 import NotificationExportList from './list/index.vue'
+import { useNotificationToast } from './_composables/useNotificationToast'
 
 defineOptions({
   name: 'NotificationExport',
 })
 
+// const { t } = useI18n()
+const { showToast } = useNotificationToast()
 const notificationMenuState = ref(false)
 
 // import { Channel } from '@/configs/wsConfig'
@@ -26,6 +31,13 @@ onBeforeMount(async () => {
 onBeforeUnmount(async () => {
   WSService.unsubscribe(Channel.Nitifications)
 })
+
+const callToast = () => {
+  showToast({
+    entityName: 'Payouts',
+    downloadHandler: () => console.log('Donwload'),
+  })
+}
 </script>
 
 <template>
