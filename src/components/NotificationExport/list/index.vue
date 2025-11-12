@@ -38,3 +38,10 @@ onBeforeMount(async () => {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.list-wrapper {
+  max-height: 16rem;
+  overflow: auto;
+}
+</style>
