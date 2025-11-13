@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, defineEmits, onBeforeMount, ref, useTemplateRef } from 'vue'
 import { useInfiniteScroll } from '@vueuse/core'
-import { delay } from 'lodash'
 import { useNotificationExportStore } from '../../../stores/notificationExport'
 import { NotificationStatuses } from '../../../@model/notificationExport'
 import type {
@@ -32,10 +31,6 @@ const fetchList = async (pageNumber: number) => {
   })
 }
 
-onBeforeMount(async () => {
-  await fetchList(pageNumber.value)
-})
-
 const canDownload = (item: IDownloadListReportNotificationItem) => item.status === NotificationStatuses.Done
 const notificationListWrapperRef = useTemplateRef<HTMLElement>('notificationListWrapperRef')
 
@@ -44,19 +39,17 @@ const isLoading = computed(() => loaderStore.isLoadingEndpoint('/report/download
 useInfiniteScroll(
   notificationListWrapperRef,
   async () => {
-    if (isLoading.value)
+    if (isLoading.value || !notificationExportStore.canLoadDownLoadList)
       return
 
     pageNumber.value++
 
-    delay(async () => {
-      await fetchList(pageNumber.value)
-    }, 2000)
+    await fetchList(pageNumber.value)
   },
   {
     distance: 10,
 
-    canLoadMore: () => notificationExportStore.canLoadDownLoadList,
+    // canLoadMore: () => notificationExportStore.canLoadDownLoadList,
   },
 )
 
@@ -71,6 +64,7 @@ const listNotEmpty = computed(() => notificationExportStore.getDownloadList.isNo
 
 <template>
   <div>
+    {{ notificationExportStore.canLoadDownLoadList }}
     <div
       v-if="listNotEmpty"
       ref="notificationListWrapperRef"
