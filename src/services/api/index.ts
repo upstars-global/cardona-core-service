@@ -66,6 +66,7 @@ class ApiService {
       rejectError = true,
       loaderSlug = '',
       responseType = 'json',
+      withResponseHeaders = false,
       cache = payload.type.includes(CACHE_PHRASE),
     } = config
 
@@ -91,7 +92,6 @@ class ApiService {
         await cacheStore.delete(cacheRequest)
       }
     }
-
     try {
       if (withLoader)
         loaderStore.setLoaderOn(getLoaderSlug(url, loaderSlug))
@@ -137,6 +137,9 @@ class ApiService {
 
       if (cache)
         await this.setCache(cacheRequest, data, headers)
+
+      if (withResponseHeaders)
+        return { data, headers }
 
       return data
     }
