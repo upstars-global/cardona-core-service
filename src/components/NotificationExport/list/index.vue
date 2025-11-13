@@ -89,7 +89,7 @@ onBeforeMount(async () => {
 
 <style lang="scss" scoped>
 .list-wrapper {
-  max-height: 16rem;
+  max-height: 24.25rem;
   overflow: auto;
 }
 </style>
