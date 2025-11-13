@@ -344,6 +344,8 @@
     "settings": "Settings",
     "editableField": "Editable field",
     "addTags": "Add tags...",
+    "uploadVideo": "Upload video",
+    "columns": "Columns",
     "phone": {
       "_": "Phone",
       "list": "Phones"
@@ -638,6 +640,7 @@
     "inactive": "Inactive"
   },
   "placeholder": {
+    "videoIsCurrentlyProcessed": "The video is currently processed",
     "minutesRange": {
       "from": "From",
       "to": "To"

@@ -19,6 +19,16 @@ import {
 } from '../../../mocks/base-list'
 import useToastService from '../../../../../src/helpers/toasts'
 
+vi.mock('../../../../../src/stores/users', () => {
+  return {
+    useUsersStore: () => ({
+      fetchUsersList: vi.fn(),
+      fetchEntityList: vi.fn(),
+      updateUserPassword: vi.fn(),
+    }),
+  }
+})
+
 // Helper function to select table cells based on data attribute
 const getSelectorCField = (name: string) => `td[data-c-field="${name}"]`
 
@@ -312,29 +322,11 @@ describe('BaseList', () => {
     testOn.existElement({ wrapper, testId: 'right-search-btn' })
   })
 
-  it('Should use customFetchList when customModuleName is provided', async () => {
-    // Mock dispatch response for custom fetch list
-    mockDispatch.mockResolvedValueOnce({
-      list: [],
-      total: 100,
-    })
-
-    // Configure custom fetch list settings in props
-    props.config.customModuleName = 'entityTest'
-    props.config.withCustomFetchList = true
-
-    getMountBaseList(props, global)
-
-    // Assert that the custom fetch action was dispatched
-    expect(mockBaseStoreCore.fetchEntityList).toHaveBeenCalled()
-  })
-
   it('Should call customDelete when withCustomDelete is enabled', async () => {
     const hideMock = vi.fn()
     const commentToRemove = 'Test Comment'
 
     // Configure custom delete settings in props
-    // props.config.customModuleName = 'entityTest'
     props.config.withCustomDelete = true
     props.useList = useListForCustomStore(mockCustomStore)
 

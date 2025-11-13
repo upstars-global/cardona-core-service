@@ -377,12 +377,6 @@ export interface IBaseSectionConfig {
   /** noPermissionPrefix - Вкл/выкл префикс проекта (true) */
   readonly noPermissionPrefix?: boolean
 
-  /** withCustomModuleName - Вкл/выкл пользовательское имя модуля стор */
-  readonly withCustomModuleName?: boolean
-
-  /** customModuleName - Пользовательское имя модуля стор */
-  readonly customModuleName?: string
-
   /** customApiPrefix - Пользовательский апи префикс (App.V2.) */
   readonly customApiPrefix?: string
 
@@ -417,9 +411,7 @@ export interface IBaseSectionConfig {
 export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to base section model
   readonly onePermissionKey?: string
   readonly permissionKey?: string
-  readonly withCustomModuleName?: boolean
   readonly noPermissionPrefix?: boolean
-  readonly customModuleName?: string
   readonly customApiPrefix?: string
   readonly loadingEndpointArr: Array<string>
   readonly customPermissionPrefix?: string
@@ -432,9 +424,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   constructor(data: IBaseSectionConfig) {
     this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
-    this.withCustomModuleName = data?.withCustomModuleName
     this.noPermissionPrefix = data?.noPermissionPrefix
-    this.customModuleName = data?.customModuleName
     this.customApiPrefix = data?.customApiPrefix
     this.loadingEndpointArr = data?.loadingEndpointArr || []
     this.customPermissionPrefix = data?.customPermissionPrefix

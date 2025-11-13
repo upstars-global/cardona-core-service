@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, inject, nextTick, ref, watch } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 import 'vue-froala-wysiwyg'
 import type { TranslateResult } from 'vue-i18n'
 import { useStore } from 'vuex'
@@ -8,10 +9,15 @@ import type { LocaleVariable } from '../../@model/translations'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import { copyToClipboard } from '../../helpers/clipboard'
+import { useVideoUploadStore } from '../../stores/uploadVideo'
 import { useTextEditorStore } from '../../stores/textEditor'
+import { PermissionLevel } from '../../@model/permission'
+import useToastService from '../../helpers/toasts'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
+import { useUploadVideoVimeo } from './_composables/useUploadVideoVimeo'
+import { PermissionType } from '@permissions'
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
@@ -24,6 +30,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>()
 
+const editorWrapper = ref<HTMLElement | null>(null)
+interface Props {
+  modelValue: string
+  optionsVariable: Array<string>
+}
 interface Props {
   modelValue: string
   optionsVariable: Array<string>
@@ -40,76 +51,51 @@ interface Emits {
 }
 
 const modal = inject('modal')
+const editorKey = uuidv4()
 
 const store = useStore()
+const videoUploadStore = useVideoUploadStore()
 const textEditorStore = useTextEditorStore()
 
 const content = computed({
   get: () => props.modelValue,
-  set: value => {
-    emit('update:modelValue', value)
-  },
+  set: value => emit('update:modelValue', value),
 })
 
-const globalEditor = ref()
+const { toastError } = useToastService()
+
+const globalEditor = ref<any>()
 const isUpdateVar = computed(() => textEditorStore.isUpdateVar)
 const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
 
-const setVariableTextBuffer = params => {
-  textEditorStore.setVariableTextBuffer(params)
-}
+const setVariableTextBuffer = params => textEditorStore.setVariableTextBuffer(params)
+const setVariableByKey = ({ key, value }) => textEditorStore.setVariableByKey({ key, value })
+const removeVariableValueByKey = key => textEditorStore.removeVariableValueByKey(key)
 
-const setVariableByKey = ({ key, value }) => {
-  textEditorStore.setVariableByKey({ key, value })
-}
-
-const removeVariableValueByKey = key => {
-  textEditorStore.removeVariableValueByKey(key)
-}
-
-watch(
-  () => isUpdateVar.value,
-  () => {
-    if (isUpdateVar.value) {
-      findNoUseVarAndDelete()
-      textEditorStore.setUpdateVar(false)
-    }
-  },
-)
+watch(() => isUpdateVar.value, () => {
+  if (isUpdateVar.value) {
+    findNoUseVarAndDelete()
+    textEditorStore.setUpdateVar(false)
+  }
+})
 
 const variableTextBuffer = computed({
-  get: () => {
-    return variableTextBufferStore.value
-  },
-  set: value => {
-    setVariableTextBuffer(value)
-  },
+  get: () => variableTextBufferStore.value,
+  set: value => setVariableTextBuffer(value),
 })
 
-watch(
-  () => variableTextBuffer,
-  () => {
-    emit('update-localisation-parameters', variableTextBuffer.value)
-  },
-  {
-    deep: true,
-  },
-)
+watch(() => variableTextBuffer, () => {
+  emit('update-localisation-parameters', variableTextBuffer.value)
+}, { deep: true })
 
-watch(
-  () => props.localisationParameters,
-  async () => {
-    setVariableTextBuffer(props.localisationParameters)
-  },
-  { deep: true, immediate: true },
-)
+watch(() => props.localisationParameters, async () => {
+  setVariableTextBuffer(props.localisationParameters)
+}, { deep: true, immediate: true })
 
 const variableKeySelect = ref('')
-const defaultObjLocalisationParameters = {}
+const defaultObjLocalisationParameters: Record<string, any> = {}
 
-props.optionsVariable.forEach(item => {
-  defaultObjLocalisationParameters[item] = ''
-})
+props.optionsVariable.forEach(item => { defaultObjLocalisationParameters[item] = '' })
 
 const selectedProject = computed(() => store.getters.selectedProject)
 
@@ -120,16 +106,19 @@ const selectedProjectPublicName = computed(
 const galleryModalId = 'gallery-modal'
 
 const insertImages = ({ publicPath, fileName }: { publicPath: string; fileName: string }) => {
-  nextTick(() => {
-    modal.hideModal(galleryModalId)
-  })
-
-  globalEditor.value.image.insert(publicPath, true, { name: fileName, id: fileName }, '', {
-    link: publicPath,
-  })
-
+  nextTick(() => { modal?.hideModal(galleryModalId) })
+  globalEditor.value.image.insert(publicPath, true, { name: fileName, id: fileName }, '', { link: publicPath })
   globalEditor.value.image.hideProgressBar(true)
 }
+
+FroalaEditor.DefineIcon('clear', { NAME: 'remove', SVG_KEY: 'remove' })
+FroalaEditor.RegisterCommand('clear', {
+  title: 'Clear HTML',
+  focus: false,
+  undo: true,
+  refreshAfterCallback: true,
+  callback() { this.html.set(''); this.events.focus() },
+})
 
 FroalaEditor.DefineIcon('gallery', { NAME: 'folder', SVG_KEY: 'imageManager' })
 FroalaEditor.RegisterCommand('gallery', {
@@ -142,18 +131,34 @@ FroalaEditor.RegisterCommand('gallery', {
 
     this.html.set(text)
     globalEditor.value = this
-    nextTick(() => {
-      modal.showModal(galleryModalId)
-    })
+    nextTick(() => { modal?.showModal(galleryModalId) })
   },
 })
+
+const canUploadVideo = computed(() => store.getters.abilityCan(PermissionType.BackofficeVimeo, PermissionLevel.create))
+
+let uploadVideoVimeo = null
+
+if (canUploadVideo.value) {
+  uploadVideoVimeo = useUploadVideoVimeo({
+    uploadFn: (file, key) => videoUploadStore.upload(file, key),
+    getStatusFn: videoId => videoUploadStore.getStatusVideo({ videoId }),
+    pollMs: 5000,
+  })
+
+  uploadVideoVimeo?.watchContent(content)
+}
+
+watch(() => canUploadVideo.value, value => {
+  if (value)
+    baseConfig.pluginsEnabled.push('video')
+}, { immediate: true })
 
 const config = {
   placeholderText: props.placeholder,
   events: {
     initialized() {
       globalEditor.value = this
-
       if (props.disabled)
         globalEditor.value.edit.off()
     },
@@ -175,12 +180,12 @@ const config = {
       if (uniqueVariables.length > 0) {
         // Сохранение точной позиции курсора
         const selection = window.getSelection()
-        let range = null
+        let range: Range | null = null
         if (selection?.rangeCount > 0)
           range = selection.getRangeAt(0).cloneRange()
 
         let updated = false
-        let lastInsertedSpan = null
+        let lastInsertedSpan: ChildNode | null = null
 
         uniqueVariables.forEach((keyVar: string) => {
           if (!keyVar)
@@ -193,7 +198,7 @@ const config = {
           // Обновление текста без полной перерисовки
           const walker = document.createTreeWalker(editor.$el[0], NodeFilter.SHOW_TEXT, null)
           while (walker.nextNode()) {
-            const node = walker.currentNode
+            const node = walker.currentNode as Text
             if (node.nodeValue?.includes(`{{${keyVar}}}`)) {
               const span = document.createElement('span')
 
@@ -208,7 +213,7 @@ const config = {
               parent.replaceChild(beforeText, node)
               parent.insertBefore(span, beforeText.nextSibling)
               parent.insertBefore(afterText, span.nextSibling)
-              lastInsertedSpan = afterText // Устанавливаем курсор после переменной
+              lastInsertedSpan = afterText
               updated = true
             }
           }
@@ -217,7 +222,7 @@ const config = {
         if (updated) {
           textEditorStore.setUpdateVar(true)
           emit('update:modelValue', editor.html.get())
-          editor.events.trigger('contentChanged') // Тригер на обновление контента
+          editor.events.trigger('contentChanged')
         }
 
         editor.$el.find('[id="isPasted"]').removeAttr('id')
@@ -228,10 +233,15 @@ const config = {
 
           newRange.setStartAfter(lastInsertedSpan)
           newRange.setEndAfter(lastInsertedSpan)
+
+          const selection = window.getSelection()
+
           selection?.removeAllRanges()
           selection?.addRange(newRange)
         }
         else if (range) {
+          const selection = window.getSelection()
+
           selection?.removeAllRanges()
           selection?.addRange(range)
         }
@@ -240,9 +250,24 @@ const config = {
         updateVariableInContent(editor)
       }
     },
-    'commands.after': function (command) {
+    'commands.after': function (command: string) {
       if (command === 'html')
         isCodeViewActive.value = this.codeView.isActive()
+    },
+    'video.beforeUpload': function (files: File[]) {
+      if (!files[0].type.startsWith('video/')) {
+        toastError('upload_file_INVALID_FILE_FORMAT')
+
+        return false
+      }
+      uploadVideoVimeo?.handleBeforeUpload(files, editorKey, content)
+
+      const editorDataId = `[data-id="${editorKey}"]`
+
+      document.querySelector(`${editorDataId} button[data-cmd="insertVideo"]`)?.classList.toggle('fr-btn-active-popup')
+      document.querySelector(`${editorDataId} .fr-popup.fr-desktop`)?.classList.toggle('fr-active')
+
+      return false
     },
     'image.beforeUpload': function (images: any[]) {
       Array.from(images).forEach(async file => {
@@ -252,21 +277,18 @@ const config = {
 
         const _path = `/${selectedProjectPublicName.value}/upload/${fileName}`
         try {
-          const { publicPath } = await store.dispatch('compostelaCore/uploadFile', {
-            file,
-            path: _path,
-          })
+          const { publicPath } = await store.dispatch('compostelaCore/uploadFile', { file, path: _path })
 
-          this.image.insert(publicPath, true, { name: fileName, id: fileName }, '', {
-            link: publicPath,
-          })
-
+          this.image.insert(publicPath, true, { name: fileName, id: fileName }, '', { link: publicPath })
           this.image.hideProgressBar(true)
         }
         catch (e) {}
       })
 
       return false
+    },
+    'html.get': function (html: string) {
+      return html.replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&')
     },
   },
   ...baseConfig,
@@ -277,15 +299,17 @@ const newVariableText = ref({})
 
 // Данный метод нужен для обнавления переменных из текста который пришел с АПИ
 // Так же обновления рания удаленых переменных после их возвращения в текст при помощи одиночной скобки '}'
-const updateVariableInContent = editor => {
+
+const updateVariableInContent = (editor: any) => {
   const contentChanged = editor.html.get(true)
 
   newVariableText.value = {}
   Object.keys(variableTextBuffer.value).forEach(key => {
     const variable = `<span class="variable-box">{${key}}</span>`
     if (contentChanged.includes(variable)) {
-      newVariableText.value[key] = variableTextBuffer.value[key]
-      if (!variableTextBuffer.value[key]) {
+      // @ts-expect-error
+      newVariableText.value[key] = (variableTextBuffer.value as any)[key]
+      if (!(variableTextBuffer.value as any)[key]) {
         editor.selection.restore()
         editor.selection.setAfter(editor.selection.element())
         editor.selection.restore()
@@ -301,10 +325,11 @@ const findNoUseVarAndDelete = () => {
   const regex = /<span class="variable-box">\{(.*?)\}<\/span>/g
 
   const text = ref(globalEditor.value.html.get(true).replaceAll('&nbsp;', ''))
-  let match
+  let match: RegExpExecArray | null
   let isUpdateCursor = false
 
   while ((match = regex.exec(text.value)) !== null) {
+    // @ts-expect-error
     if (globalEditor.value && !variableTextBuffer.value[match[1]]) {
       isUpdateCursor = true
       text.value = text.value
@@ -331,17 +356,16 @@ const modalId = 'variable-modal'
 const setVariableKeySelect = (key: string) => {
   variableKeySelect.value = key
   nextTick(() => {
-    modal.showModal(modalId)
+    modal?.showModal(modalId)
   })
 }
 
 const updateVariableTextByKey = val => {
   // Обнавления значения данных для переменной по ключу
   // Так же обновляем буффер
+
   if (!variableKeySelect.value)
-    return
-  setVariableByKey({ key: variableKeySelect.value, value: val })
-  variableKeySelect.value = ''
+    return; setVariableByKey({ key: variableKeySelect.value, value: val }); variableKeySelect.value = ''
 }
 
 const deleteVariableTextByKey = () => {
@@ -362,15 +386,14 @@ const deleteVariableTextByKey = () => {
 }
 
 const isCodeViewActive = ref(false)
-
-const onSaveChanges = () => {
-  globalEditor.value.codeView.toggle()
-  isCodeViewActive.value = false
-}
+const onSaveChanges = () => { globalEditor.value.codeView.toggle(); isCodeViewActive.value = false }
 </script>
 
 <template>
-  <div class="block-text-edite">
+  <div
+    class="block-text-edite"
+    :data-id="editorKey"
+  >
     <VariableModal
       :key="variableKeySelect"
       :value="variableTextBuffer[variableKeySelect]"
@@ -386,6 +409,7 @@ const onSaveChanges = () => {
       @insert="insertImages"
     />
     <div
+      ref="editorWrapper"
       class="editor-wrap"
       :class="{ disabled }"
     >
@@ -395,7 +419,21 @@ const onSaveChanges = () => {
         data-test-id="text-editor"
         :config="config"
       />
-
+      <div
+        v-if="videoUploadStore.getProgressState(editorKey)"
+        class="py-4"
+      >
+        <span>{{ $t('common.uploadVideo') }}</span>
+        <VProgressLinear
+          :model-value="videoUploadStore.getProgressPercent(editorKey)"
+          :max="100"
+          height="12"
+        >
+          <template #default="{ value }">
+            <span class="text-sm">{{ Math.ceil(value) }}%</span>
+          </template>
+        </VProgressLinear>
+      </div>
       <VBtn
         v-if="isCodeViewActive"
         :color="VColors.Primary"
@@ -409,10 +447,7 @@ const onSaveChanges = () => {
           :icon="IconsList.DeviceFloppyIcon"
           :color="VColors.Primary"
         />
-
-        <span>
-          {{ $t('action.saveChanges') }}
-        </span>
+        <span>{{ $t('action.saveChanges') }}</span>
       </VBtn>
     </div>
 
@@ -421,9 +456,7 @@ const onSaveChanges = () => {
         :key="`block-text-edite-variable${isUpdateVar}`"
         class="d-flex flex-wrap align-center block-text-edite-variable pt-3 gap-2"
       >
-        <span class="text-body-2 mr-1">
-          {{ $t('common.editor.addedVariables') }}:
-        </span>
+        <span class="text-body-2 mr-1">{{ $t('common.editor.addedVariables') }}:</span>
         <VChip
           v-for="key in Object.keys(variableTextBuffer)"
           :key="key"
@@ -432,7 +465,7 @@ const onSaveChanges = () => {
           class="tag-variable gap-4"
           @click="setVariableKeySelect(key)"
         >
-          <span class="pr-1">{{ `{${key}\}` }} </span>
+          <span class="pr-1">{{ `{${key}\}` }}</span>
           <VIcon
             size="16"
             :icon="IconsList.CopyIcon"
@@ -448,51 +481,18 @@ const onSaveChanges = () => {
 .block-text-edite {
   .editor-wrap {
     position: relative;
-    :deep(.fr-counter) {
-      color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
-      font-size: 15px;
-    }
-    :deep(.fr-toolbar) {
-      border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
-    }
-    :deep(.fr-newline) {
-      background:  rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
-    }
-    :deep(.fr-box.fr-basic) {
-      .fr-wrapper {
-        border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
-      }
-    }
-    :deep(.fr-second-toolbar) {
-      border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
-    }
+    :deep(.fr-counter) { color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)); font-size: 15px; }
+    :deep(.fr-toolbar) { border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)); }
+    :deep(.fr-newline) { background:  rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)); }
+    :deep(.fr-box.fr-basic) { .fr-wrapper { border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)); } }
+    :deep(.fr-second-toolbar) { border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)); }
     &.disabled {
-      :deep(.fr-toolbar),
-      :deep(.fr-element),
-      :deep(.fr-second-toolbar) {
-        background: rgb(var(--v-theme-grey-100));
-      }
-      :deep(.fr-placeholder) {
-        z-index: 2;
-      }
+      :deep(.fr-toolbar), :deep(.fr-element), :deep(.fr-second-toolbar) { background: rgb(var(--v-theme-grey-100)); }
+      :deep(.fr-placeholder) { z-index: 2; }
     }
-
-    :deep(ul) {
-      margin-top: 1em;
-      margin-bottom: 1em;
-      padding-left: 40px;
-    }
-
-    .save-changes-btn {
-      position: absolute;
-      bottom: 0.375rem;
-      right: 0;
-      z-index: 99;
-    }
+    :deep(ul) { margin-top: 1em; margin-bottom: 1em; padding-left: 40px; }
+    .save-changes-btn { position: absolute; bottom: 0.375rem; right: 0; z-index: 99; }
   }
-  :deep(.variable-box) {
-    background: rgba(var(--v-theme-grey-500), var(--v-badge-opacity));
-    padding: 1px 0.285rem;
-  }
+  :deep(.variable-box) { background: rgba(var(--v-theme-grey-500), var(--v-badge-opacity)); padding: 1px 0.285rem; }
 }
 </style>

@@ -1,9 +1,9 @@
 import type { Component } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
-import store from '../../../store'
 import type { IValidationConfig } from '../../../@model/validations'
 import type { OptionsItem } from '../../../@model'
 import { i18n } from '../../../plugins/i18n'
+import { OPTIONS_PER_PAGE } from '../../../utils/constants'
 import type { PermissionType } from '@permissions'
 
 export interface IBaseField {
@@ -74,7 +74,7 @@ export interface ITransformFieldOptions {
 
 export interface IASelectBaseField<T> extends IBaseField {
   readonly options?: Array<T>
-  readonly fetchOptionsActionName?: string
+  readonly fetchOptionsAction?: CallableFunction
   readonly staticFilters?: Record<string, string>
   readonly withCalculatePosition?: boolean
   readonly preloadOptionsByIds?: boolean
@@ -87,7 +87,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
   extends BaseField
   implements IASelectBaseField<T> {
   public options?: Array<T | OptionsItem>
-  readonly fetchOptionsActionName?: string
+  readonly fetchOptionsAction?: CallableFunction
   readonly preloadOptionsByIds?: boolean
   readonly staticFilters: Record<string, string>
   readonly calculatePositionCb?: CallableFunction
@@ -96,12 +96,14 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
   readonly infiniteLoading?: boolean
   readonly localeKey: string
   pageNumber: number
+  private prevSearch = ''
+  allowLoadMore = true
 
   protected constructor(field: IASelectBaseField<T>) {
     super(field)
     this.localeKey = field?.localeKey || ''
     this.options = this.getOptionItems(field?.options)
-    this.fetchOptionsActionName = field.fetchOptionsActionName
+    this.fetchOptionsAction = field.fetchOptionsAction
     this.preloadOptionsByIds = field.preloadOptionsByIds
     this.staticFilters = field.staticFilters || {}
     this.calculatePositionCb = field.withCalculatePosition ? this.calculatePosition : undefined
@@ -138,8 +140,10 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     if (resetPage)
       this.pageNumber = 1
 
-    const { list = [] } = await store.dispatch(this.fetchOptionsActionName, {
-      perPage: 50,
+    this.prevSearch = filters.search || ''
+
+    const { list = [] } = await this.fetchOptionsAction({
+      perPage: OPTIONS_PER_PAGE,
       pageNumber: this.pageNumber,
       filter: {
         ...this.staticFilters,
@@ -147,11 +151,15 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
       },
     })
 
+    this.allowLoadMore = list.length === OPTIONS_PER_PAGE
+
     return this.getOptionItems(list)
   }
 
   async getOptions(filters: { search?: string; ids?: string[] } = {}) {
-    const resetPage = !!filters.search?.length
+    if (!filters.search)
+      filters.search = ''
+    const resetPage = this.prevSearch !== filters.search
 
     return await this.fetchOptionList(filters, resetPage)
   }
@@ -161,7 +169,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
   }
 
   async fetchOptions(search?: string) {
-    if (this.fetchOptionsActionName) {
+    if (this.fetchOptionsAction) {
       const isExistsValue = this.value?.length || this.value?.id
 
       if (this.preloadOptionsByIds && isExistsValue && search === undefined) {
@@ -175,10 +183,12 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     }
   }
 
-  async loadMore() {
+  async loadMore(search: string) {
+    if (!this.allowLoadMore)
+      return
     this.pageNumber++
 
-    const options = await this.getOptions()
+    const options = await this.getOptions({ search })
 
     this.options = [...this.options, ...options]
   }

@@ -55,7 +55,7 @@ const getButtonConfirm = (text: string) => text || props.confirmBtnText
           label: $t('action.cancel'),
         }"
         :accept="{
-          color: VColors.Primary,
+          color: payload?.btnConfirmColor || VColors.Primary,
           label: getButtonConfirm(payload?.btnConfirmText),
         }"
         @on-cancel="onCloseModal(action.hide)"
