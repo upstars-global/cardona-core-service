@@ -46,6 +46,7 @@ export interface IApiServiceConfig {
   readonly withErrorToast?: boolean
   readonly withErrorDescriptionToast?: boolean
   readonly withSuccessToast?: boolean
+  readonly successToastTitle?: string | undefined
   readonly successToastDescription?: string | undefined
   readonly withLoader?: boolean
   readonly formRef?: any

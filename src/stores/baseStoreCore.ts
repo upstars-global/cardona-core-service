@@ -65,7 +65,8 @@ const reportFactory = (isSpecificReport = false) => async (
       [paramKey]: combineFilter(payload.data.filter, projectAlias),
     },
     {
-      withSuccessToast: true,
+      withSuccessToast: isSpecificReport,
+      successToastTitle: isSpecificReport ? 'reportLoad' : undefined,
       responseType:
         payload.data.filter.format === ExportFormat.XLSX ? 'blob' : 'json',
     },

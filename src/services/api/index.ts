@@ -58,6 +58,7 @@ class ApiService {
       withErrorDescriptionToast = false,
       withErrorNotFound = true,
       withSuccessToast = false,
+      successToastTitle = undefined,
       successToastDescription = undefined,
       withLoader = true,
       formRef = null,
@@ -125,7 +126,7 @@ class ApiService {
       if (withSuccessToast) {
         const action = getActionName(payload.type)
 
-        const toastTitle = action && i18n.te(`entities.${entity}`)
+        const toastTitle = successToastTitle || action && i18n.te(`entities.${entity}`)
           ? action
           : url
 
