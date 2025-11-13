@@ -7,6 +7,7 @@ import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import WSService from '../../services/ws'
 import { Location } from '../../@model/enums/tooltipPlacement'
 import { useNotificationExportStore } from '../../stores/notificationExport'
+import { isNotificationWithStatusDone } from '../../@model/notificationExport'
 import NotificationExportList from './list/index.vue'
 import { useNotificationToast } from './_composables/useNotificationToast'
 
@@ -22,10 +23,6 @@ const notificationMenuState = ref(false)
 const notificationExportStore = useNotificationExportStore()
 
 const existNewNotification = computed(() => notificationExportStore.existingNotifications && !notificationMenuState.value)
-
-// const chanelStores = {
-//   [Channel.Nitifications]: useNotificationExportStore(),
-// }
 
 onBeforeMount(async () => {
   WSService.subscribe(Channel.Nitifications)
@@ -53,7 +50,7 @@ const onChangeMenuState = (state: boolean) => {
 }
 
 watch(() => notificationExportStore.getLastNotification, newVal => {
-  if (!newVal)
+  if (!newVal || !isNotificationWithStatusDone(newVal))
     return
   callToast({
     entityName: newVal?.entityType,

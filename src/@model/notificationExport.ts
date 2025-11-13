@@ -33,10 +33,10 @@ const notificationStatusColor: Record<NotificationStatuses, VColors> = {
   [NotificationStatuses.Loading]: VColors.Info,
   [NotificationStatuses.Done]: VColors.Success,
   [NotificationStatuses.Error]: VColors.Error,
-  [NotificationStatuses.Started.toLowerCase()]:VColors.Secondary,
-  [NotificationStatuses.Loading.toLowerCase()]:VColors.Info,
-  [NotificationStatuses.Done.toLowerCase()]:VColors.Success,
-  [NotificationStatuses.Error.toLowerCase()]:VColors.Error,
+  [NotificationStatuses.Started.toLowerCase()]: VColors.Secondary,
+  [NotificationStatuses.Loading.toLowerCase()]: VColors.Info,
+  [NotificationStatuses.Done.toLowerCase()]: VColors.Success,
+  [NotificationStatuses.Error.toLowerCase()]: VColors.Error,
 }
 
 export const notificationStatesLabel: Record<NotificationStatuses, TranslateResult | string> = {
@@ -44,8 +44,8 @@ export const notificationStatesLabel: Record<NotificationStatuses, TranslateResu
   [NotificationStatuses.Loading]: i18n.t(`notification.${NotificationStatuses.Loading}`),
   [NotificationStatuses.Done]: '',
   [NotificationStatuses.Error]: '',
-  [NotificationStatuses.Started.toLowerCase()]:i18n.t(`notification.${NotificationStatuses.Started}`),
-  [NotificationStatuses.Loading.toLowerCase()]:i18n.t(`notification.${NotificationStatuses.Loading}`),
+  [NotificationStatuses.Started.toLowerCase()]: i18n.t(`notification.${NotificationStatuses.Started}`),
+  [NotificationStatuses.Loading.toLowerCase()]: i18n.t(`notification.${NotificationStatuses.Loading}`),
   [NotificationStatuses.Done.toLowerCase()]: '',
   [NotificationStatuses.Error.toLowerCase()]: '',
 }
@@ -88,4 +88,4 @@ export interface INotificationEmitEvent {
   (event: 'download-report', payload: number): void
 }
 
-export const canDownloadFile = (item: IDownloadListReportNotificationItem) => item.status === NotificationStatuses.Done || item.status === NotificationStatuses.Done?.toLowerCase()
+export const isNotificationWithStatusDone = (item: IDownloadListReportNotificationItem | INotificationReportItem) => item?.status === NotificationStatuses.Done || item?.status === NotificationStatuses.Done?.toLowerCase()
