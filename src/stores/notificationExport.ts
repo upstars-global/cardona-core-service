@@ -43,6 +43,7 @@ const mock = [
 const notificationList = useLocalStorage<INotificationReportItem[]>('notifications', [])
 export const useNotificationExportStore = defineStore('notification-export', {
   state: () => ({
+    canLoadDownLoadList: true,
     downloadList: [] as IDownloadListReportNotificationItem[],
   }),
   getters: {
@@ -67,8 +68,6 @@ export const useNotificationExportStore = defineStore('notification-export', {
       console.log('Delete notification: ', data)
     },
     async downloadReport(reportId: number) {
-      console.log('Download report: ', reportId)
-
       const response = await ApiService.request({
         type: 'App.V2.Report.Download.File',
         data: { project: store.getters.selectedProject?.alias, reportId },
@@ -81,7 +80,6 @@ export const useNotificationExportStore = defineStore('notification-export', {
       const fileNameMatch = disposition?.match(/filename="?([^"]+)"?/)
       const fileName = fileNameMatch ? fileNameMatch[1] : 'report.bin'
 
-      // Створюємо Blob і завантажуємо
       const url = window.URL.createObjectURL(new Blob([response.data]))
       const link = document.createElement('a')
 
@@ -105,6 +103,8 @@ export const useNotificationExportStore = defineStore('notification-export', {
         }, {
           withErrorToast: false,
         }) || []
+
+        this.canLoadDownLoadList = data.length === payload.pagination.perPage
       }
       catch {
         data = { data: mock }

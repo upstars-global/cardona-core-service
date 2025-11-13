@@ -9,6 +9,7 @@ import type {
   INotificationEmitEvent,
 } from '../../../@model/notificationExport'
 import { VColors, VSizes } from '../../../@model/vuetify'
+import { useLoaderStore } from '../../../stores/loader'
 import NotificationExportListItem from './ListItem.vue'
 import NotificationExportEmptyCard from './EmptyCard.vue'
 
@@ -20,6 +21,7 @@ defineEmits<INotificationEmitEvent>()
 
 const notificationExportStore = useNotificationExportStore()
 const pageNumber = ref(1)
+const loaderStore = useLoaderStore()
 
 const fetchList = async (pageNumber: number) => {
   await notificationExportStore.fetchEntityList({
@@ -37,7 +39,7 @@ onBeforeMount(async () => {
 const canDownload = (item: IDownloadListReportNotificationItem) => item.status === NotificationStatuses.Done
 const notificationListWrapperRef = useTemplateRef<HTMLElement>('notificationListWrapperRef')
 
-const isLoading = ref(false)
+const isLoading = computed(() => loaderStore.isLoadingEndpoint('/report/download/list'))
 
 useInfiniteScroll(
   notificationListWrapperRef,
@@ -45,18 +47,16 @@ useInfiniteScroll(
     if (isLoading.value)
       return
 
-    isLoading.value = true
     pageNumber.value++
 
     delay(async () => {
       await fetchList(pageNumber.value)
-      isLoading.value = false
     }, 2000)
   },
   {
     distance: 10,
 
-    // canLoadMore: () => !isLoading.value,
+    canLoadMore: () => notificationExportStore.canLoadDownLoadList,
   },
 )
 
