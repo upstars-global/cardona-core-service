@@ -39,7 +39,9 @@ class WSService {
 
     // ws://localhost:56316/connection/websocket (lens link port)
     // wss://${location.host || location.hostname}/ws
-    const client = new Centrifuge(`wss://${location.host || location.hostname}/ws`, {
+    // const client = new Centrifuge(`wss://${location.host || location.hostname}/ws`, {
+
+    const client = new Centrifuge('ws://localhost:56316/connection/websocket', {
       debug: true,
       token: refreshAuthToken || getAccessToken(),
       getToken,

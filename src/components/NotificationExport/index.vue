@@ -10,6 +10,8 @@ import { useNotificationExportStore } from '../../stores/notificationExport'
 import NotificationExportList from './list/index.vue'
 import { useNotificationToast } from './_composables/useNotificationToast'
 
+import { Channel } from '@/configs/wsConfig'
+
 defineOptions({
   name: 'NotificationExport',
 })
@@ -19,19 +21,18 @@ const { showToast } = useNotificationToast()
 const notificationMenuState = ref(false)
 const notificationExportStore = useNotificationExportStore()
 
-// import { Channel } from '@/configs/wsConfig'
-enum Channel {
-  Payouts = 'payouts-feed',
-  Nitifications = 'notification-push',
-}
+// enum Channel {
+//   Payouts = 'payouts-feed',
+//   Nitifications = 'notification-push',
+// }
 const existNewNotification = computed(() => notificationExportStore.existingNotifications && !notificationMenuState.value)
 
-const chanelStores = {
-  [Channel.Nitifications]: useNotificationExportStore(),
-}
+// const chanelStores = {
+//   [Channel.Nitifications]: useNotificationExportStore(),
+// }
 
 onBeforeMount(async () => {
-  await WSService.connect(Channel, { stores: chanelStores })
+  // await WSService.connect(Channel, { stores: chanelStores })
   WSService.subscribe(Channel.Nitifications)
 })
 

@@ -69,12 +69,27 @@ export const useNotificationExportStore = defineStore('notification-export', {
     async downloadReport(reportId: number) {
       console.log('Download report: ', reportId)
 
-      const result = await ApiService.request({
+      const response = await ApiService.request({
         type: 'App.V2.Report.Download.File',
         data: { project: store.getters.selectedProject?.alias, reportId },
+      }, {
+        responseType: 'blob',
       })
 
-      console.log(result)
+      const disposition = response.headers['content-disposition']
+      const fileNameMatch = disposition?.match(/filename="?([^"]+)"?/)
+      const fileName = fileNameMatch ? fileNameMatch[1] : 'report.bin'
+
+      // Створюємо Blob і завантажуємо
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+
+      link.href = url
+      link.setAttribute('download', fileName)
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
     },
     async fetchEntityList(payload: { pagination: {
       pageNumber: number

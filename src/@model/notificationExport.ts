@@ -11,28 +11,28 @@ import { VColors } from './vuetify'
 // }
 
 export enum NotificationStatuses {
-  Waiting = 'waiting',
+  Started = 'started',
   Loading = 'loading',
   Done = 'done',
   Error = 'error',
 }
 
 const notificationStatusIcons: Record<NotificationStatuses, IconsList> = {
-  [NotificationStatuses.Waiting]: IconsList.ArrowRight,
+  [NotificationStatuses.Started]: IconsList.ArrowRight,
   [NotificationStatuses.Loading]: IconsList.RefreshCwIcon,
   [NotificationStatuses.Done]: IconsList.CheckIcon,
   [NotificationStatuses.Error]: IconsList.ExclamationMark,
 }
 
 const notificationStatusColor: Record<NotificationStatuses, VColors> = {
-  [NotificationStatuses.Waiting]: VColors.Secondary,
+  [NotificationStatuses.Started]: VColors.Secondary,
   [NotificationStatuses.Loading]: VColors.Info,
   [NotificationStatuses.Done]: VColors.Success,
   [NotificationStatuses.Error]: VColors.Error,
 }
 
 export const notificationStatesLabel: Record<NotificationStatuses, TranslateResult | string> = {
-  [NotificationStatuses.Waiting]: i18n.t(`notification.${NotificationStatuses.Waiting}`),
+  [NotificationStatuses.Started]: i18n.t(`notification.${NotificationStatuses.Started}`),
   [NotificationStatuses.Loading]: i18n.t(`notification.${NotificationStatuses.Loading}`),
   [NotificationStatuses.Done]: '',
   [NotificationStatuses.Error]: '',
