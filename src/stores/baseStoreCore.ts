@@ -50,13 +50,13 @@ const reportFactory = (isSpecificReport = false) => async (
 ): Promise<Blob | string> => {
   const paramKey = isSpecificReport ? 'data' : 'filter'
   const projectAlias = store.getters.selectedProject?.alias
-  const typeSufix = isSpecificReport ? 'Load' : ''
+  const typeSuffix = isSpecificReport ? 'Load.' : ''
 
   const response = await ApiService.request(
     {
       type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
         payload.type,
-      )}.${typeSufix}.List.Report`,
+      )}.${typeSuffix}List.Report`,
       sort: payload.data.sort,
       pagination: {
         pageNumber: payload.data.page ?? 1,
@@ -65,6 +65,7 @@ const reportFactory = (isSpecificReport = false) => async (
       [paramKey]: combineFilter(payload.data.filter, projectAlias),
     },
     {
+      withSuccessToast: true,
       responseType:
         payload.data.filter.format === ExportFormat.XLSX ? 'blob' : 'json',
     },

@@ -119,8 +119,6 @@ const isExistsCreatePage = checkExistsPage(CreatePageName)
 const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 const isExistsDetailsPage = checkExistsPage(DetailsPageName)
 
-const actualStore = useStore ? customStore : baseStoreCore
-
 // Actions
 const fetchAction: CallableFunction = useStore
   ? customStore?.fetchEntityList
@@ -423,7 +421,7 @@ const onExportFormatSelected = async (format: ExportFormat) => {
 
   const filter = setRequestFilters()
   const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
-  const action = isSpecificExport ? actualStore.specificFetchReport : actualStore.fetchReport
+  const action = isSpecificExport ? baseStoreCore.specificFetchReport : baseStoreCore.fetchReport
 
   const report: string | Blob = await action({
     type: entityName,
