@@ -111,7 +111,7 @@ class ApiService {
             requestId: uuidv4(),
           })
 
-      const { data }: any = await axiosInstance({
+      const { data, headers: responseHeaders }: any = await axiosInstance({
         url,
         method,
         headers,
@@ -139,7 +139,7 @@ class ApiService {
         await this.setCache(cacheRequest, data, headers)
 
       if (withResponseHeaders)
-        return { data, headers }
+        return { data, headers: responseHeaders }
 
       return data
     }

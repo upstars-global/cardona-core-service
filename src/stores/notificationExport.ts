@@ -74,6 +74,7 @@ export const useNotificationExportStore = defineStore('notification-export', {
         data: { project: store.getters.selectedProject?.alias, reportId },
       }, {
         responseType: 'blob',
+        withResponseHeaders: true,
       })
 
       const disposition = response.headers['content-disposition']
