@@ -1,44 +1,15 @@
 import { defineStore } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
-import ApiService from '../services/api'
 import type {
   IDownloadListReportNotificationItem,
   INotificationReportItem,
+  WSChanelPayload,
 } from '../@model/notificationExport'
+import ApiService from '../services/api'
 import {
   NotificationStatuses,
 } from '../@model/notificationExport'
 import store from '@/store'
-
-const mock = [
-  {
-    reportId: 100,
-    entityType: 'ACTIONS_BALANCES',
-    fileUid: '691468c11fbdc35990054691',
-    format: 'xlsx',
-    ttl: '2025-11-12 13:57:05',
-    status: 'done',
-    message: null,
-  },
-  {
-    reportId: 101,
-    entityType: 'ACTIONS_BALANCES',
-    fileUid: '691468c11fbdc35990054694',
-    format: 'xlsx',
-    ttl: '2025-11-12 13:59:08',
-    status: NotificationStatuses.Waiting,
-    message: 'with long description text with description text with support description text',
-  },
-  {
-    reportId: 102,
-    entityType: 'ACTIONS_BALANCES',
-    fileUid: '691469ebc5f2c506600c9cc1',
-    format: 'xlsx',
-    ttl: '2025-11-12 14:02:36',
-    status: NotificationStatuses.Error,
-    message: null,
-  },
-]
 
 const notificationList = useLocalStorage<INotificationReportItem[]>('notifications', [])
 export const useNotificationExportStore = defineStore('notification-export', {
@@ -48,7 +19,7 @@ export const useNotificationExportStore = defineStore('notification-export', {
   }),
   getters: {
     getDownloadList: state => state.downloadList,
-    existingNotifications: () => notificationList.value.length,
+    existingNotifications: () => notificationList.value.filter(item => item?.status === NotificationStatuses.Done).isNotEmpty,
     getLastNotification: () => notificationList.value[notificationList.value.length - 1],
   },
   actions: {
@@ -58,7 +29,16 @@ export const useNotificationExportStore = defineStore('notification-export', {
     resetNotifications() {
       notificationList.value = []
     },
-    async createWSData(data: INotificationReportItem) {
+    updateNotification(notification: INotificationReportItem) {
+      notificationList.value.splice(notificationList.value.findIndex(item => item.reportId === notification.reportId), 1, notification)
+    },
+    async createWSData({ data }: WSChanelPayload) {
+      const existNotification = notificationList.value.find(item => item.reportId === data.reportId)
+      if (existNotification) {
+        this.updateNotification(data)
+
+        return
+      }
       this.addNotification(data)
     },
     async setWSData(data: INotificationReportItem) {
@@ -94,9 +74,8 @@ export const useNotificationExportStore = defineStore('notification-export', {
       pageNumber: number
       perPage: number
     } }) {
-      let data = []
       try {
-        data = await ApiService.request({
+        const { data } = await ApiService.request({
           type: 'App.V2.Report.Download.List',
           pagination: payload.pagination,
           filter: { project: store.getters.selectedProject?.alias },
@@ -105,13 +84,11 @@ export const useNotificationExportStore = defineStore('notification-export', {
         }) || []
 
         this.canLoadDownLoadList = data.length === payload.pagination.perPage
-      }
-      catch {
-        data = { data: mock }
-      }
-      this.downloadList = [...this.downloadList, ...data.data]
+        this.downloadList = [...this.downloadList, ...data]
 
-      return this.downloadList
+        return this.downloadList
+      }
+      catch {}
     },
   },
 })

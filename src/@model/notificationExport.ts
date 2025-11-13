@@ -11,10 +11,10 @@ import { VColors } from './vuetify'
 // }
 
 export enum NotificationStatuses {
-  Started = 'started',
-  Loading = 'loading',
-  Done = 'done',
-  Error = 'error',
+  Started = 'Started',
+  Loading = 'Loading',
+  Done = 'Done',
+  Error = 'Error',
 }
 
 const notificationStatusIcons: Record<NotificationStatuses, IconsList> = {
@@ -22,6 +22,10 @@ const notificationStatusIcons: Record<NotificationStatuses, IconsList> = {
   [NotificationStatuses.Loading]: IconsList.RefreshCwIcon,
   [NotificationStatuses.Done]: IconsList.CheckIcon,
   [NotificationStatuses.Error]: IconsList.ExclamationMark,
+  [NotificationStatuses.Started.toLowerCase()]: IconsList.ArrowRight,
+  [NotificationStatuses.Loading.toLowerCase()]: IconsList.RefreshCwIcon,
+  [NotificationStatuses.Done.toLowerCase()]: IconsList.CheckIcon,
+  [NotificationStatuses.Error.toLowerCase()]: IconsList.ExclamationMark,
 }
 
 const notificationStatusColor: Record<NotificationStatuses, VColors> = {
@@ -29,6 +33,10 @@ const notificationStatusColor: Record<NotificationStatuses, VColors> = {
   [NotificationStatuses.Loading]: VColors.Info,
   [NotificationStatuses.Done]: VColors.Success,
   [NotificationStatuses.Error]: VColors.Error,
+  [NotificationStatuses.Started.toLowerCase()]:VColors.Secondary,
+  [NotificationStatuses.Loading.toLowerCase()]:VColors.Info,
+  [NotificationStatuses.Done.toLowerCase()]:VColors.Success,
+  [NotificationStatuses.Error.toLowerCase()]:VColors.Error,
 }
 
 export const notificationStatesLabel: Record<NotificationStatuses, TranslateResult | string> = {
@@ -36,6 +44,10 @@ export const notificationStatesLabel: Record<NotificationStatuses, TranslateResu
   [NotificationStatuses.Loading]: i18n.t(`notification.${NotificationStatuses.Loading}`),
   [NotificationStatuses.Done]: '',
   [NotificationStatuses.Error]: '',
+  [NotificationStatuses.Started.toLowerCase()]:i18n.t(`notification.${NotificationStatuses.Started}`),
+  [NotificationStatuses.Loading.toLowerCase()]:i18n.t(`notification.${NotificationStatuses.Loading}`),
+  [NotificationStatuses.Done.toLowerCase()]: '',
+  [NotificationStatuses.Error.toLowerCase()]: '',
 }
 
 export const getNotificationIcon = (status: NotificationStatuses) => notificationStatusIcons[status]
@@ -57,6 +69,13 @@ interface ReportEmitter {
   username: string
 }
 
+export interface WSChanelPayload {
+  data: INotificationReportItem
+  type: string
+  project: string
+  emitter: ReportEmitter
+}
+
 export interface INotificationReportItem {
   reportId: string
   entityType: string
@@ -68,3 +87,5 @@ export interface INotificationReportItem {
 export interface INotificationEmitEvent {
   (event: 'download-report', payload: number): void
 }
+
+export const canDownloadFile = (item: IDownloadListReportNotificationItem) => item.status === NotificationStatuses.Done || item.status === NotificationStatuses.Done?.toLowerCase()

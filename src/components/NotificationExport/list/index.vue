@@ -2,11 +2,10 @@
 import { computed, defineEmits, onBeforeMount, ref, useTemplateRef } from 'vue'
 import { useInfiniteScroll } from '@vueuse/core'
 import { useNotificationExportStore } from '../../../stores/notificationExport'
-import { NotificationStatuses } from '../../../@model/notificationExport'
 import type {
-  IDownloadListReportNotificationItem,
   INotificationEmitEvent,
 } from '../../../@model/notificationExport'
+import { canDownloadFile } from '../../../@model/notificationExport'
 import { VColors, VSizes } from '../../../@model/vuetify'
 import { useLoaderStore } from '../../../stores/loader'
 import NotificationExportListItem from './ListItem.vue'
@@ -26,12 +25,11 @@ const fetchList = async (pageNumber: number) => {
   await notificationExportStore.fetchEntityList({
     pagination: {
       pageNumber,
-      perPage: 5,
+      perPage: 10,
     },
   })
 }
 
-const canDownload = (item: IDownloadListReportNotificationItem) => item.status === NotificationStatuses.Done
 const notificationListWrapperRef = useTemplateRef<HTMLElement>('notificationListWrapperRef')
 
 const isLoading = computed(() => loaderStore.isLoadingEndpoint('/report/download/list'))
@@ -48,13 +46,12 @@ useInfiniteScroll(
   },
   {
     distance: 10,
-
-    // canLoadMore: () => notificationExportStore.canLoadDownLoadList,
   },
 )
 
 onBeforeMount(async () => {
-  pageNumber.value = 1
+  if (pageNumber.value !== 1)
+    return
   await fetchList(pageNumber.value)
 })
 
@@ -64,7 +61,6 @@ const listNotEmpty = computed(() => notificationExportStore.getDownloadList.isNo
 
 <template>
   <div>
-    {{ notificationExportStore.canLoadDownLoadList }}
     <div
       v-if="listNotEmpty"
       ref="notificationListWrapperRef"
@@ -74,7 +70,7 @@ const listNotEmpty = computed(() => notificationExportStore.getDownloadList.isNo
         v-for="(item, index) in notificationExportStore.getDownloadList"
         :key="item.fileUid"
         :data="item"
-        :can-download="canDownload(item)"
+        :can-download="canDownloadFile(item)"
         :class="{
           'mb-4': isNotLastItem(index),
         }"

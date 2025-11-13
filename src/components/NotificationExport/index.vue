@@ -21,10 +21,6 @@ const { showToast } = useNotificationToast()
 const notificationMenuState = ref(false)
 const notificationExportStore = useNotificationExportStore()
 
-// enum Channel {
-//   Payouts = 'payouts-feed',
-//   Nitifications = 'notification-push',
-// }
 const existNewNotification = computed(() => notificationExportStore.existingNotifications && !notificationMenuState.value)
 
 // const chanelStores = {
@@ -32,20 +28,12 @@ const existNewNotification = computed(() => notificationExportStore.existingNoti
 // }
 
 onBeforeMount(async () => {
-  // await WSService.connect(Channel, { stores: chanelStores })
   WSService.subscribe(Channel.Nitifications)
 })
 
 onBeforeUnmount(async () => {
   WSService.unsubscribe(Channel.Nitifications)
 })
-
-const mockWSData = { channel: 'notification-push', data: { type: 'report_download', data: { reportId: 101, entityType: 'ACTIONS_BALANCES', status: 'Done' }, project: 'thor_develop', emitter: { id: 5869, username: 'Krazis' } } }
-
-const mockSetWsData = () => {
-  mockWSData.data.data.reportId = Math.floor(Math.random() * 100000)
-  WSService.parseData(mockWSData)
-}
 
 const callToast = ({
   entityName, reportId,
@@ -57,7 +45,6 @@ const callToast = ({
 }
 
 const setMenuState = (state: boolean) => {
-  console.log(state)
   notificationMenuState.value = state
 }
 
@@ -69,22 +56,17 @@ watch(() => notificationExportStore.getLastNotification, newVal => {
   if (!newVal)
     return
   callToast({
-    entityName: newVal?.data?.entityType,
-    reportId: newVal?.data?.reportId,
+    entityName: newVal?.entityType,
+    reportId: newVal?.reportId,
   })
 }, { deep: true })
 </script>
 
 <template>
   <div>
-    <VBtn
-      class="mx-4"
-      @click="mockSetWsData"
-    >
-      Set ws data
-    </VBtn>
     <VMenu
       v-model="notificationMenuState"
+      eager
       persistent
       no-click-animation
       :model-value="notificationMenuState"
