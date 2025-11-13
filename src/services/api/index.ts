@@ -126,11 +126,11 @@ class ApiService {
       if (withSuccessToast) {
         const action = getActionName(payload.type)
 
-        const toastTitle = successToastTitle || action && i18n.te(`entities.${entity}`)
+        const toastTitle = action && i18n.te(`entities.${entity}`)
           ? action
           : url
 
-        toastSuccess(toastTitle, {
+        toastSuccess(successToastTitle || toastTitle, {
           defaultDescription: successToastDescription,
           entityName: i18n.t(`entities.${entityName}`),
         })
