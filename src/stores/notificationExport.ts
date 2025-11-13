@@ -1,7 +1,13 @@
 import { defineStore } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
 import ApiService from '../services/api'
-import type { IDownloadListReportNotificationItem, INotificationReportItem } from '../@model/notificationExport'
+import type {
+  IDownloadListReportNotificationItem,
+  INotificationReportItem,
+} from '../@model/notificationExport'
+import {
+  NotificationStatuses,
+} from '../@model/notificationExport'
 import store from '@/store'
 
 const mock = [
@@ -20,7 +26,7 @@ const mock = [
     fileUid: '691468c11fbdc35990054694',
     format: 'xlsx',
     ttl: '2025-11-12 13:59:08',
-    status: 'done',
+    status: NotificationStatuses.Waiting,
     message: 'with long description text with description text with support description text',
   },
   {
@@ -29,7 +35,7 @@ const mock = [
     fileUid: '691469ebc5f2c506600c9cc1',
     format: 'xlsx',
     ttl: '2025-11-12 14:02:36',
-    status: 'done',
+    status: NotificationStatuses.Error,
     message: null,
   },
 ]

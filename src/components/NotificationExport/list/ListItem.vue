@@ -1,6 +1,14 @@
 <script setup lang="ts">
-import { defineEmits } from 'vue'
-import type { IDownloadListReportNotificationItem, INotificationEmitEvent } from '../../../@model/notificationExport'
+import { computed, defineEmits } from 'vue'
+import type {
+  IDownloadListReportNotificationItem,
+  INotificationEmitEvent,
+} from '../../../@model/notificationExport'
+import {
+  NotificationStatuses,
+
+  getNotificationStatus,
+} from '../../../@model/notificationExport'
 import { IconsList } from '../../../@model/enums/icons'
 import { VSizes } from '../../../@model/vuetify'
 import NotificationExportIconStatus from './IconStatus.vue'
@@ -9,7 +17,7 @@ defineOptions({
   name: 'NotificationExportListItem',
 })
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 defineEmits<INotificationEmitEvent>()
 
@@ -17,6 +25,9 @@ interface Props {
   data: IDownloadListReportNotificationItem
   canDownload?: boolean
 }
+
+const showDate = (status: NotificationStatuses) => [NotificationStatuses.Done, NotificationStatuses.Error].includes(status)
+const labelStatus = computed(() => getNotificationStatus(props.data.status))
 </script>
 
 <template>
@@ -25,11 +36,16 @@ interface Props {
       <NotificationExportIconStatus :status="data.status" />
     </div>
     <div class="list-item-content ml-2">
-      <div class="list-item-title text-body-1 font-weight-medium">
-        {{ data.entityType }}
+      <div class="list-item-title">
+        <span class="text-body-1 font-weight-medium">
+          {{ data.entityType }}
+        </span>
+        <span class="list-item-title-description text-color-mute font-weight-medium">
+          {{ data.message }}
+        </span>
       </div>
       <div class="text-body-2 text-color-placeholder-disabled">
-        {{ data.ttl }}
+        <span v-if="labelStatus">{{ labelStatus }}</span><span v-if="showDate(data.status)">{{ data.ttl }}</span>
       </div>
     </div>
     <div

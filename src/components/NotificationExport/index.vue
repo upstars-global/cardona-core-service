@@ -140,7 +140,7 @@ watch(() => notificationExportStore.getLastNotification, newVal => {
             />
           </div>
         </VCardTitle>
-        <VCardText class="pa-0">
+        <VCardText class="pa-0 position-relative">
           <hr class="ma-0">
           <NotificationExportList @download-report="notificationExportStore.downloadReport" />
         </VCardText>

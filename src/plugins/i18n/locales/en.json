@@ -965,6 +965,8 @@
   },
   "notification": {
     "_": "Export notifications",
+    "waiting":  "Started",
+    "loading": "Processing...",
     "toast": {
       "startMessage": "New export file",
       "endMessage": "has been generated."

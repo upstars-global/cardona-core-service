@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineEmits, onBeforeMount, ref, useTemplateRef } from 'vue'
+import { computed, defineEmits, onBeforeMount, ref, useTemplateRef } from 'vue'
 import { useInfiniteScroll } from '@vueuse/core'
 import { delay } from 'lodash'
 import { useNotificationExportStore } from '../../../stores/notificationExport'
@@ -8,6 +8,7 @@ import type {
   IDownloadListReportNotificationItem,
   INotificationEmitEvent,
 } from '../../../@model/notificationExport'
+import { VColors, VSizes } from '../../../@model/vuetify'
 import NotificationExportListItem from './ListItem.vue'
 import NotificationExportEmptyCard from './EmptyCard.vue'
 
@@ -50,7 +51,7 @@ useInfiniteScroll(
     delay(async () => {
       await fetchList(pageNumber.value)
       isLoading.value = false
-    }, 1000)
+    }, 2000)
   },
   {
     distance: 10,
@@ -63,22 +64,41 @@ onBeforeMount(async () => {
   pageNumber.value = 1
   await fetchList(pageNumber.value)
 })
+
+const isNotLastItem = (index: number) => index !== notificationExportStore.getDownloadList.length - 1
+const listNotEmpty = computed(() => notificationExportStore.getDownloadList.isNotEmpty)
 </script>
 
 <template>
   <div>
     <div
-      v-if="notificationExportStore.getDownloadList.isNotEmpty"
+      v-if="listNotEmpty"
       ref="notificationListWrapperRef"
       class="list-wrapper pa-4"
     >
       <NotificationExportListItem
-        v-for="item in notificationExportStore.getDownloadList"
+        v-for="(item, index) in notificationExportStore.getDownloadList"
         :key="item.fileUid"
         :data="item"
         :can-download="canDownload(item)"
-        class="my-4"
+        :class="{
+          'mb-4': isNotLastItem(index),
+        }"
         @download-report="$emit('download-report', $event)"
+      />
+      <div
+        v-if="isLoading"
+        class="d-flex justify-center align-center pt-4"
+      >
+        <VProgressCircular
+          indeterminate
+          :size="VSizes.Small"
+          :color="VColors.Primary"
+        />
+      </div>
+      <div
+        v-else
+        class="gradient-bottom"
       />
     </div>
     <div v-else>
@@ -91,5 +111,13 @@ onBeforeMount(async () => {
 .list-wrapper {
   max-height: 24.25rem;
   overflow: auto;
+}
+.gradient-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(to top, #fff 0%, transparent 100%);
 }
 </style>

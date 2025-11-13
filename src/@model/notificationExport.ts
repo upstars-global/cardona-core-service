@@ -1,3 +1,5 @@
+import type { TranslateResult } from 'vue-i18n'
+import { i18n } from '../plugins/i18n'
 import { IconsList } from './enums/icons'
 import { VColors } from './vuetify'
 
@@ -29,8 +31,16 @@ const notificationStatusColor: Record<NotificationStatuses, VColors> = {
   [NotificationStatuses.Error]: VColors.Error,
 }
 
+export const notificationStatesLabel: Record<NotificationStatuses, TranslateResult | string> = {
+  [NotificationStatuses.Waiting]: i18n.t(`notification.${NotificationStatuses.Waiting}`),
+  [NotificationStatuses.Loading]: i18n.t(`notification.${NotificationStatuses.Loading}`),
+  [NotificationStatuses.Done]: '',
+  [NotificationStatuses.Error]: '',
+}
+
 export const getNotificationIcon = (status: NotificationStatuses) => notificationStatusIcons[status]
 export const getNotificationColor = (status: NotificationStatuses) => notificationStatusColor[status]
+export const getNotificationStatus = (status: NotificationStatuses) => notificationStatesLabel[status] || ''
 
 export interface IDownloadListReportNotificationItem {
   reportId: number
@@ -38,7 +48,7 @@ export interface IDownloadListReportNotificationItem {
   fileUid: string
   format: string
   ttl: string
-  status: string
+  status: NotificationStatuses
   message: string
 }
 
