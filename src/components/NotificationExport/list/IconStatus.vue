@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { NotificationStatuses } from '../../../@model/notificationExport'
+import type { ReportFileStatus } from '../../../@model/notificationExport'
 import { getNotificationColor, getNotificationIcon } from '../../../@model/notificationExport'
 import NotificationExportIconFile from './IconFile.vue'
 
@@ -9,7 +9,7 @@ defineOptions({
 })
 
 const props = defineProps<{
-  status: NotificationStatuses
+  status: ReportFileStatus
 }>()
 
 const color = computed(() => getNotificationColor(props.status))

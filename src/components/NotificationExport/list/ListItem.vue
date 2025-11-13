@@ -5,9 +5,8 @@ import type {
   INotificationEmitEvent,
 } from '../../../@model/notificationExport'
 import {
-  NotificationStatuses,
-
   getNotificationStatus,
+  showFileDate,
 } from '../../../@model/notificationExport'
 import { IconsList } from '../../../@model/enums/icons'
 import { VSizes } from '../../../@model/vuetify'
@@ -26,7 +25,6 @@ interface Props {
   canDownload?: boolean
 }
 
-const showDate = (status: NotificationStatuses) => [NotificationStatuses.Done, NotificationStatuses.Error].includes(status)
 const labelStatus = computed(() => getNotificationStatus(props.data.status))
 </script>
 
@@ -45,7 +43,7 @@ const labelStatus = computed(() => getNotificationStatus(props.data.status))
         </span>
       </div>
       <div class="text-body-2 text-color-placeholder-disabled">
-        <span v-if="labelStatus">{{ labelStatus }}</span><span v-if="showDate(data.status)">{{ data.ttl }}</span>
+        <span v-if="labelStatus">{{ labelStatus }}</span><span v-if="showFileDate(data.status)">{{ data.ttl }}</span>
       </div>
     </div>
     <div

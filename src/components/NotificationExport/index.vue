@@ -7,10 +7,9 @@ import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import WSService from '../../services/ws'
 import { Location } from '../../@model/enums/tooltipPlacement'
 import { useNotificationExportStore } from '../../stores/notificationExport'
-import { isNotificationWithStatusDone } from '../../@model/notificationExport'
+import { canShowToastNotification } from '../../@model/notificationExport'
 import NotificationExportList from './list/index.vue'
 import { useNotificationToast } from './_composables/useNotificationToast'
-
 import { Channel } from '@/configs/wsConfig'
 
 defineOptions({
@@ -34,7 +33,7 @@ onBeforeUnmount(async () => {
 
 const callToast = ({
   entityName, reportId,
-}: { entityName: string; reportId: string }) => {
+}: { entityName: string; reportId: number }) => {
   showToast({
     entityName,
     downloadHandler: () => notificationExportStore.downloadReport(reportId),
@@ -50,7 +49,7 @@ const onChangeMenuState = (state: boolean) => {
 }
 
 watch(() => notificationExportStore.getLastNotification, newVal => {
-  if (!newVal || !isNotificationWithStatusDone(newVal))
+  if (!newVal || !canShowToastNotification(newVal.status))
     return
   callToast({
     entityName: newVal?.entityType,
