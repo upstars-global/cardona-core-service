@@ -15,6 +15,7 @@ const canAddIsLocalization = (type: ConstructorFieldType) => canShowLocaleParams
 
 export const getBaseConfig = (config: BaseFieldConfig): BaseFieldConfig => {
   const isLocalizationConfigParam = canAddIsLocalization(config.type) ? [getBooleanConfigParam('isLocalization')] : []
+  const validationRulesParam = getBooleanConfigParam('validationRules')
 
   return {
     ...config,
@@ -25,6 +26,7 @@ export const getBaseConfig = (config: BaseFieldConfig): BaseFieldConfig => {
       canAddPlaceholder(config?.type),
     ].filter(Boolean),
     configParams: [
+      validationRulesParam,
       ...config.options?.configParams || [],
       ...isLocalizationConfigParam,
     ].filter(Boolean),
