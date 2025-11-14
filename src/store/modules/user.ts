@@ -46,13 +46,9 @@ export default {
   getters: {
     userInfo: ({ userInfo }) => userInfo,
 
-    // haveAccessToNotificationsReport: ({ userInfo }) => userInfo
-    //   .permissions
-    //   .some(permission => {
-    //     const res= permission._access >= 1 && permission.target.includes('-report')
-    //     res && console.log(permission.target)
-    //     return permission._access >= 1 && permission.target.includes('-report')
-    //   }),
+    haveSomePermissionReport: ({ userInfo }) => userInfo
+      .permissions
+      .some(permission => permission._access >= 1 && permission.target.includes('-report')),
     userProjects: ({ userInfo }) => userInfo.projects,
     userProducts: ({ userInfo }) => userInfo.products,
 
