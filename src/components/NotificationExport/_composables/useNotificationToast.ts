@@ -14,7 +14,10 @@ export const useNotificationToast = () => {
     toast({
       component: NotificationExportToast,
       listeners: {
-        download: () => options.downloadHandler(),
+        download: () => {
+          options.downloadHandler()
+          toast.clear()
+        },
       },
       icon: false,
       props: {
