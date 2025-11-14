@@ -50,8 +50,8 @@ useInfiniteScroll(
 )
 
 onBeforeMount(async () => {
-  if (pageNumber.value !== 1)
-    return
+  pageNumber.value = 1
+  notificationExportStore.resetDownloadList()
   await fetchList(pageNumber.value)
 })
 

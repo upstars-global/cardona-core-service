@@ -25,7 +25,7 @@ const upsert = <ListType>(array: Array<ListType>, predicate: Partial<ListType>, 
 }
 
 const notificationList = useLocalStorage<INotificationReportItem[]>('notifications', [])
-// const mockdata = [{ reportId: 211, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }, { reportId: 212, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }, { reportId: 213, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }, { reportId: 214, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }]
+
 export const useNotificationExportStore = defineStore('notification-export', {
   state: () => ({
     canLoadDownLoadList: true,
@@ -42,6 +42,9 @@ export const useNotificationExportStore = defineStore('notification-export', {
     },
     resetNotifications() {
       notificationList.value = []
+    },
+    resetDownloadList() {
+      this.downloadList = []
     },
     updateDownloadListItem(data: INotificationReportItem) {
       const currentIndex = this.downloadList.findIndex(item => item.reportId === data.reportId)

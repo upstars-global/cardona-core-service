@@ -11,23 +11,11 @@ import { reportIsReady } from '../../@model/notificationExport'
 import NotificationExportList from './list/index.vue'
 import { useNotificationToast } from './_composables/useNotificationToast'
 
+import { Channel } from '@/configs/wsConfig'
+
 defineOptions({
   name: 'NotificationExport',
 })
-
-import { Channel } from '@/configs/wsConfig'
-
-// enum Channel {
-//   Payouts = 'payouts-feed',
-//   Nitifications = 'notification-push',
-// }
-//
-// const mockItem = () => ({
-//   reportId: 212,
-//   entityType: 'ACTIONS_BALANCES',
-//   status: NotificationStatuses.Done,
-//   ttl: '2025-11-14 15:54:27',
-// })
 
 const { t } = useI18n()
 const { showToast } = useNotificationToast()
@@ -73,10 +61,8 @@ watch(() => notificationExportStore.getLastNotification, newVal => {
 
 <template>
   <div>
-<!--    <VBtn @click="notificationExportStore.createWSData({data: mockItem()})">Set ws data</VBtn>-->
     <VMenu
       v-model="notificationMenuState"
-      eager
       persistent
       no-click-animation
       :model-value="notificationMenuState"
