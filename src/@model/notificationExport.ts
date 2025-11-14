@@ -4,43 +4,36 @@ import { IconsList } from './enums/icons'
 import { VColors } from './vuetify'
 
 export enum NotificationStatuses {
-  Waiting = 'Waiting',
-  Loading = 'Loading...',
-  Done = 'Done',
-  Error = 'Error',
-}
-
-export enum ReportFileStatus {
   Started = 'started',
   Loading = 'loading',
   Done = 'done',
   Error = 'error',
 }
 
-const notificationStatusIcons: Record<ReportFileStatus, IconsList> = {
-  [ReportFileStatus.Started]: IconsList.ArrowRight,
-  [ReportFileStatus.Loading]: IconsList.RefreshCwIcon,
-  [ReportFileStatus.Done]: IconsList.CheckIcon,
-  [ReportFileStatus.Error]: IconsList.ExclamationMark,
+const notificationStatusIcons: Record<NotificationStatuses, IconsList> = {
+  [NotificationStatuses.Started]: IconsList.ArrowRight,
+  [NotificationStatuses.Loading]: IconsList.RefreshCwIcon,
+  [NotificationStatuses.Done]: IconsList.CheckIcon,
+  [NotificationStatuses.Error]: IconsList.ExclamationMark,
 }
 
-const notificationStatusColor: Record<ReportFileStatus, VColors> = {
-  [ReportFileStatus.Started]: VColors.Secondary,
-  [ReportFileStatus.Loading]: VColors.Info,
-  [ReportFileStatus.Done]: VColors.Success,
-  [ReportFileStatus.Error]: VColors.Error,
+const notificationStatusColor: Record<NotificationStatuses, VColors> = {
+  [NotificationStatuses.Started]: VColors.Secondary,
+  [NotificationStatuses.Loading]: VColors.Info,
+  [NotificationStatuses.Done]: VColors.Success,
+  [NotificationStatuses.Error]: VColors.Error,
 }
 
-export const notificationStatesLabel: Record<ReportFileStatus, TranslateResult | string> = {
-  [ReportFileStatus.Started]: i18n.t(`notification.${ReportFileStatus.Started}`),
-  [ReportFileStatus.Loading]: i18n.t(`notification.${ReportFileStatus.Loading}`),
-  [ReportFileStatus.Done]: i18n.t(`notification.${ReportFileStatus.Done}`),
-  [ReportFileStatus.Error]: '',
+export const notificationStatesLabel: Record<NotificationStatuses, TranslateResult | string> = {
+  [NotificationStatuses.Started]: i18n.t(`notification.${NotificationStatuses.Started}`),
+  [NotificationStatuses.Loading]: i18n.t(`notification.${NotificationStatuses.Loading}`),
+  [NotificationStatuses.Done]: i18n.t(`notification.${NotificationStatuses.Done}`),
+  [NotificationStatuses.Error]: '',
 }
 
-export const getNotificationIcon = (status: ReportFileStatus) => notificationStatusIcons[status]
-export const getNotificationColor = (status: ReportFileStatus) => notificationStatusColor[status]
-export const getNotificationStatus = (status: ReportFileStatus) => notificationStatesLabel[status] || ''
+export const getNotificationIcon = (status: NotificationStatuses) => notificationStatusIcons[status]
+export const getNotificationColor = (status: NotificationStatuses) => notificationStatusColor[status]
+export const getNotificationStatus = (status: NotificationStatuses) => notificationStatesLabel[status] || ''
 
 export interface IDownloadListReportNotificationItem {
   reportId: number
@@ -48,7 +41,7 @@ export interface IDownloadListReportNotificationItem {
   fileUid: string
   format: string
   ttl: string
-  status: ReportFileStatus
+  status: NotificationStatuses
   message: string
 }
 
@@ -76,6 +69,5 @@ export interface INotificationEmitEvent {
   (event: 'download-report', payload: number): void
 }
 
-export const canDownloadReport = (status: ReportFileStatus) => status === ReportFileStatus.Done
-export const canShowToastNotification = (status: NotificationStatuses) => status === NotificationStatuses.Done
-export const showFileDate = (status: ReportFileStatus) => [ReportFileStatus.Done, ReportFileStatus.Error].includes(status)
+export const reportIsReady = (status: NotificationStatuses) => status === NotificationStatuses.Done
+export const showFileDate = (status: NotificationStatuses) => [NotificationStatuses.Done, NotificationStatuses.Error].includes(status)

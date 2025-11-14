@@ -2,10 +2,10 @@
 import { computed, defineEmits, onBeforeMount, ref, useTemplateRef } from 'vue'
 import { useInfiniteScroll } from '@vueuse/core'
 import { useNotificationExportStore } from '../../../stores/notificationExport'
-import type {
-  INotificationEmitEvent,
-} from '../../../@model/notificationExport';
-import { canDownloadReport } from '../../../@model/notificationExport'
+import type { INotificationEmitEvent } from '../../../@model/notificationExport'
+import {
+  reportIsReady,
+} from '../../../@model/notificationExport'
 import { VColors, VSizes } from '../../../@model/vuetify'
 import { useLoaderStore } from '../../../stores/loader'
 import NotificationExportListItem from './ListItem.vue'
@@ -70,7 +70,7 @@ const listNotEmpty = computed(() => notificationExportStore.getDownloadList.isNo
         v-for="(item, index) in notificationExportStore.getDownloadList"
         :key="item.fileUid"
         :data="item"
-        :can-download="canDownloadReport(item.status)"
+        :can-download="reportIsReady(item.status)"
         :class="{
           'mb-4': isNotLastItem(index),
         }"
