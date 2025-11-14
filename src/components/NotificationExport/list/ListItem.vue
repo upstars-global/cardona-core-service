@@ -26,6 +26,7 @@ interface Props {
 }
 
 const labelStatus = computed(() => getNotificationStatus(props.data.status))
+const formattedDate = computed(() => props.data.ttl.replace(' ', ', '))
 </script>
 
 <template>
@@ -43,7 +44,10 @@ const labelStatus = computed(() => getNotificationStatus(props.data.status))
         </span>
       </div>
       <div class="text-body-2 text-color-placeholder-disabled">
-        <span v-if="labelStatus">{{ labelStatus }}</span><span v-if="showFileDate(data.status)">{{ data.ttl }}</span>
+        <span v-if="labelStatus">{{ labelStatus }}</span><span
+          v-if="showFileDate(data.status)"
+          class="pl-1"
+        >{{ formattedDate }}</span>
       </div>
     </div>
     <div

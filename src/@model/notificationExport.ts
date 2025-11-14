@@ -34,7 +34,7 @@ const notificationStatusColor: Record<ReportFileStatus, VColors> = {
 export const notificationStatesLabel: Record<ReportFileStatus, TranslateResult | string> = {
   [ReportFileStatus.Started]: i18n.t(`notification.${ReportFileStatus.Started}`),
   [ReportFileStatus.Loading]: i18n.t(`notification.${ReportFileStatus.Loading}`),
-  [ReportFileStatus.Done]: '',
+  [ReportFileStatus.Done]: i18n.t(`notification.${ReportFileStatus.Done}`),
   [ReportFileStatus.Error]: '',
 }
 
