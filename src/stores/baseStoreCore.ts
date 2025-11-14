@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { isUndefined } from 'lodash'
+import { useRouter } from 'vue-router'
 import ApiService from '../services/api'
+import { useRedirectToNotFoundPage } from '../helpers/router'
 import type { IRequestListPayload } from '../@model'
 import { ListData } from '../@model'
 import { convertLowerCaseFirstSymbol } from '../helpers'
@@ -105,7 +107,36 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
 
     fetchReport: reportFactory(),
     specificFetchReport: reportFactory(true),
+    async readEntity(payload: {
+      type: string
+      id: string
+      customApiPrefix?: string
+    }): Promise<any> {
+      const projectAlias = store.getters.selectedProject?.alias
+      const router = useRouter()
+      const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 
+      try {
+        const { data } = await ApiService.request({
+          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+            payload.type,
+          )}.Read`,
+          data: {
+            id: payload.id,
+            project: isNeocoreProduct ? projectAlias : '',
+          },
+        })
+
+        return data
+      }
+      catch (error: any) {
+        const wasRedirect = await redirectToNotFoundPage(error.type)
+        if (wasRedirect)
+          return
+
+        return Promise.reject(error)
+      }
+    },
     async fetchTypes(type: string): Promise<any> {
       const projectAlias = store.getters.selectedProject?.alias
 
