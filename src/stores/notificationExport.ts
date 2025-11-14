@@ -29,6 +29,15 @@ export const useNotificationExportStore = defineStore('notification-export', {
     resetNotifications() {
       notificationList.value = []
     },
+    updateDownloadListItem(data: INotificationReportItem) {
+      const currentIndex = this.downloadList.findIndex(item => item.reportId === data.reportId)
+      const currentItem = this.downloadList[currentIndex]
+
+      this.downloadList[currentIndex] = {
+        ...currentItem,
+        ...data,
+      }
+    },
     updateNotification(notification: INotificationReportItem) {
       notificationList.value.splice(notificationList.value.findIndex(item => item.reportId === notification.reportId), 1, notification)
     },
@@ -36,6 +45,11 @@ export const useNotificationExportStore = defineStore('notification-export', {
       const existNotification = notificationList.value.find(item => item.reportId === data.reportId)
       if (existNotification) {
         this.updateNotification(data)
+
+        const existReportInDownloadList = this.downloadList.find(item => item.reportId === data.reportId)
+
+        if (existReportInDownloadList)
+          this.updateDownloadListItem(data)
 
         return
       }

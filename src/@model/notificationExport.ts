@@ -61,6 +61,7 @@ export interface INotificationReportItem {
   reportId: number
   entityType: string
   status: NotificationStatuses
+  ttl: string
   project: string
   emitter: ReportEmitter
 }
