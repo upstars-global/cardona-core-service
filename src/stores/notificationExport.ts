@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
+import _ from 'lodash'
 import type {
   IDownloadListReportNotificationItem,
   INotificationReportItem,
@@ -11,11 +12,24 @@ import {
 } from '../@model/notificationExport'
 import store from '@/store'
 
+const upsert = <ListType>(array: Array<ListType>, predicate: Partial<ListType>, newItem: ListType) => {
+  const foundItem = _.find(array, predicate)
+  if (foundItem) {
+    const foundIndex = _.indexOf(array, foundItem)
+
+    array.splice(foundIndex, 1, newItem)
+  }
+  else {
+    array.unshift(newItem)
+  }
+}
+
 const notificationList = useLocalStorage<INotificationReportItem[]>('notifications', [])
+const mockdata = [{ reportId: 211, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }, { reportId: 212, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }, { reportId: 213, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }, { reportId: 214, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }]
 export const useNotificationExportStore = defineStore('notification-export', {
   state: () => ({
     canLoadDownLoadList: true,
-    downloadList: [] as IDownloadListReportNotificationItem[],
+    downloadList: mockdata as IDownloadListReportNotificationItem[],
   }),
   getters: {
     getDownloadList: state => state.downloadList,
@@ -42,17 +56,10 @@ export const useNotificationExportStore = defineStore('notification-export', {
       notificationList.value.splice(notificationList.value.findIndex(item => item.reportId === notification.reportId), 1, notification)
     },
     async createWSData({ data }: WSChanelPayload) {
-      const existNotification = notificationList.value.find(item => item.reportId === data.reportId)
-      if (existNotification) {
-        this.updateNotification(data)
+      upsert(notificationList.value, { reportId: data.reportId }, data)
 
-        const existReportInDownloadList = this.downloadList.find(item => item.reportId === data.reportId)
+      upsert(this.downloadList, { reportId: data.reportId }, data)
 
-        if (existReportInDownloadList)
-          this.updateDownloadListItem(data)
-
-        return
-      }
       this.addNotification(data)
     },
     async setWSData(data: INotificationReportItem) {
