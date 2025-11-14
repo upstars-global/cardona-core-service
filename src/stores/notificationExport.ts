@@ -25,11 +25,11 @@ const upsert = <ListType>(array: Array<ListType>, predicate: Partial<ListType>, 
 }
 
 const notificationList = useLocalStorage<INotificationReportItem[]>('notifications', [])
-const mockdata = [{ reportId: 211, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }, { reportId: 212, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }, { reportId: 213, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }, { reportId: 214, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }]
+// const mockdata = [{ reportId: 211, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }, { reportId: 212, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }, { reportId: 213, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }, { reportId: 214, entityType: 'ACTIONS_BALANCES', status: 'started', ttl: '2025-11-14 16:47:03' }]
 export const useNotificationExportStore = defineStore('notification-export', {
   state: () => ({
     canLoadDownLoadList: true,
-    downloadList: mockdata as IDownloadListReportNotificationItem[],
+    downloadList: [] as IDownloadListReportNotificationItem[],
   }),
   getters: {
     getDownloadList: state => state.downloadList,
