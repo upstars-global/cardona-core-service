@@ -44,8 +44,8 @@ const setMenuState = (state: boolean) => {
   notificationMenuState.value = state
 }
 
-const onChangeMenuState = (state: boolean) => {
-  state && notificationExportStore.resetNotifications()
+const onChangeMenuState = () => {
+  notificationExportStore.resetNotifications()
 }
 
 watch(() => notificationExportStore.getLastNotification, newVal => {
