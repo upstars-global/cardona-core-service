@@ -37,33 +37,16 @@ export const useNotificationExportStore = defineStore('notification-export', {
     getLastNotification: () => notificationList.value[notificationList.value.length - 1],
   },
   actions: {
-    addNotification(notification: INotificationReportItem) {
-      notificationList.value = [...notificationList.value, notification]
-    },
     resetNotifications() {
       notificationList.value = []
     },
     resetDownloadList() {
       this.downloadList = []
     },
-    updateDownloadListItem(data: INotificationReportItem) {
-      const currentIndex = this.downloadList.findIndex(item => item.reportId === data.reportId)
-      const currentItem = this.downloadList[currentIndex]
-
-      this.downloadList[currentIndex] = {
-        ...currentItem,
-        ...data,
-      }
-    },
-    updateNotification(notification: INotificationReportItem) {
-      notificationList.value.splice(notificationList.value.findIndex(item => item.reportId === notification.reportId), 1, notification)
-    },
     async createWSData({ data }: WSChanelPayload) {
       upsert(notificationList.value, { reportId: data.reportId }, data)
 
       upsert(this.downloadList, { reportId: data.reportId }, data)
-
-      this.addNotification(data)
     },
     async setWSData(data: INotificationReportItem) {
       console.log('Update notification: ', data)
