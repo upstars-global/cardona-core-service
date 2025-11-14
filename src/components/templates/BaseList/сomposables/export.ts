@@ -1,6 +1,6 @@
 import { ExportFormat } from '../../../../@model/templates/baseList'
 
-export const downloadReport = (report: string, entityName: string, format: ExportFormat) => {
+export const downloadReport = (report: string | Blob, entityName: string, format: ExportFormat) => {
   const fakeLink: HTMLElement = document.createElement('a')
   const downloadUrl = window.URL.createObjectURL(new Blob([report]))
 

@@ -9,6 +9,7 @@ export enum TyperRequest {
   Updated = 'updated',
   Created = 'created',
   Deleted = 'deleted',
+  ReportDownload = 'report_download',
 }
 
 class WSService {
@@ -161,6 +162,8 @@ class WSService {
       await actualStore.setWSData(data)
     else if (type === TyperRequest.Deleted)
       await actualStore.deleteWSData(data)
+    else if (type === TyperRequest.ReportDownload)
+      await actualStore.createWSData(data)
   }
 }
 

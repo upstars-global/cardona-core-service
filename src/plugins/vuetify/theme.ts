@@ -63,6 +63,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'border-opacity': 0.16,
       'high-emphasis-opacity': 0.9,
       'medium-emphasis-opacity': 0.62,
+      'opacity-grey': 0.24,
       'switch-opacity': 0.2,
       'switch-disabled-track-opacity': 0.3,
       'switch-disabled-thumb-opacity': 0.4,

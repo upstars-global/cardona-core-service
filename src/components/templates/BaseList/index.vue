@@ -382,6 +382,7 @@ watch(() => searchQuery.value, () => {
 })
 
 // Export
+const { isSpecificExport } = props.config
 
 const setRequestFilters = (): PayloadFilters => {
   if (!ListFilterModel)
@@ -420,8 +421,9 @@ const onExportFormatSelected = async (format: ExportFormat) => {
 
   const filter = setRequestFilters()
   const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
+  const action = isSpecificExport ? baseStoreCore.specificFetchReport : baseStoreCore.fetchReport
 
-  const report: string = await baseStoreCore.fetchReport({
+  const report: string | Blob = await action({
     type: entityName,
     data: {
       filter: {
@@ -434,7 +436,8 @@ const onExportFormatSelected = async (format: ExportFormat) => {
     customApiPrefix: props.config?.customApiPrefix,
   })
 
-  downloadReport(report, entityName, format)
+  if (!isSpecificExport)
+    downloadReport(report, entityName, format)
 }
 
 // Projects filters

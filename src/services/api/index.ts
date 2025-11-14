@@ -58,6 +58,7 @@ class ApiService {
       withErrorDescriptionToast = false,
       withErrorNotFound = true,
       withSuccessToast = false,
+      successToastTitle = undefined,
       successToastDescription = undefined,
       withLoader = true,
       formRef = null,
@@ -66,6 +67,7 @@ class ApiService {
       rejectError = true,
       loaderSlug = '',
       responseType = 'json',
+      withResponseHeaders = false,
       cache = payload.type.includes(CACHE_PHRASE),
     } = config
 
@@ -91,7 +93,6 @@ class ApiService {
         await cacheStore.delete(cacheRequest)
       }
     }
-
     try {
       if (withLoader)
         loaderStore.setLoaderOn(getLoaderSlug(url, loaderSlug))
@@ -111,7 +112,7 @@ class ApiService {
             requestId: uuidv4(),
           })
 
-      const { data }: any = await axiosInstance({
+      const { data, headers: responseHeaders }: any = await axiosInstance({
         url,
         method,
         headers,
@@ -129,7 +130,7 @@ class ApiService {
           ? action
           : url
 
-        toastSuccess(toastTitle, {
+        toastSuccess(successToastTitle || toastTitle, {
           defaultDescription: successToastDescription,
           entityName: i18n.t(`entities.${entityName}`),
         })
@@ -137,6 +138,9 @@ class ApiService {
 
       if (cache)
         await this.setCache(cacheRequest, data, headers)
+
+      if (withResponseHeaders)
+        return { data, headers: responseHeaders }
 
       return data
     }
