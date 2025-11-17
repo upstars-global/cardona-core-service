@@ -553,9 +553,10 @@ export class DemoSideBar {
           label: i18n.t('common.tags', { count: data?.tags?.length }),
         }),
         email: new ViewInfo({
-          type: ViewType.Copy,
+          type: ViewType.Text,
           value: data?.email,
           label: i18n.t('common.email'),
+          withCopy: true,
         }),
         newDate: new ViewInfo({
           type: ViewType.DateWithSeconds,
