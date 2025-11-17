@@ -8,10 +8,9 @@ import WSService from '../../services/ws'
 import { Location } from '../../@model/enums/tooltipPlacement'
 import { useNotificationExportStore } from '../../stores/notificationExport'
 import { reportIsReady } from '../../@model/notificationExport'
+import { Channel } from '../../configs/wsConfig'
 import NotificationExportList from './list/index.vue'
 import { useNotificationToast } from './_composables/useNotificationToast'
-
-import { Channel } from '@/configs/wsConfig'
 
 defineOptions({
   name: 'NotificationExport',
