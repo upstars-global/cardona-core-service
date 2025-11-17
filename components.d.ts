@@ -53,7 +53,6 @@ declare module 'vue' {
     ConfirmModal: typeof import('./src/components/BaseModal/ConfirmModal.vue')['default']
     CopyField: typeof import('./src/components/templates/_components/CopyField.vue')['default']
     CopyShortField: typeof import('./src/components/templates/BaseList/_components/fields/CopyShortField.vue')['default']
-    CopyView: typeof import('./src/components/templates/ViewGenerator/_components/CopyView.vue')['default']
     CountriesSelect: typeof import('./src/components/CountriesSelect.vue')['default']
     CTable: typeof import('./src/components/CTable/index.vue')['default']
     CurrencyField: typeof import('./src/components/templates/FieldGenerator/_components/CurrencyField.vue')['default']
