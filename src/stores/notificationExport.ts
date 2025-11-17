@@ -44,15 +44,9 @@ export const useNotificationExportStore = defineStore('notification-export', {
       this.downloadList = []
     },
     async createWSData({ data }: WSChanelPayload) {
-      upsert(notificationList.value, { reportId: data.reportId }, data)
+      upsert<INotificationReportItem>(notificationList.value, { reportId: data.reportId }, data)
 
-      upsert(this.downloadList, { reportId: data.reportId }, data)
-    },
-    async setWSData(data: INotificationReportItem) {
-      console.log('Update notification: ', data)
-    },
-    async deleteWSData(data: INotificationReportItem) {
-      console.log('Delete notification: ', data)
+      upsert<IDownloadListReportNotificationItem | INotificationReportItem>(this.downloadList, { reportId: data.reportId }, data)
     },
     async downloadReport(reportId: number) {
       const response = await ApiService.request({
