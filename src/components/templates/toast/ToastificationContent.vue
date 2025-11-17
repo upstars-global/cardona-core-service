@@ -13,7 +13,10 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="toastification">
+  <div
+    class="toastification"
+    :data-test-id="`${variant}-toast`"
+  >
     <div
       class="d-flex align-items-start gap-2"
       :class="`text-${variant}`"
@@ -32,6 +35,7 @@ defineProps<Props>()
           <h4
             v-if="title"
             class="text-body-1 toastification-title font-weight-semi-bold"
+            data-test-id="toast-title"
             v-text="title"
           />
           <small
