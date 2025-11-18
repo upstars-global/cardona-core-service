@@ -107,7 +107,7 @@ watch(() => notificationExportStore.getLastNotification, newVal => {
       <VCard class="notification-list">
         <VCardTitle class="pa-4 d-flex justify-space-between align-center">
           <div class="text-h5 d-flex align-center">
-            {{ $t('notification.list._') }}
+            {{ $t('notification._') }}
           </div>
           <div>
             <VIcon
