@@ -5,7 +5,9 @@ defineOptions({ name: 'NotificationExportToast' })
 
 defineProps<Props>()
 
-defineEmits(['download'])
+defineEmits<{
+  (event: 'download'): void
+}>()
 interface Props {
   variant: string
   icon?: string

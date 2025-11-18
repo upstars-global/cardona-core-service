@@ -1,4 +1,4 @@
 // channel
 export enum Channel {
-  Nitifications = 'notification-push',
+  Notifications = 'notification-push',
 }

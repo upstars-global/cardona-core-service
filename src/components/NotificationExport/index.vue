@@ -24,11 +24,11 @@ const notificationExportStore = useNotificationExportStore()
 const existNewNotification = computed(() => notificationExportStore.existingNotifications && !notificationMenuState.value)
 
 onBeforeMount(async () => {
-  WSService.subscribe(Channel.Nitifications)
+  WSService.subscribe(Channel.Notifications)
 })
 
 onBeforeUnmount(async () => {
-  WSService.unsubscribe(Channel.Nitifications)
+  WSService.unsubscribe(Channel.Notifications)
 })
 
 const callToast = ({
