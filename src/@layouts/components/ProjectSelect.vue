@@ -2,6 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useFavicon } from '@vueuse/core'
+import type { ProjectInfo } from '../../@model/project'
 import { IconsList } from '../../@model/enums/icons'
 import { useChangeProject } from '../../composables/useChangeProject'
 
@@ -14,7 +15,8 @@ const selectProject = computed({
   set: val => changeProject(val),
 })
 
-const projects = computed(() => store.getters.userInfo.projects)
+const selectedProduct = computed(() => store.getters.selectedProduct)
+const projects = computed(() => store.getters.userInfo.projects.filter((item: ProjectInfo) => item.productId === selectedProduct.value?.id))
 const cantSelect = computed(() => projects.value.length < 2)
 
 onMounted(() => {
