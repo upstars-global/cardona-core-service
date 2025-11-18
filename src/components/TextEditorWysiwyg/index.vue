@@ -479,6 +479,12 @@ const onSaveChanges = () => { globalEditor.value.codeView.toggle(); isCodeViewAc
 
 <style lang="scss" scoped>
 .block-text-edite {
+  :deep(.fr-fullscreen),
+  :deep(.CodeMirror-linenumbers) {
+    background-color: rgb(var(--v-theme-surface));
+    z-index: 9999;
+  }
+
   .editor-wrap {
     position: relative;
     :deep(.fr-counter) { color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)); font-size: 15px; }
