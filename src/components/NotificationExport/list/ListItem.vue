@@ -37,7 +37,7 @@ const formattedDate = computed(() => props.data.ttl.replace(' ', ', '))
     <div class="list-item-content ml-2">
       <div class="list-item-title">
         <span class="text-body-1 font-weight-medium">
-          {{ data.entityType }}
+          {{ $t(`notificationReport.entityType.${data.entityType}`) }}
         </span>
         <span class="list-item-title-description text-color-mute font-weight-medium">
           {{ data.message }}
