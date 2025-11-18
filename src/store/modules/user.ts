@@ -73,6 +73,7 @@ export default {
 
     // @ts-expect-error
     isNeocore: () => productName === productsName.neocore,
+    isMarbella: () => productName === productsName.marbella,
 
     getSpecificProject:
       ({ userInfo }) =>
