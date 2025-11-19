@@ -26,7 +26,13 @@ interface Props {
 }
 
 const labelStatus = computed(() => getNotificationStatus(props.data.status))
-const formattedDate = computed(() => props.data.ttl.replace(' ', ', '))
+
+const formattedDate = computed(() => {
+  const [date, time] = props.data.ttl.split(' ')
+  const [hours, minutes] = time.split(':')
+
+  return `${date}, ${hours}:${minutes}`
+})
 </script>
 
 <template>
