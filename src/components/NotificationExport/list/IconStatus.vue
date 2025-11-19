@@ -17,7 +17,7 @@ const icon = computed(() => getNotificationIcon(props.status))
 </script>
 
 <template>
-  <div class="position-relative icon-file bg-grey-100 pa-2 rounded-circle d-flex justify-center align-center">
+  <div class="position-relative icon-file pa-2 rounded-circle d-flex justify-center align-center">
     <NotificationExportIconFile
       :icon-size="18"
       :wrapper-size="32"
@@ -32,7 +32,7 @@ const icon = computed(() => getNotificationIcon(props.status))
       />
     </div>
   </div>
-</template>
+</template>s
 
 <style lang="scss" scoped>
 .icon-file {
@@ -40,8 +40,7 @@ const icon = computed(() => getNotificationIcon(props.status))
 }
 .icon-status-wrapper {
   width: 18px; height: 18px;
-  bottom: -4px; right: -4px;
-  border: 1px solid white;
-
+  bottom: 2px; right: 4px;
+  border: 1px solid rgb(var(--v-theme-surface));
 }
 </style>

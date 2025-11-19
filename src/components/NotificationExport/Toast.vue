@@ -28,9 +28,9 @@ interface Props {
       <div class="contnet-wrapper">
         <div class="d-flex flex-grow-1 font-weight-medium">
           <div class="d-flex align-center">
-            <div class="icon-file pa-2 bg-grey-100 rounded-circle d-flex align-center justify-center mr-3">
+            <div class="icon-file pa-2 bg-grey-200 rounded-circle d-flex align-center justify-center mr-3">
               <i
-                class="icon-file-body v-icon notranslate v-icon--size-default v-icon--clickable cursor-pointer v-icon notranslate v-icon--size-default v-icon--clickable cursor-pointer "
+                class="icon-file-body v-icon notranslate v-icon--size-default v-icon--clickable cursor-pointer v-icon notranslate v-icon--size-default v-icon--clickable cursor-pointer bg-grey-400"
                 :class="IconsList.FileIcon"
                 role="button"
                 aria-hidden="false"
@@ -80,11 +80,9 @@ interface Props {
 .icon-file {
   width: 2rem;
   height: 2rem;
-  background-color: rgba(var(--v-theme-grey-100), var(--v-opacity-grey));
   &-body {
     width: 1rem;
     height: 1rem;
-    background-color: rgba(var(--v-theme-grey-500), var(--v-opacity-grey));
   }
 }
 </style>

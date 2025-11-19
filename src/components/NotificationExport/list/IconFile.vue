@@ -14,11 +14,11 @@ defineProps<{
 <template>
   <div>
     <div
-      class="position-relative icon-file bg-grey-100 pa-2 rounded-circle d-flex justify-center align-center"
+      class="position-relative icon-file bg-grey-200 pa-2 rounded-circle d-flex justify-center align-center"
       :style="`width: ${wrapperSize}px; height: ${wrapperSize}px;`"
     >
       <VIcon
-        class="icon-file-body"
+        class="icon-file-body bg-grey-400"
         :icon="IconsList.FileIcon"
         :size="iconSize"
       />
@@ -26,13 +26,3 @@ defineProps<{
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.icon-file {
-  background-color: rgba(var(--v-theme-grey-100), var(--v-opacity-grey));
-  &-body {
-    background-color: rgba(var(--v-theme-grey-500), var(--v-opacity-grey));
-
-  }
-}
-</style>
