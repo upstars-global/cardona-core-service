@@ -108,6 +108,6 @@ const listNotEmpty = computed(() => notificationExportStore.getDownloadList.isNo
   left: 0;
   width: 100%;
   height: 20px;
-  background: linear-gradient(to top, #fff 0%, transparent 100%);
+  background: linear-gradient(to top, rgb(var(--v-theme-background)) 0%, transparent 100%);
 }
 </style>
