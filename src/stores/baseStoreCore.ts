@@ -10,6 +10,7 @@ import { productsName } from '../configs/productsName'
 import { ExportFormat } from '../@model/templates/baseList'
 import { ApiTypePrefix, productName } from '@productConfig'
 import store from '@/store'
+import { i18n } from '@/plugins/i18n'
 
 const isSymbolIsDash = (symbol: string): boolean => symbol === '-'
 
@@ -68,7 +69,8 @@ const reportFactory = (isSpecificReport = false) => async (
     },
     {
       withSuccessToast: isSpecificReport,
-      successToastTitle: isSpecificReport ? 'reportLoad' : undefined,
+      successToastTitle: isSpecificReport ? 'reportLoadTitle' : undefined,
+      successToastDescription: isSpecificReport ? i18n.t('toast.success.reportLoadDescription') : undefined,
       responseType:
         payload.data.filter.format === ExportFormat.XLSX ? 'blob' : 'json',
     },

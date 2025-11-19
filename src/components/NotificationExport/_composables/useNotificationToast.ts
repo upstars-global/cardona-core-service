@@ -11,6 +11,7 @@ export const useNotificationToast = () => {
     downloadHandler: () => void
     entityName: TranslateResult
   }) => {
+    const TIMEOUT = 5000
     toast({
       component: NotificationExportToast,
       listeners: {
@@ -28,6 +29,8 @@ export const useNotificationToast = () => {
           endMessage: t('notification.toast.endMessage'),
         },
       },
+    }, {
+      timeout: TIMEOUT,
     })
   }
 
