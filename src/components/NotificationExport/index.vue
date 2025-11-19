@@ -62,12 +62,9 @@ watch(() => notificationExportStore.getLastNotification, newVal => {
   <div>
     <VMenu
       v-model="notificationMenuState"
-      persistent
       no-click-animation
       :model-value="notificationMenuState"
       :close-on-content-click="false"
-      :close-on-back="false"
-      :close-on-backdrop-click="false"
       @update:model-value="onChangeMenuState"
     >
       <template #activator="{ props: menuProps }">
