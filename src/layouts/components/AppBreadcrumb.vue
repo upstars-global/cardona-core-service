@@ -50,7 +50,7 @@ onUnmounted(clock.stopTime)
       >
         <VCol
           cols="9"
-          class="d-flex align-center ml-auto"
+          class="d-flex align-center"
         >
           <VBtn
             size="28"
@@ -99,7 +99,7 @@ onUnmounted(clock.stopTime)
         </VCol>
         <VCol
           cols="2"
-          class="d-flex align-center justify-end text-body-1"
+          class="d-flex align-center justify-end text-body-1 ml-auto"
         >
           <div class="mr-1 text-color-mute">
             <VIcon :icon="IconsList.ClockIcon" />
