@@ -111,18 +111,18 @@ onUnmounted(clock.stopTime)
             UTC
           </div>
         </VCol>
-        <VCol
+        <VDivider
+          v-if="canShowNotificationExport"
+          class="mx-4"
+          vertical
+        />
+        <div
           v-if="canShowNotificationExport"
           cols="1"
           class="d-flex align-center justify-end notification-export-wrapper"
         >
-          <VDivider
-            class="mr-6 py-2"
-            vertical
-          />
-
           <NotificationExport />
-        </VCol>
+        </div>
       </VRow>
     </VCol>
   </VRow>
