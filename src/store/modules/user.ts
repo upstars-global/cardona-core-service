@@ -46,6 +46,9 @@ export default {
   getters: {
     userInfo: ({ userInfo }) => userInfo,
 
+    haveSomePermissionReport: ({ userInfo }) => userInfo
+      .permissions
+      .some(permission => permission._access >= 1 && permission.target.includes('-report')),
     userProjects: ({ userInfo }) => userInfo.projects,
     userProducts: ({ userInfo }) => userInfo.products,
 

@@ -1,6 +1,7 @@
 import { useToast } from 'vue-toastification'
 import ToastificationContent from '../components/templates/toast/ToastificationContent.vue'
 import { IconsList } from '../@model/enums/icons'
+import type { VColors } from '../@model/vuetify'
 import { i18n } from '@/plugins/i18n'
 
 type ToastOptions = Record<string | 'defaultCode' | 'defaultDescription', string | undefined>
@@ -74,7 +75,27 @@ export default function useToastService() {
     })
   }
 
+  const toastBase = (message: string, config: {
+    component: Component
+    variant: VColors
+    icon: IconsList
+    params?: Record<string, unknown>
+  }) => {
+    const { component = ToastificationContent, variant, icon, params = {} } = config
+
+    toast({
+      component,
+      props: {
+        title: message,
+        icon,
+        variant,
+        ...params,
+      },
+    })
+  }
+
   return {
+    toastBase,
     toastSuccess,
     toastError,
     toastErrorMessageString,

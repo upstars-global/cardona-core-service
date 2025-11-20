@@ -766,6 +766,7 @@
     "activate": "Activate",
     "deactivate": "Deactivate",
     "addEmail": "Add email",
+    "download": "Download",
     "addPhone": "Add phone",
     "login": "Sign in",
     "selectEntity": "Select entity",
@@ -961,5 +962,19 @@
     "adminSection": "Admin section",
     "darkMode": "Dark mode",
     "lightMode": "Light mode"
+  },
+  "notification": {
+    "_": "Your exports",
+    "started":  "Started",
+    "loading": "Processing...",
+    "done": "Available untill:",
+    "toast": {
+      "startMessage": "New export file",
+      "endMessage": "has been generated."
+    },
+    "list": {
+      "_": "Your notifications",
+      "empty": "No export files yet. Generate one from any player or report section."
+    }
   }
 }
