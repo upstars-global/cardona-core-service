@@ -1,8 +1,9 @@
 import FroalaEditor from 'froala-editor'
+import { FROALA_API_KEY } from '../../libs/froala'
 
 const baseConfig = {
-  apiKey: 'uXD2lC7D6G4D3H4H4C11dNSWXf1h1MDb1CF1PLPFf1C1EESFKVlA3C11A8E6D2B4C4G2F3C2==',
-  key: 'uXD2lC7D6G4D3H4H4C11dNSWXf1h1MDb1CF1PLPFf1C1EESFKVlA3C11A8E6D2B4C4G2F3C2==',
+  apiKey: FROALA_API_KEY,
+  key: FROALA_API_KEY,
   enter: FroalaEditor.ENTER_BR,
   imageUpload: true,
   pluginsEnabled: [
