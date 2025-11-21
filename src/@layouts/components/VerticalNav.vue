@@ -80,6 +80,7 @@ watch(() => isMinMode.value, () => {
 })
 
 const isNeocore = computed(() => store.getters.isNeocore)
+const isMarbella = computed(() => store.getters.isMarbella)
 const isMenuTypeMain = computed(() => store.getters['appConfigCore/isMenuTypeMain'])
 
 const selectedProjectTitle = computed(() =>
@@ -96,6 +97,8 @@ const actualBackRoute = computed(() => {
 })
 
 const defaultRoute = { path: '/' }
+
+const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value || isMenuTypeMain.value && isMarbella.value)
 </script>
 
 <template>
@@ -147,7 +150,7 @@ const defaultRoute = { path: '/' }
     </div>
 
     <ProjectSelect
-      v-if="isMenuTypeMain && isNeocore"
+      v-if="canSelectProject"
       class="mx-3 mt-6 mb-8"
       :class="{ 'project-select--collapsed': configStore.isVerticalNavCollapsed && !isHovered }"
     />
