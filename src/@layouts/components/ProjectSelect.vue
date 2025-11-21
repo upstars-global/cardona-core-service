@@ -16,7 +16,7 @@ const selectProject = computed({
 })
 
 const selectedProduct = computed(() => store.getters.selectedProduct)
-const projects = computed(() => store.getters.userInfo.projects.filter((item: ProjectInfo) => item.productId === selectedProduct.value?.id))
+const projects = computed(() => store.getters.userInfo.projects.filter((item: ProjectInfo) => item?.productId === selectedProduct.value?.id))
 const cantSelect = computed(() => projects.value.length < 2)
 
 onMounted(() => {
