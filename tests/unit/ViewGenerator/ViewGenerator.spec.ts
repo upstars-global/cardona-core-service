@@ -1,11 +1,13 @@
-import { beforeEach, describe, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { flushPromises } from '@vue/test-utils'
 import ViewGenerator from '../../../src/components/templates/ViewGenerator/index.vue'
 import { ViewType } from '../../../src/@model/view'
-import { setMountComponent } from '../utils'
+import { clickTrigger, setMountComponent } from '../utils'
 import { testOn } from '../templates/shared-tests/test-case-generator'
 import { IconsList } from '../../../src/@model/enums/icons'
 import { testingDate } from '../templates/shared-tests/date-and-dateTimeField'
 import { fullDate } from '../../../src/utils/date'
+import { copyToClipboard } from '../../../src/helpers/clipboard'
 
 const getMountViewGenerator = setMountComponent(ViewGenerator)
 
@@ -30,10 +32,12 @@ const testIdIcon = 'icon'
 const testIdSeparator = 'separator'
 const testIdWrapperValue = 'wrapper-value'
 
+const viewValue = 'Test Value'
+
 const createDefaultProps = (modelValueOverrides = {}) => ({
   modelValue: {
     type: ViewType.BadgeCopy,
-    value: 'Test Value',
+    value: viewValue,
     label: 'Test Label',
     icon: IconsList.StarIcon,
     withSeparator: false,
@@ -58,7 +62,7 @@ describe('ViewGenerator.vue', () => {
     const maxCols = 12
 
     testOn.equalTextValue({ wrapper, testId: testIdLabel }, props.modelValue.label)
-    testOn.equalTextValue({ wrapper, testId: testIdViewGeneratorComponent }, 'Test Value')
+    testOn.equalTextValue({ wrapper, testId: testIdViewGeneratorComponent }, viewValue)
     testOn.existClass({ wrapper, testId: testIdIcon }, IconsList.StarIcon)
     testOn.notExistElement({ wrapper, testId: testIdSeparator })
     testOn.existClass({ wrapper, testId: 'wrapper-label' }, `v-col-${props.cols}`)
@@ -101,5 +105,26 @@ describe('ViewGenerator.vue', () => {
     testIds.forEach(testId => {
       testOn.notExistElement({ wrapper, testId })
     })
+  })
+
+  it('Copy the value', async () => {
+    const testId = 'copy-view-icon'
+
+    mockAbilityCan.mockReturnValue(true)
+
+    const props = createDefaultProps({
+      type: ViewType.Text,
+      withCopy: true,
+    })
+
+    const wrapper = getMountViewGenerator(props)
+
+    testOn.existElement({ wrapper, testId })
+
+    await flushPromises()
+
+    await clickTrigger({ wrapper, testId })
+
+    expect(copyToClipboard).toHaveBeenCalledWith(viewValue)
   })
 })

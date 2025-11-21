@@ -12,7 +12,6 @@ import LinkView from '../components/templates/ViewGenerator/_components/LinkView
 import InnerBlankLinkView from '../components/templates/ViewGenerator/_components/InnerBlankLinkView.vue'
 import BadgeCopyView from '../components/templates/ViewGenerator/_components/BadgeCopyView.vue'
 import BadgeShortCopyView from '../components/templates/ViewGenerator/_components/BadgeShortCopyView.vue'
-import CopyView from '../components/templates/ViewGenerator/_components/CopyView.vue'
 import DateView from '../components/templates/ViewGenerator/_components/DateView.vue'
 import DateRangeView from '../components/templates/ViewGenerator/_components/DateRangeView.vue'
 import DateWithSecondsView from '../components/templates/ViewGenerator/_components/DateWithSecondsView.vue'
@@ -41,7 +40,6 @@ export enum ViewType {
   DateWithSeconds = DateWithSecondsView,
   BadgeCopy = BadgeCopyView,
   BadgeShortCopy = BadgeShortCopyView,
-  Copy = CopyView,
   SumAndCurrency = SumAndCurrencyView,
   StatusWithDate = StatusWithDateView,
   StatusWithDateHistory = StatusWithDateHistoryView,
