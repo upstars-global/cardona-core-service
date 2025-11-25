@@ -168,6 +168,8 @@ const isShowSaveBtn = computed<boolean>(() => isUpdatePage && (canUpdate || canU
 const isReadMode = computed<boolean>(() => isUpdatePage && !canUpdate && !canUpdateSeo)
 
 const onSubmit = async (isStay: boolean) => {
+  textEditorStore.isSave = true
+
   if (!(await validate()) || isExistsEndpointsWithError.value)
     return
   isStaySubmit.value = isStay

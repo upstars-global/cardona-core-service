@@ -66,6 +66,7 @@ const { toastError } = useToastService()
 
 const globalEditor = ref<any>()
 const isUpdateVar = computed(() => textEditorStore.isUpdateVar)
+const isSave = computed(() => textEditorStore.isSave)
 const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
 
 const setVariableTextBuffer = params => textEditorStore.setVariableTextBuffer(params)
@@ -387,6 +388,19 @@ const deleteVariableTextByKey = () => {
 
 const isCodeViewActive = ref(false)
 const onSaveChanges = () => { globalEditor.value.codeView.toggle(); isCodeViewActive.value = false }
+
+watch(() => isSave.value, () => {
+  if (isSave.value) {
+    onSaveChanges()
+    globalEditor.value.codeView.toggle()
+    isCodeViewActive.value = false
+  }
+
+  if (globalEditor.value.codeView.isActive()) {
+    globalEditor.value.codeView.toggle()
+    isCodeViewActive.value = false
+  }
+})
 </script>
 
 <template>

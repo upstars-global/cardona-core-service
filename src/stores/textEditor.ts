@@ -3,6 +3,7 @@ import { omit } from 'lodash'
 
 export const useTextEditorStore = defineStore('textEditor', {
   state: () => ({
+    isSave: false,
     isUpdateVar: false,
     variableTextBuffer: {},
   }),
