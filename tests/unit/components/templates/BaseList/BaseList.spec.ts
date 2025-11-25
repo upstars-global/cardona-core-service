@@ -17,7 +17,6 @@ import {
   useListForCustomStore,
   useListForToggleStatus,
 } from '../../../mocks/base-list'
-import useToastService from '../../../../../src/helpers/toasts'
 
 vi.mock('../../../../../src/stores/users', () => {
   return {
@@ -176,6 +175,27 @@ describe('BaseList', () => {
     mockDispatch = vi.spyOn(mockStore, 'dispatch')
 
     mockStore.state.selectedProject = { id: 'p1', alias: 'alpha', name: 'Project A' }
+  })
+
+  it('Should call export data with params', async () => {
+    // Enable export functionality in props
+    props.config.withExport = true
+
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+
+    // Simulate user interactions to trigger JSON export
+    await clickTrigger({ wrapper, testId: 'menu-activator' })
+    await clickTrigger({ wrapper, testId: 'export-json' })
+
+    expect(mockBaseStoreCore.fetchReport).toHaveBeenCalled([
+      [{
+        type: 'Test',
+        data: { filter: { format: 'json' }, perPage: 1, sort: undefined },
+        customApiPrefix: undefined,
+      }],
+    ])
   })
 
   it('Should render the default state with cell slots', async () => {
