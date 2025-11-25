@@ -394,6 +394,7 @@ watch(() => isSave.value, () => {
     onSaveChanges()
     globalEditor.value.codeView.toggle()
     isCodeViewActive.value = false
+    textEditorStore.setSave(false)
   }
 
   if (globalEditor.value.codeView.isActive()) {

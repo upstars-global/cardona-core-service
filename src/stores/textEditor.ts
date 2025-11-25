@@ -12,6 +12,9 @@ export const useTextEditorStore = defineStore('textEditor', {
     setUpdateVar(newIsUpdateVar) {
       this.isUpdateVar = newIsUpdateVar
     },
+    setSave(newIsSave) {
+      this.isSave = newIsSave
+    },
     setVariableTextBuffer(variableTextBuffer) {
       this.variableTextBuffer = variableTextBuffer
     },
