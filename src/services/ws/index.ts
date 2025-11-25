@@ -3,8 +3,8 @@ import { Centrifuge } from 'centrifuge'
 import { has } from 'lodash'
 import store from '../../store'
 import { checkIsLoggedIn } from '../../helpers/token-auth'
+import { IS_DEV_ENV, LENS_PORT } from '../../utils/constants'
 import { messageTypes } from './config'
-import {IS_DEV_ENV, LENS_PORT} from '@/utils/constants'
 
 export enum TyperRequest {
   Updated = 'updated',
