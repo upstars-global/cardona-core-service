@@ -174,7 +174,7 @@ const global = {
 let props
 let mockDispatch
 
-describe('BaseList', () => {
+describe('DefaultBaseList', () => {
   beforeEach(() => {
     // Reset mocks and initialize props before each test
     exportDataMock()
