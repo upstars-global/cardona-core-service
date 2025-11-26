@@ -1,6 +1,5 @@
 // import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { beforeEach, describe, it } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
 import { cloneDeep } from 'lodash'
 import BaseList from '../../../../../src/components/templates/BaseList/index.vue'
 import { defaultProps as defaultPropsBaseList, fields } from '../../../mocks/base-list'
@@ -25,7 +24,6 @@ const defaultProps = {
 
 describe('BaseList', () => {
   beforeEach(() => {
-    setActivePinia(createPinia())
     props = cloneDeep(defaultProps)
   })
 

@@ -90,7 +90,7 @@ export const fetchEntityList = vi.fn().mockResolvedValue({
   }],
   total: 1,
 })
-vi.mock('@/stores/useUsersStore', () => ({
+vi.mock('../../../../../../src/stores/users', () => ({
   useUsersStore: () => ({
     fetchUsersList: vi.fn(),
   }),

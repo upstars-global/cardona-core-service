@@ -83,7 +83,7 @@ const admin = new SelectBaseField({
   key: FilterType.Admin,
   label: i18n.t('common.admin._'),
   placeholder: i18n.t('placeholder.filter.admin'),
-  fetchOptionsAction: () => useUsersStore().fetchUsersList,
+  fetchOptionsAction: useUsersStore().fetchUsersList,
 })
 
 // const action = new SelectBaseField({
