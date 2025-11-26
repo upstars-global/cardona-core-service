@@ -18,6 +18,7 @@ import {
   useListForToggleStatus,
 } from '../../../../mocks/base-list'
 import useToastService from '../../../../../../src/helpers/toasts'
+import '../../../../../../src/stores/users'
 
 vi.mock('../../../../../src/stores/users', () => {
   return {
@@ -33,7 +34,7 @@ vi.mock('../../../../../src/stores/users', () => {
 const getSelectorCField = (name: string) => `td[data-c-field="${name}"]`
 
 // Mounting function for the DefaultBaseList component
-const getMountBaseList = setMountComponent(DefaultBaseList)
+const getMountComponent = setMountComponent(DefaultBaseList)
 
 // Utility function to update component props
 const getUpdatePropsConfig = (updatedConfig, props) => ({
@@ -67,7 +68,7 @@ vi.mock('vue-router', async importOriginal => {
 })
 
 // Mock the toast service to control and inspect toast notifications
-vi.mock('../../../../../src/helpers/toasts', () => {
+vi.mock('../../../../../../src/helpers/toasts', () => {
   const toastErrorMock = vi.fn()
 
   return {
@@ -89,6 +90,11 @@ export const fetchEntityList = vi.fn().mockResolvedValue({
   }],
   total: 1,
 })
+vi.mock('@/stores/useUsersStore', () => ({
+  useUsersStore: () => ({
+    fetchUsersList: vi.fn(),
+  }),
+}))
 
 const updateEntity = vi.fn()
 const fetchReport = vi.fn()
@@ -121,7 +127,7 @@ const runActionToggleState = async props => {
     total: 1,
   })
 
-  const wrapper = getMountBaseList(props, global)
+  const wrapper = getMountComponent(props, global)
 
   await flushPromises()
 
@@ -185,7 +191,7 @@ describe('BaseList', () => {
       total: 1,
     })
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
@@ -206,7 +212,7 @@ describe('BaseList', () => {
     // Enable the search functionality in props
     props.config.withSearch = true
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     // Check that the search input is rendered
     testOn.existElement({ wrapper, testId: 'search-input' })
@@ -230,7 +236,7 @@ describe('BaseList', () => {
     // Apply static filters to props
     props.config.staticFilters = filterParams
 
-    getMountBaseList(props, global)
+    getMountComponent(props, global)
 
     await flushPromises()
 
@@ -265,7 +271,7 @@ describe('BaseList', () => {
     props.config.withExport = true
     props.config.formatOfExports = [ExportFormat.CSV]
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
@@ -282,7 +288,7 @@ describe('BaseList', () => {
     // Enable export functionality in props
     props.config.withExport = true
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
@@ -298,7 +304,7 @@ describe('BaseList', () => {
     // Enable the create button in props
     props.config.withCreateBtn = true
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     // Check that the create button is rendered
     testOn.existElement({ wrapper, testId: 'right-search-btn' })
@@ -316,7 +322,7 @@ describe('BaseList', () => {
     props.config.onePermissionKey = 'test-super'
     props.config.noPermissionPrefix = true
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     // Check that the action buttons are rendered based on permissions
     testOn.existElement({ wrapper, testId: 'right-search-btn' })
@@ -330,7 +336,7 @@ describe('BaseList', () => {
     props.config.withCustomDelete = true
     props.useList = useListForCustomStore(mockCustomStore)
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     // Select an item to delete
     wrapper.vm.selectedItem = { id: '123' }
@@ -351,7 +357,7 @@ describe('BaseList', () => {
     // Set permission key in props
     props.config.permissionKey = 'test-permission'
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     // Verify that the component recognizes available actions based on permissions
     expect(wrapper.vm.canCreate).toBeTruthy()
@@ -365,7 +371,7 @@ describe('BaseList', () => {
     // Set custom API prefix in props
     props.config.customApiPrefix = customApiPrefix
 
-    getMountBaseList(props, global)
+    getMountComponent(props, global)
 
     await flushPromises()
 
@@ -442,7 +448,7 @@ describe('BaseList', () => {
       total: 1,
     })
 
-    const wrapper = getMountBaseList(props, global, slots)
+    const wrapper = getMountComponent(props, global, slots)
 
     await flushPromises()
 
@@ -495,7 +501,7 @@ describe('BaseList', () => {
       total: 1,
     })
 
-    const wrapper = getMountBaseList(props, global, slots)
+    const wrapper = getMountComponent(props, global, slots)
 
     await flushPromises()
 
@@ -522,7 +528,7 @@ describe('BaseList', () => {
       total: 0,
     })
 
-    const wrapper = getMountBaseList(props, global, slots)
+    const wrapper = getMountComponent(props, global, slots)
 
     await flushPromises()
 
@@ -537,7 +543,7 @@ describe('BaseList', () => {
       total: 0,
     })
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
@@ -546,7 +552,7 @@ describe('BaseList', () => {
   })
 
   it('Should emit rowClicked event when a table row is clicked', async () => {
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
@@ -576,7 +582,7 @@ describe('BaseList', () => {
       total: 1,
     })
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
@@ -594,7 +600,7 @@ describe('BaseList', () => {
   })
 
   it('should call multipleDeleteEntity when multiple items are selected one more', async () => {
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
@@ -612,7 +618,7 @@ describe('BaseList', () => {
   })
 
   it('should call deleteEntity when multiple items are selected one', async () => {
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
@@ -635,7 +641,7 @@ describe('BaseList', () => {
 
     mockDispatch.mockResolvedValueOnce({ list: [], total: 0 })
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
@@ -649,7 +655,7 @@ describe('BaseList', () => {
     props.config.withProjectsFilter = false
     mockDispatch.mockResolvedValueOnce({ list: [], total: 0 })
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
@@ -669,7 +675,7 @@ describe('BaseList', () => {
 
     mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({ list: [], total: 0 })
 
-    getMountBaseList(props, global)
+    getMountComponent(props, global)
     await flushPromises()
 
     const args = mockBaseStoreCore.fetchEntityList.mock.calls.at(-1)?.[0]
@@ -681,7 +687,7 @@ describe('BaseList', () => {
     props.config.withProjectsFilter = true
     mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({ list: [], total: 0 })
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
@@ -711,7 +717,7 @@ describe('BaseList', () => {
 
     mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({ list: [], total: 0 })
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
@@ -734,7 +740,7 @@ describe('BaseList', () => {
     props.config.withProjectsFilter = true
     mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({ list: [], total: 0 })
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
@@ -768,7 +774,7 @@ describe('BaseList', () => {
     props.config.withProjectsFilter = true
     mockDispatch.mockResolvedValueOnce({ list: [], total: 0 })
 
-    const wrapper = getMountBaseList(props, global)
+    const wrapper = getMountComponent(props, global)
 
     await flushPromises()
 
