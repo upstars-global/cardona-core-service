@@ -2,12 +2,11 @@ import { beforeEach, describe, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 import '../../../mocks/baselist/static-mock'
 import BaseList from '../../../../../src/components/templates/BaseList/index.vue'
-import { defaultProps as defaultPropsBaseList, fields, mockStore } from '../../../mocks/baselist/base-list'
+import { defaultProps as defaultPropsBaseList, fields, globalConfig, mockStore } from '../../../mocks/baselist/utils'
 import { setMountComponent } from '../../../utils'
 import { ListTypes } from '../../../../../src/@model/templates/baseList'
 import DefaultBaseList from '../../../../../src/components/templates/BaseList/types/default.vue'
 import { testOn } from '../../../templates/shared-tests/test-case-generator'
-import { globalConfig } from '../../../mocks/baselist/base-list-config'
 
 let props
 let mockDispatch

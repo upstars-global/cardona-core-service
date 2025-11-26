@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import {mockBaseStoreCore} from "./base-list-config";
+import { mockBaseStoreCore } from './utils'
 
 vi.mock('vue-router', async importOriginal => {
   const actual = await importOriginal()
@@ -21,7 +21,6 @@ vi.mock('vue-router', async importOriginal => {
     })),
   }
 })
-
 
 vi.mock('@/stores/users', () => ({
   useUsersStore: () => ({
@@ -48,3 +47,24 @@ vi.mock('../../../../../src/stores/users', () => {
     }),
   }
 })
+
+vi.mock('../../../../../../src/helpers/toasts', () => {
+  const toastErrorMock = vi.fn()
+
+  return {
+    default: vi.fn(() => ({
+      toastError: toastErrorMock,
+      toastSuccess: vi.fn(),
+      toastErrorMessageString: vi.fn(),
+    })),
+    toastErrorMock,
+  }
+})
+
+vi.mock('@/stores/baseStoreCore', () => ({
+  useBaseStoreCore: () => ({
+    ...mockBaseStoreCore,
+    isLoading: false,
+    selectedItems: [],
+  }),
+}))

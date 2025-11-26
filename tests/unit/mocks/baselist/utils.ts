@@ -1,10 +1,49 @@
 import { vi } from 'vitest'
 import { createStore } from 'vuex'
+import { flushPromises } from '@vue/test-utils'
 import type { PermissionLevel } from '../../../../src/@model/permission'
 import { AllPermission, Permission } from '../../../../src/@model/permission'
 import type { UseListType } from '../../../../src/@model/templates/baseList'
 import { FilterID } from '../../../../src/@model/filter'
 import { ListFieldType, TableField } from '../../../../src/@model/templates/tableFields'
+import { testOn } from '../../templates/shared-tests/test-case-generator'
+import { mockModal } from '../modal-provide-config'
+import { clickTrigger } from '../../utils'
+
+export const mockCustomStore = {
+  fetchEntityList: vi.fn().mockResolvedValue({
+    list: [],
+    total: 101,
+  }),
+  updateEntity: vi.fn(),
+  fetchReport: vi.fn(),
+  toggleStatusEntity: vi.fn(),
+  deleteEntity: vi.fn(),
+}
+
+export const fetchEntityList = vi.fn().mockResolvedValue({
+  list: [{
+    id: 1,
+    name: 'Item 1',
+    type: 'Type 1',
+    status: 'Status 1',
+  }],
+  total: 1,
+})
+export const updateEntity = vi.fn()
+export const fetchReport = vi.fn()
+export const toggleStatusEntity = vi.fn()
+export const deleteEntity = vi.fn()
+export const multipleDeleteEntity = vi.fn()
+
+export const mockBaseStoreCore = {
+  fetchEntityList,
+  updateEntity,
+  fetchReport,
+  toggleStatusEntity,
+  deleteEntity,
+  multipleDeleteEntity,
+}
 
 export const exportDataMock = () => {
   if (!window.URL.createObjectURL) {
@@ -166,3 +205,46 @@ export const useListForCustomStore = customStore => () => {
     ],
   }
 }
+
+export const runActionToggleState = async wrapper => {
+  // Mock the dispatch response with a sample list item
+  mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
+    list: [{
+      id: 1,
+      name: 'Item 1',
+      type: 'Type 1',
+      status: 'Status 1',
+      isActive: true,
+    }],
+    total: 1,
+  })
+
+  await flushPromises()
+
+  // Verify that the pill-status element exists
+  testOn.existElement({ wrapper, testId: 'pill-status' })
+
+  // Simulate user interactions to toggle status
+  await clickTrigger({ wrapper, testId: 'activator' })
+  await clickTrigger({ wrapper, testId: 'status-toggle' })
+}
+
+export const globalConfig = {
+  provide: { modal: mockModal },
+  plugins: [mockStore],
+  components: {
+    VueSelect: {
+      template: '<select><slot /></select>',
+    },
+  },
+}
+
+export const getUpdatePropsConfig = (updatedConfig, props) => ({
+  ...props,
+  config: {
+    ...props.config,
+    ...updatedConfig,
+  },
+})
+
+export const getSelectorCField = (name: string) => `td[data-c-field="${name}"]`

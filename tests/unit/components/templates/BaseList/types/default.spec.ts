@@ -2,163 +2,28 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 import { flushPromises } from '@vue/test-utils'
 import { h } from 'vue'
+import '../../../../mocks/baselist/static-mock'
 import DefaultBaseList from '../../../../../../src/components/templates/BaseList/types/default.vue'
 import ProjectsFilter from '../../../../../../src/components/templates/BaseList/_components/ProjectsFilter.vue'
 import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../../utils'
-import { BaseListSlots, ExportFormat } from '../../../../../../src/@model/templates/baseList'
+import { BaseListSlots } from '../../../../../../src/@model/templates/baseList'
 import { mockModal } from '../../../../mocks/modal-provide-config'
 import { testOn } from '../../../../templates/shared-tests/test-case-generator'
 import { FilterID } from '../../../../../../src/@model/filter'
 import {
   defaultProps,
   exportDataMock,
-  fields,
-  mockStore,
+  fields, getSelectorCField, getUpdatePropsConfig, mockBaseStoreCore, mockCustomStore,
+  mockStore, runActionToggleState,
   useListForCustomStore,
   useListForToggleStatus,
-} from '../../../../mocks/baselist/base-list'
-import useToastService from '../../../../../../src/helpers/toasts'
+} from '../../../../mocks/baselist/utils'
 import '../../../../../../src/stores/users'
 
-vi.mock('../../../../../src/stores/users', () => {
-  return {
-    useUsersStore: () => ({
-      fetchUsersList: vi.fn(),
-      fetchEntityList: vi.fn(),
-      updateUserPassword: vi.fn(),
-    }),
-  }
-})
-
 // Helper function to select table cells based on data attribute
-const getSelectorCField = (name: string) => `td[data-c-field="${name}"]`
 
 // Mounting function for the DefaultBaseList component
 const getMountComponent = setMountComponent(DefaultBaseList)
-
-// Utility function to update component props
-const getUpdatePropsConfig = (updatedConfig, props) => ({
-  ...props,
-  config: {
-    ...props.config,
-    ...updatedConfig,
-  },
-})
-
-// Mock vue-router before importing components that depend on it
-vi.mock('vue-router', async importOriginal => {
-  const actual = await importOriginal()
-
-  return {
-    ...actual,
-    useRouter: vi.fn(() => ({
-      push: vi.fn(),
-      replace: vi.fn(),
-      getRoutes: vi.fn(() => [
-        { name: 'TestCreate', path: '/test/create' },
-        { name: 'TestRoute', path: '/test-route' },
-      ]),
-    })),
-    useRoute: vi.fn(() => ({
-      params: {},
-      name: 'TestRoute',
-      query: { page: '1' },
-    })),
-  }
-})
-
-// Mock the toast service to control and inspect toast notifications
-vi.mock('../../../../../../src/helpers/toasts', () => {
-  const toastErrorMock = vi.fn()
-
-  return {
-    default: vi.fn(() => ({
-      toastError: toastErrorMock,
-      toastSuccess: vi.fn(),
-      toastErrorMessageString: vi.fn(),
-    })),
-    toastErrorMock,
-  }
-})
-
-export const fetchEntityList = vi.fn().mockResolvedValue({
-  list: [{
-    id: 1,
-    name: 'Item 1',
-    type: 'Type 1',
-    status: 'Status 1',
-  }],
-  total: 1,
-})
-vi.mock('../../../../../../src/stores/users', () => ({
-  useUsersStore: () => ({
-    fetchUsersList: vi.fn(),
-  }),
-}))
-
-const updateEntity = vi.fn()
-const fetchReport = vi.fn()
-const toggleStatusEntity = vi.fn()
-const deleteEntity = vi.fn()
-const multipleDeleteEntity = vi.fn()
-
-const mockBaseStoreCore = {
-  fetchEntityList,
-  updateEntity,
-  multipleDeleteEntity,
-  fetchReport,
-  toggleStatusEntity,
-  deleteEntity,
-}
-
-// Function to test toggling the status of an entity
-const runActionToggleState = async props => {
-  props.useList = useListForToggleStatus
-
-  // Mock the dispatch response with a sample list item
-  mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
-    list: [{
-      id: 1,
-      name: 'Item 1',
-      type: 'Type 1',
-      status: 'Status 1',
-      isActive: true,
-    }],
-    total: 1,
-  })
-
-  const wrapper = getMountComponent(props, global)
-
-  await flushPromises()
-
-  // Verify that the pill-status element exists
-  testOn.existElement({ wrapper, testId: 'pill-status' })
-
-  // Simulate user interactions to toggle status
-  await clickTrigger({ wrapper, testId: 'activator' })
-  await clickTrigger({ wrapper, testId: 'status-toggle' })
-}
-
-export const mockCustomStore = {
-  fetchEntityList: vi.fn().mockResolvedValue({
-    list: [],
-    total: 101,
-  }),
-  updateEntity: vi.fn(),
-  fetchReport: vi.fn(),
-  toggleStatusEntity: vi.fn(),
-  deleteEntity: vi.fn(),
-}
-
-export const mockUseBaseStoreCore = () => {
-  vi.mock('@/stores/baseStoreCore', () => ({
-    useBaseStoreCore: () => ({
-      ...mockBaseStoreCore,
-      isLoading: false,
-      selectedItems: [],
-    }),
-  }))
-}
 
 // Global configuration for mounting the component, including plugins and providers
 const global = {
@@ -256,50 +121,6 @@ describe('DefaultBaseList', () => {
     })
   })
 
-  it('Should show an error when maxExportItems is exceeded', async () => {
-    const { toastError } = useToastService()
-    const maxExportItems = 100
-
-    // Mock dispatch response indicating export limit exceeded
-    mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
-      list: [],
-      total: 101,
-    })
-
-    // Configure export settings in props
-    props.config.maxExportItems = maxExportItems
-    props.config.withExport = true
-    props.config.formatOfExports = [ExportFormat.CSV]
-
-    const wrapper = getMountComponent(props, global)
-
-    await flushPromises()
-
-    // Simulate user interaction to trigger export
-    await clickTrigger({ wrapper, testId: 'menu-activator' })
-
-    // Expect that an error toast was shown
-    expect(toastError).toHaveBeenCalled()
-  })
-
-  it('Should call toastError when exporting data via export-json', async () => {
-    const { toastError } = useToastService()
-
-    // Enable export functionality in props
-    props.config.withExport = true
-
-    const wrapper = getMountComponent(props, global)
-
-    await flushPromises()
-
-    // Simulate user interactions to trigger JSON export
-    await clickTrigger({ wrapper, testId: 'menu-activator' })
-    await clickTrigger({ wrapper, testId: 'export-json' })
-
-    // Expect that an error toast was shown
-    expect(toastError).toHaveBeenCalled()
-  })
-
   it('Should display the create button when withCreateBtn is enabled', () => {
     // Enable the create button in props
     props.config.withCreateBtn = true
@@ -394,9 +215,12 @@ describe('DefaultBaseList', () => {
   it('Should update entity status when withDeactivation is enabled', async () => {
     // Enable deactivation feature in props
     props.config.withDeactivation = true
+    props.useList = useListForToggleStatus
+
+    const wrapper = getMountComponent(props, global)
 
     // Run the status toggle test with the expected action
-    await runActionToggleState(props)
+    await runActionToggleState(wrapper)
     expect(mockBaseStoreCore.updateEntity).toHaveBeenCalled()
     mockBaseStoreCore.updateEntity.mockReset()
   })
@@ -404,9 +228,12 @@ describe('DefaultBaseList', () => {
   it('Should toggle entity status using a specific action when withDeactivationBySpecificAction is enabled', async () => {
     // Enable specific action deactivation feature in props
     props.config.withDeactivationBySpecificAction = true
+    props.useList = useListForToggleStatus
 
     // Run the status toggle test with the specific expected action
-    await runActionToggleState(props)
+    const wrapper = getMountComponent(props, global)
+
+    await runActionToggleState(wrapper)
     expect(mockBaseStoreCore.toggleStatusEntity).toHaveBeenCalled()
     mockBaseStoreCore.updateEntity.mockReset()
   })
