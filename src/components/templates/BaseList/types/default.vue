@@ -200,7 +200,7 @@ watch(
   { deep: true },
 )
 
-const selectedFields = ref<TableField[]>([...fields])
+const selectedFields = ref<TableField[]>(fields)
 
 const normalizedEntityName = computed(() => {
   const index = entityName.indexOf('-') + 1

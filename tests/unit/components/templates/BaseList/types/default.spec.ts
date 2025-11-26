@@ -11,16 +11,14 @@ import { mockModal } from '../../../../mocks/modal-provide-config'
 import { testOn } from '../../../../templates/shared-tests/test-case-generator'
 import { FilterID } from '../../../../../../src/@model/filter'
 import {
-  defaultProps,
   exportDataMock,
-  fields, getSelectorCField, getUpdatePropsConfig, mockBaseStoreCore, mockCustomStore,
-  mockStore, runActionToggleState,
+  getSelectorCField, getUpdatePropsConfig, mockBaseStoreCore,
+  runActionToggleState,
   useListForCustomStore,
   useListForToggleStatus,
 } from '../../../../mocks/baselist/utils'
 import '../../../../../../src/stores/users'
-
-// Helper function to select table cells based on data attribute
+import { defaultProps, fields, mockCustomStore, mockStore } from '../../../../mocks/baselist/mock'
 
 // Mounting function for the DefaultBaseList component
 const getMountComponent = setMountComponent(DefaultBaseList)
