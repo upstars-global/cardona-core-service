@@ -330,6 +330,10 @@ const getList = async () => {
 
 const reFetchList = () => getList()
 
+const clearSort = () => {
+  sortData.value = []
+}
+
 onChangePagination(() => {
   if (props.config.closeFilterOnPagination)
     isFiltersShown.value = false
@@ -777,6 +781,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             v-model="selectedFields"
             :entity-name="pageName || entityName"
             :list="fields"
+            @clearSort="clearSort"
           />
         </div>
       </div>
