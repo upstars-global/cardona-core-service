@@ -1,10 +1,10 @@
 import { vi } from 'vitest'
 import { createStore } from 'vuex'
-import type { PermissionLevel } from '../../../src/@model/permission'
-import { AllPermission, Permission } from '../../../src/@model/permission'
-import type { UseListType } from '../../../src/@model/templates/baseList'
-import { FilterID } from '../../../src/@model/filter'
-import { ListFieldType, TableField } from '../../../src/@model/templates/tableFields'
+import type { PermissionLevel } from '../../../../src/@model/permission'
+import { AllPermission, Permission } from '../../../../src/@model/permission'
+import type { UseListType } from '../../../../src/@model/templates/baseList'
+import { FilterID } from '../../../../src/@model/filter'
+import { ListFieldType, TableField } from '../../../../src/@model/templates/tableFields'
 
 export const exportDataMock = () => {
   if (!window.URL.createObjectURL) {

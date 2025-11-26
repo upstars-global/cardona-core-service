@@ -1,9 +1,9 @@
 import { vi } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
-import { testOn } from '../templates/shared-tests/test-case-generator'
-import { clickTrigger } from '../utils'
+import { testOn } from '../../templates/shared-tests/test-case-generator'
+import { clickTrigger } from '../../utils'
 import { mockStore, useListForToggleStatus } from './base-list'
-import { mockModal } from './modal-provide-config'
+import { mockModal } from '../modal-provide-config'
 
 // ------------------ toasts ------------------
 export const toastErrorMock = vi.fn()

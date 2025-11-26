@@ -16,7 +16,7 @@ import {
   mockStore,
   useListForCustomStore,
   useListForToggleStatus,
-} from '../../../../mocks/base-list'
+} from '../../../../mocks/baselist/base-list'
 import useToastService from '../../../../../../src/helpers/toasts'
 import '../../../../../../src/stores/users'
 
