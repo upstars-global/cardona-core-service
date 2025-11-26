@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { IBaseListConfig } from '../../../@model/templates/baseList'
+import { ListTypes } from '../../../@model/templates/baseList'
 import DefaultBaseList from './types/default.vue'
 
 withDefaults(defineProps<{
   config: IBaseListConfig
   useList: unknown
-  type: 'default'
+  type?: ListTypes
 }>(), {
-  type: 'default',
+  type: ListTypes.Default,
 })
 
 const emits = defineEmits<{
