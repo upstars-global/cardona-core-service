@@ -2,13 +2,13 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 import { flushPromises } from '@vue/test-utils'
 import { h } from 'vue'
-import BaseList from '../../../../../src/components/templates/BaseList/index.vue'
-import ProjectsFilter from '../../../../../src/components/templates/BaseList/_components/ProjectsFilter.vue'
-import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../utils'
-import { BaseListSlots, ExportFormat } from '../../../../../src/@model/templates/baseList'
-import { mockModal } from '../../../mocks/modal-provide-config'
-import { testOn } from '../../../templates/shared-tests/test-case-generator'
-import { FilterID } from '../../../../../src/@model/filter'
+import DefaultBaseList from '../../../../../../src/components/templates/BaseList/types/default.vue'
+import ProjectsFilter from '../../../../../../src/components/templates/BaseList/_components/ProjectsFilter.vue'
+import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../../utils'
+import { BaseListSlots, ExportFormat } from '../../../../../../src/@model/templates/baseList'
+import { mockModal } from '../../../../mocks/modal-provide-config'
+import { testOn } from '../../../../templates/shared-tests/test-case-generator'
+import { FilterID } from '../../../../../../src/@model/filter'
 import {
   defaultProps,
   exportDataMock,
@@ -16,8 +16,8 @@ import {
   mockStore,
   useListForCustomStore,
   useListForToggleStatus,
-} from '../../../mocks/base-list'
-import useToastService from '../../../../../src/helpers/toasts'
+} from '../../../../mocks/base-list'
+import useToastService from '../../../../../../src/helpers/toasts'
 
 vi.mock('../../../../../src/stores/users', () => {
   return {
@@ -32,8 +32,8 @@ vi.mock('../../../../../src/stores/users', () => {
 // Helper function to select table cells based on data attribute
 const getSelectorCField = (name: string) => `td[data-c-field="${name}"]`
 
-// Mounting function for the BaseList component
-const getMountBaseList = setMountComponent(BaseList)
+// Mounting function for the DefaultBaseList component
+const getMountBaseList = setMountComponent(DefaultBaseList)
 
 // Utility function to update component props
 const getUpdatePropsConfig = (updatedConfig, props) => ({

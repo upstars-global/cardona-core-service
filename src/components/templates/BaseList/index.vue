@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import type { IBaseListConfig } from '../../../@model/templates/baseList'
 import { ListTypes } from '../../../@model/templates/baseList'
-import DefaultBaseList from './types/default.vue'
+import type DefaultBaseList from './types/default.vue'
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   config: IBaseListConfig
   useList: unknown
   type?: ListTypes
@@ -34,6 +34,14 @@ const onMountedList = async () => {
 
 const listByTypeRef = ref<InstanceType<typeof DefaultBaseList> | null>(null)
 
+const componentsMap = {
+  default: () => import('./types/default.vue'),
+}
+
+const dynamicComponent = computed(() =>
+  defineAsyncComponent(componentsMap[props.type]),
+)
+
 defineExpose({
   reFetchList: listByTypeRef.value?.reFetchList,
   resetSelectedItem: listByTypeRef.value?.resetSelectedItem,
@@ -47,7 +55,8 @@ defineExpose({
 </script>
 
 <template>
-  <DefaultBaseList
+  <component
+    :is="dynamicComponent"
     ref="listByTypeRef"
     :config="config"
     :use-list="useList"
@@ -76,7 +85,7 @@ defineExpose({
         v-bind="slotProps"
       />
     </template>
-  </DefaultBaseList>
+  </component>
 </template>
 
 <style lang="scss" scoped>
