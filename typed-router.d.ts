@@ -56,6 +56,7 @@ declare module 'vue-router/auto/routes' {
     'constructor-components-order-blocks': RouteRecordInfo<'constructor-components-order-blocks', '/constructor/_components/OrderBlocks', Record<never, never>, Record<never, never>>,
     'constructor-components-validation-rules-editor': RouteRecordInfo<'constructor-components-validation-rules-editor', '/constructor/_components/ValidationRulesEditor', Record<never, never>, Record<never, never>>,
     'constructor-components-view-mode-selector': RouteRecordInfo<'constructor-components-view-mode-selector', '/constructor/_components/ViewModeSelector', Record<never, never>, Record<never, never>>,
+    'demo-list': RouteRecordInfo<'demo-list', '/demo/list', Record<never, never>, Record<never, never>>,
     'error404': RouteRecordInfo<'error404', '/error/404', Record<never, never>, Record<never, never>>,
     'forgot-password': RouteRecordInfo<'forgot-password', '/forgot-password', Record<never, never>, Record<never, never>>,
     'login': RouteRecordInfo<'login', '/login', Record<never, never>, Record<never, never>>,
