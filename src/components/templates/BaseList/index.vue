@@ -55,35 +55,37 @@ defineExpose({
 </script>
 
 <template>
-  <component
-    :is="dynamicComponent"
-    ref="listByTypeRef"
-    :config="config"
-    :use-list="useList"
-    @row-clicked="onClickRow"
-    @end="onEnd"
-    @mounted="onMountedList"
-    v-on="{
-      ...$attrs,
-      ...Object.fromEntries(
-        Object.entries($attrs).map(([key]) => [
-          key,
-          (...args) => $emit(key, ...args),
-        ]),
-      ),
-    }"
-  >
-    <slot />
-
-    <template
-      v-for="(_, slotName) in $slots"
-      :key="slotName"
-      #[slotName]="slotProps = {}"
+  <div>
+    <component
+      :is="dynamicComponent"
+      ref="listByTypeRef"
+      :config="config"
+      :use-list="useList"
+      @row-clicked="onClickRow"
+      @end="onEnd"
+      @mounted="onMountedList"
+      v-on="{
+        ...$attrs,
+        ...Object.fromEntries(
+          Object.entries($attrs).map(([key]) => [
+            key,
+            (...args) => $emit(key, ...args),
+          ]),
+        ),
+      }"
     >
-      <slot
-        :name="slotName"
-        v-bind="slotProps"
-      />
-    </template>
-  </component>
+      <slot />
+
+      <template
+        v-for="(_, slotName) in $slots"
+        :key="slotName"
+        #[slotName]="slotProps = {}"
+      >
+        <slot
+          :name="slotName"
+          v-bind="slotProps"
+        />
+      </template>
+    </component>
+  </div>
 </template>

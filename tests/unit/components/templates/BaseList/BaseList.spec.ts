@@ -206,6 +206,7 @@ describe('BaseList.vue (with mocked dynamic import)', () => {
 
     const wrapper = getMountComponent(props, global)
 
+    testOn.existElement({ wrapper, testId: 'default-base-list' })
     console.log(wrapper.html(), '11')
   })
 
