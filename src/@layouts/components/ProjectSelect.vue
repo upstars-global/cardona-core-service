@@ -1,24 +1,27 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
+
+// import { useStore } from 'vuex'
 import { useFavicon } from '@vueuse/core'
 import { IconsList } from '../../@model/enums/icons'
 import { useChangeProject } from '../../composables/useChangeProject'
+import { useUserStore } from '../../stores/user'
 
-const store = useStore()
+// const store = useStore()
+const userStore = useUserStore()
 
 const { changeProject } = useChangeProject()
 
 const selectProject = computed({
-  get: () => store.getters.selectedProjectWithoutPriority,
+  get: () => userStore.selectedProjectWithoutPriority,
   set: val => changeProject(val),
 })
 
-const projects = computed(() => store.getters.userInfo.projects)
+const projects = computed(() => userStore.userInfo.projects)
 const cantSelect = computed(() => projects.value.length < 2)
 
 onMounted(() => {
-  const faviconPath = store.getters.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
+  const faviconPath = userStore.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
 
   useFavicon(faviconPath)
 })

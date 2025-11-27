@@ -144,7 +144,6 @@ export default {
     async fetchCurrentUser({ commit }) {
       try {
         const currentUser: UserInfo = await fetchCurrentUser()
-
         commit('SET_USER_INFO', currentUser)
       }
       catch {}

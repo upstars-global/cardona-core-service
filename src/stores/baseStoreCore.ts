@@ -52,7 +52,8 @@ const reportFactory = (isSpecificReport = false) => async (
   payload: { type: string; data: IRequestListPayload; customApiPrefix?: string },
 ): Promise<Blob | string> => {
   const paramKey = isSpecificReport ? 'data' : 'filter'
-  const projectAlias = store.getters.selectedProject?.alias
+
+  // const projectAlias = store.getters.selectedProject?.alias
   const typeSuffix = isSpecificReport ? 'Load.' : ''
 
   const response = await ApiService.request(
@@ -65,7 +66,7 @@ const reportFactory = (isSpecificReport = false) => async (
         pageNumber: payload.data.page ?? 1,
         perPage: payload.data.perPage,
       },
-      [paramKey]: combineFilter(payload.data.filter, projectAlias),
+      [paramKey]: combineFilter(payload.data.filter, this.$selectedProjectAlias),
     },
     {
       withSuccessToast: isSpecificReport,
@@ -90,7 +91,8 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
         options: { customApiPrefix?: string; listItemModel?: any }
       },
     ): Promise<ListData> {
-      const projectAlias = store.getters.selectedProject?.alias
+      // // const projectAlias = store.getters.selectedProject?.alias
+      // console.log(projectAlias,'111', this.$selectedProject, '11')
 
       const response = await ApiService.request({
         type: `${payload.options.customApiPrefix || ApiTypePrefix}${transformNameToType(
@@ -101,7 +103,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
           perPage: payload.data.perPage ?? 10,
         },
         sort: payload.data.sort,
-        filter: combineFilter(payload.data.filter, projectAlias),
+        filter: combineFilter(payload.data.filter, this.$selectedProjectAlias),
       })
 
       return new ListData(response, payload.options.listItemModel)
@@ -114,7 +116,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       id: string
       customApiPrefix?: string
     }): Promise<any> {
-      const projectAlias = store.getters.selectedProject?.alias
+      // const projectAlias = store.getters.selectedProject?.alias
       const router = useRouter()
       const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 
@@ -125,7 +127,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
           )}.Read`,
           data: {
             id: payload.id,
-            project: isNeocoreProduct ? projectAlias : '',
+            project: isNeocoreProduct ? this.$selectedProjectAlias : '',
           },
         })
 
@@ -140,12 +142,12 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       }
     },
     async fetchTypes(type: string): Promise<any> {
-      const projectAlias = store.getters.selectedProject?.alias
+      // const projectAlias = store.getters.selectedProject?.alias
 
       return ApiService.request({
         type: `${ApiTypePrefix + transformNameToType(type)}.Types.List`,
         data: {
-          project: isNeocoreProduct ? projectAlias : '',
+          project: isNeocoreProduct ? this.$selectedProjectAlias : '',
         },
       })
     },
@@ -158,7 +160,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       const actualProject = payload?.data?.form?.project
         ? payload?.data?.form?.project
         : isNeocoreProduct
-          ? store.getters.selectedProject?.alias
+          ? this.$selectedProjectAlias
           : ''
 
       const productId = store.getters['productCore/productId']
@@ -195,7 +197,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       const actualProject = payload?.data?.form?.project
         ? payload?.data?.form?.project
         : isNeocoreProduct
-          ? store.getters.selectedProject?.alias
+          ? this.$selectedProjectAlias
           : ''
 
       return ApiService.request(
@@ -226,7 +228,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       const actualProject = payload?.data?.form?.project
         ? payload?.data?.form?.project
         : isNeocoreProduct
-          ? store.getters.selectedProject?.alias
+          ? this.$selectedProjectAlias
           : ''
 
       return ApiService.request(
@@ -253,7 +255,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       data: Array<{ id: string; isActive: boolean }>
       customApiPrefix?: string
     }): Promise<any> {
-      const projectAlias = store.getters.selectedProject?.alias
+      // const projectAlias = store.getters.selectedProject?.alias
       const entityKey = convertLowerCaseFirstSymbol(payload.type)
 
       return ApiService.request(
@@ -262,7 +264,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
             payload.type,
           )}.Update.Multiple`,
           data: {
-            project: isNeocoreProduct ? projectAlias : '',
+            project: isNeocoreProduct ? this.$selectedProjectAlias : '',
             [entityKey]: payload.data,
           },
         },
@@ -276,7 +278,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       comment: string
       customApiPrefix?: string
     }): Promise<any> {
-      const projectAlias = store.getters.selectedProject?.alias
+      // const projectAlias = store.getters.selectedProject?.alias
 
       return ApiService.request(
         {
@@ -286,7 +288,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
           data: {
             id: payload.id,
             comment: payload.comment,
-            project: isNeocoreProduct ? projectAlias : '',
+            project: isNeocoreProduct ? this.$selectedProjectAlias : '',
           },
         },
         { withSuccessToast: true, entityName: payload.type },
@@ -298,7 +300,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       ids: string[]
       customApiPrefix?: string
     }): Promise<any> {
-      const projectAlias = store.getters.selectedProject?.alias
+      // const projectAlias = store.getters.selectedProject?.alias
 
       return ApiService.request(
         {
@@ -307,7 +309,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
           )}.Delete.Multiple`,
           data: {
             ids: payload.ids,
-            project: isNeocoreProduct ? projectAlias : '',
+            project: isNeocoreProduct ? this.$selectedProjectAlias : '',
           },
         },
         { withSuccessToast: true },

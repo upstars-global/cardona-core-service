@@ -83,7 +83,7 @@ export const useVideoUploadStore = defineStore('videoUpload', () => {
       title: file.name,
       description: file.name,
       fileSize: file.size,
-      project: store.getters.selectedProject?.alias,
+      project: this.$selectedProjectAlias,
     }
 
     setProgressState(true, key)

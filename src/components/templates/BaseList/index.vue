@@ -36,6 +36,7 @@ import SumAndCurrency from '../../../components/templates/_components/SumAndCurr
 import StatusField from '../../../components/templates/_components/StatusField.vue'
 import { useLoaderStore } from '../../../stores/loader'
 import { useBaseStoreCore } from '../../../stores/baseStoreCore'
+import { useUserStore } from '../../../stores/user'
 import usePagination from './сomposables/pagination'
 import type { PaginationResult } from './сomposables/pagination'
 import MultipleActions from './_components/MultipleActions.vue'
@@ -79,6 +80,7 @@ const slots = useSlots()
 
 const baseStoreCore = useBaseStoreCore()
 const store = useVuexStore()
+const userStore = useUserStore()
 const loaderStore = useLoaderStore()
 const { t } = useI18n()
 
@@ -447,7 +449,7 @@ const userProjects = computed<ProjectsFilterOption[]>(() => store.getters['appCo
   title: name,
 })))
 
-const projectsFilter = ref<string[]>([store.getters.selectedProject?.alias])
+const projectsFilter = ref<string[]>([userStore.getSelectedProject?.alias])
 
 // Filters
 const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(

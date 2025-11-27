@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { VIcon } from 'vuetify/components/VIcon'
+
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
@@ -8,6 +9,7 @@ import { useRouter } from 'vue-router'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors } from '../../@model/vuetify'
 import { PermissionLevel } from '../../@model/permission'
+import { useUserStore } from '../../stores/user'
 import { useConfigStore } from '@core/stores/config'
 import { Theme } from '@core/enums'
 
@@ -18,13 +20,14 @@ const props = defineProps<{
 const { t } = useI18n()
 
 const store = useStore()
+const userStore = useUserStore()
 const router = useRouter()
 
 const userName = computed(() => {
-  return store.getters.userInfo?.userName || 'No name'
+  return userStore.userInfo?.userName || 'No name'
 })
 
-const userAvatar = computed(() => store.getters.userInfo?.picture || '')
+const userAvatar = computed(() => userStore.userInfo?.picture || '')
 
 const firstLetter = computed(() => {
   return userName.value[0].toUpperCase()
@@ -42,7 +45,7 @@ const logOutAction = {
 const configStore = useConfigStore()
 
 const canAllAdminSection = computed(() => {
-  return store.getters.abilityCan('backoffice-users-control', PermissionLevel.view)
+  return userStore.abilityCan('backoffice-users-control', PermissionLevel.view)
 })
 
 const changeMode = computed(() => {
@@ -71,8 +74,6 @@ const superAdminMenu = computed(() => {
 const customMenuActions = computed((): Array<{ title: TranslateResult; icon: IconsList; action?: Function }> => {
   return canAllAdminSection.value ? [superAdminMenu.value, changeMode.value] : [changeMode.value]
 })
-
-
 </script>
 
 <template>
@@ -100,8 +101,16 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
               size="large"
               class="avatar-block"
             >
-              <VImg :src="userAvatar" cover v-if="userAvatar" class="object-contain" />
-              <h5 v-else class="text-h5 text-body-1 first-letter text-success">
+              <VImg
+                v-if="userAvatar"
+                :src="userAvatar"
+                cover
+                class="object-contain"
+              />
+              <h5
+                v-else
+                class="text-h5 text-body-1 first-letter text-success"
+              >
                 {{ firstLetter }}
               </h5>
             </VAvatar>

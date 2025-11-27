@@ -13,6 +13,7 @@ import { convertUpperCaseFirstSymbol } from '../../helpers'
 import { IconsList } from '../../@model/enums/icons'
 import ProjectSelect from '../../@layouts/components/ProjectSelect.vue'
 import { VVariants } from '../../@model/vuetify'
+import { useUserStore } from '../../stores/user'
 import { layoutConfig } from '@layouts'
 import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
 import { useLayoutConfigStore } from '@layouts/stores/config'
@@ -33,7 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const store = useStore()
 const refNav = ref()
-
+const userStore = useUserStore()
 const isHovered = useElementHover(refNav)
 
 provide(injectionKeyIsVerticalNavHovered, isHovered)
@@ -79,13 +80,13 @@ watch(() => isMinMode.value, () => {
     configStore.isVerticalNavCollapsed = false
 })
 
-const isNeocore = computed(() => store.getters.isNeocore)
+const isNeocore = computed(() => userStore.isNeocore)
 const isMenuTypeMain = computed(() => store.getters['appConfigCore/isMenuTypeMain'])
 
 const selectedProjectTitle = computed(() =>
   isNeocore.value
-    ? store.getters.selectedProject?.publicName
-    : convertUpperCaseFirstSymbol(store.getters.selectedProduct?.name),
+    ? userStore.getSelectedProject?.publicName
+    : convertUpperCaseFirstSymbol(userStore.getSelectedProject?.name),
 )
 
 const actualBackRoute = computed(() => {
