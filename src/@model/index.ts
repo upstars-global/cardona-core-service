@@ -91,3 +91,6 @@ export interface IRequestError {
   type: string
   validationErrors?: Array<ValidationError>
 }
+export interface EmitEvents<T extends Record<string, unknown>> {
+  <K extends keyof T>(event: K, payload: T[K]): void
+}
