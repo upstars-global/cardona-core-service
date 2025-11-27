@@ -7,6 +7,7 @@ import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import WSService from '../../services/ws'
 import { Location } from '../../@model/enums/tooltipPlacement'
 import { useNotificationExportStore } from '../../stores/notificationExport'
+import type { INotificationReportItem } from '../../@model/notificationExport'
 import { reportIsReady } from '../../@model/notificationExport'
 import { Channel } from '../../configs/wsConfig'
 import NotificationExportList from './list/index.vue'
@@ -15,6 +16,10 @@ import { useNotificationToast } from './_composables/useNotificationToast'
 defineOptions({
   name: 'NotificationExport',
 })
+
+const props = defineProps<{
+  userId: number
+}>()
 
 const { t } = useI18n()
 const { showToast } = useNotificationToast()
@@ -48,8 +53,10 @@ const onChangeMenuState = () => {
   notificationExportStore.resetNotifications()
 }
 
+const disableNotificationToast = (value: INotificationReportItem) => !value || !reportIsReady(value.status) || props.userId !== value.emitter.id
+
 watch(() => notificationExportStore.getLastNotification, newVal => {
-  if (!newVal || !reportIsReady(newVal.status))
+  if (disableNotificationToast(newVal))
     return
   callToast({
     entityName: t(`notificationReport.entityType.${newVal?.entityType}`),

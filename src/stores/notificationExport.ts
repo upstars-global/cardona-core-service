@@ -43,7 +43,10 @@ export const useNotificationExportStore = defineStore('notification-export', {
     resetDownloadList() {
       this.downloadList = []
     },
-    async createWSData({ data }: WSChanelPayload) {
+    async createWSData({ data, emitter }: WSChanelPayload) {
+
+      data.emitter = emitter
+
       upsert<INotificationReportItem>(notificationList.value, { reportId: data.reportId }, data)
 
       upsert<IDownloadListReportNotificationItem | INotificationReportItem>(this.downloadList, { reportId: data.reportId }, data)
