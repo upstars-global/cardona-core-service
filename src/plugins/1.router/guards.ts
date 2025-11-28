@@ -32,7 +32,6 @@ export const setupGuards = (router: Router) => {
     const isLoggedIn = !!(useCookie('userData').value && useCookie('accessToken').value)
 
     if (isLoggedIn && userStore.userInfo.isEmpty) {
-      await store.dispatch('fetchCurrentUser')
       await userStore.fetchCurrentUser()
       await Promise.all([
         localeStore.fetchLocalesList(),
