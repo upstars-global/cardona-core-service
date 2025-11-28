@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
-import _ from 'lodash'
 import type {
   IDownloadListReportNotificationItem,
   INotificationReportItem,
@@ -12,16 +11,20 @@ import {
 } from '../@model/notificationExport'
 import store from '@/store'
 
-const upsert = <ListType>(array: Array<ListType>, predicate: Partial<ListType>, newItem: ListType) => {
-  const foundItem = _.find(array, predicate)
-  if (foundItem) {
-    const foundIndex = _.indexOf(array, foundItem)
+function upsert<T extends { reportId: number }>(
+  list: T[],
+  item: T,
+): T[] {
+  const index = list.findIndex(x => x.reportId === item.reportId)
 
-    array.splice(foundIndex, 1, newItem)
-  }
-  else {
-    array.unshift(newItem)
-  }
+  if (index === -1)
+    return [...list, item]
+
+  return [
+    ...list.slice(0, index),
+    item,
+    ...list.slice(index + 1),
+  ]
 }
 
 const notificationList = useLocalStorage<INotificationReportItem[]>('notifications', [])
@@ -33,7 +36,9 @@ export const useNotificationExportStore = defineStore('notification-export', {
   }),
   getters: {
     getDownloadList: state => state.downloadList,
-    existingNotifications: () => notificationList.value.filter(item => item?.status === NotificationStatuses.Done).isNotEmpty,
+    existingNotifications: () => (userId: number) => notificationList.value
+      .filter(item => item?.status === NotificationStatuses.Done && item.emitter.id === userId)
+      .isNotEmpty,
     getLastNotification: () => notificationList.value[notificationList.value.length - 1],
   },
   actions: {
@@ -43,10 +48,13 @@ export const useNotificationExportStore = defineStore('notification-export', {
     resetDownloadList() {
       this.downloadList = []
     },
-    async createWSData({ data }: WSChanelPayload) {
-      upsert<INotificationReportItem>(notificationList.value, { reportId: data.reportId }, data)
+    async createWSData({ data, emitter }: WSChanelPayload) {
+      data.emitter = emitter
 
-      upsert<IDownloadListReportNotificationItem | INotificationReportItem>(this.downloadList, { reportId: data.reportId }, data)
+      console.log(notificationList.value.find(item => data.reportId === item.reportId))
+      notificationList.value = upsert<INotificationReportItem>(notificationList.value, data)
+
+      this.downloadList = upsert<IDownloadListReportNotificationItem | INotificationReportItem>(this.downloadList, data)
     },
     async downloadReport(reportId: number) {
       const response = await ApiService.request({

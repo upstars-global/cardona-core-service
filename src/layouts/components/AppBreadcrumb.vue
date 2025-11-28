@@ -29,6 +29,8 @@ const clock = useClockUtc({ isUtc: true })
 const time = computed(() => clock.time.value)
 const canShowNotificationExport = computed(() => store.getters.haveSomePermissionReport)
 
+const userId = computed(() => store.getters.userInfo.id)
+
 onMounted(clock.runTime)
 onUnmounted(clock.stopTime)
 </script>
@@ -121,7 +123,7 @@ onUnmounted(clock.stopTime)
           cols="1"
           class="d-flex align-center justify-end notification-export-wrapper"
         >
-          <NotificationExport />
+          <NotificationExport :user-id="userId" />
         </div>
       </VRow>
     </VCol>
