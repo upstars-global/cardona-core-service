@@ -10,6 +10,7 @@ import { IconsList } from '../../@model/enums/icons'
 import { VColors } from '../../@model/vuetify'
 import { PermissionLevel } from '../../@model/permission'
 import { useUserStore } from '../../stores/user'
+import { useAppConfigCoreStore } from '../../stores/appConfigCore'
 import { useConfigStore } from '@core/stores/config'
 import { Theme } from '@core/enums'
 
@@ -21,6 +22,7 @@ const { t } = useI18n()
 
 const store = useStore()
 const userStore = useUserStore()
+const appConfigStore = useAppConfigCoreStore()
 const router = useRouter()
 
 const userName = computed(() => {
@@ -65,7 +67,7 @@ const superAdminMenu = computed(() => {
     title: t('customMenu.adminSection'),
     icon: IconsList.CommandIcon,
     action: async () => {
-      await store.dispatch('appConfigCore/onToggleMenuType')
+      appConfigStore.onToggleMenuType()
       router.push({ name: 'UsersControlList' })
     },
   }
