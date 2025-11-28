@@ -18,7 +18,6 @@ class WSService {
   static WSListSubscribe: Set<string> = new Set()
   static WSchannel: null
   static stores: Record<string, any> = {}
-  private static authCoreStore = useAuthCoreStore()
 
   static async connect(channel, { needRefresh, stores }: { needRefresh?: boolean; stores: Record<string, any> }) {
     this.WSchannel = channel
@@ -30,7 +29,7 @@ class WSService {
       const data: {
         accessToken: string
         refreshToken: string
-      } = await WSService.authCoreStore.refreshAuth(getRefreshToken())
+      } = await useAuthCoreStore().refreshAuth(getRefreshToken())
 
       return data?.accessToken
     }
