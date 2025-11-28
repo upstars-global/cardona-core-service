@@ -2,20 +2,20 @@ import { createStore } from 'vuex'
 
 // Modules
 import appConfigCore from './modules/appConfigCore'
-import verticalMenuCore from './modules/verticalMenuCore'
+import verticalMenuCore from './old/verticalMenuCore'
 import breakpointCore from './modules/breakpointCore'
 import baseStoreCore from './modules/baseStoreCore'
-import productCore from './modules/productCore'
 import filtersCore from './modules/filtersCore'
 import authCore from './modules/authCore'
 import compostelaCore from './modules/compostelaCore'
-import users from './modules/users'
 import baseSectionErrors from './modules/baseSectionErrors'
-import tags from './modules/tags'
 import demo from './modules/demo'
 import permissions from './modules/permissions'
 import conditions from './modules/conditions'
 
+// import productCore from './old/productCore'
+// import users from './old/users'
+// import tags from './old/tags'
 // import user from './old/user'
 
 // TODO import ecommerceStoreModuleCore from '../views/apps/e-commerce/eCommerceStoreModule'
@@ -27,19 +27,20 @@ const store = createStore({
     verticalMenuCore,
     breakpointCore,
     baseStoreCore,
-    productCore,
     filtersCore,
     authCore,
     compostelaCore,
-    users,
     baseSectionErrors,
-    tags,
     demo,
     permissions,
     conditions,
     app,
 
-    // OLD version user,
+    // OLD version
+    // user,
+    // tags,
+    // users,
+    // productCore,
     // TODO 'app-ecommerce': ecommerceStoreModuleCore,
   },
   strict: Boolean(process.env.DEV),

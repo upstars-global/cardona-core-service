@@ -4,9 +4,9 @@ import { UserSmallInfo } from '../@model/users'
 import type { IRequestListPayload } from '../@model/index'
 import { ViewInfo, ViewType } from '../@model/view'
 import { i18n } from '../plugins/i18n'
-import store from '../store'
 import { MultiSelectBaseField, TextBaseField } from '../@model/templates/baseField'
 import { useUsersStore } from '../stores/users'
+import { useProductStore } from '../stores/productCore'
 
 export class GroupData {
   readonly id?: string
@@ -75,7 +75,7 @@ export class GroupForm {
     const users = data?.users.map(user => new UserSmallInfo(user))
 
     this.id = data?.id
-    this.productId = store.getters['productCore/productId']
+    this.productId = useProductStore().productId
     this.name = new TextBaseField({
       key: 'name',
       value: data?.name,
