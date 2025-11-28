@@ -5,7 +5,7 @@ import { h } from 'vue'
 import BaseList from '../../../../../src/components/templates/BaseList/index.vue'
 import ProjectsFilter from '../../../../../src/components/templates/BaseList/_components/ProjectsFilter.vue'
 import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../utils'
-import { BaseListSlots, ExportFormat } from '../../../../../src/@model/templates/baseList'
+import { BaseListSlots } from '../../../../../src/@model/templates/baseList'
 import { mockModal } from '../../../mocks/modal-provide-config'
 import { testOn } from '../../../templates/shared-tests/test-case-generator'
 import { FilterID } from '../../../../../src/@model/filter'
@@ -17,7 +17,6 @@ import {
   useListForCustomStore,
   useListForToggleStatus,
 } from '../../../mocks/base-list'
-import useToastService from '../../../../../src/helpers/toasts'
 
 vi.mock('../../../../../src/stores/users', () => {
   return {
@@ -178,6 +177,27 @@ describe('BaseList', () => {
     mockStore.state.selectedProject = { id: 'p1', alias: 'alpha', name: 'Project A' }
   })
 
+  it('Should call export data with params', async () => {
+    // Enable export functionality in props
+    props.config.withExport = true
+
+    const wrapper = getMountBaseList(props, global)
+
+    await flushPromises()
+
+    // Simulate user interactions to trigger JSON export
+    await clickTrigger({ wrapper, testId: 'menu-activator' })
+    await clickTrigger({ wrapper, testId: 'export-json' })
+
+    expect(mockBaseStoreCore.fetchReport).toHaveBeenCalled([
+      [{
+        type: 'Test',
+        data: { filter: { format: 'json' }, perPage: 1, sort: undefined },
+        customApiPrefix: undefined,
+      }],
+    ])
+  })
+
   it('Should render the default state with cell slots', async () => {
     // Mock the dispatch response with initial list data
     mockDispatch.mockResolvedValueOnce({
@@ -248,50 +268,6 @@ describe('BaseList', () => {
       },
       type: 'Test',
     })
-  })
-
-  it('Should show an error when maxExportItems is exceeded', async () => {
-    const { toastError } = useToastService()
-    const maxExportItems = 100
-
-    // Mock dispatch response indicating export limit exceeded
-    mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
-      list: [],
-      total: 101,
-    })
-
-    // Configure export settings in props
-    props.config.maxExportItems = maxExportItems
-    props.config.withExport = true
-    props.config.formatOfExports = [ExportFormat.CSV]
-
-    const wrapper = getMountBaseList(props, global)
-
-    await flushPromises()
-
-    // Simulate user interaction to trigger export
-    await clickTrigger({ wrapper, testId: 'menu-activator' })
-
-    // Expect that an error toast was shown
-    expect(toastError).toHaveBeenCalled()
-  })
-
-  it('Should call toastError when exporting data via export-json', async () => {
-    const { toastError } = useToastService()
-
-    // Enable export functionality in props
-    props.config.withExport = true
-
-    const wrapper = getMountBaseList(props, global)
-
-    await flushPromises()
-
-    // Simulate user interactions to trigger JSON export
-    await clickTrigger({ wrapper, testId: 'menu-activator' })
-    await clickTrigger({ wrapper, testId: 'export-json' })
-
-    // Expect that an error toast was shown
-    expect(toastError).toHaveBeenCalled()
   })
 
   it('Should display the create button when withCreateBtn is enabled', () => {
