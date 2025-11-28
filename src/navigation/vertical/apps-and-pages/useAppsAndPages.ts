@@ -1,3 +1,5 @@
+import { ref } from 'vue'
+
 export function useAppsAndPages() {
   return {
     appsAndPages: ref([
@@ -16,6 +18,6 @@ export function useAppsAndPages() {
         to: { name: 'Constructor' },
         icon: { icon: 'tabler-box' },
       },
-    ])
+    ]),
   }
 }
