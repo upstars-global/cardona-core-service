@@ -132,8 +132,8 @@ export const useAppConfigCoreStore = defineStore('appConfigCore', {
     },
 
     setVerifiedProject(project: ProjectInfo) {
-      if (!this.verifiedProjects.find(p => p?.id === project?.id))
-        this.verifiedProjects.push(project)
+      if (!this.verifiedProjects?.find(p => p?.id === project?.id))
+        this.verifiedProjects?.push(project)
     },
 
     async fetchConfig() {
