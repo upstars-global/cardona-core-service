@@ -9,13 +9,14 @@ import productCore from './modules/productCore'
 import filtersCore from './modules/filtersCore'
 import authCore from './modules/authCore'
 import compostelaCore from './modules/compostelaCore'
-import user from './modules/user'
 import users from './modules/users'
 import baseSectionErrors from './modules/baseSectionErrors'
 import tags from './modules/tags'
 import demo from './modules/demo'
 import permissions from './modules/permissions'
 import conditions from './modules/conditions'
+
+// import user from './old/user'
 
 // TODO import ecommerceStoreModuleCore from '../views/apps/e-commerce/eCommerceStoreModule'
 import app from './app'
@@ -30,7 +31,6 @@ const store = createStore({
     filtersCore,
     authCore,
     compostelaCore,
-    user,
     users,
     baseSectionErrors,
     tags,
@@ -39,6 +39,7 @@ const store = createStore({
     conditions,
     app,
 
+    // OLD version user,
     // TODO 'app-ecommerce': ecommerceStoreModuleCore,
   },
   strict: Boolean(process.env.DEV),

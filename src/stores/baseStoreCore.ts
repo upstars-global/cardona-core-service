@@ -53,7 +53,6 @@ const reportFactory = (isSpecificReport = false) => async (
 ): Promise<Blob | string> => {
   const paramKey = isSpecificReport ? 'data' : 'filter'
 
-  // const projectAlias = store.getters.selectedProject?.alias
   const typeSuffix = isSpecificReport ? 'Load.' : ''
 
   const response = await ApiService.request(
@@ -91,7 +90,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
         options: { customApiPrefix?: string; listItemModel?: any }
       },
     ): Promise<ListData> {
-      // // const projectAlias = store.getters.selectedProject?.alias
+      //
       // console.log(projectAlias,'111', this.$selectedProject, '11')
 
       const response = await ApiService.request({
@@ -116,7 +115,6 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       id: string
       customApiPrefix?: string
     }): Promise<any> {
-      // const projectAlias = store.getters.selectedProject?.alias
       const router = useRouter()
       const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 
@@ -142,8 +140,6 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       }
     },
     async fetchTypes(type: string): Promise<any> {
-      // const projectAlias = store.getters.selectedProject?.alias
-
       return ApiService.request({
         type: `${ApiTypePrefix + transformNameToType(type)}.Types.List`,
         data: {
@@ -255,7 +251,6 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       data: Array<{ id: string; isActive: boolean }>
       customApiPrefix?: string
     }): Promise<any> {
-      // const projectAlias = store.getters.selectedProject?.alias
       const entityKey = convertLowerCaseFirstSymbol(payload.type)
 
       return ApiService.request(
@@ -278,8 +273,6 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       comment: string
       customApiPrefix?: string
     }): Promise<any> {
-      // const projectAlias = store.getters.selectedProject?.alias
-
       return ApiService.request(
         {
           type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
@@ -300,8 +293,6 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       ids: string[]
       customApiPrefix?: string
     }): Promise<any> {
-      // const projectAlias = store.getters.selectedProject?.alias
-
       return ApiService.request(
         {
           type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
