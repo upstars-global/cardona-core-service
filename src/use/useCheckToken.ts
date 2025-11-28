@@ -1,19 +1,20 @@
-import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { TOKEN_INVALID } from 'cardona-core-service/src/utils/constants'
-import useToastService from 'cardona-core-service/src/helpers/toasts'
+import { TOKEN_INVALID } from '../utils/constants'
+import useToastService from '../helpers/toasts'
+import { useAuthCoreStore } from '../stores/authCore'
+import { useUserStore } from '../stores/user'
 
 const { toastError } = useToastService()
 
 export function useCheckToken() {
-  const store = useStore()
   const router = useRouter()
+  const authCoreStore = useAuthCoreStore()
 
   const getActualTokenKey = () => Object.keys(localStorage).find(key => key.includes('auth-tokens-'))
 
   const actionOnBrokenToken = async (withToast = false) => {
     withToast && toastError(TOKEN_INVALID)
-    await store.dispatch('authCore/clearAuth')
+    authCoreStore.clearAuth()
     await router.push('/login')
   }
 
@@ -32,7 +33,7 @@ export function useCheckToken() {
 
   const checkOnActualToken = async () => {
     try {
-      await store.dispatch('fetchCurrentUser')
+      await useUserStore().fetchCurrentUser()
     }
     catch {
       await actionOnBrokenToken()

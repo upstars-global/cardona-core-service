@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { VIcon } from 'vuetify/components/VIcon'
 
-import { useStore } from 'vuex'
 import { computed } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
@@ -11,6 +10,7 @@ import { VColors } from '../../@model/vuetify'
 import { PermissionLevel } from '../../@model/permission'
 import { useUserStore } from '../../stores/user'
 import { useAppConfigCoreStore } from '../../stores/appConfigCore'
+import { useAuthCoreStore } from '../../stores/authCore'
 import { useConfigStore } from '@core/stores/config'
 import { Theme } from '@core/enums'
 
@@ -20,9 +20,9 @@ const props = defineProps<{
 
 const { t } = useI18n()
 
-const store = useStore()
 const userStore = useUserStore()
 const appConfigStore = useAppConfigCoreStore()
+const authCoreStore = useAuthCoreStore()
 const router = useRouter()
 
 const userName = computed(() => {
@@ -39,7 +39,7 @@ const logOutAction = {
   title: t('customMenu.logout'),
   icon: IconsList.LogOutIcon,
   action: async () => {
-    await store.dispatch('authCore/clearAuth')
+    authCoreStore.clearAuth()
     await router.push('/login')
   },
 }

@@ -4,7 +4,7 @@ import ApiService from '../../services/api'
 import type { ILoginData } from '../../@model/auth'
 import { checkIsLoggedIn } from '../../helpers/token-auth'
 import { useUserStore } from '../../stores/user'
-import { useCookie } from '../../@core/composable/useCookie'
+import { useCookie } from '@core/composable/useCookie'
 
 export default {
   namespaced: true,

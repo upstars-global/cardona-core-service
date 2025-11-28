@@ -1,9 +1,9 @@
 import { getAccessToken, getRefreshToken } from 'axios-jwt'
 import { Centrifuge } from 'centrifuge'
 import { has } from 'lodash'
-import store from '../../store'
 import { checkIsLoggedIn } from '../../helpers/token-auth'
 import { IS_DEV_ENV, LENS_PORT } from '../../utils/constants'
+import { useAuthCoreStore } from '../../stores/authCore'
 import { messageTypes } from './config'
 
 export enum TyperRequest {
@@ -18,6 +18,7 @@ class WSService {
   static WSListSubscribe: Set<string> = new Set()
   static WSchannel: null
   static stores: Record<string, any> = {}
+  private static authCoreStore = useAuthCoreStore()
 
   static async connect(channel, { needRefresh, stores }: { needRefresh?: boolean; stores: Record<string, any> }) {
     this.WSchannel = channel
@@ -29,7 +30,7 @@ class WSService {
       const data: {
         accessToken: string
         refreshToken: string
-      } = await store.dispatch('authCore/refreshAuth', getRefreshToken())
+      } = await WSService.authCoreStore.refreshAuth(getRefreshToken())
 
       return data?.accessToken
     }

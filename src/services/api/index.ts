@@ -8,6 +8,7 @@ import { convertCamelCase } from '../../helpers'
 import { TOKEN_INVALID } from '../../utils/constants'
 import { useLoaderStore } from '../../stores/loader'
 import { i18n } from '../../plugins/i18n/index'
+import { useAuthCoreStore } from '../../stores/authCore'
 import {
   ContentType,
   Method,
@@ -145,6 +146,7 @@ class ApiService {
       return data
     }
     catch (error: any) {
+      const authCoreStore = useAuthCoreStore()
       // TODO BAC-4018
       // if (retryCount > 0 && (!error?.description || error?.type === 'INTERNAL')) {
       //   console.log(`Request failed. Waiting ${retryDelay / 1000} sec before next try. Count: ${retryCount}`)
@@ -160,9 +162,9 @@ class ApiService {
       const isInvalidToken = isInvalidTokenError(error)
       const errorsType = ['UNAUTHORIZED', 'BAD_CREDENTIALS', 'TOKEN_EXPIRED', TOKEN_INVALID]
 
-      if (store.getters['authCore/isAuthorizedUser'] && errorsType.includes(error?.type) || isInvalidToken) {
+      if (authCoreStore.isAuthorizedUser && errorsType.includes(error?.type) || isInvalidToken) {
         toastError(TOKEN_INVALID)
-        store.dispatch('authCore/clearAuth')
+        authCoreStore.clearAuth()
 
         if (!isLoginPage)
           router.push('/login')
