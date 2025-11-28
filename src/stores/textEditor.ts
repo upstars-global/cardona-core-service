@@ -3,6 +3,7 @@ import { omit } from 'lodash'
 
 export const useTextEditorStore = defineStore('textEditor', {
   state: () => ({
+    isSave: false,
     isUpdateVar: false,
     variableTextBuffer: {},
   }),
@@ -10,6 +11,9 @@ export const useTextEditorStore = defineStore('textEditor', {
   actions: {
     setUpdateVar(newIsUpdateVar) {
       this.isUpdateVar = newIsUpdateVar
+    },
+    setSave(newIsSave) {
+      this.isSave = newIsSave
     },
     setVariableTextBuffer(variableTextBuffer) {
       this.variableTextBuffer = variableTextBuffer

@@ -3,6 +3,7 @@ import { Centrifuge } from 'centrifuge'
 import { has } from 'lodash'
 import store from '../../store'
 import { checkIsLoggedIn } from '../../helpers/token-auth'
+import { IS_DEV_ENV, LENS_PORT } from '../../utils/constants'
 import { messageTypes } from './config'
 
 export enum TyperRequest {
@@ -37,9 +38,11 @@ class WSService {
     if (needRefresh)
       refreshAuthToken = await getToken()
 
-    // ws://localhost:56316/connection/websocket (lens link port)
-    // wss://${location.host || location.hostname}/ws
-    const client = new Centrifuge(`wss://${location.host || location.hostname}/ws`, {
+    const centrifugeUrl = IS_DEV_ENV
+      ? `ws://localhost:${LENS_PORT}/connection/websocket` // (lens link port) for development mode
+      : `wss://${location.host || location.hostname}/ws` // for production mode
+
+    const client = new Centrifuge(centrifugeUrl, {
       debug: true,
       token: refreshAuthToken || getAccessToken(),
       getToken,
