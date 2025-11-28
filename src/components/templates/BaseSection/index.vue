@@ -2,7 +2,6 @@
 import { computed, inject, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
-import { useStore as useVuexStore } from 'vuex'
 import { IconsList } from '../../../@model/enums/icons'
 import { checkExistsPage, transformFormData } from '../../../helpers'
 import { basePermissions } from '../../../helpers/base-permissions'
@@ -16,6 +15,7 @@ import { useRedirectToNotFoundPage } from '../../../helpers/router'
 import { useLoaderStore } from '../../../stores/loader'
 import { useTextEditorStore } from '../../../stores/textEditor'
 import { useBaseStoreCore } from '../../../stores/baseStoreCore'
+import { useBaseSectionErrorsStore } from '../../stores/baseSectionErrors'
 import { setTabError } from './composables/tabs'
 import { generateEntityUrl } from './composables/entity'
 import BaseSectionLoading from './BaseSectionLoading.vue'
@@ -42,8 +42,8 @@ const emits = defineEmits<{
 }>()
 
 const modal = inject('modal')
-const vuexStore = useVuexStore()
 const loaderStore = useLoaderStore()
+const baseSectionErrorStore = useBaseSectionErrorsStore()
 const route = useRoute()
 const router = useRouter()
 const textEditorStore = useTextEditorStore()
@@ -90,7 +90,7 @@ const isDisableSubmitBtn = computed(() => {
   return loaderStore.isLoadingEndpoint(props.config.loadingEndpointArr)
 })
 
-const isExistsEndpointsWithError = computed(() => vuexStore.getters.isErrorEndpoint([
+const isExistsEndpointsWithError = computed(() => baseSectionErrorStore.isErrorEndpoint([
   `${entityUrl}/read`,
   ...props.config.loadingEndpointArr,
 ]))
@@ -275,11 +275,11 @@ const confirmRemoveModal = async () => {
 }
 
 watch(() => formRef.value?.values, () => {
-  vuexStore.dispatch('resetErrorUrls')
+  baseSectionErrorStore.resetErrorUrls()
 }, { deep: true })
 
 onBeforeUnmount(() => {
-  vuexStore.dispatch('resetErrorUrls')
+  baseSectionErrorStore.resetErrorUrls()
   textEditorStore.setVariableTextBuffer({})
 })
 

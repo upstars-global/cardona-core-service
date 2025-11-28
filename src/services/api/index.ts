@@ -2,13 +2,13 @@ import { v4 as uuidv4 } from 'uuid'
 import { useRoute, useRouter } from 'vue-router'
 import type { AxiosError, AxiosInstance, AxiosRequestConfig } from '../../libs/axios'
 import axios from '../../libs/axios'
-import store from '../../store'
 import useToastService from '../../helpers/toasts'
 import { convertCamelCase } from '../../helpers'
 import { TOKEN_INVALID } from '../../utils/constants'
 import { useLoaderStore } from '../../stores/loader'
 import { i18n } from '../../plugins/i18n/index'
 import { useAuthCoreStore } from '../../stores/authCore'
+import { useBaseSectionErrorsStore } from '../../stores/baseSectionErrors'
 import {
   ContentType,
   Method,
@@ -147,6 +147,7 @@ class ApiService {
     }
     catch (error: any) {
       const authCoreStore = useAuthCoreStore()
+
       // TODO BAC-4018
       // if (retryCount > 0 && (!error?.description || error?.type === 'INTERNAL')) {
       //   console.log(`Request failed. Waiting ${retryDelay / 1000} sec before next try. Count: ${retryCount}`)
@@ -170,7 +171,9 @@ class ApiService {
           router.push('/login')
       }
 
-      store.dispatch('addErrorUrl', url)
+      useBaseSectionErrorsStore().addErrorUrl(url)
+
+      // store.dispatch('addErrorUrl', url)
 
       const notVisibleErrorToast = !withErrorNotFound && error?.type === 'NOT_FOUND'
       if (!notVisibleErrorToast) {
