@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
 import AppBreadcrumb from './AppBreadcrumb.vue'
-import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages/index'
+import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
 import { VerticalNavLayout } from '@layouts'
 
 const { appsAndPages } = useAppsAndPages()
