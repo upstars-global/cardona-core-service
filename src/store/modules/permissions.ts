@@ -1,7 +1,7 @@
 import ApiService from '../../services/api'
 import { useUserStore } from '../../stores/user'
 import type { UserInfo } from '../../@model/users'
-import { transformNameToType } from '../old/baseStoreCore'
+import { transformNameToType } from '../../stores/baseStoreCore'
 import { ApiTypePrefix } from '@productConfig'
 
 export default {
@@ -28,7 +28,6 @@ export default {
       const userStore = useUserStore()
 
       const user = {
-        // ...rootGetters.userInfo,
         ...userStore.userInfo,
         permissions: payload.data.form.permissions,
       }
