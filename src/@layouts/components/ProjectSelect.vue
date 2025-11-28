@@ -14,7 +14,9 @@ const { changeProject } = useChangeProject()
 
 const selectProject = computed({
   get: () => userStore.selectedProjectWithoutPriority,
-  set: val => changeProject(val),
+  set: val => {
+    changeProject(val)
+  },
 })
 
 const projects = computed(() => userStore.userInfo.projects)
@@ -24,6 +26,7 @@ onMounted(() => {
   const faviconPath = userStore.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
 
   useFavicon(faviconPath)
+  changeProject(userStore.selectedProjectWithoutPriority)
 })
 </script>
 
