@@ -14,6 +14,7 @@ import InputTextWrapper from '../../templates/LocaleForm/_components/InputTextWr
 import CheckField from '../../templates/FieldGenerator/_components/CheckField.vue'
 import { useLocaleStore } from '../../../stores/locale'
 import { useTextEditorStore } from '../../../stores/textEditor'
+import { useUserStore } from '../../../stores/user'
 
 interface Props {
   modelValue: TranslationForm
@@ -36,9 +37,10 @@ const emits = defineEmits<{
 const store = useStore()
 const localeStore = useLocaleStore()
 const textEditorStore = useTextEditorStore()
+const userStore = useUserStore()
 
 const selectEditeInput = ref('')
-const selectedProject = computed(() => store.getters.selectedProject)
+const selectedProject = computed(() => userStore.getSelectedProject)
 const mainLocale = computed<string>(() => selectedProject.value?.mainLocale || 'ru')
 const allLocales = computed(() => localeStore.allLocales)
 const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])

@@ -1,4 +1,6 @@
 import ApiService from '../../services/api'
+import { useUserStore } from '../../stores/user'
+import type { UserInfo } from '../../@model/users'
 import { transformNameToType } from './baseStoreCore'
 import { ApiTypePrefix } from '@productConfig'
 
@@ -23,12 +25,17 @@ export default {
       { commit, rootGetters },
       payload: { type: string; data: { form: any; formRef: any }; customApiPrefix: string },
     ) {
+      const userStore = useUserStore()
+
       const user = {
-        ...rootGetters.userInfo,
+        // ...rootGetters.userInfo,
+        ...userStore.userInfo,
         permissions: payload.data.form.permissions,
       }
 
-      commit('SET_USER_INFO', user, { root: true })
+      userStore.setUserInfo(user as UserInfo)
+
+      // commit('SET_USER_INFO', user, { root: true })
 
       return await ApiService.request(
         {
