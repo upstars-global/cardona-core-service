@@ -26,7 +26,7 @@ const { showToast } = useNotificationToast()
 const notificationMenuState = ref(false)
 const notificationExportStore = useNotificationExportStore()
 
-const existNewNotification = computed(() => notificationExportStore.existingNotifications && !notificationMenuState.value)
+const existNewNotification = computed(() => notificationExportStore.existingNotifications(props.userId) && !notificationMenuState.value)
 
 onBeforeMount(async () => {
   WSService.subscribe(Channel.Notifications)
