@@ -1,15 +1,16 @@
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
 import AppBreadcrumb from './AppBreadcrumb.vue'
-import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages/index'
+import navItems from '@/navigation/vertical/'
 import { VerticalNavLayout } from '@layouts'
 
-const { appsAndPages } = useAppsAndPages()
-
-const navItems = computed(() => {
-  return appsAndPages.value
-})
+// import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages/index'
+// const { appsAndPages } = useAppsAndPages()
+//
+// const navItems = computed(() => {
+//   return appsAndPages.value
+// })
 
 const isFallbackStateActive = ref(false)
 const refLoadingIndicator = ref<any>(null)
