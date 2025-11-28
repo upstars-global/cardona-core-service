@@ -14,6 +14,7 @@ import { IconsList } from '../../@model/enums/icons'
 import ProjectSelect from '../../@layouts/components/ProjectSelect.vue'
 import { VVariants } from '../../@model/vuetify'
 import { useUserStore } from '../../stores/user'
+import { useAppConfigCoreStore } from '../../stores/appConfigCore'
 import { layoutConfig } from '@layouts'
 import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
 import { useLayoutConfigStore } from '@layouts/stores/config'
@@ -55,6 +56,7 @@ const resolveNavItemComponent = (item: NavLink | NavSectionTitle | NavGroup): un
   Close overlay vertical nav when link is clicked
 */
 const route = useRoute()
+const appConfigCoreStore = useAppConfigCoreStore()
 
 watch(() => route.name, () => {
   props.toggleIsOverlayNavActive(false)
@@ -81,7 +83,7 @@ watch(() => isMinMode.value, () => {
 })
 
 const isNeocore = computed(() => userStore.isNeocore)
-const isMenuTypeMain = computed(() => store.getters['appConfigCore/isMenuTypeMain'])
+const isMenuTypeMain = computed(() => appConfigCoreStore.isMenuTypeMain)
 
 const selectedProjectTitle = computed(() =>
   isNeocore.value

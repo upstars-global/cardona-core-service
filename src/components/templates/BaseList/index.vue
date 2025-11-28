@@ -37,6 +37,7 @@ import StatusField from '../../../components/templates/_components/StatusField.v
 import { useLoaderStore } from '../../../stores/loader'
 import { useBaseStoreCore } from '../../../stores/baseStoreCore'
 import { useUserStore } from '../../../stores/user'
+import { useAppConfigCoreStore } from '../../../stores/appConfigCore'
 import usePagination from './сomposables/pagination'
 import type { PaginationResult } from './сomposables/pagination'
 import MultipleActions from './_components/MultipleActions.vue'
@@ -79,6 +80,7 @@ const modal = inject('modal')
 const slots = useSlots()
 
 const baseStoreCore = useBaseStoreCore()
+const appConfigCoreStore = useAppConfigCoreStore()
 const store = useVuexStore()
 const userStore = useUserStore()
 const loaderStore = useLoaderStore()
@@ -443,7 +445,7 @@ const onExportFormatSelected = async (format: ExportFormat) => {
 }
 
 // Projects filters
-const userProjects = computed<ProjectsFilterOption[]>(() => store.getters['appConfigCore/verifiedProjects'].map(({ id, alias, name }) => ({
+const userProjects = computed<ProjectsFilterOption[]>(() => appConfigCoreStore.verifiedProjects.map(({ id, alias, name }) => ({
   id,
   alias,
   title: name,
@@ -754,7 +756,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :model-value="perPage"
             :options="perPageOptions"
             class="per-page-selector d-inline-block"
-            :dir="store.getters['appConfigCore/dirOption']"
+            :dir="appConfigCoreStore.dirOption"
             :searchable="false"
             :clearable="false"
             @update:model-value="setPerPage"

@@ -2,10 +2,9 @@ import type { Router } from 'vue-router'
 import { useCookie } from '../../@core/composable/useCookie'
 import { useLocaleStore } from '../../stores/locale'
 import { useUserStore } from '../../stores/user'
-import store from '@/store'
+import { useAppConfigCoreStore } from '../../stores/appConfigCore'
 
 export const setupGuards = (router: Router) => {
-
   // 👉 router.beforeEach
   // Docs: https://router.vuejs.org/guide/advanced/navigation-guards.html#global-before-guards
   router.beforeEach(async to => {
@@ -21,6 +20,7 @@ export const setupGuards = (router: Router) => {
     const isAllPermissions = to.meta.isAllPermissions
 
     const localeStore = useLocaleStore()
+    const appConfigCoreStore = useAppConfigCoreStore()
 
     if (to.meta.public)
       return
@@ -35,7 +35,7 @@ export const setupGuards = (router: Router) => {
       await userStore.fetchCurrentUser()
       await Promise.all([
         localeStore.fetchLocalesList(),
-        store.dispatch('appConfigCore/fetchConfig'),
+        appConfigCoreStore.fetchConfig(),
       ])
     }
 
