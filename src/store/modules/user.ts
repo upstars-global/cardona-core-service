@@ -73,6 +73,10 @@ export default {
     },
 
     selectedProduct: ({ selectedProduct }) => selectedProduct,
+    projectsBySelectedProduct: (_, getters) => getters
+      .userProjects
+      .filter(item => item?.productId === getters.selectedProduct?.id)
+      .filter(Boolean),
 
     // @ts-expect-error
     isNeocore: () => productName === productsName.neocore,
