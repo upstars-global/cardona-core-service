@@ -4,7 +4,7 @@ import { beforeEach, expect, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { merge } from 'lodash'
 import { getSelectorTestId, setMountComponent } from '../../utils'
-import { router } from '../../../../src/plugins/2.router'
+import { router } from '../../../../src/plugins/1.router'
 import DateField from '../../../../src/components/templates/FieldGenerator/_components/DateField.vue'
 import { EventEmittersNames, testOn } from './test-case-generator'
 
