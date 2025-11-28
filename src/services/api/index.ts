@@ -46,6 +46,12 @@ const getActionName = (string: string): string => [
   ?.replace('.', '_') || ''
 
 class ApiService {
+  private static headers: RequestHeaders
+
+  static setHeaders(headers: RequestHeaders): void {
+    ApiService.headers = headers
+  }
+
   static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}, retryCount = 0, retryDelay = 1000) {
     const loaderStore = useLoaderStore()
     const router = useRouter()
@@ -100,6 +106,7 @@ class ApiService {
       const axiosInstance: AxiosInstance = newAxiosInstance ? axios.create() : axios
 
       const headers: RequestHeaders = {
+        ...this.headers || {},
         'Content-Type': contentType,
       }
 
