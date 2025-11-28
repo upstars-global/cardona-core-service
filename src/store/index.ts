@@ -3,9 +3,9 @@ import { createStore } from 'vuex'
 // Modules
 import filtersCore from './modules/filtersCore'
 import compostelaCore from './modules/compostelaCore'
-import baseSectionErrors from './modules/baseSectionErrors'
 import permissions from './modules/permissions'
 
+// import baseSectionErrors from './old/baseSectionErrors'
 // import conditions from './old/conditions'
 // import authCore from './old/authCore'
 // import demo from './old/demo'
@@ -25,11 +25,11 @@ const store = createStore({
   modules: {
     filtersCore,
     compostelaCore,
-    baseSectionErrors,
     permissions,
     app,
 
     // OLD version
+    // baseSectionErrors,
     // conditions,
     // appConfigCore,
     // verticalMenuCore,
