@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
 import { cloneDeep } from 'lodash'
 import useToastService from '../../helpers/toasts'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
@@ -9,6 +8,7 @@ import { IconsList } from '../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import type { BaseField } from '../../@model/templates/baseField'
 import type { IDefaultFilter } from '../../@model/filter'
+import { useFiltersStore } from '../../stores/filtersCore'
 import FilterSelector from './_components/FilterSelector.vue'
 
 const props = withDefaults(defineProps<{
@@ -25,8 +25,8 @@ const emits = defineEmits<{
   (e: 'change-selected-filters', filters: BaseField[]): void
 }>()
 
-const store = useStore()
 const route = useRoute()
+const filtersCoreStore = useFiltersStore()
 const { toastSuccess } = useToastService()
 
 const { name: pageName } = route
@@ -36,14 +36,17 @@ const selectedFilters = ref<BaseField[]>([])
 
 const isSmallBlock: boolean = props.size === VSizes.Small
 
-const isExistsEntityDefaultFilters = computed<boolean>(() => store.getters['filtersCore/isExistsEntityDefaultFilters'](keyStorage))
+const isExistsEntityDefaultFilters = computed<boolean>(() => filtersCoreStore.isExistsEntityDefaultFilters(keyStorage))
 
 const onChange = (filter: BaseField) => selectedFilters.value.push(cloneDeep(filter))
 
 const onApply = () => {
-  store.commit('filtersCore/SET_LIST_ENTITY_NAME', props.entityName)
-  store.commit('filtersCore/SET_LIST_PATH', route.path)
-  store.commit('filtersCore/SET_LIST_FILTERS', selectedFilters.value)
+  // store.commit('filtersCore/SET_LIST_ENTITY_NAME', props.entityName)
+  // store.commit('filtersCore/SET_LIST_PATH', route.path)
+  // store.commit('filtersCore/SET_LIST_FILTERS', selectedFilters.value)
+  filtersCoreStore.setListEntityName(props.entityName)
+  filtersCoreStore.setListPath(route.path)
+  filtersCoreStore.setListFilters(selectedFilters.value)
 
   emits('apply')
 }
@@ -65,20 +68,24 @@ watch(selectedFilters, filters => {
 }, { deep: true })
 
 onMounted(async () => {
-  const isSamePath = route.path === store.getters['filtersCore/listPath']
-  const isSameEntity = props.entityName === store.getters['filtersCore/listEntityName']
+  const isSamePath = route.path === filtersCoreStore.listPath
+  const isSameEntity = props.entityName === filtersCoreStore.listEntityName
 
   if (!isSamePath || !isSameEntity) {
-    store.commit('filtersCore/SET_LIST_ENTITY_NAME')
-    store.commit('filtersCore/SET_LIST_PATH')
-    store.commit('filtersCore/SET_LIST_FILTERS')
+    filtersCoreStore.setListEntityName()
+    filtersCoreStore.setListPath()
+    filtersCoreStore.setListFilters()
+
+    // store.commit('filtersCore/SET_LIST_ENTITY_NAME')
+    // store.commit('filtersCore/SET_LIST_PATH')
+    // store.commit('filtersCore/SET_LIST_FILTERS')
   }
 
-  if (store.getters['filtersCore/appliedListFilters'].length) {
-    selectedFilters.value = store.getters['filtersCore/appliedListFilters']
+  if (filtersCoreStore.appliedListFilters.length) {
+    selectedFilters.value = filtersCoreStore.appliedListFilters
   }
   else {
-    const filtersSavedByDefault: IDefaultFilter[] = await store.dispatch('filtersCore/fetchDefaultFilters')
+    const filtersSavedByDefault: IDefaultFilter[] = await filtersCoreStore.fetchDefaultFilters()
     const currentListFilters: IDefaultFilter | undefined = filtersSavedByDefault.find(({ type }) => type === keyStorage)
 
     if (currentListFilters) {
@@ -98,7 +105,7 @@ const selectedFiltersKeys = computed(() => {
 const onSaveByDefault = async () => {
   const savedFilter: IDefaultFilter = { type: keyStorage, fields: selectedFiltersKeys.value }
 
-  await store.dispatch('filtersCore/setDefaultFilter', savedFilter)
+  filtersCoreStore.setDefaultFilter(savedFilter)
 
   toastSuccess('filtersSavedByDefault')
 }
@@ -174,7 +181,12 @@ const listNotSelected = computed(() => {
                   md="9"
                   class="d-flex align-center py-0"
                 >
-                  <slot :name="`filter(${selectedFilters[key].key})`" :index="key" :selectedFilters="selectedFilters" :size="size">
+                  <slot
+                    :name="`filter(${selectedFilters[key].key})`"
+                    :index="key"
+                    :selected-filters="selectedFilters"
+                    :size="size"
+                  >
                     <FieldGenerator
                       v-model="selectedFilters[key]"
                       :with-label="false"
