@@ -1,7 +1,7 @@
 import ApiService from '../../services/api'
 import { useUserStore } from '../../stores/user'
 import type { UserInfo } from '../../@model/users'
-import { transformNameToType } from '../old/baseStoreCore'
+import { transformNameToType } from './baseStoreCore'
 import { ApiTypePrefix } from '@productConfig'
 
 export default {

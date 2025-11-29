@@ -3,12 +3,12 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NoFiles from '../UploadImage/NoFiles.vue'
 import usePagination from '../templates/BaseList/сomposables/pagination'
-import store from '../../store'
 import AppTextField from '../../@core/components/app-form-elements/AppTextField.vue'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import GridView from './GridView.vue'
 import ListView from './ListView.vue'
+import { useCompostelaStore } from '@/stores/compostelaCore'
 
 const props = withDefaults(defineProps<{
   urlFile: string
@@ -47,6 +47,7 @@ const {
 
 const url = ref(props.path)
 const type = ref('grid')
+const compostelaStore = useCompostelaStore()
 
 const items = computed(() => {
   const arrUrl = url.value.split('/').filter(item => !!item)
@@ -74,7 +75,7 @@ const fetchFilesStructure = async () => {
   isLoad.value = true
 
   try {
-    const { data, pagination } = await store.dispatch('compostelaCore/getStructureList', {
+    const { data, pagination } = await compostelaStore.getStructureList({
       path: url.value,
       pageNumber: currentPage.value,
       perPage: perPage.value,
@@ -170,7 +171,7 @@ const setUrlFile = async (publicPathIMG, path) => {
     const nameFileArr = path?.split('/')
     const nameFile = nameFileArr[nameFileArr.length - 1]
 
-    const { publicPath } = await store.dispatch('compostelaCore/uploadFile', {
+    const { publicPath } = await compostelaStore.uploadFile({
       path: `${props.path}/${nameFile}`,
       replace: path,
     })

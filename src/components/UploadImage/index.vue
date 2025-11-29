@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, nextTick, ref } from 'vue'
 import { Field } from 'vee-validate'
-import store from '../../store'
 import { IconsList } from '../../@model/enums/icons'
 import { ModalSizes, VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { i18n } from '../../plugins/i18n'
@@ -12,6 +11,7 @@ import FilesUpload from '../FilesUpload/FilesUpload.vue'
 import { MAX_WIDTH_TOOLTIP } from '../../utils/constants'
 import { ModalsId } from '../../@model/modalsId'
 import ModalFileUpload from './ModalFileUpload.vue'
+import { useCompostelaStore } from '@/stores/compostelaCore'
 
 interface FieldConfig {
   id: string
@@ -57,6 +57,7 @@ const emits = defineEmits<{
 }>()
 
 const modal = inject('modal')
+const compostelaStore = useCompostelaStore()
 
 const maxSizeFileMb = 4 // 4MB
 const file = ref()
@@ -104,7 +105,7 @@ const onFileUpload = async file => {
   try {
     const _path = `${props.path}/${file.name.replace(/\W/g, '_')}`
 
-    const { publicPath } = await store.dispatch('compostelaCore/uploadFile', {
+    const { publicPath } = await compostelaStore.uploadFile({
       file,
       path: _path,
     })

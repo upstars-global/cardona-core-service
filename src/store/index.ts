@@ -1,9 +1,8 @@
 import { createStore } from 'vuex'
 
 // Modules
-import compostelaCore from './modules/compostelaCore'
-
-// import permissions from './modules/permissions'
+// import compostelaCore from './old/compostelaCore'
+import permissions from './old/permissions'
 // import filtersCore from './old/filtersCore'
 // import baseSectionErrors from './old/baseSectionErrors'
 // import conditions from './old/conditions'
