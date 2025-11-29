@@ -10,8 +10,8 @@ import RemoveModal from '../../components/BaseModal/RemoveModal.vue'
 import FilesUpload from '../FilesUpload/FilesUpload.vue'
 import { MAX_WIDTH_TOOLTIP } from '../../utils/constants'
 import { ModalsId } from '../../@model/modalsId'
+import { useCompostelaStore } from '../../stores/compostelaCore'
 import ModalFileUpload from './ModalFileUpload.vue'
-import { useCompostelaStore } from '@/stores/compostelaCore'
 
 interface FieldConfig {
   id: string

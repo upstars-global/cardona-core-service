@@ -6,9 +6,9 @@ import usePagination from '../templates/BaseList/сomposables/pagination'
 import AppTextField from '../../@core/components/app-form-elements/AppTextField.vue'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
+import { useCompostelaStore } from '../../stores/compostelaCore'
 import GridView from './GridView.vue'
 import ListView from './ListView.vue'
-import { useCompostelaStore } from '@/stores/compostelaCore'
 
 const props = withDefaults(defineProps<{
   urlFile: string
