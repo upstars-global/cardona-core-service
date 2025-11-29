@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { useStore } from 'vuex'
 import type {
   FieldTranslationsLocale,
   LocaleVariable, TranslationForm,
@@ -15,6 +14,7 @@ import CheckField from '../../templates/FieldGenerator/_components/CheckField.vu
 import { useLocaleStore } from '../../../stores/locale'
 import { useTextEditorStore } from '../../../stores/textEditor'
 import { useUserStore } from '../../../stores/user'
+import { useAppConfigCoreStore } from '../../../stores/appConfigCore'
 
 interface Props {
   modelValue: TranslationForm
@@ -34,16 +34,16 @@ const emits = defineEmits<{
   (e: 'update:model-value', value: any): void
 }>()
 
-const store = useStore()
 const localeStore = useLocaleStore()
 const textEditorStore = useTextEditorStore()
 const userStore = useUserStore()
+const appConfigCorStore = useAppConfigCoreStore()
 
 const selectEditeInput = ref('')
 const selectedProject = computed(() => userStore.getSelectedProject)
 const mainLocale = computed<string>(() => selectedProject.value?.mainLocale || 'ru')
 const allLocales = computed(() => localeStore.allLocales)
-const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
+const allCurrencies = computed(() => appConfigCorStore.allCurrencies)
 const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
 
 const isMainLocale = (locale: string): boolean => locale === mainLocale.value
