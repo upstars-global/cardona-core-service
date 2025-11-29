@@ -141,11 +141,13 @@ export default {
   },
 
   actions: {
-    async fetchCurrentUser({ commit }) {
+    async fetchCurrentUser({ commit }): Promise<UserInfo | void> {
       try {
         const currentUser: UserInfo = await fetchCurrentUser()
 
         commit('SET_USER_INFO', currentUser)
+
+        return currentUser
       }
       catch {}
     },

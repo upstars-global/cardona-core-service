@@ -13,6 +13,7 @@ import { useVideoUploadStore } from '../../stores/uploadVideo'
 import { useTextEditorStore } from '../../stores/textEditor'
 import { PermissionLevel } from '../../@model/permission'
 import useToastService from '../../helpers/toasts'
+import { useUserStore } from '../../stores/user'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
@@ -54,6 +55,7 @@ const modal = inject('modal')
 const editorKey = uuidv4()
 
 const store = useStore()
+const userStore = useUserStore()
 const videoUploadStore = useVideoUploadStore()
 const textEditorStore = useTextEditorStore()
 
@@ -98,10 +100,10 @@ const defaultObjLocalisationParameters: Record<string, any> = {}
 
 props.optionsVariable.forEach(item => { defaultObjLocalisationParameters[item] = '' })
 
-const selectedProject = computed(() => store.getters.selectedProject)
+const selectedProject = computed(() => userStore.getSelectedProject)
 
 const selectedProjectPublicName = computed(
-  () => selectedProject.value?.publicName || store.getters.selectedProject?.title,
+  () => selectedProject.value?.publicName || userStore.getSelectedProject?.title,
 )
 
 const galleryModalId = 'gallery-modal'
@@ -136,7 +138,7 @@ FroalaEditor.RegisterCommand('gallery', {
   },
 })
 
-const canUploadVideo = computed(() => store.getters.abilityCan(PermissionType.BackofficeVimeo, PermissionLevel.create))
+const canUploadVideo = computed(() => userStore.abilityCan(PermissionType.BackofficeVimeo, PermissionLevel.create))
 
 let uploadVideoVimeo = null
 

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
-import { useStore } from 'vuex'
 import type { ViewInfo } from '../../../../@model/view'
+import { useUserStore } from '../../../../stores/user'
+import { PermissionLevel } from '../../../../@model/permission'
 
 const props = defineProps<{
   item: ViewInfo
@@ -9,10 +10,10 @@ const props = defineProps<{
 
 const modal = inject('modal')
 
-const store = useStore()
+const userStore = useUserStore()
 
 const canUpdate = computed<boolean>(() =>
-  props.item.permission ? store.getters.abilityCan(props.item.permission, 'update') : true,
+  props.item.permission ? userStore.abilityCan(props.item.permission, PermissionLevel.update) : true,
 )
 
 const isLink = computed<boolean>(() => props.item.value.route)

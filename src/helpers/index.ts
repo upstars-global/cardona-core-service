@@ -4,7 +4,9 @@ import { isObject } from '../@core/utils/helpers'
 import { BaseField, DateBaseField, NumberRangeBaseField } from '../@model/templates/baseField'
 import type { NumberOrString, OptionsItem } from '../@model'
 import { useTextEditorStore } from '../stores/textEditor'
-import store from '@/store'
+import { useUserStore } from '../stores/user'
+
+// import store from '@/store'
 
 export const getMappedUrl = (url: string) => url.replace(/\/api\/v\d+\//, '')
 export const isNullOrUndefinedValue = (value: any): boolean => value === null || value === undefined
@@ -12,6 +14,7 @@ export const trimEdges = (value: string): string => value.trimEnd().trimStart()
 
 export const transformFormData = (form): object => {
   const textEditorStore = useTextEditorStore()
+  const userStore = useUserStore()
 
   return Object.entries(form).reduce((acc, [key, valueData]: [string, any]) => {
     if (valueData instanceof DateBaseField || valueData instanceof NumberRangeBaseField) {
@@ -34,7 +37,7 @@ export const transformFormData = (form): object => {
     else if (isObject(valueData)) {
       let valueDataInner = JSON.parse(JSON.stringify(valueData))
       if (key === 'fieldTranslations') {
-        const { mainLocale = 'ru' } = store.getters.selectedProject
+        const { mainLocale = 'ru' } = userStore.selectedProject
 
         Object.keys(valueDataInner).forEach(keyInner => {
           valueDataInner[keyInner][mainLocale].value = form[keyInner] ? form[keyInner]?.value : form.seo[keyInner]?.value
