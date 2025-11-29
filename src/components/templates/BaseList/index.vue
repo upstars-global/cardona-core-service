@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
-import { useStore as useVuexStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
@@ -38,6 +37,7 @@ import { useLoaderStore } from '../../../stores/loader'
 import { useBaseStoreCore } from '../../../stores/baseStoreCore'
 import { useUserStore } from '../../../stores/user'
 import { useAppConfigCoreStore } from '../../../stores/appConfigCore'
+import { useFiltersStore } from '../../../stores/filtersCore'
 import usePagination from './сomposables/pagination'
 import type { PaginationResult } from './сomposables/pagination'
 import MultipleActions from './_components/MultipleActions.vue'
@@ -81,9 +81,9 @@ const slots = useSlots()
 
 const baseStoreCore = useBaseStoreCore()
 const appConfigCoreStore = useAppConfigCoreStore()
-const store = useVuexStore()
 const userStore = useUserStore()
 const loaderStore = useLoaderStore()
+const filtersCoreStore = useFiltersStore()
 const { t } = useI18n()
 
 const router = useRouter()
@@ -462,9 +462,9 @@ const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, 
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
 const appliedFilters = computed<BaseField[]>(() => {
-  const isSameEntity: boolean = entityName === store.getters['filtersCore/listEntityName']
+  const isSameEntity: boolean = entityName === filtersCoreStore.listEntityName
 
-  return isSameEntity ? store.getters['filtersCore/appliedListFilters'] : []
+  return isSameEntity ? filtersCoreStore.appliedListFilters : []
 })
 
 const hasSelectedFilters = computed(() => selectedFilters && selectedFilters.value.isNotEmpty)
