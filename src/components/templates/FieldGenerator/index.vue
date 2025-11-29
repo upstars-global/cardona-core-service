@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import { Field } from 'vee-validate'
 import type { BaseField } from '../../../@model/templates/baseField'
 import { CheckBaseField, FieldGeneratorSlots, RatesBaseField, SwitchBaseField } from '../../../@model/templates/baseField'
@@ -28,7 +27,6 @@ const emits = defineEmits<{
   (e: 'update:modelValue', item: BaseField): void
 }>()
 
-const store = useStore()
 const userStore = useUserStore()
 const appConfigCoreStore = useAppConfigCoreStore()
 
@@ -68,7 +66,7 @@ const localValue = computed(() => props.modelValue.component)
 const onSearch = (search: string) => emits('search', search)
 
 const canUpdate = computed<boolean>(() =>
-  props.modelValue?.permission ? store.getters.abilityCan(props.modelValue?.permission, PermissionLevel.update) : true,
+  props.modelValue?.permission ? userStore.abilityCan(props.modelValue?.permission, PermissionLevel.update) : true,
 )
 
 const notFilledDateRange = computed(() => {

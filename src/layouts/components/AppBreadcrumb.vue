@@ -32,7 +32,6 @@ const clock = useClockUtc({ isUtc: true })
 
 const time = computed(() => clock.time.value)
 
-// const canShowNotificationExport = computed(() => store.getters.haveSomePermissionReport)
 const canShowNotificationExport = computed(() => userStore.haveSomePermissionReport)
 
 onMounted(clock.runTime)

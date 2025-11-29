@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import CopyField from '../../../../../components/templates/BaseList/_components/fields/CopyField.vue'
 import CopyShortField from '../../../../../components/templates/BaseList/_components/fields/CopyShortField.vue'
 import { VColors } from '../../../../../@model/vuetify'
 import { IconsList } from '../../../../../@model/enums/icons'
 import { copyToClipboard } from '../../../../../helpers/clipboard'
+import { useUserStore } from '../../../../../stores/user'
 
 const props = defineProps<{
   item: Record<string, any>
@@ -15,9 +15,8 @@ const props = defineProps<{
   isShort?: boolean
 }>()
 
-const store = useStore()
-
-const isYou = computed(() => props.isShowYou && props.item.id.toString() === store.getters.userInfo.id.toString())
+const userStore = useUserStore()
+const isYou = computed(() => props.isShowYou && props.item.id.toString() === userStore.userInfo.id.toString())
 
 const itemName = computed<string>(() => props.item.name || props.item.userName || props.item.title)
 
