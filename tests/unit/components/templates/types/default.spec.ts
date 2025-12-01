@@ -1,9 +1,9 @@
+import '../../../mocks/base-section/static'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises } from '@vue/test-utils'
 import { useRouter } from 'vue-router'
-import '../../../mocks/base-section/static'
 import BaseSectionDefault from '../../../../../src/components/templates/BaseSection/types/default.vue'
 import { BaseSectionConfig } from '../../../../../src/@model/templates/baseList'
 import { mockModal } from '../../../mocks/modal-provide-config'
@@ -15,7 +15,7 @@ import * as loaderStoreModule from '../../../../../src/stores/loader'
 import { setTabError } from '../../../../../src/components/templates/BaseSection/composables/tabs'
 import {
   FieldGeneratorStub,
-  createEntity, goMock,
+  createEntity,
   mockStore,
   pushMock,
   readEntity,
@@ -24,42 +24,7 @@ import {
 
 const getMountComponent = setMountComponent(BaseSectionDefault)
 
-const routes = [
-  { path: '/mock-form-list', name: 'mock-formList', component: { template: '<div>Mock Form List</div>' } },
-]
-
 const sectionConfig = new BaseSectionConfig({})
-
-vi.mock('vue-router', async importOriginal => {
-  const actual = await importOriginal()
-
-  return {
-    ...actual,
-    useRoute: vi.fn(() => ({
-      params: { id: '123' },
-      routes,
-      name: 'TestRoute',
-      options: {
-        history: {
-          state: {
-            back: true,
-          },
-        },
-      },
-    })),
-    useRouter: vi.fn(() => ({
-      push: pushMock,
-      go: goMock,
-      options: {
-        history: {
-          state: {
-            back: true,
-          },
-        },
-      },
-    })),
-  }
-})
 
 const mountComponent = (props = {}, global = {}, slots = {}) =>
   getMountComponent({
