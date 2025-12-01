@@ -6,7 +6,6 @@ import { useRouter } from 'vue-router'
 import '../../../mocks/base-section/static'
 import BaseSectionDefault from '../../../../../src/components/templates/BaseSection/types/default.vue'
 import { BaseSectionConfig } from '../../../../../src/@model/templates/baseList'
-
 import { mockModal } from '../../../mocks/modal-provide-config'
 import { PageType } from '../../../../../src/@model/templates/baseSection'
 import { clickTrigger, getSelectorTestId, getWrapperElement, setMountComponent } from '../../../utils'
