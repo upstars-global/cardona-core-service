@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<{
   useEntity: Function
   localEntityData?: Record<string, unknown>
   entityId?: string
-  type: BaseSectionType
+  type?: BaseSectionType
 }>(),
 {
   useEntity: undefined,

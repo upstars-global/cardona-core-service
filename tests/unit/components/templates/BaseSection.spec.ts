@@ -1,9 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
-import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises } from '@vue/test-utils'
+import { afterEach, describe, it, vi } from 'vitest'
 import { createStore } from 'vuex'
-import { useRouter } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import type { UseEntityType } from '../../../../src/components/templates/BaseSection/index.vue'
 import BaseSection from '../../../../src/components/templates/BaseSection/index.vue'
@@ -12,17 +8,15 @@ import { SwitchBaseField } from '../../../../src/@model/templates/baseField'
 import { i18n } from '../../../../src/plugins/i18n'
 import { mockModal } from '../../mocks/modal-provide-config'
 import { PageType } from '../../../../src/@model/templates/baseSection'
-import { clickTrigger, getSelectorTestId, getWrapperElement, setMountComponent } from '../../utils'
+import { setMountComponent } from '../../utils'
+import DefaultBaseSection from '../../../../src/components/templates/BaseSection/types/default.vue'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
-import { basePermissions } from '../../../../src/helpers/base-permissions'
-import { setTabError } from '../../../../src/components/templates/BaseSection/composables/tabs'
-import * as loaderStoreModule from '../../../../src/stores/loader'
 
 vi.mock('../../../../src/stores/baseStoreCore', () => ({
   useBaseStoreCore: () => mockBaseStoreCore,
 }))
 
-const getMountBaseSection = setMountComponent(BaseSection)
+const getMountComponent = setMountComponent(BaseSection)
 
 const FieldGeneratorStub = {
   template: '<div class="field-generator-stub" />',
@@ -102,46 +96,17 @@ const mockStore = createStore({
   },
 })
 
-const goMock = vi.fn()
-const pushMock = vi.fn()
-
-vi.mock('vue-router', async importOriginal => {
-  const actual = await importOriginal()
+vi.mock('vue', async importOriginal => {
+  const vue = await importOriginal()
 
   return {
-    ...actual,
-    useRoute: vi.fn(() => ({
-      params: { id: '123' },
-      routes,
-      name: 'TestRoute',
-      options: {
-        history: {
-          state: {
-            back: true,
-          },
-        },
-      },
-    })),
-    useRouter: vi.fn(() => ({
-      push: pushMock,
-      go: goMock,
-      options: {
-        history: {
-          state: {
-            back: true,
-          },
-        },
-      },
-    })),
+    ...vue,
+    defineAsyncComponent: () => DefaultBaseSection,
   }
 })
 
-vi.mock('../../../../src/components/templates/BaseSection/composables/tabs', () => ({
-  setTabError: vi.fn(),
-}))
-
 const mountComponent = (props = {}, global = {}, slots = {}) =>
-  getMountBaseSection({
+  getMountComponent({
     config: sectionConfig,
     useEntity: useMockForm,
     ...props,
@@ -163,30 +128,23 @@ const mountComponent = (props = {}, global = {}, slots = {}) =>
   },
   )
 
-let mockRouter
-beforeEach(() => {
-  mockRouter = useRouter()
-  setActivePinia(createPinia())
-})
-
 afterEach(() => {
   // Reset mocks after run each test
   vi.clearAllMocks()
 })
 
 describe('BaseSection.vue', () => {
-  it('!!!', async () => {
-    // /// Mount the component with required props
-    // const wrapper = mountComponent({
-    //   pageType: PageType.Create,
-    //   withReadAction: false,
-    // })
-    //
-    // /// Wait for Vue lifecycle hooks to complete
-    // await wrapper.vm.$nextTick()
-    //
-    // /// Check that the main base section renders successfully
-    // testOn.existElement({ wrapper, testId: 'base-section' })
-    console.log('Run base section tests')
+  it('Render is default base section', async () => {
+    /// Mount the component with required props
+    const wrapper = mountComponent({
+      pageType: PageType.Empty,
+      withReadAction: false,
+    })
+
+    /// Wait for Vue lifecycle hooks to complete
+    await wrapper.vm.$nextTick()
+
+    /// Check that the main base section renders successfully
+    testOn.existElement({ wrapper, testId: 'base-section-default' })
   })
 })
