@@ -2,6 +2,7 @@
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 
 import { useI18n } from 'vue-i18n'
+import { formatToISOWithTimeZone } from '../../helpers/date'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import WSService from '../../services/ws'
@@ -15,6 +16,10 @@ import { useNotificationToast } from './_composables/useNotificationToast'
 defineOptions({
   name: 'NotificationExport',
 })
+
+const props = defineProps<{
+  time: string
+}>()
 
 const { t } = useI18n()
 const { showToast } = useNotificationToast()
@@ -51,11 +56,18 @@ const onChangeMenuState = () => {
 watch(() => notificationExportStore.getLastNotification, newVal => {
   if (!newVal || !reportIsReady(newVal.status))
     return
+  console.log(newVal)
   callToast({
     entityName: t(`notificationReport.entityType.${newVal?.entityType}`),
     reportId: newVal?.reportId,
   })
 }, { deep: true })
+
+watch(() => props.time, time => {
+  const date = formatToISOWithTimeZone(new Date()).split('T')[0]
+
+  notificationExportStore.removeExpiredReports(`${date} ${time}`)
+}, { immediate: true })
 </script>
 
 <template>
