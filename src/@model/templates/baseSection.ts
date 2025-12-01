@@ -27,3 +27,7 @@ export interface UseEntityType<FormModel> {
 export enum BaseSectionSlots {
   Actions = 'actions',
 }
+
+export enum BaseSectionType {
+  Default = 'default',
+}
