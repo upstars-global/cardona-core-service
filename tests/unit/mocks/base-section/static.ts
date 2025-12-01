@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import {goMock, mockBaseStoreCore, pushMock} from './utils'
+import { goMock, mockBaseStoreCore, pushMock } from './utils'
 
 vi.mock('../../../../src/helpers/base-permissions', () => ({
   basePermissions: vi.fn(() => ({
@@ -22,7 +22,6 @@ vi.mock('../../../../src/stores/baseStoreCore', () => ({
 vi.mock('path/to/generateEntityUrl', () => ({
   generateEntityUrl: vi.fn(() => '/mock-entity-url'),
 }))
-
 
 const routes = [
   { path: '/mock-form-list', name: 'mock-formList', component: { template: '<div>Mock Form List</div>' } },

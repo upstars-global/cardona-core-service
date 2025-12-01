@@ -1,9 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router/auto'
+import { vi } from 'vitest'
+import { createStore } from 'vuex'
 import { SwitchBaseField } from '../../../../src/@model/templates/baseField'
 import { i18n } from '../../../../src/plugins/i18n'
-import {UseEntityType} from "../../../../src/@model/templates/baseSection";
-import {vi} from "vitest";
-import {createStore} from "vuex";
+import type { UseEntityType } from '../../../../src/@model/templates/baseSection'
+import BaseSection from '../../../../src/components/templates/BaseSection/index.vue'
+import { mockModal } from '../../mocks/modal-provide-config'
+
+import { setMountComponent } from '../../utils'
+import { BaseSectionConfig } from '../../../../src/@model/templates/baseList'
 
 const routes = [
   { path: '/mock-form-list', name: 'mock-formList', component: { template: '<div>Mock Form List</div>' } },
@@ -54,7 +59,6 @@ export const mockBaseStoreCore = {
   deleteEntity,
 }
 
-
 export const mockStore = createStore({
   state: {
     errorUrls: [],
@@ -69,6 +73,29 @@ export const mockStore = createStore({
   },
 })
 
-
 export const goMock = vi.fn()
 export const pushMock = vi.fn()
+export const getMountComponent = setMountComponent(BaseSection)
+
+export const mountComponent = (props = {}, global = {}, slots = {}) =>
+  getMountComponent({
+    config: new BaseSectionConfig({}),
+    useEntity: useMockForm,
+    ...props,
+  }, {
+    plugins: [mockStore, router],
+    stubs: {
+      VBtn: { template: '<button><slot /></button>' },
+    },
+    ...global,
+    provide: { modal: mockModal },
+    components: {
+      FieldGenerator: FieldGeneratorStub,
+    },
+  }, {
+    default: `<template #default="{ form }">
+                  <FieldGenerator v-model="form.isActive" />
+                </template>`,
+    ...slots,
+  },
+  )

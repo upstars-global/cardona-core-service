@@ -1,5 +1,5 @@
-import '../../../mocks/base-section/static'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import '../../../mocks/base-section/static'
 import { createPinia, setActivePinia } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises } from '@vue/test-utils'
