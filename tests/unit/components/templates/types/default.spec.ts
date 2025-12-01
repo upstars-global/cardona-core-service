@@ -2,108 +2,34 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises } from '@vue/test-utils'
-import { createStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { createRouter, createWebHistory } from 'vue-router/auto'
+import '../../../mocks/base-section/static'
 import BaseSectionDefault from '../../../../../src/components/templates/BaseSection/types/default.vue'
 import { BaseSectionConfig } from '../../../../../src/@model/templates/baseList'
-import { SwitchBaseField } from '../../../../../src/@model/templates/baseField'
-import { i18n } from '../../../../../src/plugins/i18n'
+
 import { mockModal } from '../../../mocks/modal-provide-config'
-import type { UseEntityType } from '../../../../../src/@model/templates/baseSection'
 import { PageType } from '../../../../../src/@model/templates/baseSection'
 import { clickTrigger, getSelectorTestId, getWrapperElement, setMountComponent } from '../../../utils'
 import { testOn } from '../../../templates/shared-tests/test-case-generator'
 import { basePermissions } from '../../../../../src/helpers/base-permissions'
 import * as loaderStoreModule from '../../../../../src/stores/loader'
 import { setTabError } from '../../../../../src/components/templates/BaseSection/composables/tabs'
-
-vi.mock('../../../../../src/stores/baseStoreCore', () => ({
-  useBaseStoreCore: () => mockBaseStoreCore,
-}))
+import {
+  FieldGeneratorStub,
+  createEntity, goMock,
+  mockStore,
+  pushMock,
+  readEntity,
+  router, updateEntity, useMockForm,
+} from '../../../mocks/base-section/utils'
 
 const getMountComponent = setMountComponent(BaseSectionDefault)
-
-const FieldGeneratorStub = {
-  template: '<div class="field-generator-stub" />',
-}
 
 const routes = [
   { path: '/mock-form-list', name: 'mock-formList', component: { template: '<div>Mock Form List</div>' } },
 ]
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-})
-
-class MockForm {
-  readonly id?: string
-  readonly isActive: SwitchBaseField
-
-  constructor(data: { id?: string; isActive: boolean }) {
-    this.id = data?.id
-    this.isActive = new SwitchBaseField({
-      key: 'isActive',
-      value: data?.isActive,
-      label: i18n.t('userStatuses.active'),
-    })
-  }
-}
-
 const sectionConfig = new BaseSectionConfig({})
-const createEntity = vi.fn()
-const updateEntity = vi.fn()
-const readEntity = vi.fn()
-const deleteEntity = vi.fn()
-
-const mockBaseStoreCore = {
-  createEntity,
-  updateEntity,
-  readEntity,
-  deleteEntity,
-}
-
-const useMockForm = (): UseEntityType<MockForm> => {
-  const EntityFormClass = MockForm
-
-  return {
-    entityName: 'mock-form',
-    EntityFormClass,
-    loadingEndpointArr: ['/test-endpoint'],
-  }
-}
-
-vi.mock('path/to/generateEntityUrl', () => ({
-  generateEntityUrl: vi.fn(() => '/mock-entity-url'),
-}))
-
-vi.mock('../../../../../src/helpers/base-permissions', () => ({
-  basePermissions: vi.fn(() => ({
-    canCreateSeo: true,
-    canUpdate: true,
-    canUpdateSeo: false,
-    canRemove: false,
-    canViewSeo: true,
-  })),
-}))
-
-const mockStore = createStore({
-  state: {
-    errorUrls: [],
-  },
-  getters: {
-    isLoadingPage: vi.fn(() => false),
-    abilityCan: vi.fn(() => vi.fn(() => true)),
-    isErrorEndpoint: () => vi.fn(() => false),
-  },
-  actions: {
-    resetErrorUrls: vi.fn(),
-  },
-})
-
-const goMock = vi.fn()
-const pushMock = vi.fn()
 
 vi.mock('vue-router', async importOriginal => {
   const actual = await importOriginal()
@@ -135,10 +61,6 @@ vi.mock('vue-router', async importOriginal => {
     })),
   }
 })
-
-vi.mock('../../../../../src/components/templates/BaseSection/composables/tabs', () => ({
-  setTabError: vi.fn(),
-}))
 
 const mountComponent = (props = {}, global = {}, slots = {}) =>
   getMountComponent({
@@ -357,7 +279,6 @@ describe('BaseSection.vue', () => {
     expect(slotContent.attributes('data-can-remove')).toBe('false')
     expect(slotContent.attributes('data-can-view-seo')).toBe('true')
   })
-
 
   it('Calls onSave and handles success correctly', async () => {
     // make createEntity return success with id
