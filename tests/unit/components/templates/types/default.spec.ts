@@ -6,7 +6,6 @@ import { createStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router/auto'
 
-// import type { UseEntityType } from '../../../../../../src/components/templates/BaseSection/index.vue'
 import BaseSectionDefault from '../../../../../src/components/templates/BaseSection/types/default.vue'
 import { BaseSectionConfig } from '../../../../../src/@model/templates/baseList'
 import { SwitchBaseField } from '../../../../../src/@model/templates/baseField'
@@ -17,8 +16,8 @@ import { PageType } from '../../../../../src/@model/templates/baseSection'
 import { clickTrigger, getSelectorTestId, getWrapperElement, setMountComponent } from '../../../utils'
 import { testOn } from '../../../templates/shared-tests/test-case-generator'
 import { basePermissions } from '../../../../../src/helpers/base-permissions'
-import { setTabError } from '../../../../../src/components/templates/BaseSection/composables/tabs'
 import * as loaderStoreModule from '../../../../../src/stores/loader'
+import { setTabError } from '../../../../../src/components/templates/BaseSection/composables/tabs'
 
 vi.mock('../../../../../src/stores/baseStoreCore', () => ({
   useBaseStoreCore: () => mockBaseStoreCore,
@@ -80,7 +79,7 @@ vi.mock('path/to/generateEntityUrl', () => ({
   generateEntityUrl: vi.fn(() => '/mock-entity-url'),
 }))
 
-vi.mock('../../../../src/helpers/base-permissions', () => ({
+vi.mock('../../../../../src/helpers/base-permissions', () => ({
   basePermissions: vi.fn(() => ({
     canCreateSeo: true,
     canUpdate: true,
@@ -96,7 +95,7 @@ const mockStore = createStore({
   },
   getters: {
     isLoadingPage: vi.fn(() => false),
-    abilityCan: () => true,
+    abilityCan: vi.fn(() => vi.fn(() => true)),
     isErrorEndpoint: () => vi.fn(() => false),
   },
   actions: {
@@ -138,7 +137,7 @@ vi.mock('vue-router', async importOriginal => {
   }
 })
 
-vi.mock('../../../../src/components/templates/BaseSection/composables/tabs', () => ({
+vi.mock('../../../../../src/components/templates/BaseSection/composables/tabs', () => ({
   setTabError: vi.fn(),
 }))
 
@@ -359,6 +358,7 @@ describe('BaseSection.vue', () => {
     expect(slotContent.attributes('data-can-remove')).toBe('false')
     expect(slotContent.attributes('data-can-view-seo')).toBe('true')
   })
+
 
   it('Calls onSave and handles success correctly', async () => {
     // make createEntity return success with id
