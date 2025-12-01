@@ -296,6 +296,7 @@ defineExpose({
 
 <template>
   <BaseSectionLoading
+    data-test-id="base-section-default-loading"
     :loading="isLoadingPage || isDisableSubmitBtn"
     :fullscreen-background="!config.isModalSection"
   >
@@ -313,7 +314,7 @@ defineExpose({
         v-if="form"
         ref="formRef"
         class="base-section"
-        data-test-id="base-section"
+        data-test-id="base-section-default"
         @submit.prevent
       >
         <div class="position-relative">

@@ -5,7 +5,6 @@ import { flushPromises } from '@vue/test-utils'
 import { createStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router/auto'
-
 import BaseSectionDefault from '../../../../../src/components/templates/BaseSection/types/default.vue'
 import { BaseSectionConfig } from '../../../../../src/@model/templates/baseList'
 import { SwitchBaseField } from '../../../../../src/@model/templates/baseField'
@@ -187,7 +186,7 @@ describe('BaseSection.vue', () => {
     await wrapper.vm.$nextTick()
 
     /// Check that the main base section renders successfully
-    testOn.existElement({ wrapper, testId: 'base-section' })
+    testOn.existElement({ wrapper, testId: 'base-section-default' })
   })
 
   it('Calls onSubmit with false when "Create and Exit" button is clicked', async () => {
