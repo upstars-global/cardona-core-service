@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg/index.vue'
 import { filterString } from '../../../../helpers/text-editor'
 import type { RichTextBaseField } from '../../../../@model/templates/baseField'
@@ -24,7 +23,6 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: string | number): void
 }>()
 
-const store = useStore()
 const textEditorStore = useTextEditorStore()
 const appConfigCoreStore = useAppConfigCoreStore()
 

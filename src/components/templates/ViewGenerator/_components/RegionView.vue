@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, onBeforeMount } from 'vue'
-import { useStore } from 'vuex'
 import type { ViewInfo } from '../../../../@model/view'
 import { isEmpty } from '../../../../@core/utils/helpers'
 import { useRegionsStore } from '../../../../stores/regions'
@@ -9,7 +8,6 @@ const props = defineProps<{
   item: ViewInfo
 }>()
 
-const store = useStore()
 const regionsStore = useRegionsStore()
 
 onBeforeMount(() => {

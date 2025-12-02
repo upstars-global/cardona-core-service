@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-
-import { useStore } from 'vuex'
 import { IconsList } from '../../../../@model/enums/icons'
 import type { RatesBaseField } from '../../../../@model/templates/baseField'
 import { NumberBaseField, TextBaseField } from '../../../../@model/templates/baseField'
@@ -27,7 +25,6 @@ const emit = defineEmits<{
   (event: 'update:modelValue', value: Array<RatesValueItem>): void
 }>()
 
-const store = useStore()
 const appConfigCoreStore = useAppConfigCoreStore()
 
 interface Rates {

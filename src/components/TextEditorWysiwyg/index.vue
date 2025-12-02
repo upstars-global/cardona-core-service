@@ -3,7 +3,6 @@ import { computed, inject, nextTick, ref, watch } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import 'vue-froala-wysiwyg'
 import type { TranslateResult } from 'vue-i18n'
-import { useStore } from 'vuex'
 import FroalaEditor from 'froala-editor'
 import type { LocaleVariable } from '../../@model/translations'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
@@ -14,6 +13,7 @@ import { useTextEditorStore } from '../../stores/textEditor'
 import { PermissionLevel } from '../../@model/permission'
 import useToastService from '../../helpers/toasts'
 import { useUserStore } from '../../stores/user'
+import { useCompostelaStore } from '../../stores/compostelaCore'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
@@ -30,6 +30,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<Emits>()
+
+const compostelaStore = useCompostelaStore()
 
 const editorWrapper = ref<HTMLElement | null>(null)
 interface Props {
@@ -54,7 +56,6 @@ interface Emits {
 const modal = inject('modal')
 const editorKey = uuidv4()
 
-const store = useStore()
 const userStore = useUserStore()
 const videoUploadStore = useVideoUploadStore()
 const textEditorStore = useTextEditorStore()
@@ -280,7 +281,7 @@ const config = {
 
         const _path = `/${selectedProjectPublicName.value}/upload/${fileName}`
         try {
-          const { publicPath } = await store.dispatch('compostelaCore/uploadFile', { file, path: _path })
+          const { publicPath } = await compostelaStore.uploadFile({ file, path: _path })
 
           this.image.insert(publicPath, true, { name: fileName, id: fileName }, '', { link: publicPath })
           this.image.hideProgressBar(true)
