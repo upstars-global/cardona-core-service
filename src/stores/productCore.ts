@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { productId } from '@productConfig'
 
-export const useProductStore = defineStore('product', {
+export const useProductCoreStore = defineStore('product', {
   state: () => ({
     productId,
   }),

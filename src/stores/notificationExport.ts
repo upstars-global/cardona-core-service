@@ -10,7 +10,6 @@ import ApiService from '../services/api'
 import {
   NotificationStatuses,
 } from '../@model/notificationExport'
-import store from '@/store'
 
 const upsert = <ListType>(array: Array<ListType>, predicate: Partial<ListType>, newItem: ListType) => {
   const foundItem = _.find(array, predicate)

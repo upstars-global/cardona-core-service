@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import * as tus from 'tus-js-client'
 import ApiService from '../services/api'
-import store from '@/store'
 
 export interface UploadVideoPayload {
   title: string

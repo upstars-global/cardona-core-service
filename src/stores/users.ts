@@ -2,14 +2,15 @@ import { defineStore } from 'pinia'
 import ApiService from '../services/api'
 import { ListData } from '../@model'
 import { UserInfo } from '../@model/users'
+import { useProductCoreStore } from '../stores/productCore'
 import { productName } from '@productConfig'
-import store from '@/store'
 
 export const useUsersStore = defineStore('users', {
   actions: {
     async fetchUsersList(inputData?: any) {
+      const productCoreStore = useProductCoreStore()
       const data = inputData?.data ? inputData.data : inputData
-      const isMenuTypeAdmin = !store.getters['appConfigCore/isMenuTypeMain']
+      const isMenuTypeAdmin = !productCoreStore.isMenuTypeMain
 
       return new ListData(
         await ApiService.request({
@@ -19,7 +20,7 @@ export const useUsersStore = defineStore('users', {
             perPage: data?.perPage || 20,
           },
           filter: {
-            productIds: isMenuTypeAdmin ? [] : [store.getters['productCore/productId']],
+            productIds: isMenuTypeAdmin ? [] : [productCoreStore.productId],
             ...data?.filter,
           },
         }),

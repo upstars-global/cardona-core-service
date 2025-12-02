@@ -8,8 +8,8 @@ import { ListData } from '../@model'
 import { convertLowerCaseFirstSymbol } from '../helpers'
 import { productsName } from '../configs/productsName'
 import { ExportFormat } from '../@model/templates/baseList'
+import { useProductCoreStore } from '../stores/productCore'
 import { ApiTypePrefix, productName } from '@productConfig'
-import store from '@/store'
 import { i18n } from '@/plugins/i18n'
 
 const isSymbolIsDash = (symbol: string): boolean => symbol === '-'
@@ -159,7 +159,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
           ? this.$selectedProjectAlias
           : ''
 
-      const productId = store.getters['productCore/productId']
+      const productId = useProductCoreStore().productId
 
       const { data } = await ApiService.request(
         {
@@ -188,7 +188,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       data: { form: any; formRef: any }
       customApiPrefix?: string
     }): Promise<any> {
-      const productId = store.getters['productCore/productId']
+      const productId = useProductCoreStore().productId
 
       const actualProject = payload?.data?.form?.project
         ? payload?.data?.form?.project
