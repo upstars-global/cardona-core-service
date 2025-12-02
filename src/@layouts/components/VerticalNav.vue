@@ -4,7 +4,6 @@ import { useElementHover, useWindowSize } from '@vueuse/core'
 import { computed, provide, ref, watch } from 'vue'
 import type { Component } from 'vue'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import { useStore } from
 import CustomMenu from '../../layouts/components/CustomMenu.vue'
 import { convertUpperCaseFirstSymbol } from '../../helpers'
 import { IconsList } from '../../@model/enums/icons'
