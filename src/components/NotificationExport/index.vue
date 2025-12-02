@@ -8,6 +8,7 @@ import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import WSService from '../../services/ws'
 import { Location } from '../../@model/enums/tooltipPlacement'
 import { useNotificationExportStore } from '../../stores/notificationExport'
+import type { INotificationReportItem } from '../../@model/notificationExport'
 import { reportIsReady } from '../../@model/notificationExport'
 import { Channel } from '../../configs/wsConfig'
 import NotificationExportList from './list/index.vue'
@@ -19,6 +20,8 @@ defineOptions({
 
 const props = defineProps<{
   time: string
+  userId: number
+
 }>()
 
 const { t } = useI18n()
@@ -26,7 +29,7 @@ const { showToast } = useNotificationToast()
 const notificationMenuState = ref(false)
 const notificationExportStore = useNotificationExportStore()
 
-const existNewNotification = computed(() => notificationExportStore.existingNotifications && !notificationMenuState.value)
+const existNewNotification = computed(() => notificationExportStore.existingNotifications(props.userId) && !notificationMenuState.value)
 
 onBeforeMount(async () => {
   WSService.subscribe(Channel.Notifications)
@@ -53,10 +56,11 @@ const onChangeMenuState = () => {
   notificationExportStore.resetNotifications()
 }
 
+const disableNotificationToast = (value: INotificationReportItem) => !value || !reportIsReady(value.status) || props.userId !== value.emitter.id
+
 watch(() => notificationExportStore.getLastNotification, newVal => {
-  if (!newVal || !reportIsReady(newVal.status))
+  if (disableNotificationToast(newVal))
     return
-  console.log(newVal)
   callToast({
     entityName: t(`notificationReport.entityType.${newVal?.entityType}`),
     reportId: newVal?.reportId,
