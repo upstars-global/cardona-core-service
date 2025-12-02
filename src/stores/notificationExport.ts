@@ -30,7 +30,7 @@ function upsert<T extends { reportId: number }>(
 const notificationList = useLocalStorage<INotificationReportItem[]>('notifications', [])
 
 const getDate = (date: string) => new Date(date.replace(' ', 'T'))
-const compareDates = (date: string) => (item: IDownloadListReportNotificationItem | INotificationReportItem) => getDate(item.ttl) < getDate(date)
+const compareDates = (date: string) => (item: IDownloadListReportNotificationItem | INotificationReportItem) => getDate(item.ttl) >= getDate(date)
 
 export const useNotificationExportStore = defineStore('notification-export', {
   state: () => ({
