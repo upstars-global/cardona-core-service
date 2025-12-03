@@ -12,7 +12,6 @@ import { useLayoutConfigStore } from '@layouts/stores/config'
 
 const route = useRoute()
 
-// const store = useStore()
 const userStore = useUserStore()
 
 const allBreadcrumb = computed(() => {
@@ -33,7 +32,7 @@ const time = computed(() => clock.time.value)
 
 const canShowNotificationExport = computed(() => userStore.haveSomePermissionReport)
 
-const userId = computed(() => store.getters.userInfo.id)
+const userId = computed(() => userStore.userInfo.id)
 
 onMounted(clock.runTime)
 onUnmounted(clock.stopTime)

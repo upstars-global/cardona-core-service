@@ -1,13 +1,12 @@
-// src/stores/regions.ts
 import { defineStore } from 'pinia'
-import ApiService from 'cardona-core-service/src/services/api'
 import type {
   RegionInfo as RegionInfoType,
   RegionsRequestFilter,
   RegionsResponseData,
-} from 'cardona-core-service/src/@model/regions'
-import { RegionInfo } from 'cardona-core-service/src/@model/regions'
-import type { OptionsItem } from 'cardona-core-service/src/@model'
+} from '../@model/regions'
+import { RegionInfo } from '../@model/regions'
+import type { OptionsItem } from '../@model'
+import ApiService from '../services/api'
 
 export const useRegionsStore = defineStore('regions', {
   state: () => ({
