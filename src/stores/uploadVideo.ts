@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import * as tus from 'tus-js-client'
 import ApiService from '../services/api'
+import store from '@/store'
 
 export interface UploadVideoPayload {
   title: string
@@ -44,6 +45,12 @@ export enum VideoStatus {
   Timeout = 'timeout',
 }
 
+const VIDEO_PRESETS = [
+  { name: 'Thor', id: 121437169 },
+  { name: 'Vegas', id: 121437171 },
+  { name: 'Bond', id: 121437172 },
+] as const
+
 const CHUNK_SIZE = 1024 * 1024
 
 export const useVideoUploadStore = defineStore('videoUpload', () => {
@@ -78,11 +85,15 @@ export const useVideoUploadStore = defineStore('videoUpload', () => {
   }
 
   async function upload(file: File, key: string): Promise<string | undefined> {
+    const projectAlias = store.getters.selectedProject?.alias
+    const projectPresetData = VIDEO_PRESETS.find(({ name }) => projectAlias.includes(name.toLowerCase()))
+
     const params = {
       title: file.name,
       description: file.name,
       fileSize: file.size,
       project: this.$selectedProjectAlias,
+      presetId: projectPresetData?.id,
     }
 
     setProgressState(true, key)
@@ -137,13 +148,13 @@ export const useVideoUploadStore = defineStore('videoUpload', () => {
 
   async function getStatusVideo(payload: GetStatusVideoPayload): Promise<VideoStatus> {
     const { data }: { data: {
-        status: VideoStatus
-        duration: number
-        thumbnail: string
-        name: string
-        embedUrl: string
-        videoUrl: string
-      } } = await ApiService.request({
+      status: VideoStatus
+      duration: number
+      thumbnail: string
+      name: string
+      embedUrl: string
+      videoUrl: string
+    } } = await ApiService.request({
       type: 'App.V2.Vimeo.Status',
       data: payload,
     })
