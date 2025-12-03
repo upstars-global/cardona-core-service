@@ -4,21 +4,21 @@ import { BaseSectionType, PageType } from '../../../@model/templates/baseSection
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
 
 const props = withDefaults(defineProps<{
-  withReadAction?: boolean
-  config?: BaseSectionConfig
-  pageType?: PageType
-  useEntity: Function
-  localEntityData?: Record<string, unknown>
-  entityId?: string
-  type?: BaseSectionType
-}>(),
-{
-  useEntity: undefined,
-  withReadAction: true,
-  config: () => new BaseSectionConfig({}),
-  pageType: PageType.Create,
-  type: BaseSectionType.Default,
-},
+    withReadAction?: boolean
+    config?: BaseSectionConfig
+    pageType?: PageType
+    useEntity: Function
+    localEntityData?: Record<string, unknown>
+    entityId?: string
+    type?: BaseSectionType
+  }>(),
+  {
+    useEntity: undefined,
+    withReadAction: true,
+    config: () => new BaseSectionConfig({}),
+    pageType: PageType.Create,
+    type: BaseSectionType.Default,
+  },
 )
 
 const emits = defineEmits<{
@@ -27,12 +27,6 @@ const emits = defineEmits<{
 }>()
 
 const formRef = ref<InstanceType<any> | null>(null)
-
-defineExpose({
-  form: formRef.value?.form,
-  validate: formRef.value?.validate,
-  formRef: formRef.value?.formRef,
-})
 
 const componentsMap = {
   default: () => import('./types/default.vue'),
@@ -45,6 +39,18 @@ const dynamicComponent = computed(() =>
 const onEmitEvent = (event: 'on-cancel' | 'on-save') => {
   emits(event)
 }
+
+defineExpose({
+  get form() {
+    return formRef.value?.form
+  },
+  get validate() {
+    return formRef.value?.validate
+  },
+  get formRef() {
+    return formRef.value?.formRef
+  },
+})
 </script>
 
 <template>
