@@ -64,7 +64,7 @@ const listNotEmpty = computed(() => notificationExportStore.getDownloadList.isNo
     <div
       v-if="listNotEmpty"
       ref="notificationListWrapperRef"
-      class="list-wrapper pa-4"
+      class="list-wrapper pa-4 pt-3"
     >
       <NotificationExportListItem
         v-for="(item, index) in notificationExportStore.getDownloadList"
