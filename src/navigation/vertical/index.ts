@@ -11,4 +11,9 @@ export default [
     to: { name: 'PermissionPage', params: { id: 'demo' } },
     icon: { icon: 'tabler-box' },
   },
+  {
+    title: 'Constructor',
+    to: { name: 'Constructor' },
+    icon: { icon: 'tabler-box' },
+  },
 ] as VerticalNavItems

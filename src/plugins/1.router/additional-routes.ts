@@ -101,4 +101,18 @@ export const routes: RouteRecordRaw[] = [
     name: 'PermissionPage',
     component: () => import('@/pages/permission/form/index.vue'),
   },
+  {
+    path: '/constructor',
+    name: 'Constructor',
+    meta: {
+      title: 'constructor',
+      breadcrumb: [
+        {
+          title: 'constructor',
+          active: true,
+        },
+      ],
+    },
+    component: () => import('@/pages/constructor/index.vue'),
+  },
 ]
