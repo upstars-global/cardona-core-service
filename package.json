@@ -104,7 +104,7 @@
     "@tiptap/extension-subscript": "^2.1.12",
     "@tiptap/extension-superscript": "^2.1.12",
     "@tiptap/extension-underline": "^2.1.12",
-    "@types/jsdom": "^21.1.7",
+    "@types/jsdom": "^22.1.0",
     "@types/lodash": "^4.14.202",
     "@types/mapbox-gl": "^2.7.16",
     "@types/node": "^20.8.6",
