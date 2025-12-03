@@ -1,4 +1,3 @@
-// import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { storageKeys } from '../configs/storage'
 import type { ProjectInfoInput } from '../@model/project'
@@ -7,7 +6,6 @@ import { useUserStore } from '../stores/user'
 export const useChangeProject = () => {
   const userStore = useUserStore()
 
-  // const store = useStore()
   const route = useRoute()
   const router = useRouter()
 
