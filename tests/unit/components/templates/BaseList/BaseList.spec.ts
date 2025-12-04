@@ -10,8 +10,8 @@ import { FilterID } from '../../../../../src/@model/filter'
 import {
   defaultProps,
   exportDataMock,
-  fields, useListForCustomStore,
-
+  fields,
+  useListForCustomStore,
   useListForToggleStatus,
 } from '../../../mocks/base-list'
 import useToastService from '../../../../../src/helpers/toasts'
