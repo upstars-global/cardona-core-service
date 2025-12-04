@@ -86,7 +86,10 @@ export const useUserStore = defineStore('user', {
     selectedProductComputed: state => state.selectedProduct,
 
     isNeocore: () => productName === productsName.neocore,
-
+    isMarbella: () => productName === productsName.marbella,
+    projectsBySelectedProduct: () => this.userProjects
+      .filter(item => item?.productId === this.selectedProduct?.id)
+      .filter(Boolean),
     getSpecificProject:
       state =>
         (projectAlias: string): ProjectInfo =>

@@ -79,10 +79,8 @@ watch(() => isMinMode.value, () => {
 
 const isNeocore = computed(() => userStore.isNeocore)
 const isMenuTypeMain = computed(() => appConfigCoreStore.isMenuTypeMain)
-const isNeocore = computed(() => store.getters.isNeocore)
-const isMarbella = computed(() => store.getters.isMarbella)
-const isMenuTypeMain = computed(() => store.getters['appConfigCore/isMenuTypeMain'])
-const projects = computed(() => store.getters.projectsBySelectedProduct)
+const isMarbella = computed(() => userStore.isMarbella)
+const projects = computed(() => userStore.projectsBySelectedProduct)
 
 const selectedProjectTitle = computed(() =>
   isNeocore.value
