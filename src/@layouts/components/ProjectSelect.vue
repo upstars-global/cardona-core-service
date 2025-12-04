@@ -5,6 +5,7 @@ import { useFavicon } from '@vueuse/core'
 import type { ProjectInfo } from '../../@model/project'
 import { IconsList } from '../../@model/enums/icons'
 import { useChangeProject } from '../../composables/useChangeProject'
+import ApiService from '../../services/api'
 
 const store = useStore()
 
@@ -23,6 +24,13 @@ onMounted(() => {
   const faviconPath = store.getters.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
 
   useFavicon(faviconPath)
+})
+watch(selectProject, project => {
+  ApiService.setHeaders({
+    MarbellaProject: project.originProject.alias,
+  })
+}, {
+  immediate: true,
 })
 </script>
 
