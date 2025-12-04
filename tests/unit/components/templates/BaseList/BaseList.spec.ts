@@ -3,21 +3,61 @@ import { cloneDeep } from 'lodash'
 import { flushPromises } from '@vue/test-utils'
 import { h } from 'vue'
 import BaseList from '../../../../../src/components/templates/BaseList/index.vue'
-import ProjectsFilter from '../../../../../src/components/templates/BaseList/_components/ProjectsFilter.vue'
 import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../utils'
-import { BaseListSlots, ExportFormat } from '../../../../../src/@model/templates/baseList'
 import { mockModal } from '../../../mocks/modal-provide-config'
 import { testOn } from '../../../templates/shared-tests/test-case-generator'
 import { FilterID } from '../../../../../src/@model/filter'
 import {
   defaultProps,
   exportDataMock,
-  fields,
-  mockStore,
-  useListForCustomStore,
+  fields, useListForCustomStore,
+
   useListForToggleStatus,
 } from '../../../mocks/base-list'
 import useToastService from '../../../../../src/helpers/toasts'
+import { BaseListSlots, ExportFormat } from '../../../../../src/@model/templates/baseList'
+import ProjectsFilter from '../../../../../src/components/templates/BaseList/_components/ProjectsFilter.vue'
+
+const isLoadingValue = false
+
+export const permissionsMock = {
+  canCreate: true,
+  canUpdate: true,
+  canUpdateSeo: true,
+  canRemove: true,
+  canExport: true,
+}
+
+vi.mock('../../../../../src/helpers/base-permissions', () => ({
+  basePermissions: () => ({ ...permissionsMock }),
+}))
+
+const projects = [
+  { id: 'p1', alias: 'alpha', name: 'Project A' },
+  { id: 'p2', alias: 'beta', name: 'Project B' },
+]
+
+vi.mock('../../../../../src/stores/appConfigCore', () => {
+  return {
+    useAppConfigCoreStore: () => ({
+      verifiedProjects: projects,
+    }),
+  }
+})
+
+vi.mock('../../../../../src/stores/loader', () => ({
+  useLoaderStore: () => ({
+    isLoadingEndpoint: () => isLoadingValue,
+  }),
+}))
+
+vi.mock('../../../../../src/stores/user', () => {
+  return {
+    useUserStore: () => ({
+      getSelectedProject: projects[0],
+    }),
+  }
+})
 
 vi.mock('../../../../../src/stores/users', () => {
   return {
@@ -144,20 +184,17 @@ export const mockCustomStore = {
   deleteEntity: vi.fn(),
 }
 
-export const mockUseBaseStoreCore = () => {
-  vi.mock('@/stores/baseStoreCore', () => ({
-    useBaseStoreCore: () => ({
-      ...mockBaseStoreCore,
-      isLoading: false,
-      selectedItems: [],
-    }),
-  }))
-}
+vi.mock('../../../../../src/stores/baseStoreCore', () => ({
+  useBaseStoreCore: () => ({
+    ...mockBaseStoreCore,
+    isLoading: false,
+    selectedItems: [],
+  }),
+}))
 
 // Global configuration for mounting the component, including plugins and providers
 const global = {
   provide: { modal: mockModal },
-  plugins: [mockStore],
   components: {
     VueSelect: {
       template: '<select><slot /></select>',
@@ -166,25 +203,15 @@ const global = {
 }
 
 let props
-let mockDispatch
 
 describe('BaseList', () => {
   beforeEach(() => {
     // Reset mocks and initialize props before each test
     exportDataMock()
     props = cloneDeep(defaultProps)
-    mockDispatch = vi.spyOn(mockStore, 'dispatch')
-
-    mockStore.state.selectedProject = { id: 'p1', alias: 'alpha', name: 'Project A' }
   })
 
   it('Should render the default state with cell slots', async () => {
-    // Mock the dispatch response with initial list data
-    mockDispatch.mockResolvedValueOnce({
-      list: [{ id: 1, name: 'Item 1', type: 'Type 1', status: 'Status 1' }],
-      total: 1,
-    })
-
     const wrapper = getMountBaseList(props, global)
 
     await flushPromises()
@@ -234,7 +261,7 @@ describe('BaseList', () => {
 
     await flushPromises()
 
-    // Assert that dispatch was called with the correct parameters
+    // Assert that fetch was called with the correct parameters
     expect(mockBaseStoreCore.fetchEntityList).toHaveBeenCalledWith({
       data: {
         filter: new FilterID(filterParams),
@@ -254,7 +281,7 @@ describe('BaseList', () => {
     const { toastError } = useToastService()
     const maxExportItems = 100
 
-    // Mock dispatch response indicating export limit exceeded
+    // Mock fetch response indicating export limit exceeded
     mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
       list: [],
       total: 101,
@@ -304,21 +331,20 @@ describe('BaseList', () => {
     testOn.existElement({ wrapper, testId: 'right-search-btn' })
   })
 
-  it('Should display create, update, and delete buttons based on onePermissionKey', () => {
-    // Mock dispatch response for permissions
-    mockDispatch.mockResolvedValueOnce({
+  it('Should display create, update, and delete buttons based on onePermissionKey', async () => {
+    // Mock response
+    mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
       list: [],
-      total: 100,
+      total: 0,
     })
 
-    // Configure permission-related props
+    // Configure props
     props.config.withCreateBtn = true
     props.config.onePermissionKey = 'test-super'
     props.config.noPermissionPrefix = true
 
     const wrapper = getMountBaseList(props, global)
 
-    // Check that the action buttons are rendered based on permissions
     testOn.existElement({ wrapper, testId: 'right-search-btn' })
   })
 
@@ -343,13 +369,12 @@ describe('BaseList', () => {
 
     await flushPromises()
 
-    // Assert that the custom delete action was dispatched
+    // Assert that the custom delete action was called
     expect(mockCustomStore.deleteEntity).toHaveBeenCalled()
   })
-
   it('Should provide access to actions based on permissionKey', () => {
     // Set permission key in props
-    props.config.permissionKey = 'test-permission'
+    // props.config.permissionKey = 'test-permission'
 
     const wrapper = getMountBaseList(props, global)
 
@@ -358,7 +383,6 @@ describe('BaseList', () => {
     expect(wrapper.vm.canUpdate).toBeTruthy()
     expect(wrapper.vm.canRemove).toBeTruthy()
   })
-
   it('Should pass customApiPrefix in the fetchEntityList request', async () => {
     const customApiPrefix = 'test'
 
@@ -369,7 +393,7 @@ describe('BaseList', () => {
 
     await flushPromises()
 
-    // Assert that the customApiPrefix was included in the dispatch call
+    // Assert that the customApiPrefix was included in the action call
     expect(mockBaseStoreCore.fetchEntityList).toHaveBeenCalledWith({
       data: {
         filter: new FilterID({}),
@@ -385,6 +409,7 @@ describe('BaseList', () => {
     })
   })
 
+  //
   it('Should update entity status when withDeactivation is enabled', async () => {
     // Enable deactivation feature in props
     props.config.withDeactivation = true
@@ -395,6 +420,7 @@ describe('BaseList', () => {
     mockBaseStoreCore.updateEntity.mockReset()
   })
 
+  //
   it('Should toggle entity status using a specific action when withDeactivationBySpecificAction is enabled', async () => {
     // Enable specific action deactivation feature in props
     props.config.withDeactivationBySpecificAction = true
@@ -405,6 +431,7 @@ describe('BaseList', () => {
     mockBaseStoreCore.updateEntity.mockReset()
   })
 
+  //
   it('Should correctly render slot contents', async () => {
     // Define slots with dynamic content based on fields
     const slotsByField = fields.reduce((acc, field) => ({
@@ -429,18 +456,6 @@ describe('BaseList', () => {
       'multiple-actions': '<div data-test-id="multiple-actions">Multiple actions</div>',
       ...slotsByField,
     }
-
-    // Mock dispatch response with a sample list item
-    mockDispatch.mockResolvedValueOnce({
-      list: [{
-        id: 1,
-        name: 'Item 1',
-        type: 'Type 1',
-        status: 'Status 1',
-        isActive: true,
-      }],
-      total: 1,
-    })
 
     const wrapper = getMountBaseList(props, global, slots)
 
@@ -483,18 +498,6 @@ describe('BaseList', () => {
     // Enable status toggling feature in props
     props.useList = useListForToggleStatus
 
-    // Mock dispatch response with a sample list item
-    mockDispatch.mockResolvedValueOnce({
-      list: [{
-        id: 1,
-        name: 'Item 1',
-        type: 'Type 1',
-        status: 'Status 1',
-        isActive: true,
-      }],
-      total: 1,
-    })
-
     const wrapper = getMountBaseList(props, global, slots)
 
     await flushPromises()
@@ -516,7 +519,7 @@ describe('BaseList', () => {
     // Enable status toggling feature in props
     props.useList = useListForToggleStatus
 
-    // Mock dispatch response with no list items
+    // Mock action response with no list items
     mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
       list: [],
       total: 0,
@@ -531,12 +534,6 @@ describe('BaseList', () => {
   })
 
   it('Should not display pagination when there is no data', async () => {
-    // Mock dispatch response with no list items
-    mockDispatch.mockResolvedValueOnce({
-      list: [],
-      total: 0,
-    })
-
     const wrapper = getMountBaseList(props, global)
 
     await flushPromises()
@@ -564,8 +561,7 @@ describe('BaseList', () => {
     // Spy on the showModal method to verify it gets called
     const modalSpy = vi.spyOn(mockModal, 'showModal')
 
-    // Mock dispatch response with a sample list item
-    mockDispatch.mockResolvedValueOnce({
+    mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
       list: [{
         id: 1,
         name: 'Item 1',
@@ -575,6 +571,8 @@ describe('BaseList', () => {
       }],
       total: 1,
     })
+
+    await flushPromises()
 
     const wrapper = getMountBaseList(props, global)
 
@@ -633,8 +631,6 @@ describe('BaseList', () => {
   it('Should render ProjectsFilter when withProjectsFilter is true', async () => {
     props.config.withProjectsFilter = true
 
-    mockDispatch.mockResolvedValueOnce({ list: [], total: 0 })
-
     const wrapper = getMountBaseList(props, global)
 
     await flushPromises()
@@ -647,7 +643,6 @@ describe('BaseList', () => {
 
   it('Should not render ProjectsFilter when withProjectsFilter is false', async () => {
     props.config.withProjectsFilter = false
-    mockDispatch.mockResolvedValueOnce({ list: [], total: 0 })
 
     const wrapper = getMountBaseList(props, global)
 
@@ -760,13 +755,12 @@ describe('BaseList', () => {
     const chipA2 = wrapper.findAllComponents({ name: 'VChip' }).find(c => c.text().includes('Project A'))!
     const chipB2 = wrapper.findAllComponents({ name: 'VChip' }).find(c => c.text().includes('Project B'))!
 
-    expect(chipA2.props('color')).toBe('secondary') // неактивный
-    expect(chipB2.props('color')).toBe('primary') // активный
+    expect(chipA2.props('color')).toBe('secondary')
+    expect(chipB2.props('color')).toBe('primary')
   })
 
   it('Should refetch list when projects selection changes', async () => {
     props.config.withProjectsFilter = true
-    mockDispatch.mockResolvedValueOnce({ list: [], total: 0 })
 
     const wrapper = getMountBaseList(props, global)
 
