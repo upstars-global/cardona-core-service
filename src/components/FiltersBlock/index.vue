@@ -41,9 +41,6 @@ const isExistsEntityDefaultFilters = computed<boolean>(() => filtersCoreStore.is
 const onChange = (filter: BaseField) => selectedFilters.value.push(cloneDeep(filter))
 
 const onApply = () => {
-  // store.commit('filtersCore/SET_LIST_ENTITY_NAME', props.entityName)
-  // store.commit('filtersCore/SET_LIST_PATH', route.path)
-  // store.commit('filtersCore/SET_LIST_FILTERS', selectedFilters.value)
   filtersCoreStore.setListEntityName(props.entityName)
   filtersCoreStore.setListPath(route.path)
   filtersCoreStore.setListFilters(selectedFilters.value)
@@ -75,10 +72,6 @@ onMounted(async () => {
     filtersCoreStore.setListEntityName()
     filtersCoreStore.setListPath()
     filtersCoreStore.setListFilters()
-
-    // store.commit('filtersCore/SET_LIST_ENTITY_NAME')
-    // store.commit('filtersCore/SET_LIST_PATH')
-    // store.commit('filtersCore/SET_LIST_FILTERS')
   }
 
   if (filtersCoreStore.appliedListFilters.length) {
