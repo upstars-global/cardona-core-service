@@ -59,15 +59,6 @@ const defaultGlobalConfig = {
   },
 }
 
-vi.mock('vuex', async importOriginal => {
-  const original = await importOriginal()
-
-  return {
-    ...original,
-    useStore: () => createStore(mockStoreConfig),
-  }
-})
-
 beforeEach(() => {
   /// Reset state mocked method before run each test
   setVariableTextBufferMock.mockReset()
