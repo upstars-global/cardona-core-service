@@ -332,12 +332,6 @@ describe('BaseList', () => {
   })
 
   it('Should display create, update, and delete buttons based on onePermissionKey', async () => {
-    // Mock response
-    mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
-      list: [],
-      total: 0,
-    })
-
     // Configure props
     props.config.withCreateBtn = true
     props.config.onePermissionKey = 'test-super'
