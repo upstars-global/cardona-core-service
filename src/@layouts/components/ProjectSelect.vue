@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, onMounted, watch } from 'vue'
-import { useStore } from 'vuex'
 import { useFavicon } from '@vueuse/core'
 import type { ProjectInfo } from '../../@model/project'
 import { IconsList } from '../../@model/enums/icons'
@@ -17,7 +16,7 @@ const userStore = useUserStore()
 const { changeProject } = useChangeProject()
 
 const selectProject = computed({
-  get: () => store.getters.selectedProjectWithoutPriority,
+  get: () => userStore.selectedProjectWithoutPriority,
   set: val => changeProject(val),
 })
 
