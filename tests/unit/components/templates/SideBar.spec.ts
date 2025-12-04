@@ -9,21 +9,6 @@ import { i18n } from '../../../../src/plugins/i18n'
 import { EMIT_AFTER_ANIMATION_SIDEBAR } from '../../../../src/utils/constants'
 import { SideBarCollapseItem } from '../../../../src/@model/templates/baseList'
 
-const mockAbilityCan = vi.fn()
-
-vi.mock('vuex', async importOriginal => {
-  const original = await importOriginal()
-
-  return {
-    ...original,
-    useStore: () => ({
-      getters: {
-        abilityCan: mockAbilityCan,
-      },
-    }),
-  }
-})
-
 vi.mock('vue-router', async importOriginal => {
   const actual = await importOriginal()
 
