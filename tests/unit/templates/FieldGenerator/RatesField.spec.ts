@@ -9,21 +9,12 @@ import { textOnEqualDataAndValueInput } from '../shared-tests/rates'
 
 const getMountRatesField = setMountComponent(RatesField)
 
-const mockStore = {
-  getters: {
-    'appConfigCore/allCurrencies': ['USD', 'EUR', 'CAD'],
-  },
-  dispatch: vi.fn(),
-}
+vi.mock('../../../../src/stores/appConfigCore', () => ({
+  useAppConfigCoreStore: () => ({
+    allCurrencies: ['USD', 'EUR', 'CAD'],
+  }),
+}))
 
-vi.mock('vuex', async importOriginal => {
-  const original = await importOriginal()
-
-  return {
-    ...original,
-    useStore: () => mockStore, // Мокаем useStore
-  }
-})
 
 describe('RatesField.vue', () => {
   const modelValue = [
@@ -54,7 +45,7 @@ describe('RatesField.vue', () => {
   }
 
   beforeEach(() => {
-    mockStore.dispatch.mockClear()
+    // mockStore.dispatch.mockClear()
   })
 
   it('Render elements of wrapper input ', async () => {
