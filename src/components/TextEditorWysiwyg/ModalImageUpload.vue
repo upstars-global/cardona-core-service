@@ -26,7 +26,8 @@ const setPathFile = (val: string) => {
   <BaseModal
     :id="modalId"
     :title="$t('uploadImg.selectImage')"
-    :size="ModalSizes.Medium"
+    :size="ModalSizes.Flex"
+    :modalBodyClass="'px-0 pt-6'"
   >
     <div class="px-6 pb-6 tabs-file-upload">
       <FileGallery
