@@ -5,7 +5,6 @@ import {
   checkBaseTestCaseForNameWithId,
   defaultProps,
   global,
-  mockStore,
   testIds,
 } from '../../../../../templates/shared-tests/name-with-short-id'
 import { getShortString } from '../../../../../../../src/helpers'
@@ -13,14 +12,13 @@ import { testOn } from '../../../../../templates/shared-tests/test-case-generato
 
 const getMountNameWithShortIdField = setMountComponent(NameWithShortIdField)
 
-vi.mock('vuex', async importOriginal => {
-  const original = await importOriginal()
-
-  return {
-    ...original,
-    useStore: () => mockStore,
-  }
-})
+vi.mock('../../../../../../../src/stores/user', () => ({
+  useUserStore: () => ({
+    userInfo: {
+      id: defaultProps.item.id,
+    },
+  }),
+}))
 
 let props
 
