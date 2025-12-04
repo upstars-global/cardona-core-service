@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useFavicon } from '@vueuse/core'
 import type { ProjectInfo } from '../../@model/project'
