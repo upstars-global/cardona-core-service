@@ -3,24 +3,22 @@ import NameWithIdField from '../../../../../../../src/components/templates/BaseL
 import { setMountComponent } from '../../../../../utils'
 import {
   checkBaseTestCaseForNameWithId,
-  global,
   defaultProps,
-  mockStore,
+  global,
   testIds,
 } from '../../../../../templates/shared-tests/name-with-short-id'
 import { testOn } from '../../../../../templates/shared-tests/test-case-generator'
 import { getShortString } from '../../../../../../../src/helpers'
 
+vi.mock('../../../../../../../src/stores/user', () => ({
+  useUserStore: () => ({
+    userInfo: {
+      id: defaultProps.item.id,
+    },
+  }),
+}))
+
 const getMountNameWithIdField = setMountComponent(NameWithIdField)
-
-vi.mock('vuex', async importOriginal => {
-  const original = await importOriginal()
-
-  return {
-    ...original,
-    useStore: () => mockStore,
-  }
-})
 
 let props
 
