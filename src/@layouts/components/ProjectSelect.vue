@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useFavicon } from '@vueuse/core'
+import type { ProjectInfo } from '../../@model/project'
 import { IconsList } from '../../@model/enums/icons'
 import { useChangeProject } from '../../composables/useChangeProject'
+import ApiService from '../../services/api'
 
 const store = useStore()
 
@@ -14,13 +16,23 @@ const selectProject = computed({
   set: val => changeProject(val),
 })
 
-const projects = computed(() => store.getters.userInfo.projects)
+const selectedProduct = computed(() => store.getters.selectedProduct)
+const projects = computed(() => store.getters.userInfo.projects.filter((item: ProjectInfo) => item?.productId === selectedProduct.value?.id))
 const cantSelect = computed(() => projects.value.length < 2)
 
 onMounted(() => {
   const faviconPath = store.getters.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
 
   useFavicon(faviconPath)
+})
+
+watch(selectProject, project => {
+  ApiService.setHeaders({
+    MarbellaProject: project.originProject.alias,
+  })
+  console.log('Project changed to:', project.originProject.alias)
+}, {
+  immediate: true,
 })
 </script>
 
