@@ -82,6 +82,7 @@ watch(() => isMinMode.value, () => {
 const isNeocore = computed(() => store.getters.isNeocore)
 const isMarbella = computed(() => store.getters.isMarbella)
 const isMenuTypeMain = computed(() => store.getters['appConfigCore/isMenuTypeMain'])
+const projects = computed(() => store.getters.projectsBySelectedProduct)
 
 const selectedProjectTitle = computed(() =>
   isNeocore.value
@@ -150,7 +151,8 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
     </div>
 
     <ProjectSelect
-      v-if="canSelectProject"
+      v-if="canSelectProject && projects.isNotEmpty"
+      :projects="projects"
       class="mx-3 mt-6 mb-8"
       :class="{ 'project-select--collapsed': configStore.isVerticalNavCollapsed && !isHovered }"
     />
@@ -207,6 +209,7 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
     line-height: 1.75rem;
     text-transform: capitalize;
   }
+
   .nav-item {
     :deep(.nav-item-title) {
       color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity)) !important;
@@ -289,7 +292,7 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 }
 
 // Small screen vertical nav transition
-@media (max-width:1279px) {
+@media (max-width: 1279px) {
   .layout-vertical-nav {
     &:not(.visible) {
       transform: translateX(-#{variables.$layout-vertical-nav-width});
@@ -305,7 +308,7 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 
 .sidenav-overlay {
   display: none;
-  background-color: rgba(34,41,47,.5);
+  background-color: rgba(34, 41, 47, .5);
   position: fixed;
   top: 0;
   left: 0;

@@ -7,6 +7,10 @@ import { IconsList } from '../../@model/enums/icons'
 import { useChangeProject } from '../../composables/useChangeProject'
 import ApiService from '../../services/api'
 
+const props = defineProps<{
+  projects: ProjectInfo[]
+}>()
+
 const store = useStore()
 
 const { changeProject } = useChangeProject()
@@ -16,9 +20,7 @@ const selectProject = computed({
   set: val => changeProject(val),
 })
 
-const selectedProduct = computed(() => store.getters.selectedProduct)
-const projects = computed(() => store.getters.userInfo.projects.filter((item: ProjectInfo) => item?.productId === selectedProduct.value?.id))
-const cantSelect = computed(() => projects.value.length < 2)
+const cantSelect = computed(() => props.projects.length < 2)
 
 onMounted(() => {
   const faviconPath = store.getters.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
@@ -26,8 +28,10 @@ onMounted(() => {
   useFavicon(faviconPath)
 })
 watch(selectProject, project => {
+  if (!project)
+    return
   ApiService.setHeaders({
-    MarbellaProject: project.originProject.alias,
+    MarbellaProject: project?.originProject?.alias,
   })
 }, {
   immediate: true,
