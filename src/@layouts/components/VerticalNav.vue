@@ -1,18 +1,16 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
-
 import { useElementHover, useWindowSize } from '@vueuse/core'
-
 import { computed, provide, ref, watch } from 'vue'
-
 import type { Component } from 'vue'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import { useStore } from 'vuex'
 import CustomMenu from '../../layouts/components/CustomMenu.vue'
 import { convertUpperCaseFirstSymbol } from '../../helpers'
 import { IconsList } from '../../@model/enums/icons'
 import ProjectSelect from '../../@layouts/components/ProjectSelect.vue'
 import { VVariants } from '../../@model/vuetify'
+import { useUserStore } from '../../stores/user'
+import { useAppConfigCoreStore } from '../../stores/appConfigCore'
 import { layoutConfig } from '@layouts'
 import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
 import { useLayoutConfigStore } from '@layouts/stores/config'
@@ -31,9 +29,8 @@ const props = withDefaults(defineProps<Props>(), {
   tag: 'aside',
 })
 
-const store = useStore()
 const refNav = ref()
-
+const userStore = useUserStore()
 const isHovered = useElementHover(refNav)
 
 provide(injectionKeyIsVerticalNavHovered, isHovered)
@@ -54,6 +51,7 @@ const resolveNavItemComponent = (item: NavLink | NavSectionTitle | NavGroup): un
   Close overlay vertical nav when link is clicked
 */
 const route = useRoute()
+const appConfigCoreStore = useAppConfigCoreStore()
 
 watch(() => route.name, () => {
   props.toggleIsOverlayNavActive(false)
@@ -79,15 +77,15 @@ watch(() => isMinMode.value, () => {
     configStore.isVerticalNavCollapsed = false
 })
 
-const isNeocore = computed(() => store.getters.isNeocore)
-const isMarbella = computed(() => store.getters.isMarbella)
-const isMenuTypeMain = computed(() => store.getters['appConfigCore/isMenuTypeMain'])
-const projects = computed(() => store.getters.projectsBySelectedProduct)
+const isNeocore = computed(() => userStore.isNeocore)
+const isMenuTypeMain = computed(() => appConfigCoreStore.isMenuTypeMain)
+const isMarbella = computed(() => userStore.isMarbella)
+const projects = computed(() => userStore.projectsBySelectedProduct)
 
 const selectedProjectTitle = computed(() =>
   isNeocore.value
-    ? store.getters.selectedProject?.publicName
-    : convertUpperCaseFirstSymbol(store.getters.selectedProduct?.name),
+    ? userStore.getSelectedProject?.publicName
+    : convertUpperCaseFirstSymbol(userStore.getSelectedProject?.name),
 )
 
 const actualBackRoute = computed(() => {

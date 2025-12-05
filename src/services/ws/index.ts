@@ -1,9 +1,9 @@
 import { getAccessToken, getRefreshToken } from 'axios-jwt'
 import { Centrifuge } from 'centrifuge'
 import { has } from 'lodash'
-import store from '../../store'
 import { checkIsLoggedIn } from '../../helpers/token-auth'
 import { IS_DEV_ENV, LENS_PORT } from '../../utils/constants'
+import { useAuthCoreStore } from '../../stores/authCore'
 import { messageTypes } from './config'
 
 export enum TyperRequest {
@@ -29,7 +29,7 @@ class WSService {
       const data: {
         accessToken: string
         refreshToken: string
-      } = await store.dispatch('authCore/refreshAuth', getRefreshToken())
+      } = await useAuthCoreStore().refreshAuth(getRefreshToken())
 
       return data?.accessToken
     }

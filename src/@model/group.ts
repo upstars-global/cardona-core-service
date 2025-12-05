@@ -1,10 +1,12 @@
 import type { Permission } from '../@model/permission'
-import {UserInfo, UserSmallInfo} from '../@model/users'
+import type { UserInfo } from '../@model/users'
+import { UserSmallInfo } from '../@model/users'
 import type { IRequestListPayload } from '../@model/index'
 import { ViewInfo, ViewType } from '../@model/view'
 import { i18n } from '../plugins/i18n'
-import store from '../store'
-import {MultiSelectBaseField, TextBaseField} from "../@model/templates/baseField";
+import { MultiSelectBaseField, TextBaseField } from '../@model/templates/baseField'
+import { useUsersStore } from '../stores/users'
+import { useProductCoreStore } from '../stores/productCore'
 
 export class GroupData {
   readonly id?: string
@@ -70,9 +72,10 @@ export class GroupForm {
   permissions?: Permission[]
 
   constructor(data?: any) {
-    const users = data?.users.map((user) => new UserSmallInfo(user))
+    const users = data?.users.map(user => new UserSmallInfo(user))
+
     this.id = data?.id
-    this.productId = store.getters['productCore/productId']
+    this.productId = useProductCoreStore().productId
     this.name = new TextBaseField({
       key: 'name',
       value: data?.name,
@@ -85,8 +88,10 @@ export class GroupForm {
       value: users,
       label: i18n.t('common.groups.adminAdd'),
       placeholder: i18n.t('placeholder.filter.admin'),
-      fetchOptionsActionName: 'users/fetchUsersList',
-    });
+
+      // fetchOptionsAction: 'users/fetchUsersList',
+      fetchOptionsAction: useUsersStore().fetchUsersList,
+    })
     this.permissions = data?.permissions || []
   }
 }

@@ -6,7 +6,6 @@ import VueFroala from './libs/froala'
 import { initDirectives } from '@/directives'
 import App from '@/App.vue'
 import { registerPlugins } from '@core/utils/plugins'
-import vuex from '@/store'
 
 // Styles
 import '@core/scss/template/index.scss'
@@ -19,7 +18,6 @@ const app = createApp(App)
 registerPlugins(app)
 initDirectives(app)
 app.use(VueFroala)
-app.use(vuex)
 
 // Mount vue app
 app.mount('#app')

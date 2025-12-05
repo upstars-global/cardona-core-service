@@ -9,7 +9,6 @@ import ApiService from '../services/api'
 import {
   NotificationStatuses,
 } from '../@model/notificationExport'
-import store from '@/store'
 
 function upsert<T extends { reportId: number }>(
   list: T[],
@@ -59,7 +58,7 @@ export const useNotificationExportStore = defineStore('notification-export', {
     async downloadReport(reportId: number) {
       const response = await ApiService.request({
         type: 'App.V2.Report.Download.File',
-        data: { project: store.getters.selectedProject?.alias, reportId },
+        data: { project: this.$selectedProjectAlias, reportId },
       }, {
         responseType: 'blob',
         withResponseHeaders: true,
@@ -87,7 +86,7 @@ export const useNotificationExportStore = defineStore('notification-export', {
         const { data } = await ApiService.request({
           type: 'App.V2.Report.Download.List',
           pagination: payload.pagination,
-          filter: { project: store.getters.selectedProject?.alias },
+          filter: { project: this.$selectedProjectAlias },
         }, {
           withErrorToast: false,
         }) || []
