@@ -11,6 +11,10 @@ import type { MultipleActions } from '../../@model/enums/multipleActions'
 import type { TableField } from './tableFields'
 import type { ProjectFilterTypes } from '@filterConfig'
 
+export enum ListTypes {
+  Default = 'default',
+}
+
 export enum SortDirection {
   asc = 'asc',
   desc = 'desc',
