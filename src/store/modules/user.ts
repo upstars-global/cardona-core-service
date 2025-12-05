@@ -62,20 +62,25 @@ export default {
       return priorityProject || selectedProject || selectedProjectInfo || defaultProject
     },
 
-    selectedProjectWithoutPriority: ({ selectedProject, priorityProject }, { userProjects }): ProjectInfoInput => {
-      const defaultProject: ProjectInfoInput = userProjects[0]
+    selectedProjectWithoutPriority: ({ selectedProject, priorityProject }, { projectsBySelectedProduct }): ProjectInfoInput => {
+      const defaultProject: ProjectInfoInput = projectsBySelectedProduct[0]
 
       const projectIdFromStorage: string | null = sessionStorage.getItem(storageKeys.selectedProjectId)
 
-      const selectedProjectInfo: ProjectInfoInput = userProjects.find(({ id }) => id === Number(projectIdFromStorage))
+      const selectedProjectInfo: ProjectInfoInput = projectsBySelectedProduct.find(({ id }) => id === Number(projectIdFromStorage))
 
       return selectedProject || selectedProjectInfo || defaultProject
     },
 
     selectedProduct: ({ selectedProduct }) => selectedProduct,
+    projectsBySelectedProduct: (_, getters) => getters
+      .userProjects
+      .filter(item => item?.productId === getters.selectedProduct?.id)
+      .filter(Boolean),
 
     // @ts-expect-error
     isNeocore: () => productName === productsName.neocore,
+    isMarbella: () => productName === productsName.marbella,
 
     getSpecificProject:
       ({ userInfo }) =>
