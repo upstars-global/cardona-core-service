@@ -29,7 +29,7 @@ onMounted(() => {
   useFavicon(faviconPath)
 })
 watch(selectProject, project => {
-  if (!project && !isMarbella.value)
+  if (!project || !isMarbella.value)
     return
   ApiService.setHeaders({
     MarbellaProject: project?.originProject?.alias,
