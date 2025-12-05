@@ -28,6 +28,7 @@ onMounted(() => {
   useFavicon(faviconPath)
 })
 watch(selectProject, project => {
+  changeProject(project)
   if (!project)
     return
   ApiService.setHeaders({
