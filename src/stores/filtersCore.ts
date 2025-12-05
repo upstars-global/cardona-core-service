@@ -13,7 +13,7 @@ export const useFiltersStore = defineStore('filters-core', {
 
   getters: {
     listEntityName: (state): string => state.entityName,
-    listPath: (state): string => state.listPath,
+    getListPath: (state): string => state.listPath,
     appliedListFilters: (state): BaseField[] => state.listFilters,
     defaultFiltersList: (state): IDefaultFilter[] => state.defaultFilters,
 
