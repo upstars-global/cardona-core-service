@@ -48,39 +48,6 @@ const combineFilter = (
   return Object.values(filter).some(v => !isUndefined(v)) ? filter : undefined
 }
 
-const reportFactory = (isSpecificReport = false) => async (
-  payload: { type: string; data: IRequestListPayload; customApiPrefix?: string },
-): Promise<Blob | string> => {
-  const paramKey = isSpecificReport ? 'data' : 'filter'
-  const projectAlias = store.getters.selectedProject?.alias
-  const typeSuffix = isSpecificReport ? 'Load.' : ''
-
-  const response = await ApiService.request(
-    {
-      type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
-        payload.type,
-      )}.${typeSuffix}List.Report`,
-      sort: payload.data.sort,
-      pagination: {
-        pageNumber: payload.data.page ?? 1,
-        perPage: payload.data.perPage,
-      },
-      [paramKey]: combineFilter(payload.data.filter, projectAlias),
-    },
-    {
-      withSuccessToast: isSpecificReport,
-      successToastTitle: isSpecificReport ? 'reportLoadTitle' : undefined,
-      successToastDescription: isSpecificReport ? i18n.t('toast.success.reportLoadDescription') : undefined,
-      responseType:
-        payload.data.filter.format === ExportFormat.XLSX ? 'blob' : 'json',
-    },
-  )
-
-  return payload.data.filter.format === ExportFormat.JSON
-    ? JSON.stringify(response)
-    : response
-}
-
 export const useBaseStoreCore = defineStore('baseStoreCore', {
   actions: {
     async fetchEntityList(
@@ -107,8 +74,36 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       return new ListData(response, payload.options.listItemModel)
     },
 
-    fetchReport: reportFactory(),
-    specificFetchReport: reportFactory(true),
+    async fetchReport(
+      payload: { type: string; data: IRequestListPayload; customApiPrefix?: string },
+    ): Promise<Blob | string> {
+      const projectAlias = store.getters.selectedProject?.alias
+
+      const response = await ApiService.request(
+        {
+          type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
+            payload.type,
+          )}.Load.List.Report`,
+          sort: payload.data.sort,
+          pagination: {
+            pageNumber: payload.data.page ?? 1,
+            perPage: payload.data.perPage,
+          },
+          data: combineFilter(payload.data.filter, projectAlias),
+        },
+        {
+          withSuccessToast: true,
+          successToastTitle: 'reportLoadTitle',
+          successToastDescription: i18n.t('toast.success.reportLoadDescription'),
+          responseType:
+            payload.data.filter.format === ExportFormat.XLSX ? 'blob' : 'json',
+        },
+      )
+
+      return payload.data.filter.format === ExportFormat.JSON
+        ? JSON.stringify(response)
+        : response
+    },
     async readEntity(payload: {
       type: string
       id: string
