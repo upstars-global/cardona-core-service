@@ -67,7 +67,7 @@ export const useUserStore = defineStore('user', {
         p => p._access >= 1 && p.target.includes('-report'),
       ),
 
-    userProjects: state => state.userInfo.projects,
+    userProjects: state => state.userInfo?.projects || [],
     userProducts: state => state.userInfo.products,
 
     // selectedProjectComputed: state => {
@@ -87,9 +87,11 @@ export const useUserStore = defineStore('user', {
 
     isNeocore: () => productName === productsName.neocore,
     isMarbella: () => productName === productsName.marbella,
-    projectsBySelectedProduct: () => this.userProjects
-      ?.filter(item => item?.productId === this.selectedProduct?.id)
-      ?.filter(Boolean) || [],
+    projectsBySelectedProduct() {
+      return this.userProjects
+        ?.filter(item => item?.productId === this.selectedProductComputed?.id)
+        ?.filter(Boolean) || []
+    },
     getSpecificProject:
       state =>
         (projectAlias: string): ProjectInfo =>
