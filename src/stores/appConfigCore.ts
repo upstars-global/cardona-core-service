@@ -68,7 +68,7 @@ export const useAppConfigCoreStore = defineStore('appConfigCore', {
 
     isMenuTypeMain: state => state.menuType === MenuType.main,
 
-    verifiedProjects: state => state.verifiedProjects,
+    getVerifiedProjects: state => state.verifiedProjects,
   },
 
   actions: {
