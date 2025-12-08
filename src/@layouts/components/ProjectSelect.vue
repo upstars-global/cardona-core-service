@@ -16,11 +16,12 @@ const userStore = useUserStore()
 const { changeProject } = useChangeProject()
 
 const selectProject = computed({
-  get: () => userStore.selectedProjectWithoutPriority,
+  get: () => store.getters.selectedProjectWithoutPriority,
   set: val => changeProject(val),
 })
 
 const cantSelect = computed(() => props.projects.length < 2)
+const isMarbella = computed(() => store.getters.isMarbella)
 
 onMounted(() => {
   const faviconPath = userStore.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
@@ -30,6 +31,7 @@ onMounted(() => {
 watch(selectProject, project => {
   changeProject(project)
   if (!project)
+  if (!project || !isMarbella.value)
     return
   ApiService.setHeaders({
     MarbellaProject: project?.originProject?.alias,
