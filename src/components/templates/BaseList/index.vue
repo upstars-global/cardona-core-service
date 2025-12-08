@@ -44,13 +44,13 @@ const dynamicComponent = computed(() =>
 
 defineExpose({
   get reFetchList() { return listByTypeRef.value?.reFetchList },
-  get resetSelectedItem() { return listByTypeRef.value?.resetSelectedItem },
-  get selectedItems() { return listByTypeRef.value?.selectedItems },
-  get disableRowIds() { return listByTypeRef.value?.disableRowIds },
-  get sortData() { return listByTypeRef.value?.sortData },
-  get items() { return listByTypeRef.value?.items },
-  get isSidebarShown() { return listByTypeRef.value?.isSidebarShown },
-  get searchQuery() { return listByTypeRef.value?.searchQuery },
+  resetSelectedItem: listByTypeRef.value?.resetSelectedItem,
+  selectedItems: listByTypeRef.value?.selectedItems,
+  disableRowIds: listByTypeRef.value?.disableRowIds,
+  sortData: listByTypeRef.value?.sortData,
+  items: listByTypeRef.value?.items,
+  isSidebarShown: listByTypeRef.value?.isSidebarShown,
+  searchQuery: listByTypeRef.value?.searchQuery,
 })
 </script>
 
