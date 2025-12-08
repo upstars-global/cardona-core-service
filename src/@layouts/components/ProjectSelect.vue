@@ -21,6 +21,7 @@ const selectProject = computed({
 })
 
 const cantSelect = computed(() => props.projects.length < 2)
+const isMarbella = computed(() => store.getters.isMarbella)
 
 onMounted(() => {
   const faviconPath = store.getters.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
@@ -28,7 +29,7 @@ onMounted(() => {
   useFavicon(faviconPath)
 })
 watch(selectProject, project => {
-  if (!project)
+  if (!project || !isMarbella.value)
     return
   ApiService.setHeaders({
     MarbellaProject: project?.originProject?.alias,
