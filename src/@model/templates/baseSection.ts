@@ -2,6 +2,7 @@ import type { IValidationError } from '../../services/api/config'
 import type { useBaseStoreCore } from '../../stores/baseStoreCore'
 
 export enum PageType {
+  Root = 'root',
   Create = 'create',
   Update = 'update',
   Empty = '',

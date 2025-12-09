@@ -28,6 +28,7 @@ export interface ProjectInfoInput {
   readonly websiteUrl: string
   readonly integrations?: ProjectIntegrationsInput | null
   readonly iconPath?: string | null
+  readonly productId?: number | string
   readonly mainLocale?: string
   readonly locales?: Array<string>
 }
@@ -50,11 +51,13 @@ export class ProjectInfo {
   readonly iconPath?: string | null
   readonly originProject?: object
   readonly mainLocale?: string
+  readonly productId: number | string
   readonly locales?: Array<string>
 
   constructor(project: ProjectInfoInput) {
     this.id = Number(project.id)
     this.name = project.name
+    this.productId = project?.productId ?? ''
     this.publicName = project.publicName
     this.users = project.users
     this.alias = project.alias
