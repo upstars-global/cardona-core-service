@@ -970,7 +970,7 @@
     "_": "Your exports",
     "started":  "Started",
     "loading": "Processing...",
-    "done": "Available untill:",
+    "done": "Available until:",
     "toast": {
       "startMessage": "New export file",
       "endMessage": "has been generated."
