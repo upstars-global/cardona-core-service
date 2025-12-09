@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { ref } from 'vue'
 import type { IBaseListConfig } from '../../../@model/templates/baseList'
 import { ListTypes } from '../../../@model/templates/baseList'
-import type DefaultBaseList from './types/default.vue'
 
-const props = withDefaults(defineProps<{
-  config: IBaseListConfig
-  useList: unknown
-  type?: ListTypes
-}>(), {
-  type: ListTypes.Default,
-})
+import DefaultBaseList from './types/default.vue'
+
+const props = withDefaults(
+  defineProps<{
+    config: IBaseListConfig
+    useList: unknown
+    type?: ListTypes
+  }>(),
+  {
+    type: ListTypes.Default,
+  },
+)
 
 const emits = defineEmits<{
   mounted: []
@@ -18,29 +22,17 @@ const emits = defineEmits<{
   end: [item: Record<string, unknown>]
 }>()
 
-// const slots = useSlots()
-
-const onClickRow = async data => {
-  emits('rowClicked', data)
-}
-
-const onEnd = async data => {
-  emits('end', data)
-}
-
-const onMountedList = async () => {
-  emits('mounted')
-}
-
 const listByTypeRef = ref<InstanceType<typeof DefaultBaseList> | null>(null)
 
 const componentsMap = {
-  default: () => import('./types/default.vue'),
+  default: DefaultBaseList,
 }
 
-const dynamicComponent = computed(() =>
-  defineAsyncComponent(componentsMap[props.type]),
-)
+const dynamicComponent = componentsMap[props.type]
+
+const onClickRow = (data: any) => emits('rowClicked', data)
+const onEnd = (data: any) => emits('end', data)
+const onMountedList = () => emits('mounted')
 
 defineExpose({
   get reFetchList() { return listByTypeRef.value?.reFetchList },
