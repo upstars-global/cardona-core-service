@@ -166,7 +166,7 @@ const isCreateOrUpdateSeo = computed(
 )
 
 const isShowSaveBtn = computed<boolean>(() => isUpdatePage && (canUpdate || canUpdateSeo))
-const isReadMode = computed<boolean>(() => isUpdatePage && !canUpdate && !canUpdateSeo)
+const isReadMode = computed<boolean>(() => (isUpdatePage || isRootPage) && !canUpdate && !canUpdateSeo)
 
 const onSubmit = async (isStay: boolean) => {
   textEditorStore.setSave(true)
