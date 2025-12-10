@@ -70,6 +70,7 @@ declare module 'vue' {
     DateView: typeof import('./src/components/templates/ViewGenerator/_components/DateView.vue')['default']
     DateWithSecondsField: typeof import('./src/components/templates/_components/DateWithSecondsField.vue')['default']
     DateWithSecondsView: typeof import('./src/components/templates/ViewGenerator/_components/DateWithSecondsView.vue')['default']
+    Default: typeof import('./src/components/templates/BaseList/types/default.vue')['default']
     DemoAlertBasic: typeof import('./src/views/demos/components/alert/DemoAlertBasic.vue')['default']
     DemoAlertBorder: typeof import('./src/views/demos/components/alert/DemoAlertBorder.vue')['default']
     DemoAlertClosable: typeof import('./src/views/demos/components/alert/DemoAlertClosable.vue')['default']
