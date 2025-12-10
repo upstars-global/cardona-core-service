@@ -3,12 +3,12 @@ import { productId } from '@productConfig'
 
 export const useProductCoreStore = defineStore('product', {
   state: () => ({
-    productId,
+    _productId: productId,
   }),
 
   getters: {
     productId(state): number | null {
-      return state.productId
+      return state._productId
     },
   },
 })
