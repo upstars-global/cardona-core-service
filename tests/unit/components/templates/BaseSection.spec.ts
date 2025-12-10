@@ -2,7 +2,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises } from '@vue/test-utils'
-import { createStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import type { UseEntityType } from '../../../../src/components/templates/BaseSection/index.vue'
@@ -88,20 +87,6 @@ vi.mock('../../../../src/helpers/base-permissions', () => ({
   })),
 }))
 
-const mockStore = createStore({
-  state: {
-    errorUrls: [],
-  },
-  getters: {
-    isLoadingPage: vi.fn(() => false),
-    abilityCan: () => true,
-    isErrorEndpoint: () => vi.fn(() => false),
-  },
-  actions: {
-    resetErrorUrls: vi.fn(),
-  },
-})
-
 const goMock = vi.fn()
 const pushMock = vi.fn()
 
@@ -146,7 +131,7 @@ const mountComponent = (props = {}, global = {}, slots = {}) =>
     useEntity: useMockForm,
     ...props,
   }, {
-    plugins: [mockStore, router],
+    plugins: [router],
     stubs: {
       VBtn: { template: '<button><slot /></button>' },
     },

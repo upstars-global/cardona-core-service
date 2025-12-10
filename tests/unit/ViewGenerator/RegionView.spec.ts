@@ -3,52 +3,50 @@ import RegionView from '../../../src/components/templates/ViewGenerator/_compone
 import { setMountComponent } from '../utils'
 import { testOn } from '../templates/shared-tests/test-case-generator'
 
-const getMountRegionView = setMountComponent(RegionView)
+const fetchCountriesList = vi.fn()
 
-const mockStore = {
-  getters: {
-    'regions/countryList': {
-      list: [
-        { id: 'US', name: 'United States' },
-        { id: 'FR', name: 'France' },
-        { id: 'UA', name: 'Ukraine' },
-      ],
+let countryList = []
+
+vi.mock('../../../src/stores/regions', () => ({
+  useRegionsStore: () => ({
+    countryList: {
+      list: countryList,
     },
-  },
-  dispatch: vi.fn(),
-}
+    fetchCountriesList,
+  }),
+}))
+
+const getMountRegionView = setMountComponent(RegionView)
 
 const mockItem = {
   value: 'US',
 }
 
-vi.mock('vuex', async importOriginal => {
-  const original = await importOriginal()
-
-  return {
-    ...original,
-    useStore: () => mockStore, // Мокаем useStore
-  }
-})
-
 describe('RegionView.vue', () => {
   beforeEach(() => {
-    mockStore.dispatch.mockClear()
+    vi.resetModules()
+    fetchCountriesList.mockClear()
   })
 
   it('Renders the correct region based on item value', async () => {
+    countryList = [
+      { id: 'US', name: 'United States' },
+      { id: 'FR', name: 'France' },
+      { id: 'UA', name: 'Ukraine' },
+    ]
+
     const wrapper = getMountRegionView({ item: mockItem })
 
     testOn.equalTextValue({ wrapper }, 'United States')
   })
 
   it('Calls fetchCountriesList when countryList is empty', async () => {
-    mockStore.getters['regions/countryList'].list = []
+    countryList = []
 
     const wrapper = getMountRegionView({ item: mockItem })
 
     await wrapper.vm.$nextTick()
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith('regions/fetchCountriesList')
+    expect(fetchCountriesList).toHaveBeenCalled()
   })
 })
