@@ -41,7 +41,7 @@ const formattedDate = computed(() => {
     <div class="list-item-icon">
       <NotificationExportIconStatus :status="data.status" />
     </div>
-    <div class="list-item-content ml-2">
+    <div class="list-item-content ml-2 pt-1">
       <div class="list-item-title">
         <span class="text-body-1 font-weight-medium">
           {{ $t(`notificationReport.entityType.${data.entityType}`) }}

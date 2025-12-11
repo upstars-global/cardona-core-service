@@ -209,9 +209,6 @@ export interface IBaseListConfig {
 
   /** disableLoading - Flag для блокирования loading state  */
   readonly disableLoading?: boolean
-
-  /** isSpecificExport - !!! Временноый Flag для export который подвязан на генерецию файлов по новому формату  */
-  readonly isSpecificExport?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -264,7 +261,6 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withTopPagination?: boolean
   readonly saveSort?: boolean
   readonly disableLoading?: boolean
-  readonly isSpecificExport: boolean
 
   constructor({
     withSearch,
@@ -316,7 +312,6 @@ export class BaseListConfig implements IBaseListConfig {
     withTopPagination,
     saveSort,
     disableLoading,
-    isSpecificExport,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -367,7 +362,6 @@ export class BaseListConfig implements IBaseListConfig {
     this.withTopPagination = withTopPagination
     this.saveSort = saveSort ?? true
     this.disableLoading = disableLoading
-    this.isSpecificExport = isSpecificExport ?? false
   }
 }
 

@@ -123,7 +123,7 @@ onUnmounted(clock.stopTime)
           cols="1"
           class="d-flex align-center justify-end notification-export-wrapper"
         >
-          <NotificationExport :user-id="userId" />
+          <NotificationExport :time="time" :user-id="userId" />
         </div>
       </VRow>
     </VCol>
