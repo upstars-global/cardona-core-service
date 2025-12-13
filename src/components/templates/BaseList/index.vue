@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import type { IBaseListConfig } from '../../../@model/templates/baseList'
 import { ListTypes } from '../../../@model/templates/baseList'
-
 import DefaultBaseList from './types/default.vue'
 
 const props = withDefaults(
@@ -49,7 +48,7 @@ defineExpose({
 </script>
 
 <template>
-  <div>
+  <div class="base-list-wrapper">
     <component
       :is="dynamicComponent"
       ref="listByTypeRef"
@@ -83,3 +82,35 @@ defineExpose({
     </component>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.base-list-wrapper {
+  :deep(.table-card-settings) {
+    .table-settings {
+      display: flex;
+      padding: 0.5rem 1rem;
+
+      .per-page-selector {
+        min-width: 6rem;
+      }
+    }
+  }
+
+  :deep(.c-table) {
+    .default-cell-value {
+      max-width: 320px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    tr {
+      td[data-c-field='actions'] {
+        width: 3.5rem;
+      }
+
+      td[data-c-field="email"] {
+        padding: 0 !important;
+      }
+    }
+  }
+}
+</style>
