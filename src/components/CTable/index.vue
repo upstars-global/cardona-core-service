@@ -64,7 +64,7 @@ const onDragEnd = (event: { moved: object }) => {
   emits('end', event.moved)
 }
 
-const cellClasses = computed(() => props.small ? 'py-2 px-3' : 'py-3 px-4')
+const cellClasses = computed(() => props.small ? 'c-table-sm-cell-padding' : 'c-table-cell-padding')
 const maxSkeletonRows = 25
 
 const skeletonRows = computed(() =>
@@ -155,7 +155,7 @@ const toggleExpand = (id: string) => {
       <th
         v-if="props.selectable"
         class="c-table__header-cell"
-        :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
+        :class="{ 'c-table-cell-padding': !props.small, 'px-0': props.small }"
         data-c-field="selectable"
         data-test-id="selectable-th"
       >
@@ -233,32 +233,32 @@ const toggleExpand = (id: string) => {
         v-if="isLoadingList"
         data-test-id="tbody-skeleton"
       >
-      <slot name="skeleton">
-        <tr
-          v-for="index in skeletonRows"
-          :key="`skeleton-row_${index}`"
-          data-test-id="skeleton-row"
-        >
-          <td
-            v-if="props.selectable"
-            class="c-table__cell"
-            :class="cellClasses"
-            data-c-field="selectable"
+        <slot name="skeleton">
+          <tr
+            v-for="index in skeletonRows"
+            :key="`skeleton-row_${index}`"
+            data-test-id="skeleton-row"
           >
-            <VSkeletonLoader type="text" />
-          </td>
-          <td
-            v-for="(field, cellIndex) in getActualField(fields)"
-            :key="`skeleton-cell_${index}_${cellIndex}`"
-            class="c-table__cell"
-            data-test-id="skeleton-coll"
-            :class="cellClasses"
-            :data-c-field="field.key"
-          >
-            <VSkeletonLoader type="text" />
-          </td>
-        </tr>
-      </slot>
+            <td
+              v-if="props.selectable"
+              class="c-table__cell"
+              :class="cellClasses"
+              data-c-field="selectable"
+            >
+              <VSkeletonLoader type="text" />
+            </td>
+            <td
+              v-for="(field, cellIndex) in getActualField(fields)"
+              :key="`skeleton-cell_${index}_${cellIndex}`"
+              class="c-table__cell"
+              data-test-id="skeleton-coll"
+              :class="cellClasses"
+              :data-c-field="field.key"
+            >
+              <VSkeletonLoader type="text" />
+            </td>
+          </tr>
+        </slot>
       </tbody>
       <Component
         :is="tableWrapperComponent"
@@ -296,7 +296,7 @@ const toggleExpand = (id: string) => {
             <td
               v-if="props.selectable"
               class="c-table__cell"
-              :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
+              :class="{ 'c-table-cell-padding': !props.small, 'px-0': props.small }"
               data-c-field="selectable"
               data-test-id="selectable"
             >
@@ -335,13 +335,12 @@ const toggleExpand = (id: string) => {
               v-if="showExpand && expanded.includes(item.raw.id)"
               :key="`${item.raw.id}-expand`"
             >
-
               <!-- [START] Add for similar col and cell in table  -->
               <td v-if="props.selectable" />
               <td
                 v-if="props.selectable"
                 class="c-table-expand__cell"
-                :class="{ 'py-3 px-4': !props.small, 'px-0': props.small }"
+                :class="{ 'c-table-cell-padding': !props.small, 'px-0': props.small }"
                 data-c-expand-field="selectable"
               />
               <!-- [END] Add for similar col and cell in table -->
@@ -355,7 +354,7 @@ const toggleExpand = (id: string) => {
                 <slot
                   :name="`cellExpand(${field.key})`"
                   :field="field"
-                  :item="{ ...item, raw, value: raw}"
+                  :item="{ ...item, raw, value: raw }"
                   :cell="raw[field.key]"
                   :toggle-expand="toggleExpand"
                   :is-expanded="expanded.includes(item.raw.id)"
