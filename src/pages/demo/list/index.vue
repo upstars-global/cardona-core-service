@@ -6,7 +6,7 @@ import BaseList from '../../../components/templates/BaseList/index.vue'
 import { useDemoList } from '../useDemo'
 import { FilterType } from '../../../@model/filter'
 import { IconsList } from '../../../@model/enums/icons'
-import { BaseListConfig, ListTypes, SortDirection } from '../../../@model/templates/baseList'
+import { BaseListConfig, SortDirection } from '../../../@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
 import BtnIcon from '../../../components/templates/_components/BtnIcon.vue'
 import { ProjectFilterTypes } from '@filterConfig'
@@ -77,7 +77,6 @@ const setButtonState = (key: string): void => {
     :use-list="useDemoList"
     :config="listConfig"
     class="demo-list mr-md-1 mr-sm-0"
-    :type="ListTypes.Compact"
   >
     <template #table-field-setting>
       <VIcon
