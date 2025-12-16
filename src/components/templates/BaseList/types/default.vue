@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
 import { useStorage } from '@vueuse/core'
@@ -60,6 +61,10 @@ import DateField from '../_components/fields/DateField.vue'
 import ProjectsFilter from '../_components/ProjectsFilter.vue'
 import { mapSortData } from '../сomposables/sorting'
 import { transformFilters } from '../сomposables/filters'
+
+defineOptions({
+  name: 'DefaultBaseList',
+})
 
 const props = defineProps<{
   config: IBaseListConfig

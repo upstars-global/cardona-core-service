@@ -5,7 +5,7 @@ import { FilterID } from '../../../../src/@model/filter'
 import { ListFieldType, TableField } from '../../../../src/@model/templates/tableFields'
 import { mockModal } from '../modal-provide-config'
 import { clickTrigger, setMountComponent } from '../../utils'
-import BaseList from '../../../../src/components/templates/BaseList/index.vue'
+import DefaultBaseList from '../../../../src/components/templates/BaseList/types/default.vue'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 
 export const exportDataMock = () => {
@@ -157,7 +157,7 @@ export const global = {
 export const getSelectorCField = (name: string) => `td[data-c-field="${name}"]`
 
 // Mounting function for the BaseList component
-export const getMountComponent = setMountComponent(BaseList)
+export const getMountComponent = setMountComponent(DefaultBaseList)
 
 // Utility function to update component props
 export const getUpdatePropsConfig = (updatedConfig, props) => ({

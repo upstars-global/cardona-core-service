@@ -1,59 +1,33 @@
+import '../../../../mocks/base-list/static-mock'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 import { flushPromises } from '@vue/test-utils'
 import { h } from 'vue'
-import '../../../../mocks/baselist/static-mock'
-import DefaultBaseList from '../../../../../../src/components/templates/BaseList/types/default.vue'
-import ProjectsFilter from '../../../../../../src/components/templates/BaseList/_components/ProjectsFilter.vue'
-import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../../utils'
-import { BaseListSlots } from '../../../../../../src/@model/templates/baseList'
-import { mockModal } from '../../../../mocks/modal-provide-config'
+import { clickTrigger, getSelectorTestId } from '../../../../utils'
 import { testOn } from '../../../../templates/shared-tests/test-case-generator'
 import { FilterID } from '../../../../../../src/@model/filter'
 import {
+  defaultProps,
   exportDataMock,
-  getSelectorCField, getUpdatePropsConfig, mockBaseStoreCore,
-  runActionToggleState,
-  useListForCustomStore,
-  useListForToggleStatus,
-} from '../../../../mocks/baselist/utils'
-import '../../../../../../src/stores/users'
-import { defaultProps, fields, mockCustomStore, mockStore } from '../../../../mocks/baselist/mock'
-
-// Mounting function for the DefaultBaseList component
-const getMountComponent = setMountComponent(DefaultBaseList)
-
-// Global configuration for mounting the component, including plugins and providers
-const global = {
-  provide: { modal: mockModal },
-  plugins: [mockStore],
-  components: {
-    VueSelect: {
-      template: '<select><slot /></select>',
-    },
-  },
-}
+  fields,
+  getMountComponent, getSelectorCField,
+  getUpdatePropsConfig,
+  global,
+  mockBaseStoreCore, mockCustomStore, modalSpy, runActionToggleState, useListForCustomStore, useListForToggleStatus,
+} from '../../../../mocks/base-list/utils'
+import { BaseListSlots } from '../../../../../../src/@model/templates/baseList'
+import ProjectsFilter from '../../../../../../src/components/templates/BaseList/_components/ProjectsFilter.vue'
 
 let props
-let mockDispatch
 
-describe('DefaultBaseList', () => {
+describe('BaseList', () => {
   beforeEach(() => {
     // Reset mocks and initialize props before each test
     exportDataMock()
     props = cloneDeep(defaultProps)
-    mockDispatch = vi.spyOn(mockStore, 'dispatch')
-
-    mockStore.state.selectedProject = { id: 'p1', alias: 'alpha', name: 'Project A' }
   })
 
   it('Should render the default state with cell slots', async () => {
-    // Mock the dispatch response with initial list data
-    mockDispatch.mockResolvedValueOnce({
-      list: [{ id: 1, name: 'Item 1', type: 'Type 1', status: 'Status 1' }],
-      total: 1,
-    })
-
     const wrapper = getMountComponent(props, global)
 
     await flushPromises()
@@ -103,7 +77,7 @@ describe('DefaultBaseList', () => {
 
     await flushPromises()
 
-    // Assert that dispatch was called with the correct parameters
+    // Assert that fetch was called with the correct parameters
     expect(mockBaseStoreCore.fetchEntityList).toHaveBeenCalledWith({
       data: {
         filter: new FilterID(filterParams),
@@ -129,21 +103,14 @@ describe('DefaultBaseList', () => {
     testOn.existElement({ wrapper, testId: 'right-search-btn' })
   })
 
-  it('Should display create, update, and delete buttons based on onePermissionKey', () => {
-    // Mock dispatch response for permissions
-    mockDispatch.mockResolvedValueOnce({
-      list: [],
-      total: 100,
-    })
-
-    // Configure permission-related props
+  it('Should display create, update, and delete buttons based on onePermissionKey', async () => {
+    // Configure props
     props.config.withCreateBtn = true
     props.config.onePermissionKey = 'test-super'
     props.config.noPermissionPrefix = true
 
     const wrapper = getMountComponent(props, global)
 
-    // Check that the action buttons are rendered based on permissions
     testOn.existElement({ wrapper, testId: 'right-search-btn' })
   })
 
@@ -168,13 +135,12 @@ describe('DefaultBaseList', () => {
 
     await flushPromises()
 
-    // Assert that the custom delete action was dispatched
+    // Assert that the custom delete action was called
     expect(mockCustomStore.deleteEntity).toHaveBeenCalled()
   })
-
   it('Should provide access to actions based on permissionKey', () => {
     // Set permission key in props
-    props.config.permissionKey = 'test-permission'
+    // props.config.permissionKey = 'test-permission'
 
     const wrapper = getMountComponent(props, global)
 
@@ -183,7 +149,6 @@ describe('DefaultBaseList', () => {
     expect(wrapper.vm.canUpdate).toBeTruthy()
     expect(wrapper.vm.canRemove).toBeTruthy()
   })
-
   it('Should pass customApiPrefix in the fetchEntityList request', async () => {
     const customApiPrefix = 'test'
 
@@ -194,7 +159,7 @@ describe('DefaultBaseList', () => {
 
     await flushPromises()
 
-    // Assert that the customApiPrefix was included in the dispatch call
+    // Assert that the customApiPrefix was included in the action call
     expect(mockBaseStoreCore.fetchEntityList).toHaveBeenCalledWith({
       data: {
         filter: new FilterID({}),
@@ -210,32 +175,29 @@ describe('DefaultBaseList', () => {
     })
   })
 
+  //
   it('Should update entity status when withDeactivation is enabled', async () => {
     // Enable deactivation feature in props
     props.config.withDeactivation = true
-    props.useList = useListForToggleStatus
-
-    const wrapper = getMountComponent(props, global)
 
     // Run the status toggle test with the expected action
-    await runActionToggleState(wrapper)
+    await runActionToggleState(props)
     expect(mockBaseStoreCore.updateEntity).toHaveBeenCalled()
     mockBaseStoreCore.updateEntity.mockReset()
   })
 
+  //
   it('Should toggle entity status using a specific action when withDeactivationBySpecificAction is enabled', async () => {
     // Enable specific action deactivation feature in props
     props.config.withDeactivationBySpecificAction = true
-    props.useList = useListForToggleStatus
 
     // Run the status toggle test with the specific expected action
-    const wrapper = getMountComponent(props, global)
-
-    await runActionToggleState(wrapper)
+    await runActionToggleState(props)
     expect(mockBaseStoreCore.toggleStatusEntity).toHaveBeenCalled()
     mockBaseStoreCore.updateEntity.mockReset()
   })
 
+  //
   it('Should correctly render slot contents', async () => {
     // Define slots with dynamic content based on fields
     const slotsByField = fields.reduce((acc, field) => ({
@@ -260,18 +222,6 @@ describe('DefaultBaseList', () => {
       'multiple-actions': '<div data-test-id="multiple-actions">Multiple actions</div>',
       ...slotsByField,
     }
-
-    // Mock dispatch response with a sample list item
-    mockDispatch.mockResolvedValueOnce({
-      list: [{
-        id: 1,
-        name: 'Item 1',
-        type: 'Type 1',
-        status: 'Status 1',
-        isActive: true,
-      }],
-      total: 1,
-    })
 
     const wrapper = getMountComponent(props, global, slots)
 
@@ -314,18 +264,6 @@ describe('DefaultBaseList', () => {
     // Enable status toggling feature in props
     props.useList = useListForToggleStatus
 
-    // Mock dispatch response with a sample list item
-    mockDispatch.mockResolvedValueOnce({
-      list: [{
-        id: 1,
-        name: 'Item 1',
-        type: 'Type 1',
-        status: 'Status 1',
-        isActive: true,
-      }],
-      total: 1,
-    })
-
     const wrapper = getMountComponent(props, global, slots)
 
     await flushPromises()
@@ -347,7 +285,7 @@ describe('DefaultBaseList', () => {
     // Enable status toggling feature in props
     props.useList = useListForToggleStatus
 
-    // Mock dispatch response with no list items
+    // Mock action response with no list items
     mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
       list: [],
       total: 0,
@@ -362,12 +300,6 @@ describe('DefaultBaseList', () => {
   })
 
   it('Should not display pagination when there is no data', async () => {
-    // Mock dispatch response with no list items
-    mockDispatch.mockResolvedValueOnce({
-      list: [],
-      total: 0,
-    })
-
     const wrapper = getMountComponent(props, global)
 
     await flushPromises()
@@ -393,10 +325,8 @@ describe('DefaultBaseList', () => {
     props.useList = useListForToggleStatus
 
     // Spy on the showModal method to verify it gets called
-    const modalSpy = vi.spyOn(mockModal, 'showModal')
 
-    // Mock dispatch response with a sample list item
-    mockDispatch.mockResolvedValueOnce({
+    mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({
       list: [{
         id: 1,
         name: 'Item 1',
@@ -406,6 +336,8 @@ describe('DefaultBaseList', () => {
       }],
       total: 1,
     })
+
+    await flushPromises()
 
     const wrapper = getMountComponent(props, global)
 
@@ -464,8 +396,6 @@ describe('DefaultBaseList', () => {
   it('Should render ProjectsFilter when withProjectsFilter is true', async () => {
     props.config.withProjectsFilter = true
 
-    mockDispatch.mockResolvedValueOnce({ list: [], total: 0 })
-
     const wrapper = getMountComponent(props, global)
 
     await flushPromises()
@@ -478,7 +408,6 @@ describe('DefaultBaseList', () => {
 
   it('Should not render ProjectsFilter when withProjectsFilter is false', async () => {
     props.config.withProjectsFilter = false
-    mockDispatch.mockResolvedValueOnce({ list: [], total: 0 })
 
     const wrapper = getMountComponent(props, global)
 
@@ -591,13 +520,12 @@ describe('DefaultBaseList', () => {
     const chipA2 = wrapper.findAllComponents({ name: 'VChip' }).find(c => c.text().includes('Project A'))!
     const chipB2 = wrapper.findAllComponents({ name: 'VChip' }).find(c => c.text().includes('Project B'))!
 
-    expect(chipA2.props('color')).toBe('secondary') // неактивный
-    expect(chipB2.props('color')).toBe('primary') // активный
+    expect(chipA2.props('color')).toBe('secondary')
+    expect(chipB2.props('color')).toBe('primary')
   })
 
   it('Should refetch list when projects selection changes', async () => {
     props.config.withProjectsFilter = true
-    mockDispatch.mockResolvedValueOnce({ list: [], total: 0 })
 
     const wrapper = getMountComponent(props, global)
 
