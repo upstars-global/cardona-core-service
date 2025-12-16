@@ -57,8 +57,6 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
         options: { customApiPrefix?: string; listItemModel?: any }
       },
     ): Promise<ListData> {
-      const projectAlias = store.getters.selectedProject?.alias
-
       const response = await ApiService.request({
         type: `${payload.options.customApiPrefix || ApiTypePrefix}${transformNameToType(
           payload.type,
@@ -68,17 +66,14 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
           perPage: payload.data.perPage ?? 10,
         },
         sort: payload.data.sort,
-        filter: combineFilter(payload.data.filter, projectAlias),
+        filter: combineFilter(payload.data.filter, this.$selectedProjectAlias),
       })
 
       return new ListData(response, payload.options.listItemModel)
     },
-
     async fetchReport(
       payload: { type: string; data: IRequestListPayload; customApiPrefix?: string },
     ): Promise<Blob | string> {
-      const projectAlias = store.getters.selectedProject?.alias
-
       const response = await ApiService.request(
         {
           type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
@@ -89,7 +84,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
             pageNumber: payload.data.page ?? 1,
             perPage: payload.data.perPage,
           },
-          data: combineFilter(payload.data.filter, projectAlias),
+          data: combineFilter(payload.data.filter, this.$selectedProjectAlias),
         },
         {
           withSuccessToast: true,
