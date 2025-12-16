@@ -25,7 +25,6 @@ import {
   isEmptyString,
   isNullOrUndefinedValue,
 } from '../../../../helpers'
-import useToastService from '../../../../helpers/toasts'
 import { VSizes } from '../../../../@model/vuetify'
 import SideBar from '../../../../components/templates/SideBar/index.vue'
 import FiltersBlock from '../../../../components/FiltersBlock/index.vue'
@@ -58,7 +57,6 @@ import TableFields from '.././_components/TableFields.vue'
 import DateField from '.././_components/fields/DateField.vue'
 import ProjectsFilter from '.././_components/ProjectsFilter.vue'
 import { mapSortData } from '.././сomposables/sorting'
-import { downloadReport } from '.././сomposables/export'
 import { transformFilters } from '.././сomposables/filters'
 
 defineOptions({
@@ -75,8 +73,6 @@ const emits = defineEmits<{
   rowClicked: [item: Record<string, unknown>]
   end: [item: Record<string, unknown>]
 }>()
-
-const { toastError } = useToastService()
 
 const modal = inject('modal')
 const slots = useSlots()
@@ -386,8 +382,6 @@ watch(() => searchQuery.value, () => {
 })
 
 // Export
-const { isSpecificExport } = props.config
-
 const setRequestFilters = (): PayloadFilters => {
   if (!ListFilterModel)
     return {}
@@ -417,17 +411,10 @@ const setRequestFilters = (): PayloadFilters => {
 }
 
 const onExportFormatSelected = async (format: ExportFormat) => {
-  if (props.config?.maxExportItems && props.config?.maxExportItems < total.value) {
-    toastError('maxLimitForExport', { quantity: props.config.maxExportItems })
-
-    return
-  }
-
   const filter = setRequestFilters()
   const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
-  const action = isSpecificExport ? baseStoreCore.specificFetchReport : baseStoreCore.fetchReport
 
-  const report: string | Blob = await action({
+  await baseStoreCore.fetchReport({
     type: entityName,
     data: {
       filter: {
@@ -439,11 +426,7 @@ const onExportFormatSelected = async (format: ExportFormat) => {
     },
     customApiPrefix: props.config?.customApiPrefix,
   })
-
-  if (!isSpecificExport)
-    downloadReport(report, entityName, format)
 }
-
 // Projects filters
 const userProjects = computed<ProjectsFilterOption[]>(() => store.getters['appConfigCore/verifiedProjects'].map(({ id, alias, name }) => ({
   id,
