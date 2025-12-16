@@ -4,21 +4,21 @@ import { BaseSectionType, PageType } from '../../../@model/templates/baseSection
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
 
 const props = withDefaults(defineProps<{
-    withReadAction?: boolean
-    config?: BaseSectionConfig
-    pageType?: PageType
-    useEntity: Function
-    localEntityData?: Record<string, unknown>
-    entityId?: string
-    type?: BaseSectionType
-  }>(),
-  {
-    useEntity: undefined,
-    withReadAction: true,
-    config: () => new BaseSectionConfig({}),
-    pageType: PageType.Create,
-    type: BaseSectionType.Default,
-  },
+  withReadAction?: boolean
+  config?: BaseSectionConfig
+  pageType?: PageType
+  useEntity: Function
+  localEntityData?: Record<string, unknown>
+  entityId?: string
+  type?: BaseSectionType
+}>(),
+{
+  useEntity: undefined,
+  withReadAction: true,
+  config: () => new BaseSectionConfig({}),
+  pageType: PageType.Create,
+  type: BaseSectionType.Default,
+},
 )
 
 const emits = defineEmits<{
@@ -58,9 +58,12 @@ defineExpose({
     :is="dynamicComponent"
     ref="formRef"
     :with-read-action="withReadAction"
-    :use-entity="useEntity"
-    :page-type="pageType"
     :config="config"
+    :page-type="pageType"
+    :use-entity="useEntity"
+    :local-entity-data="localEntityData"
+    :entity-id="entityId"
+    :type="type"
     @on-cancel="onEmitEvent('on-cancel')"
     @on-save="onEmitEvent('on-save')"
     v-on="{
