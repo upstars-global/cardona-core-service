@@ -40,7 +40,9 @@ defineExpose({
   selectedItems: listByTypeRef.value?.selectedItems,
   disableRowIds: listByTypeRef.value?.disableRowIds,
   sortData: listByTypeRef.value?.sortData,
-  items: listByTypeRef.value?.items,
+  get items() {
+    return listByTypeRef.value?.items
+  },
   isSidebarShown: listByTypeRef.value?.isSidebarShown,
   searchQuery: listByTypeRef.value?.searchQuery,
 })
