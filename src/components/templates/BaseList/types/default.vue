@@ -591,7 +591,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 </script>
 
 <template>
-  <div class="d-flex flex-column">
+  <div class="d-flex flex-column" data-test-id="default-base-list">
     <RemoveModal
       :config="config"
       :remove-modal-id="removeModalId"
