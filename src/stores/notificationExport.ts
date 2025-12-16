@@ -28,6 +28,9 @@ function upsert<T extends { reportId: number }>(
 
 const notificationList = useLocalStorage<INotificationReportItem[]>('notifications', [])
 
+const getDate = (date: string) => new Date(date.replace(' ', 'T'))
+const compareDates = (date: string) => (item: IDownloadListReportNotificationItem | INotificationReportItem) => getDate(item.ttl) >= getDate(date)
+
 export const useNotificationExportStore = defineStore('notification-export', {
   state: () => ({
     canLoadDownLoadList: true,
@@ -50,9 +53,7 @@ export const useNotificationExportStore = defineStore('notification-export', {
     async createWSData({ data, emitter }: WSChanelPayload) {
       data.emitter = emitter
 
-      console.log(notificationList.value.find(item => data.reportId === item.reportId))
       notificationList.value = upsert<INotificationReportItem>(notificationList.value, data)
-
       this.downloadList = upsert<IDownloadListReportNotificationItem | INotificationReportItem>(this.downloadList, data)
     },
     async downloadReport(reportId: number) {
@@ -97,6 +98,12 @@ export const useNotificationExportStore = defineStore('notification-export', {
         return this.downloadList
       }
       catch {}
+    },
+    removeExpiredReports(date: string) {
+      if (this.downloadList.isNotEmpty)
+        this.downloadList = this.downloadList.filter(compareDates(date))
+      if (notificationList.value.isNotEmpty)
+        notificationList.value = notificationList.value.filter(compareDates(date))
     },
   },
 })

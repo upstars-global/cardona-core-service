@@ -1,60 +1,17 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { VSizes, VVariants } from '../../../../@model/vuetify'
 import type { PaginationResult } from '../сomposables/pagination'
+import CPagination from './CPagination.vue'
 
 interface Props {
   paginationConfig: PaginationResult
   linkGen?: Function
   dataMeta: { from: number; to: number; of: number }
-  modelValue: number
   small?: boolean
 }
 
-interface VPaginationItem {
-  isActive: boolean
-  key: string | number
-  page: string
-  props: Record<string, any>
-}
+defineProps<Props>()
 
-interface Emits {
-  (e: 'update:modelValue', payload: number): void
-}
-const props = defineProps<Props>()
-const emits = defineEmits<Emits>()
-
-const total = computed(() => {
-  return Math.ceil(+props.paginationConfig.total.value / props.paginationConfig.perPage.value) || 0
-})
-
-const totalVisible = computed(() => props.small ? 4 : 6)
-
-const currentPage = computed({
-  get: () => props.modelValue,
-  set: value => {
-    emits('update:modelValue', value)
-  },
-})
-
-const getNumberOfPage = ({ page }) => {
-  if (page.includes('...'))
-    return page
-
-  return +page.replace(/[^0-9]/g, '')
-}
-
-const isEllipsis = (item: VPaginationItem) => item.page.includes('...')
-
-const setActivePage = (item: VPaginationItem) => {
-  if (isEllipsis(item))
-    return
-  currentPage.value = getNumberOfPage(item)
-}
-
-const actualSize = computed(() => props.small ? VSizes.Small : VSizes.Medium)
-
-const getDataTestId = (buttonText: VPaginationItem): string => isEllipsis(buttonText) ? 'ellipsis' : `page-${getNumberOfPage(buttonText)}`
+const currentPage = defineModel<number>()
 </script>
 
 <template>
@@ -80,29 +37,11 @@ const getDataTestId = (buttonText: VPaginationItem): string => isEllipsis(button
       sm="8"
       class="d-flex align-center justify-center px-0"
     >
-      <VPagination
-        v-if="total"
+      <CPagination
         v-model="currentPage"
-        :length="total"
-        :total-visible="totalVisible"
-        :size="actualSize"
-        rounded="circle"
-        class="ml-auto pagination"
-      >
-        <template #item="item">
-          <VBtn
-            :variant="VVariants.Tonal"
-            :color="item.isActive ? 'primary' : 'secondary'"
-            class="pagination--button"
-            rounded="circle"
-            :disabled="isEllipsis(item)"
-            :data-test-id="getDataTestId(item)"
-            @click="setActivePage(item)"
-          >
-            {{ getNumberOfPage(item) }}
-          </VBtn>
-        </template>
-      </VPagination>
+        :pagination-config="paginationConfig"
+        :small="small"
+      />
     </Vcol>
   </VRow>
 </template>
@@ -112,12 +51,11 @@ const getDataTestId = (buttonText: VPaginationItem): string => isEllipsis(button
   :deep(ul) {
     li {
       button {
-        border-radius: 100px !important;
-        min-width: 32px !important;
-        height: 32px !important;
-        border-radius: 100px !important;
-        padding: 0 6px !important;
-        width: auto !important;
+        border-radius: 100% !important;
+        min-width: 2rem;
+        height: 2rem;
+        padding: 0 6px;
+        width: auto;
         font-size: 13px;
       }
     }
