@@ -438,6 +438,14 @@ const toggleExpand = (id: string) => {
     }
   }
 
+  .c-table-cell-padding {
+    padding: 0.75rem 1rem;
+  }
+
+  .c-table-sm-cell-padding {
+    padding: 0.5rem 0.75rem;
+  }
+
   .c-table__cell{
     background-color: transparent;
     cursor: pointer;
