@@ -97,7 +97,7 @@ describe('CTable', () => {
     const wrapper = getMountCTable(props)
 
     props.fields.forEach(field => {
-      testOn.existClassList({ wrapper, testId: `table-th-${field.key}` }, ['py-2', 'px-3'])
+      testOn.existClass({ wrapper, testId: `table-th-${field.key}` }, 'c-table-sm-cell-padding')
     })
 
     /// Make table selectable for check style on small mode
