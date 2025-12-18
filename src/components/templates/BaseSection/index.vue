@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { ref } from 'vue'
 import { BaseSectionType, PageType } from '../../../@model/templates/baseSection'
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
+import DefaultBaseSection from './types/default.vue'
 
 const props = withDefaults(defineProps<{
   withReadAction?: boolean
@@ -29,12 +30,10 @@ const emits = defineEmits<{
 const formRef = ref<InstanceType<any> | null>(null)
 
 const componentsMap = {
-  default: () => import('./types/default.vue'),
+  default: DefaultBaseSection,
 }
 
-const dynamicComponent = computed(() =>
-  defineAsyncComponent(componentsMap[props.type]),
-)
+const dynamicComponent = componentsMap[props.type]
 
 const onEmitEvent = (event: 'on-cancel' | 'on-save') => {
   emits(event)
