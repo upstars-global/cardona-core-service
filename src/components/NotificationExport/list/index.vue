@@ -91,7 +91,17 @@ const listNotEmpty = computed(() => notificationExportStore.getDownloadList.isNo
         class="gradient-bottom"
       />
     </div>
-    <div v-else>
+    <div
+      v-if="isLoading && !listNotEmpty"
+      class="d-flex justify-center align-center pa-4"
+    >
+      <VProgressCircular
+        indeterminate
+        :size="VSizes.Small"
+        :color="VColors.Primary"
+      />
+    </div>
+    <div v-else-if="!listNotEmpty && !isLoading">
       <NotificationExportEmptyCard />
     </div>
   </div>
