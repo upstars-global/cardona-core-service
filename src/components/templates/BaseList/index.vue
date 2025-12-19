@@ -113,6 +113,10 @@ defineExpose({
         padding: 0 !important;
       }
     }
+
+    .v-table__wrapper {
+      border-radius: unset;
+    }
   }
 }
 </style>
