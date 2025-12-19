@@ -42,7 +42,7 @@ const onRemove = () => {
     :action-btn-text="i18n.t('action.remove')"
     @confirmed="emits('on-remove')"
   />
-  <div class="table-settings w-100 align-center justify-space-between pa-4">
+  <div class="table-settings w-100 align-center justify-space-between">
     <span data-test-id="number-selected">
       {{ $t('common.numberOfSelected', { number: numberSelectedItems }) }}
     </span>
