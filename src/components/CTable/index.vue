@@ -169,6 +169,7 @@ const toggleExpand = (id: string) => {
           :model-value="allSelected || someSelected"
           :indeterminate="allSelected ? false : someSelected"
           :disabled="isLoadingList"
+          class="selectable-checkbox"
           data-test-id="select-all-checkbox"
           @update:model-value="selectAll"
         />
@@ -304,6 +305,7 @@ const toggleExpand = (id: string) => {
                 :model-value="isSelected([item])"
                 data-test-id="selectable-checkbox"
                 :disabled="disabledRowIds?.includes(item.raw.id)"
+                class="selectable-checkbox"
                 @update:model-value="select([item], $event)"
                 @click.stop
               />
@@ -370,7 +372,7 @@ const toggleExpand = (id: string) => {
       <tr v-if="items.isEmpty && !isLoadingList">
         <td
           :colspan="emptyColspan"
-          class="text-center text-body-1 pa-4"
+          class="text-center text-body-1"
         >
           <slot name="empty" />
         </td>
@@ -471,12 +473,25 @@ const toggleExpand = (id: string) => {
     opacity: 0;
     transition: opacity 0.3s;
   }
-}
-tbody {
-  td {
-    .v-skeleton-loader {
-      width: 90%;
+
+  .selectable-checkbox {
+    :deep(.v-selection-control__wrapper), :deep(.v-selection-control__input) {
+      height: 1.125rem;
     }
+  }
+
+  :deep(tbody) {
+    td {
+      height: var(--compact__c-table-td-height);
+
+      .v-skeleton-loader {
+        width: 90%;
+      }
+    }
+  }
+
+  th {
+    height: var(--c-table-th-height);
   }
 }
 
