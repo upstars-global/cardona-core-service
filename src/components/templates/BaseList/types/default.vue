@@ -427,6 +427,7 @@ const onExportFormatSelected = async (format: ExportFormat) => {
     customApiPrefix: props.config?.customApiPrefix,
   })
 }
+
 // Projects filters
 const userProjects = computed<ProjectsFilterOption[]>(() => store.getters['appConfigCore/verifiedProjects'].map(({ id, alias, name }) => ({
   id,
@@ -1302,7 +1303,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
   }
 
   .empty-state-wrapper {
-    height: 5.2rem;
+    height: 7.25rem;
   }
 }
 </style>
