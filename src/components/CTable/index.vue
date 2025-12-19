@@ -154,14 +154,13 @@ const toggleExpand = (id: string) => {
       />
       <th
         v-if="props.selectable"
-        class="c-table__header-cell"
-        :class="{ 'c-table-cell-padding': !props.small, 'px-0': props.small }"
+        class="c-table__header-cell pa-0"
         data-c-field="selectable"
         data-test-id="selectable-th"
       >
         <VSkeletonLoader
           v-if="isLoadingList"
-          class="col-table-skeleton"
+          class="col-table-skeleton pl-4"
           type="text"
         />
         <VCheckbox
@@ -296,8 +295,7 @@ const toggleExpand = (id: string) => {
 
             <td
               v-if="props.selectable"
-              class="c-table__cell"
-              :class="{ 'c-table-cell-padding': !props.small, 'px-0': props.small }"
+              class="c-table__cell pa-0"
               data-c-field="selectable"
               data-test-id="selectable"
             >
@@ -474,12 +472,6 @@ const toggleExpand = (id: string) => {
     transition: opacity 0.3s;
   }
 
-  .selectable-checkbox {
-    :deep(.v-selection-control__wrapper), :deep(.v-selection-control__input) {
-      height: 1.125rem;
-    }
-  }
-
   :deep(tbody) {
     td {
       height: var(--compact__c-table-td-height);
@@ -493,11 +485,17 @@ const toggleExpand = (id: string) => {
   th {
     height: var(--c-table-th-height);
   }
+
+  :deep(.v-checkbox) {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .col-table-skeleton {
-  height: 2rem;
+  height: 1rem;
   background-color: initial !important;
+
   :deep(.v-skeleton-loader) {
     padding: 0;
     margin: 0;
