@@ -160,7 +160,8 @@ const toggleExpand = (id: string) => {
       >
         <VSkeletonLoader
           v-if="isLoadingList"
-          class="col-table-skeleton pl-4"
+          class="col-table-skeleton py-0 pr-0"
+          :class="cellClasses"
           type="text"
         />
         <VCheckbox
