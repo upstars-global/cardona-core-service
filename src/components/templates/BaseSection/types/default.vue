@@ -2,7 +2,6 @@
 import { computed, inject, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
-import { useStore as useVuexStore } from 'vuex'
 import { IconsList } from '../../../../@model/enums/icons'
 import { checkExistsPage, transformFormData } from '../../../../helpers'
 import { basePermissions } from '../../../../helpers/base-permissions'
@@ -11,7 +10,7 @@ import { BaseSectionConfig } from '../../../../@model/templates/baseList'
 import { VColors, VVariants } from '../../../../@model/vuetify'
 import RemoveModal from '../../../../components/BaseModal/RemoveModal.vue'
 import ConfirmModal from '../../../../components/BaseModal/ConfirmModal.vue'
-import { ModalsId } from '../../../..//@model/modalsId'
+import { ModalsId } from '../../../../@model/modalsId'
 import { useRedirectToNotFoundPage } from '../../../../helpers/router'
 import { useLoaderStore } from '../../../../stores/loader'
 import { useTextEditorStore } from '../../../../stores/textEditor'
@@ -19,6 +18,7 @@ import { useBaseStoreCore } from '../../../../stores/baseStoreCore'
 import { setTabError } from '../composables/tabs'
 import { generateEntityUrl } from '../composables/entity'
 import BaseSectionLoading from '../BaseSectionLoading.vue'
+import { useBaseSectionErrorsStore } from '../../../../stores/baseSectionErrors'
 
 defineOptions({
   name: 'DefaultBaseSection',
@@ -46,8 +46,8 @@ const emits = defineEmits<{
 }>()
 
 const modal = inject('modal')
-const vuexStore = useVuexStore()
 const loaderStore = useLoaderStore()
+const baseSectionErrorStore = useBaseSectionErrorsStore()
 const route = useRoute()
 const router = useRouter()
 const textEditorStore = useTextEditorStore()
@@ -95,7 +95,7 @@ const isDisableSubmitBtn = computed(() => {
   return loaderStore.isLoadingEndpoint(props.config.loadingEndpointArr)
 })
 
-const isExistsEndpointsWithError = computed(() => vuexStore.getters.isErrorEndpoint([
+const isExistsEndpointsWithError = computed(() => baseSectionErrorStore.isErrorEndpoint([
   `${entityUrl}/read`,
   ...props.config.loadingEndpointArr,
 ]))
@@ -280,11 +280,11 @@ const confirmRemoveModal = async () => {
 }
 
 watch(() => formRef.value?.values, () => {
-  vuexStore.dispatch('resetErrorUrls')
+  baseSectionErrorStore.resetErrorUrls()
 }, { deep: true })
 
 onBeforeUnmount(() => {
-  vuexStore.dispatch('resetErrorUrls')
+  baseSectionErrorStore.resetErrorUrls()
   textEditorStore.setVariableTextBuffer({})
 })
 
@@ -297,7 +297,6 @@ defineExpose({
 
 <template>
   <BaseSectionLoading
-    data-test-id="base-section-default-loading"
     :loading="isLoadingPage || isDisableSubmitBtn"
     :fullscreen-background="!config.isModalSection"
   >
@@ -315,7 +314,7 @@ defineExpose({
         v-if="form"
         ref="formRef"
         class="base-section"
-        data-test-id="base-section-default"
+        data-test-id="base-section"
         @submit.prevent
       >
         <div class="position-relative">
