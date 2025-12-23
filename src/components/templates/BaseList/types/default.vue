@@ -585,7 +585,10 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 </script>
 
 <template>
-  <div class="d-flex flex-column" data-test-id="default-base-list">
+  <div
+    class="d-flex flex-column default__base-list"
+    data-test-id="default-base-list"
+  >
     <RemoveModal
       :config="config"
       :remove-modal-id="removeModalId"
@@ -1268,6 +1271,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         </template>
       </CTable>
     </VCard>
+
     <div
       v-if="items.isNotEmpty && config.pagination"
       class="pt-6"
@@ -1286,35 +1290,19 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 </template>
 
 <style lang="scss" scoped>
-.table-card-settings {
-  :deep(.table-settings) {
-    display: flex;
-    padding: 0.5rem 1rem;
-
-    .per-page-selector {
-      min-width: 6rem;
-    }
-  }
-}
-
-:deep(.c-table) {
-  .default-cell-value {
-    max-width: 320px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  tr {
-    td[data-c-field='actions'] {
-      width: 3.5rem;
+.default__base-list {
+  :deep(.c-table) {
+    .c-table-cell-padding {
+      padding: var(--default__c-table-cell-padding);
     }
 
-    td[data-c-field="email"] {
-      padding: 0 !important;
+    .c-table-sm-cell-padding {
+      padding: var(--default__c-table-sm-cell-padding);
     }
   }
-}
 
-.empty-state-wrapper {
-  height: 5.2rem;
+  .empty-state-wrapper {
+    height: 5.2rem;
+  }
 }
 </style>
