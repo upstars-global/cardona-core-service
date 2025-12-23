@@ -28,11 +28,7 @@ onMounted(() => {
 
   useFavicon(faviconPath)
 })
-
-watch(selectProject, (project, oldProject) => {
-  if (oldProject !== undefined)
-    changeProject(project)
-
+watch(selectProject, project => {
   if (!project || !isMarbella.value)
     return
   ApiService.setHeaders({
