@@ -74,6 +74,9 @@ export const themes: Record<string, ThemeDefinition> = {
 
       // Shadows
       'shadow-key-umbra-color': '#2F2B3D',
+
+      // Table
+      'c-table-head-bg': '#EFEFF0',
     },
   },
   dark: {
@@ -134,6 +137,9 @@ export const themes: Record<string, ThemeDefinition> = {
 
       // Shadows
       'shadow-key-umbra-color': '#0F1422',
+
+      // Table
+      'c-table-head-bg': '#242532',
     },
   },
 }

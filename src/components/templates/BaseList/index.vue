@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import type { IBaseListConfig } from '../../../@model/templates/baseList'
 import { ListTypes } from '../../../@model/templates/baseList'
 import DefaultBaseList from './types/default.vue'
+import CompactBaseList from './types/compact.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -25,6 +26,7 @@ const listByTypeRef = ref<InstanceType<typeof DefaultBaseList> | null>(null)
 
 const componentsMap = {
   default: DefaultBaseList,
+  compact: CompactBaseList,
 }
 
 const dynamicComponent = componentsMap[props.type]
@@ -110,6 +112,10 @@ defineExpose({
       td[data-c-field="email"] {
         padding: 0 !important;
       }
+    }
+
+    .v-table__wrapper {
+      border-radius: unset;
     }
   }
 }

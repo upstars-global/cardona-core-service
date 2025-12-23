@@ -25,6 +25,7 @@ import {
   isEmptyString,
   isNullOrUndefinedValue,
 } from '../../../../helpers'
+import useToastService from '../../../../helpers/toasts'
 import { VSizes } from '../../../../@model/vuetify'
 import SideBar from '../../../../components/templates/SideBar/index.vue'
 import FiltersBlock from '../../../../components/FiltersBlock/index.vue'
@@ -57,6 +58,7 @@ import TableFields from '.././_components/TableFields.vue'
 import DateField from '.././_components/fields/DateField.vue'
 import ProjectsFilter from '.././_components/ProjectsFilter.vue'
 import { mapSortData } from '.././сomposables/sorting'
+import { downloadReport } from '.././сomposables/export'
 import { transformFilters } from '.././сomposables/filters'
 
 defineOptions({
@@ -73,6 +75,8 @@ const emits = defineEmits<{
   rowClicked: [item: Record<string, unknown>]
   end: [item: Record<string, unknown>]
 }>()
+
+const { toastError } = useToastService()
 
 const modal = inject('modal')
 const slots = useSlots()
@@ -382,6 +386,8 @@ watch(() => searchQuery.value, () => {
 })
 
 // Export
+const { isSpecificExport } = props.config
+
 const setRequestFilters = (): PayloadFilters => {
   if (!ListFilterModel)
     return {}
@@ -411,10 +417,17 @@ const setRequestFilters = (): PayloadFilters => {
 }
 
 const onExportFormatSelected = async (format: ExportFormat) => {
+  if (props.config?.maxExportItems && props.config?.maxExportItems < total.value) {
+    toastError('maxLimitForExport', { quantity: props.config.maxExportItems })
+
+    return
+  }
+
   const filter = setRequestFilters()
   const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
+  const action = isSpecificExport ? baseStoreCore.specificFetchReport : baseStoreCore.fetchReport
 
-  await baseStoreCore.fetchReport({
+  const report: string | Blob = await action({
     type: entityName,
     data: {
       filter: {
@@ -426,6 +439,9 @@ const onExportFormatSelected = async (format: ExportFormat) => {
     },
     customApiPrefix: props.config?.customApiPrefix,
   })
+
+  if (!isSpecificExport)
+    downloadReport(report, entityName, format)
 }
 
 // Projects filters
@@ -587,8 +603,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
 <template>
   <div
-    class="d-flex flex-column default__base-list"
-    data-test-id="default-base-list"
+    class="d-flex flex-column align-stretch compact__base-list"
+    data-test-id="compact-base-list"
   >
     <RemoveModal
       :config="config"
@@ -724,7 +740,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         @update:model-value="setPage"
       />
     </div>
-    <VCard class="table-card-settings">
+    <VCard class="table-card-settings table-wrapper">
       <div
         v-if="config.withSettings && (!canUpdate || selectedItems.isEmpty)"
         class="table-settings align-center"
@@ -1262,7 +1278,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         </template>
 
         <template #empty>
-          <div class="d-flex flex-column justify-center align-center p-2 text-color-mute empty-state-wrapper">
+          <div class="d-flex flex-column justify-center align-center text-color-mute empty-state-wrapper">
             <slot :name="BaseListSlots.Empty">
               <span>
                 {{ emptyListText }}
@@ -1291,19 +1307,82 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 </template>
 
 <style lang="scss" scoped>
-.default__base-list {
-  :deep(.c-table) {
-    .c-table-cell-padding {
-      padding: var(--default__c-table-cell-padding);
+.compact__base-list {
+  height: calc(100vh - 106px);
+
+  .table-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+
+    :deep(.c-table) {
+      height: 100%;
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 8px;
+        height: var(--c-table-th-height);
+        background: rgba(var(--v-c-table-head-bg), 1);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .c-table-cell-padding, .c-table-sm-cell-padding {
+        padding: var(--compact__c-table-cell-padding);
+      }
     }
 
-    .c-table-sm-cell-padding {
-      padding: var(--default__c-table-sm-cell-padding);
+    :deep(.v-select) {
+      min-height: 2rem;
+    }
+
+    :deep(.vs__dropdown-toggle) {
+      min-height: 2rem;
+      max-height: 2rem;
+      padding: 0.3rem;
+    }
+
+    :deep(.v-table) {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+
+      .v-table__wrapper {
+        &::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+          margin-top: var(--c-table-th-height);
+        }
+
+        table {
+          thead {
+            th {
+              position: sticky;
+              top: 0;
+              z-index: 2;
+              background: rgba(var(--v-c-table-head-bg), 1);
+              border-top: 1px solid rgba(var(--v-theme-grey-200), 1);
+              border-bottom: 1px solid rgba(var(--v-theme-grey-200), 1);
+            }
+          }
+
+          td {
+            border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
+          }
+        }
+      }
     }
   }
 
   .empty-state-wrapper {
-    height: 7.25rem;
+    padding: var(--compact__c-table-cell-padding);
   }
 }
 </style>

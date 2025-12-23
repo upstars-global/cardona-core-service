@@ -103,7 +103,7 @@ describe('CTable', () => {
     /// Make table selectable for check style on small mode
     await wrapper.setProps({ ...props, selectable: true })
 
-    testOn.existClass({ wrapper, testId: 'selectable' }, 'px-0')
+    testOn.existElement({ wrapper, testId: 'selectable' }, 'pa-0')
   })
 
   it('Check draggable activated of component', async () => {

@@ -13,6 +13,7 @@ import type { ProjectFilterTypes } from '@filterConfig'
 
 export enum ListTypes {
   Default = 'default',
+  Compact = 'compact',
 }
 
 export enum SortDirection {
