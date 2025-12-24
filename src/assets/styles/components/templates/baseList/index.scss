@@ -1,0 +1,5 @@
+@import "./variables";
+
+.table-default-bg {
+  background-color: rgb(var(--v-theme-surface));
+}
