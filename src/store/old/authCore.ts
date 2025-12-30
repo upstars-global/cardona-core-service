@@ -3,7 +3,8 @@ import { clearAuthTokens, setAuthTokens } from 'axios-jwt'
 import ApiService from '../../services/api'
 import type { ILoginData } from '../../@model/auth'
 import { checkIsLoggedIn } from '../../helpers/token-auth'
-import { useCookie } from '../../@core/composable/useCookie'
+import { useUserStore } from '../../stores/user'
+import { useCookie } from '@core/composable/useCookie'
 
 export default {
   namespaced: true,
@@ -55,8 +56,9 @@ export default {
         setAuthTokens(data)
 
         commit('SET_AUTH', true)
+        await useUserStore().fetchCurrentUser()
 
-        await dispatch('fetchCurrentUser', {}, { root: true })
+        // await dispatch('fetchCurrentUser', {}, { root: true })
       }
       catch {}
     },

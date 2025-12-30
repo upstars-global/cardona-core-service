@@ -2,15 +2,17 @@
 import { computed, onMounted, onUnmounted } from 'vue'
 
 import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
+
 import { IconsList } from '../../@model/enums/icons'
 import { VVariants } from '../../@model/vuetify'
 import { useClockUtc } from '../../use/useClockUtc'
 import NotificationExport from '../../components/NotificationExport/index.vue'
+import { useUserStore } from '../../stores/user'
 import { useLayoutConfigStore } from '@layouts/stores/config'
 
 const route = useRoute()
-const store = useStore()
+
+const userStore = useUserStore()
 
 const allBreadcrumb = computed(() => {
   const breadcrumbs = route.meta.breadcrumb
@@ -27,9 +29,10 @@ const layoutConfig = useLayoutConfigStore()
 const clock = useClockUtc({ isUtc: true })
 
 const time = computed(() => clock.time.value)
-const canShowNotificationExport = computed(() => store.getters.haveSomePermissionReport)
 
-const userId = computed(() => store.getters.userInfo.id)
+const canShowNotificationExport = computed(() => userStore.haveSomePermissionReport)
+
+const userId = computed(() => userStore.userInfo.id)
 
 onMounted(clock.runTime)
 onUnmounted(clock.stopTime)

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useStore } from 'vuex'
+
 import { productsName } from '../../configs/productsName'
 import { IconsList } from '../../@model/enums/icons'
+import { useUserStore } from '../../stores/user'
 
 defineOptions({ name: 'ProductsSelect' })
 
@@ -10,10 +11,10 @@ const props = defineProps<{
   isCollapsedMenu: boolean
 }>()
 
-const store = useStore()
+const userStore = useUserStore()
 
 const selectedProduct = computed({
-  get: () => store.getters.selectedProduct,
+  get: () => userStore.selectedProduct,
   set: val => {
     const url
       = val.name === productsName.neocore
@@ -24,7 +25,7 @@ const selectedProduct = computed({
   },
 })
 
-const products = computed(() => store.getters.userInfo.products)
+const products = computed(() => userStore.userInfo.products)
 
 const productNameSelected = computed(() =>
   props.isCollapsedMenu ? selectedProduct.value?.name : selectedProduct.value?.name.slice(0, 2),

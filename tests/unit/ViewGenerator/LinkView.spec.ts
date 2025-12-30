@@ -4,25 +4,18 @@ import LinkView from '../../../src/components/templates/ViewGenerator/_component
 import { getWrapperElement, setMountComponent } from '../utils'
 import type { Nullable } from '../../../src/@model/index'
 import { testOn } from '../templates/shared-tests/test-case-generator'
-import {mockModal} from "../mocks/modal-provide-config";
+import { mockModal } from '../mocks/modal-provide-config'
+import '../../../src/stores/user'
 
 const getMountLinkView = setMountComponent(LinkView)
 
 const mockAbilityCan = vi.fn()
 
-vi.mock('vuex', async importOriginal => {
-  const original = await importOriginal()
-
-  return {
-    ...original,
-    useStore: () => ({
-      getters: {
-        abilityCan: mockAbilityCan,
-      },
-    }),
-  }
-})
-
+vi.mock('../../../src/stores/user', () => ({
+  useUserStore: () => ({
+    abilityCan: mockAbilityCan,
+  }),
+}))
 const findAndTriggerClick = async (wrapperParent: BaseWrapper<Node>) => {
   const wrapper = getWrapperElement({ wrapper: wrapperParent, testId: 'title' })
 

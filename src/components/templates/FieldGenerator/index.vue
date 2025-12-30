@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import { Field } from 'vee-validate'
 import type { BaseField } from '../../../@model/templates/baseField'
 import { CheckBaseField, FieldGeneratorSlots, RatesBaseField, SwitchBaseField } from '../../../@model/templates/baseField'
 import { IconsList } from '../../../@model/enums/icons'
 import { MAX_WIDTH_TOOLTIP } from '../../../utils/constants'
 import { PermissionLevel } from '../../../@model/permission'
+import { useUserStore } from '../../../stores/user'
+import { useAppConfigCoreStore } from '../../../stores/appConfigCore'
 
 const props = withDefaults(defineProps<{
   modelValue: BaseField
@@ -26,10 +27,11 @@ const emits = defineEmits<{
   (e: 'update:modelValue', item: BaseField): void
 }>()
 
-const store = useStore()
+const userStore = useUserStore()
+const appConfigCoreStore = useAppConfigCoreStore()
 
 const canView = computed<boolean>(() => {
-  return props.modelValue?.permission ? store.getters.abilityCan(props.modelValue.permission, 'view') : true
+  return props.modelValue?.permission ? userStore.abilityCan(props.modelValue.permission, PermissionLevel.view) : true
 })
 
 const isCheckType = computed(
@@ -64,14 +66,14 @@ const localValue = computed(() => props.modelValue.component)
 const onSearch = (search: string) => emits('search', search)
 
 const canUpdate = computed<boolean>(() =>
-  props.modelValue?.permission ? store.getters.abilityCan(props.modelValue?.permission, PermissionLevel.update) : true,
+  props.modelValue?.permission ? userStore.abilityCan(props.modelValue?.permission, PermissionLevel.update) : true,
 )
 
 const notFilledDateRange = computed(() => {
   return props.modelValue?.isRangeMode && fieldModel.value?.length && !fieldModel.value?.split(props.modelValue.separator)[1]?.length
 })
 
-const allCurrencies = computed<string[]>(() => store.getters['appConfigCore/allCurrencies'])
+const allCurrencies = computed<string[]>(() => appConfigCoreStore.allCurrencies)
 
 const validationLabel = computed(() => {
   const isCurrencyLabel = allCurrencies.value.includes(props.modelValue.label)

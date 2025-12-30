@@ -1,5 +1,7 @@
 import mock from '../../mock'
-import store from '../../../store'
+
+// import store from '../../../store'
+import { useUserStore } from '../../../stores/user'
 
 mock.onPost('api/v2/permission/read').reply(() => [
   200,
@@ -7,7 +9,9 @@ mock.onPost('api/v2/permission/read').reply(() => [
     data: {
       id: 'demo',
       users: [],
-      permissions: store.getters['userInfo'].permissions,
+
+      // permissions: store.getters['userInfo'].permissions,
+      permissions: useUserStore().userInfo.permissions,
     },
   },
 ])
