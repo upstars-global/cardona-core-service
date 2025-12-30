@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import LayoutDefault from '../../layouts/default.vue'
+import LayoutDefault from '../layouts/default.vue'
 
 export function useLayoutChanger(layoutByMeta: Record<string, Component>) {
   const route = useRoute()

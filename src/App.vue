@@ -2,11 +2,11 @@
 import { useTheme } from 'vuetify'
 
 import { CoreLayoutsMap } from './@model/layouts'
+import { useLayoutChanger } from './composables/useLayoutChanger'
 import ScrollToTop from '@core/components/ScrollToTop.vue'
 import initCore from '@core/initCore'
 import { initConfigStore, useConfigStore } from '@core/stores/config'
 import { hexToRgb } from '@layouts/utils'
-import { useLayoutChanger } from '@core/composable/useLayoutChanger'
 
 const { global } = useTheme()
 
