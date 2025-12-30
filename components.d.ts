@@ -48,6 +48,7 @@ declare module 'vue' {
     CodeViewEditor: typeof import('./src/components/CodeViewEditor.vue')['default']
     CommentField: typeof import('./src/components/templates/BaseList/_components/fields/CommentField.vue')['default']
     CommentView: typeof import('./src/components/templates/ViewGenerator/_components/CommentView.vue')['default']
+    Compact: typeof import('./src/components/templates/BaseList/types/compact.vue')['default']
     ConditionsField: typeof import('./src/components/templates/FieldGenerator/_components/ConditionsField.vue')['default']
     ConfirmationModal: typeof import('./src/components/BaseModal/ConfirmationModal.vue')['default']
     ConfirmModal: typeof import('./src/components/BaseModal/ConfirmModal.vue')['default']
