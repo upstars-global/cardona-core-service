@@ -44,12 +44,16 @@ const actualItems = computed(() => {
     .map(item => normalizeNavItem(item as AnyNavItem))
     .filter((x): x is AnyNavItem => Boolean(x))
 })
+
+const canShowLayout = computed(() => {
+  return actualItems.value.length
+})
 </script>
 
 <template>
   <VerticalNavLayout
-    v-if="actualItems.length"
-    :nav-items="actualItems"
+    v-if="canShowLayout"
+    :nav-items="rawNavItems"
   >
     <!-- 👉 navbar -->
     <template #navbar>

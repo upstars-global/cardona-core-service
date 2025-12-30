@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, onMounted } from 'vue'
+import { defineAsyncComponent } from 'vue'
 import { useSkins } from '../@core/composable/useSkins'
 
 import { switchToVerticalNavOnLtOverlayNavBreakpoint } from '@layouts/utils'
@@ -13,9 +13,6 @@ switchToVerticalNavOnLtOverlayNavBreakpoint()
 const { layoutAttrs, injectSkinClasses } = useSkins()
 
 injectSkinClasses()
-onMounted(() => {
-  console.log(layoutAttrs.value)
-})
 </script>
 
 <template>
