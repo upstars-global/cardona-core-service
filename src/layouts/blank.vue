@@ -14,8 +14,6 @@ const refLoadingIndicator = ref<any>(null)
 
 // watching if the fallback state is active and the refLoadingIndicator component is available
 watch([isFallbackStateActive, refLoadingIndicator], () => {
-  console.log(refLoadingIndicator.value)
-
   const indicator = refLoadingIndicator.value as any
 
   if (isFallbackStateActive.value && indicator && isFunction(indicator.fallbackHandle))
