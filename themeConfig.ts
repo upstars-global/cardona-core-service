@@ -35,7 +35,7 @@ export const { themeConfig, layoutConfig } = defineThemeConfig({
     type: NavbarType.Static,
     navbarBlur: false,
   },
-  footer: { type: FooterType.Static },
+  footer: { type: FooterType.Hidden },
   verticalNav: {
     isVerticalNavCollapsed: false,
     defaultNavItemIconProps: { icon: 'tabler-circle', size: 10 },

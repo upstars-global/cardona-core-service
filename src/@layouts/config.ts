@@ -1,5 +1,6 @@
 import { breakpointsVuetify } from '@vueuse/core'
 import { h } from 'vue'
+import { VIcon } from 'vuetify/components/VIcon'
 import { AppContentLayoutNav, ContentWidth, FooterType, NavbarType } from './enums'
 import type { LayoutConfig } from './types'
 
@@ -15,7 +16,7 @@ export const layoutConfig: LayoutConfig = {
     i18n: {
       enable: true,
     },
-    iconRenderer: h('div'),
+    iconRenderer: VIcon,
   },
   navbar: {
     type: NavbarType.Sticky,
