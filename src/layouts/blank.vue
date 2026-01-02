@@ -30,10 +30,7 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
   <AppLoadingIndicator ref="refLoadingIndicator" />
 
   <div class="layout-wrapper layout-blank">
-    <slot
-      name="page"
-      :is-fallback-state-active="isFallbackStateActive"
-    >
+    <slot :is-fallback-state-active="isFallbackStateActive">
       <RouterView v-slot="{ Component }">
         <template v-if="Component">
           <Transition
