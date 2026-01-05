@@ -41,7 +41,10 @@ const valueModel = computed<OptionsItem[]>({
         ? props.field.options?.find((option: OptionsItem) => option.id == item)
         : item,
     ),
-  set: (item: OptionsItem[]) => emits('update:modelValue', item),
+  set: (item: OptionsItem[]) => {
+    props.field.selectedOptions = item
+    emits('update:modelValue', item)
+  },
 })
 
 const selectClasses = computed(() => {
