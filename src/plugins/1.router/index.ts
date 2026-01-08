@@ -1,6 +1,5 @@
 import type { App } from 'vue'
 
-import { setupLayouts } from 'virtual:generated-layouts'
 import type { RouteRecordRaw } from 'vue-router/auto'
 
 import { createRouter, createWebHistory } from 'vue-router/auto'
@@ -16,7 +15,7 @@ function recursiveLayouts(route: RouteRecordRaw): RouteRecordRaw {
     return route
   }
 
-  return setupLayouts([route])[0]
+  return route
 }
 
 const router = createRouter({
