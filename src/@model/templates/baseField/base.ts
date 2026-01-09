@@ -75,6 +75,8 @@ export interface ITransformFieldOptions {
   trackBy?: string
 }
 
+type FilterByFunction = (option: OptionsItem[], label: string, search: string) => OptionsItem[]
+
 export interface IASelectBaseField<T> extends IBaseField {
   readonly options?: Array<T>
   readonly fetchOptionsAction?: CallableFunction
@@ -84,6 +86,8 @@ export interface IASelectBaseField<T> extends IBaseField {
   readonly filterable?: boolean
   readonly infiniteLoading?: boolean
   readonly localeKey?: string
+  readonly filterBy?: FilterByFunction
+
 }
 
 export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsItem | string>
@@ -101,6 +105,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
   pageNumber: number
   private prevSearch = ''
   allowLoadMore = true
+  filterBy?: FilterByFunction
 
   protected constructor(field: IASelectBaseField<T>) {
     super(field)
@@ -113,6 +118,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     this.filterable = field.filterable ?? true
     this.infiniteLoading = field.infiniteLoading
     this.pageNumber = 1
+    this.filterBy = field.filterBy ?? undefined
   }
 
   calculatePosition({ dropdownList }) {
