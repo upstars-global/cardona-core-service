@@ -42,7 +42,6 @@ const valueModel = computed<OptionsItem[]>({
         : item,
     ),
   set: (item: OptionsItem[]) => {
-    props.field.selectedOptions = item
     emits('update:modelValue', item)
   },
 })
@@ -145,6 +144,7 @@ const {
       :append-to-body="field.appendToBody"
       :calculate-position="withPopper(field.calculatePositionCb)"
       :filterable="field.filterable"
+      :filterBy="field.filterBy"
       @search="onSearch"
       @open="onOpen"
       @close="onClose"
