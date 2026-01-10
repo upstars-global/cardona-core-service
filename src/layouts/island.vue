@@ -1,13 +1,23 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
-import { useStore } from 'vuex'
-import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
-import NotificationExport from '../../components/NotificationExport/index.vue'
-import AppBreadcrumb from './AppBreadcrumb.vue'
-import navItems from '@/navigation/vertical/'
+import { VColors, VSizes, VVariants } from '../@model/vuetify'
+import { IconsList } from '../@model/enums/icons'
+import AppLoadingIndicator from '../components/AppLoadingIndicator.vue'
+import { useSkins } from '../@core/composable/useSkins'
+import AppBreadcrumb from '../layouts/components/AppBreadcrumb.vue'
+import navItems from '@/navigation/vertical'
 import { VerticalNavLayout } from '@layouts'
+import { useConfigStore } from '@core/stores/config'
+import { switchToVerticalNavOnLtOverlayNavBreakpoint } from '@layouts/utils'
+import { Theme } from '@core/enums'
 
-const store = useStore()
+const configStore = useConfigStore()
+
+switchToVerticalNavOnLtOverlayNavBreakpoint()
+
+const { layoutAttrs, injectSkinClasses } = useSkins()
+
+injectSkinClasses()
 
 const isFallbackStateActive = ref(false)
 const refLoadingIndicator = ref<any>(null)
@@ -20,10 +30,11 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
     refLoadingIndicator.value.resolveHandle()
 }, { immediate: true })
 
-// Notifications export
-const canShowNotificationExport = computed(() => store.getters.haveSomePermissionReport)
+const isActiveDarkTheme = computed<boolean>(() => configStore.theme === Theme.Dark)
 
-const userId = computed(() => store.getters.userInfo.id)
+const onCLickThemeIcon = () => {
+  configStore.theme = isActiveDarkTheme.value ? Theme.Light : Theme.Dark
+}
 </script>
 
 <template>
@@ -31,23 +42,22 @@ const userId = computed(() => store.getters.userInfo.id)
     <!-- 👉 navbar -->
     <template #navbar>
       <AppBreadcrumb>
-        <template #content-right="{ time }">
-          <VDivider
-            v-if="canShowNotificationExport"
-            class="mx-4"
-            vertical
-          />
-
-          <div
-            v-if="canShowNotificationExport"
-            cols="1"
-            class="d-flex align-center justify-end notification-export-wrapper"
+        <template #content-right>
+          <VBtn
+            :variant="VVariants.Text"
+            :size="VSizes.XSmall"
+            :color="VColors.Primary"
+            rounded="lg"
+            icon
+            class="theme-btn ml-2"
+            :active="isActiveDarkTheme"
+            @click="onCLickThemeIcon"
           >
-            <NotificationExport
-              :time="time"
-              :user-id="userId"
+            <VIcon
+              :icon="IconsList.MoonIcon"
+              :size="20"
             />
-          </div>
+          </VBtn>
         </template>
       </AppBreadcrumb>
     </template>
@@ -82,3 +92,12 @@ const userId = computed(() => store.getters.userInfo.id)
     <!-- 👉 Customizer -->
   </VerticalNavLayout>
 </template>
+
+<style lang="scss">
+// As we are using `layouts` plugin we need its styles to be imported
+@use "@layouts/styles/default-layout";
+
+.theme-btn {
+  background-color: rgba(var(--v-theme-primary), 0.03)
+}
+</style>
