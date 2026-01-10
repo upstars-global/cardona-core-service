@@ -1,12 +1,17 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { VColors, VSizes, VVariants } from '../@model/vuetify'
+import { IconsList } from '../@model/enums/icons'
 import AppLoadingIndicator from '../components/AppLoadingIndicator.vue'
 import { useSkins } from '../@core/composable/useSkins'
 import AppBreadcrumb from '../layouts/components/AppBreadcrumb.vue'
 import navItems from '@/navigation/vertical'
 import { VerticalNavLayout } from '@layouts'
-
+import { useConfigStore } from '@core/stores/config'
 import { switchToVerticalNavOnLtOverlayNavBreakpoint } from '@layouts/utils'
+import { Theme } from '@core/enums'
+
+const configStore = useConfigStore()
 
 switchToVerticalNavOnLtOverlayNavBreakpoint()
 
@@ -24,13 +29,37 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
   if (!isFallbackStateActive.value && refLoadingIndicator.value)
     refLoadingIndicator.value.resolveHandle()
 }, { immediate: true })
+
+const isActiveDarkTheme = computed<boolean>(() => configStore.theme === Theme.Dark)
+
+const onCLickThemeIcon = () => {
+  configStore.theme = isActiveDarkTheme.value ? Theme.Light : Theme.Dark
+}
 </script>
 
 <template>
   <VerticalNavLayout :nav-items="navItems">
     <!-- 👉 navbar -->
     <template #navbar>
-      <AppBreadcrumb />
+      <AppBreadcrumb>
+        <template #content-right>
+          <VBtn
+            :variant="VVariants.Text"
+            :size="VSizes.XSmall"
+            :color="VColors.Primary"
+            rounded="lg"
+            icon
+            class="theme-btn ml-2"
+            :active="isActiveDarkTheme"
+            @click="onCLickThemeIcon"
+          >
+            <VIcon
+              :icon="IconsList.MoonIcon"
+              :size="20"
+            />
+          </VBtn>
+        </template>
+      </AppBreadcrumb>
     </template>
 
     <AppLoadingIndicator ref="refLoadingIndicator" />
@@ -67,4 +96,8 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
 <style lang="scss">
 // As we are using `layouts` plugin we need its styles to be imported
 @use "@layouts/styles/default-layout";
+
+.theme-btn {
+  background-color: rgba(var(--v-theme-primary), 0.03)
+}
 </style>
