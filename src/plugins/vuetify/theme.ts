@@ -77,6 +77,9 @@ export const themes: Record<string, ThemeDefinition> = {
 
       // Table
       'c-table-head-bg': '#EFEFF0',
+
+      // Layouts
+      'island-layout-bg': '#181C2E',
     },
   },
   dark: {
@@ -140,6 +143,9 @@ export const themes: Record<string, ThemeDefinition> = {
 
       // Table
       'c-table-head-bg': '#242532',
+
+      // Layouts
+      'island-layout-bg': '#13151F',
     },
   },
 }
