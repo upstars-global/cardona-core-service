@@ -3,7 +3,7 @@ import { ref, watch } from 'vue'
 import AppLoadingIndicator from '../components/AppLoadingIndicator.vue'
 import { useSkins } from '../@core/composable/useSkins'
 import AppBreadcrumb from '../layouts/components/AppBreadcrumb.vue'
-import navItems from '../navigation/vertical/index'
+import navItems from '@/navigation/vertical'
 import { VerticalNavLayout } from '@layouts'
 
 import { switchToVerticalNavOnLtOverlayNavBreakpoint } from '@layouts/utils'
