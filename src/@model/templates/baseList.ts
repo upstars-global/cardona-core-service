@@ -368,7 +368,9 @@ export class BaseListConfig implements IBaseListConfig {
     this.withTopPagination = withTopPagination
     this.saveSort = saveSort ?? true
     this.disableLoading = disableLoading
-    this.cellCbClass = cellCbClass ?? () => ''
+    this.cellCbClass = cellCbClass ?? function () {
+      return ''
+    }
   }
 }
 
