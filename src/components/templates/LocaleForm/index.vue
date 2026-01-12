@@ -84,10 +84,10 @@ const handleVariablesChange = () => {
   const localeKeyInText = getVariablesFromLocale(allString)
   const excessKeyVariable = getExcessKeyVariable(localeKeyInText, variableTextBufferStore.value)
 
-  props!.modelValue.metaTitle = cleanMetaTitle(
-    props!.modelValue.metaTitle || {},
-    excessKeyVariable || '',
-  )
+  // props!.modelValue.metaTitle = cleanMetaTitle(
+  //   props!.modelValue.metaTitle || {},
+  //   excessKeyVariable || '',
+  // )
 }
 
 const getValue = (locale: string, key: string): string => {
