@@ -75,7 +75,7 @@ export interface ITransformFieldOptions {
   trackBy?: string
 }
 
-type FilterByFunction = (option: OptionsItem[], label: string, search: string) => OptionsItem[]
+type FilterByFunction = (option: OptionsItem, label: string, search: string) => boolean
 
 export interface IASelectBaseField<T> extends IBaseField {
   readonly options?: Array<T>
