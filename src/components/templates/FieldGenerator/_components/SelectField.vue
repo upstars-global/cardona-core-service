@@ -38,7 +38,6 @@ const valueModel = computed<OptionsItem>({
       ? props.field.options?.find((option: OptionsItem) => option.id === props.modelValue)
       : props.modelValue,
   set: (item: object) => {
-    props.field.selectedOptions = item
     emits('update:modelValue', item)
   },
 })
