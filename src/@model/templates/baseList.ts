@@ -210,6 +210,9 @@ export interface IBaseListConfig {
 
   /** disableLoading - Flag для блокирования loading state  */
   readonly disableLoading?: boolean
+
+  //* *  cellCbClass - Callback для добавления класса ячейке таблицы */
+  readonly cellCbClass?: CallableFunction
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -262,6 +265,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withTopPagination?: boolean
   readonly saveSort?: boolean
   readonly disableLoading?: boolean
+  readonly cellCbClass: CallableFunction
 
   constructor({
     withSearch,
@@ -313,6 +317,7 @@ export class BaseListConfig implements IBaseListConfig {
     withTopPagination,
     saveSort,
     disableLoading,
+    cellCbClass,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -363,6 +368,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.withTopPagination = withTopPagination
     this.saveSort = saveSort ?? true
     this.disableLoading = disableLoading
+    this.cellCbClass = cellCbClass ?? () => ''
   }
 }
 
