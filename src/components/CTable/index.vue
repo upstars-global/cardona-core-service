@@ -132,7 +132,6 @@ const toggleExpand = (id: string) => {
     expanded.value.push(id)
 }
 
-console.log(props.cellCbClass)
 </script>
 
 <template>
