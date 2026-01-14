@@ -486,6 +486,7 @@ export enum BaseListSlots {
   RightSearchBtn = 'right-search-btn',
   LeftSearchBtn = 'left-search-btn',
   CustomFilter = 'custom-filter',
+  PrependMultipleAction = 'prepend-multiple-action',
   MultipleActions = 'multiple-actions',
   TableFieldSetting = 'table-field-setting',
   Empty = 'empty',

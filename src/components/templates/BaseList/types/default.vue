@@ -781,6 +781,17 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         @on-deactivate="onClickToggleStatusMultiple(false)"
         @on-remove="onClickDeleteMultiple"
       >
+        <template
+          v-if="checkSlotExistence(BaseListSlots.PrependMultipleAction)"
+          #[BaseListSlots.PrependMultipleAction]
+        >
+          <slot
+            :name="BaseListSlots.PrependMultipleAction"
+            :selected-items="selectedItems"
+            :can-update="canUpdate"
+          />
+        </template>
+
         <slot
           :name="BaseListSlots.MultipleActions"
           :selected-items="selectedItems"

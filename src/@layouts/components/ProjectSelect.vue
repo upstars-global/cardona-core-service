@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useFavicon } from '@vueuse/core'
 import type { ProjectInfo } from '../../@model/project'
@@ -23,11 +23,12 @@ const selectProject = computed({
 const cantSelect = computed(() => props.projects.length < 2)
 const isMarbella = computed(() => store.getters.isMarbella)
 
-onMounted(() => {
+watch(() => selectProject.value.id, () => {
   const faviconPath = store.getters.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
 
   useFavicon(faviconPath)
-})
+}, { immediate: true })
+
 watch(selectProject, project => {
   if (!project || !isMarbella.value)
     return
