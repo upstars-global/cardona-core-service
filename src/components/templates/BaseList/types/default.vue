@@ -306,7 +306,9 @@ const getList = async () => {
   const filter = setRequestFilters()
   const sort = mapSortData(sortData.value)
 
-  const actualPerPage = !props.config.pagination ? props.config.defaultPerPage : perPage.value
+  const actualPerPage = !props.config.pagination && props.config.defaultPerPage
+    ? props.config.defaultPerPage
+    : perPage.value
 
   const { list, total } = await fetchAction({
     type: parseEntityNameWithTabs(entityName),
