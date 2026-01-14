@@ -1,5 +1,29 @@
-aside {
-  &.layout-vertical-nav {
-    background-color: red;
-  }
+body.skin--default,
+aside.layout-vertical-nav,
+.layout-content-wrapper {
+  background-color: rgba(var(--v-island-layout-bg)) !important;
+}
+
+.layout-content-wrapper {
+  padding: 1rem 1rem 1rem 0;
+}
+
+.layout-navbar {
+  background-color: rgba(var(--v-island-page-bg));
+  border-top-right-radius: 1.5rem;
+  border-top-left-radius: 1.5rem;
+}
+
+.layout-page-content {
+  background-color: rgba(var(--v-island-page-bg));
+  border-bottom-right-radius: 1.5rem;
+  border-bottom-left-radius: 1.5rem;
+}
+
+.title-text-color {
+  color: rgba(var(--v-island-menu-section-color)) !important;
+}
+
+.nav-item-title, .nav-item-icon {
+  color: rgba(var(--v-island-menu-item-color)) !important;
 }

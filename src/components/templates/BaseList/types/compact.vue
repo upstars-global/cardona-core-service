@@ -1308,7 +1308,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
 <style lang="scss" scoped>
 .compact__base-list {
-  height: calc(100vh - 106px);
+  height: calc(100vh - 138px);
 
   .table-wrapper {
     display: flex;
