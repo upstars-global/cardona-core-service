@@ -276,7 +276,7 @@ const toggleExpand = (id: string) => {
         >
           <!-- Main row -->
           <tr
-            class="c-table__row table-default-bg"
+            class="c-table__row"
             data-test-id="table-row"
             :class="compareClasses(item.raw, isSelected([item]))"
             @click="onRowClicked(item.raw)"

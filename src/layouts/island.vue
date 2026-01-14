@@ -38,7 +38,10 @@ const onCLickThemeIcon = () => {
 </script>
 
 <template>
-  <VerticalNavLayout :nav-items="navItems">
+  <VerticalNavLayout
+    class="island-layout"
+    :nav-items="navItems"
+  >
     <!-- 👉 navbar -->
     <template #navbar>
       <AppBreadcrumb>
