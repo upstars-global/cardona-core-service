@@ -352,6 +352,7 @@ const toggleExpand = (id: string) => {
                 v-for="field in fields"
                 :key="`c-table-expand-cell_${index}_${field.key}`"
                 class="c-table-expand__cell text-body-1 whitespace-no-wrap"
+                :class="cellClasses"
                 :data-c-expand-field="field.key"
               >
                 <slot
