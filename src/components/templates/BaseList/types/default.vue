@@ -1063,6 +1063,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :index="getIndexByItemFromList(item.value)"
             :toggle-expand="toggleExpand"
             :is-expanded="isExpanded"
+            :on-click-remove="onClickRemove"
             @click.stop
           />
           <StatusField
