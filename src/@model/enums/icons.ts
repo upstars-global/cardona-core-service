@@ -329,4 +329,5 @@ export enum IconsList {
   BrandTypescript = 'tabler-brand-typescript',
   ExclamationMark = 'tabler-exclamation-mark',
   ArrowRight = 'tabler-arrow-right',
+  CloudSearch = 'tabler-cloud-search',
 }

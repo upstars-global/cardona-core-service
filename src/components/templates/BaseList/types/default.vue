@@ -306,10 +306,14 @@ const getList = async () => {
   const filter = setRequestFilters()
   const sort = mapSortData(sortData.value)
 
+  const actualPerPage = !props.config.pagination && props.config.defaultPerPage
+    ? props.config.defaultPerPage
+    : perPage.value
+
   const { list, total } = await fetchAction({
     type: parseEntityNameWithTabs(entityName),
     data: {
-      perPage: perPage.value,
+      perPage: actualPerPage,
       page: currentPage.value,
       filter,
       sort,
@@ -815,6 +819,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :selected-items="selectedItems"
         :items-per-page="itemsPerPage"
         :disabled-row-ids="disableRowIds"
+        :cell-cb-class="config.cellCbClass"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"

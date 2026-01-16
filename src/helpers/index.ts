@@ -110,6 +110,11 @@ export const convertDictionaryToOptions = (
   )
 }
 
+export const convertValueToOptions = (values: string[] | number[]): OptionsItem[] => values.map(item => ({
+  id: item,
+  name: String(item),
+} as OptionsItem))
+
 interface permissionKeys {
   permissionKey: string
   permissionKeySeo: string
