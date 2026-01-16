@@ -121,6 +121,7 @@ const listNotSelected = computed(() => {
       <VCard
         v-if="isOpen"
         no-body
+        class="filters-block-wrapper"
       >
         <VCardItem
           class="py-4"
@@ -174,7 +175,12 @@ const listNotSelected = computed(() => {
                   md="9"
                   class="d-flex align-center py-0"
                 >
-                  <slot :name="`filter(${selectedFilters[key].key})`" :index="key" :selectedFilters="selectedFilters" :size="size">
+                  <slot
+                    :name="`filter(${selectedFilters[key].key})`"
+                    :index="key"
+                    :selected-filters="selectedFilters"
+                    :size="size"
+                  >
                     <FieldGenerator
                       v-model="selectedFilters[key]"
                       :with-label="false"

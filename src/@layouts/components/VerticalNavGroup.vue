@@ -215,7 +215,7 @@ const isMounted = useMounted()
           v-bind="getDynamicI18nProps(item.title, 'span')"
           v-show="!hideTitleAndBadge"
           key="title"
-          class="nav-item-title font-weight-regular text-color-base"
+          class="nav-item-title font-weight-regular"
         >
           {{ item.title }}
         </Component>

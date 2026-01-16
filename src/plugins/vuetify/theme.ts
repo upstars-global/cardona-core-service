@@ -77,6 +77,15 @@ export const themes: Record<string, ThemeDefinition> = {
 
       // Table
       'c-table-head-bg': '#EFEFF0',
+
+      // Layouts
+      'island-layout-bg': '#181C2E',
+      'island-page-bg': '#F9F9FA',
+      'island-menu-section-color': '#E9E9F0',
+      'island-menu-item-color': '#F4F4F7',
+      'island-project-select-color': '#E7E9F6',
+      'island-project-select-bg': '#2F3349',
+      'island-card-bg': '#FFFFFF',
     },
   },
   dark: {
@@ -140,6 +149,15 @@ export const themes: Record<string, ThemeDefinition> = {
 
       // Table
       'c-table-head-bg': '#242532',
+
+      // Layouts
+      'island-layout-bg': '#13151F',
+      'island-page-bg': '#0E1017',
+      'island-menu-section-color': '#E9E9F0',
+      'island-menu-item-color': '#F4F4F7',
+      'island-project-select-color': '#E7E9F6',
+      'island-project-select-bg': '#2F3349',
+      'island-card-bg': '#161822',
     },
   },
 }
