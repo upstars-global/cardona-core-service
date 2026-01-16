@@ -37,7 +37,9 @@ const valueModel = computed<OptionsItem>({
     typeof props.modelValue === 'string' || typeof props.modelValue === 'number'
       ? props.field.options?.find((option: OptionsItem) => option.id === props.modelValue)
       : props.modelValue,
-  set: (item: object) => emits('update:modelValue', item),
+  set: (item: object) => {
+    emits('update:modelValue', item)
+  },
 })
 
 const selectClasses = computed(() => {
