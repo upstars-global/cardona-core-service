@@ -1,4 +1,10 @@
 @mixin apply {
+  .v-expansion-panel {
+    $border-radius: var(--v-border-radius);
+
+    border-radius: $border-radius;
+    border: 1px solid rgba(--v-island-border-color, 1);
+  }
   .v-expansion-panel{
     background-color: rgba(var(--v-island-block-bg));
   }

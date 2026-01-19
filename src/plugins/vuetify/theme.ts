@@ -3,6 +3,7 @@ import type { ThemeDefinition } from 'vuetify'
 export const staticPrimaryColor = '#6D60F0'
 export const grey800 = '#373645'
 export const grey900 = '#1F1C32'
+const grey200 = '#E9E9F0'
 
 export const themes: Record<string, ThemeDefinition> = {
   light: {
@@ -27,7 +28,7 @@ export const themes: Record<string, ThemeDefinition> = {
       /// !TODO ADD ALSO TO DARK - start
       'grey-50': '#FAFAFA',
       'grey-100': '#F4F4F7',
-      'grey-200': '#E9E9F0',
+      'grey-200': grey200,
       'grey-300': '#D2D1DB',
       'grey-400': '#ADABBE',
       'grey-500': '#84819D',
@@ -86,6 +87,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'island-project-select-color': '#E7E9F6',
       'island-project-select-bg': '#2F3349',
       'island-card-bg': '#FFFFFF',
+      'island-border-color': grey200,
     },
   },
   dark: {
@@ -158,6 +160,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'island-project-select-color': '#E7E9F6',
       'island-project-select-bg': '#2F3349',
       'island-block-bg': '#161822',
+      'island-border-color': '#3A3C50',
     },
   },
 }
