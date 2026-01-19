@@ -1,0 +1,7 @@
+@use "./card" as card;
+@use "./expand" as expand;
+
+@mixin apply {
+  @include card.apply;
+  @include expand.apply;
+}

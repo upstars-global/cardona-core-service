@@ -157,7 +157,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'island-menu-item-color': '#F4F4F7',
       'island-project-select-color': '#E7E9F6',
       'island-project-select-bg': '#2F3349',
-      'island-card-bg': '#161822',
+      'island-block-bg': '#161822',
     },
   },
 }

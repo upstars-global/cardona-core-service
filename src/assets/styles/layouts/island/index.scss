@@ -1,18 +1,22 @@
+@use "./componets" as island-componets;
+
 body.skin--default:has(.island-layout) {
   background-color: rgba(var(--v-island-layout-bg)) !important;
 }
 
 .v-overlay-container {
   .v-list {
-    background-color: rgba(var(--v-island-card-bg)) !important;
+    background-color: rgba(var(--v-island-block-bg)) !important;
   }
 }
 
 .modal-card, .Vue-Toastification__toast.Vue-Toastification__toast--default {
-  background-color: rgba(var(--v-island-card-bg)) !important;
+  background-color: rgba(var(--v-island-block-bg)) !important;
 }
 
 .island-layout {
+  @include island-componets.apply;
+
   body.skin--default,
   aside.layout-vertical-nav,
   .layout-content-wrapper {
@@ -73,12 +77,12 @@ body.skin--default:has(.island-layout) {
   .v-skeleton-loader,
   .c-table,
   .filters-block-wrapper {
-    background-color: rgba(var(--v-island-card-bg));
+    background-color: rgba(var(--v-island-block-bg));
   }
 
   .search {
     .v-field__overlay{
-      background-color: rgba(var(--v-island-card-bg));
+      background-color: rgba(var(--v-island-block-bg));
     }
   }
 }
