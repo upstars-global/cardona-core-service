@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import LayoutDefault from '../layouts/default.vue'
 import { CoreLayouts } from '../@model/layouts'
-import { useThemeChanger } from '../composables/useThemeChanger'
+import { useThemeVariablesChanger } from '../composables/useThemeVariablesChanger'
 import { theme as islandTheme } from '../assets/styles/layouts/island/themeConfig'
 
 export function useLayoutChanger(layoutByMeta: Record<string, Component>, defaultLayout = CoreLayouts.Default) {
@@ -11,7 +11,7 @@ export function useLayoutChanger(layoutByMeta: Record<string, Component>, defaul
   const layoutKey = computed(() => route.meta?.layout || defaultLayout)
   const activeLayout = computed(() => layoutByMeta[layoutKey.value] || LayoutDefault)
 
-  const themeChanger = useThemeChanger()
+  const themeVariablesChanger = useThemeVariablesChanger()
 
   const themesKeysByLayout = {
     [CoreLayouts.Island]: islandTheme,
@@ -24,12 +24,9 @@ export function useLayoutChanger(layoutByMeta: Record<string, Component>, defaul
       return
 
     Object.keys(actualTheme).forEach(key => {
-      themeChanger.patchThemeByName(key, themesKeysByLayout[layout][key])
+      themeVariablesChanger.patchThemeByName(key, themesKeysByLayout[layout][key])
     })
   })
-
-  if (layoutKey.value === CoreLayouts.Island)
-    themeChanger.patchThemeByName('dark', islandTheme)
 
   return {
     activeLayout,
