@@ -1,5 +1,6 @@
 @mixin apply {
   .v-card {
     background-color: rgba(var(--v-island-block-bg));
+    border-color: rgba(var(--v-island-border-color)) !important;
   }
 }

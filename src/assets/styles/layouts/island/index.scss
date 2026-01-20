@@ -17,6 +17,10 @@ body.skin--default:has(.island-layout) {
 .island-layout {
   @include island-componets.apply;
 
+  hr {
+    border-top: 1px solid rgba(var(--v-island-border-color));
+  }
+
   body.skin--default,
   aside.layout-vertical-nav,
   .layout-content-wrapper {
