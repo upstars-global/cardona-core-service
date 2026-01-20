@@ -155,7 +155,7 @@ export const themes: Record<string, ThemeDefinition> = {
       // Layouts
       'island-layout-bg': '#13151F',
       'island-page-bg': '#0E1017',
-      'island-menu-section-color': '#E9E9F0',
+      'island-menu-section-color': grey200,
       'island-menu-item-color': '#F4F4F7',
       'island-project-select-color': '#E7E9F6',
       'island-project-select-bg': '#2F3349',
