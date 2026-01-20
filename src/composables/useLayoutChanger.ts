@@ -20,7 +20,7 @@ export function useLayoutChanger(layoutByMeta: Record<string, Component>, defaul
     [CoreLayouts.Island]: islandTheme,
   }
 
-  const updateColorVariablesByTheme = (layout: CoreLayouts) => {
+  const updateColorVariablesByTheme = (layout: string) => {
     const actualTheme = themesKeysByLayout[layout] ?? null
 
     if (!actualTheme)
@@ -35,15 +35,15 @@ export function useLayoutChanger(layoutByMeta: Record<string, Component>, defaul
     })
   }
 
-  const setBodyDataAttributeByLayout = () => {
-    document.querySelector('body')?.setAttribute('data-layout', layoutKey.value)
+  const setBodyDataAttributeByLayout = (layout: string) => {
+    document.querySelector('body')?.setAttribute('data-layout', layout)
   }
 
   watch(
     () => layoutKey.value,
     layout => {
       updateColorVariablesByTheme(layout)
-      setBodyDataAttributeByLayout()
+      setBodyDataAttributeByLayout(layout)
     },
     { immediate: true },
   )
