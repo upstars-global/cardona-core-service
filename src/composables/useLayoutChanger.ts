@@ -20,21 +20,30 @@ export function useLayoutChanger(layoutByMeta: Record<string, Component>, defaul
     [CoreLayouts.Island]: islandTheme,
   }
 
+  const updateColorVariablesByTheme = (layout: CoreLayouts) => {
+    const actualTheme = themesKeysByLayout[layout] ?? null
+
+    if (!actualTheme)
+      return
+
+    ;(['light', 'dark'] as const).forEach(mode => {
+      const def = actualTheme[mode]
+      if (!def?.colors)
+        return
+
+      themeVariablesChanger.setThemeColors(mode, def.colors as Record<string, unknown>)
+    })
+  }
+
+  const setBodyDataAttributeByLayout = () => {
+    document.querySelector('body')?.setAttribute('data-layout', layoutKey.value)
+  }
+
   watch(
     () => layoutKey.value,
     layout => {
-      const actualTheme = themesKeysByLayout[layout] ?? null
-
-      if (!actualTheme)
-        return
-
-      ;(['light', 'dark'] as const).forEach(mode => {
-        const def = actualTheme[mode]
-        if (!def?.colors)
-          return
-
-        themeVariablesChanger.setThemeColors(mode, def.colors as Record<string, unknown>)
-      })
+      updateColorVariablesByTheme(layout)
+      setBodyDataAttributeByLayout()
     },
     { immediate: true },
   )
