@@ -575,12 +575,12 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
 }
 
 onBeforeMount(async () => {
+  if (props.config.withProjectsFilter)
+    projectsFilter.value = props.config.projectsFilterMode === ProjectsFilterMode.All ? userProjects.value.map(project => project.alias) : [store.getters.selectedProject?.alias]
+
   await getList()
 
   isInitialState.value = false
-
-  if (props.config.withProjectsFilter)
-    projectsFilter.value = props.config.projectsFilterMode === ProjectsFilterMode.All ? userProjects.value.map(project => project.alias) : [store.getters.selectedProject?.alias]
 })
 
 const editingId = ref<string | null>(null)
