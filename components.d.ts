@@ -29,6 +29,7 @@ declare module 'vue' {
     BadgesField: typeof import('./src/components/templates/BaseList/_components/fields/BadgesField.vue')['default']
     BadgeShortCopyView: typeof import('./src/components/templates/ViewGenerator/_components/BadgeShortCopyView.vue')['default']
     BadgesView: typeof import('./src/components/templates/ViewGenerator/_components/BadgesView.vue')['default']
+    BadgeToggleGroup: typeof import('./src/components/BadgeToggleGroup.vue')['default']
     BadgeView: typeof import('./src/components/templates/ViewGenerator/_components/BadgeView.vue')['default']
     BaseChart: typeof import('./src/components/templates/BaseChart.vue')['default']
     BaseList: typeof import('./src/components/templates/BaseList/index.vue')['default']
