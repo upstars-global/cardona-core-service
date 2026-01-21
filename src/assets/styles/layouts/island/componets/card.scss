@@ -3,4 +3,8 @@
     background-color: rgba(var(--v-island-block-bg));
     border-color: rgba(var(--v-island-border-color)) !important;
   }
+
+  .v-card--variant-elevated {
+    color: rgba(var(--v-island-text-general)) !important;
+  }
 }

@@ -2,6 +2,10 @@
   .v-expansion-panel {
     $border-radius: var(--v-border-radius);
 
+    .v-expansion-panel-title {
+      color: rgba(var(--v-island-text-general)) !important;
+    }
+
     border-radius: $border-radius;
     border: 1px solid rgba(var(--v-island-border-color), 1);
   }
