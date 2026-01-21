@@ -115,10 +115,11 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     this.preloadOptionsByIds = field.preloadOptionsByIds
     this.staticFilters = field.staticFilters || {}
     this.calculatePositionCb = field.withCalculatePosition ? this.calculatePosition : undefined
-    this.filterable = (Boolean(field.filterBy) || field.filterable) ?? true
+    const filtrable = field?.filterBy || field?.filterable
+    this.filterable = filtrable ?? true
     this.infiniteLoading = field.infiniteLoading
     this.pageNumber = 1
-    this.filterBy = field.filterBy ?? undefined
+    this.filterBy = field?.filterBy
   }
 
   calculatePosition({ dropdownList }) {
