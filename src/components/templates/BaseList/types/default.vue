@@ -5,8 +5,8 @@ import { useStore as useVuexStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
-import { BaseListSlots } from '../../../../@model/templates/baseList'
 import type { ExportFormat, IBaseListConfig, ProjectsFilterOption } from '../../../../@model/templates/baseList'
+import { BaseListSlots, ProjectsFilterMode } from '../../../../@model/templates/baseList'
 import CTable from '../../../CTable/index.vue'
 import type { PayloadFilters } from '../../../../@model/filter'
 import RemoveModal from '../../../../components/BaseModal/RemoveModal.vue'
@@ -439,7 +439,7 @@ const userProjects = computed<ProjectsFilterOption[]>(() => store.getters['appCo
   title: name,
 })))
 
-const projectsFilter = ref<string[]>([store.getters.selectedProject?.alias])
+const projectsFilter = ref<string[]>([])
 
 // Filters
 const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
@@ -575,7 +575,11 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
 }
 
 onBeforeMount(async () => {
+  if (props.config.withProjectsFilter)
+    projectsFilter.value = props.config.projectsFilterMode === ProjectsFilterMode.All ? userProjects.value.map(project => project.alias) : [store.getters.selectedProject?.alias]
+
   await getList()
+
   isInitialState.value = false
 })
 
