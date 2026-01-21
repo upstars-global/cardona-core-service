@@ -1,5 +1,5 @@
 import type { Component } from 'vue'
-import { uniqBy } from 'lodash'
+import { isFunction, uniqBy } from 'lodash'
 import type { TranslateResult } from 'vue-i18n'
 import type { IValidationConfig } from '../../../@model/validations'
 import type { OptionsItem } from '../../../@model'
@@ -115,8 +115,10 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     this.preloadOptionsByIds = field.preloadOptionsByIds
     this.staticFilters = field.staticFilters || {}
     this.calculatePositionCb = field.withCalculatePosition ? this.calculatePosition : undefined
-    const filtrable = field?.filterBy || field?.filterable
-    this.filterable = filtrable ?? true
+
+    const isFilterable = isFunction(field?.filterBy) || field?.filterable
+
+    this.filterable = isFilterable ?? true
     this.infiniteLoading = field.infiniteLoading
     this.pageNumber = 1
     this.filterBy = field?.filterBy
