@@ -88,6 +88,8 @@ export const themes: Record<string, ThemeDefinition> = {
       'island-project-select-bg': '#2F3349',
       'island-block-bg': '#FFFFFF',
       'island-border-color': grey200,
+      'island-text-general': '#353347',
+
     },
   },
   dark: {
@@ -161,6 +163,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'island-project-select-bg': '#2F3349',
       'island-block-bg': '#161822',
       'island-border-color': '#3A3C50',
+      'island-text-general': '#D5D5DE',
     },
   },
 }
