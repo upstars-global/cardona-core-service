@@ -29,8 +29,10 @@ const props = withDefaults(defineProps<{
   disabledRowIds?: string[]
   skeletonRows?: number
   skeletonCols?: number
+  cellCbClass?: (item: Record<string, unknown>, cell: string) => string
 }>(), {
-  disabledRowIds: [],
+  cellCbClass: () => () => '',
+  disabledRowIds: () => [],
 })
 
 const emits = defineEmits<{
@@ -129,6 +131,7 @@ const toggleExpand = (id: string) => {
   else
     expanded.value.push(id)
 }
+
 </script>
 
 <template>
@@ -314,7 +317,7 @@ const toggleExpand = (id: string) => {
               v-for="field in fields"
               :key="`c-table-cell_${index}_${field.key}`"
               class="c-table__cell text-body-1 whitespace-no-wrap"
-              :class="cellClasses"
+              :class="[cellClasses, cellCbClass(item, field.key)]"
               :data-c-field="field.key"
             >
               <slot

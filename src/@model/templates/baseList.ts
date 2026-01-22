@@ -16,6 +16,11 @@ export enum ListTypes {
   Compact = 'compact',
 }
 
+export enum ProjectsFilterMode {
+  Current = 'current',
+  All = 'all',
+}
+
 export enum SortDirection {
   asc = 'asc',
   desc = 'desc',
@@ -85,6 +90,9 @@ export interface IBaseListConfig {
 
   /** withProjectsFilter - Вкл/выкл фильтр по проектам  */
   readonly withProjectsFilter?: boolean
+
+  /** projectsFilterMode - Установить количестро выбранных проектов (все или текущий) */
+  readonly projectsFilterMode?: ProjectsFilterMode
 
   /** staticSorts - Статический сортировка таблицы field: 'position', dir: SortDirection.asc, */
   readonly staticSorts?: SortItem
@@ -210,6 +218,9 @@ export interface IBaseListConfig {
 
   /** disableLoading - Flag для блокирования loading state  */
   readonly disableLoading?: boolean
+
+  //* *  cellCbClass - Callback для добавления класса ячейке таблицы */
+  readonly cellCbClass?: CallableFunction
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -221,6 +232,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly filterList: Array<FilterListItem>
   readonly staticFilters: StaticFilters
   readonly withProjectsFilter?: boolean
+  readonly projectsFilterMode?: ProjectsFilterMode
   readonly staticSorts?: SortItem
   readonly selectMode?: SelectMode
   readonly selectable?: boolean
@@ -262,6 +274,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly withTopPagination?: boolean
   readonly saveSort?: boolean
   readonly disableLoading?: boolean
+  readonly cellCbClass: CallableFunction
 
   constructor({
     withSearch,
@@ -272,6 +285,7 @@ export class BaseListConfig implements IBaseListConfig {
     filterList,
     staticFilters,
     withProjectsFilter,
+    projectsFilterMode,
     staticSorts,
     selectMode,
     selectable,
@@ -313,6 +327,7 @@ export class BaseListConfig implements IBaseListConfig {
     withTopPagination,
     saveSort,
     disableLoading,
+    cellCbClass,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -322,6 +337,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.filterList = filterList || []
     this.staticFilters = staticFilters || {}
     this.withProjectsFilter = withProjectsFilter
+    this.projectsFilterMode = projectsFilterMode ?? ProjectsFilterMode.Current
     this.staticSorts = staticSorts
     this.selectMode = selectMode || SelectMode.Page
     this.selectable = selectable
@@ -363,6 +379,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.withTopPagination = withTopPagination
     this.saveSort = saveSort ?? true
     this.disableLoading = disableLoading
+    this.cellCbClass = cellCbClass
   }
 }
 
