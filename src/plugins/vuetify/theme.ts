@@ -4,6 +4,7 @@ export const staticPrimaryColor = '#6D60F0'
 export const grey800 = '#373645'
 export const grey900 = '#1F1C32'
 const grey200 = '#E9E9F0'
+const islandTableHeaderText = '#7D7E85'
 
 export const themes: Record<string, ThemeDefinition> = {
   light: {
@@ -89,7 +90,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'island-card-bg': '#FFFFFF',
       'island-border-color': grey200,
       'island-text-general': '#353347',
-
+      'island-table-header-text': islandTableHeaderText,
     },
   },
   dark: {
@@ -165,6 +166,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'island-border-color': '#3A3C50',
       'island-text-general': '#D5D5DE',
       'island-block-bg': '#161822',
+      'island-table-header-text': islandTableHeaderText,
     },
   },
 }

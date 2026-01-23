@@ -1,10 +1,11 @@
 @use "./card" as card;
 @use "./expand" as expand;
+@use "./table" as table;
 
 @mixin apply {
   @include card.apply;
   @include expand.apply;
-
+  @include table.apply;
 
   h1, h2, h3, h4, h5, h6, .text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-h6, .text-button, .text-overline, .v-card-title {
     color: rgba(var(--v-island-text-general)) ;

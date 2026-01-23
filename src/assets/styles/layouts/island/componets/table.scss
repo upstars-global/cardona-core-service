@@ -1,0 +1,12 @@
+@mixin apply {
+  .v-table {
+    thead {
+      th {
+        color: rgba(var(--v-theme-island-table-header-text));
+      }
+      td {
+        color: rgba(var(--v-theme-island-text-general));
+      }
+    }
+  }
+}
