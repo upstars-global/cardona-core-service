@@ -165,8 +165,6 @@ export const themes: Record<string, ThemeDefinition> = {
       'island-border-color': '#3A3C50',
       'island-text-general': '#D5D5DE',
       'island-block-bg': '#161822',
-      'island-border-color': '#3A3C50',
-      'island-text-general': '#D5D5DE',
     },
   },
 }
