@@ -9,6 +9,11 @@ export function useLayoutChanger(layoutByMeta: Record<string, Component>, defaul
   const layoutKey = computed(() => route.meta?.layout || defaultLayout)
   const activeLayout = computed(() => layoutByMeta[layoutKey.value] || LayoutDefault)
 
+  const body = document.body
+
+  if (!body.dataset.layout)
+    body.dataset.layout = layoutKey.value
+
   return {
     activeLayout,
     layoutKey,
