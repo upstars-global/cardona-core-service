@@ -48,7 +48,7 @@ const onClickLink = () => {
 
 <template>
   <div
-    class="d-flex align-center text-primary cursor-pointer"
+    class="d-flex align-center cursor-pointer inner-link-wrapper"
     :class="linkSizeClass"
   >
     <span class="link-title">
@@ -69,7 +69,7 @@ const onClickLink = () => {
 
     <VIcon
       v-if="copyElement"
-      class="text-color-mute ml-2"
+      class="copy-btn ml-2"
       data-test-id="icon-copy"
       :icon="IconsList.CopyIcon"
       :size="iconSize"
@@ -79,6 +79,10 @@ const onClickLink = () => {
 </template>
 
 <style lang="scss" scoped>
+.inner-link-wrapper {
+  color: rgb(var(--v-theme-primary));
+}
+
 .link-title {
   margin-right: 0.25rem;
 }

@@ -1,6 +1,5 @@
 import type { ChartOptions, ChartType, ScriptableContext } from 'chart.js'
 import { amountFormatter } from '../../helpers/amount'
-import config from "@/components/TextEditorWysiwyg/config";
 
 export const ChartTypes: Record<string, ChartType> = {
   Line: 'line',
@@ -19,17 +18,27 @@ export enum ChartInteractionMode {
 
 const ticksCallback = (value: number, isPercent?: boolean): string => isPercent ? `${value}%` : amountFormatter(value)
 
-export const getChartConfig = (options: { chartType: AllowedChartType; isPercent?: boolean; tooltipMode?: ChartInteractionMode; yTicksCallback?: (value: string) => string }) => {
-  const { chartType, isPercent, tooltipMode = ChartInteractionMode.Index, yTicksCallback } = options
+export const getChartConfig = (options: {
+  chartType: AllowedChartType
+  isPercent?: boolean
+  tooltipMode?: ChartInteractionMode
+  yTicksCallback?: (value: string) => string
+  gridColor?: string
+  labelColor?: string
+}) => {
+  const { chartType, isPercent, tooltipMode = ChartInteractionMode.Index, yTicksCallback, gridColor = '' } = options
 
   const tooltip = {
     mode: tooltipMode,
     intersect: true,
   }
 
+  const labelAdditional = options.labelColor ? { color: options.labelColor } : {}
+
   const legend = {
     position: 'bottom',
     labels: {
+      ...labelAdditional,
       usePointStyle: true,
       pointStyle: 'circle',
       padding: 12,
@@ -53,7 +62,7 @@ export const getChartConfig = (options: { chartType: AllowedChartType; isPercent
 
   const grid = {
     display: true,
-    color: '#E9E9F0',
+    color: gridColor || '#E9E9F0',
   }
 
   const border = {

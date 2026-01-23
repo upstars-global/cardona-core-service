@@ -60,7 +60,7 @@ const searchQuery = computed({
           :prepend-inner-icon="IconsList.SearchIcon"
           :placeholder="config.searchPlaceholder"
           data-test-id="search-input"
-          class="search bg-surface"
+          class="search"
         />
 
         <VBtn
@@ -94,8 +94,8 @@ const searchQuery = computed({
           v-if="exportSelector.canShow"
           data-test-id="export-format-selector"
           :small="config.small"
-          :isLoadingExport="isLoadingExport"
-          :exportSelector="exportSelector"
+          :is-loading-export="isLoadingExport"
+          :export-selector="exportSelector"
           :disabled="exportSelector.disable"
           :format-of-exports="config.formatOfExports"
           @export-format-selected="onExportFormatSelected"

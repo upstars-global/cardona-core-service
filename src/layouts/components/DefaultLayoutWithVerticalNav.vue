@@ -1,9 +1,13 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useStore } from 'vuex'
 import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
+import NotificationExport from '../../components/NotificationExport/index.vue'
 import AppBreadcrumb from './AppBreadcrumb.vue'
 import navItems from '@/navigation/vertical/'
 import { VerticalNavLayout } from '@layouts'
+
+const store = useStore()
 
 const isFallbackStateActive = ref(false)
 const refLoadingIndicator = ref<any>(null)
@@ -15,13 +19,37 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
   if (!isFallbackStateActive.value && refLoadingIndicator.value)
     refLoadingIndicator.value.resolveHandle()
 }, { immediate: true })
+
+// Notifications export
+const canShowNotificationExport = computed(() => store.getters.haveSomePermissionReport)
+
+const userId = computed(() => store.getters.userInfo.id)
 </script>
 
 <template>
   <VerticalNavLayout :nav-items="navItems">
     <!-- 👉 navbar -->
     <template #navbar>
-      <AppBreadcrumb />
+      <AppBreadcrumb>
+        <template #content-right="{ time }">
+          <VDivider
+            v-if="canShowNotificationExport"
+            class="mx-4"
+            vertical
+          />
+
+          <div
+            v-if="canShowNotificationExport"
+            cols="1"
+            class="d-flex align-center justify-end notification-export-wrapper"
+          >
+            <NotificationExport
+              :time="time"
+              :user-id="userId"
+            />
+          </div>
+        </template>
+      </AppBreadcrumb>
     </template>
 
     <AppLoadingIndicator ref="refLoadingIndicator" />

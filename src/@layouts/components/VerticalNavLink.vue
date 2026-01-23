@@ -40,7 +40,7 @@ const onClick = () => {
           v-show="!hideTitleAndBadge"
           key="title"
           class="nav-item-title font-weight-regular"
-          :class="{ 'text-color-base': !isNavLinkActive(item, $router) }"
+          :class="{ 'nav-item-color': !isNavLinkActive(item, $router) }"
           v-bind="getDynamicI18nProps(item.title, 'span')"
         >
           {{ item.title }}
@@ -69,5 +69,9 @@ const onClick = () => {
     display: flex;
     align-items: center;
   }
+}
+
+.nav-item-color {
+  color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
 }
 </style>
