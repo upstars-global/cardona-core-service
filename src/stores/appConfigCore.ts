@@ -40,7 +40,7 @@ export const useAppConfigCoreStore = defineStore('appConfigCore', {
       const userStore = useUserStore()
 
       const selectedProject
-        = userStore.selectedProject
+        = userStore.getSelectedProject
         || userStore.userInfo?.projects?.[0]
 
       return (
@@ -55,7 +55,7 @@ export const useAppConfigCoreStore = defineStore('appConfigCore', {
       const userStore = useUserStore()
 
       const selectedProject
-        = userStore.selectedProject
+        = userStore.getSpecificProject
         || userStore.userInfo?.projects?.[0]
 
       return (
@@ -138,7 +138,7 @@ export const useAppConfigCoreStore = defineStore('appConfigCore', {
 
     async fetchConfig() {
       const userStore = useUserStore()
-      const selectedProject = userStore.selectedProject
+      const selectedProject = userStore.getSelectedProject
 
       if (
         !this.defaultCurrency[selectedProject?.id]

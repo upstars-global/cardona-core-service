@@ -70,10 +70,6 @@ export const useUserStore = defineStore('user', {
     userProjects: state => state.userInfo?.projects || [],
     userProducts: state => state.userInfo.products,
 
-    // selectedProjectComputed: state => {
-    //
-    // },
-
     selectedProjectWithoutPriority: state => {
       const projects = state.userInfo.projects
       const defaultProject = projects[0]
