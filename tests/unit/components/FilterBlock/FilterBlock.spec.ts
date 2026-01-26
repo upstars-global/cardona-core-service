@@ -25,15 +25,7 @@ vi.mock('../../../../src/stores/filtersCore', () => ({
 
 const getMountFiltersBlock = setMountComponent(FiltersBlock)
 
-vi.mock('lodash', async importOriginal => {
-  const actual = await importOriginal()
 
-  return {
-    debounce: (fn: Function) => fn,
-    has: actual.has,
-    cloneDeep: val => val,
-  }
-})
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({

@@ -30,9 +30,10 @@ vi.mock('lodash', async importOriginal => {
   const actual = await importOriginal()
 
   return {
-    ...actual,
     debounce: (fn: Function) => fn,
     has: actual.has,
+    cloneDeep: val => val,
+    isFunction: val => val,
   }
 })
 
