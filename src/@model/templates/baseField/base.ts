@@ -1,5 +1,5 @@
 import type { Component } from 'vue'
-import { uniqBy } from 'lodash'
+import { isFunction, uniqBy } from 'lodash'
 import type { TranslateResult } from 'vue-i18n'
 import type { IValidationConfig } from '../../../@model/validations'
 import type { OptionsItem } from '../../../@model'
@@ -75,6 +75,8 @@ export interface ITransformFieldOptions {
   trackBy?: string
 }
 
+type FilterByFunction = (option: OptionsItem, label: string, search: string) => boolean
+
 export interface IASelectBaseField<T> extends IBaseField {
   readonly options?: Array<T>
   readonly fetchOptionsAction?: CallableFunction
@@ -84,6 +86,8 @@ export interface IASelectBaseField<T> extends IBaseField {
   readonly filterable?: boolean
   readonly infiniteLoading?: boolean
   readonly localeKey?: string
+  readonly filterBy?: FilterByFunction
+
 }
 
 export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsItem | string>
@@ -101,6 +105,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
   pageNumber: number
   private prevSearch = ''
   allowLoadMore = true
+  filterBy?: FilterByFunction
 
   protected constructor(field: IASelectBaseField<T>) {
     super(field)
@@ -110,9 +115,13 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     this.preloadOptionsByIds = field.preloadOptionsByIds
     this.staticFilters = field.staticFilters || {}
     this.calculatePositionCb = field.withCalculatePosition ? this.calculatePosition : undefined
-    this.filterable = field.filterable ?? true
+
+    const isFilterable = isFunction(field?.filterBy) || field?.filterable
+
+    this.filterable = isFilterable ?? true
     this.infiniteLoading = field.infiniteLoading
     this.pageNumber = 1
+    this.filterBy = field?.filterBy
   }
 
   calculatePosition({ dropdownList }) {

@@ -19,6 +19,8 @@ vi.mock('lodash', async importOriginal => {
   return {
     debounce: (fn: Function) => fn,
     has: actual.has,
+    cloneDeep: val => val,
+    isFunction: val => val,
   }
 })
 
