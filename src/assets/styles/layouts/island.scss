@@ -3,7 +3,7 @@ body[data-layout="island"] {
 
   .v-overlay-container {
     .v-overlay__content {
-      border: 1px solid rgb(var(--v-theme-secondary));
+      border: 1px solid rgb(var(--v-island-border-color));
     }
 
     .v-list {
