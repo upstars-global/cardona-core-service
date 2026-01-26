@@ -79,26 +79,27 @@ const onRemoveVariables = (variable: string): void => {
   }
 }
 
-const handleVariablesChange = () => {
-  const allString = getVariablesFromAllLocaleText(props!.modelValue?.metaTitle)
-  if (!allString)
-    return
-  const localeKeyInText = getVariablesFromLocale(allString)
-  const excessKeyVariable = getExcessKeyVariable(localeKeyInText, variableTextBufferStore.value)
+// TODO: commented for task https://upstars.atlassian.net/browse/BAC-7090
+// const handleVariablesChange = () => {
+//   const allString = getVariablesFromAllLocaleText(props!.modelValue?.metaTitle)
+//   if (!allString)
+//     return
+//   const localeKeyInText = getVariablesFromLocale(allString)
+//   const excessKeyVariable = getExcessKeyVariable(localeKeyInText, variableTextBufferStore.value)
+//
+//   props!.modelValue.metaTitle = cleanMetaTitle(
+//     props!.modelValue.metaTitle || {},
+//     excessKeyVariable || '',
+//   )
+// }
 
-  props!.modelValue.metaTitle = cleanMetaTitle(
-    props!.modelValue.metaTitle || {},
-    excessKeyVariable || '',
-  )
-}
+// const watchOptions = { immediate: true, deep: true }
+
+// watch(() => variableTextBufferStore, handleVariablesChange, watchOptions)
 
 const getValue = (locale: string, key: string): string => {
   return isMainLocale(locale) ? props.form[key] ? props.form[key].value : props.form.seo[key].value : props.form.fieldTranslations[key][locale].value
 }
-
-const watchOptions = { immediate: true, deep: true }
-
-watch(() => variableTextBufferStore, handleVariablesChange, watchOptions)
 </script>
 
 <template>

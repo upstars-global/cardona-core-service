@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
+import { BaseListSlots } from '../../../../@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '../../../../@model/vuetify'
 import { i18n } from '../../../../plugins/i18n'
 import { ModalsId } from '../../../../@model/modalsId'
@@ -42,12 +43,14 @@ const onRemove = () => {
     :action-btn-text="i18n.t('action.remove')"
     @confirmed="emits('on-remove')"
   />
-  <div class="table-settings w-100 align-center justify-space-between pa-4">
+  <div class="table-settings w-100 align-center justify-space-between">
     <span data-test-id="number-selected">
       {{ $t('common.numberOfSelected', { number: numberSelectedItems }) }}
     </span>
 
     <div class="d-flex gap-4">
+      <slot :name="BaseListSlots.PrependMultipleAction" />
+
       <slot>
         <VBtn
           v-if="isToggleStatus"

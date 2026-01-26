@@ -23,11 +23,14 @@ const selectProject = computed({
 const cantSelect = computed(() => props.projects.length < 2)
 const isMarbella = computed(() => userStore.isMarbella)
 
-onMounted(() => {
-  const faviconPath = userStore.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
+// onMounted(() => {
+//   const faviconPath = userStore.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
+watch(() => selectProject.value.id, () => {
+  const faviconPath = store.getters.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
 
   useFavicon(faviconPath)
-})
+}, { immediate: true })
+
 watch(selectProject, project => {
   if (!project || !isMarbella.value)
     return

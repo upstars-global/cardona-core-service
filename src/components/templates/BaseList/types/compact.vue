@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
+import { useStore as useVuexStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
+import { BaseListSlots } from '../../../../@model/templates/baseList'
 import type { ExportFormat, IBaseListConfig, ProjectsFilterOption } from '../../../../@model/templates/baseList'
-import { BaseListSlots, ProjectsFilterMode } from '../../../../@model/templates/baseList'
 import CTable from '../../../CTable/index.vue'
 import type { PayloadFilters } from '../../../../@model/filter'
 import RemoveModal from '../../../../components/BaseModal/RemoveModal.vue'
@@ -24,6 +25,7 @@ import {
   isEmptyString,
   isNullOrUndefinedValue,
 } from '../../../../helpers'
+import useToastService from '../../../../helpers/toasts'
 import { VSizes } from '../../../../@model/vuetify'
 import SideBar from '../../../../components/templates/SideBar/index.vue'
 import FiltersBlock from '../../../../components/FiltersBlock/index.vue'
@@ -34,32 +36,30 @@ import SumAndCurrency from '../../../../components/templates/_components/SumAndC
 import StatusField from '../../../../components/templates/_components/StatusField.vue'
 import { useLoaderStore } from '../../../../stores/loader'
 import { useBaseStoreCore } from '../../../../stores/baseStoreCore'
-import { useUserStore } from '../../../../stores/user'
-import { useAppConfigCoreStore } from '../../../../stores/appConfigCore'
-import { useFiltersStore } from '../../../../stores/filtersCore'
-import usePagination from '../сomposables/pagination'
-import type { PaginationResult } from '../сomposables/pagination'
-import MultipleActions from '../_components/MultipleActions.vue'
-import ListSearch from '../_components/ListSearch.vue'
-import PillStatusField from '../_components/fields/PillStatusField.vue'
-import NameWithIdField from '../_components/fields/NameWithIdField.vue'
-import NameWithShortIdField from '../_components/fields/NameWithShortIdField.vue'
-import EmailField from '../_components/fields/EmailField.vue'
-import BadgesField from '../_components/fields/BadgesField.vue'
-import PositionField from '../_components/fields/PositionField.vue'
-import ButtonField from '../_components/fields/ButtonField.vue'
-import CommentField from '../_components/fields/CommentField.vue'
-import ImageField from '../_components/fields/ImageField.vue'
-import ImageDetailField from '../_components/fields/ImageDetailField.vue'
-import DatePeriodField from '../_components/fields/DatePeriodField.vue'
-import CopyShortField from '../_components/fields/CopyShortField.vue'
-import ItemActions from '../_components/fields/ItemActions.vue'
-import ListPagination from '../_components/ListPagination.vue'
-import TableFields from '../_components/TableFields.vue'
-import DateField from '../_components/fields/DateField.vue'
-import ProjectsFilter from '../_components/ProjectsFilter.vue'
-import { mapSortData } from '../сomposables/sorting'
-import { transformFilters } from '../сomposables/filters'
+import usePagination from '.././сomposables/pagination'
+import type { PaginationResult } from '.././сomposables/pagination'
+import MultipleActions from '.././_components/MultipleActions.vue'
+import ListSearch from '.././_components/ListSearch.vue'
+import PillStatusField from '.././_components/fields/PillStatusField.vue'
+import NameWithIdField from '.././_components/fields/NameWithIdField.vue'
+import NameWithShortIdField from '.././_components/fields/NameWithShortIdField.vue'
+import EmailField from '.././_components/fields/EmailField.vue'
+import BadgesField from '.././_components/fields/BadgesField.vue'
+import PositionField from '.././_components/fields/PositionField.vue'
+import ButtonField from '.././_components/fields/ButtonField.vue'
+import CommentField from '.././_components/fields/CommentField.vue'
+import ImageField from '.././_components/fields/ImageField.vue'
+import ImageDetailField from '.././_components/fields/ImageDetailField.vue'
+import DatePeriodField from '.././_components/fields/DatePeriodField.vue'
+import CopyShortField from '.././_components/fields/CopyShortField.vue'
+import ItemActions from '.././_components/fields/ItemActions.vue'
+import ListPagination from '.././_components/ListPagination.vue'
+import TableFields from '.././_components/TableFields.vue'
+import DateField from '.././_components/fields/DateField.vue'
+import ProjectsFilter from '.././_components/ProjectsFilter.vue'
+import { mapSortData } from '.././сomposables/sorting'
+import { downloadReport } from '.././сomposables/export'
+import { transformFilters } from '.././сomposables/filters'
 
 defineOptions({
   name: 'DefaultBaseList',
@@ -76,14 +76,14 @@ const emits = defineEmits<{
   end: [item: Record<string, unknown>]
 }>()
 
+const { toastError } = useToastService()
+
 const modal = inject('modal')
 const slots = useSlots()
 
 const baseStoreCore = useBaseStoreCore()
-const appConfigCoreStore = useAppConfigCoreStore()
-const userStore = useUserStore()
+const store = useVuexStore()
 const loaderStore = useLoaderStore()
-const filtersCoreStore = useFiltersStore()
 const { t } = useI18n()
 
 const router = useRouter()
@@ -200,7 +200,7 @@ watch(
   { deep: true },
 )
 
-const selectedFields = ref<TableField[]>([...fields])
+const selectedFields = ref<TableField[]>(fields)
 
 const normalizedEntityName = computed(() => {
   const index = entityName.indexOf('-') + 1
@@ -310,14 +310,10 @@ const getList = async () => {
   const filter = setRequestFilters()
   const sort = mapSortData(sortData.value)
 
-  const actualPerPage = !props.config.pagination && props.config.defaultPerPage
-    ? props.config.defaultPerPage
-    : perPage.value
-
   const { list, total } = await fetchAction({
     type: parseEntityNameWithTabs(entityName),
     data: {
-      perPage: actualPerPage,
+      perPage: perPage.value,
       page: currentPage.value,
       filter,
       sort,
@@ -390,6 +386,8 @@ watch(() => searchQuery.value, () => {
 })
 
 // Export
+const { isSpecificExport } = props.config
+
 const setRequestFilters = (): PayloadFilters => {
   if (!ListFilterModel)
     return {}
@@ -419,10 +417,17 @@ const setRequestFilters = (): PayloadFilters => {
 }
 
 const onExportFormatSelected = async (format: ExportFormat) => {
+  if (props.config?.maxExportItems && props.config?.maxExportItems < total.value) {
+    toastError('maxLimitForExport', { quantity: props.config.maxExportItems })
+
+    return
+  }
+
   const filter = setRequestFilters()
   const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
+  const action = isSpecificExport ? baseStoreCore.specificFetchReport : baseStoreCore.fetchReport
 
-  await baseStoreCore.fetchReport({
+  const report: string | Blob = await action({
     type: entityName,
     data: {
       filter: {
@@ -434,16 +439,19 @@ const onExportFormatSelected = async (format: ExportFormat) => {
     },
     customApiPrefix: props.config?.customApiPrefix,
   })
+
+  if (!isSpecificExport)
+    downloadReport(report, entityName, format)
 }
 
 // Projects filters
-const userProjects = computed<ProjectsFilterOption[]>(() => appConfigCoreStore.verifiedProjects.map(({ id, alias, name }) => ({
+const userProjects = computed<ProjectsFilterOption[]>(() => store.getters['appConfigCore/verifiedProjects'].map(({ id, alias, name }) => ({
   id,
   alias,
   title: name,
 })))
 
-const projectsFilter = ref<string[]>([userStore.getSelectedProject?.alias])
+const projectsFilter = ref<string[]>([store.getters.selectedProject?.alias])
 
 // Filters
 const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
@@ -454,9 +462,9 @@ const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, 
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
 const appliedFilters = computed<BaseField[]>(() => {
-  const isSameEntity: boolean = entityName === filtersCoreStore.listEntityName
+  const isSameEntity: boolean = entityName === store.getters['filtersCore/listEntityName']
 
-  return isSameEntity ? filtersCoreStore.appliedListFilters : []
+  return isSameEntity ? store.getters['filtersCore/appliedListFilters'] : []
 })
 
 const hasSelectedFilters = computed(() => selectedFilters && selectedFilters.value.isNotEmpty)
@@ -579,11 +587,7 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
 }
 
 onBeforeMount(async () => {
-  if (props.config.withProjectsFilter)
-    projectsFilter.value = props.config.projectsFilterMode === ProjectsFilterMode.All ? userProjects.value.map(project => project.alias) : [store.getters.selectedProject?.alias]
-
   await getList()
-
   isInitialState.value = false
 })
 
@@ -599,8 +603,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
 <template>
   <div
-    class="d-flex flex-column default__base-list"
-    data-test-id="default-base-list"
+    class="d-flex flex-column align-stretch compact__base-list"
+    data-test-id="compact-base-list"
   >
     <RemoveModal
       :config="config"
@@ -736,7 +740,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         @update:model-value="setPage"
       />
     </div>
-    <VCard class="table-card-settings">
+    <VCard class="table-card-settings table-wrapper">
       <div
         v-if="config.withSettings && (!canUpdate || selectedItems.isEmpty)"
         class="table-settings align-center"
@@ -755,7 +759,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :model-value="perPage"
             :options="perPageOptions"
             class="per-page-selector d-inline-block"
-            :dir="appConfigCoreStore.dirOption"
+            :dir="store.getters['appConfigCore/dirOption']"
             :searchable="false"
             :clearable="false"
             @update:model-value="setPerPage"
@@ -793,17 +797,6 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         @on-deactivate="onClickToggleStatusMultiple(false)"
         @on-remove="onClickDeleteMultiple"
       >
-        <template
-          v-if="checkSlotExistence(BaseListSlots.PrependMultipleAction)"
-          #[BaseListSlots.PrependMultipleAction]
-        >
-          <slot
-            :name="BaseListSlots.PrependMultipleAction"
-            :selected-items="selectedItems"
-            :can-update="canUpdate"
-          />
-        </template>
-
         <slot
           :name="BaseListSlots.MultipleActions"
           :selected-items="selectedItems"
@@ -827,7 +820,6 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :selected-items="selectedItems"
         :items-per-page="itemsPerPage"
         :disabled-row-ids="disableRowIds"
-        :cell-cb-class="config.cellCbClass"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"
@@ -1076,7 +1068,6 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :index="getIndexByItemFromList(item.value)"
             :toggle-expand="toggleExpand"
             :is-expanded="isExpanded"
-            :on-click-remove="onClickRemove"
             @click.stop
           />
           <StatusField
@@ -1287,7 +1278,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         </template>
 
         <template #empty>
-          <div class="d-flex flex-column justify-center align-center p-2 text-color-mute empty-state-wrapper">
+          <div class="d-flex flex-column justify-center align-center text-color-mute empty-state-wrapper">
             <slot :name="BaseListSlots.Empty">
               <span>
                 {{ emptyListText }}
@@ -1316,19 +1307,82 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 </template>
 
 <style lang="scss" scoped>
-.default__base-list {
-  :deep(.c-table) {
-    .c-table-cell-padding {
-      padding: var(--default__c-table-cell-padding);
+.compact__base-list {
+  height: calc(100vh - 106px);
+
+  .table-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+
+    :deep(.c-table) {
+      height: 100%;
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 8px;
+        height: var(--c-table-th-height);
+        background: rgba(var(--v-c-table-head-bg), 1);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .c-table-cell-padding, .c-table-sm-cell-padding {
+        padding: var(--compact__c-table-cell-padding);
+      }
     }
 
-    .c-table-sm-cell-padding {
-      padding: var(--default__c-table-sm-cell-padding);
+    :deep(.v-select) {
+      min-height: 2rem;
+    }
+
+    :deep(.vs__dropdown-toggle) {
+      min-height: 2rem;
+      max-height: 2rem;
+      padding: 0.3rem;
+    }
+
+    :deep(.v-table) {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+
+      .v-table__wrapper {
+        &::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+          margin-top: var(--c-table-th-height);
+        }
+
+        table {
+          thead {
+            th {
+              position: sticky;
+              top: 0;
+              z-index: 2;
+              background: rgba(var(--v-c-table-head-bg), 1);
+              border-top: 1px solid rgba(var(--v-theme-grey-200), 1);
+              border-bottom: 1px solid rgba(var(--v-theme-grey-200), 1);
+            }
+          }
+
+          td {
+            border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
+          }
+        }
+      }
     }
   }
 
   .empty-state-wrapper {
-    height: 7.25rem;
+    padding: var(--compact__c-table-cell-padding);
   }
 }
 </style>

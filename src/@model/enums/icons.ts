@@ -224,7 +224,7 @@ export enum IconsList {
   ReportIcon = 'tabler-report',
   RewindIcon = 'RewindIcon',
   RobotFaceIcon = 'tabler-robot-face',
-  RotateCcwIcon = 'RotateCcwIcon',
+  RotateIcon = 'tabler-rotate',
   RotateCwIcon = 'RotateCwIcon',
   RssIcon = 'RssIcon',
   SaveIcon = 'SaveIcon',
@@ -329,4 +329,5 @@ export enum IconsList {
   BrandTypescript = 'tabler-brand-typescript',
   ExclamationMark = 'tabler-exclamation-mark',
   ArrowRight = 'tabler-arrow-right',
+  CloudSearch = 'tabler-cloud-search',
 }

@@ -33,22 +33,24 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
     <AppLoadingIndicator ref="refLoadingIndicator" />
 
     <!-- 👉 Pages -->
-    <RouterView v-slot="{ Component }">
-      <template v-if="Component">
-        <Transition
-          name="zoom-fade"
-          mode="out-in"
-        >
-          <Suspense
-            :timeout="0"
-            @fallback="isFallbackStateActive = true"
-            @resolve="isFallbackStateActive = false"
+    <slot :is-fallback-state-active="isFallbackStateActive">
+      <RouterView v-slot="{ Component }">
+        <template v-if="Component">
+          <Transition
+            name="zoom-fade"
+            mode="out-in"
           >
-            <Component :is="Component" />
-          </Suspense>
-        </Transition>
-      </template>
-    </RouterView>
+            <Suspense
+              :timeout="0"
+              @fallback="isFallbackStateActive = true"
+              @resolve="isFallbackStateActive = false"
+            >
+              <component :is="Component" />
+            </Suspense>
+          </Transition>
+        </template>
+      </RouterView>
+    </slot>
 
     <!-- 👉 Footer -->
     <template #footer>

@@ -29,8 +29,10 @@ const props = withDefaults(defineProps<{
   disabledRowIds?: string[]
   skeletonRows?: number
   skeletonCols?: number
+  cellCbClass?: (item: Record<string, unknown>, cell: string) => string
 }>(), {
-  disabledRowIds: [],
+  cellCbClass: () => () => '',
+  disabledRowIds: () => [],
 })
 
 const emits = defineEmits<{
@@ -129,6 +131,7 @@ const toggleExpand = (id: string) => {
   else
     expanded.value.push(id)
 }
+
 </script>
 
 <template>
@@ -154,14 +157,14 @@ const toggleExpand = (id: string) => {
       />
       <th
         v-if="props.selectable"
-        class="c-table__header-cell"
-        :class="{ 'c-table-cell-padding': !props.small, 'px-0': props.small }"
+        class="c-table__header-cell pa-0"
         data-c-field="selectable"
         data-test-id="selectable-th"
       >
         <VSkeletonLoader
           v-if="isLoadingList"
-          class="col-table-skeleton"
+          class="col-table-skeleton py-0 pr-0"
+          :class="cellClasses"
           type="text"
         />
         <VCheckbox
@@ -169,6 +172,7 @@ const toggleExpand = (id: string) => {
           :model-value="allSelected || someSelected"
           :indeterminate="allSelected ? false : someSelected"
           :disabled="isLoadingList"
+          class="selectable-checkbox"
           data-test-id="select-all-checkbox"
           @update:model-value="selectAll"
         />
@@ -295,8 +299,7 @@ const toggleExpand = (id: string) => {
 
             <td
               v-if="props.selectable"
-              class="c-table__cell"
-              :class="{ 'c-table-cell-padding': !props.small, 'px-0': props.small }"
+              class="c-table__cell pa-0"
               data-c-field="selectable"
               data-test-id="selectable"
             >
@@ -304,6 +307,7 @@ const toggleExpand = (id: string) => {
                 :model-value="isSelected([item])"
                 data-test-id="selectable-checkbox"
                 :disabled="disabledRowIds?.includes(item.raw.id)"
+                class="selectable-checkbox"
                 @update:model-value="select([item], $event)"
                 @click.stop
               />
@@ -313,7 +317,7 @@ const toggleExpand = (id: string) => {
               v-for="field in fields"
               :key="`c-table-cell_${index}_${field.key}`"
               class="c-table__cell text-body-1 whitespace-no-wrap"
-              :class="cellClasses"
+              :class="[cellClasses, cellCbClass(item, field.key)]"
               :data-c-field="field.key"
             >
               <slot
@@ -370,7 +374,7 @@ const toggleExpand = (id: string) => {
       <tr v-if="items.isEmpty && !isLoadingList">
         <td
           :colspan="emptyColspan"
-          class="text-center text-body-1 pa-4"
+          class="text-center text-body-1"
         >
           <slot name="empty" />
         </td>
@@ -471,18 +475,31 @@ const toggleExpand = (id: string) => {
     opacity: 0;
     transition: opacity 0.3s;
   }
-}
-tbody {
-  td {
-    .v-skeleton-loader {
-      width: 90%;
+
+  :deep(tbody) {
+    td {
+      height: var(--compact__c-table-td-height);
+
+      .v-skeleton-loader {
+        width: 90%;
+      }
     }
+  }
+
+  th {
+    height: var(--c-table-th-height);
+  }
+
+  :deep(.v-checkbox) {
+    display: flex;
+    justify-content: center;
   }
 }
 
 .col-table-skeleton {
-  height: 2rem;
+  height: 1rem;
   background-color: initial !important;
+
   :deep(.v-skeleton-loader) {
     padding: 0;
     margin: 0;
