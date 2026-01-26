@@ -35,7 +35,7 @@ export const transformFormData = (form): object => {
     else if (isObject(valueData)) {
       let valueDataInner = JSON.parse(JSON.stringify(valueData))
       if (key === 'fieldTranslations') {
-        const { mainLocale = 'ru' } = userStore.selectedProject
+        const { mainLocale = 'ru' } = userStore.getSelectedProject
 
         Object.keys(valueDataInner).forEach(keyInner => {
           valueDataInner[keyInner][mainLocale].value = form[keyInner] ? form[keyInner]?.value : form.seo[keyInner]?.value
@@ -68,7 +68,7 @@ export const convertCamelCase = (string: string, separator: string): string => {
 
   return (
     string[0].toLowerCase()
-      + string.slice(1).replace(/[A-Z]/g, letter => `${separator}${letter.toLowerCase()}`)
+    + string.slice(1).replace(/[A-Z]/g, letter => `${separator}${letter.toLowerCase()}`)
   )
 }
 
