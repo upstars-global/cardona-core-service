@@ -47,7 +47,7 @@ body[data-layout="island"] {
     }
   }
 
-  .nav-item-title {
+  .nav-item-title, .nav-item-title.nav-item-color {
     color: rgba(var(--v-island-menu-item-color)) !important;
   }
 
