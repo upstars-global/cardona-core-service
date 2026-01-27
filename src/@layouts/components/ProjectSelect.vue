@@ -49,7 +49,7 @@ watch(selectProject, project => {
       v-model="selectProject"
       :options="projects"
       label="publicName"
-      class="select-field text-color-base"
+      class="select-field select-field-color"
       :clearable="false"
       :searchable="false"
       :no-drop="cantSelect"
@@ -64,11 +64,11 @@ watch(selectProject, project => {
           >
           <div
             v-else
-            class="project-logo project-logo-no-ico d-flex align-center justify-center text-color-base"
+            class="project-logo project-logo-no-ico d-flex align-center justify-center select-field-color"
           >
             {{ publicName[0].toUpperCase() }}
           </div>
-          <span class="text-expanded text-color-base">{{ publicName || title }}</span>
+          <span class="text-expanded select-field-color">{{ publicName || title }}</span>
         </div>
       </template>
       <template #option="{ publicName, title, alias, iconPath }">
@@ -81,7 +81,7 @@ watch(selectProject, project => {
           >
           <div
             v-else
-            class="project-logo project-logo-no-ico d-flex align-center justify-center text-color-base"
+            class="project-logo project-logo-no-ico d-flex align-center justify-center select-field-color"
           >
             {{ publicName[0].toUpperCase() }}
           </div>
@@ -100,7 +100,7 @@ watch(selectProject, project => {
         >
           <VIcon
             :icon="IconsList.ChevronDownIcon"
-            class="text-expanded text-color-base"
+            class="text-expanded select-field-color"
           />
         </div>
       </template>
@@ -138,6 +138,10 @@ watch(selectProject, project => {
       padding-left: 0.875rem;
       padding-right: 0.875rem;
     }
+  }
+
+  .select-field-color {
+    color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
   }
 }
 .project-logo {

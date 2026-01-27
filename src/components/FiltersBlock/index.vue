@@ -121,6 +121,7 @@ const listNotSelected = computed(() => {
       <VCard
         v-if="isOpen"
         no-body
+        class="filters-block-wrapper"
       >
         <VCardItem
           class="py-4"
