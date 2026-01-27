@@ -22,7 +22,7 @@ const shallRenderIcon = configStore.isVerticalNavMini()
         <Component
           :is="shallRenderIcon ? layoutConfig.app.iconRenderer : layoutConfig.app.i18n.enable ? 'i18n-t' : 'span'"
           :key="shallRenderIcon"
-          :class="shallRenderIcon ? 'placeholder-icon' : 'title-text text-color-placeholder-disabled'"
+          :class="shallRenderIcon ? 'placeholder-icon' : 'title-text title-text-color'"
           v-bind="{ ...layoutConfig.icons.sectionTitlePlaceholder, ...getDynamicI18nProps(item.heading, 'span') }"
         >
           {{ !shallRenderIcon ? item.heading : null }}
@@ -31,3 +31,9 @@ const shallRenderIcon = configStore.isVerticalNavMini()
     </div>
   </li>
 </template>
+
+<style lang="scss" scoped>
+.title-text-color {
+  color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
+}
+</style>

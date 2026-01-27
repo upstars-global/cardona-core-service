@@ -1,16 +1,12 @@
 <script setup>
 import { computed, onMounted, onUnmounted } from 'vue'
-
 import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
 import { IconsList } from '../../@model/enums/icons'
 import { VVariants } from '../../@model/vuetify'
 import { useClockUtc } from '../../use/useClockUtc'
-import NotificationExport from '../../components/NotificationExport/index.vue'
 import { useLayoutConfigStore } from '@layouts/stores/config'
 
 const route = useRoute()
-const store = useStore()
 
 const allBreadcrumb = computed(() => {
   const breadcrumbs = route.meta.breadcrumb
@@ -27,9 +23,6 @@ const layoutConfig = useLayoutConfigStore()
 const clock = useClockUtc({ isUtc: true })
 
 const time = computed(() => clock.time.value)
-const canShowNotificationExport = computed(() => store.getters.haveSomePermissionReport)
-
-const userId = computed(() => store.getters.userInfo.id)
 
 onMounted(clock.runTime)
 onUnmounted(clock.stopTime)
@@ -113,18 +106,11 @@ onUnmounted(clock.stopTime)
             UTC
           </div>
         </VCol>
-        <VDivider
-          v-if="canShowNotificationExport"
-          class="mx-4"
-          vertical
+
+        <slot
+          name="content-right"
+          :time="time"
         />
-        <div
-          v-if="canShowNotificationExport"
-          cols="1"
-          class="d-flex align-center justify-end notification-export-wrapper"
-        >
-          <NotificationExport :time="time" :user-id="userId" />
-        </div>
       </VRow>
     </VCol>
   </VRow>
