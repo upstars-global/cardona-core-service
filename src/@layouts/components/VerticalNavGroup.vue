@@ -262,7 +262,7 @@ const isMounted = useMounted()
   color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity))
 }
 
-.nav-item-title + i.v-icon {
+.nav-item-title, .nav-item-title + i.v-icon {
   color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
 }
 
