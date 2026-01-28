@@ -262,8 +262,18 @@ const isMounted = useMounted()
   color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity))
 }
 
-.nav-item-title + i.v-icon {
-  color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
+.nav-group-label {
+  .nav-item-title {
+    color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
+  }
+}
+
+.nav-link {
+  a:not(.router-link-active) {
+    .nav-item-title, .nav-item-title + i.v-icon {
+      color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
+    }
+  }
 }
 
 .layout-vertical-nav {
