@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue'
-import { useStore } from 'vuex'
+import { computed, onMounted, watch } from 'vue'
 import { useFavicon } from '@vueuse/core'
 import type { ProjectInfo } from '../../@model/project'
 import { IconsList } from '../../@model/enums/icons'
 import { useChangeProject } from '../../composables/useChangeProject'
+import { useUserStore } from '../../stores/user'
 import ApiService from '../../services/api'
 
 const props = defineProps<{
   projects: ProjectInfo[]
 }>()
 
-const store = useStore()
+const userStore = useUserStore()
 
 const { changeProject } = useChangeProject()
 
 const selectProject = computed({
-  get: () => store.getters.selectedProjectWithoutPriority,
+  get: () => userStore.selectedProjectWithoutPriority,
   set: val => changeProject(val),
 })
 
 const cantSelect = computed(() => props.projects.length < 2)
-const isMarbella = computed(() => store.getters.isMarbella)
+const isMarbella = computed(() => userStore.isMarbella)
 
 watch(() => selectProject.value.id, () => {
-  const faviconPath = store.getters.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
+  const faviconPath = userStore.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
 
   useFavicon(faviconPath)
 }, { immediate: true })

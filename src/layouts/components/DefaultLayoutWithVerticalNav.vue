@@ -1,13 +1,19 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
-import { useStore } from 'vuex'
 import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
 import NotificationExport from '../../components/NotificationExport/index.vue'
+import { useUserStore } from '../../stores/user'
 import AppBreadcrumb from './AppBreadcrumb.vue'
-import navItems from '@/navigation/vertical/'
+import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
 import { VerticalNavLayout } from '@layouts'
 
-const store = useStore()
+const userStore = useUserStore()
+
+const { appsAndPages } = useAppsAndPages()
+
+const navItems = computed(() => {
+  return appsAndPages.value
+})
 
 const isFallbackStateActive = ref(false)
 const refLoadingIndicator = ref<any>(null)
@@ -21,9 +27,9 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
 }, { immediate: true })
 
 // Notifications export
-const canShowNotificationExport = computed(() => store.getters.haveSomePermissionReport)
+const canShowNotificationExport = computed(() => userStore.haveSomePermissionReport)
 
-const userId = computed(() => store.getters.userInfo.id)
+const userId = computed(() => userStore.userInfo.id)
 </script>
 
 <template>

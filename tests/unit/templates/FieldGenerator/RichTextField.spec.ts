@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createStore } from 'vuex'
 import FroalaEditor from 'froala-editor'
 import { nextTick } from 'vue'
 import TextEditor from '../../../../src/components/TextEditorWysiwyg/index.vue'
@@ -22,24 +21,6 @@ vi.mock('../../../../src/stores/textEditor', () => ({
   }),
 }))
 
-const mockStoreConfig = {
-  modules: {
-    appConfigCore: {
-      namespaced: true,
-      getters: {
-        allCurrencies: () => ['USD', 'EUR', 'GBP'],
-      },
-    },
-  },
-  getters: {
-    abilityCan: () => vi.fn(() => true),
-    selectedProject: () => ({
-      title: 'Mock Project',
-      publicName: 'MockProject',
-    }),
-  },
-}
-
 const defaultProps = {
   modelValue: '<p>Initial content</p>',
   optionsVariable: ['var1', 'var2'],
@@ -49,7 +30,6 @@ const defaultProps = {
 const mountTextEditor = setMountComponent(TextEditor)
 
 const defaultGlobalConfig = {
-  plugins: [createStore(mockStoreConfig)],
   provide: { modal: mockModal },
   stubs: {
     Froala: {
@@ -58,15 +38,6 @@ const defaultGlobalConfig = {
     },
   },
 }
-
-vi.mock('vuex', async importOriginal => {
-  const original = await importOriginal()
-
-  return {
-    ...original,
-    useStore: () => createStore(mockStoreConfig),
-  }
-})
 
 beforeEach(() => {
   /// Reset state mocked method before run each test
