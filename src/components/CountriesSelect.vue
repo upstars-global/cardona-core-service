@@ -8,8 +8,8 @@ import { VColors, VSizes, VVariants } from '../@model/vuetify'
 import { IconsList } from '../@model/enums/icons'
 import { withPopper } from '../helpers/selectPopper'
 import { ModalsIds } from '../@model/enums/modal'
+import { useRegionsStore } from '../stores/regions'
 import RemoveModal from './BaseModal/RemoveModal.vue'
-import {useRegionsStore} from "@/stores/regions";
 
 const props = defineProps<{
   modelValue: Array<string>
@@ -66,7 +66,7 @@ const regionsSet = computed(() => new Set(Object.values(regions.value).map(item 
 const selectedCountriesList = computed(() => [...selectedCountriesVisible.value.values()].flat(1).map(item => item.code))
 
 onBeforeMount(async () => {
-  regions.value = await regionsStore.fetchRegionList()
+  regions.value = await regionsStore.fetchRegionList({})
 
   if (props.modelValue.isNotEmpty) {
     let list = props.modelValue
@@ -79,15 +79,20 @@ onBeforeMount(async () => {
     }
     list.forEach(item => {
       const [country, region] = item.split('-')
+      const countryData = regions.value[country]
+      const itemData = regions.value[item]
 
-      if (selectedCountriesVisible.value.has(regions.value[country].name) && region) {
-        const list: Array<string> = selectedCountriesVisible.value.get(regions.value[country].name)
+      if (!countryData || !itemData)
+        return
 
-        list.push(regions.value[item])
-        selectedCountriesVisible.value.set(regions.value[country].name, list)
+      if (selectedCountriesVisible.value.has(countryData.name) && region) {
+        const list: Array<string> = selectedCountriesVisible.value.get(countryData.name)
+
+        list.push(itemData)
+        selectedCountriesVisible.value.set(countryData.name, list)
       }
       else {
-        selectedCountriesVisible.value.set(regions.value[country].name, [regions.value[item]])
+        selectedCountriesVisible.value.set(countryData.name, [itemData])
       }
     })
   }
@@ -223,8 +228,8 @@ defineExpose({
           :color="VColors.Error"
           :variant="VVariants.Tonal"
           :size="VSizes.Small"
-          @click="modal.showModal(ModalsIds.RemoveAllCountries + keyID)"
           :disabled="disabled"
+          @click="modal.showModal(ModalsIds.RemoveAllCountries + keyID)"
         >
           <VIcon :icon="IconsList.PlaylistX" />
 
