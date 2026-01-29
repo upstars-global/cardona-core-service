@@ -40,7 +40,9 @@ const selectRef = ref()
 const countriesRadioModel = ref(countriesType.Ban)
 const selectedCountries = ref([])
 const selectedCountriesVisible = ref(new Map())
-const regions = ref({})
+const regions = ref<Record<string, RegionInfo>>({})
+
+const isCountry = (region: RegionInfo) => region.code === region.countryCode
 
 watch(countriesRadioModel, newValue => {
   emits('update:type', newValue)
@@ -78,21 +80,26 @@ onBeforeMount(async () => {
       countriesRadioModel.value = countriesType.Ban
     }
     list.forEach(item => {
-      const [country, region] = item.split('-')
-      const countryData = regions.value[country]
       const itemData = regions.value[item]
-
-      if (!countryData || !itemData)
+      if (!itemData)
         return
 
-      if (selectedCountriesVisible.value.has(countryData.name) && region) {
-        const list: Array<string> = selectedCountriesVisible.value.get(countryData.name)
+      const countryData = regions.value[itemData.countryCode]
+      if (!countryData)
+        return
 
-        list.push(itemData)
-        selectedCountriesVisible.value.set(countryData.name, list)
+      const key = countryData.name
+
+      if (selectedCountriesVisible.value.has(key)) {
+        const existingList: Array<RegionInfo> = selectedCountriesVisible.value.get(key)
+
+        if (!existingList.some(r => r.code === itemData.code)) {
+          existingList.push(itemData)
+          selectedCountriesVisible.value.set(key, sortBy(existingList, r => r.code))
+        }
       }
       else {
-        selectedCountriesVisible.value.set(countryData.name, [itemData])
+        selectedCountriesVisible.value.set(key, [itemData])
       }
     })
   }
@@ -135,26 +142,35 @@ const updateValue = () => {
 }
 
 const onSelectItem = (region: RegionInfo) => {
-  if (selectedCountriesVisible.value.has(region.countryName || region.name)) {
-    const regions = selectedCountriesVisible.value.get(region.countryName || region.name)
+  const key = region.countryName
 
-    regions.push(region)
-    selectedCountriesVisible.value.set(region.countryName || region.name, sortBy(regions, item => item.code))
+  if (isCountry(region)) {
+    const countryWithRegions = Object.values(regions.value).filter(
+      item => item.countryCode === region.code,
+    )
+
+    selectedCountriesVisible.value.set(key, sortBy(countryWithRegions, r => r.code))
   }
   else {
-    let selectedRegions = []
-    if (region.countryName) {
-      selectedRegions = [region]
-      if (countriesRadioModel.value === countriesType.Allow) {
-        const currentCountry = regionsOptions.value.find(option => (option.name === region.countryName) && !option.countryName)
+    if (selectedCountriesVisible.value.has(key)) {
+      const existingRegions = selectedCountriesVisible.value.get(key)
 
-        selectedRegions.push(currentCountry)
+      if (!existingRegions.some((r: RegionInfo) => r.code === region.code)) {
+        existingRegions.push(region)
+        selectedCountriesVisible.value.set(key, sortBy(existingRegions, r => r.code))
       }
     }
     else {
-      selectedRegions = Object.values(regions.value).filter(item => item.countryCode === region.countryCode)
+      const selectedRegions: RegionInfo[] = [region]
+
+      if (countriesRadioModel.value === countriesType.Allow) {
+        const countryItem = regions.value[region.countryCode]
+        if (countryItem)
+          selectedRegions.push(countryItem)
+      }
+
+      selectedCountriesVisible.value.set(key, sortBy(selectedRegions, r => r.code))
     }
-    selectedCountriesVisible.value.set(region.countryName || region.name, selectedRegions)
   }
   selectRef.value.clearSelection()
   updateValue()
@@ -282,15 +298,15 @@ defineExpose({
             </p>
             <VChip
               v-for="(region, index) in value"
-              :key="`${key}_${region.name}`"
+              :key="`${key}_${region.code}`"
               :closable="!disabled"
               :disabled="disabled"
               label
-              :color="region.code === region.countryCode ? VColors.Error : VColors.Primary"
-              :class="{ 'order-1': region.code === region.countryCode }"
+              :color="isCountry(region) ? VColors.Error : VColors.Primary"
+              :class="{ 'order-1': isCountry(region) }"
               @click:close="onDeleteRegion(key, index, region.code, region.countryCode)"
             >
-              {{ region.code === region.countryCode ? `${$t('action.remove')} ${region.label}` : region.label }}
+              {{ isCountry(region) ? `${$t('action.remove')} ${region.label}` : region.label }}
             </VChip>
           </div>
         </div>
