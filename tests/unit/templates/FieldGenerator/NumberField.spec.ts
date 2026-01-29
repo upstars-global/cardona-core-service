@@ -58,7 +58,19 @@ describe('NumberField', () => {
     testOn.inputAttributeValueToBe({ wrapper, selector: 'input' }, testValue)
   })
 
-  it('Check on only integer numbers ', async () => {
+  it('Check on update integer value with coma', async () => {
+    const testValue = '123,12'
+
+    props.field.isIntegerNumbers = true
+
+    const wrapper = getMountNumberField(props)
+
+    await wrapper.find('input').setValue(testValue)
+
+    testOn.isNotDisabledElement({ wrapper })
+  })
+
+  it('Check on update integer value with dot', async () => {
     const testValue = '123.12'
 
     props.field.isIntegerNumbers = true
@@ -66,6 +78,7 @@ describe('NumberField', () => {
     const wrapper = getMountNumberField(props)
 
     await wrapper.find('input').setValue(testValue)
+
     testOn.isCalledEmitEventValue({ wrapper }, { event: EventEmittersNames.UpdateVModel, value: removeDot(testValue) })
   })
 

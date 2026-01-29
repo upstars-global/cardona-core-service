@@ -41,6 +41,7 @@ const localValue = computed({
 const disabledKeys = computed(() => [
   'e',
   props.field.isIntegerNumbers && '.',
+  props.field.isIntegerNumbers && ',',
   props.field.withPositiveNumbers && '-',
 ])
 
