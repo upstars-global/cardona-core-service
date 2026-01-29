@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, onBeforeMount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useStore } from 'vuex'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { sortBy } from 'lodash'
 import type { RegionInfo } from '../@model/regions'
@@ -10,6 +9,7 @@ import { IconsList } from '../@model/enums/icons'
 import { withPopper } from '../helpers/selectPopper'
 import { ModalsIds } from '../@model/enums/modal'
 import RemoveModal from './BaseModal/RemoveModal.vue'
+import {useRegionsStore} from "@/stores/regions";
 
 const props = defineProps<{
   modelValue: Array<string>
@@ -28,7 +28,6 @@ const emits = defineEmits<{
 }>()
 
 const { t } = useI18n()
-const store = useStore()
 const collator = new Intl.Collator('en')
 const modal = inject('modal')
 
@@ -36,6 +35,7 @@ enum countriesType {
   Ban = 'ban',
   Allow = 'allow',
 }
+const regionsStore = useRegionsStore()
 const selectRef = ref()
 const countriesRadioModel = ref(countriesType.Ban)
 const selectedCountries = ref([])
@@ -66,7 +66,7 @@ const regionsSet = computed(() => new Set(Object.values(regions.value).map(item 
 const selectedCountriesList = computed(() => [...selectedCountriesVisible.value.values()].flat(1).map(item => item.code))
 
 onBeforeMount(async () => {
-  regions.value = await store.dispatch('regions/fetchRegionList')
+  regions.value = await regionsStore.fetchRegionList()
 
   if (props.modelValue.isNotEmpty) {
     let list = props.modelValue

@@ -1,12 +1,15 @@
 import type { Router } from 'vue-router'
 import { useCookie } from '../../@core/composable/useCookie'
 import { useLocaleStore } from '../../stores/locale'
-import store from '@/store'
+import { useUserStore } from '../../stores/user'
+import { useAppConfigCoreStore } from '../../stores/appConfigCore'
 
 export const setupGuards = (router: Router) => {
   // 👉 router.beforeEach
   // Docs: https://router.vuejs.org/guide/advanced/navigation-guards.html#global-before-guards
   router.beforeEach(async to => {
+    const userStore = useUserStore()
+
     /*
      * If it's a public route, continue navigation. This kind of pages are allowed to visited by login & non-login users. Basically, without any restrictions.
      * Examples of public routes are, 404, under maintenance, etc.
@@ -17,6 +20,7 @@ export const setupGuards = (router: Router) => {
     const isAllPermissions = to.meta.isAllPermissions
 
     const localeStore = useLocaleStore()
+    const appConfigCoreStore = useAppConfigCoreStore()
 
     if (to.meta.public)
       return
@@ -27,18 +31,18 @@ export const setupGuards = (router: Router) => {
      */
     const isLoggedIn = !!(useCookie('userData').value && useCookie('accessToken').value)
 
-    if (isLoggedIn && store.getters.userInfo.isEmpty) {
-      await store.dispatch('fetchCurrentUser')
+    if (isLoggedIn && userStore.userInfo.isEmpty) {
+      await userStore.fetchCurrentUser()
       await Promise.all([
         localeStore.fetchLocalesList(),
-        store.dispatch('appConfigCore/fetchConfig'),
+        appConfigCoreStore.fetchConfig(),
       ])
     }
 
     const hasPermission = permission
-      ? store.getters.abilityCan(permission, permissionLevel)
+      ? userStore.abilityCan(permission, permissionLevel)
       : permissionGroup
-        ? store.getters.abilityCanInGroup(permissionGroup, permissionLevel, isAllPermissions)
+        ? userStore.abilityCanInGroup(permissionGroup, permissionLevel, isAllPermissions)
         : true
 
     if (!hasPermission)

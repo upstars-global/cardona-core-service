@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
-import { useStore as useVuexStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
@@ -35,29 +34,32 @@ import SumAndCurrency from '../../../../components/templates/_components/SumAndC
 import StatusField from '../../../../components/templates/_components/StatusField.vue'
 import { useLoaderStore } from '../../../../stores/loader'
 import { useBaseStoreCore } from '../../../../stores/baseStoreCore'
-import usePagination from '.././сomposables/pagination'
-import type { PaginationResult } from '.././сomposables/pagination'
-import MultipleActions from '.././_components/MultipleActions.vue'
-import ListSearch from '.././_components/ListSearch.vue'
-import PillStatusField from '.././_components/fields/PillStatusField.vue'
-import NameWithIdField from '.././_components/fields/NameWithIdField.vue'
-import NameWithShortIdField from '.././_components/fields/NameWithShortIdField.vue'
-import EmailField from '.././_components/fields/EmailField.vue'
-import BadgesField from '.././_components/fields/BadgesField.vue'
-import PositionField from '.././_components/fields/PositionField.vue'
-import ButtonField from '.././_components/fields/ButtonField.vue'
-import CommentField from '.././_components/fields/CommentField.vue'
-import ImageField from '.././_components/fields/ImageField.vue'
-import ImageDetailField from '.././_components/fields/ImageDetailField.vue'
-import DatePeriodField from '.././_components/fields/DatePeriodField.vue'
-import CopyShortField from '.././_components/fields/CopyShortField.vue'
-import ItemActions from '.././_components/fields/ItemActions.vue'
-import ListPagination from '.././_components/ListPagination.vue'
-import TableFields from '.././_components/TableFields.vue'
-import DateField from '.././_components/fields/DateField.vue'
-import ProjectsFilter from '.././_components/ProjectsFilter.vue'
-import { mapSortData } from '.././сomposables/sorting'
-import { transformFilters } from '.././сomposables/filters'
+import { useUserStore } from '../../../../stores/user'
+import { useAppConfigCoreStore } from '../../../../stores/appConfigCore'
+import { useFiltersStore } from '../../../../stores/filtersCore'
+import usePagination from '../сomposables/pagination'
+import type { PaginationResult } from '../сomposables/pagination'
+import MultipleActions from '../_components/MultipleActions.vue'
+import ListSearch from '../_components/ListSearch.vue'
+import PillStatusField from '../_components/fields/PillStatusField.vue'
+import NameWithIdField from '../_components/fields/NameWithIdField.vue'
+import NameWithShortIdField from '../_components/fields/NameWithShortIdField.vue'
+import EmailField from '../_components/fields/EmailField.vue'
+import BadgesField from '../_components/fields/BadgesField.vue'
+import PositionField from '../_components/fields/PositionField.vue'
+import ButtonField from '../_components/fields/ButtonField.vue'
+import CommentField from '../_components/fields/CommentField.vue'
+import ImageField from '../_components/fields/ImageField.vue'
+import ImageDetailField from '../_components/fields/ImageDetailField.vue'
+import DatePeriodField from '../_components/fields/DatePeriodField.vue'
+import CopyShortField from '../_components/fields/CopyShortField.vue'
+import ItemActions from '../_components/fields/ItemActions.vue'
+import ListPagination from '../_components/ListPagination.vue'
+import TableFields from '../_components/TableFields.vue'
+import DateField from '../_components/fields/DateField.vue'
+import ProjectsFilter from '../_components/ProjectsFilter.vue'
+import { mapSortData } from '../сomposables/sorting'
+import { transformFilters } from '../сomposables/filters'
 
 defineOptions({
   name: 'DefaultBaseList',
@@ -78,8 +80,10 @@ const modal = inject('modal')
 const slots = useSlots()
 
 const baseStoreCore = useBaseStoreCore()
-const store = useVuexStore()
+const appConfigCoreStore = useAppConfigCoreStore()
+const userStore = useUserStore()
 const loaderStore = useLoaderStore()
+const filtersCoreStore = useFiltersStore()
 const { t } = useI18n()
 
 const router = useRouter()
@@ -196,7 +200,7 @@ watch(
   { deep: true },
 )
 
-const selectedFields = ref<TableField[]>(fields)
+const selectedFields = ref<TableField[]>([...fields])
 
 const normalizedEntityName = computed(() => {
   const index = entityName.indexOf('-') + 1
@@ -433,13 +437,13 @@ const onExportFormatSelected = async (format: ExportFormat) => {
 }
 
 // Projects filters
-const userProjects = computed<ProjectsFilterOption[]>(() => store.getters['appConfigCore/verifiedProjects'].map(({ id, alias, name }) => ({
+const userProjects = computed<ProjectsFilterOption[]>(() => appConfigCoreStore.verifiedProjects.map(({ id, alias, name }) => ({
   id,
   alias,
   title: name,
 })))
 
-const projectsFilter = ref<string[]>([])
+const projectsFilter = ref<string[]>([userStore.getSelectedProject?.alias])
 
 // Filters
 const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
@@ -450,9 +454,9 @@ const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, 
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
 const appliedFilters = computed<BaseField[]>(() => {
-  const isSameEntity: boolean = entityName === store.getters['filtersCore/listEntityName']
+  const isSameEntity: boolean = entityName === filtersCoreStore.listEntityName
 
-  return isSameEntity ? store.getters['filtersCore/appliedListFilters'] : []
+  return isSameEntity ? filtersCoreStore.appliedListFilters : []
 })
 
 const hasSelectedFilters = computed(() => selectedFilters && selectedFilters.value.isNotEmpty)
@@ -576,7 +580,7 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
 
 onBeforeMount(async () => {
   if (props.config.withProjectsFilter)
-    projectsFilter.value = props.config.projectsFilterMode === ProjectsFilterMode.All ? userProjects.value.map(project => project.alias) : [store.getters.selectedProject?.alias]
+    projectsFilter.value = props.config.projectsFilterMode === ProjectsFilterMode.All ? userProjects.value.map(project => project.alias) : [userStore.getSelectedProject?.alias]
 
   await getList()
 
@@ -751,7 +755,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :model-value="perPage"
             :options="perPageOptions"
             class="per-page-selector d-inline-block"
-            :dir="store.getters['appConfigCore/dirOption']"
+            :dir="appConfigCoreStore.dirOption"
             :searchable="false"
             :clearable="false"
             @update:model-value="setPerPage"

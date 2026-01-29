@@ -1,44 +1,44 @@
 import { createStore } from 'vuex'
 
 // Modules
-import appConfigCore from './modules/appConfigCore'
-import verticalMenuCore from './modules/verticalMenuCore'
-import breakpointCore from './modules/breakpointCore'
-import baseStoreCore from './modules/baseStoreCore'
-import productCore from './modules/productCore'
-import filtersCore from './modules/filtersCore'
-import authCore from './modules/authCore'
-import compostelaCore from './modules/compostelaCore'
-import user from './modules/user'
-import users from './modules/users'
-import baseSectionErrors from './modules/baseSectionErrors'
-import tags from './modules/tags'
-import demo from './modules/demo'
-import permissions from './modules/permissions'
-import conditions from './modules/conditions'
+// import compostelaCore from './old/compostelaCore'
+// import filtersCore from './old/filtersCore'
+// import baseSectionErrors from './old/baseSectionErrors'
+// import conditions from './old/conditions'
+// import authCore from './old/authCore'
+// import demo from './old/demo'
+// import appConfigCore from './old/appConfigCore'
+// import verticalMenuCore from './old/verticalMenuCore'
+// import breakpointCore from './old/breakpointCore'
+// import baseStoreCore from './old/baseStoreCore'
+// import productCore from './old/productCore'
+// import users from './old/users'
+// import tags from './old/tags'
+// import user from './old/user'
 
 // TODO import ecommerceStoreModuleCore from '../views/apps/e-commerce/eCommerceStoreModule'
 import app from './app'
 
 const store = createStore({
   modules: {
-    appConfigCore,
-    verticalMenuCore,
-    breakpointCore,
-    baseStoreCore,
-    productCore,
-    filtersCore,
-    authCore,
-    compostelaCore,
-    user,
-    users,
-    baseSectionErrors,
-    tags,
-    demo,
-    permissions,
-    conditions,
     app,
 
+    // OLD version
+    // permissions,
+    // compostelaCore,
+    // filtersCore,
+    // baseSectionErrors,
+    // conditions,
+    // appConfigCore,
+    // verticalMenuCore,
+    // breakpointCore,
+    // baseStoreCore,
+    // demo,
+    // authCore,
+    // user,
+    // tags,
+    // users,
+    // productCore,
     // TODO 'app-ecommerce': ecommerceStoreModuleCore,
   },
   strict: Boolean(process.env.DEV),

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import type { ViewInfo, ViewJustifyContent } from '../../../@model/view'
 import { IconsList } from '../../../@model/enums/icons'
 import { copyToClipboard } from '../../../helpers/clipboard'
+import { useUserStore } from '../../../stores/user'
+import { PermissionLevel } from '../../../@model/permission'
 
 const props = defineProps<{
   modelValue: ViewInfo
@@ -12,10 +13,10 @@ const props = defineProps<{
   cols?: number
 }>()
 
-const store = useStore()
+const userStore = useUserStore()
 
 const canView = computed<boolean>(() =>
-  props.modelValue?.permission ? store.getters.abilityCan(props.modelValue?.permission, 'view') : true,
+  props.modelValue?.permission ? userStore.abilityCan(props.modelValue?.permission, PermissionLevel.view) : true,
 )
 
 const justifyClass = computed(() => `justify-content-${props.justifyContent}`)

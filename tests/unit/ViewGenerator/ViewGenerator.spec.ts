@@ -13,18 +13,11 @@ const getMountViewGenerator = setMountComponent(ViewGenerator)
 
 const mockAbilityCan = vi.fn()
 
-vi.mock('vuex', async importOriginal => {
-  const original = await importOriginal()
-
-  return {
-    ...original,
-    useStore: () => ({
-      getters: {
-        abilityCan: mockAbilityCan,
-      },
-    }),
-  }
-})
+vi.mock('../../../src/stores/user', () => ({
+  useUserStore: () => ({
+    abilityCan: mockAbilityCan,
+  }),
+}))
 
 const testIdLabel = 'label'
 const testIdViewGeneratorComponent = 'view-generator-component'

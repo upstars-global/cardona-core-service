@@ -1,12 +1,13 @@
+import { defineStore } from 'pinia'
 import ApiService from '../../services/api'
-import { transformNameToType } from './baseStoreCore'
+import { useUserStore } from '../../stores/user'
+import type { UserInfo } from '../../@model/users'
+import { transformNameToType } from '../old/baseStoreCore'
 import { ApiTypePrefix } from '@productConfig'
 
-export default {
-  namespaced: true,
-
+export const usePermissionsStore = defineStore('permissions', {
   actions: {
-    async readEntity(_, payload: { type: string; id: string; customApiPrefix: string }) {
+    async readEntity(payload: { type: string; id: string; customApiPrefix?: string }) {
       const { data } = await ApiService.request({
         type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
           payload.type,
@@ -19,16 +20,19 @@ export default {
       return data
     },
 
-    async updateEntity(
-      { commit, rootGetters },
-      payload: { type: string; data: { form: any; formRef: any }; customApiPrefix: string },
-    ) {
-      const user = {
-        ...rootGetters.userInfo,
+    async updateEntity(payload: {
+      type: string
+      data: { form: any; formRef: any }
+      customApiPrefix?: string
+    }) {
+      const userStore = useUserStore()
+
+      const user: UserInfo = {
+        ...userStore.userInfo,
         permissions: payload.data.form.permissions,
       }
 
-      commit('SET_USER_INFO', user, { root: true })
+      userStore.setUserInfo(user)
 
       return await ApiService.request(
         {
@@ -40,8 +44,11 @@ export default {
             id: payload.data.form?.id,
           },
         },
-        { withSuccessToast: true, formRef: payload.data.formRef },
+        {
+          withSuccessToast: true,
+          formRef: payload.data.formRef,
+        },
       )
     },
   },
-}
+})

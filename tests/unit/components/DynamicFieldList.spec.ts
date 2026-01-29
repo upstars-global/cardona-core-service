@@ -1,5 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createStore } from 'vuex'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 import { clickTrigger, getSelectorTestId, getWrapperElement, setMountComponentWithGlobal } from '../utils'
@@ -21,15 +20,7 @@ interface Props {
   fieldCol?: number | string
 }
 
-const mockStore = createStore({
-  getters: {
-    'abilityCan': () => vi.fn(() => true),
-    'appConfigCore/allCurrencies': vi.fn(() => ['USD', 'EUR', 'CAD']),
-  },
-})
-
 const getMountComponent = setMountComponentWithGlobal<Props>(DynamicFieldList, {
-  plugins: [mockStore],
   components: {
     VueSelect: {
       props: ['modelValue', 'options'],

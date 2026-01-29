@@ -2,23 +2,13 @@ import { describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { createStore } from 'vuex'
 import ConditionsField from '../../../../src/components/templates/FieldGenerator/_components/ConditionsField.vue'
 import { getSelectorTestId, getWrapperElement, setMountComponent } from '../../utils'
 import { onDisabledInput, testOnValidPlaceholder } from '../shared-tests/text-input-fields'
 import en from '../../../../src/plugins/i18n/locales/en.json'
 import { testOn } from '../shared-tests/test-case-generator'
 
-const mockStore = createStore({
-  getters: {
-    'abilityCan': () => vi.fn(() => true),
-    'appConfigCore/allCurrencies': vi.fn(() => ['USD', 'EUR', 'CAD']),
-  },
-})
-
-const getMountConditionsField = props => setMountComponent(ConditionsField)(props, {
-  plugins: [mockStore],
-})
+const getMountConditionsField = setMountComponent(ConditionsField)
 
 const conditions = Object.keys(en.component.conditions)
 

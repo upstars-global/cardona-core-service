@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import TextEditorWysiwyg from '../../../../components/TextEditorWysiwyg/index.vue'
 import { filterString } from '../../../../helpers/text-editor'
 import type { RichTextBaseField } from '../../../../@model/templates/baseField'
 import { useTextEditorStore } from '../../../../stores/textEditor'
+import { useAppConfigCoreStore } from '../../../../stores/appConfigCore'
 
 interface RichTextProps {
   modelValue: string | number
@@ -23,10 +23,10 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: string | number): void
 }>()
 
-const store = useStore()
 const textEditorStore = useTextEditorStore()
+const appConfigCoreStore = useAppConfigCoreStore()
 
-const allCurrencies = computed(() => store.getters['appConfigCore/allCurrencies'])
+const allCurrencies = computed(() => appConfigCoreStore.allCurrencies)
 const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
 
 const localModelValue = computed({

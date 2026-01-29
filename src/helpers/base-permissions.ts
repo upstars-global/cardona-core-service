@@ -1,5 +1,5 @@
-import { useStore } from 'vuex'
 import { PermissionLevel } from '../@model/permission'
+import { useUserStore } from '../stores/user'
 import { getPermissionKeys } from './index'
 import { permissionPrefix } from '@productConfig'
 
@@ -26,7 +26,8 @@ interface PermissionsParams<T> {
 }
 
 export function basePermissions<T>({ entityName, config }: PermissionsParams<T>): PermissionsValue {
-  const store = useStore()
+  // const store = useStore()
+  const userStore = useUserStore()
 
   const {
     permissionKey: configPermissionKey,
@@ -46,8 +47,8 @@ export function basePermissions<T>({ entityName, config }: PermissionsParams<T>)
 
   const getPermission = (key: string, action: PermissionLevel): boolean =>
     onePermissionKey
-      ? store.getters.abilityCan(onePermissionKey, PermissionLevel.view)
-      : store.getters.abilityCan(key, action)
+      ? userStore.abilityCan(onePermissionKey, PermissionLevel.view)
+      : userStore.abilityCan(key, action)
 
   return {
     canCreate: getPermission(permissionKey, PermissionLevel.create),

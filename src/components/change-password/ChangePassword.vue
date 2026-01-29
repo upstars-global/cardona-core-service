@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { useStore } from 'vuex'
 import { inject, ref } from 'vue'
+import { PageType } from 'cardona-core-service/src/@model/templates/baseSection'
+import { transformFormData } from 'cardona-core-service/src/helpers'
 import { useSection } from '../../@model/changePassword'
 import BaseModal from '../BaseModal/index.vue'
 import FieldGenerator from '../templates/FieldGenerator/index.vue'
@@ -8,8 +9,7 @@ import BaseSection from '../templates/BaseSection/index.vue'
 import ModalFooter from '../BaseModal/ModalFooter.vue'
 import { ModalsId } from '../../@model/modalsId'
 import { BaseSectionConfig } from '../../@model/templates/baseList'
-import { PageType } from 'cardona-core-service/src/@model/templates/baseSection'
-import { transformFormData } from 'cardona-core-service/src/helpers'
+import { useUsersStore } from '../../stores/users'
 
 const props = withDefaults(defineProps<{
   id: string | number
@@ -18,8 +18,8 @@ const props = withDefaults(defineProps<{
   isProduct: true,
 })
 
+const usersStore = useUsersStore()
 const modal = inject('modal')
-const store = useStore()
 const passwordFormRef = ref()
 
 const onSuccess = async () => {
@@ -28,7 +28,7 @@ const onSuccess = async () => {
     return
   const payload = { id: props.id, password: form.password, isProduct: props.isProduct }
 
-  await store.dispatch('users/updateUserPassword', payload)
+  await usersStore.updateUserPassword(payload)
 
   onCloseModal()
 }

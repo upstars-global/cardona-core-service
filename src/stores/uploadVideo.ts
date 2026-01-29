@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import * as tus from 'tus-js-client'
 import ApiService from '../services/api'
-import store from '@/store'
 
 export interface UploadVideoPayload {
   title: string
@@ -85,14 +84,14 @@ export const useVideoUploadStore = defineStore('videoUpload', () => {
   }
 
   async function upload(file: File, key: string): Promise<string | undefined> {
-    const projectAlias = store.getters.selectedProject?.alias
+    const projectAlias = this.$selectedProjectAlias
     const projectPresetData = VIDEO_PRESETS.find(({ name }) => projectAlias.includes(name.toLowerCase()))
 
     const params = {
       title: file.name,
       description: file.name,
       fileSize: file.size,
-      project: projectAlias,
+      project: this.$selectedProjectAlias,
       presetId: projectPresetData?.id,
     }
 

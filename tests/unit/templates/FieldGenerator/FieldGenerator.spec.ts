@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
 import { h } from 'vue'
-import { createStore } from 'vuex'
 import { Field } from 'vee-validate'
 import FieldGenerator from '../../../../src/components/templates/FieldGenerator/index.vue'
 import { CheckBaseField, DummySelectBaseField, TextBaseField } from '../../../../src/@model/templates/baseField'
@@ -9,6 +8,20 @@ import { EventEmittersNames, testOn } from '../shared-tests/test-case-generator'
 import { setMountComponent } from '../../utils'
 
 const getMountFieldGenerator = setMountComponent(FieldGenerator)
+
+const mockAbilityCan = vi.fn()
+
+vi.mock('../../../../src/stores/user', () => ({
+  useUserStore: () => ({
+    abilityCan: mockAbilityCan.mockReturnValue(true),
+  }),
+}))
+
+vi.mock('../../../../src/stores/useAppConfigCoreStore', () => ({
+  useAppConfigCoreStore: () => ({
+    allCurrencies: vi.fn(() => ['USD', 'EUR', 'CAD']),
+  }),
+}))
 
 vi.mock('vee-validate', () => ({
   Field: {
@@ -21,13 +34,6 @@ vi.mock('vee-validate', () => ({
     },
   },
 }))
-
-const mockStore = createStore({
-  getters: {
-    'abilityCan': () => vi.fn(() => true),
-    'appConfigCore/allCurrencies': vi.fn(() => ['USD', 'EUR', 'CAD']),
-  },
-})
 
 const defaultProps = {
   modelValue: {
@@ -45,13 +51,12 @@ const defaultProps = {
   },
 }
 
-const mountFieldGenerator = (props?: unknown, global: unknown = {}) => getMountFieldGenerator({
+const mountFieldGenerator = (props?: unknown) => getMountFieldGenerator({
   ...defaultProps,
   ...props,
   h,
 },
 {
-  plugins: [mockStore],
   stubs: {
     VueSelect: {
       template: '<div><slot></slot></div>',
@@ -174,7 +179,7 @@ describe('FieldGenerator.vue', () => {
   })
 
   it('does not render when permission check fails', () => {
-    mockStore.getters.abilityCan.mockImplementation(() => false)
+    mockAbilityCan.mockImplementation(() => false)
     defaultProps.modelValue.permission = 'test'
 
     const wrapper = mountFieldGenerator(defaultProps, {

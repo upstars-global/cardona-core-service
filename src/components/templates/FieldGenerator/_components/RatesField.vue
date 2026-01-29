@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-
-import { useStore } from 'vuex'
 import { IconsList } from '../../../../@model/enums/icons'
 import type { RatesBaseField } from '../../../../@model/templates/baseField'
 import { NumberBaseField, TextBaseField } from '../../../../@model/templates/baseField'
 import FieldGenerator from '../index.vue'
 import type { RatesValueItem } from '../../../../@model/templates/baseField/rates'
 import { MAX_WIDTH_TOOLTIP } from '../../../..//utils/constants'
+import { useAppConfigCoreStore } from '../../../../stores/appConfigCore'
 
 const props = withDefaults(
   defineProps<{
@@ -26,7 +25,7 @@ const emit = defineEmits<{
   (event: 'update:modelValue', value: Array<RatesValueItem>): void
 }>()
 
-const store = useStore()
+const appConfigCoreStore = useAppConfigCoreStore()
 
 interface Rates {
   readonly currency: string
@@ -34,7 +33,7 @@ interface Rates {
 }
 
 const isNotFilledFormRates = ref(true)
-const allCurrencies = computed<string[]>(() => store.getters['appConfigCore/allCurrencies'])
+const allCurrencies = computed<string[]>(() => appConfigCoreStore.allCurrencies)
 
 const formRates = ref<NumberBaseField[]>(setRates())
 
@@ -68,7 +67,7 @@ function setRates(): NumberBaseField[] {
   const field = props.field.withString ? TextBaseField : NumberBaseField
 
   return allCurrencies.value.map(
-    (currency) => {
+    currency => {
       return new field({
         key: currency,
         id: `${props.field.id}_${currency}`,

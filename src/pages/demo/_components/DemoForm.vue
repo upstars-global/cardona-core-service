@@ -2,7 +2,8 @@
 import { computed, ref, watchEffect } from 'vue'
 import type { DemoForm } from '../../../@model/demo'
 import { createPhoneDomainFieldItem } from '../../../@model/demo'
-import store from '../../../store'
+// import store from '../../../store'
+import { useUserStore } from '../../../stores/user'
 import useToastService from '@/helpers/toasts'
 
 const props = defineProps<Props>()
@@ -25,10 +26,12 @@ watchEffect(() => {
   formData.value = props.form
 })
 
-const selectedProject = computed(() => store.getters.selectedProject)
+const userStore = useUserStore()
+
+const selectedProject = computed(() => userStore.getSelectedProject)
 
 const selectedProjectPublicName = computed(
-  () => selectedProject.value?.publicName || store.getters.selectedProject?.title,
+  () => selectedProject.value?.publicName || userStore.getSelectedProject?.title,
 )
 
 const isUpdatePage = computed(() => !!props.entityId)
