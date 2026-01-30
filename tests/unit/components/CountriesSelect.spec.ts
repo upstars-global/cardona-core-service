@@ -7,8 +7,7 @@ import CountriesSelect from '../../../src/components/CountriesSelect.vue'
 import { setMountComponent } from '../utils'
 import { mockModal } from '../mocks/modal-provide-config'
 import { regionFetchListResultMock } from '../mocks/country-select'
-
-export const modalSpy = vi.spyOn(mockModal, 'showModal')
+import { testOn } from '../templates/shared-tests/test-case-generator'
 
 export const global = {
   provide: { modal: mockModal },
@@ -20,7 +19,7 @@ const defaultProps = {
   modelValue: [],
   disabled: false,
   allowedOnly: false,
-  bannedOnly: [],
+  bannedOnly: false,
   excludeCountries: [],
   customLabel: '',
   customDescription: '',
@@ -28,6 +27,12 @@ const defaultProps = {
 }
 
 let props
+
+const DATA_TEST_ID = {
+  TOGGLE_MODE_COUNTRIES: 'toggle-mode-countries',
+  COUNTRIES_SELECT_LABEL: 'countries-select-label',
+  COUNTRIES_SELECT_DESCRIPTION: 'countries-select-description',
+}
 
 const getExpectedSelectedRegions = (countryOrRegion: string) => {
   const result = []
@@ -100,5 +105,79 @@ describe('CountriesSelect.spec', () => {
 
   it('Expect selecting Poland-Mazovia region selects only this region', async () => {
     await testOnValidEmittedValue(['PL-MZ'])
+  })
+
+  it('Expect that not will render toggle mode', async () => {
+    props.allowedOnly = true // or bannedOnly = true
+
+    const wrapper = getMountComponent(props)
+
+    await flushPromises()
+
+    ;(wrapper.vm as any).onSelectItem((regionFetchListResultMock as any)['UA'])
+
+    await nextTick()
+
+    testOn.notExistElement({ wrapper, testId: 'toggle-mode-countries' })
+  })
+
+  it('Expect render required field label', async () => {
+    props.required = true
+
+    const wrapper = getMountComponent(props)
+
+    await flushPromises()
+
+    ;(wrapper.vm as any).onSelectItem((regionFetchListResultMock as any)['UA'])
+
+    await nextTick()
+
+    testOn.existClass({ wrapper, testId: DATA_TEST_ID.COUNTRIES_SELECT_LABEL }, 'required')
+
+    /// Check that removing required works fine
+    props.required = false
+    await wrapper.setProps(props)
+    testOn.notExistClasses({ wrapper, testId: DATA_TEST_ID.COUNTRIES_SELECT_LABEL }, 'required')
+  })
+
+  it('Expect redner custom label, and description', async () => {
+    props = {
+      ...props,
+      customLabel: 'Custom Label',
+      customDescription: 'Custom Description',
+    }
+
+    const wrapper = getMountComponent(props)
+
+    await flushPromises()
+
+    ;(wrapper.vm as any).onSelectItem((regionFetchListResultMock as any)['UA'])
+
+    await nextTick()
+
+    testOn.existTextValue({ wrapper, testId: DATA_TEST_ID.COUNTRIES_SELECT_LABEL }, props.customLabel)
+    testOn.existTextValue({ wrapper, testId: DATA_TEST_ID.COUNTRIES_SELECT_DESCRIPTION }, props.customDescription)
+  })
+
+  it('Expect that options data will be filtered', async () => {
+    const EXCLUDED_COUNTRIES = ['FR', 'FR-PAC', 'UA', 'UA-KY', 'UA-LV', 'UA-OD', 'UA-DP', 'UA-KH', 'UA-ZP', 'UA-VN']
+
+    props.excludeCountries = EXCLUDED_COUNTRIES
+
+    const wrapper = getMountComponent(props)
+
+    await flushPromises()
+
+    ;(wrapper.vm as any).onSelectItem((regionFetchListResultMock as any)['UA'])
+
+    await nextTick()
+
+    const regionsOptions = (wrapper.vm as any).regionsOptions as Array<{ code: string }>
+
+    const codes = regionsOptions.map(item => item.code)
+
+    expect(codes.some(code => EXCLUDED_COUNTRIES.includes(code))).toBe(false)
+
+    expect(new Set(codes).size).toBe(codes.length)
   })
 })
