@@ -69,7 +69,7 @@ const selectedCountriesList = computed(() => [...selectedCountriesVisible.value.
 
 onBeforeMount(async () => {
   regions.value = await regionsStore.fetchRegionList({})
-
+  // console.log(regions.value, '!!')
   if (props.modelValue.isNotEmpty) {
     let list = props.modelValue
     if (props.modelValue.length > Object.keys(regions.value).length / 2) {
@@ -172,7 +172,8 @@ const onSelectItem = (region: RegionInfo) => {
       selectedCountriesVisible.value.set(key, sortBy(selectedRegions, r => r.code))
     }
   }
-  selectRef.value.clearSelection()
+  // selectRef.value.clearSelection()
+  selectRef.value?.clearSelection?.()
   updateValue()
 }
 
@@ -205,6 +206,7 @@ const keyID = Math.random()
 
 defineExpose({
   selectedCountriesVisibleView,
+  onSelectItem,
 })
 </script>
 
