@@ -282,7 +282,7 @@ defineExpose({
 
         <div>
           <VBtn
-            v-if="addAllBtn"
+            v-if="addAllBtn && regionsOptions.isNotEmpty"
             :variant="VVariants.Tonal"
             :size="VSizes.Small"
             :disabled="disabled"
