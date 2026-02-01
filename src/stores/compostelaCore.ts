@@ -37,7 +37,7 @@ export const useCompostelaStore = defineStore('compostelaCore', {
           perPage: payload.perPage,
         },
         filter: {
-          path: payload.search,
+          search: payload.search,
         },
       })
 
