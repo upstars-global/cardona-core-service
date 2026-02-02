@@ -70,7 +70,6 @@ const selectedCountriesList = computed(() => [...selectedCountriesVisible.value.
 onBeforeMount(async () => {
   regions.value = await regionsStore.fetchRegionList({})
 
-  // console.log(regions.value, '!!')
   if (props.modelValue.isNotEmpty) {
     let list = props.modelValue
     if (props.modelValue.length > Object.keys(regions.value).length / 2) {
@@ -174,7 +173,6 @@ const onSelectItem = (region: RegionInfo) => {
     }
   }
 
-  // selectRef.value.clearSelection()
   selectRef.value?.clearSelection?.()
   updateValue()
 }
