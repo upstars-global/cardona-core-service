@@ -213,7 +213,8 @@ const onSelectItem = (region: RegionInfo) => {
       selectedCountriesVisible.value.set(key, sortBy(selectedRegions, r => r.code))
     }
   }
-  selectRef.value.clearSelection()
+
+  selectRef.value?.clearSelection?.()
   updateValue()
 }
 
@@ -246,6 +247,7 @@ const keyID = Math.random()
 
 defineExpose({
   selectedCountriesVisibleView,
+  onSelectItem,
 })
 </script>
 
@@ -255,6 +257,7 @@ defineExpose({
       <hr class="mb-6 mt-0">
       <VBtnToggle
         v-model="countriesRadioModel"
+        data-test-id="toggle-mode-countries"
         :disabled="disabled"
         divided
         mandatory
@@ -276,7 +279,10 @@ defineExpose({
 
     <div class="mt-4">
       <div class="mb-1 field-generator-label text-body-2 text-high-emphasis d-flex justify-space-between align-baseline">
-        <span :class="{ required }">
+        <span
+          :class="{ required }"
+          data-test-id="countries-select-label"
+        >
           {{ customLabel ? customLabel : countriesRadioLabel }}
         </span>
 
@@ -331,6 +337,7 @@ defineExpose({
     <span
       v-if="!required"
       class="text-sm text-color-mute mt-1"
+      data-test-id="countries-select-description"
     >
       {{ customDescription || $t('component.countriesSelect.description') }}
     </span>
