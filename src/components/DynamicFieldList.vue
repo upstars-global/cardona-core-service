@@ -10,20 +10,21 @@ import { VColors, VSizes, VVariants } from '../@model/vuetify'
 type DynamicField = BaseField | Record<string, BaseField>
 
 const props = withDefaults(defineProps<{
-    modelValue: DynamicField[]
-    templateField: Function
-    disabled?: boolean
-    disabledAddBtn?: boolean
-    required?: boolean
-    allowAddWithEmpty?: boolean
-    hideLabelOnEmptyList?: boolean
-    fieldCol?: number | string
-  }>(),
-  {
-    fieldCol: 4,
-    hideLabelOnEmptyList: true,
-    required: false,
-  })
+  modelValue: DynamicField[]
+  templateField: Function
+  disabled?: boolean
+  disabledAddBtn?: boolean
+  required?: boolean
+  allowAddWithEmpty?: boolean
+  hideLabelOnEmptyList?: boolean
+  fieldCol?: number | string | boolean
+  withInfo?: boolean
+}>(),
+{
+  fieldCol: 4,
+  hideLabelOnEmptyList: true,
+  required: false,
+})
 
 const emits = defineEmits<{
   (event: 'update:model-value', value: Record<string, string>): void
@@ -131,7 +132,10 @@ const disableAddFiled = computed(() =>
 <template>
   <div>
     <VRow v-if="templateField && !hideLabelOnEmptyList">
-      <VCol v-if="isBaseField(templateField)" data-test-id="single-field-label">
+      <VCol
+        v-if="isBaseField(templateField)"
+        data-test-id="single-field-label"
+      >
         <label>{{ templateField?.label }}</label>
       </VCol>
 
@@ -165,10 +169,10 @@ const disableAddFiled = computed(() =>
           <FieldGenerator
             v-model="rows[rowIndex]"
             :options="filteredOptions"
-            :with-info="false"
+            :with-info="withInfo"
             :disabled="disabled"
-            @search="fetchSelectOptions"
             :data-test-id="`single-field-${rowIndex}`"
+            @search="fetchSelectOptions"
           />
         </slot>
       </VCol>
@@ -191,9 +195,9 @@ const disableAddFiled = computed(() =>
             v-model="rows[rowIndex][key]"
             :options="filteredOptions"
             :disabled="disabled"
-            :with-info="false"
-            @search="fetchSelectOptions"
+            :with-info="withInfo"
             :data-test-id="`field-${rowIndex}-${key}`"
+            @search="fetchSelectOptions"
           />
         </slot>
       </VCol>
@@ -210,8 +214,8 @@ const disableAddFiled = computed(() =>
           class="filed-list__delete pa-0"
           :class="{ 'cursor-default': disabled }"
           :disabled="disabled"
-          @click="onRemove(rowIndex)"
           :data-test-id="`button-remove-${rowIndex}`"
+          @click="onRemove(rowIndex)"
         >
           <VIcon :icon="IconsList.Trash2Icon" />
         </VBtn>
@@ -225,8 +229,8 @@ const disableAddFiled = computed(() =>
       :color="VColors.Secondary"
       class="mt-50"
       :disabled="disableAddFiled"
-      @click="onAdd"
       data-test-id="button-add"
+      @click="onAdd"
     >
       <VIcon :icon="IconsList.PlusIcon" />
 
