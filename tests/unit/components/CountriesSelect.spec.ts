@@ -180,4 +180,31 @@ describe('CountriesSelect.spec', () => {
 
     expect(new Set(codes).size).toBe(codes.length)
   })
+
+  it('Expect addAllBtn selects all available regions', async () => {
+    props.addAllBtn = true
+
+    const wrapper = getMountComponent(props)
+
+    await flushPromises()
+
+    ;(wrapper.vm as any).selectRef = {
+      clearSelection: vi.fn(),
+    }
+
+    testOn.existElement({ wrapper, testId: 'add-all-btn' })
+
+    await wrapper.find('[data-test-id="add-all-btn"]').trigger('click')
+    await nextTick()
+
+    const selectedCountries = (wrapper.vm as any).selectedCountriesVisibleView as Array<[string, any[]]>
+
+    const selectedRegionCodes = selectedCountries
+      .flatMap(([, regions]) => regions.map(r => r.code))
+
+    const allRegionCodes = Object.keys(regionFetchListResultMock)
+
+    expect(selectedRegionCodes).toHaveLength(allRegionCodes.length)
+    expect(selectedRegionCodes).toEqual(expect.arrayContaining(allRegionCodes))
+  })
 })

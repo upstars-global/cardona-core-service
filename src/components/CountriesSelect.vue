@@ -292,6 +292,7 @@ defineExpose({
             :variant="VVariants.Tonal"
             :size="VSizes.Small"
             :disabled="disabled"
+            data-test-id="add-all-btn"
             @click="onClickAddAll"
           >
             <VIcon :icon="IconsList.PlaylistAdd" />
