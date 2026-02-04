@@ -320,6 +320,7 @@ export enum IconsList {
   FileTypeXml = 'tabler-file-type-xml',
   SettingSearch = 'tabler-settings-search',
   PlaylistX = 'tabler-playlist-x',
+  PlaylistAdd = 'tabler-playlist-add',
   ChartHistogram = 'tabler-chart-histogram',
   LayoutRows = 'tabler-layout-rows',
   LayoutColumns = 'tabler-layout-columns',

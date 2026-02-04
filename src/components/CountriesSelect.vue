@@ -20,6 +20,7 @@ const props = defineProps<{
   customLabel?: string
   customDescription?: string
   required?: boolean
+  addAllBtn?: boolean
 }>()
 
 const emits = defineEmits<{
@@ -141,6 +142,46 @@ const updateValue = () => {
     emits('update:modelValue', Array.from(regionsSet.value.difference(new Set(bannedCountries))))
 }
 
+const onClickAddAll = () => {
+  const result = new Map<string, RegionInfo[]>()
+  const allRegions = Object.values(regions.value)
+
+  for (const region of allRegions) {
+    const key = region.countryName
+
+    let list = result.get(key)
+
+    if (!list) {
+      list = []
+      result.set(key, list)
+    }
+
+    list.push(region)
+  }
+
+  if (countriesRadioModel.value === countriesType.Allow) {
+    for (const list of result.values()) {
+      const country = list.find(isCountry)
+
+      if (!country) {
+        const region = list[0]
+        const countryItem = regions.value[region.countryCode]
+
+        if (countryItem)
+          list.push(countryItem)
+      }
+    }
+  }
+
+  for (const [key, list] of result)
+    result.set(key, sortBy(list, r => r.code))
+
+  selectedCountriesVisible.value = result
+
+  selectRef.value.clearSelection()
+  updateValue()
+}
+
 const onSelectItem = (region: RegionInfo) => {
   const key = region.countryName
 
@@ -245,18 +286,34 @@ defineExpose({
           {{ customLabel ? customLabel : countriesRadioLabel }}
         </span>
 
-        <VBtn
-          v-if="selectedCountriesVisible.size"
-          :color="VColors.Error"
-          :variant="VVariants.Tonal"
-          :size="VSizes.Small"
-          :disabled="disabled"
-          @click="modal.showModal(ModalsIds.RemoveAllCountries + keyID)"
-        >
-          <VIcon :icon="IconsList.PlaylistX" />
+        <div>
+          <VBtn
+            v-if="addAllBtn && regionsOptions.isNotEmpty"
+            :variant="VVariants.Tonal"
+            :size="VSizes.Small"
+            :disabled="disabled"
+            data-test-id="add-all-btn"
+            @click="onClickAddAll"
+          >
+            <VIcon :icon="IconsList.PlaylistAdd" />
 
-          {{ $t('action.removeAll') }}
-        </VBtn>
+            {{ $t('component.countriesSelect.addAllCountries') }}
+          </VBtn>
+
+          <VBtn
+            v-if="selectedCountriesVisible.size"
+            class="ml-2"
+            :color="VColors.Error"
+            :variant="VVariants.Tonal"
+            :size="VSizes.Small"
+            :disabled="disabled"
+            @click="modal.showModal(ModalsIds.RemoveAllCountries + keyID)"
+          >
+            <VIcon :icon="IconsList.PlaylistX" />
+
+            {{ $t('action.removeAll') }}
+          </VBtn>
+        </div>
       </div>
 
       <VueSelect

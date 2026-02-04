@@ -471,6 +471,7 @@
       "allowedCountries": "Allowed countries",
       "placeholder": "Search by Country and Region",
       "description": "If no countries are selected, then all countries are allowed",
+      "addAllCountries": "Add all countries",
       "removeAllModal": {
         "title": "Remove all countries",
         "description": "Are you sure you want to remove all countries?"
