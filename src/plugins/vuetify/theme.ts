@@ -1,42 +1,29 @@
 import type { ThemeDefinition } from 'vuetify'
+import { GREY } from './colors'
 
 export const staticPrimaryColor = '#6D60F0'
-export const grey800 = '#373645'
-export const grey900 = '#1F1C32'
-const grey200 = '#E9E9F0'
 
 export const themes: Record<string, ThemeDefinition> = {
   light: {
     dark: false,
     colors: {
-      'primary': staticPrimaryColor, /// !TODO ADD ALSO TO DARK
+      'primary': staticPrimaryColor,
       'primary-300': '#A9A2F6',
       'on-primary': '#fff',
-      'secondary': '#787A80', /// !TODO ADD ALSO TO DARK
+      'secondary': '#787A80',
       'on-secondary': '#fff',
-      'success': '#0DB157', /// !TODO ADD ALSO TO DARK
+      'success': '#0DB157',
       'on-success': '#fff',
-      'info': '#3B83F7', /// !TODO ADD ALSO TO DARK
+      'info': '#3B83F7',
       'on-info': '#fff',
-      'warning': '#F08C35', /// !TODO ADD ALSO TO DARK
+      'warning': '#F08C35',
       'on-warning': '#fff',
-      'error': '#EA3D3E', /// !TODO ADD ALSO TO DARK
+      'error': '#EA3D3E',
       'background': '#F9F9FA',
-      'on-background': grey900,
+      'on-background': GREY.light['grey-900'],
       'on-surface': '#2F2B3D',
-
-      /// !TODO ADD ALSO TO DARK - start
-      'grey-50': '#FAFAFA',
-      'grey-100': '#F4F4F7',
-      'grey-200': grey200,
-      'grey-300': '#D2D1DB',
-      'grey-400': '#ADABBE',
-      'grey-500': '#84819D',
-      'grey-600': '#615E78',
-      'grey-700': '#4A485B',
-      'grey-800': grey800,
-      'grey-900': grey900,
-      'body': grey900,
+      ...GREY.light,
+      'body': GREY.light['grey-900'],
       'extra-body': '#F9F9FA',
       'border-color': '#2F2B3D',
 
@@ -50,7 +37,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'table-bg': '#EFEFF0',
       'code-color': '#d400ff',
       'overlay-scrim-background': '#4C4E64',
-      'tooltip-background': grey800,
+      'tooltip-background': GREY.light['grey-800'],
       'overlay-scrim-opacity': 0.5,
       'hover-opacity': 0.04,
       'focus-opacity': 0.12,
@@ -82,12 +69,12 @@ export const themes: Record<string, ThemeDefinition> = {
       // Layouts
       'island-layout-bg': '#181C2E',
       'island-page-bg': '#F9F9FA',
-      'island-menu-section-color': '#E9E9F0',
-      'island-menu-item-color': '#F4F4F7',
-      'island-project-select-color': '#E7E9F6',
-      'island-project-select-bg': '#2F3349',
+      'island-menu-section-color': GREY.light['grey-200'],
+      'island-menu-item-color': GREY.light['grey-100'],
+      'island-project-select-color': GREY.dark['grey-900'],
+      'island-project-select-bg': GREY.dark['grey-100'],
       'island-card-bg': '#FFFFFF',
-      'island-border-color': grey200,
+      'island-border-color': GREY.light['grey-200'],
       'island-text-general': '#353347',
 
     },
@@ -111,16 +98,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'on-background': '#E7E9F6',
       'surface': '#2F3349',
       'on-surface': '#D0D4F1',
-      'grey-50': '#26293A',
-      'grey-100': '#2F3349',
-      'grey-200': '#26293A',
-      'grey-300': '#4A5072',
-      'grey-400': '#5E6692',
-      'grey-500': '#7983BB',
-      'grey-600': '#AAB3DE',
-      'grey-700': '#B6BEE3',
-      'grey-800': '#CFD3EC',
-      'grey-900': '#E7E9F6',
+      ...GREY.dark,
       'perfect-scrollbar-thumb': '#4A5072',
       'skin-bordered-background': '#2f3349',
       'skin-bordered-surface': '#2f3349',
@@ -129,7 +107,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'table-bg': '#3D4155',
       'code-color': '#d400ff',
       'overlay-scrim-background': '#101121',
-      'tooltip-background': '#5E6692',
+      'tooltip-background': GREY.dark['grey-400'],
       'overlay-scrim-opacity': 0.6,
       'hover-opacity': 0.04,
       'focus-opacity': 0.12,
@@ -157,10 +135,10 @@ export const themes: Record<string, ThemeDefinition> = {
       // Layouts
       'island-layout-bg': '#13151F',
       'island-page-bg': '#0E1017',
-      'island-menu-section-color': grey200,
-      'island-menu-item-color': '#F4F4F7',
-      'island-project-select-color': '#E7E9F6',
-      'island-project-select-bg': '#2F3349',
+      'island-menu-section-color': GREY.dark['grey-200'],
+      'island-menu-item-color': GREY.dark['grey-100'],
+      'island-project-select-color': GREY.dark['grey-900'],
+      'island-project-select-bg': GREY.dark['grey-100'],
       'island-card-bg': '#161822',
       'island-border-color': '#3A3C50',
       'island-text-general': '#D5D5DE',
