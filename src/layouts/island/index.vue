@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
-import { VColors, VSizes, VVariants } from '../@model/vuetify'
-import { IconsList } from '../@model/enums/icons'
-import AppLoadingIndicator from '../components/AppLoadingIndicator.vue'
-import { useSkins } from '../@core/composable/useSkins'
-import AppBreadcrumb from '../layouts/components/AppBreadcrumb.vue'
+import { VColors, VSizes, VVariants } from '../../@model/vuetify'
+import { IconsList } from '../../@model/enums/icons'
+import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
+import { useSkins } from '@core/composable/useSkins'
+import AppBreadcrumb from '../components/AppBreadcrumb.vue'
 import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
 import { VerticalNavLayout } from '@layouts'
 import { useConfigStore } from '@core/stores/config'
@@ -103,8 +103,8 @@ const onCLickThemeIcon = () => {
 
 <style lang="scss">
 // As we are using `layouts` plugin we need its styles to be imported
-@use "@layouts/styles/default-layout";
-@import "../assets/styles/layouts/island/index";
+@use "default-layout";
+@import "../../assets/styles/layouts/island/index";
 
 .theme-btn {
   background-color: rgba(var(--v-theme-primary), 0.03)

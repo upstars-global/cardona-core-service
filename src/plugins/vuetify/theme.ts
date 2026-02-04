@@ -65,18 +65,6 @@ export const themes: Record<string, ThemeDefinition> = {
 
       // Table
       'c-table-head-bg': '#EFEFF0',
-
-      // Layouts
-      'island-layout-bg': '#181C2E',
-      'island-page-bg': '#F9F9FA',
-      'island-menu-section-color': GREY.light['grey-200'],
-      'island-menu-item-color': GREY.light['grey-100'],
-      'island-project-select-color': GREY.dark['grey-900'],
-      'island-project-select-bg': GREY.dark['grey-100'],
-      'island-card-bg': '#FFFFFF',
-      'island-border-color': GREY.light['grey-200'],
-      'island-text-general': '#353347',
-
     },
   },
   dark: {
@@ -131,17 +119,6 @@ export const themes: Record<string, ThemeDefinition> = {
 
       // Table
       'c-table-head-bg': '#242532',
-
-      // Layouts
-      'island-layout-bg': '#13151F',
-      'island-page-bg': '#0E1017',
-      'island-menu-section-color': GREY.dark['grey-200'],
-      'island-menu-item-color': GREY.dark['grey-100'],
-      'island-project-select-color': GREY.dark['grey-900'],
-      'island-project-select-bg': GREY.dark['grey-100'],
-      'island-card-bg': '#161822',
-      'island-border-color': '#3A3C50',
-      'island-text-general': '#D5D5DE',
     },
   },
 }

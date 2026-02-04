@@ -1,6 +1,6 @@
 import LayoutBlank from '../layouts/blank.vue'
 import LayoutDefault from '../layouts/default.vue'
-import LayoutIsland from '../layouts/island.vue'
+import LayoutIndex from '../layouts/island/index.vue'
 
 export enum CoreLayouts {
   Default = 'default',
@@ -11,5 +11,5 @@ export enum CoreLayouts {
 export const CoreLayoutsMap: Record<string, Component> = {
   [CoreLayouts.Default]: LayoutDefault,
   [CoreLayouts.Blank]: LayoutBlank,
-  [CoreLayouts.Island]: LayoutIsland,
+  [CoreLayouts.Island]: LayoutIndex,
 }
