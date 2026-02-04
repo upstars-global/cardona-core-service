@@ -29,11 +29,13 @@ watch(() => selectProject.value.id, () => {
   useFavicon(faviconPath)
 }, { immediate: true })
 
+const HEADER_VALUE_MARBELLA_PROJECT = 'marbella_thor'
+
 watch(selectProject, project => {
   if (!project || !isMarbella.value)
     return
   ApiService.setHeaders({
-    MarbellaProject: project?.originProject?.alias,
+    MarbellaProject: HEADER_VALUE_MARBELLA_PROJECT,
   })
 }, {
   immediate: true,
