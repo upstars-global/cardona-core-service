@@ -103,7 +103,7 @@ const onCLickThemeIcon = () => {
 
 <style lang="scss">
 // As we are using `layouts` plugin we need its styles to be imported
-@use "default-layout";
+// @use "default-layout";
 @import "../../assets/styles/layouts/island/index";
 
 .theme-btn {
