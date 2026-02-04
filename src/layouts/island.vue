@@ -5,13 +5,18 @@ import { IconsList } from '../@model/enums/icons'
 import AppLoadingIndicator from '../components/AppLoadingIndicator.vue'
 import { useSkins } from '../@core/composable/useSkins'
 import AppBreadcrumb from '../layouts/components/AppBreadcrumb.vue'
-import navItems from '../navigation/vertical'
+import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
 import { VerticalNavLayout } from '@layouts'
 import { useConfigStore } from '@core/stores/config'
 import { switchToVerticalNavOnLtOverlayNavBreakpoint } from '@layouts/utils'
 import { Theme } from '@core/enums'
 
 const configStore = useConfigStore()
+const { appsAndPages } = useAppsAndPages()
+
+const navItems = computed(() => {
+  return appsAndPages.value
+})
 
 switchToVerticalNavOnLtOverlayNavBreakpoint()
 
