@@ -104,7 +104,7 @@ const onCLickThemeIcon = () => {
 <style lang="scss">
 // As we are using `layouts` plugin we need its styles to be imported
 @use "@layouts/styles/default-layout";
-@import "../assets/styles/layouts/island";
+@import "../assets/styles/layouts/island/index";
 
 .theme-btn {
   background-color: rgba(var(--v-theme-primary), 0.03)

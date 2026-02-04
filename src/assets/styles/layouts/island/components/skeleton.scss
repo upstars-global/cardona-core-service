@@ -1,0 +1,5 @@
+@mixin apply {
+  .v-skeleton-loader__bone::after {
+    background: linear-gradient(90deg, rgba(var(--v-theme-surface), 0), rgba(var(--v-theme-surface), 0.5), rgba(var(--v-theme-surface), 1), rgba(var(--v-theme-border-system), 0.08));
+  }
+}

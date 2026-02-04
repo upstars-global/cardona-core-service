@@ -1,4 +1,8 @@
+@use "./components" as island-componets;
+
 body[data-layout="island"] {
+  @include island-componets.apply;
+
   background-color: rgba(var(--v-island-layout-bg)) !important;
 
   .v-overlay-container {
