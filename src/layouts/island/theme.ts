@@ -2,7 +2,8 @@
 import type { ThemeDefinition } from 'vuetify'
 import { GREY } from '../../plugins/vuetify/colors'
 
-export const staticPrimaryColor = '#6D60F0'
+export const staticLightPrimaryColor = '#649DFA'
+export const staticDarkPrimaryColor = '#8B81F3'
 
 // Combine with on-secondary 64%
 // 'light-secondary': '#A0A2A6'
@@ -11,7 +12,7 @@ export const light: ThemeDefinition = {
   dark: false,
   colors: {
     // General
-    'primary': staticPrimaryColor,
+    'primary': staticLightPrimaryColor,
     'secondary': '#787A80',
     'warning': '#F08C35',
     'error': '#EA3D3E',
@@ -92,7 +93,7 @@ export const dark: ThemeDefinition = {
   dark: true,
   colors: {
     // General
-    'primary': '#8B81F3',
+    'primary': staticDarkPrimaryColor,
     'secondary': '#A0A2A6',
     'warning': '#F08C35',
     'error': '#F76A6A',
