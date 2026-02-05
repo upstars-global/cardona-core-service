@@ -2,7 +2,7 @@
 import type { ThemeDefinition } from 'vuetify'
 import { GREY } from '../../plugins/vuetify/colors'
 
-export const staticLightPrimaryColor = '#649DFA'
+export const staticLightPrimaryColor = '#6D60F0'
 export const staticDarkPrimaryColor = '#8B81F3'
 
 // Combine with on-secondary 64%
