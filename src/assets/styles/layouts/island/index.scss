@@ -46,7 +46,7 @@ body[data-layout="island"] {
   }
 
   .layout-nav-type-vertical .layout-vertical-nav .nav-group > :first-child::before {
-    background-color: rgba(var(--v-theme-grey-200), var(--v-hover-opacity)) !important;
+    background-color: rgba(var(--v-island-active-nav-bg), var(--v-hover-opacity)) !important;
   }
 
   .nav-group-label {

@@ -81,6 +81,7 @@ export const light: ThemeDefinition = {
     'island-border-color': GREY.light['grey-200'],
     'island-text-general': '#353347',
     'island-skeleton': GREY.dark['grey-600'],
+    'island-active-nav-bg': GREY.light['grey-200'],
   },
 }
 
@@ -161,5 +162,6 @@ export const dark: ThemeDefinition = {
     'island-border-color': '#3A3C50',
     'island-text-general': '#D5D5DE',
     'island-skeleton': GREY.light['grey-200'],
+    'island-active-nav-bg': GREY.light['grey-200'],
   },
 }
