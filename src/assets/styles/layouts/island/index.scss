@@ -42,17 +42,21 @@ body[data-layout="island"] {
   }
 
   .title-text-color {
-    color: rgba(var(--v-island-menu-section-color)) !important;
+    color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity)) !important;
+  }
+
+  .layout-nav-type-vertical .layout-vertical-nav .nav-group > :first-child::before {
+    background-color: rgba(var(--v-theme-grey-200), var(--v-hover-opacity)) !important;
   }
 
   .nav-group-label {
     .nav-item-icon, i.v-icon {
-      color: rgba(var(--v-island-menu-item-color)) !important;
+      color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity)) !important;
     }
   }
 
   .nav-item-title, .nav-item-title.nav-item-color {
-    color: rgba(var(--v-island-menu-item-color)) !important;
+    color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity)) !important;
   }
 
   .select-field-color {
