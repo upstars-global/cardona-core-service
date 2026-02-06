@@ -1,20 +1,16 @@
-type GreyScale =
-  | 'grey-50'
-  | 'grey-100'
-  | 'grey-200'
-  | 'grey-300'
-  | 'grey-400'
-  | 'grey-500'
-  | 'grey-600'
-  | 'grey-700'
-  | 'grey-800'
-  | 'grey-900'
+type TokenPrefix = 'grey'
 
-type GreyTheme = Record<GreyScale, string>
+type Scale =
+  | 50 | 100 | 200 | 300 | 400
+  | 500 | 600 | 700 | 800 | 900
 
-export const GREY: {
-  light: GreyTheme
-  dark: GreyTheme
+type TokenKey = `${TokenPrefix}-${Scale}`
+
+type ThemeColors = Record<TokenKey, string>
+
+export const COLORS: {
+  light: ThemeColors
+  dark: ThemeColors
 } = {
   light: {
     'grey-50': '#FAFAFA',

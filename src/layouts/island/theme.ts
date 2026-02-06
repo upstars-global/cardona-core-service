@@ -1,6 +1,6 @@
 // Overwrite staticPrimaryColor
 import type { ThemeDefinition } from 'vuetify'
-import { GREY } from '../../plugins/vuetify/colors'
+import { COLORS } from '../../plugins/vuetify/colors'
 
 export const staticLightPrimaryColor = '#6D60F0'
 export const staticDarkPrimaryColor = '#8B81F3'
@@ -74,15 +74,15 @@ export const light: ThemeDefinition = {
     // Layouts
     'island-layout-bg': '#181C2E',
     'island-page-bg': '#F9F9FA',
-    'island-menu-section-color': GREY.light['grey-200'],
-    'island-menu-item-color': GREY.light['grey-100'],
-    'island-project-select-color': GREY.light['grey-100'],
-    'island-project-select-bg': GREY.dark['grey-100'],
+    'island-menu-section-color': COLORS.light['grey-200'],
+    'island-menu-item-color': COLORS.light['grey-100'],
+    'island-project-select-color': COLORS.light['grey-100'],
+    'island-project-select-bg': COLORS.dark['grey-100'],
     'island-card-bg': '#FFFFFF',
-    'island-border-color': GREY.light['grey-200'],
+    'island-border-color': COLORS.light['grey-200'],
     'island-text-general': '#353347',
-    'island-skeleton': GREY.dark['grey-600'],
-    'island-active-nav-bg': GREY.light['grey-200'],
+    'island-skeleton': COLORS.dark['grey-600'],
+    'island-active-nav-bg': COLORS.light['grey-600'],
   },
 }
 
@@ -155,14 +155,14 @@ export const dark: ThemeDefinition = {
     // Layouts
     'island-layout-bg': '#13151F',
     'island-page-bg': '#0E1017',
-    'island-menu-section-color': GREY.light['grey-200'],
-    'island-menu-item-color': GREY.dark['grey-100'],
-    'island-project-select-color': GREY.light['grey-100'],
-    'island-project-select-bg': GREY.dark['grey-100'],
+    'island-menu-section-color': COLORS.light['grey-200'],
+    'island-menu-item-color': COLORS.dark['grey-100'],
+    'island-project-select-color': COLORS.light['grey-100'],
+    'island-project-select-bg': COLORS.dark['grey-100'],
     'island-card-bg': '#161822',
     'island-border-color': '#3A3C50',
     'island-text-general': '#D5D5DE',
-    'island-skeleton': GREY.light['grey-200'],
-    'island-active-nav-bg': GREY.light['grey-200'],
+    'island-skeleton': COLORS.light['grey-200'],
+    'island-active-nav-bg': COLORS.light['grey-200'],
   },
 }
