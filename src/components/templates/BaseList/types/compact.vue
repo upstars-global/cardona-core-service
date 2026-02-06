@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
-import { useStore as useVuexStore } from 'vuex'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
@@ -36,6 +35,9 @@ import SumAndCurrency from '../../../../components/templates/_components/SumAndC
 import StatusField from '../../../../components/templates/_components/StatusField.vue'
 import { useLoaderStore } from '../../../../stores/loader'
 import { useBaseStoreCore } from '../../../../stores/baseStoreCore'
+import { useUserStore } from '../../../../stores/user'
+import { useAppConfigCoreStore } from '../../../../stores/appConfigCore'
+import { useFiltersStore } from '../../../../stores/filtersCore'
 import usePagination from '.././сomposables/pagination'
 import type { PaginationResult } from '.././сomposables/pagination'
 import MultipleActions from '.././_components/MultipleActions.vue'
@@ -82,8 +84,11 @@ const modal = inject('modal')
 const slots = useSlots()
 
 const baseStoreCore = useBaseStoreCore()
-const store = useVuexStore()
 const loaderStore = useLoaderStore()
+const userStore = useUserStore()
+const appConfigCoreStore = useAppConfigCoreStore()
+const filtersCoreStore = useFiltersStore()
+
 const { t } = useI18n()
 
 const router = useRouter()
@@ -445,13 +450,13 @@ const onExportFormatSelected = async (format: ExportFormat) => {
 }
 
 // Projects filters
-const userProjects = computed<ProjectsFilterOption[]>(() => store.getters['appConfigCore/verifiedProjects'].map(({ id, alias, name }) => ({
+const userProjects = computed<ProjectsFilterOption[]>(() => appConfigCoreStore.verifiedProjects.map(({ id, alias, name }) => ({
   id,
   alias,
   title: name,
 })))
 
-const projectsFilter = ref<string[]>([store.getters.selectedProject?.alias])
+const projectsFilter = ref<string[]>([userStore.getSelectedProject?.alias])
 
 // Filters
 const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
@@ -462,9 +467,9 @@ const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, 
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
 const appliedFilters = computed<BaseField[]>(() => {
-  const isSameEntity: boolean = entityName === store.getters['filtersCore/listEntityName']
+  const isSameEntity: boolean = entityName === filtersCoreStore.listEntityName
 
-  return isSameEntity ? store.getters['filtersCore/appliedListFilters'] : []
+  return isSameEntity ? filtersCoreStore.appliedListFilters : []
 })
 
 const hasSelectedFilters = computed(() => selectedFilters && selectedFilters.value.isNotEmpty)
@@ -759,7 +764,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :model-value="perPage"
             :options="perPageOptions"
             class="per-page-selector d-inline-block"
-            :dir="store.getters['appConfigCore/dirOption']"
+            :dir="appConfigCoreStore.dirOption"
             :searchable="false"
             :clearable="false"
             @update:model-value="setPerPage"
@@ -1290,7 +1295,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     </VCard>
 
     <div
-      v-if="items.isNotEmpty && config.pagination"
+      v-if="config.pagination"
       class="pt-6"
     >
       <ListPagination
