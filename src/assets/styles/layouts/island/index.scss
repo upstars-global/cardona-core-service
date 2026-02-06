@@ -41,8 +41,6 @@ body[data-layout="island"] {
     border-bottom-left-radius: 1.5rem;
   }
 
-  //
-
   .title-text-color {
     color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity)) !important;
   }
@@ -61,8 +59,12 @@ body[data-layout="island"] {
     color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity)) !important;
   }
 
-  // Project select component
-
+  .nav-link {
+    i {
+      color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity));
+    }
+  }
+  
   .custom-menu {
     border-top: initial !important;
 
