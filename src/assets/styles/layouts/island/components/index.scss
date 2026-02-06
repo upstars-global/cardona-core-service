@@ -1,9 +1,11 @@
 @use "./skeleton" as skeleton;
 @use "./tooltip" as tooltip;
+@use "./project-select" as project-select;
 
 @mixin apply {
   @include skeleton.apply;
   @include tooltip.apply;
+  @include project-select.apply;
 
 
   $card-internal-radius: 12px;
