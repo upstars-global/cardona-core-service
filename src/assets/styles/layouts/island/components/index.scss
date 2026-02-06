@@ -1,0 +1,24 @@
+@use "./skeleton" as skeleton;
+@use "./tooltip" as tooltip;
+@use "./project-select" as project-select;
+
+@mixin apply {
+  @include skeleton.apply;
+  @include tooltip.apply;
+  @include project-select.apply;
+
+
+  $card-internal-radius: 12px;
+
+  .card-internal-rounded-1 {
+    border-radius: $card-internal-radius
+  }
+
+  .card-internal-rounded-2 {
+    border-radius: $card-internal-radius/2
+  }
+
+  .text-color-label {
+    color: rgba(var(--v-theme-on-surface-disabled), var(--v-low-emphasis-opacity)) !important
+  }
+}
