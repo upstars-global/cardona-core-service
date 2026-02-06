@@ -6,6 +6,7 @@ import { ListFieldType, TableField } from '../../../../src/@model/templates/tabl
 import { mockModal } from '../modal-provide-config'
 import { clickTrigger, setMountComponent } from '../../utils'
 import DefaultBaseList from '../../../../src/components/templates/BaseList/types/default.vue'
+import CompactBaseList from '../../../../src/components/templates/BaseList/types/compact.vue'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 
 export const exportDataMock = () => {
@@ -158,6 +159,7 @@ export const getSelectorCField = (name: string) => `td[data-c-field="${name}"]`
 
 // Mounting function for the BaseList component
 export const getMountComponent = setMountComponent(DefaultBaseList)
+export const getMountCompactComponent = setMountComponent(CompactBaseList)
 
 // Utility function to update component props
 export const getUpdatePropsConfig = (updatedConfig, props) => ({
