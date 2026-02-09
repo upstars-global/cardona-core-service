@@ -21,9 +21,9 @@ describe('basePermissions', () => {
   const setupMocks = (
     abilityCan: ReturnType<typeof vi.fn>,
     permissionKeys = {
-      permissionKey: 'adminproducts',
-      permissionKeySeo: 'adminproductsseo',
-      permissionKeyReport: 'adminproductsreport',
+      permissionKey: 'admin-products',
+      permissionKeySeo: 'admin-products-seo',
+      permissionKeyReport: 'admin-products-report',
     },
   ) => {
     vi.mocked(useUserStore).mockReturnValue({ abilityCan } as any)
@@ -55,9 +55,9 @@ describe('basePermissions', () => {
       expect(result.canUpdate).toBe(true)
       expect(result.canRemove).toBe(true)
       expect(result.canExport).toBe(true)
-      expect(mockAbilityCan).toHaveBeenCalledWith('adminproducts', PermissionLevel.create)
-      expect(mockAbilityCan).toHaveBeenCalledWith('adminproducts', PermissionLevel.update)
-      expect(mockAbilityCan).toHaveBeenCalledWith('adminproducts', PermissionLevel.delete)
+      expect(mockAbilityCan).toHaveBeenCalledWith('admin-products', PermissionLevel.create)
+      expect(mockAbilityCan).toHaveBeenCalledWith('admin-products', PermissionLevel.update)
+      expect(mockAbilityCan).toHaveBeenCalledWith('admin-products', PermissionLevel.delete)
     })
 
     it('returns all true when noPermissions is true', () => {
@@ -141,7 +141,7 @@ describe('basePermissions', () => {
       })
 
       expect(mockAbilityCan).toHaveBeenCalledWith('superadmin', PermissionLevel.view)
-      expect(mockAbilityCan).not.toHaveBeenCalledWith('adminproducts', PermissionLevel.create)
+      expect(mockAbilityCan).not.toHaveBeenCalledWith('admin-products', PermissionLevel.create)
     })
 
     it('uses custom permissionKey when provided', () => {
@@ -149,8 +149,8 @@ describe('basePermissions', () => {
 
       setupMocks(mockAbilityCan, {
         permissionKey: 'custom-products',
-        permissionKeySeo: 'custom-productsseo',
-        permissionKeyReport: 'custom-productsreport',
+        permissionKeySeo: 'custom-products-seo',
+        permissionKeyReport: 'custom-products-report',
       })
 
       basePermissions({
@@ -167,9 +167,9 @@ describe('basePermissions', () => {
       const mockAbilityCan = createMockAbilityCan(true)
 
       setupMocks(mockAbilityCan, {
-        permissionKey: 'superproducts',
-        permissionKeySeo: 'superproductsseo',
-        permissionKeyReport: 'superproductsreport',
+        permissionKey: 'super-products',
+        permissionKeySeo: 'super-products-seo',
+        permissionKeyReport: 'super-products-report',
       })
 
       basePermissions({
@@ -179,7 +179,7 @@ describe('basePermissions', () => {
         },
       })
 
-      expect(mockAbilityCan).toHaveBeenCalledWith('superproducts', PermissionLevel.create)
+      expect(mockAbilityCan).toHaveBeenCalledWith('super-products', PermissionLevel.create)
     })
 
     it('removes prefix when noPermissionPrefix is true', () => {
@@ -187,8 +187,8 @@ describe('basePermissions', () => {
 
       setupMocks(mockAbilityCan, {
         permissionKey: 'products',
-        permissionKeySeo: 'productsseo',
-        permissionKeyReport: 'productsreport',
+        permissionKeySeo: 'products-seo',
+        permissionKeyReport: 'products-report',
       })
 
       basePermissions({
@@ -205,9 +205,9 @@ describe('basePermissions', () => {
       const mockAbilityCan = createMockAbilityCan(true)
 
       setupMocks(mockAbilityCan, {
-        permissionKey: 'adminproductcategories',
-        permissionKeySeo: 'adminproductcategoriesseo',
-        permissionKeyReport: 'adminproductcategoriesreport',
+        permissionKey: 'admin-product-categories',
+        permissionKeySeo: 'admin-product-categories-seo',
+        permissionKeyReport: 'admin-product-categories-report',
       })
 
       basePermissions({
@@ -215,7 +215,7 @@ describe('basePermissions', () => {
         config: {},
       })
 
-      expect(mockAbilityCan).toHaveBeenCalledWith('adminproductcategories', PermissionLevel.create)
+      expect(mockAbilityCan).toHaveBeenCalledWith('admin-product-categories', PermissionLevel.create)
     })
 
     it('handles combined noPermissions and userStore permissions', () => {
@@ -340,6 +340,7 @@ describe('basePermissions', () => {
 
   it('calls getPermissionKeys with correct params', () => {
     const mockAbilityCan = createMockAbilityCan(true)
+
     setupMocks(mockAbilityCan)
 
     basePermissions({
@@ -356,6 +357,7 @@ describe('basePermissions', () => {
 
   it('handles seo with other permissions in noPermissions', () => {
     const mockAbilityCan = createMockAbilityCan(false)
+
     setupMocks(mockAbilityCan)
 
     const result = basePermissions({
@@ -373,6 +375,7 @@ describe('basePermissions', () => {
 
   it('handles multiple specific seo permissions', () => {
     const mockAbilityCan = createMockAbilityCan(false)
+
     setupMocks(mockAbilityCan)
 
     const result = basePermissions({
