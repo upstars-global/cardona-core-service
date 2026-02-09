@@ -8,7 +8,7 @@ import { SelectMode } from '../../@model/enums/selectMode'
 import type { SortItem } from '../../@core/types'
 import type { useBaseStoreCore } from '../../stores/baseStoreCore'
 import type { MultipleActions } from '../../@model/enums/multipleActions'
-import type { PermissionLevel } from '../../@model/permission'
+import type { ListPermissionLevel } from '../../@model/permission'
 import type { TableField } from './tableFields'
 import type { ProjectFilterTypes } from '@filterConfig'
 
@@ -58,7 +58,7 @@ export interface FilterListItem {
 
 type StaticFilters = Record<string, string | string[] | number | number[]>
 
-export type NoPermissions = PermissionLevel[] | boolean
+export type NoPermissions = ListPermissionLevel[] | boolean
 
 /**
  * IBaseListConfig - Конфиг базового листа
