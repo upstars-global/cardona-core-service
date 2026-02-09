@@ -38,8 +38,14 @@ const onMountedList = () => emits('mounted')
 defineExpose({
   get reFetchList() { return listByTypeRef.value?.reFetchList },
   resetSelectedItem: listByTypeRef.value?.resetSelectedItem,
-  selectedItems: listByTypeRef.value?.selectedItems,
-  disableRowIds: listByTypeRef.value?.disableRowIds,
+  setSelectedItems(items: Record<string, unknown>[]) {
+    if (listByTypeRef.value)
+      listByTypeRef.value.selectedItems = items
+  },
+  setDisableRowIds(ids: string[]) {
+    if (listByTypeRef.value)
+      listByTypeRef.value.disableRowIds = ids
+  },
   sortData: listByTypeRef.value?.sortData,
   get items() {
     return listByTypeRef.value?.items
