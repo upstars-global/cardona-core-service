@@ -52,7 +52,7 @@ export function basePermissions<T>({ entityName, config }: PermissionsParams<T>)
   })
 
   const getPermission = (key: string, action: PermissionLevel): boolean => {
-    if (fullAccess)
+    if (isullAccess)
       return true
 
     if (Array.isArray(noPermissions) && noPermissions.includes(action))
