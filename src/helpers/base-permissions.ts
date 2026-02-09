@@ -1,7 +1,5 @@
-import { isBoolean } from 'lodash'
 import { PermissionLevel } from '../@model/permission'
 import { useUserStore } from '../stores/user'
-import type { NoPermissions } from '../@model/templates/baseList'
 import { getPermissionKeys } from './index'
 import { permissionPrefix } from '@productConfig'
 
@@ -20,7 +18,6 @@ interface ConfigType {
   noPermissionPrefix?: boolean
   customPermissionPrefix?: string
   onePermissionKey?: string
-  noPermissions?: NoPermissions
 }
 
 interface PermissionsParams<T> {
@@ -37,13 +34,10 @@ export function basePermissions<T>({ entityName, config }: PermissionsParams<T>)
     noPermissionPrefix,
     customPermissionPrefix = permissionPrefix,
     onePermissionKey,
-    noPermissions,
   } = config
 
   const entityNamePermission = entityName.replace('-', '')
   const permissionPrefixValue = noPermissionPrefix ? undefined : customPermissionPrefix
-
-  const isFullAccess = isBoolean(noPermissions) && noPermissions
 
   const { permissionKey, permissionKeySeo, permissionKeyReport } = getPermissionKeys({
     permissionKey: configPermissionKey,
@@ -51,17 +45,10 @@ export function basePermissions<T>({ entityName, config }: PermissionsParams<T>)
     entityNamePermission,
   })
 
-  const getPermission = (key: string, action: PermissionLevel): boolean => {
-    if (isFullAccess)
-      return true
-
-    if (Array.isArray(noPermissions) && noPermissions.includes(action))
-      return true
-
-    return onePermissionKey
+  const getPermission = (key: string, action: PermissionLevel): boolean =>
+    onePermissionKey
       ? userStore.abilityCan(onePermissionKey, PermissionLevel.view)
       : userStore.abilityCan(key, action)
-  }
 
   return {
     canCreate: getPermission(permissionKey, PermissionLevel.create),
