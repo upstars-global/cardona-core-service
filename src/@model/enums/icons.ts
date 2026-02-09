@@ -331,4 +331,5 @@ export enum IconsList {
   ExclamationMark = 'tabler-exclamation-mark',
   ArrowRight = 'tabler-arrow-right',
   CloudSearch = 'tabler-cloud-search',
+  Photo = 'tabler-photo',
 }
