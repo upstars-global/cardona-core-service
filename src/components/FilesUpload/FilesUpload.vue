@@ -13,6 +13,11 @@ interface Props {
   onSubmitCallback?: Function
   onBtnClickCallback?: Function
   textBtn: string
+  btnUpload?: {
+    color: VColors
+    variant: VVariants
+    size: VSizes
+  }
   isError?: boolean
 }
 
@@ -22,6 +27,11 @@ const props = withDefaults(defineProps<Props>(), {
   dataTypes: () => ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'],
   maxSizeFileMb: 10,
   textBtn: 'Upload file',
+  btnUpload: {
+    color: VColors.Secondary,
+    variant: VVariants.Outlined,
+    size: VSizes.Small,
+  }
 })
 
 const emits = defineEmits<{
@@ -121,9 +131,9 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
           :file-size-formatted="fileSizeFormatted"
         />
         <VBtn
-          :variant="VVariants.Outlined"
-          :color="VColors.Secondary"
-          :size="VSizes.Small"
+          :variant="btnUpload.variant"
+          :color="btnUpload.color"
+          :size="btnUpload.size"
           :disabled="disabled"
           @click="onClickBtn"
         >
