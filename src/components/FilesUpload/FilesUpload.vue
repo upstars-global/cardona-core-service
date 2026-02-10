@@ -71,7 +71,14 @@ async function onDrop(files: File[] | null) {
     const file: File | File[] = isMultiple.value ? Array.from(files) : files[0]
     const isFileList = Array.isArray(file)
     if (isMultiple.value && isFileList) {
-      const actualFiles = file?.filter(item => item.size <= maxSizeFileKB.value)
+      const actualFiles = file?.filter(item => {
+        const isInvalidSize = item.size > maxSizeFileKB.value
+        if (isInvalidSize)
+          toastError('fileSizeError', { MB: fileSizeFormatted.value })
+
+        return !isInvalidSize
+      })
+
       try {
         isLoading.value = true
         if (props.onSubmitCallback)
@@ -84,24 +91,25 @@ async function onDrop(files: File[] | null) {
         isLoading.value = false
       }
     }
+    else {
+      if (!isFileList && file.size > maxSizeFileKB.value) {
+        toastError('fileSizeError', { MB: fileSizeFormatted.value })
+        isLoadingError.value = true
 
-    if (!isFileList && file.size > maxSizeFileKB.value) {
-      toastError('fileSizeError', { MB: fileSizeFormatted.value })
-      isLoadingError.value = true
+        return
+      }
 
-      return
-    }
-
-    try {
-      isLoading.value = true
-      if (props.onSubmitCallback)
-        await props.onSubmitCallback(file)
-    }
-    catch {
-      isLoadingError.value = true
-    }
-    finally {
-      isLoading.value = false
+      try {
+        isLoading.value = true
+        if (props.onSubmitCallback)
+          await props.onSubmitCallback(file)
+      }
+      catch {
+        isLoadingError.value = true
+      }
+      finally {
+        isLoading.value = false
+      }
     }
   }
 }
