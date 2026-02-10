@@ -12,6 +12,7 @@ interface Props {
   maxSizeFileMb?: number
   onSubmitCallback?: Function
   onBtnClickCallback?: Function
+  multiple?: boolean
   textBtn: string
   btnUpload?: {
     color: VColors
@@ -23,6 +24,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   size: UploadFileSizes.md,
+  wrapperClass: '',
   disabled: false,
   dataTypes: () => ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'],
   maxSizeFileMb: 10,
@@ -31,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
     color: VColors.Secondary,
     variant: VVariants.Outlined,
     size: VSizes.Small,
-  }
+  },
 })
 
 const emits = defineEmits<{
@@ -45,6 +47,7 @@ const maxSizeFileKB = computed(() => props.maxSizeFileMb * kbsInMb)
 const fileSizeFormatted = computed(() => (maxSizeFileKB.value / kbsInMb).toString())
 const isLoading = ref(false)
 const isLoadingError = ref(false)
+const isMultiple = computed(() => props.multiple)
 
 const { open, onChange } = useFileDialog({
   accept: props.dataTypes.join(','),
@@ -64,8 +67,24 @@ onChange(items => {
 })
 async function onDrop(files: File[] | null) {
   if (files && files.length) {
-    const file = files[0]
-    if (file.size > maxSizeFileKB.value) {
+    const file: File | File[] = isMultiple.value ? Array.from(files) : files[0]
+    const isFileList = Array.isArray(file)
+    if (isMultiple.value && isFileList) {
+      const actualFiles = file?.filter(item => item.size <= maxSizeFileKB.value)
+      try {
+        isLoading.value = true
+        if (props.onSubmitCallback)
+          await props.onSubmitCallback(actualFiles)
+      }
+      catch {
+        isLoadingError.value = true
+      }
+      finally {
+        isLoading.value = false
+      }
+    }
+
+    if (!isFileList && file.size > maxSizeFileKB.value) {
       toastError('fileSizeError', { MB: fileSizeFormatted.value })
       isLoadingError.value = true
 
