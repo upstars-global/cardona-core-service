@@ -133,7 +133,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
       </div>
       <div
         v-else
-        class="btn-open-modal-block d-flex flex-column gap-2 align-center justify-center text-center"
+        class="btn-open-modal-block d-flex flex-column gap-2 align-center justify-center text-center w-100"
       >
         <slot
           name="content"
