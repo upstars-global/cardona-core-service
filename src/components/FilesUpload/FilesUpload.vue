@@ -67,7 +67,8 @@ onChange(items => {
     onDrop(items)
 })
 async function onDrop(files: File[] | null) {
-  if (!files?.length) return
+  if (!files?.length)
+    return
 
   const filesToProcess = isMultiple.value ? Array.from(files) : [files[0]]
 
@@ -75,11 +76,13 @@ async function onDrop(files: File[] | null) {
     const isValid = file.size <= maxSizeFileKB.value
     if (!isValid)
       toastError('fileSizeError', { MB: fileSizeFormatted.value })
+
     return isValid
   })
 
   if (!validFiles.length) {
     isLoadingError.value = true
+
     return
   }
 
@@ -141,17 +144,22 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
           :open-file-dialog="open"
           :file-size-formatted="fileSizeFormatted"
         />
-        <VBtn
-          :variant="btnUpload.variant"
-          :color="btnUpload.color"
-          :size="btnUpload.size"
-          :disabled="disabled"
-          @click="onClickBtn"
+        <slot
+          name="upload-btn"
+          :actions="{ onClickBtn }"
         >
-          <span class="white-space-nowrap">
-            {{ textBtn }}
-          </span>
-        </VBtn>
+          <VBtn
+            :variant="btnUpload.variant"
+            :color="btnUpload.color"
+            :size="btnUpload.size"
+            :disabled="disabled"
+            @click="onClickBtn"
+          >
+            <span class="white-space-nowrap">
+              {{ textBtn }}
+            </span>
+          </VBtn>
+        </slot>
       </div>
     </slot>
   </div>
