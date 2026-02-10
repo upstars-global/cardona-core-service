@@ -7,6 +7,7 @@ import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 
 interface Props {
   size?: UploadFileSizes
+  wrapperClass: string
   disabled?: boolean
   dataTypes?: string[]
   maxSizeFileMb?: number
@@ -36,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
   },
 })
 
-const emits = defineEmits<{
+defineEmits<{
   uploadedFiles: [files: File]
 }>()
 
@@ -112,7 +113,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
   <div
     ref="dropZoneRef"
     class="files-upload d-flex align-center justify-center text-medium-emphasis"
-    :class="[props.size, { 'files-upload--over-drop': isOverDropZone, disabled, 'error': isError }]"
+    :class="[props.size, wrapperClass, { 'files-upload--over-drop': isOverDropZone, disabled, 'error': isError }]"
     @dragover.prevent
     @drop.prevent
   >
