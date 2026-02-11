@@ -47,7 +47,7 @@ const [isLoadingFullImage, toggleLoadingFullImage] = useToggle(true)
           :src="imagePath"
           alt="full img"
           class="full-size-img"
-          @load="toggleLoadingFullImage"
+          @load="toggleLoadingFullImage()"
         >
         <div
           v-if="isLoadingFullImage"
