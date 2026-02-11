@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
+import { useToggle } from '@vueuse/core'
+import { VSizes } from 'cardona-core-service/src/@model/vuetify'
 import BaseModal from '../../../../BaseModal/index.vue'
 import { ModalSizes } from '../../../../../@model/vuetify'
 import { ListSize } from '../../../../../@model/templates/tableFields'
@@ -21,10 +23,14 @@ const previewAdditionalParams = computed(() =>
 )
 
 const previewImage = computed(() => props.imagePath + previewAdditionalParams.value)
+const [isLoadingFullImage, toggleLoadingFullImage] = useToggle(true)
+
+// TODO: https://upstars.atlassian.net/browse/BAC-7362
 </script>
 
 <template>
   <div
+    :key="id"
     v-if="imagePath"
     class="d-flex justify-content-center align-center image-detail-field"
   >
@@ -39,11 +45,23 @@ const previewImage = computed(() => props.imagePath + previewAdditionalParams.va
     >
       <div class="d-flex justify-center align-center pa-5">
         <img
+          v-show="!isLoadingFullImage"
           data-test-id="image-detail"
           :src="imagePath"
           alt="full img"
           class="full-size-img"
+          @load="toggleLoadingFullImage()"
         >
+        <div
+          v-if="isLoadingFullImage"
+          class="d-flex justify-center align-center"
+          style="height: 80vh"
+        >
+          <VProgressCircular
+            indeterminate
+            :size="VSizes.Large"
+          />
+        </div>
       </div>
     </BaseModal>
   </div>
