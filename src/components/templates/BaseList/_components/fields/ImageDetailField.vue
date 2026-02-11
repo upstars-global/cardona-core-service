@@ -22,7 +22,7 @@ const previewAdditionalParams = computed(() =>
 )
 
 const previewImage = computed(() => props.imagePath + previewAdditionalParams.value)
-const [isLoadingFullImage, toggleLoadingFullImage] = useToggle()
+const [isLoadingFullImage, toggleLoadingFullImage] = useToggle(true)
 </script>
 
 <template>
