@@ -24,10 +24,13 @@ const previewAdditionalParams = computed(() =>
 
 const previewImage = computed(() => props.imagePath + previewAdditionalParams.value)
 const [isLoadingFullImage, toggleLoadingFullImage] = useToggle(true)
+
+// TODO: https://upstars.atlassian.net/browse/BAC-7362
 </script>
 
 <template>
   <div
+    :key="id"
     v-if="imagePath"
     class="d-flex justify-content-center align-center image-detail-field"
   >
