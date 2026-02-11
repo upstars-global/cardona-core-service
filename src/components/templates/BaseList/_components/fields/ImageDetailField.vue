@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
+import { useToggle } from '@vueuse/core'
 import { VSizes } from 'cardona-core-service/src/@model/vuetify'
 import BaseModal from '../../../../BaseModal/index.vue'
 import { ModalSizes } from '../../../../../@model/vuetify'
