@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, inject } from 'vue'
-import { useToggle } from '@vueuse/core'
+import { computed, inject, ref } from 'vue'
 import { VSizes } from 'cardona-core-service/src/@model/vuetify'
 import BaseModal from '../../../../BaseModal/index.vue'
 import { ModalSizes } from '../../../../../@model/vuetify'
@@ -23,15 +22,19 @@ const previewAdditionalParams = computed(() =>
 )
 
 const previewImage = computed(() => props.imagePath + previewAdditionalParams.value)
-const [isLoadingFullImage, toggleLoadingFullImage] = useToggle(true)
+const loadImage = ref(true)
+
+const changeLoadImage = (value: boolean) => {
+  loadImage.value = value
+}
 
 // TODO: https://upstars.atlassian.net/browse/BAC-7362
 </script>
 
 <template>
   <div
-    :key="id"
     v-if="imagePath"
+    :key="id"
     class="d-flex justify-content-center align-center image-detail-field"
   >
     <ImageField
@@ -45,15 +48,15 @@ const [isLoadingFullImage, toggleLoadingFullImage] = useToggle(true)
     >
       <div class="d-flex justify-center align-center pa-5">
         <img
-          v-show="!isLoadingFullImage"
+          v-show="!loadImage"
           data-test-id="image-detail"
           :src="imagePath"
           alt="full img"
           class="full-size-img"
-          @load="toggleLoadingFullImage()"
+          @load="changeLoadImage(false)"
         >
         <div
-          v-if="isLoadingFullImage"
+          v-if="loadImage"
           class="d-flex justify-center align-center"
           style="height: 80vh"
         >
