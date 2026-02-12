@@ -16,19 +16,26 @@ const props = withDefaults(defineProps<{
 })
 
 const modal = inject('modal')
+const SPINNER_HEIGHT = 200
 
 const previewAdditionalParams = computed(() =>
   props.compressionForPreview ? `?ar=${props.compressionForPreview}` : '',
 )
 
 const previewImage = computed(() => props.imagePath + previewAdditionalParams.value)
-const loadImage = ref(true)
+const isImageLoaded = ref(false)
+const containerRef = ref<HTMLElement | null>(null)
+const imageRef = ref<HTMLImageElement | null>(null)
+const containerHeight = ref(SPINNER_HEIGHT)
 
-const changeLoadImage = (value: boolean) => {
-  loadImage.value = value
+const onImageLoad = () => {
+  if (imageRef.value) {
+    containerHeight.value = Math.max(imageRef.value.offsetHeight, SPINNER_HEIGHT)
+  }
+  setTimeout(() => {
+    isImageLoaded.value = true
+  }, 400)
 }
-
-// TODO: https://upstars.atlassian.net/browse/BAC-7362
 </script>
 
 <template>
@@ -46,24 +53,29 @@ const changeLoadImage = (value: boolean) => {
       :id="`${id}-image-detail`"
       :size="ModalSizes.FullScreen"
     >
-      <div class="d-flex justify-center align-center pa-5">
-        <img
-          v-show="!loadImage"
-          data-test-id="image-detail"
-          :src="imagePath"
-          alt="full img"
-          class="full-size-img"
-          @load="changeLoadImage(false)"
-        >
+      <div class="image-modal-content">
         <div
-          v-if="loadImage"
-          class="d-flex justify-center align-center"
-          style="height: 80vh"
+          ref="containerRef"
+          :class="['image-container', { 'image-container--loaded': isImageLoaded }]"
+          :style="{ height: `${containerHeight}px` }"
         >
-          <VProgressCircular
-            indeterminate
-            :size="VSizes.Large"
-          />
+          <div
+            v-if="!isImageLoaded"
+            class="spinner-wrapper"
+          >
+            <VProgressCircular
+              indeterminate
+              :size="VSizes.Large"
+            />
+          </div>
+          <img
+            ref="imageRef"
+            data-test-id="image-detail"
+            :src="imagePath"
+            alt="full img"
+            class="full-size-img"
+            @load="onImageLoad"
+          >
         </div>
       </div>
     </BaseModal>
@@ -71,9 +83,54 @@ const changeLoadImage = (value: boolean) => {
 </template>
 
 <style lang="scss" scoped>
+$transition-duration: 0.4s;
+
+.image-modal-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.image-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  width: 100%;
+  transition: height $transition-duration ease-out;
+}
+
+.spinner-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fade-in 0.1s ease-out forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .full-size-img {
   width: fit-content;
   max-width: calc(100% - 8rem);
-  max-height: 80vh;
+  max-height: 50vh;
+  opacity: 0;
+  transition: opacity $transition-duration ease-out;
+}
+
+.image-container--loaded {
+  .full-size-img {
+    opacity: 1;
+  }
 }
 </style>
