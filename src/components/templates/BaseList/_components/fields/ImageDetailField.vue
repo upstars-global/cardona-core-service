@@ -55,16 +55,18 @@ const changeLoadImage = (value: boolean) => {
           class="full-size-img"
           @load="changeLoadImage(false)"
         >
-        <div
-          v-if="loadImage"
-          class="d-flex justify-center align-center"
-          style="height: 80vh"
-        >
-          <VProgressCircular
-            indeterminate
-            :size="VSizes.Large"
-          />
-        </div>
+        <Transition name="fade-height">
+          <div
+            v-if="loadImage"
+            class="d-flex justify-center align-center"
+            style="height: 80vh"
+          >
+            <VProgressCircular
+              indeterminate
+              :size="VSizes.Large"
+            />
+          </div>
+        </Transition>
       </div>
     </BaseModal>
   </div>
@@ -74,6 +76,23 @@ const changeLoadImage = (value: boolean) => {
 .full-size-img {
   width: fit-content;
   max-width: calc(100% - 8rem);
-  max-height: 80vh;
+  max-height: 50vh;
+}
+
+.fade-height-enter-from,
+.fade-height-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
+.fade-height-enter-to,
+.fade-height-leave-from {
+  max-height: 50vh;
+  opacity: 1;
+}
+
+.fade-height-enter-active,
+.fade-height-leave-active {
+  transition: max-height 0.3s ease, opacity 0.3s ease;
 }
 </style>
