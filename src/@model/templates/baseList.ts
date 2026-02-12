@@ -8,6 +8,7 @@ import { SelectMode } from '../../@model/enums/selectMode'
 import type { SortItem } from '../../@core/types'
 import type { useBaseStoreCore } from '../../stores/baseStoreCore'
 import type { MultipleActions } from '../../@model/enums/multipleActions'
+import type { ListPermissionLevel } from '../../@model/permission'
 import type { TableField } from './tableFields'
 import type { ProjectFilterTypes } from '@filterConfig'
 
@@ -56,6 +57,8 @@ export interface FilterListItem {
 }
 
 type StaticFilters = Record<string, string | string[] | number | number[]>
+
+export type NoPermissions = ListPermissionLevel[] | boolean
 
 /**
  * IBaseListConfig - Конфиг базового листа
@@ -221,6 +224,9 @@ export interface IBaseListConfig {
 
   //* *  cellCbClass - Callback для добавления класса ячейке таблицы */
   readonly cellCbClass?: CallableFunction
+
+  //* *  noPermissions - Для отключения permission */
+  readonly noPermissions?: NoPermissions
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -275,6 +281,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly saveSort?: boolean
   readonly disableLoading?: boolean
   readonly cellCbClass: CallableFunction
+  readonly noPermissions?: NoPermissions
 
   constructor({
     withSearch,
@@ -328,6 +335,7 @@ export class BaseListConfig implements IBaseListConfig {
     saveSort,
     disableLoading,
     cellCbClass,
+    noPermissions,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -380,6 +388,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.saveSort = saveSort ?? true
     this.disableLoading = disableLoading
     this.cellCbClass = cellCbClass
+    this.noPermissions = noPermissions ?? false
   }
 }
 
@@ -428,6 +437,9 @@ export interface IBaseSectionConfig {
 
   /** initializeWithUpdate - Флаг для инициализации данных формы на основе update response  */
   readonly initializeWithUpdate?: boolean
+
+  //* *  noPermissions - Для отключения permission */
+  readonly noPermissions?: NoPermissions
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to base section model
@@ -443,6 +455,8 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly backToTheHistoryLast?: boolean
   readonly isModalSection?: boolean
   readonly initializeWithUpdate: boolean
+  readonly noPermissions?: NoPermissions
+
   constructor(data: IBaseSectionConfig) {
     this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
@@ -456,6 +470,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
     this.backToTheHistoryLast = data?.backToTheHistoryLast || false
     this.isModalSection = data?.isModalSection || false
     this.initializeWithUpdate = data?.initializeWithUpdate || false
+    this.noPermissions = data?.noPermissions ?? false
   }
 }
 
