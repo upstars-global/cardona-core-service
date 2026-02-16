@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 
 import { productsName } from '../../configs/productsName'
 import { IconsList } from '../../@model/enums/icons'
 import { useUserStore } from '../../stores/user'
+import ApiService from '@/services/api'
 
 defineOptions({ name: 'ProductsSelect' })
 
@@ -38,6 +39,16 @@ const isDynamicDomain = DYNAMIC_DOMAIN_PREFIX.some(parOfHost =>
 )
 
 const canSelect = computed(() => products.value.length > 1)
+
+watch(selectedProduct, product => {
+  if (!product)
+    return
+  ApiService.setHeaders({
+    productid: product?.id,
+  })
+}, {
+  immediate: true,
+})
 </script>
 
 <template>
