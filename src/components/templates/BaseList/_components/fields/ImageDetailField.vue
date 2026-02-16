@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, ref } from 'vue'
-import { VSizes } from 'cardona-core-service/src/@model/vuetify'
+import { VSizes } from '../../../../../@model/vuetify'
 import BaseModal from '../../../../BaseModal/index.vue'
 import { ModalSizes } from '../../../../../@model/vuetify'
 import { ListSize } from '../../../../../@model/templates/tableFields'
