@@ -4,7 +4,7 @@ import { computed, watch } from 'vue'
 import { productsName } from '../../configs/productsName'
 import { IconsList } from '../../@model/enums/icons'
 import { useUserStore } from '../../stores/user'
-import ApiService from '@/services/api'
+import ApiService from '../../services/api'
 
 defineOptions({ name: 'ProductsSelect' })
 
