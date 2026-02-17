@@ -1,6 +1,6 @@
 import LayoutBlank from '../layouts/blank.vue'
 import LayoutDefault from '../layouts/default.vue'
-import LayoutIsland from '../layouts/island.vue'
+import LayoutIsland from '../layouts/island/index.vue'
 
 export enum CoreLayouts {
   Default = 'default',

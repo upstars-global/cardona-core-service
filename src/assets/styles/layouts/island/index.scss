@@ -1,4 +1,8 @@
+@use "./components" as island-componets;
+
 body[data-layout="island"] {
+  @include island-componets.apply;
+
   background-color: rgba(var(--v-island-layout-bg)) !important;
 
   .v-overlay-container {
@@ -38,35 +42,31 @@ body[data-layout="island"] {
   }
 
   .title-text-color {
-    color: rgba(var(--v-island-menu-section-color)) !important;
+    color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity)) !important;
+  }
+
+  .layout-nav-type-vertical .layout-vertical-nav .nav-group > :first-child::before {
+    background-color: rgba(var(--v-island-active-nav-bg), var(--v-hover-opacity)) !important;
   }
 
   .nav-group-label {
     .nav-item-icon, i.v-icon {
-      color: rgba(var(--v-island-menu-item-color)) !important;
+      color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity)) !important;
     }
   }
 
   .nav-item-title, .nav-item-title.nav-item-color {
-    color: rgba(var(--v-island-menu-item-color)) !important;
+    color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity)) !important;
   }
 
-  .select-field-color {
-    color: rgba(var(--v-island-project-select-color)) !important;
-  }
-
-  .project-select {
-    .vs__dropdown-toggle {
-      border-color: rgba(var(--v-island-project-select-color), var(--v-disabled-opacity)) !important;
-    }
-
-    .vs__dropdown-menu {
-      background-color: rgba(var(--v-island-project-select-bg)) !important;
+  .nav-link {
+    i {
+      color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity));
     }
   }
-
+  
   .custom-menu {
-    border-color: rgba(var(--v-island-project-select-bg)) !important;
+    border-top: initial !important;
 
     .full-name {
       color: rgba(var(--v-island-menu-section-color));
