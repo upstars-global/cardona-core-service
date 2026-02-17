@@ -49,6 +49,9 @@ defineExpose({
   get formRef() {
     return formRef.value?.formRef
   },
+  get submit() {
+    return formRef.value?.submit
+  },
 })
 </script>
 
