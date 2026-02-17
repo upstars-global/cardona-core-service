@@ -130,6 +130,7 @@ const disableAddFiled = computed(() =>
   ].some(Boolean),
 )
 
+/// TODO ADD TEST
 const getFieldCol = (key: string): number | string => {
   if (typeof props.fieldCol === 'string' || typeof props.fieldCol === 'number')
     return props.fieldCol
