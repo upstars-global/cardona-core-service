@@ -9,6 +9,8 @@ import { VColors, VSizes, VVariants } from '../@model/vuetify'
 
 type DynamicField = BaseField | Record<string, BaseField>
 
+type FieldCol = Record<string, number> | number | string
+
 const props = withDefaults(defineProps<{
   modelValue: DynamicField[]
   templateField: Function
@@ -17,7 +19,7 @@ const props = withDefaults(defineProps<{
   required?: boolean
   allowAddWithEmpty?: boolean
   hideLabelOnEmptyList?: boolean
-  fieldCol?: number | string | boolean
+  fieldCol?: FieldCol
   withInfo?: boolean
 }>(),
 {
@@ -127,6 +129,13 @@ const disableAddFiled = computed(() =>
     props.disabledAddBtn,
   ].some(Boolean),
 )
+
+const getFieldCol = (key: string): number | string => {
+  if (typeof props.fieldCol === 'string' || typeof props.fieldCol === 'number')
+    return props.fieldCol
+
+  return props.fieldCol[key] || 4
+}
 </script>
 
 <template>
@@ -183,7 +192,7 @@ const disableAddFiled = computed(() =>
         :key="idx"
         class="py-0"
         :data-test-id="`row-${rowIndex}-col-${idx}`"
-        :md="fieldCol"
+        :md="getFieldCol(key)"
       >
         <slot
           :key="key"
