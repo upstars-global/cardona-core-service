@@ -292,7 +292,6 @@ defineExpose({
   form,
   validate,
   formRef,
-  submit: onSubmit,
 })
 </script>
 
