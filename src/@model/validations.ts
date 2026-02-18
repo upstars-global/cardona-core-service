@@ -24,6 +24,7 @@ import { i18n } from '../plugins/i18n'
 import type { NumberOrString } from '../@model/index'
 import { dateSeparators } from '../@model/date'
 
+defineRule('big_decimal_max', big_decimal_max)
 defineRule('required', required)
 defineRule('email', email)
 defineRule('min', min)
@@ -217,6 +218,7 @@ export interface IValidationConfig {
   range_date?: boolean | string
   range_date_different?: boolean | string
   date_format?: string
+  big_decimal_max?: NumberOrString
   custom_cb?: CustomCbRule
 }
 (function () {
@@ -229,3 +231,44 @@ export interface IValidationConfig {
     },
   })
 })()
+
+function big_decimal_max(value: unknown, [max]: [NumberOrString]) {
+  const str = String(value ?? '').trim()
+
+  if (!str)
+    return true
+
+  if (!/^\d+(\.\d+)?$/.test(str))
+    return false
+
+  const maxStr = String(max ?? '').trim()
+
+  if (!maxStr)
+    return true
+
+  if (!/^\d+(\.\d+)?$/.test(maxStr))
+    return false
+
+  const [intPart, decPart = ''] = str.split('.')
+  const [maxInt, maxDec = ''] = maxStr.split('.')
+
+  try {
+    if (BigInt(intPart) > BigInt(maxInt))
+      return false
+
+    if (BigInt(intPart) < BigInt(maxInt))
+      return true
+
+    const maxDecimalLength = Math.max(decPart.length, maxDec.length)
+    const paddedDec = decPart.padEnd(maxDecimalLength, '0')
+    const paddedMaxDec = maxDec.padEnd(maxDecimalLength, '0')
+
+    if (BigInt(paddedDec || '0') > BigInt(paddedMaxDec || '0'))
+      return false
+
+    return true
+  }
+  catch {
+    return false
+  }
+}
