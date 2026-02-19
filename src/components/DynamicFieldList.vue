@@ -12,21 +12,21 @@ type DynamicField = BaseField | Record<string, BaseField>
 type FieldCol = Record<string, number> | number | string
 
 const props = withDefaults(defineProps<{
-  modelValue: DynamicField[]
-  templateField: Function
-  disabled?: boolean
-  disabledAddBtn?: boolean
-  required?: boolean
-  allowAddWithEmpty?: boolean
-  hideLabelOnEmptyList?: boolean
-  fieldCol?: FieldCol
-  withInfo?: boolean
-}>(),
-{
-  fieldCol: 4,
-  hideLabelOnEmptyList: true,
-  required: false,
-})
+    modelValue: DynamicField[]
+    templateField: Function
+    disabled?: boolean
+    disabledAddBtn?: boolean
+    required?: boolean
+    allowAddWithEmpty?: boolean
+    hideLabelOnEmptyList?: boolean
+    fieldCol?: FieldCol
+    withInfo?: boolean
+  }>(),
+  {
+    fieldCol: 4,
+    hideLabelOnEmptyList: true,
+    required: false,
+  })
 
 const emits = defineEmits<{
   (event: 'update:model-value', value: Record<string, string>): void
@@ -140,7 +140,7 @@ const getFieldCol = (key: string): number | string => {
 </script>
 
 <template>
-  <div>
+  <div class="dynamic-field-list">
     <VRow v-if="templateField && !hideLabelOnEmptyList">
       <VCol
         v-if="isBaseField(templateField)"
@@ -232,20 +232,26 @@ const getFieldCol = (key: string): number | string => {
       </VCol>
     </VRow>
 
-    <VBtn
+    <slot
       v-if="!disabled"
-      :size="VSizes.Small"
-      :variant="VVariants.Outlined"
-      :color="VColors.Secondary"
-      class="mt-50"
+      name="btn-add"
       :disabled="disableAddFiled"
-      data-test-id="button-add"
-      @click="onAdd"
+      :add="onAdd"
     >
-      <VIcon :icon="IconsList.PlusIcon" />
+      <VBtn
+        :size="VSizes.Small"
+        :variant="VVariants.Outlined"
+        :color="VColors.Secondary"
+        class="mt-50"
+        :disabled="disableAddFiled"
+        data-test-id="button-add"
+        @click="onAdd"
+      >
+        <VIcon :icon="IconsList.PlusIcon" />
 
-      <span class="text-nowrap"> {{ $t('action.add') }} </span>
-    </VBtn>
+        <span class="text-nowrap"> {{ $t('action.add') }} </span>
+      </VBtn>
+    </slot>
   </div>
 </template>
 
