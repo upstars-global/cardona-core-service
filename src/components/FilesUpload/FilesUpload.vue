@@ -118,11 +118,15 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
       :is-loading="isLoading"
       :is-loading-error="isLoadingError"
     >
-      <p v-if="isOverDropZone">
+      <p
+        v-if="isOverDropZone"
+        data-test-id="drop-file-text"
+      >
         {{ $t('placeholder.dropFile') }}
       </p>
       <div
         v-else-if="isLoading"
+        data-test-id="loading-state"
         class="d-flex flex-column justify-center align-center"
       >
         <VProgressCircular
@@ -149,6 +153,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
           :actions="{ onClickBtn }"
         >
           <VBtn
+            data-test-id="upload-btn"
             :variant="btnUpload.variant"
             :color="btnUpload.color"
             :size="btnUpload.size"
