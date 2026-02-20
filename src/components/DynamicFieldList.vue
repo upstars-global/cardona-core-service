@@ -9,22 +9,24 @@ import { VColors, VSizes, VVariants } from '../@model/vuetify'
 
 type DynamicField = BaseField | Record<string, BaseField>
 
+type FieldCol = Record<string, number> | number | string
+
 const props = withDefaults(defineProps<{
-  modelValue: DynamicField[]
-  templateField: Function
-  disabled?: boolean
-  disabledAddBtn?: boolean
-  required?: boolean
-  allowAddWithEmpty?: boolean
-  hideLabelOnEmptyList?: boolean
-  fieldCol?: number | string | boolean
-  withInfo?: boolean
-}>(),
-{
-  fieldCol: 4,
-  hideLabelOnEmptyList: true,
-  required: false,
-})
+    modelValue: DynamicField[]
+    templateField: Function
+    disabled?: boolean
+    disabledAddBtn?: boolean
+    required?: boolean
+    allowAddWithEmpty?: boolean
+    hideLabelOnEmptyList?: boolean
+    fieldCol?: FieldCol
+    withInfo?: boolean
+  }>(),
+  {
+    fieldCol: 4,
+    hideLabelOnEmptyList: true,
+    required: false,
+  })
 
 const emits = defineEmits<{
   (event: 'update:model-value', value: Record<string, string>): void
@@ -127,10 +129,18 @@ const disableAddFiled = computed(() =>
     props.disabledAddBtn,
   ].some(Boolean),
 )
+
+/// TODO ADD TEST
+const getFieldCol = (key: string): number | string => {
+  if (typeof props.fieldCol === 'string' || typeof props.fieldCol === 'number')
+    return props.fieldCol
+
+  return props.fieldCol[key] || 4
+}
 </script>
 
 <template>
-  <div>
+  <div class="dynamic-field-list">
     <VRow v-if="templateField && !hideLabelOnEmptyList">
       <VCol
         v-if="isBaseField(templateField)"
@@ -183,7 +193,7 @@ const disableAddFiled = computed(() =>
         :key="idx"
         class="py-0"
         :data-test-id="`row-${rowIndex}-col-${idx}`"
-        :md="fieldCol"
+        :md="getFieldCol(key)"
       >
         <slot
           :key="key"
@@ -222,20 +232,26 @@ const disableAddFiled = computed(() =>
       </VCol>
     </VRow>
 
-    <VBtn
+    <slot
       v-if="!disabled"
-      :size="VSizes.Small"
-      :variant="VVariants.Outlined"
-      :color="VColors.Secondary"
-      class="mt-50"
+      name="btn-add"
       :disabled="disableAddFiled"
-      data-test-id="button-add"
-      @click="onAdd"
+      :add="onAdd"
     >
-      <VIcon :icon="IconsList.PlusIcon" />
+      <VBtn
+        :size="VSizes.Small"
+        :variant="VVariants.Outlined"
+        :color="VColors.Secondary"
+        class="mt-50"
+        :disabled="disableAddFiled"
+        data-test-id="button-add"
+        @click="onAdd"
+      >
+        <VIcon :icon="IconsList.PlusIcon" />
 
-      <span class="text-nowrap"> {{ $t('action.add') }} </span>
-    </VBtn>
+        <span class="text-nowrap"> {{ $t('action.add') }} </span>
+      </VBtn>
+    </slot>
   </div>
 </template>
 

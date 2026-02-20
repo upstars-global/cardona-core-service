@@ -7,24 +7,37 @@ import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 
 interface Props {
   size?: UploadFileSizes
+  wrapperClass: string
   disabled?: boolean
   dataTypes?: string[]
   maxSizeFileMb?: number
   onSubmitCallback?: Function
   onBtnClickCallback?: Function
+  multiple?: boolean
   textBtn: string
+  btnUpload?: {
+    color: VColors
+    variant: VVariants
+    size: VSizes
+  }
   isError?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: UploadFileSizes.md,
+  wrapperClass: '',
   disabled: false,
   dataTypes: () => ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'],
   maxSizeFileMb: 10,
   textBtn: 'Upload file',
+  btnUpload: {
+    color: VColors.Secondary,
+    variant: VVariants.Outlined,
+    size: VSizes.Small,
+  },
 })
 
-const emits = defineEmits<{
+defineEmits<{
   uploadedFiles: [files: File]
 }>()
 
@@ -35,6 +48,7 @@ const maxSizeFileKB = computed(() => props.maxSizeFileMb * kbsInMb)
 const fileSizeFormatted = computed(() => (maxSizeFileKB.value / kbsInMb).toString())
 const isLoading = ref(false)
 const isLoadingError = ref(false)
+const isMultiple = computed(() => props.multiple)
 
 const { open, onChange } = useFileDialog({
   accept: props.dataTypes.join(','),
@@ -53,26 +67,36 @@ onChange(items => {
     onDrop(items)
 })
 async function onDrop(files: File[] | null) {
-  if (files && files.length) {
-    const file = files[0]
-    if (file.size > maxSizeFileKB.value) {
+  if (!files?.length)
+    return
+
+  const filesToProcess = isMultiple.value ? Array.from(files) : [files[0]]
+
+  const validFiles = filesToProcess.filter(file => {
+    const isValid = file.size <= maxSizeFileKB.value
+    if (!isValid)
       toastError('fileSizeError', { MB: fileSizeFormatted.value })
-      isLoadingError.value = true
 
-      return
-    }
+    return isValid
+  })
 
-    try {
-      isLoading.value = true
-      if (props.onSubmitCallback)
-        await props.onSubmitCallback(file)
-    }
-    catch {
-      isLoadingError.value = true
-    }
-    finally {
-      isLoading.value = false
-    }
+  if (!validFiles.length) {
+    isLoadingError.value = true
+
+    return
+  }
+
+  const payload = isMultiple.value ? validFiles : validFiles[0]
+
+  try {
+    isLoading.value = true
+    await props.onSubmitCallback?.(payload)
+  }
+  catch {
+    isLoadingError.value = true
+  }
+  finally {
+    isLoading.value = false
   }
 }
 
@@ -83,7 +107,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
   <div
     ref="dropZoneRef"
     class="files-upload d-flex align-center justify-center text-medium-emphasis"
-    :class="[props.size, { 'files-upload--over-drop': isOverDropZone, disabled, 'error': isError }]"
+    :class="[props.size, wrapperClass, { 'files-upload--over-drop': isOverDropZone, disabled, 'error': isError }]"
     @dragover.prevent
     @drop.prevent
   >
@@ -94,11 +118,15 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
       :is-loading="isLoading"
       :is-loading-error="isLoadingError"
     >
-      <p v-if="isOverDropZone">
+      <p
+        v-if="isOverDropZone"
+        data-test-id="drop-file-text"
+      >
         {{ $t('placeholder.dropFile') }}
       </p>
       <div
         v-else-if="isLoading"
+        data-test-id="loading-state"
         class="d-flex flex-column justify-center align-center"
       >
         <VProgressCircular
@@ -112,7 +140,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
       </div>
       <div
         v-else
-        class="btn-open-modal-block d-flex flex-column gap-2 align-center justify-center text-center"
+        class="btn-open-modal-block d-flex flex-column gap-2 align-center justify-center text-center w-100"
       >
         <slot
           name="content"
@@ -120,17 +148,23 @@ const { isOverDropZone } = useDropZone(dropZoneRef, { onDrop, dataTypes: props.d
           :open-file-dialog="open"
           :file-size-formatted="fileSizeFormatted"
         />
-        <VBtn
-          :variant="VVariants.Outlined"
-          :color="VColors.Secondary"
-          :size="VSizes.Small"
-          :disabled="disabled"
-          @click="onClickBtn"
+        <slot
+          name="upload-btn"
+          :actions="{ onClickBtn }"
         >
-          <span class="white-space-nowrap">
-            {{ textBtn }}
-          </span>
-        </VBtn>
+          <VBtn
+            data-test-id="upload-btn"
+            :variant="btnUpload.variant"
+            :color="btnUpload.color"
+            :size="btnUpload.size"
+            :disabled="disabled"
+            @click="onClickBtn"
+          >
+            <span class="white-space-nowrap">
+              {{ textBtn }}
+            </span>
+          </VBtn>
+        </slot>
       </div>
     </slot>
   </div>
