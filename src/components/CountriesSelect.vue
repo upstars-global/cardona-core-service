@@ -21,6 +21,7 @@ const props = defineProps<{
   customDescription?: string
   required?: boolean
   addAllBtn?: boolean
+  presetCodes?: RegionInfo[]
 }>()
 
 const emits = defineEmits<{
@@ -144,7 +145,7 @@ const updateValue = () => {
 
 const onClickAddAll = () => {
   const result = new Map<string, RegionInfo[]>()
-  const allRegions = Object.values(regions.value)
+  const allRegions = props.presetCodes || Object.values(regions.value)
 
   for (const region of allRegions) {
     const key = region.countryName
