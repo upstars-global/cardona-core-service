@@ -1378,7 +1378,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           }
 
           td {
-            border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
+            border-bottom: 1px solid rgba(var(--v-theme-border-system));
           }
         }
       }
