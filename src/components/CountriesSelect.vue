@@ -10,7 +10,6 @@ import { withPopper } from '../helpers/selectPopper'
 import { ModalsIds } from '../@model/enums/modal'
 import { useRegionsStore } from '../stores/regions'
 import RemoveModal from './BaseModal/RemoveModal.vue'
-import type { RegionsRequestFilter } from 'cardona-core-service/src/@model/regions'
 
 const props = defineProps<{
   modelValue: Array<string>
