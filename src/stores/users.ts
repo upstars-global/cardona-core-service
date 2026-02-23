@@ -33,7 +33,6 @@ export const useUsersStore = defineStore('users', {
     },
 
     async updateUserPassword(
-      _payload: unknown,
       { id, password, isProduct }: { id: string; password: string; isProduct: boolean },
     ) {
       const product = isProduct

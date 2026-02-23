@@ -1,12 +1,26 @@
 import permissions from '@permissions'
 
 export type PermissionUpdatableType = 'switch' | 'table'
+
 export enum PermissionLevel {
   noaccess = 'noaccess',
   view = 'view',
   create = 'create',
   update = 'update',
   delete = 'delete',
+}
+
+export enum ListPermissionLevel {
+  noaccess = PermissionLevel.noaccess,
+  view = PermissionLevel.view,
+  create = PermissionLevel.create,
+  update = PermissionLevel.update,
+  delete = PermissionLevel.delete,
+  seo = 'seo',
+  seoCreate = 'seoCreate',
+  seoUpdate = 'seoUpdate',
+  seoView = 'seoView',
+  export = 'export',
 }
 
 export interface PermissionInput {
