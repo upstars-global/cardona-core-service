@@ -145,7 +145,13 @@ const updateValue = () => {
 
 const onClickAddAll = () => {
   const result = new Map<string, RegionInfo[]>()
-  const allRegions = props.presetCodes || Object.values(regions.value)
+  let allRegions = Object.values(regions.value)
+
+  //TODO Мой костыль нужно решить как Костя вернется. Задача BAC-7387
+  if(props.presetCodes) {
+    const keyRegionsPreset = props.presetCodes.map(item => item.countryCode)
+    allRegions = allRegions.filter(item => keyRegionsPreset.includes(item.countryCode))
+  }
 
   for (const region of allRegions) {
     const key = region.countryName
@@ -178,7 +184,6 @@ const onClickAddAll = () => {
     result.set(key, sortBy(list, r => r.code))
 
   selectedCountriesVisible.value = result
-
   selectRef.value.clearSelection()
   updateValue()
 }
