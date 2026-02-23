@@ -71,6 +71,9 @@ export const light: ThemeDefinition = {
     // Theme specific
     'theme-overlay-multiplier': 1,
 
+    'c-table-head-bg': COLORS.light['grey-600'],
+    'c-table-head-opacity': 0.08,
+
     // Layouts
     'island-layout-bg': '#181C2E',
     'island-page-bg': '#F9F9FA',
@@ -151,6 +154,9 @@ export const dark: ThemeDefinition = {
 
     // Theme specific
     'theme-overlay-multiplier': 1,
+
+    'c-table-head-bg': COLORS.light['grey-200'],
+    'c-table-head-opacity': 0.08,
 
     // Layouts
     'island-layout-bg': '#13151F',
