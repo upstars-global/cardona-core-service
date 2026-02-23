@@ -10,6 +10,7 @@ import { withPopper } from '../helpers/selectPopper'
 import { ModalsIds } from '../@model/enums/modal'
 import { useRegionsStore } from '../stores/regions'
 import RemoveModal from './BaseModal/RemoveModal.vue'
+import type { RegionsRequestFilter } from 'cardona-core-service/src/@model/regions'
 
 const props = defineProps<{
   modelValue: Array<string>
@@ -71,6 +72,19 @@ const selectedCountriesList = computed(() => [...selectedCountriesVisible.value.
 
 onBeforeMount(async () => {
   regions.value = await regionsStore.fetchRegionList({})
+
+  //TODO Мой костыль нужно решить как Костя вернется. Задача BAC-7387
+  if(props.presetCodes) {
+    const keyRegionsPreset = props.presetCodes.map(item => item.countryCode)
+    let newRegions = {} as Record<string, RegionInfo>
+
+    for(const regionKey of Object.keys(regions.value)) {
+      if(keyRegionsPreset.includes(regions.value[regionKey].countryCode))
+        newRegions[regionKey] = regions.value[regionKey]
+    }
+
+    regions.value = newRegions
+  }
 
   if (props.modelValue.isNotEmpty) {
     let list = props.modelValue
@@ -146,12 +160,6 @@ const updateValue = () => {
 const onClickAddAll = () => {
   const result = new Map<string, RegionInfo[]>()
   let allRegions = Object.values(regions.value)
-
-  //TODO Мой костыль нужно решить как Костя вернется. Задача BAC-7387
-  if(props.presetCodes) {
-    const keyRegionsPreset = props.presetCodes.map(item => item.countryCode)
-    allRegions = allRegions.filter(item => keyRegionsPreset.includes(item.countryCode))
-  }
 
   for (const region of allRegions) {
     const key = region.countryName
