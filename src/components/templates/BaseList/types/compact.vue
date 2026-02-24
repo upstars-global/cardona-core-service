@@ -1331,7 +1331,6 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         right: 0;
         width: 8px;
         height: var(--c-table-th-height);
-        background: rgba(var(--v-c-table-head-bg), 1);
         pointer-events: none;
         z-index: 1;
       }
@@ -1371,7 +1370,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               position: sticky;
               top: 0;
               z-index: 2;
-              background: rgba(var(--v-c-table-head-bg), var(--v-c-table-head-opacity, 1));;
+              background: rgba(var(--v-c-table-head-bg), var(--v-c-table-head-opacity, 1));
               border-top: 1px solid rgba(var(--v-theme-grey-200), 1);
               border-bottom: 1px solid rgba(var(--v-theme-grey-200), 1);
             }
