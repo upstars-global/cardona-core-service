@@ -43,6 +43,7 @@ const countriesRadioModel = ref(countriesType.Ban)
 const selectedCountries = ref([])
 const selectedCountriesVisible = ref(new Map())
 const regions = ref<Record<string, RegionInfo>>({})
+const regionsPreset = ref<Record<string, RegionInfo>>({})
 
 const isCountry = (region: RegionInfo) => region.code === region.countryCode
 
@@ -82,7 +83,7 @@ onBeforeMount(async () => {
         newRegions[regionKey] = regions.value[regionKey]
     }
 
-    regions.value = newRegions
+    regionsPreset.value = newRegions
   }
 
   if (props.modelValue.isNotEmpty) {
@@ -158,7 +159,7 @@ const updateValue = () => {
 
 const onClickAddAll = () => {
   const result = new Map<string, RegionInfo[]>()
-  let allRegions = Object.values(regions.value)
+  let allRegions = Object.values(props.presetCodes ? regionsPreset.value : regions.value)
 
   for (const region of allRegions) {
     const key = region.countryName
@@ -258,6 +259,16 @@ const singleMode = computed(() => props.allowedOnly || props.bannedOnly)
 
 const keyID = Math.random()
 
+const isVisiblePresetOptions = computed(() => {
+  if (!props.presetCodes)
+    return true
+
+  const allRegionsPresetCodes = Object.values(regionsPreset.value).map(item => item.code)
+  const lengthSelected = allRegionsPresetCodes.filter(item => selectedCountriesList.value.includes(item)).length
+
+  return !(lengthSelected == allRegionsPresetCodes.length)
+})
+
 defineExpose({
   selectedCountriesVisibleView,
   onSelectItem,
@@ -301,7 +312,7 @@ defineExpose({
 
         <div>
           <VBtn
-            v-if="addAllBtn && regionsOptions.isNotEmpty"
+            v-if="addAllBtn && regionsOptions.isNotEmpty && isVisiblePresetOptions"
             :variant="VVariants.Tonal"
             :size="VSizes.Small"
             :disabled="disabled"
