@@ -74,6 +74,9 @@ body[data-layout="island"] {
   }
 
   .v-data-table.c-table {
+    .default-cell-value {
+      color: rgba(var(--v-theme-on-surface));
+    }
     .c-table__header-cell {
 
       .c-table__header-cell-icon-wrapper {
