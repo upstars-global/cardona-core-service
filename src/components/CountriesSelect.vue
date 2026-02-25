@@ -73,13 +73,13 @@ const selectedCountriesList = computed(() => [...selectedCountriesVisible.value.
 onBeforeMount(async () => {
   regions.value = await regionsStore.fetchRegionList({})
 
-  //TODO Мой костыль нужно решить как Костя вернется. Задача BAC-7387
-  if(props.presetCodes) {
+  // TODO Мой костыль нужно решить как Костя вернется. Задача BAC-7387
+  if (props.presetCodes) {
     const keyRegionsPreset = props.presetCodes.map(item => item.countryCode)
-    let newRegions = {} as Record<string, RegionInfo>
+    const newRegions = {} as Record<string, RegionInfo>
 
-    for(const regionKey of Object.keys(regions.value)) {
-      if(keyRegionsPreset.includes(regions.value[regionKey].countryCode))
+    for (const regionKey of Object.keys(regions.value)) {
+      if (keyRegionsPreset.includes(regions.value[regionKey].countryCode))
         newRegions[regionKey] = regions.value[regionKey]
     }
 
@@ -159,7 +159,7 @@ const updateValue = () => {
 
 const onClickAddAll = () => {
   const result = new Map<string, RegionInfo[]>()
-  let allRegions = Object.values(props.presetCodes ? regionsPreset.value : regions.value)
+  const allRegions = Object.values(props.presetCodes ? regionsPreset.value : regions.value)
 
   for (const region of allRegions) {
     const key = region.countryName
