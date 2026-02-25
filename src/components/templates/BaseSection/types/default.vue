@@ -43,6 +43,7 @@ const props = withDefaults(defineProps<{
 const emits = defineEmits<{
   (event: 'on-cancel'): void
   (event: 'on-save'): void
+  (event: 'on-receive-entity'): any
 }>()
 
 const modal = inject('modal')
@@ -108,6 +109,11 @@ const onFetchFormData = async () => {
       type: entityName,
       id: entityId,
       customApiPrefix: props.config?.customApiPrefix,
+    })
+
+    emits('on-receive-entity', {
+      ...receivedEntity,
+      id: entityId,
     })
 
     if (isCreatePage) {
@@ -431,6 +437,5 @@ defineExpose({
         </Form>
       </template>
     </BaseSectionLoading>
-
   </div>
 </template>
