@@ -21,6 +21,7 @@ const props = defineProps<{
   customDescription?: string
   required?: boolean
   addAllBtn?: boolean
+  presetCodes?: RegionInfo[]
 }>()
 
 const emits = defineEmits<{
@@ -42,6 +43,7 @@ const countriesRadioModel = ref(countriesType.Ban)
 const selectedCountries = ref([])
 const selectedCountriesVisible = ref(new Map())
 const regions = ref<Record<string, RegionInfo>>({})
+const regionsPreset = ref<Record<string, RegionInfo>>({})
 
 const isCountry = (region: RegionInfo) => region.code === region.countryCode
 
@@ -70,6 +72,19 @@ const selectedCountriesList = computed(() => [...selectedCountriesVisible.value.
 
 onBeforeMount(async () => {
   regions.value = await regionsStore.fetchRegionList({})
+
+  //TODO Мой костыль нужно решить как Костя вернется. Задача BAC-7387
+  if(props.presetCodes) {
+    const keyRegionsPreset = props.presetCodes.map(item => item.countryCode)
+    let newRegions = {} as Record<string, RegionInfo>
+
+    for(const regionKey of Object.keys(regions.value)) {
+      if(keyRegionsPreset.includes(regions.value[regionKey].countryCode))
+        newRegions[regionKey] = regions.value[regionKey]
+    }
+
+    regionsPreset.value = newRegions
+  }
 
   if (props.modelValue.isNotEmpty) {
     let list = props.modelValue
@@ -144,7 +159,7 @@ const updateValue = () => {
 
 const onClickAddAll = () => {
   const result = new Map<string, RegionInfo[]>()
-  const allRegions = Object.values(regions.value)
+  let allRegions = Object.values(props.presetCodes ? regionsPreset.value : regions.value)
 
   for (const region of allRegions) {
     const key = region.countryName
@@ -177,7 +192,6 @@ const onClickAddAll = () => {
     result.set(key, sortBy(list, r => r.code))
 
   selectedCountriesVisible.value = result
-
   selectRef.value.clearSelection()
   updateValue()
 }
@@ -245,6 +259,16 @@ const singleMode = computed(() => props.allowedOnly || props.bannedOnly)
 
 const keyID = Math.random()
 
+const isVisiblePresetOptions = computed(() => {
+  if (!props.presetCodes)
+    return true
+
+  const allRegionsPresetCodes = Object.values(regionsPreset.value).map(item => item.code)
+  const lengthSelected = allRegionsPresetCodes.filter(item => selectedCountriesList.value.includes(item)).length
+
+  return !(lengthSelected == allRegionsPresetCodes.length)
+})
+
 defineExpose({
   selectedCountriesVisibleView,
   onSelectItem,
@@ -288,7 +312,7 @@ defineExpose({
 
         <div>
           <VBtn
-            v-if="addAllBtn && regionsOptions.isNotEmpty"
+            v-if="addAllBtn && regionsOptions.isNotEmpty && isVisiblePresetOptions"
             :variant="VVariants.Tonal"
             :size="VSizes.Small"
             :disabled="disabled"
