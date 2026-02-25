@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<{
 const emits = defineEmits<{
   (event: 'on-cancel'): void
   (event: 'on-save'): void
-  (event: 'on-receive-entity'): any
+  (event: 'on-receive-entity', payload: any, isForAnotherProject: boolean): any
 }>()
 
 const modal = inject('modal')
@@ -105,6 +105,8 @@ const form = ref()
 
 const onFetchFormData = async () => {
   try {
+    const forProject = route.query?.forProject || ''
+
     const receivedEntity = await actionRead({
       type: entityName,
       id: entityId,
@@ -114,12 +116,10 @@ const onFetchFormData = async () => {
     emits('on-receive-entity', {
       ...receivedEntity,
       id: entityId,
-    })
+    }, Boolean(forProject))
 
     if (isCreatePage) {
       receivedEntity.id = null
-
-      const forProject = route.query?.forProject || ''
 
       await router.replace({
         name: route.name,
