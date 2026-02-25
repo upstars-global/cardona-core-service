@@ -250,6 +250,7 @@ const onSave = async (isStay?: boolean) => {
       await onFetchFormData()
   }
   catch (e) {
+    console.error(e)
     if (e?.validationErrors?.[0])
       setTabError(e.validationErrors[0]?.field, form)
   }
