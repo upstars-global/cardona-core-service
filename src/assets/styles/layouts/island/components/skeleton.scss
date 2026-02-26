@@ -1,10 +1,6 @@
 @mixin apply {
-  .v-skeleton-loader__bone::after {
-    background: linear-gradient(
-        90deg,
-        rgba(var(--v-theme-surface), 0),
-        rgba(var(--v-theme-surface), 0.5),
-        rgba(var(--v-theme-surface), 1),
-        rgba(var(--v-island-skeleton), var(--v-hover-opacity))
-    ) !important;  }
+
+  .v-skeleton-loader .v-skeleton-loader__avatar, .v-skeleton-loader .v-skeleton-loader__button, .v-skeleton-loader .v-skeleton-loader__chip, .v-skeleton-loader .v-skeleton-loader__divider, .v-skeleton-loader .v-skeleton-loader__heading, .v-skeleton-loader .v-skeleton-loader__image, .v-skeleton-loader .v-skeleton-loader__ossein, .v-skeleton-loader .v-skeleton-loader__text {
+    background: rgba(var(--v-theme-on-surface), var(--v-pressed-opacity));
+  }
 }
