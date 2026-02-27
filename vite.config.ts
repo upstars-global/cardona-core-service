@@ -1,4 +1,5 @@
 import { fileURLToPath } from 'node:url'
+import { resolve } from 'node:path'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -25,6 +26,9 @@ export default defineConfig({
       exclude: ['**/demo', '**/permission'],
     }),
     vue({
+      script: {
+        defineModel: true,
+      },
       template: {
         compilerOptions: {
           isCustomElement: tag => tag === 'swiper-container' || tag === 'swiper-slide',
@@ -72,6 +76,9 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './vitest.setup.ts',
     css: false,
+    alias: {
+      'tus-js-client': resolve(__dirname, 'tests/__mocks__/tus-js-client.ts'),
+    },
     deps: {
       inline: ['vuetify'],
     },
