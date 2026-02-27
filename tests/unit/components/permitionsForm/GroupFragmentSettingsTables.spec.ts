@@ -5,7 +5,8 @@ import {
   checkExistPermissionCheckbox,
   mockPermissions,
   permissionsConfig,
-  switchAllIsDisabled, testCheckboxDisabledState,
+  switchAllNotDisabled,
+  testCheckboxDisabledState,
   updateValueForPermissionInput,
 } from '../../templates/shared-tests/permission-table'
 import GroupFragmentSettingsTables from '../../../../src/components/permitionsForm/GroupFragmentSettingsTables.vue'
@@ -91,6 +92,6 @@ describe('GroupFragmentSettings.vue', () => {
     testOn.isCalledEmitEventValue({ wrapper }, { event: 'change', value: [], index: 1 })
 
     /// Is disabled switch all
-    switchAllIsDisabled(wrapper)
+    switchAllNotDisabled(wrapper)
   })
 })

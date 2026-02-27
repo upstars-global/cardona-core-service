@@ -93,11 +93,11 @@ describe('GroupFragmentSettingsTable.vue', () => {
     })
   })
 
-  it('Switch all is disabled by checked checkbox', async () => {
+  it('Switch all is not disabled by checked checkbox', async () => {
     const wrapper = getMountGroupFragmentSettingsTable(props)
 
     /// All permissions are checked
-    switchAllIsDisabled(wrapper)
+    switchAllNotDisabled(wrapper)
 
     await updateValueForPermissionInput({ wrapper, testId: 'permission-checkbox-test-1' }, false)
 
@@ -105,21 +105,21 @@ describe('GroupFragmentSettingsTable.vue', () => {
     switchAllNotDisabled(wrapper)
   })
 
-  it('Switch all is disabled by switch', async () => {
+  it('Switch all is not disabled by switch', async () => {
     const wrapper = getMountGroupFragmentSettingsTable(props)
 
-    switchAllIsDisabled(wrapper)
+    switchAllNotDisabled(wrapper)
 
     await updateValueForPermissionInput({ wrapper, testId: testIds.switchTestExport }, false)
 
     switchAllNotDisabled(wrapper)
   })
 
-  it('Switch all is disabled after set value true', async () => {
+  it('Switch all is not disabled after set value true', async () => {
     const wrapper = getMountGroupFragmentSettingsTable(props)
 
     /// Check base state
-    switchAllIsDisabled(wrapper)
+    switchAllNotDisabled(wrapper)
 
     /// Make switch all unchecked
     await updateValueForPermissionInput({ wrapper, testId: testIds.switchTestExport }, false)
@@ -132,7 +132,7 @@ describe('GroupFragmentSettingsTable.vue', () => {
     await updateValueForPermissionInput({ wrapper, testId: testIds.switchAll }, true)
 
     /// Check that switch all is disabled
-    switchAllIsDisabled(wrapper)
+    switchAllNotDisabled(wrapper)
   })
 
   it('Call event on set value permission checkbox', async () => {
