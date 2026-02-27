@@ -44,6 +44,11 @@ export const light: ThemeDefinition = {
     // Border
     'border-focused': '#4C4BD8',
     'border-system': '#E9E9F0',
+
+    // skeleton
+    'skeleton-primary': '#D8D8DA',
+    'skeleton-secondary': '#FFFFFF',
+    'skeleton-bg': '#84819D',
   },
   variables: {
     // Border
@@ -128,6 +133,11 @@ export const dark: ThemeDefinition = {
     // Border
     'border-focused': '#5957DF',
     'border-system': '#373645',
+
+    // skeleton
+    'skeleton-primary': '#D8D8DA',
+    'skeleton-secondary': '#FFFFFF',
+    'skeleton-bg': '#ADABBE',
   },
   variables: {
     // Border
