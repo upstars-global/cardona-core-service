@@ -8,44 +8,14 @@
   .v-skeleton-loader .v-skeleton-loader__image,
   .v-skeleton-loader .v-skeleton-loader__ossein,
   .v-skeleton-loader .v-skeleton-loader__text {
-    background: rgba(--v-theme-skeleton-bg, 0.16)
+    background: rgba(var(--v-theme-skeleton-bg), var(--v-pressed-opacity))
   }
 
   .v-skeleton-loader__bone::after {
     background: linear-gradient(270deg,
-      rgba(--v-theme-skeleton-primary, 0.80) 13.65%,
-      rgba(--v-theme-skeleton-secondary, 0.80) 29.12%,
-      rgba(--v-theme-skeleton-primary, 0.80) 41.76%,
-      rgba(--v-theme-skeleton-primary, 0.00) 99.62%) !important;
+      rgba(var(--v-theme-skeleton-primary), 0.80) 13.65%,
+      rgba(var(--v-theme-skeleton-secondary), 0.80) 29.12%,
+      rgba(var(--v-theme-skeleton-primary), 0.80) 41.76%,
+      rgba(var(--v-theme-skeleton-primary), 0.00) 99.62%) !important;
   }
 }
-
-
-
-
-//--v-theme-skeleton-primary
-//--v-theme-skeleton-secondary
-
-//216, 216, 218 → #D8D8DA
-//255, 255, 255 → #FFFFFF
-
-/// DARK
-//background: linear-gradient(270deg,
-//rgba(--v-theme-skeleton-primary, 0.80) 13.65%,
-//rgba(--v-theme-skeleton-secondary, 0.80) 29.12%,
-//rgba(--v-theme-skeleton-primary, 0.80) 41.76%,
-//rgba(--v-theme-skeleton-primary, 0.00) 99.62%);
-
-/// Gradient background
-// background: rgba(--v-theme-skeleton-bg, 0.16)
-
-
-/// LIGHT
-// background: linear-gradient(270deg,
-// rgba(--v-theme-skeleton-primary, 0.80) 13.65%,
-// rgba(--v-theme-skeleton-secondary, 0.80) 29.12%,
-// rgba(--v-theme-skeleton-primary, 0.80) 41.76%,
-// rgba(--v-theme-skeleton-primary, 0.00) 99.62%);
-
-/// Gradient background
-// #84819D
