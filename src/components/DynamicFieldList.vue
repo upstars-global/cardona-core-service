@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
-import { debounce } from 'lodash'
+import { debounce, isBoolean } from 'lodash'
 import FieldGenerator from '../components/templates/FieldGenerator/index.vue'
 import type { NumberOrString } from '../@model'
 import { IconsList } from '../@model/enums/icons'
@@ -131,7 +131,9 @@ const disableAddFiled = computed(() =>
 )
 
 /// TODO ADD TEST
-const getFieldCol = (key: string): number | string => {
+const getFieldCol = (key: string): number | string | boolean => {
+  if (isBoolean(props.fieldCol))
+    return props.fieldCol
   if (typeof props.fieldCol === 'string' || typeof props.fieldCol === 'number')
     return props.fieldCol
 
@@ -140,7 +142,7 @@ const getFieldCol = (key: string): number | string => {
 </script>
 
 <template>
-  <div>
+  <div class="dynamic-field-list">
     <VRow v-if="templateField && !hideLabelOnEmptyList">
       <VCol
         v-if="isBaseField(templateField)"
@@ -232,20 +234,26 @@ const getFieldCol = (key: string): number | string => {
       </VCol>
     </VRow>
 
-    <VBtn
+    <slot
       v-if="!disabled"
-      :size="VSizes.Small"
-      :variant="VVariants.Outlined"
-      :color="VColors.Secondary"
-      class="mt-50"
+      name="btn-add"
       :disabled="disableAddFiled"
-      data-test-id="button-add"
-      @click="onAdd"
+      :add="onAdd"
     >
-      <VIcon :icon="IconsList.PlusIcon" />
+      <VBtn
+        :size="VSizes.Small"
+        :variant="VVariants.Outlined"
+        :color="VColors.Secondary"
+        class="mt-50"
+        :disabled="disableAddFiled"
+        data-test-id="button-add"
+        @click="onAdd"
+      >
+        <VIcon :icon="IconsList.PlusIcon" />
 
-      <span class="text-nowrap"> {{ $t('action.add') }} </span>
-    </VBtn>
+        <span class="text-nowrap"> {{ $t('action.add') }} </span>
+      </VBtn>
+    </slot>
   </div>
 </template>
 
