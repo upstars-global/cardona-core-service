@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
-import { debounce } from 'lodash'
+import { debounce, isBoolean } from 'lodash'
 import FieldGenerator from '../components/templates/FieldGenerator/index.vue'
 import type { NumberOrString } from '../@model'
 import { IconsList } from '../@model/enums/icons'
@@ -130,8 +130,9 @@ const disableAddFiled = computed(() =>
   ].some(Boolean),
 )
 
-/// TODO ADD TEST
-const getFieldCol = (key: string): number | string => {
+const getFieldCol = (key: string): number | string | boolean => {
+  if (isBoolean(props.fieldCol))
+    return props.fieldCol
   if (typeof props.fieldCol === 'string' || typeof props.fieldCol === 'number')
     return props.fieldCol
 
