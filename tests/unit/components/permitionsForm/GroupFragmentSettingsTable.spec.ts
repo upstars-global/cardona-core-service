@@ -93,46 +93,45 @@ describe('GroupFragmentSettingsTable.vue', () => {
     })
   })
 
-  it('Switch all is disabled by checked checkbox', async () => {
+  it('Switch all is not disabled when all permissions are checked', async () => {
     const wrapper = getMountGroupFragmentSettingsTable(props)
 
-    /// All permissions are checked
-    switchAllIsDisabled(wrapper)
+    /// All permissions are checked — switch-all should remain enabled
+    switchAllNotDisabled(wrapper)
 
     await updateValueForPermissionInput({ wrapper, testId: 'permission-checkbox-test-1' }, false)
 
-    /// Check that switch all is not disabled
+    /// Check that switch all is still not disabled
     switchAllNotDisabled(wrapper)
   })
 
-  it('Switch all is disabled by switch', async () => {
+  it('Switch all is not disabled after unchecking switch permission', async () => {
     const wrapper = getMountGroupFragmentSettingsTable(props)
 
-    switchAllIsDisabled(wrapper)
+    switchAllNotDisabled(wrapper)
 
     await updateValueForPermissionInput({ wrapper, testId: testIds.switchTestExport }, false)
 
     switchAllNotDisabled(wrapper)
   })
 
-  it('Switch all is disabled after set value true', async () => {
+  it('Switch all is not disabled after toggle', async () => {
     const wrapper = getMountGroupFragmentSettingsTable(props)
 
-    /// Check base state
-    switchAllIsDisabled(wrapper)
+    /// Check base state — not disabled
+    switchAllNotDisabled(wrapper)
 
     /// Make switch all unchecked
     await updateValueForPermissionInput({ wrapper, testId: testIds.switchTestExport }, false)
 
-    /// Check that switch all is disabled
+    /// Still not disabled
     switchAllNotDisabled(wrapper)
 
     /// Make switch all checked
-
     await updateValueForPermissionInput({ wrapper, testId: testIds.switchAll }, true)
 
-    /// Check that switch all is disabled
-    switchAllIsDisabled(wrapper)
+    /// Still not disabled after setting to true
+    switchAllNotDisabled(wrapper)
   })
 
   it('Call event on set value permission checkbox', async () => {
