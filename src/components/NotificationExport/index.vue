@@ -59,11 +59,7 @@ const onChangeMenuState = () => {
 const disableNotificationToast = (value: INotificationReportItem) => !value || !reportIsReady(value.status) || props.userId !== value.emitter.id
 
 watch(() => notificationExportStore.getNotificationList, newVal => {
-  console.log('newVal', newVal)
-
   newVal.forEach(value => {
-    console.log('value', value)
-
     if (disableNotificationToast(value) || !value.isShowNotify)
       return
 
