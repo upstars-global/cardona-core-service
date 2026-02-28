@@ -1,46 +1,41 @@
 import type { ThemeDefinition } from 'vuetify'
+import { COLORS } from './colors'
 
 export const staticPrimaryColor = '#6D60F0'
-export const grey800 = '#373645'
-export const grey900 = '#1F1C32'
-const grey200 = '#E9E9F0'
 
 export const themes: Record<string, ThemeDefinition> = {
   light: {
     dark: false,
     colors: {
-      'primary': staticPrimaryColor, /// !TODO ADD ALSO TO DARK
+      'primary': staticPrimaryColor,
       'primary-300': '#A9A2F6',
       'on-primary': '#fff',
-      'secondary': '#787A80', /// !TODO ADD ALSO TO DARK
+      'secondary': '#787A80',
       'on-secondary': '#fff',
-      'success': '#0DB157', /// !TODO ADD ALSO TO DARK
+      'success': '#0DB157',
       'on-success': '#fff',
-      'info': '#3B83F7', /// !TODO ADD ALSO TO DARK
+      'info': '#3B83F7',
       'on-info': '#fff',
-      'warning': '#F08C35', /// !TODO ADD ALSO TO DARK
+      'warning': '#F08C35',
       'on-warning': '#fff',
-      'error': '#EA3D3E', /// !TODO ADD ALSO TO DARK
+      'error': '#EA3D3E',
       'background': '#F9F9FA',
-      'on-background': grey900,
+      'on-background': COLORS.light['grey-900'],
       'on-surface': '#2F2B3D',
-
-      /// !TODO ADD ALSO TO DARK - start
-      'grey-50': '#FAFAFA',
-      'grey-100': '#F4F4F7',
-      'grey-200': grey200,
-      'grey-300': '#D2D1DB',
-      'grey-400': '#ADABBE',
-      'grey-500': '#84819D',
-      'grey-600': '#615E78',
-      'grey-700': '#4A485B',
-      'grey-800': grey800,
-      'grey-900': grey900,
-      'body': grey900,
+      'grey-50': COLORS.light['grey-50'],
+      'grey-100': COLORS.light['grey-100'],
+      'grey-200': COLORS.light['grey-200'],
+      'grey-300': COLORS.light['grey-300'],
+      'grey-400': COLORS.light['grey-400'],
+      'grey-500': COLORS.light['grey-500'],
+      'grey-600': COLORS.light['grey-600'],
+      'grey-700': COLORS.light['grey-700'],
+      'grey-800': COLORS.light['grey-800'],
+      'grey-900': COLORS.light['grey-900'],
+      'body': COLORS.light['grey-900'],
       'extra-body': '#F9F9FA',
       'border-color': '#2F2B3D',
 
-      /// !TODO ADD ALSO TO DARK - end >
       'perfect-scrollbar-thumb': '#DBDADE',
       'skin-bordered-background': '#fff',
       'skin-bordered-surface': '#fff',
@@ -50,7 +45,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'table-bg': '#EFEFF0',
       'code-color': '#d400ff',
       'overlay-scrim-background': '#4C4E64',
-      'tooltip-background': grey800,
+      'tooltip-background': COLORS.light['grey-800'],
       'overlay-scrim-opacity': 0.5,
       'hover-opacity': 0.04,
       'focus-opacity': 0.12,
@@ -78,18 +73,6 @@ export const themes: Record<string, ThemeDefinition> = {
 
       // Table
       'c-table-head-bg': '#EFEFF0',
-
-      // Layouts
-      'island-layout-bg': '#181C2E',
-      'island-page-bg': '#F9F9FA',
-      'island-menu-section-color': '#E9E9F0',
-      'island-menu-item-color': '#F4F4F7',
-      'island-project-select-color': '#E7E9F6',
-      'island-project-select-bg': '#2F3349',
-      'island-card-bg': '#FFFFFF',
-      'island-border-color': grey200,
-      'island-text-general': '#353347',
-
     },
   },
   dark: {
@@ -108,28 +91,30 @@ export const themes: Record<string, ThemeDefinition> = {
       'on-warning': '#fff',
       'error': '#EA5455',
       'background': '#25293C',
-      'on-background': '#E7E9F6',
+      'on-background': COLORS.dark['grey-900'],
       'surface': '#2F3349',
       'on-surface': '#D0D4F1',
-      'grey-50': '#26293A',
-      'grey-100': '#2F3349',
-      'grey-200': '#26293A',
-      'grey-300': '#4A5072',
-      'grey-400': '#5E6692',
-      'grey-500': '#7983BB',
-      'grey-600': '#AAB3DE',
-      'grey-700': '#B6BEE3',
-      'grey-800': '#CFD3EC',
-      'grey-900': '#E7E9F6',
-      'perfect-scrollbar-thumb': '#4A5072',
-      'skin-bordered-background': '#2f3349',
-      'skin-bordered-surface': '#2f3349',
+
+      'grey-50': COLORS.dark['grey-50'],
+      'grey-100': COLORS.dark['grey-100'],
+      'grey-200': COLORS.dark['grey-200'],
+      'grey-300': COLORS.dark['grey-300'],
+      'grey-400': COLORS.dark['grey-400'],
+      'grey-500': COLORS.dark['grey-500'],
+      'grey-600': COLORS.dark['grey-600'],
+      'grey-700': COLORS.dark['grey-700'],
+      'grey-800': COLORS.dark['grey-800'],
+      'grey-900': COLORS.dark['grey-900'],
+
+      'perfect-scrollbar-thumb': COLORS.dark['grey-300'],
+      'skin-bordered-background': '#2F3349',
+      'skin-bordered-surface': '#2F3349',
     },
     variables: {
       'table-bg': '#3D4155',
       'code-color': '#d400ff',
       'overlay-scrim-background': '#101121',
-      'tooltip-background': '#5E6692',
+      'tooltip-background': COLORS.dark['grey-400'],
       'overlay-scrim-opacity': 0.6,
       'hover-opacity': 0.04,
       'focus-opacity': 0.12,
@@ -153,17 +138,6 @@ export const themes: Record<string, ThemeDefinition> = {
 
       // Table
       'c-table-head-bg': '#242532',
-
-      // Layouts
-      'island-layout-bg': '#13151F',
-      'island-page-bg': '#0E1017',
-      'island-menu-section-color': grey200,
-      'island-menu-item-color': '#F4F4F7',
-      'island-project-select-color': '#E7E9F6',
-      'island-project-select-bg': '#2F3349',
-      'island-card-bg': '#161822',
-      'island-border-color': '#3A3C50',
-      'island-text-general': '#D5D5DE',
     },
   },
 }
