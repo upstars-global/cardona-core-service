@@ -45,7 +45,6 @@ const callToast = ({
   showToast({
     entityName,
     downloadHandler: () => notificationExportStore.downloadReport(reportId),
-    reportId,
   })
 }
 
@@ -59,16 +58,21 @@ const onChangeMenuState = () => {
 
 const disableNotificationToast = (value: INotificationReportItem) => !value || !reportIsReady(value.status) || props.userId !== value.emitter.id
 
-watch(() => notificationExportStore.getLastNotification, newVal => {
-  if (disableNotificationToast(newVal))
-    return
-
+watch(() => notificationExportStore.getNotificationList, newVal => {
   console.log('newVal', newVal)
-  console.log('watch', newVal?.reportId)
 
-  callToast({
-    entityName: t(`notificationReport.entityType.${newVal?.entityType}`),
-    reportId: newVal?.reportId,
+  newVal.forEach(value => {
+    console.log('value', value)
+
+    if (disableNotificationToast(value) || !value.isShowNotify)
+      return
+
+    callToast({
+      entityName: t(`notificationReport.entityType.${value?.entityType}`),
+      reportId: value?.reportId,
+    })
+
+    value.isShowNotify = false
   })
 }, { deep: true })
 

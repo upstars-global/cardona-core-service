@@ -41,12 +41,7 @@ export const useNotificationExportStore = defineStore('notification-export', {
     existingNotifications: () => (userId: number) => notificationList.value
       .filter(item => item?.status === NotificationStatuses.Done && item.emitter.id === userId)
       .isNotEmpty,
-    getLastNotification: () => {
-      console.log('getLastNotification', notificationList.value)
-      console.log('notificationList.value[notificationList.value.length - 1]', notificationList.value[notificationList.value.length - 1])
-
-      return notificationList.value[notificationList.value.length - 1]
-    },
+    getNotificationList: () => notificationList.value,
   },
   actions: {
     resetNotifications() {
@@ -58,7 +53,7 @@ export const useNotificationExportStore = defineStore('notification-export', {
     async createWSData({ data, emitter }: WSChanelPayload) {
       data.emitter = emitter
 
-      notificationList.value = upsert<INotificationReportItem>(notificationList.value, data)
+      notificationList.value = upsert<INotificationReportItem>(notificationList.value, { ...data, isShowNotify: true })
       this.downloadList = upsert<IDownloadListReportNotificationItem | INotificationReportItem>(this.downloadList, data)
     },
     async downloadReport(reportId: number) {
