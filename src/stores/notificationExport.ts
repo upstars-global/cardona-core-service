@@ -41,7 +41,12 @@ export const useNotificationExportStore = defineStore('notification-export', {
     existingNotifications: () => (userId: number) => notificationList.value
       .filter(item => item?.status === NotificationStatuses.Done && item.emitter.id === userId)
       .isNotEmpty,
-    getLastNotification: () => notificationList.value[notificationList.value.length - 1],
+    getLastNotification: () => {
+      console.log('getLastNotification', notificationList.value)
+      console.log('notificationList.value[notificationList.value.length - 1]', notificationList.value[notificationList.value.length - 1])
+
+      return notificationList.value[notificationList.value.length - 1]
+    },
   },
   actions: {
     resetNotifications() {

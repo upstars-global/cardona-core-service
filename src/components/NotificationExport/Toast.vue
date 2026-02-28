@@ -18,12 +18,16 @@ interface Props {
     endMessage: string
     entityName: string
     textButton: string
+    reportId: number
   }
 }
 </script>
 
 <template>
-  <div class="toastification">
+  <div
+    :key="options.reportId"
+    class="toastification"
+  >
     <div class="d-flex align-items-start gap-2">
       <div class="contnet-wrapper">
         <div class="d-flex flex-grow-1 font-weight-medium">

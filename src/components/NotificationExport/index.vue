@@ -45,6 +45,7 @@ const callToast = ({
   showToast({
     entityName,
     downloadHandler: () => notificationExportStore.downloadReport(reportId),
+    reportId,
   })
 }
 
@@ -61,6 +62,10 @@ const disableNotificationToast = (value: INotificationReportItem) => !value || !
 watch(() => notificationExportStore.getLastNotification, newVal => {
   if (disableNotificationToast(newVal))
     return
+
+  console.log('newVal', newVal)
+  console.log('watch', newVal?.reportId)
+
   callToast({
     entityName: t(`notificationReport.entityType.${newVal?.entityType}`),
     reportId: newVal?.reportId,
