@@ -2,6 +2,7 @@
 import { computed, inject, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
+import { useUserStore } from 'cardona-core-service/src/stores/user'
 import { IconsList } from '../../../../@model/enums/icons'
 import { checkExistsPage, transformFormData } from '../../../../helpers'
 import { basePermissions } from '../../../../helpers/base-permissions'
@@ -48,6 +49,7 @@ const emits = defineEmits<{
 
 const modal = inject('modal')
 const loaderStore = useLoaderStore()
+const userStore = useUserStore()
 const baseSectionErrorStore = useBaseSectionErrorsStore()
 const route = useRoute()
 const router = useRouter()
@@ -112,6 +114,12 @@ const onFetchFormData = async () => {
       id: entityId,
       customApiPrefix: props.config?.customApiPrefix,
     })
+
+    if (forProject) {
+      const specificProject = userStore.getSpecificProject(forProject)
+
+      userStore.setSelectedProject(specificProject)
+    }
 
     emits('on-receive-entity', {
       ...receivedEntity,
