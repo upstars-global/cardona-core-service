@@ -14,6 +14,7 @@ const props = defineProps<{
 const checkeds = ref(props.tables.map(() => false))
 const checked = ref(false)
 const panel = ref(0)
+const tableRef = ref<InstanceType<typeof GroupFragmentSettingsTable> | null>(null)
 
 const updateAllChecked = (index, val) => {
   checkeds.value[index] = val
@@ -24,6 +25,14 @@ watch(checked, val => {
   if (val)
     checkeds.value = checkeds.value.map(() => true)
 })
+
+const onUpdateFullAccess = (state: boolean) => {
+  if (!state) {
+    tableRef.value?.forEach(ref => {
+      ref.onUpdateFullAccess(state)
+    })
+  }
+}
 </script>
 
 <template>
@@ -48,12 +57,12 @@ watch(checked, val => {
             >
               <VSwitch
                 v-model="checked"
-                :readonly="checked"
-                :disabled="disabled || checked"
+                :disabled="disabled"
                 :color="VColors.Primary"
                 :label="$t('permission.fullAccess')"
                 data-test-id="switch-all"
                 @click.stop
+                @update:model-value="onUpdateFullAccess"
               />
             </div>
           </div>
@@ -74,6 +83,7 @@ watch(checked, val => {
               {{ item.title }}
             </p>
             <GroupFragmentSettingsTable
+              ref="tableRef"
               :permissions="item.permissions"
               :title="item.title"
               not-header

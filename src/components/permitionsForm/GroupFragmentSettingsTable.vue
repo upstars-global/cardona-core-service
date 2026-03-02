@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, defineExpose, nextTick, ref, watch } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 import { VColors } from '../../@model/vuetify'
@@ -53,7 +53,7 @@ const searchLevel = (permission: PermissionUpdatableTable, val: string) => {
   return levelAccessTable
 }
 
-const getMaxValue = (permission: PermissionUpdatableTable) => {
+const getMaxValue = (permission: PermissionUpdatableTable): number => {
   switch (permission.type) {
     case 'switch':
       return permission?.forAccessLevelValue || 1
@@ -92,6 +92,14 @@ watch(
     }
   },
 )
+
+const onUpdateFullAccess = (state: boolean) => {
+  if (!state) {
+    props.permissions.forEach(permission => {
+      changeAccess(permission, 0)
+    })
+  }
+}
 
 const changeAccess = (permission: PermissionUpdatableTable, access: number) => {
   permission.changeAccess(access)
@@ -155,6 +163,10 @@ const onChangeCheckboxTable = (
   changeAccess(permission, level)
   onChangeTrigger(permission)
 }
+
+defineExpose({
+  onUpdateFullAccess,
+})
 </script>
 
 <template>
@@ -185,10 +197,10 @@ const onChangeCheckboxTable = (
             <VSwitch
               v-model="checked"
               data-test-id="switch-all"
-              :readonly="checked"
-              :disabled="disabled || checked"
+              :disabled="disabled"
               :color="VColors.Primary"
               :label="$t('permission.fullAccess')"
+              @update:model-value="onUpdateFullAccess"
             />
           </div>
         </div>
