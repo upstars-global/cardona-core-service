@@ -31,6 +31,10 @@ export const vuetify = createVuetify({
 vi.mock('*.css', () => ({}))
 vi.mock('*.scss', () => ({}))
 
+vi.mock('tus-js-client', () => ({
+  Upload: vi.fn(),
+}))
+
 vi.mock('./src/helpers/clipboard', () => ({
   copyToClipboard: vi.fn(),
 }))
