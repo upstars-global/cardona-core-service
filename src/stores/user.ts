@@ -9,7 +9,7 @@ import { AllPermission, Permission } from '../@model/permission'
 import type { PermissionGroup } from '../@model/enums/permissions'
 import { productsName } from '../configs/productsName'
 import { storageKeys } from '../configs/storage'
-import { productId, productName } from '@productConfig'
+import { productName } from '@productConfig'
 
 export const fetchCurrentUserApi = async () => {
   const { data } = await ApiService.request({
@@ -68,7 +68,9 @@ export const useUserStore = defineStore('user', {
       ),
 
     userProjects: state => state.userInfo?.projects || [],
+    isExistsProjects: ({ userInfo }) => !!userInfo?.projects?.length,
     userProducts: state => state.userInfo.products,
+    isExistsGroups: ({ userInfo }) => !!userInfo?.groups?.length,
 
     selectedProjectWithoutPriority: state => {
       const projects = state.userInfo.projects
@@ -83,7 +85,6 @@ export const useUserStore = defineStore('user', {
 
     isNeocore: () => productName === productsName.neocore,
     isMarbella: () => productName === productsName.marbella,
-    isExistsCurrentProduct: ({ userInfo }) => !!userInfo.products.find(product => product.id === productId),
     projectsBySelectedProduct() {
       return this.userProjects
         ?.filter(item => item?.productId === this.selectedProductComputed?.id)
