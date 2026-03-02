@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { TextareaBaseField } from '../../../../@model/templates/baseField'
 import AppTextarea from '../../../../@core/components/app-form-elements/AppTextarea.vue'
 
@@ -39,7 +39,7 @@ const autoHeight = computed(() => props.field?.autoHeight
 const textareaField = ref(null)
 
 const onInput = () => {
-  const textareaWrapper = textareaField.value?.textarea.$el
+  const textareaWrapper = (textareaField.value as any)?.textarea.$el
 
   if (textareaWrapper) {
     textareaWrapper.style.height = 'auto'
@@ -62,6 +62,44 @@ watch(() => localModelValue.value, () => {
 }, {
   immediate: true,
   deep: true,
+})
+
+let resizeObserver: ResizeObserver | null = null
+let previousWidth = 0
+
+const setupResizeObserver = () => {
+  if (!props.field?.autoHeight)
+    return
+
+  const textareaWrapper = (textareaField.value as any)?.textarea.$el
+
+  if (!textareaWrapper)
+    return
+
+  previousWidth = textareaWrapper.offsetWidth
+
+  resizeObserver = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const newWidth = entry.contentRect.width
+
+      if (newWidth !== previousWidth) {
+        previousWidth = newWidth
+        onInput()
+      }
+    }
+  })
+
+  resizeObserver.observe(textareaWrapper)
+}
+
+onMounted(() => {
+  if (props.field?.autoHeight)
+    nextTick(setupResizeObserver)
+})
+
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect()
+  resizeObserver = null
 })
 
 const handleKeydown = (event: KeyboardEvent) => {
