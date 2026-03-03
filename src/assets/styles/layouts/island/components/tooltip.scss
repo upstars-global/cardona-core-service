@@ -1,0 +1,8 @@
+@mixin apply {
+  .tooltip-text {
+    color: rgba(var(--v-theme-text-invert), var(--v-high-emphasis-opacity)) !important
+  }
+  .tooltip-text-secondary {
+    color: rgba(var(--v-theme-text-invert), var(--v-low-emphasis-opacity)) !important;
+  }
+}
