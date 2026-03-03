@@ -1,0 +1,3 @@
+name = "cardona-core-service"
+pages_build_output_dir = "./server/dist"
+compatibility_date = "2024-12-01"
