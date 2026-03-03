@@ -33,6 +33,7 @@ interface Props {
   field?: FieldConfig
   withPreview: boolean
   withoutLabel: boolean
+  withUpload?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -46,6 +47,7 @@ const props = withDefaults(defineProps<Props>(), {
   path: '',
   disabled: false,
   withoutLabel: false,
+  withUpload: true,
   modalId: ModalsId.UploadImage,
   field: () => ({
     id: '',
@@ -58,6 +60,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{
   (e: 'update:modelValue', value: string): void
   (e: 'input-path', value: string): void
+  (e: 'select-img', value: { path: string; publicPath: string }): void
 }>()
 
 const modal = inject('modal')
@@ -108,13 +111,15 @@ const openSelectModal = () => {
 const onFileUpload = async file => {
   try {
     const _path = `${props.path}/${file.name.replace(/\W/g, '_')}`
+    if (props.withUpload) {
+      const { publicPath } = await compostelaStore.uploadFile({
+        file,
+        path: _path,
+      })
 
-    const { publicPath } = await compostelaStore.uploadFile({
-      file,
-      path: _path,
-    })
-
-    urlFile.value = publicPath
+      urlFile.value = publicPath
+    }
+    console.log(_path)
     emits('input-path', _path)
   }
   catch (error) {
@@ -222,9 +227,11 @@ const isRequired = computed(() => !!props.field.rules?.required)
               v-model="urlFile"
               :path="path"
               :file="file"
+              :with-upload="withUpload"
               :on-upload-image-cb="onFileUpload"
               @set-path="onSetPath"
               @clear="onClickRemove"
+              @select-img="$emit('select-img', $event)"
             />
           </template>
         </BaseModal>

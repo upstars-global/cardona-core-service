@@ -14,7 +14,9 @@ const props = withDefaults(defineProps<{
   urlFile: string
   path: string
   isOnlyGallery: boolean
+  withUpload?: boolean
 }>(), {
+  withUpload: true,
   urlFile: '',
   path: '/',
   isOnlyGallery: false,
@@ -23,6 +25,7 @@ const props = withDefaults(defineProps<{
 const emits = defineEmits<{
   input: [value: string]
   inputPath: [value: string]
+  selectImg: [{ path: string; publicPath: string }]
 }>()
 
 const { t } = useI18n()
@@ -86,6 +89,7 @@ const fetchFilesStructure = async () => {
       updateTotal(pagination.total)
 
     if (data) {
+      // console.log(data)
       const newData = data.map(item => {
         const arrPath = item.path.split('/')
 
@@ -162,22 +166,25 @@ const setUrlFile = async (publicPathIMG, path) => {
 
     return
   }
+  emits('selectImg', { path, publicPath: publicPathIMG })
 
   if (propsPath === url.value) {
     emits('input', publicPathIMG)
     emits('inputPath', path)
   }
   else {
+    // console.log(publicPathIMG, path)
     const nameFileArr = path?.split('/')
     const nameFile = nameFileArr[nameFileArr.length - 1]
+    if (props.withUpload) {
+      const { publicPath } = await compostelaStore.uploadFile({
+        path: `${props.path}/${nameFile}`,
+        replace: path,
+      })
 
-    const { publicPath } = await compostelaStore.uploadFile({
-      path: `${props.path}/${nameFile}`,
-      replace: path,
-    })
-
-    goToCatalog(propsPath)
-    emits('input', publicPath)
+      goToCatalog(propsPath)
+      emits('input', publicPath)
+    }
     emits('inputPath', `${props.path}/${nameFile}`)
   }
 }
