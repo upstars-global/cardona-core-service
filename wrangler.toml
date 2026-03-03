@@ -1,9 +1,9 @@
-"$schema" = "./node_modules/wrangler/config-schema.json"
 name = "cardona-core-service"
-pages_build_output_dir = "./server/dist"
-# Set this to today's date
 compatibility_date = "2026-03-03"
-workers_dev = false
+pages_build_output_dir = "./server/dist"
 
-[env.staging]
+[env.production]
+name = "cardona-core-service"
+
+[env.preview]
 name = "cardona-core-service"
