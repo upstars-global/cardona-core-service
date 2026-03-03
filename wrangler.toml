@@ -1,6 +1,6 @@
 "$schema" = "./node_modules/wrangler/config-schema.json"
 name = "cardona-core-service"
-main = "./server/dist/index.html"
+pages_build_output_dir = "./server/dist"
 # Set this to today's date
 compatibility_date = "2026-03-03"
 workers_dev = false
