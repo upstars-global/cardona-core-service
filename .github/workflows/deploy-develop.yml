@@ -66,7 +66,7 @@ jobs:
         with:
           apiToken: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./server/dist --project-name=cardona-core-service --branch=develop
+          command: deploy --name=cardona-core-service --branch=develop
 
       - name: Get Deployment URL and Deployment Timestamp
         id: get-deploy-url
