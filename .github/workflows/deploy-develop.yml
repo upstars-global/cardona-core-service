@@ -57,7 +57,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./server/dist --project-name=cardona-core-service
 
       - name: Deploy app develop
@@ -65,7 +65,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./server/dist --project-name=cardona-core-service --branch=develop
 
       - name: Get Deployment URL and Deployment Timestamp

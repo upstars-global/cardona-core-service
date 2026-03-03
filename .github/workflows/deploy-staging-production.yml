@@ -73,7 +73,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./server/build-dist --project-name=cardona-core-service --branch=staging
 
       - name: Print deployment-url
@@ -125,7 +125,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./server/build-dist --project-name=cardona-core-service
 
       - name: Get Deployment URL and Deployment Timestamp
