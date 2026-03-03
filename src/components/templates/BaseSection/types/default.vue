@@ -107,19 +107,14 @@ const form = ref()
 
 const onFetchFormData = async () => {
   try {
-    const forProject = route.query?.forProject || ''
+    const { forProject, fromProject } = route?.query || { fromProject: '', forProject: '' }
 
     const receivedEntity = await actionRead({
       type: entityName,
       id: entityId,
       customApiPrefix: props.config?.customApiPrefix,
+      project: fromProject,
     })
-
-    if (forProject) {
-      const specificProject = userStore.getSpecificProject(forProject)
-
-      userStore.setSelectedProject(specificProject)
-    }
 
     emits('on-receive-entity', {
       ...receivedEntity,
