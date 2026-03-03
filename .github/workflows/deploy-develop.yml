@@ -52,21 +52,13 @@ jobs:
       - name: Build
         run: npm run build-cf
 
-      - name: Create Pages project (if not exists)
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
-          command: pages project create cardona-core-service --production-branch=master
-        continue-on-error: true
-
       - name: Deploy app
         id: deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./server/dist --project-name=cardona-core-service
+          command: deploy
 
       - name: Deploy app develop
         id: deploy-develop
@@ -74,7 +66,7 @@ jobs:
         with:
           apiToken: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./server/dist --project-name=cardona-core-service --branch=develop
+          command: deploy --branch=develop
 
       - name: Get Deployment URL and Deployment Timestamp
         id: get-deploy-url
