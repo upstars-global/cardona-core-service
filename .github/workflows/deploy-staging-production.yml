@@ -72,7 +72,7 @@ jobs:
         id: deploy-staging
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          apiToken: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./server/build-dist --project-name=cardona-core-service --branch=staging
 
@@ -124,7 +124,7 @@ jobs:
         id: deploy-production
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          apiToken: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./server/build-dist --project-name=cardona-core-service
 

@@ -56,7 +56,7 @@ jobs:
         id: deploy
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          apiToken: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./server/dist --project-name=cardona-core-service
 
@@ -64,7 +64,7 @@ jobs:
         id: deploy-develop
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          apiToken: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./server/dist --project-name=cardona-core-service --branch=develop
 
