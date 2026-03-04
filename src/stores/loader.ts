@@ -26,7 +26,6 @@ export const useLoaderStore = defineStore('loader', {
   },
   actions: {
     setLoaderOn(url: string) {
-      // console.log(this.$selectedProject)
       this.globalLoader = true
       this.loadingEndpoints.push(url)
     },
