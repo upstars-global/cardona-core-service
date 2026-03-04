@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useFavicon } from '@vueuse/core'
 import type { ProjectInfo } from '../../@model/project'
 import { IconsList } from '../../@model/enums/icons'
@@ -29,13 +29,11 @@ watch(() => selectProject.value.id, () => {
   useFavicon(faviconPath)
 }, { immediate: true })
 
-const HEADER_VALUE_MARBELLA_PROJECT = 'marbella_thor'
-
-watch(selectProject, project => {
+watch(() => selectProject.value, project => {
   if (!project || !isMarbella.value)
     return
   ApiService.setHeaders({
-    MarbellaProject: HEADER_VALUE_MARBELLA_PROJECT,
+    MarbellaProject: selectProject.value.alias,
   })
 }, {
   immediate: true,
@@ -161,3 +159,4 @@ watch(selectProject, project => {
   color: white;
 }
 </style>
+
