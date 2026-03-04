@@ -1,0 +1,21 @@
+@mixin apply {
+
+  .v-skeleton-loader .v-skeleton-loader__avatar,
+  .v-skeleton-loader .v-skeleton-loader__button,
+  .v-skeleton-loader .v-skeleton-loader__chip,
+  .v-skeleton-loader .v-skeleton-loader__divider,
+  .v-skeleton-loader .v-skeleton-loader__heading,
+  .v-skeleton-loader .v-skeleton-loader__image,
+  .v-skeleton-loader .v-skeleton-loader__ossein,
+  .v-skeleton-loader .v-skeleton-loader__text {
+    background: rgba(var(--v-theme-skeleton-bg), var(--v-pressed-opacity))
+  }
+
+  .v-skeleton-loader__bone::after {
+    background: linear-gradient(270deg,
+      rgba(var(--v-theme-skeleton-primary), 0.80) 13.65%,
+      rgba(var(--v-theme-skeleton-secondary), 0.80) 29.12%,
+      rgba(var(--v-theme-skeleton-primary), 0.80) 41.76%,
+      rgba(var(--v-theme-skeleton-primary), 0.00) 99.62%) !important;
+  }
+}
