@@ -159,4 +159,3 @@ watch(() => selectProject.value, project => {
   color: white;
 }
 </style>
-

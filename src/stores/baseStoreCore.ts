@@ -103,18 +103,24 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       type: string
       id: string
       customApiPrefix?: string
+      project?: string
     }): Promise<any> {
       const router = useRouter()
       const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 
       try {
+        let project = isNeocoreProduct ? this.$selectedProjectAlias : ''
+
+        if (payload.project)
+          project = payload.project
+
         const { data } = await ApiService.request({
           type: `${payload.customApiPrefix || ApiTypePrefix}${transformNameToType(
             payload.type,
           )}.Read`,
           data: {
             id: payload.id,
-            project: isNeocoreProduct ? this.$selectedProjectAlias : '',
+            project,
           },
         })
 
