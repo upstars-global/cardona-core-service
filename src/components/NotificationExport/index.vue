@@ -58,12 +58,17 @@ const onChangeMenuState = () => {
 
 const disableNotificationToast = (value: INotificationReportItem) => !value || !reportIsReady(value.status) || props.userId !== value.emitter.id
 
-watch(() => notificationExportStore.getLastNotification, newVal => {
-  if (disableNotificationToast(newVal))
-    return
-  callToast({
-    entityName: t(`notificationReport.entityType.${newVal?.entityType}`),
-    reportId: newVal?.reportId,
+watch(() => notificationExportStore.getNotificationList, newVal => {
+  newVal.forEach(value => {
+    if (disableNotificationToast(value) || !value.isShowNotify)
+      return
+
+    callToast({
+      entityName: t(`notificationReport.entityType.${value?.entityType}`),
+      reportId: value?.reportId,
+    })
+
+    value.isShowNotify = false
   })
 }, { deep: true })
 
