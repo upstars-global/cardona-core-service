@@ -1,4 +1,8 @@
+@use "./components" as island-componets;
+
 body[data-layout="island"] {
+  @include island-componets.apply;
+
   background-color: rgba(var(--v-island-layout-bg)) !important;
 
   .v-overlay-container {
@@ -38,38 +42,66 @@ body[data-layout="island"] {
   }
 
   .title-text-color {
-    color: rgba(var(--v-island-menu-section-color)) !important;
+    color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity)) !important;
+  }
+
+  .layout-nav-type-vertical .layout-vertical-nav .nav-group > :first-child::before {
+    background-color: rgba(var(--v-island-active-nav-bg), var(--v-hover-opacity)) !important;
   }
 
   .nav-group-label {
     .nav-item-icon, i.v-icon {
-      color: rgba(var(--v-island-menu-item-color)) !important;
+      color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity)) !important;
     }
   }
 
   .nav-item-title, .nav-item-title.nav-item-color {
-    color: rgba(var(--v-island-menu-item-color)) !important;
+    color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity)) !important;
   }
 
-  .select-field-color {
-    color: rgba(var(--v-island-project-select-color)) !important;
-  }
-
-  .project-select {
-    .vs__dropdown-toggle {
-      border-color: rgba(var(--v-island-project-select-color), var(--v-disabled-opacity)) !important;
-    }
-
-    .vs__dropdown-menu {
-      background-color: rgba(var(--v-island-project-select-bg)) !important;
+  .nav-link {
+    i {
+      color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity));
     }
   }
 
   .custom-menu {
-    border-color: rgba(var(--v-island-project-select-bg)) !important;
+    border-top: initial !important;
 
     .full-name {
       color: rgba(var(--v-island-menu-section-color));
+    }
+  }
+
+  .v-data-table.c-table {
+    .default-cell-value {
+      color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+    }
+    .c-table__header-cell {
+
+      .c-table__header-cell-icon-wrapper {
+        position: relative;
+        width: 1rem;
+        height: 2rem;
+        position: relative;
+        .c-table__header-cell-icon {
+          height: 1rem;
+          cursor: pointer;
+          position: absolute;
+          left: 50%;
+
+          &:first-child {
+            top: 2px;
+          }
+          &:last-child {
+            bottom: 2px;
+          }
+        }
+      }
+
+      .column-title {
+        color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity));
+      }
     }
   }
 
