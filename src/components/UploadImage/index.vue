@@ -33,7 +33,7 @@ interface Props {
   field?: FieldConfig
   withPreview: boolean
   withoutLabel: boolean
-  withUpload?: boolean
+  manualUpload?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -47,7 +47,7 @@ const props = withDefaults(defineProps<Props>(), {
   path: '',
   disabled: false,
   withoutLabel: false,
-  withUpload: true,
+  manualUpload: false,
   modalId: ModalsId.UploadImage,
   field: () => ({
     id: '',
@@ -61,6 +61,7 @@ const emits = defineEmits<{
   (e: 'update:modelValue', value: string): void
   (e: 'input-path', value: string): void
   (e: 'select-img', value: { path: string; publicPath: string }): void
+  (e: 'file-upload', value: File): void
 }>()
 
 const modal = inject('modal')
@@ -110,16 +111,19 @@ const openSelectModal = () => {
 
 const onFileUpload = async file => {
   try {
-    const _path = `${props.path}/${file.name.replace(/\W/g, '_')}`
-    if (props.withUpload) {
-      const { publicPath } = await compostelaStore.uploadFile({
-        file,
-        path: _path,
-      })
+    if (props.manualUpload) {
+      emits('file-upload', file)
 
-      urlFile.value = publicPath
+      return
     }
-    console.log(_path)
+    const _path = `${props.path}/${file.name.replace(/\W/g, '_')}`
+
+    const { publicPath } = await compostelaStore.uploadFile({
+      file,
+      path: _path,
+    })
+
+    urlFile.value = publicPath
     emits('input-path', _path)
   }
   catch (error) {
@@ -225,6 +229,7 @@ const isRequired = computed(() => !!props.field.rules?.required)
           <template #default>
             <ModalFileUpload
               v-model="urlFile"
+              :manual-upload="manualUpload"
               :path="path"
               :file="file"
               :on-upload-image-cb="onFileUpload"
