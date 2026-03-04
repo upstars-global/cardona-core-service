@@ -5,21 +5,17 @@ import FilesUpload from '../FilesUpload/FilesUpload.vue'
 import { IconsList } from '.././../@model/enums/icons'
 import FileGallery from './FileGallery.vue'
 
-withDefaults(defineProps<{
+defineProps<{
   modelValue: string
   path: string
   file: File
   isLoad: boolean
   onUploadImageCb: Function
-  withUpload?: boolean
-}>(), {
-  withUpload: true,
-})
+}>()
 
 const emits = defineEmits<{
   (e: 'upload-files', value: File): void
   (e: 'set-path', value: string): void
-  (e: 'select-img', value: { path: string; publicPath: string }): void
   (e: 'update:modelValue', value: string): void
   (e: 'clear'): void
 }>()
@@ -149,11 +145,9 @@ const currentTab = ref(tabs.new)
       <VWindowItem :value="tabs.selectImage">
         <FileGallery
           :url-file="modelValue"
-          :with-upload="withUpload"
           :path="path"
           @input="setUrlFile"
           @input-path="setPathFile"
-          @select-img="$emit('select-img', $event)"
         />
       </VWindowItem>
     </VWindow>
