@@ -12,6 +12,7 @@ export const useNotificationToast = () => {
     entityName: TranslateResult
   }) => {
     const TIMEOUT = 5000
+
     toast({
       component: NotificationExportToast,
       listeners: {

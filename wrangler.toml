@@ -1,0 +1,9 @@
+name = "cardona-core-service"
+compatibility_date = "2026-03-03"
+pages_build_output_dir = "./server/dist"
+
+[env.production]
+name = "cardona-core-service"
+
+[env.preview]
+name = "cardona-core-service"

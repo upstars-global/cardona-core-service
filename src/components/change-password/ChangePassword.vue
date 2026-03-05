@@ -40,6 +40,7 @@ const onCloseModal = () => {
 const baseSectionConfig = new BaseSectionConfig({
   withoutDeleteModal: true,
   withoutConfirmModal: true,
+  isModalSection: true,
 })
 </script>
 

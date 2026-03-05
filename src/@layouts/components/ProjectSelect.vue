@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useFavicon } from '@vueuse/core'
 import type { ProjectInfo } from '../../@model/project'
 import { IconsList } from '../../@model/enums/icons'
@@ -29,11 +29,11 @@ watch(() => selectProject.value.id, () => {
   useFavicon(faviconPath)
 }, { immediate: true })
 
-watch(selectProject, project => {
+watch(() => selectProject.value, project => {
   if (!project || !isMarbella.value)
     return
   ApiService.setHeaders({
-    MarbellaProject: project?.originProject?.alias,
+    MarbellaProject: selectProject.value.alias,
   })
 }, {
   immediate: true,

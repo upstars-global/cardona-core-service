@@ -62,6 +62,9 @@ import ProjectsFilter from '.././_components/ProjectsFilter.vue'
 import { mapSortData } from '.././сomposables/sorting'
 import { downloadReport } from '.././сomposables/export'
 import { transformFilters } from '.././сomposables/filters'
+import { useAppConfigCoreStore } from '../../../../stores/appConfigCore'
+import { useUserStore } from '../../../../stores/user'
+import { useFiltersStore } from '../../../../stores/filtersCore'
 
 defineOptions({
   name: 'DefaultBaseList',
@@ -83,11 +86,11 @@ const { toastError } = useToastService()
 const modal = inject('modal')
 const slots = useSlots()
 
+const appConfigCoreStore = useAppConfigCoreStore()
 const baseStoreCore = useBaseStoreCore()
+const filtersCoreStore = useFiltersStore()
 const loaderStore = useLoaderStore()
 const userStore = useUserStore()
-const appConfigCoreStore = useAppConfigCoreStore()
-const filtersCoreStore = useFiltersStore()
 
 const { t } = useI18n()
 
@@ -1283,7 +1286,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         </template>
 
         <template #empty>
-          <div class="d-flex flex-column justify-center align-center text-color-mute empty-state-wrapper">
+          <div class="d-flex flex-column justify-center empty-state-wrapper align-center text-color-mute text-color-label">
             <slot :name="BaseListSlots.Empty">
               <span>
                 {{ emptyListText }}
@@ -1332,7 +1335,6 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         right: 0;
         width: 8px;
         height: var(--c-table-th-height);
-        background: rgba(var(--v-c-table-head-bg), 1);
         pointer-events: none;
         z-index: 1;
       }
@@ -1372,14 +1374,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               position: sticky;
               top: 0;
               z-index: 2;
-              background: rgba(var(--v-c-table-head-bg), 1);
+              background: rgba(var(--v-c-table-head-bg), var(--v-c-table-head-opacity, 1));
               border-top: 1px solid rgba(var(--v-theme-grey-200), 1);
               border-bottom: 1px solid rgba(var(--v-theme-grey-200), 1);
             }
           }
 
           td {
-            border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
+            border-bottom: 1px solid rgba(var(--v-theme-border-system));
           }
         }
       }

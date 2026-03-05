@@ -1,0 +1,22 @@
+@mixin apply {
+
+  .select-field-color {
+    color: rgba(var(--v-island-project-select-color)) !important;
+  }
+
+  .project-select {
+    &:has(.vs--open) {
+      .vs__dropdown-toggle {
+        border-color: rgba(var(--v-theme-primary));
+      }
+    }
+
+    .vs__dropdown-toggle {
+      border-color: rgba(var(--v-island-project-select-color), var(--v-disabled-opacity));
+    }
+
+    .vs__dropdown-menu {
+      border: 1px solid rgb(var(--v-island-border-color))
+    }
+  }
+}
