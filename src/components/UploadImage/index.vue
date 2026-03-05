@@ -187,7 +187,7 @@ const isRequired = computed(() => !!props.field.rules?.required)
           </div>
         </div>
         <slot
-          v-else-if="!withPreview && urlFile"
+          v-else
           name="file-upload"
           :open-select-modal="openSelectModal"
         >
