@@ -64,6 +64,7 @@ export interface INotificationReportItem {
   ttl: string
   project: string
   emitter: ReportEmitter
+  isShowNotify: boolean
 }
 
 export interface INotificationEmitEvent {

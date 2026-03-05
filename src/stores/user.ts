@@ -48,7 +48,7 @@ export const useUserStore = defineStore('user', {
   getters: {
     getSelectedProject: state => {
       const projects = state.userInfo.projects
-      const defaultProject = projects[0]
+      const defaultProject = projects.find(({ productId }) => state.selectedProduct?.id === productId) || projects[0]
 
       const fromStorage = sessionStorage.getItem(storageKeys.selectedProjectId)
       const storedProject = projects.find(p => p.id === Number(fromStorage))
