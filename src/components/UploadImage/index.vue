@@ -113,6 +113,7 @@ const onFileUpload = async file => {
   try {
     if (props.manualUpload) {
       emits('file-upload', file)
+      modal.hideModal(selectModalId)
 
       return
     }
