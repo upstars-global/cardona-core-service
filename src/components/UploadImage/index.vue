@@ -31,6 +31,9 @@ interface Props {
   disabled?: boolean
   modalId?: string
   field?: FieldConfig
+  withPreview: boolean
+  withoutLabel: boolean
+  manualUpload?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -39,9 +42,12 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'banners',
   textBtn: i18n.t('uploadImg.textBtn'),
   dropPlaceholder: i18n.t('placeholder.dropFile'),
+  withPreview: true,
   value: '',
   path: '',
   disabled: false,
+  withoutLabel: false,
+  manualUpload: false,
   modalId: ModalsId.UploadImage,
   field: () => ({
     id: '',
@@ -54,6 +60,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{
   (e: 'update:modelValue', value: string): void
   (e: 'input-path', value: string): void
+  (e: 'select-img', value: { path: string; publicPath: string }): void
+  (e: 'file-upload', value: File): void
 }>()
 
 const modal = inject('modal')
@@ -103,6 +111,12 @@ const openSelectModal = () => {
 
 const onFileUpload = async file => {
   try {
+    if (props.manualUpload) {
+      emits('file-upload', file)
+      modal.hideModal(selectModalId)
+
+      return
+    }
     const _path = `${props.path}/${file.name.replace(/\W/g, '_')}`
 
     const { publicPath } = await compostelaStore.uploadFile({
@@ -136,13 +150,14 @@ const isRequired = computed(() => !!props.field.rules?.required)
     <template #default="{ errorMessage }">
       <div :id="`${field.id}-field`">
         <VLabel
+          v-if="!withoutLabel"
           class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between"
           :class="{ 'field-generator-label--required': isRequired }"
         >
           {{ label }}
         </VLabel>
         <div
-          v-if="urlFile"
+          v-if="urlFile && withPreview"
           class="img-file-block-inner d-flex justify-center align-center"
           :class="{ disabled }"
         >
@@ -171,15 +186,20 @@ const isRequired = computed(() => !!props.field.rules?.required)
             />
           </div>
         </div>
-        <FilesUpload
+        <slot
           v-else
-          :text-btn="textBtn"
-          :on-submit-callback="onFileUpload"
-          :max-size-file-mb="maxSizeFileMb"
-          :on-btn-click-callback="openSelectModal"
-          :disabled="disabled"
-          :is-error="errorMessage"
-        />
+          name="file-upload"
+          :open-select-modal="openSelectModal"
+        >
+          <FilesUpload
+            :text-btn="textBtn"
+            :on-submit-callback="onFileUpload"
+            :max-size-file-mb="maxSizeFileMb"
+            :on-btn-click-callback="openSelectModal"
+            :disabled="disabled"
+            :is-error="errorMessage"
+          />
+        </slot>
         <BaseModal
           :id="selectModalId"
           :title="$t('uploadImg.selectImage')"
@@ -210,11 +230,13 @@ const isRequired = computed(() => !!props.field.rules?.required)
           <template #default>
             <ModalFileUpload
               v-model="urlFile"
+              :manual-upload="manualUpload"
               :path="path"
               :file="file"
               :on-upload-image-cb="onFileUpload"
               @set-path="onSetPath"
               @clear="onClickRemove"
+              @select-img="$emit('select-img', $event)"
             />
           </template>
         </BaseModal>

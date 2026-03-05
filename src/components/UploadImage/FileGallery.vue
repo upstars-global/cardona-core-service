@@ -14,15 +14,18 @@ const props = withDefaults(defineProps<{
   urlFile: string
   path: string
   isOnlyGallery: boolean
+  manualUpload: boolean
 }>(), {
   urlFile: '',
   path: '/',
   isOnlyGallery: false,
+  manualUpload: false,
 })
 
 const emits = defineEmits<{
   input: [value: string]
   inputPath: [value: string]
+  selectImg: [value: { path: string; publicPath: string }]
 }>()
 
 const { t } = useI18n()
@@ -163,9 +166,10 @@ const setUrlFile = async (publicPathIMG, path) => {
     return
   }
 
-  if (propsPath === url.value) {
+  if (propsPath === url.value || props.manualUpload) {
     emits('input', publicPathIMG)
     emits('inputPath', path)
+    emits('selectImg', { path, publicPath: publicPathIMG })
   }
   else {
     const nameFileArr = path?.split('/')

@@ -128,6 +128,9 @@ class ApiService {
         responseType,
       } as AxiosRequestConfig)
 
+      if (responseType === 'blob' && data instanceof Blob)
+        return data
+
       if (data.error || (!data.data && !url.includes('report')))
         throw data.error
 
