@@ -18,12 +18,12 @@ const props = withDefaults(defineProps<Props>(), {
   }),
 })
 
+defineEmits([Action.Accept, Action.Cancel])
+
 enum Action {
   Accept = 'onAccept',
   Cancel = 'onCancel',
 }
-
-defineEmits([Action.Accept, Action.Cancel])
 
 interface ButtonConfig {
   label?: string
@@ -37,8 +37,6 @@ interface Props {
   accept: ButtonConfig
   cancel: ButtonConfig
 }
-
-
 
 const defaultAcceptProps = {
   label: '',
@@ -68,6 +66,7 @@ const cancelButtonConfig = computed(() => ({
 <template>
   <hr class="ma-0 mb-4">
   <div class="px-6 pb-4 d-flex justify-end items-center">
+    <slot name="start" />
     <VBtn
       v-bind="cancelButtonConfig"
       data-test-id="btn-cancel"
@@ -75,6 +74,7 @@ const cancelButtonConfig = computed(() => ({
     >
       {{ cancelButtonConfig?.label || $t('action.cancel') }}
     </VBtn>
+    <slot name="middle" />
     <VBtn
       class="ml-4"
       v-bind="acceptButtonConfig"
@@ -83,9 +83,6 @@ const cancelButtonConfig = computed(() => ({
     >
       {{ acceptButtonConfig?.label }}
     </VBtn>
+    <slot name="end" />
   </div>
 </template>
-
-<style scoped lang="scss">
-
-</style>

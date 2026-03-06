@@ -606,7 +606,8 @@
     "range_date": "The date range must contain two dates",
     "range_date_different": "Date from and to should be different",
     "positive": "The {_field_} field must be a positive number",
-    "date_format": "The entered value has an invalid format date. The format should be \n {format}"
+    "date_format": "The entered value has an invalid format date. The format should be \n {format}",
+    "big_decimal_max": "The {_field_} field must be {_max_} or less"
   },
   "toast": {
     "success": {
