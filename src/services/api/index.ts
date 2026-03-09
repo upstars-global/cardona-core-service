@@ -128,9 +128,6 @@ class ApiService {
         responseType,
       } as AxiosRequestConfig)
 
-      if (responseType === 'blob' && data instanceof Blob)
-        return data
-
       if (data.error || (!data.data && !url.includes('report')))
         throw data.error
 
@@ -146,6 +143,10 @@ class ApiService {
           entityName: i18n.t(`entities.${entityName}`),
         })
       }
+
+      //TODO НУЖНО ПОПРАВИТЬ!
+      if (responseType === 'blob' && data instanceof Blob && !withResponseHeaders)
+        return data
 
       if (cache)
         await this.setCache(cacheRequest, data, headers)
