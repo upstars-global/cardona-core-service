@@ -87,6 +87,7 @@ const appConfigCoreStore = useAppConfigCoreStore()
 const baseStoreCore = useBaseStoreCore()
 const filtersCoreStore = useFiltersStore()
 const loaderStore = useLoaderStore()
+const userStore = useUserStore()
 
 const { t } = useI18n()
 
@@ -455,7 +456,7 @@ const userProjects = computed<ProjectsFilterOption[]>(() => appConfigCoreStore.v
   title: name,
 })))
 
-const projectsFilter = ref<string[]>([useUserStore().getSelectedProject?.alias])
+const projectsFilter = ref<string[]>([userStore.getSelectedProject?.alias])
 
 // Filters
 const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
@@ -1294,7 +1295,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     </VCard>
 
     <div
-      v-if="items.isNotEmpty && config.pagination"
+      v-if="config.pagination"
       class="pt-6"
     >
       <ListPagination
