@@ -68,7 +68,9 @@ export const useUserStore = defineStore('user', {
       ),
 
     userProjects: state => state.userInfo?.projects || [],
+    isExistsProjects: ({ userInfo }) => !!userInfo?.projects?.length,
     userProducts: state => state.userInfo.products,
+    isExistsGroups: ({ userInfo }) => !!userInfo?.groups?.length,
 
     selectedProjectWithoutPriority: state => {
       const projects = state.userInfo.projects
