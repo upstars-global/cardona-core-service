@@ -1354,7 +1354,6 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     :deep(.v-table) {
       display: flex;
       flex-direction: column;
-      min-height: 0;
 
       .v-table__wrapper {
         &::-webkit-scrollbar {
