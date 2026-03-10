@@ -1,11 +1,13 @@
 @use "./skeleton" as skeleton;
 @use "./tooltip" as tooltip;
 @use "./project-select" as project-select;
+@use "./base-list" as base-list;
 
 @mixin apply {
   @include skeleton.apply;
   @include tooltip.apply;
   @include project-select.apply;
+  @include base-list.apply;
 
 
   $card-internal-radius: 12px;
