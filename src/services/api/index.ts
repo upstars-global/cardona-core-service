@@ -144,6 +144,10 @@ class ApiService {
         })
       }
 
+      //TODO НУЖНО ПОПРАВИТЬ!
+      if (responseType === 'blob' && data instanceof Blob && !withResponseHeaders)
+        return data
+
       if (cache)
         await this.setCache(cacheRequest, data, headers)
 

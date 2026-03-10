@@ -10,6 +10,8 @@ import { testOn } from '../templates/shared-tests/test-case-generator'
 
 type DynamicField = BaseField | Record<string, BaseField>
 
+type FieldCol = Record<string, number> | number | string | boolean
+
 interface Props {
   modelValue: DynamicField
   templateField: Function
@@ -17,7 +19,7 @@ interface Props {
   required?: boolean
   allowAddWithEmpty?: boolean
   hideLabelOnEmptyList?: boolean
-  fieldCol?: number | string
+  fieldCol?: FieldCol
 }
 
 const getMountComponent = setMountComponentWithGlobal<Props>(DynamicFieldList, {
@@ -191,6 +193,76 @@ describe('DynamicFieldList', () => {
     allFields.forEach((field, i) => {
       if (i === 0)
         testOn.notExistElement({ wrapper: field, testId: dataTestIds.buttonRemove(i) })
+    })
+  })
+
+  describe('getFieldCol', () => {
+    beforeEach(() => {
+      props.modelValue = [templateField()]
+    })
+
+    it('returns number value for all columns when fieldCol is a number', () => {
+      props.fieldCol = 6
+
+      const wrapper = getMountComponent(props)
+      const row = wrapper.find('.filed-list__item')
+
+      Object.keys(templateField()).forEach((_, col) => {
+        testOn.existClass({ wrapper: row, selector: getSelectorTestId(dataTestIds.rowCol(0, col)) }, 'v-col-md-6')
+      })
+    })
+
+    it('returns string value for all columns when fieldCol is a string', () => {
+      props.fieldCol = 'auto'
+
+      const wrapper = getMountComponent(props)
+      const row = wrapper.find('.filed-list__item')
+
+      Object.keys(templateField()).forEach((_, col) => {
+        testOn.existClass({ wrapper: row, selector: getSelectorTestId(dataTestIds.rowCol(0, col)) }, 'v-col-md-auto')
+      })
+    })
+
+    it('returns per-key width when fieldCol is an object', () => {
+      props.fieldCol = { text: 6, select: 3 }
+
+      const wrapper = getMountComponent(props)
+      const row = wrapper.find('.filed-list__item')
+
+      testOn.existClass({ wrapper: row, selector: getSelectorTestId(dataTestIds.rowCol(0, 0)) }, 'v-col-md-6')
+      testOn.existClass({ wrapper: row, selector: getSelectorTestId(dataTestIds.rowCol(0, 1)) }, 'v-col-md-3')
+    })
+
+    it('falls back to col-4 when fieldCol object is missing a key', () => {
+      props.fieldCol = { text: 6 }
+
+      const wrapper = getMountComponent(props)
+      const row = wrapper.find('.filed-list__item')
+
+      testOn.existClass({ wrapper: row, selector: getSelectorTestId(dataTestIds.rowCol(0, 0)) }, 'v-col-md-6')
+      testOn.existClass({ wrapper: row, selector: getSelectorTestId(dataTestIds.rowCol(0, 1)) }, 'v-col-md-4')
+    })
+
+    it('defaults to col-4 when fieldCol prop is not provided', () => {
+      const wrapper = getMountComponent(props)
+      const row = wrapper.find('.filed-list__item')
+
+      Object.keys(templateField()).forEach((_, col) => {
+        testOn.existClass({ wrapper: row, selector: getSelectorTestId(dataTestIds.rowCol(0, col)) }, 'v-col-md-4')
+      })
+    })
+
+    it('passes boolean false to column binding without adding md breakpoint class', () => {
+      props.fieldCol = false
+
+      const wrapper = getMountComponent(props)
+      const row = wrapper.find('.filed-list__item')
+
+      Object.keys(templateField()).forEach((_, col) => {
+        const colEl = row.find(getSelectorTestId(dataTestIds.rowCol(0, col)))
+
+        expect(colEl.classes().some(c => c.startsWith('v-col-md-'))).toBe(false)
+      })
     })
   })
 

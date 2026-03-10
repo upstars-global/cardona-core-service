@@ -437,6 +437,9 @@ export interface IBaseSectionConfig {
 
   /** initializeWithUpdate - Флаг для инициализации данных формы на основе update response  */
   readonly initializeWithUpdate?: boolean
+
+  //* *  noPermissions - Для отключения permission */
+  readonly noPermissions?: NoPermissions
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to base section model
@@ -452,6 +455,8 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly backToTheHistoryLast?: boolean
   readonly isModalSection?: boolean
   readonly initializeWithUpdate: boolean
+  readonly noPermissions?: NoPermissions
+
   constructor(data: IBaseSectionConfig) {
     this.permissionKey = data?.permissionKey
     this.onePermissionKey = data?.onePermissionKey
@@ -465,6 +470,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
     this.backToTheHistoryLast = data?.backToTheHistoryLast || false
     this.isModalSection = data?.isModalSection || false
     this.initializeWithUpdate = data?.initializeWithUpdate || false
+    this.noPermissions = data?.noPermissions ?? false
   }
 }
 

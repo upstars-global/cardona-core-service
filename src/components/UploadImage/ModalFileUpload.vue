@@ -11,11 +11,13 @@ defineProps<{
   file: File
   isLoad: boolean
   onUploadImageCb: Function
+  manualUpload?: boolean
 }>()
 
 const emits = defineEmits<{
   (e: 'upload-files', value: File): void
   (e: 'set-path', value: string): void
+  (e: 'select-img', value: { path: string; publicPath: string }): void
   (e: 'update:modelValue', value: string): void
   (e: 'clear'): void
 }>()
@@ -145,9 +147,11 @@ const currentTab = ref(tabs.new)
       <VWindowItem :value="tabs.selectImage">
         <FileGallery
           :url-file="modelValue"
+          :manual-upload="manualUpload"
           :path="path"
           @input="setUrlFile"
           @input-path="setPathFile"
+          @select-img="$emit('select-img', $event)"
         />
       </VWindowItem>
     </VWindow>
@@ -156,7 +160,7 @@ const currentTab = ref(tabs.new)
 
 <style lang="scss">
 .tabs-file-upload {
- width: 800px;
+  width: 800px;
 }
 
 .tabs-file-upload {
