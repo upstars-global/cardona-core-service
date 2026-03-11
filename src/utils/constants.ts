@@ -7,3 +7,6 @@ export const IS_DEV_ENV = process.env.NODE_ENV === 'development'
 export const EMIT_AFTER_ANIMATION_SIDEBAR = 200
 export const OPTIONS_PER_PAGE = 50
 export const LENS_PORT = 8765
+export const ERRORS = {
+  NOT_FOUND: 'NOT_FOUND',
+}
