@@ -6,4 +6,5 @@ export interface IRouterConfig {
   isPermissionGroup?: boolean
   isConvertName?: boolean
   withCard?: boolean
+  isSingleRoute?: boolean
 }
