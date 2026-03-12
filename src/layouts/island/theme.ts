@@ -91,6 +91,7 @@ export const light: ThemeDefinition = {
     'island-text-general': '#353347',
     'island-skeleton': COLORS.dark['grey-600'],
     'island-active-nav-bg': COLORS.light['grey-600'],
+    'base-list-border-radius': '1rem',
   },
 }
 
@@ -180,5 +181,6 @@ export const dark: ThemeDefinition = {
     'island-text-general': '#D5D5DE',
     'island-skeleton': COLORS.light['grey-200'],
     'island-active-nav-bg': COLORS.light['grey-200'],
+    'base-list-border-radius': '1rem',
   },
 }
