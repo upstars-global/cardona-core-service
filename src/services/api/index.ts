@@ -50,7 +50,7 @@ class ApiService {
   private static headers: RequestHeaders
 
   static setHeaders(headers: RequestHeaders): void {
-    ApiService.headers = headers
+    ApiService.headers = { ...ApiService.headers, ...headers }
   }
 
   static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}, retryCount = 0, retryDelay = 1000) {
