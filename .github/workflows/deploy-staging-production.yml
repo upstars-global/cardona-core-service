@@ -61,6 +61,9 @@ jobs:
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -70,6 +73,26 @@ jobs:
         with:
           name: build-dist
           path: ./server/build-dist
+
+      - name: Reset staging branch to master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MASTER_SHA="${{ github.sha }}"
+          echo "Master SHA: $MASTER_SHA"
+
+          echo "Удаляем ветку staging..."
+          curl -s -o /dev/null -X DELETE \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/git/refs/heads/staging"
+
+          echo "Создаём ветку staging из master..."
+          RESULT=$(curl -s -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://api.github.com/repos/${{ github.repository }}/git/refs" \
+            -d "{\"ref\": \"refs/heads/staging\", \"sha\": \"$MASTER_SHA\"}")
+          echo "$RESULT" | jq '{ref: .ref, sha: .object.sha}'
 
       - name: Deploy app staging
         id: deploy-staging
@@ -113,7 +136,7 @@ jobs:
             PAGE=$((PAGE + 1))
           done
 
-          OLD_DEPLOYMENT_IDS=$(echo "$ALL_DEPLOYMENTS" | jq -r 'sort_by(.created_on) | reverse | .[1:] | .[].id')
+          OLD_DEPLOYMENT_IDS=$(echo "$ALL_DEPLOYMENTS" | jq -r 'sort_by(.created_on) | reverse | .[3:] | .[].id')
 
           if [ -z "$OLD_DEPLOYMENT_IDS" ]; then
             echo "Старых деплоев для ветки 'staging' не найдено"
