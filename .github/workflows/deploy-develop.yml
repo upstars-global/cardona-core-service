@@ -11,6 +11,9 @@ jobs:
       matrix:
         node-version: [ 23 ]
 
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     permissions:
       # Required to checkout the code
       contents: read
@@ -25,15 +28,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
 
-      - name: Install yarn & install dependencies
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
+      - name: Install dependencies
+        run: yarn install
 
       - name: Test
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: test:coverage
+        run: yarn test:coverage
 
       - name: Debug Coverage Files
         run: ls -la coverage || echo "Coverage folder not found!"
