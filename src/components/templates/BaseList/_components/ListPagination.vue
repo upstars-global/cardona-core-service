@@ -7,6 +7,7 @@ interface Props {
   linkGen?: Function
   dataMeta: { from: number; to: number; of: number }
   small?: boolean
+  classShowing?: string
 }
 
 defineProps<Props>()
@@ -27,6 +28,7 @@ const currentPage = defineModel<number>()
       <span
         class="text-body-1 text-medium-emphasis	text-no-wrap"
         data-test-id="pagination-meta"
+        :class="classShowing"
       >
         {{ $t('pagination.showing', dataMeta) }}
       </span>

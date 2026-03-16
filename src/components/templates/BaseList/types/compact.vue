@@ -743,6 +743,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :data-meta="dataMeta"
         :small="config.small"
         @update:model-value="setPage"
+        class-showing="text-color-label"
       />
     </div>
     <VCard class="table-card-settings table-wrapper">
@@ -1306,6 +1307,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :data-meta="dataMeta"
         :small="config.small"
         @update:model-value="setPage"
+        class-showing="text-color-label"
       />
     </div>
   </div>
