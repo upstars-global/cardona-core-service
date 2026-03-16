@@ -1314,6 +1314,9 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 </template>
 
 <style lang="scss" scoped>
+
+$pagination-button-text-color: white;
+
 .compact__base-list {
   height: calc(100vh - 138px);
 
@@ -1389,6 +1392,16 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
   .empty-state-wrapper {
     padding: var(--compact__c-table-cell-padding);
+  }
+
+  :deep(.v-pagination) {
+    .v-pagination__item--is-active {
+      .v-btn {
+        &__content {
+          color: $pagination-button-text-color;
+        }
+      }
+    }
   }
 }
 </style>
