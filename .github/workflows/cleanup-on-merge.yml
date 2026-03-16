@@ -1,0 +1,77 @@
+name: Cleanup on PR merge
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+
+jobs:
+  cleanup:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    environment: develop
+
+    permissions:
+      # Required to delete the branch
+      contents: write
+
+    steps:
+      - name: Delete Cloudflare Pages branch deployments
+        env:
+          CF_API_TOKEN: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
+          CF_PROJECT_NAME: cardona-core-service
+          BRANCH_NAME: ${{ github.head_ref }}
+        run: |
+          echo "Удаляем деплои CF Pages для ветки: $BRANCH_NAME"
+
+          PAGE=1
+          ALL_IDS=""
+
+          while true; do
+            RESPONSE=$(curl -s -X GET \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments?page=$PAGE&per_page=25" \
+              -H "Authorization: Bearer $CF_API_TOKEN" \
+              -H "Content-Type: application/json")
+
+            SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
+            if [ "$SUCCESS" != "true" ]; then
+              echo "Ошибка при получении списка деплоев (страница $PAGE):"
+              echo "$RESPONSE" | jq '.errors'
+              exit 1
+            fi
+
+            PAGE_IDS=$(echo "$RESPONSE" | jq -r --arg branch "$BRANCH_NAME" \
+              '.result[] | select(.deployment_trigger.metadata.branch == $branch) | .id')
+            ALL_IDS="$ALL_IDS $PAGE_IDS"
+
+            COUNT=$(echo "$RESPONSE" | jq '.result | length')
+            if [ "$COUNT" -lt 25 ]; then
+              break
+            fi
+            PAGE=$((PAGE + 1))
+          done
+
+          ALL_IDS=$(echo "$ALL_IDS" | tr ' ' '\n' | grep -v '^$')
+
+          if [ -z "$ALL_IDS" ]; then
+            echo "Деплои для ветки '$BRANCH_NAME' не найдены — ничего удалять не нужно"
+            exit 0
+          fi
+
+          for DEPLOYMENT_ID in $ALL_IDS; do
+            echo "Удаляем деплой: $DEPLOYMENT_ID"
+            DELETE_RESPONSE=$(curl -s -X DELETE \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments/$DEPLOYMENT_ID?force=true" \
+              -H "Authorization: Bearer $CF_API_TOKEN" \
+              -H "Content-Type: application/json")
+            DELETE_SUCCESS=$(echo "$DELETE_RESPONSE" | jq -r '.success')
+            if [ "$DELETE_SUCCESS" != "true" ]; then
+              echo "Не удалось удалить деплой $DEPLOYMENT_ID:"
+              echo "$DELETE_RESPONSE" | jq '.errors'
+            else
+              echo "Деплой $DEPLOYMENT_ID успешно удалён"
+            fi
+          done
