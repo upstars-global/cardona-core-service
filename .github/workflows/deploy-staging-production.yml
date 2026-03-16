@@ -84,22 +84,33 @@ jobs:
         run: |
           echo "Удаляем старые деплои CF Pages для ветки: staging"
 
-          RESPONSE=$(curl -s -X GET \
-            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments" \
-            -H "Authorization: Bearer $CF_API_TOKEN" \
-            -H "Content-Type: application/json")
+          PAGE=1
+          ALL_DEPLOYMENTS='[]'
 
-          SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
-          if [ "$SUCCESS" != "true" ]; then
-            echo "Ошибка при получении списка деплоев:"
-            echo "$RESPONSE" | jq '.errors'
-            exit 1
-          fi
+          while true; do
+            RESPONSE=$(curl -s -X GET \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments?page=$PAGE&per_page=25" \
+              -H "Authorization: Bearer $CF_API_TOKEN" \
+              -H "Content-Type: application/json")
 
-          OLD_DEPLOYMENT_IDS=$(echo "$RESPONSE" | jq -r '
-            [.result[] | select(.deployment_trigger.metadata.branch == "staging")]
-            | sort_by(.created_on) | reverse | .[1:] | .[].id
-          ')
+            SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
+            if [ "$SUCCESS" != "true" ]; then
+              echo "Ошибка при получении списка деплоев (страница $PAGE):"
+              echo "$RESPONSE" | jq '.errors'
+              exit 1
+            fi
+
+            PAGE_DEPS=$(echo "$RESPONSE" | jq '[.result[] | select(.deployment_trigger.metadata.branch == "staging") | {id, created_on}]')
+            ALL_DEPLOYMENTS=$(echo "$ALL_DEPLOYMENTS" | jq --argjson page "$PAGE_DEPS" '. + $page')
+
+            COUNT=$(echo "$RESPONSE" | jq '.result | length')
+            if [ "$COUNT" -lt 25 ]; then
+              break
+            fi
+            PAGE=$((PAGE + 1))
+          done
+
+          OLD_DEPLOYMENT_IDS=$(echo "$ALL_DEPLOYMENTS" | jq -r 'sort_by(.created_on) | reverse | .[1:] | .[].id')
 
           if [ -z "$OLD_DEPLOYMENT_IDS" ]; then
             echo "Старых деплоев для ветки 'staging' не найдено"
