@@ -1283,7 +1283,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         </template>
 
         <template #empty>
-          <div class="d-flex flex-column justify-center empty-state-wrapper align-center text-color-mute text-color-label">
+          <div class="d-flex flex-column justify-center empty-state-wrapper align-center text-color-label">
             <slot :name="BaseListSlots.Empty">
               <span>
                 {{ emptyListText }}
