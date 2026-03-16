@@ -4,7 +4,7 @@ import type { AxiosError, AxiosInstance, AxiosRequestConfig } from '../../libs/a
 import axios from '../../libs/axios'
 import useToastService from '../../helpers/toasts'
 import { convertCamelCase } from '../../helpers'
-import { TOKEN_INVALID } from '../../utils/constants'
+import { ERRORS, TOKEN_INVALID } from '../../utils/constants'
 import { useLoaderStore } from '../../stores/loader'
 import { i18n } from '../../plugins/i18n/index'
 import { useAuthCoreStore } from '../../stores/authCore'
@@ -144,7 +144,7 @@ class ApiService {
         })
       }
 
-      //TODO НУЖНО ПОПРАВИТЬ!
+      // TODO НУЖНО ПОПРАВИТЬ!
       if (responseType === 'blob' && data instanceof Blob && !withResponseHeaders)
         return data
 
@@ -167,7 +167,7 @@ class ApiService {
       //   return this.request(payload, config, retryCount - 1, retryDelay * 2)
       // }
 
-      if (error?.type === 'NOT_FOUND')
+      if (withErrorNotFound && error?.type === ERRORS.NOT_FOUND)
         return router.push('/not-found')
 
       const isLoginPage: boolean = route?.name === 'Login' || route?.name === 'login'
@@ -186,7 +186,7 @@ class ApiService {
 
       // store.dispatch('addErrorUrl', url)
 
-      const notVisibleErrorToast = !withErrorNotFound && error?.type === 'NOT_FOUND'
+      const notVisibleErrorToast = !withErrorNotFound && error?.type === ERRORS.NOT_FOUND
       if (!notVisibleErrorToast) {
         if (withErrorToast)
           this.showError(error, entity, formRef, withErrorDescriptionToast)

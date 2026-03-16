@@ -27,28 +27,44 @@ jobs:
         run: |
           echo "Удаляем деплои CF Pages для ветки: $BRANCH_NAME"
 
-          RESPONSE=$(curl -s -X GET \
-            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments" \
-            -H "Authorization: Bearer $CF_API_TOKEN" \
-            -H "Content-Type: application/json")
+          PAGE=1
+          ALL_IDS=""
 
-          # Проверяем успешность запроса
-          SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
-          if [ "$SUCCESS" != "true" ]; then
-            echo "Ошибка при получении списка деплоев:"
-            echo "$RESPONSE" | jq '.errors'
-            exit 1
-          fi
+          while true; do
+            RESPONSE=$(curl -s -X GET \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments?page=$PAGE&per_page=25" \
+              -H "Authorization: Bearer $CF_API_TOKEN" \
+              -H "Content-Type: application/json")
 
-          DEPLOYMENT_IDS=$(echo "$RESPONSE" | jq -r --arg branch "$BRANCH_NAME" \
-            '.result[] | select(.deployment_trigger.metadata.branch == $branch) | .id')
+            SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
+            if [ "$SUCCESS" != "true" ]; then
+              echo "Ошибка при получении списка деплоев (страница $PAGE):"
+              echo "$RESPONSE" | jq '.errors'
+              exit 1
+            fi
 
-          if [ -z "$DEPLOYMENT_IDS" ]; then
+            echo "=== DEBUG: ветки на странице $PAGE ==="
+            echo "$RESPONSE" | jq -r '.result[] | "\(.id) | branch=\(.deployment_trigger.metadata.branch // "null") | aliases=\(.aliases // [] | join(","))"'
+
+            PAGE_IDS=$(echo "$RESPONSE" | jq -r --arg branch "$BRANCH_NAME" \
+              '.result[] | select(.deployment_trigger.metadata.branch == $branch) | .id')
+            ALL_IDS="$ALL_IDS $PAGE_IDS"
+
+            COUNT=$(echo "$RESPONSE" | jq '.result | length')
+            if [ "$COUNT" -lt 25 ]; then
+              break
+            fi
+            PAGE=$((PAGE + 1))
+          done
+
+          ALL_IDS=$(echo "$ALL_IDS" | tr ' ' '\n' | grep -v '^$' || true)
+
+          if [ -z "$ALL_IDS" ]; then
             echo "Деплои для ветки '$BRANCH_NAME' не найдены — ничего удалять не нужно"
             exit 0
           fi
 
-          for DEPLOYMENT_ID in $DEPLOYMENT_IDS; do
+          for DEPLOYMENT_ID in $ALL_IDS; do
             echo "Удаляем деплой: $DEPLOYMENT_ID"
             DELETE_RESPONSE=$(curl -s -X DELETE \
               "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments/$DEPLOYMENT_ID?force=true" \
