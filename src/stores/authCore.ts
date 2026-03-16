@@ -1,11 +1,15 @@
 import { defineStore } from 'pinia'
 import type { IAuthTokens } from 'axios-jwt'
 import { clearAuthTokens, setAuthTokens } from 'axios-jwt'
+import useToastService from '../helpers/toasts'
 import ApiService from '../services/api'
 import type { ILoginData } from '../@model/auth'
 import { checkIsLoggedIn } from '../helpers/token-auth'
 import { useUserStore } from '../stores/user'
+import { ERRORS } from '../utils/constants'
 import { useCookie } from '@core/composable/useCookie'
+
+const { toastError } = useToastService()
 
 export const useAuthCoreStore = defineStore('authCore', {
   state: () => ({
@@ -34,16 +38,25 @@ export const useAuthCoreStore = defineStore('authCore', {
       catch {}
     },
 
-    async login(authData: ILoginData) {
+    async login(authData: ILoginData): Promise<boolean> {
       try {
         const { data }: { data: IAuthTokens } = await ApiService.request({
           type: 'App.V2.Auth',
           data: authData,
+        }, {
+          withErrorNotFound: false,
         })
 
         await this.setAuth(data)
+
+        return true
       }
-      catch {}
+      catch (error) {
+        if (error?.type === ERRORS.NOT_FOUND)
+          toastError('NOT_FOUND_USER')
+
+        return false
+      }
     },
 
     async setAuth(data: IAuthTokens) {
