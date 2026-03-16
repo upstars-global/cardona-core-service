@@ -85,7 +85,7 @@ jobs:
           echo "Удаляем старые деплои CF Pages для ветки: staging"
 
           RESPONSE=$(curl -s -X GET \
-            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments?per_page=100" \
+            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments" \
             -H "Authorization: Bearer $CF_API_TOKEN" \
             -H "Content-Type: application/json")
 
