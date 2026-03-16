@@ -10,6 +10,9 @@ jobs:
       matrix:
         node-version: [ 23 ]
 
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     permissions:
       # Required to checkout the code
       contents: read
@@ -24,15 +27,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
 
-      - name: Install yarn & install dependencies
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
+      - name: Install dependencies
+        run: yarn install
 
       - name: Test
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: test:coverage
+        run: yarn test:coverage
 
       - name: Report Coverage
         if: always() # Also generate the report if tests are failing
@@ -58,6 +57,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     needs: build-core-service-staging
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -157,6 +160,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     needs: build-core-service-staging
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
