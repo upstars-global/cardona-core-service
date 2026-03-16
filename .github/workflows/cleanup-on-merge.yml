@@ -43,6 +43,9 @@ jobs:
               exit 1
             fi
 
+            echo "=== DEBUG: ветки на странице $PAGE ==="
+            echo "$RESPONSE" | jq -r '.result[] | "\(.id) | branch=\(.deployment_trigger.metadata.branch // "null") | aliases=\(.aliases // [] | join(","))"'
+
             PAGE_IDS=$(echo "$RESPONSE" | jq -r --arg branch "$BRANCH_NAME" \
               '.result[] | select(.deployment_trigger.metadata.branch == $branch) | .id')
             ALL_IDS="$ALL_IDS $PAGE_IDS"
@@ -54,7 +57,7 @@ jobs:
             PAGE=$((PAGE + 1))
           done
 
-          ALL_IDS=$(echo "$ALL_IDS" | tr ' ' '\n' | grep -v '^$')
+          ALL_IDS=$(echo "$ALL_IDS" | tr ' ' '\n' | grep -v '^$' || true)
 
           if [ -z "$ALL_IDS" ]; then
             echo "Деплои для ветки '$BRANCH_NAME' не найдены — ничего удалять не нужно"
