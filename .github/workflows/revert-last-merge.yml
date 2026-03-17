@@ -33,12 +33,12 @@ jobs:
           node-version: 22
 
       - name: Install @octokit/auth-app
-        run: npm install @octokit/auth-app
+        run: npm install --prefix /tmp/auth-app @octokit/auth-app
 
       - name: Get GitHub App Token
         run: |
           echo "${{ secrets.GH_APP_PRIVATE_KEY }}" > private-key.pem
-          TOKEN=$(node <<EOF
+          TOKEN=$(NODE_PATH=/tmp/auth-app/node_modules node <<EOF
           const { createAppAuth } = require("@octokit/auth-app");
           const { readFileSync } = require("fs");
           (async () => {
