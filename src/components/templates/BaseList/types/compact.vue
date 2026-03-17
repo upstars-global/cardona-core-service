@@ -774,7 +774,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               <VIcon
                 v-bind="attributes"
                 :icon="IconsList.ChevronDownIcon"
+
               />
+            </template>
+            <template #option="{label}">
+              <div class="d-flex align-center justify-space-between" v-if="label === perPage">
+                <span>{{label}}</span>
+                <VIcon :icon="IconsList.CheckIcon" />
+              </div>
             </template>
           </VueSelect>
         </div>

@@ -1,0 +1,24 @@
+@mixin apply {
+  .v-select.per-page-selector {
+    .vs__dropdown-toggle {
+      border: 1px solid rgba(var(--v-theme-surface-invert), var(--v-border-opacity));
+    }
+    .vs__open-indicator {
+      color: rgba(var(--v-theme-surface-invert));
+    }
+
+    .vs__selected-options {
+      .vs__selected {
+        color: rgba(var(--v-theme-surface-invert));
+      }
+    }
+    .vs__dropdown-menu {
+      .vs__dropdown-option--selected {
+        color: rgba(var(--v-theme-surface-invert)) !important;
+      }
+      .vs__dropdown-option--selected.vs__dropdown-option--highlight {
+        color: rgba(var(--v-theme-surface-invert)) !important;
+      }
+    }
+  }
+}
