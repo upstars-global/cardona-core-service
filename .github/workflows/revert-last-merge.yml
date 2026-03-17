@@ -1,0 +1,173 @@
+name: Revert last merged PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Номер PR для отката (оставьте пустым — откатит последний смёрдженный)'
+        required: false
+        type: string
+
+jobs:
+  revert:
+    runs-on: ubuntu-latest
+    environment: production
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install @octokit/auth-app
+        run: npm install @octokit/auth-app
+
+      - name: Get GitHub App Token
+        run: |
+          echo "${{ secrets.GH_APP_PRIVATE_KEY }}" > private-key.pem
+          TOKEN=$(node <<EOF
+          const { createAppAuth } = require("@octokit/auth-app");
+          const { readFileSync } = require("fs");
+          (async () => {
+            const auth = createAppAuth({
+              appId: "${{ secrets.GH_APP_ID }}",
+              privateKey: readFileSync("private-key.pem", "utf8"),
+              installationId: "${{ secrets.GH_INSTALLATION_ID }}"
+            });
+            const { token } = await auth({ type: "installation" });
+            console.log(token);
+          })();
+          EOF
+          )
+          rm -f private-key.pem
+          echo "::add-mask::$TOKEN"
+          echo "APP_TOKEN=$TOKEN" >> $GITHUB_ENV
+
+      - name: Find PR to revert
+        run: |
+          if [ -n "${{ inputs.pr_number }}" ]; then
+            echo "Используем указанный PR #${{ inputs.pr_number }}"
+            PR=$(curl -s \
+              -H "Authorization: Bearer $APP_TOKEN" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls/${{ inputs.pr_number }}")
+          else
+            echo "Ищем последний смёрдженный PR в master..."
+            PR=$(curl -s \
+              -H "Authorization: Bearer $APP_TOKEN" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls?state=closed&base=master&sort=updated&direction=desc&per_page=1" \
+              | jq '.[0]')
+          fi
+
+          MERGED_AT=$(echo "$PR" | jq -r '.merged_at')
+          if [ "$MERGED_AT" = "null" ]; then
+            echo "PR не был смёрджен — откат невозможен"
+            exit 1
+          fi
+
+          PR_NUMBER=$(echo "$PR" | jq -r '.number')
+          PR_BRANCH=$(echo "$PR" | jq -r '.head.ref')
+          MERGE_COMMIT=$(echo "$PR" | jq -r '.merge_commit_sha')
+
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+          echo "PR_BRANCH=$PR_BRANCH" >> $GITHUB_ENV
+          echo "MERGE_COMMIT=$MERGE_COMMIT" >> $GITHUB_ENV
+          echo "Найден PR #$PR_NUMBER | ветка: $PR_BRANCH | merge commit: $MERGE_COMMIT"
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:$APP_TOKEN@github.com/${{ github.repository }}.git"
+
+      - name: Restore PR branch
+        run: |
+          # ^2 — второй родитель merge commit = HEAD ветки до мерджа
+          BRANCH_SHA=$(git rev-parse "$MERGE_COMMIT^2")
+          echo "Восстанавливаем ветку '$PR_BRANCH' из $BRANCH_SHA"
+          git push origin "$BRANCH_SHA:refs/heads/$PR_BRANCH"
+          echo "Ветка '$PR_BRANCH' восстановлена"
+
+      - name: Revert merge commit on master
+        run: |
+          echo "Откатываем merge commit $MERGE_COMMIT на master..."
+          git revert -m 1 --no-edit "$MERGE_COMMIT"
+          git push origin master
+          echo "Откат выполнен"
+
+      - name: Reopen PR
+        run: |
+          RESULT=$(curl -s -X PATCH \
+            -H "Authorization: Bearer $APP_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER" \
+            -d '{"state": "open"}')
+          STATE=$(echo "$RESULT" | jq -r '.state')
+          if [ "$STATE" = "open" ]; then
+            echo "PR #$PR_NUMBER переоткрыт"
+          else
+            echo "Не удалось переоткрыть PR:"
+            echo "$RESULT" | jq '.message'
+          fi
+
+      - name: Delete CF Pages deployments for PR branch
+        env:
+          CF_API_TOKEN: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
+          CF_PROJECT_NAME: cardona-core-service
+        run: |
+          echo "Удаляем деплои CF Pages для ветки: $PR_BRANCH"
+
+          PAGE=1
+          ALL_IDS=""
+
+          while true; do
+            RESPONSE=$(curl -s -X GET \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments?page=$PAGE&per_page=25" \
+              -H "Authorization: Bearer $CF_API_TOKEN" \
+              -H "Content-Type: application/json")
+
+            SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
+            if [ "$SUCCESS" != "true" ]; then
+              echo "Ошибка при получении списка деплоев (страница $PAGE):"
+              echo "$RESPONSE" | jq '.errors'
+              exit 1
+            fi
+
+            PAGE_IDS=$(echo "$RESPONSE" | jq -r --arg branch "$PR_BRANCH" \
+              '.result[] | select(.deployment_trigger.metadata.branch == $branch) | .id')
+            ALL_IDS="$ALL_IDS $PAGE_IDS"
+
+            COUNT=$(echo "$RESPONSE" | jq '.result | length')
+            if [ "$COUNT" -lt 25 ]; then
+              break
+            fi
+            PAGE=$((PAGE + 1))
+          done
+
+          ALL_IDS=$(echo "$ALL_IDS" | tr ' ' '\n' | grep -v '^$' || true)
+
+          if [ -z "$ALL_IDS" ]; then
+            echo "Деплои для ветки '$PR_BRANCH' не найдены"
+          else
+            for DEPLOYMENT_ID in $ALL_IDS; do
+              echo "Удаляем деплой: $DEPLOYMENT_ID"
+              curl -s -X DELETE \
+                "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments/$DEPLOYMENT_ID?force=true" \
+                -H "Authorization: Bearer $CF_API_TOKEN" \
+                -H "Content-Type: application/json" > /dev/null
+              echo "Деплой $DEPLOYMENT_ID удалён"
+            done
+          fi
