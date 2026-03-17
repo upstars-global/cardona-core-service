@@ -81,10 +81,25 @@ jobs:
           PR_BRANCH=$(echo "$PR" | jq -r '.head.ref')
           MERGE_COMMIT=$(echo "$PR" | jq -r '.merge_commit_sha')
 
+          # Получаем SHA второго родителя merge commit через API (^2 = HEAD ветки до мерджа)
+          PARENTS=$(curl -s \
+            -H "Authorization: Bearer $APP_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/commits/$MERGE_COMMIT" \
+            | jq '.parents')
+
+          PARENT_COUNT=$(echo "$PARENTS" | jq 'length')
+          if [ "$PARENT_COUNT" -lt 2 ]; then
+            echo "PR #$PR_NUMBER был смёрджен через squash или rebase — нет второго родителя, восстановить ветку невозможно"
+            exit 1
+          fi
+
+          BRANCH_SHA=$(echo "$PARENTS" | jq -r '.[1].sha')
+
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
           echo "PR_BRANCH=$PR_BRANCH" >> $GITHUB_ENV
           echo "MERGE_COMMIT=$MERGE_COMMIT" >> $GITHUB_ENV
-          echo "Найден PR #$PR_NUMBER | ветка: $PR_BRANCH | merge commit: $MERGE_COMMIT"
+          echo "BRANCH_SHA=$BRANCH_SHA" >> $GITHUB_ENV
+          echo "Найден PR #$PR_NUMBER | ветка: $PR_BRANCH | merge commit: $MERGE_COMMIT | branch SHA: $BRANCH_SHA"
 
       - name: Configure git
         run: |
@@ -94,8 +109,6 @@ jobs:
 
       - name: Restore PR branch
         run: |
-          # ^2 — второй родитель merge commit = HEAD ветки до мерджа
-          BRANCH_SHA=$(git rev-parse "$MERGE_COMMIT^2")
           echo "Восстанавливаем ветку '$PR_BRANCH' из $BRANCH_SHA"
           git push origin "$BRANCH_SHA:refs/heads/$PR_BRANCH"
           echo "Ветка '$PR_BRANCH' восстановлена"
