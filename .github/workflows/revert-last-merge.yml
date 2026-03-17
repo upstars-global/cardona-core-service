@@ -81,25 +81,30 @@ jobs:
           PR_BRANCH=$(echo "$PR" | jq -r '.head.ref')
           MERGE_COMMIT=$(echo "$PR" | jq -r '.merge_commit_sha')
 
-          # Получаем SHA второго родителя merge commit через API (^2 = HEAD ветки до мерджа)
+          # Определяем тип мерджа и SHA для восстановления ветки
           PARENTS=$(curl -s \
             -H "Authorization: Bearer $APP_TOKEN" \
             "https://api.github.com/repos/${{ github.repository }}/commits/$MERGE_COMMIT" \
             | jq '.parents')
 
           PARENT_COUNT=$(echo "$PARENTS" | jq 'length')
-          if [ "$PARENT_COUNT" -lt 2 ]; then
-            echo "PR #$PR_NUMBER был смёрджен через squash или rebase — нет второго родителя, восстановить ветку невозможно"
-            exit 1
-          fi
 
-          BRANCH_SHA=$(echo "$PARENTS" | jq -r '.[1].sha')
+          if [ "$PARENT_COUNT" -ge 2 ]; then
+            # Regular merge — второй родитель это HEAD ветки до мерджа
+            BRANCH_SHA=$(echo "$PARENTS" | jq -r '.[1].sha')
+            MERGE_TYPE="merge"
+          else
+            # Squash merge — HEAD ветки берём из PR (оригинальный коммит до squash)
+            BRANCH_SHA=$(echo "$PR" | jq -r '.head.sha')
+            MERGE_TYPE="squash"
+          fi
 
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
           echo "PR_BRANCH=$PR_BRANCH" >> $GITHUB_ENV
           echo "MERGE_COMMIT=$MERGE_COMMIT" >> $GITHUB_ENV
           echo "BRANCH_SHA=$BRANCH_SHA" >> $GITHUB_ENV
-          echo "Найден PR #$PR_NUMBER | ветка: $PR_BRANCH | merge commit: $MERGE_COMMIT | branch SHA: $BRANCH_SHA"
+          echo "MERGE_TYPE=$MERGE_TYPE" >> $GITHUB_ENV
+          echo "Найден PR #$PR_NUMBER | ветка: $PR_BRANCH | тип мерджа: $MERGE_TYPE | merge commit: $MERGE_COMMIT | branch SHA: $BRANCH_SHA"
 
       - name: Configure git
         run: |
@@ -115,8 +120,12 @@ jobs:
 
       - name: Revert merge commit on master
         run: |
-          echo "Откатываем merge commit $MERGE_COMMIT на master..."
-          git revert -m 1 --no-edit "$MERGE_COMMIT"
+          echo "Откатываем $MERGE_TYPE commit $MERGE_COMMIT на master..."
+          if [ "$MERGE_TYPE" = "merge" ]; then
+            git revert -m 1 --no-edit "$MERGE_COMMIT"
+          else
+            git revert --no-edit "$MERGE_COMMIT"
+          fi
           git push origin master
           echo "Откат выполнен"
 
