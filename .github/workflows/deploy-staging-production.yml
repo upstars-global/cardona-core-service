@@ -10,6 +10,9 @@ jobs:
       matrix:
         node-version: [ 23 ]
 
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     permissions:
       # Required to checkout the code
       contents: read
@@ -24,15 +27,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
 
-      - name: Install yarn & install dependencies
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
+      - name: Install dependencies
+        run: yarn install
 
       - name: Test
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: test:coverage
+        run: yarn test:coverage
 
       - name: Report Coverage
         if: always() # Also generate the report if tests are failing
@@ -58,6 +57,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     needs: build-core-service-staging
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -68,6 +74,26 @@ jobs:
           name: build-dist
           path: ./server/build-dist
 
+      - name: Reset staging branch to master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MASTER_SHA="${{ github.sha }}"
+          echo "Master SHA: $MASTER_SHA"
+
+          echo "Удаляем ветку staging..."
+          curl -s -o /dev/null -X DELETE \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/git/refs/heads/staging"
+
+          echo "Создаём ветку staging из master..."
+          RESULT=$(curl -s -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://api.github.com/repos/${{ github.repository }}/git/refs" \
+            -d "{\"ref\": \"refs/heads/staging\", \"sha\": \"$MASTER_SHA\"}")
+          echo "$RESULT" | jq '{ref: .ref, sha: .object.sha}'
+
       - name: Deploy app staging
         id: deploy-staging
         uses: cloudflare/wrangler-action@v3
@@ -75,6 +101,55 @@ jobs:
           apiToken: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./server/build-dist --project-name=cardona-core-service --branch=staging
+
+      - name: Cleanup old staging branch deployments
+        env:
+          CF_API_TOKEN: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
+          CF_PROJECT_NAME: cardona-core-service
+        run: |
+          echo "Удаляем старые деплои CF Pages для ветки: staging"
+
+          PAGE=1
+          ALL_DEPLOYMENTS='[]'
+
+          while true; do
+            RESPONSE=$(curl -s -X GET \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments?page=$PAGE&per_page=25" \
+              -H "Authorization: Bearer $CF_API_TOKEN" \
+              -H "Content-Type: application/json")
+
+            SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
+            if [ "$SUCCESS" != "true" ]; then
+              echo "Ошибка при получении списка деплоев (страница $PAGE):"
+              echo "$RESPONSE" | jq '.errors'
+              exit 1
+            fi
+
+            PAGE_DEPS=$(echo "$RESPONSE" | jq '[.result[] | select(.deployment_trigger.metadata.branch == "staging") | {id, created_on}]')
+            ALL_DEPLOYMENTS=$(echo "$ALL_DEPLOYMENTS" | jq --argjson page "$PAGE_DEPS" '. + $page')
+
+            COUNT=$(echo "$RESPONSE" | jq '.result | length')
+            if [ "$COUNT" -lt 25 ]; then
+              break
+            fi
+            PAGE=$((PAGE + 1))
+          done
+
+          OLD_DEPLOYMENT_IDS=$(echo "$ALL_DEPLOYMENTS" | jq -r 'sort_by(.created_on) | reverse | .[3:] | .[].id')
+
+          if [ -z "$OLD_DEPLOYMENT_IDS" ]; then
+            echo "Старых деплоев для ветки 'staging' не найдено"
+          else
+            for DEPLOYMENT_ID in $OLD_DEPLOYMENT_IDS; do
+              echo "Удаляем старый деплой: $DEPLOYMENT_ID"
+              curl -s -X DELETE \
+                "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments/$DEPLOYMENT_ID?force=true" \
+                -H "Authorization: Bearer $CF_API_TOKEN" \
+                -H "Content-Type: application/json" > /dev/null
+              echo "Деплой $DEPLOYMENT_ID удалён"
+            done
+          fi
 
       - name: Print deployment-url
         env:
@@ -108,6 +183,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     needs: build-core-service-staging
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -127,6 +206,55 @@ jobs:
           apiToken: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy ./server/build-dist --project-name=cardona-core-service
+
+      - name: Cleanup old master branch deployments
+        env:
+          CF_API_TOKEN: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
+          CF_PROJECT_NAME: cardona-core-service
+        run: |
+          echo "Удаляем старые деплои CF Pages для ветки: master (оставляем последние 3)"
+
+          PAGE=1
+          ALL_DEPLOYMENTS='[]'
+
+          while true; do
+            RESPONSE=$(curl -s -X GET \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments?page=$PAGE&per_page=25" \
+              -H "Authorization: Bearer $CF_API_TOKEN" \
+              -H "Content-Type: application/json")
+
+            SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
+            if [ "$SUCCESS" != "true" ]; then
+              echo "Ошибка при получении списка деплоев (страница $PAGE):"
+              echo "$RESPONSE" | jq '.errors'
+              exit 1
+            fi
+
+            PAGE_DEPS=$(echo "$RESPONSE" | jq '[.result[] | select(.deployment_trigger.metadata.branch == "master") | {id, created_on}]')
+            ALL_DEPLOYMENTS=$(echo "$ALL_DEPLOYMENTS" | jq --argjson page "$PAGE_DEPS" '. + $page')
+
+            COUNT=$(echo "$RESPONSE" | jq '.result | length')
+            if [ "$COUNT" -lt 25 ]; then
+              break
+            fi
+            PAGE=$((PAGE + 1))
+          done
+
+          OLD_DEPLOYMENT_IDS=$(echo "$ALL_DEPLOYMENTS" | jq -r 'sort_by(.created_on) | reverse | .[3:] | .[].id')
+
+          if [ -z "$OLD_DEPLOYMENT_IDS" ]; then
+            echo "Деплоев для удаления не найдено (меньше или равно 3)"
+          else
+            for DEPLOYMENT_ID in $OLD_DEPLOYMENT_IDS; do
+              echo "Удаляем старый деплой: $DEPLOYMENT_ID"
+              curl -s -X DELETE \
+                "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments/$DEPLOYMENT_ID?force=true" \
+                -H "Authorization: Bearer $CF_API_TOKEN" \
+                -H "Content-Type: application/json" > /dev/null
+              echo "Деплой $DEPLOYMENT_ID удалён"
+            done
+          fi
 
       - name: Get Deployment URL and Deployment Timestamp
         id: get-deploy-url
