@@ -1382,7 +1382,7 @@ $pagination-button-text-color: white;
               position: sticky;
               top: 0;
               z-index: 2;
-              background: rgba(var(--v-c-table-head-bg), var(--v-c-table-head-opacity, 1));
+              background: rgba(var(--v-c-table-head-bg), 1);
               border-top: 1px solid rgba(var(--v-theme-grey-200), 1);
               border-bottom: 1px solid rgba(var(--v-theme-grey-200), 1);
             }
