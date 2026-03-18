@@ -76,8 +76,7 @@ export const light: ThemeDefinition = {
     // Theme specific
     'theme-overlay-multiplier': 1,
 
-    'c-table-head-bg': COLORS.light['grey-600'],
-    'c-table-head-opacity': 0.08,
+    'c-table-head-bg': '#E9E9F0',
 
     // Layouts
     'island-layout-bg': '#181C2E',
@@ -91,6 +90,7 @@ export const light: ThemeDefinition = {
     'island-text-general': '#353347',
     'island-skeleton': COLORS.dark['grey-600'],
     'island-active-nav-bg': COLORS.light['grey-600'],
+    'base-list-border-radius': '1rem',
   },
 }
 
@@ -165,8 +165,7 @@ export const dark: ThemeDefinition = {
     // Theme specific
     'theme-overlay-multiplier': 1,
 
-    'c-table-head-bg': COLORS.light['grey-200'],
-    'c-table-head-opacity': 0.08,
+    'c-table-head-bg': '#373645',
 
     // Layouts
     'island-layout-bg': '#13151F',
@@ -180,5 +179,6 @@ export const dark: ThemeDefinition = {
     'island-text-general': '#D5D5DE',
     'island-skeleton': COLORS.light['grey-200'],
     'island-active-nav-bg': COLORS.light['grey-200'],
+    'base-list-border-radius': '1rem',
   },
 }
