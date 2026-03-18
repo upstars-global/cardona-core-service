@@ -54,7 +54,7 @@ jobs:
             PAGE=$((PAGE + 1))
           done
 
-          ALL_IDS=$(echo "$ALL_IDS" | tr ' ' '\n' | grep -v '^$')
+          ALL_IDS=$(echo "$ALL_IDS" | tr ' ' '\n' | grep -v '^$' || true)
 
           if [ -z "$ALL_IDS" ]; then
             echo "Деплои для ветки '$BRANCH_NAME' не найдены — ничего удалять не нужно"
