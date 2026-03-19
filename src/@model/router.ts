@@ -7,4 +7,5 @@ export interface IRouterConfig {
   isConvertName?: boolean
   withCard?: boolean
   isSingleRoute?: boolean
+  prefixName?: string
 }
