@@ -11,9 +11,12 @@ jobs:
       matrix:
         node-version: [ 23 ]
 
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     permissions:
-      # Required to checkout the code
-      contents: read
+      # Required to checkout the code and manage branches
+      contents: write
       # Required to put a comment into the pull-request
       pull-requests: write
 
@@ -25,15 +28,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
 
-      - name: Install yarn & install dependencies
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
+      - name: Install dependencies
+        run: yarn install
 
       - name: Test
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: test:coverage
+        run: yarn test:coverage
 
       - name: Debug Coverage Files
         run: ls -la coverage || echo "Coverage folder not found!"
@@ -58,7 +57,30 @@ jobs:
         with:
           apiToken: ${{ secrets.BO_CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.BO_CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./server/dist --project-name=cardona-core-service
+          command: pages deploy ./server/dist --project-name=cardona-core-service --branch=${{ github.head_ref }}
+
+      - name: Reset develop branch to master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MASTER_SHA=$(curl -s \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/git/refs/heads/master" \
+            | jq -r '.object.sha')
+          echo "Master SHA: $MASTER_SHA"
+
+          echo "Удаляем ветку develop..."
+          curl -s -o /dev/null -X DELETE \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/git/refs/heads/develop"
+
+          echo "Создаём ветку develop из master..."
+          RESULT=$(curl -s -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://api.github.com/repos/${{ github.repository }}/git/refs" \
+            -d "{\"ref\": \"refs/heads/develop\", \"sha\": \"$MASTER_SHA\"}")
+          echo "$RESULT" | jq '{ref: .ref, sha: .object.sha}'
 
       - name: Deploy app develop
         id: deploy-develop
@@ -102,7 +124,7 @@ jobs:
             PAGE=$((PAGE + 1))
           done
 
-          OLD_DEPLOYMENT_IDS=$(echo "$ALL_DEPLOYMENTS" | jq -r 'sort_by(.created_on) | reverse | .[1:] | .[].id')
+          OLD_DEPLOYMENT_IDS=$(echo "$ALL_DEPLOYMENTS" | jq -r 'sort_by(.created_on) | reverse | .[3:] | .[].id')
 
           if [ -z "$OLD_DEPLOYMENT_IDS" ]; then
             echo "Старых деплоев для ветки 'develop' не найдено"
