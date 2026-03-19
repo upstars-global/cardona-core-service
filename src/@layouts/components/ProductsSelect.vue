@@ -5,6 +5,7 @@ import { productsName } from '../../configs/productsName'
 import { IconsList } from '../../@model/enums/icons'
 import { useUserStore } from '../../stores/user'
 import ApiService from '../../services/api'
+import { storageKeys } from '../../configs/storage'
 
 defineOptions({ name: 'ProductsSelect' })
 
@@ -22,6 +23,7 @@ const selectedProduct = computed({
         ? window.location.origin
         : `${window.location.origin}/${val.name}`
 
+    sessionStorage.removeItem(storageKeys.selectedProjectId)
     window.location.replace(url)
   },
 })
