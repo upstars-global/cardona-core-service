@@ -3,6 +3,7 @@
 @use "./project-select" as project-select;
 @use "./base-list" as base-list;
 @use "./per-page-select" as per-page-select;
+@use "./base-modal" as base-modal;
 
 @mixin apply {
   @include skeleton.apply;
@@ -10,6 +11,7 @@
   @include project-select.apply;
   @include base-list.apply;
   @include per-page-select.apply;
+  @include base-modal.apply;
 
 
   $card-internal-radius: 12px;
