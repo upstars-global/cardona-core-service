@@ -150,11 +150,11 @@ const enhancedAttrs = computed(() => ({
     position: absolute;
     right: 0;
     top: 0;
-    transform: translate(8px,-2px);
+    transform: translate(8px,-8px);
     border-color: rgb(var(--v-theme-grey-200));
 
     &:hover {
-      transform: translate(5px,3px);
+      transform: translate(0px,0px);
     }
   }
 }
