@@ -1,7 +1,7 @@
 @mixin apply {
   .base-modal {
     .modal-header {
-      h5 {
+      &__value {
         font-weight: 700;
       }
     }

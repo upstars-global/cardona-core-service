@@ -97,7 +97,7 @@ const enhancedAttrs = computed(() => ({
           >
             <h5
               v-if="title"
-              class="text-h5 mb-0"
+              class="text-h5 modal-header__value mb-0"
               data-test-id="modal-title"
             >
               {{ title }}
