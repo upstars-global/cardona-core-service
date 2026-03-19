@@ -743,6 +743,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :data-meta="dataMeta"
         :small="config.small"
         @update:model-value="setPage"
+        class-showing="text-color-label"
       />
     </div>
     <VCard class="table-card-settings table-wrapper">
@@ -773,7 +774,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               <VIcon
                 v-bind="attributes"
                 :icon="IconsList.ChevronDownIcon"
+
               />
+            </template>
+            <template #option="{label}">
+              <div class="d-flex align-center justify-space-between" v-if="label === perPage">
+                <span>{{label}}</span>
+                <VIcon :icon="IconsList.CheckIcon" />
+              </div>
             </template>
           </VueSelect>
         </div>
@@ -1283,7 +1291,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         </template>
 
         <template #empty>
-          <div class="d-flex flex-column justify-center empty-state-wrapper align-center text-color-mute text-color-label">
+          <div class="d-flex flex-column justify-center empty-state-wrapper align-center text-color-label">
             <slot :name="BaseListSlots.Empty">
               <span>
                 {{ emptyListText }}
@@ -1306,12 +1314,16 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :data-meta="dataMeta"
         :small="config.small"
         @update:model-value="setPage"
+        class-showing="text-color-label"
       />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+
+$pagination-button-text-color: white;
+
 .compact__base-list {
   height: calc(100vh - 138px);
 
@@ -1354,7 +1366,6 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     :deep(.v-table) {
       display: flex;
       flex-direction: column;
-      min-height: 0;
 
       .v-table__wrapper {
         &::-webkit-scrollbar {
@@ -1371,14 +1382,15 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               position: sticky;
               top: 0;
               z-index: 2;
-              background: rgba(var(--v-c-table-head-bg), var(--v-c-table-head-opacity, 1));
+              background: rgba(var(--v-c-table-head-bg), 1);
               border-top: 1px solid rgba(var(--v-theme-grey-200), 1);
               border-bottom: 1px solid rgba(var(--v-theme-grey-200), 1);
             }
           }
-
-          td {
-            border-bottom: 1px solid rgba(var(--v-theme-border-system));
+          &:not(:has(.empty-state-wrapper)){
+            td {
+              border-bottom: 1px solid rgba(var(--v-theme-border-system));
+            }
           }
         }
       }
@@ -1387,6 +1399,16 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
   .empty-state-wrapper {
     padding: var(--compact__c-table-cell-padding);
+  }
+
+  :deep(.v-pagination) {
+    .v-pagination__item--is-active {
+      .v-btn {
+        &__content {
+          color: $pagination-button-text-color;
+        }
+      }
+    }
   }
 }
 </style>
