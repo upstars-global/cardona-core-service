@@ -367,7 +367,9 @@ describe('BaseList', () => {
 
     await flushPromises()
 
-    wrapper.vm.selectedItems = [{ id: 'item1' }, { id: 'item2' }]
+    wrapper.vm.items = [{ id: 'item1' }, { id: 'item2' }]
+    wrapper.vm.onRowSelected([{ id: 'item1' }, { id: 'item2' }])
+    await wrapper.vm.$nextTick()
 
     await wrapper.vm.onClickDeleteMultiple()
 
@@ -377,7 +379,7 @@ describe('BaseList', () => {
       customApiPrefix: undefined,
     })
     mockBaseStoreCore.multipleDeleteEntity.mockReset()
-    wrapper.vm.selectedItems = []
+    wrapper.unmount()
   })
 
   it('should call deleteEntity when multiple items are selected one', async () => {
@@ -385,7 +387,9 @@ describe('BaseList', () => {
 
     await flushPromises()
 
-    wrapper.vm.selectedItems = [{ id: 'item1' }]
+    wrapper.vm.items = [{ id: 'item1' }]
+    wrapper.vm.onRowSelected([{ id: 'item1' }])
+    await wrapper.vm.$nextTick()
 
     await wrapper.vm.onClickDeleteMultiple()
 
@@ -396,7 +400,7 @@ describe('BaseList', () => {
     })
 
     mockBaseStoreCore.deleteEntity.mockReset()
-    wrapper.vm.selectedItems = []
+    wrapper.unmount()
   })
 
   it('Should render ProjectsFilter when withProjectsFilter is true', async () => {
