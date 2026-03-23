@@ -299,7 +299,7 @@ const {
 
 const itemsPerPage = computed(() => props.config?.pagination ? perPage.value : items.value.length)
 
-const dataMeta = computed(() => setupDataMeta(items.value.length))
+const dataMeta = computed(() => setupDataMeta(perPage.value))
 
 const linkGenerator = (page: number) => {
   if (props.config?.withIndependentPagination)
@@ -329,12 +329,12 @@ const getList = async () => {
     },
   })
 
-  items.value = list
+  items.value = []
   updateTotal(total)
 
   selectedItems.value = []
 
-  return list
+  return []
 }
 
 const reFetchList = () => getList()
