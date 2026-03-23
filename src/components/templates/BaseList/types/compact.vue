@@ -329,12 +329,12 @@ const getList = async () => {
     },
   })
 
-  items.value = []
+  items.value = list
   updateTotal(total)
 
   selectedItems.value = []
 
-  return []
+  return list
 }
 
 const reFetchList = () => getList()
