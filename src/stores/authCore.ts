@@ -7,6 +7,7 @@ import type { ILoginData } from '../@model/auth'
 import { checkIsLoggedIn } from '../helpers/token-auth'
 import { useUserStore } from '../stores/user'
 import { ERRORS } from '../utils/constants'
+import { storageKeys } from '../configs/storage'
 import { useCookie } from '@core/composable/useCookie'
 
 const { toastError } = useToastService()
@@ -90,6 +91,7 @@ export const useAuthCoreStore = defineStore('authCore', {
       useCookie('accessToken').value = null
       clearAuthTokens()
       this.setAuthState(false)
+      sessionStorage.removeItem(storageKeys.selectedProjectId)
 
       ///      dispatch('filtersCore/clearLocalDefaultFilters', null, { root: true })
       // dispatch root action
