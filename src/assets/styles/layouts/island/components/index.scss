@@ -5,6 +5,7 @@
 @use "./per-page-select" as per-page-select;
 @use "./base-modal" as base-modal;
 @use "./base-select" as base-select;
+@use "./base-input" as base-input;
 
 @mixin apply {
   @include skeleton.apply;
@@ -14,6 +15,7 @@
   @include per-page-select.apply;
   @include base-modal.apply;
   @include base-select.apply;
+  @include base-input.apply;
 
 
   $card-internal-radius: 12px;

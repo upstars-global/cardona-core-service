@@ -1,0 +1,12 @@
+@mixin apply {
+  .v-input
+  .v-field--variant-outlined
+  .v-field__outline__start,
+  .v-input .v-field--variant-outlined
+  .v-field__outline__notch::before,
+  .v-input .v-field--variant-outlined
+  .v-field__outline__notch::after,
+  .v-input .v-field--variant-outlined .v-field__outline__end{
+    border-color: rgba(var(--v-border-color), var(--v-border-opacity))
+  }
+}
