@@ -6814,10 +6814,10 @@ fresh@^2.0.0:
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-2.0.0.tgz#8dd7df6a1b3a1b3a5cf186c05a5dd267622635a4"
   integrity sha512-Rx/WycZ60HOaqLKAi6cHRKKI7zxWbJ31MhntmtwMoaTeF7XFH9hhBp8vITaMidfljRQ6eYWCKkaTK+ykVJHP2A==
 
-froala-editor@^4.5.2:
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/froala-editor/-/froala-editor-4.5.2.tgz#caae73eea45e26ca420e1bb0e69c1eb85f2ffe27"
-  integrity sha512-Nkfll8jkZEtxTDO6bbmOVXHZIrH5yIO7jIDEkMc68uQjRZJwYZM+MuOhUZspDY2U1PR+kEI+o3NOymD5isizjQ==
+froala-editor@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/froala-editor/-/froala-editor-5.0.1.tgz#f85687ba069f2c30bf6967e6c237b6658f79fac8"
+  integrity sha512-KOiNLQ1X+dAflVsI5qx6+2m3luIVok7DvS/Vx3yIK08SjVfepO02USvrtAdwjPbicMtsk3kw11NwwTawpSSUPQ==
 
 from2@^2.3.0:
   version "2.3.0"
@@ -13725,14 +13725,14 @@ vue-flatpickr-component@^11.0.4:
   dependencies:
     flatpickr "^4.6.13"
 
-vue-froala-wysiwyg@^4.3.1:
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/vue-froala-wysiwyg/-/vue-froala-wysiwyg-4.5.2.tgz#0a50b8174f1dbd25fd60f1898693c4883619f40b"
-  integrity sha512-++NhPX8HVAYQ4vaQHd9nVGgggtsqhTtdZX9MEkLoILaQm9Hg2Kld8DsFfxEWbhfDoixZ5WVm5xgUGi9EkS8mug==
+vue-froala-wysiwyg@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/vue-froala-wysiwyg/-/vue-froala-wysiwyg-5.0.1.tgz#894afdb3e38f5c5336681e22bc387e29a71da88f"
+  integrity sha512-iwxzsJ3VVUPO6qfyJJ0v5nQ2wS65xUeiDpAXRv5QpAe9y9YAMQJXYLBQgiqKubUFsecWBwtaH6a3MA2r0cwh1A==
   dependencies:
     "@babel/runtime-corejs2" "^7.7.7"
     babel-runtime "^6.26.0"
-    froala-editor "^4.5.2"
+    froala-editor "^5.0.1"
     vue "^3.2.0"
 
 vue-i18n@^9.5.0:
