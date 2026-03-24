@@ -1,0 +1,13 @@
+@mixin apply {
+  .v-select {
+    .vs__dropdown-toggle {
+      .vs__selected-options {
+        .vs__selected {
+          .selected-option-value {
+            color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));;
+          }
+        }
+      }
+    }
+  }
+}
