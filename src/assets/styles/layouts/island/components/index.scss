@@ -27,4 +27,8 @@
   .text-color-label {
     color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important
   }
+
+  hr {
+    border-top: 1px solid rgb(var(--v-theme-border-system));
+  }
 }

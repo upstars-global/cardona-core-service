@@ -17,7 +17,7 @@ export const light: ThemeDefinition = {
     'warning': '#F08C35',
     'error': '#EA3D3E',
     'success': '#0DB157',
-    'info': '#649DFA',
+    'info': '#3B83F7',
     'white': '#FFFFFF',
 
     // Background / Surface
@@ -106,7 +106,7 @@ export const dark: ThemeDefinition = {
     'warning': '#F08C35',
     'error': '#F76A6A',
     'success': '#2CC972',
-    'info': '#3B83F7',
+    'info': '#649DFA',
     'white': '#FFFFFF',
 
     // Background / Surface
