@@ -9,4 +9,9 @@
   .v-input .v-field--variant-outlined .v-field__outline__end{
     border-color: rgba(var(--v-border-color), var(--v-border-opacity))
   }
+  .v-field__input input::placeholder,
+  input.v-field__input::placeholder,
+  textarea.v-field__input::placeholder {
+    color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
+  }
 }
