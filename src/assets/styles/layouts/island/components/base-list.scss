@@ -76,10 +76,6 @@
           &:has(.empty-state-wrapper) {
             border-bottom: initial;
           }
-
-          &:first-child {
-            border-bottom-left-radius: $list-border-radius;
-          }
         }
       }
     }
