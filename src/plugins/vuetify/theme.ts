@@ -157,7 +157,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'border-opacity': 0.14, // replaces the old hex-alpha approach
       'shadow-color': '#000000',
 
-      'high-emphasis-opacity': 0.9, // matches Vuetify light default
+      'high-emphasis-opacity': 0.98, // matches Vuetify light default
       'medium-emphasis-opacity': 0.56,
       'disabled-opacity': 0.38,
       'idle-opacity': 0.04,
@@ -357,7 +357,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'border-opacity': 0.12,
       'shadow-color': '#000000',
 
-      'high-emphasis-opacity': 1, // matches Vuetify dark default
+      'high-emphasis-opacity': 0.98, // matches Vuetify dark default
       'medium-emphasis-opacity': 0.56,
       'disabled-opacity': 0.50,
       'idle-opacity': 0.10,
