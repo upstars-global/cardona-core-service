@@ -64,7 +64,7 @@ const currentTab = ref(tabs.new)
     >
       <VWindowItem :value="tabs.new">
         <div
-          v-if="modelValue"
+          v-if="modelValue && !manualUpload"
           class="pa-6 img-block"
         >
           <VBtn
