@@ -158,7 +158,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'shadow-color': '#000000',
 
       'high-emphasis-opacity': 0.9, // matches Vuetify light default
-      'medium-emphasis-opacity': 0.60,
+      'medium-emphasis-opacity': 0.56,
       'disabled-opacity': 0.38,
       'idle-opacity': 0.04,
       'hover-opacity': 0.04,
@@ -358,7 +358,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'shadow-color': '#000000',
 
       'high-emphasis-opacity': 1, // matches Vuetify dark default
-      'medium-emphasis-opacity': 0.70,
+      'medium-emphasis-opacity': 0.56,
       'disabled-opacity': 0.50,
       'idle-opacity': 0.10,
       'hover-opacity': 0.04,

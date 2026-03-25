@@ -1,9 +1,27 @@
 @mixin apply {
-  .layout-vertical-nav {
-     background-color: rgba(var(--v-theme-sidebar));
-
-    .nav-link {
-      color: rgba(var(--v-theme-on-sidebar));
+  .layout-nav-type-vertical {
+    .layout-vertical-nav {
+      background-color: rgba(var(--v-theme-sidebar));
+      .nav-items{
+        .title-wrapper {
+          .title-text {
+            color: rgba(var(--v-theme-on-sidebar), var(--v-medium-emphasis-opacity));
+          }
+        }
+        .nav-group.active {
+          .nav-group-label {
+            color: rgba(var(--v-theme-on-sidebar), var(--v-high-emphasis-opacity)) !important;
+          }
+        }
+        .nav-group {
+          &-label {
+            color: rgba(var(--v-theme-on-sidebar), var(--v-high-emphasis-opacity));
+          }
+        }
+        .nav-link {
+          color: rgba(var(--v-theme-on-sidebar));
+        }
+      }
     }
   }
 }
