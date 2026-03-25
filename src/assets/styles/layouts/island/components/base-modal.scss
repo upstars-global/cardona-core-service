@@ -1,4 +1,7 @@
 @mixin apply {
+  .modal-card {
+    border: 1px solid rgba(var(--v-theme-border-system));
+  }
   .base-modal {
     .modal-header {
       &__value {
