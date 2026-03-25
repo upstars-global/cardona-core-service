@@ -510,6 +510,8 @@ watch(() => isSave.value, () => {
     :deep(.fr-newline) { background:  rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)); }
     :deep(.fr-box.fr-basic) { .fr-wrapper { border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)); } }
     :deep(.fr-second-toolbar) { border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)); }
+    :deep(.fr-toolbar .fr-command.fr-btn), { margin: 4px 0px; max-width: 36px;}
+    :deep(.fr-toolbar .fr-btn-grp), { margin: 0 8px 0 8px; }
     &.disabled {
       :deep(.fr-toolbar), :deep(.fr-element), :deep(.fr-second-toolbar) { background: rgb(var(--v-theme-grey-100)); }
       :deep(.fr-placeholder) { z-index: 2; }
