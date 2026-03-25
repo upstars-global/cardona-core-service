@@ -15,6 +15,10 @@
     color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
   }
 
+  .v-input.v-text-field .v-field__input {
+    color: rgba(var(--v-theme-surface-invert), var(--v-high-emphasis-opacity))
+  }
+
   .v-field__prepend-inner > .v-icon, .v-field__append-inner > .v-icon, .v-field__clearable > .v-icon {
     color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
   }
