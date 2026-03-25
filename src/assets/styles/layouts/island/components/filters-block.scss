@@ -1,7 +1,7 @@
 @mixin apply {
   .block-with-selected-filter-items {
     .filter-label {
-      font-weight: 400;
+      font-weight: 400 !important;
       color: rgba(var(--v-theme-surface-invert), var(--v-high-emphasis-opacity));
     }
   }
