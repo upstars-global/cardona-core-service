@@ -37,4 +37,20 @@
   hr {
     border-top: 1px solid rgb(var(--v-theme-border-system));
   }
+
+  .content-header {
+    .breadcrumb-wrapper {
+      position: relative;
+      padding-left: 3rem;
+      &:after {
+        top: 14px;
+        left: 1.5rem;
+        content: '';
+        position: absolute;
+        height: 50%;
+        width: 1px;
+        background-color: rgba(var(--v-theme-border-system), var(--v-high-emphasis-opacity));
+      }
+    }
+  }
 }
