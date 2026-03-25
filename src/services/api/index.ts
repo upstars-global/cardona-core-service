@@ -113,12 +113,12 @@ class ApiService {
 
       const body: FormData | any
         = contentType === ContentType.FormData && payload.formData
-          ? this.createFormData(payload.formData)
-          : JSON.stringify({
-            ...payload,
-            type: isRemovePrefix ? payload.type.replace(ApiTypePrefix, '') : payload.type,
-            requestId: uuidv4(),
-          })
+        ? this.createFormData(payload.formData)
+        : JSON.stringify({
+          ...payload,
+          type: isRemovePrefix ? payload.type.replace(ApiTypePrefix, '') : payload.type,
+          requestId: uuidv4(),
+        })
 
       const { data, headers: responseHeaders }: any = await axiosInstance({
         url,
@@ -127,6 +127,9 @@ class ApiService {
         data: body,
         responseType,
       } as AxiosRequestConfig)
+
+      if (responseType === 'blob' && data instanceof Blob && !withResponseHeaders)
+        return data
 
       if (data.error || (!data.data && !url.includes('report')))
         throw data.error
@@ -143,10 +146,6 @@ class ApiService {
           entityName: i18n.t(`entities.${entityName}`),
         })
       }
-
-      // TODO НУЖНО ПОПРАВИТЬ!
-      if (responseType === 'blob' && data instanceof Blob && !withResponseHeaders)
-        return data
 
       if (cache)
         await this.setCache(cacheRequest, data, headers)
