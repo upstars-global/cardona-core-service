@@ -1,6 +1,7 @@
 @mixin apply {
   .v-select {
     .vs__dropdown-toggle {
+      border: 1px solid rgba(var(--v-theme-surface-invert), var(--v-border-opacity));
       .vs__selected-options {
         .vs__selected {
           .selected-option-value {

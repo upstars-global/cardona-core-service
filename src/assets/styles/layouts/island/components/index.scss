@@ -6,6 +6,7 @@
 @use "./base-modal" as base-modal;
 @use "./base-select" as base-select;
 @use "./base-input" as base-input;
+@use "./filters-block" as filters-block;
 
 @mixin apply {
   @include skeleton.apply;
@@ -16,6 +17,7 @@
   @include base-modal.apply;
   @include base-select.apply;
   @include base-input.apply;
+  @include filters-block.apply;
 
 
   $card-internal-radius: 12px;
