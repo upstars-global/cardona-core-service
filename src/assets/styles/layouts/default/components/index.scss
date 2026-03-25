@@ -1,0 +1,5 @@
+@use "./sdiebar" as sdiebar;
+
+@mixin apply {
+  @include sdiebar.apply;
+}

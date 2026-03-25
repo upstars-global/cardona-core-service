@@ -1,0 +1,5 @@
+@use "./components" as default-layout-componets;
+
+body[data-layout="default"] {
+  @include default-layout-componets.apply;
+}
