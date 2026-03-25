@@ -20,6 +20,10 @@
         }
         .nav-link {
           color: rgba(var(--v-theme-on-sidebar));
+          .router-link-active.router-link-exact-active {
+            background-color: rgba(var(--v-theme-primary));
+            box-shadow: initial;
+          }
         }
       }
     }
