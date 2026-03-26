@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue'
 
-import { productsName } from '../../configs/productsName'
-import { IconsList } from '../../@model/enums/icons'
-import { useUserStore } from '../../stores/user'
-import ApiService from '../../services/api'
-import { storageKeys } from '../../configs/storage'
+import { productsName } from '../../../configs/productsName'
+import { IconsList } from '../../../@model/enums/icons'
+import { useUserStore } from '../../../stores/user'
+import ApiService from '../../../services/api'
+import { storageKeys } from '../../../configs/storage'
 
 defineOptions({ name: 'ProductsSelect' })
 
