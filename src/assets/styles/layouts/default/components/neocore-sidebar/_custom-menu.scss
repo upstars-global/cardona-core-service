@@ -1,0 +1,14 @@
+// CustomMenu overrides for dark sidebar — overrides scoped styles in layouts/components/CustomMenu.vue
+@mixin apply {
+  .layout-nav-type-vertical .custom-menu {
+    border-top-color: rgba(var(--v-theme-on-sidebar), 0.12) !important;
+
+    .full-name {
+      color: rgb(var(--v-theme-on-sidebar)) !important;
+
+      &:hover {
+        color: rgb(var(--v-theme-primary)) !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+// Active nav link and open group states
+@mixin apply {
+  .layout-nav-type-vertical .layout-vertical-nav {
+    // Active link: solid primary color instead of gradient
+    .nav-link > .router-link-exact-active {
+      background: rgb(var(--v-theme-primary)) !important;
+      box-shadow: none !important;
+
+      .nav-item-icon,
+      .nav-item-title {
+        color: rgb(var(--v-theme-on-primary)) !important;
+      }
+    }
+
+    // Open/active group: no highlighted background
+    .nav-group.open > .nav-group-label,
+    .nav-group.active > .nav-group-label {
+      background-color: transparent !important;
+
+      &::before {
+        opacity: 0 !important;
+      }
+    }
+
+    // Global style from VerticalNavGroup.vue sets background-color on div
+    .nav-group.open div {
+      background-color: transparent !important;
+    }
+  }
+}

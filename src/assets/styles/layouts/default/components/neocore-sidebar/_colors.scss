@@ -1,0 +1,39 @@
+// White text and icons on dark sidebar background
+@mixin apply {
+  .layout-nav-type-vertical .layout-vertical-nav {
+    .nav-header .header-action {
+      color: rgba(var(--v-theme-on-sidebar), 0.7) !important;
+    }
+
+    .nav-item-icon {
+      color: rgba(var(--v-theme-on-sidebar), 0.7) !important;
+    }
+
+    .nav-item-title,
+    .nav-item-color {
+      color: rgb(var(--v-theme-on-sidebar)) !important;
+    }
+
+    // Overrides !important from VerticalNavGroup.vue
+    .nav-group-label .nav-item-title {
+      color: rgb(var(--v-theme-on-sidebar)) !important;
+    }
+
+    // Overrides !important from VerticalNavGroup.vue
+    .nav-link a:not(.router-link-active) {
+      .nav-item-title,
+      .nav-item-title + i.v-icon {
+        color: rgb(var(--v-theme-on-sidebar)) !important;
+      }
+    }
+
+    .nav-group-arrow {
+      color: rgba(var(--v-theme-on-sidebar), 0.7) !important;
+    }
+
+    .ps__thumb-y,
+    .ps__rail-y:hover > .ps__thumb-y {
+      background-color: rgba(var(--v-theme-on-sidebar), 0.2) !important;
+    }
+  }
+}

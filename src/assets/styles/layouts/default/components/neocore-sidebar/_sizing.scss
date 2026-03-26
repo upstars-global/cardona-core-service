@@ -1,0 +1,12 @@
+// Nav item height and spacing — Figma: 36px height, 2px gap
+@mixin apply {
+  .layout-nav-type-vertical .layout-vertical-nav {
+    .nav-link,
+    .nav-group {
+      > :first-child {
+        block-size: 2.25rem !important;        // 36px (was 44px)
+        margin-block-end: 0.125rem !important; // 2px gap (was 6px)
+      }
+    }
+  }
+}

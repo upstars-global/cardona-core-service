@@ -1,0 +1,19 @@
+// ProjectSelect: white text/icons on dark sidebar
+@mixin apply {
+  .layout-nav-type-vertical .layout-vertical-nav .project-select {
+    .select-field-color,
+    .text-expanded,
+    .vs__selected,
+    .vs__open-indicator {
+      color: rgb(var(--v-theme-on-sidebar)) !important;
+    }
+
+    .vs__dropdown-toggle {
+      border-color: rgba(var(--v-theme-on-sidebar), 0.2) !important;
+    }
+
+    .vs__search {
+      color: rgb(var(--v-theme-on-sidebar)) !important;
+    }
+  }
+}

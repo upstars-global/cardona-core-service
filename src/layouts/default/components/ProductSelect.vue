@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue'
-import { upperFirst } from 'lodash'
+import {upperFirst} from 'lodash'
 import { productsName } from '../../../configs/productsName'
 import { IconsList } from '../../../@model/enums/icons'
 import { useUserStore } from '../../../stores/user'
@@ -23,8 +23,8 @@ const selectedProduct = computed({
   set: val => {
     const url
       = val.name === productsName.neocore
-        ? window.location.origin
-        : `${window.location.origin}/${val.name}`
+      ? window.location.origin
+      : `${window.location.origin}/${val.name}`
 
     sessionStorage.removeItem(storageKeys.selectedProjectId)
     window.location.replace(url)
@@ -62,7 +62,9 @@ watch(selectedProduct, product => {
     :class="{ 'overflow-hidden': !canSelect }"
   >
     <template v-if="canSelect">
-      <div class="select-item bg-info product-short_size product-text d-flex align-center justify-center rounded">
+      <div
+        class="select-item bg-info prodcut-short_size product-text d-flex align-center justify-center rounded"
+      >
         {{ selectedProductNameShort }}
       </div>
       <VueSelect
@@ -75,7 +77,7 @@ watch(selectedProduct, product => {
         :searchable="false"
       >
         <template #list-header>
-          <div>
+          <div >
             {{ $t('common.products._') }}
           </div>
         </template>
@@ -94,7 +96,7 @@ watch(selectedProduct, product => {
         </template>
         <template #open-indicator="{ attributes }">
           <VIcon
-            class="side-bar_text-color"
+            class="chevron-icon"
             v-bind="attributes"
             :icon="IconsList.ChevronDownIcon"
           />
@@ -118,11 +120,16 @@ watch(selectedProduct, product => {
 
 <style lang="scss" scoped>
 .product-text {
-  color: rgba(var(--v-theme-on-sidebar));
+  color: rgb(var(--v-theme-on-sidebar));
   font-weight: 600;
 }
-.product-short_size {
+
+.prodcut-short_size {
   height: 2rem;
   width: 2rem;
+}
+
+.chevron-icon {
+  color: rgba(var(--v-theme-on-sidebar), 0.7);
 }
 </style>

@@ -1,0 +1,19 @@
+// Neocore sidebar redesign — entry point
+// Figma: https://www.figma.com/design/SB9GrN232GryXAY1cmQxr2/Neocore?node-id=1-7093
+//
+// Applied only inside body[data-layout="default"] via layouts/default/components/index.scss
+@use 'sizing';
+@use 'colors';
+@use 'states';
+@use 'section-titles';
+@use 'project-select';
+@use 'custom-menu';
+
+@mixin apply {
+  @include sizing.apply;
+  @include colors.apply;
+  @include states.apply;
+  @include section-titles.apply;
+  @include project-select.apply;
+  @include custom-menu.apply;
+}
