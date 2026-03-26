@@ -8,6 +8,7 @@
 @use 'section-titles';
 @use 'project-select';
 @use 'custom-menu';
+@use 'collapsed';
 
 @mixin apply {
   @include sizing.apply;
@@ -16,4 +17,5 @@
   @include section-titles.apply;
   @include project-select.apply;
   @include custom-menu.apply;
+  @include collapsed.apply;
 }

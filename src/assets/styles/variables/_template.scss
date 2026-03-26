@@ -4,6 +4,7 @@
 // and VerticalNavLayout.vue (content wrapper padding-inline-start).
 @forward "@core/scss/template/variables" with (
   $layout-vertical-nav-width: 252px,
+  $layout-vertical-nav-collapsed-width: 52px,  // collapsed sidebar (was 80px)
   $vertical-nav-horizontal-spacing: 0.5rem,  // 8px margin-inline for nav items (was 0.875rem / 14px)
   $vertical-nav-horizontal-padding: 0.5rem,  // 8px padding-inline for nav items (was 0.75rem / 12px)
 );

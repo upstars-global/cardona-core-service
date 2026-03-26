@@ -1,0 +1,52 @@
+// Collapsed sidebar (52px) — center all visible UI elements
+// Triggered when: .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered)
+
+@mixin apply {
+  .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
+
+    // ── Nav header: center product badge ───────────────────────────────────
+    .nav-header {
+      justify-content: center !important;
+      padding-inline: 0 !important;
+      margin-inline: 0 !important;
+    }
+
+    // ── ProductsSelect: center badge when dropdown is hidden ───────────────
+    .product-select {
+      justify-content: center !important;
+    }
+
+    // ── Nav items & groups: center icon, strip padding ─────────────────────
+    // margin-inline stays (8px each side → 36px element in 52px sidebar)
+    // padding stripped so icon fills the element and centers properly
+    .nav-link,
+    .nav-group {
+      > :first-child {
+        justify-content: center !important;
+        padding-inline: 0 !important;
+      }
+
+      .nav-item-icon {
+        margin-inline: 0 !important; // remove icon's right margin so it centers
+      }
+    }
+
+    // ── ProjectSelect: center project logo ────────────────────────────────
+    .project-select {
+      .vs__selected-options {
+        justify-content: center !important;
+      }
+    }
+
+    // ── CustomMenu: center avatar, override horizontal padding ────────────
+    .custom-menu {
+      display: flex !important;
+      justify-content: center !important;
+      padding-inline: 0 !important;
+
+      .user-info {
+        justify-content: center !important;
+      }
+    }
+  }
+}
