@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue'
-
+import { upperFirst } from 'lodash'
 import { productsName } from '../../../configs/productsName'
 import { IconsList } from '../../../@model/enums/icons'
 import { useUserStore } from '../../../stores/user'
@@ -14,6 +14,9 @@ const props = defineProps<{
 }>()
 
 const userStore = useUserStore()
+
+const selectedProductName = computed(() => upperFirst(userStore.selectedProduct?.name))
+const selectedProductNameShort = computed(() => selectedProductName.value.slice(0, 1))
 
 const selectedProduct = computed({
   get: () => userStore.selectedProduct,
@@ -55,35 +58,33 @@ watch(selectedProduct, product => {
 
 <template>
   <div
-    class="product-select"
+    class="product-select d-flex align-center justify-between"
     :class="{ 'overflow-hidden': !canSelect }"
   >
     <template v-if="canSelect">
-      <div
-        v-if="isCollapsedMenu"
-        class="select-item text-primary text-uppercase py-2"
-      >
-        {{ selectedProduct?.name.slice(0, 2) }}
+      <div class="select-item bg-info product-short_size product-text d-flex align-center justify-center rounded">
+        {{ selectedProductNameShort }}
       </div>
       <VueSelect
-        v-else
+        v-if="!isCollapsedMenu"
         v-model="selectedProduct"
         :options="products"
         label="name"
+        class="select-text-color"
         :clearable="false"
         :searchable="false"
       >
         <template #list-header>
-          <div class="text-uppercase header-select">
+          <div>
             {{ $t('common.products._') }}
           </div>
         </template>
         <template #selected-option="{ name }">
-          <div class="d-flex align-items-center flex-nowrap">
+          <div class="d-flex align-center flex-nowrap">
             <span
-              class="select-item text-primary text-uppercase"
+              class="select-item product-text ml-3"
               :class="{ 'text-info': isDynamicDomain }"
-            >{{ name }}</span>
+            >{{ selectedProductName }}</span>
           </div>
         </template>
         <template #option="{ name }">
@@ -93,7 +94,7 @@ watch(selectedProduct, product => {
         </template>
         <template #open-indicator="{ attributes }">
           <VIcon
-            class="text-primary"
+            class="side-bar_text-color"
             v-bind="attributes"
             :icon="IconsList.ChevronDownIcon"
           />
@@ -106,7 +107,7 @@ watch(selectedProduct, product => {
       to="/"
     >
       <span
-        class="brand-logo text-primary select-item text-uppercase"
+        class="brand-logo  select-item"
         :class="{ 'text-info': isDynamicDomain }"
       >
         {{ selectedProduct?.name }}
@@ -114,3 +115,14 @@ watch(selectedProduct, product => {
     </RouterLink>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.product-text {
+  color: rgba(var(--v-theme-on-sidebar));
+  font-weight: 600;
+}
+.product-short_size {
+  height: 2rem;
+  width: 2rem;
+}
+</style>

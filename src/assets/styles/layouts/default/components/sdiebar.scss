@@ -1,5 +1,8 @@
 @mixin apply {
   .layout-nav-type-vertical {
+    .side-bar_text-color {
+      color: rgba(var(--v-theme-on-sidebar));
+    }
     .layout-vertical-nav {
       background-color: rgba(var(--v-theme-sidebar));
       .nav-items{
