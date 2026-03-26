@@ -11,12 +11,12 @@ import ProjectSelect from '../../@layouts/components/ProjectSelect.vue'
 import { VVariants } from '../../@model/vuetify'
 import { useUserStore } from '../../stores/user'
 import { useAppConfigCoreStore } from '../../stores/appConfigCore'
+import ProductsSelect from '../../layouts/default/components/ProductSelect.vue'
 import { layoutConfig } from '@layouts'
 import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
 import { useLayoutConfigStore } from '@layouts/stores/config'
 import { injectionKeyIsVerticalNavHovered } from '@layouts/symbols'
 import type { NavGroup, NavLink, NavSectionTitle, VerticalNavItems } from '@layouts/types'
-import ProductsSelect from '@layouts/components/ProductsSelect.vue'
 
 interface Props {
   tag?: string | Component
