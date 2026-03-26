@@ -1,0 +1,118 @@
+// Seamless collapse / expand transitions for all sidebar elements
+// Synced with sidebar width animation: 0.25s ease-in-out (VerticalNav.vue)
+
+@mixin apply {
+  .layout-nav-type-vertical .layout-vertical-nav {
+
+    // ── Nav header: animate padding/margin instead of instant jump ──────────
+    // Values go: expanded(8px) → collapsed(0) over 0.25s
+    // This keeps the badge in a stable position during collapse instead of
+    // instantly shifting when the collapsed class is applied.
+    .nav-header {
+      transition: padding-inline 0.25s ease-in-out, margin-inline 0.25s ease-in-out;
+    }
+
+    // ── ProductsSelect badge: smooth centering via transform ────────────────
+    // Using transform instead of justify-content (which can't animate).
+    // transition-delay: 0.15s matches product-select-fade leave duration so the
+    // badge only starts moving once the VueSelect has fully faded and gone.
+    // Maths: sidebar=52px, badge=32px → center offset = (52-32)/2 = 10px = 0.625rem
+    .product-select {
+      // Badge is position:absolute so it needs its own transition (not inherited from flex)
+      .prodcut-short_size {
+        transition: transform 0.2s ease-in-out;
+        transition-delay: 0.15s;
+      }
+    }
+
+    // ── Nav item layout properties: animate padding & icon margin ───────────
+    // padding-inline transitions from 8px (expanded) → 7px (collapsed)
+    // margin-inline-end transitions from 8px → 0  ─ both are transitionable
+    .nav-link,
+    .nav-group {
+      > :first-child {
+        transition: padding-inline 0.25s ease-in-out;
+      }
+
+      .nav-item-icon {
+        transition: margin-inline 0.2s ease-in-out;
+      }
+    }
+
+    // ── Override transition-slide-x inside sidebar: pure fade, no slide ────
+    // The default slide (translateX) conflicts with the sidebar width animation
+    // and makes text appear to "jump". A pure opacity fade is seamless here.
+    .transition-slide-x-leave-active {
+      transition: opacity 0.15s ease-out !important;
+    }
+    .transition-slide-x-leave-to {
+      opacity: 0 !important;
+      transform: none !important;
+    }
+    .transition-slide-x-enter-active {
+      // Delay so sidebar is already open before text appears
+      transition: opacity 0.2s ease-in !important;
+      transition-delay: 0.12s !important;
+    }
+    .transition-slide-x-enter-from {
+      opacity: 0 !important;
+      transform: none !important;
+    }
+
+    // ── Section titles: fade with sidebar ──────────────────────────────────
+    .nav-section-title {
+      transition: opacity 0.15s ease-in-out;
+    }
+
+    // ── ProjectSelect: fade text and chevron ────────────────────────────────
+    .project-select {
+      .text-expanded,
+      .vs__open-indicator {
+        transition: opacity 0.15s ease-out;
+      }
+    }
+
+    // ── CustomMenu: fade username ──────────────────────────────────────────
+    .custom-menu {
+      transition: padding-inline 0.25s ease-in-out;
+
+      .full-name {
+        transition: opacity 0.15s ease-out;
+      }
+    }
+  }
+
+  // ── Collapsed state: values that need transitions ───────────────────────
+  .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
+
+    // Nav header shrinks its spacing (animated via transition above)
+    .nav-header {
+      padding-inline: 0 !important;
+      margin-inline: 0 !important;
+    }
+
+    // Badge slides to center after VueSelect fades (0.15s delay).
+    // Badge starts with translateY(-50%) for vertical centering (position:absolute).
+    // X offset: nav-header padding collapses to 0, sidebar=52px, badge=32px
+    //   → center left = (52-32)/2 = 10px = 0.625rem
+    .product-select .prodcut-short_size {
+      transform: translate(0.625rem, -50%);
+    }
+
+    // Opacity targets for CSS-driven text elements
+    .nav-section-title {
+      opacity: 0;
+    }
+
+    .project-select {
+      .text-expanded,
+      .vs__open-indicator {
+        opacity: 0;
+      }
+    }
+
+    .custom-menu .full-name {
+      opacity: 0;
+    }
+  }
+}

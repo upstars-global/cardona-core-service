@@ -9,6 +9,7 @@
 @use 'project-select';
 @use 'custom-menu';
 @use 'collapsed';
+@use 'transitions';
 
 @mixin apply {
   @include sizing.apply;
@@ -18,4 +19,5 @@
   @include project-select.apply;
   @include custom-menu.apply;
   @include collapsed.apply;
+  @include transitions.apply;
 }
