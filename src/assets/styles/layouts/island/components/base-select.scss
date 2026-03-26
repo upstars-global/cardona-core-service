@@ -1,4 +1,12 @@
+$box-shadow: 0 2px 4px 0 rgba(132, 129, 157, 0.24);
+
 @mixin apply {
+  .v-select.vs--open{
+    .vs__dropdown-toggle {
+      border: 1px solid rgba(var(--v-theme-primary));
+      box-shadow: $box-shadow;
+    }
+  }
   .v-select {
     .vs__search::placeholder {
       color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
