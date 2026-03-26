@@ -1,6 +1,9 @@
-@forward "@core/scss/template/variables";
-
-// ℹ️ Remove above import and uncomment below to override core variables.
-// @forward "@core/scss/template/variables" with (
-//   $<variable-name>: <variable-value>
-// )
+// ℹ️ Neocore sidebar redesign overrides — Figma: https://www.figma.com/design/SB9GrN232GryXAY1cmQxr2/Neocore?node-id=1-7093
+// Changes sidebar width from 260px → 252px and nav item horizontal spacing from 14px+12px → 8px+8px.
+// These variables propagate automatically to VerticalNav.vue (width, mobile transform)
+// and VerticalNavLayout.vue (content wrapper padding-inline-start).
+@forward "@core/scss/template/variables" with (
+  $layout-vertical-nav-width: 252px,
+  $vertical-nav-horizontal-spacing: 0.5rem,  // 8px margin-inline for nav items (was 0.875rem / 14px)
+  $vertical-nav-horizontal-padding: 0.5rem,  // 8px padding-inline for nav items (was 0.75rem / 12px)
+);
