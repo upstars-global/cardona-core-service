@@ -25,19 +25,19 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<{
-  withReadAction?: boolean
-  config?: BaseSectionConfig
-  pageType?: PageType
-  useEntity: Function
-  localEntityData?: Record<string, unknown>
-  entityId?: string
-}>(),
-{
-  useEntity: undefined,
-  withReadAction: true,
-  config: () => new BaseSectionConfig({}),
-  pageType: PageType.Create,
-},
+    withReadAction?: boolean
+    config?: BaseSectionConfig
+    pageType?: PageType
+    useEntity: Function
+    localEntityData?: Record<string, unknown>
+    entityId?: string
+  }>(),
+  {
+    useEntity: undefined,
+    withReadAction: true,
+    config: () => new BaseSectionConfig({}),
+    pageType: PageType.Create,
+  },
 )
 
 const emits = defineEmits<{
@@ -346,6 +346,7 @@ defineExpose({
             :loading="isLoadingPage"
             :cancel="onClickCancel"
             :submit="onSubmit"
+            :can-update="canUpdate"
           >
             <hr
               v-if="config.isModalSection"
