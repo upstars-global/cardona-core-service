@@ -22,6 +22,11 @@
       }
     }
 
+    // ── Section titles: center placeholder dash ───────────────────────────
+    .nav-section-title {
+      justify-content: center !important;
+    }
+
     // ── ProjectSelect: center project logo ────────────────────────────────
     .project-select {
       .vs__selected-options {
