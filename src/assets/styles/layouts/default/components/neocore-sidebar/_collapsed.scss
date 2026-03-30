@@ -23,8 +23,14 @@
     }
 
     // ── Section titles: center placeholder dash ───────────────────────────
+    // _vertical-nav.scss sets margin-inline-start: 0.3rem on .placeholder-icon
+    // which shifts the dash off-center — reset it here.
     .nav-section-title {
       justify-content: center !important;
+
+      .placeholder-icon {
+        margin-inline-start: 0 !important;
+      }
     }
 
     // ── ProjectSelect: center project logo ────────────────────────────────
