@@ -124,12 +124,6 @@ watch(() => selectProject.value, project => {
     }
   }
 
-  // ── Remove purple border when open ──────────────────────────────────────
-  :deep(.vs--open .vs__dropdown-toggle) {
-    border-color: rgba(var(--v-theme-on-sidebar), 0.2) !important;
-    box-shadow: none !important;
-  }
-
   // ── Dropdown menu ────────────────────────────────────────────────────────
   :deep(.vs__dropdown-menu) {
     background: rgb(var(--v-theme-sidebar)) !important;
