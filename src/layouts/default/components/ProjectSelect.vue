@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue'
 import { useFavicon } from '@vueuse/core'
-import type { ProjectInfo } from '../../@model/project'
-import { IconsList } from '../../@model/enums/icons'
-import { useChangeProject } from '../../composables/useChangeProject'
-import { useUserStore } from '../../stores/user'
-import ApiService from '../../services/api'
+import type { ProjectInfo } from '../../../@model/project'
+import { IconsList } from '../../../@model/enums/icons'
+import { useChangeProject } from '../../../composables/useChangeProject'
+import { useUserStore } from '../../../stores/user'
+import ApiService from '../../../services/api'
 
 const props = defineProps<{
   projects: ProjectInfo[]
