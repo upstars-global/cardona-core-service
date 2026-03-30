@@ -47,11 +47,6 @@
       transform: translateX(0) !important;
     }
 
-    // ── Section titles: fade with sidebar ──────────────────────────────────
-    .nav-section-title {
-      transition: opacity 0.15s ease-in-out;
-    }
-
     // ── ProjectSelect: fade text and chevron ────────────────────────────────
     .project-select {
       .text-expanded,
@@ -88,10 +83,6 @@
     }
 
     // Opacity targets for CSS-driven text elements
-    .nav-section-title {
-      opacity: 0;
-    }
-
     .project-select {
       .text-expanded,
       .vs__open-indicator {

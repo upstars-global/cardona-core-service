@@ -5,7 +5,8 @@
     margin-block-start: 0.75rem !important;
     margin-block-end: 0.125rem !important;
 
-    .title-text-color {
+    .title-text-color,
+    .placeholder-icon {
       color: rgba(var(--v-theme-on-sidebar), 0.45) !important;
     }
   }
