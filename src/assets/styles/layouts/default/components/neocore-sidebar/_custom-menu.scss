@@ -11,4 +11,22 @@
       }
     }
   }
+
+  // VMenu teleports .action-menu outside the sidebar DOM tree — target it globally.
+  // Figma: node 189-12765 — popup fill rgba(0.15,0.16,0.20,1) ≈ --v-theme-sidebar
+  .action-menu {
+    background-color: rgb(var(--v-theme-sidebar)) !important;
+
+    .v-list-item-title {
+      color: rgb(var(--v-theme-on-sidebar)) !important;
+    }
+
+    .v-icon {
+      color: rgb(var(--v-theme-on-sidebar)) !important;
+    }
+
+    .v-divider {
+      border-color: rgba(var(--v-theme-on-sidebar), 0.16) !important;
+    }
+  }
 }

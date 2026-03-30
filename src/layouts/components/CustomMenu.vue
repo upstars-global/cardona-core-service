@@ -209,7 +209,6 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 
 .divider {
   margin-block: 0.5rem;
-  background-color: rgba(var(--v-border-color), var(--v-border-opacity));
 }
 
 .custom-menu {
