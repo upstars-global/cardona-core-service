@@ -94,7 +94,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
             color="success"
             location="bottom end"
             bordered
-            offset-x="5"
+            offset-x="2"
             offset-y="5"
             class="badge cursor-pointer"
           >
@@ -108,6 +108,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
                 :src="userAvatar"
                 cover
                 class="object-contain"
+                referrerpolicy="no-referrer"
               />
               <h5
                 v-else
@@ -219,6 +220,11 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
     height: 11px;
     width: 11px;
     border-radius: 100%;
+  }
+  :deep(.v-badge__badge::after) {
+    color: rgba(var(--v-theme-sidebar));
+    border-width: 2px;
+    transform: scale(1.5);
   }
 }
 </style>
