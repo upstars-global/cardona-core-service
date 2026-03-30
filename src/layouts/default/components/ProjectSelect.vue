@@ -161,12 +161,22 @@ watch(() => selectProject.value, project => {
   }
 
   &--collapsed {
+    // Sidebar collapsed = 52px, mx-3 margins = 12px×2, container = 28px
+    // Global .vs__dropdown-toggle has padding: 0.375rem (6px) each side = 12px total
+    // which leaves only 16px for the 24px logo → must reset inline padding.
+    // Result: 28px container − 1px border×2 = 26px inner → logo 24px centered ✓
+    :deep(.vs__dropdown-toggle) {
+      padding-inline: 0 !important;
+    }
+
     :deep(.vs__actions) {
       display: none;
     }
+
     .text-expanded {
       display: none;
     }
+
     :deep(.vs__dropdown-option) {
       padding-left: 0.875rem;
       padding-right: 0.875rem;
