@@ -104,13 +104,14 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
               class="avatar-block"
             >
               <VImg
-                v-if="false"
+                v-if="userAvatar"
                 :src="userAvatar"
                 cover
                 class="object-contain"
                 referrerpolicy="no-referrer"
               />
               <h5
+                v-else
                 class="text-h5 text-body-1 first-letter"
               >
                 {{ firstLetter }}
