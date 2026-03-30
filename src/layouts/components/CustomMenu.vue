@@ -183,15 +183,27 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 
 .action-menu {
   :deep(.v-list-item) {
-    padding-inline: 0.5rem !important;
-    margin-inline: 0rem !important;
-    margin-block: 0rem !important;
-    padding-block: 0rem !important;
-    min-block-size: 2rem !important;
+    padding-inline: 1rem !important;  // 16px
+    padding-block: 0.5rem !important; // 8px
+    margin-inline: 0 !important;
+    margin-block: 0 !important;
+    min-inline-size: 86px !important;
+    align-self: stretch !important;
     border-radius: 0 !important;
+    gap: 8px !important;
+
     .v-list-item__spacer {
-      width: 0.25rem;
+      width: 0 !important;
     }
+  }
+
+  // Hover: on-sidebar color at 6% opacity over dark menu background
+  :deep(.v-list-item__overlay) {
+    background-color: rgb(var(--v-theme-on-sidebar)) !important;
+  }
+
+  :deep(.v-list-item:hover .v-list-item__overlay) {
+    opacity: 0.06 !important;
   }
 }
 

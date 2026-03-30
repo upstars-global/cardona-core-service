@@ -129,7 +129,7 @@ watch(() => selectProject.value, project => {
     background: rgb(var(--v-theme-sidebar)) !important;
     border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
     border-radius: 6px !important;
-    box-shadow: 0 4px 16px rgba(26, 28, 36, 1) !important;
+    box-shadow: 0 4px 16px rgb(var(--v-theme-shadow)) !important;
     padding: 8px 0 !important;
     width: 100% !important;
     min-width: unset !important;
