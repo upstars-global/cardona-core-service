@@ -25,29 +25,17 @@
       }
     }
 
-    // ── Nav item layout properties: animate padding & icon margin ───────────
-    // padding-inline transitions from 8px (expanded) → 7px (collapsed)
-    // margin-inline-end transitions from 8px → 0  ─ both are transitionable
-    .nav-link,
-    .nav-group {
-      > :first-child {
-        transition: padding-inline 0.25s ease-in-out;
-      }
-
-      .nav-item-icon {
-        transition: margin-inline 0.2s ease-in-out;
-      }
-    }
-
     // ── Override transition-slide-x inside sidebar: pure fade, no slide ────
     // The default slide (translateX) conflicts with the sidebar width animation
     // and makes text appear to "jump". A pure opacity fade is seamless here.
+    // translateX(0) instead of "none" keeps the compositor layer stable and
+    // avoids layer promotion/demotion thrashing on every toggle.
     .transition-slide-x-leave-active {
       transition: opacity 0.15s ease-out !important;
     }
     .transition-slide-x-leave-to {
       opacity: 0 !important;
-      transform: none !important;
+      transform: translateX(0) !important;
     }
     .transition-slide-x-enter-active {
       // Delay so sidebar is already open before text appears
@@ -56,7 +44,7 @@
     }
     .transition-slide-x-enter-from {
       opacity: 0 !important;
-      transform: none !important;
+      transform: translateX(0) !important;
     }
 
     // ── Section titles: fade with sidebar ──────────────────────────────────
