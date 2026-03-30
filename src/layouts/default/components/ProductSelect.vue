@@ -9,7 +9,7 @@ import { storageKeys } from '../../../configs/storage'
 
 defineOptions({ name: 'ProductsSelect' })
 
-const props = defineProps<{
+defineProps<{
   isCollapsedMenu: boolean
 }>()
 
@@ -32,10 +32,6 @@ const selectedProduct = computed({
 })
 
 const products = computed(() => userStore.userInfo.products)
-
-const productNameSelected = computed(() =>
-  props.isCollapsedMenu ? selectedProduct.value?.name : selectedProduct.value?.name.slice(0, 2),
-)
 
 const DYNAMIC_DOMAIN_PREFIX = ['cardona-bac-', 'cardona-development.boffice.site']
 
@@ -76,11 +72,11 @@ watch(selectedProduct, product => {
           :searchable="false"
         >
           <template #list-header>
-            <div>
+            <div class="products-dropdown-header">
               {{ $t('common.products._') }}
             </div>
           </template>
-          <template #selected-option="{ name }">
+          <template #selected-option>
             <div class="d-flex align-center flex-nowrap">
               <span
                 class="select-item product-text pl-3"
@@ -89,8 +85,14 @@ watch(selectedProduct, product => {
             </div>
           </template>
           <template #option="{ name }">
-            <div class="d-flex align-items-center flex-nowrap">
+            <div class="products-dropdown-item d-flex align-center justify-space-between">
               <span>{{ name[0].toUpperCase() + name.slice(1) }}</span>
+              <VIcon
+                v-if="selectedProduct?.name === name"
+                :icon="IconsList.CheckIcon"
+                size="20"
+                class="products-dropdown-check"
+              />
             </div>
           </template>
           <template #open-indicator="{ attributes }">
@@ -109,7 +111,7 @@ watch(selectedProduct, product => {
       to="/"
     >
       <span
-        class="brand-logo  select-item"
+        class="brand-logo select-item"
         :class="{ 'text-info': isDynamicDomain }"
       >
         {{ selectedProduct?.name }}
@@ -143,6 +145,74 @@ watch(selectedProduct, product => {
 
 .chevron-icon {
   color: rgba(var(--v-theme-on-sidebar), 0.7);
+}
+
+// ── Dropdown menu ───────────────────────────────────────────────────────────
+// Global vue-select.scss uses !important on highlight/selected — we must match.
+// All overrides are under .product-select so scoped attribute makes them more specific.
+.product-select {
+  :deep(.vs--open .vs__dropdown-toggle) {
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  :deep(.vs__dropdown-menu) {
+    background: rgb(var(--v-theme-sidebar)) !important;
+    border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 16px rgba(26, 28, 36, 1) !important;
+    padding: 8px 0 !important;
+    width: 220px !important;
+    // Center dropdown relative to the trigger
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  :deep(.vs__dropdown-option) {
+    padding: 8px 16px !important;
+    font-size: 15px !important;
+    line-height: 22px !important;
+    color: rgb(var(--v-theme-on-sidebar)) !important;
+    background: transparent !important;
+  }
+
+  // Global vue-select.scss adds ::after pseudo-element on --selected with content:''
+  // which renders as an empty box — hide it since we use our own VIcon checkmark
+  :deep(.vs__dropdown-option--selected::after) {
+    display: none !important;
+  }
+
+  :deep(.vs__dropdown-option:hover),
+  :deep(.vs__dropdown-option--highlight) {
+    background: rgba(var(--v-theme-on-sidebar), 0.06) !important;
+    color: rgb(var(--v-theme-on-sidebar)) !important;
+  }
+
+  // Selected state: transparent bg, white text, checkmark rendered by #option slot
+  :deep(.vs__dropdown-option--selected),
+  :deep(.vs__dropdown-option--selected.vs__dropdown-option--highlight),
+  :deep(.vs__dropdown-option--selected:hover) {
+    background: transparent !important;
+    color: rgb(var(--v-theme-on-sidebar)) !important;
+  }
+}
+
+// Section header "Products" — must be !important to beat any inherited color from vs__dropdown-menu
+.products-dropdown-header {
+  padding: 0 8px 8px;
+  font-size: 12px !important;
+  line-height: 15px;
+  letter-spacing: 0.4px;
+  color: rgba(var(--v-theme-on-sidebar), 0.56) !important;
+}
+
+.products-dropdown-item {
+  width: 100%;
+}
+
+.products-dropdown-check {
+  color: rgb(var(--v-theme-on-sidebar));
+  flex-shrink: 0;
 }
 
 // Smooth fade when sidebar collapses / expands (synced with sidebar 0.25s transition)
