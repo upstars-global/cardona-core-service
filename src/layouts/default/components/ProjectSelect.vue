@@ -9,6 +9,7 @@ import ApiService from '../../../services/api'
 
 const props = defineProps<{
   projects: ProjectInfo[]
+  isCollapsedMenu?: boolean
 }>()
 
 const userStore = useUserStore()
@@ -43,7 +44,7 @@ watch(() => selectProject.value, project => {
 <template>
   <div
     class="project-select"
-    :class="{ 'cant-select': cantSelect }"
+    :class="{ 'cant-select': cantSelect, 'project-select--collapsed': isCollapsedMenu }"
   >
     <VueSelect
       v-model="selectProject"
@@ -123,8 +124,46 @@ watch(() => selectProject.value, project => {
     }
   }
 
+  // ── Remove purple border when open ──────────────────────────────────────
+  :deep(.vs--open .vs__dropdown-toggle) {
+    border-color: rgba(var(--v-theme-on-sidebar), 0.2) !important;
+    box-shadow: none !important;
+  }
+
+  // ── Dropdown menu ────────────────────────────────────────────────────────
   :deep(.vs__dropdown-menu) {
-    min-width: auto;
+    background: rgb(var(--v-theme-sidebar)) !important;
+    border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 16px rgba(26, 28, 36, 1) !important;
+    padding: 8px 0 !important;
+    width: 100% !important;
+    min-width: unset !important;
+  }
+
+  :deep(.vs__dropdown-option) {
+    padding: 8px 16px !important;
+    font-size: 15px !important;
+    line-height: 22px !important;
+    color: rgb(var(--v-theme-on-sidebar)) !important;
+    background: transparent !important;
+  }
+
+  :deep(.vs__dropdown-option--selected::after) {
+    display: none !important;
+  }
+
+  :deep(.vs__dropdown-option:hover),
+  :deep(.vs__dropdown-option--highlight) {
+    background: rgba(var(--v-theme-on-sidebar), 0.06) !important;
+    color: rgb(var(--v-theme-on-sidebar)) !important;
+  }
+
+  :deep(.vs__dropdown-option--selected),
+  :deep(.vs__dropdown-option--selected.vs__dropdown-option--highlight),
+  :deep(.vs__dropdown-option--selected:hover) {
+    background: transparent !important;
+    color: rgb(var(--v-theme-on-sidebar)) !important;
   }
 
   &--collapsed {
@@ -144,6 +183,7 @@ watch(() => selectProject.value, project => {
     color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
   }
 }
+
 .project-logo {
   width: 1.5rem;
   height: 1.5rem;
@@ -154,6 +194,7 @@ watch(() => selectProject.value, project => {
   margin-top: 2px;
   margin-bottom: 2px;
 }
+
 .project-logo-no-ico {
   background: rgb(var(--v-theme-primary));
   color: white;
