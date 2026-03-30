@@ -100,19 +100,18 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
           >
             <VAvatar
               :color="VColors.Success"
-              size="large"
+              size="32"
               class="avatar-block"
             >
               <VImg
-                v-if="userAvatar"
+                v-if="false"
                 :src="userAvatar"
                 cover
                 class="object-contain"
                 referrerpolicy="no-referrer"
               />
               <h5
-                v-else
-                class="text-h5 text-body-1 first-letter text-success"
+                class="text-h5 text-body-1 first-letter"
               >
                 {{ firstLetter }}
               </h5>
@@ -160,10 +159,13 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 .avatar-block {
   height: 40px;
   width: 40px;
-  background-color: rgba(var(--v-theme-success), var(--v-badge-opacity)) !important;
+  // background-color: rgba(var(--v-theme-success), var(--v-badge-opacity)) !important;
+  background-color: rgba(var(--v-theme-blue-800)) !important;
 }
 .first-letter {
   font-weight: 600;
+  font-size: 13px;
+  color: #ffffff;
 }
 
 .user-info {
@@ -223,8 +225,8 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
   }
   :deep(.v-badge__badge::after) {
     color: rgba(var(--v-theme-sidebar));
-    border-width: 2px;
-    transform: scale(1.5);
+    border-width: 1px;
+    //transform: scale(1.5);
   }
 }
 </style>
