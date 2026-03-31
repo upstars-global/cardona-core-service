@@ -1,4 +1,6 @@
 $box-shadow: 0 2px 4px 0 rgba(132, 129, 157, 0.24);
+$border-popup: 1px solid rgba(var(--v-theme-border-system));
+$border-popup-shadow: 0 10px 20px 0 rgba(var(--v-theme-skeleton-bg), 0.10);
 
 @mixin apply {
   .v-select.vs--open{
@@ -24,10 +26,13 @@ $box-shadow: 0 2px 4px 0 rgba(132, 129, 157, 0.24);
     }
   }
   .vs__dropdown-menu {
+    border: $border-popup;
+    box-shadow: $border-popup-shadow;
+
     .vs__no-options {
-      border: 1px solid rgba(var(--v-theme-border-system));
+      border: $border-popup;
       border-radius: 6px;
-      box-shadow: 0 10px 20px 0 rgba(var(--v-theme-skeleton-bg), 0.10);
+      box-shadow: $border-popup;
       color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
       font-weight: 400;
       font-size: 15px;
