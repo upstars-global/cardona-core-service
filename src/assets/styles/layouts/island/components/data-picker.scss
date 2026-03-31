@@ -1,0 +1,35 @@
+@mixin apply {
+  .flatpickr-calendar {
+    border-radius: 6px;
+
+    .flatpickr-months {
+      border-block: initial;
+      .flatpickr-prev-month, .flatpickr-next-month {
+        background-color: rgba(var(--v-theme-skeleton-bg), 0.08);
+        fill: rgba(var(--v-border-color)) !important;
+      }
+    }
+
+    .flatpickr-weekdays {
+      padding-inline: 12px;
+    }
+
+    .flatpickr-weekday {
+      font-weight: 400;
+    }
+
+    .flatpickr-day.flatpickr-disabled, .flatpickr-calendar .flatpickr-day.prevMonthDay:not(.startRange, .inRange), .flatpickr-calendar .flatpickr-day.nextMonthDay:not(.endRange, .inRange) {
+      opacity: 0.32;
+    }
+
+    .flatpickr-time {
+      .numInput {
+        font-size: 15px;
+      }
+    }
+  }
+
+  .flatpickr-calendar.hasTime.open .flatpickr-time {
+    border-color: rgba(var(--v-theme-border-system));
+  }
+}

@@ -7,6 +7,7 @@
 @use "./base-select" as base-select;
 @use "./base-input" as base-input;
 @use "./filters-block" as filters-block;
+@use "./data-picker" as data-picker;
 
 @mixin apply {
   @include skeleton.apply;
@@ -18,6 +19,7 @@
   @include base-select.apply;
   @include base-input.apply;
   @include filters-block.apply;
+  @include data-picker.apply;
 
 
   $card-internal-radius: 12px;
