@@ -1,6 +1,8 @@
 @mixin apply {
   .flatpickr-calendar {
     border-radius: 6px;
+    border: 1px solid rgba(var(--v-theme-border-system));
+    box-shadow: 0 10px 20px 0 rgba(var(--v-theme-skeleton-bg), 0.10);
 
     .flatpickr-months {
       border-block: initial;
