@@ -1,7 +1,7 @@
 <script lang="ts">
-import { useWindowSize, useToggle, syncRef } from '@vueuse/core';
+import { syncRef, useToggle, useWindowSize } from '@vueuse/core'
 
-import { defineComponent, ref, watch, toRef, h } from 'vue';
+import { defineComponent, h, ref, toRef, watch } from 'vue'
 
 import type { PropType } from 'vue'
 import { VerticalNav } from '@layouts/components'
@@ -107,9 +107,12 @@ export default defineComponent({
         },
       )
 
+      // WORKPIECE NODES for main body layout
+      // const mainWrapper = (child: VNode[]) => h('div', { class: 'ml-2 my-4 main-wrapper bg-main' }, child)
+
       return h(
         'div',
-        { class: ['layout-wrapper', ...configStore._layoutClasses] },
+        { class: ['layout-wrapper bg-layout', ...configStore._layoutClasses] },
         [
           verticalNavWrapper ? h(verticalNavWrapper, verticalNavWrapperProps, { default: () => verticalNav }) : verticalNav,
           h(
@@ -118,6 +121,8 @@ export default defineComponent({
             [
               navbar,
               main,
+
+              // WORKPIECE NODES for main body layout
               footer,
             ],
           ),
@@ -230,4 +235,18 @@ export default defineComponent({
     }
   }
 }
+
+// WORKPIECE Style for main body layout
+//.main-wrapper {
+//  border-top-left-radius: 12px;
+//  border-bottom-left-radius: 12px;
+//}
+//
+//.bg-main {
+//  background-color: rgba(var(--v-theme-surface));
+//}
+//
+//.bg-layout {
+//  background-color: #252833;
+//}
 </style>
