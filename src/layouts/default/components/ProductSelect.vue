@@ -151,7 +151,7 @@ watch(selectedProduct, product => {
 // Global vue-select.scss uses !important on highlight/selected — we must match.
 // All overrides are under .product-select so scoped attribute makes them more specific.
 .product-select {
-  :deep(.vs--open .vs__dropdown-toggle) {
+  :deep(.vs__dropdown-toggle) {
     border-color: transparent !important;
     box-shadow: none !important;
   }
