@@ -183,6 +183,16 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 200px;
+  transition: opacity 0.3s ease, max-width 0.3s ease, margin-left 0.3s ease;
+}
+
+.custom-menu--collapsed {
+  .full-name {
+    opacity: 0;
+    max-width: 0;
+    margin-left: 0 !important;
+  }
 }
 
 .action-menu {
