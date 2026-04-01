@@ -9,6 +9,10 @@
       .text-color-mute  {
         color:  rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
       }
+
+      .v-counter {
+        color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
+      }
     }
   }
 }
