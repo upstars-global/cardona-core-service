@@ -4,6 +4,12 @@
     border: 1px solid rgba(var(--v-theme-border-system));
     box-shadow: 0 10px 20px 0 rgba(var(--v-theme-skeleton-bg), 0.10);
 
+    .numInputWrapper {
+      input {
+        color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
+      }
+    }
+
     .flatpickr-months {
       border-block: initial;
       .flatpickr-prev-month, .flatpickr-next-month {
