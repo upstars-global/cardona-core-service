@@ -60,6 +60,7 @@ export const useUserStore = defineStore('user', {
         || defaultProject
       )
     },
+    isExistsUser: ({ userInfo }) => !!userInfo.id,
     userInfoData: state => state.userInfo,
 
     haveSomePermissionReport: state =>
