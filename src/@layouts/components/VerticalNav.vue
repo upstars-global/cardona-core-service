@@ -178,7 +178,7 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
       <PerfectScrollbar
         :key="configStore.isAppRTL"
         tag="ul"
-        class="nav-items"
+        class="nav-items pr-3"
         :options="{ wheelPropagation: false }"
         @ps-scroll-y="handleNavScroll"
       >
