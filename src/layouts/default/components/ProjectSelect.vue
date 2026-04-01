@@ -173,9 +173,9 @@ watch(() => selectProject.value, project => {
       display: none;
     }
 
-    .text-expanded {
-      display: none;
-    }
+    //.text-expanded {
+    //  display: none;
+    //}
 
     :deep(.vs__dropdown-option) {
       padding-left: 0.875rem;
