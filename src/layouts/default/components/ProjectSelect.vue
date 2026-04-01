@@ -53,7 +53,7 @@ watch(() => selectProject.value, project => {
       class="select-field select-field-color"
       :clearable="false"
       :searchable="false"
-      :no-drop="cantSelect"
+      :no-drop="cantSelect || !isCollapsedMenu"
     >
       <template #selected-option="{ publicName, title, alias, iconPath }">
         <div class="d-flex align-center overflow-hidden gap-2">
