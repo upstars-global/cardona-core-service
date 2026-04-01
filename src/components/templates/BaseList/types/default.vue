@@ -529,6 +529,8 @@ const onClickDeleteMultiple = async () => {
     customApiPrefix: props.config?.customApiPrefix,
   })
 
+  baseListSelectionStore.clearSelectedIds()
+
   reFetchList()
 }
 
@@ -807,7 +809,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         v-else-if="config.withMultipleActions && selectedItems.isNotEmpty"
         :action="typeof config.withMultipleActions !== 'boolean' ? config.withMultipleActions : null"
         :entity-name="entityName"
-        :number-selected-items="selectedItems.length"
+        :number-selected-items="allSelectedIds.size"
         :can-remove="canRemove"
         @on-activate="onClickToggleStatusMultiple(true)"
         @on-deactivate="onClickToggleStatusMultiple(false)"
