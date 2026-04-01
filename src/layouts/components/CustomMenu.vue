@@ -79,14 +79,11 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 </script>
 
 <template>
-  <div
-    class="custom-menu"
-    :class="{ 'custom-menu--collapsed': isCollapsedMenu }"
-  >
+  <div class="custom-menu">
     <VMenu>
       <template #activator="{ props }">
         <div
-          class="d-flex align-center cursor-pointer user-info"
+          class="d-flex align-center cursor-pointer user-info mr-auto"
           v-bind="props"
         >
           <VBadge
@@ -160,7 +157,6 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 .avatar-block {
   height: 40px;
   width: 40px;
-  // background-color: rgba(var(--v-theme-success), var(--v-badge-opacity)) !important;
   background-color: rgba(var(--v-theme-blue-800)) !important;
 }
 .first-letter {
@@ -170,6 +166,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 }
 
 .user-info {
+  margin-left: 10px;
   overflow: hidden;
   &:hover {
     .full-name {
@@ -187,13 +184,13 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
   transition: opacity 0.3s ease, max-width 0.3s ease, margin-left 0.3s ease;
 }
 
-.custom-menu--collapsed {
-  .full-name {
-    opacity: 0;
-    max-width: 0;
-    margin-left: 0 !important;
-  }
-}
+//.custom-menu--collapsed {
+//  .full-name {
+//    opacity: 0;
+//    max-width: 0;
+//    margin-left: 0 !important;
+//  }
+//}
 
 .action-menu {
   :deep(.v-list-item) {
