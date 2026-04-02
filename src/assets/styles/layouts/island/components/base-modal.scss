@@ -1,0 +1,12 @@
+@mixin apply {
+  .modal-card {
+    border: initial;
+  }
+  .base-modal {
+    .modal-header {
+      &__value {
+        font-weight: 700;
+      }
+    }
+  }
+}

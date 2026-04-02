@@ -5,7 +5,7 @@ body[data-layout="island"] {
 
   background-color: rgba(var(--v-island-layout-bg)) !important;
 
-  .v-overlay-container {
+  .v-overlay-container:has(.v-list){
     .v-overlay__content {
       border: 1px solid rgb(var(--v-island-border-color));
     }

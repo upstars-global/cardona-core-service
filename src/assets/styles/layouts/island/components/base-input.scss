@@ -1,0 +1,25 @@
+@mixin apply {
+  .v-input
+  .v-field--variant-outlined
+  .v-field__outline__start,
+  .v-input .v-field--variant-outlined
+  .v-field__outline__notch::before,
+  .v-input .v-field--variant-outlined
+  .v-field__outline__notch::after,
+  .v-input .v-field--variant-outlined .v-field__outline__end{
+    border-color: rgba(var(--v-border-color), var(--v-border-opacity))
+  }
+  .v-field__input input::placeholder,
+  input.v-field__input::placeholder,
+  textarea.v-field__input::placeholder {
+    color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
+  }
+
+  .v-input.v-text-field .v-field__input {
+    color: rgba(var(--v-theme-surface-invert), var(--v-high-emphasis-opacity))
+  }
+
+  .v-field__prepend-inner > .v-icon, .v-field__append-inner > .v-icon, .v-field__clearable > .v-icon {
+    color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
+  }
+}
