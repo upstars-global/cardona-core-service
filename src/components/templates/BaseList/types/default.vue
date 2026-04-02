@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
+import { computed, inject, onBeforeMount, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
@@ -37,6 +37,7 @@ import { useBaseStoreCore } from '../../../../stores/baseStoreCore'
 import { useUserStore } from '../../../../stores/user'
 import { useAppConfigCoreStore } from '../../../../stores/appConfigCore'
 import { useFiltersStore } from '../../../../stores/filtersCore'
+import { useBaseListSelection } from '../../../../stores/baseListSelection'
 import usePagination from '../сomposables/pagination'
 import type { PaginationResult } from '../сomposables/pagination'
 import MultipleActions from '../_components/MultipleActions.vue'
@@ -84,6 +85,7 @@ const appConfigCoreStore = useAppConfigCoreStore()
 const userStore = useUserStore()
 const loaderStore = useLoaderStore()
 const filtersCoreStore = useFiltersStore()
+const baseListSelectionStore = useBaseListSelection()
 const { t } = useI18n()
 
 const router = useRouter()
@@ -331,7 +333,7 @@ const getList = async () => {
   items.value = list
   updateTotal(total)
 
-  selectedItems.value = []
+  selectedItems.value = list.filter(item => allSelectedIds.value.has(item.id))
 
   return list
 }
@@ -468,6 +470,7 @@ watch(() => hasSelectedFilters.value, hasFilters => {
 
 // Selectable
 const selectedItems = ref<Record<string, unknown>[]>([])
+const allSelectedIds = computed(() => baseListSelectionStore.getAllSelectedIds)
 
 const allSelected = ref(false)
 const indeterminate = ref(false)
@@ -487,12 +490,19 @@ watch(selectedItems, newItems => {
   }
 })
 
-const onRowSelected = items => (selectedItems.value = items)
+const onRowSelected = checkedItems => {
+  selectedItems.value = checkedItems
+
+  const allItemsIds = items.value.map(({ id }) => id)
+  const selectedItemsIds = checkedItems.map(({ id }) => id)
+
+  baseListSelectionStore.syncPageSelection(allItemsIds, selectedItemsIds)
+}
 
 // Multiple actions
 const onClickToggleStatusMultiple = async (isActive: boolean) => {
-  const data: Array<{ id: string; isActive: boolean }> = selectedItems.value.map(
-    ({ id }: { id: string }) => ({
+  const data: Array<{ id: string; isActive: boolean }> = [...allSelectedIds.value].map(
+    id => ({
       id,
       isActive,
     }),
@@ -507,7 +517,7 @@ const onClickToggleStatusMultiple = async (isActive: boolean) => {
 }
 
 const onClickDeleteMultiple = async () => {
-  const ids: Array<string> = selectedItems.value.map(({ id }) => id)
+  const ids: Array<string> = [...allSelectedIds.value]
   const isOneMoreId = ids.length > 1
 
   const action: CallableFunction = isOneMoreId ? multipleDeleteAction : deleteAction
@@ -518,6 +528,8 @@ const onClickDeleteMultiple = async () => {
     ...params,
     customApiPrefix: props.config?.customApiPrefix,
   })
+
+  baseListSelectionStore.clearSelectedIds()
 
   reFetchList()
 }
@@ -574,6 +586,12 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
   })
 
   selectedItems.value = selectedItems.value.filter(item => item?.id !== selectedItem.value.id)
+
+  const allItemsIds = items.value.map(({ id }) => id)
+  const selectedItemsIds = selectedItems.value.map(({ id }) => id)
+
+  baseListSelectionStore.syncPageSelection(allItemsIds, selectedItemsIds)
+
   resetSelectedItem()
   await reFetchList()
 }
@@ -593,6 +611,10 @@ const onOpenEdit = (id: string) => editingId.value = id
 
 onMounted(() => {
   emits('mounted')
+})
+
+onBeforeUnmount(() => {
+  baseListSelectionStore.clearSelectedIds()
 })
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
@@ -787,7 +809,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         v-else-if="config.withMultipleActions && selectedItems.isNotEmpty"
         :action="typeof config.withMultipleActions !== 'boolean' ? config.withMultipleActions : null"
         :entity-name="entityName"
-        :number-selected-items="selectedItems.length"
+        :number-selected-items="allSelectedIds.size"
         :can-remove="canRemove"
         @on-activate="onClickToggleStatusMultiple(true)"
         @on-deactivate="onClickToggleStatusMultiple(false)"
