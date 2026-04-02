@@ -224,7 +224,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 
 .custom-menu {
   padding: 1rem;
-  border-top: 1px solid rgb(var(--v-theme-grey-200));
+  // border-top: 1px solid rgb(var(--v-theme-grey-200));
 
   :deep(.v-badge__badge) {
     height: 11px;
