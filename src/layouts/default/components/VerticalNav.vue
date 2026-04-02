@@ -220,7 +220,7 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 }
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use "@configured-variables" as variables;
 @use "@layouts/styles/mixins";
 
@@ -287,10 +287,8 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 
 }
 
-body[data-layout="default"] {
-  .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
-    inline-size: variables.$layout-vertical-nav-collapsed-width;
-  }
+.layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
+  inline-size: variables.$layout-vertical-nav-collapsed-width;
 }
 
 // Small screen vertical nav transition
