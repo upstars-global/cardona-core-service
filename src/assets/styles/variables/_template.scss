@@ -1,10 +1,5 @@
-// ℹ️ Neocore sidebar redesign overrides — Figma: https://www.figma.com/design/SB9GrN232GryXAY1cmQxr2/Neocore?node-id=1-7093
-// Changes sidebar width from 260px → 252px and nav item horizontal spacing from 14px+12px → 8px+8px.
-// These variables propagate automatically to VerticalNav.vue (width, mobile transform)
-// and VerticalNavLayout.vue (content wrapper padding-inline-start).
-@forward "@core/scss/template/variables" with (
-  $layout-vertical-nav-width: 252px,
-  $layout-vertical-nav-collapsed-width: 52px,  // collapsed sidebar (was 80px)
-  $vertical-nav-horizontal-spacing: 0.5rem,  // 8px margin-inline for nav items (was 0.875rem / 14px)
-  $vertical-nav-horizontal-padding: 0.5rem,  // 8px padding-inline for nav items (was 0.75rem / 12px)
-);
+// Framework variable defaults — no layout-specific overrides here.
+// Neocore sidebar values (252px width, 52px collapsed, 8px spacing) live in:
+//   - src/layouts/default/components/VerticalNav.vue  (widths, hardcoded)
+//   - src/assets/styles/layouts/default/components/neocore-sidebar/_sizing.scss (spacing + content wrapper)
+@forward "@core/scss/template/variables";

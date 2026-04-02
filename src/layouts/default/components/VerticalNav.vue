@@ -235,7 +235,7 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
   display: flex;
   flex-direction: column;
   block-size: 100%;
-  inline-size: variables.$layout-vertical-nav-width;
+  inline-size: 252px; // neocore design (framework default: 260px)
   inset-block-start: 0;
   inset-inline-start: 0;
   transition: inline-size 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
@@ -288,17 +288,17 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 }
 
 .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
-  inline-size: variables.$layout-vertical-nav-collapsed-width;
+  inline-size: 52px; // neocore design (framework default: 80px)
 }
 
 // Small screen vertical nav transition
 @media (max-width: 1279px) {
   .layout-vertical-nav {
     &:not(.visible) {
-      transform: translateX(-#{variables.$layout-vertical-nav-width});
+      transform: translateX(-252px); // neocore width
 
       @include mixins.rtl {
-        transform: translateX(variables.$layout-vertical-nav-width);
+        transform: translateX(252px);
       }
     }
 
