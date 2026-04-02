@@ -4,19 +4,19 @@ import { useElementHover, useWindowSize } from '@vueuse/core'
 import { computed, provide, ref, watch } from 'vue'
 import type { Component } from 'vue'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import CustomMenu from '../../layouts/default/components/CustomMenu.vue'
+import CustomMenu from '../../layouts/components/CustomMenu.vue'
 import { convertUpperCaseFirstSymbol } from '../../helpers'
 import { IconsList } from '../../@model/enums/icons'
-import ProjectSelect from '../../layouts/default/components/ProjectSelect.vue'
+import ProjectSelect from '../../@layouts/components/ProjectSelect.vue'
 import { VVariants } from '../../@model/vuetify'
 import { useUserStore } from '../../stores/user'
 import { useAppConfigCoreStore } from '../../stores/appConfigCore'
-import ProductsSelect from '../../layouts/default/components/ProductSelect.vue'
 import { layoutConfig } from '@layouts'
 import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
 import { useLayoutConfigStore } from '@layouts/stores/config'
 import { injectionKeyIsVerticalNavHovered } from '@layouts/symbols'
 import type { NavGroup, NavLink, NavSectionTitle, VerticalNavItems } from '@layouts/types'
+import ProductsSelect from '@layouts/components/ProductsSelect.vue'
 
 interface Props {
   tag?: string | Component
@@ -151,12 +151,8 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
     <ProjectSelect
       v-if="canSelectProject && projects.isNotEmpty"
       :projects="projects"
-      :is-collapsed-menu="configStore.isVerticalNavCollapsed && isHovered"
-      class="mx-2 mb-1"
-      :class="{
-        'project-select--collapsed': configStore.isVerticalNavCollapsed && !isHovered,
-        'mr-4 ml-4': configStore.isVerticalNavCollapsed && isHovered
-      }"
+      class="mx-3 mt-6 mb-8"
+      :class="{ 'project-select--collapsed': configStore.isVerticalNavCollapsed && !isHovered }"
     />
     <slot name="before-nav-items" />
     <div
