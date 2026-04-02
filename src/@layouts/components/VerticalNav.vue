@@ -235,6 +235,19 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
   will-change: transform, inline-size;
   overflow: hidden;
 
+  .nav-header {
+    display: flex;
+    align-items: center;
+
+    .header-action {
+      cursor: pointer;
+    }
+  }
+
+  .app-title-wrapper {
+    margin-inline-end: auto;
+  }
+
   .nav-items {
     block-size: 100%;
   }
@@ -299,22 +312,14 @@ body[data-layout="default"] {
   }
 
   // Hide pin / unpin buttons in mini (collapsed) mode
-  .layout-vertical-nav {
-    .nav-header .header-action {
-      cursor: pointer;
-
-      @at-root {
-        #{variables.$selector-vertical-nav-mini} .nav-header .header-action {
-          &.nav-pin,
-          &.nav-unpin {
-            display: none !important;
-          }
-        }
+  // @at-root breaks out of any parent selector by design, so this rule
+  // is always global — same behaviour as the original code.
+  @at-root {
+    #{variables.$selector-vertical-nav-mini} .nav-header .header-action {
+      &.nav-pin,
+      &.nav-unpin {
+        display: none !important;
       }
-    }
-
-    .app-title-wrapper {
-      margin-inline-end: auto;
     }
   }
 }
