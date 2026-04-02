@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onUnmounted, ref, watch } from 'vue'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
@@ -7,11 +7,23 @@ import { useSkins } from '@core/composable/useSkins'
 import AppBreadcrumb from '../components/AppBreadcrumb.vue'
 import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
 import { VerticalNavLayout } from '@layouts'
+import { useLayoutConfigStore } from '@layouts/stores/config'
 import { useConfigStore } from '@core/stores/config'
 import { switchToVerticalNavOnLtOverlayNavBreakpoint } from '@layouts/utils'
 import { Theme } from '@core/enums'
 
 const configStore = useConfigStore()
+const layoutConfigStore = useLayoutConfigStore()
+
+// Island sidebar is always in mini mode (expands on hover), no toggle button.
+// Save the default layout's collapse preference and restore it on unmount
+// so navigating back to default doesn't change the user's pin state.
+const prevCollapsed = layoutConfigStore.isVerticalNavCollapsed
+layoutConfigStore.isVerticalNavCollapsed = true
+onUnmounted(() => {
+  layoutConfigStore.isVerticalNavCollapsed = prevCollapsed
+})
+
 const { appsAndPages } = useAppsAndPages()
 
 const navItems = computed(() => {

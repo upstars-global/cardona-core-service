@@ -211,11 +211,9 @@ export default defineComponent({
     }
   }
 
-  // Adjust right column pl when vertical nav is collapsed (default layout only)
-  body[data-layout="default"] & {
-    &.layout-vertical-nav-collapsed .layout-content-wrapper {
-      padding-inline-start: variables.$layout-vertical-nav-collapsed-width;
-    }
+  // Adjust right column pl when vertical nav is collapsed
+  &.layout-vertical-nav-collapsed .layout-content-wrapper {
+    padding-inline-start: variables.$layout-vertical-nav-collapsed-width;
   }
 
   // 👉 Content height fixed

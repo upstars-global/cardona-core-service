@@ -298,28 +298,24 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
   transform: translateX(0) !important;
 }
 
-// ─── Default layout only: collapse behaviour ──────────────────────────────────
+// ─── Shared: collapse behaviour (both default and island) ────────────────────
 
-body[data-layout="default"] {
-  // Collapse transition on the layout wrapper
-  .layout-vertical-nav-collapsed {
-    transition: transform 0.3s ease-in-out;
-  }
+.layout-vertical-nav-collapsed {
+  transition: transform 0.3s ease-in-out;
+}
 
-  // Collapsed nav width
-  .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
-    inline-size: variables.$layout-vertical-nav-collapsed-width;
-  }
+.layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
+  inline-size: variables.$layout-vertical-nav-collapsed-width;
+}
 
-  // Hide pin / unpin buttons in mini (collapsed) mode
-  // @at-root breaks out of any parent selector by design, so this rule
-  // is always global — same behaviour as the original code.
-  @at-root {
-    #{variables.$selector-vertical-nav-mini} .nav-header .header-action {
-      &.nav-pin,
-      &.nav-unpin {
-        display: none !important;
-      }
+// ─── Default layout only: hide pin/unpin in mini mode ────────────────────────
+
+// @at-root always compiles to root level regardless of parent selector.
+@at-root {
+  #{variables.$selector-vertical-nav-mini} .nav-header .header-action {
+    &.nav-pin,
+    &.nav-unpin {
+      display: none !important;
     }
   }
 }
