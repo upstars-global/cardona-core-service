@@ -220,11 +220,8 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 @use "@configured-variables" as variables;
 @use "@layouts/styles/mixins";
 
-.layout-vertical-nav-collapsed {
-  transition: transform 0.3s ease-in-out;
-}
+// ─── Shared: apply to ALL layouts that use .layout-vertical-nav ──────────────
 
-// 👉 Vertical Nav
 .layout-vertical-nav {
   position: fixed;
   z-index: variables.$layout-vertical-nav-z-index;
@@ -238,36 +235,8 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
   will-change: transform, inline-size;
   overflow: hidden;
 
-  .nav-header {
-    display: flex;
-    align-items: center;
-
-    .header-action {
-      cursor: pointer;
-
-      @at-root {
-        #{variables.$selector-vertical-nav-mini} .nav-header .header-action {
-          &.nav-pin,
-          &.nav-unpin {
-            display: none !important;
-          }
-        }
-      }
-    }
-  }
-
-  .app-title-wrapper {
-    margin-inline-end: auto;
-  }
-
   .nav-items {
     block-size: 100%;
-
-    // ℹ️ We no loner needs this overflow styles as perfect scrollbar applies it
-    // overflow-x: hidden;
-
-    // // ℹ️ We used `overflow-y` instead of `overflow` to mitigate overflow x. Revert back if any issue found.
-    // overflow-y: auto;
   }
 
   .ps {
@@ -280,16 +249,9 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-
 }
 
-body[data-layout="default"] {
-  .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
-    inline-size: variables.$layout-vertical-nav-collapsed-width;
-  }
-}
-
-// Small screen vertical nav transition
+// Small screen: slide nav out of viewport
 @media (max-width: 1279px) {
   .layout-vertical-nav {
     &:not(.visible) {
@@ -321,5 +283,39 @@ body[data-layout="default"] {
 
 .show-menu {
   transform: translateX(0) !important;
+}
+
+// ─── Default layout only: collapse behaviour ──────────────────────────────────
+
+body[data-layout="default"] {
+  // Collapse transition on the layout wrapper
+  .layout-vertical-nav-collapsed {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  // Collapsed nav width
+  .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
+    inline-size: variables.$layout-vertical-nav-collapsed-width;
+  }
+
+  // Hide pin / unpin buttons in mini (collapsed) mode
+  .layout-vertical-nav {
+    .nav-header .header-action {
+      cursor: pointer;
+
+      @at-root {
+        #{variables.$selector-vertical-nav-mini} .nav-header .header-action {
+          &.nav-pin,
+          &.nav-unpin {
+            display: none !important;
+          }
+        }
+      }
+    }
+
+    .app-title-wrapper {
+      margin-inline-end: auto;
+    }
+  }
 }
 </style>
