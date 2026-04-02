@@ -53,15 +53,17 @@ export default defineComponent({
       const { wrapper: verticalNavWrapper, wrapperProps: verticalNavWrapperProps, ...additionalVerticalNavAttrs } = verticalNavAttrs.value
 
       // 👉 Vertical nav
-      const verticalNav = h(
-        VerticalNav,
-        { isOverlayNavActive: isOverlayNavActive.value, toggleIsOverlayNavActive, navItems: props.navItems, ...additionalVerticalNavAttrs },
-        {
-          'nav-header': () => slots['vertical-nav-header']?.(),
-          'before-nav-items': () => slots['before-vertical-nav-items']?.(),
-          'footer': () => slots['nav-footer']?.(),
-        },
-      )
+      const verticalNav = slots['vertical-nav']
+        ? slots['vertical-nav']({ isOverlayNavActive: isOverlayNavActive.value, toggleIsOverlayNavActive })
+        : h(
+          VerticalNav,
+          { isOverlayNavActive: isOverlayNavActive.value, toggleIsOverlayNavActive, navItems: props.navItems, ...additionalVerticalNavAttrs },
+          {
+            'nav-header': () => slots['vertical-nav-header']?.(),
+            'before-nav-items': () => slots['before-vertical-nav-items']?.(),
+            'footer': () => slots['nav-footer']?.(),
+          },
+        )
 
       // 👉 Navbar
       const navbar = h(
