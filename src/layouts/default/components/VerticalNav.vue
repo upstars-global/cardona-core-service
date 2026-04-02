@@ -285,11 +285,11 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
     white-space: nowrap;
   }
 
-  // 👉 Collapsed
-  .layout-vertical-nav-collapsed & {
-    &:not(.hovered) {
-      inline-size: variables.$layout-vertical-nav-collapsed-width;
-    }
+}
+
+body[data-layout="default"] {
+  .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
+    inline-size: variables.$layout-vertical-nav-collapsed-width;
   }
 }
 
