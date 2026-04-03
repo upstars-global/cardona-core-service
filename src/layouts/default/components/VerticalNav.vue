@@ -147,17 +147,17 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
         />
       </slot>
     </div>
-
     <ProjectSelect
-      v-if="projects.isNotEmpty"
+      v-if="canSelectProject && projects.isNotEmpty"
       :projects="projects"
       :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered"
-      class="mx-2 mb-1"
+      class="mb-1"
       :class="{
+        'px-4': isHovered || !configStore.isVerticalNavCollapsed,
+        'px-2': !isHovered,
         'project-select--collapsed': configStore.isVerticalNavCollapsed && !isHovered,
       }"
     />
-<!--    'mx-3': configStore.isVerticalNavCollapsed && isHovered,-->
     <slot name="before-nav-items" />
     <div
       v-if="!isMenuTypeMain"
