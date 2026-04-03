@@ -68,7 +68,6 @@ watch(selectedProduct, product => {
           :options="products"
           label="name"
           class="select-text-color"
-          appendToBody
           :clearable="false"
           :searchable="false"
         >
@@ -169,8 +168,10 @@ watch(selectedProduct, product => {
 }
 </style>
 
-<!-- appendToBody рендерить дропдаун в <body> поза скоупом компонента, тому потрібні глобальні стилі -->
 <style lang="scss">
+.product-select .vs__dropdown-menu {
+  left: -32px !important;
+}
 .vs__dropdown-menu {
   background: rgb(var(--v-theme-sidebar)) !important;
   border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
