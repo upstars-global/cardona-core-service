@@ -184,18 +184,10 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
   transition: opacity 0.3s ease, max-width 0.3s ease, margin-left 0.3s ease;
 }
 
-//.custom-menu--collapsed {
-//  .full-name {
-//    opacity: 0;
-//    max-width: 0;
-//    margin-left: 0 !important;
-//  }
-//}
-
 .action-menu {
   :deep(.v-list-item) {
-    padding-inline: 1rem !important;  // 16px
-    padding-block: 0.5rem !important; // 8px
+    padding-inline: 1rem !important;
+    padding-block: 0.5rem !important;
     margin-inline: 0 !important;
     margin-block: 0 !important;
     min-inline-size: 86px !important;
@@ -208,7 +200,6 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
     }
   }
 
-  // Hover: on-sidebar color at 6% opacity over dark menu background
   :deep(.v-list-item__overlay) {
     background-color: rgb(var(--v-theme-on-sidebar)) !important;
   }
@@ -223,8 +214,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 }
 
 .custom-menu {
-  padding: 1rem;
-  // border-top: 1px solid rgb(var(--v-theme-grey-200));
+  padding: 1rem 0.5rem;
 
   :deep(.v-badge__badge) {
     height: 11px;
@@ -234,7 +224,6 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
   :deep(.v-badge__badge::after) {
     color: rgba(var(--v-theme-sidebar));
     border-width: 1px;
-    //transform: scale(1.5);
   }
 }
 </style>
