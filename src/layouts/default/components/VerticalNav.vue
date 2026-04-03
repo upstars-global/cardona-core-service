@@ -228,7 +228,6 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
   transition: transform 0.3s ease-in-out;
 }
 
-// 👉 Vertical Nav
 .layout-vertical-nav {
   position: fixed;
   z-index: variables.$layout-vertical-nav-z-index;
@@ -266,12 +265,6 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 
   .nav-items {
     block-size: 100%;
-
-    // ℹ️ We no loner needs this overflow styles as perfect scrollbar applies it
-    // overflow-x: hidden;
-
-    // // ℹ️ We used `overflow-y` instead of `overflow` to mitigate overflow x. Revert back if any issue found.
-    // overflow-y: auto;
   }
 
   .ps {
@@ -288,10 +281,9 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 }
 
 .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
-  inline-size: 52px; // neocore design (framework default: 80px)
+  inline-size: 52px;
 }
 
-// Small screen vertical nav transition
 @media (max-width: 1279px) {
   .layout-vertical-nav {
     &:not(.visible) {
