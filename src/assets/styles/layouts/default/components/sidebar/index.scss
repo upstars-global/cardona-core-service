@@ -1,0 +1,11 @@
+// Default layout sidebar — entry point
+// Applied only inside body[data-layout="default"] via layouts/default/components/index.scss
+@use 'sizing';
+@use 'theme';
+@use 'mini';
+
+@mixin apply {
+  @include sizing.apply;
+  @include theme.apply;
+  @include mini.apply;
+}

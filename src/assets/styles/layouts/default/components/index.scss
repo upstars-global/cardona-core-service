@@ -1,7 +1,5 @@
-@use "./sdiebar" as sdiebar;
-@use "./neocore-sidebar" as neocore-sidebar;
+@use "./sidebar" as sidebar;
 
 @mixin apply {
-  @include sdiebar.apply;
-  @include neocore-sidebar.apply;
+  @include sidebar.apply;
 }
