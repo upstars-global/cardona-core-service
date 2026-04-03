@@ -23,6 +23,9 @@
       }
 
       // Override !important from VerticalNavGroup.vue
+      .nav-group.open div {
+        background-color: rgba(var(--v-theme-on-sidebar), 0.06) !important;
+      }
       .nav-group-label .nav-item-title {
         color: rgb(var(--v-theme-on-sidebar)) !important;
       }
@@ -58,15 +61,18 @@
       // Open/active group: no highlighted background
       .nav-group.open > .nav-group-label,
       .nav-group.active > .nav-group-label {
-        background-color: transparent !important;
+        // background-color: transparent !important;
 
         &::before {
-          opacity: 0 !important;
+          background-color: white !important;
+          opacity: 0.06 !important;
+          // background-color: rgba(var(--v-theme-on-sidebar), 0.06) !important;
+          // opacity: 0 !important;
         }
       }
 
       .nav-group.open div {
-        background-color: transparent !important;
+        /// background-color: transparent !important;
       }
 
       .nav-section-title {
