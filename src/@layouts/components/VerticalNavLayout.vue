@@ -109,9 +109,6 @@ export default defineComponent({
         },
       )
 
-      // WORKPIECE NODES for main body layout
-      // const mainWrapper = (child: VNode[]) => h('div', { class: 'ml-2 my-4 main-wrapper bg-main' }, child)
-
       return h(
         'div',
         { class: ['layout-wrapper bg-layout', ...configStore._layoutClasses] },
@@ -123,8 +120,6 @@ export default defineComponent({
             [
               navbar,
               main,
-
-              // WORKPIECE NODES for main body layout
               footer,
             ],
           ),
@@ -237,18 +232,4 @@ export default defineComponent({
     }
   }
 }
-
-// WORKPIECE Style for main body layout
-//.main-wrapper {
-//  border-top-left-radius: 12px;
-//  border-bottom-left-radius: 12px;
-//}
-//
-//.bg-main {
-//  background-color: rgba(var(--v-theme-surface));
-//}
-//
-//.bg-layout {
-//  background-color: #252833;
-//}
 </style>
