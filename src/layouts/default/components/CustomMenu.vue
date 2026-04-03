@@ -168,11 +168,6 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 .user-info {
   margin-left: 10px;
   overflow: hidden;
-  &:hover {
-    .full-name {
-      color: rgb(var(--v-theme-primary))
-    }
-  }
 }
 .full-name {
   font-weight: 500;
