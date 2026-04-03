@@ -1,20 +1,17 @@
-// Sidebar mini (collapsed) mode — positioning and animations
-// Triggered when: .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered)
-// Sidebar width in this state: 52px (set in VerticalNav.vue)
+// Sidebar mini (collapsed) mode — transitions and icon centering
+// Active when: .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered)
 @mixin apply {
 
-  // ── Transitions: smooth expand/collapse ───────────────────────────────────
+  // Transitions
   .layout-nav-type-vertical .layout-vertical-nav {
 
-    // Nav header: animate padding/margin instead of instant jump.
-    // Values go: expanded(8px) → collapsed(0) over 0.25s
+    // Animate nav-header spacing so collapse doesn't jump instantly
     .nav-header {
       transition: padding-inline 0.25s ease-in-out, margin-inline 0.25s ease-in-out;
     }
 
-    // ProductsSelect badge: smooth centering via transform.
-    // transition-delay: 0.15s matches product-select-fade leave duration.
-    // Maths: sidebar=52px, badge=32px → center offset = (52-32)/2 = 10px = 0.625rem
+    // Badge centering: delay matches product-select-fade leave (0.15s)
+    // so badge starts moving only after VueSelect fades out
     .product-select {
       .prodcut-short_size {
         transition: transform 0.2s ease-in-out;
@@ -22,9 +19,7 @@
       }
     }
 
-    // Override transition-slide-x inside sidebar: pure fade, no slide.
-    // The default slide (translateX) conflicts with the sidebar width animation.
-    // translateX(0) keeps the compositor layer stable.
+    // Replace slide-x with fade inside sidebar — translateX conflicts with width animation
     .transition-slide-x-leave-active {
       transition: opacity 0.15s ease-out !important;
     }
@@ -34,14 +29,13 @@
     }
     .transition-slide-x-enter-active {
       transition: opacity 0.2s ease-in !important;
-      transition-delay: 0.12s !important; // delay so sidebar is open before text appears
+      transition-delay: 0.12s !important;
     }
     .transition-slide-x-enter-from {
       opacity: 0 !important;
       transform: translateX(0) !important;
     }
 
-    // ProjectSelect: fade text and chevron
     .project-select {
       .text-expanded,
       .vs__open-indicator {
@@ -49,7 +43,6 @@
       }
     }
 
-    // CustomMenu: fade username
     .custom-menu {
       transition: padding-inline 0.25s ease-in-out;
 
@@ -59,23 +52,21 @@
     }
   }
 
-  // ── Collapsed state ────────────────────────────────────────────────────────
+  // Collapsed state
   .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
 
-    // Nav header: shrink spacing (animated via transition above)
+    // Shrink nav-header spacing to 0 (animated)
     .nav-header {
       padding-inline: 0 !important;
       margin-inline: 0 !important;
     }
 
-    // Badge slides to center after VueSelect fades (0.15s delay).
-    // X offset: nav-header padding=0, sidebar=52px, badge=32px → (52-32)/2 = 10px = 0.625rem
+    // Slide badge to sidebar center: (52px - 32px) / 2 = 10px = 0.625rem
     .product-select .prodcut-short_size {
       transform: translate(0.625rem, -50%);
     }
 
-    // Nav items: center icon via padding
-    // sidebar=52px, margin=8px×2 → element=36px, icon=22px → centering = (36-22)/2 = 7px = 0.4375rem
+    // Center icon: sidebar=52px, margin=8px×2 → el=36px, icon=22px → (36-22)/2 = 7px = 0.4375rem
     .nav-link,
     .nav-group {
       > :first-child {
@@ -87,7 +78,6 @@
       }
     }
 
-    // Section titles: center placeholder dash
     .nav-section-title {
       justify-content: center !important;
 
@@ -96,7 +86,6 @@
       }
     }
 
-    // ProjectSelect: center logo + fade text
     .project-select {
       .vs__selected-options {
         justify-content: center !important;
@@ -108,7 +97,6 @@
       }
     }
 
-    // CustomMenu: center avatar
     .custom-menu {
       display: flex !important;
       justify-content: center !important;

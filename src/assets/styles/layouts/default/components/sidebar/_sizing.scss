@@ -1,42 +1,33 @@
-// Nav item height, gap, spacing — Figma: 36px height, 2px gap, 8px margin/padding
-// Applied only inside body[data-layout="default"] via sidebar/index.scss.
 @mixin apply {
-
-  // ── Content wrapper: neocore sidebar widths ───────────────────────────────
-  // VerticalNavLayout.vue (shared) uses $layout-vertical-nav-width from @configured-variables.
-  // After removing global overrides from _template.scss the variable is back to 260px/80px.
-  // Override here so content area stays in sync with the 252px/52px sidebar in this layout.
+  // Content wrapper offset — synced with 252px/52px sidebar (VerticalNavLayout uses framework default 260px/80px)
   .layout-wrapper.layout-nav-type-vertical .layout-content-wrapper {
     @media screen and (min-width: 1280px) {
-      padding-inline-start: 252px; // neocore (framework default: 260px)
+      padding-inline-start: 252px;
     }
   }
 
   .layout-wrapper.layout-nav-type-vertical.layout-vertical-nav-collapsed .layout-content-wrapper {
-    padding-inline-start: 52px; // neocore (framework default: 80px)
+    padding-inline-start: 52px;
   }
 
-  // ── Nav item height and gap ────────────────────────────────────────────────
+  // Nav item height: 36px, gap: 2px
   .layout-nav-type-vertical .layout-vertical-nav {
     .nav-link,
     .nav-group {
       > :first-child {
-        block-size: 2.25rem !important;        // 36px (was 44px)
-        margin-block-end: 0.125rem !important; // 2px gap (was 6px)
+        block-size: 2.25rem !important;
+        margin-block-end: 0.125rem !important;
       }
     }
   }
 
-  // ── Nav item horizontal spacing ────────────────────────────────────────────
-  // %vertical-nav-item placeholder (from @core) uses $vertical-nav-horizontal-spacing/padding.
-  // After removing global overrides from _template.scss those variables are back to
-  // 0.875rem / 0.75rem. Override here for neocore 8px = 0.5rem.
+  // Nav item horizontal spacing: 8px (framework default: ~14px/12px)
   .layout-nav-type-vertical .layout-vertical-nav {
     .nav-link,
     .nav-group {
       > :first-child {
-        margin-inline: 0.5rem; // neocore (framework default: 0.875rem)
-        padding-inline: 0.5rem; // neocore (framework default: 0.75rem)
+        margin-inline: 0.5rem;
+        padding-inline: 0.5rem;
       }
     }
 
@@ -45,8 +36,6 @@
       padding-inline: 0.5rem;
     }
 
-    // nav-header inherits $vertical-nav-header-inline-spacing / $vertical-nav-header-padding
-    // from @core/scss/base/_vertical-nav.scss — override here.
     .nav-header {
       margin-inline: 0.5rem;
       padding-inline: 0.5rem;

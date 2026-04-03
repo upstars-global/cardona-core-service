@@ -1,5 +1,4 @@
-// Default layout sidebar — entry point
-// Applied only inside body[data-layout="default"] via layouts/default/components/index.scss
+// Default layout sidebar styles (body[data-layout="default"] scope)
 @use 'sizing';
 @use 'theme';
 @use 'mini';

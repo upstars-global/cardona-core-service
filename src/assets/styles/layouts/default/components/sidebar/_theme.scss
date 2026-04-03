@@ -1,8 +1,6 @@
-// Sidebar visual theme — colors, active states, component overrides
-// Figma: https://www.figma.com/design/SB9GrN232GryXAY1cmQxr2/Neocore?node-id=1-7093
+// Sidebar colors, active states, component overrides
 @mixin apply {
 
-  // ── Base sidebar background + text color ──────────────────────────────────
   .layout-nav-type-vertical {
     .side-bar_text-color {
       color: rgba(var(--v-theme-on-sidebar));
@@ -11,7 +9,6 @@
     .layout-vertical-nav {
       background-color: rgba(var(--v-theme-sidebar));
 
-      // ── Nav item colors ──────────────────────────────────────────────────
       .nav-header .header-action {
         color: rgba(var(--v-theme-on-sidebar), 0.7) !important;
       }
@@ -25,12 +22,12 @@
         color: rgb(var(--v-theme-on-sidebar)) !important;
       }
 
-      // Overrides !important from VerticalNavGroup.vue
+      // Override !important from VerticalNavGroup.vue
       .nav-group-label .nav-item-title {
         color: rgb(var(--v-theme-on-sidebar)) !important;
       }
 
-      // Overrides !important from VerticalNavGroup.vue
+      // Override !important from VerticalNavGroup.vue
       .nav-link a:not(.router-link-active) {
         .nav-item-title,
         .nav-item-title + i.v-icon {
@@ -47,8 +44,7 @@
         background-color: rgba(var(--v-theme-on-sidebar), 0.2) !important;
       }
 
-      // ── Active / open states ───────────────────────────────────────────
-      // Active link: solid primary color instead of gradient
+      // Active link: solid primary instead of gradient
       .nav-link > .router-link-exact-active {
         background: rgb(var(--v-theme-primary)) !important;
         box-shadow: none !important;
@@ -73,7 +69,6 @@
         background-color: transparent !important;
       }
 
-      // ── Section titles ─────────────────────────────────────────────────
       .nav-section-title {
         text-transform: none !important;
         margin-block-start: 0.75rem !important;
@@ -85,7 +80,6 @@
         }
       }
 
-      // ── ProjectSelect ──────────────────────────────────────────────────
       .project-select {
         .select-field-color,
         .text-expanded,
@@ -109,7 +103,6 @@
     }
   }
 
-  // ── CustomMenu ────────────────────────────────────────────────────────────
   .layout-nav-type-vertical .custom-menu {
     border-top-color: rgba(var(--v-theme-on-sidebar), 0.12) !important;
 
@@ -122,7 +115,7 @@
     }
   }
 
-  // VMenu teleports .action-menu outside the sidebar DOM tree — target it globally.
+  // .action-menu is teleported by VMenu outside the sidebar DOM tree
   .action-menu {
     background-color: rgb(var(--v-theme-sidebar)) !important;
     border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
