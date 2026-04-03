@@ -17,7 +17,7 @@ export const light: ThemeDefinition = {
     'warning': '#F08C35',
     'error': '#EA3D3E',
     'success': '#0DB157',
-    'info': '#649DFA',
+    'info': '#3B83F7',
     'white': '#FFFFFF',
 
     // Background / Surface
@@ -106,7 +106,7 @@ export const dark: ThemeDefinition = {
     'warning': '#F08C35',
     'error': '#F76A6A',
     'success': '#2CC972',
-    'info': '#3B83F7',
+    'info': '#649DFA',
     'white': '#FFFFFF',
 
     // Background / Surface
@@ -122,12 +122,12 @@ export const dark: ThemeDefinition = {
     'on-background': '#F4F4F7',
     'on-surface': '#F4F4F7',
     'on-surface-variant': '#F4F4F7',
-    'on-primary': '#161822',
-    'on-secondary': '#161822',
-    'on-warning': '#161822',
-    'on-error': '#161822',
-    'on-success': '#161822',
-    'on-info': '#161822',
+    'on-primary': '#FFFFFF',
+    'on-secondary': '#FFFFFF',
+    'on-warning': '#FFFFFF',
+    'on-error': '#FFFFFF',
+    'on-success': '#FFFFFF',
+    'on-info': '#FFFFFF',
     'text-invert': '#1F1C32',
 
     // Border

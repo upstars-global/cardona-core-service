@@ -3,6 +3,11 @@
 @use "./project-select" as project-select;
 @use "./base-list" as base-list;
 @use "./per-page-select" as per-page-select;
+@use "./base-modal" as base-modal;
+@use "./base-select" as base-select;
+@use "./base-input" as base-input;
+@use "./filters-block" as filters-block;
+@use "./data-picker" as data-picker;
 
 @mixin apply {
   @include skeleton.apply;
@@ -10,6 +15,11 @@
   @include project-select.apply;
   @include base-list.apply;
   @include per-page-select.apply;
+  @include base-modal.apply;
+  @include base-select.apply;
+  @include base-input.apply;
+  @include filters-block.apply;
+  @include data-picker.apply;
 
 
   $card-internal-radius: 12px;
@@ -24,5 +34,25 @@
 
   .text-color-label {
     color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important
+  }
+
+  hr {
+    border-top: 1px solid rgb(var(--v-theme-border-system));
+  }
+
+  .content-header {
+    .breadcrumb-wrapper {
+      position: relative;
+      padding-left: 3rem;
+      &:after {
+        top: 14px;
+        left: 1.5rem;
+        content: '';
+        position: absolute;
+        height: 50%;
+        width: 1px;
+        background-color: rgba(var(--v-theme-border-system), var(--v-high-emphasis-opacity));
+      }
+    }
   }
 }
