@@ -68,6 +68,7 @@ watch(selectedProduct, product => {
           :options="products"
           label="name"
           class="select-text-color"
+          appendToBody
           :clearable="false"
           :searchable="false"
         >
@@ -79,7 +80,7 @@ watch(selectedProduct, product => {
           <template #selected-option>
             <div class="d-flex align-center flex-nowrap">
               <span
-                class="select-item product-text pl-3"
+                class="full-product-name select-item product-text"
                 :class="{ 'text-info': isDynamicDomain }"
               >{{ selectedProductName }}</span>
             </div>
@@ -121,11 +122,13 @@ watch(selectedProduct, product => {
 </template>
 
 <style lang="scss" scoped>
+.full-product-name {
+  font-size: 14px;
+}
+
 .product-select {
   position: relative;
-  // Reserve space on the left so VueSelect never overlaps the badge.
-  // Badge is position:absolute so it doesn't affect flex layout at all.
-  padding-left: 2.5rem;
+  padding-left: 2rem;
 }
 
 .product-text {
@@ -134,70 +137,74 @@ watch(selectedProduct, product => {
 }
 
 .prodcut-short_size {
-  // Taken out of flex flow — VueSelect changes can't affect badge position
   position: absolute;
   left: 0;
   top: 50%;
   transform: translateY(-50%);
   height: 2rem;
   width: 2rem;
+  font-size: 13px;
 }
 
 .chevron-icon {
   color: rgba(var(--v-theme-on-sidebar), 0.7);
 }
 
-// ── Dropdown menu ───────────────────────────────────────────────────────────
-// Global vue-select.scss uses !important on highlight/selected — we must match.
-// All overrides are under .product-select so scoped attribute makes them more specific.
 .product-select {
   :deep(.vs__dropdown-toggle) {
     border-color: transparent !important;
     box-shadow: none !important;
   }
-
-  :deep(.vs__dropdown-menu) {
-    background: rgb(var(--v-theme-sidebar)) !important;
-    border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
-    border-radius: 6px !important;
-    box-shadow: 0 4px 16px rgb(var(--v-theme-shadow)) !important;
-    padding: 8px 0 !important;
-    width: 220px !important;
-    // Center dropdown relative to the trigger
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-  }
-
-  :deep(.vs__dropdown-option) {
-    padding: 8px 16px !important;
-    font-size: 15px !important;
-    line-height: 22px !important;
-    color: rgb(var(--v-theme-on-sidebar)) !important;
-    background: transparent !important;
-  }
-
-  // Global vue-select.scss adds ::after pseudo-element on --selected with content:''
-  // which renders as an empty box — hide it since we use our own VIcon checkmark
-  :deep(.vs__dropdown-option--selected::after) {
-    display: none !important;
-  }
-
-  :deep(.vs__dropdown-option:hover),
-  :deep(.vs__dropdown-option--highlight) {
-    background: rgba(var(--v-theme-on-sidebar), 0.06) !important;
-    color: rgb(var(--v-theme-on-sidebar)) !important;
-  }
-
-  // Selected state: transparent bg, white text, checkmark rendered by #option slot
-  :deep(.vs__dropdown-option--selected),
-  :deep(.vs__dropdown-option--selected.vs__dropdown-option--highlight),
-  :deep(.vs__dropdown-option--selected:hover) {
-    background: transparent !important;
-    color: rgb(var(--v-theme-on-sidebar)) !important;
-  }
 }
 
-// Section header "Products" — must be !important to beat any inherited color from vs__dropdown-menu
+.product-select-fade-leave-active {
+  transition: opacity 0.15s ease-out;
+}
+.product-select-fade-enter-active {
+  transition: opacity 0.2s ease-in;
+}
+.product-select-fade-enter-from,
+.product-select-fade-leave-to {
+  opacity: 0;
+}
+</style>
+
+<!-- appendToBody рендерить дропдаун в <body> поза скоупом компонента, тому потрібні глобальні стилі -->
+<style lang="scss">
+.vs__dropdown-menu {
+  background: rgb(var(--v-theme-sidebar)) !important;
+  border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 16px rgb(var(--v-theme-shadow)) !important;
+  padding: 8px 0 !important;
+  width: 220px !important;
+}
+
+.vs__dropdown-option {
+  padding: 8px 16px !important;
+  font-size: 15px !important;
+  line-height: 22px !important;
+  color: rgb(var(--v-theme-on-sidebar)) !important;
+  background: transparent !important;
+}
+
+.vs__dropdown-option--selected::after {
+  display: none !important;
+}
+
+.vs__dropdown-option:hover,
+.vs__dropdown-option--highlight {
+  background: rgba(var(--v-theme-on-sidebar), 0.06) !important;
+  color: rgb(var(--v-theme-on-sidebar)) !important;
+}
+
+.vs__dropdown-option--selected,
+.vs__dropdown-option--selected.vs__dropdown-option--highlight,
+.vs__dropdown-option--selected:hover {
+  background: transparent !important;
+  color: rgb(var(--v-theme-on-sidebar)) !important;
+}
+
 .products-dropdown-header {
   padding: 0 8px 8px;
   font-size: 12px !important;
@@ -213,18 +220,5 @@ watch(selectedProduct, product => {
 .products-dropdown-check {
   color: rgb(var(--v-theme-on-sidebar));
   flex-shrink: 0;
-}
-
-// Smooth fade when sidebar collapses / expands (synced with sidebar 0.25s transition)
-.product-select-fade-leave-active {
-  transition: opacity 0.15s ease-out;
-}
-.product-select-fade-enter-active {
-  transition: opacity 0.2s ease-in;
-  transition-delay: 0.1s; // wait for sidebar to start opening before fading in
-}
-.product-select-fade-enter-from,
-.product-select-fade-leave-to {
-  opacity: 0;
 }
 </style>
