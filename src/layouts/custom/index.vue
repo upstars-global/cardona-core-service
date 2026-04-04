@@ -6,6 +6,7 @@ import ProductsSelect from '../../@layouts/components/ProductsSelect.vue'
 import ProjectSelect from '../../@layouts/components/ProjectSelect.vue'
 import { useAppsAndPages } from '../../navigation/vertical/apps-and-pages'
 import { useUserStore } from '../../stores/user'
+import { IconsList } from '@/@model/enums/icons'
 
 const { t } = useI18n()
 const { appsAndPages } = useAppsAndPages()
@@ -34,17 +35,21 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
     >
       <div class="px-4 pt-4 pb-2 d-flex align-center justify-space-between">
         <ProductsSelect :is-collapsed-menu="isCollapsed" />
-        <VAppBarNavIcon
+        <VIcon
           v-show="!isCollapsed"
+          :icon="!rail ? IconsList.CircleDotIcon : IconsList.CircleIcon"
           @click="rail = !rail"
         />
       </div>
 
       <div
-        v-if="!isCollapsed && userStore.selectedProjectWithoutPriority"
+        v-if="userStore.selectedProjectWithoutPriority"
         class="px-4 pb-3"
       >
-        <ProjectSelect :projects="projects" />
+        <ProjectSelect
+          :projects="projects"
+          :is-collapsed="isCollapsed"
+        />
       </div>
 
       <!-- Collapsed: centered icon buttons -->
@@ -127,4 +132,3 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
     </VMain>
   </VLayout>
 </template>
-
