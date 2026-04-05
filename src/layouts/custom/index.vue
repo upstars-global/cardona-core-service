@@ -35,7 +35,6 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
       @mouseleave="isHovered = false"
     >
       <div class="sidebar-inner d-flex flex-column h-100">
-        <!-- Fixed top -->
         <div class="sidebar-top">
           <div class="px-4 pt-4 pb-2 d-flex align-center justify-space-between">
             <ProductsSelect :is-collapsed-menu="isCollapsed" />
@@ -58,7 +57,6 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
           </div>
         </div>
 
-        <!-- Scrollable nav items -->
         <div class="sidebar-nav flex-grow-1 overflow-y-auto">
           <div
             v-if="isCollapsed"
@@ -191,13 +189,13 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
   opacity: 1 !important;
 }
 
-  .layout-border-top {
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-  }
+.layout-border-top {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
 
-  .layout-border-bottom {
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-  }
+.layout-border-bottom {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
 </style>
