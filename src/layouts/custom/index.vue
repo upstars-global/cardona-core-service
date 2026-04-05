@@ -5,8 +5,8 @@ import ProductsSelect from '../../@layouts/components/ProductsSelect.vue'
 import ProjectSelect from '../../@layouts/components/ProjectSelect.vue'
 import { useAppsAndPages } from '../../navigation/vertical/apps-and-pages'
 import { useUserStore } from '../../stores/user'
+import { IconsList } from '../../@model/enums/icons'
 import CustomMenu from './components/CustomMenu.vue'
-import { IconsList } from '@/@model/enums/icons'
 
 const { t } = useI18n()
 const { appsAndPages } = useAppsAndPages()
