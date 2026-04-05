@@ -115,4 +115,13 @@ export const routes: RouteRecordRaw[] = [
     },
     component: () => import('@/pages/constructor/index.vue'),
   },
+  {
+    path: '/custom-layout-demo',
+    name: 'CustomLayoutDemo',
+    component: () => import('../../pages/demo/list/index.vue'),
+    meta: {
+      layout: 'custom',
+      title: 'Custom Layout Demo',
+    },
+  },
 ]

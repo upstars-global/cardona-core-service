@@ -9,6 +9,7 @@ import ApiService from '../../services/api'
 
 const props = defineProps<{
   projects: ProjectInfo[]
+  isCollapsed?: boolean
 }>()
 
 const userStore = useUserStore()
@@ -43,7 +44,7 @@ watch(() => selectProject.value, project => {
 <template>
   <div
     class="project-select"
-    :class="{ 'cant-select': cantSelect }"
+    :class="{ 'cant-select': cantSelect, 'project-select--collapsed': isCollapsed }"
   >
     <VueSelect
       v-model="selectProject"
