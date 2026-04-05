@@ -7,6 +7,7 @@ import { useAppsAndPages } from '../../navigation/vertical/apps-and-pages'
 import { useUserStore } from '../../stores/user'
 import { IconsList } from '../../@model/enums/icons'
 import CustomMenu from './components/CustomMenu.vue'
+import AppBreadcrumb from '../components/AppBreadcrumb.vue'
 
 const { t } = useI18n()
 const { appsAndPages } = useAppsAndPages()
@@ -115,8 +116,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
       height="64"
     >
       <div class="w-100 h-100 d-flex align-center px-4 bg-surface layout-border-top">
-        <span class="text-h6 font-weight-medium">My App</span>
-        <VSpacer />
+        <AppBreadcrumb class="flex-grow-1" />
         <VBtn
           icon
           variant="text"
@@ -127,7 +127,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
     </VAppBar>
     <VMain style="height: 100dvh; overflow: hidden;">
       <div class="bg-sidebar w-100 h-100 pl-2 pr-2 pb-2 d-flex flex-column">
-        <div class="bg-surface flex-grow-1 layout-border-bottom overflow-y-auto">
+        <div class="bg-surface flex-grow-1 layout-border-bottom overflow-y-auto pa-4">
           <VContainer
             fluid
             class="px-0"
