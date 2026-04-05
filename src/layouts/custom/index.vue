@@ -28,8 +28,9 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
     <VNavigationDrawer
       v-model="drawer"
       :rail="isCollapsed"
-      :rail-width="64"
-      width="260"
+      :rail-width="52"
+      class="bg-sidebar border-r-0"
+      width="252"
       @mouseenter="isHovered = true"
       @mouseleave="isHovered = false"
     >
@@ -37,6 +38,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
         <ProductsSelect :is-collapsed-menu="isCollapsed" />
         <VIcon
           v-show="!isCollapsed"
+          class="text-secondary"
           :icon="!rail ? IconsList.CircleDotIcon : IconsList.CircleIcon"
           @click="rail = !rail"
         />
@@ -52,7 +54,6 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
         />
       </div>
 
-      <!-- Collapsed: centered icon buttons -->
       <div
         v-if="isCollapsed"
         class="d-flex flex-column align-center py-1 gap-1"
@@ -69,7 +70,6 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
         />
       </div>
 
-      <!-- Expanded: full list items -->
       <VList
         v-else
         nav
@@ -92,43 +92,68 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
     </VNavigationDrawer>
 
     <VAppBar
-      elevation="1"
+      :elevation="0"
+      color="transparent"
+      class="px-2 pt-2 bg-sidebar"
       height="64"
     >
-      <VAppBarTitle>My App</VAppBarTitle>
-
-      <template #append>
+      <div class="w-100 h-100 d-flex align-center px-4 bg-surface layout-border-top">
+        <span class="text-h6 font-weight-medium">My App</span>
+        <VSpacer />
         <VBtn
           icon
           variant="text"
         >
           <VIcon icon="tabler-bell" />
         </VBtn>
-      </template>
+      </div>
     </VAppBar>
-
     <VMain>
-      <VContainer
-        fluid
-        class="pa-6"
-      >
-        <RouterView v-slot="{ Component }">
-          <template v-if="Component">
-            <Transition
-              name="zoom-fade"
-              mode="out-in"
-            >
-              <Suspense
-                :timeout="0"
-                @fallback="isFallbackStateActive = true"
-                @resolve="isFallbackStateActive = false"
-              >
-                <component :is="Component" />
-              </Suspense>
-            </Transition>
-          </template>
-        </RouterView>
-      </VContainer>
+      <div class="bg-sidebar w-100 h-100 pl-2 pr-2 pb-2 overflow-auto">
+        <div class="bg-surface w-100 h-100 layout-border-bottom">
+          <VContainer
+            fluid
+            class="px-0"
+          >
+            <RouterView v-slot="{ Component }">
+              <template v-if="Component">
+                <Transition
+                  name="zoom-fade"
+                  mode="out-in"
+                >
+                  <Suspense
+                    :timeout="0"
+                    @fallback="isFallbackStateActive = true"
+                    @resolve="isFallbackStateActive = false"
+                  >
+                    <component :is="Component" />
+                  </Suspense>
+                </Transition>
+              </template>
+            </RouterView>
+          </VContainer>
+        </div>
+      </div>
     </VMain>
   </VLayout>
 </template>
+
+<style lang="scss" scoped>
+.bg-sidebar {
+  background-color: #252833 !important;
+}
+
+.custom-layout :deep(.v-navigation-drawer) {
+  border-inline-end: none !important;
+}
+
+  .layout-border-top {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+
+  .layout-border-bottom {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+</style>
