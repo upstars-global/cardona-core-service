@@ -190,7 +190,13 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
         />
       </PerfectScrollbar>
     </slot>
-    <CustomMenu :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered" />
+    <div
+      :class="{
+        'pl-4': !configStore.isVerticalNavCollapsed || isHovered,
+      }"
+    >
+      <CustomMenu :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered" />
+    </div>
   </Component>
   <div
     class="sidenav-overlay"
@@ -288,7 +294,7 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 @media (max-width: 1279px) {
   .layout-vertical-nav {
     &:not(.visible) {
-      transform: translateX(-252px); // neocore width
+      transform: translateX(-252px);
 
       @include mixins.rtl {
         transform: translateX(252px);
