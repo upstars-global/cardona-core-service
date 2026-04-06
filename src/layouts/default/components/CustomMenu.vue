@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { VIcon } from 'vuetify/components/VIcon'
 
-import { computed } from 'vue'
+import { computed, inject, ref } from 'vue'
+import type { Ref } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -46,6 +47,8 @@ const logOutAction = {
 
 const configStore = useConfigStore()
 
+const isMenuOpen = inject<Ref<boolean>>('isVerticalNavMenuOpen', ref(false))
+
 const canAllAdminSection = computed(() => {
   return userStore.abilityCan('backoffice-users-control', PermissionLevel.view)
 })
@@ -79,8 +82,9 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 </script>
 
 <template>
-  <div class="custom-menu">
+  <div class="custom-menu mb-2">
     <VMenu
+      v-model="isMenuOpen"
       location="top"
       :content-class="`custom-menu-popup ${isCollapsedMenu ? 'custom-menu-popup--collapsed' : ''}`"
     >
@@ -157,9 +161,9 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 </template>
 
 <style lang="scss" scoped>
-.badge-margin {
-  margin-right: 0.6rem;
-}
+//.badge-margin {
+//  margin-right: 0.6rem;
+//}
 .avatar-block {
   height: 40px;
   width: 40px;
@@ -172,8 +176,8 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 }
 
 .user-info {
-  margin-left: 10px;
-  overflow: hidden;
+  // margin-left: 10px;
+  // overflow: hidden;
 }
 .full-name {
   font-weight: 500;
@@ -215,7 +219,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 }
 
 .custom-menu {
-  padding: 1rem 0.5rem;
+  // padding: 1rem 0.5rem;
 
   :deep(.v-badge__badge) {
     height: 11px;

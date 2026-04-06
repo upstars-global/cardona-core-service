@@ -265,6 +265,7 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 
   .nav-items {
     block-size: 100%;
+    height: calc(100% - 100px);
   }
 
   .ps {
