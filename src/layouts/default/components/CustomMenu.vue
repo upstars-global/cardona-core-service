@@ -96,7 +96,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
             bordered
             offset-x="2"
             offset-y="5"
-            class="badge cursor-pointer"
+            class="badge cursor-pointer badge-margin"
           >
             <VAvatar
               :color="VColors.Success"
@@ -157,6 +157,9 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 </template>
 
 <style lang="scss" scoped>
+.badge-margin {
+  margin-right: 0.6rem;
+}
 .avatar-block {
   height: 40px;
   width: 40px;
@@ -233,6 +236,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 }
 
 .custom-menu-popup--collapsed {
+  left: 0 !important;
   min-width: 52px !important;
 }
 </style>
