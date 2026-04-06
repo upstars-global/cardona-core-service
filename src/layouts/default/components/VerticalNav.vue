@@ -191,7 +191,9 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
       </PerfectScrollbar>
     </slot>
     <div
+      class="mr-auto"
       :class="{
+        'sidebar-custom_menu-padding': configStore.isVerticalNavCollapsed && !isHovered,
         'pl-4': !configStore.isVerticalNavCollapsed || isHovered,
       }"
     >
@@ -206,6 +208,9 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 </template>
 
 <style lang="scss" scoped>
+.sidebar-custom_menu-padding {
+  padding-left: 10px;
+}
 .app-logo {
   display: flex;
   align-items: center;
