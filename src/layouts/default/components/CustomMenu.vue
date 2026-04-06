@@ -80,10 +80,13 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 
 <template>
   <div class="custom-menu">
-    <VMenu>
+    <VMenu
+      location="top"
+      :content-class="`custom-menu-popup ${isCollapsedMenu ? 'custom-menu-popup--collapsed' : ''}`"
+    >
       <template #activator="{ props }">
         <div
-          class="d-flex align-center cursor-pointer user-info mr-auto"
+          class="d-flex align-center cursor-pointer user-info w-100"
           v-bind="props"
         >
           <VBadge
@@ -220,5 +223,16 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
     color: rgba(var(--v-theme-sidebar));
     border-width: 1px;
   }
+}
+</style>
+
+<style>
+.custom-menu-popup {
+  left: 16px !important;
+  min-width: 220px !important;
+}
+
+.custom-menu-popup--collapsed {
+  min-width: 52px !important;
 }
 </style>
