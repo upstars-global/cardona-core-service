@@ -194,9 +194,10 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
       class="mr-auto pt-3"
       :class="{
         'sidebar-custom_menu-padding': configStore.isVerticalNavCollapsed && !isHovered,
-        'pl-4': !configStore.isVerticalNavCollapsed || isHovered,
+        'pl-4 custom_menu-top-divider': !configStore.isVerticalNavCollapsed || isHovered,
       }"
     >
+      <div class="text-error" />
       <CustomMenu :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered" />
     </div>
   </Component>
@@ -328,5 +329,17 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 .show-menu {
   transform: translateX(0) !important;
 }
-// rgba(255, 255, 255, 0.08)
+.custom_menu-top-divider {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    width: 220px;
+    top: 0;
+    left: 16px;
+    right: 16px;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+}
 </style>
