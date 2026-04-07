@@ -61,6 +61,7 @@ import DateField from '../_components/fields/DateField.vue'
 import ProjectsFilter from '../_components/ProjectsFilter.vue'
 import { mapSortData } from '../сomposables/sorting'
 import { transformFilters } from '../сomposables/filters'
+import { useQuickFilters } from '../сomposables/quickFilters'
 
 defineOptions({
   name: 'DefaultBaseList',
@@ -93,7 +94,6 @@ const route = useRoute()
 const searchQuery = ref('')
 const currentPageName = route.name?.toString()
 const disableRowIds = ref<string[]>([])
-const quickFilters = ref({})
 
 const {
   entityName,
@@ -407,6 +407,7 @@ const setRequestFilters = (): PayloadFilters => {
     search: searchQuery.value,
     ...appliedFiltersData,
     ...projectFilterFiledParams,
+    ...quickFilters.value,
   })
 
   for (const key in filtersData) {
@@ -453,6 +454,8 @@ const projectsFilter = ref<string[]>([userStore.getSelectedProject?.alias])
 const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
   props.config?.filterList,
 )
+
+const { quickFilters, filterFields, onFieldUpdate } = useQuickFilters(props.config?.quickFilters, reFetchList)
 
 const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, false)
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
@@ -611,10 +614,6 @@ const editingId = ref<string | null>(null)
 
 const onOpenEdit = (id: string) => editingId.value = id
 
-const changeQuickFilters = value => {
-  console.log('changeQuickFilters', value)
-}
-
 onMounted(() => {
   emits('mounted')
 })
@@ -711,12 +710,10 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         />
       </template>
       <template #left-search-btn>
-        {{ quickFilters }}
-        <hr>
         <QuickFilters
           v-if="config.quickFilters?.isNotEmpty"
-          :filters="config.quickFilters"
-          @change="changeQuickFilters"
+          :filter-fields="filterFields"
+          @change="onFieldUpdate"
         />
         <slot :name="BaseListSlots.LeftSearchBtn" />
       </template>
