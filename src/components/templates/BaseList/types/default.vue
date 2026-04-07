@@ -710,6 +710,11 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       </template>
     </ListSearch>
 
+    <QuickFilters
+      v-if="config.quickFilters?.isNotEmpty"
+      :filters="config.quickFilters"
+    />
+
     <ProjectsFilter
       v-if="config.withProjectsFilter"
       v-model="projectsFilter"

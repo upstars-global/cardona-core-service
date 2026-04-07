@@ -227,6 +227,9 @@ export interface IBaseListConfig {
 
   //* *  noPermissions - Для отключения permission */
   readonly noPermissions?: NoPermissions
+
+  //* *  quickFilters - Filter fields які задаються перманентно   */
+  readonly quickFilters?: Array<FilterListItem>
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -282,6 +285,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly disableLoading?: boolean
   readonly cellCbClass: CallableFunction
   readonly noPermissions?: NoPermissions
+  readonly quickFilters?: Array<FilterListItem>
 
   constructor({
     withSearch,
@@ -336,6 +340,7 @@ export class BaseListConfig implements IBaseListConfig {
     disableLoading,
     cellCbClass,
     noPermissions,
+    quickFilters,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -389,6 +394,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.disableLoading = disableLoading
     this.cellCbClass = cellCbClass
     this.noPermissions = noPermissions ?? false
+    this.quickFilters = quickFilters ?? []
   }
 }
 
