@@ -4,14 +4,14 @@ import type { FilterListItem } from '../../../../@model/templates/baseList'
 import { useFilters } from '../../../FiltersBlock/useFilters'
 import { transformFormData } from '../../../../helpers'
 
-export const useQuickFilters = (
-  quickFilterConfig: FilterListItem[] | undefined,
+export const useInlineFilters = (
+  inlineFilterConfig: FilterListItem[] | undefined,
   onFilterChange: () => void,
 ) => {
-  const { filters: filterFields } = useFilters(quickFilterConfig ?? [])
+  const { filters: filterFields } = useFilters(inlineFilterConfig ?? [])
 
   const buildPayload = (): Record<string, unknown> => {
-    if (!quickFilterConfig?.length)
+    if (!inlineFilterConfig?.length)
       return {}
 
     const data: Record<string, BaseField> = {}
@@ -23,10 +23,10 @@ export const useQuickFilters = (
     return transformFormData(data)
   }
 
-  const quickFilters = ref<Record<string, unknown>>(buildPayload())
+  const inlineFilters = ref<Record<string, unknown>>(buildPayload())
 
-  const changeQuickFilters = (value: Record<string, unknown>) => {
-    quickFilters.value = value
+  const changeInlineFilters = (value: Record<string, unknown>) => {
+    inlineFilters.value = value
     onFilterChange()
   }
 
@@ -37,8 +37,8 @@ export const useQuickFilters = (
       return acc
     }, {})
 
-    changeQuickFilters(transformFormData(data) as Record<string, unknown>)
+    changeInlineFilters(transformFormData(data) as Record<string, unknown>)
   }
 
-  return { quickFilters, changeQuickFilters, filterFields, onFieldUpdate }
+  return { inlineFilters, changeInlineFilters, filterFields, onFieldUpdate }
 }

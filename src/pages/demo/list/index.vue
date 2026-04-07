@@ -57,7 +57,7 @@ const listConfig = new BaseListConfig({
       key: 'sumRange',
     },
   ],
-  quickFilters: [
+  inlineFilters: [
     {
       type: FilterType.Status,
       key: 'isActive',

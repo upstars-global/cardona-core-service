@@ -4,7 +4,7 @@ import FieldGenerator from '../../../../components/templates/FieldGenerator/inde
 import { VSizes } from '../../../../@model/vuetify'
 
 defineOptions({
-  name: 'QuickFilters',
+  name: 'InlineFilters',
 })
 
 interface Props {
@@ -27,7 +27,7 @@ const emits = defineEmits<{
       <div
         v-for="(field, index) in filterFields"
         :key="field.key"
-        :data-quick-filter="field.key"
+        :data-inline-filter="field.key"
         :class="{ 'ml-4': index }"
       >
         <FieldGenerator

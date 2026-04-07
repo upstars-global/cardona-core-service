@@ -61,7 +61,7 @@ import DateField from '../_components/fields/DateField.vue'
 import ProjectsFilter from '../_components/ProjectsFilter.vue'
 import { mapSortData } from '../сomposables/sorting'
 import { transformFilters } from '../сomposables/filters'
-import { useQuickFilters } from '../сomposables/quickFilters'
+import { useInlineFilters } from '../сomposables/inlineFilters'
 
 defineOptions({
   name: 'DefaultBaseList',
@@ -308,7 +308,7 @@ const linkGenerator = (page: number) => {
 
 // Fetch list
 const getList = async () => {
-  console.log('getList', quickFilters.value)
+  console.log('getList', inlineFilters.value)
   isDebouncedSearch.value = false
 
   const filter = setRequestFilters()
@@ -407,7 +407,7 @@ const setRequestFilters = (): PayloadFilters => {
     search: searchQuery.value,
     ...appliedFiltersData,
     ...projectFilterFiledParams,
-    ...quickFilters.value,
+    ...inlineFilters.value,
   })
 
   for (const key in filtersData) {
@@ -455,7 +455,7 @@ const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
   props.config?.filterList,
 )
 
-const { quickFilters, filterFields, onFieldUpdate } = useQuickFilters(props.config?.quickFilters, reFetchList)
+const { inlineFilters, filterFields, onFieldUpdate } = useInlineFilters(props.config?.inlineFilters, reFetchList)
 
 const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, false)
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
@@ -710,8 +710,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         />
       </template>
       <template #left-search-btn>
-        <QuickFilters
-          v-if="config.quickFilters?.isNotEmpty"
+        <InlineFilters
+          v-if="config.inlineFilters?.isNotEmpty"
           :filter-fields="filterFields"
           @change="onFieldUpdate"
         />
