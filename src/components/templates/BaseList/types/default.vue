@@ -93,6 +93,7 @@ const route = useRoute()
 const searchQuery = ref('')
 const currentPageName = route.name?.toString()
 const disableRowIds = ref<string[]>([])
+const quickFilters = ref({})
 
 const {
   entityName,
@@ -307,6 +308,7 @@ const linkGenerator = (page: number) => {
 
 // Fetch list
 const getList = async () => {
+  console.log('getList', quickFilters.value)
   isDebouncedSearch.value = false
 
   const filter = setRequestFilters()
@@ -609,6 +611,10 @@ const editingId = ref<string | null>(null)
 
 const onOpenEdit = (id: string) => editingId.value = id
 
+const changeQuickFilters = value => {
+  console.log('changeQuickFilters', value)
+}
+
 onMounted(() => {
   emits('mounted')
 })
@@ -677,7 +683,6 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         />
       </template>
     </SideBar>
-
     <ListSearch
       v-if="!config.hideSearchBlock"
       v-model.trim="searchQuery"
@@ -706,14 +711,16 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         />
       </template>
       <template #left-search-btn>
+        {{ quickFilters }}
+        <hr>
+        <QuickFilters
+          v-if="config.quickFilters?.isNotEmpty"
+          :filters="config.quickFilters"
+          @change="changeQuickFilters"
+        />
         <slot :name="BaseListSlots.LeftSearchBtn" />
       </template>
     </ListSearch>
-
-    <QuickFilters
-      v-if="config.quickFilters?.isNotEmpty"
-      :filters="config.quickFilters"
-    />
 
     <ProjectsFilter
       v-if="config.withProjectsFilter"
