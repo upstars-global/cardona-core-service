@@ -62,6 +62,7 @@ import ProjectsFilter from '../_components/ProjectsFilter.vue'
 import { mapSortData } from '../сomposables/sorting'
 import { transformFilters } from '../сomposables/filters'
 import { useInlineFilters } from '../сomposables/inlineFilters'
+import InlineFilters from '../_components/InlineFilters.vue'
 
 defineOptions({
   name: 'DefaultBaseList',
@@ -308,7 +309,6 @@ const linkGenerator = (page: number) => {
 
 // Fetch list
 const getList = async () => {
-  console.log('getList', inlineFilters.value)
   isDebouncedSearch.value = false
 
   const filter = setRequestFilters()
