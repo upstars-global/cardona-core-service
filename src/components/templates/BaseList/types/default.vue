@@ -710,11 +710,15 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         />
       </template>
       <template #left-search-btn>
-        <InlineFilters
+        <div
           v-if="config.inlineFilters?.isNotEmpty"
-          :filter-fields="filterFields"
-          @change="onFieldUpdate"
-        />
+          class="w-100 d-flex align-center justify-content-start"
+        >
+          <InlineFilters
+            :filter-fields="filterFields"
+            @change="onFieldUpdate"
+          />
+        </div>
         <slot :name="BaseListSlots.LeftSearchBtn" />
       </template>
     </ListSearch>
