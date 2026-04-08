@@ -5,10 +5,10 @@ import { useFilters } from '../../../FiltersBlock/useFilters'
 import { transformFormData } from '../../../../helpers'
 
 export const useInlineFilters = (
-  inlineFilterConfig: FilterListItem[] | undefined,
+  inlineFilterConfig: FilterListItem[] | undefined = [],
   onFilterChange: () => void,
 ) => {
-  const { filters: filterFields } = useFilters(inlineFilterConfig ?? [])
+  const { filters: filterFields } = useFilters(inlineFilterConfig)
 
   const buildPayload = (): Record<string, unknown> => {
     if (!inlineFilterConfig?.length)
