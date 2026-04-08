@@ -39,7 +39,6 @@ const isSmallBlock: boolean = props.size === VSizes.Small
 const isExistsEntityDefaultFilters = computed<boolean>(() => filtersCoreStore.isExistsEntityDefaultFilters(keyStorage))
 
 const onChange = (filter: BaseField) => {
-  console.log(cloneDeep(filter), 'clone')
   selectedFilters.value.push(cloneDeep(filter))
 }
 
