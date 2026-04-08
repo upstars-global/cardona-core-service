@@ -50,7 +50,7 @@ export const useUserStore = defineStore('user', {
       const projects = state.userInfo.projects
       const defaultProject = projects.find(({ productId }) => state.selectedProduct?.id === productId) || projects[0]
 
-      const fromStorage = sessionStorage.getItem(`${storageKeys.selectedProjectId}-${productName}`)
+      const fromStorage = sessionStorage.getItem(`${storageKeys.selectedProjectId}-${productName}-${state.userInfo.id}`)
       const storedProject = projects.find(p => p.id === Number(fromStorage))
 
       return (
@@ -76,7 +76,7 @@ export const useUserStore = defineStore('user', {
     selectedProjectWithoutPriority: state => {
       const projects = state.userInfo.projects
       const defaultProject = projects[0]
-      const fromStorage = sessionStorage.getItem(`${storageKeys.selectedProjectId}-${productName}`)
+      const fromStorage = sessionStorage.getItem(`${storageKeys.selectedProjectId}-${productName}-${state.userInfo.id}`)
       const storedProject = projects.find(p => p.id === Number(fromStorage))
 
       return state.selectedProject || storedProject || defaultProject
