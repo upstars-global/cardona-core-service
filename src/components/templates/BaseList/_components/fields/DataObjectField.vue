@@ -33,7 +33,12 @@ defineProps<{
         class="font-weight-medium"
         :data-test-id="`value-${name}`"
       >
-        {{ value }}
+        <slot
+          :name
+          :value="value"
+        >
+          {{ value }}
+        </slot>
       </span>
     </div>
   </div>
