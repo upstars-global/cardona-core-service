@@ -9,6 +9,7 @@ import { IconsList } from '../../../@model/enums/icons'
 import { BaseListConfig, SortDirection } from '../../../@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
 import BtnIcon from '../../../components/templates/_components/BtnIcon.vue'
+import Test from './Test.vue'
 import { ProjectFilterTypes } from '@filterConfig'
 
 const { t } = useI18n()
@@ -73,6 +74,8 @@ const setButtonState = (key: string): void => {
 </script>
 
 <template>
+  <Test />
+  <hr>
   <BaseList
     :use-list="useDemoList"
     :config="listConfig"
