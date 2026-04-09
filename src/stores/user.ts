@@ -173,5 +173,10 @@ export const useUserStore = defineStore('user', {
       this.priorityProject
         = this.userInfo.projects.find(p => p.alias === project.alias) || null
     },
+
+    clearProjects() {
+      this.selectedProject = null
+      this.priorityProject = null
+    }
   },
 })

@@ -91,6 +91,7 @@ export const useAuthCoreStore = defineStore('authCore', {
       useCookie('accessToken').value = null
       clearAuthTokens()
       this.setAuthState(false)
+      useUserStore().clearProjects()
       sessionStorage.removeItem(storageKeys.selectedProjectId)
 
       ///      dispatch('filtersCore/clearLocalDefaultFilters', null, { root: true })
