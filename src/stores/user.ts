@@ -179,6 +179,7 @@ export const useUserStore = defineStore('user', {
     clearProjects() {
       this.selectedProject = null
       this.priorityProject = null
+      this.userInfo = { ...this.userInfo, projects: []}
     },
   },
 })
