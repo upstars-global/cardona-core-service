@@ -164,6 +164,8 @@ export const useUserStore = defineStore('user', {
     },
 
     setUserInfo(userInfo: UserInfo) {
+      this.selectedProject = null
+      this.priorityProject = null
       this.userInfo = userInfo
       this.permissions.setAccessAllPermission(userInfo.permissions)
       this.selectedProduct = userInfo.products.find(({ name }) => name === productName)
@@ -177,6 +179,6 @@ export const useUserStore = defineStore('user', {
     clearProjects() {
       this.selectedProject = null
       this.priorityProject = null
-    }
+    },
   },
 })
