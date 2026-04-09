@@ -167,10 +167,10 @@ const getFieldCol = (key: string): number | string | boolean => {
       :key="rowIndex"
       class="filed-list__item d-flex align-start"
     >
-      <VRow class="flex-grow-1 ma-0">
+      <VRow class="flex-grow-1 ma-0 ms-n3">
         <VCol
           v-if="isBaseField(row)"
-          class="py-0 pl-0"
+          class="py-0"
           :class="{ 'pr-0': rows.length === 1 }"
         >
           <slot
@@ -193,7 +193,7 @@ const getFieldCol = (key: string): number | string | boolean => {
           v-else
           :key="idx"
           class="py-0"
-          :class="{ 'pl-0': !idx, 'pr-0': rows.length === 1 }"
+          :class="{ 'pr-0': rows.length === 1 }"
           :data-test-id="`row-${rowIndex}-col-${idx}`"
           :md="getFieldCol(key)"
         >
