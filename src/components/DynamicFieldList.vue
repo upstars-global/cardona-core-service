@@ -12,21 +12,21 @@ type DynamicField = BaseField | Record<string, BaseField>
 type FieldCol = Record<string, number> | number | string
 
 const props = withDefaults(defineProps<{
-    modelValue: DynamicField[]
-    templateField: Function
-    disabled?: boolean
-    disabledAddBtn?: boolean
-    required?: boolean
-    allowAddWithEmpty?: boolean
-    hideLabelOnEmptyList?: boolean
-    fieldCol?: FieldCol
-    withInfo?: boolean
-  }>(),
-  {
-    fieldCol: 4,
-    hideLabelOnEmptyList: true,
-    required: false,
-  })
+  modelValue: DynamicField[]
+  templateField: Function
+  disabled?: boolean
+  disabledAddBtn?: boolean
+  required?: boolean
+  allowAddWithEmpty?: boolean
+  hideLabelOnEmptyList?: boolean
+  fieldCol?: FieldCol
+  withInfo?: boolean
+}>(),
+{
+  fieldCol: 4,
+  hideLabelOnEmptyList: true,
+  required: false,
+})
 
 const emits = defineEmits<{
   (event: 'update:model-value', value: Record<string, string>): void
@@ -171,6 +171,7 @@ const getFieldCol = (key: string): number | string | boolean => {
         <VCol
           v-if="isBaseField(row)"
           class="py-0 pl-0"
+          :class="{ 'pr-0': rows.length === 1 }"
         >
           <slot
             :field="rows[rowIndex]"
@@ -192,7 +193,7 @@ const getFieldCol = (key: string): number | string | boolean => {
           v-else
           :key="idx"
           class="py-0"
-          :class="{ 'pl-0': !idx }"
+          :class="{ 'pl-0': !idx, 'pr-0': rows.length === 1 }"
           :data-test-id="`row-${rowIndex}-col-${idx}`"
           :md="getFieldCol(key)"
         >
@@ -215,7 +216,7 @@ const getFieldCol = (key: string): number | string | boolean => {
       </VRow>
 
       <VBtn
-        v-if="!disabled"
+        v-if="!disabled && rows.length > 1"
         :variant="VVariants.Outlined"
         :color="VColors.Error"
         class="filed-list__delete pa-0 ms-2 flex-shrink-0"
