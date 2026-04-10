@@ -12,21 +12,21 @@ type DynamicField = BaseField | Record<string, BaseField>
 type FieldCol = Record<string, number> | number | string
 
 const props = withDefaults(defineProps<{
-  modelValue: DynamicField[]
-  templateField: Function
-  disabled?: boolean
-  disabledAddBtn?: boolean
-  required?: boolean
-  allowAddWithEmpty?: boolean
-  hideLabelOnEmptyList?: boolean
-  fieldCol?: FieldCol
-  withInfo?: boolean
-}>(),
-{
-  fieldCol: 4,
-  hideLabelOnEmptyList: true,
-  required: false,
-})
+    modelValue: DynamicField[]
+    templateField: Function
+    disabled?: boolean
+    disabledAddBtn?: boolean
+    required?: boolean
+    allowAddWithEmpty?: boolean
+    hideLabelOnEmptyList?: boolean
+    fieldCol?: FieldCol
+    withInfo?: boolean
+  }>(),
+  {
+    fieldCol: 4,
+    hideLabelOnEmptyList: true,
+    required: false,
+  })
 
 const emits = defineEmits<{
   (event: 'update:model-value', value: Record<string, string>): void
@@ -167,7 +167,7 @@ const getFieldCol = (key: string): number | string | boolean => {
       :key="rowIndex"
       class="filed-list__item d-flex align-start"
     >
-      <VRow class="flex-grow-1 ma-0 ms-n3">
+      <VRow class="flex-grow-1 ma-0 mx-n3">
         <VCol
           v-if="isBaseField(row)"
           class="py-0"
@@ -214,7 +214,7 @@ const getFieldCol = (key: string): number | string | boolean => {
       </VRow>
 
       <VBtn
-        v-if="rowIndex || !required"
+        v-if="rows.length > 1 || !required"
         :variant="VVariants.Outlined"
         :color="VColors.Error"
         class="filed-list__delete pa-0 ms-2 flex-shrink-0"
