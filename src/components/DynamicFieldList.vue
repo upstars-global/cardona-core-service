@@ -171,7 +171,6 @@ const getFieldCol = (key: string): number | string | boolean => {
         <VCol
           v-if="isBaseField(row)"
           class="py-0"
-          :class="{ 'pr-0': rows.length === 1 }"
         >
           <slot
             :field="rows[rowIndex]"
@@ -193,7 +192,6 @@ const getFieldCol = (key: string): number | string | boolean => {
           v-else
           :key="idx"
           class="py-0"
-          :class="{ 'pr-0': rows.length === 1 }"
           :data-test-id="`row-${rowIndex}-col-${idx}`"
           :md="getFieldCol(key)"
         >
@@ -216,12 +214,12 @@ const getFieldCol = (key: string): number | string | boolean => {
       </VRow>
 
       <VBtn
-        v-if="!required && rows.length > 1"
+        v-if="rowIndex || !required"
         :variant="VVariants.Outlined"
         :color="VColors.Error"
-        :disabled="disabled"
         class="filed-list__delete pa-0 ms-2 flex-shrink-0"
-        :style="{ visibility: (rowIndex || !required) ? 'visible' : 'hidden' }"
+        :class="{ 'cursor-default': disabled }"
+        :disabled="disabled"
         :data-test-id="`button-remove-${rowIndex}`"
         @click="onRemove(rowIndex)"
       >
