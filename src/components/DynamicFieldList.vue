@@ -216,9 +216,10 @@ const getFieldCol = (key: string): number | string | boolean => {
       </VRow>
 
       <VBtn
-        v-if="!disabled && rows.length > 1"
+        v-if="!required && rows.length > 1"
         :variant="VVariants.Outlined"
         :color="VColors.Error"
+        :disabled="disabled"
         class="filed-list__delete pa-0 ms-2 flex-shrink-0"
         :style="{ visibility: (rowIndex || !required) ? 'visible' : 'hidden' }"
         :data-test-id="`button-remove-${rowIndex}`"
