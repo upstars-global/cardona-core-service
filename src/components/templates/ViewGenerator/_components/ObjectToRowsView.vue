@@ -13,7 +13,13 @@ defineProps<{
       :key="name"
       class="font-weight-bolder d-flex align-items-start"
     >
-      {{ `${name}: ${value}` }}
+      <slot
+        :key="name"
+        :name
+        :value="value"
+      >
+        {{ `${name}: ${value}` }}
+      </slot>
     </div>
   </div>
 </template>
