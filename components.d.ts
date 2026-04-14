@@ -420,6 +420,7 @@ declare module 'vue' {
     ImageDetailField: typeof import('./src/components/templates/BaseList/_components/fields/ImageDetailField.vue')['default']
     ImageField: typeof import('./src/components/templates/BaseList/_components/fields/ImageField.vue')['default']
     ImageItem: typeof import('./src/components/UploadImage/ImageItem.vue')['default']
+    InlineFilters: typeof import('./src/components/templates/BaseList/_components/InlineFilters.vue')['default']
     InnerBlankLink: typeof import('./src/components/templates/_components/InnerBlankLink.vue')['default']
     InnerBlankLinkView: typeof import('./src/components/templates/ViewGenerator/_components/InnerBlankLinkView.vue')['default']
     InputTextWrapper: typeof import('./src/components/templates/LocaleForm/_components/InputTextWrapper.vue')['default']

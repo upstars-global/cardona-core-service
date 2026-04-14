@@ -38,7 +38,9 @@ const isSmallBlock: boolean = props.size === VSizes.Small
 
 const isExistsEntityDefaultFilters = computed<boolean>(() => filtersCoreStore.isExistsEntityDefaultFilters(keyStorage))
 
-const onChange = (filter: BaseField) => selectedFilters.value.push(cloneDeep(filter))
+const onChange = (filter: BaseField) => {
+  selectedFilters.value.push(cloneDeep(filter))
+}
 
 const onApply = () => {
   filtersCoreStore.setListEntityName(props.entityName)

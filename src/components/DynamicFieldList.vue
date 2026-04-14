@@ -160,78 +160,72 @@ const getFieldCol = (key: string): number | string | boolean => {
           <label v-show="!index">{{ item?.label }}</label>
         </template>
       </VCol>
-
-      <VCol md="1" />
     </VRow>
 
-    <VRow
+    <div
       v-for="(row, rowIndex) in rows"
       :key="rowIndex"
-      class="filed-list__item"
+      class="filed-list__item d-flex align-start"
     >
-      <VCol
-        v-if="isBaseField(row)"
-        class="py-0"
-      >
-        <slot
-          :field="rows[rowIndex]"
-          :index="rowIndex"
+      <VRow class="flex-grow-1 ma-0 mx-n3">
+        <VCol
+          v-if="isBaseField(row)"
+          class="py-0"
         >
-          <FieldGenerator
-            v-model="rows[rowIndex]"
-            :options="filteredOptions"
-            :with-info="withInfo"
-            :disabled="disabled"
-            :data-test-id="`single-field-${rowIndex}`"
-            @search="fetchSelectOptions"
-          />
-        </slot>
-      </VCol>
+          <slot
+            :field="rows[rowIndex]"
+            :index="rowIndex"
+          >
+            <FieldGenerator
+              v-model="rows[rowIndex]"
+              :options="filteredOptions"
+              :with-info="withInfo"
+              :disabled="disabled"
+              :data-test-id="`single-field-${rowIndex}`"
+              @search="fetchSelectOptions"
+            />
+          </slot>
+        </VCol>
 
-      <VCol
-        v-for="(fieldInfo, key, idx) in row"
-        v-else
-        :key="idx"
-        class="py-0"
-        :data-test-id="`row-${rowIndex}-col-${idx}`"
-        :md="getFieldCol(key)"
-      >
-        <slot
-          :key="key"
-          :name="`field-${key}`"
-          :row-index="rowIndex"
-          :field="rows[rowIndex][key]"
+        <VCol
+          v-for="(fieldInfo, key, idx) in row"
+          v-else
+          :key="idx"
+          class="py-0"
+          :data-test-id="`row-${rowIndex}-col-${idx}`"
+          :md="getFieldCol(key)"
         >
-          <FieldGenerator
-            v-model="rows[rowIndex][key]"
-            :options="filteredOptions"
-            :disabled="disabled"
-            :with-info="withInfo"
-            :data-test-id="`field-${rowIndex}-${key}`"
-            @search="fetchSelectOptions"
-          />
-        </slot>
-      </VCol>
+          <slot
+            :key="key"
+            :name="`field-${key}`"
+            :row-index="rowIndex"
+            :field="rows[rowIndex][key]"
+          >
+            <FieldGenerator
+              v-model="rows[rowIndex][key]"
+              :options="filteredOptions"
+              :disabled="disabled"
+              :with-info="withInfo"
+              :data-test-id="`field-${rowIndex}-${key}`"
+              @search="fetchSelectOptions"
+            />
+          </slot>
+        </VCol>
+      </VRow>
 
-      <VCol
-        v-if="!disabled"
-        md="1"
-        class="d-flex justify-start align-self-start remove-field__wrapper py-0"
+      <VBtn
+        v-if="rows.length > 1 || !required"
+        :variant="VVariants.Outlined"
+        :color="VColors.Error"
+        class="filed-list__delete pa-0 ms-2 flex-shrink-0"
+        :class="{ 'cursor-default': disabled }"
+        :disabled="disabled"
+        :data-test-id="`button-remove-${rowIndex}`"
+        @click="onRemove(rowIndex)"
       >
-        <VBtn
-          v-if="rowIndex || !required"
-          :variant="VVariants.Outlined"
-          :color="VColors.Error"
-          class="filed-list__delete pa-0"
-          :class="{ 'cursor-default': disabled }"
-          :disabled="disabled"
-          :data-test-id="`button-remove-${rowIndex}`"
-          @click="onRemove(rowIndex)"
-        >
-          <VIcon :icon="IconsList.Trash2Icon" />
-        </VBtn>
-      </VCol>
-    </VRow>
+        <VIcon :icon="IconsList.Trash2Icon" />
+      </VBtn>
+    </div>
 
     <slot
       v-if="!disabled"

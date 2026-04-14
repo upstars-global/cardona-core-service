@@ -13,7 +13,7 @@ type DynamicField = BaseField | Record<string, BaseField>
 type FieldCol = Record<string, number> | number | string | boolean
 
 interface Props {
-  modelValue: DynamicField
+  modelValue: DynamicField[]
   templateField: Function
   disabled?: boolean
   required?: boolean
@@ -72,7 +72,7 @@ export const dataTestIds = {
 let props: Props
 
 beforeEach(() => {
-  props = { ...defaultProps }
+  props = { ...defaultProps, modelValue: [...defaultProps.modelValue] }
 })
 
 describe('DynamicFieldList', () => {
@@ -82,8 +82,10 @@ describe('DynamicFieldList', () => {
     const wrapper = getMountComponent(props)
 
     props.modelValue.forEach((field, i) => {
-      testOn.existTextValue({ wrapper, selector: `${getSelectorTestId(dataTestIds.field(i, 'text'))} label` }, field.text.label)
-      testOn.existTextValue({ wrapper, selector: `${getSelectorTestId(dataTestIds.field(i, 'select'))} label` }, field.select.label)
+      const typedField = field as Record<string, BaseField>
+
+      testOn.existTextValue({ wrapper, selector: `${getSelectorTestId(dataTestIds.field(i, 'text'))} label` }, typedField.text.label)
+      testOn.existTextValue({ wrapper, selector: `${getSelectorTestId(dataTestIds.field(i, 'select'))} label` }, typedField.select.label)
       testOn.existElement({ wrapper, selector: `${getSelectorTestId(dataTestIds.buttonRemove(i))}` })
     })
 
@@ -109,7 +111,7 @@ describe('DynamicFieldList', () => {
     const fieldToRemoveIndex = 1
 
     props.modelValue = getTemplateFields(fieldsCount, getSingleField) as TextBaseField[]
-    props.modelValue.forEach((f, i) => (f.label = `item-${i}`))
+    props.modelValue.forEach((f, i) => ((f as { label: string }).label = `item-${i}`))
 
     const wrapper = getMountComponent(props)
 
@@ -162,7 +164,8 @@ describe('DynamicFieldList', () => {
     expect(allFields).toHaveLength(props.modelValue.length)
 
     allFields.forEach((field, i) => {
-      testOn.notExistElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonRemove(i)) })
+      testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonRemove(i)) })
+      testOn.isDisabledElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonRemove(i)) })
       testOn.isDisabledElement({ wrapper: field, selector: 'input' })
     })
   })
@@ -183,16 +186,52 @@ describe('DynamicFieldList', () => {
     })
   })
 
-  it('hides remove button when required is true', () => {
-    props.modelValue = getTemplateFields(5, templateField)
-    props.required = true
+  describe('delete button visibility', () => {
+    it('is visible for single row when required is false', () => {
+      const wrapper = getMountComponent(props)
 
-    const wrapper = getMountComponent(props)
-    const allFields = wrapper.findAll('.filed-list__item')
+      testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonRemove(0)) })
+    })
 
-    allFields.forEach((field, i) => {
-      if (i === 0)
-        testOn.notExistElement({ wrapper: field, testId: dataTestIds.buttonRemove(i) })
+    it('is visible for every row when multiple rows exist', () => {
+      props.modelValue = getTemplateFields(3, templateField)
+
+      const wrapper = getMountComponent(props)
+
+      props.modelValue.forEach((_, i) => {
+        testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonRemove(i)) })
+      })
+    })
+
+    it('is hidden for single row when required is true', () => {
+      props.required = true
+
+      const wrapper = getMountComponent(props)
+
+      testOn.notExistElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonRemove(0)) })
+    })
+
+    it('is visible for all rows when required is true and multiple rows exist', () => {
+      props.modelValue = getTemplateFields(3, templateField)
+      props.required = true
+
+      const wrapper = getMountComponent(props)
+
+      props.modelValue.forEach((_, i) => {
+        testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonRemove(i)) })
+      })
+    })
+
+    it('is visible but disabled when disabled prop is true', () => {
+      props.modelValue = getTemplateFields(3, templateField)
+      props.disabled = true
+
+      const wrapper = getMountComponent(props)
+
+      props.modelValue.forEach((_, i) => {
+        testOn.existElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonRemove(i)) })
+        testOn.isDisabledElement({ wrapper, selector: getSelectorTestId(dataTestIds.buttonRemove(i)) })
+      })
     })
   })
 
