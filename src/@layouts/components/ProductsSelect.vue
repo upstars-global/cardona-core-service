@@ -23,7 +23,6 @@ const selectedProduct = computed({
         ? window.location.origin
         : `${window.location.origin}/${val.name}`
 
-    sessionStorage.removeItem(storageKeys.selectedProjectId)
     window.location.replace(url)
   },
 })
