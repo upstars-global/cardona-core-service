@@ -57,6 +57,21 @@ const listConfig = new BaseListConfig({
       key: 'sumRange',
     },
   ],
+  inlineFilters: [
+    {
+      type: FilterType.Status,
+      key: 'isActive',
+    },
+    {
+      type: FilterType.DateRangeCreative,
+      key: 'created',
+    },
+    {
+      type: FilterType.DemoType,
+      key: 'type',
+      trackBy: 'id',
+    },
+  ],
   showExpand: true,
 })
 

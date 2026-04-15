@@ -61,6 +61,8 @@ import DateField from '../_components/fields/DateField.vue'
 import ProjectsFilter from '../_components/ProjectsFilter.vue'
 import { mapSortData } from '../сomposables/sorting'
 import { transformFilters } from '../сomposables/filters'
+import { useInlineFilters } from '../сomposables/inlineFilters'
+import InlineFilters from '../_components/InlineFilters.vue'
 
 defineOptions({
   name: 'DefaultBaseList',
@@ -405,6 +407,7 @@ const setRequestFilters = (): PayloadFilters => {
     search: searchQuery.value,
     ...appliedFiltersData,
     ...projectFilterFiledParams,
+    ...inlineFilters.value,
   })
 
   for (const key in filtersData) {
@@ -451,6 +454,8 @@ const projectsFilter = ref<string[]>([userStore.getSelectedProject?.alias])
 const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
   props.config?.filterList,
 )
+
+const { inlineFilters, filterFields, onFieldUpdate } = useInlineFilters(props.config?.inlineFilters, reFetchList)
 
 const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, false)
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
@@ -677,7 +682,6 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         />
       </template>
     </SideBar>
-
     <ListSearch
       v-if="!config.hideSearchBlock"
       v-model.trim="searchQuery"
@@ -706,6 +710,15 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         />
       </template>
       <template #left-search-btn>
+        <div
+          v-if="config.inlineFilters?.isNotEmpty"
+          class="w-100 d-flex align-center justify-content-start"
+        >
+          <InlineFilters
+            :filter-fields="filterFields"
+            @change="onFieldUpdate"
+          />
+        </div>
         <slot :name="BaseListSlots.LeftSearchBtn" />
       </template>
     </ListSearch>

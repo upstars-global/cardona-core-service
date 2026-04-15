@@ -50,7 +50,7 @@ export const useUserStore = defineStore('user', {
       const projects = state.userInfo.projects
       const defaultProject = projects.find(({ productId }) => state.selectedProduct?.id === productId) || projects[0]
 
-      const fromStorage = sessionStorage.getItem(storageKeys.selectedProjectId)
+      const fromStorage = sessionStorage.getItem(`${storageKeys.selectedProjectId}-${productName}-${state.userInfo.id}`)
       const storedProject = projects.find(p => p.id === Number(fromStorage))
 
       return (
@@ -76,7 +76,7 @@ export const useUserStore = defineStore('user', {
     selectedProjectWithoutPriority: state => {
       const projects = state.userInfo.projects
       const defaultProject = projects[0]
-      const fromStorage = sessionStorage.getItem(storageKeys.selectedProjectId)
+      const fromStorage = sessionStorage.getItem(`${storageKeys.selectedProjectId}-${productName}-${state.userInfo.id}`)
       const storedProject = projects.find(p => p.id === Number(fromStorage))
 
       return state.selectedProject || storedProject || defaultProject
@@ -164,6 +164,8 @@ export const useUserStore = defineStore('user', {
     },
 
     setUserInfo(userInfo: UserInfo) {
+      this.selectedProject = null
+      this.priorityProject = null
       this.userInfo = userInfo
       this.permissions.setAccessAllPermission(userInfo.permissions)
       this.selectedProduct = userInfo.products.find(({ name }) => name === productName)
@@ -172,6 +174,12 @@ export const useUserStore = defineStore('user', {
     setPriorityProject(project: ProjectInfoInput) {
       this.priorityProject
         = this.userInfo.projects.find(p => p.alias === project.alias) || null
+    },
+
+    clearProjects() {
+      this.selectedProject = null
+      this.priorityProject = null
+      this.userInfo = { ...this.userInfo, projects: []}
     },
   },
 })

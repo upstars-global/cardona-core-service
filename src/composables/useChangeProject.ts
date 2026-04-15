@@ -2,6 +2,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { storageKeys } from '../configs/storage'
 import type { ProjectInfoInput } from '../@model/project'
 import { useUserStore } from '../stores/user'
+import { productName } from '@productConfig'
 
 export const useChangeProject = () => {
   const userStore = useUserStore()
@@ -27,7 +28,7 @@ export const useChangeProject = () => {
   }
 
   const changeProject = async (project: ProjectInfoInput, withoutNavigation?: boolean) => {
-    sessionStorage.setItem(storageKeys.selectedProjectId, project.id)
+    sessionStorage.setItem(`${storageKeys.selectedProjectId}-${productName}-${userStore.userInfo.id}`, project.id)
 
     // await store.dispatch('setSelectedProject', project)
     userStore.setSelectedProject(project)
