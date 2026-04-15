@@ -55,6 +55,11 @@ watch(() => selectProject.value, project => {
       :searchable="false"
       :no-drop="isCollapsedMenu && !cantSelect"
     >
+      <template #list-header>
+        <div class="projects-dropdown-header">
+          {{ $t('common.project.list') }}
+        </div>
+      </template>
       <template #selected-option="{ publicName, title, alias, iconPath }">
         <div class="d-flex align-center overflow-hidden gap-2">
           <img
@@ -177,6 +182,14 @@ watch(() => selectProject.value, project => {
 
   .select-field-color {
     color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
+  }
+
+  .projects-dropdown-header {
+    padding: 0 8px 8px;
+    font-size: 12px !important;
+    line-height: 15px;
+    letter-spacing: 0.4px;
+    color: rgba(var(--v-theme-on-sidebar), 0.56) !important;
   }
 }
 
