@@ -90,7 +90,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
     >
       <template #activator="{ props }">
         <div
-          class="d-flex align-center cursor-pointer user-info w-100"
+          class="d-flex align-center cursor-pointer w-100"
           v-bind="props"
         >
           <VBadge
@@ -122,7 +122,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
               </h5>
             </VAvatar>
           </VBadge>
-          <div class="full-name ml-5">
+          <div class="full-name ml-5 text-truncate">
             {{ userName }}
           </div>
         </div>
@@ -161,9 +161,6 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 </template>
 
 <style lang="scss" scoped>
-//.badge-margin {
-//  margin-right: 0.6rem;
-//}
 .avatar-block {
   height: 40px;
   width: 40px;
@@ -175,17 +172,13 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
   color: #ffffff;
 }
 
-.user-info {
-  // margin-left: 10px;
-  // overflow: hidden;
-}
 .full-name {
+  max-width: 172px;
   font-weight: 500;
   color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 200px;
   transition: opacity 0.3s ease, max-width 0.3s ease, margin-left 0.3s ease;
 }
 
@@ -219,8 +212,6 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 }
 
 .custom-menu {
-  // padding: 1rem 0.5rem;
-
   :deep(.v-badge__badge) {
     height: 11px;
     width: 11px;
