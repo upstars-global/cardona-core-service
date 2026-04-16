@@ -33,12 +33,6 @@ const selectedProduct = computed({
 
 const products = computed(() => userStore.userInfo.products)
 
-const DYNAMIC_DOMAIN_PREFIX = ['cardona-bac-', 'cardona-development.boffice.site']
-
-const isDynamicDomain = DYNAMIC_DOMAIN_PREFIX.some(parOfHost =>
-  window.location.host.includes(parOfHost),
-)
-
 const canSelect = computed(() => products.value.length > 1)
 
 watch(selectedProduct, product => {
@@ -80,7 +74,6 @@ watch(selectedProduct, product => {
             <div class="d-flex align-center flex-nowrap">
               <span
                 class="full-product-name select-item product-text"
-                :class="{ 'text-info': isDynamicDomain }"
               >{{ selectedProductName }}</span>
             </div>
           </template>
@@ -112,7 +105,6 @@ watch(selectedProduct, product => {
     >
       <span
         class="brand-logo select-item"
-        :class="{ 'text-info': isDynamicDomain }"
       >
         {{ selectedProduct?.name }}
       </span>

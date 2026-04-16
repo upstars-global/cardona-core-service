@@ -131,6 +131,7 @@ watch(() => selectProject.value, project => {
 
   // ── Dropdown menu ────────────────────────────────────────────────────────
   :deep(.vs__dropdown-menu) {
+    margin-top: -12px !important;
     background: rgb(var(--v-theme-sidebar)) !important;
     border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
     border-radius: 6px !important;
