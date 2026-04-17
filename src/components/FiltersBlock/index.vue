@@ -108,6 +108,13 @@ const onSaveByDefault = async () => {
 const listNotSelected = computed(() => {
   return props.filters.filter(({ key }) => !selectedFiltersKeys.value.includes(key))
 })
+
+defineExpose({
+  clearFilters: () => {
+    filtersCoreStore.setListFilters([])
+    selectedFilters.value = []
+  },
+})
 </script>
 
 <template>
