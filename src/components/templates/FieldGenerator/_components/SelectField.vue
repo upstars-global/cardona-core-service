@@ -8,6 +8,7 @@ import type { SelectBaseField } from '../../../../@model/templates/baseField'
 import { i18n } from '../../../../plugins/i18n'
 import { withPopper } from '../../../../helpers/selectPopper'
 import { useInfiniteScroll } from '../../../../helpers/infiniteScroll'
+import { useUserStore } from '../../../../stores/user'
 
 const props = withDefaults(
   defineProps<{
@@ -28,9 +29,19 @@ const emits = defineEmits<{
   (e: 'update:modelValue', value: string | number): void
 }>()
 
+const userStore = useUserStore()
+
 const isMultiple = false
 const isLoading = ref(false)
 const [isOpenDropDown, toggleDropDownState] = useToggle()
+
+watch(() => userStore.getSelectedProject?.alias, async (_newAlias, oldAlias) => {
+  if (!oldAlias || !props.field.fetchOptionsAction)
+    return
+  isLoading.value = true
+  await props.field.fetchOptions()
+  isLoading.value = false
+})
 
 const valueModel = computed<OptionsItem>({
   get: () =>

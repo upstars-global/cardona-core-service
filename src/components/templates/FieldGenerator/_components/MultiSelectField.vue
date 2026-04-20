@@ -11,6 +11,7 @@ import { IconsList } from '../../../../@model/enums/icons'
 import { copyToClipboard } from '../../../../helpers/clipboard'
 import { useInfiniteScroll } from '../../../../helpers/infiniteScroll'
 import { FieldGeneratorSlots } from '../../../../@model/templates/baseField'
+import { useUserStore } from '../../../../stores/user'
 
 interface MultiselectProps {
   modelValue: OptionsItem[] | string[] | number[]
@@ -31,8 +32,18 @@ const emits = defineEmits<{
   (event: 'update:modelValue', item: OptionsItem[]): void
 }>()
 
+const userStore = useUserStore()
+
 const isLoading = ref(false)
 const [, toggleDropDownState] = useToggle()
+
+watch(() => userStore.getSelectedProject?.alias, async (_newAlias, oldAlias) => {
+  if (!oldAlias || !props.field.fetchOptionsAction)
+    return
+  isLoading.value = true
+  await props.field.fetchOptions()
+  isLoading.value = false
+})
 
 const valueModel = computed<OptionsItem[]>({
   get: () =>
