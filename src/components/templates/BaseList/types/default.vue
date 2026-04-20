@@ -335,7 +335,7 @@ const getList = async () => {
   items.value = list
   updateTotal(total)
 
-  selectedItems.value = list.filter(item => allSelectedIds.value.has(item.id))
+  selectedItems.value = list.filter(item => allSelectedIds.value?.has(item.id))
 
   return list
 }
@@ -475,7 +475,7 @@ watch(() => hasSelectedFilters.value, hasFilters => {
 
 // Selectable
 const selectedItems = ref<Record<string, unknown>[]>([])
-const allSelectedIds = computed(() => baseListSelectionStore.getAllSelectedIds)
+const allSelectedIds = computed(() => baseListSelectionStore.getAllSelectedIds(entityName))
 
 const allSelected = ref(false)
 const indeterminate = ref(false)
@@ -501,7 +501,7 @@ const onRowSelected = checkedItems => {
   const allItemsIds = items.value.map(({ id }) => id)
   const selectedItemsIds = checkedItems.map(({ id }) => id)
 
-  baseListSelectionStore.syncPageSelection(allItemsIds, selectedItemsIds)
+  baseListSelectionStore.syncPageSelection(entityName, allItemsIds, selectedItemsIds)
 }
 
 // Multiple actions
@@ -534,7 +534,7 @@ const onClickDeleteMultiple = async () => {
     customApiPrefix: props.config?.customApiPrefix,
   })
 
-  baseListSelectionStore.clearSelectedIds()
+  baseListSelectionStore.clearSelectedIds(entityName)
 
   reFetchList()
 }
@@ -595,7 +595,7 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
   const allItemsIds = items.value.map(({ id }) => id)
   const selectedItemsIds = selectedItems.value.map(({ id }) => id)
 
-  baseListSelectionStore.syncPageSelection(allItemsIds, selectedItemsIds)
+  baseListSelectionStore.syncPageSelection(entityName, allItemsIds, selectedItemsIds)
 
   resetSelectedItem()
   await reFetchList()
@@ -619,7 +619,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  baseListSelectionStore.clearSelectedIds()
+  baseListSelectionStore.clearSelectedIds(entityName)
 })
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
@@ -640,6 +640,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       :selected-items="selectedItems"
       :total="total"
       :search="searchQuery"
+      :entity-name="entityName"
     />
 
     <SideBar
@@ -836,6 +837,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :name="BaseListSlots.PrependMultipleAction"
             :selected-items="selectedItems"
             :can-update="canUpdate"
+            :entity-name="entityName"
           />
         </template>
 
@@ -843,6 +845,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           :name="BaseListSlots.MultipleActions"
           :selected-items="selectedItems"
           :can-update="canUpdate"
+          :entity-name="entityName"
         />
       </MultipleActions>
 
