@@ -115,6 +115,7 @@ defineExpose({
     filtersCoreStore.setListFilters([])
     selectedFilters.value = []
     props.filters.forEach(field => {
+      field.value = undefined
       if ('resetOptions' in field)
         (field as ASelectBaseField).resetOptions()
     })
