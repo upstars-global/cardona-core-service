@@ -469,7 +469,6 @@ watch(() => userStore.getSelectedProject?.alias, (_newAlias, oldAlias) => {
   filtersCoreStore.setListPath()
   onChangeSelectedFilters([])
   filtersBlockRef.value?.clearFilters()
-  getList()
 })
 
 const appliedFilters = computed<BaseField[]>(() => {
