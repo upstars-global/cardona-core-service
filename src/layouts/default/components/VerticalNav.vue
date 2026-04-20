@@ -4,19 +4,19 @@ import { useElementHover, useWindowSize } from '@vueuse/core'
 import { computed, provide, ref, watch } from 'vue'
 import type { Component } from 'vue'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import CustomMenu from '../../layouts/components/CustomMenu.vue'
-import { convertUpperCaseFirstSymbol } from '../../helpers'
-import { IconsList } from '../../@model/enums/icons'
-import ProjectSelect from '../../@layouts/components/ProjectSelect.vue'
-import { VVariants } from '../../@model/vuetify'
-import { useUserStore } from '../../stores/user'
-import { useAppConfigCoreStore } from '../../stores/appConfigCore'
+import { convertUpperCaseFirstSymbol } from '../../../helpers'
+import { IconsList } from '../../../@model/enums/icons'
+import ProjectSelect from '../../../layouts/default/components/ProjectSelect.vue'
+import { VVariants } from '../../../@model/vuetify'
+import { useUserStore } from '../../../stores/user'
+import { useAppConfigCoreStore } from '../../../stores/appConfigCore'
+import ProductsSelect from '../../../layouts/default/components/ProductSelect.vue'
+import CustomMenu from './CustomMenu.vue'
 import { layoutConfig } from '@layouts'
 import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
 import { useLayoutConfigStore } from '@layouts/stores/config'
 import { injectionKeyIsVerticalNavHovered } from '@layouts/symbols'
 import type { NavGroup, NavLink, NavSectionTitle, VerticalNavItems } from '@layouts/types'
-import ProductsSelect from '@layouts/components/ProductsSelect.vue'
 
 interface Props {
   tag?: string | Component
@@ -147,12 +147,16 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
         />
       </slot>
     </div>
-
     <ProjectSelect
       v-if="canSelectProject && projects.isNotEmpty"
       :projects="projects"
-      class="mx-3 mt-6 mb-8"
-      :class="{ 'project-select--collapsed': configStore.isVerticalNavCollapsed && !isHovered }"
+      :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered"
+      class="mb-1"
+      :class="{
+        'px-4': isHovered || !configStore.isVerticalNavCollapsed,
+        'px-2': !isHovered,
+        'project-select--collapsed': configStore.isVerticalNavCollapsed && !isHovered,
+      }"
     />
     <slot name="before-nav-items" />
     <div
@@ -186,7 +190,16 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
         />
       </PerfectScrollbar>
     </slot>
-    <CustomMenu :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered" />
+    <div
+      class="mr-auto pt-3"
+      :class="{
+        'sidebar-custom_menu-padding': configStore.isVerticalNavCollapsed && !isHovered,
+        'pl-4 custom_menu-top-divider': !configStore.isVerticalNavCollapsed || isHovered,
+      }"
+    >
+      <div class="text-error" />
+      <CustomMenu :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered" />
+    </div>
   </Component>
   <div
     class="sidenav-overlay"
@@ -196,6 +209,9 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 </template>
 
 <style lang="scss" scoped>
+.sidebar-custom_menu-padding {
+  padding-left: 10px;
+}
 .app-logo {
   display: flex;
   align-items: center;
@@ -216,11 +232,13 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 }
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use "@configured-variables" as variables;
 @use "@layouts/styles/mixins";
 
-// ─── Shared: apply to ALL layouts that use .layout-vertical-nav ──────────────
+.layout-vertical-nav-collapsed {
+  transition: transform 0.3s ease-in-out;
+}
 
 .layout-vertical-nav {
   position: fixed;
@@ -228,7 +246,7 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
   display: flex;
   flex-direction: column;
   block-size: 100%;
-  inline-size: variables.$layout-vertical-nav-width;
+  inline-size: 252px; // neocore design (framework default: 260px)
   inset-block-start: 0;
   inset-inline-start: 0;
   transition: inline-size 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
@@ -241,6 +259,15 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 
     .header-action {
       cursor: pointer;
+
+      @at-root {
+        #{variables.$selector-vertical-nav-mini} .nav-header .header-action {
+          &.nav-pin,
+          &.nav-unpin {
+            display: none !important;
+          }
+        }
+      }
     }
   }
 
@@ -250,6 +277,7 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 
   .nav-items {
     block-size: 100%;
+    height: calc(100vh - 125px);
   }
 
   .ps {
@@ -262,16 +290,20 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
 }
 
-// Small screen: slide nav out of viewport
+.layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
+  inline-size: 52px;
+}
+
 @media (max-width: 1279px) {
   .layout-vertical-nav {
     &:not(.visible) {
-      transform: translateX(-#{variables.$layout-vertical-nav-width});
+      transform: translateX(-252px);
 
       @include mixins.rtl {
-        transform: translateX(variables.$layout-vertical-nav-width);
+        transform: translateX(252px);
       }
     }
 
@@ -297,26 +329,17 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
 .show-menu {
   transform: translateX(0) !important;
 }
-
-// ─── Shared: collapse behaviour (both default and island) ────────────────────
-
-.layout-vertical-nav-collapsed {
-  transition: transform 0.3s ease-in-out;
-}
-
-.layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
-  inline-size: variables.$layout-vertical-nav-collapsed-width;
-}
-
-// ─── Default layout only: hide pin/unpin in mini mode ────────────────────────
-
-// @at-root always compiles to root level regardless of parent selector.
-@at-root {
-  #{variables.$selector-vertical-nav-mini} .nav-header .header-action {
-    &.nav-pin,
-    &.nav-unpin {
-      display: none !important;
-    }
+.custom_menu-top-divider {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    width: 220px;
+    top: 0;
+    left: 16px;
+    right: 16px;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.08);
   }
 }
 </style>

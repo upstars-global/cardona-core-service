@@ -1,7 +1,7 @@
 <script lang="ts">
-import { useWindowSize, useToggle, syncRef } from '@vueuse/core';
+import { syncRef, useToggle, useWindowSize } from '@vueuse/core'
 
-import { defineComponent, ref, watch, toRef, h } from 'vue';
+import { defineComponent, h, ref, toRef, watch } from 'vue'
 
 import type { PropType } from 'vue'
 import { VerticalNav } from '@layouts/components'
@@ -53,15 +53,17 @@ export default defineComponent({
       const { wrapper: verticalNavWrapper, wrapperProps: verticalNavWrapperProps, ...additionalVerticalNavAttrs } = verticalNavAttrs.value
 
       // 👉 Vertical nav
-      const verticalNav = h(
-        VerticalNav,
-        { isOverlayNavActive: isOverlayNavActive.value, toggleIsOverlayNavActive, navItems: props.navItems, ...additionalVerticalNavAttrs },
-        {
-          'nav-header': () => slots['vertical-nav-header']?.(),
-          'before-nav-items': () => slots['before-vertical-nav-items']?.(),
-          'footer': () => slots['nav-footer']?.(),
-        },
-      )
+      const verticalNav = slots['vertical-nav']
+        ? slots['vertical-nav']({ isOverlayNavActive: isOverlayNavActive.value, toggleIsOverlayNavActive })
+        : h(
+          VerticalNav,
+          { isOverlayNavActive: isOverlayNavActive.value, toggleIsOverlayNavActive, navItems: props.navItems, ...additionalVerticalNavAttrs },
+          {
+            'nav-header': () => slots['vertical-nav-header']?.(),
+            'before-nav-items': () => slots['before-vertical-nav-items']?.(),
+            'footer': () => slots['nav-footer']?.(),
+          },
+        )
 
       // 👉 Navbar
       const navbar = h(
@@ -109,7 +111,7 @@ export default defineComponent({
 
       return h(
         'div',
-        { class: ['layout-wrapper', ...configStore._layoutClasses] },
+        { class: ['layout-wrapper bg-layout', ...configStore._layoutClasses] },
         [
           verticalNavWrapper ? h(verticalNavWrapper, verticalNavWrapperProps, { default: () => verticalNav }) : verticalNav,
           h(

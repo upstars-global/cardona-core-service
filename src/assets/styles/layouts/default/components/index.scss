@@ -1,0 +1,5 @@
+@use "./sidebar" as sidebar;
+
+@mixin apply {
+  @include sidebar.apply;
+}

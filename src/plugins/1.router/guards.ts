@@ -5,39 +5,58 @@ import { useUserStore } from '../../stores/user'
 import { useAppConfigCoreStore } from '../../stores/appConfigCore'
 
 export const setupGuards = (router: Router) => {
-  // 👉 router.beforeEach
-  // Docs: https://router.vuejs.org/guide/advanced/navigation-guards.html#global-before-guards
   router.beforeEach(async to => {
-    const userStore = useUserStore()
-
-    /*
-     * If it's a public route, continue navigation. This kind of pages are allowed to visited by login & non-login users. Basically, without any restrictions.
-     * Examples of public routes are, 404, under maintenance, etc.
-     */
-    const permission = to.meta.permission
-    const permissionLevel = to.meta.level || 1
-    const permissionGroup = to.meta.permissionGroup
-    const isAllPermissions = to.meta.isAllPermissions
-
-    const localeStore = useLocaleStore()
-    const appConfigCoreStore = useAppConfigCoreStore()
-
     if (to.meta.public)
       return
 
-    /**
-     * Check if user is logged in by checking if token & user data exists in local storage
-     * Feel free to update this logic to suit your needs
-     */
-    const isLoggedIn = !!(useCookie('userData').value && useCookie('accessToken').value)
+    const isLoggedIn = !!(
+      useCookie('userData').value
+      && useCookie('accessToken').value
+    )
 
-    if (isLoggedIn && userStore.userInfo.isEmpty) {
-      await userStore.fetchCurrentUser()
-      await Promise.all([
-        localeStore.fetchLocalesList(),
-        appConfigCoreStore.fetchConfig(),
-      ])
+    if (to.meta.unauthenticatedOnly) {
+      return isLoggedIn ? '/' : undefined
     }
+
+    if (!isLoggedIn) {
+      return {
+        path: '/login',
+        query: {
+          ...to.query,
+          to: to.fullPath !== '/' ? to.fullPath : undefined,
+        },
+      }
+    }
+
+    const userStore = useUserStore()
+    const localeStore = useLocaleStore()
+    const appConfigCoreStore = useAppConfigCoreStore()
+
+    if (userStore.userInfo.isEmpty) {
+      try {
+        await userStore.fetchCurrentUser()
+        await Promise.all([
+          localeStore.fetchLocalesList(),
+          appConfigCoreStore.fetchConfig(),
+        ])
+      }
+      catch {
+        useCookie('userData').value = null
+        useCookie('accessToken').value = null
+
+        return {
+          path: '/login',
+          query: {
+            to: to.fullPath !== '/' ? to.fullPath : undefined,
+          },
+        }
+      }
+    }
+
+    const permission = to.meta.permission
+    const permissionLevel = to.meta.level ?? 1
+    const permissionGroup = to.meta.permissionGroup
+    const isAllPermissions = to.meta.isAllPermissions
 
     const hasPermission = permission
       ? userStore.abilityCan(permission, permissionLevel)
@@ -47,30 +66,5 @@ export const setupGuards = (router: Router) => {
 
     if (!hasPermission)
       return '/error-404'
-
-    /*
-      If user is logged in and is trying to access login like page, redirect to home
-      else allow visiting the page
-      (WARN: Don't allow executing further by return statement because next code will check for permissions)
-     */
-    if (to.meta.unauthenticatedOnly) {
-      if (isLoggedIn)
-        return '/'
-      else
-        return undefined
-    }
-
-    /* if (!canNavigate(to)) {
-      /!* eslint-disable indent *!/
-      return isLoggedIn
-        ? { name: 'not-authorized' }
-        : {
-            name: 'login',
-            query: {
-              ...to.query,
-              to: to.fullPath !== '/' ? to.path : undefined,
-            },
-          }
-    } */ // TODO: посомтреть в чем проблема падает ошибка если юзать await
   })
 }

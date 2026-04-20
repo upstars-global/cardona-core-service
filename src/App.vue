@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTheme } from 'vuetify'
+import { useDisplay, useTheme } from 'vuetify'
 
 import { CoreLayoutsMap } from './@model/layouts'
 import { useLayoutChanger } from './composables/useLayoutChanger'
@@ -18,14 +18,38 @@ initConfigStore()
 const configStore = useConfigStore()
 
 const { activeLayout } = useLayoutChanger(CoreLayoutsMap)
+
+const { name } = useDisplay()
 </script>
 
 <template>
   <VLocaleProvider :rtl="configStore.isAppRTL">
     <!-- ℹ️ This is required to set the background color of active nav link based on currently active global theme's primary -->
-    <VApp :style="`--v-global-theme-primary: ${hexToRgb(global.current.value.colors.primary)}`">
-      <Component :is="activeLayout" />
-      <ScrollToTop />
+    <VApp
+      :class="name"
+      :style="`--v-global-theme-primary: ${hexToRgb(global.current.value.colors.primary)}`"
+    >
+      <Component :is="activeLayout">
+        <template #default="{ isFallbackStateActive }: {isFallbackStateActive: boolean}">
+          <RouterView v-slot="{ Component }">
+            <template v-if="Component">
+              <ScrollToTop />
+              <Transition
+                name="zoom-fade"
+                mode="out-in"
+              >
+                <Suspense
+                  :timeout="0"
+                  @fallback="isFallbackStateActive = true"
+                  @resolve="isFallbackStateActive = false"
+                >
+                  <Component :is="Component" />
+                </Suspense>
+              </Transition>
+            </template>
+          </RouterView>
+        </template>
+      </Component>
     </VApp>
   </VLocaleProvider>
 </template>
