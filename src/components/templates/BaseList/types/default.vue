@@ -460,8 +460,6 @@ const { inlineFilters, filterFields, onFieldUpdate } = useInlineFilters(props.co
 const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, false)
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
-const inlineFiltersKey = ref(0)
-
 watch(() => userStore.getSelectedProject?.alias, (_newAlias, oldAlias) => {
   if (!oldAlias)
     return
@@ -477,7 +475,6 @@ watch(() => userStore.getSelectedProject?.alias, (_newAlias, oldAlias) => {
     if ('resetOptions' in field)
       (field as { resetOptions: () => void }).resetOptions()
   })
-  inlineFiltersKey.value++
 })
 
 const appliedFilters = computed<BaseField[]>(() => {
@@ -738,7 +735,6 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           class="w-100 d-flex align-center justify-content-start"
         >
           <InlineFilters
-            :key="inlineFiltersKey"
             :filter-fields="filterFields"
             @change="onFieldUpdate"
           />
