@@ -1,0 +1,10 @@
+// Default layout sidebar styles (body[data-layout="default"] scope)
+@use 'sizing';
+@use 'theme';
+@use 'mini';
+
+@mixin apply {
+  @include sizing.apply;
+  @include theme.apply;
+  @include mini.apply;
+}
