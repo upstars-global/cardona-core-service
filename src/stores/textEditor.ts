@@ -16,7 +16,7 @@ export const useTextEditorStore = defineStore('textEditor', {
       this.isSave = newIsSave
     },
     setVariableTextBuffer(variableTextBuffer) {
-      this.variableTextBuffer = variableTextBuffer
+      this.variableTextBuffer = variableTextBuffer || {}
     },
     setVariableByKey({ key, value }) {
       this.variableTextBuffer = {
