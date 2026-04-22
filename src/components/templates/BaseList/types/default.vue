@@ -460,6 +460,23 @@ const { inlineFilters, filterFields, onFieldUpdate } = useInlineFilters(props.co
 const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, false)
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
+watch(() => userStore.getSelectedProject?.alias, (_newAlias, oldAlias) => {
+  if (!oldAlias)
+    return
+
+  filtersCoreStore.setListFilters([])
+  filtersCoreStore.setListEntityName()
+  filtersCoreStore.setListPath()
+  onChangeSelectedFilters([])
+  filtersBlockRef.value?.clearFilters()
+
+  filterFields.value.forEach(field => {
+    field.value = undefined
+    if ('resetOptions' in field)
+      (field as { resetOptions: () => void }).resetOptions()
+  })
+})
+
 const appliedFilters = computed<BaseField[]>(() => {
   const isSameEntity: boolean = entityName === filtersCoreStore.listEntityName
 
@@ -621,6 +638,9 @@ onMounted(() => {
 onBeforeUnmount(() => {
   baseListSelectionStore.clearSelectedIds()
 })
+
+const filtersBlockRef = ref(null)
+
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
 
@@ -733,6 +753,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
     <FiltersBlock
       v-if="config.filterList?.isNotEmpty"
+      ref="filtersBlockRef"
       :is-open="isOpenFilterBlock"
       :entity-name="entityName"
       :filters="filters"
