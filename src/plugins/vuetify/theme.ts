@@ -39,6 +39,12 @@ export const themes: Record<string, ThemeDefinition> = {
       'perfect-scrollbar-thumb': '#DBDADE',
       'skin-bordered-background': '#fff',
       'skin-bordered-surface': '#fff',
+
+      // ── Sidebar-specific tokens ──────────────────────────────────────────────
+      'sidebar': '#252833',
+      'on-sidebar': '#ffffff',
+      'shadow': '#1a1c24',
+      'blue-800': '#1c4a9a',
     },
 
     variables: {
@@ -64,7 +70,7 @@ export const themes: Record<string, ThemeDefinition> = {
       'switch-disabled-track-opacity': 0.3,
       'switch-disabled-thumb-opacity': 0.4,
       'switch-checked-disabled-opacity': 0.3,
-      'muted-placeholder-opacity': 0.62, // TODO: medium-emphasis-opacity
+      'muted-placeholder-opacity': 0.62,
       'body-opacity': 0.9,
       'border-radius': '0.5rem',
 
@@ -109,6 +115,12 @@ export const themes: Record<string, ThemeDefinition> = {
       'perfect-scrollbar-thumb': COLORS.dark['grey-300'],
       'skin-bordered-background': '#2F3349',
       'skin-bordered-surface': '#2F3349',
+
+      // ── Sidebar-specific tokens ──────────────────────────────────────────────
+      'sidebar': '#252833',
+      'on-sidebar': '#ffffff',
+      'shadow': '#1a1c24',
+      'blue-800': '#1c4a9a',
     },
     variables: {
       'table-bg': '#3D4155',
@@ -127,6 +139,8 @@ export const themes: Record<string, ThemeDefinition> = {
       'border-opacity': 0.16,
       'high-emphasis-opacity': 0.78,
       'medium-emphasis-opacity': 0.68,
+      'muted-placeholder-opacity': 0.62,
+      'body-opacity': 0.9,
       'switch-opacity': 0.4,
       'switch-disabled-track-opacity': 0.4,
       'switch-disabled-thumb-opacity': 0.8,

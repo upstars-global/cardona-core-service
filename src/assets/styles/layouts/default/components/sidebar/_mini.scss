@@ -1,0 +1,118 @@
+// Sidebar mini (collapsed) mode — transitions and icon centering
+// Active when: .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered)
+@mixin apply {
+
+  // Transitions
+  .layout-nav-type-vertical .layout-vertical-nav {
+
+    // Animate nav-header spacing so collapse doesn't jump instantly
+    .nav-header {
+      transition: padding-inline 0.25s ease-in-out, margin-inline 0.25s ease-in-out;
+    }
+
+    // Badge centering: delay matches product-select-fade leave (0.15s)
+    // so badge starts moving only after VueSelect fades out
+    .product-select {
+      .prodcut-short_size {
+        transition: transform 0.2s ease-in-out;
+        transition-delay: 0.15s;
+      }
+    }
+
+    // Replace slide-x with fade inside sidebar — translateX conflicts with width animation
+    .transition-slide-x-leave-active {
+      transition: opacity 0.15s ease-out !important;
+    }
+    .transition-slide-x-leave-to {
+      opacity: 0 !important;
+      transform: translateX(0) !important;
+    }
+    .transition-slide-x-enter-active {
+      transition: opacity 0.2s ease-in !important;
+      transition-delay: 0.12s !important;
+    }
+    .transition-slide-x-enter-from {
+      opacity: 0 !important;
+      transform: translateX(0) !important;
+    }
+
+    .project-select {
+      .text-expanded,
+      .vs__open-indicator {
+        transition: opacity 0.15s ease-out;
+      }
+    }
+
+    .custom-menu {
+      transition: padding-inline 0.25s ease-in-out;
+
+      .full-name {
+        transition: opacity 0.15s ease-out;
+      }
+    }
+  }
+
+  // Collapsed state
+  .layout-vertical-nav-collapsed .layout-vertical-nav:not(.hovered) {
+
+    // Shrink nav-header spacing to 0 (animated)
+    .nav-header {
+      padding-inline: 0 !important;
+      margin-inline: 0 !important;
+    }
+
+    // Slide badge to sidebar center: (52px - 32px) / 2 = 10px = 0.625rem
+    .product-select .prodcut-short_size {
+      transform: translate(0.625rem, -50%);
+    }
+
+    // Center icon: sidebar=52px, margin=8px×2 → el=36px, icon=22px → (36-22)/2 = 7px = 0.4375rem
+    .nav-link,
+    .nav-group {
+      > :first-child {
+        padding-inline: 0.4375rem !important;
+      }
+
+      .nav-item-icon {
+        margin-inline: 0 !important;
+      }
+    }
+
+    .nav-section-title {
+      justify-content: center !important;
+
+      .placeholder-icon {
+        margin-inline-start: 0 !important;
+      }
+    }
+
+    .project-select {
+      .vs__selected-options {
+        justify-content: center !important;
+      }
+
+      .text-expanded,
+      .vs__open-indicator {
+        opacity: 0;
+      }
+    }
+
+    .custom-menu {
+      display: flex !important;
+      justify-content: center !important;
+      padding-inline: 0 !important;
+
+      .user-info {
+        justify-content: center !important;
+      }
+
+      .full-name {
+        flex: 0 0 0 !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        margin-inline: 0 !important;
+        opacity: 0;
+      }
+    }
+  }
+}

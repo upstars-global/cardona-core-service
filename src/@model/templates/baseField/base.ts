@@ -204,6 +204,10 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
 
     this.options = [...this.options, ...options]
   }
+
+  resetOptions() {
+    this.options = undefined
+  }
 }
 
 // Abstract text input

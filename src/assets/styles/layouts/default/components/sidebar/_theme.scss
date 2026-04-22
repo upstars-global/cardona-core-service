@@ -1,0 +1,139 @@
+// Sidebar colors, active states, component overrides
+@mixin apply {
+
+  .layout-nav-type-vertical {
+    .side-bar_text-color {
+      color: rgba(var(--v-theme-on-sidebar));
+    }
+
+    .layout-vertical-nav {
+      background-color: rgba(var(--v-theme-sidebar));
+
+      .nav-header .header-action {
+        color: rgba(var(--v-theme-on-sidebar), 0.7) !important;
+      }
+
+      .nav-item-icon {
+        color: rgb(var(--v-theme-on-sidebar)) !important;
+      }
+
+      .nav-item-title,
+      .nav-item-color {
+        color: rgb(var(--v-theme-on-sidebar)) !important;
+      }
+
+      // Override !important from VerticalNavGroup.vue
+      .nav-group.open div {
+        background-color: rgba(var(--v-theme-on-sidebar), 0.06) !important;
+      }
+      .nav-group-label .nav-item-title {
+        color: rgb(var(--v-theme-on-sidebar)) !important;
+      }
+
+      // Override !important from VerticalNavGroup.vue
+      .nav-link a:not(.router-link-active) {
+        .nav-item-title,
+        .nav-item-title + i.v-icon {
+          color: rgb(var(--v-theme-on-sidebar)) !important;
+        }
+      }
+
+      .nav-group-arrow {
+        color: rgba(var(--v-theme-on-sidebar), 0.7) !important;
+      }
+
+      .ps__thumb-y,
+      .ps__rail-y:hover > .ps__thumb-y {
+        background-color: rgba(var(--v-theme-on-sidebar), 0.2) !important;
+      }
+
+      // Active link: solid primary instead of gradient
+      .nav-link > .router-link-exact-active {
+        background: rgb(var(--v-theme-primary)) !important;
+        box-shadow: none !important;
+
+        .nav-item-icon,
+        .nav-item-title {
+          color: rgb(var(--v-theme-on-primary)) !important;
+        }
+      }
+
+      // Open/active group: no highlighted background
+      .nav-group.open > .nav-group-label,
+      .nav-group.active > .nav-group-label {
+        // background-color: transparent !important;
+
+        &::before {
+          background-color: white !important;
+          opacity: 0.06 !important;
+          // background-color: rgba(var(--v-theme-on-sidebar), 0.06) !important;
+          // opacity: 0 !important;
+        }
+      }
+
+      .nav-group.open div {
+        /// background-color: transparent !important;
+      }
+
+      .nav-section-title {
+        text-transform: none !important;
+        margin-block-start: 0.75rem !important;
+        margin-block-end: 0.125rem !important;
+
+        .title-text-color,
+        .placeholder-icon {
+          color: rgba(var(--v-theme-on-sidebar), 0.45) !important;
+        }
+      }
+
+      .project-select {
+        .select-field-color,
+        .text-expanded,
+        .vs__selected,
+        .vs__open-indicator {
+          color: rgb(var(--v-theme-on-sidebar)) !important;
+        }
+
+        .vs__dropdown-toggle {
+          border-color: rgba(var(--v-theme-on-sidebar), 0.2) !important;
+        }
+
+        .vs--open .vs__dropdown-toggle {
+          border-color: rgb(var(--v-theme-primary)) !important;
+        }
+
+        .vs__search {
+          color: rgb(var(--v-theme-on-sidebar)) !important;
+        }
+      }
+    }
+  }
+
+  .layout-nav-type-vertical .custom-menu {
+    border-top-color: rgba(var(--v-theme-on-sidebar), 0.12) !important;
+
+    .full-name {
+      color: rgb(var(--v-theme-on-sidebar)) !important;
+    }
+  }
+
+  // .action-menu is teleported by VMenu outside the sidebar DOM tree
+  .action-menu {
+    background-color: rgb(var(--v-theme-sidebar)) !important;
+    border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 16px 0 rgb(var(--v-theme-shadow)) !important;
+
+    .v-list-item-title {
+      color: rgb(var(--v-theme-on-sidebar)) !important;
+    }
+
+    .v-icon {
+      color: rgb(var(--v-theme-on-sidebar)) !important;
+    }
+
+    .v-divider {
+      border-color: rgba(var(--v-theme-on-sidebar), 0.16) !important;
+    }
+  }
+}

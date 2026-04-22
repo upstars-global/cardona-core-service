@@ -70,7 +70,7 @@ const { toastError } = useToastService()
 const globalEditor = ref<any>()
 const isUpdateVar = computed(() => textEditorStore.isUpdateVar)
 const isSave = computed(() => textEditorStore.isSave)
-const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
+const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer || {})
 
 const setVariableTextBuffer = params => textEditorStore.setVariableTextBuffer(params)
 const setVariableByKey = ({ key, value }) => textEditorStore.setVariableByKey({ key, value })
@@ -414,7 +414,7 @@ watch(() => isSave.value, () => {
   >
     <VariableModal
       :key="variableKeySelect"
-      :value="variableTextBuffer[variableKeySelect]"
+      :value="variableTextBuffer?.[variableKeySelect]"
       :key-var="variableKeySelect"
       :modal-id="modalId"
       :disabled="disabled"

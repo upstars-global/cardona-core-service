@@ -73,6 +73,7 @@ export const database: User[] = [
         websiteUrl: 'https://rc.thor-develop.upstr.to',
         integrations: { valencia: true, marbella: true },
         iconPath: '/svc/img/i/shared/projects/chromevnztIDiq_png',
+        productId,
         originProject: {
           integrations: { valencia: true, marbella: true },
           websiteUrl: 'https://rc.thor-develop.upstr.to',
@@ -124,6 +125,7 @@ export const database: User[] = [
         websiteUrl: 'https://rc.thor-develop.upstr.to',
         integrations: { valencia: true, marbella: true },
         iconPath: '/svc/img/i/shared/projects/chromevnztIDiq_png',
+        productId,
         originProject: {
           integrations: { valencia: true, marbella: true },
           websiteUrl: 'https://rc.thor-develop.upstr.to',

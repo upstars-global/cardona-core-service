@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
 import NotificationExport from '../../components/NotificationExport/index.vue'
 import { useUserStore } from '../../stores/user'
+import VerticalNav from '../default/components/VerticalNav.vue'
 import AppBreadcrumb from './AppBreadcrumb.vue'
 import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
 import { VerticalNavLayout } from '@layouts'
@@ -34,6 +35,13 @@ const userId = computed(() => userStore.userInfo.id)
 
 <template>
   <VerticalNavLayout :nav-items="navItems">
+    <template #vertical-nav="{ isOverlayNavActive, toggleIsOverlayNavActive }">
+      <VerticalNav
+        :nav-items="navItems"
+        :is-overlay-nav-active="isOverlayNavActive"
+        :toggle-is-overlay-nav-active="toggleIsOverlayNavActive"
+      />
+    </template>
     <!-- 👉 navbar -->
     <template #navbar>
       <AppBreadcrumb>

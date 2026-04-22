@@ -1,6 +1,5 @@
+// Framework variable defaults — no layout-specific overrides here.
+// Neocore sidebar values (252px width, 52px collapsed, 8px spacing) live in:
+//   - src/layouts/default/components/VerticalNav.vue  (widths, hardcoded)
+//   - src/assets/styles/layouts/default/components/neocore-sidebar/_sizing.scss (spacing + content wrapper)
 @forward "@core/scss/template/variables";
-
-// ℹ️ Remove above import and uncomment below to override core variables.
-// @forward "@core/scss/template/variables" with (
-//   $<variable-name>: <variable-value>
-// )
