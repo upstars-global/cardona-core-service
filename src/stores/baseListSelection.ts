@@ -21,6 +21,10 @@ export const useBaseListSelection = defineStore('baseListSelection', {
       this.selectedIds[entityName] = newSelectedIds
     },
 
+    deleteSelectedId(entityName: string, id: string) {
+      this.selectedIds[entityName].delete(id)
+    },
+
     clearSelectedIds(entityName: string) {
       this.selectedIds[entityName] = new Set()
     },
