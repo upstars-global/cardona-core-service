@@ -424,6 +424,7 @@ declare module 'vue' {
     InnerBlankLink: typeof import('./src/components/templates/_components/InnerBlankLink.vue')['default']
     InnerBlankLinkView: typeof import('./src/components/templates/ViewGenerator/_components/InnerBlankLinkView.vue')['default']
     InputTextWrapper: typeof import('./src/components/templates/LocaleForm/_components/InputTextWrapper.vue')['default']
+    ItemActionCopy: typeof import('./src/components/templates/BaseList/_components/fields/ItemActionCopy.vue')['default']
     ItemActions: typeof import('./src/components/templates/BaseList/_components/fields/ItemActions.vue')['default']
     LinkView: typeof import('./src/components/templates/ViewGenerator/_components/LinkView.vue')['default']
     List: typeof import('./src/components/NotificationExport/list/index.vue')['default']

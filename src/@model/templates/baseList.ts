@@ -230,6 +230,9 @@ export interface IBaseListConfig {
 
   //* *  inlineFilters - Filter fields які в монтовані в список   */
   readonly inlineFilters?: Array<FilterListItem>
+
+  //* *  copyForAllProjects - Копіювати на інші проєкти   */
+  readonly copyForAllProjects?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -286,6 +289,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly cellCbClass: CallableFunction
   readonly noPermissions?: NoPermissions
   readonly inlineFilters?: Array<FilterListItem>
+  readonly copyForAllProjects?: boolean
 
   constructor({
     withSearch,
@@ -341,6 +345,7 @@ export class BaseListConfig implements IBaseListConfig {
     cellCbClass,
     noPermissions,
     inlineFilters,
+    copyForAllProjects,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -395,6 +400,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.cellCbClass = cellCbClass
     this.noPermissions = noPermissions ?? false
     this.inlineFilters = inlineFilters ?? []
+    this.copyForAllProjects = copyForAllProjects ?? false
   }
 }
 
