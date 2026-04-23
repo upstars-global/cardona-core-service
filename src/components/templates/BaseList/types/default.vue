@@ -1340,6 +1340,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
                 :item="item"
                 :can-update="canUpdate"
                 :can-create="canCreate"
+                :entity-name="entityName"
               />
             </template>
           </ItemActions>
