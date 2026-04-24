@@ -96,3 +96,15 @@ const onCreateCopyForAnotherProject = ({ id, project }: { id: string; project: s
     </VListItemTitle>
   </VListItem>
 </template>
+
+<style lang="scssss" scoped>
+.item-list--hover {
+  &:hover {
+    background-color: rgba(var(--v-theme-primary), 0.02) !important;
+    .item-list--title {
+      color: rgb(var(--v-theme-primary)) !important;
+
+    }
+  }
+}
+</style>
