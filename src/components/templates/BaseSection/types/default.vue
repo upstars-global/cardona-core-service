@@ -2,7 +2,7 @@
 import { computed, inject, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
-import { has, omit } from 'lodash'
+import { omit } from 'lodash'
 import { IconsList } from '../../../../@model/enums/icons'
 import { checkExistsPage, transformFormData } from '../../../../helpers'
 import { basePermissions } from '../../../../helpers/base-permissions'
@@ -125,16 +125,18 @@ const onFetchFormData = async () => {
     })
 
     if (onReceiveEntity) {
+      const isForAnotherProject = forProject && fromProject && forProject !== fromProject
+
       await onReceiveEntity({
         ...receivedEntity,
         id: entityId,
-      })
+      }, isForAnotherProject)
     }
 
     if (isCreatePage) {
       receivedEntity.id = null
 
-      const query = forProject ? omit(route.query, 'forProject') : route.query
+      const query = forProject || fromProject ? omit(route.query, ['forProject', 'fromProject']) : route.query
 
       await router.replace({
         name: route.name,
