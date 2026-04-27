@@ -147,9 +147,6 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
         />
       </slot>
     </div>
-    <div class="text-primary">
-      {{[canSelectProject, projects.isNotEmpty]}}
-    </div>
     <ProjectSelect
       v-if="canSelectProject && projects.isNotEmpty"
       :projects="projects"
