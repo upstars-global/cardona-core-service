@@ -163,6 +163,7 @@ const onHide = () => {
                           :data-test-id="`collapse-item-${groupKey}`"
                           :model-value="viewForm[key].views[groupKey]"
                           :key-name="groupKey"
+                          class="text-color-base"
                           :class="`${groupKey}-view`"
                           :cols="4"
                         >
