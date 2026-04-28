@@ -122,6 +122,7 @@ const onHide = () => {
               :key="key"
               :model-value="viewForm[key]"
               :key-name="key"
+              class="text-color-base"
               :class="`${key}-view`"
               :cols="4"
             >
