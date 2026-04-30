@@ -10,7 +10,7 @@ defineProps<{
   <div>
     <span
       data-test-id="text"
-      class="mb-0 text-color-base"
+      class="mb-0"
     >
       {{ item.value || '-' }}
     </span>
