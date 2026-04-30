@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
-import {useRoute} from 'vue-router'
-import { isUndefined } from 'lodash'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { has, isUndefined } from 'lodash'
 import ApiService from '../services/api'
 import { useRedirectToNotFoundPage } from '../helpers/router'
 import type { IRequestListPayload } from '../@model'
@@ -44,9 +43,8 @@ const combineFilter = (
   const route = useRoute()
   const existProjectPramInRoute = route.path.includes(useRoute().params?.project) || false
 
-  if (existProjectPramInRoute) {
+  if (existProjectPramInRoute && !has(filters, 'project'))
     filters.project = projectAlias
-  }
 
   return Object.values(filters).some(v => !isUndefined(v)) ? filters : undefined
 }
