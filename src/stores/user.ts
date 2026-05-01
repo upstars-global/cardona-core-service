@@ -96,6 +96,8 @@ export const useUserStore = defineStore('user', {
         (projectAlias: string): ProjectInfo =>
           state.userInfo.projects.find(p => p.alias === projectAlias) as ProjectInfo,
 
+    getProjectAliasById: ({ userInfo }) => (id: number): string | undefined => userInfo?.projects?.find(item => item.id === id)?.alias,
+
     canViewVCoinInProject:
       state =>
         (projectAlias: string) =>
@@ -179,7 +181,7 @@ export const useUserStore = defineStore('user', {
     clearProjects() {
       this.selectedProject = null
       this.priorityProject = null
-      this.userInfo = { ...this.userInfo, projects: []}
+      this.userInfo = { ...this.userInfo, projects: [] }
     },
   },
 })
