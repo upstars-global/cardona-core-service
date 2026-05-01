@@ -179,6 +179,7 @@ const onClickRow = async data => {
     await props.config?.cbShowSidebar(selectedItem, isSidebarShown, {
       itemList: data,
       index: getIndexByItemFromList(data),
+      entityName,
     })
   }
   else {
@@ -600,11 +601,13 @@ const onClickRemove = item => {
 
 const onClickModalOk = async ({ hide, commentToRemove }) => {
   hide()
+
   await deleteAction({
     type: entityName,
     id: selectedItem.value.id,
     comment: commentToRemove,
     customApiPrefix: props.config?.customApiPrefix,
+    inlineFilters: inlineFilters.value,
   })
 
   selectedItems.value = selectedItems.value.filter(item => item?.id !== selectedItem.value.id)
@@ -728,6 +731,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           :can-create="canCreate"
           :can-update="canUpdate"
           :create-page-name="CreatePageName"
+          :inline-filters
         />
       </template>
       <template #left-search-btn>
@@ -1131,6 +1135,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :item="item.raw"
             :cell="cell"
             :value="item.value"
+            :inline-filters="inlineFilters"
             :get-update-route="getUpdateRoute"
             :index="getIndexByItemFromList(item.value)"
             :toggle-expand="toggleExpand"
