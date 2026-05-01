@@ -19,7 +19,7 @@ export const useInfiniteScroll = (loadMoreCb: Function, loadRef: Ref<HTMLElement
 
   const setupObserver = async () => {
     await nextTick()
-    observer.observe(loadRef.value)
+    if (loadRef.value) observer.observe(loadRef.value)
   }
 
   const abortObserver = () => {

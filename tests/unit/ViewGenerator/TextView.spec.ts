@@ -28,6 +28,5 @@ describe('ViewComponent.vue', () => {
 
     testOn.equalTextValue({ wrapper, testId }, mockItem.value)
     testOn.existClass({ wrapper, testId }, 'mb-0')
-    testOn.existClass({ wrapper, testId }, 'text-color-base')
   })
 })

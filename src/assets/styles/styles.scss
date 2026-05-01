@@ -19,6 +19,10 @@
 @import "./components/v-check";
 @import "./components/check-field";
 
+html {
+  overflow-y: auto;
+}
+
 .text-color-base {
   color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
 }
