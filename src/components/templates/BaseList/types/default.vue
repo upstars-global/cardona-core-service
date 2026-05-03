@@ -180,6 +180,7 @@ const onClickRow = async data => {
       itemList: data,
       index: getIndexByItemFromList(data),
       entityName,
+      inlineFilters: inlineFilters.value,
     })
   }
   else {
@@ -685,6 +686,9 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           :name="BaseListSlots.SidebarActions"
           :form="form"
           :item="selectedItem"
+          :can-remove="canRemove"
+          :inline-filters="inlineFilters"
+          :on-click-remove="onClickRemove"
         />
       </template>
 
@@ -1135,6 +1139,9 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :item="item.raw"
             :cell="cell"
             :value="item.value"
+            :create-page-name="CreatePageName"
+            :can-create="canCreate"
+            :can-remove="canRemove"
             :inline-filters="inlineFilters"
             :get-update-route="getUpdateRoute"
             :index="getIndexByItemFromList(item.value)"

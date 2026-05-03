@@ -25,19 +25,19 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<{
-    withReadAction?: boolean
-    config?: BaseSectionConfig
-    pageType?: PageType
-    useEntity: Function
-    localEntityData?: Record<string, unknown>
-    entityId?: string
-  }>(),
-  {
-    useEntity: undefined,
-    withReadAction: true,
-    config: () => new BaseSectionConfig({}),
-    pageType: PageType.Create,
-  },
+  withReadAction?: boolean
+  config?: BaseSectionConfig
+  pageType?: PageType
+  useEntity: Function
+  localEntityData?: Record<string, unknown>
+  entityId?: string
+}>(),
+{
+  useEntity: undefined,
+  withReadAction: true,
+  config: () => new BaseSectionConfig({}),
+  pageType: PageType.Create,
+},
 )
 
 const emits = defineEmits<{
@@ -124,7 +124,10 @@ const onFetchFormData = async () => {
 
       await router.replace({
         name: route.name,
-        params: { id: '' },
+        params: {
+          ...route.params,
+          id: '',
+        },
         query: forProject ? route.query : {},
       })
     }
@@ -257,7 +260,6 @@ const onSave = async (isStay?: boolean) => {
       await onFetchFormData()
   }
   catch (e) {
-    console.error(e)
     if (e?.validationErrors?.[0])
       setTabError(e.validationErrors[0]?.field, form)
   }
