@@ -19,7 +19,12 @@ import { setTabError } from '../composables/tabs'
 import { generateEntityUrl } from '../composables/entity'
 import BaseSectionLoading from '../BaseSectionLoading.vue'
 import { useBaseSectionErrorsStore } from '../../../../stores/baseSectionErrors'
-import ProjectFilter from '../_components/ProjectFilter.vue'
+import { useAppConfigCoreStore } from '../../../../stores/appConfigCore'
+import { useUserStore } from '../../../../stores/user'
+import { SelectBaseField } from '../../../../@model/templates/baseField'
+import type { OptionsItem } from '../../../../@model'
+import SelectField from '../../../../components/templates/FieldGenerator/_components/SelectField.vue'
+import type { ProjectInfo } from '../../../../@model/project'
 
 defineOptions({
   name: 'DefaultBaseSection',
@@ -53,6 +58,8 @@ const baseSectionErrorStore = useBaseSectionErrorsStore()
 const route = useRoute()
 const router = useRouter()
 const textEditorStore = useTextEditorStore()
+const appConfigCoreStore = useAppConfigCoreStore()
+const userStore = useUserStore()
 
 const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 
@@ -62,7 +69,16 @@ const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
 const isModal = props.config?.isModalSection
 
-const { useStore, entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb, onSerializeFormCb, validationErrorCb }
+const {
+  useStore,
+  entityName,
+  pageName,
+  EntityFormClass,
+  onSubmitCallback,
+  onBeforeSubmitCb,
+  onSerializeFormCb,
+  validationErrorCb,
+}
   = props.useEntity()
 
 const formRef = ref(null)
@@ -104,7 +120,7 @@ const isExistsEndpointsWithError = computed(() => baseSectionErrorStore.isErrorE
 
 const form = ref()
 
-const onFetchFormData = async () => {
+const onFetchFormData = async (projectAlias?: string) => {
   try {
     const { forProject, fromProject } = route?.query || { fromProject: '', forProject: '' }
 
@@ -112,7 +128,7 @@ const onFetchFormData = async () => {
       type: entityName,
       id: entityId,
       customApiPrefix: props.config?.customApiPrefix,
-      project: fromProject,
+      project: fromProject || projectAlias,
     })
 
     emits('on-receive-entity', {
@@ -292,6 +308,19 @@ watch(() => formRef.value?.values, () => {
   baseSectionErrorStore.resetErrorUrls()
 }, { deep: true })
 
+// Project filter
+const projectFilter = ref(new SelectBaseField<OptionsItem>({
+  key: 'projectFilter',
+  value: userStore.getSelectedProject,
+  options: appConfigCoreStore.verifiedProjects,
+  label: '',
+  clearable: false,
+}))
+
+watch(() => projectFilter.value.value, ({ alias }: ProjectInfo) => {
+  onFetchFormData(alias)
+})
+
 onBeforeUnmount(() => {
   baseSectionErrorStore.resetErrorUrls()
   textEditorStore.setVariableTextBuffer({})
@@ -320,9 +349,11 @@ defineExpose({
           :text="$t('component.baseSection.readModeAlert')"
         />
 
-        <ProjectFilter
-          v-if="config.projectFilter"
-          class="mb-6"
+        <SelectField
+          v-if="config?.projectFilter"
+          v-model="projectFilter.value"
+          :field="projectFilter"
+          class="project-filter mb-6"
         />
 
         <Form
@@ -447,3 +478,9 @@ defineExpose({
     </BaseSectionLoading>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.project-filter {
+  width: 265px;
+}
+</style>
