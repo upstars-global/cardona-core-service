@@ -19,25 +19,26 @@ import { setTabError } from '../composables/tabs'
 import { generateEntityUrl } from '../composables/entity'
 import BaseSectionLoading from '../BaseSectionLoading.vue'
 import { useBaseSectionErrorsStore } from '../../../../stores/baseSectionErrors'
+import ProjectFilter from '../_components/ProjectFilter.vue'
 
 defineOptions({
   name: 'DefaultBaseSection',
 })
 
 const props = withDefaults(defineProps<{
-    withReadAction?: boolean
-    config?: BaseSectionConfig
-    pageType?: PageType
-    useEntity: Function
-    localEntityData?: Record<string, unknown>
-    entityId?: string
-  }>(),
-  {
-    useEntity: undefined,
-    withReadAction: true,
-    config: () => new BaseSectionConfig({}),
-    pageType: PageType.Create,
-  },
+  withReadAction?: boolean
+  config?: BaseSectionConfig
+  pageType?: PageType
+  useEntity: Function
+  localEntityData?: Record<string, unknown>
+  entityId?: string
+}>(),
+{
+  useEntity: undefined,
+  withReadAction: true,
+  config: () => new BaseSectionConfig({}),
+  pageType: PageType.Create,
+},
 )
 
 const emits = defineEmits<{
@@ -317,6 +318,11 @@ defineExpose({
           class="mb-6 px-4 py-2 font-weight-bolder"
           :color="VColors.Info"
           :text="$t('component.baseSection.readModeAlert')"
+        />
+
+        <ProjectFilter
+          v-if="config.projectFilter"
+          class="mb-6"
         />
 
         <Form
