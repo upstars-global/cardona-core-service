@@ -41,7 +41,7 @@ const combineFilter = (
   projectAlias?: string,
 ): Record<string, any> | undefined => {
   const route = useRoute()
-  const existProjectPramInRoute = route.path.includes(useRoute().params?.project) || false
+  const existProjectPramInRoute = route?.path?.includes(useRoute()?.params?.project) || false
 
   if (existProjectPramInRoute && !has(filters, 'project'))
     filters.project = projectAlias
