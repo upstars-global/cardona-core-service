@@ -7,6 +7,7 @@ import { IconsList } from '../../../../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../../../../@model/vuetify'
 import { IS_TEST_ENV } from '../../../../../utils/constants'
 import { checkExistsPage } from '../../../../../../src/helpers'
+import ItemActionCopy from './ItemActionCopy.vue'
 
 interface Props {
   item: any
@@ -60,7 +61,6 @@ const canShowEdit = computed(() => (props.canUpdate || props.canUpdateSeo) && pr
 const canShowDetails = computed(() => checkExistsPage(props.detailsPageName))
 
 const onUpdateItem = () => router.push(props.getUpdateRoute(props.item))
-const onCreateCopy = () => router.push({ name: props.createPageName, params: { id: props.item.id } })
 const onClickDetails = () => router.push({ name: props.detailsPageName, params: { id: props.item.id } })
 </script>
 
@@ -132,20 +132,12 @@ const onClickDetails = () => router.push({ name: props.detailsPageName, params: 
           {{ $t('action.edit') }}
         </VListItemTitle>
       </VListItem>
-
-      <VListItem
+      <ItemActionCopy
         v-if="canCreate && config.createFromCopy"
-        data-test-id="copy"
-        @click="onCreateCopy"
-      >
-        <template #prepend>
-          <VIcon :icon="IconsList.CopyPlusIcon" />
-        </template>
-        <VListItemTitle>
-          {{ $t('action.makeCopy') }}
-        </VListItemTitle>
-      </VListItem>
-
+        :item="item"
+        :create-page-name="createPageName"
+        :copy-for-all-projects="config.copyForAllProjects"
+      />
       <VListItem
         v-if="canRemoveItem"
         class="text-error hover-text-error"
