@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { has, isUndefined } from 'lodash'
 import ApiService from '../services/api'
 import { useRedirectToNotFoundPage } from '../helpers/router'
@@ -11,6 +11,7 @@ import { ExportFormat } from '../@model/templates/baseList'
 import { useProductCoreStore } from '../stores/productCore'
 import { ApiTypePrefix, productName } from '@productConfig'
 import { i18n } from '@/plugins/i18n'
+import { router } from '@/plugins/2.router'
 
 const isSymbolIsDash = (symbol: string): boolean => symbol === '-'
 
@@ -40,8 +41,7 @@ const combineFilter = (
   filters: Record<string, any> = {},
   projectAlias?: string,
 ): Record<string, any> | undefined => {
-  const route = useRoute()
-  const existProjectPramInRoute = route?.path?.includes(useRoute()?.params?.project) || false
+  const existProjectPramInRoute = router?.path?.includes(router?.params?.project) || false
 
   if (existProjectPramInRoute && !has(filters, 'project'))
     filters.project = projectAlias
