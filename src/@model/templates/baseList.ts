@@ -54,6 +54,7 @@ export interface FilterListItem {
   readonly type: FilterType | ProjectFilterTypes
   readonly key: string
   readonly trackBy?: string
+  readonly defaultValue?: unknown
 }
 
 type StaticFilters = Record<string, string | string[] | number | number[]>
