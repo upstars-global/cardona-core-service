@@ -21,6 +21,7 @@ export interface UseEntityType<FormModel> {
     transformedFormData: Partial<Record<keyof FormModel, unknown>>,
     rawFormData: Ref<FormModel>
   ) => Record<string, unknown>
+  readonly onReceiveEntity?: CallableFunction
   readonly validationErrorCb?: IValidationErrorCb
   readonly useStore?: BaseStore
 }
