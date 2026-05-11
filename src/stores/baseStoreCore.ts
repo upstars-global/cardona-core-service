@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
-import { has, isUndefined } from 'lodash'
+import { isUndefined } from 'lodash'
+import { useRouter } from 'vue-router'
 import ApiService from '../services/api'
 import { useRedirectToNotFoundPage } from '../helpers/router'
 import type { IRequestListPayload } from '../@model'
@@ -40,13 +40,12 @@ const combineFilter = (
   filters: Record<string, any> = {},
   projectAlias?: string,
 ): Record<string, any> | undefined => {
-  const route = useRoute()
-  const existProjectPramInRoute = route?.path?.includes(useRoute()?.params?.project) || false
+  const filter = {
+    ...filters,
+    project: isNeocoreProduct ? projectAlias : undefined,
+  }
 
-  if (existProjectPramInRoute && !has(filters, 'project'))
-    filters.project = projectAlias
-
-  return Object.values(filters).some(v => !isUndefined(v)) ? filters : undefined
+  return Object.values(filter).some(v => !isUndefined(v)) ? filter : undefined
 }
 
 export const useBaseStoreCore = defineStore('baseStoreCore', {
