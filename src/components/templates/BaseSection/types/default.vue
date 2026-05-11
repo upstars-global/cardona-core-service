@@ -2,6 +2,7 @@
 import { computed, inject, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
+import { omit } from 'lodash'
 import { IconsList } from '../../../../@model/enums/icons'
 import { checkExistsPage, transformFormData } from '../../../../helpers'
 import { basePermissions } from '../../../../helpers/base-permissions'
@@ -25,25 +26,24 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<{
-    withReadAction?: boolean
-    config?: BaseSectionConfig
-    pageType?: PageType
-    useEntity: Function
-    localEntityData?: Record<string, unknown>
-    entityId?: string
-  }>(),
-  {
-    useEntity: undefined,
-    withReadAction: true,
-    config: () => new BaseSectionConfig({}),
-    pageType: PageType.Create,
-  },
+  withReadAction?: boolean
+  config?: BaseSectionConfig
+  pageType?: PageType
+  useEntity: Function
+  localEntityData?: Record<string, unknown>
+  entityId?: string
+}>(),
+{
+  useEntity: undefined,
+  withReadAction: true,
+  config: () => new BaseSectionConfig({}),
+  pageType: PageType.Create,
+},
 )
 
 const emits = defineEmits<{
   (event: 'on-cancel'): void
   (event: 'on-save'): void
-  (event: 'on-receive-entity', payload: any, isForAnotherProject: boolean): any
 }>()
 
 const modal = inject('modal')
@@ -61,7 +61,17 @@ const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
 const isModal = props.config?.isModalSection
 
-const { useStore, entityName, pageName, EntityFormClass, onSubmitCallback, onBeforeSubmitCb, onSerializeFormCb, validationErrorCb }
+const {
+  useStore,
+  entityName,
+  pageName,
+  EntityFormClass,
+  onSubmitCallback,
+  onBeforeSubmitCb,
+  onSerializeFormCb,
+  onReceiveEntity,
+  validationErrorCb,
+}
   = props.useEntity()
 
 const formRef = ref(null)
@@ -114,18 +124,24 @@ const onFetchFormData = async () => {
       project: fromProject,
     })
 
-    emits('on-receive-entity', {
-      ...receivedEntity,
-      id: entityId,
-    }, Boolean(forProject))
+    if (onReceiveEntity) {
+      const isForAnotherProject = forProject && fromProject && forProject !== fromProject
+
+      await onReceiveEntity({
+        ...receivedEntity,
+        id: entityId,
+      }, isForAnotherProject)
+    }
 
     if (isCreatePage) {
       receivedEntity.id = null
 
+      const query = forProject || fromProject ? omit(route.query, ['forProject', 'fromProject']) : route.query
+
       await router.replace({
         name: route.name,
         params: { id: '' },
-        query: forProject ? route.query : {},
+        query,
       })
     }
 
