@@ -210,15 +210,19 @@ const onSubmit = async (isStay: boolean) => {
     return
   isStaySubmit.value = isStay
 
+  const project = props.config?.projectFilter ? projectFilter.value.value?.alias : undefined
+
   const formData = isUpdateSeoOnly.value
     ? {
       id: form.value.id,
+      project,
       seo: form.value.seo,
       fieldTranslations: form.value.fieldTranslations,
       localisationParameters: form.value.localisationParameters,
     }
     : {
       ...form.value,
+      project,
       seo: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission ? form.value.seo : null,
       fieldTranslations: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission ? form.value.fieldTranslations : null,
       localisationParameters: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission
