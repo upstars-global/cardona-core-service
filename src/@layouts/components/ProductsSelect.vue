@@ -114,7 +114,7 @@ watch(selectedProduct, product => {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .product-select {
 
   .vs__dropdown-toggle {
