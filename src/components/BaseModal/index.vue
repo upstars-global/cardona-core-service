@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue'
+import { computed, inject, onBeforeUnmount, onMounted, provide, ref, useAttrs } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { IconsList } from '../../@model/enums/icons'
 import { ModalSizes, VColors, VVariants } from '../../@model/vuetify'
@@ -32,6 +32,8 @@ const props = withDefaults(
   })
 
 const emits = defineEmits<Emits>()
+
+provide('isInsideModal', true)
 
 const attrs = useAttrs()
 
