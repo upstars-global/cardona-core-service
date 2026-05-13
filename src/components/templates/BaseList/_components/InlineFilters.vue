@@ -7,11 +7,6 @@ defineOptions({
   name: 'InlineFilters',
 })
 
-interface Props {
-  filterFields: BaseField[]
-  size?: VSizes
-}
-
 withDefaults(defineProps<Props>(), {
   size: VSizes.Medium,
 })
@@ -19,6 +14,11 @@ withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{
   change: [fields: BaseField[]]
 }>()
+
+interface Props {
+  filterFields: BaseField[]
+  size?: VSizes
+}
 </script>
 
 <template>
@@ -40,3 +40,9 @@ const emits = defineEmits<{
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+div[data-inline-filter="singleProject"] {
+  width: 265px !important;
+}
+</style>

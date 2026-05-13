@@ -741,7 +741,10 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       <template #left-search-btn>
         <div
           v-if="config.inlineFilters?.isNotEmpty"
-          class="w-100 d-flex align-center justify-content-start"
+          class="w-auto d-flex align-center justify-content-start"
+          :class="{
+            'w-auto': config.withSearch,
+            'w-100': !config.withSearch}"
         >
           <InlineFilters
             :filter-fields="filterFields"
