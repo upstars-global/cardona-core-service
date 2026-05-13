@@ -203,6 +203,13 @@ const isCreateOrUpdateSeo = computed(
 const isShowSaveBtn = computed<boolean>(() => isUpdatePage && (canUpdate || canUpdateSeo))
 const isReadMode = computed<boolean>(() => (isUpdatePage || isRootPage) && !canUpdate && !canUpdateSeo)
 
+const getProject = () => {
+  if (form.value?.project)
+    return form.value.project
+
+  return props.config?.projectFilter ? projectFilter.value.value?.alias : undefined
+}
+
 const onSubmit = async (isStay: boolean) => {
   textEditorStore.setSave(true)
 
@@ -210,7 +217,7 @@ const onSubmit = async (isStay: boolean) => {
     return
   isStaySubmit.value = isStay
 
-  const project = props.config?.projectFilter ? projectFilter.value.value?.alias : undefined
+  const project = getProject()
 
   const formData = isUpdateSeoOnly.value
     ? {
