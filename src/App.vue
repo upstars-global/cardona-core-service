@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDisplay, useTheme } from 'vuetify'
 
-import { CoreLayoutsMap } from './@model/layouts'
+import {CoreLayouts, CoreLayoutsMap} from './@model/layouts'
 import { useLayoutChanger } from './composables/useLayoutChanger'
 import ScrollToTop from '@core/components/ScrollToTop.vue'
 import initCore from '@core/initCore'
@@ -17,7 +17,7 @@ initConfigStore()
 
 const configStore = useConfigStore()
 
-const { activeLayout } = useLayoutChanger(CoreLayoutsMap)
+const { activeLayout } = useLayoutChanger(CoreLayoutsMap, CoreLayouts.Island)
 
 const { name } = useDisplay()
 </script>

@@ -84,7 +84,12 @@ const onCLickThemeIcon = () => {
       </AppBreadcrumb>
     </template>
     <template #product-select="{ isCollapsedMenu }">
-      <ProductsSelect :is-collapsed-menu="isCollapsedMenu" />
+      <slot
+        name="product-select"
+        :is-collapsed-menu="isCollapsedMenu"
+      >
+        <ProductsSelect :is-collapsed-menu="isCollapsedMenu" />
+      </slot>
     </template>
 
     <AppLoadingIndicator ref="refLoadingIndicator" />
