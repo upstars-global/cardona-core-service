@@ -410,7 +410,7 @@ watch(() => searchQuery.value, () => {
 // Export
 const setRequestFilters = (): PayloadFilters => {
   if (!ListFilterModel)
-    return {}
+    return combineFilter({}, userStore.getSelectedProject?.alias)
 
   const appliedFiltersData = transformFilters(appliedFilters.value, props.config)
 
