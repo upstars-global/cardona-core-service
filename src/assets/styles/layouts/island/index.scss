@@ -5,13 +5,13 @@ body[data-layout="island"] {
 
   background-color: rgba(var(--v-island-layout-bg)) !important;
 
-  //.product-select {
-  //  .select-item {
-  //    font-size: 13px;
-  //    line-height: 20px;
-  //    font-weight: 500;
-  //  }
-  //}
+  .product-select {
+    .select-item {
+      font-size: 13px;
+      line-height: 20px;
+      font-weight: 500;
+    }
+  }
 
   .v-overlay-container:has(.v-list){
     .v-overlay__content {
