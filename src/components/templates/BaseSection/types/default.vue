@@ -435,10 +435,10 @@ defineExpose({
                   :disabled="isDisableSubmit || isLoadingPage"
                   @click="onSubmit(false)"
                 >
-                  {{ isModal ? $t('action.save') : $t('action.saveAndExit') }}
+                  {{ isModalSection ? $t('action.save') : $t('action.saveAndExit') }}
                 </VBtn>
                 <VBtn
-                  v-if="!isModal"
+                  v-if="!isModalSection"
                   class="mr-4"
                   :color="VColors.Secondary"
                   :variant="VVariants.Outlined"

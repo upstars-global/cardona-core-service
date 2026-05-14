@@ -37,7 +37,7 @@ const mountComponent = (props = {}, global = {}, slots = {}) =>
       VBtn: { template: '<button><slot /></button>' },
     },
     ...global,
-    provide: { modal: mockModal },
+    provide: { modal: mockModal, ...(global.provide ?? {}) },
     components: {
       FieldGenerator: FieldGeneratorStub,
     },
@@ -336,13 +336,14 @@ describe('BaseSection.vue', () => {
     // Emulate readEntity
     readEntity.mockResolvedValueOnce({ id: '456' })
 
-    // Mount the component в режимі Update + isModalSection
+    // Mount the component в режимі Update + isModalSection (wrapped in BaseModal context)
     const wrapper = mountComponent({
       pageType: PageType.Update,
       config: new BaseSectionConfig({
         backToTheHistoryLast: true,
-        isModalSection: true,
       }),
+    }, {
+      provide: { isInsideModal: true },
     })
 
     await flushPromises()
