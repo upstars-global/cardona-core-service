@@ -168,11 +168,11 @@ const onHide = () => {
                         >
                           <template
                             v-if="checkSlotExistence(`sidebar-value(${groupKey})`)"
-                            #[`sidebar-value(${groupKey})`]="{ item }"
+                            #[`sidebar-value(${groupKey})`]="{ value }"
                           >
                             <slot
                               :name="`sidebar-value(${groupKey})`"
-                              :item="item"
+                              :item="value"
                             />
                           </template>
                         </ViewGenerator>
