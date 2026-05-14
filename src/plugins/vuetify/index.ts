@@ -9,6 +9,7 @@ import { getI18n } from '../../plugins/i18n'
 import defaults from './defaults'
 import { icons } from './icons'
 import { staticPrimaryColor, themes } from './theme'
+import { light as islandLight, dark as islandDark } from '../../layouts/island/theme'
 
 // Styles
 import { cookieRef } from '@/@layouts/stores/config'
@@ -32,7 +33,7 @@ export default function (app: App) {
     },
   }
 
-  const optionTheme = deepMerge({ themes }, cookieThemeValues)
+  const optionTheme = deepMerge({ themes: { ...themes, islandLight, islandDark } }, cookieThemeValues)
 
   const vuetify = createVuetify({
     aliases: {
