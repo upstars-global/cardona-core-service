@@ -3,6 +3,33 @@
 body[data-layout="island"] {
   @include island-componets.apply;
 
+  // Spacing tokens
+  --v-p-1: 4px;   --v-p-2: 8px;   --v-p-3: 12px;  --v-p-4: 16px;
+  --v-p-5: 20px;  --v-p-6: 24px;  --v-p-7: 28px;  --v-p-8: 32px;
+  --v-p-9: 36px;  --v-p-10: 40px; --v-p-11: 44px; --v-p-12: 48px;
+  --v-p-13: 52px; --v-p-14: 56px; --v-p-15: 60px; --v-p-16: 64px;
+  --v-p-17: 68px;
+
+  --v-gap-1: 4px;   --v-gap-2: 8px;   --v-gap-3: 12px;  --v-gap-4: 16px;
+  --v-gap-5: 20px;  --v-gap-6: 24px;  --v-gap-7: 28px;  --v-gap-8: 32px;
+  --v-gap-9: 36px;  --v-gap-10: 40px; --v-gap-11: 44px; --v-gap-12: 48px;
+  --v-gap-13: 52px; --v-gap-14: 56px; --v-gap-15: 60px; --v-gap-16: 64px;
+
+  // Border radius tokens
+  --v-border-radius-xs: 2px;
+  --v-border-radius-sm: 4px;
+  --v-border-radius-md: 6px;
+  --v-border-radius-lg: 8px;
+  --v-border-radius-xl: 10px;
+  --v-border-round: 9999px;
+
+  // Layout misc tokens
+  --v-card-header: 24px;
+  --v-card-padding: 24px;
+  --v-card-footer: 24px;
+  --v-form-gap: 24px;
+  --v-container-xl: 1140px;
+
   background-color: rgba(var(--v-island-layout-bg)) !important;
 
   .v-overlay-container:has(.v-list){

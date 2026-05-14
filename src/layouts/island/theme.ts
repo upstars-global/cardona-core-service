@@ -49,6 +49,10 @@ export const light: ThemeDefinition = {
     'skeleton-primary': '#D8D8DA',
     'skeleton-secondary': '#FFFFFF',
     'skeleton-bg': '#84819D',
+
+    // Skin fallbacks (required by initCore _handleSkinChanges — island ignores skin)
+    'skin-bordered-background': '#F9F9FA',
+    'skin-bordered-surface': '#FFFFFF',
   },
   variables: {
     // Border
@@ -91,6 +95,77 @@ export const light: ThemeDefinition = {
     'island-skeleton': COLORS.dark['grey-600'],
     'island-active-nav-bg': COLORS.light['grey-600'],
     'base-list-border-radius': '1rem',
+
+    // Text emphasis (additional)
+    'text-primary-opacity': 0.9,
+    'text-secondary-opacity': 0.7,
+    'text-subtitle-opacity': 0.55,
+
+    // Action states (additional)
+    'dragged-opacity': 0.08,
+    'action-active-opacity': 0.6,
+    'action-hover-opacity': 0.06,
+    'action-selected-opacity': 0.08,
+    'action-focus-opacity': 0.1,
+    'action-disabled-opacity': 0.3,
+    'action-disabled-bg-opacity': 0.16,
+
+    // Border & divider
+    'divider-opacity': 0.12,
+    'outline-border-opacity': 0.24,
+    'input-border-opacity': 0.22,
+
+    // Component misc
+    'chip-background-opacity': 0.08,
+    'filled-input-bg-opacity': 0.06,
+    'backdrop-overlay': 'rgba(31, 28, 50, 0.5)',
+    'theme-kbd': '#1F1C32',
+    'theme-on-kbd': '#FFFFFF',
+    'theme-code': '#F9F9FA',
+    'theme-on-code': '#1F1C32',
+
+    // Color-opacity palette
+    'gray-opacity-darker': 'rgba(31, 28, 50, 0.38)',
+    'gray-opacity-dark': 'rgba(31, 28, 50, 0.32)',
+    'gray-opacity-main': 'rgba(31, 28, 50, 0.24)',
+    'gray-opacity-light': 'rgba(31, 28, 50, 0.16)',
+    'gray-opacity-lighter': 'rgba(31, 28, 50, 0.08)',
+
+    'primary-opacity-darker': 'rgba(109, 96, 240, 0.38)',
+    'primary-opacity-dark': 'rgba(109, 96, 240, 0.32)',
+    'primary-opacity-main': 'rgba(109, 96, 240, 0.24)',
+    'primary-opacity-light': 'rgba(109, 96, 240, 0.16)',
+    'primary-opacity-lighter': 'rgba(109, 96, 240, 0.08)',
+
+    'secondary-opacity-darker': 'rgba(120, 122, 128, 0.38)',
+    'secondary-opacity-dark': 'rgba(120, 122, 128, 0.32)',
+    'secondary-opacity-main': 'rgba(120, 122, 128, 0.24)',
+    'secondary-opacity-light': 'rgba(120, 122, 128, 0.16)',
+    'secondary-opacity-lighter': 'rgba(120, 122, 128, 0.08)',
+
+    'success-opacity-darker': 'rgba(13, 177, 87, 0.38)',
+    'success-opacity-dark': 'rgba(13, 177, 87, 0.32)',
+    'success-opacity-main': 'rgba(13, 177, 87, 0.24)',
+    'success-opacity-light': 'rgba(13, 177, 87, 0.16)',
+    'success-opacity-lighter': 'rgba(13, 177, 87, 0.08)',
+
+    'info-opacity-darker': 'rgba(59, 131, 247, 0.38)',
+    'info-opacity-dark': 'rgba(59, 131, 247, 0.32)',
+    'info-opacity-main': 'rgba(59, 131, 247, 0.24)',
+    'info-opacity-light': 'rgba(59, 131, 247, 0.16)',
+    'info-opacity-lighter': 'rgba(59, 131, 247, 0.08)',
+
+    'warning-opacity-darker': 'rgba(240, 140, 53, 0.38)',
+    'warning-opacity-dark': 'rgba(240, 140, 53, 0.32)',
+    'warning-opacity-main': 'rgba(240, 140, 53, 0.24)',
+    'warning-opacity-light': 'rgba(240, 140, 53, 0.16)',
+    'warning-opacity-lighter': 'rgba(240, 140, 53, 0.08)',
+
+    'error-opacity-darker': 'rgba(234, 61, 62, 0.38)',
+    'error-opacity-dark': 'rgba(234, 61, 62, 0.32)',
+    'error-opacity-main': 'rgba(234, 61, 62, 0.24)',
+    'error-opacity-light': 'rgba(234, 61, 62, 0.16)',
+    'error-opacity-lighter': 'rgba(234, 61, 62, 0.08)',
   },
 }
 
@@ -138,6 +213,10 @@ export const dark: ThemeDefinition = {
     'skeleton-primary': '#D8D8DA',
     'skeleton-secondary': '#FFFFFF',
     'skeleton-bg': '#ADABBE',
+
+    // Skin fallbacks (required by initCore _handleSkinChanges — island ignores skin)
+    'skin-bordered-background': '#0E1017',
+    'skin-bordered-surface': '#161822',
   },
   variables: {
     // Border
@@ -180,5 +259,76 @@ export const dark: ThemeDefinition = {
     'island-skeleton': COLORS.light['grey-200'],
     'island-active-nav-bg': COLORS.light['grey-200'],
     'base-list-border-radius': '1rem',
+
+    // Text emphasis (additional)
+    'text-primary-opacity': 0.9,
+    'text-secondary-opacity': 0.7,
+    'text-subtitle-opacity': 0.55,
+
+    // Action states (additional)
+    'dragged-opacity': 0.08,
+    'action-active-opacity': 0.6,
+    'action-hover-opacity': 0.06,
+    'action-selected-opacity': 0.08,
+    'action-focus-opacity': 0.1,
+    'action-disabled-opacity': 0.3,
+    'action-disabled-bg-opacity': 0.16,
+
+    // Border & divider
+    'divider-opacity': 0.12,
+    'outline-border-opacity': 0.24,
+    'input-border-opacity': 0.22,
+
+    // Component misc
+    'chip-background-opacity': 0.08,
+    'filled-input-bg-opacity': 0.06,
+    'backdrop-overlay': 'rgba(14, 16, 23, 0.6)',
+    'theme-kbd': '#D5D5DE',
+    'theme-on-kbd': '#0E1017',
+    'theme-code': '#0E1017',
+    'theme-on-code': '#F4F4F7',
+
+    // Color-opacity palette
+    'gray-opacity-darker': 'rgba(244, 244, 247, 0.38)',
+    'gray-opacity-dark': 'rgba(244, 244, 247, 0.32)',
+    'gray-opacity-main': 'rgba(244, 244, 247, 0.24)',
+    'gray-opacity-light': 'rgba(244, 244, 247, 0.16)',
+    'gray-opacity-lighter': 'rgba(244, 244, 247, 0.08)',
+
+    'primary-opacity-darker': 'rgba(139, 129, 243, 0.38)',
+    'primary-opacity-dark': 'rgba(139, 129, 243, 0.32)',
+    'primary-opacity-main': 'rgba(139, 129, 243, 0.24)',
+    'primary-opacity-light': 'rgba(139, 129, 243, 0.16)',
+    'primary-opacity-lighter': 'rgba(139, 129, 243, 0.08)',
+
+    'secondary-opacity-darker': 'rgba(160, 162, 166, 0.38)',
+    'secondary-opacity-dark': 'rgba(160, 162, 166, 0.32)',
+    'secondary-opacity-main': 'rgba(160, 162, 166, 0.24)',
+    'secondary-opacity-light': 'rgba(160, 162, 166, 0.16)',
+    'secondary-opacity-lighter': 'rgba(160, 162, 166, 0.08)',
+
+    'success-opacity-darker': 'rgba(44, 201, 114, 0.38)',
+    'success-opacity-dark': 'rgba(44, 201, 114, 0.32)',
+    'success-opacity-main': 'rgba(44, 201, 114, 0.24)',
+    'success-opacity-light': 'rgba(44, 201, 114, 0.16)',
+    'success-opacity-lighter': 'rgba(44, 201, 114, 0.08)',
+
+    'info-opacity-darker': 'rgba(100, 157, 250, 0.38)',
+    'info-opacity-dark': 'rgba(100, 157, 250, 0.32)',
+    'info-opacity-main': 'rgba(100, 157, 250, 0.24)',
+    'info-opacity-light': 'rgba(100, 157, 250, 0.16)',
+    'info-opacity-lighter': 'rgba(100, 157, 250, 0.08)',
+
+    'warning-opacity-darker': 'rgba(240, 140, 53, 0.38)',
+    'warning-opacity-dark': 'rgba(240, 140, 53, 0.32)',
+    'warning-opacity-main': 'rgba(240, 140, 53, 0.24)',
+    'warning-opacity-light': 'rgba(240, 140, 53, 0.16)',
+    'warning-opacity-lighter': 'rgba(240, 140, 53, 0.08)',
+
+    'error-opacity-darker': 'rgba(247, 106, 106, 0.38)',
+    'error-opacity-dark': 'rgba(247, 106, 106, 0.32)',
+    'error-opacity-main': 'rgba(247, 106, 106, 0.24)',
+    'error-opacity-light': 'rgba(247, 106, 106, 0.16)',
+    'error-opacity-lighter': 'rgba(247, 106, 106, 0.08)',
   },
 }
