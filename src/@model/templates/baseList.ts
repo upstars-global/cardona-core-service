@@ -54,6 +54,7 @@ export interface FilterListItem {
   readonly type: FilterType | ProjectFilterTypes
   readonly key: string
   readonly trackBy?: string
+  readonly defaultValue?: unknown
 }
 
 type StaticFilters = Record<string, string | string[] | number | number[]>
@@ -452,6 +453,9 @@ export interface IBaseSectionConfig {
 
   //* *  noPermissions - Для отключения permission */
   readonly noPermissions?: NoPermissions
+
+  /** projectFilter - Вкл/выкл фильтр по проектам */
+  readonly projectFilter?: boolean
 }
 
 export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to base section model
@@ -468,6 +472,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly isModalSection?: boolean
   readonly initializeWithUpdate: boolean
   readonly noPermissions?: NoPermissions
+  readonly projectFilter?: boolean
 
   constructor(data: IBaseSectionConfig) {
     this.permissionKey = data?.permissionKey
@@ -483,6 +488,7 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
     this.isModalSection = data?.isModalSection || false
     this.initializeWithUpdate = data?.initializeWithUpdate || false
     this.noPermissions = data?.noPermissions ?? false
+    this.projectFilter = data?.projectFilter
   }
 }
 
