@@ -5,6 +5,14 @@ import { COLORS } from '../../plugins/vuetify/colors'
 export const staticLightPrimaryColor = '#7367F0' // old: '#6D60F0'
 export const staticDarkPrimaryColor = '#7367F0' // old: '#8B81F3'
 
+const lightBase = '#2F2B3D'
+const lightGrey = '#F4F4F7'
+
+const darkBase = '#E1DEF5'
+const darkSurface = '#1F1C32'
+const darkBg = '#13151F'
+const darkBackdrop = '#171925'
+
 // Combine with on-secondary 64%
 // 'light-secondary': '#A0A2A6'
 
@@ -24,22 +32,22 @@ export const light: ThemeDefinition = {
     'background': '#F8F7FA', // old: '#F9F9FA'
     'surface': '#FFFFFF',
     'surface-variant': '#181C2E',
-    'surface-disabled': '#F4F4F7',
-    'surface-hover': '#F4F4F7',
+    'surface-disabled': lightGrey,
+    'surface-hover': lightGrey,
     'surface-invert': '#1F1C32',
     'surface-header': '#615E78',
 
     // On colors (text/icons)
-    'on-background': '#2F2B3D', // old: '#1F1C32'
-    'on-surface': '#2F2B3D', // old: '#1F1C32'
-    'on-surface-variant': '#F4F4F7',
+    'on-background': lightBase, // old: '#1F1C32'
+    'on-surface': lightBase, // old: '#1F1C32'
+    'on-surface-variant': lightGrey,
     'on-primary': '#FFFFFF',
     'on-secondary': '#FFFFFF',
     'on-warning': '#FFFFFF',
     'on-error': '#FFFFFF',
     'on-success': '#FFFFFF',
     'on-info': '#FFFFFF',
-    'text-invert': '#F4F4F7',
+    'text-invert': lightGrey,
 
     // Border
     'border-focused': '#4C4BD8',
@@ -51,24 +59,24 @@ export const light: ThemeDefinition = {
     'skeleton-bg': '#84819D',
 
     // Backdrop
-    'backdrop-overlay': '#2F2B3D',
+    'backdrop-overlay': lightBase,
 
-    // Tokens (base: #2F2B3D)
-    'text-primary': '#2F2B3D',
-    'text-secondary': '#2F2B3D',
-    'text-subtitle': '#2F2B3D',
-    'text-disabled': '#2F2B3D',
-    'action-active': '#2F2B3D',
-    'action-hover': '#2F2B3D',
-    'action-focus': '#2F2B3D',
-    'action-selected': '#2F2B3D',
-    'action-disabled': '#2F2B3D',
-    'action-disabled-bg': '#2F2B3D',
-    'outline-border': '#2F2B3D',
-    'input-border': '#2F2B3D',
-    'divider': '#2F2B3D',
-    'filled-input-bg': '#2F2B3D',
-    'chip-background': '#2F2B3D',
+    // Tokens (base: lightBase)
+    'text-primary': lightBase,
+    'text-secondary': lightBase,
+    'text-subtitle': lightBase,
+    'text-disabled': lightBase,
+    'action-active': lightBase,
+    'action-hover': lightBase,
+    'action-focus': lightBase,
+    'action-selected': lightBase,
+    'action-disabled': lightBase,
+    'action-disabled-bg': lightBase,
+    'outline-border': lightBase,
+    'input-border': lightBase,
+    'divider': lightBase,
+    'filled-input-bg': lightBase,
+    'chip-background': lightBase,
   },
   variables: {
     // Border
@@ -137,25 +145,25 @@ export const dark: ThemeDefinition = {
     'white': '#FFFFFF',
 
     // Background / Surface
-    'background': '#13151F', // old: '#0E1017'
+    'background': darkBg, // old: '#0E1017'
     'surface': '#161822',
-    'surface-variant': '#13151F',
-    'surface-disabled': '#1F1C32',
-    'surface-hover': '#1F1C32',
-    'surface-invert': '#F4F4F7',
+    'surface-variant': darkBg,
+    'surface-disabled': darkSurface,
+    'surface-hover': darkSurface,
+    'surface-invert': lightGrey,
     'surface-header': '#373645',
 
     // On colors (text/icons)
-    'on-background': '#E1DEF5', // old: '#F4F4F7'
-    'on-surface': '#E1DEF5', // old: '#F4F4F7'
-    'on-surface-variant': '#F4F4F7',
+    'on-background': darkBase, // old: '#F4F4F7'
+    'on-surface': darkBase, // old: '#F4F4F7'
+    'on-surface-variant': lightGrey,
     'on-primary': '#FFFFFF',
     'on-secondary': '#FFFFFF',
     'on-warning': '#FFFFFF',
     'on-error': '#FFFFFF',
     'on-success': '#FFFFFF',
     'on-info': '#FFFFFF',
-    'text-invert': '#1F1C32',
+    'text-invert': darkSurface,
 
     // Border
     'border-focused': '#5957DF',
@@ -167,28 +175,28 @@ export const dark: ThemeDefinition = {
     'skeleton-bg': '#ADABBE',
 
     // Backdrop
-    'backdrop-overlay': '#171925',
+    'backdrop-overlay': darkBackdrop,
 
-    // Tokens (base: #E1DEF5)
-    'text-primary': '#E1DEF5',
-    'text-secondary': '#E1DEF5',
-    'text-subtitle': '#E1DEF5',
-    'text-disabled': '#E1DEF5',
-    'action-active': '#E1DEF5',
-    'action-hover': '#E1DEF5',
-    'action-focus': '#E1DEF5',
-    'action-selected': '#E1DEF5',
-    'action-disabled': '#E1DEF5',
-    'action-disabled-bg': '#E1DEF5',
-    'outline-border': '#E1DEF5',
-    'input-border': '#E1DEF5',
-    'divider': '#E1DEF5',
-    'filled-input-bg': '#E1DEF5',
-    'chip-background': '#E1DEF5',
+    // Tokens (base: darkBase)
+    'text-primary': darkBase,
+    'text-secondary': darkBase,
+    'text-subtitle': darkBase,
+    'text-disabled': darkBase,
+    'action-active': darkBase,
+    'action-hover': darkBase,
+    'action-focus': darkBase,
+    'action-selected': darkBase,
+    'action-disabled': darkBase,
+    'action-disabled-bg': darkBase,
+    'outline-border': darkBase,
+    'input-border': darkBase,
+    'divider': darkBase,
+    'filled-input-bg': darkBase,
+    'chip-background': darkBase,
   },
   variables: {
     // Border
-    'border-color': '#F4F4F7',
+    'border-color': lightGrey,
     'border-opacity': 0.32,
     'border-hover-opacity': 0.62,
 
@@ -222,7 +230,7 @@ export const dark: ThemeDefinition = {
     'c-table-head-bg': '#373645',
 
     // Layouts
-    'island-layout-bg': '#13151F',
+    'island-layout-bg': darkBg,
     'island-page-bg': '#0E1017',
     'island-menu-section-color': COLORS.light['grey-200'],
     'island-menu-item-color': COLORS.dark['grey-100'],
