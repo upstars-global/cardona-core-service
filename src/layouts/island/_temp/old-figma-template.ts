@@ -2,8 +2,8 @@
 import type { ThemeDefinition } from 'vuetify'
 import { COLORS } from '../../plugins/vuetify/colors'
 
-export const staticLightPrimaryColor = '#7367F0' // old: '#6D60F0'
-export const staticDarkPrimaryColor = '#7367F0' // old: '#8B81F3'
+export const staticLightPrimaryColor = '#6D60F0'
+export const staticDarkPrimaryColor = '#8B81F3'
 
 // Combine with on-secondary 64%
 // 'light-secondary': '#A0A2A6'
@@ -13,15 +13,15 @@ export const light: ThemeDefinition = {
   colors: {
     // General
     'primary': staticLightPrimaryColor,
-    'secondary': '#808390', // old: '#787A80'
-    'warning': '#FF9F43', // old: '#F08C35'
-    'error': '#FF4C51', // old: '#EA3D3E'
-    'success': '#53D28C', // old: '#0DB157'
-    'info': '#33C8DA', // old: '#3B83F7'
+    'secondary': '#787A80',
+    'warning': '#F08C35',
+    'error': '#EA3D3E',
+    'success': '#0DB157',
+    'info': '#3B83F7',
     'white': '#FFFFFF',
 
     // Background / Surface
-    'background': '#F8F7FA', // old: '#F9F9FA'
+    'background': '#F9F9FA',
     'surface': '#FFFFFF',
     'surface-variant': '#181C2E',
     'surface-disabled': '#F4F4F7',
@@ -30,8 +30,8 @@ export const light: ThemeDefinition = {
     'surface-header': '#615E78',
 
     // On colors (text/icons)
-    'on-background': '#2F2B3D', // old: '#1F1C32'
-    'on-surface': '#2F2B3D', // old: '#1F1C32'
+    'on-background': '#1F1C32',
+    'on-surface': '#1F1C32',
     'on-surface-variant': '#F4F4F7',
     'on-primary': '#FFFFFF',
     'on-secondary': '#FFFFFF',
@@ -57,18 +57,18 @@ export const light: ThemeDefinition = {
     'border-hover-opacity': 0.62,
 
     // States
-    'hover-opacity': 0.06, // old: 0.08
-    'focus-opacity': 0.10, // old: 0.9
+    'hover-opacity': 0.08,
+    'focus-opacity': 0.9,
     'pressed-opacity': 0.16,
-    'selected-opacity': 0.08, // old: 0.24
+    'selected-opacity': 0.24,
     'activated-opacity': 0.16,
-    'disabled-opacity': 0.30, // old: 0.64
+    'disabled-opacity': 0.64,
 
     // Text emphasis
-    'high-emphasis-opacity': 0.90,
-    'medium-emphasis-opacity': 0.70, // old: 0.9
-    'low-emphasis-opacity': 0.55, // old: 0.62
-    'text-disabled-opacity': 0.40, // old: 0.32
+    'high-emphasis-opacity': 0.9,
+    'medium-emphasis-opacity': 0.9,
+    'low-emphasis-opacity': 0.62,
+    'text-disabled-opacity': 0.32,
 
     // Surface header (з alpha)
     'surface-header-opacity': 0.08,
@@ -79,7 +79,7 @@ export const light: ThemeDefinition = {
     'c-table-head-bg': '#E9E9F0',
 
     // Layouts
-    'island-layout-bg': '#13151F',
+    'island-layout-bg': '#181C2E',
     'island-page-bg': '#F9F9FA',
     'island-menu-section-color': COLORS.light['grey-200'],
     'island-menu-item-color': COLORS.light['grey-100'],
@@ -102,15 +102,15 @@ export const dark: ThemeDefinition = {
   colors: {
     // General
     'primary': staticDarkPrimaryColor,
-    'secondary': '#808390', // old: '#A0A2A6'
-    'warning': '#FF9F43', // old: '#F08C35'
-    'error': '#FF4C51', // old: '#F76A6A'
-    'success': '#53D28C', // old: '#2CC972'
-    'info': '#33C8DA', // old: '#649DFA'
+    'secondary': '#A0A2A6',
+    'warning': '#F08C35',
+    'error': '#F76A6A',
+    'success': '#2CC972',
+    'info': '#649DFA',
     'white': '#FFFFFF',
 
     // Background / Surface
-    'background': '#13151F', // old: '#0E1017'
+    'background': '#0E1017',
     'surface': '#161822',
     'surface-variant': '#13151F',
     'surface-disabled': '#1F1C32',
@@ -119,8 +119,8 @@ export const dark: ThemeDefinition = {
     'surface-header': '#373645',
 
     // On colors (text/icons)
-    'on-background': '#E1DEF5', // old: '#F4F4F7'
-    'on-surface': '#E1DEF5', // old: '#F4F4F7'
+    'on-background': '#F4F4F7',
+    'on-surface': '#F4F4F7',
     'on-surface-variant': '#F4F4F7',
     'on-primary': '#FFFFFF',
     'on-secondary': '#FFFFFF',
@@ -146,18 +146,18 @@ export const dark: ThemeDefinition = {
     'border-hover-opacity': 0.62,
 
     // States
-    'hover-opacity': 0.06, // old: 0.08
-    'focus-opacity': 0.10, // old: 0.9
+    'hover-opacity': 0.08,
+    'focus-opacity': 0.9,
     'pressed-opacity': 0.16,
-    'selected-opacity': 0.08, // old: 0.24
+    'selected-opacity': 0.24,
     'activated-opacity': 0.16,
-    'disabled-opacity': 0.30, // old: 0.64
+    'disabled-opacity': 0.64,
 
     // Text emphasis
-    'high-emphasis-opacity': 0.90,
-    'medium-emphasis-opacity': 0.70, // old: 0.9
-    'low-emphasis-opacity': 0.55, // old: 0.62
-    'text-disabled-opacity': 0.40, // old: 0.32
+    'high-emphasis-opacity': 0.9,
+    'medium-emphasis-opacity': 0.9,
+    'low-emphasis-opacity': 0.62,
+    'text-disabled-opacity': 0.32,
 
     // Surface header (з alpha)
     'surface-header-opacity': 0.08,
