@@ -221,8 +221,8 @@ const onSubmit = async (isStay: boolean) => {
       localisationParameters: form.value.localisationParameters,
     }
     : {
-      ...form.value,
       project,
+      ...form.value,
       seo: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission ? form.value.seo : null,
       fieldTranslations: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission ? form.value.fieldTranslations : null,
       localisationParameters: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission
