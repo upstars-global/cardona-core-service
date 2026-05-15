@@ -2,8 +2,8 @@
 import type { ThemeDefinition } from 'vuetify'
 import { COLORS } from '../../plugins/vuetify/colors'
 
-export const staticLightPrimaryColor = '#6D60F0'
-export const staticDarkPrimaryColor = '#8B81F3'
+export const staticLightPrimaryColor = '#7367F0'
+export const staticDarkPrimaryColor = '#7367F0'
 
 // Combine with on-secondary 64%
 // 'light-secondary': '#A0A2A6'
@@ -13,15 +13,15 @@ export const light: ThemeDefinition = {
   colors: {
     // General
     'primary': staticLightPrimaryColor,
-    'secondary': '#787A80',
-    'warning': '#F08C35',
-    'error': '#EA3D3E',
-    'success': '#0DB157',
-    'info': '#3B83F7',
+    'secondary': '#808390',
+    'warning': '#FF9F43',
+    'error': '#FF4C51',
+    'success': '#53D28C',
+    'info': '#33C8DA',
     'white': '#FFFFFF',
 
     // Background / Surface
-    'background': '#F9F9FA',
+    'background': '#F8F7FA',
     'surface': '#FFFFFF',
     'surface-variant': '#181C2E',
     'surface-disabled': '#F4F4F7',
@@ -30,8 +30,8 @@ export const light: ThemeDefinition = {
     'surface-header': '#615E78',
 
     // On colors (text/icons)
-    'on-background': '#1F1C32',
-    'on-surface': '#1F1C32',
+    'on-background': '#2F2B3D',
+    'on-surface': '#2F2B3D',
     'on-surface-variant': '#F4F4F7',
     'on-primary': '#FFFFFF',
     'on-secondary': '#FFFFFF',
@@ -57,18 +57,18 @@ export const light: ThemeDefinition = {
     'border-hover-opacity': 0.62,
 
     // States
-    'hover-opacity': 0.08,
-    'focus-opacity': 0.9,
+    'hover-opacity': 0.06,
+    'focus-opacity': 0.10,
     'pressed-opacity': 0.16,
-    'selected-opacity': 0.24,
+    'selected-opacity': 0.08,
     'activated-opacity': 0.16,
-    'disabled-opacity': 0.64,
+    'disabled-opacity': 0.30,
 
     // Text emphasis
-    'high-emphasis-opacity': 0.9,
-    'medium-emphasis-opacity': 0.9,
-    'low-emphasis-opacity': 0.62,
-    'text-disabled-opacity': 0.32,
+    'high-emphasis-opacity': 0.90,
+    'medium-emphasis-opacity': 0.70,
+    'low-emphasis-opacity': 0.55,
+    'text-disabled-opacity': 0.40,
 
     // Surface header (з alpha)
     'surface-header-opacity': 0.08,
@@ -102,15 +102,15 @@ export const dark: ThemeDefinition = {
   colors: {
     // General
     'primary': staticDarkPrimaryColor,
-    'secondary': '#A0A2A6',
-    'warning': '#F08C35',
-    'error': '#F76A6A',
-    'success': '#2CC972',
-    'info': '#649DFA',
+    'secondary': '#808390',
+    'warning': '#FF9F43',
+    'error': '#FF4C51',
+    'success': '#53D28C',
+    'info': '#33C8DA',
     'white': '#FFFFFF',
 
     // Background / Surface
-    'background': '#0E1017',
+    'background': '#13151F',
     'surface': '#161822',
     'surface-variant': '#13151F',
     'surface-disabled': '#1F1C32',
@@ -119,8 +119,8 @@ export const dark: ThemeDefinition = {
     'surface-header': '#373645',
 
     // On colors (text/icons)
-    'on-background': '#F4F4F7',
-    'on-surface': '#F4F4F7',
+    'on-background': '#E1DEF5',
+    'on-surface': '#E1DEF5',
     'on-surface-variant': '#F4F4F7',
     'on-primary': '#FFFFFF',
     'on-secondary': '#FFFFFF',
@@ -146,18 +146,18 @@ export const dark: ThemeDefinition = {
     'border-hover-opacity': 0.62,
 
     // States
-    'hover-opacity': 0.08,
-    'focus-opacity': 0.9,
+    'hover-opacity': 0.06,
+    'focus-opacity': 0.10,
     'pressed-opacity': 0.16,
-    'selected-opacity': 0.24,
+    'selected-opacity': 0.08,
     'activated-opacity': 0.16,
-    'disabled-opacity': 0.64,
+    'disabled-opacity': 0.30,
 
     // Text emphasis
-    'high-emphasis-opacity': 0.9,
-    'medium-emphasis-opacity': 0.9,
-    'low-emphasis-opacity': 0.62,
-    'text-disabled-opacity': 0.32,
+    'high-emphasis-opacity': 0.90,
+    'medium-emphasis-opacity': 0.70,
+    'low-emphasis-opacity': 0.55,
+    'text-disabled-opacity': 0.40,
 
     // Surface header (з alpha)
     'surface-header-opacity': 0.08,
