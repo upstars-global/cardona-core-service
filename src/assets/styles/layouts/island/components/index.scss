@@ -1,4 +1,5 @@
 @use "./bordered-skin" as bordered-skin;
+@use "./v-card" as v-card;
 @use "./skeleton" as skeleton;
 @use "./tooltip" as tooltip;
 @use "./project-select" as project-select;
@@ -12,6 +13,7 @@
 
 @mixin apply {
   @include bordered-skin.apply;
+  @include v-card.apply;
   @include skeleton.apply;
   @include tooltip.apply;
   @include project-select.apply;
