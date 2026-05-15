@@ -6,56 +6,92 @@
  * Використовуй як CSS custom properties або в SCSS.
  */
 
+const darkBase = '#E1DEF5'
+const darkBackdrop = '#171925'
+const lightBase = '#2F2B3D'
+
 export const darkTokens = {
   // Text
-  'text-primary': '#E1DEF5E5',   // alpha 0.898
-  'text-secondary': '#E1DEF5B2', // alpha 0.698
-  'text-subtitle': '#E1DEF58C',  // alpha 0.549
-  'text-disabled': '#E1DEF566',  // alpha 0.400
+  'text-primary': darkBase,
+  'text-primary-opacity': 0.90,
+  'text-secondary': darkBase,
+  'text-secondary-opacity': 0.70,
+  'text-subtitle': darkBase,
+  'text-subtitle-opacity': 0.55,
+  'text-disabled': darkBase,
+  'text-disabled-opacity': 0.40,
 
   // Actions
-  'action-active': '#E1DEF599',      // alpha 0.600
-  'action-hover': '#E1DEF50F',       // alpha 0.059
-  'action-focus': '#E1DEF51A',       // alpha 0.102
-  'action-selected': '#E1DEF514',    // alpha 0.078
-  'action-disabled': '#E1DEF54D',    // alpha 0.302
-  'action-disabled-bg': '#E1DEF529', // alpha 0.161
+  'action-active': darkBase,
+  'action-active-opacity': 0.60,
+  'action-hover': darkBase,
+  'action-hover-opacity': 0.06,
+  'action-focus': darkBase,
+  'action-focus-opacity': 0.10,
+  'action-selected': darkBase,
+  'action-selected-opacity': 0.08,
+  'action-disabled': darkBase,
+  'action-disabled-opacity': 0.30,
+  'action-disabled-bg': darkBase,
+  'action-disabled-bg-opacity': 0.16,
 
   // Borders / Dividers
-  'outline-border': '#E1DEF53D',  // alpha 0.239
-  'input-border': '#E1DEF538',    // alpha 0.220
-  'divider': '#E1DEF51F',         // alpha 0.122
+  'outline-border': darkBase,
+  'outline-border-opacity': 0.24,
+  'input-border': darkBase,
+  'input-border-opacity': 0.22,
+  'divider': darkBase,
+  'divider-opacity': 0.12,
 
   // Backgrounds
-  'filled-input-bg': '#E1DEF50F',   // alpha 0.059
-  'chip-background': '#E1DEF514',   // alpha 0.078
-  'backdrop-overlay': '#17192599',  // alpha 0.600
+  'filled-input-bg': darkBase,
+  'filled-input-bg-opacity': 0.06,
+  'chip-background': darkBase,
+  'chip-background-opacity': 0.08,
+  'backdrop-overlay': darkBackdrop,
+  'backdrop-overlay-opacity': 0.60,
 } as const
 
 export const lightTokens = {
   // Text
-  'text-primary': '#2F2B3DE5',   // alpha 0.898
-  'text-secondary': '#2F2B3DB2', // alpha 0.698
-  'text-subtitle': '#2F2B3D8C',  // alpha 0.549
-  'text-disabled': '#2F2B3D66',  // alpha 0.400
+  'text-primary': lightBase,
+  'text-primary-opacity': 0.90,
+  'text-secondary': lightBase,
+  'text-secondary-opacity': 0.70,
+  'text-subtitle': lightBase,
+  'text-subtitle-opacity': 0.55,
+  'text-disabled': lightBase,
+  'text-disabled-opacity': 0.40,
 
   // Actions
-  'action-active': '#2F2B3D99',      // alpha 0.600
-  'action-hover': '#2F2B3D0F',       // alpha 0.059
-  'action-focus': '#2F2B3D1A',       // alpha 0.102
-  'action-selected': '#2F2B3D14',    // alpha 0.078
-  'action-disabled': '#2F2B3D4D',    // alpha 0.302
-  'action-disabled-bg': '#2F2B3D29', // alpha 0.161
+  'action-active': lightBase,
+  'action-active-opacity': 0.60,
+  'action-hover': lightBase,
+  'action-hover-opacity': 0.06,
+  'action-focus': lightBase,
+  'action-focus-opacity': 0.10,
+  'action-selected': lightBase,
+  'action-selected-opacity': 0.08,
+  'action-disabled': lightBase,
+  'action-disabled-opacity': 0.30,
+  'action-disabled-bg': lightBase,
+  'action-disabled-bg-opacity': 0.16,
 
   // Borders / Dividers
-  'outline-border': '#2F2B3D3D',  // alpha 0.239
-  'input-border': '#2F2B3D38',    // alpha 0.220
-  'divider': '#2F2B3D1F',         // alpha 0.122
+  'outline-border': lightBase,
+  'outline-border-opacity': 0.24,
+  'input-border': lightBase,
+  'input-border-opacity': 0.22,
+  'divider': lightBase,
+  'divider-opacity': 0.12,
 
   // Backgrounds
-  'filled-input-bg': '#2F2B3D0F',  // alpha 0.059
-  'chip-background': '#2F2B3D14',  // alpha 0.078
-  'backdrop-overlay': '#2F2B3D80', // alpha 0.500
+  'filled-input-bg': lightBase,
+  'filled-input-bg-opacity': 0.06,
+  'chip-background': lightBase,
+  'chip-background-opacity': 0.08,
+  'backdrop-overlay': lightBase,
+  'backdrop-overlay-opacity': 0.50,
 } as const
 
 export type DarkTokenKey = keyof typeof darkTokens

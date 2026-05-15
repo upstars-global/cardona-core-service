@@ -49,6 +49,26 @@ export const light: ThemeDefinition = {
     'skeleton-primary': '#D8D8DA',
     'skeleton-secondary': '#FFFFFF',
     'skeleton-bg': '#84819D',
+
+    // Backdrop
+    'backdrop-overlay': '#2F2B3D',
+
+    // Tokens (base: #2F2B3D)
+    'text-primary': '#2F2B3D',
+    'text-secondary': '#2F2B3D',
+    'text-subtitle': '#2F2B3D',
+    'text-disabled': '#2F2B3D',
+    'action-active': '#2F2B3D',
+    'action-hover': '#2F2B3D',
+    'action-focus': '#2F2B3D',
+    'action-selected': '#2F2B3D',
+    'action-disabled': '#2F2B3D',
+    'action-disabled-bg': '#2F2B3D',
+    'outline-border': '#2F2B3D',
+    'input-border': '#2F2B3D',
+    'divider': '#2F2B3D',
+    'filled-input-bg': '#2F2B3D',
+    'chip-background': '#2F2B3D',
   },
   variables: {
     // Border
@@ -72,6 +92,13 @@ export const light: ThemeDefinition = {
 
     // Surface header (з alpha)
     'surface-header-opacity': 0.08,
+
+    // Tokens
+    'action-active-opacity': 0.60,
+    'outline-border-opacity': 0.24,
+    'input-border-opacity': 0.22,
+    'divider-opacity': 0.12,
+    'backdrop-overlay-opacity': 0.50,
 
     // Theme specific
     'theme-overlay-multiplier': 1,
@@ -138,6 +165,26 @@ export const dark: ThemeDefinition = {
     'skeleton-primary': '#D8D8DA',
     'skeleton-secondary': '#FFFFFF',
     'skeleton-bg': '#ADABBE',
+
+    // Backdrop
+    'backdrop-overlay': '#171925',
+
+    // Tokens (base: #E1DEF5)
+    'text-primary': '#E1DEF5',
+    'text-secondary': '#E1DEF5',
+    'text-subtitle': '#E1DEF5',
+    'text-disabled': '#E1DEF5',
+    'action-active': '#E1DEF5',
+    'action-hover': '#E1DEF5',
+    'action-focus': '#E1DEF5',
+    'action-selected': '#E1DEF5',
+    'action-disabled': '#E1DEF5',
+    'action-disabled-bg': '#E1DEF5',
+    'outline-border': '#E1DEF5',
+    'input-border': '#E1DEF5',
+    'divider': '#E1DEF5',
+    'filled-input-bg': '#E1DEF5',
+    'chip-background': '#E1DEF5',
   },
   variables: {
     // Border
@@ -161,6 +208,13 @@ export const dark: ThemeDefinition = {
 
     // Surface header (з alpha)
     'surface-header-opacity': 0.08,
+
+    // Tokens
+    'action-active-opacity': 0.60,
+    'outline-border-opacity': 0.24,
+    'input-border-opacity': 0.22,
+    'divider-opacity': 0.12,
+    'backdrop-overlay-opacity': 0.60,
 
     // Theme specific
     'theme-overlay-multiplier': 1,
