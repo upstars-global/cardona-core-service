@@ -1,3 +1,4 @@
+@use "./bordered-skin" as bordered-skin;
 @use "./skeleton" as skeleton;
 @use "./tooltip" as tooltip;
 @use "./project-select" as project-select;
@@ -10,6 +11,7 @@
 @use "./data-picker" as data-picker;
 
 @mixin apply {
+  @include bordered-skin.apply;
   @include skeleton.apply;
   @include tooltip.apply;
   @include project-select.apply;
