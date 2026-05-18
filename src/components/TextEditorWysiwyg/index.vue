@@ -14,6 +14,7 @@ import { PermissionLevel } from '../../@model/permission'
 import useToastService from '../../helpers/toasts'
 import { useUserStore } from '../../stores/user'
 import { useCompostelaStore } from '../../stores/compostelaCore'
+import { useAppConfigCoreStore } from '../../stores/appConfigCore'
 import baseConfig from './config'
 import VariableModal from './VariableModal.vue'
 import ModalImageUpload from './ModalImageUpload.vue'
@@ -32,6 +33,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<Emits>()
 
 const compostelaStore = useCompostelaStore()
+const appConfigCoreStore = useAppConfigCoreStore()
+const allCurrencies = computed(() => appConfigCoreStore.allCurrencies)
 
 const editorWrapper = ref<HTMLElement | null>(null)
 interface Props {
@@ -418,6 +421,7 @@ watch(() => isSave.value, () => {
       :key-var="variableKeySelect"
       :modal-id="modalId"
       :disabled="disabled"
+      :currencies="allCurrencies"
       @update-value="updateVariableTextByKey"
       @close-modal="variableKeyUnselect"
       @delete-key="deleteVariableTextByKey"

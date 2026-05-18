@@ -10,6 +10,7 @@ interface Props {
   value?: Value
   keyVar: string
   disabled: boolean
+  currencies?: string[]
 }
 
 interface Emits {
@@ -20,9 +21,20 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
   value: () => ({}),
+  currencies: () => [],
 })
 const emit = defineEmits<Emits>()
-const formModal = ref(props.value)
+
+const initFormModal = (): Value => {
+  const result: Value = { ...(props.value ?? {}) }
+  props.currencies?.forEach((currency) => {
+    if (!(currency in result))
+      result[currency] = ''
+  })
+  return result
+}
+
+const formModal = ref(initFormModal())
 const modal = inject('modal')
 
 const closed = () => {

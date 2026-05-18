@@ -67,7 +67,23 @@ watch(
 )
 
 const allCurrencies = computed(() => appConfigCorStore.allCurrencies)
-const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
+
+const variableTextBufferStore = computed((): LocaleVariable => {
+  const buffer = textEditorStore.variableTextBuffer
+  if (!buffer)
+    return {}
+
+  const currenciesSet = new Set(allCurrencies.value)
+
+  return Object.fromEntries(
+    Object.entries(buffer).map(([varKey, varValue]) => [
+      varKey,
+      Object.fromEntries(
+        Object.entries(varValue as Record<string, unknown>).filter(([currency]) => currenciesSet.has(currency)),
+      ),
+    ]),
+  ) as LocaleVariable
+})
 
 const onSelectEditeInput = (item, local) => {
   if (props.disabled)
