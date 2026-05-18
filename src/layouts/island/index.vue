@@ -21,7 +21,7 @@ const layoutConfigStore = useLayoutConfigStore()
 // so navigating back to default doesn't change the user's pin state.
 const prevCollapsed = layoutConfigStore.isVerticalNavCollapsed
 
-layoutConfigStore.isVerticalNavCollapsed = true
+// layoutConfigStore.isVerticalNavCollapsed = true
 onUnmounted(() => {
   layoutConfigStore.isVerticalNavCollapsed = prevCollapsed
 })
