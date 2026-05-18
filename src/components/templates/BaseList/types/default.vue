@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import { debounce, findIndex } from 'lodash'
+import {debounce, findIndex, has, isUndefined} from 'lodash'
 import type { ExportFormat, IBaseListConfig, ProjectsFilterOption } from '../../../../@model/templates/baseList'
 import { BaseListSlots, ProjectsFilterMode } from '../../../../@model/templates/baseList'
 import CTable from '../../../CTable/index.vue'
@@ -307,6 +307,20 @@ const linkGenerator = (page: number) => {
   return linkGen(page)
 }
 
+const combineFilter = (
+  filters: Record<string, any> = {},
+  projectAlias?: string,
+): Record<string, any> | undefined => {
+  const existProjectInPath = route.path?.includes(`/${projectAlias}/`)
+  const exitsProjectParam = has(filters, 'project') && filters.project
+
+  if (existProjectInPath && !exitsProjectParam) {
+    filters.project = projectAlias
+  }
+
+  return Object.values(filters).some(v => !isUndefined(v)) ? filters : undefined
+}
+
 // Fetch list
 const getList = async () => {
   isDebouncedSearch.value = false
@@ -396,7 +410,7 @@ watch(() => searchQuery.value, () => {
 // Export
 const setRequestFilters = (): PayloadFilters => {
   if (!ListFilterModel)
-    return {}
+    return combineFilter({}, userStore.getSelectedProject?.alias)
 
   const appliedFiltersData = transformFilters(appliedFilters.value, props.config)
 
@@ -420,7 +434,7 @@ const setRequestFilters = (): PayloadFilters => {
       delete filtersData[key]
   }
 
-  return filtersData
+  return combineFilter(filtersData, userStore.getSelectedProject?.alias)
 }
 
 const onExportFormatSelected = async (format: ExportFormat) => {
@@ -730,7 +744,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           class="w-auto d-flex align-center justify-content-start"
           :class="{
             'w-auto': config.withSearch,
-            'w-100': !config.withSearch}"
+            'w-100': !config.withSearch,
+          }"
         >
           <InlineFilters
             :filter-fields="filterFields"
