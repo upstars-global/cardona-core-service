@@ -168,7 +168,7 @@ describe('BaseList', () => {
     // Assert that the customApiPrefix was included in the action call
     expect(mockBaseStoreCore.fetchEntityList).toHaveBeenCalledWith({
       data: {
-        filter: new FilterID({}),
+        filter: undefined,
         page: 1,
         perPage: 10,
         sort: null,
