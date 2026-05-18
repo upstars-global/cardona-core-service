@@ -10,6 +10,12 @@ export const useInlineFilters = (
 ) => {
   const { filters: filterFields } = useFilters(inlineFilterConfig)
 
+  inlineFilterConfig.forEach((config, index) => {
+    if (config.defaultValue !== undefined) {
+      filterFields.value[index].value = config.defaultValue
+    }
+  })
+
   const buildPayload = (): Record<string, unknown> => {
     if (!inlineFilterConfig?.length)
       return {}
