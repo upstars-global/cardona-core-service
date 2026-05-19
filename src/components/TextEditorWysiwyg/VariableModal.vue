@@ -26,10 +26,12 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<Emits>()
 
 const initFormModal = (): Value => {
-  const result: Value = { ...(props.value ?? {}) }
-  props.currencies?.forEach((currency) => {
-    if (!(currency in result))
-      result[currency] = ''
+  const existing = props.value ?? {}
+  if (!props.currencies?.length)
+    return { ...existing }
+  const result: Value = {}
+  props.currencies.forEach((currency) => {
+    result[currency] = currency in existing ? existing[currency] : ''
   })
   return result
 }
