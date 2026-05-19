@@ -142,6 +142,11 @@ watch(selectedProduct, product => {
 }
 
 .product-select {
+  .select-item {
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 500;
+  }
   :deep(.vs__dropdown-toggle) {
     border-color: transparent !important;
     box-shadow: none !important;
