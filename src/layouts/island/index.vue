@@ -3,8 +3,9 @@ import { computed, onUnmounted, ref, watch } from 'vue'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
-import { useSkins } from '@core/composable/useSkins'
 import AppBreadcrumb from '../components/AppBreadcrumb.vue'
+import ProductsSelect from '../default/components/ProductSelect.vue'
+import { useSkins } from '@core/composable/useSkins'
 import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
 import { VerticalNavLayout } from '@layouts'
 import { useLayoutConfigStore } from '@layouts/stores/config'
@@ -19,7 +20,7 @@ const layoutConfigStore = useLayoutConfigStore()
 // Save the default layout's collapse preference and restore it on unmount
 // so navigating back to default doesn't change the user's pin state.
 const prevCollapsed = layoutConfigStore.isVerticalNavCollapsed
-layoutConfigStore.isVerticalNavCollapsed = true
+
 onUnmounted(() => {
   layoutConfigStore.isVerticalNavCollapsed = prevCollapsed
 })
@@ -80,6 +81,14 @@ const onCLickThemeIcon = () => {
           </VBtn>
         </template>
       </AppBreadcrumb>
+    </template>
+    <template #product-select="{ isCollapsedMenu }">
+      <slot
+        name="product-select"
+        :is-collapsed-menu="isCollapsedMenu"
+      >
+        <ProductsSelect :is-collapsed-menu="isCollapsedMenu" />
+      </slot>
     </template>
 
     <AppLoadingIndicator ref="refLoadingIndicator" />
