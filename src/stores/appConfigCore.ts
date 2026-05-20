@@ -4,6 +4,15 @@ import ApiService from '../services/api'
 import { MenuType } from '../@model/enums/menuType'
 import { useUserStore } from './user'
 
+const findInlineProject = (inlineProjectAlias: string | null): ProjectInfo | null => {
+  if (!inlineProjectAlias)
+    return null
+
+  const userStore = useUserStore()
+
+  return userStore.userInfo?.projects?.find(p => p.alias === inlineProjectAlias) ?? null
+}
+
 export const useAppConfigCoreStore = defineStore('appConfigCore', {
   state: () => ({
     layout: {
@@ -29,6 +38,7 @@ export const useAppConfigCoreStore = defineStore('appConfigCore', {
     currencies: {} as Record<number, any>,
     menuType: MenuType.main,
     verifiedProjects: [] as ProjectInfo[],
+    inlineProjectAlias: null as string | null,
   }),
 
   getters: {
@@ -36,11 +46,14 @@ export const useAppConfigCoreStore = defineStore('appConfigCore', {
 
     dirOption: state => (state.layout.isRTL ? 'rtl' : 'ltr'),
 
+    inlineProject: (state): ProjectInfo | null => findInlineProject(state.inlineProjectAlias),
+
     allCurrencies: state => {
       const userStore = useUserStore()
 
       const selectedProject
-        = userStore.getSelectedProject
+        = findInlineProject(state.inlineProjectAlias)
+        || userStore.getSelectedProject
         || userStore.userInfo?.projects?.[0]
 
       return (
@@ -55,7 +68,8 @@ export const useAppConfigCoreStore = defineStore('appConfigCore', {
       const userStore = useUserStore()
 
       const selectedProject
-        = userStore.getSpecificProject
+        = findInlineProject(state.inlineProjectAlias)
+        || userStore.getSpecificProject
         || userStore.userInfo?.projects?.[0]
 
       return (
@@ -134,6 +148,10 @@ export const useAppConfigCoreStore = defineStore('appConfigCore', {
     setVerifiedProject(project: ProjectInfo) {
       if (!this.verifiedProjects?.find(p => p?.id === project?.id))
         this.verifiedProjects?.push(project)
+    },
+
+    setInlineProject(alias: string | null) {
+      this.inlineProjectAlias = alias
     },
 
     async fetchConfig() {
