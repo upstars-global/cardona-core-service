@@ -36,18 +36,6 @@ export const transformNameToType = (type: string): string =>
 // @ts-expect-error
 const isNeocoreProduct = productName === productsName.neocore
 
-const combineFilter = (
-  filters: Record<string, any> = {},
-  projectAlias?: string,
-): Record<string, any> | undefined => {
-  const filter = {
-    ...filters,
-    project: isNeocoreProduct ? projectAlias : undefined,
-  }
-
-  return Object.values(filter).some(v => !isUndefined(v)) ? filter : undefined
-}
-
 export const useBaseStoreCore = defineStore('baseStoreCore', {
   actions: {
     async fetchEntityList(
@@ -66,7 +54,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
           perPage: payload.data.perPage ?? 10,
         },
         sort: payload.data.sort,
-        filter: combineFilter(payload.data.filter, this.$selectedProjectAlias),
+        filter: payload.data.filter,
       })
 
       return new ListData(response, payload.options.listItemModel)
@@ -84,7 +72,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
             pageNumber: payload.data.page ?? 1,
             perPage: payload.data.perPage,
           },
-          data: combineFilter(payload.data.filter, this.$selectedProjectAlias),
+          data: payload.data?.filter,
         },
         {
           withSuccessToast: true,
