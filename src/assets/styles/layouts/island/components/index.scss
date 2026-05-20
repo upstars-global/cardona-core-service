@@ -41,6 +41,10 @@
   .text-emphasis-disabled {
     color: rgba(var(--v-theme-text-disabled), var(--v-text-disabled-opacity)) !important;
   }
+
+  //.text-tooltip {
+  //  color: rgb(var(--v-theme-tooltip-text));
+  //}
   // ------------------------------------------------------------------------------------
 
   $card-internal-radius: 12px;
