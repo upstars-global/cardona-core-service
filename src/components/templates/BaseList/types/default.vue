@@ -483,12 +483,6 @@ watch(() => userStore.getSelectedProject?.alias, (_newAlias, oldAlias) => {
   filtersCoreStore.setListPath()
   onChangeSelectedFilters([])
   filtersBlockRef.value?.clearFilters()
-
-  filterFields.value.forEach(field => {
-    field.value = undefined
-    if ('resetOptions' in field)
-      (field as { resetOptions: () => void }).resetOptions()
-  })
 })
 
 const appliedFilters = computed<BaseField[]>(() => {
