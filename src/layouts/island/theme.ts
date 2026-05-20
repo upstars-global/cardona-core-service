@@ -107,7 +107,7 @@ export const light: ThemeDefinition = {
     'input-border-opacity': 0.22,
     'divider-opacity': 0.12,
     'backdrop-overlay-opacity': 0.50,
-    'tooltip-text': '#F1F0F2',
+    'tooltip': '#F1F0F2',
 
     // Theme specific
     'theme-overlay-multiplier': 1,
