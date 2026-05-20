@@ -107,6 +107,7 @@ export const light: ThemeDefinition = {
     'input-border-opacity': 0.22,
     'divider-opacity': 0.12,
     'backdrop-overlay-opacity': 0.50,
+    'tooltip-text': '#F1F0F2',
 
     // Theme specific
     'theme-overlay-multiplier': 1,
@@ -176,6 +177,9 @@ export const dark: ThemeDefinition = {
 
     // Backdrop
     'backdrop-overlay': darkBackdrop,
+
+    'tooltip-text': '#3A3F57',
+
 
     // Tokens (base: darkBase)
     'text-primary': darkBase,
