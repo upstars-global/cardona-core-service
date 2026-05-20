@@ -180,7 +180,6 @@ export const dark: ThemeDefinition = {
 
     'tooltip-text': '#3A3F57',
 
-
     // Tokens (base: darkBase)
     'text-primary': darkBase,
     'text-secondary': darkBase,
