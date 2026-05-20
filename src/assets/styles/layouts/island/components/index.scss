@@ -25,6 +25,23 @@
   @include filters-block.apply;
   @include data-picker.apply;
 
+  // Text color
+  .text-emphasis-primary {
+    color: rgba(var(--v-theme-text-primary), var(--v-high-emphasis-opacity)) !important;
+  }
+
+  .text-emphasis-secondary {
+    color: rgba(var(--v-theme-text-secondary), var(--v-medium-emphasis-opacity)) !important;
+  }
+
+  .text-emphasis-subtitle {
+    color: rgba(var(--v-theme-text-subtitle), var(--v-low-emphasis-opacity)) !important;
+  }
+
+  .text-emphasis-disabled {
+    color: rgba(var(--v-theme-text-disabled), var(--v-text-disabled-opacity)) !important;
+  }
+  // ------------------------------------------------------------------------------------
 
   $card-internal-radius: 12px;
 
@@ -37,9 +54,9 @@
   }
 
   .text-color-label {
-    color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important
+    // color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important
+    color: red !important
   }
-
   hr {
     border-top: 1px solid rgb(var(--v-theme-border-system));
   }

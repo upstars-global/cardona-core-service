@@ -56,7 +56,7 @@ body[data-layout="island"] {
   }
 
   .nav-item-title, .nav-item-title.nav-item-color {
-      color: rgba(var(--v-island-menu-item-color)) !important;
+    color: rgba(var(--v-island-menu-item-color)) !important;
   }
 
   .nav-link {
@@ -69,8 +69,11 @@ body[data-layout="island"] {
     border-top: initial !important;
 
     .full-name {
-      color: rgba(var(--v-island-menu-section-color));
+      color: rgba(var(--v-island-menu-item-color)) !important;
     }
   }
 
+  .text-secondary {
+    color: rgba(var(--v-theme-text-secondary), 0.70) !important;
+  }
 }
