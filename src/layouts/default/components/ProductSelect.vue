@@ -143,9 +143,9 @@ watch(selectedProduct, product => {
 
 .product-select {
   .select-item {
-    font-size: 13px;
+    font-size: 14px;
     line-height: 20px;
-    font-weight: 500;
+    font-weight: 600;
   }
   :deep(.vs__dropdown-toggle) {
     border-color: transparent !important;
