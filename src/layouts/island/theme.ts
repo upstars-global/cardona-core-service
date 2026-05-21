@@ -92,7 +92,7 @@ export const light: ThemeDefinition = {
     'pressed-opacity': 0.16,
     'selected-opacity': 0.08, // old: 0.24
     'activated-opacity': 0.16,
-    'disabled-opacity': 0.30, // old: 0.64
+    'disabled-opacity': 0.40, // old: 0.64
 
     // Text emphasis
     'high-emphasis-opacity': 0.90,
@@ -214,7 +214,7 @@ export const dark: ThemeDefinition = {
     'pressed-opacity': 0.16,
     'selected-opacity': 0.08, // old: 0.24
     'activated-opacity': 0.16,
-    'disabled-opacity': 0.30, // old: 0.64
+    'disabled-opacity': 0.40, // old: 0.64
 
     // Text emphasis
     'high-emphasis-opacity': 0.90,
