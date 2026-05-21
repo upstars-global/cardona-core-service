@@ -1,5 +1,43 @@
+@use "./layout" as layout;
 @use "./sidebar" as sidebar;
+@use "./v-btn" as v-btn;
+@use "./v-input" as v-input;
+@use "./v-card" as v-card;
+@use "./v-breadcrumb" as v-breadcrumb;
+@use "./app-sidebar" as component-sidebar;
+@use "./transitions" as transitions;
+@use "./code-view-editor" as code-view-editor;
+@use "./v-textarea" as v-textarea;
+@use "./v-tabs" as v-tabs;
+@use "./v-icon" as v-icon;
+@use "./toasts" as toasts;
+@use "./v-switch" as v-switch;
+@use "./gallery" as gallery;
+@use "./v-list" as v-list;
+@use "./v-check" as v-check;
+@use "./check-field" as check-field;
+@use "./vue-select" as vue-select;
+@use "./base-list" as base-list;
 
 @mixin apply {
+  @include layout.apply;
   @include sidebar.apply;
+  @include v-btn.apply;
+  @include v-input.apply;
+  @include v-card.apply;
+  @include v-breadcrumb.apply;
+  @include component-sidebar.apply;
+  @include transitions.apply;
+  @include code-view-editor.apply;
+  @include v-textarea.apply;
+  @include v-tabs.apply;
+  @include v-icon.apply;
+  @include toasts.apply;
+  @include v-switch.apply;
+  @include gallery.apply;
+  @include v-list.apply;
+  @include v-check.apply;
+  @include check-field.apply;
+  @include vue-select.apply;
+  @include base-list.apply;
 }

@@ -4,29 +4,4 @@ body[data-layout="default"] {
   @include default-layout-componets.apply;
 
   background-color: rgba(var(--v-theme-sidebar), 1) !important;
-
-  aside.layout-vertical-nav,
-  .layout-content-wrapper {
-    background-color: rgba(var(--v-theme-sidebar), 1) !important;
-  }
-
-  .layout-content-wrapper {
-    padding: 0.5rem 0.5rem 0.5rem 0;
-  }
-
-  .layout-navbar {
-    background-color: rgb(var(--v-theme-surface))!important;
-    border-top-right-radius: 12px;
-    border-top-left-radius: 12px;
-  }
-
-  .layout-page-content {
-    background-color: rgb(var(--v-theme-surface))!important;
-    border-bottom-right-radius: 12px;
-    border-bottom-left-radius: 12px;
-  }
-
-  .layout-footer {
-    display: none;
-  }
 }

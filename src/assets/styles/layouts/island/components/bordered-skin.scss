@@ -1,0 +1,38 @@
+@mixin apply {
+  .skin--bordered {
+    // Cards, menus, popper
+    .v-card:not(.v-card--flat),
+    .v-menu .v-overlay__content > .v-card,
+    .v-menu .v-overlay__content > .v-sheet,
+    .v-menu .v-overlay__content > .v-list,
+    .popper-content {
+      border: 1px solid rgba(var(--v-theme-outline-border), var(--v-outline-border-opacity));
+    }
+
+    // Navbar — island uses rounded corners, no border needed
+    .layout-navbar-and-nav-container,
+    .layout-nav-type-vertical.window-scrolled.layout-navbar-sticky .layout-navbar,
+    .layout-nav-type-vertical.window-scrolled.layout-navbar-sticky .layout-navbar .navbar-content-container {
+      border: none !important;
+      border-bottom: none !important;
+    }
+
+    // Footer — island uses its own background, no border needed
+    .layout-nav-type-vertical.layout-footer-sticky .layout-footer .footer-content-container,
+    .layout-nav-type-horizontal.layout-footer-sticky .layout-footer {
+      border: none !important;
+    }
+
+    // Vertical Nav
+    .layout-vertical-nav {
+      border-inline-end: 1px solid rgba(var(--v-theme-outline-border), var(--v-outline-border-opacity));
+    }
+
+    // Expansion Panels — use outline-border token from island theme
+    .v-expansion-panels:not(.customized-panels) {
+      .v-expansion-panel {
+        border: 1px solid rgba(var(--v-theme-outline-border), var(--v-outline-border-opacity));
+      }
+    }
+  }
+}
