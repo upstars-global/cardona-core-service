@@ -255,6 +255,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       id: string
       comment: string
       customApiPrefix?: string
+      inlineFilters?: Record<string, unknown>
     }): Promise<any> {
       return ApiService.request(
         {

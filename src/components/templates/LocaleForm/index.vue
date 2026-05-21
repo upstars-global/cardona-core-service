@@ -5,8 +5,7 @@ import type {
   LocaleVariable, TranslationForm,
 } from '../../../@model/translations'
 import {
-  filterString, getExcessKeyVariable,
-  getVariablesFromAllLocaleText, getVariablesFromLocale,
+  filterString,
 } from '../../../helpers/text-editor'
 import TextEditorWysiwyg from '../../TextEditorWysiwyg/index.vue'
 import InputTextWrapper from '../../templates/LocaleForm/_components/InputTextWrapper.vue'
@@ -43,10 +42,33 @@ const selectEditeInput = ref('')
 const selectedProject = computed(() => userStore.getSelectedProject)
 const mainLocale = computed<string>(() => selectedProject.value?.mainLocale || 'ru')
 const allLocales = computed(() => localeStore.allLocales)
-const allCurrencies = computed(() => appConfigCorStore.allCurrencies)
-const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer)
 
 const isMainLocale = (locale: string): boolean => locale === mainLocale.value
+
+const projectLocales = computed<string[]>(() => {
+  const locales: string[] = selectedProject.value?.locales || []
+
+  return locales.includes(mainLocale.value) ? locales : [mainLocale.value, ...locales]
+})
+
+watch(
+  [projectLocales, () => props.form.fieldTranslations],
+  () => {
+    if (!props.form.fieldTranslations)
+      return
+    Object.keys(props.form.fieldTranslations).forEach((item: string) => {
+      projectLocales.value.forEach((locale: string) => {
+        if (!isMainLocale(locale) && !props.form.fieldTranslations[item]?.[locale])
+          props.form.fieldTranslations[item][locale] = { value: '', disabled: false }
+      })
+    })
+  },
+  { immediate: true },
+)
+
+const allCurrencies = computed(() => appConfigCorStore.allCurrencies)
+
+const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer || {})
 
 const onSelectEditeInput = (item, local) => {
   if (props.disabled)
@@ -117,7 +139,7 @@ const getValue = (locale: string, key: string): string => {
       >
         <template v-if="form.fieldTranslations[item]">
           <VRow
-            v-for="local in Object.keys(form.fieldTranslations[item])"
+            v-for="local in projectLocales"
             :key="item + local"
             class="row-item-field-translations mt-0 mb-3"
             :class="{ 'order-first': isMainLocale(local) }"
