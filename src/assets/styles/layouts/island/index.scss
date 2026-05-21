@@ -9,16 +9,12 @@ body[data-layout="island"] {
     .v-overlay__content {
       border: 1px solid rgb(var(--v-island-border-color));
     }
-
-    .v-list {
-      background-color: rgba(var(--v-island-card-bg)) !important;
-    }
   }
 
-  .modal-card,
-  .Vue-Toastification__toast.Vue-Toastification__toast--default {
-    background-color: rgba(var(--v-island-card-bg)) !important;
-  }
+  //.modal-card,
+  //.Vue-Toastification__toast.Vue-Toastification__toast--default {
+  //  background-color: rgba(var(--v-island-card-bg)) !important;
+  //}
 
   aside.layout-vertical-nav,
   .layout-content-wrapper {

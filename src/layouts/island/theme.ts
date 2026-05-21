@@ -78,6 +78,7 @@ export const light: ThemeDefinition = {
     'divider': lightBase,
     'filled-input-bg': lightBase,
     'chip-background': lightBase,
+    'misc-paper': '#FFFFFF',
   },
   variables: {
     // Border
@@ -196,6 +197,7 @@ export const dark: ThemeDefinition = {
     'divider': darkBase,
     'filled-input-bg': darkBase,
     'chip-background': darkBase,
+    'misc-paper': '#13151F',
   },
   variables: {
     // Border
