@@ -179,6 +179,8 @@ const onClickRow = async data => {
     await props.config?.cbShowSidebar(selectedItem, isSidebarShown, {
       itemList: data,
       index: getIndexByItemFromList(data),
+      entityName,
+      inlineFilters: inlineFilters.value,
     })
   }
   else {
@@ -483,12 +485,6 @@ watch(() => userStore.getSelectedProject?.alias, (_newAlias, oldAlias) => {
   filtersCoreStore.setListPath()
   onChangeSelectedFilters([])
   filtersBlockRef.value?.clearFilters()
-
-  filterFields.value.forEach(field => {
-    field.value = undefined
-    if ('resetOptions' in field)
-      (field as { resetOptions: () => void }).resetOptions()
-  })
 })
 
 const appliedFilters = computed<BaseField[]>(() => {
@@ -614,11 +610,13 @@ const onClickRemove = item => {
 
 const onClickModalOk = async ({ hide, commentToRemove }) => {
   hide()
+
   await deleteAction({
     type: entityName,
     id: selectedItem.value.id,
     comment: commentToRemove,
     customApiPrefix: props.config?.customApiPrefix,
+    inlineFilters: inlineFilters.value,
   })
 
   selectedItems.value = selectedItems.value.filter(item => item?.id !== selectedItem.value.id)
@@ -696,6 +694,9 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           :name="BaseListSlots.SidebarActions"
           :form="form"
           :item="selectedItem"
+          :can-remove="canRemove"
+          :inline-filters="inlineFilters"
+          :on-click-remove="onClickRemove"
         />
       </template>
 
@@ -742,6 +743,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           :can-create="canCreate"
           :can-update="canUpdate"
           :create-page-name="CreatePageName"
+          :inline-filters
         />
       </template>
       <template #left-search-btn>
@@ -1149,6 +1151,10 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :item="item.raw"
             :cell="cell"
             :value="item.value"
+            :create-page-name="CreatePageName"
+            :can-create="canCreate"
+            :can-remove="canRemove"
+            :inline-filters="inlineFilters"
             :get-update-route="getUpdateRoute"
             :index="getIndexByItemFromList(item.value)"
             :toggle-expand="toggleExpand"

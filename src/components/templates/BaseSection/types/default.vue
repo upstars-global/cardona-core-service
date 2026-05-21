@@ -148,7 +148,10 @@ const onFetchFormData = async (projectAlias?: string) => {
 
       await router.replace({
         name: route.name,
-        params: { id: '' },
+        params: {
+          ...route.params,
+          id: '',
+        },
         query,
       })
     }
@@ -271,7 +274,7 @@ const onSave = async (isStay?: boolean) => {
 
     if (isCreatePage) {
       isStaySubmit.value && data
-        ? await router.push({ name: UpdatePageName, params: { id: String(data?.id) } })
+        ? await router.push({ name: UpdatePageName, params: { ...route.params, id: String(data?.id) }, query: route.query })
         : redirectToListOrPrevPage()
     }
 
@@ -285,7 +288,7 @@ const onSave = async (isStay?: boolean) => {
       await onFetchFormData()
   }
   catch (e) {
-    console.error(e)
+    console.error(e instanceof Error ? e : (e as any)?.description || JSON.stringify(e))
     if (e?.validationErrors?.[0])
       setTabError(e.validationErrors[0]?.field, form)
   }
