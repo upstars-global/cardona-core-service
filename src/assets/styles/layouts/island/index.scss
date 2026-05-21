@@ -5,6 +5,14 @@ body[data-layout="island"] {
 
   background-color: rgba(var(--v-island-layout-bg)) !important;
 
+  .product-select {
+    .select-item {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 600;
+    }
+  }
+
   .v-overlay-container:has(.v-list){
     .v-overlay__content {
       border: 1px solid rgb(var(--v-island-border-color));
