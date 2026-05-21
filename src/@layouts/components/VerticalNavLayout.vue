@@ -60,6 +60,7 @@ export default defineComponent({
           { isOverlayNavActive: isOverlayNavActive.value, toggleIsOverlayNavActive, navItems: props.navItems, ...additionalVerticalNavAttrs },
           {
             'nav-header': () => slots['vertical-nav-header']?.(),
+            'product-select': (slotProps) => slots['product-select']?.(slotProps),
             'before-nav-items': () => slots['before-vertical-nav-items']?.(),
             'footer': () => slots['nav-footer']?.(),
           },
