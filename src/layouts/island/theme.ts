@@ -20,6 +20,7 @@ export const light: ThemeDefinition = {
   dark: false,
   colors: {
     // General
+    'tooltip': '#F1F0F2',
     'primary': staticLightPrimaryColor,
     'secondary': '#808390', // old: '#787A80'
     'warning': '#FF9F43', // old: '#F08C35'
@@ -60,7 +61,6 @@ export const light: ThemeDefinition = {
 
     // Backdrop
     'backdrop-overlay': lightBase,
-    'tooltip': '#F1F0F2',
 
     // Tokens (base: lightBase)
     'text-primary': lightBase,
