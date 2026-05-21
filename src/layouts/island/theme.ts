@@ -118,14 +118,17 @@ export const light: ThemeDefinition = {
     // Layouts
     'island-layout-bg': '#13151F',
     'island-page-bg': '#F9F9FA',
-    'island-menu-section-color': COLORS.light['grey-200'],
+
+    // 'island-menu-section-color': COLORS.light['grey-200'],
     'island-menu-item-color': '#E1DEF5E5',
     'island-project-select-color': COLORS.light['grey-100'],
-    'island-project-select-bg': COLORS.dark['grey-100'],
+
+    // 'island-project-select-bg': COLORS.dark['grey-100'],
     'island-card-bg': '#FFFFFF',
     'island-border-color': COLORS.light['grey-200'],
-    'island-text-general': '#353347',
-    'island-skeleton': COLORS.dark['grey-600'],
+
+    // 'island-text-general': '#353347',
+    // 'island-skeleton': COLORS.dark['grey-600'],
     'island-active-nav-bg': COLORS.light['grey-600'],
     'base-list-border-radius': '1rem',
   },
@@ -237,14 +240,17 @@ export const dark: ThemeDefinition = {
     // Layouts
     'island-layout-bg': darkBg,
     'island-page-bg': '#0E1017',
-    'island-menu-section-color': COLORS.light['grey-200'],
+
+    // 'island-menu-section-color': COLORS.light['grey-200'],
     'island-menu-item-color': '#E1DEF5E5',
     'island-project-select-color': COLORS.light['grey-100'],
-    'island-project-select-bg': COLORS.dark['grey-100'],
+
+    // 'island-project-select-bg': COLORS.dark['grey-100'],
     'island-card-bg': '#161822',
     'island-border-color': '#3A3C50',
-    'island-text-general': '#D5D5DE',
-    'island-skeleton': COLORS.light['grey-200'],
+
+    // 'island-text-general': '#D5D5DE',
+    // 'island-skeleton': COLORS.light['grey-200'],
     'island-active-nav-bg': COLORS.light['grey-200'],
     'base-list-border-radius': '1rem',
   },
