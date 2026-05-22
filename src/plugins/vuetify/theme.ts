@@ -78,7 +78,9 @@ export const themes: Record<string, ThemeDefinition> = {
       'shadow-key-umbra-color': '#2F2B3D',
 
       // Table
-      'c-table-head-bg': '#EFEFF0',
+      'c-table-head-bg': '#37364514',      // grey-800 @8%
+      'c-table-head-text': '#1F1C329E',    // grey-900 @62%
+      'c-table-row-hover-bg': '#F4F4F7',   // grey-100
     },
   },
   dark: {
@@ -151,7 +153,9 @@ export const themes: Record<string, ThemeDefinition> = {
       'shadow-key-umbra-color': '#0F1422',
 
       // Table
-      'c-table-head-bg': '#242532',
+      'c-table-head-bg': '#CFD3EC14',      // grey-800 @8%
+      'c-table-head-text': '#E7E9F69E',    // grey-900 @62%
+      'c-table-row-hover-bg': '#2F3349',   // grey-100
     },
   },
 }

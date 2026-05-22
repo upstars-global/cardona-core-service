@@ -388,9 +388,9 @@ const toggleExpand = (id: string) => {
 <style scoped lang="scss">
 .v-data-table.c-table {
   .c-table__header-cell {
-    background: rgba(var(--v-theme-grey-800), 0.08);
+    background: var(--v-c-table-head-bg);
     .column-title {
-      color: rgb(var(--v-theme-grey-900), 0.62);
+      color: var(--v-c-table-head-text);
     }
   }
 
@@ -418,13 +418,13 @@ const toggleExpand = (id: string) => {
   }
   .is-hover-row {
     &:hover {
-      background: rgb(var(--v-theme-grey-100));
+      background: var(--v-c-table-row-hover-bg);
     }
   }
   .c-table__row {
     cursor: pointer;
     &--selected {
-      background: rgb(var(--v-theme-grey-100));
+      background: var(--v-c-table-row-hover-bg);
     }
   }
   .c-table__header-cell,

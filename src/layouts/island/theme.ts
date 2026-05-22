@@ -113,7 +113,9 @@ export const light: ThemeDefinition = {
     // Theme specific
     'theme-overlay-multiplier': 1,
 
-    'c-table-head-bg': '#E9E9F0',
+    'c-table-head-bg': '#7367F0',        // primary
+    'c-table-head-text': '#7367F0',      // primary
+    'c-table-row-hover-bg': '#7367F0',   // primary
 
     // Layouts
     'island-layout-bg': '#13151F',
@@ -235,7 +237,9 @@ export const dark: ThemeDefinition = {
     // Theme specific
     'theme-overlay-multiplier': 1,
 
-    'c-table-head-bg': '#373645',
+    'c-table-head-bg': '#7367F0',        // primary
+    'c-table-head-text': '#7367F0',      // primary
+    'c-table-row-hover-bg': '#7367F0',   // primary
 
     // Layouts
     'island-layout-bg': darkBg,
