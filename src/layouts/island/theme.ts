@@ -113,9 +113,12 @@ export const light: ThemeDefinition = {
     // Theme specific
     'theme-overlay-multiplier': 1,
 
-    'c-table-head-bg': '#7367F0',        // primary
-    'c-table-head-text': '#7367F0',      // primary
+    'c-table-head-bg': '#FFFFFF',        // primary
+    'c-table-th-height': '48px',
+    'c-table-head-text': '#2F2B3D',      // primary
+    'c-table-head-text-opacity': 0.9,
     'c-table-row-hover-bg': '#7367F0',   // primary
+    'compact__c-table-cell-padding': '0.5rem 1rem 0.5rem 1.25rem',
 
     // Layouts
     'island-layout-bg': '#13151F',
@@ -233,12 +236,14 @@ export const dark: ThemeDefinition = {
     'input-border-opacity': 0.22,
     'divider-opacity': 0.12,
     'backdrop-overlay-opacity': 0.60,
+    'compact__c-table-cell-padding': '0.5rem 1rem 0.5rem 1.25rem',
 
     // Theme specific
     'theme-overlay-multiplier': 1,
 
-    'c-table-head-bg': '#7367F0',        // primary
-    'c-table-head-text': '#7367F0',      // primary
+    'c-table-head-bg': '#2F3349',        // primary
+    'c-table-head-text': '#E1DEF5',      // primary
+    'c-table-head-text-opacity': 0.9,      // primary
     'c-table-row-hover-bg': '#7367F0',   // primary
 
     // Layouts

@@ -237,32 +237,32 @@ const toggleExpand = (id: string) => {
         v-if="isLoadingList"
         data-test-id="tbody-skeleton"
       >
-        <slot name="skeleton">
-          <tr
-            v-for="index in skeletonRows"
-            :key="`skeleton-row_${index}`"
-            data-test-id="skeleton-row"
+      <slot name="skeleton">
+        <tr
+          v-for="index in skeletonRows"
+          :key="`skeleton-row_${index}`"
+          data-test-id="skeleton-row"
+        >
+          <td
+            v-if="props.selectable"
+            class="c-table__cell"
+            :class="cellClasses"
+            data-c-field="selectable"
           >
-            <td
-              v-if="props.selectable"
-              class="c-table__cell"
-              :class="cellClasses"
-              data-c-field="selectable"
-            >
-              <VSkeletonLoader type="text" />
-            </td>
-            <td
-              v-for="(field, cellIndex) in getActualField(fields)"
-              :key="`skeleton-cell_${index}_${cellIndex}`"
-              class="c-table__cell"
-              data-test-id="skeleton-coll"
-              :class="cellClasses"
-              :data-c-field="field.key"
-            >
-              <VSkeletonLoader type="text" />
-            </td>
-          </tr>
-        </slot>
+            <VSkeletonLoader type="text" />
+          </td>
+          <td
+            v-for="(field, cellIndex) in getActualField(fields)"
+            :key="`skeleton-cell_${index}_${cellIndex}`"
+            class="c-table__cell"
+            data-test-id="skeleton-coll"
+            :class="cellClasses"
+            :data-c-field="field.key"
+          >
+            <VSkeletonLoader type="text" />
+          </td>
+        </tr>
+      </slot>
       </tbody>
       <Component
         :is="tableWrapperComponent"
@@ -390,7 +390,7 @@ const toggleExpand = (id: string) => {
   .c-table__header-cell {
     background: var(--v-c-table-head-bg);
     .column-title {
-      color: var(--v-c-table-head-text);
+      color: rgba(var(--v-c-table-head-text), var(--v-c-table-head-text-opacity))
     }
   }
 
@@ -487,7 +487,7 @@ const toggleExpand = (id: string) => {
   }
 
   th {
-    height: var(--c-table-th-height);
+    height: var(--v-c-table-th-height);
   }
 
   :deep(.v-checkbox) {
