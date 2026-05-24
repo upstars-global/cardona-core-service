@@ -104,6 +104,7 @@ const {
   pageName,
   canUpdateCb,
   canRemoveCb,
+  canCopyCb,
   beforeRemoveCallback,
   ListItemModel,
   useStore,
@@ -151,6 +152,9 @@ const canUpdateItem = (item): boolean =>
 
 const canRemoveItem = (item): boolean =>
   canRemoveCb && item ? canRemove && canRemoveCb(item) : canRemove
+
+const canCopyItem = (item): boolean =>
+  canCopyCb && item ? canCopyCb(item) : true
 
 const canDraggable = computed(() => { return props.config.small ? canUpdate && props.config.draggable && !searchQuery.value : canUpdate && props.config.draggable })
 
@@ -1100,6 +1104,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :can-update-seo="canUpdateSeo"
             :can-update-item="canUpdateItem(item.raw)"
             :can-remove-item="canRemoveItem(item.raw)"
+            :can-copy-item="canCopyItem(item.raw)"
             :config="config"
             :get-update-route="getUpdateRoute"
             @on-remove="onClickRemove"
@@ -1331,6 +1336,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :can-update-seo="canUpdateSeo"
             :can-update-item="canUpdateItem(item.raw)"
             :can-remove-item="canRemoveItem(item.raw)"
+            :can-copy-item="canCopyItem(item.raw)"
             :config="config"
             :get-update-route="getUpdateRoute"
             @on-remove="onClickRemove"
