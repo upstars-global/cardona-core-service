@@ -157,6 +157,8 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
     // Single select selected text
     .v-select.vs--single & {
       color: rgb(var(--v-theme-on-surface));
+      background: transparent;
+      font-weight: 400;
       margin-top: 0;
 
       // Add transition when selected option is moved when focus
@@ -247,6 +249,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
 
     &.vs--single .vs__selected {
       color: rgba(var(--v-theme-grey-700));
+      background: transparent;
       font-size: 0.9375rem;
       font-style: normal;
       font-weight: 400;
