@@ -3,11 +3,11 @@
 
   $border-divider-color: rgb(var(--v-theme-divider), var(--v-divider-opacity));
   $border-divider: 1px solid $border-divider-color;
+  --default__c-table-cell-padding:  0.5em 1rem 0.5rem 1.25rem;
+
 
   .v-data-table.c-table {
-    //.default-cell-value {
-    //  color: rgba(var(--v-theme-info));
-    //}
+
     .c-table__header-cell {
 
       .c-table__header-cell-icon-wrapper {
@@ -40,26 +40,6 @@
       }
     }
   }
-
-  //.table-settings,
-  //.v-skeleton-loader,
-  //.c-table,
-  //.filters-block-wrapper {
-  //  background-color: rgba(var(--v-island-card-bg));
-  //}
-  //
-  //.search {
-  //  .v-field__overlay{
-  //    background-color: rgba(var(--v-island-card-bg));
-  //  }
-  //}
-
-  //.inner-link-wrapper {
-  //  .copy-btn {
-  //    color: rgb(var(--v-theme-secondary));
-  //  }
-  //}
-
   .v-table {
     min-height: 32rem;
   }
@@ -77,6 +57,10 @@
         border-top: $border-divider;
         border-bottom: $border-divider;
       }
+      .c-table-cell-padding {
+        padding: var(--default__c-table-cell-padding) !important;
+      }
+
       td {
         border-bottom: $border-divider !important;
       }
