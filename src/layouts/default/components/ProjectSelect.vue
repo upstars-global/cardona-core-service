@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue'
 import { useFavicon } from '@vueuse/core'
+import { useRoute } from 'vue-router'
 import type { ProjectInfo } from '../../../@model/project'
 import { IconsList } from '../../../@model/enums/icons'
 import { useChangeProject } from '../../../composables/useChangeProject'
@@ -13,7 +14,7 @@ const props = defineProps<{
 }>()
 
 const userStore = useUserStore()
-
+const route = useRoute()
 const { changeProject } = useChangeProject()
 
 const selectProject = computed({
@@ -24,12 +25,13 @@ const selectProject = computed({
 const cantSelect = computed(() => props.projects.length < 2)
 const isMarbella = computed(() => userStore.isMarbella)
 
-watch(() => selectProject.value.id, () => {
-  if (newProject?.alias === route.params.project) return
+watch(() => selectProject.value, newProject => {
+  if (newProject?.alias === route.params?.project)
+    return
   const faviconPath = userStore.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
 
   useFavicon(faviconPath)
-}, { immediate: true })
+}, { deep: true, immediate: true })
 
 watch(() => selectProject.value, project => {
   if (!project || !isMarbella.value)
