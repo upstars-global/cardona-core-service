@@ -242,6 +242,7 @@ export const dark: ThemeDefinition = {
     'theme-overlay-multiplier': 1,
 
     'c-table-head-bg': '#2F3349',        // primary
+    'c-table-th-height': '48px',
     'c-table-head-text': '#E1DEF5',      // primary
     'c-table-head-text-opacity': 0.9,      // primary
     'c-table-row-hover-bg': '#7367F0',   // primary
