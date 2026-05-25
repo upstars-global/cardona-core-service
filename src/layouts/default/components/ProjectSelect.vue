@@ -25,6 +25,7 @@ const cantSelect = computed(() => props.projects.length < 2)
 const isMarbella = computed(() => userStore.isMarbella)
 
 watch(() => selectProject.value.id, () => {
+  if (newProject?.alias === route.params.project) return
   const faviconPath = userStore.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
 
   useFavicon(faviconPath)
