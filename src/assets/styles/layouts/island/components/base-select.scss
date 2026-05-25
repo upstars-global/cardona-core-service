@@ -195,6 +195,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
     font-weight: 500;
     margin-top: 0;
     line-height: 1rem;
+    position: relative;
 
     input.vs__search, input.vs__search:focus {
       color: rgba(var(--v-theme-text-primary), var(--v-disabled-opacity));
@@ -202,7 +203,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
 
     // Single select selected text
     .v-select.vs--single & {
-      color: rgb(var(--v-theme-on-surface));
+      color: red;
       background: transparent;
       font-weight: 400;
       margin-top: 0;
@@ -230,7 +231,7 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
 
   .selected-option-value {
     // color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
-    color: rgb(var(--v-theme-primary));
+    //color: rgb(var(--v-theme-primary));
   }
 
   // Tag/Multi Select
@@ -297,11 +298,13 @@ $vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
     }
 
     &.vs--single .vs__selected {
-      color: rgba(var(--v-theme-grey-700));
+      color: rgba(var(--v-theme-text-primary), var(--v-high-emphasis-opacity));
       background: transparent;
       font-size: 0.9375rem;
       font-style: normal;
       font-weight: 400;
+      margin: 0;
+      position: initial;
     }
     .vs__selected-options {
       padding: 0;
