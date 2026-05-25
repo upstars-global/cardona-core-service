@@ -1,41 +1,458 @@
-$box-shadow: 0 2px 4px 0 rgba(132, 129, 157, 0.24);
-$border-popup: 1px solid rgba(var(--v-theme-border-system));
-$border-popup-shadow: 0 10px 20px 0 rgba(var(--v-theme-skeleton-bg), 0.10);
+//$box-shadow: 0 2px 4px 0 rgba(132, 129, 157, 0.24);
+//$border-popup: 1px solid rgba(var(--v-theme-border-system));
+//$border-popup-shadow: 0 10px 20px 0 rgba(var(--v-theme-skeleton-bg), 0.10);
+//
+//@mixin apply {
+//  .v-select.vs--open{
+//    .vs__dropdown-toggle {
+//      border: 1px solid rgba(var(--v-theme-primary));
+//      box-shadow: $box-shadow;
+//    }
+//  }
+//  .v-select {
+//    .vs__search::placeholder {
+//      color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
+//    }
+//    .vs__dropdown-toggle {
+//      border: 1px solid rgba(var(--v-theme-surface-invert), var(--v-border-opacity));
+//      .vs__selected-options {
+//        .vs__selected {
+//          .selected-option-value {
+//            color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+//          }
+//        }
+//      }
+//
+//    }
+//  }
+//  .vs__dropdown-menu {
+//    border: $border-popup;
+//    box-shadow: $border-popup-shadow;
+//
+//    .vs__no-options {
+//      border: $border-popup;
+//      border-radius: 6px;
+//      box-shadow: $border-popup;
+//      color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
+//      font-weight: 400;
+//      font-size: 15px;
+//    }
+//  }
+//}
+
+
+@import "vue-select/dist/vue-select.css";
+
+$options-padding-x: 20px;
+$options-padding-y: 7px;
+
+
+//  Global Component Variables
+$vs-component-line-height: 1.8;
+
+//  Active State
+$vs-state-active-bg: rgba(var(--v-theme-primary), 0.12);
+$vs-state-active-color: var(--v-theme-primary) !important;
+
+
+//  Selected
+$vs-selected-bg: var(--v-theme-primary);
+$vs-selected-border-width: 0;
+
+// Dropdown
+$vs-dropdown-box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
 
 @mixin apply {
-  .v-select.vs--open{
-    .vs__dropdown-toggle {
-      border: 1px solid rgba(var(--v-theme-primary));
-      box-shadow: $box-shadow;
+  --vs-line-height: 1.25;
+  --vs-disabled-bg: rgb(var(--v-theme-grey-100));
+
+  .vs--open .vs__dropdown-toggle {
+    border-color: rgb(var(--v-theme-primary));
+    border-bottom-color: rgb(var(--v-theme-primary));
+    border-bottom-left-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+    box-shadow: 0 2px 4px rgba(var(--v-shadow-key-umbra-color), 0.12);
+  }
+
+  .vs__dropdown-menu {
+    width: 100%;
+    margin-top: 0.25rem;
+    padding-top: 0;
+    border: 1px solid var(--vs-border-color);
+    border-radius: var(--vs-border-radius);
+  }
+
+  .vs__open-indicator {
+    fill: none;
+    margin-top: 0;
+  }
+  .vs--disabled {
+    .vs__clear {
+      opacity: 0;
+    }
+    .vs__open-indicator {
+      // background-color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+    }
+    .selected-option-value {
+      //color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+      color: red;
+    }
+
+    .vs__selected-options {
+      input::placeholder {
+        color: rgba(var(--v-theme-text-primary), var(--v-disabled-opacity));
+      }
     }
   }
-  .v-select {
-    .vs__search::placeholder {
-      color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
+
+  // Matches height of input element for consistency
+  .vs__dropdown-toggle {
+    padding: 0.375rem;
+    transition: all 0.25s ease-in-out;
+    border-radius: 0.375rem;
+    min-height: 2.5rem;
+    height: 100%;
+    border-color: rgba(var(--v-theme-input-border), var(--v-input-border-opacity));
+    .vs--single & {
+      padding-left: 6px;
     }
+  }
+
+  .vs__dropdown-option--disabled {
+    opacity: 0.5;
+
+    &.vs__dropdown-option--selected {
+      background:  rgb(var(--v-theme-primary)) !important;
+    }
+  }
+
+  // Options list color
+  .vs__dropdown-option {
+    font-size: 0.9375rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.375rem;
+    white-space: normal;
+    word-break: break-word;
+    color: rgba(var(--v-theme-text-primary), var(--v-high-emphasis-opacity))
+    // color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));;
+  }
+
+  .vs__dropdown-option,
+  .vs__no-options {
+    // We have only update Y padding
+    padding: $options-padding-y $options-padding-x;
+  }
+
+  /* rtl:begin:ignore */
+  .vs__dropdown-option--selected {
+    background-color:  rgb(var(--v-theme-primary));
+    color: rgb(var(--v-theme-background));
+    position: relative;
+
+    &::after {
+      // Icon
+      background-image: rgb(var(--v-theme-on-surface));
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 1.1rem;
+      content: '';
+      display: inline-block;
+      height: 1.1rem;
+      position: absolute;
+      right: $options-padding-x;
+
+      // vertically center icon
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1.1rem;
+
+      [dir='rtl'] & {
+        left: $options-padding-x;
+        right: unset;
+      }
+    }
+
+    // Because, highlight get primary color and if item is selected we want to keep white color even if it's hovered/highlighted
+    &.vs__dropdown-option--highlight {
+      background-color: rgb(var(--v-theme-primary)) !important;
+      color: rgb(var(--v-theme-background)) !important;
+    }
+  }
+  .vs__dropdown-option--highlight {
+    background-color: rgba(var(--v-theme-primary), var(--v-hover-opacity)) !important;
+    color: rgb(var(--v-theme-primary)) !important;
+  }
+
+  /* rtl:end:ignore */
+
+  // Selected Color. It don't have any variable to override. (text in tag)
+  .vs__selected {
+    color: rgb(var(--v-theme-primary));
+    background: $vs-state-active-bg;
+    border: none;
+    font-weight: 500;
+    margin-top: 0;
+    line-height: 1rem;
+
+    input.vs__search, input.vs__search:focus {
+      color: rgba(var(--v-theme-text-primary), var(--v-disabled-opacity));
+    }
+
+    // Single select selected text
+    .v-select.vs--single & {
+      color: rgb(var(--v-theme-on-surface));
+      margin-top: 0;
+
+      // Add transition when selected option is moved when focus
+      transition: transform 0.2s ease;
+
+      input {
+        padding-left: 0;
+      }
+    }
+
+    // Slide selected option to right on focus
+    // * Just like on input focus we get placeholder moved
+    .vs--single.vs--open & {
+      // transform: translateX(5px);
+      position: relative;
+    }
+
+    // Close icon in tag
+    .vs__deselect {
+      color: inherit;
+    }
+  }
+
+  .selected-option-value {
+    // color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
+    color: rgb(var(--v-theme-primary));
+  }
+
+  // Tag/Multi Select
+  .v-select.vs--open {
+    .vs__selected{
+      opacity: 1 !important;
+    }
+
+    input::placeholder {
+      // color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+      color: rgba(var(--v-theme-text-primary), var(--v-disabled-opacity));
+    }
+
+  }
+  .v-select {
+    min-height: 2.5rem;
+    .vs__clear {
+      height: 16px;
+      width: 16px;
+      display: flex;
+      i {
+        font-size: 16px;
+        height: 16px;
+        width: 16px;
+      }
+    }
+
+    &:not(.vs--single) {
+      .vs__selected {
+        border-radius: 3px;
+        font-size: 0.8125rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 150%;
+        margin: 0 0;
+        padding: 0.25rem 0.5rem;
+      }
+
+      .vs__deselect {
+        .v-icon {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .vs__search {
+      &:focus,
+      & {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 400;
+      }
+      &::placeholder {
+        color: rgba(var(--v-theme-text-primary), var(--v-disabled-opacity));
+      }
+      color: rgba(var(--v-theme-text-primary), var(--v-high-emphasis-opacity))
+    }
+
+    .vs__actions {
+      padding-bottom: 0;
+      padding-top: 0;
+      // color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
+      color: rgba(var(--v-theme-text-primary), var(--v-high-emphasis-opacity))
+    }
+
+    &.vs--single .vs__selected {
+      color: rgba(var(--v-theme-grey-700));
+      font-size: 0.9375rem;
+      font-style: normal;
+      font-weight: 400;
+    }
+    .vs__selected-options {
+      padding: 0;
+      gap: 0.5rem;
+    }
+
+    &.error .vs__dropdown-toggle {
+      border-color: rgb(var(--v-theme-error));
+    }
+
+  }
+
+  .vs--multiple.vs--disabled {
+    .vs__selected {
+      color: rgba(var(--v-theme-grey-500));
+      background-color: rgba(var(--v-theme-grey-500), var(--v-activated-opacity));
+    }
+
+    .vs__deselect {
+      pointer-events: none;
+    }
+  }
+  // Dropdown Position
+  .vs__dropdown-menu {
+    border: none;
+    border-radius: 6px;
+    padding: 0;
+    top: calc(100% + 1rem);
+    background: rgb(var(--v-theme-surface));
+    z-index: 9999;
+    max-height: 40vh;
+  }
+
+  // ------------------------------------------------
+  // Size: Large
+  // ------------------------------------------------
+  .select-size-lg {
+    .vs__selected {
+      font-size: 1rem !important;
+    }
+
+    &.vs--single.vs--open .vs__selected {
+      margin-top: 0px;
+    }
+
+    .vs__dropdown-toggle,
+    .vs__selected {
+      font-size: 1.25rem;
+    }
+
     .vs__dropdown-toggle {
-      border: 1px solid rgba(var(--v-theme-surface-invert), var(--v-border-opacity));
-      .vs__selected-options {
+      padding: 5px;
+
+      input {
+        margin-top: 0;
+      }
+    }
+
+    .vs__deselect {
+      svg {
+        transform: scale(1) !important;
+        vertical-align: middle !important;
+      }
+    }
+  }
+
+  // ------------------------------------------------
+  // Size: Small
+  // ------------------------------------------------
+  .select-size-sm {
+    min-height: 2rem;
+
+    & .vs__dropdown-toggle {
+      padding: 0.25rem 0.75rem;
+      min-height: 2rem;
+    }
+
+    // Only set margin for multi/tag select
+    &.v-select:not(.vs--single) .vs__selected {
+      font-size: 0.75rem;
+      height: 1.25rem;
+    }
+
+    // Selected options size for single selection
+    &.v-select.vs--single .vs__selected {
+      margin-top: 1px;
+    }
+
+    .vs__actions {
+      .v-icon {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  // ------------------------Dark Layout------------------//
+
+  .dark-layout {
+    //vue select
+    .vs__dropdown-toggle {
+      background: rgb(var(--v-theme-primary));
+      border-color: rgb(var(--v-theme-primary));
+      color: rgb(var(--v-theme-primary));
+    }
+
+    .vs__selected-options {
+      input {
+        color: rgb(var(--v-theme-primary));
+
+        &::placeholder {
+          color: rgb(var(--v-theme-primary));
+        }
+      }
+    }
+
+    .vs__actions {
+      svg {
+        fill: rgb(var(--v-theme-primary));
+      }
+    }
+
+    .vs__dropdown-menu {
+      background: rgb(var(--v-theme-primary));
+
+      li {
+        color: rgb(var(--v-theme-primary));
+      }
+    }
+
+    .v-select {
+      &:not(.vs--single) {
         .vs__selected {
-          .selected-option-value {
-            color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
-          }
+          background-color: rgba(var(--v-theme-primary), 0.12);
+          color: rgb(var(--v-theme-primary));
         }
       }
 
+      // For single select
+      &.vs--single {
+        .vs__selected {
+          color: rgb(var(--v-theme-primary)) !important;
+        }
+      }
     }
-  }
-  .vs__dropdown-menu {
-    border: $border-popup;
-    box-shadow: $border-popup-shadow;
 
-    .vs__no-options {
-      border: $border-popup;
-      border-radius: 6px;
-      box-shadow: $border-popup;
-      color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
-      font-weight: 400;
-      font-size: 15px;
+    // Disabled styles
+    .vs--disabled {
+      .vs__dropdown-toggle,
+      .vs__clear,
+      .vs__search,
+      .vs__selected,
+      .vs__open-indicator {
+        background-color: rgb(var(--v-theme-primary));
+        opacity: var(--v-disabled-opacity);
+      }
     }
   }
 }

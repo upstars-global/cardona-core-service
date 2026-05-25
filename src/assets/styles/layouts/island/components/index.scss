@@ -46,11 +46,6 @@
     color: rgba(var(--v-theme-text-disabled), var(--v-text-disabled-opacity)) !important;
   }
 
-  //.text-tooltip {
-  //  color: rgb(var(--v-theme-tooltip-text));
-  //}
-  // ------------------------------------------------------------------------------------
-
   $card-internal-radius: 12px;
 
   .card-internal-rounded-1 {
@@ -61,10 +56,6 @@
     border-radius: $card-internal-radius/2
   }
 
-  .text-color-label {
-    // color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important
-    color: red !important
-  }
   hr {
     border-top: 1px solid rgb(var(--v-theme-border-system));
   }
