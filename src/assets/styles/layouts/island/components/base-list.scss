@@ -29,15 +29,6 @@
           }
         }
       }
-
-      .column-title {
-        padding-right: 1rem;
-        &:after {
-          content: "";
-          height: 14px;
-          border-right: 2px solid $border-divider-color;
-        }
-      }
     }
   }
   .v-table {
