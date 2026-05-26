@@ -471,6 +471,15 @@ const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
   props.config?.filterList,
 )
 
+props.config?.filterList?.forEach((config, index) => {
+  if (config.defaultValue !== undefined && filters.value[index])
+    filters.value[index].value = config.defaultValue
+})
+
+const defaultSelectedFilters = computed(() =>
+  filters.value.filter((_, index) => props.config?.filterList?.[index]?.defaultValue !== undefined),
+)
+
 const { inlineFilters, filterFields, onFieldUpdate } = useInlineFilters(props.config?.inlineFilters, reFetchList)
 
 const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, false)
@@ -779,6 +788,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       :entity-name="entityName"
       :filters="filters"
       :size="size"
+      :default-selected-filters="defaultSelectedFilters"
       @apply="reFetchList"
       @change-selected-filters="onChangeSelectedFilters"
     >
