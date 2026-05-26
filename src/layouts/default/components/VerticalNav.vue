@@ -117,7 +117,12 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
     <!-- 👉 Header -->
     <div class="nav-header justify-space-between text-primary">
       <slot name="nav-header">
-        <ProductsSelect :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered" />
+        <slot
+          name="product-select"
+          :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered"
+        >
+          <ProductsSelect :is-collapsed-menu="configStore.isVerticalNavCollapsed && !isHovered" />
+        </slot>
         <!-- 👉 Vertical nav actions -->
         <!-- Show toggle collapsible in >md and close button in <md -->
         <Component

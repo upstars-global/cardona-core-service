@@ -50,6 +50,10 @@ const onKeyDown = event => {
     event.preventDefault()
 }
 
+const onWheel = (event: WheelEvent) => {
+  (event.target as HTMLInputElement).blur()
+}
+
 const appendInnerIcon = computed(() => {
   if (props.errors)
     return IconsList.InfoIcon
@@ -73,6 +77,7 @@ const appendInnerIcon = computed(() => {
       class="number-field"
       hide-details
       @keydown="onKeyDown"
+      @wheel="onWheel"
     />
   </div>
 </template>
