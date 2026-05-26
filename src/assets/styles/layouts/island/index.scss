@@ -47,6 +47,7 @@ body[data-layout="island"] {
     background-color: rgba(var(--v-island-page-bg));
     border-bottom-right-radius: 1.5rem;
     border-bottom-left-radius: 1.5rem;
+    overflow: hidden;
   }
 
   .title-text-color {
