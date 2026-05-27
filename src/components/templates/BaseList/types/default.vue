@@ -129,7 +129,7 @@ const isExistsDetailsPage = checkExistsPage(DetailsPageName)
 
 // Actions
 const fetchAction: CallableFunction = customStore?.fetchEntityList
-  ? customStore?.fetchEntityList
+  ? customStore.fetchEntityList
   : baseStoreCore.fetchEntityList
 
 const deleteAction = customStore?.deleteEntity
