@@ -639,9 +639,21 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
   await reFetchList()
 }
 
+const initDefaultFilters = () => {
+  const isSameEntity = entityName === filtersCoreStore.listEntityName
+  const isSamePath = route.path === filtersCoreStore.listPath
+  if (defaultSelectedFilters.value.length && (!isSameEntity || !isSamePath)) {
+    filtersCoreStore.setListEntityName(entityName)
+    filtersCoreStore.setListPath(route.path)
+    filtersCoreStore.setListFilters(defaultSelectedFilters.value as BaseField[])
+  }
+}
+
 onBeforeMount(async () => {
   if (props.config.withProjectsFilter)
     projectsFilter.value = props.config.projectsFilterMode === ProjectsFilterMode.All ? userProjects.value.map(project => project.alias) : [userStore.getSelectedProject?.alias]
+
+  initDefaultFilters()
 
   await getList()
 
