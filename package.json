@@ -38,9 +38,9 @@
     "@vueuse/core": "10.9.0",
     "@vueuse/math": "^10.5.0",
     "apexcharts-clevision": "^3.28.5",
-    "axios": "1.4.0",
-    "axios-jwt": "^2.0.1",
-    "axios-mock-adapter": "1.21.4",
+    "axios": "^1.15.0",
+    "axios-jwt": "^4.0.3",
+    "axios-mock-adapter": "^2.1.0",
     "centrifuge": "^5.3.4",
     "chart.js": "^4.5.0",
     "cookie-es": "^1.0.0",
@@ -153,7 +153,7 @@
     "vite-plugin-vuetify": "1.0.2",
     "vitest": "^2.0.5",
     "vue-shepherd": "^3.0.0",
-    "vue-tsc": "^1.8.19"
+    "vue-tsc": "^2.1.10"
   },
   "resolutions": {
     "postcss": "^8",
