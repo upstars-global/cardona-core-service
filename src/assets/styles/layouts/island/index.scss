@@ -17,16 +17,12 @@ body[data-layout="island"] {
     .v-overlay__content {
       border: 1px solid rgb(var(--v-island-border-color));
     }
-
-    .v-list {
-      background-color: rgba(var(--v-island-card-bg)) !important;
-    }
   }
 
-  .modal-card,
-  .Vue-Toastification__toast.Vue-Toastification__toast--default {
-    background-color: rgba(var(--v-island-card-bg)) !important;
-  }
+  //.modal-card,
+  //.Vue-Toastification__toast.Vue-Toastification__toast--default {
+  //  background-color: rgba(var(--v-island-card-bg)) !important;
+  //}
 
   aside.layout-vertical-nav,
   .layout-content-wrapper {
@@ -64,7 +60,7 @@ body[data-layout="island"] {
   }
 
   .nav-item-title, .nav-item-title.nav-item-color {
-    color: rgba(var(--v-theme-white), var(--v-high-emphasis-opacity)) !important;
+    color: rgba(var(--v-island-menu-item-color)) !important;
   }
 
   .nav-link {
@@ -77,8 +73,11 @@ body[data-layout="island"] {
     border-top: initial !important;
 
     .full-name {
-      color: rgba(var(--v-island-menu-section-color));
+      color: rgba(var(--v-island-menu-item-color)) !important;
     }
   }
 
+  .text-secondary {
+    color: rgba(var(--v-theme-text-secondary), 0.70) !important;
+  }
 }

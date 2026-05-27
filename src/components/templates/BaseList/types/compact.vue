@@ -742,8 +742,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :pagination-config="paginationConfig"
         :data-meta="dataMeta"
         :small="config.small"
-        @update:model-value="setPage"
         class-showing="text-color-label"
+        @update:model-value="setPage"
       />
     </div>
     <VCard class="table-card-settings table-wrapper">
@@ -774,12 +774,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               <VIcon
                 v-bind="attributes"
                 :icon="IconsList.ChevronDownIcon"
-
               />
             </template>
-            <template #option="{label}">
-              <div class="d-flex align-center justify-space-between" v-if="label === perPage">
-                <span>{{label}}</span>
+            <template #option="{ label }">
+              <div
+                v-if="label === perPage"
+                class="d-flex align-center justify-space-between"
+              >
+                <span>{{ label }}</span>
                 <VIcon :icon="IconsList.CheckIcon" />
               </div>
             </template>
@@ -1313,15 +1315,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :pagination-config="paginationConfig"
         :data-meta="dataMeta"
         :small="config.small"
-        @update:model-value="setPage"
         class-showing="text-color-label"
+        @update:model-value="setPage"
       />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-
 $pagination-button-text-color: white;
 
 .compact__base-list {

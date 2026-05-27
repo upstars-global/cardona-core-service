@@ -1,0 +1,23 @@
+@mixin apply {
+  // CSS custom properties (previously in :root {} of variables/default.scss and variables/compact.scss)
+  --default__c-table-cell-padding: 0.75rem 1rem;
+  --default__c-table-sm-cell-padding: 0.5rem 0.75rem;
+  --compact__c-table-cell-padding: 0.5rem 0.75rem;
+  --compact__c-table-td-height: auto;
+  --c-table-th-height: 2.75rem;
+
+  // Color utility classes — hardcoded list mirrors $theme-colors-name default from @core/scss/base/variables
+  @each $color_name in "primary", "secondary", "error", "info", "success", "warning" {
+    .table-light-#{$color_name} {
+      background-color: rgba(var(--v-theme-#{$color_name}), 0.12)!important;
+    }
+    .is-hover-row.table-light-#{$color_name} {
+      &:hover {
+        background-color: rgba(var(--v-theme-#{$color_name}), 0.36) !important;
+      }
+    }
+    .table-light-#{$color_name}-bg {
+      background-color: rgba(var(--v-theme-#{$color_name}), 0.36) !important;
+    }
+  }
+}

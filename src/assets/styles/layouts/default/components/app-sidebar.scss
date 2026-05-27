@@ -1,0 +1,59 @@
+@mixin apply {
+  .v-application.v-layout {
+    .v-application__wrap {
+      .side-bar {
+        min-width: 30.75rem;
+        width: 100%;
+        .content-sidebar-header {
+          background-color: rgb(var(--v-theme-extra-body));
+          &__title {
+            color: rgba(var(--v-theme-body), var(--v-body-opacity));
+            font-weight: 600;
+          }
+          .v-icon {
+            color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+          }
+        }
+        .v-expansion-panels {
+          .v-expansion-panel {
+            color: inherit !important;
+            &--active {
+              .v-expansion-panel-text__wrapper {
+                padding-top: 0;
+              }
+            }
+            &-title {
+              padding-left: 0;
+              padding-right: 0;
+              font-weight: 500;
+              font-size: 1rem;
+              color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
+              .v-expansion-panel-title__icon {
+                .v-icon {
+                  font-size: 1rem;
+                }
+              }
+            }
+            &-text__wrapper {
+              hr {
+                margin: 1rem 0;
+              }
+              .v-row {
+                margin-top: 0;
+                margin-bottom: 0;
+              }
+            }
+            .v-expansion-panel__shadow {
+              box-shadow: none;
+            }
+            &:not(.v-expansion-panels--variant-accordion).v-expansion-panel--active {
+              .v-expansion-panel__shadow {
+                box-shadow: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

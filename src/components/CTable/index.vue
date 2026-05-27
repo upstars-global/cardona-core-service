@@ -237,32 +237,32 @@ const toggleExpand = (id: string) => {
         v-if="isLoadingList"
         data-test-id="tbody-skeleton"
       >
-        <slot name="skeleton">
-          <tr
-            v-for="index in skeletonRows"
-            :key="`skeleton-row_${index}`"
-            data-test-id="skeleton-row"
+      <slot name="skeleton">
+        <tr
+          v-for="index in skeletonRows"
+          :key="`skeleton-row_${index}`"
+          data-test-id="skeleton-row"
+        >
+          <td
+            v-if="props.selectable"
+            class="c-table__cell"
+            :class="cellClasses"
+            data-c-field="selectable"
           >
-            <td
-              v-if="props.selectable"
-              class="c-table__cell"
-              :class="cellClasses"
-              data-c-field="selectable"
-            >
-              <VSkeletonLoader type="text" />
-            </td>
-            <td
-              v-for="(field, cellIndex) in getActualField(fields)"
-              :key="`skeleton-cell_${index}_${cellIndex}`"
-              class="c-table__cell"
-              data-test-id="skeleton-coll"
-              :class="cellClasses"
-              :data-c-field="field.key"
-            >
-              <VSkeletonLoader type="text" />
-            </td>
-          </tr>
-        </slot>
+            <VSkeletonLoader type="text" />
+          </td>
+          <td
+            v-for="(field, cellIndex) in getActualField(fields)"
+            :key="`skeleton-cell_${index}_${cellIndex}`"
+            class="c-table__cell"
+            data-test-id="skeleton-coll"
+            :class="cellClasses"
+            :data-c-field="field.key"
+          >
+            <VSkeletonLoader type="text" />
+          </td>
+        </tr>
+      </slot>
       </tbody>
       <Component
         :is="tableWrapperComponent"
@@ -388,9 +388,9 @@ const toggleExpand = (id: string) => {
 <style scoped lang="scss">
 .v-data-table.c-table {
   .c-table__header-cell {
-    background: rgba(var(--v-theme-grey-800), 0.08);
+    background: var(--v-c-table-head-bg);
     .column-title {
-      color: rgb(var(--v-theme-grey-900), 0.62);
+      color: rgba(var(--v-c-table-head-text), var(--v-c-table-head-text-opacity))
     }
   }
 
@@ -418,13 +418,13 @@ const toggleExpand = (id: string) => {
   }
   .is-hover-row {
     &:hover {
-      background: rgb(var(--v-theme-grey-100));
+      background: var(--v-c-table-row-hover-bg);
     }
   }
   .c-table__row {
     cursor: pointer;
     &--selected {
-      background: rgb(var(--v-theme-grey-100));
+      background: var(--v-c-table-row-hover-bg);
     }
   }
   .c-table__header-cell,
@@ -487,7 +487,7 @@ const toggleExpand = (id: string) => {
   }
 
   th {
-    height: var(--c-table-th-height);
+    height: var(--v-c-table-th-height);
   }
 
   :deep(.v-checkbox) {

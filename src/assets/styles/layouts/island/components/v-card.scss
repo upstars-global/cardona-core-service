@@ -1,0 +1,5 @@
+@mixin apply {
+  .v-card:not(.v-card--flat) {
+    border: 1px solid rgba(var(--v-theme-outline-border), var(--v-outline-border-opacity));
+  }
+}
