@@ -1,12 +1,20 @@
-import { isLoggedIn } from 'axios-jwt'
-
-export const checkIsLoggedIn = (onFail?: CallableFunction) => {
+export const checkIsLoggedIn = (onFail?: CallableFunction): boolean => {
   try {
-    return isLoggedIn()
+    const tokenKey = Object.keys(localStorage).find(key => key.startsWith('auth-tokens-'))
+    if (!tokenKey)
+      return false
+
+    const raw = localStorage.getItem(tokenKey)
+    if (!raw)
+      return false
+
+    const tokens = JSON.parse(raw)
+
+    return Boolean(tokens?.accessToken && tokens?.refreshToken)
   }
   catch {
     onFail && onFail()
 
-    return true
+    return false
   }
 }

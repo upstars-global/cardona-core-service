@@ -446,9 +446,6 @@ export interface IBaseSectionConfig {
   /** backToTheHistoryLast - Кнопка Cancel возвращает не предыдущую страницу, если такая есть в истории роута */
   readonly backToTheHistoryLast?: boolean
 
-  /** isModalSection - Флаг для отображения секции в модалке. Нужно использовать emits on-save, on-cancel */
-  readonly isModalSection?: boolean
-
   /** initializeWithUpdate - Флаг для инициализации данных формы на основе update response  */
   readonly initializeWithUpdate?: boolean
 
@@ -470,7 +467,6 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
   readonly withoutDeleteModal?: boolean
   readonly withoutConfirmModal?: boolean
   readonly backToTheHistoryLast?: boolean
-  readonly isModalSection?: boolean
   readonly initializeWithUpdate: boolean
   readonly noPermissions?: NoPermissions
   readonly projectFilter?: boolean
@@ -486,7 +482,6 @@ export class BaseSectionConfig implements IBaseSectionConfig { // TODO: Moved to
     this.withoutDeleteModal = data?.withoutDeleteModal || false
     this.withoutConfirmModal = data?.withoutConfirmModal || false
     this.backToTheHistoryLast = data?.backToTheHistoryLast || false
-    this.isModalSection = data?.isModalSection || false
     this.initializeWithUpdate = data?.initializeWithUpdate || false
     this.noPermissions = data?.noPermissions ?? false
     this.projectFilter = data?.projectFilter
