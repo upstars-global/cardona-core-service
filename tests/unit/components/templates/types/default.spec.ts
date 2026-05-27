@@ -16,10 +16,13 @@ import { setTabError } from '../../../../../src/components/templates/BaseSection
 import {
   FieldGeneratorStub,
   createEntity,
+  deleteEntity,
   mockStore,
   pushMock,
   readEntity,
-  router, updateEntity, useMockForm,
+  router,
+  updateEntity,
+  useMockForm,
 } from '../../../mocks/base-section/utils'
 
 const getMountComponent = setMountComponent(BaseSectionDefault)
@@ -437,5 +440,139 @@ describe('BaseSection.vue', () => {
         id: '123',
       }),
     )
+  })
+})
+
+describe('BaseSection.vue - useStore vs baseStoreCore', () => {
+  let customStore: {
+    createEntity: ReturnType<typeof vi.fn>
+    updateEntity: ReturnType<typeof vi.fn>
+    readEntity: ReturnType<typeof vi.fn>
+    deleteEntity: ReturnType<typeof vi.fn>
+  }
+
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    customStore = {
+      createEntity: vi.fn().mockResolvedValue({ id: '789' }),
+      updateEntity: vi.fn().mockResolvedValue({ id: '789' }),
+      readEntity: vi.fn().mockResolvedValue({ id: '789', isActive: true }),
+      deleteEntity: vi.fn().mockResolvedValue({}),
+    }
+  })
+
+  afterEach(() => {
+    vi.clearAllMocks()
+  })
+
+  const mountWithStore = (additionalProps = {}) =>
+    mountComponent({
+      withReadAction: false,
+      ...additionalProps,
+      useEntity: () => ({ ...useMockForm(), useStore: () => customStore }),
+    })
+
+  describe('createEntity', () => {
+    it('calls baseStoreCore.createEntity when useStore is not provided', async () => {
+      createEntity.mockResolvedValueOnce({ id: '456' })
+
+      const wrapper = mountComponent({ pageType: PageType.Create, withReadAction: false })
+
+      wrapper.vm.transformedForm = { id: '123' }
+      await wrapper.vm.onSave()
+
+      expect(createEntity).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'mock-form' }),
+      )
+    })
+
+    it('calls customStore.createEntity and not baseStoreCore when useStore is provided', async () => {
+      const wrapper = mountWithStore({ pageType: PageType.Create })
+
+      wrapper.vm.transformedForm = { id: '123' }
+      await wrapper.vm.onSave()
+
+      expect(customStore.createEntity).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'mock-form' }),
+      )
+      expect(createEntity).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('updateEntity', () => {
+    it('calls baseStoreCore.updateEntity when useStore is not provided', async () => {
+      updateEntity.mockResolvedValueOnce({})
+
+      const wrapper = mountComponent({ pageType: PageType.Update, withReadAction: false })
+
+      wrapper.vm.transformedForm = { id: '123' }
+      await wrapper.vm.onSave()
+
+      expect(updateEntity).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'mock-form' }),
+      )
+    })
+
+    it('calls customStore.updateEntity and not baseStoreCore when useStore is provided', async () => {
+      const wrapper = mountWithStore({ pageType: PageType.Update })
+
+      wrapper.vm.transformedForm = { id: '123' }
+      await wrapper.vm.onSave()
+
+      expect(customStore.updateEntity).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'mock-form' }),
+      )
+      expect(updateEntity).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('readEntity', () => {
+    it('calls baseStoreCore.readEntity on mount when useStore is not provided', async () => {
+      readEntity.mockResolvedValueOnce({ id: '123', isActive: true })
+
+      mountComponent({ pageType: PageType.Update })
+
+      await flushPromises()
+
+      expect(readEntity).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'mock-form', id: '123' }),
+      )
+    })
+
+    it('calls customStore.readEntity and not baseStoreCore on mount when useStore is provided', async () => {
+      mountWithStore({ pageType: PageType.Update, withReadAction: true })
+
+      await flushPromises()
+
+      expect(customStore.readEntity).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'mock-form', id: '123' }),
+      )
+      expect(readEntity).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('deleteEntity', () => {
+    it('calls baseStoreCore.deleteEntity when useStore is not provided', async () => {
+      deleteEntity.mockResolvedValueOnce({})
+
+      const wrapper = mountComponent({ pageType: PageType.Update, withReadAction: false })
+
+      await wrapper.vm.confirmRemoveModal()
+
+      expect(deleteEntity).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'mock-form', id: '123' }),
+      )
+    })
+
+    it('calls customStore.deleteEntity and not baseStoreCore when useStore is provided', async () => {
+      const wrapper = mountWithStore({ pageType: PageType.Update })
+
+      await wrapper.vm.confirmRemoveModal()
+
+      expect(customStore.deleteEntity).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'mock-form', id: '123' }),
+      )
+      expect(deleteEntity).not.toHaveBeenCalled()
+    })
   })
 })
