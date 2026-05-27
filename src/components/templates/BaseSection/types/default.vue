@@ -61,6 +61,7 @@ const router = useRouter()
 const textEditorStore = useTextEditorStore()
 const appConfigCoreStore = useAppConfigCoreStore()
 const userStore = useUserStore()
+const baseStoreCore = useBaseStoreCore()
 
 const redirectToNotFoundPage = useRedirectToNotFoundPage(router)
 
@@ -89,15 +90,25 @@ const UpdatePageName: string = pageName ? `${pageName}Update` : `${entityName}Up
 const entityUrl = generateEntityUrl(entityName)
 
 const isExistsListPage = checkExistsPage(ListPageName)
-
-const actualStore = useStore ? useStore() : useBaseStoreCore()
+const customStore: ReturnType<typeof useBaseStoreCore> = useStore ? useStore() : null
 
 // Actions
 
-const actionCreate = actualStore.createEntity
-const actionUpdate = actualStore.updateEntity
-const actionRead = actualStore.readEntity
-const actionDelete = actualStore.deleteEntity
+const actionCreate = customStore?.createEntity
+  ? customStore?.createEntity
+  : baseStoreCore.createEntity
+
+const actionUpdate = customStore?.updateEntity
+  ? customStore?.updateEntity
+  : baseStoreCore.updateEntity
+
+const actionRead = customStore?.readEntity
+  ? customStore?.readEntity
+  : baseStoreCore.readEntity
+
+const actionDelete = customStore?.deleteEntity
+  ? customStore?.deleteEntity
+  : baseStoreCore.deleteEntity
 
 // Permissions
 const { canCreateSeo, canUpdate, canUpdateSeo, canRemove, canViewSeo }
