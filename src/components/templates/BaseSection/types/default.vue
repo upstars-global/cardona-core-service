@@ -53,6 +53,7 @@ const emits = defineEmits<{
 }>()
 
 const modal = inject('modal')
+const isModalSection = inject('isInsideModal', false)
 const loaderStore = useLoaderStore()
 const baseSectionErrorStore = useBaseSectionErrorsStore()
 const route = useRoute()
@@ -67,7 +68,6 @@ const entityId: string = props.entityId || route.params?.id?.toString()
 const isRootPage: boolean = props.pageType === PageType.Root
 const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
-const isModal = props.config?.isModalSection
 
 const {
   useStore,
@@ -275,7 +275,7 @@ const onSave = async (isStay?: boolean) => {
       customApiPrefix: props.config?.customApiPrefix,
     })
 
-    if (isModal)
+    if (isModalSection)
       return emits('on-save')
 
     if (isCreatePage) {
@@ -301,7 +301,7 @@ const onSave = async (isStay?: boolean) => {
 }
 
 const onClickCancel = () => {
-  if (isModal)
+  if (isModalSection)
     return emits('on-cancel')
   redirectToListOrPrevPage()
 }
@@ -357,7 +357,7 @@ defineExpose({
   <div data-test-id="base-section-default">
     <BaseSectionLoading
       :loading="isLoadingPage || isDisableSubmitBtn"
-      :fullscreen-background="!config.isModalSection"
+      :fullscreen-background="!isModalSection"
     >
       <template #default>
         <VAlert
@@ -406,12 +406,12 @@ defineExpose({
             :can-update="canUpdate"
           >
             <hr
-              v-if="config.isModalSection"
+              v-if="isModalSection"
               class="mt-5"
             >
             <div
               class="d-flex align-center mt-6"
-              :class="{ 'px-2 mt-4 mb-4 flex-row-reverse gap-4': config.isModalSection }"
+              :class="{ 'px-2 mt-4 mb-4 flex-row-reverse gap-4': isModalSection }"
             >
               <template v-if="isCreatePage">
                 <VBtn
@@ -444,10 +444,10 @@ defineExpose({
                   :disabled="isDisableSubmit || isLoadingPage"
                   @click="onSubmit(false)"
                 >
-                  {{ isModal ? $t('action.save') : $t('action.saveAndExit') }}
+                  {{ isModalSection ? $t('action.save') : $t('action.saveAndExit') }}
                 </VBtn>
                 <VBtn
-                  v-if="!isModal"
+                  v-if="!isModalSection"
                   class="mr-4"
                   :color="VColors.Secondary"
                   :variant="VVariants.Outlined"
