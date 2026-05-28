@@ -13,7 +13,6 @@ const props = defineProps<{
 }>()
 
 const userStore = useUserStore()
-
 const { changeProject } = useChangeProject()
 
 const selectProject = computed({
@@ -24,11 +23,11 @@ const selectProject = computed({
 const cantSelect = computed(() => props.projects.length < 2)
 const isMarbella = computed(() => userStore.isMarbella)
 
-watch(() => selectProject.value.id, () => {
+watch(() => selectProject.value, () => {
   const faviconPath = userStore.selectedProjectWithoutPriority?.iconPath || '/favicon.ico'
 
   useFavicon(faviconPath)
-}, { immediate: true })
+}, { deep: true, immediate: true })
 
 watch(() => selectProject.value, project => {
   if (!project || !isMarbella.value)
