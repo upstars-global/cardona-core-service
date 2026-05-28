@@ -133,15 +133,15 @@ const fetchAction: CallableFunction = customStore?.fetchEntityList
   : baseStoreCore.fetchEntityList
 
 const deleteAction = customStore?.deleteEntity
-  ? customStore?.deleteEntity
+  ? customStore.deleteEntity
   : baseStoreCore.deleteEntity
 
 const multipleDeleteAction = customStore?.multipleDeleteEntity
-  ? customStore?.multipleDeleteEntity
+  ? customStore.multipleDeleteEntity
   : baseStoreCore.multipleDeleteEntity
 
 const fetchReportAction = customStore?.fetchReport
-  ? customStore?.fetchReport
+  ? customStore.fetchReport
   : baseStoreCore.fetchReport
 
 // Permissions

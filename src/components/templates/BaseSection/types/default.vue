@@ -95,19 +95,19 @@ const customStore: ReturnType<typeof useBaseStoreCore> = useStore ? useStore() :
 // Actions
 
 const actionCreate = customStore?.createEntity
-  ? customStore?.createEntity
+  ? customStore.createEntity
   : baseStoreCore.createEntity
 
 const actionUpdate = customStore?.updateEntity
-  ? customStore?.updateEntity
+  ? customStore.updateEntity
   : baseStoreCore.updateEntity
 
 const actionRead = customStore?.readEntity
-  ? customStore?.readEntity
+  ? customStore.readEntity
   : baseStoreCore.readEntity
 
 const actionDelete = customStore?.deleteEntity
-  ? customStore?.deleteEntity
+  ? customStore.deleteEntity
   : baseStoreCore.deleteEntity
 
 // Permissions
