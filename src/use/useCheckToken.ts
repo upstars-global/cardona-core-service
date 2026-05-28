@@ -40,9 +40,12 @@ export function useCheckToken() {
     }
   }
 
-  window.addEventListener('storage', async () => {
+  window.addEventListener('storage', async (event) => {
+    if (!event.key?.includes('auth-tokens-'))
+      return
     const isValid = await isValidLocalStorageValue()
     if (isValid)
       await checkOnActualToken()
   })
+
 }

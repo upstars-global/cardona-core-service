@@ -215,6 +215,12 @@ const onSubmit = async (isStay: boolean) => {
 
   const project = props.config?.projectFilter ? projectFilter.value.value?.alias : undefined
 
+  const hasSeo = 'seo' in form.value
+  const hasFieldTranslations = 'fieldTranslations' in form.value
+  const hasLocalisationParameters = 'localisationParameters' in form.value
+
+  const canSendSeo = isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission
+
   const formData = isUpdateSeoOnly.value
     ? {
       id: form.value.id,
@@ -226,11 +232,11 @@ const onSubmit = async (isStay: boolean) => {
     : {
       project,
       ...form.value,
-      seo: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission ? form.value.seo : null,
-      fieldTranslations: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission ? form.value.fieldTranslations : null,
-      localisationParameters: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission
-        ? form.value.localisationParameters
-        : null,
+      ...(hasSeo && { seo: canSendSeo ? form.value.seo : null }),
+      ...(hasFieldTranslations && { fieldTranslations: canSendSeo ? form.value.fieldTranslations : null }),
+      ...(hasLocalisationParameters && {
+        localisationParameters: canSendSeo ? form.value.localisationParameters : null,
+      }),
     }
 
   const transformedData = transformFormData(formData)
@@ -331,13 +337,24 @@ const projectFilter = ref(new SelectBaseField<OptionsItem>({
   clearable: false,
 }))
 
-watch(() => projectFilter.value.value, ({ alias }: ProjectInfo) => {
-  onFetchFormData(alias)
+onBeforeMount(() => {
+  const alias = (route?.query?.currentProject as string | undefined)
+    || (props.config?.projectFilter ? projectFilter.value.value?.alias : undefined)
+
+  if (alias)
+    appConfigCoreStore.setInlineProject(alias)
+})
+
+watch(() => projectFilter.value.value, (project: ProjectInfo) => {
+  if (props.config?.projectFilter)
+    appConfigCoreStore.setInlineProject(project?.alias ?? null)
+  onFetchFormData(project?.alias)
 })
 
 onBeforeUnmount(() => {
   baseSectionErrorStore.resetErrorUrls()
   textEditorStore.setVariableTextBuffer({})
+  appConfigCoreStore.setInlineProject(null)
 })
 
 defineExpose({

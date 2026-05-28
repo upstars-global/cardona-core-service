@@ -62,7 +62,7 @@ export const useAuthCoreStore = defineStore('authCore', {
 
     async setAuth(data: IAuthTokens) {
       try {
-        setAuthTokens(data)
+        await setAuthTokens(data)
         this.setAuthState(true)
         await useUserStore().fetchCurrentUser()
       }
@@ -86,10 +86,10 @@ export const useAuthCoreStore = defineStore('authCore', {
       }
     },
 
-    clearAuth() {
+    async clearAuth() {
       useCookie('userData').value = null
       useCookie('accessToken').value = null
-      clearAuthTokens()
+      await clearAuthTokens()
       this.setAuthState(false)
       useUserStore().clearProjects()
 
