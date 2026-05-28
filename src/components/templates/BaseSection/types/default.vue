@@ -337,13 +337,24 @@ const projectFilter = ref(new SelectBaseField<OptionsItem>({
   clearable: false,
 }))
 
-watch(() => projectFilter.value.value, ({ alias }: ProjectInfo) => {
-  onFetchFormData(alias)
+onBeforeMount(() => {
+  const alias = (route?.query?.currentProject as string | undefined)
+    || (props.config?.projectFilter ? projectFilter.value.value?.alias : undefined)
+
+  if (alias)
+    appConfigCoreStore.setInlineProject(alias)
+})
+
+watch(() => projectFilter.value.value, (project: ProjectInfo) => {
+  if (props.config?.projectFilter)
+    appConfigCoreStore.setInlineProject(project?.alias ?? null)
+  onFetchFormData(project?.alias)
 })
 
 onBeforeUnmount(() => {
   baseSectionErrorStore.resetErrorUrls()
   textEditorStore.setVariableTextBuffer({})
+  appConfigCoreStore.setInlineProject(null)
 })
 
 defineExpose({
