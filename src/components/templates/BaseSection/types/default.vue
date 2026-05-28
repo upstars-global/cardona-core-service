@@ -53,6 +53,7 @@ const emits = defineEmits<{
 }>()
 
 const modal = inject('modal')
+const isModalSection = inject('isInsideModal', false)
 const loaderStore = useLoaderStore()
 const baseSectionErrorStore = useBaseSectionErrorsStore()
 const route = useRoute()
@@ -67,7 +68,6 @@ const entityId: string = props.entityId || route.params?.id?.toString()
 const isRootPage: boolean = props.pageType === PageType.Root
 const isCreatePage: boolean = props.pageType === PageType.Create
 const isUpdatePage: boolean = props.pageType === PageType.Update
-const isModal = props.config?.isModalSection
 
 const {
   useStore,
@@ -215,6 +215,12 @@ const onSubmit = async (isStay: boolean) => {
 
   const project = props.config?.projectFilter ? projectFilter.value.value?.alias : undefined
 
+  const hasSeo = 'seo' in form.value
+  const hasFieldTranslations = 'fieldTranslations' in form.value
+  const hasLocalisationParameters = 'localisationParameters' in form.value
+
+  const canSendSeo = isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission
+
   const formData = isUpdateSeoOnly.value
     ? {
       id: form.value.id,
@@ -226,11 +232,11 @@ const onSubmit = async (isStay: boolean) => {
     : {
       project,
       ...form.value,
-      seo: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission ? form.value.seo : null,
-      fieldTranslations: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission ? form.value.fieldTranslations : null,
-      localisationParameters: isCreateOrUpdateSeo.value || props.config.ignoreSeoPermission
-        ? form.value.localisationParameters
-        : null,
+      ...(hasSeo && { seo: canSendSeo ? form.value.seo : null }),
+      ...(hasFieldTranslations && { fieldTranslations: canSendSeo ? form.value.fieldTranslations : null }),
+      ...(hasLocalisationParameters && {
+        localisationParameters: canSendSeo ? form.value.localisationParameters : null,
+      }),
     }
 
   const transformedData = transformFormData(formData)
@@ -269,7 +275,7 @@ const onSave = async (isStay?: boolean) => {
       customApiPrefix: props.config?.customApiPrefix,
     })
 
-    if (isModal)
+    if (isModalSection)
       return emits('on-save')
 
     if (isCreatePage) {
@@ -295,7 +301,7 @@ const onSave = async (isStay?: boolean) => {
 }
 
 const onClickCancel = () => {
-  if (isModal)
+  if (isModalSection)
     return emits('on-cancel')
   redirectToListOrPrevPage()
 }
@@ -331,13 +337,24 @@ const projectFilter = ref(new SelectBaseField<OptionsItem>({
   clearable: false,
 }))
 
-watch(() => projectFilter.value.value, ({ alias }: ProjectInfo) => {
-  onFetchFormData(alias)
+onBeforeMount(() => {
+  const alias = (route?.query?.currentProject as string | undefined)
+    || (props.config?.projectFilter ? projectFilter.value.value?.alias : undefined)
+
+  if (alias)
+    appConfigCoreStore.setInlineProject(alias)
+})
+
+watch(() => projectFilter.value.value, (project: ProjectInfo) => {
+  if (props.config?.projectFilter)
+    appConfigCoreStore.setInlineProject(project?.alias ?? null)
+  onFetchFormData(project?.alias)
 })
 
 onBeforeUnmount(() => {
   baseSectionErrorStore.resetErrorUrls()
   textEditorStore.setVariableTextBuffer({})
+  appConfigCoreStore.setInlineProject(null)
 })
 
 defineExpose({
@@ -351,7 +368,7 @@ defineExpose({
   <div data-test-id="base-section-default">
     <BaseSectionLoading
       :loading="isLoadingPage || isDisableSubmitBtn"
-      :fullscreen-background="!config.isModalSection"
+      :fullscreen-background="!isModalSection"
     >
       <template #default>
         <VAlert
@@ -400,12 +417,12 @@ defineExpose({
             :can-update="canUpdate"
           >
             <hr
-              v-if="config.isModalSection"
+              v-if="isModalSection"
               class="mt-5"
             >
             <div
               class="d-flex align-center mt-6"
-              :class="{ 'px-2 mt-4 mb-4 flex-row-reverse gap-4': config.isModalSection }"
+              :class="{ 'px-2 mt-4 mb-4 flex-row-reverse gap-4': isModalSection }"
             >
               <template v-if="isCreatePage">
                 <VBtn
@@ -438,10 +455,10 @@ defineExpose({
                   :disabled="isDisableSubmit || isLoadingPage"
                   @click="onSubmit(false)"
                 >
-                  {{ isModal ? $t('action.save') : $t('action.saveAndExit') }}
+                  {{ isModalSection ? $t('action.save') : $t('action.saveAndExit') }}
                 </VBtn>
                 <VBtn
-                  v-if="!isModal"
+                  v-if="!isModalSection"
                   class="mr-4"
                   :color="VColors.Secondary"
                   :variant="VVariants.Outlined"

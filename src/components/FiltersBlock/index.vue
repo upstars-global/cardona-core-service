@@ -17,8 +17,10 @@ const props = withDefaults(defineProps<{
   filters: BaseField[]
   isOpen?: boolean
   size?: VSizes
+  defaultSelectedFilters?: BaseField[]
 }>(), {
   size: VSizes.Medium,
+  defaultSelectedFilters: () => [],
 })
 
 const emits = defineEmits<{
@@ -90,6 +92,10 @@ onMounted(async () => {
       )
 
       emits('change-selected-filters', selectedFilters.value)
+    }
+    else if (props.defaultSelectedFilters?.length) {
+      selectedFilters.value = [...props.defaultSelectedFilters]
+      onApply()
     }
   }
 })

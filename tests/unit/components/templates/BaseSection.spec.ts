@@ -6,6 +6,7 @@ import { PageType } from '../../../../src/@model/templates/baseSection'
 import DefaultBaseSection from '../../../../src/components/templates/BaseSection/types/default.vue'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
 import { mountComponent, pushMock, readEntity, useMockForm } from '../../mocks/base-section/utils'
+import { useAppConfigCoreStore } from '../../../../src/stores/appConfigCore'
 
 vi.mock('vue', async importOriginal => {
   const vue = await importOriginal()
@@ -178,5 +179,70 @@ describe('BaseSection.vue — copy entity (forProject/fromProject)', () => {
     await flushPromises()
 
     expect(onReceiveEntityMock).not.toHaveBeenCalled()
+  })
+})
+
+describe('BaseSection.vue — inline project (currentProject query)', () => {
+  const mockEntity = { id: '123', isActive: true }
+
+  const setupInlineRoute = (query: Record<string, string>) => {
+    vi.mocked(useRoute).mockReturnValueOnce({
+      params: { id: '123' },
+      name: 'TestRoute',
+      query,
+    })
+
+    vi.mocked(useRouter).mockReturnValueOnce({
+      push: pushMock,
+      go: vi.fn(),
+      replace: vi.fn().mockResolvedValue(undefined),
+      options: { history: { state: { back: null } } },
+    })
+  }
+
+  beforeEach(() => {
+    readEntity.mockReset()
+    readEntity.mockResolvedValue(mockEntity)
+  })
+
+  it('Sets inline project override from currentProject query on mount', async () => {
+    const appConfigCoreStore = useAppConfigCoreStore()
+    const setInlineProjectSpy = vi.spyOn(appConfigCoreStore, 'setInlineProject')
+
+    setupInlineRoute({ currentProject: 'bond_staging' })
+
+    mountComponent({ pageType: PageType.Create })
+
+    await flushPromises()
+
+    expect(setInlineProjectSpy).toHaveBeenCalledWith('bond_staging')
+  })
+
+  it('Clears inline project override on unmount', async () => {
+    const appConfigCoreStore = useAppConfigCoreStore()
+    const setInlineProjectSpy = vi.spyOn(appConfigCoreStore, 'setInlineProject')
+
+    setupInlineRoute({ currentProject: 'bond_staging' })
+
+    const wrapper = mountComponent({ pageType: PageType.Create })
+
+    await flushPromises()
+
+    wrapper.unmount()
+
+    expect(setInlineProjectSpy).toHaveBeenLastCalledWith(null)
+  })
+
+  it('Does not set inline project when currentProject query is absent', async () => {
+    const appConfigCoreStore = useAppConfigCoreStore()
+    const setInlineProjectSpy = vi.spyOn(appConfigCoreStore, 'setInlineProject')
+
+    setupInlineRoute({})
+
+    mountComponent({ pageType: PageType.Create })
+
+    await flushPromises()
+
+    expect(setInlineProjectSpy).not.toHaveBeenCalled()
   })
 })
