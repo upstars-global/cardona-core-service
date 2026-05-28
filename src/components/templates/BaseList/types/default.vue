@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import {debounce, findIndex, has, isUndefined} from 'lodash'
+import { debounce, findIndex, has, isUndefined } from 'lodash'
 import type { ExportFormat, IBaseListConfig, ProjectsFilterOption } from '../../../../@model/templates/baseList'
 import { BaseListSlots, ProjectsFilterMode } from '../../../../@model/templates/baseList'
 import CTable from '../../../CTable/index.vue'
@@ -63,6 +63,7 @@ import { mapSortData } from '../сomposables/sorting'
 import { transformFilters } from '../сomposables/filters'
 import { useInlineFilters } from '../сomposables/inlineFilters'
 import InlineFilters from '../_components/InlineFilters.vue'
+import ImageDetailModal from '../_components/ImageDetailModal.vue'
 
 defineOptions({
   name: 'DefaultBaseList',
@@ -316,9 +317,8 @@ const combineFilter = (
   const existProjectInPath = route.path?.includes(`/${projectAlias}/`)
   const exitsProjectParam = has(filters, 'project') && filters.project
 
-  if (existProjectInPath && !exitsProjectParam) {
+  if (existProjectInPath && !exitsProjectParam)
     filters.project = projectAlias
-  }
 
   return Object.values(filters).some(v => !isUndefined(v)) ? filters : undefined
 }
@@ -674,6 +674,13 @@ onBeforeUnmount(() => {
 
 const filtersBlockRef = ref(null)
 
+const imagePath = ref('')
+
+const showDetailImage = (data: string) => {
+  imagePath.value = data
+  modal.showModal('image-detail', { imagePath: data })
+}
+
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
 
@@ -682,6 +689,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     class="d-flex flex-column default__base-list"
     data-test-id="default-base-list"
   >
+    <ImageDetailModal :image-path="imagePath" />
     <RemoveModal
       :config="config"
       :remove-modal-id="removeModalId"
@@ -1083,6 +1091,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :image-path="item.raw[field.key]?.imagePath"
             :size="field.size"
             :compression-for-preview="item.raw[field.key]?.compressionForPreview || 0"
+            @show-modal="showDetailImage"
           />
 
           <DatePeriodField
@@ -1314,6 +1323,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :image-path="item.raw[field.key]?.imagePath"
             :size="field.size"
             :compression-for-preview="item.raw[field.key]?.compressionForPreview || 0"
+            @show-modal="showDetailImage"
           />
 
           <DatePeriodField
