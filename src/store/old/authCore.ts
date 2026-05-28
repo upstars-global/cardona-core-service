@@ -53,7 +53,7 @@ export default {
 
     async setAuth({ commit, dispatch }, data: IAuthTokens) {
       try {
-        setAuthTokens(data)
+        await setAuthTokens(data)
 
         commit('SET_AUTH', true)
         await useUserStore().fetchCurrentUser()
@@ -82,10 +82,10 @@ export default {
       }
     },
 
-    clearAuth({ commit, dispatch }) {
+    async clearAuth({ commit, dispatch }) {
       useCookie('userData').value = null
       useCookie('accessToken').value = null
-      clearAuthTokens()
+      await clearAuthTokens()
       commit('SET_AUTH', false)
       dispatch('filtersCore/clearLocalDefaultFilters', null, { root: true })
     },

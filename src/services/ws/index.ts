@@ -22,14 +22,17 @@ class WSService {
   static async connect(channel, { needRefresh, stores }: { needRefresh?: boolean; stores: Record<string, any> }) {
     this.WSchannel = channel
     this.stores = stores
-    if (!checkIsLoggedIn() || !getAccessToken() || !getRefreshToken())
+
+    const accessToken = await getAccessToken()
+    const refreshToken = await getRefreshToken()
+    if (!checkIsLoggedIn() || !accessToken || !refreshToken)
       return
 
     async function getToken() {
       const data: {
         accessToken: string
         refreshToken: string
-      } = await useAuthCoreStore().refreshAuth(getRefreshToken())
+      } = await useAuthCoreStore().refreshAuth(await getRefreshToken())
 
       return data?.accessToken
     }
@@ -44,7 +47,7 @@ class WSService {
 
     const client = new Centrifuge(centrifugeUrl, {
       debug: true,
-      token: refreshAuthToken || getAccessToken(),
+      token: refreshAuthToken || accessToken,
       getToken,
     })
 
