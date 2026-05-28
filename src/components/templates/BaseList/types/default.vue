@@ -209,14 +209,7 @@ watch(
 const selectedFields = ref<TableField[]>([...fields])
 
 const normalizedEntityName = computed(() => {
-  const index = entityName.indexOf('-') + 1
-  if (index <= 0)
-    return entityName
-
-  return entityName.replace(
-    entityName[index],
-    entityName[index].toLowerCase(),
-  )
+  return entityName.replace(/-(.)/g, (_, char) => '-' + char.toLowerCase())
 })
 
 const entityUrl = computed(() => {
