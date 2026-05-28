@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { VColors } from '../../../@model/vuetify'
 
 interface Props {
@@ -15,6 +15,12 @@ const canShowSlot = computed(() => {
 
   return true
 })
+
+const hasLayoutContent = ref(false)
+
+onMounted(() => {
+  hasLayoutContent.value = !!document.querySelector('.layout-page-content')
+})
 </script>
 
 <template>
@@ -23,7 +29,7 @@ const canShowSlot = computed(() => {
       <slot />
     </div>
 
-    <Teleport v-if="fullscreenBackground" to=".layout-page-content">
+    <Teleport v-if="fullscreenBackground && hasLayoutContent" to=".layout-page-content">
       <div
         v-if="props.loading"
         class="custom-overlay custom-overlay--fullscreen d-flex justify-center align-center"
