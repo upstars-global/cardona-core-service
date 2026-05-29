@@ -23,12 +23,15 @@ const onImageLoad = () => {
     isImageLoaded.value = true
   }, 400)
 }
+
+const onHide = () => isImageLoaded.value = false
 </script>
 
 <template>
   <BaseModal
     :id="ModalsId.ImageDetailModal"
     :size="ModalSizes.FullScreen"
+    @hide="onHide"
   >
     <template #default="{ payload }">
       <div class="image-modal-content">
