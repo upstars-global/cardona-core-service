@@ -3,4 +3,5 @@ export enum ModalsId {
   ConfirmModal = 'confirm-modal',
   UploadImage = 'upload-image',
   MultipleRemoveList = 'multiple-remove-list-modal',
+  ImageDetailModal = 'image-detail-modal',
 }

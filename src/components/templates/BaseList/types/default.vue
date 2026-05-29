@@ -64,6 +64,7 @@ import { transformFilters } from '../сomposables/filters'
 import { useInlineFilters } from '../сomposables/inlineFilters'
 import InlineFilters from '../_components/InlineFilters.vue'
 import ImageDetailModal from '../_components/ImageDetailModal.vue'
+import { ModalsId } from '../../../../@model/modalsId'
 
 defineOptions({
   name: 'DefaultBaseList',
@@ -674,11 +675,8 @@ onBeforeUnmount(() => {
 
 const filtersBlockRef = ref(null)
 
-const imagePath = ref('')
-
-const showDetailImage = (data: string) => {
-  imagePath.value = data
-  modal.showModal('image-detail', { imagePath: data })
+const showDetailImage = (imagePath: string) => {
+  modal.showModal(ModalsId.ImageDetailModal, { imagePath })
 }
 
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
@@ -689,7 +687,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     class="d-flex flex-column default__base-list"
     data-test-id="default-base-list"
   >
-    <ImageDetailModal :image-path="imagePath" />
+    <ImageDetailModal />
     <RemoveModal
       :config="config"
       :remove-modal-id="removeModalId"

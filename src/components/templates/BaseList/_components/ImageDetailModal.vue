@@ -2,16 +2,11 @@
 import { ref } from 'vue'
 import BaseModal from '../../../BaseModal/index.vue'
 import { ModalSizes, VSizes } from '../../../../@model/vuetify'
+import { ModalsId } from '../../../../@model/modalsId'
 
 defineOptions({
   name: 'ImageDetailModal',
 })
-
-defineProps<Props>()
-
-interface Props {
-  imagePath: string
-}
 
 const SPINNER_HEIGHT = 200
 
@@ -32,12 +27,11 @@ const onImageLoad = () => {
 
 <template>
   <BaseModal
-    id="image-detail"
+    :id="ModalsId.ImageDetailModal"
     :size="ModalSizes.FullScreen"
   >
     <template #default="{ payload }">
       <div class="image-modal-content">
-        {{ payload }}
         <div
           ref="containerRef"
           class="image-container"
@@ -51,12 +45,12 @@ const onImageLoad = () => {
             <VProgressCircular
               indeterminate
               :size="VSizes.Large"
-            / >
+            />
           </div>
           <img
             ref="imageRef"
             data-test-id="image-detail"
-            :src="payload.imagePath"
+            :src="payload?.imagePath"
             alt="full img"
             class="full-size-img"
             @load="onImageLoad"
