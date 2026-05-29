@@ -17,7 +17,7 @@ withDefaults(defineProps<{
 })
 
 defineEmits<{
-  confirmed: [hide: Function]
+  confirmed: { payload: unknown; hide: Function } | [CallableFunction]
 }>()
 </script>
 
@@ -33,7 +33,7 @@ defineEmits<{
         {{ description }}
       </p>
     </template>
-    <template #modal-footer="{ action } : BaseModalDefaultPropsOfSlot">
+    <template #modal-footer="{ action, payload = '' } : BaseModalDefaultPropsOfSlot">
       <ModalFooter
         :cancel="{
           label: $t('action.cancel'),
@@ -45,7 +45,7 @@ defineEmits<{
           loading: isLoading,
         }"
         @on-cancel="action.hide"
-        @on-accept="$emit('confirmed', action.hide)"
+        @on-accept="$emit('confirmed', payload ? { payload, hide: action.hide } : action.hide)"
       />
     </template>
   </BaseModal>
