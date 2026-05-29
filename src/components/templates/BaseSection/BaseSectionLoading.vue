@@ -24,7 +24,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="position-relative overflow-hidden">
+  <div class="position-relative">
     <div v-show="canShowSlot">
       <slot />
     </div>
