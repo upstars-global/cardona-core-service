@@ -24,6 +24,7 @@ body[data-layout="default"] {
     background-color: rgb(var(--v-theme-surface))!important;
     border-bottom-right-radius: 12px;
     border-bottom-left-radius: 12px;
+    overflow: hidden;
   }
 
   .layout-footer {
