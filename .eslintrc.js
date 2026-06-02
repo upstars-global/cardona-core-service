@@ -3,17 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: [
-    '@antfu/eslint-config-vue',
-    'plugin:vue/vue3-recommended',
-    'plugin:import/recommended',
-    'plugin:import/typescript',
-    'plugin:promise/recommended',
-    'plugin:sonarjs/recommended',
-    'plugin:@typescript-eslint/recommended',
-
-    // 'plugin:unicorn/recommended',
-  ],
+  extends: ['@antfu/eslint-config-vue', 'plugin:vue/vue3-recommended', 'plugin:import/recommended', 'plugin:import/typescript', 'plugin:promise/recommended', 'plugin:sonarjs/recommended', 'plugin:@typescript-eslint/recommended', 'plugin:storybook/recommended'],
   parser: 'vue-eslint-parser',
   parserOptions: {
     ecmaVersion: 13,
