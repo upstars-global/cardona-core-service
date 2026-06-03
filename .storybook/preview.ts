@@ -9,6 +9,10 @@ import * as directives from 'vuetify/directives'
 
 // Vuetify base styles (must come before project overrides)
 import 'vuetify/styles'
+// Iconify icon definitions — all .tabler-* and .custom-* mask-image classes.
+// This is the bundled output of `npm run build:icons` and must be loaded
+// before any component renders a <v-icon>, otherwise icons appear as empty boxes.
+import '../src/plugins/iconify/icons.css'
 // Vuetify component overrides (@core)
 import '../src/@core/scss/template/libs/vuetify/index.scss'
 // Project-level component overrides

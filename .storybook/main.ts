@@ -35,9 +35,12 @@ const config: StorybookConfig = {
       css: {
         preprocessorOptions: {
           scss: {
-            // Lets Sass resolve  @import "@core/..."  and  @use "@layouts/..."
-            // inside .scss files without relying solely on Vite's importer bridge.
-            loadPaths: [r('../src')],
+            // Vite's CSS plugin sets includePaths: ["node_modules"] by default but the
+            // user-provided options are spread AFTER it, replacing that default.
+            // We must include node_modules explicitly so Sass can still resolve
+            // "vuetify/lib/styles/tools/functions" and similar package imports,
+            // while also resolving bare "@core/..." and "@layouts/..." paths from src/.
+            includePaths: [r('../src'), 'node_modules'],
           },
         },
       },
