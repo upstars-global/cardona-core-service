@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { VColors } from '../../../@model/vuetify'
 
 interface Props {
@@ -15,6 +15,12 @@ const canShowSlot = computed(() => {
 
   return true
 })
+
+const hasLayoutContent = ref(false)
+
+onMounted(() => {
+  hasLayoutContent.value = !!document.querySelector('.layout-page-content')
+})
 </script>
 
 <template>
@@ -23,13 +29,24 @@ const canShowSlot = computed(() => {
       <slot />
     </div>
 
+    <Teleport v-if="fullscreenBackground && hasLayoutContent" to=".layout-page-content">
+      <div
+        v-if="props.loading"
+        class="custom-overlay custom-overlay--fullscreen d-flex justify-center align-center"
+        data-test-id="loader"
+      >
+        <VProgressCircular
+          size="40"
+          indeterminate
+          :color="VColors.Primary"
+        />
+      </div>
+    </Teleport>
+
     <div
-      v-if="props.loading"
+      v-else-if="props.loading"
       class="custom-overlay d-flex justify-center align-center"
       data-test-id="loader"
-      :class="{
-        'custom-overlay--fullscreen': fullscreenBackground,
-      }"
     >
       <VProgressCircular
         size="40"
@@ -46,14 +63,12 @@ const canShowSlot = computed(() => {
   inset: 0;
   z-index: 10;
   background-color: white;
-
 }
 
 .custom-overlay--fullscreen {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 90vh;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background-color: white;
 }
 </style>

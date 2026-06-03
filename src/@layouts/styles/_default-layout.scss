@@ -12,6 +12,7 @@ body {
 .layout-page-content {
   @include mixins.boxed-content(true);
 
+  position: relative;
   flex-grow: 1;
 
   // TODO: Use grid gutter variable here
