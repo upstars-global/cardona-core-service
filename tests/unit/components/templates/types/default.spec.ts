@@ -38,6 +38,7 @@ const mountComponent = (props = {}, global = {}, slots = {}) =>
     plugins: [mockStore, router],
     stubs: {
       VBtn: { template: '<button><slot /></button>' },
+      Teleport: { template: '<div><slot /></div>' },
     },
     ...global,
     provide: { modal: mockModal, ...(global.provide ?? {}) },

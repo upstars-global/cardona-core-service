@@ -42,9 +42,14 @@ export const setTabError = (fieldName: string, form: Ref<Record<string, unknown>
     tabButton && tabButton.click()
 
     nextTick(() => {
-      fieldElement.scrollIntoView({
-        block: 'start',
-      })
+      const rect = fieldElement.getBoundingClientRect()
+      const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight
+
+      if (!isVisible) {
+        fieldElement.scrollIntoView({
+          block: 'start',
+        })
+      }
     })
   }
 }
