@@ -46,6 +46,7 @@ export interface UseListType<
   readonly beforeRemoveCallback?: (item: ItemModel) => boolean
   readonly ListItemModel?: new (...args: any[]) => ItemModel
   readonly canUpdateCb?: (item: ItemModel) => boolean
+  readonly canCopyCb?: (item: ItemModel) => boolean
   readonly canRemoveCb?: (item: ItemModel) => boolean
   readonly useStore?: BaseListStore
 }

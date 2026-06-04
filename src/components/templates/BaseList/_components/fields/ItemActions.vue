@@ -20,6 +20,7 @@ interface Props {
   canCreate: boolean
   getUpdateRoute: (item: { id: string }) => Location
   canRemoveItem?: boolean
+  canCopyItem?: boolean
 }
 
 interface Emits {
@@ -32,6 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
   canUpdateItem: false,
   canUpdateSeo: false,
   canCreate: false,
+  canCopyItem: true,
 })
 
 const emits = defineEmits<Emits>()
@@ -51,7 +53,7 @@ const isShowActions = computed(() => {
   return [
     props.canUpdate && props.canUpdateItem,
     props.canUpdateSeo,
-    props.canCreate && props.config.createFromCopy,
+    props.canCreate && props.config.createFromCopy && props.canCopyItem,
     props.canRemoveItem,
     isExistsActionItemsSlot.value,
   ].some(Boolean)
@@ -133,7 +135,7 @@ const onClickDetails = () => router.push({ name: props.detailsPageName, params: 
         </VListItemTitle>
       </VListItem>
       <ItemActionCopy
-        v-if="canCreate && config.createFromCopy"
+        v-if="canCreate && config.createFromCopy && canCopyItem"
         :item="item"
         :create-page-name="createPageName"
         :copy-for-all-projects="config.copyForAllProjects"
