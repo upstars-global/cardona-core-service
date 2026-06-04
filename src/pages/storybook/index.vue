@@ -14,7 +14,7 @@ definePage({ name: 'storybook' })
 
 <style scoped>
 .storybook-wrapper {
-  height: calc(100vh - 64px);
+  height: calc(100vh - 100px);
 }
 
 .storybook-frame {

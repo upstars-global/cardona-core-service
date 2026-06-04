@@ -11,12 +11,17 @@ export function useAppsAndPages() {
       {
         title: 'page.groupFragment.demoPage',
         to: { name: 'PermissionPage', params: { id: 'demo' } },
-        icon: { icon: 'tabler-box' },
+        icon: { icon: 'tabler-lock-access' },
       },
       {
         title: 'Constructor',
         to: { name: 'Constructor' },
-        icon: { icon: 'tabler-box' },
+        icon: { icon: 'tabler-brand-databricks' },
+      },
+      {
+        title: 'Storybook',
+        to: { name: 'Storybook' },
+        icon: { icon: 'tabler-book' },
       },
     ]),
   }
