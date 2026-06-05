@@ -37,7 +37,7 @@ const onCloseModal = (hide: Function) => {
   hide()
 }
 
-const isLoading = computed(() => props?.loadingUrls ? loaderStore.isLoadingEndpoint(props?.loadingUrls) : '')
+const isLoading = computed(() => props?.loadingUrls ? loaderStore.isLoadingEndpoint(props?.loadingUrls) : false)
 
 const getButtonConfirm = (text: string) => text || props.confirmBtnText
 </script>
