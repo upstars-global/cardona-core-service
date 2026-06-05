@@ -46,7 +46,7 @@ export default function useToastService() {
 
   const toastError = (codes: string[], options: ToastOptions = defaultOptions) => {
     const isListErrors = codes.length > 1
-    const fullKey = isListErrors ? 'toast.error.amount' : `toast.error.${codes[0]}`
+    const fullKey = isListErrors ? 'toast.error.amount' : `toast.error.${codes[0].localizationKey}`
     const fallbackKey = `toast.error.${options?.defaultCode}`
 
     const message = safeTe(fullKey)

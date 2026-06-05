@@ -5,7 +5,7 @@ interface Props {
   variant: string
   icon?: string
   title?: string
-  text?: string
+  text?: string[]
   hideClose?: boolean
 }
 
@@ -38,11 +38,11 @@ defineProps<Props>()
             data-test-id="toast-title"
             v-text="title"
           />
-          <small
-            v-if="text"
-            class="d-inline-block text-body text-body-1"
-            v-text="text"
-          />
+          <template v-if="text.length > 1">
+            <div class="text-body-1 text-error font-weight-semi-bold" v-for="(item, key) in text" :key="key">
+              <span  :class="IconsList.PointFilled"></span><span> {{item}}</span>
+            </div>
+          </template>
         </div>
       </div>
 
@@ -79,7 +79,7 @@ defineProps<Props>()
 }
 
 .toastification-close-icon {
- color: rgb(var(--v-theme-on-surface))
+  color: rgb(var(--v-theme-on-surface))
 }
 .toastification-title {
   color: inherit;
