@@ -1,51 +1,74 @@
 <script setup lang="ts">
-import { type TranslateResult } from 'vue-i18n'
-import { ModalSizes, VColors } from '../../@model/vuetify'
-import type { BaseModalDefaultPropsOfSlot } from '../../@model/modal'
-import BaseModal from './index.vue'
+import { computed } from 'vue'
+import { VColors } from '../../@model/vuetify'
+import BaseModal from '../BaseModal/index.vue'
+import type { ConfirmModalPropsOfSlotDefault, ModalActionsFromSlot } from '../../@model/modal'
+import { i18n } from '../../plugins/i18n'
+import { useLoaderStore } from '../../stores/loader'
 import ModalFooter from './ModalFooter.vue'
 
-withDefaults(defineProps<{
+interface Props {
   modalId: string
-  title: TranslateResult
-  description: TranslateResult
-  actionBtnText: TranslateResult
-  actionBtnColor: VColors
-  isLoading: boolean
-}>(), {
-  actionBtnColor: VColors.Error,
+  title?: string
+  description?: string
+  confirmBtnText?: string
+  loadingUrls?: string[] | string
+}
+
+interface Emits {
+  (event: 'on-click-modal-ok', payload: Pick<ModalActionsFromSlot, 'hide'>): void
+  (event: 'on-close-modal'): void
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  confirmBtnText: i18n.t('action.add'),
 })
 
-defineEmits<{
-  confirmed: { payload: unknown; hide: Function } | [CallableFunction]
-}>()
+const emits = defineEmits<Emits>()
+
+const loaderStore = useLoaderStore()
+
+const onClickModalOk = async (hide: Function) => {
+  emits('on-click-modal-ok', { hide })
+}
+
+const onCloseModal = (hide: Function) => {
+  emits('on-close-modal')
+  hide()
+}
+
+const isLoading = computed(() => loaderStore.isLoadingEndpoint(props.loadingUrls))
+
+const getButtonConfirm = (text: string) => text || props.confirmBtnText
 </script>
 
 <template>
   <BaseModal
     :id="modalId"
     :title="title"
-    :size="ModalSizes.Small"
-    centered
+    data-test-id="base-modal"
   >
-    <template #default>
-      <p data-test-id="modal-description">
-        {{ description }}
-      </p>
+    <template #default="{ action, payload }: ConfirmModalPropsOfSlotDefault">
+      <div>
+        <span
+          class="text-body-1"
+          data-test-id="modal-description"
+        >{{ payload?.description || description }}</span>
+      </div>
     </template>
-    <template #modal-footer="{ action, payload = '' } : BaseModalDefaultPropsOfSlot">
+    <template #modal-footer="{ action, payload }">
       <ModalFooter
         :cancel="{
           label: $t('action.cancel'),
+          disabled: isLoading,
         }"
         :accept="{
-          color: actionBtnColor,
-          label: actionBtnText,
+          color: payload?.btnConfirmColor || VColors.Primary,
+          label: getButtonConfirm(payload?.btnConfirmText),
           disabled: isLoading,
-          loading: isLoading,
         }"
-        @on-cancel="action.hide"
-        @on-accept="$emit('confirmed', payload ? { payload, hide: action.hide } : action.hide)"
+        @on-cancel="onCloseModal(action.hide)"
+        @on-accept="onClickModalOk(action.hide)"
       />
     </template>
   </BaseModal>
