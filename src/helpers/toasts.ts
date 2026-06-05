@@ -1,5 +1,6 @@
 import { useToast } from 'vue-toastification'
 import ToastificationContent from '../components/templates/toast/ToastificationContent.vue'
+import ToastificationErrorContent from '../components/templates/toast/ToastificationErrorContent.vue'
 import { IconsList } from '../@model/enums/icons'
 import type { VColors } from '../@model/vuetify'
 import { i18n } from '@/plugins/i18n'
@@ -43,20 +44,24 @@ export default function useToastService() {
     return translated !== '' && translated !== key
   }
 
-  const toastError = (code: string, options: ToastOptions = defaultOptions) => {
-    const fullKey = `toast.error.${code}`
+  const toastError = (codes: string[], options: ToastOptions = defaultOptions) => {
+    const isListErrors = codes.length > 1
+    const fullKey = isListErrors ? 'toast.error.amount' : `toast.error.${codes[0]}`
     const fallbackKey = `toast.error.${options?.defaultCode}`
 
     const message = safeTe(fullKey)
-      ? i18n.t(fullKey, options)
+      ? i18n.t(fullKey, { ...options, amount: codes.length })
       : options?.defaultText || i18n.t(fallbackKey, options)
 
+    const text = isListErrors ? codes.map(code => i18n.t(`toast.error.${code.localizationKey}`, code.options)) : ''
+
     toast({
-      component: ToastificationContent,
+      component: ToastificationErrorContent,
       props: {
         title: message,
         icon: IconsList.AlertTriangleIcon,
         variant: 'error',
+        text,
       },
     })
   }
