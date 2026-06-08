@@ -2,16 +2,27 @@ import type { Ref } from 'vue'
 import { nextTick } from 'vue'
 
 export const useInfiniteScroll = (loadMoreCb: Function, loadRef: Ref<HTMLElement | undefined>) => {
+  let isLoading = false
+
   const infiniteScroll = async (entries: IntersectionObserverEntry[]) => {
     const [{ isIntersecting, target }] = entries
 
-    if (isIntersecting) {
+    if (isIntersecting && !isLoading) {
+      isLoading = true
       const ul = (target as HTMLElement).offsetParent as HTMLElement
       const scrollTop = ul.scrollTop
 
-      await loadMoreCb()
-      await nextTick()
-      ul.scrollTop = scrollTop
+      try {
+        await loadMoreCb()
+        await nextTick()
+        requestAnimationFrame(() => {
+          ul.scrollTop = scrollTop
+          isLoading = false
+        })
+      }
+      catch {
+        isLoading = false
+      }
     }
   }
 
