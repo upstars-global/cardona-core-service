@@ -112,6 +112,7 @@ export default defineConfig({
   },
   define: { 'process.env': {} },
   resolve: {
+    dedupe: ['countries-list'],
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@themeConfig': fileURLToPath(new URL('./themeConfig.ts', import.meta.url)),
