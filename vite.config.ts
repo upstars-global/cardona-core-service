@@ -133,6 +133,12 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: ['vuetify'],
+    include: [
+      'vue-cleave-component',
+      'vue-prism-component',
+      'froala-editor',
+      'countries-list',
+    ],
     entries: [
       './src/**/*.vue',
     ],
