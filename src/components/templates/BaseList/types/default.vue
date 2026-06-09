@@ -131,17 +131,21 @@ const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 const isExistsDetailsPage = checkExistsPage(DetailsPageName)
 
 // Actions
-const fetchAction: CallableFunction = useStore
-  ? customStore?.fetchEntityList
+const fetchAction: CallableFunction = customStore?.fetchEntityList
+  ? customStore.fetchEntityList
   : baseStoreCore.fetchEntityList
 
-const deleteAction = useStore
-  ? customStore?.deleteEntity
+const deleteAction = customStore?.deleteEntity
+  ? customStore.deleteEntity
   : baseStoreCore.deleteEntity
 
-const multipleDeleteAction = useStore
-  ? customStore?.multipleDeleteEntity
+const multipleDeleteAction = customStore?.multipleDeleteEntity
+  ? customStore.multipleDeleteEntity
   : baseStoreCore.multipleDeleteEntity
+
+const fetchReportAction = customStore?.fetchReport
+  ? customStore.fetchReport
+  : baseStoreCore.fetchReport
 
 // Permissions
 const { canCreate, canUpdate, canUpdateSeo, canRemove, canExport }
@@ -441,7 +445,7 @@ const onExportFormatSelected = async (format: ExportFormat) => {
   const filter = setRequestFilters()
   const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
 
-  await baseStoreCore.fetchReport({
+  await fetchReportAction({
     type: entityName,
     data: {
       filter: {
