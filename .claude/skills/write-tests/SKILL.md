@@ -8,7 +8,6 @@ This skill guides writing unit tests for the `cardona-core-service` project. Fol
 
 Use this skill when the user asks to:
 - Write tests for a component, helper, composable, or store
-- Add test coverage for existing code
 - Create new spec files
 
 ---
