@@ -17,7 +17,7 @@ initConfigStore()
 
 const configStore = useConfigStore()
 
-const { activeLayout } = useLayoutChanger(CoreLayoutsMap, CoreLayouts.Island)
+const { activeLayout } = useLayoutChanger(CoreLayoutsMap)
 
 const { name } = useDisplay()
 </script>

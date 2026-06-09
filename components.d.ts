@@ -418,6 +418,7 @@ declare module 'vue' {
     IconFile: typeof import('./src/components/NotificationExport/list/IconFile.vue')['default']
     IconStatus: typeof import('./src/components/NotificationExport/list/IconStatus.vue')['default']
     ImageDetailField: typeof import('./src/components/templates/BaseList/_components/fields/ImageDetailField.vue')['default']
+    ImageDetailModal: typeof import('./src/components/templates/BaseList/_components/ImageDetailModal.vue')['default']
     ImageField: typeof import('./src/components/templates/BaseList/_components/fields/ImageField.vue')['default']
     ImageItem: typeof import('./src/components/UploadImage/ImageItem.vue')['default']
     InlineFilters: typeof import('./src/components/templates/BaseList/_components/InlineFilters.vue')['default']

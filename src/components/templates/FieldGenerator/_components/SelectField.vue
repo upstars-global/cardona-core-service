@@ -126,9 +126,7 @@ const {
   setupObserver,
   abortObserver,
 } = useInfiniteScroll(
-  () => {
-    props.field.loadMore(searchValue.value)
-  },
+  () => props.field.loadMore(searchValue.value),
   loadRef,
 )
 </script>

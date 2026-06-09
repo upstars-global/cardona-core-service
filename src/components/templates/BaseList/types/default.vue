@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import {debounce, findIndex, has, isUndefined} from 'lodash'
+import { debounce, findIndex, has, isUndefined } from 'lodash'
 import type { ExportFormat, IBaseListConfig, ProjectsFilterOption } from '../../../../@model/templates/baseList'
 import { BaseListSlots, ProjectsFilterMode } from '../../../../@model/templates/baseList'
 import CTable from '../../../CTable/index.vue'
@@ -63,6 +63,8 @@ import { mapSortData } from '../сomposables/sorting'
 import { transformFilters } from '../сomposables/filters'
 import { useInlineFilters } from '../сomposables/inlineFilters'
 import InlineFilters from '../_components/InlineFilters.vue'
+import ImageDetailModal from '../_components/ImageDetailModal.vue'
+import { ModalsId } from '../../../../@model/modalsId'
 
 defineOptions({
   name: 'DefaultBaseList',
@@ -129,17 +131,21 @@ const isExistsUpdatePage = checkExistsPage(UpdatePageName)
 const isExistsDetailsPage = checkExistsPage(DetailsPageName)
 
 // Actions
-const fetchAction: CallableFunction = useStore
-  ? customStore?.fetchEntityList
+const fetchAction: CallableFunction = customStore?.fetchEntityList
+  ? customStore.fetchEntityList
   : baseStoreCore.fetchEntityList
 
-const deleteAction = useStore
-  ? customStore?.deleteEntity
+const deleteAction = customStore?.deleteEntity
+  ? customStore.deleteEntity
   : baseStoreCore.deleteEntity
 
-const multipleDeleteAction = useStore
-  ? customStore?.multipleDeleteEntity
+const multipleDeleteAction = customStore?.multipleDeleteEntity
+  ? customStore.multipleDeleteEntity
   : baseStoreCore.multipleDeleteEntity
+
+const fetchReportAction = customStore?.fetchReport
+  ? customStore.fetchReport
+  : baseStoreCore.fetchReport
 
 // Permissions
 const { canCreate, canUpdate, canUpdateSeo, canRemove, canExport }
@@ -313,9 +319,8 @@ const combineFilter = (
   const existProjectInPath = route.path?.includes(`/${projectAlias}/`)
   const exitsProjectParam = has(filters, 'project') && filters.project
 
-  if (existProjectInPath && !exitsProjectParam) {
+  if (existProjectInPath && !exitsProjectParam)
     filters.project = projectAlias
-  }
 
   return Object.values(filters).some(v => !isUndefined(v)) ? filters : undefined
 }
@@ -440,7 +445,7 @@ const onExportFormatSelected = async (format: ExportFormat) => {
   const filter = setRequestFilters()
   const sort = sortData.value.isNotEmpty ? [new ListSort({ sortBy: sortData.value[0].key, sortDesc: sortData.value[0].order })] : undefined
 
-  await baseStoreCore.fetchReport({
+  await fetchReportAction({
     type: entityName,
     data: {
       filter: {
@@ -671,6 +676,10 @@ onBeforeUnmount(() => {
 
 const filtersBlockRef = ref(null)
 
+const showDetailImage = (imagePath: string) => {
+  modal.showModal(ModalsId.ImageDetailModal, { imagePath })
+}
+
 defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sortData, items, isSidebarShown, searchQuery })
 </script>
 
@@ -679,6 +688,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
     class="d-flex flex-column default__base-list"
     data-test-id="default-base-list"
   >
+    <ImageDetailModal />
     <RemoveModal
       :config="config"
       :remove-modal-id="removeModalId"
@@ -1080,6 +1090,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :image-path="item.raw[field.key]?.imagePath"
             :size="field.size"
             :compression-for-preview="item.raw[field.key]?.compressionForPreview || 0"
+            @show-modal="showDetailImage"
           />
 
           <DatePeriodField
@@ -1312,6 +1323,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :image-path="item.raw[field.key]?.imagePath"
             :size="field.size"
             :compression-for-preview="item.raw[field.key]?.compressionForPreview || 0"
+            @show-modal="showDetailImage"
           />
 
           <DatePeriodField
