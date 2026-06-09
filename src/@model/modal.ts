@@ -7,6 +7,7 @@ export interface ModalActionsFromSlot {
 
 export interface BaseModalDefaultPropsOfSlot {
   action: ModalActionsFromSlot
+  payload?: unknown
 }
 
 export interface ConfirmModalPropsOfSlotDefault {
