@@ -43,7 +43,7 @@ const onRemove = () => {
     :description="multipleRemoveDescription"
     :modal-id="ModalsId.MultipleRemoveList"
     :action-btn-text="i18n.t('action.remove')"
-    @confirmed="emits('on-remove')"
+    @on-click-modal-ok="emits('on-remove')"
   />
   <div class="table-settings w-100 align-center justify-space-between">
     <span data-test-id="number-selected">
