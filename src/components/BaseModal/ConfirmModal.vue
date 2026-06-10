@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { VColors } from '../../@model/vuetify'
 import BaseModal from '../BaseModal/index.vue'
 import type { ConfirmModalPropsOfSlotDefault, ModalActionsFromSlot } from '../../@model/modal'
 import { i18n } from '../../plugins/i18n'
+import { useLoaderStore } from '../../stores/loader'
 import ModalFooter from './ModalFooter.vue'
 
 interface Props {
@@ -10,6 +12,7 @@ interface Props {
   title?: string
   description?: string
   confirmBtnText?: string
+  loadingUrls?: string[] | string
 }
 
 interface Emits {
@@ -23,6 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<Emits>()
 
+const loaderStore = useLoaderStore()
+
 const onClickModalOk = async (hide: Function) => {
   emits('on-click-modal-ok', { hide })
 }
@@ -33,6 +38,8 @@ const onCloseModal = (hide: Function) => {
 }
 
 const getButtonConfirm = (text: string) => text || props.confirmBtnText
+
+const isLoading = computed(() => props?.loadingUrls ? loaderStore.isLoadingEndpoint(props?.loadingUrls) : false)
 </script>
 
 <template>
@@ -53,10 +60,12 @@ const getButtonConfirm = (text: string) => text || props.confirmBtnText
       <ModalFooter
         :cancel="{
           label: $t('action.cancel'),
+          disabled: isLoading,
         }"
         :accept="{
           color: payload?.btnConfirmColor || VColors.Primary,
           label: getButtonConfirm(payload?.btnConfirmText),
+          disabled: isLoading,
         }"
         @on-cancel="onCloseModal(action.hide)"
         @on-accept="onClickModalOk(action.hide)"

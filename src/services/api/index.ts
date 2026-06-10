@@ -113,12 +113,12 @@ class ApiService {
 
       const body: FormData | any
         = contentType === ContentType.FormData && payload.formData
-        ? this.createFormData(payload.formData)
-        : JSON.stringify({
-          ...payload,
-          type: isRemovePrefix ? payload.type.replace(ApiTypePrefix, '') : payload.type,
-          requestId: uuidv4(),
-        })
+          ? this.createFormData(payload.formData)
+          : JSON.stringify({
+            ...payload,
+            type: isRemovePrefix ? payload.type.replace(ApiTypePrefix, '') : payload.type,
+            requestId: uuidv4(),
+          })
 
       const { data, headers: responseHeaders }: any = await axiosInstance({
         url,
@@ -223,7 +223,7 @@ class ApiService {
     }
 
     if (error.validationErrors) {
-      error.validationErrors.forEach(({ code, field, params, template }: IValidationError) => {
+      const notificationErrors = error.validationErrors.map(({ code, field, params, template }: IValidationError) => {
         let localizationKey = `${entity}_${field}_${code}`
         const validationErrorCb = formRef?.validationErrorCb
         let options = {}
@@ -249,8 +249,17 @@ class ApiService {
             : i18n.t(localizationKey, options),
         })
 
-        toastError(localizationKey, { field, defaultCode: 'field_ALREADY_EXISTS', ...options })
+        return {
+          localizationKey,
+          options: {
+            field,
+            defaultCode: 'field_ALREADY_EXISTS',
+            options,
+          },
+        }
       })
+
+      toastError(notificationErrors)
     }
     else if (withErrorDescriptionToast && error.description) {
       toastErrorMessageString(error.description)

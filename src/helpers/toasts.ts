@@ -4,6 +4,11 @@ import { IconsList } from '../@model/enums/icons'
 import type { VColors } from '../@model/vuetify'
 import { i18n } from '@/plugins/i18n'
 
+export interface ToastErrorItem {
+  localizationKey: string
+  options?: Record<string, unknown>
+}
+
 type ToastOptions = Record<string | 'defaultCode' | 'defaultDescription', string | undefined>
 
 const defaultOptions: ToastOptions = {
@@ -43,13 +48,20 @@ export default function useToastService() {
     return translated !== '' && translated !== key
   }
 
-  const toastError = (code: string, options: ToastOptions = defaultOptions) => {
-    const fullKey = `toast.error.${code}`
+  const toastError = (input: string | ToastErrorItem | ToastErrorItem[], options: ToastOptions = defaultOptions) => {
+    const codes: ToastErrorItem[] = typeof input === 'string'
+      ? [{ localizationKey: input }]
+      : Array.isArray(input) ? input : [input]
+
+    const isListErrors = codes.length > 1
+    const fullKey = isListErrors ? 'toast.error.amount' : `toast.error.${codes[0].localizationKey}`
     const fallbackKey = `toast.error.${options?.defaultCode}`
 
     const message = safeTe(fullKey)
-      ? i18n.t(fullKey, options)
+      ? i18n.t(fullKey, { ...options, amount: codes.length })
       : options?.defaultText || i18n.t(fallbackKey, options)
+
+    const text = isListErrors ? codes.map(code => i18n.t(`toast.error.${code.localizationKey}`, code.options)) : ''
 
     toast({
       component: ToastificationContent,
@@ -57,6 +69,7 @@ export default function useToastService() {
         title: message,
         icon: IconsList.AlertTriangleIcon,
         variant: 'error',
+        text,
       },
     })
   }
