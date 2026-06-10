@@ -4,7 +4,7 @@ import { BaseListSlots } from '../../../../@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '../../../../@model/vuetify'
 import { i18n } from '../../../../plugins/i18n'
 import { ModalsId } from '../../../../@model/modalsId'
-import ConfirmModal from '../../../../../src/components/BaseModal/ConfirmationModal.vue'
+import ConfirmationModal from '../../../../../src/components/BaseModal/ConfirmationModal.vue'
 import { MultipleActions } from '../../../../@model/enums/multipleActions'
 
 interface Props {
@@ -31,16 +31,18 @@ const multipleRemoveTitle = computed(() => props.numberSelectedItems > 1 ? i18n.
 const multipleRemoveDescription = computed(() => props.numberSelectedItems > 1 ? i18n.t(`modal.remove${props.entityName}.descriptionMultiple`) : i18n.t(`modal.remove${props.entityName}.description`))
 
 const onRemove = () => {
-  modal.showModal(ModalsId.MultipleRemoveList)
+  modal.showModal(ModalsId.MultipleRemoveList, {
+    btnConfirmColor: VColors.Error,
+  })
 }
 </script>
 
 <template>
-  <ConfirmModal
+  <ConfirmationModal
     :title="multipleRemoveTitle"
     :description="multipleRemoveDescription"
     :modal-id="ModalsId.MultipleRemoveList"
-    :action-btn-text="i18n.t('action.remove')"
+    :confirm-btn-text="i18n.t('action.remove')"
     @confirmed="emits('on-remove')"
   />
   <div class="table-settings w-100 align-center justify-space-between">
