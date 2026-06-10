@@ -5,7 +5,7 @@ interface Props {
   variant: string
   icon?: string
   title?: string
-  text?: string
+  text?: string | string[]
   hideClose?: boolean
 }
 
@@ -38,8 +38,17 @@ defineProps<Props>()
             data-test-id="toast-title"
             v-text="title"
           />
+          <template v-if="Array.isArray(text) && text.length > 1">
+            <div
+              v-for="(item, key) in text"
+              :key="key"
+              class="text-body-1 text-error font-weight-semi-bold"
+            >
+              <span :class="IconsList.PointFilled" /><span> {{ item }}</span>
+            </div>
+          </template>
           <small
-            v-if="text"
+            v-else-if="text && !Array.isArray(text)"
             class="d-inline-block text-body text-body-1"
             v-text="text"
           />

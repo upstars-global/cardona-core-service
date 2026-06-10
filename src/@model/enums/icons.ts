@@ -332,4 +332,5 @@ export enum IconsList {
   ArrowRight = 'tabler-arrow-right',
   CloudSearch = 'tabler-cloud-search',
   Photo = 'tabler-photo',
+  PointFilled = 'tabler-point-filled',
 }
