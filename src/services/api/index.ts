@@ -90,7 +90,7 @@ class ApiService {
     const url: string = convertedType.join('/')
     const cacheRequest = new Request(url)
 
-    const abortKey = cancelPrevious ? url : ''
+    const abortKey = cancelPrevious ? getLoaderSlug(url, loaderSlug) : ''
     let abortController: AbortController | undefined
 
     if (abortKey) {
