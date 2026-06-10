@@ -31,9 +31,7 @@ const multipleRemoveTitle = computed(() => props.numberSelectedItems > 1 ? i18n.
 const multipleRemoveDescription = computed(() => props.numberSelectedItems > 1 ? i18n.t(`modal.remove${props.entityName}.descriptionMultiple`) : i18n.t(`modal.remove${props.entityName}.description`))
 
 const onRemove = () => {
-  modal.showModal(ModalsId.MultipleRemoveList, {
-    btnConfirmColor: VColors.Error,
-  })
+  modal.showModal(ModalsId.MultipleRemoveList)
 }
 </script>
 
@@ -43,7 +41,7 @@ const onRemove = () => {
     :description="multipleRemoveDescription"
     :modal-id="ModalsId.MultipleRemoveList"
     :action-btn-text="i18n.t('action.remove')"
-    @on-click-modal-ok="emits('on-remove')"
+    @confirmed="emits('on-remove')"
   />
   <div class="table-settings w-100 align-center justify-space-between">
     <span data-test-id="number-selected">
