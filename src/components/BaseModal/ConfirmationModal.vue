@@ -11,7 +11,8 @@ interface Props {
   modalId: string
   title?: string
   description?: string
-  confirmBtnText?: string
+  actionBtnText?: string
+  btnConfirmColor?: VColors
   loadingUrls?: string[] | string
 }
 
@@ -39,7 +40,7 @@ const onCloseModal = (hide: Function) => {
 
 const isLoading = computed(() => props?.loadingUrls ? loaderStore.isLoadingEndpoint(props?.loadingUrls) : false)
 
-const getButtonConfirm = (text: string) => text || props.confirmBtnText
+const getButtonConfirm = (text: string) => text || props?.actionBtnText
 </script>
 
 <template>
@@ -63,7 +64,7 @@ const getButtonConfirm = (text: string) => text || props.confirmBtnText
           disabled: isLoading,
         }"
         :accept="{
-          color: payload?.btnConfirmColor || VColors.Primary,
+          color: btnConfirmColor || payload?.btnConfirmColor || VColors.Primary,
           label: getButtonConfirm(payload?.btnConfirmText),
           disabled: isLoading,
         }"
