@@ -4,7 +4,7 @@ import { BaseListSlots } from '../../../../@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '../../../../@model/vuetify'
 import { i18n } from '../../../../plugins/i18n'
 import { ModalsId } from '../../../../@model/modalsId'
-import ConfirmModal from '../../../../../src/components/BaseModal/ConfirmationModal.vue'
+import ConfirmationModal from '../../../../../src/components/BaseModal/ConfirmationModal.vue'
 import { MultipleActions } from '../../../../@model/enums/multipleActions'
 
 interface Props {
@@ -36,7 +36,7 @@ const onRemove = () => {
 </script>
 
 <template>
-  <ConfirmModal
+  <ConfirmationModal
     :title="multipleRemoveTitle"
     :description="multipleRemoveDescription"
     :modal-id="ModalsId.MultipleRemoveList"
