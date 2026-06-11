@@ -18,7 +18,7 @@ const defaultProps = {
   modalId: 'test-modal',
   title: i18n.t('modal.addAllGames.title'),
   description: i18n.t('modal.addAllGames.description'),
-  confirmBtnText: i18n.t('action.send'),
+  actionBtnText: i18n.t('action.send'),
 }
 
 const globalConfig = { provide: { modal: mockModal } }
@@ -59,6 +59,6 @@ describe('ConfirmationModal', () => {
     await callActionShowForInternalBaseModal(wrapper)
 
     await clickTrigger({ wrapper, testId: testIdConfirmBtn })
-    testOn.isCalledEmitEvent({ wrapper }, 'on-click-modal-ok')
+    testOn.isCalledEmitEvent({ wrapper }, 'confirmed')
   })
 })
