@@ -33,7 +33,7 @@ describe('ConfirmationModal', () => {
 
     isEqualModalTitle(wrapper, defaultProps.title)
     isEqualModalDescription(wrapper, defaultProps.description)
-    testOn.equalTextValue({ wrapper, testId: testIdConfirmBtn }, defaultProps.confirmBtnText)
+    testOn.equalTextValue({ wrapper, testId: testIdConfirmBtn }, defaultProps.actionBtnText)
     testOn.notExistClasses({ wrapper, testId: testIdConfirmBtn }, btnDisabledClass)
   })
 
