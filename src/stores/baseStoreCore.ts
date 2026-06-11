@@ -42,7 +42,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
       payload: {
         type: string
         data: IRequestListPayload
-        options: { customApiPrefix?: string; listItemModel?: any }
+        options: { customApiPrefix?: string; listItemModel?: any; cancelPrevious?: boolean }
       },
     ): Promise<ListData> {
       const response = await ApiService.request({
@@ -55,7 +55,7 @@ export const useBaseStoreCore = defineStore('baseStoreCore', {
         },
         sort: payload.data.sort,
         filter: payload.data.filter,
-      })
+      }, { cancelPrevious: payload.options.cancelPrevious })
 
       return new ListData(response, payload.options.listItemModel)
     },
