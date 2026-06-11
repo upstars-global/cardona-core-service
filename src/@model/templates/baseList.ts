@@ -224,7 +224,15 @@ export interface IBaseListConfig {
   /** disableLoading - Flag для блокирования loading state  */
   readonly disableLoading?: boolean
 
-  /** cancelPreviousRequest - Отменять предыдущий незавершённый запрос списка */
+  /**
+   * cancelPreviousRequest - Отменять предыдущий незавершённый запрос списка при новом.
+   *
+   * ⚠️ Ключ отмены = URL списка (выводится из entityName). Не включать флаг,
+   * если ДВА списка с ОДИНАКОВЫМ entityName могут быть смонтированы одновременно
+   * (один entity в двух табах с keep-alive, встроенный список-дубль и т.п.) —
+   * их запросы будут отменять друг друга. Для таких случаев нужен отдельный
+   * дискриминатор ключа (cancelKey), которого пока нет.
+   */
   readonly cancelPreviousRequest?: boolean
 
   //* *  cellCbClass - Callback для добавления класса ячейке таблицы */
