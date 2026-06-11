@@ -54,7 +54,7 @@ const onHide = () => isImageLoaded.value = false
             ref="imageRef"
             data-test-id="image-detail"
             :src="payload?.imagePath"
-            :alt="t('common.imageNotAvalible')"
+            :alt="$t('common.imageNotAvalible')"
             class="full-size-img"
             @load="onImageLoad"
             @error="onImageLoad"
