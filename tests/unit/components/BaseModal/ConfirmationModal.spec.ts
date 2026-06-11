@@ -18,7 +18,7 @@ const defaultProps = {
   modalId: 'test-modal',
   title: i18n.t('modal.addAllGames.title'),
   description: i18n.t('modal.addAllGames.description'),
-  confirmBtnText: i18n.t('action.send'),
+  actionBtnText: i18n.t('action.send'),
 }
 
 const globalConfig = { provide: { modal: mockModal } }
@@ -33,7 +33,7 @@ describe('ConfirmationModal', () => {
 
     isEqualModalTitle(wrapper, defaultProps.title)
     isEqualModalDescription(wrapper, defaultProps.description)
-    testOn.equalTextValue({ wrapper, testId: testIdConfirmBtn }, defaultProps.confirmBtnText)
+    testOn.equalTextValue({ wrapper, testId: testIdConfirmBtn }, defaultProps.actionBtnText)
     testOn.notExistClasses({ wrapper, testId: testIdConfirmBtn }, btnDisabledClass)
   })
 
@@ -59,6 +59,6 @@ describe('ConfirmationModal', () => {
     await callActionShowForInternalBaseModal(wrapper)
 
     await clickTrigger({ wrapper, testId: testIdConfirmBtn })
-    testOn.isCalledEmitEvent({ wrapper }, 'on-click-modal-ok')
+    testOn.isCalledEmitEvent({ wrapper }, 'confirmed')
   })
 })
