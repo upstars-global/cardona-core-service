@@ -925,7 +925,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :fields="selectedFields"
         :rows="items"
         :select-mode="config.selectMode"
-        :selectable="config.selectable"
+        :selectable="config.selectable && canUpdate"
         :small="config.small"
         :draggable="canDraggable"
         :hover="config.hover"
