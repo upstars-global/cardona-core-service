@@ -1,5 +1,6 @@
 import '../../../../mocks/base-list/static-mock'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { permissionsMock } from '../../../../mocks/base-list/static-mock'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 import { flushPromises } from '@vue/test-utils'
 import { h } from 'vue'
@@ -532,6 +533,54 @@ describe('BaseList', () => {
 
     expect(chipA2.props('color')).toBe('secondary')
     expect(chipB2.props('color')).toBe('primary')
+  })
+
+  describe('selectable (config.selectable && canUpdate)', () => {
+    afterEach(() => {
+      permissionsMock.canUpdate = true
+    })
+
+    it('renders selectable checkboxes when config.selectable and canUpdate are both true', async () => {
+      props.config.selectable = true
+
+      const wrapper = getMountComponent(props, global)
+      await flushPromises()
+
+      testOn.existElement({ wrapper, testId: 'selectable-th' })
+      testOn.existElement({ wrapper, testId: 'selectable-checkbox' })
+    })
+
+    it('does not render selectable checkboxes when config.selectable is false', async () => {
+      props.config.selectable = false
+
+      const wrapper = getMountComponent(props, global)
+      await flushPromises()
+
+      testOn.notExistElement({ wrapper, testId: 'selectable-th' })
+      testOn.notExistElement({ wrapper, testId: 'selectable-checkbox' })
+    })
+
+    it('does not render selectable checkboxes when canUpdate is false even if config.selectable is true', async () => {
+      permissionsMock.canUpdate = false
+      props.config.selectable = true
+
+      const wrapper = getMountComponent(props, global)
+      await flushPromises()
+
+      testOn.notExistElement({ wrapper, testId: 'selectable-th' })
+      testOn.notExistElement({ wrapper, testId: 'selectable-checkbox' })
+    })
+
+    it('does not render selectable checkboxes when both config.selectable and canUpdate are false', async () => {
+      permissionsMock.canUpdate = false
+      props.config.selectable = false
+
+      const wrapper = getMountComponent(props, global)
+      await flushPromises()
+
+      testOn.notExistElement({ wrapper, testId: 'selectable-th' })
+      testOn.notExistElement({ wrapper, testId: 'selectable-checkbox' })
+    })
   })
 
   it('Should refetch list when projects selection changes', async () => {
