@@ -535,12 +535,24 @@ describe('BaseList', () => {
     expect(chipB2.props('color')).toBe('primary')
   })
 
-  describe('selectable (config.selectable && canUpdate)', () => {
+  describe('selectable (config.selectable && (canUpdate || canRemove))', () => {
     afterEach(() => {
       permissionsMock.canUpdate = true
+      permissionsMock.canRemove = true
     })
 
-    it('renders selectable checkboxes when config.selectable and canUpdate are both true', async () => {
+    it('renders selectable checkboxes when config.selectable is true and canUpdate is true', async () => {
+      props.config.selectable = true
+
+      const wrapper = getMountComponent(props, global)
+      await flushPromises()
+
+      testOn.existElement({ wrapper, testId: 'selectable-th' })
+      testOn.existElement({ wrapper, testId: 'selectable-checkbox' })
+    })
+
+    it('renders selectable checkboxes when config.selectable is true and canRemove is true (canUpdate false)', async () => {
+      permissionsMock.canUpdate = false
       props.config.selectable = true
 
       const wrapper = getMountComponent(props, global)
@@ -560,8 +572,9 @@ describe('BaseList', () => {
       testOn.notExistElement({ wrapper, testId: 'selectable-checkbox' })
     })
 
-    it('does not render selectable checkboxes when canUpdate is false even if config.selectable is true', async () => {
+    it('does not render selectable checkboxes when config.selectable is true but both canUpdate and canRemove are false', async () => {
       permissionsMock.canUpdate = false
+      permissionsMock.canRemove = false
       props.config.selectable = true
 
       const wrapper = getMountComponent(props, global)
@@ -571,8 +584,9 @@ describe('BaseList', () => {
       testOn.notExistElement({ wrapper, testId: 'selectable-checkbox' })
     })
 
-    it('does not render selectable checkboxes when both config.selectable and canUpdate are false', async () => {
+    it('does not render selectable checkboxes when config.selectable is false and all permissions are false', async () => {
       permissionsMock.canUpdate = false
+      permissionsMock.canRemove = false
       props.config.selectable = false
 
       const wrapper = getMountComponent(props, global)

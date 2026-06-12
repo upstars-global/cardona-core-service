@@ -219,7 +219,7 @@ watch(
 const selectedFields = ref<TableField[]>([...fields])
 
 const normalizedEntityName = computed(() => {
-  return entityName.replace(/-(.)/g, (_, char) => '-' + char.toLowerCase())
+  return entityName.replace(/-(.)/g, (_, char) => `-${char.toLowerCase()}`)
 })
 
 const entityUrl = computed(() => {
@@ -925,7 +925,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :fields="selectedFields"
         :rows="items"
         :select-mode="config.selectMode"
-        :selectable="config.selectable && canUpdate"
+        :selectable="config.selectable && (canUpdate || canRemove)"
         :small="config.small"
         :draggable="canDraggable"
         :hover="config.hover"
