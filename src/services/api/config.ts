@@ -57,6 +57,7 @@ export interface IApiServiceConfig {
   readonly responseType?: 'json' | 'blob'
   readonly cache?: boolean
   readonly withResponseHeaders?: boolean
+  readonly cancelPrevious?: boolean
 }
 
 // Response error
