@@ -7,6 +7,13 @@ export enum UserStatus {
   active = 'active',
   inactive = 'inactive',
 }
+
+export enum UserActivityStatus {
+  Ok = 'ok',
+  Created = 'created',
+  Skipped = 'skipped',
+}
+
 export interface IUserInfo {
   readonly id: number
   readonly firstName: string
