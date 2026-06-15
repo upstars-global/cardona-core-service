@@ -49,6 +49,8 @@ const getActionName = (string: string): string => [
 class ApiService {
   private static headers: RequestHeaders
 
+  private static pendingControllers = new Map<string, AbortController>()
+
   static setHeaders(headers: RequestHeaders): void {
     ApiService.headers = { ...ApiService.headers, ...headers }
   }
@@ -76,6 +78,7 @@ class ApiService {
       responseType = 'json',
       withResponseHeaders = false,
       cache = payload.type.includes(CACHE_PHRASE),
+      cancelPrevious = false,
     } = config
 
     const convertedType: Array<string> = payload.type
@@ -86,6 +89,17 @@ class ApiService {
     const entity: string = entityName || convertedType[2]
     const url: string = convertedType.join('/')
     const cacheRequest = new Request(url)
+
+    const abortKey = cancelPrevious ? getLoaderSlug(url, loaderSlug) : ''
+    let abortController: AbortController | undefined
+
+    if (abortKey) {
+      ApiService.pendingControllers.get(abortKey)?.abort()
+
+      abortController = new AbortController()
+
+      ApiService.pendingControllers.set(abortKey, abortController)
+    }
 
     if (cache) {
       const cacheStore = await caches.open(CACHE_NAME)
@@ -126,6 +140,7 @@ class ApiService {
         headers,
         data: body,
         responseType,
+        signal: abortController?.signal,
       } as AxiosRequestConfig)
 
       if (responseType === 'blob' && data instanceof Blob && !withResponseHeaders)
@@ -156,6 +171,9 @@ class ApiService {
       return data
     }
     catch (error: any) {
+      if (axios.isCancel(error))
+        return new Promise(() => {})
+
       const authCoreStore = useAuthCoreStore()
 
       // TODO BAC-4018
@@ -194,7 +212,12 @@ class ApiService {
       return rejectError ? Promise.reject(error) : undefined
     }
     finally {
-      loaderStore.setLoaderOff(getLoaderSlug(url, loaderSlug))
+      if (!abortKey || ApiService.pendingControllers.get(abortKey) === abortController) {
+        loaderStore.setLoaderOff(getLoaderSlug(url, loaderSlug))
+
+        if (abortKey)
+          ApiService.pendingControllers.delete(abortKey)
+      }
     }
   }
 
