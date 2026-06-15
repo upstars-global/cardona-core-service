@@ -62,6 +62,10 @@ onUnmounted(clock.stopTime)
           <h4 class="float-left mb-0 text-h4 breadcrumb-title">
             {{ $t(`title.${$route.meta.title}`) }}
           </h4>
+          <VDivider
+            vertical
+            class="breadcrumb-divider my-0"
+          />
           <div class="breadcrumb-wrapper">
             <VBreadcrumbs
               :items="allBreadcrumb"
@@ -126,8 +130,16 @@ onUnmounted(clock.stopTime)
   color: rgb(var(--v-theme-grey-900));
 }
 
+.breadcrumb-divider {
+  align-self: center;
+  height: 28px;
+  max-height: 28px;
+  margin-inline: 14px;
+  border-color: rgb(var(--v-theme-grey-200));
+  opacity: 1;
+}
+
 .breadcrumb-wrapper {
-  padding-left: 1rem;
   :deep(ul) {
     padding-inline: 0;
   }
