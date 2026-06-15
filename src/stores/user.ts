@@ -32,6 +32,7 @@ export const fetchCurrentUserApi = async () => {
     products: data.products.map((p: any) => p as OptionsItem),
     permissions: data.permissions.map((p: any) => new Permission(p)),
     picture: data.picture || '',
+    isSessionTracked: data?.isSessionTracked,
   })
 }
 
@@ -182,6 +183,13 @@ export const useUserStore = defineStore('user', {
       this.selectedProject = null
       this.priorityProject = null
       this.userInfo = { ...this.userInfo, projects: [] }
+    },
+
+    async sendSessionsPing(status: 'create' | 'ok') {
+      await ApiService.request({
+        type: 'App.V2.Users.SessionLogs.Ping',
+        data: { status },
+      })
     },
   },
 })
