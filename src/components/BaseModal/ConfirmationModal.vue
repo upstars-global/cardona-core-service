@@ -1,17 +1,19 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { type TranslateResult } from 'vue-i18n'
 import { ModalSizes, VColors } from '../../@model/vuetify'
 import type { BaseModalDefaultPropsOfSlot } from '../../@model/modal'
+import { useLoaderStore } from '../../stores/loader'
 import BaseModal from './index.vue'
 import ModalFooter from './ModalFooter.vue'
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   modalId: string
   title: TranslateResult
   description: TranslateResult
   actionBtnText: TranslateResult
   actionBtnColor: VColors
-  isLoading: boolean
+  loadingUrls?: string[] | string
 }>(), {
   actionBtnColor: VColors.Error,
 })
@@ -19,6 +21,10 @@ withDefaults(defineProps<{
 defineEmits<{
   confirmed: { payload: unknown; hide: Function } | [CallableFunction]
 }>()
+
+const loaderStore = useLoaderStore()
+
+const isLoading = computed(() => props?.loadingUrls ? loaderStore.isLoadingEndpoint(props?.loadingUrls) : false)
 </script>
 
 <template>

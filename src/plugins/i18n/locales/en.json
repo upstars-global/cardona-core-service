@@ -620,6 +620,7 @@
       "constructorJsonCopied": "JSON copied to clipboard"
     },
     "error": {
+      "amount": "There are following issues ({amount}):",
       "default": "An error has occurred",
       "UNAUTHORIZED": "User not authorized",
       "BAD_CREDENTIALS": "Wrong login or password",
