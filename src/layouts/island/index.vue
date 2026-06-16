@@ -76,6 +76,7 @@ const islandDefaults: DefaultsOptions = {
   VFileInput: { class: 'island-text-field' },
   VTextarea: { class: 'island-text-field' },
   VSkeletonLoader: { class: 'island-skeleton' },
+  VMenu: { contentClass: 'island-dropdown-menu' },
 }
 </script>
 
