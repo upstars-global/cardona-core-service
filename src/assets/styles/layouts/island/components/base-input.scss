@@ -1,7 +1,7 @@
 // Styles for Vuetify input fields in island layout.
 // The .island-text-field class is injected via VDefaultsProvider in src/layouts/island/index.vue
 // onto VTextField, VAutocomplete, VSelect, VCombobox, VFileInput, VTextarea.
-// This avoids targeting Vuetify internal class names directly and removes !important overrides.
+// This avoids targeting Vuetify internal class names directly.
 
 @mixin apply {
   .island-text-field {
@@ -19,7 +19,7 @@
     .v-field__input input::placeholder,
     input.v-field__input::placeholder,
     textarea.v-field__input::placeholder {
-      color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity));
+      color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
     }
 
     // Input text color
@@ -31,7 +31,7 @@
     .v-field__prepend-inner > .v-icon,
     .v-field__append-inner > .v-icon,
     .v-field__clearable > .v-icon {
-      color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity));
+      color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
     }
   }
 }
