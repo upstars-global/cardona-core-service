@@ -14,7 +14,7 @@
   --select-dropdown-bg: rgb(var(--v-theme-surface));
   --select-dropdown-border: none;
   --select-dropdown-radius: 6px;
-  --select-dropdown-shadow: none;
+  --select-dropdown-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
   --select-dropdown-top: calc(100% + 1rem);
 
   // Dropdown option text — must be at :root level because .vs__dropdown-menu is

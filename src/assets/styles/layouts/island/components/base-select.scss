@@ -14,7 +14,7 @@ $border-popup-shadow: 0 10px 20px 0 rgba(var(--v-theme-skeleton-bg), 0.10);
   // Dropdown panel — body-level scope for appendToBody compatibility
   // (--v-theme-border-system and --v-theme-on-background are synced to <body> via bodyThemeColorKeys)
   --select-dropdown-border: 1px solid rgba(var(--v-theme-border-system));
-  --select-dropdown-shadow: #{$border-popup-shadow};
+  --select-dropdown-shadow: none;
   // Dropdown option text for appendToBody — on-background equals on-surface in island theme
   --select-text-color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
 
