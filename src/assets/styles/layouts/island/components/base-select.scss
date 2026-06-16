@@ -1,25 +1,31 @@
 // Island layout overrides for SelectField (vue-select).
 // Base styles and token definitions: src/assets/styles/components/vue-select.scss
+//
+// Token scoping rules:
+// - Dropdown tokens (--select-dropdown-*) are set WITHOUT a nested selector so
+//   they apply to body[data-layout="island"] itself and cascade to .vs__dropdown-menu
+//   even when appendToBody: true (dropdown is a direct child of <body>).
+// - Component tokens (border, radius, colors) are set inside .v-select {} because
+//   they only affect elements inside the component (toggle, input, chips).
 
 $border-popup-shadow: 0 10px 20px 0 rgba(var(--v-theme-skeleton-bg), 0.10);
 
 @mixin apply {
+  // Dropdown panel — body-level scope for appendToBody compatibility
+  --select-dropdown-border: 1px solid rgba(var(--v-theme-border-system));
+  --select-dropdown-shadow: #{$border-popup-shadow};
+
+  // Component toggle / input overrides
   .v-select {
-    // Override design tokens for island layout context
     --select-border-color: rgba(var(--v-theme-surface-invert), var(--v-border-opacity));
     --select-border-color-active: rgba(var(--v-theme-primary));
     --select-border-radius: 6px;
     --select-placeholder-color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity));
     --select-text-color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
     --select-focus-shadow: none;
-
-    // Dropdown panel
-    --select-dropdown-border: 1px solid rgba(var(--v-theme-border-system));
-    --select-dropdown-shadow: #{$border-popup-shadow};
-    --select-dropdown-offset: 0;
   }
 
-  // No-options message — island-specific border treatment
+  // No-options message
   .vs__dropdown-menu .vs__no-options {
     color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity));
     font-size: 15px;
