@@ -16,6 +16,10 @@
   --select-dropdown-radius: 6px;
   --select-dropdown-shadow: none;
   --select-dropdown-top: calc(100% + 1rem);
+
+  // Dropdown option text — must be at :root level because .vs__dropdown-menu is
+  // appended to <body> when appendToBody: true and cannot inherit from .v-select.
+  --select-text-color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
 }
 
 // ─── SCSS variables ───────────────────────────────────────────────────────────
@@ -30,7 +34,7 @@ $options-padding-y: 7px;
 .v-select {
   --select-border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
   --select-border-color-active: rgb(var(--v-theme-primary));
-  --select-border-radius: 4px; // Vuetify default border-radius
+  --select-border-radius: 0.375rem;
   --select-min-height: 2.5rem;
   --select-padding: 0.375rem;
   --select-text-color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
