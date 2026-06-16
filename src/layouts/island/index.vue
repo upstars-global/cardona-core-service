@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, onUnmounted, ref, watch } from 'vue'
+import type { DefaultsOptions } from 'vuetify'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import { IconsList } from '../../@model/enums/icons'
 import AppLoadingIndicator from '../../components/AppLoadingIndicator.vue'
@@ -53,9 +54,33 @@ const isActiveDarkTheme = computed<boolean>(() => configStore.theme === Theme.Da
 const onCLickThemeIcon = () => {
   configStore.theme = isActiveDarkTheme.value ? Theme.Light : Theme.Dark
 }
+
+// Island-specific Vuetify component defaults.
+// Classes are injected via VDefaultsProvider so they only apply within the island
+// layout tree. CSS hooks on these classes live in assets/styles/layouts/island/.
+const islandDefaults: DefaultsOptions = {
+  VTextField: { class: 'island-text-field' },
+  VAutocomplete: {
+    class: 'island-text-field',
+    // Preserve global contentClass for VAutocomplete; add island dropdown class
+    menuProps: { contentClass: 'island-dropdown-menu app-autocomplete__content v-autocomplete__content' },
+  },
+  VSelect: {
+    class: 'island-text-field',
+    menuProps: { contentClass: 'island-dropdown-menu' },
+  },
+  VCombobox: {
+    class: 'island-text-field',
+    menuProps: { contentClass: 'island-dropdown-menu' },
+  },
+  VFileInput: { class: 'island-text-field' },
+  VTextarea: { class: 'island-text-field' },
+  VSkeletonLoader: { class: 'island-skeleton' },
+}
 </script>
 
 <template>
+  <VDefaultsProvider :defaults="islandDefaults">
   <VerticalNavLayout
     class="island-layout"
     :nav-items="navItems"
@@ -120,6 +145,7 @@ const onCLickThemeIcon = () => {
 
     <!-- 👉 Customizer -->
   </VerticalNavLayout>
+  </VDefaultsProvider>
 </template>
 
 <style lang="scss">

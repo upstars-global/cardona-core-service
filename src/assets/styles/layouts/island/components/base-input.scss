@@ -1,25 +1,37 @@
+// Styles for Vuetify input fields in island layout.
+// The .island-text-field class is injected via VDefaultsProvider in src/layouts/island/index.vue
+// onto VTextField, VAutocomplete, VSelect, VCombobox, VFileInput, VTextarea.
+// This avoids targeting Vuetify internal class names directly and removes !important overrides.
+
 @mixin apply {
-  .v-input
-  .v-field--variant-outlined
-  .v-field__outline__start,
-  .v-input .v-field--variant-outlined
-  .v-field__outline__notch::before,
-  .v-input .v-field--variant-outlined
-  .v-field__outline__notch::after,
-  .v-input .v-field--variant-outlined .v-field__outline__end{
-    border-color: rgba(var(--v-border-color), var(--v-border-opacity))
-  }
-  .v-field__input input::placeholder,
-  input.v-field__input::placeholder,
-  textarea.v-field__input::placeholder {
-    color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
-  }
+  .island-text-field {
+    // Outlined border color
+    &.v-input .v-field--variant-outlined {
+      .v-field__outline__start,
+      .v-field__outline__notch::before,
+      .v-field__outline__notch::after,
+      .v-field__outline__end {
+        border-color: rgba(var(--v-border-color), var(--v-border-opacity));
+      }
+    }
 
-  .v-input.v-text-field .v-field__input {
-    color: rgba(var(--v-theme-surface-invert), var(--v-high-emphasis-opacity))
-  }
+    // Placeholder color
+    .v-field__input input::placeholder,
+    input.v-field__input::placeholder,
+    textarea.v-field__input::placeholder {
+      color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity));
+    }
 
-  .v-field__prepend-inner > .v-icon, .v-field__append-inner > .v-icon, .v-field__clearable > .v-icon {
-    color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
+    // Input text color
+    &.v-text-field .v-field__input {
+      color: rgba(var(--v-theme-surface-invert), var(--v-high-emphasis-opacity));
+    }
+
+    // Prepend / append / clear icons
+    .v-field__prepend-inner > .v-icon,
+    .v-field__append-inner > .v-icon,
+    .v-field__clearable > .v-icon {
+      color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity));
+    }
   }
 }

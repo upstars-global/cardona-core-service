@@ -13,10 +13,12 @@ body[data-layout="island"] {
     }
   }
 
-  .v-overlay-container:has(.v-list){
-    .v-overlay__content {
-      border: 1px solid rgb(var(--v-island-border-color));
-    }
+  // Dropdown menus from VSelect / VAutocomplete / VCombobox.
+  // The .island-dropdown-menu class is injected via menuProps.contentClass
+  // in VDefaultsProvider (src/layouts/island/index.vue).
+  // Replaces the fragile :has(.v-list) selector.
+  .island-dropdown-menu {
+    border: 1px solid rgb(var(--v-island-border-color));
 
     .v-list {
       background-color: rgba(var(--v-island-card-bg)) !important;
