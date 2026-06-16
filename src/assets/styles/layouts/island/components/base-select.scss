@@ -25,7 +25,7 @@ $border-popup-shadow: 0 10px 20px 0 rgba(var(--v-theme-skeleton-bg), 0.10);
     --select-border-radius: 6px;
     --select-placeholder-color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity));
     --select-text-color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
-    --select-focus-shadow: 0 2px 4px 0 rgba(132, 129, 157, 0.24);
+    --select-focus-shadow: none;
   }
 
   // No-options message
