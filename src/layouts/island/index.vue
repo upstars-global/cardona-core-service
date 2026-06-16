@@ -13,6 +13,7 @@ import { useLayoutConfigStore } from '@layouts/stores/config'
 import { useConfigStore } from '@core/stores/config'
 import { switchToVerticalNavOnLtOverlayNavBreakpoint } from '@layouts/utils'
 import { Theme } from '@core/enums'
+import { light as islandLight, dark as islandDark, bodyLayoutVarKeys, bodyThemeColorKeys } from './theme'
 
 const configStore = useConfigStore()
 const layoutConfigStore = useLayoutConfigStore()
@@ -55,6 +56,52 @@ const onCLickThemeIcon = () => {
   configStore.theme = isActiveDarkTheme.value ? Theme.Light : Theme.Dark
 }
 
+// ── VThemeProvider + body var sync ─────────────────────────────────────────
+// VThemeProvider activates 'island-light' / 'island-dark', scoping all
+// Vuetify CSS custom properties (--v-theme-*) to the island layout tree.
+//
+// Body-level CSS vars sync:
+// CSS vars cascade DOWN only. <body> is ABOVE VThemeProvider, so body-level
+// SCSS rules (body[data-layout="island"]) — especially those targeting teleported
+// elements (flatpickr, appendToBody dropdowns) — cannot inherit from VThemeProvider.
+// We mirror the needed vars onto document.body.style via this watcher.
+//
+//   bodyLayoutVarKeys → --v-<key>        (from theme.variables)
+//   bodyThemeColorKeys → --v-theme-<key> (from theme.colors, stored as R,G,B)
+const islandTheme = computed(() => isActiveDarkTheme.value ? 'island-dark' : 'island-light')
+
+// Mirrors Vuetify's internal hex→RGB conversion for theme variables.
+const hexToRgbTriplet = (hex: string): string => {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return `${r},${g},${b}`
+}
+
+const syncBodyVars = (theme: 'island-dark' | 'island-light') => {
+  const themeData = theme === 'island-dark' ? islandDark : islandLight
+  const vars = themeData.variables as Record<string, unknown>
+  const colors = themeData.colors as Record<string, string>
+
+  // --v-<key>: sync island variables (hex values converted to RGB to match Vuetify output)
+  bodyLayoutVarKeys.forEach(key => {
+    const value = String(vars[key])
+    document.body.style.setProperty(`--v-${key}`, value.startsWith('#') ? hexToRgbTriplet(value) : value)
+  })
+
+  // --v-theme-<key>: R,G,B — sync island colors needed by teleported elements
+  bodyThemeColorKeys.forEach(key => {
+    document.body.style.setProperty(`--v-theme-${key}`, hexToRgbTriplet(colors[key]))
+  })
+}
+
+watch(islandTheme, syncBodyVars, { immediate: true })
+
+onUnmounted(() => {
+  bodyLayoutVarKeys.forEach(key => document.body.style.removeProperty(`--v-${key}`))
+  bodyThemeColorKeys.forEach(key => document.body.style.removeProperty(`--v-theme-${key}`))
+})
+
 // Island-specific Vuetify component defaults.
 // Classes are injected via VDefaultsProvider so they only apply within the island
 // layout tree. CSS hooks on these classes live in assets/styles/layouts/island/.
@@ -80,6 +127,7 @@ const islandDefaults: DefaultsOptions = {
 </script>
 
 <template>
+  <VThemeProvider :theme="islandTheme" style="display: contents">
   <VDefaultsProvider :defaults="islandDefaults">
   <VerticalNavLayout
     class="island-layout"
@@ -146,6 +194,7 @@ const islandDefaults: DefaultsOptions = {
     <!-- 👉 Customizer -->
   </VerticalNavLayout>
   </VDefaultsProvider>
+  </VThemeProvider>
 </template>
 
 <style lang="scss">
