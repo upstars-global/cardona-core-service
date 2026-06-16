@@ -1,41 +1,28 @@
-$box-shadow: 0 2px 4px 0 rgba(132, 129, 157, 0.24);
-$border-popup: 1px solid rgba(var(--v-theme-border-system));
+// Island layout overrides for SelectField (vue-select).
+// Base styles and token definitions: src/assets/styles/components/vue-select.scss
+
 $border-popup-shadow: 0 10px 20px 0 rgba(var(--v-theme-skeleton-bg), 0.10);
 
 @mixin apply {
-  .v-select.vs--open{
-    .vs__dropdown-toggle {
-      border: 1px solid rgba(var(--v-theme-primary));
-      box-shadow: $box-shadow;
-    }
-  }
   .v-select {
-    .vs__search::placeholder {
-      color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
-    }
-    .vs__dropdown-toggle {
-      border: 1px solid rgba(var(--v-theme-surface-invert), var(--v-border-opacity));
-      .vs__selected-options {
-        .vs__selected {
-          .selected-option-value {
-            color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
-          }
-        }
-      }
+    // Override design tokens for island layout context
+    --select-border-color: rgba(var(--v-theme-surface-invert), var(--v-border-opacity));
+    --select-border-color-active: rgba(var(--v-theme-primary));
+    --select-border-radius: 6px;
+    --select-placeholder-color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity));
+    --select-text-color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+    --select-focus-shadow: none;
 
-    }
+    // Dropdown panel
+    --select-dropdown-border: 1px solid rgba(var(--v-theme-border-system));
+    --select-dropdown-shadow: #{$border-popup-shadow};
+    --select-dropdown-offset: 0;
   }
-  .vs__dropdown-menu {
-    border: $border-popup;
-    box-shadow: $border-popup-shadow;
 
-    .vs__no-options {
-      border: $border-popup;
-      border-radius: 6px;
-      box-shadow: $border-popup;
-      color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
-      font-weight: 400;
-      font-size: 15px;
-    }
+  // No-options message — island-specific border treatment
+  .vs__dropdown-menu .vs__no-options {
+    color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity));
+    font-size: 15px;
+    font-weight: 400;
   }
 }
