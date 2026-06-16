@@ -1,0 +1,26 @@
+// CTable design tokens — default values (global / default layout).
+//
+// PATTERN (same as base-select.scss for vue-select):
+//   1. This file defines CSS custom properties on `.c-table` with default values.
+//   2. CTable/index.vue references these via var() in its scoped styles.
+//   3. Per-layout overrides (e.g. island) redefine only the token values on `.c-table`
+//      inside their layout mixin — no selector-specificity fights needed.
+//
+// WHY THIS WORKS WITH SCOPED STYLES:
+//   CSS custom properties are inherited through the DOM, not resolved by selector
+//   specificity. A layout SCSS setting `--c-table-header-bg` on `.c-table` wins
+//   over the CTable scoped default even though scoped styles have higher specificity,
+//   because `var()` reads the nearest ancestor value at paint time.
+//
+// TO ADD A NEW LAYOUT OVERRIDE:
+//   In src/assets/styles/layouts/<name>/components/base-list.scss:
+//     .c-table { --c-table-header-bg: <value>; ... }
+.c-table {
+  --c-table-header-bg:       rgba(var(--v-theme-grey-800), 0.08);
+  --c-table-header-color:    rgb(var(--v-theme-grey-900), 0.62);
+  --c-table-row-hover-bg:    rgb(var(--v-theme-grey-100));
+  --c-table-row-selected-bg: rgb(var(--v-theme-grey-100));
+  --c-table-cell-padding:    0.75rem 1rem;
+  --c-table-sm-cell-padding: 0.5rem 0.75rem;
+  --c-table-td-height:       auto;
+}

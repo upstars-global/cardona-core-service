@@ -1337,6 +1337,10 @@ $pagination-button-text-color: white;
       height: 100%;
       position: relative;
 
+      // Override CTable tokens for compact type — all cells use reduced padding
+      --c-table-cell-padding:    0.5rem 0.75rem;
+      --c-table-sm-cell-padding: 0.5rem 0.75rem;
+
       &::before {
         content: "";
         position: absolute;
@@ -1346,10 +1350,6 @@ $pagination-button-text-color: white;
         height: var(--c-table-th-height);
         pointer-events: none;
         z-index: 1;
-      }
-
-      .c-table-cell-padding, .c-table-sm-cell-padding {
-        padding: var(--compact__c-table-cell-padding);
       }
     }
 
@@ -1398,7 +1398,7 @@ $pagination-button-text-color: white;
   }
 
   .empty-state-wrapper {
-    padding: var(--compact__c-table-cell-padding);
+    padding: 0.5rem 0.75rem;
   }
 
   :deep(.v-pagination) {

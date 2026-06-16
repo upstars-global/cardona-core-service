@@ -1422,16 +1422,6 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
 
 <style lang="scss" scoped>
 .default__base-list {
-  :deep(.c-table) {
-    .c-table-cell-padding {
-      padding: var(--default__c-table-cell-padding);
-    }
-
-    .c-table-sm-cell-padding {
-      padding: var(--default__c-table-sm-cell-padding);
-    }
-  }
-
   .empty-state-wrapper {
     height: 7.25rem;
   }

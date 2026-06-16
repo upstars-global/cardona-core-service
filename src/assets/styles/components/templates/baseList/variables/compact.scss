@@ -1,4 +1,3 @@
-:root {
-  --compact__c-table-cell-padding: 0.5rem 0.75rem;
-  --compact__c-table-td-height: auto;
-}
+// Padding tokens for compact BaseList type are now set as CSS custom property
+// overrides on :deep(.c-table) inside compact.vue's scoped styles.
+// This file is intentionally empty.
