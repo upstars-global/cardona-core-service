@@ -1,9 +1,21 @@
 @import "vue-select/dist/vue-select.css";
 
-// ─── Root-level CSS fallbacks ─────────────────────────────────────────────────
+// ─── Root-level CSS variables ─────────────────────────────────────────────────
+// Two groups:
+// 1. Dropdown tokens on :root  — must be global because .vs__dropdown-menu is
+//    appended to <body> when appendToBody: true, so it cannot inherit from .v-select.
+// 2. Component tokens on .v-select — safe to scope; only used by descendants
+//    of .v-select (toggle, search input, selected chips, etc.).
 :root {
   --vs-line-height: 1.25;
   --vs-disabled-bg: rgb(var(--v-theme-grey-100));
+
+  // Dropdown panel — override per layout in the layout's mixin (at body level)
+  --select-dropdown-bg: rgb(var(--v-theme-surface));
+  --select-dropdown-border: none;
+  --select-dropdown-radius: 6px;
+  --select-dropdown-shadow: none;
+  --select-dropdown-top: calc(100% + 1rem);
 }
 
 // ─── SCSS variables ───────────────────────────────────────────────────────────
@@ -12,53 +24,38 @@ $vs-state-active-bg: rgba(var(--v-theme-primary), 0.12);
 $options-padding-x: 20px;
 $options-padding-y: 7px;
 
-// ─── Design tokens (CSS custom properties) ───────────────────────────────────
-// Override these per-layout to configure appearance without duplicating rules.
-// Island layout overrides: src/assets/styles/layouts/island/components/base-select.scss
+// ─── Component-level design tokens ───────────────────────────────────────────
+// These are only used by elements that stay inside .v-select (toggle, input, chips).
+// Override per layout inside `.v-select {}` in the layout's mixin.
 .v-select {
-  // Border & shape
   --select-border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
   --select-border-color-active: rgb(var(--v-theme-primary));
   --select-border-radius: 4px; // Vuetify default border-radius
-
-  // Sizing
   --select-min-height: 2.5rem;
   --select-padding: 0.375rem;
-
-  // Typography
   --select-text-color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
   --select-placeholder-color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
-
-  // Focus ring (Vuetify uses border change only; set to "none" to match exactly)
   --select-focus-shadow: 0 2px 4px rgba(var(--v-shadow-key-umbra-color), 0.12);
-
-  // Dropdown panel
-  --select-dropdown-bg: rgb(var(--v-theme-surface));
-  --select-dropdown-border: none;
-  --select-dropdown-radius: 6px;
-  --select-dropdown-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
-  --select-dropdown-offset: 0.25rem; // gap between toggle and menu
 }
 
 // ─── Open state ───────────────────────────────────────────────────────────────
 .vs--open .vs__dropdown-toggle {
   border-color: var(--select-border-color-active);
-  border-bottom-color: var(--select-border-color-active);
   border-bottom-left-radius: var(--select-border-radius);
   border-bottom-right-radius: var(--select-border-radius);
   box-shadow: var(--select-focus-shadow);
 }
 
 // ─── Dropdown menu ────────────────────────────────────────────────────────────
+// Uses :root tokens — works for both inline and appendToBody modes.
 .vs__dropdown-menu {
   width: 100%;
-  margin-top: var(--select-dropdown-offset);
   padding: 0;
   background: var(--select-dropdown-bg);
   border: var(--select-dropdown-border);
   border-radius: var(--select-dropdown-radius);
   box-shadow: var(--select-dropdown-shadow);
-  top: 100%;
+  top: var(--select-dropdown-top);
   z-index: 9999;
   max-height: 40vh;
 }
@@ -328,6 +325,7 @@ $options-padding-y: 7px;
 }
 
 // ─── Size: Small ──────────────────────────────────────────────────────────────
+// Sets component-level tokens so all child elements pick up the smaller size.
 .select-size-sm {
   --select-min-height: 2rem;
   --select-padding: 0.25rem 0.75rem;
