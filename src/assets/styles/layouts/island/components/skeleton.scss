@@ -1,9 +1,9 @@
 // Skeleton loader styles for island layout.
-// The .island-skeleton class is injected via VDefaultsProvider in src/layouts/island/index.vue
-// onto VSkeletonLoader components.
+// Scoped via body[data-layout="island"] from the parent mixin — no injected class needed.
+// Tokens (skeleton-bg, skeleton-primary, skeleton-secondary) are defined in island/theme.ts.
 
 @mixin apply {
-  .island-skeleton {
+  .v-skeleton-loader {
     .v-skeleton-loader__avatar,
     .v-skeleton-loader__button,
     .v-skeleton-loader__chip,
