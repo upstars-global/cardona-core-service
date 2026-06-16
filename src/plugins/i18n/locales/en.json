@@ -556,7 +556,6 @@
   "title": {
     "seo": "Seo",
     "constructor": "Constructor",
-    "storybook": "Storybook",
     "localization": "Localization",
     "backoffice": "Backoffice",
     "demo": {

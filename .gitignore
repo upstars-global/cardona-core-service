@@ -42,6 +42,3 @@ public/mockServiceWorker.js
 .env*
 !.env.example
 
-*storybook.log
-storybook-static
-public/storybook/

@@ -14,9 +14,7 @@
     "msw:init": "msw init public/ --save",
     "postinstall": "npm run build:icons && npm run msw:init",
     "test:unit": "vitest --environment jsdom",
-    "test:coverage": "vitest run --coverage",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build -o ./public/storybook"
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@babel/traverse": "^7.28.4",
@@ -155,13 +153,7 @@
     "vite-plugin-vuetify": "1.0.2",
     "vitest": "^2.0.5",
     "vue-shepherd": "^3.0.0",
-    "vue-tsc": "^2.1.10",
-    "storybook": "^10.4.2",
-    "@storybook/vue3-vite": "^10.4.2",
-    "@storybook/addon-a11y": "^10.4.2",
-    "@storybook/addon-docs": "^10.4.2",
-    "@storybook/addon-onboarding": "^10.4.2",
-    "eslint-plugin-storybook": "^10.4.2"
+    "vue-tsc": "^2.1.10"
   },
   "resolutions": {
     "postcss": "^8",

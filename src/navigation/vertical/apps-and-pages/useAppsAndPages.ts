@@ -18,11 +18,7 @@ export function useAppsAndPages() {
         to: { name: 'Constructor' },
         icon: { icon: 'tabler-brand-databricks' },
       },
-      {
-        title: 'Storybook',
-        to: { name: 'Storybook' },
-        icon: { icon: 'tabler-book' },
-      },
+
     ]),
   }
 }

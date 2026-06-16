@@ -115,18 +115,5 @@ export const routes: RouteRecordRaw[] = [
     },
     component: () => import('@/pages/constructor/index.vue'),
   },
-  {
-    path: '/storybook',
-    name: 'Storybook',
-    meta: {
-      title: 'storybook',
-      breadcrumb: [
-        {
-          title: 'storybook',
-          active: true,
-        },
-      ],
-    },
-    component: () => import('@/pages/storybook/index.vue'),
-  },
+
 ]
