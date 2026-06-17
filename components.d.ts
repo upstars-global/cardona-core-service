@@ -33,6 +33,7 @@ declare module 'vue' {
     BadgeView: typeof import('./src/components/templates/ViewGenerator/_components/BadgeView.vue')['default']
     BaseChart: typeof import('./src/components/templates/BaseChart.vue')['default']
     BaseList: typeof import('./src/components/templates/BaseList/index.vue')['default']
+    BaseListCell: typeof import('./src/components/templates/BaseList/_components/BaseListCell.vue')['default']
     BaseModal: typeof import('./src/components/BaseModal/index.vue')['default']
     BaseSection: typeof import('./src/components/templates/BaseSection/index.vue')['default']
     BaseSectionLoading: typeof import('./src/components/templates/BaseSection/BaseSectionLoading.vue')['default']
