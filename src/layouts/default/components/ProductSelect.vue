@@ -23,8 +23,8 @@ const selectedProduct = computed({
   set: val => {
     const url
       = val.name === productsName.neocore
-        ? window.location.origin
-        : `${window.location.origin}/${val.name}`
+      ? window.location.origin
+      : `${window.location.origin}/${val.name}`
 
     sessionStorage.removeItem(storageKeys.selectedProjectId)
     window.location.replace(url)
@@ -51,11 +51,11 @@ watch(selectedProduct, product => {
     class="product-select d-flex align-center"
     :class="{ 'overflow-hidden': !canSelect }"
   >
-    <template v-if="canSelect">
+    <div>
       <div class="select-item bg-info prodcut-short_size product-text d-flex align-center justify-center rounded">
         {{ selectedProductNameShort }}
       </div>
-      <Transition name="product-select-fade">
+      <Transition v-if="canSelect" name="product-select-fade">
         <VueSelect
           v-show="!isCollapsedMenu"
           v-model="selectedProduct"
@@ -97,18 +97,18 @@ watch(selectedProduct, product => {
           </template>
         </VueSelect>
       </Transition>
-    </template>
-    <RouterLink
-      v-else
-      class="navbar-brand"
-      to="/"
-    >
-      <span
-        class="brand-logo select-item"
+      <RouterLink
+        v-else
+        class="navbar-brand"
+        to="/"
       >
-        {{ selectedProduct?.name }}
-      </span>
-    </RouterLink>
+        <div v-if="!isCollapsedMenu" class="d-flex align-center flex-nowrap pa-3">
+              <span
+                class="full-product-name select-item product-text"
+              >{{ selectedProductName }}</span>
+        </div>
+      </RouterLink>
+    </div>
   </div>
 </template>
 
