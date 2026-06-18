@@ -176,7 +176,7 @@ export abstract class ASelectBaseField<T extends OptionsItem | string = OptionsI
     return await this.fetchOptionList(filters, resetPage)
   }
 
-  async reinitOptions(filters: { search?: string; ids?: string[] } = {}) {
+  async reinitOptions(filters?: { search?: string; ids?: string[] } = {}) {
     return await this.fetchOptionList(filters, true)
   }
 
