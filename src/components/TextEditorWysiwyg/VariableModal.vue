@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   value: () => ({}),
   currencies: () => [],
 })
+
 const emit = defineEmits<Emits>()
 
 const initFormModal = (): Value => {
@@ -30,9 +31,11 @@ const initFormModal = (): Value => {
   if (!props.currencies?.length)
     return { ...existing }
   const result: Value = {}
-  props.currencies.forEach((currency) => {
+
+  props.currencies.forEach(currency => {
     result[currency] = currency in existing ? existing[currency] : ''
   })
+
   return result
 }
 
@@ -63,25 +66,31 @@ const deleteForm = () => {
   <BaseModal
     :id="modalId"
     :title="$t('common.banners.variableTitle')"
-    :width="ModalSizes.Flex"
+    :width="ModalSizes.Medium"
     modal-body-class="pa-0"
     @hide="onHideModal"
   >
+    <template #modal-header="{ title }">
+      <div class="d-flex align-center">
+        <div class="text-h5">
+          {{ title }}
+        </div>
+        <div class="pl-2">
+          <VChip
+            label
+            class="variable-box"
+            :color="VColors.Secondary"
+          >
+            {{ `{${keyVar}` + '}' }}
+          </VChip>
+        </div>
+      </div>
+    </template>
     <div class="full-width variable-modal">
       <div class="pa-6">
         <VRow class="full-width flex-nowrap">
-          <VCol cols="4">
-            <VChip
-              label
-              class="variable-box"
-              :color="VColors.Secondary"
-            >
-              {{ `{${keyVar}` + '}' }}
-            </VChip>
-          </VCol>
-
           <VCol
-            cols="8"
+            cols="12"
             class="mb-3 pr-0"
           >
             <VRow
@@ -93,13 +102,13 @@ const deleteForm = () => {
                 {{ itemKey }}
               </VCol>
               <VCol
-                cols="10"
+                cols="11"
                 class="pr-0"
               >
                 <AppTextField
                   v-model="formModal[itemKey]"
                   :disabled="disabled"
-                  :placeholder="$t('common.banners.empty')"
+                  placeholder="0.00"
                 />
               </VCol>
             </VRow>
@@ -152,9 +161,9 @@ const deleteForm = () => {
 </template>
 
 <style lang="scss" scoped>
-.variable-box {
-  margin-bottom: 0.571rem;
-}
+//.variable-box {
+//  margin-bottom: 0.571rem;
+//}
 
 .variable-modal {
   min-width: 31.25rem;
