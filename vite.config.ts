@@ -112,7 +112,6 @@ export default defineConfig({
   },
   define: { 'process.env': {} },
   resolve: {
-    dedupe: ['countries-list'],
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@themeConfig': fileURLToPath(new URL('./themeConfig.ts', import.meta.url)),
@@ -134,12 +133,6 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: ['vuetify'],
-    include: [
-      'vue-cleave-component',
-      'vue-prism-component',
-      'froala-editor',
-      'countries-list',
-    ],
     entries: [
       './src/**/*.vue',
     ],
