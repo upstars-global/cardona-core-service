@@ -89,7 +89,7 @@ const errorTextField = computed(() => Boolean(props.errors || duplicateTagsList.
       v-if="duplicateTagsList.length"
       class="text-caption text-error mt-1 mb-0 d-flex gap-1"
     >
-      <span>{{ $t('component.tags.duplicateTag', { label: field.label }) }}</span>
+      <span>{{ $t('component.tags.duplicateTag', { label: field.label?.toLowerCase() }) }}</span>
       <span
         v-for="tag in duplicateTagsList"
         :key="tag"
