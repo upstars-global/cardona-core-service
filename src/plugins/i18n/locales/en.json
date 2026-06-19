@@ -348,6 +348,22 @@
     "addTags": "Add tags...",
     "uploadVideo": "Upload video",
     "columns": "Columns",
+    "giftTypes": {
+      "Deposit bonus": "Deposit bonus",
+      "NonDeposit": "Non deposit",
+      "Levels": "Levels",
+      "Group": "Group",
+      "Universal gaming": "Universal gaming",
+      "Cashback": "Cashback",
+      "XP": "XP",
+      "XP & SP": "VIP Gift",
+      "Cash": "Cash",
+      "Custom Gift": "Custom gift",
+      "Manual": "Manual",
+      "Action currency": "Action currency",
+      "Betting": "Betting",
+      "Deposit insurance": "Deposit insurance"
+    },
     "phone": {
       "_": "Phone",
       "list": "Phones"
