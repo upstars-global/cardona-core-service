@@ -79,7 +79,7 @@ const onSelectGiftType = ({ value }: SelectBaseField) => {
   giftValue.value.value = ''
   giftValue.value.options = []
   giftData.value = {}
-  gift.value.fetchOptionsAction = value === GIT_TYPE_OPTIONS[0] ? textEditorStore.fetchGiftsOptions : textEditorStore.fetchGiftSpinOffersOptions
+  gift.value.fetchOptionsAction = value.id === GIT_TYPE_OPTIONS[0].id ? textEditorStore.fetchGiftsOptions : textEditorStore.fetchGiftSpinOffersOptions
   gift.value.options = undefined
   canApply.value = false
   isApplied.value = false
@@ -93,7 +93,7 @@ const onSelectGift = async ({ value }: { value: GiftOptionsItem | GiftSpinOfferO
   giftValue.value.value = ''
   giftValue.value.options = []
 
-  if (giftType.value === GIT_TYPE_OPTIONS[0].id) {
+  if (giftType.value.value.id === GIT_TYPE_OPTIONS[0].id) {
     giftData.value = await textEditorStore.readGiftEntity(value.id)
     giftData.value.depositLimits = value.depositLimits
     giftValue.value.options = getAvailableFields(giftData.value).map(field => ({
@@ -103,7 +103,7 @@ const onSelectGift = async ({ value }: { value: GiftOptionsItem | GiftSpinOfferO
   }
   else {
     giftValue.value.options = GIFT_SPIN_OFFER_OPTIONS
-    giftData.value.rates = value.rates
+    giftData.value.rates = value?.rates
   }
 
   canApply.value = false
