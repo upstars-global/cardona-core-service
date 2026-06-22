@@ -103,7 +103,7 @@ const setApply = () => {
     >
       <div class="selector-input--header d-flex align-center justify-space-between py-3">
         <div class="title text-body-1 title text-color-base font-weight-medium">
-          {{ $t('component.variableGiftPreset.fillFromGift') }}
+          {{ $t('component.variableGiftPreset.fillFromGift') }} {{giftData ? giftData?.type : ''}}
         </div>
         <div>
           <VBtn
@@ -132,7 +132,7 @@ const setApply = () => {
           </VCol>
           <VCol cols="2">
             <VBtn
-              class="w-100"
+              class="w-100 btn-apply"
               :variant="VVariants.Outlined"
               :disabled="!canApply"
               @click="setApply"
@@ -144,7 +144,7 @@ const setApply = () => {
                   class="mr-2"
                 /> {{ $t('component.variableGiftPreset.applied') }}
               </span>
-              <span>
+              <span v-else>
                 {{ $t('component.variableGiftPreset.apply') }}
               </span>
             </VBtn>
@@ -158,5 +158,9 @@ const setApply = () => {
 <style lang="scss" scoped>
 .selector-input {
   border-radius: 6px;
+}
+
+.btn-apply {
+  margin-top: 1.65rem;
 }
 </style>
