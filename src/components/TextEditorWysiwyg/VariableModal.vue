@@ -1,12 +1,11 @@
 <script lang="ts" setup>
-import {computed, inject, ref} from 'vue'
+import { computed, inject, ref } from 'vue'
 import { ModalSizes, VColors, VVariants } from '../../@model/vuetify'
 import AppTextField from '../../@core/components/app-form-elements/AppTextField.vue'
 import BaseModal from '../../components/BaseModal/index.vue'
+import { PermissionLevel } from '../../@model/permission'
+import { useUserStore } from '../../stores/user'
 import VariableGiftPreset from './VariableGiftPreset.vue'
-import {PermissionType} from "@permissions";
-import {PermissionLevel} from "@/@model/permission";
-import {useUserStore} from "@/stores/user";
 
 type Value = Record<string, unknown>
 interface Props {
@@ -23,14 +22,14 @@ interface Emits {
   (event: 'delete-key'): void
 }
 
-const userStore = useUserStore()
-
 const props = withDefaults(defineProps<Props>(), {
   value: () => ({}),
   currencies: () => [],
 })
 
 const emit = defineEmits<Emits>()
+
+const userStore = useUserStore()
 
 const canUseVariablePreset = computed(() => userStore.abilityCan('backoffice-gifts', PermissionLevel.view))
 

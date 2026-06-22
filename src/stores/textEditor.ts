@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { omit } from 'lodash'
 import { ListData } from '../@model'
 import ApiService from '../services/api'
-import { OPTIONS_PER_PAGE } from '@/utils/constants'
-import { GiftOptionsItem } from '@/@model/gift'
+import { OPTIONS_PER_PAGE } from '../utils/constants'
+import { GiftOptionsItem } from '../@model/gift'
 
 export const useTextEditorStore = defineStore('textEditor', {
   state: () => ({

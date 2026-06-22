@@ -5,7 +5,7 @@ import { IconsList } from '../../@model/enums/icons'
 import { VColors, VVariants } from '../../@model/vuetify'
 import SelectField from '../../components/templates/FieldGenerator/_components/SelectField.vue'
 import { useTextEditorStore } from '../../stores/textEditor'
-import { SelectBaseField } from '@/@model/templates/baseField'
+import { SelectBaseField } from '../../@model/templates/baseField'
 
 defineOptions({
   name: 'VaraibleGiftPreset',
@@ -50,7 +50,6 @@ const giftValueConfig = new SelectBaseField({
       class="open-select d-flex align-center justify-end text-primary cursor-pointer"
     >
       <span
-        class="bg-info"
         @click="setStateOpenSelectors(true)"
       >
         <VIcon
