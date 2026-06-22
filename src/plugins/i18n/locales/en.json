@@ -484,7 +484,9 @@
     },
     "variableGiftPreset": {
       "fillFromGift": "Fill from gift",
-      "apply": "Apply"
+      "apply": "Apply",
+      "gift": "Gift",
+      "value": "Value"
     },
     "countriesSelect": {
       "banInCountries": "Ban in countries",

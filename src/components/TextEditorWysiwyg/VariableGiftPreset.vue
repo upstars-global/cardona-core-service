@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors, VVariants } from '../../@model/vuetify'
+import SelectField from '../../components/templates/FieldGenerator/_components/SelectField.vue'
+import { useTextEditorStore } from '../../stores/textEditor'
+import { SelectBaseField } from '@/@model/templates/baseField'
 
 defineOptions({
   name: 'VaraibleGiftPreset',
 })
+
+const i18n = useI18n()
 
 const isOpenSelectors = ref(false)
 
@@ -14,8 +20,27 @@ const setStateOpenSelectors = (state: boolean) => {
 }
 
 const selectedGift = ref()
-const selectedGiftField = ref()
 
+const selectedGiftConfig = new SelectBaseField(
+  {
+    key: 'selectedGift',
+    label: i18n.t('component.variableGiftPreset.selectedGift'),
+    fetchOptionsAction: useTextEditorStore().fetchGiftsOptions,
+    clearable: false,
+    infiniteLoading: true,
+    filterBy: {
+      isActive: 'true',
+    },
+  },
+)
+
+const giftValue = ref()
+
+const giftValueConfig = new SelectBaseField({
+  key: 'giftValue',
+  label: i18n.t('component.variableGiftPreset.value'),
+  options: [],
+})
 </script>
 
 <template>
@@ -60,10 +85,16 @@ const selectedGiftField = ref()
       <div class="selector-input--body">
         <VRow>
           <VCol cols="5">
-            Gift
+            <SelectField
+              v-model="selectedGift"
+              :field="selectedGiftConfig"
+            />
           </VCol>
           <VCol cols="5">
-            Gift field
+            <SelectField
+              v-model="giftValue"
+              :field="giftValueConfig"
+            />
           </VCol>
           <VCol cols="2">
             <VBtn
