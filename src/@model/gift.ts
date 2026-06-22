@@ -1,7 +1,7 @@
 import type { TranslationForm } from '../@model/translations'
 import type { OptionsItem } from '../@model/index'
 import { getShortString } from '../helpers'
-import i18n from '../plugins/i18n'
+import { i18n } from '../plugins/i18n'
 
 export interface IGiftPayload {
   readonly id: string
