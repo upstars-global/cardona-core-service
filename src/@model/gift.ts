@@ -1,6 +1,7 @@
 import type { TranslationForm } from '../@model/translations'
 import type { OptionsItem } from '../@model/index'
 import { getShortString } from '../helpers'
+import i18n from '../plugins/i18n'
 
 export interface IGiftPayload {
   readonly id: string
@@ -22,6 +23,25 @@ export class GiftOptionsItem implements OptionsItem {
     this.depositLimits = data.depositLimits
   }
 }
+
+export class GiftSpinOfferOptionsItem implements OptionsItem {
+  readonly id: string
+  readonly name: string
+  readonly rates: Record<string, CurrencyLimit>
+
+  constructor(data: { id: string; name: string; rates: Record<string, CurrencyLimit> }) {
+    this.id = data.id
+    this.name = getOptionTitle(data.id, data.name)
+    this.rates = data.rates
+  }
+}
+
+export const GIFT_SPIN_OFFER_OPTIONS = [
+  {
+    id: 'rates',
+    name: i18n.t('component.variableGiftPreset.fields.rates'),
+  },
+]
 
 export interface CurrencyLimit {
   currency: string

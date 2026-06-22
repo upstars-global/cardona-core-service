@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors, VVariants } from '../../@model/vuetify'
 import { useTextEditorStore } from '../../stores/textEditor'
 import { SelectBaseField } from '../../@model/templates/baseField'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
-import type { CurrencyLimit } from '../../@model/gift'
-import { getAvailableFields } from '../../@model/gift'
+import type { CurrencyLimit, GiftOptionsItem, GiftSpinOfferOptionsItem } from '../../@model/gift'
+import { GIFT_SPIN_OFFER_OPTIONS, getAvailableFields } from '../../@model/gift'
 import type { EmitEvents } from '../../@model'
 
 defineOptions({
@@ -85,19 +85,27 @@ const onSelectGiftType = ({ value }: SelectBaseField) => {
   isApplied.value = false
 }
 
-const onSelectGift = async ({ value }: SelectBaseField) => {
+const onSelectGift = async ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptionsItem }) => {
   giftValue.value.options = []
   if (!value?.id)
     return
 
   giftValue.value.value = ''
   giftValue.value.options = []
-  giftData.value = await textEditorStore.readGiftEntity(value.id)
-  giftData.value.depositLimits = value.depositLimits
-  giftValue.value.options = getAvailableFields(giftData.value).map(field => ({
-    id: field,
-    name: t(`component.variableGiftPreset.fields.${field}`),
-  }))
+
+  if (giftType.value === GIT_TYPE_OPTIONS[0].id) {
+    giftData.value = await textEditorStore.readGiftEntity(value.id)
+    giftData.value.depositLimits = value.depositLimits
+    giftValue.value.options = getAvailableFields(giftData.value).map(field => ({
+      id: field,
+      name: t(`component.variableGiftPreset.fields.${field}`),
+    }))
+  }
+  else {
+    giftValue.value.options = GIFT_SPIN_OFFER_OPTIONS
+    giftData.value.rates = value.rates
+  }
+
   canApply.value = false
   isApplied.value = false
 }
