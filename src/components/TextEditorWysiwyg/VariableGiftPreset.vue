@@ -48,8 +48,8 @@ const onSelectGift = async (value: SelectBaseField) => {
   if (!value._value?.id)
     return
   giftData.value = await textEditorStore.readGiftEntity(value._value.id)
-
-  giftValue.value.options = getAvailableFields(gift).map(field => ({
+  console.log(getAvailableFields(giftData.value))
+  giftValue.value.options = getAvailableFields(giftData.value).map(field => ({
     id: field,
     name: t(`component.variableGiftPreset.fields.${field}`),
   }))
@@ -57,7 +57,7 @@ const onSelectGift = async (value: SelectBaseField) => {
 
 const onSelectGiftFieldValue = (value: SelectBaseField) => {
   console.log(value._value.id)
-  console.log(giftData.value[value._value?.id] ?? 'None !!!')
+  console.log(giftData.value, value._value.id)
 }
 </script>
 

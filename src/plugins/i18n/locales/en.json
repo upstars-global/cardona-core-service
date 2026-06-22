@@ -488,10 +488,11 @@
       "gift": "Gift",
       "value": "Value",
       "fields": {
-        "depositRules": "Deposit rules",
+        "depositLimits": "Deposit rules",
         "sums":"Sum",
         "sumLimits": "Max sum",
-        "maxWin":"Max win"
+        "maxWin":"Max win",
+        "winLimits": "Win limits"
       }
     },
     "countriesSelect": {
