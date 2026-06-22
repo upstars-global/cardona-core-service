@@ -76,6 +76,9 @@ const deleteForm = () => {
     :width="ModalSizes.Medium"
     modal-body-class="pa-0"
     @hide="onHideModal"
+    no-close-on-backdrop
+    :retain-focus="false"
+    no-click-animation
   >
     <template #modal-header="{ title }">
       <div class="d-flex align-center">
