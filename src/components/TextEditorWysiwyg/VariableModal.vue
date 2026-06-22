@@ -75,10 +75,11 @@ const deleteForm = () => {
     :title="$t('common.banners.variableTitle')"
     :width="ModalSizes.Medium"
     modal-body-class="pa-0"
-    @hide="onHideModal"
     no-close-on-backdrop
     :retain-focus="false"
     no-click-animation
+    persistent
+    @hide="onHideModal"
   >
     <template #modal-header="{ title }">
       <div class="d-flex align-center">

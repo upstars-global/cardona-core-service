@@ -24,7 +24,7 @@ const selectedGift = ref(new SelectBaseField(
   {
     value: '',
     key: 'selectedGift',
-    label: i18n.t('component.variableGiftPreset.selectedGift'),
+    label: '',
     fetchOptionsAction: useTextEditorStore().fetchGiftsOptions,
     clearable: false,
     infiniteLoading: true,
@@ -37,7 +37,7 @@ const selectedGift = ref(new SelectBaseField(
 
 const giftValue = ref(new SelectBaseField({
   key: 'giftValue',
-  label: i18n.t('component.variableGiftPreset.value'),
+  label: '',
   options: [],
 }))
 </script>
