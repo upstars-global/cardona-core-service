@@ -3,16 +3,17 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors, VVariants } from '../../@model/vuetify'
-import SelectField from '../../components/templates/FieldGenerator/_components/SelectField.vue'
 import { useTextEditorStore } from '../../stores/textEditor'
 import { SelectBaseField } from '../../@model/templates/baseField'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
+import { getAvailableFields } from '../../@model/gift'
 
 defineOptions({
   name: 'VaraibleGiftPreset',
 })
 
-const i18n = useI18n()
+const { t } = useI18n()
+const textEditorStore = useTextEditorStore()
 
 const isOpenSelectors = ref(false)
 
@@ -24,8 +25,8 @@ const selectedGift = ref(new SelectBaseField(
   {
     value: '',
     key: 'selectedGift',
-    label: '',
-    fetchOptionsAction: useTextEditorStore().fetchGiftsOptions,
+    label: t('component.variableGiftPreset.gift'),
+    fetchOptionsAction: textEditorStore.fetchGiftsOptions,
     clearable: false,
     infiniteLoading: true,
     filterable: false,
@@ -37,9 +38,27 @@ const selectedGift = ref(new SelectBaseField(
 
 const giftValue = ref(new SelectBaseField({
   key: 'giftValue',
-  label: '',
+  label: t('component.variableGiftPreset.value'),
   options: [],
 }))
+
+const giftData = ref()
+
+const onSelectGift = async (value: SelectBaseField) => {
+  if (!value._value?.id)
+    return
+  giftData.value = await textEditorStore.readGiftEntity(value._value.id)
+
+  giftValue.value.options = getAvailableFields(gift).map(field => ({
+    id: field,
+    name: t(`component.variableGiftPreset.fields.${field}`),
+  }))
+}
+
+const onSelectGiftFieldValue = (value: SelectBaseField) => {
+  console.log(value._value.id)
+  console.log(giftData.value[value._value?.id] ?? 'None !!!')
+}
 </script>
 
 <template>
@@ -83,13 +102,13 @@ const giftValue = ref(new SelectBaseField({
           <VCol cols="5">
             <FieldGenerator
               v-model="selectedGift"
-              :with-label="false"
+              @update:model-value="onSelectGift"
             />
           </VCol>
           <VCol cols="5">
             <FieldGenerator
               v-model="giftValue"
-              :with-label="false"
+              @update:model-value="onSelectGiftFieldValue"
             />
           </VCol>
           <VCol cols="2">

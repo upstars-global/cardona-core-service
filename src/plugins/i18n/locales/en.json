@@ -486,7 +486,13 @@
       "fillFromGift": "Fill from gift",
       "apply": "Apply",
       "gift": "Gift",
-      "value": "Value"
+      "value": "Value",
+      "fields": {
+        "depositRules": "Deposit rules",
+        "sums":"Sum",
+        "sumLimits": "Max sum",
+        "maxWin":"Max win"
+      }
     },
     "countriesSelect": {
       "banInCountries": "Ban in countries",

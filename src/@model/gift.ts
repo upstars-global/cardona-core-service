@@ -92,3 +92,59 @@ export interface IGiftData {
   // readonly pointsType: string
   // readonly amountOfExperience: number
 }
+
+export enum GiftType {
+  Cash = 'Cash',
+  CustomGift = 'Custom Gift',
+  ActionCurrency = 'Action currency',
+  DepositBonus = 'Deposit bonus',
+  DepositInsurance = 'Deposit insurance',
+  Cashback = 'Cashback',
+  Group = 'Group',
+  NonDeposit = 'NonDeposit',
+  XP = 'XP',
+  'XP & SP' = 'XP & SP',
+
+  // TODO rollback after include valid API make like in changes from task https://upstars.atlassian.net/browse/BAC-6306
+  // Levels = 'Levels',
+  UniversalGaming = 'Universal gaming',
+  Betting = 'Betting',
+}
+
+
+const TYPE_GROUP_1 = [
+  GiftType.DepositBonus,
+  GiftType.ActionCurrency,
+  GiftType.XP,
+  GiftType.Betting,
+] as const
+
+const TYPE_GROUP_2 = [GiftType.UniversalGaming] as const
+
+type DepositField = 'depositRules' | 'sum' | 'maxSum' | 'maxWin' | 'maxSumForTransfer'
+
+export function getAvailableFields(gift: IGiftData): DepositField[] {
+  const { type, sumsAsPercent } = gift
+
+  if (TYPE_GROUP_1.includes(type as typeof TYPE_GROUP_1[number])) {
+    const fields: DepositField[] = ['depositRules', 'maxSum', 'maxSumForTransfer']
+
+    if (!sumsAsPercent) {
+      fields.push('sum', 'maxWin')
+    }
+
+    return fields
+  }
+
+  if (TYPE_GROUP_2.includes(type as typeof TYPE_GROUP_2[number])) {
+    const fields: DepositField[] = ['depositRules']
+
+    if (!sumsAsPercent) {
+      fields.push('maxWin')
+    }
+
+    return fields
+  }
+
+  return []
+}
