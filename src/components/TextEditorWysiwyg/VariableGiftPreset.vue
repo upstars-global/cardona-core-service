@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { IconsList } from '../../@model/enums/icons'
-import {VColors, VSizes, VVariants} from '../../@model/vuetify'
+import { VColors, VVariants } from '../../@model/vuetify'
 
 defineOptions({
   name: 'VaraibleGiftPreset',
@@ -12,6 +12,10 @@ const isOpenSelectors = ref(false)
 const setStateOpenSelectors = (state: boolean) => {
   isOpenSelectors.value = state
 }
+
+const selectedGift = ref()
+const selectedGiftField = ref()
+
 </script>
 
 <template>
@@ -55,17 +59,26 @@ const setStateOpenSelectors = (state: boolean) => {
       </div>
       <div class="selector-input--body">
         <VRow>
-          <VCol>
+          <VCol cols="5">
             Gift
           </VCol>
-          <VCol>
+          <VCol cols="5">
             Gift field
+          </VCol>
+          <VCol cols="2">
+            <VBtn
+              class="w-100"
+              :variant="VVariants.Outlined"
+            >
+              {{ $t('component.variableGiftPreset.apply') }}
+            </VBtn>
           </VCol>
         </VRow>
       </div>
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .selector-input {
   border-radius: 6px;

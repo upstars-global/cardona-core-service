@@ -483,7 +483,8 @@
       "vipStatus": "Number value of Vip status field in the Profile"
     },
     "variableGiftPreset": {
-      "fillFromGift": "Fill from gift"
+      "fillFromGift": "Fill from gift",
+      "apply": "Apply"
     },
     "countriesSelect": {
       "banInCountries": "Ban in countries",
