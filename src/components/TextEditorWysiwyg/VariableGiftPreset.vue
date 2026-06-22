@@ -102,21 +102,26 @@ const onSelectGiftType = ({ value }: SelectBaseField) => {
   resetApplyState()
 }
 
-const onSelectGift = async ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptionsItem }) => {
+const onSelectGift = ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptionsItem }) => {
   if (!value?.id)
     return
 
   giftValue.value.value = ''
-  giftValue.value.options = []
 
   if (giftType.value.value.id === GIFT_TYPE_OPTIONS[0].id) {
-    const entity = await textEditorStore.readGiftEntity(value.id)
+    giftValue.value.fetchOptionsAction = async () => {
+      const entity = await textEditorStore.readGiftEntity((value as GiftOptionsItem).id)
 
-    giftData.value = { ...entity, depositLimits: (value as GiftOptionsItem).depositLimits } as GiftData
-    giftValue.value.options = getAvailableFields(entity).map(field => ({
-      id: field,
-      name: t(`component.variableGiftPreset.fields.${field}`),
-    }))
+      giftData.value = { ...entity, depositLimits: (value as GiftOptionsItem).depositLimits } as GiftData
+
+      return {
+        list: getAvailableFields(entity).map(field => ({
+          id: field,
+          name: t(`component.variableGiftPreset.fields.${field}`),
+        })),
+      }
+    }
+    giftValue.value.options = undefined
   }
   else {
     giftValue.value.options = GIFT_SPIN_OFFER_OPTIONS
