@@ -11,7 +11,7 @@ import { GIFT_SPIN_OFFER_OPTIONS, getAvailableFields } from '../../@model/gift'
 import type { EmitEvents } from '../../@model'
 
 defineOptions({
-  name: 'VaraibleGiftPreset',
+  name: 'VariableGiftPreset',
 })
 
 const emit = defineEmits<EmitEvents<{
@@ -21,7 +21,7 @@ const emit = defineEmits<EmitEvents<{
 const { t } = useI18n()
 const textEditorStore = useTextEditorStore()
 
-const GIT_TYPE_OPTIONS = [
+const GIFT_TYPE_OPTIONS = [
   {
     id: 'gift',
     name: t('component.variableGiftPreset.gift'),
@@ -32,18 +32,31 @@ const GIT_TYPE_OPTIONS = [
   },
 ]
 
-const isOpenSelectors = ref(false)
+const FETCH_OPTIONS_MAP = {
+  gift: textEditorStore.fetchGiftsOptions,
+  giftSpinOffers: textEditorStore.fetchGiftSpinOffersOptions,
+} as const
 
-const setStateOpenSelectors = (state: boolean) => {
-  isOpenSelectors.value = state
+interface GiftData {
+  type?: string
+  depositLimits?: Record<string, CurrencyLimit>
+  sums?: CurrencyLimit[]
+  sumLimits?: CurrencyLimit[]
+  winLimits?: CurrencyLimit[]
+  rates?: Record<string, CurrencyLimit>
+  sumsAsPercent?: boolean
+  winLimitsAsPercent?: boolean
+  [key: string]: unknown
 }
+
+const isOpenSelectors = ref(false)
 
 const giftType = ref(new SelectBaseField(
   {
-    value: GIT_TYPE_OPTIONS[0],
+    value: GIFT_TYPE_OPTIONS[0],
     key: 'type',
     label: t('component.variableGiftPreset.type'),
-    options: GIT_TYPE_OPTIONS,
+    options: GIFT_TYPE_OPTIONS,
     clearable: false,
   },
 ))
@@ -70,48 +83,51 @@ const giftValue = ref(new SelectBaseField({
   options: [],
 }))
 
-const giftData = ref()
+const giftData = ref<GiftData | null>(null)
 const canApply = ref(false)
 const isApplied = ref(false)
+
+const resetApplyState = () => {
+  canApply.value = false
+  isApplied.value = false
+}
 
 const onSelectGiftType = ({ value }: SelectBaseField) => {
   gift.value.value = ''
   giftValue.value.value = ''
   giftValue.value.options = []
-  giftData.value = {}
-  gift.value.fetchOptionsAction = value.id === GIT_TYPE_OPTIONS[0].id ? textEditorStore.fetchGiftsOptions : textEditorStore.fetchGiftSpinOffersOptions
+  giftData.value = null
+  gift.value.fetchOptionsAction = FETCH_OPTIONS_MAP[value.id as keyof typeof FETCH_OPTIONS_MAP]
   gift.value.options = undefined
-  canApply.value = false
-  isApplied.value = false
+  resetApplyState()
 }
 
 const onSelectGift = async ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptionsItem }) => {
-  giftValue.value.options = []
   if (!value?.id)
     return
 
   giftValue.value.value = ''
   giftValue.value.options = []
 
-  if (giftType.value.value.id === GIT_TYPE_OPTIONS[0].id) {
-    giftData.value = await textEditorStore.readGiftEntity(value.id)
-    giftData.value.depositLimits = value.depositLimits
-    giftValue.value.options = getAvailableFields(giftData.value).map(field => ({
+  if (giftType.value.value.id === GIFT_TYPE_OPTIONS[0].id) {
+    const entity = await textEditorStore.readGiftEntity(value.id)
+
+    giftData.value = { ...entity, depositLimits: (value as GiftOptionsItem).depositLimits } as GiftData
+    giftValue.value.options = getAvailableFields(entity).map(field => ({
       id: field,
       name: t(`component.variableGiftPreset.fields.${field}`),
     }))
   }
   else {
     giftValue.value.options = GIFT_SPIN_OFFER_OPTIONS
-    giftData.value.rates = value?.rates
+    giftData.value = { rates: (value as GiftSpinOfferOptionsItem).rates }
   }
 
-  canApply.value = false
-  isApplied.value = false
+  resetApplyState()
 }
 
 const onSelectGiftFieldValue = ({ value }: SelectBaseField) => {
-  emit('setVariables', giftData.value[value?.id] ?? {})
+  emit('setVariables', (giftData.value?.[value?.id] as Record<string, CurrencyLimit>) ?? {} as Record<string, CurrencyLimit>)
   canApply.value = true
   isApplied.value = false
 }
@@ -129,16 +145,14 @@ const applyBtnLabel = computed(() => isApplied.value ? t('component.variableGift
     <div
       v-if="!isOpenSelectors"
       class="open-select d-flex align-center justify-end text-primary cursor-pointer"
+      @click="isOpenSelectors = true"
     >
-      <span @click="setStateOpenSelectors(true)">
-        <VIcon
-          :icon="IconsList.Sparkles"
-          class="mr-2"
-        />
-
-        <span>
-          {{ $t('component.variableGiftPreset.fillFromGift') }}
-        </span>
+      <VIcon
+        :icon="IconsList.Sparkles"
+        class="mr-2"
+      />
+      <span>
+        {{ $t('component.variableGiftPreset.fillFromGift') }}
       </span>
     </div>
     <div
@@ -147,14 +161,14 @@ const applyBtnLabel = computed(() => isApplied.value ? t('component.variableGift
     >
       <div class="selector-input--header d-flex align-center justify-space-between py-3">
         <div class="title text-body-1 title text-color-base font-weight-medium">
-          {{ $t('component.variableGiftPreset.fillFromGift') }}: {{ giftData ? giftData?.type : '' }}
+          {{ $t('component.variableGiftPreset.fillFromGift') }}: {{ giftData?.type ?? '' }}
         </div>
         <div>
           <VBtn
             :variant="VVariants.Text"
             :color="VColors.Secondary"
             :size="20"
-            @click="setStateOpenSelectors(false)"
+            @click="isOpenSelectors = false"
           >
             <VIcon :icon="IconsList.XIcon" />
           </VBtn>
