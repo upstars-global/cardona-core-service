@@ -6,6 +6,7 @@ export interface IGiftPayload {
   readonly id: string
   readonly title: string
   readonly templateTitle: string
+  readonly depositLimits: Record<string, CurrencyLimit>
 }
 
 export const getOptionTitle = (id: string, title: string) => `${title} (ID ${getShortString(id)})`
@@ -13,10 +14,12 @@ export const getOptionTitle = (id: string, title: string) => `${title} (ID ${get
 export class GiftOptionsItem implements OptionsItem {
   readonly id: string
   readonly name: string
+  readonly depositLimits: Record<string, CurrencyLimit>
 
   constructor(data: IGiftPayload) {
     this.id = data.id
     this.name = getOptionTitle(data.id, data.templateTitle || data.title)
+    this.depositLimits = data.depositLimits
   }
 }
 

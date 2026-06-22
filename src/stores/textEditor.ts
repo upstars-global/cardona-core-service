@@ -45,7 +45,7 @@ export const useTextEditorStore = defineStore('textEditor', {
     async fetchGiftsOptions(parmas?: { pageNumber?: number; perPage?: number; filter?: Record<string, any> }) {
       return new ListData<string>(
         await ApiService.request({
-          type: 'App.V2.Gifts.Projects.List',
+          type: 'App.V2.Gifts.List',
           data: {
             project: this.$selectedProjectAlias,
           },
