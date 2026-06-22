@@ -504,6 +504,7 @@ declare module 'vue' {
     TransactionTypeView: typeof import('./src/components/templates/ViewGenerator/_components/TransactionTypeView.vue')['default']
     UploadImage: typeof import('./src/components/UploadImage/index.vue')['default']
     UsersListField: typeof import('./src/components/templates/FieldGenerator/_components/UsersListField.vue')['default']
+    VariableGiftPreset: typeof import('./src/components/TextEditorWysiwyg/VariableGiftPreset.vue')['default']
     VariableModal: typeof import('./src/components/TextEditorWysiwyg/VariableModal.vue')['default']
     ViewGenerator: typeof import('./src/components/templates/ViewGenerator/index.vue')['default']
   }

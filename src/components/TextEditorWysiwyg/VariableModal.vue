@@ -3,6 +3,7 @@ import { inject, ref } from 'vue'
 import { ModalSizes, VColors, VVariants } from '../../@model/vuetify'
 import AppTextField from '../../@core/components/app-form-elements/AppTextField.vue'
 import BaseModal from '../../components/BaseModal/index.vue'
+import VariableGiftPreset from './VariableGiftPreset.vue'
 
 type Value = Record<string, unknown>
 interface Props {
@@ -88,6 +89,7 @@ const deleteForm = () => {
     </template>
     <div class="full-width variable-modal">
       <div class="pa-6">
+        <VariableGiftPreset />
         <VRow class="full-width flex-nowrap">
           <VCol
             cols="12"

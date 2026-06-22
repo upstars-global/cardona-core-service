@@ -482,6 +482,9 @@
       "adc(lastNMonths)": "Calculate average daily check for last N months",
       "vipStatus": "Number value of Vip status field in the Profile"
     },
+    "variableGiftPreset": {
+      "fillFromGift": "Fill from gift"
+    },
     "countriesSelect": {
       "banInCountries": "Ban in countries",
       "allowInCountries": "Allow in countries",
