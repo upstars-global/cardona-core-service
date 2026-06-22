@@ -111,7 +111,6 @@ export enum GiftType {
   Betting = 'Betting',
 }
 
-
 const TYPE_GROUP_1 = [
   GiftType.DepositBonus,
   GiftType.ActionCurrency,
@@ -121,27 +120,29 @@ const TYPE_GROUP_1 = [
 
 const TYPE_GROUP_2 = [GiftType.UniversalGaming] as const
 
-type DepositField = 'depositRules' | 'sum' | 'maxSum' | 'maxWin' | 'maxSumForTransfer'
+type DepositField = 'depositLimits' |
+'sums' |
+'sumLimits' |
+'maxWin' |
+'winLimits'
 
 export function getAvailableFields(gift: IGiftData): DepositField[] {
   const { type, sumsAsPercent } = gift
 
   if (TYPE_GROUP_1.includes(type as typeof TYPE_GROUP_1[number])) {
-    const fields: DepositField[] = ['depositRules', 'maxSum', 'maxSumForTransfer']
+    const fields: DepositField[] = ['depositLimits', 'sumLimits']
 
-    if (!sumsAsPercent) {
-      fields.push('sum', 'maxWin')
-    }
+    if (!sumsAsPercent)
+      fields.push('sums', 'maxWin')
 
     return fields
   }
 
   if (TYPE_GROUP_2.includes(type as typeof TYPE_GROUP_2[number])) {
-    const fields: DepositField[] = ['depositRules']
+    const fields: DepositField[] = ['depositLimits']
 
-    if (!sumsAsPercent) {
+    if (!sumsAsPercent)
       fields.push('maxWin')
-    }
 
     return fields
   }
