@@ -71,28 +71,29 @@ const giftValue = ref(new SelectBaseField({
 }))
 
 const giftData = ref()
-const giftValueRef = ref(null)
 const canApply = ref(false)
 const isApplied = ref(false)
 
-const onSelectGiftType = ({ _value }: SelectBaseField) => {
-  gift.value._value = ''
-  giftValue.value._value = ''
+const onSelectGiftType = ({ value }: SelectBaseField) => {
+  gift.value.value = ''
+  giftValue.value.value = ''
   giftValue.value.options = []
-  gift.value.fetchOptionsAction = _value === GIT_TYPE_OPTIONS[0] ? textEditorStore.fetchGiftsOptions : textEditorStore.fetchGiftSpinOffersOptions
+  giftData.value = {}
+  gift.value.fetchOptionsAction = value === GIT_TYPE_OPTIONS[0] ? textEditorStore.fetchGiftsOptions : textEditorStore.fetchGiftSpinOffersOptions
+  gift.value.options = undefined
   canApply.value = false
   isApplied.value = false
 }
 
-const onSelectGift = async ({ _value }: SelectBaseField) => {
+const onSelectGift = async ({ value }: SelectBaseField) => {
   giftValue.value.options = []
-  if (!_value?.id)
+  if (!value?.id)
     return
 
-  giftValueRef.value.isLoading = true
-  giftData.value = await textEditorStore.readGiftEntity(_value.id)
-  giftValueRef.value.isLoading = false
-  giftData.value.depositLimits = _value.depositLimits
+  giftValue.value.value = ''
+  giftValue.value.options = []
+  giftData.value = await textEditorStore.readGiftEntity(value.id)
+  giftData.value.depositLimits = value.depositLimits
   giftValue.value.options = getAvailableFields(giftData.value).map(field => ({
     id: field,
     name: t(`component.variableGiftPreset.fields.${field}`),
@@ -101,8 +102,8 @@ const onSelectGift = async ({ _value }: SelectBaseField) => {
   isApplied.value = false
 }
 
-const onSelectGiftFieldValue = ({ _value }: SelectBaseField) => {
-  emit('setVariables', giftData.value[_value?.id] ?? {})
+const onSelectGiftFieldValue = ({ value }: SelectBaseField) => {
+  emit('setVariables', giftData.value[value?.id] ?? {})
   canApply.value = true
   isApplied.value = false
 }
@@ -111,6 +112,8 @@ const setApply = () => {
   isApplied.value = true
   canApply.value = false
 }
+
+const applyBtnLabel = computed(() => isApplied.value ? t('component.variableGiftPreset.applied') : t('component.variableGiftPreset.apply'))
 </script>
 
 <template>
@@ -175,7 +178,6 @@ const setApply = () => {
           >
             <FieldGenerator
               v-model="giftValue"
-              ref="giftValueRef"
               :disabled="!gift.value.id"
               @update:model-value="onSelectGiftFieldValue"
             />
@@ -188,18 +190,10 @@ const setApply = () => {
               class="btn-apply w-100"
               :variant="VVariants.Outlined"
               :disabled="!canApply"
+              :prepend-icon="isApplied ? IconsList.CheckIcon : undefined"
               @click="setApply"
             >
-              <span v-if="isApplied">
-                <VIcon
-                  :icon="IconsList.CheckIcon"
-                  :size="20"
-                  class="mr-2"
-                /> {{ $t('component.variableGiftPreset.applied') }}
-              </span>
-              <span v-else>
-                {{ $t('component.variableGiftPreset.apply') }}
-              </span>
+              {{ applyBtnLabel }}
             </VBtn>
           </VCol>
         </VRow>
