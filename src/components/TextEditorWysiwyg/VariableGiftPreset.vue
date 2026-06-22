@@ -21,16 +21,37 @@ const emit = defineEmits<EmitEvents<{
 const { t } = useI18n()
 const textEditorStore = useTextEditorStore()
 
+const GIT_TYPE_OPTIONS = [
+  {
+    id: 'gift',
+    name: t('component.variableGiftPreset.gift'),
+  },
+  {
+    id: 'giftSpinOffers',
+    name: t('component.variableGiftPreset.giftSpinOffers'),
+  },
+]
+
 const isOpenSelectors = ref(false)
 
 const setStateOpenSelectors = (state: boolean) => {
   isOpenSelectors.value = state
 }
 
-const selectedGift = ref(new SelectBaseField(
+const giftType = ref(new SelectBaseField(
+  {
+    value: GIT_TYPE_OPTIONS[0],
+    key: 'type',
+    label: t('component.variableGiftPreset.type'),
+    options: GIT_TYPE_OPTIONS,
+    clearable: false,
+  },
+))
+
+const gift = ref(new SelectBaseField(
   {
     value: '',
-    key: 'selectedGift',
+    key: 'gift',
     label: t('component.variableGiftPreset.gift'),
     fetchOptionsAction: textEditorStore.fetchGiftsOptions,
     clearable: false,
@@ -50,15 +71,27 @@ const giftValue = ref(new SelectBaseField({
 }))
 
 const giftData = ref()
-
+const giftValueRef = ref(null)
 const canApply = ref(false)
 const isApplied = ref(false)
+
+const onSelectGiftType = ({ _value }: SelectBaseField) => {
+  gift.value._value = ''
+  giftValue.value._value = ''
+  giftValue.value.options = []
+  gift.value.fetchOptionsAction = _value === GIT_TYPE_OPTIONS[0] ? textEditorStore.fetchGiftsOptions : textEditorStore.fetchGiftSpinOffersOptions
+  canApply.value = false
+  isApplied.value = false
+}
 
 const onSelectGift = async ({ _value }: SelectBaseField) => {
   giftValue.value.options = []
   if (!_value?.id)
     return
+
+  giftValueRef.value.isLoading = true
   giftData.value = await textEditorStore.readGiftEntity(_value.id)
+  giftValueRef.value.isLoading = false
   giftData.value.depositLimits = _value.depositLimits
   giftValue.value.options = getAvailableFields(giftData.value).map(field => ({
     id: field,
@@ -103,7 +136,7 @@ const setApply = () => {
     >
       <div class="selector-input--header d-flex align-center justify-space-between py-3">
         <div class="title text-body-1 title text-color-base font-weight-medium">
-          {{ $t('component.variableGiftPreset.fillFromGift') }} {{giftData ? giftData?.type : ''}}
+          {{ $t('component.variableGiftPreset.fillFromGift') }}: {{ giftData ? giftData?.type : '' }}
         </div>
         <div>
           <VBtn
@@ -117,22 +150,42 @@ const setApply = () => {
         </div>
       </div>
       <div class="selector-input--body">
-        <VRow>
-          <VCol cols="5">
+        <VRow class="d-flex align-center py-0 my-0">
+          <VCol
+            cols="2"
+            class="px-0 pl-3"
+          >
             <FieldGenerator
-              v-model="selectedGift"
+              v-model="giftType"
+              @update:model-value="onSelectGiftType"
+            />
+          </VCol>
+          <VCol
+            cols="4"
+            class="px-0 pl-3"
+          >
+            <FieldGenerator
+              v-model="gift"
               @update:model-value="onSelectGift"
             />
           </VCol>
-          <VCol cols="5">
+          <VCol
+            cols="4"
+            class="px-0 pl-3"
+          >
             <FieldGenerator
               v-model="giftValue"
+              ref="giftValueRef"
+              :disabled="!gift.value.id"
               @update:model-value="onSelectGiftFieldValue"
             />
           </VCol>
-          <VCol cols="2">
+          <VCol
+            cols="2"
+            class="px-0 pl-3"
+          >
             <VBtn
-              class="w-100 btn-apply"
+              class="btn-apply w-100"
               :variant="VVariants.Outlined"
               :disabled="!canApply"
               @click="setApply"

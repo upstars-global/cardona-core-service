@@ -61,5 +61,24 @@ export const useTextEditorStore = defineStore('textEditor', {
         GiftOptionsItem,
       )
     },
+    async fetchGiftSpinOffersOptions(parmas?: { pageNumber?: number; perPage?: number; filter?: Record<string, any> }) {
+      return new ListData<string>(
+        await ApiService.request({
+          type: 'App.V2.Alaro.GiftSpin.Templates.List',
+          data: {
+            project: this.$selectedProjectAlias,
+          },
+          pagination: {
+            pageNumber: parmas?.pageNumber || 1,
+            perPage: parmas?.perPage || OPTIONS_PER_PAGE,
+          },
+          filter: {
+            ...(parmas?.filter || {}),
+            project: this.$selectedProjectAlias,
+          },
+        }),
+        GiftOptionsItem,
+      )
+    },
   },
 })

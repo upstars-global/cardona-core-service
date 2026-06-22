@@ -487,6 +487,8 @@
       "apply": "Apply",
       "applied": "Applied",
       "gift": "Gift",
+      "type": "Type",
+      "giftSpinOffers": "Gift spin offers",
       "value": "Value",
       "fields": {
         "depositRules": "Deposit rules XXXX",

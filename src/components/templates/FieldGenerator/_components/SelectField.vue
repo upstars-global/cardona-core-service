@@ -129,6 +129,10 @@ const {
   () => props.field.loadMore(searchValue.value),
   loadRef,
 )
+
+defineExpose({
+  isLoading,
+})
 </script>
 
 <template>
