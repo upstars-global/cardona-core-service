@@ -6,6 +6,7 @@ import { VColors, VVariants } from '../../@model/vuetify'
 import SelectField from '../../components/templates/FieldGenerator/_components/SelectField.vue'
 import { useTextEditorStore } from '../../stores/textEditor'
 import { SelectBaseField } from '../../@model/templates/baseField'
+import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 
 defineOptions({
   name: 'VaraibleGiftPreset',
@@ -19,28 +20,26 @@ const setStateOpenSelectors = (state: boolean) => {
   isOpenSelectors.value = state
 }
 
-const selectedGift = ref()
-
-const selectedGiftConfig = new SelectBaseField(
+const selectedGift = ref(new SelectBaseField(
   {
+    value: '',
     key: 'selectedGift',
     label: i18n.t('component.variableGiftPreset.selectedGift'),
     fetchOptionsAction: useTextEditorStore().fetchGiftsOptions,
     clearable: false,
     infiniteLoading: true,
+    filterable: false,
     filterBy: {
       isActive: 'true',
     },
   },
-)
+))
 
-const giftValue = ref()
-
-const giftValueConfig = new SelectBaseField({
+const giftValue = ref(new SelectBaseField({
   key: 'giftValue',
   label: i18n.t('component.variableGiftPreset.value'),
   options: [],
-})
+}))
 </script>
 
 <template>
@@ -49,9 +48,7 @@ const giftValueConfig = new SelectBaseField({
       v-if="!isOpenSelectors"
       class="open-select d-flex align-center justify-end text-primary cursor-pointer"
     >
-      <span
-        @click="setStateOpenSelectors(true)"
-      >
+      <span @click="setStateOpenSelectors(true)">
         <VIcon
           :icon="IconsList.Sparkles"
           class="mr-2"
@@ -84,15 +81,15 @@ const giftValueConfig = new SelectBaseField({
       <div class="selector-input--body">
         <VRow>
           <VCol cols="5">
-            <SelectField
+            <FieldGenerator
               v-model="selectedGift"
-              :field="selectedGiftConfig"
+              :with-label="false"
             />
           </VCol>
           <VCol cols="5">
-            <SelectField
+            <FieldGenerator
               v-model="giftValue"
-              :field="giftValueConfig"
+              :with-label="false"
             />
           </VCol>
           <VCol cols="2">
