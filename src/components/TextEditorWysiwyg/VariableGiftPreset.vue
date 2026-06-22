@@ -57,7 +57,7 @@ const onSelectGift = async (value: SelectBaseField) => {
 
 const onSelectGiftFieldValue = (value: SelectBaseField) => {
   console.log(value._value.id)
-  console.log(giftData.value, value._value.id)
+  console.log(giftData.value, value._value.id, giftData.value[value._value.id] ?? 'None')
 }
 </script>
 
