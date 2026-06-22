@@ -485,6 +485,7 @@
     "variableGiftPreset": {
       "fillFromGift": "Fill from gift",
       "apply": "Apply",
+      "applied": "Applied",
       "gift": "Gift",
       "value": "Value",
       "fields": {

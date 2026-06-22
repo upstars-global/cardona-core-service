@@ -6,11 +6,17 @@ import { VColors, VVariants } from '../../@model/vuetify'
 import { useTextEditorStore } from '../../stores/textEditor'
 import { SelectBaseField } from '../../@model/templates/baseField'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
+import type { CurrencyLimit } from '../../@model/gift'
 import { getAvailableFields } from '../../@model/gift'
+import type { EmitEvents } from '../../@model'
 
 defineOptions({
   name: 'VaraibleGiftPreset',
 })
+
+const emit = defineEmits<EmitEvents<{
+  'setVariables': Record<string, CurrencyLimit>
+}>>()
 
 const { t } = useI18n()
 const textEditorStore = useTextEditorStore()
@@ -39,24 +45,38 @@ const selectedGift = ref(new SelectBaseField(
 const giftValue = ref(new SelectBaseField({
   key: 'giftValue',
   label: t('component.variableGiftPreset.value'),
+  clearable: false,
   options: [],
 }))
 
 const giftData = ref()
 
-const onSelectGift = async (value: SelectBaseField) => {
-  if (!value._value?.id)
+const canApply = ref(false)
+const isApplied = ref(false)
+
+const onSelectGift = async ({ _value }: SelectBaseField) => {
+  giftValue.value.options = []
+  if (!_value?.id)
     return
-  giftData.value = await textEditorStore.readGiftEntity(value._value.id)
-  giftData.value.depositLimits = value._value.depositLimits
+  giftData.value = await textEditorStore.readGiftEntity(_value.id)
+  giftData.value.depositLimits = _value.depositLimits
   giftValue.value.options = getAvailableFields(giftData.value).map(field => ({
     id: field,
     name: t(`component.variableGiftPreset.fields.${field}`),
   }))
+  canApply.value = false
+  isApplied.value = false
 }
 
-const onSelectGiftFieldValue = (value: SelectBaseField) => {
-  console.log(giftData.value, value._value.id, giftData.value[value._value.id] ?? 'None')
+const onSelectGiftFieldValue = ({ _value }: SelectBaseField) => {
+  emit('setVariables', giftData.value[_value?.id] ?? {})
+  canApply.value = true
+  isApplied.value = false
+}
+
+const setApply = () => {
+  isApplied.value = true
+  canApply.value = false
 }
 </script>
 
@@ -114,8 +134,19 @@ const onSelectGiftFieldValue = (value: SelectBaseField) => {
             <VBtn
               class="w-100"
               :variant="VVariants.Outlined"
+              :disabled="!canApply"
+              @click="setApply"
             >
-              {{ $t('component.variableGiftPreset.apply') }}
+              <span v-if="isApplied">
+                <VIcon
+                  :icon="IconsList.CheckIcon"
+                  :size="20"
+                  class="mr-2"
+                /> {{ $t('component.variableGiftPreset.applied') }}
+              </span>
+              <span>
+                {{ $t('component.variableGiftPreset.apply') }}
+              </span>
             </VBtn>
           </VCol>
         </VRow>
