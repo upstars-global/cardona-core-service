@@ -127,13 +127,16 @@ type DepositField = 'depositLimits' |
 'winLimits'
 
 export function getAvailableFields(gift: IGiftData): DepositField[] {
-  const { type, sumsAsPercent } = gift
+  const { type, sumsAsPercent, winLimitsAsPercent } = gift
 
   if (TYPE_GROUP_1.includes(type as typeof TYPE_GROUP_1[number])) {
-    const fields: DepositField[] = ['depositLimits', 'sumLimits']
+    const fields: DepositField[] = ['depositLimits', 'sumLimits', 'winLimits']
 
     if (!sumsAsPercent)
-      fields.push('sums', 'maxWin')
+      fields.push('sums')
+
+    if (!winLimitsAsPercent)
+      fields.push('maxWin')
 
     return fields
   }
@@ -141,7 +144,7 @@ export function getAvailableFields(gift: IGiftData): DepositField[] {
   if (TYPE_GROUP_2.includes(type as typeof TYPE_GROUP_2[number])) {
     const fields: DepositField[] = ['depositLimits']
 
-    if (!sumsAsPercent)
+    if (!winLimitsAsPercent)
       fields.push('maxWin')
 
     return fields
