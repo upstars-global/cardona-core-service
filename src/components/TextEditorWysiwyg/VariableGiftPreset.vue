@@ -48,7 +48,7 @@ const onSelectGift = async (value: SelectBaseField) => {
   if (!value._value?.id)
     return
   giftData.value = await textEditorStore.readGiftEntity(value._value.id)
-  console.log(value._value)
+  giftData.value.depositLimits = value._value.depositLimits
   giftValue.value.options = getAvailableFields(giftData.value).map(field => ({
     id: field,
     name: t(`component.variableGiftPreset.fields.${field}`),
