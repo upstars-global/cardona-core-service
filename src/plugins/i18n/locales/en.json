@@ -491,7 +491,7 @@
         "depositRules": "Deposit rules",
         "sums": "Sum",
         "sumLimits": "Max sum",
-        "maxWin": "Max win"
+        "winLimits": "Max win"
       }
     },
     "countriesSelect": {

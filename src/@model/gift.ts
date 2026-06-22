@@ -123,7 +123,6 @@ const TYPE_GROUP_2 = [GiftType.UniversalGaming] as const
 type DepositField = 'depositLimits' |
 'sums' |
 'sumLimits' |
-'maxWin' |
 'winLimits'
 
 export function getAvailableFields(gift: IGiftData): DepositField[] {
@@ -135,9 +134,6 @@ export function getAvailableFields(gift: IGiftData): DepositField[] {
     if (!sumsAsPercent)
       fields.push('sums')
 
-    if (!winLimitsAsPercent)
-      fields.push('maxWin')
-
     return fields
   }
 
@@ -145,7 +141,7 @@ export function getAvailableFields(gift: IGiftData): DepositField[] {
     const fields: DepositField[] = ['depositLimits']
 
     if (!winLimitsAsPercent)
-      fields.push('maxWin')
+      fields.push('winLimits')
 
     return fields
   }
