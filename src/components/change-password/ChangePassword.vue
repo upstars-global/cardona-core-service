@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, ref } from 'vue'
-import { PageType } from 'cardona-core-service/src/@model/templates/baseSection'
-import { transformFormData } from 'cardona-core-service/src/helpers'
+import { PageType } from '../../@model/templates/baseSection'
+import { transformFormData } from '../../helpers'
 import { useSection } from '../../@model/changePassword'
 import BaseModal from '../BaseModal/index.vue'
 import FieldGenerator from '../templates/FieldGenerator/index.vue'
