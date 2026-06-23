@@ -6,7 +6,6 @@ import BaseModal from '../../components/BaseModal/index.vue'
 import { PermissionLevel } from '../../@model/permission'
 import { useUserStore } from '../../stores/user'
 import VariableGiftPreset from './VariableGiftPreset.vue'
-import type {CurrencyLimit} from "@/@model/gift";
 
 type Value = Record<string, unknown>
 interface Props {
@@ -32,7 +31,7 @@ const emit = defineEmits<Emits>()
 
 const userStore = useUserStore()
 
-const canUseVariablePreset = computed(() => userStore.abilityCan('backoffice-gifts', PermissionLevel.view))
+const canUseVariablePreset = computed(() => userStore.abilityCan('backoffice-gifts', PermissionLevel.view) || userStore.abilityCan('alaro-gift-spin-template', PermissionLevel.view))
 
 const initFormModal = (): Value => {
   const existing = props.value ?? {}
@@ -107,7 +106,10 @@ const onSetVariablesPresets = (value: Record<string, number>) => {
     </template>
     <div class="full-width variable-modal">
       <div class="pa-6">
-        <VariableGiftPreset v-if="canUseVariablePreset" @setVariables="onSetVariablesPresets($event)" />
+        <VariableGiftPreset
+          v-if="canUseVariablePreset"
+          @set-variables="onSetVariablesPresets($event)"
+        />
         <VRow class="full-width flex-nowrap">
           <VCol
             cols="12"
@@ -125,7 +127,7 @@ const onSetVariablesPresets = (value: Record<string, number>) => {
                 cols="11"
                 class="pr-0"
               >
-                {{itemKey}}
+                {{ itemKey }}
                 <AppTextField
                   v-model="formModal[itemKey]"
                   :disabled="disabled"

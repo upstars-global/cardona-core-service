@@ -9,6 +9,8 @@ import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 import type { CurrencyLimit, GiftOptionsItem, GiftSpinOfferOptionsItem } from '../../@model/gift'
 import { GIFT_SPIN_OFFER_OPTIONS, GIFT_TYPE_OPTIONS, getAvailableFields } from '../../@model/gift'
 import type { EmitEvents } from '../../@model'
+import { useUserStore } from '../../stores/user'
+import { PermissionLevel } from '../../@model/permission'
 
 defineOptions({
   name: 'VariableGiftPreset',
@@ -20,6 +22,7 @@ const emit = defineEmits<EmitEvents<{
 
 const { t } = useI18n()
 const textEditorStore = useTextEditorStore()
+const userStore = useUserStore()
 
 const FETCH_OPTIONS_MAP = {
   gift: textEditorStore.fetchGiftsOptions,
@@ -40,12 +43,14 @@ interface GiftData {
 
 const isOpenSelectors = ref(false)
 
+const canViewGift = computed(() => userStore.abilityCan(GIFT_TYPE_OPTIONS[0].permission, PermissionLevel.view))
+
 const giftType = ref(new SelectBaseField(
   {
-    value: GIFT_TYPE_OPTIONS[0],
+    value: canViewGift.value ? GIFT_TYPE_OPTIONS[0] : GIFT_TYPE_OPTIONS[1],
     key: 'type',
     label: t('component.variableGiftPreset.type'),
-    options: GIFT_TYPE_OPTIONS,
+    options: GIFT_TYPE_OPTIONS.filter(({ permission }) => userStore.abilityCan(permission, PermissionLevel.view)),
     clearable: false,
   },
 ))
@@ -55,7 +60,7 @@ const gift = ref(new SelectBaseField(
     value: '',
     key: 'gift',
     label: t('component.variableGiftPreset.gift'),
-    fetchOptionsAction: textEditorStore.fetchGiftsOptions,
+    fetchOptionsAction: canViewGift.value ? textEditorStore.fetchGiftsOptions : textEditorStore.fetchGiftSpinOffersOptions,
     clearable: false,
     infiniteLoading: true,
     filterable: false,
@@ -84,6 +89,8 @@ const resetApplyState = () => {
 }
 
 const onSelectGiftType = ({ value }: SelectBaseField) => {
+  if (!value?.id)
+    return
   gift.value.value = ''
   giftValue.value.value = ''
   giftValue.value.options = []
@@ -223,7 +230,11 @@ const applyBtnLabel = computed(() => isApplied.value ? t('component.variableGift
               @click="setApply"
             >
               <div class="d-flex align-center">
-                <VIcon v-if="isApplied" :icon="IconsList.CheckIcon" class="mr-1" />
+                <VIcon
+                  v-if="isApplied"
+                  :icon="IconsList.CheckIcon"
+                  class="mr-1"
+                />
                 {{ applyBtnLabel }}
               </div>
             </VBtn>

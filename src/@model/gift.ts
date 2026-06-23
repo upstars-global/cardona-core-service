@@ -14,10 +14,12 @@ export const GIFT_TYPE_OPTIONS = [
   {
     id: 'gift',
     name: i18n.t('component.variableGiftPreset.gift'),
+    permission: 'backoffice-gifts'
   },
   {
     id: 'giftSpinOffers',
     name: i18n.t('component.variableGiftPreset.giftSpinOffers'),
+    permission: 'alaro-gift-spin-template'
   },
 ]
 
@@ -155,9 +157,9 @@ const TYPE_GROUP_2 = [GiftType.UniversalGaming] as const
 export const GIFT_TYPES_FILTER = [...TYPE_GROUP_1, ...TYPE_GROUP_2] as const
 
 type DepositField = 'depositLimits' |
-'sums' |
-'sumLimits' |
-'winLimits'
+  'sums' |
+  'sumLimits' |
+  'winLimits'
 
 export function getAvailableFields(gift: IGiftData): DepositField[] {
   const { type, sumsAsPercent, winLimitsAsPercent } = gift
