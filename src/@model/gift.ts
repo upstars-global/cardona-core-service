@@ -152,6 +152,8 @@ const TYPE_GROUP_1 = [
 
 const TYPE_GROUP_2 = [GiftType.UniversalGaming] as const
 
+export const GIFT_TYPES_FILTER = [...TYPE_GROUP_1, ...TYPE_GROUP_2] as const
+
 type DepositField = 'depositLimits' |
 'sums' |
 'sumLimits' |

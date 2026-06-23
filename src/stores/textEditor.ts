@@ -3,7 +3,7 @@ import { omit } from 'lodash'
 import { ListData } from '../@model'
 import ApiService from '../services/api'
 import { OPTIONS_PER_PAGE } from '../utils/constants'
-import {GiftOptionsItem, GiftSpinOfferOptionsItem} from '../@model/gift'
+import { GIFT_TYPES_FILTER, GiftOptionsItem, GiftSpinOfferOptionsItem } from '../@model/gift'
 
 export const useTextEditorStore = defineStore('textEditor', {
   state: () => ({
@@ -56,6 +56,7 @@ export const useTextEditorStore = defineStore('textEditor', {
           filter: {
             ...(parmas?.filter || {}),
             project: this.$selectedProjectAlias,
+            type: GIFT_TYPES_FILTER,
           },
         }),
         GiftOptionsItem,
