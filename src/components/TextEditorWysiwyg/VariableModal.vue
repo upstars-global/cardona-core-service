@@ -68,8 +68,11 @@ const deleteForm = () => {
   modal.hideModal(props.modalId)
 }
 
-const onSetVariablesPresets = (value: CurrencyLimit[]) => {
-  console.log(value)
+const onSetVariablesPresets = (value: Record<string, number>) => {
+  Object.keys(formModal.value)
+    .forEach(key => {
+      formModal.value[key] = value[key] ?? 0
+    })
 }
 </script>
 
@@ -104,7 +107,7 @@ const onSetVariablesPresets = (value: CurrencyLimit[]) => {
     </template>
     <div class="full-width variable-modal">
       <div class="pa-6">
-        <VariableGiftPreset v-if="canUseVariablePreset" @setVariables="onSetVariablesPresets" />
+        <VariableGiftPreset v-if="canUseVariablePreset" @setVariables="onSetVariablesPresets($event)" />
         <VRow class="full-width flex-nowrap">
           <VCol
             cols="12"
@@ -122,6 +125,7 @@ const onSetVariablesPresets = (value: CurrencyLimit[]) => {
                 cols="11"
                 class="pr-0"
               >
+                {{itemKey}}
                 <AppTextField
                   v-model="formModal[itemKey]"
                   :disabled="disabled"

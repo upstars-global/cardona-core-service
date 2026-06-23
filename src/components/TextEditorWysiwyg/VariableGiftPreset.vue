@@ -15,7 +15,7 @@ defineOptions({
 })
 
 const emit = defineEmits<EmitEvents<{
-  'setVariables': CurrencyLimit[]
+  'setVariables': Record<string, number>
 }>>()
 
 const { t } = useI18n()
@@ -128,7 +128,16 @@ const onSelectGiftFieldValue = () => {
 }
 
 const setApply = () => {
-  emit('setVariables', giftData.value[giftValue.value.value?.id])
+  if (!giftData.value)
+    return
+
+  const fieldData = giftData.value[giftValue.value.value?.id] as CurrencyLimit[]
+  const emittedValue: Record<string, number> = fieldData.reduce<Record<string, number>>((acc, curr) => ({
+    ...acc,
+    [curr.currency]: curr.value,
+  }), {}) ?? {}
+
+  emit('setVariables', emittedValue)
   isApplied.value = true
   canApply.value = false
 }
