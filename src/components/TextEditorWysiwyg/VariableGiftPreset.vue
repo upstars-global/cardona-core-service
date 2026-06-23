@@ -122,7 +122,9 @@ const onSelectGift = ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptions
   resetApplyState()
 }
 
-const onSelectGiftFieldValue = () => {
+const onSelectGiftFieldValue = ({ value }) => {
+  if (!value?.id)
+    return
   canApply.value = true
   isApplied.value = false
 }
@@ -132,6 +134,7 @@ const setApply = () => {
     return
 
   const fieldData = giftData.value[giftValue.value.value?.id] as CurrencyLimit[]
+
   const emittedValue: Record<string, number> = fieldData.reduce<Record<string, number>>((acc, curr) => ({
     ...acc,
     [curr.currency]: curr.value,
