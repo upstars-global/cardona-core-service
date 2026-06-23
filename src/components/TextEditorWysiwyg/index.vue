@@ -163,6 +163,10 @@ watch(() => canUploadVideo.value, value => {
 
 const config = {
   placeholderText: props.placeholder,
+  htmlRemoveTags: [
+    'script',
+    'base',
+  ],
   events: {
     initialized() {
       globalEditor.value = this
