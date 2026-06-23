@@ -6,6 +6,7 @@ import BaseModal from '../../components/BaseModal/index.vue'
 import { PermissionLevel } from '../../@model/permission'
 import { useUserStore } from '../../stores/user'
 import VariableGiftPreset from './VariableGiftPreset.vue'
+import type {CurrencyLimit} from "@/@model/gift";
 
 type Value = Record<string, unknown>
 interface Props {
@@ -66,6 +67,10 @@ const deleteForm = () => {
   emit('delete-key')
   modal.hideModal(props.modalId)
 }
+
+const onSetVariablesPresets = (value: CurrencyLimit[]) => {
+  console.log(value)
+}
 </script>
 
 <!-- TODO: refactor sizes -->
@@ -99,7 +104,7 @@ const deleteForm = () => {
     </template>
     <div class="full-width variable-modal">
       <div class="pa-6">
-        <VariableGiftPreset v-if="true || canUseVariablePreset" />
+        <VariableGiftPreset v-if="canUseVariablePreset" @setVariables="onSetVariablesPresets" />
         <VRow class="full-width flex-nowrap">
           <VCol
             cols="12"

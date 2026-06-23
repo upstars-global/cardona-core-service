@@ -7,7 +7,7 @@ import { useTextEditorStore } from '../../stores/textEditor'
 import { SelectBaseField } from '../../@model/templates/baseField'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 import type { CurrencyLimit, GiftOptionsItem, GiftSpinOfferOptionsItem } from '../../@model/gift'
-import { GIFT_SPIN_OFFER_OPTIONS, getAvailableFields } from '../../@model/gift'
+import { GIFT_SPIN_OFFER_OPTIONS, GIFT_TYPE_OPTIONS, getAvailableFields } from '../../@model/gift'
 import type { EmitEvents } from '../../@model'
 
 defineOptions({
@@ -15,22 +15,11 @@ defineOptions({
 })
 
 const emit = defineEmits<EmitEvents<{
-  'setVariables': Record<string, CurrencyLimit>
+  'setVariables': CurrencyLimit[]
 }>>()
 
 const { t } = useI18n()
 const textEditorStore = useTextEditorStore()
-
-const GIFT_TYPE_OPTIONS = [
-  {
-    id: 'gift',
-    name: t('component.variableGiftPreset.gift'),
-  },
-  {
-    id: 'giftSpinOffers',
-    name: t('component.variableGiftPreset.giftSpinOffers'),
-  },
-]
 
 const FETCH_OPTIONS_MAP = {
   gift: textEditorStore.fetchGiftsOptions,
@@ -39,11 +28,11 @@ const FETCH_OPTIONS_MAP = {
 
 interface GiftData {
   type?: string
-  depositLimits?: Record<string, CurrencyLimit>
+  depositLimits?: CurrencyLimit[]
   sums?: CurrencyLimit[]
   sumLimits?: CurrencyLimit[]
   winLimits?: CurrencyLimit[]
-  rates?: Record<string, CurrencyLimit>
+  rates?: CurrencyLimit[]
   sumsAsPercent?: boolean
   winLimitsAsPercent?: boolean
   [key: string]: unknown
@@ -83,6 +72,8 @@ const giftValue = ref(new SelectBaseField({
   options: [],
 }))
 
+const isBaseGiftType = computed(() => giftType.value.value.id === GIFT_TYPE_OPTIONS[0].id)
+
 const giftData = ref<GiftData | null>(null)
 const canApply = ref(false)
 const isApplied = ref(false)
@@ -108,7 +99,7 @@ const onSelectGift = ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptions
 
   giftValue.value.value = ''
 
-  if (giftType.value.value.id === GIFT_TYPE_OPTIONS[0].id) {
+  if (isBaseGiftType.value) {
     giftValue.value.fetchOptionsAction = async () => {
       const entity = await textEditorStore.readGiftEntity((value as GiftOptionsItem).id)
 
@@ -131,13 +122,13 @@ const onSelectGift = ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptions
   resetApplyState()
 }
 
-const onSelectGiftFieldValue = ({ value }: SelectBaseField) => {
-  emit('setVariables', (giftData.value?.[value?.id] as Record<string, CurrencyLimit>) ?? {} as Record<string, CurrencyLimit>)
+const onSelectGiftFieldValue = () => {
   canApply.value = true
   isApplied.value = false
 }
 
 const setApply = () => {
+  emit('setVariables', giftData.value[giftValue.value.value?.id])
   isApplied.value = true
   canApply.value = false
 }

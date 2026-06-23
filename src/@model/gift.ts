@@ -7,15 +7,27 @@ export interface IGiftPayload {
   readonly id: string
   readonly title: string
   readonly templateTitle: string
-  readonly depositLimits: Record<string, CurrencyLimit>
+  readonly depositLimits: CurrencyLimit[]
 }
+
+export const GIFT_TYPE_OPTIONS = [
+  {
+    id: 'gift',
+    name: i18n.t('component.variableGiftPreset.gift'),
+  },
+  {
+    id: 'giftSpinOffers',
+    name: i18n.t('component.variableGiftPreset.giftSpinOffers'),
+  },
+]
+
 
 export const getOptionTitle = (id: string, title: string) => `${title} (ID ${getShortString(id)})`
 
 export class GiftOptionsItem implements OptionsItem {
   readonly id: string
   readonly name: string
-  readonly depositLimits: Record<string, CurrencyLimit>
+  readonly depositLimits: CurrencyLimit[]
 
   constructor(data: IGiftPayload) {
     this.id = data.id
@@ -27,12 +39,12 @@ export class GiftOptionsItem implements OptionsItem {
 export class GiftSpinOfferOptionsItem implements OptionsItem {
   readonly id: string
   readonly name: string
-  readonly rates: Record<string, CurrencyLimit>
+  readonly rates: CurrencyLimit[]
 
-  constructor(data: { id: string; name: string; rates: Record<string, CurrencyLimit> }) {
+  constructor(data: { id: string; name: string; rates: { currency: string; bet: number }[] }) {
     this.id = data.id
     this.name = getOptionTitle(data.id, data.name)
-    this.rates = data.rates
+    this.rates = data.rates.map(({ currency, bet }) => ({ currency, value: bet }))
   }
 }
 
@@ -127,9 +139,6 @@ export enum GiftType {
   NonDeposit = 'NonDeposit',
   XP = 'XP',
   'XP & SP' = 'XP & SP',
-
-  // TODO rollback after include valid API make like in changes from task https://upstars.atlassian.net/browse/BAC-6306
-  // Levels = 'Levels',
   UniversalGaming = 'Universal gaming',
   Betting = 'Betting',
 }
