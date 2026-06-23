@@ -165,11 +165,11 @@ const applyBtnLabel = computed(() => isApplied.value ? t('component.variableGift
     </div>
     <div
       v-else
-      class="selector-input bg-background px-4"
+      class="selector-input bg-background"
     >
-      <div class="selector-input--header d-flex align-center justify-space-between py-3">
+      <div class="selector-input--header d-flex align-center justify-space-between px-4 py-3">
         <div class="title text-body-1 title text-color-base font-weight-medium">
-          {{ $t('component.variableGiftPreset.fillFromGift') }}: {{ giftData?.type ?? '' }}
+          {{ $t('component.variableGiftPreset.fillFromGift') }}
         </div>
         <div>
           <VBtn
@@ -182,11 +182,11 @@ const applyBtnLabel = computed(() => isApplied.value ? t('component.variableGift
           </VBtn>
         </div>
       </div>
-      <div class="selector-input--body">
+      <div class="selector-input--body px-3 px-3">
         <VRow class="d-flex align-center py-0 my-0">
           <VCol
             cols="2"
-            class="px-0 pl-3"
+            class="px-0 pt-0 pl-3"
           >
             <FieldGenerator
               v-model="giftType"
@@ -195,7 +195,7 @@ const applyBtnLabel = computed(() => isApplied.value ? t('component.variableGift
           </VCol>
           <VCol
             cols="4"
-            class="px-0 pl-3"
+            class="px-0 pt-0 pl-3"
           >
             <FieldGenerator
               v-model="gift"
@@ -204,7 +204,7 @@ const applyBtnLabel = computed(() => isApplied.value ? t('component.variableGift
           </VCol>
           <VCol
             cols="4"
-            class="px-0 pl-3"
+            class="px-0 pt-0 pl-3"
           >
             <FieldGenerator
               v-model="giftValue"
@@ -214,16 +214,18 @@ const applyBtnLabel = computed(() => isApplied.value ? t('component.variableGift
           </VCol>
           <VCol
             cols="2"
-            class="px-0 pl-3"
+            class="pt-0"
           >
             <VBtn
               class="btn-apply w-100"
               :variant="VVariants.Outlined"
               :disabled="!canApply"
-              :prepend-icon="isApplied ? IconsList.CheckIcon : undefined"
               @click="setApply"
             >
-              {{ applyBtnLabel }}
+              <div class="d-flex align-center">
+                <VIcon v-if="isApplied" :icon="IconsList.CheckIcon" class="mr-1" />
+                {{ applyBtnLabel }}
+              </div>
             </VBtn>
           </VCol>
         </VRow>
