@@ -7,6 +7,8 @@ import type { IBaseListConfig } from '../../@model/templates/baseList'
 import { ExportFormat, SortDirection } from '../../@model/templates/baseList'
 import { SelectMode } from '../../@model/enums/selectMode'
 import { MultipleActions } from '../../@model/enums/multipleActions'
+import { useFiltersStore } from '../../stores/filtersCore'
+import { VColors } from '../../@model/vuetify'
 
 /**
  * DefaultBaseList — universal data table used across the entire project.
@@ -27,7 +29,7 @@ const ITEMS = [
     id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
     name: 'Summer Jackpot Tournament',
     email: 'jackpot@example.com',
-    status: 'active',
+    status: { status: 'active', variant: VColors.Success },
     isActive: true,
     createdAt: '2025-01-08T09:14:22.000Z',
     uuid: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
@@ -39,8 +41,8 @@ const ITEMS = [
     currency: 'USD',
     remainder: 0,
     comment: 'High-priority campaign for summer season',
-    period: { from: '2025-06-01T00:00:00.000Z', to: '2025-08-31T23:59:59.000Z' },
-    statement: 'approved',
+    period: { dateFrom: '2025-06-01T00:00:00.000Z', dateTo: '2025-08-31T23:59:59.000Z' },
+    statement: true,
     groups: [
       { id: 'g1', name: 'Round 1' },
       { id: 'g2', name: 'Round 2' },
@@ -50,7 +52,7 @@ const ITEMS = [
     id: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
     name: 'Weekly Reload Bonus',
     email: 'reload@example.com',
-    status: 'pending_review',
+    status: { status: 'pending review', variant: VColors.Warning },
     isActive: false,
     createdAt: '2025-02-14T15:03:47.000Z',
     uuid: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
@@ -62,15 +64,15 @@ const ITEMS = [
     currency: 'EUR',
     remainder: 50,
     comment: 'Weekly recurring offer',
-    period: { from: '2025-02-10T00:00:00.000Z', to: '2025-02-17T23:59:59.000Z' },
-    statement: 'pending',
+    period: { dateFrom: '2025-02-10T00:00:00.000Z', dateTo: '2025-02-17T23:59:59.000Z' },
+    statement: false,
     groups: [],
   },
   {
     id: '550e8400-e29b-41d4-a716-446655440000',
     name: 'High Roller Cashback',
     email: 'highroller@example.com',
-    status: 'completed',
+    status: { status: 'completed', variant: VColors.Info },
     isActive: true,
     createdAt: '2025-03-01T11:30:00.000Z',
     uuid: '550e8400-e29b-41d4-a716-446655440000',
@@ -82,15 +84,15 @@ const ITEMS = [
     currency: 'USD',
     remainder: 1000,
     comment: null,
-    period: { from: '2025-01-01T00:00:00.000Z', to: '2025-12-31T23:59:59.000Z' },
-    statement: 'rejected',
+    period: { dateFrom: '2025-01-01T00:00:00.000Z', dateTo: '2025-12-31T23:59:59.000Z' },
+    statement: false,
     groups: [{ id: 'g3', name: 'Elite' }],
   },
   {
     id: '3f2504e0-4f89-11d3-9a0c-0305e82c3301',
     name: 'Free Spins Friday',
     email: 'freespins@example.com',
-    status: 'scheduled',
+    status: { status: 'scheduled', variant: VColors.Primary },
     isActive: false,
     createdAt: '2025-03-21T07:00:00.000Z',
     uuid: '3f2504e0-4f89-11d3-9a0c-0305e82c3301',
@@ -102,15 +104,15 @@ const ITEMS = [
     currency: 'USD',
     remainder: 0,
     comment: 'Every Friday, limited to 50 free spins',
-    period: { from: '2025-03-21T00:00:00.000Z', to: '2025-03-21T23:59:59.000Z' },
-    statement: null,
+    period: { dateFrom: '2025-03-21T00:00:00.000Z', dateTo: '2025-03-21T23:59:59.000Z' },
+    statement: false,
     groups: [],
   },
   {
     id: 'a3bb189e-8bf9-3888-9912-ace4e6543002',
     name: 'New Player Welcome Pack',
     email: 'welcome@example.com',
-    status: 'active',
+    status: { status: 'active', variant: VColors.Success },
     isActive: true,
     createdAt: '2025-04-05T13:22:10.000Z',
     uuid: 'a3bb189e-8bf9-3888-9912-ace4e6543002',
@@ -122,15 +124,15 @@ const ITEMS = [
     currency: 'GBP',
     remainder: 0,
     comment: 'First deposit bonus',
-    period: null,
-    statement: 'approved',
+    period: { dateFrom: null, dateTo: null },
+    statement: true,
     groups: [{ id: 'g4', name: 'Week 1' }, { id: 'g5', name: 'Week 2' }],
   },
   {
     id: 'c9bf9e57-1685-4c89-bafb-ff5af830be8a',
     name: 'Loyalty Points Exchange',
     email: 'loyalty@example.com',
-    status: 'suspended',
+    status: { status: 'suspended', variant: VColors.Error },
     isActive: false,
     createdAt: '2025-04-18T08:45:33.000Z',
     uuid: 'c9bf9e57-1685-4c89-bafb-ff5af830be8a',
@@ -142,15 +144,15 @@ const ITEMS = [
     currency: 'EUR',
     remainder: 200,
     comment: 'Exchange loyalty points for real money',
-    period: { from: '2025-04-01T00:00:00.000Z', to: '2025-06-30T23:59:59.000Z' },
-    statement: 'pending',
+    period: { dateFrom: '2025-04-01T00:00:00.000Z', dateTo: '2025-06-30T23:59:59.000Z' },
+    statement: false,
     groups: [],
   },
   {
     id: 'e3d70483-d946-4168-be21-4b2cf3a66a5b',
     name: 'Live Casino Daily Drop',
     email: 'livecasino@example.com',
-    status: 'active',
+    status: { status: 'active', variant: VColors.Success },
     isActive: true,
     createdAt: '2025-05-10T16:55:00.000Z',
     uuid: 'e3d70483-d946-4168-be21-4b2cf3a66a5b',
@@ -162,8 +164,8 @@ const ITEMS = [
     currency: 'USD',
     remainder: 0,
     comment: null,
-    period: { from: '2025-05-10T00:00:00.000Z', to: '2025-05-10T23:59:59.000Z' },
-    statement: 'approved',
+    period: { dateFrom: '2025-05-10T00:00:00.000Z', dateTo: '2025-05-10T23:59:59.000Z' },
+    statement: true,
     groups: [{ id: 'g6', name: 'Day 1' }],
   },
 ]
@@ -540,6 +542,7 @@ export const Draggable: Story = {
       ...baseConfig,
       draggable: true,
       withSearch: false,
+      withCustomDrag: true,
     },
     useList: makeUseList(makeMockStore(), {
       fields: [
@@ -603,8 +606,14 @@ export const WithInlineFilters: Story = {
  * "Filters" button in the toolbar. Filter state is stored in Pinia's
  * `filtersCore` store. The mock store ignores applied filters.
  */
+const withFiltersStoreDecorator = () => {
+  useFiltersStore().$patch({ defaultFilters: [{ type: '__storybook__', fields: [] }] })
+  return { template: '<story />' }
+}
+
 export const WithFilterPanel: Story = {
   name: 'With Filter Panel',
+  decorators: [withFiltersStoreDecorator],
   args: {
     config: {
       ...baseConfig,
@@ -811,7 +820,7 @@ export const WithCellClass: Story = {
       ...baseConfig,
       cellCbClass: (_field: any, item: any) => {
         if (!item.isActive) return 'text-warning'
-        if (item.status === 'pending_review') return 'text-error'
+        if (item.status?.status?.includes('pending')) return 'text-error'
         return ''
       },
     },
@@ -879,6 +888,7 @@ export const WithStaticFilters: Story = {
  */
 export const KitchenSink: Story = {
   name: 'Kitchen Sink (All Features)',
+  decorators: [withFiltersStoreDecorator],
   args: {
     config: {
       ...baseConfig,

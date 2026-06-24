@@ -13,8 +13,8 @@ import 'vuetify/styles'
 // This is the bundled output of `npm run build:icons` and must be loaded
 // before any component renders a <v-icon>, otherwise icons appear as empty boxes.
 import '../src/plugins/iconify/icons.css'
-// Vuetify component overrides (@core)
-import '../src/@core/scss/template/libs/vuetify/index.scss'
+// Full @core template styles — mirrors what main.ts loads via @core/scss/template/index.scss
+import '../src/@core/scss/template/index.scss'
 // Project-level component overrides
 import '../src/assets/styles/styles.scss'
 
