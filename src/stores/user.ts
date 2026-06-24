@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import ApiService from '../services/api'
 import type { ProjectInfoInput } from '../@model/project'
 import { ProjectInfo } from '../@model/project'
+import type { UserActivityStatus } from '../@model/users'
 import { UserInfo } from '../@model/users'
 import type { OptionsItem } from '../@model'
 import type { PermissionLevel } from '../@model/permission'
@@ -32,6 +33,7 @@ export const fetchCurrentUserApi = async () => {
     products: data.products.map((p: any) => p as OptionsItem),
     permissions: data.permissions.map((p: any) => new Permission(p)),
     picture: data.picture || '',
+    isSessionTracked: data?.isSessionTracked,
   })
 }
 
@@ -182,6 +184,13 @@ export const useUserStore = defineStore('user', {
       this.selectedProject = null
       this.priorityProject = null
       this.userInfo = { ...this.userInfo, projects: [] }
+    },
+
+    async sendSessionsPing(status: UserActivityStatus) {
+      await ApiService.request({
+        type: 'App.V2.Users.SessionLogs.Ping',
+        data: { status },
+      })
     },
   },
 })

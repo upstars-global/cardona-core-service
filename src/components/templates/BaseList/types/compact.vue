@@ -326,11 +326,14 @@ const getList = async () => {
     options: {
       listItemModel: ListItemModel,
       customApiPrefix: props.config?.customApiPrefix,
+      cancelPrevious: props.config?.cancelPreviousRequest,
     },
   })
 
   items.value = list
   updateTotal(total)
+
+  isInitialState.value = false
 
   selectedItems.value = []
 

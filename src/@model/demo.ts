@@ -62,6 +62,7 @@ export interface IDemoListItem {
   position: number
   positionByInputWrapper: number
   imagePath: string
+  imageFull: { id: string; imagePath: string }
   tags: Array<IDemoTypeItem>
   type: {
     id: TransactionType
@@ -112,6 +113,7 @@ export class DemoListItem implements BaseListItem {
   comment: string
   rowVariant: BColors | BLightColors
   editableField: { from: number; to: number }
+  imageFull: { id: string; imagePath: string }
 
   constructor(data: IDemoListItem) {
     this.id = data.id
@@ -135,6 +137,7 @@ export class DemoListItem implements BaseListItem {
     this.position = data.position
     this.positionByInputWrapper = data.positionByInputWrapper
     this.imagePath = data.imagePath
+    this.imageFull = data.imageFull
     this.tags = data.tags
     this.type = data.type
     this.gameId = data.gameId
