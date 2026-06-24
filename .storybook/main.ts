@@ -16,8 +16,13 @@ const config: StorybookConfig = {
   ],
   framework: '@storybook/vue3-vite',
 
-  viteFinal(config) {
+  viteFinal(config, { configType }) {
     return mergeConfig(config, {
+      // When building for production (npm run build-storybook → public/storybook/),
+      // assets must be referenced relative to the /storybook/ sub-path.
+      // In dev mode (storybook dev -p 6006) the base stays at '/' so the dev
+      // server works normally on its own port.
+      base: configType === 'PRODUCTION' ? '/storybook/' : '/',
       resolve: {
         alias: {
           '@': r('../src'),

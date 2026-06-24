@@ -173,7 +173,6 @@ declare module 'vue' {
     TiptapEditor: typeof import('./src/@core/components/TiptapEditor.vue')['default']
     Toast: typeof import('./src/components/NotificationExport/Toast.vue')['default']
     ToastificationContent: typeof import('./src/components/templates/toast/ToastificationContent.vue')['default']
-    ToastificationErrorContent: typeof import('./src/components/templates/toast/ToastificationErrorContent.vue')['default']
     TransactionType: typeof import('./src/components/templates/_components/TransactionType.vue')['default']
     TransactionTypeView: typeof import('./src/components/templates/ViewGenerator/_components/TransactionTypeView.vue')['default']
     UploadImage: typeof import('./src/components/UploadImage/index.vue')['default']
