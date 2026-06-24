@@ -1,10 +1,11 @@
+import { computed } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import DefaultBaseList from '../../components/templates/BaseList/types/default.vue'
 import { TableField, ListFieldType, ListSize, AlignType } from '../../@model/templates/tableFields'
 import { FilterID } from '../../@model/filter'
 import { FilterType } from '../../@model/filter'
 import type { IBaseListConfig } from '../../@model/templates/baseList'
-import { ExportFormat, SortDirection } from '../../@model/templates/baseList'
+import { ExportFormat, ProjectsFilterMode, SortDirection } from '../../@model/templates/baseList'
 import { SelectMode } from '../../@model/enums/selectMode'
 import { MultipleActions } from '../../@model/enums/multipleActions'
 import { useFiltersStore } from '../../stores/filtersCore'
@@ -19,6 +20,9 @@ import { VColors } from '../../@model/vuetify'
  * In Storybook a mock store is provided via `useList` so no API calls are made.
  * `noPermissions: true` grants full access so all action buttons are visible.
  * `disableLoading: true` skips the skeleton loading state on mount.
+ *
+ * All `IBaseListConfig` fields are exposed as individual controls in the Controls panel.
+ * Switch to any story and adjust values live — the table re-renders immediately.
  */
 
 // ---------------------------------------------------------------------------
@@ -221,28 +225,418 @@ function makeUseList(
 }
 
 // ---------------------------------------------------------------------------
-// Shared base config — the minimal working set for every story
+// Decorator: pre-patch filtersCore store so fetchDefaultFilters skips the API
 // ---------------------------------------------------------------------------
-const baseConfig: IBaseListConfig = {
-  filterList: [],
-  loadingEndpointArr: [],
-  noPermissions: true,
-  disableLoading: true,
-  pagination: true,
+const withFiltersStoreDecorator = () => {
+  useFiltersStore().$patch({ defaultFilters: [{ type: '__storybook__', fields: [] }] })
+  return { template: '<story />' }
 }
 
 // ---------------------------------------------------------------------------
-// Meta
+// Meta — all IBaseListConfig fields exposed as individual Storybook controls
 // ---------------------------------------------------------------------------
 const meta = {
   title: 'Templates/DefaultBaseList',
   component: DefaultBaseList,
   tags: ['autodocs'],
+
+  /**
+   * The render function extracts `useList` from args and passes the remaining
+   * fields directly as the `config` prop. Every IBaseListConfig field is a
+   * top-level arg, so controls update the table live without reloading the story.
+   */
+  render: (args: any) => ({
+    components: { DefaultBaseList },
+    setup() {
+      const config = computed<IBaseListConfig>(() => ({
+        withSearch: args.withSearch,
+        withDeactivation: args.withDeactivation,
+        withDeactivationBySpecificAction: args.withDeactivationBySpecificAction,
+        withSettings: args.withSettings,
+        emptyText: args.emptyText,
+        filterList: args.filterList,
+        staticFilters: args.staticFilters,
+        withProjectsFilter: args.withProjectsFilter,
+        projectsFilterMode: args.projectsFilterMode,
+        staticSorts: args.staticSorts,
+        selectMode: args.selectMode,
+        selectable: args.selectable,
+        small: args.small,
+        draggable: args.draggable,
+        defaultPerPage: args.defaultPerPage,
+        withIndependentPagination: args.withIndependentPagination,
+        searchPlaceholder: args.searchPlaceholder,
+        withExport: args.withExport,
+        formatOfExports: args.formatOfExports,
+        maxExportItems: args.maxExportItems,
+        withMultipleActions: args.withMultipleActions,
+        sidebar: args.sidebar,
+        cbShowSidebar: args.cbShowSidebar,
+        sidebarCollapseMode: args.sidebarCollapseMode,
+        isShowYou: args.isShowYou,
+        isShowUpdatePassword: args.isShowUpdatePassword,
+        onePermissionKey: args.onePermissionKey,
+        withRemoveComment: args.withRemoveComment,
+        withRemoveModal: args.withRemoveModal,
+        createFromCopy: args.createFromCopy,
+        withCustomDrag: args.withCustomDrag,
+        pagination: args.pagination,
+        withCreateBtn: args.withCreateBtn,
+        withCustomFetchList: args.withCustomFetchList,
+        withCustomDelete: args.withCustomDelete,
+        noPermissionPrefix: args.noPermissionPrefix,
+        permissionKey: args.permissionKey,
+        customApiPrefix: args.customApiPrefix,
+        customPermissionPrefix: args.customPermissionPrefix,
+        hover: args.hover,
+        skeletonRows: args.skeletonRows,
+        skeletonCols: args.skeletonCols,
+        loadingOnlyByList: args.loadingOnlyByList,
+        loadingEndpointArr: args.loadingEndpointArr,
+        hideSearchBlock: args.hideSearchBlock,
+        closeFilterOnPagination: args.closeFilterOnPagination,
+        showExpand: args.showExpand,
+        withTopPagination: args.withTopPagination,
+        saveSort: args.saveSort,
+        disableLoading: args.disableLoading,
+        cancelPreviousRequest: args.cancelPreviousRequest,
+        cellCbClass: args.cellCbClass,
+        noPermissions: args.noPermissions,
+        inlineFilters: args.inlineFilters,
+        copyForAllProjects: args.copyForAllProjects,
+      }))
+      return { config, useList: args.useList }
+    },
+    template: '<DefaultBaseList :config="config" :use-list="useList" />',
+  }),
+
   argTypes: {
-    config: { control: false },
-    useList: { control: false },
+    // ── Toolbar ─────────────────────────────────────────────────────────────
+    withSearch: {
+      control: 'boolean',
+      description: 'Show the search input in the toolbar',
+      table: { category: 'Toolbar', defaultValue: { summary: 'false' } },
+    },
+    searchPlaceholder: {
+      control: 'text',
+      description: 'Placeholder text for the search input',
+      table: { category: 'Toolbar' },
+    },
+    withSettings: {
+      control: 'boolean',
+      description: 'Show the column-picker dropdown (column visibility toggles)',
+      table: { category: 'Toolbar', defaultValue: { summary: 'false' } },
+    },
+    hideSearchBlock: {
+      control: 'boolean',
+      description: 'Hide the entire top bar — search input, filter toggle, and create button',
+      table: { category: 'Toolbar', defaultValue: { summary: 'false' } },
+    },
+    withCreateBtn: {
+      control: 'boolean',
+      description: 'Show the "Create" button in the toolbar (requires a matching named route)',
+      table: { category: 'Toolbar', defaultValue: { summary: 'true' } },
+    },
+    withExport: {
+      control: 'boolean',
+      description: 'Show the export-format selector button',
+      table: { category: 'Toolbar', defaultValue: { summary: 'false' } },
+    },
+    formatOfExports: {
+      control: 'object',
+      description: `Available export formats — array of ExportFormat values: "${Object.values(ExportFormat).join('", "')}"`,
+      table: { category: 'Toolbar', defaultValue: { summary: '[json, csv]' } },
+    },
+    maxExportItems: {
+      control: 'number',
+      description: 'Maximum number of rows included in each export',
+      table: { category: 'Toolbar' },
+    },
+
+    // ── Filters ─────────────────────────────────────────────────────────────
+    filterList: {
+      control: 'object',
+      description: 'Array of FilterListItem — populates the collapsible filter panel (requires withFiltersStoreDecorator in Storybook)',
+      table: { category: 'Filters', defaultValue: { summary: '[]' } },
+    },
+    inlineFilters: {
+      control: 'object',
+      description: 'Filter fields embedded directly in the toolbar row instead of the panel',
+      table: { category: 'Filters', defaultValue: { summary: '[]' } },
+    },
+    staticFilters: {
+      control: 'object',
+      description: 'Filters always merged into every API request — invisible to the user',
+      table: { category: 'Filters', defaultValue: { summary: '{}' } },
+    },
+    withProjectsFilter: {
+      control: 'boolean',
+      description: 'Show the project filter dropdown',
+      table: { category: 'Filters', defaultValue: { summary: 'false' } },
+    },
+    projectsFilterMode: {
+      control: 'select',
+      options: Object.values(ProjectsFilterMode),
+      description: `Pre-selected project scope: "${ProjectsFilterMode.Current}" = current project only, "${ProjectsFilterMode.All}" = all projects`,
+      table: { category: 'Filters', defaultValue: { summary: ProjectsFilterMode.Current } },
+    },
+
+    // ── Layout ──────────────────────────────────────────────────────────────
+    small: {
+      control: 'boolean',
+      description: 'Compact table variant with reduced cell padding and font size',
+      table: { category: 'Layout', defaultValue: { summary: 'false' } },
+    },
+    hover: {
+      control: 'boolean',
+      description: 'Highlight the hovered row',
+      table: { category: 'Layout', defaultValue: { summary: 'true' } },
+    },
+    showExpand: {
+      control: 'boolean',
+      description: 'Show an expand chevron per row — expanded content comes from the `groups` data field',
+      table: { category: 'Layout', defaultValue: { summary: 'false' } },
+    },
+    emptyText: {
+      control: 'text',
+      description: 'Message displayed in the empty-state area when the list has no rows',
+      table: { category: 'Layout' },
+    },
+    cellCbClass: {
+      control: false,
+      description: 'Callback `(field, item) => string` — returns a CSS class applied to every matching cell',
+      table: { category: 'Layout' },
+    },
+
+    // ── Pagination ───────────────────────────────────────────────────────────
+    pagination: {
+      control: 'boolean',
+      description: 'Show pagination controls below (and optionally above) the table',
+      table: { category: 'Pagination', defaultValue: { summary: 'true' } },
+    },
+    defaultPerPage: {
+      control: 'number',
+      description: 'Initial number of rows per page',
+      table: { category: 'Pagination' },
+    },
+    withIndependentPagination: {
+      control: 'boolean',
+      description: 'Allow the per-page selector to be changed independently per list',
+      table: { category: 'Pagination', defaultValue: { summary: 'false' } },
+    },
+    withTopPagination: {
+      control: 'boolean',
+      description: 'Render pagination controls above the table in addition to the standard bottom controls',
+      table: { category: 'Pagination', defaultValue: { summary: 'false' } },
+    },
+    closeFilterOnPagination: {
+      control: 'boolean',
+      description: 'Close the filter panel automatically when the user changes the page',
+      table: { category: 'Pagination', defaultValue: { summary: 'false' } },
+    },
+
+    // ── Sorting ──────────────────────────────────────────────────────────────
+    saveSort: {
+      control: 'boolean',
+      description: 'Persist the active sort column and direction in localStorage',
+      table: { category: 'Sorting', defaultValue: { summary: 'true' } },
+    },
+    staticSorts: {
+      control: 'object',
+      description: 'Pre-selected sort: `{ key: string, order: "asc" | "desc" }` — applied on initial load',
+      table: { category: 'Sorting' },
+    },
+
+    // ── Selection ────────────────────────────────────────────────────────────
+    selectable: {
+      control: 'boolean',
+      description: 'Enable row selection (radio buttons for Single, checkboxes for Page/All)',
+      table: { category: 'Selection', defaultValue: { summary: 'false' } },
+    },
+    selectMode: {
+      control: 'select',
+      options: Object.values(SelectMode),
+      description: `Row selection mode: "${SelectMode.Single}" = one row, "${SelectMode.Page}" = current page, "${SelectMode.All}" = all pages`,
+      table: { category: 'Selection', defaultValue: { summary: SelectMode.Page } },
+    },
+
+    // ── Actions ──────────────────────────────────────────────────────────────
+    withMultipleActions: {
+      control: 'select',
+      options: [undefined, true, false, MultipleActions.Remove, MultipleActions.ToggleStatus],
+      description: `Bulk-action bar: true = all actions, "${MultipleActions.Remove}" = remove only, "${MultipleActions.ToggleStatus}" = toggle status only, false = disabled`,
+      table: { category: 'Actions', defaultValue: { summary: 'false' } },
+    },
+    withDeactivation: {
+      control: 'boolean',
+      description: 'Show activate/deactivate toggle in the per-row actions column',
+      table: { category: 'Actions', defaultValue: { summary: 'false' } },
+    },
+    withDeactivationBySpecificAction: {
+      control: 'boolean',
+      description: 'Route the activate/deactivate call through a dedicated store action',
+      table: { category: 'Actions', defaultValue: { summary: 'false' } },
+    },
+    withRemoveModal: {
+      control: 'boolean',
+      description: 'Show a confirmation dialog before deleting a row',
+      table: { category: 'Actions', defaultValue: { summary: 'false' } },
+    },
+    withRemoveComment: {
+      control: 'boolean',
+      description: 'Add a "reason" textarea inside the remove confirmation dialog',
+      table: { category: 'Actions', defaultValue: { summary: 'false' } },
+    },
+    createFromCopy: {
+      control: 'boolean',
+      description: 'Show a "Duplicate" action button per row',
+      table: { category: 'Actions', defaultValue: { summary: 'false' } },
+    },
+    copyForAllProjects: {
+      control: 'boolean',
+      description: 'Duplicate action replicates the entity across all projects',
+      table: { category: 'Actions', defaultValue: { summary: 'false' } },
+    },
+
+    // ── Drag & Drop ──────────────────────────────────────────────────────────
+    draggable: {
+      control: 'boolean',
+      description: 'Enable drag-and-drop row reordering via drag handles',
+      table: { category: 'Drag & Drop', defaultValue: { summary: 'false' } },
+    },
+    withCustomDrag: {
+      control: 'boolean',
+      description: 'Skip the default `updateEntity` API call on drag end — emits `@end` instead so the parent can handle reordering',
+      table: { category: 'Drag & Drop', defaultValue: { summary: 'false' } },
+    },
+
+    // ── Sidebar ──────────────────────────────────────────────────────────────
+    sidebar: {
+      control: 'boolean',
+      description: 'Enable the detail sidebar panel (requires `SideBarModel` in useList)',
+      table: { category: 'Sidebar', defaultValue: { summary: 'false' } },
+    },
+    sidebarCollapseMode: {
+      control: 'boolean',
+      description: 'Render sidebar sections as collapsible accordion panels',
+      table: { category: 'Sidebar', defaultValue: { summary: 'false' } },
+    },
+    cbShowSidebar: {
+      control: false,
+      description: 'Callback fired before the sidebar opens — can cancel the open by returning false',
+      table: { category: 'Sidebar' },
+    },
+
+    // ── Loading ──────────────────────────────────────────────────────────────
+    disableLoading: {
+      control: 'boolean',
+      description: 'Skip the skeleton loading state entirely — data appears immediately',
+      table: { category: 'Loading', defaultValue: { summary: 'false' } },
+    },
+    skeletonRows: {
+      control: 'number',
+      description: 'Number of skeleton placeholder rows shown while loading',
+      table: { category: 'Loading' },
+    },
+    skeletonCols: {
+      control: 'number',
+      description: 'Number of skeleton placeholder columns shown while loading',
+      table: { category: 'Loading' },
+    },
+    loadingOnlyByList: {
+      control: 'boolean',
+      description: 'Show skeleton only while the list-fetch request is in-flight (not other endpoints)',
+      table: { category: 'Loading', defaultValue: { summary: 'false' } },
+    },
+    loadingEndpointArr: {
+      control: 'object',
+      description: 'Additional API endpoint URLs to watch — skeleton shows while any of them is pending',
+      table: { category: 'Loading', defaultValue: { summary: '[]' } },
+    },
+    cancelPreviousRequest: {
+      control: 'boolean',
+      description: 'Cancel the previous in-flight list request when a new one starts (⚠ do not enable if two lists with the same entityName can be mounted simultaneously)',
+      table: { category: 'Loading', defaultValue: { summary: 'false' } },
+    },
+
+    // ── Permissions ──────────────────────────────────────────────────────────
+    noPermissions: {
+      control: 'boolean',
+      description: 'Bypass all permission checks — all action buttons are shown regardless of user role',
+      table: { category: 'Permissions', defaultValue: { summary: 'false' } },
+    },
+    permissionKey: {
+      control: 'text',
+      description: 'Custom permission key that overrides the auto-derived key for this list',
+      table: { category: 'Permissions' },
+    },
+    onePermissionKey: {
+      control: 'text',
+      description: 'Single permission key applied to create, update, and delete operations',
+      table: { category: 'Permissions' },
+    },
+    noPermissionPrefix: {
+      control: 'boolean',
+      description: 'Omit the project-level prefix from permission key lookup',
+      table: { category: 'Permissions', defaultValue: { summary: 'false' } },
+    },
+    customPermissionPrefix: {
+      control: 'text',
+      description: 'Custom prefix prepended to all permission keys for this list',
+      table: { category: 'Permissions' },
+    },
+
+    // ── API ──────────────────────────────────────────────────────────────────
+    customApiPrefix: {
+      control: 'text',
+      description: 'Custom API namespace prefix, e.g. "App.V2." — overrides the default entity prefix',
+      table: { category: 'API' },
+    },
+    withCustomFetchList: {
+      control: 'boolean',
+      description: 'Delegate the list fetch to a custom fetchList action in the store module',
+      table: { category: 'API', defaultValue: { summary: 'false' } },
+    },
+    withCustomDelete: {
+      control: 'boolean',
+      description: 'Delegate deletion to a custom delete action in the store module',
+      table: { category: 'API', defaultValue: { summary: 'false' } },
+    },
+
+    // ── Users ─────────────────────────────────────────────────────────────────
+    isShowYou: {
+      control: 'boolean',
+      description: 'Highlight the currently logged-in admin in the user list with a "You" badge',
+      table: { category: 'Users', defaultValue: { summary: 'false' } },
+    },
+    isShowUpdatePassword: {
+      control: 'boolean',
+      description: 'Show the "Change password" field inside the user row',
+      table: { category: 'Users', defaultValue: { summary: 'false' } },
+    },
+
+    // ── Data (not a config field) ─────────────────────────────────────────────
+    useList: {
+      control: false,
+      description: 'Factory `() => UseListType` — provides entityName, fields, and the mock store. Not editable via controls.',
+      table: { disable: true },
+    },
   },
-} satisfies Meta<typeof DefaultBaseList>
+
+  args: {
+    // Storybook-safe defaults (override component constructor defaults where needed)
+    noPermissions: true,        // show all action buttons
+    disableLoading: true,       // skip skeleton — show data immediately
+    pagination: true,
+    hover: true,
+    saveSort: false,            // don't pollute localStorage during development
+    filterList: [],
+    loadingEndpointArr: [],
+    formatOfExports: [ExportFormat.JSON, ExportFormat.CSV],
+    selectMode: SelectMode.Page,
+    useList: makeUseList(makeMockStore()),
+  },
+} satisfies Meta<any>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -257,10 +651,6 @@ type Story = StoryObj<typeof meta>
  */
 export const WithData: Story = {
   name: 'With Data',
-  args: {
-    config: baseConfig,
-    useList: makeUseList(makeMockStore()),
-  },
 }
 
 // ============================================================
@@ -273,10 +663,7 @@ export const WithData: Story = {
 export const Empty: Story = {
   name: 'Empty State',
   args: {
-    config: {
-      ...baseConfig,
-      emptyText: 'No campaigns found',
-    },
+    emptyText: 'No campaigns found',
     useList: makeUseList(makeMockStore([], 0)),
   },
 }
@@ -293,12 +680,8 @@ export const Empty: Story = {
 export const WithSearch: Story = {
   name: 'With Search',
   args: {
-    config: {
-      ...baseConfig,
-      withSearch: true,
-      searchPlaceholder: 'Search by name…',
-    },
-    useList: makeUseList(makeMockStore()),
+    withSearch: true,
+    searchPlaceholder: 'Search by name…',
   },
 }
 
@@ -313,11 +696,8 @@ export const WithSearch: Story = {
 export const AllFieldTypes: Story = {
   name: 'All Field Types',
   args: {
-    config: {
-      ...baseConfig,
-      withSearch: false,
-      withSettings: true,
-    },
+    withSearch: false,
+    withSettings: true,
     useList: makeUseList(makeMockStore(), {
       fields: [
         new TableField({ key: 'name', title: 'Default text', alwaysVisible: true }),
@@ -350,11 +730,7 @@ export const AllFieldTypes: Story = {
 export const Small: Story = {
   name: 'Small (Compact)',
   args: {
-    config: {
-      ...baseConfig,
-      small: true,
-    },
-    useList: makeUseList(makeMockStore()),
+    small: true,
   },
 }
 
@@ -369,10 +745,7 @@ export const Small: Story = {
 export const WithSettings: Story = {
   name: 'With Column Settings',
   args: {
-    config: {
-      ...baseConfig,
-      withSettings: true,
-    },
+    withSettings: true,
     useList: makeUseList(makeMockStore(), {
       fields: [
         new TableField({ key: 'name', title: 'Name', alwaysVisible: true }),
@@ -399,14 +772,9 @@ export const WithSettings: Story = {
 export const WithPagination: Story = {
   name: 'With Pagination',
   args: {
-    config: {
-      ...baseConfig,
-      pagination: true,
-      defaultPerPage: 3,
-      withSettings: true,
-      withIndependentPagination: true,
-    },
-    useList: makeUseList(makeMockStore()),
+    defaultPerPage: 3,
+    withSettings: true,
+    withIndependentPagination: true,
   },
 }
 
@@ -422,14 +790,9 @@ export const WithPagination: Story = {
 export const WithTopPagination: Story = {
   name: 'Top + Bottom Pagination',
   args: {
-    config: {
-      ...baseConfig,
-      pagination: true,
-      defaultPerPage: 3,
-      withTopPagination: true,
-      withIndependentPagination: true,
-    },
-    useList: makeUseList(makeMockStore()),
+    defaultPerPage: 3,
+    withTopPagination: true,
+    withIndependentPagination: true,
   },
 }
 
@@ -445,11 +808,7 @@ export const WithTopPagination: Story = {
 export const WithSorting: Story = {
   name: 'With Sorting',
   args: {
-    config: {
-      ...baseConfig,
-      saveSort: false,
-      staticSorts: { key: 'createdAt', order: SortDirection.desc },
-    },
+    staticSorts: { key: 'createdAt', order: SortDirection.desc },
     useList: makeUseList(makeMockStore(), {
       fields: [
         new TableField({ key: 'name', title: 'Name', sortable: true, alwaysVisible: true }),
@@ -473,12 +832,8 @@ export const WithSorting: Story = {
 export const SelectableSingle: Story = {
   name: 'Selectable — Single',
   args: {
-    config: {
-      ...baseConfig,
-      selectable: true,
-      selectMode: SelectMode.Single,
-    },
-    useList: makeUseList(makeMockStore()),
+    selectable: true,
+    selectMode: SelectMode.Single,
   },
 }
 
@@ -494,14 +849,10 @@ export const SelectableSingle: Story = {
 export const WithMultipleActions: Story = {
   name: 'With Multiple Actions',
   args: {
-    config: {
-      ...baseConfig,
-      selectable: true,
-      selectMode: SelectMode.Page,
-      withMultipleActions: true,
-      withDeactivation: true,
-    },
-    useList: makeUseList(makeMockStore()),
+    selectable: true,
+    selectMode: SelectMode.Page,
+    withMultipleActions: true,
+    withDeactivation: true,
   },
 }
 
@@ -516,13 +867,9 @@ export const WithMultipleActions: Story = {
 export const WithMultipleActionsRemoveOnly: Story = {
   name: 'Multiple Actions — Remove Only',
   args: {
-    config: {
-      ...baseConfig,
-      selectable: true,
-      selectMode: SelectMode.Page,
-      withMultipleActions: MultipleActions.Remove,
-    },
-    useList: makeUseList(makeMockStore()),
+    selectable: true,
+    selectMode: SelectMode.Page,
+    withMultipleActions: MultipleActions.Remove,
   },
 }
 
@@ -538,12 +885,9 @@ export const WithMultipleActionsRemoveOnly: Story = {
 export const Draggable: Story = {
   name: 'Draggable Rows',
   args: {
-    config: {
-      ...baseConfig,
-      draggable: true,
-      withSearch: false,
-      withCustomDrag: true,
-    },
+    draggable: true,
+    withSearch: false,
+    withCustomDrag: true,
     useList: makeUseList(makeMockStore(), {
       fields: [
         new TableField({ key: 'position', title: '#', type: ListFieldType.Priority, size: ListSize.SM }),
@@ -567,12 +911,8 @@ export const Draggable: Story = {
 export const WithExport: Story = {
   name: 'With Export',
   args: {
-    config: {
-      ...baseConfig,
-      withExport: true,
-      formatOfExports: [ExportFormat.JSON, ExportFormat.CSV, ExportFormat.XLSX],
-    },
-    useList: makeUseList(makeMockStore()),
+    withExport: true,
+    formatOfExports: [ExportFormat.JSON, ExportFormat.CSV, ExportFormat.XLSX],
   },
 }
 
@@ -587,13 +927,9 @@ export const WithExport: Story = {
 export const WithInlineFilters: Story = {
   name: 'With Inline Filters',
   args: {
-    config: {
-      ...baseConfig,
-      inlineFilters: [
-        { type: FilterType.Status, key: 'status' },
-      ],
-    },
-    useList: makeUseList(makeMockStore()),
+    inlineFilters: [
+      { type: FilterType.Status, key: 'status' },
+    ],
   },
 }
 
@@ -606,24 +942,15 @@ export const WithInlineFilters: Story = {
  * "Filters" button in the toolbar. Filter state is stored in Pinia's
  * `filtersCore` store. The mock store ignores applied filters.
  */
-const withFiltersStoreDecorator = () => {
-  useFiltersStore().$patch({ defaultFilters: [{ type: '__storybook__', fields: [] }] })
-  return { template: '<story />' }
-}
-
 export const WithFilterPanel: Story = {
   name: 'With Filter Panel',
   decorators: [withFiltersStoreDecorator],
   args: {
-    config: {
-      ...baseConfig,
-      filterList: [
-        { type: FilterType.Status, key: 'status' },
-        { type: FilterType.Date, key: 'createdAt' },
-      ],
-      withSearch: true,
-    },
-    useList: makeUseList(makeMockStore()),
+    filterList: [
+      { type: FilterType.Status, key: 'status' },
+      { type: FilterType.Date, key: 'createdAt' },
+    ],
+    withSearch: true,
   },
 }
 
@@ -642,11 +969,8 @@ export const WithFilterPanel: Story = {
 export const WithActionsColumn: Story = {
   name: 'With Actions Column',
   args: {
-    config: {
-      ...baseConfig,
-      withDeactivation: true,
-      withRemoveModal: true,
-    },
+    withDeactivation: true,
+    withRemoveModal: true,
     useList: makeUseList(makeMockStore(), {
       fields: [
         new TableField({ key: 'name', title: 'Name', alwaysVisible: true }),
@@ -671,11 +995,8 @@ export const WithActionsColumn: Story = {
 export const WithRemoveComment: Story = {
   name: 'Remove with Comment',
   args: {
-    config: {
-      ...baseConfig,
-      withRemoveModal: true,
-      withRemoveComment: true,
-    },
+    withRemoveModal: true,
+    withRemoveComment: true,
     useList: makeUseList(makeMockStore(), {
       fields: [
         new TableField({ key: 'name', title: 'Name', alwaysVisible: true }),
@@ -698,11 +1019,7 @@ export const WithRemoveComment: Story = {
 export const NoHover: Story = {
   name: 'No Row Hover',
   args: {
-    config: {
-      ...baseConfig,
-      hover: false,
-    },
-    useList: makeUseList(makeMockStore()),
+    hover: false,
   },
 }
 
@@ -719,10 +1036,7 @@ export const NoHover: Story = {
 export const ShowExpand: Story = {
   name: 'Expandable Rows',
   args: {
-    config: {
-      ...baseConfig,
-      showExpand: true,
-    },
+    showExpand: true,
     useList: makeUseList(makeMockStore(), {
       fields: [
         new TableField({ key: 'name', title: 'Name', alwaysVisible: true }),
@@ -745,14 +1059,9 @@ export const ShowExpand: Story = {
 export const HideSearchBlock: Story = {
   name: 'Hide Search Block',
   args: {
-    config: {
-      ...baseConfig,
-      hideSearchBlock: true,
-      pagination: true,
-      defaultPerPage: 4,
-      withIndependentPagination: true,
-    },
-    useList: makeUseList(makeMockStore()),
+    hideSearchBlock: true,
+    defaultPerPage: 4,
+    withIndependentPagination: true,
   },
 }
 
@@ -770,12 +1079,9 @@ export const HideSearchBlock: Story = {
 export const LoadingSkeleton: Story = {
   name: 'Loading Skeleton',
   args: {
-    config: {
-      ...baseConfig,
-      disableLoading: false,
-      skeletonRows: 5,
-      skeletonCols: 4,
-    },
+    disableLoading: false,
+    skeletonRows: 5,
+    skeletonCols: 4,
     useList: (() => {
       const slowStore = {
         fetchEntityList: () =>
@@ -816,15 +1122,11 @@ export const LoadingSkeleton: Story = {
 export const WithCellClass: Story = {
   name: 'Custom Cell Class (cellCbClass)',
   args: {
-    config: {
-      ...baseConfig,
-      cellCbClass: (_field: any, item: any) => {
-        if (!item.isActive) return 'text-warning'
-        if (item.status?.status?.includes('pending')) return 'text-error'
-        return ''
-      },
+    cellCbClass: (_field: any, item: any) => {
+      if (!item.isActive) return 'text-warning'
+      if (item.status?.status?.includes('pending')) return 'text-error'
+      return ''
     },
-    useList: makeUseList(makeMockStore()),
   },
 }
 
@@ -839,10 +1141,7 @@ export const WithCellClass: Story = {
 export const ColumnAlignAndSize: Story = {
   name: 'Column Align & Size',
   args: {
-    config: {
-      ...baseConfig,
-      withSettings: true,
-    },
+    withSettings: true,
     useList: makeUseList(makeMockStore(), {
       fields: [
         new TableField({ key: 'name', title: 'Name (left)', align: AlignType.Left, size: ListSize.FULL, alwaysVisible: true }),
@@ -867,10 +1166,7 @@ export const ColumnAlignAndSize: Story = {
 export const WithStaticFilters: Story = {
   name: 'With Static Filters',
   args: {
-    config: {
-      ...baseConfig,
-      staticFilters: { type: 'tournament', isActive: true },
-    },
+    staticFilters: { type: 'tournament', isActive: true },
     useList: makeUseList(makeMockStore(ITEMS.filter(i => i.isActive))),
   },
 }
@@ -890,30 +1186,25 @@ export const KitchenSink: Story = {
   name: 'Kitchen Sink (All Features)',
   decorators: [withFiltersStoreDecorator],
   args: {
-    config: {
-      ...baseConfig,
-      withSearch: true,
-      searchPlaceholder: 'Search…',
-      withSettings: true,
-      pagination: true,
-      defaultPerPage: 5,
-      withIndependentPagination: true,
-      withTopPagination: true,
-      selectable: true,
-      selectMode: SelectMode.Page,
-      withMultipleActions: true,
-      withDeactivation: true,
-      withExport: true,
-      formatOfExports: [ExportFormat.JSON, ExportFormat.CSV, ExportFormat.XLSX],
-      filterList: [
-        { type: FilterType.Status, key: 'status' },
-        { type: FilterType.Date, key: 'createdAt' },
-      ],
-      withRemoveModal: true,
-      withRemoveComment: true,
-      saveSort: false,
-      hover: true,
-    },
+    withSearch: true,
+    searchPlaceholder: 'Search…',
+    withSettings: true,
+    defaultPerPage: 5,
+    withIndependentPagination: true,
+    withTopPagination: true,
+    selectable: true,
+    selectMode: SelectMode.Page,
+    withMultipleActions: true,
+    withDeactivation: true,
+    withExport: true,
+    formatOfExports: [ExportFormat.JSON, ExportFormat.CSV, ExportFormat.XLSX],
+    filterList: [
+      { type: FilterType.Status, key: 'status' },
+      { type: FilterType.Date, key: 'createdAt' },
+    ],
+    withRemoveModal: true,
+    withRemoveComment: true,
+    hover: true,
     useList: makeUseList(makeMockStore(), {
       fields: [
         new TableField({ key: 'name', title: 'Name', alwaysVisible: true, sortable: true }),
