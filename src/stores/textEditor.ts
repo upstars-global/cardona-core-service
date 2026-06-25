@@ -38,6 +38,8 @@ export const useTextEditorStore = defineStore('textEditor', {
           id,
           project: this.$selectedProjectAlias,
         },
+      }, {
+        withLoader: false,
       })
 
       return data
@@ -49,6 +51,8 @@ export const useTextEditorStore = defineStore('textEditor', {
           id,
           project: this.$selectedProjectAlias,
         },
+      }, {
+        withLoader: false,
       })
 
       return data
@@ -69,6 +73,8 @@ export const useTextEditorStore = defineStore('textEditor', {
             project: this.$selectedProjectAlias,
             type: GIFT_TYPES_FILTER,
           },
+        }, {
+          withLoader: false,
         }),
         GiftOptionsItem,
       )
@@ -88,6 +94,8 @@ export const useTextEditorStore = defineStore('textEditor', {
             ...(parmas?.filter || {}),
             project: this.$selectedProjectAlias,
           },
+        }, {
+          withLoader: false,
         }),
         GiftSpinOfferOptionsItem,
       )

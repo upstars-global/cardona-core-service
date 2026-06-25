@@ -6,7 +6,7 @@ import { VColors, VVariants } from '../../@model/vuetify'
 import { useTextEditorStore } from '../../stores/textEditor'
 import { SelectBaseField } from '../../@model/templates/baseField'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
-import type { CurrencyLimit, GiftOptionsItem, GiftSpinOfferOptionsItem } from '../../@model/gift'
+import type { CurrencyLimit, GiftData, GiftOptionsItem, GiftSpinOfferOptionsItem } from '../../@model/gift'
 import { GIFT_TYPE_OPTIONS, getGiftSpinOfferOptions, getGiftValueOptions, getValueCurrency } from '../../@model/gift'
 import type { EmitEvents } from '../../@model'
 import { useUserStore } from '../../stores/user'
@@ -28,18 +28,6 @@ const FETCH_OPTIONS_MAP = {
   gift: textEditorStore.fetchGiftsOptions,
   giftSpinOffers: textEditorStore.fetchGiftSpinOffersOptions,
 } as const
-
-interface GiftData {
-  type?: string
-  depositLimits?: CurrencyLimit[]
-  sums?: CurrencyLimit[]
-  sumLimits?: CurrencyLimit[]
-  winLimits?: CurrencyLimit[]
-  rates?: CurrencyLimit[]
-  sumsAsPercent?: boolean
-  winLimitsAsPercent?: boolean
-  [key: string]: unknown
-}
 
 const isOpenSelectors = ref(false)
 
@@ -124,8 +112,6 @@ const onSelectGift = ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptions
   else {
     giftValue.value.fetchOptionsAction = async () => {
       const entity = await textEditorStore.readGiftSpinOfferEntity((value as GiftOptionsItem).id)
-
-      // giftValue.value.options =
 
       giftData.value = {
         rates: (value as GiftSpinOfferOptionsItem).rates,

@@ -206,6 +206,18 @@ export function getGiftValueOptions(gift: IGiftData): OptionsItem[] {
   }))
 }
 
+export interface GiftData {
+  type?: string
+  depositLimits?: CurrencyLimit[]
+  sums?: CurrencyLimit[]
+  sumLimits?: CurrencyLimit[]
+  winLimits?: CurrencyLimit[]
+  rates?: CurrencyLimit[]
+  sumsAsPercent?: boolean
+  winLimitsAsPercent?: boolean
+  [key: string]: unknown
+}
+
 const FIELD_WITH_CENTS = ['depositLimits', 'sums']
 
 export const getValueCurrency = (field: DepositField) => (item: CurrencyLimit) => {
