@@ -127,7 +127,6 @@ const onSetVariablesPresets = (value: Record<string, number>) => {
                 cols="11"
                 class="pr-0"
               >
-                {{ itemKey }}
                 <AppTextField
                   v-model="formModal[itemKey]"
                   :disabled="disabled"
@@ -184,10 +183,6 @@ const onSetVariablesPresets = (value: Record<string, number>) => {
 </template>
 
 <style lang="scss" scoped>
-//.variable-box {
-//  margin-bottom: 0.571rem;
-//}
-
 .variable-modal {
   min-width: 31.25rem;
 

@@ -7,7 +7,7 @@ import { useTextEditorStore } from '../../stores/textEditor'
 import { SelectBaseField } from '../../@model/templates/baseField'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 import type { CurrencyLimit, GiftOptionsItem, GiftSpinOfferOptionsItem } from '../../@model/gift'
-import { GIFT_SPIN_OFFER_OPTIONS, GIFT_TYPE_OPTIONS, getAvailableFields } from '../../@model/gift'
+import { GIFT_SPIN_OFFER_OPTIONS, GIFT_TYPE_OPTIONS, getGiftValueOptions } from '../../@model/gift'
 import type { EmitEvents } from '../../@model'
 import { useUserStore } from '../../stores/user'
 import { PermissionLevel } from '../../@model/permission'
@@ -52,6 +52,7 @@ const giftType = ref(new SelectBaseField(
     label: t('component.variableGiftPreset.type'),
     options: GIFT_TYPE_OPTIONS.filter(({ permission }) => userStore.abilityCan(permission, PermissionLevel.view)),
     clearable: false,
+    withCalculatePosition: true,
   },
 ))
 
@@ -63,6 +64,7 @@ const gift = ref(new SelectBaseField(
     fetchOptionsAction: canViewGift.value ? textEditorStore.fetchGiftsOptions : textEditorStore.fetchGiftSpinOffersOptions,
     clearable: false,
     infiniteLoading: true,
+    withCalculatePosition: true,
     filterable: false,
     filterBy: {
       isActive: 'true',
@@ -74,6 +76,7 @@ const giftValue = ref(new SelectBaseField({
   key: 'giftValue',
   label: t('component.variableGiftPreset.value'),
   clearable: false,
+  withCalculatePosition: true,
   options: [],
 }))
 
@@ -113,10 +116,7 @@ const onSelectGift = ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptions
       giftData.value = { ...entity, depositLimits: (value as GiftOptionsItem).depositLimits } as GiftData
 
       return {
-        list: getAvailableFields(entity).map(field => ({
-          id: field,
-          name: t(`component.variableGiftPreset.fields.${field}`),
-        })),
+        list: getGiftValueOptions(entity),
       }
     }
     giftValue.value.options = undefined

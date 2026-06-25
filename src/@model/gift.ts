@@ -1,3 +1,4 @@
+import { has } from 'lodash'
 import type { TranslationForm } from '../@model/translations'
 import type { OptionsItem } from '../@model/index'
 import { getShortString } from '../helpers'
@@ -14,15 +15,14 @@ export const GIFT_TYPE_OPTIONS = [
   {
     id: 'gift',
     name: i18n.t('component.variableGiftPreset.gift'),
-    permission: 'backoffice-gifts'
+    permission: 'backoffice-gifts',
   },
   {
     id: 'giftSpinOffers',
     name: i18n.t('component.variableGiftPreset.giftSpinOffers'),
-    permission: 'alaro-gift-spin-template'
+    permission: 'alaro-gift-spin-template',
   },
 ]
-
 
 export const getOptionTitle = (id: string, title: string) => `${title} (ID ${getShortString(id)})`
 
@@ -157,30 +157,41 @@ const TYPE_GROUP_2 = [GiftType.UniversalGaming] as const
 export const GIFT_TYPES_FILTER = [...TYPE_GROUP_1, ...TYPE_GROUP_2] as const
 
 type DepositField = 'depositLimits' |
-  'sums' |
-  'sumLimits' |
-  'winLimits'
+'sums' |
+'sumLimits' |
+'winLimits' |
+'maxSumForTransfer'
 
-export function getAvailableFields(gift: IGiftData): DepositField[] {
-  const { type, sumsAsPercent, winLimitsAsPercent } = gift
+function getAvailableFields(gift: IGiftData): DepositField[] {
+  const { type, sumsAsPercent = false, winLimitsAsPercent = false } = gift
 
   if (TYPE_GROUP_1.includes(type as typeof TYPE_GROUP_1[number])) {
-    const fields: DepositField[] = ['depositLimits', 'sumLimits', 'winLimits']
+    const fields: DepositField[] = ['depositLimits', 'sumLimits']
 
-    if (!sumsAsPercent)
+    if (!sumsAsPercent && has(gift, 'sums'))
       fields.push('sums')
 
-    return fields
+    if (type !== GiftType.Betting || has(gift, 'winLimits'))
+      fields.push('maxSumForTransfer')
+
+    return fields.filter(field => has(gift, field))
   }
 
   if (TYPE_GROUP_2.includes(type as typeof TYPE_GROUP_2[number])) {
     const fields: DepositField[] = ['depositLimits']
 
-    if (!winLimitsAsPercent)
+    if (!winLimitsAsPercent && has(gift, 'winLimits'))
       fields.push('winLimits')
 
-    return fields
+    return fields.filter(field => has(gift, field))
   }
 
   return []
+}
+
+export function getGiftValueOptions(gift: IGiftData): OptionsItem[] {
+  return getAvailableFields(gift).map(field => ({
+    id: field === 'maxSumForTransfer' ? 'winLimits' : field,
+    name: i18n.t(`component.variableGiftPreset.fields.${field}`),
+  }))
 }
