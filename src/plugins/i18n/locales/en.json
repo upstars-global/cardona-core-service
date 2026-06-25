@@ -496,7 +496,8 @@
         "sumLimits": "Max sum",
         "winLimits": "Max win",
         "maxSumForTransfer":"Max sum for transfer",
-        "depositLimits": "Deposit rules"
+        "depositLimits": "Deposit rules",
+        "softGamingsRates": "Soft gamings rates"
       }
     },
     "countriesSelect": {

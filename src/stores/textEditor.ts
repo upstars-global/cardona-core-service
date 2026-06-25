@@ -42,6 +42,17 @@ export const useTextEditorStore = defineStore('textEditor', {
 
       return data
     },
+    async readGiftSpinOfferEntity(id: string) {
+      const { data } = await ApiService.request({
+        type: 'App.V2.Alaro.GiftSpin.Templates.Read',
+        data: {
+          id,
+          project: this.$selectedProjectAlias,
+        },
+      })
+
+      return data
+    },
     async fetchGiftsOptions(parmas?: { pageNumber?: number; perPage?: number; filter?: Record<string, any> }) {
       return new ListData<string>(
         await ApiService.request({

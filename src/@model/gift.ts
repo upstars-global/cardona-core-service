@@ -51,12 +51,16 @@ export class GiftSpinOfferOptionsItem implements OptionsItem {
   }
 }
 
-export const GIFT_SPIN_OFFER_OPTIONS = [
+export const getGiftSpinOfferOptions = (canAddSoftRates = false) => [
   {
     id: 'rates',
     name: i18n.t('component.variableGiftPreset.fields.rates'),
   },
-]
+  canAddSoftRates && {
+    id: 'softGamingsRates',
+    name: i18n.t('component.variableGiftPreset.fields.softGamingsRates'),
+  },
+].filter(Boolean)
 
 export interface CurrencyLimit {
   currency: string

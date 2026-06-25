@@ -7,7 +7,7 @@ import { useTextEditorStore } from '../../stores/textEditor'
 import { SelectBaseField } from '../../@model/templates/baseField'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 import type { CurrencyLimit, GiftOptionsItem, GiftSpinOfferOptionsItem } from '../../@model/gift'
-import { GIFT_SPIN_OFFER_OPTIONS, GIFT_TYPE_OPTIONS, getGiftValueOptions, getValueCurrency } from '../../@model/gift'
+import { GIFT_TYPE_OPTIONS, getGiftSpinOfferOptions, getGiftValueOptions, getValueCurrency } from '../../@model/gift'
 import type { EmitEvents } from '../../@model'
 import { useUserStore } from '../../stores/user'
 import { PermissionLevel } from '../../@model/permission'
@@ -122,8 +122,20 @@ const onSelectGift = ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptions
     giftValue.value.options = undefined
   }
   else {
-    giftValue.value.options = GIFT_SPIN_OFFER_OPTIONS
-    giftData.value = { rates: (value as GiftSpinOfferOptionsItem).rates }
+    giftValue.value.fetchOptionsAction = async () => {
+      const entity = await textEditorStore.readGiftSpinOfferEntity((value as GiftOptionsItem).id)
+
+      // giftValue.value.options =
+
+      giftData.value = {
+        rates: (value as GiftSpinOfferOptionsItem).rates,
+        softGamingsRates: entity.meta.rates,
+      }
+
+      return {
+        list: getGiftSpinOfferOptions(entity.meta.showRatesEnabled),
+      }
+    }
   }
 
   resetApplyState()
