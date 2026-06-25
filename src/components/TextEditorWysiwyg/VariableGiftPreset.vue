@@ -116,7 +116,7 @@ const onSelectGift = ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptions
       giftData.value = { ...entity, depositLimits: (value as GiftOptionsItem).depositLimits } as GiftData
 
       return {
-        list: getGiftValueOptions(entity),
+        list: getGiftValueOptions(giftData.value),
       }
     }
     giftValue.value.options = undefined
