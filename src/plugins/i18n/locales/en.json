@@ -496,6 +496,7 @@
         "sums": "Sum",
         "sumLimits": "Max sum",
         "winLimits": "Max win",
+        "maxSumForTransfer":"Max sum for transfer",
         "depositLimits": "Deposit rules"
       }
     },
