@@ -3,6 +3,7 @@ import type { TranslationForm } from '../@model/translations'
 import type { OptionsItem } from '../@model/index'
 import { getShortString } from '../helpers'
 import { i18n } from '../plugins/i18n'
+import { division } from '../helpers/math-operations'
 
 export interface IGiftPayload {
   readonly id: string
@@ -199,4 +200,17 @@ export function getGiftValueOptions(gift: IGiftData): OptionsItem[] {
     id: field === 'maxSumForTransfer' ? 'winLimits' : field,
     name: i18n.t(`component.variableGiftPreset.fields.${field}`),
   }))
+}
+
+const FIELD_WITH_CENTS = ['depositLimits', 'sums']
+
+export const getValueCurrency = (field: DepositField) => (item: CurrencyLimit) => {
+  if (FIELD_WITH_CENTS.includes(field)) {
+    return ({
+      ...item,
+      value: division(item.value, 100),
+    })
+  }
+
+  return item
 }

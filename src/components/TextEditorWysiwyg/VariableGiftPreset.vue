@@ -7,7 +7,7 @@ import { useTextEditorStore } from '../../stores/textEditor'
 import { SelectBaseField } from '../../@model/templates/baseField'
 import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 import type { CurrencyLimit, GiftOptionsItem, GiftSpinOfferOptionsItem } from '../../@model/gift'
-import { GIFT_SPIN_OFFER_OPTIONS, GIFT_TYPE_OPTIONS, getGiftValueOptions } from '../../@model/gift'
+import { GIFT_SPIN_OFFER_OPTIONS, GIFT_TYPE_OPTIONS, getGiftValueOptions, getValueCurrency } from '../../@model/gift'
 import type { EmitEvents } from '../../@model'
 import { useUserStore } from '../../stores/user'
 import { PermissionLevel } from '../../@model/permission'
@@ -140,7 +140,9 @@ const setApply = () => {
   if (!giftData.value)
     return
 
-  const fieldData = giftData.value[giftValue.value.value?.id] as CurrencyLimit[]
+  const fieldKey = giftValue.value.value?.id
+
+  const fieldData = giftData.value[fieldKey].map(getValueCurrency(fieldKey)) as CurrencyLimit[]
 
   const emittedValue: Record<string, number> = fieldData.reduce<Record<string, number>>((acc, curr) => ({
     ...acc,
