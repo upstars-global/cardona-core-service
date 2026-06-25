@@ -492,7 +492,6 @@
       "value": "Value",
       "fields": {
         "rates": "Rates",
-        "depositRules": "Deposit rules XXXX",
         "sums": "Sum",
         "sumLimits": "Max sum",
         "winLimits": "Max win",
