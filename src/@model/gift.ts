@@ -171,8 +171,10 @@ function getAvailableFields(gift: IGiftData): DepositField[] {
     if (!sumsAsPercent && has(gift, 'sums'))
       fields.push('sums')
 
-    if (type !== GiftType.Betting || has(gift, 'winLimits'))
+    if (type === GiftType.Betting && has(gift, 'winLimits')) {
       fields.push('maxSumForTransfer')
+      gift['maxSumForTransfer'] = gift.winLimits
+    }
 
     return fields.filter(field => has(gift, field))
   }
