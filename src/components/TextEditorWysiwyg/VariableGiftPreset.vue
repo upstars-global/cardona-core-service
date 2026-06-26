@@ -54,7 +54,7 @@ const gift = ref(new SelectBaseField(
     infiniteLoading: true,
     withCalculatePosition: true,
     filterable: false,
-    filterBy: {
+    staticFilters: {
       isActive: 'true',
     },
   },
