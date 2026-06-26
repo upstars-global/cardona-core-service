@@ -24,7 +24,9 @@ body[data-layout="default"] {
     background-color: rgb(var(--v-theme-surface))!important;
     border-bottom-right-radius: 12px;
     border-bottom-left-radius: 12px;
-    overflow: hidden;
+    &:has(.loading-base-section) {
+      overflow: hidden;
+    }
   }
 
   .layout-footer {
