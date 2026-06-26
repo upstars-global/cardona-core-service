@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors, VVariants } from '../../@model/vuetify'
@@ -78,6 +78,22 @@ const resetApplyState = () => {
   canApply.value = false
   isApplied.value = false
 }
+
+const resetFields = () => {
+  giftType.value.value = canViewGift.value ? GIFT_TYPE_OPTIONS[0] : GIFT_TYPE_OPTIONS[1]
+  gift.value.value = ''
+  gift.value.fetchOptionsAction = canViewGift.value ? textEditorStore.fetchGiftsOptions : textEditorStore.fetchGiftSpinOffersOptions
+  gift.value.options = undefined
+  giftValue.value.value = ''
+  giftValue.value.options = []
+  giftData.value = null
+  resetApplyState()
+}
+
+watch(isOpenSelectors, isOpen => {
+  if (!isOpen)
+    resetFields()
+})
 
 const onSelectGiftType = ({ value }: SelectBaseField) => {
   if (!value?.id)
@@ -190,7 +206,7 @@ const applyBtnLabel = computed(() => isApplied.value ? t('component.variableGift
         </div>
       </div>
       <div class="selector-input--body px-3 px-3">
-        <VRow class="d-flex align-center py-0 my-0" :key="isOpenSelectors">
+        <VRow class="d-flex align-center py-0 my-0">
           <VCol
             cols="2"
             class="px-0 pt-0 pl-3"
