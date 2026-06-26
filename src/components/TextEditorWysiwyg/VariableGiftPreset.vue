@@ -36,7 +36,7 @@ const canViewGift = computed(() => userStore.abilityCan(GIFT_TYPE_OPTIONS[0].per
 const giftType = ref(new SelectBaseField(
   {
     value: canViewGift.value ? GIFT_TYPE_OPTIONS[0] : GIFT_TYPE_OPTIONS[1],
-    key: 'type',
+    key: 'giftPresetType',
     label: t('component.variableGiftPreset.type'),
     options: GIFT_TYPE_OPTIONS.filter(({ permission }) => userStore.abilityCan(permission, PermissionLevel.view)),
     clearable: false,
@@ -47,7 +47,7 @@ const giftType = ref(new SelectBaseField(
 const gift = ref(new SelectBaseField(
   {
     value: '',
-    key: 'gift',
+    key: 'giftPresetSelectedGift',
     label: t('component.variableGiftPreset.gift'),
     fetchOptionsAction: canViewGift.value ? textEditorStore.fetchGiftsOptions : textEditorStore.fetchGiftSpinOffersOptions,
     clearable: false,
@@ -61,7 +61,7 @@ const gift = ref(new SelectBaseField(
 ))
 
 const giftValue = ref(new SelectBaseField({
-  key: 'giftValue',
+  key: 'giftPresetValue',
   label: t('component.variableGiftPreset.value'),
   clearable: false,
   withCalculatePosition: true,
@@ -107,7 +107,6 @@ const onSelectGift = ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptions
         list: getGiftValueOptions(giftData.value),
       }
     }
-    giftValue.value.options = undefined
   }
   else {
     giftValue.value.fetchOptionsAction = async () => {
@@ -123,6 +122,7 @@ const onSelectGift = ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptions
       }
     }
   }
+  giftValue.value.options = undefined
 
   resetApplyState()
 }
