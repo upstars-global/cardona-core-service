@@ -130,7 +130,7 @@ const onSelectGift = ({ value }: { value: GiftOptionsItem | GiftSpinOfferOptions
 
       giftData.value = {
         rates: (value as GiftSpinOfferOptionsItem).rates,
-        softGamingsRates: entity.meta.rates,
+        softGamingsRates: entity.meta.rates.map(({ currency, bet }) => ({ currency, value: bet })),
       }
 
       return {
