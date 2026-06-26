@@ -190,7 +190,7 @@ const applyBtnLabel = computed(() => isApplied.value ? t('component.variableGift
         </div>
       </div>
       <div class="selector-input--body px-3 px-3">
-        <VRow class="d-flex align-center py-0 my-0">
+        <VRow class="d-flex align-center py-0 my-0" :key="isOpenSelectors">
           <VCol
             cols="2"
             class="px-0 pt-0 pl-3"
