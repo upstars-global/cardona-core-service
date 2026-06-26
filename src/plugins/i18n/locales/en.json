@@ -463,7 +463,7 @@
   },
   "component": {
     "tags": {
-      "duplicateTag": "Duplicate tag:"
+      "duplicateTag": "Duplicate {label}:"
     },
     "sumPeriod": {
       "today": "Today: ",
