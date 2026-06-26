@@ -32,7 +32,7 @@ onMounted(() => {
     <Teleport v-if="fullscreenBackground && hasLayoutContent" to=".layout-page-content">
       <div
         v-if="props.loading"
-        class="custom-overlay custom-overlay--fullscreen d-flex justify-center align-center"
+        class="loading-base-section custom-overlay custom-overlay--fullscreen d-flex justify-center align-center"
         data-test-id="loader"
       >
         <VProgressCircular
