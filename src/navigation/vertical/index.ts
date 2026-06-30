@@ -16,4 +16,9 @@ export default [
     to: { name: 'Constructor' },
     icon: { icon: 'tabler-box' },
   },
+  {
+    title: 'Component Library',
+    to: { name: 'storybook' },
+    icon: { icon: 'tabler-book' },
+  },
 ] as VerticalNavItems
