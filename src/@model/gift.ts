@@ -162,13 +162,14 @@ const TYPE_GROUP_2 = [GiftType.UniversalGaming] as const
 export const GIFT_TYPES_FILTER = [...TYPE_GROUP_1, ...TYPE_GROUP_2] as const
 
 type DepositField = 'depositLimits' |
-  'sums' |
-  'sumLimits' |
-  'winLimits' |
-  'maxSumForTransfer'
+'sums' |
+'sumLimits' |
+'winLimits' |
+'maxSumForTransfer'
 
 function getAvailableFields(gift: IGiftData): DepositField[] {
   const { type, sumsAsPercent = false, winLimitsAsPercent = false } = gift
+  const isBetting = type === GiftType.Betting
 
   if (TYPE_GROUP_1.includes(type as typeof TYPE_GROUP_1[number])) {
     const fields: DepositField[] = ['depositLimits', 'sumLimits']
@@ -176,12 +177,14 @@ function getAvailableFields(gift: IGiftData): DepositField[] {
     if (!sumsAsPercent && has(gift, 'sums'))
       fields.push('sums')
 
-    if (!winLimitsAsPercent && has(gift, 'winLimits'))
-      fields.push('winLimits')
-
-    if (type === GiftType.Betting && has(gift, 'winLimits')) {
-      fields.push('maxSumForTransfer')
-      gift['maxSumForTransfer'] = gift.winLimits
+    if (has(gift, 'winLimits')) {
+      if (isBetting) {
+        fields.push('maxSumForTransfer')
+        gift['maxSumForTransfer'] = gift.winLimits
+      }
+      else if (!winLimitsAsPercent) {
+        fields.push('winLimits')
+      }
     }
 
     return fields.filter(field => has(gift, field))
