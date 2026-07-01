@@ -1,8 +1,11 @@
 <script lang="ts" setup>
-import { inject, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { ModalSizes, VColors, VVariants } from '../../@model/vuetify'
 import AppTextField from '../../@core/components/app-form-elements/AppTextField.vue'
 import BaseModal from '../../components/BaseModal/index.vue'
+import { PermissionLevel } from '../../@model/permission'
+import { useUserStore } from '../../stores/user'
+import VariableGiftPreset from './VariableGiftPreset.vue'
 
 type Value = Record<string, unknown>
 interface Props {
@@ -23,16 +26,23 @@ const props = withDefaults(defineProps<Props>(), {
   value: () => ({}),
   currencies: () => [],
 })
+
 const emit = defineEmits<Emits>()
+
+const userStore = useUserStore()
+
+const canUseVariablePreset = computed(() => userStore.abilityCan('backoffice-gifts', PermissionLevel.view) || userStore.abilityCan('alaro-gift-spin-template', PermissionLevel.view))
 
 const initFormModal = (): Value => {
   const existing = props.value ?? {}
   if (!props.currencies?.length)
     return { ...existing }
   const result: Value = {}
-  props.currencies.forEach((currency) => {
+
+  props.currencies.forEach(currency => {
     result[currency] = currency in existing ? existing[currency] : ''
   })
+
   return result
 }
 
@@ -56,6 +66,13 @@ const deleteForm = () => {
   emit('delete-key')
   modal.hideModal(props.modalId)
 }
+
+const onSetVariablesPresets = (value: Record<string, number>) => {
+  Object.keys(formModal.value)
+    .forEach(key => {
+      formModal.value[key] = value[key] ?? 0
+    })
+}
 </script>
 
 <!-- TODO: refactor sizes -->
@@ -63,25 +80,39 @@ const deleteForm = () => {
   <BaseModal
     :id="modalId"
     :title="$t('common.banners.variableTitle')"
-    :width="ModalSizes.Flex"
+    :width="ModalSizes.Medium"
     modal-body-class="pa-0"
+    no-close-on-backdrop
+    :retain-focus="false"
+    no-click-animation
+    persistent
     @hide="onHideModal"
   >
+    <template #modal-header="{ title }">
+      <div class="d-flex align-center">
+        <div class="text-h5">
+          {{ title }}
+        </div>
+        <div class="pl-2">
+          <VChip
+            label
+            class="variable-box"
+            :color="VColors.Secondary"
+          >
+            {{ `{${keyVar}` + '}' }}
+          </VChip>
+        </div>
+      </div>
+    </template>
     <div class="full-width variable-modal">
       <div class="pa-6">
+        <VariableGiftPreset
+          v-if="canUseVariablePreset"
+          @set-variables="onSetVariablesPresets($event)"
+        />
         <VRow class="full-width flex-nowrap">
-          <VCol cols="4">
-            <VChip
-              label
-              class="variable-box"
-              :color="VColors.Secondary"
-            >
-              {{ `{${keyVar}` + '}' }}
-            </VChip>
-          </VCol>
-
           <VCol
-            cols="8"
+            cols="12"
             class="mb-3 pr-0"
           >
             <VRow
@@ -93,13 +124,13 @@ const deleteForm = () => {
                 {{ itemKey }}
               </VCol>
               <VCol
-                cols="10"
+                cols="11"
                 class="pr-0"
               >
                 <AppTextField
                   v-model="formModal[itemKey]"
                   :disabled="disabled"
-                  :placeholder="$t('common.banners.empty')"
+                  placeholder="0.00"
                 />
               </VCol>
             </VRow>
@@ -152,10 +183,6 @@ const deleteForm = () => {
 </template>
 
 <style lang="scss" scoped>
-.variable-box {
-  margin-bottom: 0.571rem;
-}
-
 .variable-modal {
   min-width: 31.25rem;
 
