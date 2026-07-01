@@ -348,6 +348,22 @@
     "addTags": "Add tags...",
     "uploadVideo": "Upload video",
     "columns": "Columns",
+    "giftTypes": {
+      "Deposit bonus": "Deposit bonus",
+      "NonDeposit": "Non deposit",
+      "Levels": "Levels",
+      "Group": "Group",
+      "Universal gaming": "Universal gaming",
+      "Cashback": "Cashback",
+      "XP": "XP",
+      "XP & SP": "VIP Gift",
+      "Cash": "Cash",
+      "Custom Gift": "Custom gift",
+      "Manual": "Manual",
+      "Action currency": "Action currency",
+      "Betting": "Betting",
+      "Deposit insurance": "Deposit insurance"
+    },
     "phone": {
       "_": "Phone",
       "list": "Phones"
@@ -466,6 +482,24 @@
       "adc(lastNMonths)": "Calculate average daily check for last N months",
       "vipStatus": "Number value of Vip status field in the Profile"
     },
+    "variableGiftPreset": {
+      "fillFromGift": "Fill from gift",
+      "apply": "Apply",
+      "applied": "Applied",
+      "gift": "Gift",
+      "type": "Type",
+      "giftSpinOffers": "Gift spin offers",
+      "value": "Value",
+      "fields": {
+        "rates": "Rates",
+        "sums": "Sum",
+        "sumLimits": "Max sum",
+        "winLimits": "Max win",
+        "maxSumForTransfer":"Max sum for transfer",
+        "depositLimits": "Deposit rules",
+        "softGamingsRates": "Soft gamings rates"
+      }
+    },
     "countriesSelect": {
       "banInCountries": "Ban in countries",
       "allowInCountries": "Allow in countries",
@@ -557,6 +591,7 @@
   "title": {
     "seo": "Seo",
     "constructor": "Constructor",
+    "storybook": "Storybook",
     "localization": "Localization",
     "backoffice": "Backoffice",
     "demo": {

@@ -1,5 +1,9 @@
 import { defineStore } from 'pinia'
 import { omit } from 'lodash'
+import { ListData } from '../@model'
+import ApiService from '../services/api'
+import { OPTIONS_PER_PAGE } from '../utils/constants'
+import { GIFT_TYPES_FILTER, GiftOptionsItem, GiftSpinOfferOptionsItem } from '../@model/gift'
 
 export const useTextEditorStore = defineStore('textEditor', {
   state: () => ({
@@ -26,6 +30,75 @@ export const useTextEditorStore = defineStore('textEditor', {
     },
     removeVariableValueByKey(key) {
       this.variableTextBuffer = omit(this.variableTextBuffer, [key])
+    },
+    async readGiftEntity(id: string) {
+      const { data } = await ApiService.request({
+        type: 'App.V2.Gifts.Read',
+        data: {
+          id,
+          project: this.$selectedProjectAlias,
+        },
+      }, {
+        withLoader: false,
+      })
+
+      return data
+    },
+    async readGiftSpinOfferEntity(id: string) {
+      const { data } = await ApiService.request({
+        type: 'App.V2.Alaro.GiftSpin.Templates.Read',
+        data: {
+          id,
+          project: this.$selectedProjectAlias,
+        },
+      }, {
+        withLoader: false,
+      })
+
+      return data
+    },
+    async fetchGiftsOptions(parmas?: { pageNumber?: number; perPage?: number; filter?: Record<string, any> }) {
+      return new ListData<string>(
+        await ApiService.request({
+          type: 'App.V2.Gifts.List',
+          data: {
+            project: this.$selectedProjectAlias,
+          },
+          pagination: {
+            pageNumber: parmas?.pageNumber || 1,
+            perPage: parmas?.perPage || OPTIONS_PER_PAGE,
+          },
+          filter: {
+            ...(parmas?.filter || {}),
+            project: this.$selectedProjectAlias,
+            type: GIFT_TYPES_FILTER,
+          },
+        }, {
+          withLoader: false,
+        }),
+        GiftOptionsItem,
+      )
+    },
+    async fetchGiftSpinOffersOptions(parmas?: { pageNumber?: number; perPage?: number; filter?: Record<string, any> }) {
+      return new ListData<string>(
+        await ApiService.request({
+          type: 'App.V2.Alaro.GiftSpin.Templates.List',
+          data: {
+            project: this.$selectedProjectAlias,
+          },
+          pagination: {
+            pageNumber: parmas?.pageNumber || 1,
+            perPage: parmas?.perPage || OPTIONS_PER_PAGE,
+          },
+          filter: {
+            ...(parmas?.filter || {}),
+            project: this.$selectedProjectAlias,
+          },
+        }, {
+          withLoader: false,
+        }),
+        GiftSpinOfferOptionsItem,
+      )
     },
   },
 })
