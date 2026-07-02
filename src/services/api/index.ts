@@ -88,7 +88,13 @@ class ApiService {
 
     const entity: string = entityName || convertedType[2]
     const url: string = convertedType.join('/')
-    const cacheRequest = new Request(url)
+
+    const projectFilter = (payload.filter as Record<string, unknown>)?.project
+      ?? (payload.data as Record<string, unknown>)?.project
+
+    const cacheKey = projectFilter ? `${url}?project=${projectFilter}` : url
+
+    const cacheRequest = new Request(cacheKey)
 
     const abortKey = cancelPrevious ? getLoaderSlug(url, loaderSlug) : ''
     let abortController: AbortController | undefined
