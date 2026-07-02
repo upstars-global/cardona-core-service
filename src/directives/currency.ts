@@ -3,4 +3,7 @@ export const currency = {
   beforeMount(el, binding) {
     el.textContent = getCurrency(binding.value)
   },
+  updated(el, binding) {
+    currency.beforeMount(el, binding)
+  },
 }
