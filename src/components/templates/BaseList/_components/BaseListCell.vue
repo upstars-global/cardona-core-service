@@ -57,7 +57,6 @@ const emit = defineEmits<{
   <span
     v-if="$slots['custom-slot']"
     style="display: contents"
-    @click.stop
   >
     <slot name="custom-slot" />
   </span>
