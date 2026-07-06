@@ -1,4 +1,3 @@
-import is from '@sindresorhus/is'
 import destr from 'destr'
 import { rest } from 'msw'
 import { db } from '@db/apps/users/db'
@@ -16,20 +15,20 @@ export const handlerAppsUsers = [
     const page = req.url.searchParams.get('page')
     const orderBy = req.url.searchParams.get('orderBy')
 
-    const searchQuery = is.string(q) ? q : undefined
+    const searchQuery = typeof q === 'string' ? q : undefined
     const queryLower = (searchQuery ?? '').toString().toLowerCase()
 
     const parsedSortBy = destr(sortBy)
-    const sortByLocal = is.string(parsedSortBy) ? parsedSortBy : ''
+    const sortByLocal = typeof parsedSortBy === 'string' ? parsedSortBy : ''
 
     const parsedOrderBy = destr(orderBy)
-    const orderByLocal = is.string(parsedOrderBy) ? parsedOrderBy : ''
+    const orderByLocal = typeof parsedOrderBy === 'string' ? parsedOrderBy : ''
 
     const parsedItemsPerPage = destr(itemsPerPage)
     const parsedPage = destr(page)
 
-    const itemsPerPageLocal = is.number(parsedItemsPerPage) ? parsedItemsPerPage : 10
-    const pageLocal = is.number(parsedPage) ? parsedPage : 1
+    const itemsPerPageLocal = typeof parsedItemsPerPage === 'number' ? parsedItemsPerPage : 10
+    const pageLocal = typeof parsedPage === 'number' ? parsedPage : 1
 
     // filter users
     let filteredUsers = db.users.filter(user => ((user.fullName.toLowerCase().includes(queryLower) || user.email.toLowerCase().includes(queryLower)) && user.role === (role || user.role) && user.currentPlan === (plan || user.currentPlan) && user.status === (status || user.status))).reverse()

@@ -1,4 +1,3 @@
-import is from '@sindresorhus/is'
 import destr from 'destr'
 import { rest } from 'msw'
 import { db } from '@db/apps/calendar/db'
@@ -12,7 +11,7 @@ export const handlerAppsCalendar = [
 
     const parsedCalendars = destr(queries)
 
-    const calendars = is.array(parsedCalendars) ? parsedCalendars : undefined
+    const calendars = Array.isArray(parsedCalendars) ? parsedCalendars : undefined
 
     const events = db.events.filter(event => calendars?.includes(event.extendedProps.calendar))
 
