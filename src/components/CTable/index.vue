@@ -132,10 +132,6 @@ const getActualField = (fields: Array<unknown>) => {
   return props.isLoadingList ? fields.slice(0, props.skeletonCols) : fields
 }
 
-// Avoids nullish-coalescing mixed with && in v-memo compiled key comparison (Vue compiler doesn't parenthesize the key)
-const rowKey = (item: { raw?: { id?: unknown } }, index: number): string | number =>
-  item.raw?.id != null ? (item.raw.id as string | number) : index
-
 // reactive object gives Vue per-key dependency tracking:
 // changing expandedMap['rowA'] only re-renders rows that accessed expandedMap['rowA'],
 // not all rows — this eliminates the full-table re-render on every expand/collapse
@@ -307,14 +303,10 @@ const cachedCellCbClass = computed(() => {
         @change="onDragEnd"
       >
         <!-- #7: stable ID-based keys — index keys break Vue's vnode reuse on reorder/insert -->
-        <!-- v-memo: skip VNode diff when selection/expand/data are unchanged (critical for 700+ rows) -->
-        <!-- eslint-disable vue/no-useless-template-attributes -->
         <template
           v-for="(item, index) in items"
-          :key="rowKey(item, index)"
-          v-memo="[isSelected([item]), !!expandedMap[item.raw?.id as string], item.raw]"
+          :key="item.raw?.id ?? index"
         >
-          <!-- eslint-enable vue/no-useless-template-attributes -->
           <!-- Main row -->
           <tr
             class="c-table__row"

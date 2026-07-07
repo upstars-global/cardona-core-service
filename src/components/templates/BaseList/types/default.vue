@@ -958,7 +958,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               #custom-slot
             >
               <slot
-                :name="checkSlotExistence(`cellExpand(${fieldItem.key})`) ? `cellExpand(${fieldItem.key})` : `cell(${fieldItem.key})`"
+                :name="existingCellSlots.has(`cellExpand(${fieldItem.key})`) ? `cellExpand(${fieldItem.key})` : `cell(${fieldItem.key})`"
                 :field="field"
                 :item="item.raw"
                 :cell="cell"

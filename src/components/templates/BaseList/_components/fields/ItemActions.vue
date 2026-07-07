@@ -43,10 +43,11 @@ const slots = useSlots()
 
 const existSlot = (slotKey: BaseListSlots) => !!slots[slotKey]
 
+// !!slots[slotName] is sufficient — BaseListCell already guards these slots with v-if="$slots[...]"
+// so they only exist when they have real content. Executing slots[slotName]() to check children
+// renders VNodes on every ItemActions mount (once per expand row × 2 slot checks).
 const isExistsActionItemsSlot = computed(
-  () => {
-    return [BaseListSlots.PrependActionItem, BaseListSlots.AppendActionItem].some(slotName => !!slots[slotName] && !!slots[slotName]()[0].children.length)
-  },
+  () => [BaseListSlots.PrependActionItem, BaseListSlots.AppendActionItem].some(slotName => !!slots[slotName]),
 )
 
 const isShowActions = computed(() => {
