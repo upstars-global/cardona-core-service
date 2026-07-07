@@ -29,6 +29,10 @@ const props = withDefaults(defineProps<{
   skeletonRows?: number
   skeletonCols?: number
   cellCbClass?: (item: Record<string, unknown>, cell: string) => string
+  // Optional: declare extra reactive deps from slot content so v-memo can skip unchanged rows.
+  // Return a tuple of values that bust the cache when any slot dep changes.
+  // When omitted, no memoization is applied (safe default for generic consumers).
+  memoKeyFn?: (item: Record<string, unknown>) => unknown[]
 }>(), {
   cellCbClass: () => () => '',
   disabledRowIds: () => [],
@@ -149,6 +153,36 @@ const toggleExpand = (id: string) => {
       expandedMap[id] = true
     })
   }
+}
+
+// #7: rowKey avoids ?? in the compiled :key expression — Vue compiler mixes ?? with && when v-memo
+// is present on the same element, producing invalid JS ("logical and coalesce cannot be mixed").
+const rowKey = (item: { raw?: Record<string, unknown> | null }, index: number): string | number =>
+  item.raw?.id != null ? (item.raw.id as string | number) : index
+
+// #8: per-row memo key for v-memo — only re-renders rows whose displayed state actually changed.
+// When memoKeyFn is NOT provided by the consumer, returns [Symbol()] which is always unique,
+// so v-memo always misses and the row re-renders normally (zero regression for other consumers).
+// When memoKeyFn IS provided, the row only patches DOM when item.raw ref, expand, selection,
+// visible fields, or a consumer-declared dep changes — skipping 700×N slot calls for unchanged rows.
+
+// Stable string identity for the current field set — busts memo when columns are toggled.
+const fieldsVersionKey = computed(() => props.fields.map(f => f.key).join(','))
+
+const getMemoKey = (
+  item: { raw?: Record<string, unknown> | null },
+  isItemSelected: boolean,
+): unknown[] => {
+  if (!props.memoKeyFn)
+    return [Symbol()] // sentinel: always unique → memo always misses → normal render
+  const id = item.raw?.id as string | undefined
+  return [
+    item.raw, // new ref on list refresh → busts memo for all rows
+    id !== undefined ? !!expandedMap[id] : false,
+    isItemSelected,
+    fieldsVersionKey.value, // column toggle → all memos bust → rows re-render with new columns
+    ...props.memoKeyFn(item.raw ?? {}),
+  ]
 }
 
 // #6: memoized cellCbClass — cache invalidates automatically when rows or the cb function change
@@ -309,10 +343,15 @@ const cachedCellCbClass = computed(() => {
         tag="tbody"
         @change="onDragEnd"
       >
-        <!-- #7: stable ID-based keys — index keys break Vue's vnode reuse on reorder/insert -->
+        <!-- #8: v-memo skips VNode patching for rows whose memo deps haven't changed.
+             eslint-disable is required because vue/no-useless-template-attributes does not
+             list v-memo as a valid <template> attribute, even though Vue docs explicitly
+             recommend combining v-memo with v-for on the same element. -->
+        <!-- eslint-disable vue/no-useless-template-attributes -->
         <template
           v-for="(item, index) in items"
-          :key="item.raw?.id ?? index"
+          :key="rowKey(item, index)"
+          v-memo="getMemoKey(item, isSelected([item]))"
         >
           <!-- Main row -->
           <tr
@@ -406,6 +445,7 @@ const cachedCellCbClass = computed(() => {
             </tr>
           </template>
         </template>
+        <!-- eslint-enable vue/no-useless-template-attributes -->
       </Component>
 
       <tr v-if="items.isEmpty && !isLoadingList">

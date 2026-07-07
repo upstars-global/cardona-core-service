@@ -920,6 +920,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :items-per-page="itemsPerPage"
         :disabled-row-ids="disableRowIds"
         :cell-cb-class="config.cellCbClass"
+        :memo-key-fn="(item) => [editingId === item.id]"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"
