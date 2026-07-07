@@ -186,16 +186,18 @@ const routerToUpdatePageId = item => {
 const items = ref([])
 
 // #3: O(1) index lookup — replaces O(n) lodash findIndex called per cell
-const itemIndexMap = computed(() => new Map(items.value.map((item, i) => [item.id as string, i])))
+// items is ref([]) with inferred never[] — cast once to access runtime id property safely
+const itemsTyped = computed(() => items.value as Record<string, unknown>[])
+const itemIndexMap = computed(() => new Map(itemsTyped.value.map((item, i) => [item.id as string, i])))
 const getIndexByItemFromList = (item: Record<string, unknown>) => itemIndexMap.value.get(item?.id as string) ?? -1
 
 // #6: computed once — replaces items.value.map() on every selection / delete event
-const allItemIds = computed(() => items.value.map(({ id }) => id))
+const allItemIds = computed(() => itemsTyped.value.map(({ id }) => id as string))
 
 // #2: permission Maps computed once per row — replaces 3 function calls × rows × columns per render
-const canUpdateMap = computed(() => new Map(items.value.map(item => [item.id as string, canUpdateItem(item)])))
-const canRemoveMap = computed(() => new Map(items.value.map(item => [item.id as string, canRemoveItem(item)])))
-const canCopyMap = computed(() => new Map(items.value.map(item => [item.id as string, canCopyItem(item)])))
+const canUpdateMap = computed(() => new Map(itemsTyped.value.map(item => [item.id as string, canUpdateItem(item)])))
+const canRemoveMap = computed(() => new Map(itemsTyped.value.map(item => [item.id as string, canRemoveItem(item)])))
+const canCopyMap = computed(() => new Map(itemsTyped.value.map(item => [item.id as string, canCopyItem(item)])))
 
 const isInitialState = ref(true)
 
@@ -933,13 +935,13 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :cell="cell"
             :get-update-route="getUpdateRoute"
             :get-details-route="getDetailsRoute"
-            :is-show-you="config.isShowYou"
+            :is-show-you="!!config.isShowYou"
             :can-update="canUpdate"
             :editing-id="editingId"
             :create-page-name="CreatePageName"
             :details-page-name="DetailsPageName"
             :can-create="canCreate"
-            :can-update-seo="canUpdateSeo"
+            :can-update-seo="!!canUpdateSeo"
             :can-update-item="canUpdateMap.get(item.raw?.id as string) ?? false"
             :can-remove-item="canRemoveMap.get(item.raw?.id as string) ?? false"
             :can-copy-item="canCopyMap.get(item.raw?.id as string) ?? true"
@@ -1029,13 +1031,13 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :cell="cell"
             :get-update-route="getUpdateRoute"
             :get-details-route="getDetailsRoute"
-            :is-show-you="config.isShowYou"
+            :is-show-you="!!config.isShowYou"
             :can-update="canUpdate"
             :editing-id="editingId"
             :create-page-name="CreatePageName"
             :details-page-name="DetailsPageName"
             :can-create="canCreate"
-            :can-update-seo="canUpdateSeo"
+            :can-update-seo="!!canUpdateSeo"
             :can-update-item="canUpdateMap.get(item.raw?.id as string) ?? false"
             :can-remove-item="canRemoveMap.get(item.raw?.id as string) ?? false"
             :can-copy-item="canCopyMap.get(item.raw?.id as string) ?? true"
