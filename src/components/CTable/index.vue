@@ -3,7 +3,6 @@ import { computed, ref } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
-import { find } from 'lodash'
 import type { TableField } from '../../@model/templates/tableFields'
 import type { SortItem } from '../../@core/types'
 import type { SelectMode } from '../../@model/enums/selectMode'
@@ -45,12 +44,15 @@ const emits = defineEmits<{
 const cTable = ref({})
 const tableWrapperComponent = computed(() => props.draggable ? VueDraggableNext : 'tbody')
 
+// #3: O(1) disabled row lookup — replaces Array.includes O(n) per row
+const disabledSet = computed(() => new Set(props.disabledRowIds))
+
 const compareClasses = (item: Record<string, unknown>, isSelected: boolean): Record<string, boolean> => {
   return {
     [`table-light-${item.rowVariant}`]: !!item.rowVariant,
     'c-table__row--selected': isSelected,
     'is-hover-row': props.hover,
-    'row-disabled': props.disabledRowIds?.includes(item.id),
+    'row-disabled': disabledSet.value.has(item.id as string),
   }
 }
 
@@ -77,13 +79,19 @@ const skeletonRows = computed(() =>
       : +props.itemsPerPage)
 
 const emptyColspan = computed(() => props.selectable ? props.fields.length + 1 : props.fields.length)
-const isSortableColumn = (column: TableField): boolean => props.fields?.find(item => item?.key === column?.key)?.sortable
+
+// #5: O(1) sortable column lookup — replaces fields.find() O(n) per header render
+const sortableKeySet = computed(() => new Set(props.fields.filter(f => f.sortable).map(f => f.key)))
+const isSortableColumn = (column: TableField): boolean => sortableKeySet.value.has(column.key)
 
 const sortParams = ref(props.sortData?.map(item => ({
   ...item,
   order: item?.order,
   isActive: true,
 })))
+
+// #4: O(1) sort state lookup — replaces lodash find() O(n) called 2× per sortable column
+const sortParamsMap = computed(() => new Map(sortParams.value.map(item => [item.key, item])))
 
 const handleSorByField = ({ key }: { key: string }) => {
   const itemIndex = sortParams.value.findIndex(item => item?.key === key)
@@ -103,10 +111,11 @@ const handleSorByField = ({ key }: { key: string }) => {
   emits('update:sortData', sortParams.value.filter(item => item?.isActive))
 }
 
+// #4: uses Map.get instead of lodash find
 const isActiveSort = (key: string, direction: string): boolean => {
-  const currentItem = find(sortParams.value, { key })
+  const currentItem = sortParamsMap.value.get(key)
 
-  return currentItem?.isActive && currentItem?.order?.toLowerCase() === direction
+  return !!currentItem?.isActive && currentItem?.order?.toLowerCase() === direction
 }
 
 const actualHeadersTable = computed(() => {
@@ -125,6 +134,9 @@ const getActualField = (fields: Array<unknown>) => {
 
 const expanded = ref<string[]>([])
 
+// #1: O(1) expanded row lookup — replaces Array.includes O(n) called once per cell
+const expandedSet = computed(() => new Set(expanded.value))
+
 const toggleExpand = (id: string) => {
   if (expanded.value.includes(id))
     expanded.value = expanded.value.filter(expandId => expandId !== id)
@@ -132,6 +144,23 @@ const toggleExpand = (id: string) => {
     expanded.value.push(id)
 }
 
+// #6: memoized cellCbClass — cache invalidates automatically when rows or the cb function change
+const cachedCellCbClass = computed(() => {
+  props.rows // reactive dependency: invalidates cache on row changes
+
+  const cellCbClassFn = props.cellCbClass // reactive dependency: invalidates cache if cb changes
+  const cache = new Map<string, string>()
+
+  return (item: Record<string, unknown>, fieldKey: string): string => {
+    const raw = (item as unknown as { raw?: Record<string, unknown> }).raw
+    const id = (raw?.id as string | undefined) ?? JSON.stringify(raw)
+    const cacheKey = `${id}::${fieldKey}`
+    if (!cache.has(cacheKey))
+      cache.set(cacheKey, cellCbClassFn(item, fieldKey))
+
+    return cache.get(cacheKey)!
+  }
+})
 </script>
 
 <template>
@@ -273,9 +302,10 @@ const toggleExpand = (id: string) => {
         tag="tbody"
         @change="onDragEnd"
       >
+        <!-- #7: stable ID-based keys — index keys break Vue's vnode reuse on reorder/insert -->
         <template
           v-for="(item, index) in items"
-          :key="`c-table-row_${index}`"
+          :key="item.raw?.id ?? index"
         >
           <!-- Main row -->
           <tr
@@ -306,7 +336,7 @@ const toggleExpand = (id: string) => {
               <VCheckbox
                 :model-value="isSelected([item])"
                 data-test-id="selectable-checkbox"
-                :disabled="disabledRowIds?.includes(item.raw.id)"
+                :disabled="disabledSet.has(item.raw.id as string)"
                 class="selectable-checkbox"
                 @update:model-value="select([item], $event)"
                 @click.stop
@@ -317,7 +347,7 @@ const toggleExpand = (id: string) => {
               v-for="field in fields"
               :key="`c-table-cell_${index}_${field.key}`"
               class="c-table__cell text-body-1 whitespace-no-wrap"
-              :class="[cellClasses, cellCbClass(item, field.key)]"
+              :class="[cellClasses, cachedCellCbClass(item, field.key)]"
               :data-c-field="field.key"
             >
               <slot
@@ -326,18 +356,18 @@ const toggleExpand = (id: string) => {
                 :item="item"
                 :cell="item.raw[field.key]"
                 :toggle-expand="toggleExpand"
-                :is-expanded="expanded.includes(item.raw.id)"
+                :is-expanded="expandedSet.has(item.raw.id as string)"
               >
                 {{ item.raw[field.key] }}
               </slot>
             </td>
           </tr>
 
-          <!-- Expand row -->
-          <template v-for="raw in item.raw?.groups">
+          <!-- #2: v-if guards v-for — collapsed rows no longer iterate groups at all -->
+          <template v-if="showExpand && expandedSet.has(item.raw.id as string)">
             <tr
-              v-if="showExpand && expanded.includes(item.raw.id)"
-              :key="`${item.raw.id}-expand`"
+              v-for="(raw, rawIndex) in item.raw?.groups"
+              :key="`${item.raw.id}-expand-${(raw as Record<string, unknown>).id ?? rawIndex}`"
             >
               <!-- [START] Add for similar col and cell in table  -->
               <td v-if="props.selectable" />
@@ -359,11 +389,11 @@ const toggleExpand = (id: string) => {
                   :name="`cellExpand(${field.key})`"
                   :field="field"
                   :item="{ ...item, raw, value: raw }"
-                  :cell="raw[field.key]"
+                  :cell="(raw as Record<string, unknown>)[field.key]"
                   :toggle-expand="toggleExpand"
-                  :is-expanded="expanded.includes(item.raw.id)"
+                  :is-expanded="expandedSet.has(item.raw.id as string)"
                 >
-                  {{ raw[field.key] }}
+                  {{ (raw as Record<string, unknown>)[field.key] }}
                 </slot>
               </td>
             </tr>
