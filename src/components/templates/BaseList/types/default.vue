@@ -54,6 +54,10 @@ defineOptions({
 const props = defineProps<{
   config: IBaseListConfig
   useList: unknown
+  // Declare extra reactive deps from custom action slots (prependActionItem / appendActionItem).
+  // Called per row; returned values are included in v-memo so those rows re-render when deps change.
+  // Example: :table-memo-key-fn="(item) => [canDistributeGifts(item), someStoreRef]"
+  tableMemoKeyFn?: (item: Record<string, unknown>) => unknown[]
 }>()
 
 const emits = defineEmits<{
@@ -920,7 +924,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :items-per-page="itemsPerPage"
         :disabled-row-ids="disableRowIds"
         :cell-cb-class="config.cellCbClass"
-        :memo-key-fn="(item) => [editingId === item.id]"
+        :memo-key-fn="(item) => [editingId === item.id, ...(tableMemoKeyFn ? tableMemoKeyFn(item) : [])]"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"
