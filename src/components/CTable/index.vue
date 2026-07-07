@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
@@ -33,6 +33,10 @@ const props = withDefaults(defineProps<{
   // Return a tuple of values that bust the cache when any slot dep changes.
   // When omitted, no memoization is applied (safe default for generic consumers).
   memoKeyFn?: (item: Record<string, unknown>) => unknown[]
+  // Optional: row height in px. Enables window-based virtual scroll when set.
+  // Use 52 for comfortable density (default Vuetify), 36 for compact (small=true).
+  // Leave unset for paginated lists (25-50 rows) — no benefit, zero overhead.
+  itemHeight?: number
 }>(), {
   cellCbClass: () => () => '',
   disabledRowIds: () => [],
@@ -184,6 +188,64 @@ const getMemoKey = (
     ...props.memoKeyFn(item.raw ?? {}),
   ]
 }
+
+// #9: Window-based virtual scroll — only render visible rows + a buffer.
+// Opt-in via :item-height (px per row). When unset, all rows render normally (zero regression).
+// Works with page-level scroll (not a fixed-height container) via getBoundingClientRect on tbody.
+const tbodyRef = ref<{ $el?: HTMLElement } | HTMLElement | null>(null)
+const _winScrollY = ref(typeof window !== 'undefined' ? window.scrollY : 0)
+const _viewport = ref(typeof window !== 'undefined' ? window.innerHeight : 800)
+const _VBUF = 5 // extra rows rendered above/below the visible window
+
+const _onWinScroll = () => { _winScrollY.value = window.scrollY }
+const _onResize = () => { _viewport.value = window.innerHeight }
+onMounted(() => {
+  if (props.itemHeight) {
+    window.addEventListener('scroll', _onWinScroll, { passive: true })
+    window.addEventListener('resize', _onResize, { passive: true })
+  }
+})
+onUnmounted(() => {
+  window.removeEventListener('scroll', _onWinScroll)
+  window.removeEventListener('resize', _onResize)
+})
+
+// Returns { start, end, total } for the visible row slice, or null when virtual scroll is off.
+// Pre-mount (tbodyRef not yet set): limits first-render DOM creation to ~viewport rows from 0
+// instead of mounting all N rows at once — this is the primary fix for initial-render lag.
+const _vRange = computed(() => {
+  if (!props.itemHeight || props.rows.length === 0) return null
+  const total = props.rows.length
+  const h = props.itemHeight
+  const viewport = _viewport.value // reactive dep — recomputes on resize
+
+  _winScrollY.value // reactive dep — recomputes on every scroll event
+
+  if (!tbodyRef.value) {
+    // Pre-mount: render first ceil(viewport/h) + buffer rows so the visible area is filled
+    return { start: 0, end: Math.min(total, Math.ceil(viewport / h) + _VBUF * 2), total }
+  }
+
+  const el = ((tbodyRef.value as any).$el ?? tbodyRef.value) as HTMLElement
+  if (!el?.getBoundingClientRect) return null
+
+  // Pixels of the table that have scrolled above the viewport top
+  const scrolledPast = Math.max(0, -el.getBoundingClientRect().top)
+  const start = Math.max(0, Math.floor(scrolledPast / h) - _VBUF)
+  const end = Math.min(total, start + Math.ceil(viewport / h) + _VBUF * 2)
+  return { start, end, total }
+})
+
+// Heights of invisible rows above/below the rendered window — maintain correct scrollbar size
+const _topSpacer = computed(() => (_vRange.value?.start ?? 0) * (props.itemHeight ?? 0))
+const _bottomSpacer = computed(() =>
+  ((_vRange.value?.total ?? 0) - (_vRange.value?.end ?? _vRange.value?.total ?? 0)) * (props.itemHeight ?? 0),
+)
+
+// Total column count for spacer <td> colspan
+const _spacerColspan = computed(() =>
+  props.fields.length + (props.draggable ? 1 : 0) + (props.selectable ? 1 : 0),
+)
 
 // #6: memoized cellCbClass — cache invalidates automatically when rows or the cb function change
 const cachedCellCbClass = computed(() => {
@@ -337,20 +399,32 @@ const cachedCellCbClass = computed(() => {
       <Component
         :is="tableWrapperComponent"
         v-else
+        ref="tbodyRef"
         class="dragArea list-group w-full"
         :list="items"
         data-test-id="drag-area"
         tag="tbody"
         @change="onDragEnd"
       >
+        <!-- #9: top spacer — represents rows above the virtual window -->
+        <tr
+          v-if="_topSpacer > 0"
+          aria-hidden="true"
+          style="pointer-events: none"
+        >
+          <td
+            :colspan="_spacerColspan"
+            :style="{ height: `${_topSpacer}px`, padding: '0', border: '0' }"
+          />
+        </tr>
         <!-- #8: v-memo skips VNode patching for rows whose memo deps haven't changed.
              eslint-disable is required because vue/no-useless-template-attributes does not
              list v-memo as a valid <template> attribute, even though Vue docs explicitly
              recommend combining v-memo with v-for on the same element. -->
         <!-- eslint-disable vue/no-useless-template-attributes -->
         <template
-          v-for="(item, index) in items"
-          :key="rowKey(item, index)"
+          v-for="(item, index) in (_vRange ? items.slice(_vRange.start, _vRange.end) : items)"
+          :key="rowKey(item, (_vRange?.start ?? 0) + index)"
           v-memo="getMemoKey(item, isSelected([item]))"
         >
           <!-- Main row -->
@@ -446,6 +520,17 @@ const cachedCellCbClass = computed(() => {
           </template>
         </template>
         <!-- eslint-enable vue/no-useless-template-attributes -->
+        <!-- #9: bottom spacer — represents rows below the virtual window -->
+        <tr
+          v-if="_bottomSpacer > 0"
+          aria-hidden="true"
+          style="pointer-events: none"
+        >
+          <td
+            :colspan="_spacerColspan"
+            :style="{ height: `${_bottomSpacer}px`, padding: '0', border: '0' }"
+          />
+        </tr>
       </Component>
 
       <tr v-if="items.isEmpty && !isLoadingList">

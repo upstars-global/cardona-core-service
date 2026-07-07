@@ -925,6 +925,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :disabled-row-ids="disableRowIds"
         :cell-cb-class="config.cellCbClass"
         :memo-key-fn="(item) => [editingId === item.id, ...(tableMemoKeyFn ? tableMemoKeyFn(item) : [])]"
+        :item-height="config.itemHeight"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"
