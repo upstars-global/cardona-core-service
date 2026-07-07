@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
@@ -132,16 +132,16 @@ const getActualField = (fields: Array<unknown>) => {
   return props.isLoadingList ? fields.slice(0, props.skeletonCols) : fields
 }
 
-const expanded = ref<string[]>([])
-
-// #1: O(1) expanded row lookup — replaces Array.includes O(n) called once per cell
-const expandedSet = computed(() => new Set(expanded.value))
+// reactive object gives Vue per-key dependency tracking:
+// changing expandedMap['rowA'] only re-renders rows that accessed expandedMap['rowA'],
+// not all rows — this eliminates the full-table re-render on every expand/collapse
+const expandedMap = reactive<Record<string, boolean>>({})
 
 const toggleExpand = (id: string) => {
-  if (expanded.value.includes(id))
-    expanded.value = expanded.value.filter(expandId => expandId !== id)
+  if (expandedMap[id])
+    delete expandedMap[id]
   else
-    expanded.value.push(id)
+    expandedMap[id] = true
 }
 
 // #6: memoized cellCbClass — cache invalidates automatically when rows or the cb function change
@@ -356,7 +356,7 @@ const cachedCellCbClass = computed(() => {
                 :item="item"
                 :cell="item.raw[field.key]"
                 :toggle-expand="toggleExpand"
-                :is-expanded="expandedSet.has(item.raw.id as string)"
+                :is-expanded="!!expandedMap[item.raw.id as string]"
               >
                 {{ item.raw[field.key] }}
               </slot>
@@ -364,7 +364,7 @@ const cachedCellCbClass = computed(() => {
           </tr>
 
           <!-- #2: v-if guards v-for — collapsed rows no longer iterate groups at all -->
-          <template v-if="showExpand && expandedSet.has(item.raw.id as string)">
+          <template v-if="showExpand && expandedMap[item.raw.id as string]">
             <tr
               v-for="(raw, rawIndex) in item.raw?.groups"
               :key="`${item.raw.id}-expand-${(raw as Record<string, unknown>).id ?? rawIndex}`"
@@ -391,7 +391,7 @@ const cachedCellCbClass = computed(() => {
                   :item="{ ...item, raw, value: raw }"
                   :cell="(raw as Record<string, unknown>)[field.key]"
                   :toggle-expand="toggleExpand"
-                  :is-expanded="expandedSet.has(item.raw.id as string)"
+                  :is-expanded="!!expandedMap[item.raw.id as string]"
                 >
                   {{ (raw as Record<string, unknown>)[field.key] }}
                 </slot>
