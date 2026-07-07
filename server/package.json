@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@octokit/auth-app": "^7.1.5",
-    "centrifuge": "^5.3.4"
+    "centrifuge": "^5.3.4",
+    "nitropack": "^2.9.7"
   }
 }
