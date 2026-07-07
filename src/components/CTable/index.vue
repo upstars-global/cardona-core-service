@@ -138,10 +138,17 @@ const getActualField = (fields: Array<unknown>) => {
 const expandedMap = reactive<Record<string, boolean>>({})
 
 const toggleExpand = (id: string) => {
-  if (expandedMap[id])
+  if (expandedMap[id]) {
+    // Collapse is instant — just removing DOM, no heavy work
     delete expandedMap[id]
-  else
-    expandedMap[id] = true
+  }
+  else {
+    // Defer expand to next animation frame so the browser can paint the click feedback
+    // (button ripple/focus state) before the blocking component-mount work begins
+    requestAnimationFrame(() => {
+      expandedMap[id] = true
+    })
+  }
 }
 
 // #6: memoized cellCbClass — cache invalidates automatically when rows or the cb function change

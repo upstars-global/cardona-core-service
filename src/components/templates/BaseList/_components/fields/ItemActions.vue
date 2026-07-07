@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import { Comment, computed, useSlots } from 'vue'
 import { useRouter } from 'vue-router'
 import type { IBaseListConfig } from '../../../../../@model/templates/baseList'
 import { BaseListSlots } from '../../../../../@model/templates/baseList'
@@ -43,11 +43,14 @@ const slots = useSlots()
 
 const existSlot = (slotKey: BaseListSlots) => !!slots[slotKey]
 
-// !!slots[slotName] is sufficient — BaseListCell already guards these slots with v-if="$slots[...]"
-// so they only exist when they have real content. Executing slots[slotName]() to check children
-// renders VNodes on every ItemActions mount (once per expand row × 2 slot checks).
-const isExistsActionItemsSlot = computed(
-  () => [BaseListSlots.PrependActionItem, BaseListSlots.AppendActionItem].some(slotName => !!slots[slotName]),
+// Executes slot to check for non-comment VNodes — handles v-if inside slots (false branch = Comment VNode).
+// The original [0].children.length was fragile (throws on empty array, misses multi-root slots).
+const isExistsActionItemsSlot = computed(() =>
+  [BaseListSlots.PrependActionItem, BaseListSlots.AppendActionItem].some((slotName) => {
+    const slotFn = slots[slotName]
+    if (!slotFn) return false
+    return slotFn().some(vnode => vnode.type !== Comment)
+  }),
 )
 
 const isShowActions = computed(() => {
