@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onBeforeMount, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import { debounce, findIndex, has, isUndefined } from 'lodash'
+import { debounce, has, isUndefined } from 'lodash'
 import type { ExportFormat, IBaseListConfig, ProjectsFilterOption } from '../../../../@model/templates/baseList'
 import { BaseListSlots, ProjectsFilterMode } from '../../../../@model/templates/baseList'
 import CTable from '../../../CTable/index.vue'
@@ -149,8 +149,6 @@ const canDraggable = computed(() => { return props.config.small ? canUpdate && p
 const isSidebarShown = ref(false)
 const selectedItem: any = ref(null)
 
-const getIndexByItemFromList = item => findIndex(items.value, item)
-
 const sidebarSlots = computed(() =>
   Object.keys(slots).filter(
     key => key.includes('sidebar-row') || key.includes('sidebar-value'),
@@ -186,15 +184,28 @@ const routerToUpdatePageId = item => {
 
 // Table
 const items = ref([])
+
+// #3: O(1) index lookup — replaces O(n) lodash findIndex called per cell
+const itemIndexMap = computed(() => new Map(items.value.map((item, i) => [item.id as string, i])))
+const getIndexByItemFromList = (item: Record<string, unknown>) => itemIndexMap.value.get(item?.id as string) ?? -1
+
+// #6: computed once — replaces items.value.map() on every selection / delete event
+const allItemIds = computed(() => items.value.map(({ id }) => id))
+
+// #2: permission Maps computed once per row — replaces 3 function calls × rows × columns per render
+const canUpdateMap = computed(() => new Map(items.value.map(item => [item.id as string, canUpdateItem(item)])))
+const canRemoveMap = computed(() => new Map(items.value.map(item => [item.id as string, canRemoveItem(item)])))
+const canCopyMap = computed(() => new Map(items.value.map(item => [item.id as string, canCopyItem(item)])))
+
 const isInitialState = ref(true)
 
+// #1: removed { deep: true } — items is always fully replaced by reference, deep traversal is unnecessary
 watch(
   () => items.value,
   () => {
     if (selectedItem.value)
       selectedItem.value = items.value[getIndexByItemFromList(selectedItem.value)]
   },
-  { deep: true },
 )
 
 const selectedFields = ref<TableField[]>([...fields])
@@ -213,6 +224,20 @@ const isLoadingExport = computed(() => {
   return loaderStore.isLoadingEndpoint([listUrl])
 })
 
+// #5: stable endpoint arrays — avoid array allocation on every isLoadingList evaluation
+const loadingEndpointsList = computed(() => [
+  `${entityUrl.value}/list`,
+  ...(props.config.loadingEndpointArr ?? []),
+])
+
+const loadingEndpointsFull = computed(() => [
+  `${entityUrl.value}/list`,
+  `${entityUrl.value}/update`,
+  `${entityUrl.value}/active/switch`,
+  `${entityUrl.value}/delete`,
+  ...(props.config.loadingEndpointArr ?? []),
+])
+
 const isLoadingList = computed(() => {
   if (props.config.disableLoading)
     return false
@@ -220,22 +245,9 @@ const isLoadingList = computed(() => {
   if (isInitialState.value || isDebouncedSearch.value)
     return true
 
-  const listUrl = `${entityUrl.value}/list`
-
-  if (props.config.loadingOnlyByList) {
-    return loaderStore.isLoadingEndpoint([
-      listUrl,
-      ...(props.config.loadingEndpointArr ?? []),
-    ])
-  }
-
-  return loaderStore.isLoadingEndpoint([
-    listUrl,
-    `${entityUrl.value}/update`,
-    `${entityUrl.value}/active/switch`,
-    `${entityUrl.value}/delete`,
-    ...(props.config.loadingEndpointArr ?? []),
-  ])
+  return loaderStore.isLoadingEndpoint(
+    props.config.loadingOnlyByList ? loadingEndpointsList.value : loadingEndpointsFull.value,
+  )
 })
 
 const size = props.config?.small ? VSizes.Small : VSizes.Medium
@@ -351,6 +363,11 @@ onChangePagination(() => {
 })
 
 const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
+
+// #4: computed once — replaces repeated slot object lookups inside v-for over selectedFields
+const hasPrependActionItemSlot = computed(() => !!slots[BaseListSlots.PrependActionItem])
+const hasAppendActionItemSlot = computed(() => !!slots[BaseListSlots.AppendActionItem])
+const existingCellSlots = computed(() => new Set(Object.keys(slots)))
 
 const getUpdateRoute = ({ id }): Location => {
   return isExistsUpdatePage && (canUpdateCb?.() ?? true)
@@ -499,31 +516,13 @@ watch(() => hasSelectedFilters.value, hasFilters => {
 const selectedItems = ref<Record<string, unknown>[]>([])
 const allSelectedIds = computed(() => baseListSelectionStore.getAllSelectedIds(entityName))
 
-const allSelected = ref(false)
-const indeterminate = ref(false)
-
-watch(selectedItems, newItems => {
-  if (newItems.isEmpty) {
-    indeterminate.value = false
-    allSelected.value = false
-  }
-  else if (newItems.length === items.value.length) {
-    indeterminate.value = false
-    allSelected.value = true
-  }
-  else {
-    indeterminate.value = true
-    allSelected.value = false
-  }
-})
-
 const onRowSelected = checkedItems => {
   selectedItems.value = checkedItems
 
-  const allItemsIds = items.value.map(({ id }) => id)
   const selectedItemsIds = checkedItems.map(({ id }) => id)
 
-  baseListSelectionStore.syncPageSelection(entityName, allItemsIds, selectedItemsIds)
+  // #6: allItemIds is a computed — no new array allocated per selection event
+  baseListSelectionStore.syncPageSelection(entityName, allItemIds.value, selectedItemsIds)
 }
 
 // Multiple actions
@@ -616,10 +615,9 @@ const onClickModalOk = async ({ hide, commentToRemove }) => {
 
   selectedItems.value = selectedItems.value.filter(item => item?.id !== selectedItem.value.id)
 
-  const allItemsIds = items.value.map(({ id }) => id)
   const selectedItemsIds = selectedItems.value.map(({ id }) => id)
 
-  baseListSelectionStore.syncPageSelection(entityName, allItemsIds, selectedItemsIds)
+  baseListSelectionStore.syncPageSelection(entityName, allItemIds.value, selectedItemsIds)
 
   resetSelectedItem()
   await reFetchList()
@@ -942,9 +940,9 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :details-page-name="DetailsPageName"
             :can-create="canCreate"
             :can-update-seo="canUpdateSeo"
-            :can-update-item="canUpdateItem(item.raw)"
-            :can-remove-item="canRemoveItem(item.raw)"
-            :can-copy-item="canCopyItem(item.raw)"
+            :can-update-item="canUpdateMap.get(item.raw?.id as string) ?? false"
+            :can-remove-item="canRemoveMap.get(item.raw?.id as string) ?? false"
+            :can-copy-item="canCopyMap.get(item.raw?.id as string) ?? true"
             :config="config"
             @edit-position="(rawItem, val) => onEditPosition(rawItem, val)"
             @open-edit="onOpenEdit"
@@ -954,7 +952,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           >
             <!--  If don't use slot of expand apply components and slot of base row  -->
             <template
-              v-if="checkSlotExistence(`cell(${fieldItem.key})`)"
+              v-if="existingCellSlots.has(`cell(${fieldItem.key})`)"
               #custom-slot
             >
               <slot
@@ -988,7 +986,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             </template>
 
             <template
-              v-if="checkSlotExistence(BaseListSlots.PrependActionItem)"
+              v-if="hasPrependActionItemSlot"
               #prependActionItem="{ item: actionItem, canUpdate: actionCanUpdate }"
             >
               <slot
@@ -1007,7 +1005,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             </template>
 
             <template
-              v-if="checkSlotExistence(BaseListSlots.AppendActionItem)"
+              v-if="hasAppendActionItemSlot"
               #appendActionItem="{ item: actionItem, canUpdate: actionCanUpdate, canCreate: actionCanCreate }"
             >
               <slot
@@ -1038,9 +1036,9 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             :details-page-name="DetailsPageName"
             :can-create="canCreate"
             :can-update-seo="canUpdateSeo"
-            :can-update-item="canUpdateItem(item.raw)"
-            :can-remove-item="canRemoveItem(item.raw)"
-            :can-copy-item="canCopyItem(item.raw)"
+            :can-update-item="canUpdateMap.get(item.raw?.id as string) ?? false"
+            :can-remove-item="canRemoveMap.get(item.raw?.id as string) ?? false"
+            :can-copy-item="canCopyMap.get(item.raw?.id as string) ?? true"
             :config="config"
             @edit-position="(rawItem, val) => onEditPosition(rawItem, val)"
             @open-edit="onOpenEdit"
@@ -1049,7 +1047,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             @on-toggle-status="onClickToggleStatus"
           >
             <template
-              v-if="checkSlotExistence(`cell(${fieldItem.key})`)"
+              v-if="existingCellSlots.has(`cell(${fieldItem.key})`)"
               #custom-slot
             >
               <slot
@@ -1088,7 +1086,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             </template>
 
             <template
-              v-if="checkSlotExistence(BaseListSlots.PrependActionItem)"
+              v-if="hasPrependActionItemSlot"
               #prependActionItem="{ item: actionItem, canUpdate: actionCanUpdate }"
             >
               <slot
@@ -1107,7 +1105,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
             </template>
 
             <template
-              v-if="checkSlotExistence(BaseListSlots.AppendActionItem)"
+              v-if="hasAppendActionItemSlot"
               #appendActionItem="{ item: actionItem, canUpdate: actionCanUpdate, canCreate: actionCanCreate }"
             >
               <slot
