@@ -8,6 +8,7 @@ import ProjectSelect from './default/components/ProjectSelect.vue'
 import ProductsSelect from './default/components/ProductSelect.vue'
 import AppBreadcrumb from './components/AppBreadcrumb.vue'
 import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
+import { VColors } from '@/@model/vuetify'
 
 // import AppBreadcrumb from '../components/AppBreadcrumb.vue'
 
@@ -30,8 +31,8 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
   <VLayout class="custom-layout">
     <VNavigationDrawer
       v-model="drawer"
-      rail
-      :rail="isCollapsed"
+      :rail="rail"
+      permanent
       :rail-width="52"
       class="bg-sidebar border-r-0"
       width="252"
@@ -46,7 +47,15 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
             class="pa-0 ma-0"
           >
             <VListItem class="pa-0 ma-0">
-              <ProductsSelect :is-collapsed-menu="isCollapsed" />
+              <div class="d-flex align-center justify-space-between">
+                <ProductsSelect :is-collapsed-menu="isCollapsed" />
+                <VIcon
+                  v-if="!isCollapsed"
+                  :color="VColors.Primary"
+                  :icon="IconsList.CircleDotIcon"
+                  @click="rail = !rail"
+                />
+              </div>
             </VListItem>
           </VList>
           <!--          px-4 pt-4 pb-2 -->
