@@ -105,25 +105,62 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
             class="bg-sidebar ml-0 mr-auto"
             density="compact"
             nav
+            open-strategy="single"
           >
-            <VListItem
+            <template
               v-for="item in navItems"
               :key="item.title"
-              :title="t(item.title)"
-              :to="item.to"
-              rounded="lg"
-              active-color="primary"
-              base-color="white"
-              class="bg-sidebar"
             >
-              <template #prepend>
-                <VIcon
-                  :icon="item.icon?.icon"
-                  color="white"
-                  class="me-2"
+              <VListGroup
+                v-if="'children' in item"
+                :value="item.title"
+              >
+                <template #activator="{ props: groupProps }">
+                  <VListItem
+                    v-bind="groupProps"
+                    :title="t(item.title)"
+                    rounded="lg"
+                    base-color="white"
+                    class="bg-sidebar"
+                  >
+                    <template #prepend>
+                      <VIcon
+                        :icon="item.icon?.icon"
+                        color="white"
+                        class="me-2"
+                      />
+                    </template>
+                  </VListItem>
+                </template>
+                <VListItem
+                  v-for="child in item.children"
+                  :key="child.title"
+                  :title="t(child.title)"
+                  :to="child.to"
+                  rounded="lg"
+                  active-color="primary"
+                  base-color="white"
+                  class="bg-sidebar"
                 />
-              </template>
-            </VListItem>
+              </VListGroup>
+              <VListItem
+                v-else
+                :title="t(item.title)"
+                :to="item.to"
+                rounded="lg"
+                active-color="primary"
+                base-color="white"
+                class="bg-sidebar"
+              >
+                <template #prepend>
+                  <VIcon
+                    :icon="item.icon?.icon"
+                    color="white"
+                    class="me-2"
+                  />
+                </template>
+              </VListItem>
+            </template>
           </VList>
         </div>
 
