@@ -6,7 +6,7 @@ import type { TranslateResult } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { IconsList } from '../../@model/enums/icons'
-import {VColors, VSizes} from '../../@model/vuetify'
+import { VColors, VSizes } from '../../@model/vuetify'
 import { PermissionLevel } from '../../@model/permission'
 import { useUserStore } from '../../stores/user'
 import { useAppConfigCoreStore } from '../../stores/appConfigCore'
@@ -79,10 +79,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 </script>
 
 <template>
-  <div
-    class="custom-menu"
-    :class="{ 'custom-menu--collapsed': isCollapsedMenu }"
-  >
+  <div class="custom-menu pl-2 mb-4">
     <VMenu>
       <template #activator="{ props }">
         <div
@@ -117,7 +114,10 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
               </h5>
             </VAvatar>
           </VBadge>
-          <div class="full-name ml-5">
+          <div
+            v-if="!isCollapsedMenu"
+            class="full-name on-primary ml-5"
+          >
             {{ userName }}
           </div>
         </div>
@@ -201,7 +201,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 }
 
 .custom-menu {
-  padding: 1rem;
+  //padding: 1rem;
   border-top: 1px solid rgb(var(--v-theme-grey-200));
 
   :deep(.v-badge__badge) {
