@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useUserStore } from '../stores/user'
-import { IconsList } from '../@model/enums/icons'
+import {computed, ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useUserStore} from '../stores/user'
+import {IconsList} from '../@model/enums/icons'
 import CustomMenu from './components/CustomMenu.vue'
 import ProjectSelect from './default/components/ProjectSelect.vue'
 import ProductsSelect from './default/components/ProductSelect.vue'
 import AppBreadcrumb from './components/AppBreadcrumb.vue'
-import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
-import { VColors } from '@/@model/vuetify'
+import {useAppsAndPages} from '@/navigation/vertical/apps-and-pages'
+import {VColors} from '@/@model/vuetify'
 
 // import AppBreadcrumb from '../components/AppBreadcrumb.vue'
 
@@ -52,7 +52,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
                 <VIcon
                   v-if="!isCollapsed"
                   :color="VColors.Primary"
-                  :icon="IconsList.CircleDotIcon"
+                  :icon="!rail ? IconsList.CircleDotIcon : IconsList.CircleIcon"
                   @click="rail = !rail"
                 />
               </div>
