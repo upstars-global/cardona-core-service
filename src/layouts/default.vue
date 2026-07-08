@@ -3,12 +3,13 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '../stores/user'
 import { IconsList } from '../@model/enums/icons'
+import { VColors } from '../@model/vuetify'
 import CustomMenu from './components/CustomMenu.vue'
 import ProjectSelect from './default/components/ProjectSelect.vue'
 import ProductsSelect from './default/components/ProductSelect.vue'
+import SideBar from './default/components/SideBar.vue'
 import AppBreadcrumb from './components/AppBreadcrumb.vue'
 import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
-import { VColors } from '@/@model/vuetify'
 
 // import AppBreadcrumb from '../components/AppBreadcrumb.vue'
 
@@ -100,73 +101,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
           <!--            /> -->
           <!--          </div> -->
 
-          <VList
-            bg-color="transparent"
-            class="bg-sidebar ml-0 mr-auto"
-            density="compact"
-            nav
-            open-strategy="single"
-          >
-            <template
-              v-for="item in navItems"
-              :key="item.title"
-            >
-              <VListGroup
-                v-if="'children' in item"
-                :value="item.title"
-              >
-                <template #activator="{ props: groupProps }">
-                  <VListItem
-                    v-bind="groupProps"
-                    :title="t(item.title)"
-                    rounded="lg"
-                    base-color="white"
-                    class="bg-sidebar"
-                  >
-                    <template #prepend>
-                      <VIcon
-                        :icon="item.icon?.icon"
-                        color="white"
-                        class="me-2"
-                      />
-                    </template>
-                  </VListItem>
-                </template>
-                <VListItem
-                  v-for="child in item.children"
-                  :key="child.title"
-                  :to="child.to"
-                  rounded="lg"
-                  active-color="primary"
-                  base-color="white"
-                  class="child-list-item pl-14"
-                >
-                  <template #default="props">
-                    <div class="pl-14">
-                      {{ $t(child.title) }}
-                    </div>
-                  </template>
-                </VListItem>
-              </VListGroup>
-              <VListItem
-                v-else
-                :title="t(item.title)"
-                :to="item.to"
-                rounded="lg"
-                active-color="primary"
-                base-color="white"
-                class="bg-sidebar"
-              >
-                <template #prepend>
-                  <VIcon
-                    :icon="item.icon?.icon"
-                    color="white"
-                    class="me-2"
-                  />
-                </template>
-              </VListItem>
-            </template>
-          </VList>
+          <SideBar :items="navItems" />
         </div>
 
         <div class="sidebar-bottom">
@@ -264,8 +199,5 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
 }
-
-.child-list-item {
-  padding-inline: 0 !important;
-}
+//nav-group open
 </style>

@@ -49,7 +49,7 @@ export enum IconsList {
   CheckSquareIcon = 'CheckSquareIcon',
   CheckIcon = 'tabler-check',
   ChevronDownIcon = 'tabler-chevron-down',
-  ChevronLeftIcon = 'ChevronLeftIcon',
+  ChevronLeftIcon = 'tabler-chevron-left',
   ChevronRightIcon = 'tabler-chevron-right',
   ChevronUpIcon = 'tabler-chevron-up',
   ChevronsDownIcon = 'tabler-chevrons-down',
