@@ -6,7 +6,7 @@ import type { TranslateResult } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { IconsList } from '../../@model/enums/icons'
-import { VColors } from '../../@model/vuetify'
+import {VColors, VSizes} from '../../@model/vuetify'
 import { PermissionLevel } from '../../@model/permission'
 import { useUserStore } from '../../stores/user'
 import { useAppConfigCoreStore } from '../../stores/appConfigCore'
@@ -100,7 +100,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
           >
             <VAvatar
               :color="VColors.Success"
-              size="large"
+              :size="VSizes.Large"
               class="avatar-block"
             >
               <VImg

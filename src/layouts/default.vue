@@ -49,9 +49,10 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
               <ProductsSelect :is-collapsed-menu="isCollapsed" />
             </VListItem>
           </VList>
+          <!--          px-4 pt-4 pb-2 -->
           <div
             v-if="false"
-            class="px-4 pt-4 pb-2 d-flex align-center justify-space-between"
+            class="d-flex align-center justify-space-between"
           >
             <ProductsSelect :is-collapsed-menu="isCollapsed" />
             <VIcon
@@ -62,10 +63,8 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
             />
           </div>
 
-          <div
-            v-if="userStore.selectedProjectWithoutPriority"
-            class="px-4 pb-3"
-          >
+          <div v-if="userStore.selectedProjectWithoutPriority">
+            <!--            class="px-4 pb-3" -->
             <ProjectSelect
               :projects="projects"
               :is-collapsed="isCollapsed"
@@ -74,28 +73,29 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
         </div>
 
         <div class="sidebar-nav flex-grow-1 overflow-y-auto">
-          <div
-            v-if="isCollapsed"
-            class="d-flex flex-column align-center py-1 gap-1"
-          >
-            <VBtn
-              v-for="item in navItems"
-              :key="item.title"
-              :icon="item.icon?.icon"
-              :to="item.to"
-              variant="text"
-              rounded="lg"
-              color="white"
-              active-color="primary"
-              size="40"
-            />
-          </div>
+          <!--          py-1 gap-1 -->
+          <!--          <div -->
+          <!--            v-if="isCollapsed" -->
+          <!--            class="d-flex flex-column align-center" -->
+          <!--          > -->
+          <!--            <VBtn -->
+          <!--              v-for="item in navItems" -->
+          <!--              :key="item.title" -->
+          <!--              :icon="item.icon?.icon" -->
+          <!--              :to="item.to" -->
+          <!--              variant="text" -->
+          <!--              rounded="lg" -->
+          <!--              color="white" -->
+          <!--              active-color="primary" -->
+          <!--              size="40" -->
+          <!--            /> -->
+          <!--          </div> -->
 
           <VList
-            v-else
-            nav
             bg-color="transparent"
-            class="py-1 bg-sidebar"
+            class="bg-sidebar ml-0 mr-auto"
+            density="compact"
+            nav
           >
             <VListItem
               v-for="item in navItems"
