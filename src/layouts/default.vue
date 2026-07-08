@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { useUserStore } from '../stores/user'
 import { IconsList } from '../@model/enums/icons'
-import { VColors } from '../@model/vuetify'
 import CustomMenu from './components/CustomMenu.vue'
 import ProjectSelect from './default/components/ProjectSelect.vue'
 import ProductsSelect from './default/components/ProductSelect.vue'
@@ -11,9 +9,6 @@ import SideBar from './default/components/SideBar.vue'
 import AppBreadcrumb from './components/AppBreadcrumb.vue'
 import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
 
-// import AppBreadcrumb from '../components/AppBreadcrumb.vue'
-
-const { t } = useI18n()
 const { appsAndPages } = useAppsAndPages()
 const navItems = computed(() => appsAndPages.value)
 
@@ -52,7 +47,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
                 <ProductsSelect :is-collapsed-menu="isCollapsed" />
                 <VIcon
                   v-if="!isCollapsed"
-                  :color="VColors.Primary"
+                  class="sidebar-menu-mode"
                   :icon="!rail ? IconsList.CircleDotIcon : IconsList.CircleIcon"
                   @click="rail = !rail"
                 />
@@ -83,24 +78,6 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
         </div>
 
         <div class="sidebar-nav flex-grow-1 overflow-y-auto">
-          <!--          py-1 gap-1 -->
-          <!--          <div -->
-          <!--            v-if="isCollapsed" -->
-          <!--            class="d-flex flex-column align-center" -->
-          <!--          > -->
-          <!--            <VBtn -->
-          <!--              v-for="item in navItems" -->
-          <!--              :key="item.title" -->
-          <!--              :icon="item.icon?.icon" -->
-          <!--              :to="item.to" -->
-          <!--              variant="text" -->
-          <!--              rounded="lg" -->
-          <!--              color="white" -->
-          <!--              active-color="primary" -->
-          <!--              size="40" -->
-          <!--            /> -->
-          <!--          </div> -->
-
           <SideBar :items="navItems" />
         </div>
 
@@ -198,6 +175,10 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
 .layout-border-bottom {
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
+}
+
+.sidebar-menu-mode {
+  color: rgba(var(--v-theme-on-sidebar), .7) !important;
 }
 //nav-group open
 </style>
