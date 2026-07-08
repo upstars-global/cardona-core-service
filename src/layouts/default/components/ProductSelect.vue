@@ -118,7 +118,7 @@ watch(selectedProduct, product => {
 }
 
 .product-select {
-  position: relative;
+  //position: relative;
   padding-left: 2rem;
 }
 

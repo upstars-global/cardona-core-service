@@ -30,16 +30,29 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
   <VLayout class="custom-layout">
     <VNavigationDrawer
       v-model="drawer"
+      rail
       :rail="isCollapsed"
       :rail-width="52"
       class="bg-sidebar border-r-0"
       width="252"
+      expand-on-hover
       @mouseenter="isHovered = true"
       @mouseleave="isHovered = false"
     >
       <div class="sidebar-inner d-flex flex-column h-100">
         <div class="sidebar-top">
-          <div class="px-4 pt-4 pb-2 d-flex align-center justify-space-between">
+          <VList
+            bg-color="#252833"
+            class="pa-0 ma-0"
+          >
+            <VListItem class="pa-0 ma-0">
+              <ProductsSelect :is-collapsed-menu="isCollapsed" />
+            </VListItem>
+          </VList>
+          <div
+            v-if="false"
+            class="px-4 pt-4 pb-2 d-flex align-center justify-space-between"
+          >
             <ProductsSelect :is-collapsed-menu="isCollapsed" />
             <VIcon
               v-show="!isCollapsed"
