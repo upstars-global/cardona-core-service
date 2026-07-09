@@ -42,7 +42,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
             bg-color="#252833"
             class="pa-0 ma-0"
           >
-            <VListItem class="pa-0 ma-0">
+            <VListItem class="pa-0 my-0 mx-4">
               <div class="d-flex align-center justify-space-between">
                 <ProductsSelect :is-collapsed-menu="isCollapsed" />
                 <VIcon
@@ -54,22 +54,8 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
               </div>
             </VListItem>
           </VList>
-          <!--          px-4 pt-4 pb-2 -->
-          <div
-            v-if="false"
-            class="d-flex align-center justify-space-between"
-          >
-            <ProductsSelect :is-collapsed-menu="isCollapsed" />
-            <VIcon
-              v-show="!isCollapsed"
-              class="text-secondary"
-              :icon="!rail ? IconsList.CircleDotIcon : IconsList.CircleIcon"
-              @click="rail = !rail"
-            />
-          </div>
 
           <div v-if="userStore.selectedProjectWithoutPriority">
-            <!--            class="px-4 pb-3" -->
             <ProjectSelect
               :projects="projects"
               :is-collapsed="isCollapsed"
