@@ -39,6 +39,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
       <div class="sidebar-inner d-flex flex-column h-100">
         <div class="sidebar-top">
           <VList
+            density="compact"
             bg-color="#252833"
             class="pa-0 ma-0 pt-4"
           >
@@ -67,9 +68,20 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
           <SideBar :items="navItems" />
         </div>
 
-        <div class="sidebar-bottom">
-          <CustomMenu :is-collapsed-menu="isCollapsed" />
-        </div>
+        <VList
+          bg-color="#252833"
+          density="compact"
+          class="px-0"
+        >
+          <VListItem
+            class="px-0"
+            style="margin-inline: 10px"
+          >
+            <CustomMenu :is-collapsed-menu="isCollapsed" />
+          </VListItem>
+        </VList>
+        <!--        <div class="sidebar-bottom"> -->
+        <!--        </div> -->
       </div>
     </VNavigationDrawer>
 

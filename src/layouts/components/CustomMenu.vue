@@ -83,7 +83,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
     v-if="!isCollapsedMenu"
     class="divider-color ml-2 mr-3"
   >
-  <div class="custom-menu pl-1 mb-4">
+  <div class="custom-menu">
     <VMenu>
       <template #activator="{ props }">
         <div
@@ -101,7 +101,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
           >
             <VAvatar
               :color="VColors.Success"
-              :size="VSizes.Large"
+              :size="32"
               class="avatar-block"
             >
               <VImg
@@ -160,8 +160,8 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 
 <style lang="scss" scoped>
 .avatar-block {
-  height: 40px;
-  width: 40px;
+  height: 32px;
+  width: 32px;
   background-color: rgba(var(--v-theme-success), var(--v-badge-opacity)) !important;
 }
 .first-letter {
