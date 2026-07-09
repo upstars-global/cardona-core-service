@@ -40,9 +40,9 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
         <div class="sidebar-top">
           <VList
             bg-color="#252833"
-            class="pa-0 ma-0"
+            class="pa-0 ma-0 pt-4"
           >
-            <VListItem class="pa-0 my-0 mx-4">
+            <VListItem class="pa-0 my-0 mx-2">
               <div class="d-flex align-center justify-space-between">
                 <ProductsSelect :is-collapsed-menu="isCollapsed" />
                 <VIcon
@@ -76,7 +76,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
     <VAppBar
       :elevation="0"
       color="transparent"
-      class="px-2 pt-2 bg-sidebar"
+      class="px-2 pt-2 pl-0 bg-sidebar"
       height="64"
     >
       <div class="w-100 h-100 d-flex align-center px-4 bg-surface layout-border-top">
@@ -90,7 +90,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
       </div>
     </VAppBar>
     <VMain style="height: 100dvh; overflow: hidden;">
-      <div class="bg-sidebar w-100 h-100 pl-2 pr-2 pb-2 d-flex flex-column">
+      <div class="bg-sidebar w-100 h-100 pr-2 pb-2 d-flex flex-column">
         <div class="bg-surface flex-grow-1 layout-border-bottom overflow-y-auto pa-4">
           <VContainer
             fluid

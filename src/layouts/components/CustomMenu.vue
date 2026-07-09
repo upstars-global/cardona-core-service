@@ -83,7 +83,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
     v-if="!isCollapsedMenu"
     class="divider-color ml-2 mr-3"
   >
-  <div class="custom-menu pl-2 mb-4">
+  <div class="custom-menu pl-1 mb-4">
     <VMenu>
       <template #activator="{ props }">
         <div
