@@ -79,6 +79,10 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 </script>
 
 <template>
+  <hr
+    v-if="!isCollapsedMenu"
+    class="divider-color ml-2 mr-3"
+  >
   <div class="custom-menu pl-2 mb-4">
     <VMenu>
       <template #activator="{ props }">
@@ -137,7 +141,6 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
             {{ item.title }}
           </VListItemTitle>
         </VListItem>
-        <VDivider class="divider" />
         <VListItem
           class="action-item"
           value="-1"
@@ -195,14 +198,16 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
   }
 }
 
-.divider {
-  margin-block: 0.5rem;
-  background-color: rgba(var(--v-border-color), var(--v-border-opacity));
+.divider-color {
+  border-top-color: #ffffff14;
+  //margin-block: 0.5rem;
+  //background-color: rgba(var(--v-border-color), var(--v-border-opacity));
 }
 
 .custom-menu {
+  padding-bottom: 0.5rem;
   //padding: 1rem;
-  border-top: 1px solid rgb(var(--v-theme-grey-200));
+  //border-top: 1px solid rgb(var(--v-theme-grey-200));
 
   :deep(.v-badge__badge) {
     height: 11px;
