@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import { useUserStore } from '../stores/user'
 import { IconsList } from '../@model/enums/icons'
-import { useAppsAndPages } from '../navigation/vertical/apps-and-pages'
+import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
 import CustomMenu from './components/CustomMenu.vue'
 import ProjectSelect from './default/components/ProjectSelect.vue'
 import ProductsSelect from './default/components/ProductSelect.vue'
