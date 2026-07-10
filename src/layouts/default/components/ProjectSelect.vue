@@ -73,7 +73,10 @@ watch(() => selectProject.value, project => {
           >
             {{ publicName[0].toUpperCase() }}
           </div>
-          <span class="text-expanded select-field-color">{{ publicName || title }}</span>
+          <span
+            v-show="!isCollapsedMenu"
+            class="text-expanded select-field-color"
+          >{{ publicName || title }}</span>
         </div>
       </template>
       <template #option="{ publicName, title, alias, iconPath }">
@@ -115,6 +118,10 @@ watch(() => selectProject.value, project => {
 
 <style scoped lang="scss">
 .project-select {
+  :deep(.v-select) {
+    min-height: 32px;
+    height: 32px;
+  }
   :deep(.vs__dropdown-toggle) {
     border: 1px solid rgba(255, 255, 255, 0.16);
     min-height: 32px;
@@ -219,6 +226,4 @@ watch(() => selectProject.value, project => {
   color: rgb(var(--v-theme-on-sidebar)) !important;
 }
 //border: 1px solid rgba(255, 255, 255, 0.16);
-
-
 </style>
