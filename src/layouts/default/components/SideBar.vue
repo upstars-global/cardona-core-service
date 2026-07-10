@@ -40,6 +40,7 @@ defineProps<{
               <VIcon
                 :icon="item.icon?.icon"
                 color="primary"
+                :size="22"
               />
             </template>
             <template #append="{ isActive }">
