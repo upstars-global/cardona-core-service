@@ -123,9 +123,19 @@ watch(() => selectProject.value, project => {
     height: 32px;
   }
   :deep(.vs__dropdown-toggle) {
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(var(--v-theme-on-sidebar), 0.2);
     min-height: 32px;
     height: 32px;
+  }
+
+  :deep(.vs--open .vs__dropdown-toggle) {
+    border-color: rgb(var(--v-theme-primary));
+  }
+
+  :deep(.vs__selected),
+  :deep(.vs__open-indicator),
+  :deep(.vs__search) {
+    color: rgb(var(--v-theme-on-sidebar)) !important;
   }
 
   :deep(.vs__selected-options) {
@@ -194,7 +204,7 @@ watch(() => selectProject.value, project => {
   }
 
   .select-field-color {
-    color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
+    color: rgb(var(--v-theme-on-sidebar));
   }
 
   .projects-dropdown-header {
