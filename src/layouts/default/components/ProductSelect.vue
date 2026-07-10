@@ -64,6 +64,7 @@ watch(selectedProduct, product => {
           class="select-text-color"
           :clearable="false"
           :searchable="false"
+          :append-to-body="true"
         >
           <template #list-header>
             <div class="products-dropdown-header">
@@ -117,9 +118,15 @@ watch(selectedProduct, product => {
   font-size: 14px;
 }
 
+
+:deep(.v-select) {
+  min-height: 2rem ;
+  height: 2rem;
+}
 .product-select {
-  //position: relative;
+  position: relative;
   padding-left: 2rem;
+  min-height: 2rem;
 }
 
 .product-text {
@@ -166,41 +173,40 @@ watch(selectedProduct, product => {
 </style>
 
 <style lang="scss">
-.product-select {
-  .vs__dropdown-menu {
-    background: rgb(var(--v-theme-sidebar)) !important;
-    border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
-    border-radius: 6px !important;
-    box-shadow: 0 4px 16px rgb(var(--v-theme-shadow)) !important;
-    padding: 8px 0 !important;
-    width: 220px !important;
-    left: -32px !important;
-  }
+// Dropdown is rendered in <body> via :append-to-body, selectors cannot use .product-select as parent
+.vs__dropdown-menu {
+  background: rgb(var(--v-theme-sidebar)) !important;
+  border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 16px rgb(var(--v-theme-shadow)) !important;
+  padding: 8px 0 !important;
+  width: 220px !important;
+  left: 16px !important;
+}
 
-  .vs__dropdown-option {
-    padding: 8px 16px !important;
-    font-size: 15px !important;
-    line-height: 22px !important;
-    color: rgb(var(--v-theme-on-sidebar)) !important;
-    background: transparent !important;
-  }
+.vs__dropdown-option {
+  padding: 8px 16px !important;
+  font-size: 15px !important;
+  line-height: 22px !important;
+  color: rgb(var(--v-theme-on-sidebar)) !important;
+  background: transparent !important;
+}
 
-  .vs__dropdown-option--selected::after {
-    display: none !important;
-  }
+.vs__dropdown-option--selected::after {
+  display: none !important;
+}
 
-  .vs__dropdown-option:hover,
-  .vs__dropdown-option--highlight {
-    background: rgba(var(--v-theme-on-sidebar), 0.06) !important;
-    color: rgb(var(--v-theme-on-sidebar)) !important;
-  }
+.vs__dropdown-option:hover,
+.vs__dropdown-option--highlight {
+  background: rgba(var(--v-theme-on-sidebar), 0.06) !important;
+  color: rgb(var(--v-theme-on-sidebar)) !important;
+}
 
-  .vs__dropdown-option--selected,
-  .vs__dropdown-option--selected.vs__dropdown-option--highlight,
-  .vs__dropdown-option--selected:hover {
-    background: transparent !important;
-    color: rgb(var(--v-theme-on-sidebar)) !important;
-  }
+.vs__dropdown-option--selected,
+.vs__dropdown-option--selected.vs__dropdown-option--highlight,
+.vs__dropdown-option--selected:hover {
+  background: transparent !important;
+  color: rgb(var(--v-theme-on-sidebar)) !important;
 }
 
 .products-dropdown-header {

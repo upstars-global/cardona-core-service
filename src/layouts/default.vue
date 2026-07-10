@@ -31,20 +31,36 @@ const isVerticalNavScrolled = ref(false)
 const handleNavScroll = (evt: Event) => {
   isVerticalNavScrolled.value = (evt.target as HTMLElement).scrollTop > 0
 }
+
+let collapseTimer: ReturnType<typeof setTimeout> | null = null
+
+const handleMouseEnter = () => {
+  if (collapseTimer) {
+    clearTimeout(collapseTimer)
+    collapseTimer = null
+  }
+  isHovered.value = true
+}
+
+const handleMouseLeave = () => {
+  collapseTimer = setTimeout(() => {
+    isHovered.value = false
+  }, 150)
+}
 </script>
 
 <template>
   <VLayout class="custom-layout">
     <VNavigationDrawer
       v-model="drawer"
-      :rail="layoutConfigStore.isVerticalNavCollapsed"
+      :rail="layoutConfigStore.isVerticalNavCollapsed && !isHovered"
+      :class="{ 'is-hovering': isHovered }"
       permanent
       rail-width="64"
       class="bg-sidebar border-r-0"
       width="252"
-      expand-on-hover
-      @mouseenter="isHovered = true"
-      @mouseleave="isHovered = false"
+      @mouseenter="handleMouseEnter"
+      @mouseleave="handleMouseLeave"
     >
       <div class="sidebar-inner d-flex flex-column h-100">
         <div class="sidebar-top">
@@ -180,16 +196,16 @@ const handleNavScroll = (evt: Event) => {
 }
 
 // В rail-режимі (не hovered) ховаємо текст та стрілки лише в sidebar-nav
-.custom-layout :deep(.v-navigation-drawer--rail:not(.v-navigation-drawer--is-hovering) .sidebar-nav .v-list-item__content),
-.custom-layout :deep(.v-navigation-drawer--rail:not(.v-navigation-drawer--is-hovering) .sidebar-nav .v-list-item__append) {
+.custom-layout :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav .v-list-item__content),
+.custom-layout :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav .v-list-item__append) {
   display: none !important;
 }
 
-.custom-layout :deep(.v-navigation-drawer--rail:not(.v-navigation-drawer--is-hovering) .sidebar-nav .v-list-group__items) {
+.custom-layout :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav .v-list-group__items) {
   display: none !important;
 }
 
-.custom-layout :deep(.v-navigation-drawer--rail:not(.v-navigation-drawer--is-hovering) .sidebar-nav .v-list-subheader) {
+.custom-layout :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav .v-list-subheader) {
   background-image: linear-gradient(
     transparent calc(50% - 0.5px),
     rgba(var(--v-theme-on-sidebar), .45) calc(50% - 0.5px),
@@ -201,7 +217,7 @@ const handleNavScroll = (evt: Event) => {
   background-repeat: no-repeat !important;
 }
 
-.custom-layout :deep(.v-navigation-drawer--rail:not(.v-navigation-drawer--is-hovering) .sidebar-nav .v-list-subheader__text) {
+.custom-layout :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav .v-list-subheader__text) {
   visibility: hidden !important;
 }
 
@@ -251,7 +267,7 @@ const handleNavScroll = (evt: Event) => {
   }
 }
 
-.v-navigation-drawer--is-hovering .sidebar-nav {
+.is-hovering .sidebar-nav {
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 
   &::-webkit-scrollbar-thumb {
