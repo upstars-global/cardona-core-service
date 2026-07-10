@@ -1,85 +1,106 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { IconsList } from '../../../@model/enums/icons'
-import type { VerticalNavItems } from '@layouts/types'
+import type { NavGroup, NavLink, VerticalNavItems } from '@layouts/types'
 
-defineOptions({
-  name: 'SideBar',
+defineOptions({ name: 'SideBar' })
+
+const props = defineProps<{
+  items: VerticalNavItems
+  isCollapsed: boolean
+}>()
+
+const { t } = useI18n()
+const route = useRoute()
+
+const openedGroups = ref<string[]>([])
+
+const opened = computed({
+  get: () => props.isCollapsed ? [] : openedGroups.value,
+  set: (val: string[]) => {
+    if (!props.isCollapsed)
+      openedGroups.value = val
+  },
 })
 
-defineProps<{
-  items: VerticalNavItems[]
-}>()
+const getIcon = (item: NavGroup | NavLink) =>
+  (item.icon as { icon?: string } | undefined)?.icon
+
+const isGroupActive = (group: NavGroup): boolean =>
+  group.children.some(child => {
+    if ('children' in child)
+      return isGroupActive(child as NavGroup)
+    const to = (child as NavLink).to as { name?: string } | undefined
+
+    return !!to?.name && to.name === route.name
+  })
 </script>
 
 <template>
   <VList
-    bg-color="transparent"
-    class="bg-sidebar ml-0 mr-auto"
+    v-model:opened="opened"
     density="compact"
     nav
     open-strategy="single"
   >
     <template
       v-for="item in items"
-      :key="item.title"
+      :key="'heading' in item ? item.heading : (item as NavLink | NavGroup).title"
     >
       <VListGroup
         v-if="'children' in item"
-        :value="item.title"
+        :value="(item as NavGroup).title"
       >
         <template #activator="{ props: groupProps }">
           <VListItem
             v-bind="groupProps"
-            :title="$t(item.title)"
+            :title="t((item as NavGroup).title)"
             rounded="lg"
-            class="nav-group open"
+            base-color="white"
             active-class="bg-sidebar-active"
-            collapse-icon="IconsList.ChevronDownIcon"
+            :class="{
+              'bg-sidebar-active': isCollapsed && isGroupActive(item as NavGroup),
+            }"
           >
             <template #prepend>
               <VIcon
-                :icon="item.icon?.icon"
-                color="primary"
+                :icon="getIcon(item as NavGroup)"
+                color="white"
                 :size="22"
               />
             </template>
             <template #append="{ isActive }">
               <VIcon
-                class="on-primary"
-                :icon="isActive ? IconsList.ChevronRightIcon : IconsList.ChevronDownIcon"
+                color="white"
+                :icon="isActive ? IconsList.ChevronUpIcon : IconsList.ChevronDownIcon"
               />
             </template>
           </VListItem>
         </template>
         <VListItem
-          v-for="child in item.children"
-          :key="child.title"
-          :to="child.to"
+          v-for="child in (item as NavGroup).children"
+          :key="(child as NavLink).title"
+          :title="t((child as NavLink).title)"
+          :to="(child as NavLink).to ?? undefined"
           rounded="lg"
-          base-color="on-primary"
+          base-color="white"
           class="child-list-item"
-        >
-          <template #default="props">
-            <div class="on-primary pl-10">
-              {{ $t(child.title) }}
-            </div>
-          </template>
-        </VListItem>
+        />
       </VListGroup>
       <VListItem
-        v-else
-        :title="$t(item.title)"
-        :to="item.to"
+        v-else-if="!('heading' in item)"
+        :title="t((item as NavLink).title)"
+        :to="(item as NavLink).to ?? undefined"
         rounded="lg"
-
         base-color="white"
-        class="bg-sidebar"
       >
         <template #prepend>
           <VIcon
-            :icon="item.icon?.icon"
+            :icon="getIcon(item as NavLink)"
             color="white"
-            class="me-2"
+            :size="22"
           />
         </template>
       </VListItem>
@@ -88,11 +109,12 @@ defineProps<{
 </template>
 
 <style lang="scss" scoped>
-  .bg-sidebar-active {
-    background-color: rgba(var(--v-theme-on-sidebar), .06) !important;
-    color: rgba(var(--v-theme-on-sidebar), .7)!important
-  }
-  .child-list-item {
-    padding-inline: 0 !important;
-  }
+.bg-sidebar-active {
+  background-color: rgba(var(--v-theme-on-sidebar), .06) !important;
+  color: rgba(var(--v-theme-on-sidebar), .7) !important;
+}
+
+.child-list-item {
+  padding-inline-start: 48px !important;
+}
 </style>

@@ -65,7 +65,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
         </div>
 
         <div class="sidebar-nav flex-grow-1 overflow-y-auto">
-          <SideBar :items="navItems" />
+          <SideBar :items="navItems" :isCollapsed="isCollapsed"/>
         </div>
 
         <VList
@@ -152,6 +152,20 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
 
 .sidebar-nav {
   min-height: 0;
+
+  :deep(.v-list) {
+    background-color: transparent !important;
+  }
+}
+
+// В rail-режимі (не hovered) ховаємо текст та стрілки лише в sidebar-nav
+.custom-layout :deep(.v-navigation-drawer--rail:not(.v-navigation-drawer--is-hovering) .sidebar-nav .v-list-item__content),
+.custom-layout :deep(.v-navigation-drawer--rail:not(.v-navigation-drawer--is-hovering) .sidebar-nav .v-list-item__append) {
+  display: none !important;
+}
+
+.custom-layout :deep(.v-navigation-drawer--rail:not(.v-navigation-drawer--is-hovering) .sidebar-nav .v-list-group__items) {
+  display: none !important;
 }
 
 .custom-layout :deep(.v-navigation-drawer .v-list-item-title),
