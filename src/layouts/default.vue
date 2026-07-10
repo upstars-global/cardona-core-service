@@ -80,7 +80,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
         <VList
           bg-color="#252833"
           density="compact"
-          class="px-0"
+          class="px-0 pb-3"
         >
           <VListItem
             class="px-0"

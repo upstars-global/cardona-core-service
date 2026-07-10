@@ -44,6 +44,7 @@ const isGroupActive = (group: NavGroup): boolean =>
     density="compact"
     nav
     open-strategy="single"
+    class="pt-4"
   >
     <template
       v-for="item in items"
@@ -71,7 +72,6 @@ const isGroupActive = (group: NavGroup): boolean =>
           >
             <template #prepend>
               <VIcon
-                class="ml-1"
                 :icon="getIcon(item as NavGroup)"
                 color="white"
                 :size="24"
