@@ -12,8 +12,7 @@ import { useLayoutConfigStore } from '@layouts/stores/config'
 
 const layoutConfigStore = useLayoutConfigStore()
 
-console.log(layoutConfigStore.isVerticalNavCollapsed)
-
+const toggleSidebar = () => layoutConfigStore.isVerticalNavCollapsed = !layoutConfigStore.isVerticalNavCollapsed
 const { appsAndPages } = useAppsAndPages()
 const navItems = computed(() => appsAndPages.value)
 
@@ -22,7 +21,6 @@ const projects = computed(() => userStore.projectsBySelectedProduct)
 
 const drawer = ref(true)
 
-// const rail = ref(true)
 const isHovered = ref(false)
 const isFallbackStateActive = ref(false)
 
@@ -59,7 +57,7 @@ const isCollapsed = computed(() => layoutConfigStore.isVerticalNavCollapsed && !
                   v-if="!isCollapsed"
                   class="sidebar-menu-mode"
                   :icon="!layoutConfigStore.isVerticalNavCollapsed ? IconsList.CircleDotIcon : IconsList.CircleIcon"
-                  @click="layoutConfigStore.isVerticalNavCollapsed = !layoutConfigStore.isVerticalNavCollapsed"
+                  @click="toggleSidebar"
                 />
               </div>
             </VListItem>
@@ -95,8 +93,6 @@ const isCollapsed = computed(() => layoutConfigStore.isVerticalNavCollapsed && !
             <CustomMenu :is-collapsed-menu="isCollapsed" />
           </VListItem>
         </VList>
-        <!--        <div class="sidebar-bottom"> -->
-        <!--        </div> -->
       </div>
     </VNavigationDrawer>
 
@@ -221,7 +217,6 @@ const isCollapsed = computed(() => layoutConfigStore.isVerticalNavCollapsed && !
 }
 
 .sidebar-menu-mode {
-  color: rgba(var(с), .7) !important;
+  color: rgba(var(--v-theme-on-sidebar), 0.56);
 }
-//nav-group open
 </style>
