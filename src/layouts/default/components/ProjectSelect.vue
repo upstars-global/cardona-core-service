@@ -115,6 +115,12 @@ watch(() => selectProject.value, project => {
 
 <style scoped lang="scss">
 .project-select {
+  :deep(.vs__dropdown-toggle) {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    min-height: 32px;
+    height: 32px;
+  }
+
   :deep(.vs__selected-options) {
     flex-wrap: nowrap;
 
@@ -208,4 +214,11 @@ watch(() => selectProject.value, project => {
   background: rgb(var(--v-theme-primary));
   color: white;
 }
+
+.text-expanded {
+  color: rgb(var(--v-theme-on-sidebar)) !important;
+}
+//border: 1px solid rgba(255, 255, 255, 0.16);
+
+
 </style>

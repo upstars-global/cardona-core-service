@@ -71,9 +71,10 @@ const isGroupActive = (group: NavGroup): boolean =>
           >
             <template #prepend>
               <VIcon
+                class="ml-1"
                 :icon="getIcon(item as NavGroup)"
                 color="white"
-                :size="22"
+                :size="24"
               />
             </template>
             <template #append="{ isActive }">
@@ -105,7 +106,7 @@ const isGroupActive = (group: NavGroup): boolean =>
           <VIcon
             :icon="getIcon(item as NavLink)"
             color="white"
-            :size="22"
+            :size="24"
           />
         </template>
       </VListItem>

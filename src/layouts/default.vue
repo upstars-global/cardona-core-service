@@ -29,7 +29,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
       v-model="drawer"
       :rail="rail"
       permanent
-      rail-width="52"
+      rail-width="64"
       class="bg-sidebar border-r-0"
       width="252"
       expand-on-hover
@@ -43,7 +43,10 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
             bg-color="#252833"
             class="pa-0 ma-0 pt-4"
           >
-            <VListItem class="pa-0 my-0" style="margin-inline: 10px">
+            <VListItem
+              class="pa-0 my-0"
+              style="margin-inline: 16px"
+            >
               <div class="d-flex align-center justify-space-between">
                 <ProductsSelect :is-collapsed-menu="isCollapsed" />
                 <VIcon
@@ -56,16 +59,22 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
             </VListItem>
           </VList>
 
-          <div v-if="userStore.selectedProjectWithoutPriority">
+          <div
+            v-if="userStore.selectedProjectWithoutPriority"
+            class="pt-4 px-4"
+          >
             <ProjectSelect
               :projects="projects"
-              :is-collapsed="isCollapsed"
+              :is-collapsed-menu="isCollapsed"
             />
           </div>
         </div>
 
         <div class="sidebar-nav flex-grow-1 overflow-y-auto">
-          <SideBar :items="navItems" :isCollapsed="isCollapsed"/>
+          <SideBar
+            :items="navItems"
+            :is-collapsed="isCollapsed"
+          />
         </div>
 
         <VList
@@ -75,7 +84,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
         >
           <VListItem
             class="px-0"
-            style="margin-inline: 10px"
+            style="margin-inline: 16px"
           >
             <CustomMenu :is-collapsed-menu="isCollapsed" />
           </VListItem>
