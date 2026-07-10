@@ -71,7 +71,7 @@ const handleNavScroll = (evt: Event) => {
 
           <div
             v-if="userStore.selectedProjectWithoutPriority"
-            class="pt-4 px-4"
+            class="pt-4 px-4 pb-1"
           >
             <ProjectSelect
               :projects="projects"
@@ -228,5 +228,34 @@ const handleNavScroll = (evt: Event) => {
 
 .sidebar-menu-mode {
   color: rgba(var(--v-theme-on-sidebar), 0.56);
+}
+</style>
+
+<style lang="scss">
+.sidebar-nav {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+  }
+}
+
+.v-navigation-drawer--is-hovering .sidebar-nav {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+  }
 }
 </style>
