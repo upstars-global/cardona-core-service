@@ -125,7 +125,7 @@ const isGroupActive = (group: NavGroup): boolean =>
 }
 
 .child-list-item {
-  padding-inline-start: 48px !important;
+  padding-inline-start: 42px !important;
 }
 
 .nav-heading {
