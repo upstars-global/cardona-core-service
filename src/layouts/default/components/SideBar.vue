@@ -49,8 +49,13 @@ const isGroupActive = (group: NavGroup): boolean =>
       v-for="item in items"
       :key="'heading' in item ? item.heading : (item as NavLink | NavGroup).title"
     >
+      <VListSubheader
+        v-if="'heading' in item"
+        :title="t(item.heading)"
+        class="nav-heading"
+      />
       <VListGroup
-        v-if="'children' in item"
+        v-else-if="'children' in item"
         :value="(item as NavGroup).title"
       >
         <template #activator="{ props: groupProps }">
@@ -90,7 +95,7 @@ const isGroupActive = (group: NavGroup): boolean =>
         />
       </VListGroup>
       <VListItem
-        v-else-if="!('heading' in item)"
+        v-else-if="!('heading' in item) && !('children' in item)"
         :title="t((item as NavLink).title)"
         :to="(item as NavLink).to ?? undefined"
         rounded="lg"
@@ -116,5 +121,16 @@ const isGroupActive = (group: NavGroup): boolean =>
 
 .child-list-item {
   padding-inline-start: 48px !important;
+}
+
+.nav-heading {
+  color: rgba(var(--v-theme-on-sidebar), .45) !important;
+  font-feature-settings: 'liga' off, 'clig' off !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 12px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 125% !important;
+  letter-spacing: 0.4px !important;
 }
 </style>

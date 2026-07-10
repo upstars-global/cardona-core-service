@@ -168,6 +168,21 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
   display: none !important;
 }
 
+.custom-layout :deep(.v-navigation-drawer--rail:not(.v-navigation-drawer--is-hovering) .sidebar-nav .v-list-subheader) {
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  width: 20px;
+  margin: 0 auto;
+  margin-block: 8px !important;
+  border-top: 1px solid rgba(var(--v-theme-on-sidebar), .45) !important;
+  overflow: hidden !important;
+}
+
+.custom-layout :deep(.v-navigation-drawer--rail:not(.v-navigation-drawer--is-hovering) .sidebar-nav .v-list-subheader__text) {
+  display: none !important;
+}
+
 .custom-layout :deep(.v-navigation-drawer .v-list-item-title),
 .custom-layout :deep(.v-navigation-drawer .v-list-item__prepend .v-icon) {
   color: white !important;
@@ -190,7 +205,7 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
 }
 
 .sidebar-menu-mode {
-  color: rgba(var(--v-theme-on-sidebar), .7) !important;
+  color: rgba(var(с), .7) !important;
 }
 //nav-group open
 </style>

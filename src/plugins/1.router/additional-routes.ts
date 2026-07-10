@@ -348,6 +348,266 @@ export const routes: RouteRecordRaw[] = [
     },
   },
 
+  // 👉 Players
+  {
+    path: '/players/support-service',
+    name: 'SupportService',
+    component: () => import('@/pages/players/support-service/index.vue'),
+    meta: {
+      title: 'common.supportService._',
+      breadcrumb: [
+        { title: 'common.player.list' },
+        { title: 'common.supportService._', active: true },
+      ],
+    },
+  },
+  {
+    path: '/players',
+    name: 'Players',
+    component: () => import('@/pages/players/list/index.vue'),
+    meta: {
+      title: 'title.playersDetailed',
+      breadcrumb: [
+        { title: 'common.player.list' },
+        { title: 'title.playersDetailed', active: true },
+      ],
+    },
+  },
+
+  // 👉 Cashbox
+  {
+    path: '/cashbox/cohorts',
+    name: 'CohortList',
+    component: () => import('@/pages/cashbox/cohorts/index.vue'),
+    meta: {
+      title: 'common.cohorts._',
+      breadcrumb: [
+        { title: 'common.cashbox._' },
+        { title: 'common.cohorts._', active: true },
+      ],
+    },
+  },
+  {
+    path: '/cashbox/sum-ranges',
+    name: 'TreasurySumRangeList',
+    component: () => import('@/pages/cashbox/sum-ranges/index.vue'),
+    meta: {
+      title: 'title.treasurySumRange.list',
+      breadcrumb: [
+        { title: 'common.cashbox._' },
+        { title: 'title.treasurySumRange.list', active: true },
+      ],
+    },
+  },
+
+  // 👉 Games
+  {
+    path: '/games',
+    name: 'GamesList',
+    component: () => import('@/pages/games/list/index.vue'),
+    meta: {
+      title: 'title.game.listOfGames',
+      breadcrumb: [
+        { title: 'title.game.list' },
+        { title: 'title.game.listOfGames', active: true },
+      ],
+    },
+  },
+  {
+    path: '/games/categories',
+    name: 'GamesCategoriesList',
+    component: () => import('@/pages/games/categories/index.vue'),
+    meta: {
+      title: 'title.game.categories',
+      breadcrumb: [
+        { title: 'title.game.list' },
+        { title: 'title.game.categories', active: true },
+      ],
+    },
+  },
+
+  // 👉 Gifts
+  {
+    path: '/gifts/cashbacks',
+    name: 'CashbacksList',
+    component: () => import('@/pages/gifts/cashbacks/index.vue'),
+    meta: {
+      title: 'title.cashbacks.list',
+      breadcrumb: [
+        { title: 'title.gifts.list' },
+        { title: 'title.cashbacks.list', active: true },
+      ],
+    },
+  },
+  {
+    path: '/gifts',
+    name: 'GiftsList',
+    component: () => import('@/pages/gifts/list/index.vue'),
+    meta: {
+      title: 'title.gifts.listOfGifts',
+      breadcrumb: [
+        { title: 'title.gifts.list' },
+        { title: 'title.gifts.listOfGifts', active: true },
+      ],
+    },
+  },
+
+  // 👉 Gamification
+  {
+    path: '/gamification/achievements',
+    name: 'AchievementsList',
+    component: () => import('@/pages/gamification/achievements/index.vue'),
+    meta: {
+      title: 'title.achievements.list',
+      breadcrumb: [
+        { title: 'title.gamification' },
+        { title: 'title.achievements.list', active: true },
+      ],
+    },
+  },
+  {
+    path: '/gamification/levels',
+    name: 'LevelsList',
+    component: () => import('@/pages/gamification/levels/index.vue'),
+    meta: {
+      title: 'title.levels.list',
+      breadcrumb: [
+        { title: 'title.gamification' },
+        { title: 'title.levels.list', active: true },
+      ],
+    },
+  },
+
+  // 👉 Promo
+  {
+    path: '/promo/banners',
+    name: 'BannersList',
+    component: () => import('@/pages/promo/banners/index.vue'),
+    meta: {
+      title: 'common.banners._',
+      breadcrumb: [
+        { title: 'page.groupFragment.promo' },
+        { title: 'common.banners._', active: true },
+      ],
+    },
+  },
+  {
+    path: '/promo/notifications',
+    name: 'NotificationsList',
+    component: () => import('@/pages/promo/notifications/index.vue'),
+    meta: {
+      title: 'title.notifications.list',
+      breadcrumb: [
+        { title: 'page.groupFragment.promo' },
+        { title: 'title.notifications.list', active: true },
+      ],
+    },
+  },
+
+  // 👉 Tournaments
+  {
+    path: '/tournaments',
+    name: 'TournamentsList',
+    component: () => import('@/pages/tournaments/list/index.vue'),
+    meta: {
+      title: 'title.tournament.list',
+      breadcrumb: [
+        { title: 'title.tournaments.list' },
+        { title: 'title.tournament.list', active: true },
+      ],
+    },
+  },
+  {
+    path: '/tournaments/templates',
+    name: 'TournamentTemplatesList',
+    component: () => import('@/pages/tournaments/templates/index.vue'),
+    meta: {
+      title: 'title.templates.list',
+      breadcrumb: [
+        { title: 'title.tournaments.list' },
+        { title: 'title.templates.list', active: true },
+      ],
+    },
+  },
+
+  // 👉 Actions
+  {
+    path: '/actions/miles',
+    name: 'ActionsMilesList',
+    component: () => import('@/pages/actions/miles/index.vue'),
+    meta: {
+      title: 'title.actionsMiles.list',
+      breadcrumb: [
+        { title: 'page.actions._' },
+        { title: 'title.actionsMiles.list', active: true },
+      ],
+    },
+  },
+  {
+    path: '/actions/promo',
+    name: 'PromoActionsList',
+    component: () => import('@/pages/actions/promo/index.vue'),
+    meta: {
+      title: 'title.promoActions.list',
+      breadcrumb: [
+        { title: 'page.actions._' },
+        { title: 'title.promoActions.list', active: true },
+      ],
+    },
+  },
+
+  // 👉 SEO
+  {
+    path: '/seo/redirects',
+    name: 'SeoRedirectsList',
+    component: () => import('@/pages/seo/redirects/index.vue'),
+    meta: {
+      title: 'title.seoRedirects.list',
+      breadcrumb: [
+        { title: 'title.seo' },
+        { title: 'title.seoRedirects.list', active: true },
+      ],
+    },
+  },
+  {
+    path: '/seo/meta',
+    name: 'SeoMetaList',
+    component: () => import('@/pages/seo/meta/index.vue'),
+    meta: {
+      title: 'title.seoMeta.list',
+      breadcrumb: [
+        { title: 'title.seo' },
+        { title: 'title.seoMeta.list', active: true },
+      ],
+    },
+  },
+
+  // 👉 Settings
+  {
+    path: '/settings/feature-flags',
+    name: 'FeatureFlagsList',
+    component: () => import('@/pages/settings/feature-flags/index.vue'),
+    meta: {
+      title: 'common.featureFlags._',
+      breadcrumb: [
+        { title: 'page.groupFragment.settings' },
+        { title: 'common.featureFlags._', active: true },
+      ],
+    },
+  },
+  {
+    path: '/settings/tags',
+    name: 'TagsList',
+    component: () => import('@/pages/settings/tags/index.vue'),
+    meta: {
+      title: 'title.tags.list',
+      breadcrumb: [
+        { title: 'page.groupFragment.settings' },
+        { title: 'title.tags.list', active: true },
+      ],
+    },
+  },
+
   // 👉 Logging
   {
     path: '/logs',
