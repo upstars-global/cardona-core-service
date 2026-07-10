@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { IconsList } from '../../../@model/enums/icons'
 import type { NavGroup, NavLink, VerticalNavItems } from '@layouts/types'
+import { getComputedNavLinkToProp, isNavGroupActive, isNavLinkActive } from '@layouts/utils'
 
 defineOptions({ name: 'SideBar' })
 
@@ -14,8 +15,33 @@ const props = defineProps<{
 
 const { t } = useI18n()
 const route = useRoute()
+const router = useRouter()
+
+const navigateTo = (item: NavLink) => {
+  const props = getComputedNavLinkToProp.value(item)
+  if (props.to)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    router.push(props.to as any)
+  else if (props.href)
+    window.open(props.href, props.target ?? '_self')
+}
+
+const isLinkActive = (item: NavLink): boolean => isNavLinkActive(item, router)
+const isGroupItemActive = (group: NavGroup): boolean => isNavGroupActive(group.children, router)
 
 const openedGroups = ref<string[]>([])
+
+watch(() => route.path, () => {
+  for (const item of props.items) {
+    if (!('children' in item))
+      continue
+    const group = item as NavGroup
+    if (isNavGroupActive(group.children, router) && !openedGroups.value.includes(group.title)) {
+      openedGroups.value = [group.title]
+      break
+    }
+  }
+}, { immediate: true })
 
 const opened = computed({
   get: () => props.isCollapsed ? [] : openedGroups.value,
@@ -27,15 +53,6 @@ const opened = computed({
 
 const getIcon = (item: NavGroup | NavLink) =>
   (item.icon as { icon?: string } | undefined)?.icon
-
-const isGroupActive = (group: NavGroup): boolean =>
-  group.children.some(child => {
-    if ('children' in child)
-      return isGroupActive(child as NavGroup)
-    const to = (child as NavLink).to as { name?: string } | undefined
-
-    return !!to?.name && to.name === route.name
-  })
 </script>
 
 <template>
@@ -66,10 +83,7 @@ const isGroupActive = (group: NavGroup): boolean =>
             :title="t((item as NavGroup).title)"
             rounded="lg"
             base-color="white"
-            active-class="bg-sidebar-active"
-            :class="{
-              'bg-sidebar-active': isCollapsed && isGroupActive(item as NavGroup),
-            }"
+            :active="isGroupItemActive(item as NavGroup)"
           >
             <template #prepend>
               <VIcon
@@ -90,18 +104,20 @@ const isGroupActive = (group: NavGroup): boolean =>
           v-for="child in (item as NavGroup).children"
           :key="(child as NavLink).title"
           :title="t((child as NavLink).title)"
-          :to="(child as NavLink).to ?? undefined"
           rounded="lg"
           base-color="white"
           class="child-list-item mx-1"
+          :active="isLinkActive(child as NavLink)"
+          @click="navigateTo(child as NavLink)"
         />
       </VListGroup>
       <VListItem
         v-else-if="!('heading' in item) && !('children' in item)"
         :title="t((item as NavLink).title)"
-        :to="(item as NavLink).to ?? undefined"
         rounded="lg"
         base-color="white"
+        :active="isLinkActive(item as NavLink)"
+        @click="navigateTo(item as NavLink)"
       >
         <template #prepend>
           <VIcon
@@ -120,10 +136,6 @@ const isGroupActive = (group: NavGroup): boolean =>
   background-color: rgba(var(--v-theme-on-sidebar), .06) !important;
   color: rgba(var(--v-theme-on-sidebar), .7) !important;
 }
-
-//:deep(.v-list-item) {
-//  padding-inline: 12px;
-//}
 
 .child-list-item {
   padding-inline-start: 42px !important;
