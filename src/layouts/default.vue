@@ -2,12 +2,12 @@
 import { computed, ref } from 'vue'
 import { useUserStore } from '../stores/user'
 import { IconsList } from '../@model/enums/icons'
-import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
 import CustomMenu from './components/CustomMenu.vue'
 import ProjectSelect from './default/components/ProjectSelect.vue'
 import ProductsSelect from './default/components/ProductSelect.vue'
 import SideBar from './default/components/SideBar.vue'
 import AppBreadcrumb from './components/AppBreadcrumb.vue'
+import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
 import { useLayoutConfigStore } from '@layouts/stores/config'
 
 const layoutConfigStore = useLayoutConfigStore()
@@ -25,6 +25,12 @@ const isHovered = ref(false)
 const isFallbackStateActive = ref(false)
 
 const isCollapsed = computed(() => layoutConfigStore.isVerticalNavCollapsed && !isHovered.value)
+
+const isVerticalNavScrolled = ref(false)
+
+const handleNavScroll = (evt: Event) => {
+  isVerticalNavScrolled.value = (evt.target as HTMLElement).scrollTop > 0
+}
 </script>
 
 <template>
@@ -74,7 +80,11 @@ const isCollapsed = computed(() => layoutConfigStore.isVerticalNavCollapsed && !
           </div>
         </div>
 
-        <div class="sidebar-nav flex-grow-1 overflow-y-auto">
+        <div
+          class="sidebar-nav flex-grow-1 overflow-y-auto"
+          :class="{ scrolled: isVerticalNavScrolled }"
+          @scroll="handleNavScroll"
+        >
           <SideBar
             :items="navItems"
             :is-collapsed="isCollapsed"
