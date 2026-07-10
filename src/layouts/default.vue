@@ -169,18 +169,19 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
 }
 
 .custom-layout :deep(.v-navigation-drawer--rail:not(.v-navigation-drawer--is-hovering) .sidebar-nav .v-list-subheader) {
-  height: 0 !important;
-  min-height: 0 !important;
-  padding: 0 !important;
-  width: 20px;
-  margin: 0 auto;
-  margin-block: 8px !important;
-  border-top: 1px solid rgba(var(--v-theme-on-sidebar), .45) !important;
-  overflow: hidden !important;
+  background-image: linear-gradient(
+    transparent calc(50% - 0.5px),
+    rgba(var(--v-theme-on-sidebar), .45) calc(50% - 0.5px),
+    rgba(var(--v-theme-on-sidebar), .45) calc(50% + 0.5px),
+    transparent calc(50% + 0.5px)
+  ) !important;
+  background-size: 20px 100% !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
 }
 
 .custom-layout :deep(.v-navigation-drawer--rail:not(.v-navigation-drawer--is-hovering) .sidebar-nav .v-list-subheader__text) {
-  display: none !important;
+  visibility: hidden !important;
 }
 
 .custom-layout :deep(.v-navigation-drawer .v-list-item-title),
