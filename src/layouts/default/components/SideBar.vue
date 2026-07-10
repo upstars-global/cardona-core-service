@@ -120,6 +120,10 @@ const isGroupActive = (group: NavGroup): boolean =>
   color: rgba(var(--v-theme-on-sidebar), .7) !important;
 }
 
+:deep(.v-list-item) {
+  padding-inline: 12px;
+}
+
 .child-list-item {
   padding-inline-start: 48px !important;
 }
