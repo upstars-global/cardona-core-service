@@ -2,12 +2,17 @@
 import { computed, ref } from 'vue'
 import { useUserStore } from '../stores/user'
 import { IconsList } from '../@model/enums/icons'
+import { useAppsAndPages } from '../navigation/vertical/apps-and-pages'
 import CustomMenu from './components/CustomMenu.vue'
 import ProjectSelect from './default/components/ProjectSelect.vue'
 import ProductsSelect from './default/components/ProductSelect.vue'
 import SideBar from './default/components/SideBar.vue'
 import AppBreadcrumb from './components/AppBreadcrumb.vue'
-import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
+import { useLayoutConfigStore } from '@layouts/stores/config'
+
+const layoutConfigStore = useLayoutConfigStore()
+
+console.log(layoutConfigStore.isVerticalNavCollapsed)
 
 const { appsAndPages } = useAppsAndPages()
 const navItems = computed(() => appsAndPages.value)
@@ -16,18 +21,19 @@ const userStore = useUserStore()
 const projects = computed(() => userStore.projectsBySelectedProduct)
 
 const drawer = ref(true)
-const rail = ref(true)
+
+// const rail = ref(true)
 const isHovered = ref(false)
 const isFallbackStateActive = ref(false)
 
-const isCollapsed = computed(() => rail.value && !isHovered.value)
+const isCollapsed = computed(() => layoutConfigStore.isVerticalNavCollapsed && !isHovered.value)
 </script>
 
 <template>
   <VLayout class="custom-layout">
     <VNavigationDrawer
       v-model="drawer"
-      :rail="rail"
+      :rail="layoutConfigStore.isVerticalNavCollapsed"
       permanent
       rail-width="64"
       class="bg-sidebar border-r-0"
@@ -52,8 +58,8 @@ const isCollapsed = computed(() => rail.value && !isHovered.value)
                 <VIcon
                   v-if="!isCollapsed"
                   class="sidebar-menu-mode"
-                  :icon="!rail ? IconsList.CircleDotIcon : IconsList.CircleIcon"
-                  @click="rail = !rail"
+                  :icon="!layoutConfigStore.isVerticalNavCollapsed ? IconsList.CircleDotIcon : IconsList.CircleIcon"
+                  @click="layoutConfigStore.isVerticalNavCollapsed = !layoutConfigStore.isVerticalNavCollapsed"
                 />
               </div>
             </VListItem>

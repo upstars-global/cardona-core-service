@@ -61,6 +61,7 @@ const isGroupActive = (group: NavGroup): boolean =>
       >
         <template #activator="{ props: groupProps }">
           <VListItem
+            class="mx-1"
             v-bind="groupProps"
             :title="t((item as NavGroup).title)"
             rounded="lg"
@@ -92,7 +93,7 @@ const isGroupActive = (group: NavGroup): boolean =>
           :to="(child as NavLink).to ?? undefined"
           rounded="lg"
           base-color="white"
-          class="child-list-item"
+          class="child-list-item mx-1"
         />
       </VListGroup>
       <VListItem
@@ -120,9 +121,9 @@ const isGroupActive = (group: NavGroup): boolean =>
   color: rgba(var(--v-theme-on-sidebar), .7) !important;
 }
 
-:deep(.v-list-item) {
-  padding-inline: 12px;
-}
+//:deep(.v-list-item) {
+//  padding-inline: 12px;
+//}
 
 .child-list-item {
   padding-inline-start: 42px !important;
