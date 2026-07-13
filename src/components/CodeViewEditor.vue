@@ -17,7 +17,7 @@ const emits = defineEmits<{
 const editor = ref<FroalaEditor>({})
 const code = ref<string>(JSON.stringify(props.modelValue, null, '\t'))
 
-const froalaConfig = {https://upstars.atlassian.net/browse/BAC-8331
+const froalaConfig = {
   apiKey: 'ZOD3gC7A6D6D6C3E3B2C-7SLJCKHXOSLMc2YGSGe1ZXHSa1CgC3E3G3G3B7D5B3F4C2A2==',
   key: 'ZOD3gC7A6D6D6C3E3B2C-7SLJCKHXOSLMc2YGSGe1ZXHSa1CgC3E3G3G3B7D5B3F4C2A2==',
   pluginsEnabled: ['codeView', 'codeMirror'],
