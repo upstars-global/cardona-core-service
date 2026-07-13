@@ -1,4 +1,3 @@
-import is from '@sindresorhus/is'
 import destr from 'destr'
 import { rest } from 'msw'
 import { database } from '@db/apps/invoice/db'
@@ -28,20 +27,20 @@ export const handlerAppsInvoice = [
     const sortBy = req.url.searchParams.get('sortBy')
     const orderBy = req.url.searchParams.get('orderBy')
 
-    const searchQuery = is.string(q) ? q : undefined
+    const searchQuery = typeof q === 'string' ? q : undefined
     const queryLowered = (searchQuery ?? '').toString().toLowerCase()
 
     const parsedSortBy = destr(sortBy)
-    const sortByLocal = is.string(parsedSortBy) ? parsedSortBy : ''
+    const sortByLocal = typeof parsedSortBy === 'string' ? parsedSortBy : ''
 
     const parsedOrderBy = destr(orderBy)
-    const orderByLocal = is.string(parsedOrderBy) ? parsedOrderBy : ''
+    const orderByLocal = typeof parsedOrderBy === 'string' ? parsedOrderBy : ''
 
     const parsedItemsPerPage = destr(itemsPerPage)
     const parsedPage = destr(page)
 
-    const itemsPerPageLocal = is.number(parsedItemsPerPage) ? parsedItemsPerPage : 10
-    const pageLocal = is.number(parsedPage) ? parsedPage : 1
+    const itemsPerPageLocal = typeof parsedItemsPerPage === 'number' ? parsedItemsPerPage : 10
+    const pageLocal = typeof parsedPage === 'number' ? parsedPage : 1
 
     const parsedDateRange = destr(selectedDateRange) as unknown as { start?: string; end?: string }
     const startDateLocal = parsedDateRange?.start

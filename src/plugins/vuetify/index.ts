@@ -1,5 +1,5 @@
 import { resolveVuetifyTheme } from '../../@core/utils/vuetify';
-import { deepMerge } from '@antfu/utils'
+import { merge } from 'lodash'
 import type { App } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { createVuetify } from 'vuetify'
@@ -32,7 +32,7 @@ export default function (app: App) {
     },
   }
 
-  const optionTheme = deepMerge({ themes }, cookieThemeValues)
+  const optionTheme = merge({ themes }, cookieThemeValues)
 
   const vuetify = createVuetify({
     aliases: {
