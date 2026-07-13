@@ -17,9 +17,9 @@ const emits = defineEmits<{
 const editor = ref<FroalaEditor>({})
 const code = ref<string>(JSON.stringify(props.modelValue, null, '\t'))
 
-const froalaConfig = {
-  apiKey: 'uXD2lC7D6G4D3H4H4C11dNSWXf1h1MDb1CF1PLPFf1C1EESFKVlA3C11A8E6D2B4C4G2F3C2==',
-  key: 'uXD2lC7D6G4D3H4H4C11dNSWXf1h1MDb1CF1PLPFf1C1EESFKVlA3C11A8E6D2B4C4G2F3C2==',
+const froalaConfig = {https://upstars.atlassian.net/browse/BAC-8331
+  apiKey: 'ZOD3gC7A6D6D6C3E3B2C-7SLJCKHXOSLMc2YGSGe1ZXHSa1CgC3E3G3G3B7D5B3F4C2A2==',
+  key: 'ZOD3gC7A6D6D6C3E3B2C-7SLJCKHXOSLMc2YGSGe1ZXHSa1CgC3E3G3G3B7D5B3F4C2A2==',
   pluginsEnabled: ['codeView', 'codeMirror'],
   codeMirrorOptions: {
     indentWithTabs: true,
