@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import type { _RouteLocationBase } from 'vue-router'
 import BaseList from '../../../components/templates/BaseList/index.vue'
 import { useDemoList } from '../useDemo'
+import { DemoListItem } from '../../../@model/demo'
 import { FilterType } from '../../../@model/filter'
 import { IconsList } from '../../../@model/enums/icons'
 import { BaseListConfig, SortDirection } from '../../../@model/templates/baseList'
@@ -85,12 +86,101 @@ const setButtonState = (key: string): void => {
     [key]: !buttonState.value[key] || false,
   }
 }
+
+// ─── 1000-item performance mock ──────────────────────────────────────────────
+// Pre-generates items outside Vue reactivity so there's zero proxy overhead.
+// Toggle the button in the template to switch between real API and mock data.
+const MOCK_COUNT = 500
+
+const CURRENCIES = ['USD', 'EUR', 'UAH']
+const LOCALES = ['en', 'uk', 'de']
+const COUNTRIES = ['UA', 'PL', 'DE']
+const TYPE_NAMES = ['Deposit', 'Withdrawal', 'Bonus']
+
+const mockItems = Array.from({ length: MOCK_COUNT }, (_, idx) => {
+  const i = idx + 1
+  return new DemoListItem({
+    id: `mock-${i}`,
+    shortId: String(i).padStart(6, '0'),
+    partnerCode: `PC${i}`,
+    name: `Demo Item #${i}`,
+    isActive: i % 3 !== 0,
+    status: i % 2 === 0 ? 'active' : 'inactive',
+    amount: (i * 137) % 99_999,
+    currency: CURRENCIES[i % 3],
+    wagerValue: String((i * 10) % 1_000),
+    wagerLimit: String((i * 50) % 5_000),
+    date: new Date(Date.now() - i * 86_400_000).toISOString(),
+    newDate: new Date(Date.now() - i * 3_600_000).toISOString(),
+    email: `user${i}@demo.com`,
+    period: { dateFrom: '2024-01-01', dateTo: '2024-12-31' },
+    buttonName: `Action ${i}`,
+    login: `login_${i}`,
+    localization: LOCALES[i % 3],
+    country: COUNTRIES[i % 3],
+    position: i,
+    positionByInputWrapper: i,
+    imagePath: '',
+    imageFull: { id: `img-${i}`, imagePath: '' },
+    tags: i % 5 === 0 ? [{ id: 'tag1', name: 'Tag 1' }, { id: 'tag2', name: 'Tag 2' }] : [],
+    type: { id: 'deposit' as any, name: TYPE_NAMES[i % 3] },
+    gameId: `game-${i % 20}`,
+    state: i % 4 === 0,
+    comment: i % 7 === 0 ? `Comment for item ${i}` : '',
+    rowVariant: null as any,
+    editableField: { from: i % 100, to: (i % 100) + 50 },
+    callbackData: { index: i },
+  })
+})
+
+const mockListConfig = new BaseListConfig({
+  withSettings: true,
+  selectable: true,
+  showExpand: true,
+  withDeactivation: true,
+  withMultipleActions: true,
+  pagination: false,
+  defaultPerPage: MOCK_COUNT,
+  // Virtual scroll: only ~30 visible rows in DOM instead of all MOCK_COUNT
+  itemHeight: 52,
+})
+
+const useDemoListMock = () => ({
+  ...useDemoList(),
+  useStore: () => ({
+    fetchEntityList: async ({ data: { perPage, page } }: any) => {
+      const start = ((page ?? 1) - 1) * (perPage ?? MOCK_COUNT)
+      return { list: mockItems.slice(start, start + (perPage ?? MOCK_COUNT)), total: MOCK_COUNT }
+    },
+  }),
+})
+
+const isMock = ref(false)
+// ─────────────────────────────────────────────────────────────────────────────
 </script>
 
 <template>
+  <div class="d-flex align-center gap-3 mb-4">
+    <VBtn
+      :color="isMock ? VColors.Success : VColors.Secondary"
+      :variant="VVariants.Tonal"
+      size="small"
+      @click="isMock = !isMock"
+    >
+      {{ isMock ? `Mock ${MOCK_COUNT} items (active)` : `Load mock ${MOCK_COUNT} items` }}
+    </VBtn>
+    <span
+      v-if="isMock"
+      class="text-caption text-disabled"
+    >
+      Rendering {{ MOCK_COUNT }} rows — use DevTools Performance to measure v-memo impact
+    </span>
+  </div>
+
   <BaseList
-    :use-list="useDemoList"
-    :config="listConfig"
+    :key="String(isMock)"
+    :use-list="isMock ? useDemoListMock : useDemoList"
+    :config="isMock ? mockListConfig : listConfig"
     class="demo-list mr-md-1 mr-sm-0"
   >
     <template #table-field-setting>

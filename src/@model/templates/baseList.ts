@@ -246,6 +246,11 @@ export interface IBaseListConfig {
 
   //* *  copyForAllProjects - Копіювати на інші проєкти   */
   readonly copyForAllProjects?: boolean
+
+  /** itemHeight — row height in px. Enables window-based virtual scroll in CTable.
+   *  Use 52 for comfortable density (Vuetify default), 36 for compact (small: true).
+   *  Leave unset for paginated lists (25–50 rows) — virtual scroll adds no benefit there. */
+  readonly itemHeight?: number
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -304,6 +309,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly noPermissions?: NoPermissions
   readonly inlineFilters?: Array<FilterListItem>
   readonly copyForAllProjects?: boolean
+  readonly itemHeight?: number
 
   constructor({
     withSearch,
@@ -361,6 +367,7 @@ export class BaseListConfig implements IBaseListConfig {
     noPermissions,
     inlineFilters,
     copyForAllProjects,
+    itemHeight,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -417,6 +424,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.noPermissions = noPermissions ?? false
     this.inlineFilters = inlineFilters ?? []
     this.copyForAllProjects = copyForAllProjects ?? false
+    this.itemHeight = itemHeight
   }
 }
 
