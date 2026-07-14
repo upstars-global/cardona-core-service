@@ -9,6 +9,18 @@ The target is a Vue 3 + TS + Pinia + Vuetify backoffice built on `cardona-core-s
 
 If a create/edit form will be added later, do **not** create create/update files here — that belongs to the `section-form` skill, which extends the files this skill produces.
 
+## Execution model — delegate to the worker subagent
+
+This skill can run in a dedicated subagent so the main window stays clean and the build runs on a cheaper model (Sonnet). Route by who you are:
+
+- **You are the main assistant**: gather the inputs first — section name, permission key (`PermissionType` member), menu group + neighbor, pages folder, i18n prefix, `entityName`; plus the real List JSON + a Figma/column spec **if you already have them**. Launch the Agent tool with `subagent_type: 'section-list'`, passing everything in the prompt. Then:
+  - If you had **no** real List JSON, the subagent builds the 4.1 skeleton and returns asking for the `App.V2.<...>.List` JSON — relay that to the user, get the JSON, then launch the subagent **again** with the JSON (and note the skeleton already exists) to build the full list.
+  - Relay the subagent's final summary to the user after each run.
+  Gather inputs BEFORE launching — the subagent can't stop to ask.
+- **You are the `section-list` subagent** (your system prompt says so): execute the steps below and return only the summary, per your system prompt.
+
+If the subagent is unavailable, run the steps inline.
+
 **Prerequisite:** the permission key must already exist in `src/configs/permissions.ts`. If it doesn't, run the `backoffice-permissions` skill first (or ask the user for the `backoffice-*` key).
 
 ## Pre-flight — collect before starting
