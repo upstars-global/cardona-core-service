@@ -9,6 +9,15 @@ The target is a Vue 3 + TS + Pinia + Vuetify backoffice built on `cardona-core-s
 
 This is a self-contained task. It is Stage 1 of creating a new section, but most of the time you only need a permission — do just this and stop.
 
+## Execution model — delegate to the worker subagent
+
+This skill can run in a dedicated subagent so the main window stays clean and the edits run on a cheaper model (Sonnet). Route by who you are:
+
+- **You are the main assistant** (the user asked to add/change a permission): first **gather the inputs** — permission key (`backoffice-*`, from the backend — don't guess), localized name, target group + the neighbor to place after, type (`Table`/`Switch`), any `notAccessLevel`. The subagent can't stop to ask, so collect these **before** launching. Then launch the Agent tool with `subagent_type: 'backoffice-permissions'`, passing all inputs in the prompt. Relay its final summary to the user verbatim.
+- **You are the `backoffice-permissions` subagent** (your system prompt says so): execute the steps below and return only the summary, as your system prompt requires.
+
+If the subagent is unavailable, fall back to running the steps inline — delegation is the intended path, but the steps below stand on their own.
+
 ## Files
 
 - `src/configs/permissions.ts` — the `PermissionType` string enum + the `default` export object of permission *groups* (each an array of entry objects). This file only builds the access-management UI; nothing in it imports routes/menu/list, so editing it is safe in isolation.
