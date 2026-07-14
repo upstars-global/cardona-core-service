@@ -37,7 +37,9 @@ const onMountedList = () => emits('mounted')
 
 defineExpose({
   get reFetchList() { return listByTypeRef.value?.reFetchList },
-  resetSelectedItem: listByTypeRef.value?.resetSelectedItem,
+  get resetSelectedItem() {
+    return listByTypeRef.value?.resetSelectedItem
+  },
   setSelectedItems(items: Record<string, unknown>[]) {
     if (listByTypeRef.value)
       listByTypeRef.value.selectedItems = items
