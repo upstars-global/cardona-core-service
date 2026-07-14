@@ -9,6 +9,15 @@ The target is a Vue 3 + TS + Pinia + Vuetify backoffice built on `cardona-core-s
 
 **Prerequisite:** a working list section must already exist (its `useSection.ts` with `useList`, `@model/<name>.ts` with the list model, `list/index.vue`, and a route). If it doesn't, run `section-list` first.
 
+## Execution model — delegate to the worker subagent
+
+This skill can run in a dedicated subagent so the main window stays clean and the work runs on a cheaper model (Sonnet). Route by who you are:
+
+- **You are the main assistant**: gather the inputs first — which existing list section, the sample Read/GetById response, the sample Create/Update body, and the form structure (fields, grouping, validation, multilingual/tabs). Launch the Agent tool with `subagent_type: 'section-form'`, passing all of it in the prompt, and relay its final summary to the user. Gather inputs BEFORE launching — the subagent can't stop to ask.
+- **You are the `section-form` subagent** (your system prompt says so): execute the steps below and return only the summary, per your system prompt.
+
+If the subagent is unavailable, run the steps inline.
+
 ## Request from the user before starting
 
 1. **Sample `Read`/`GetById` response** — usually more fields than the list item.
