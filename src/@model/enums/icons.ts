@@ -222,6 +222,7 @@ export enum IconsList {
   RefreshCwIcon = 'tabler-refresh',
   RepeatIcon = 'RepeatIcon',
   ReportIcon = 'tabler-report',
+  ReceiptIcon = 'tabler-receipt',
   RewindIcon = 'RewindIcon',
   RobotFaceIcon = 'tabler-robot-face',
   RotateIcon = 'tabler-rotate',
