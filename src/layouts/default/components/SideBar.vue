@@ -116,6 +116,7 @@ const getIcon = (item: NavGroup | NavLink) =>
         :title="t((item as NavLink).title)"
         rounded="lg"
         base-color="white"
+        class="mx-1"
         :active="isLinkActive(item as NavLink)"
         @click="navigateTo(item as NavLink)"
       >
