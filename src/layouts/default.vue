@@ -173,84 +173,18 @@ const handleMouseLeave = () => {
   background-color: #252833 !important;
 }
 
-.custom-layout :deep(.v-navigation-drawer) {
-  border-inline-end: none !important;
-}
-
-.custom-layout :deep(.v-navigation-drawer__content) {
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
 .sidebar-inner {
   min-height: 0;
 }
 
 .sidebar-nav {
   min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
 
   :deep(.v-list) {
     background-color: transparent !important;
   }
-}
-
-// В rail-режимі (не hovered) ховаємо текст та стрілки лише в sidebar-nav
-.custom-layout :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav .v-list-item__content),
-.custom-layout :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav .v-list-item__append) {
-  display: none !important;
-}
-
-.custom-layout :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav .v-list-group__items) {
-  display: none !important;
-}
-
-.custom-layout :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav .v-list-subheader) {
-  background-image: linear-gradient(
-    transparent calc(50% - 0.5px),
-    rgba(var(--v-theme-on-sidebar), .45) calc(50% - 0.5px),
-    rgba(var(--v-theme-on-sidebar), .45) calc(50% + 0.5px),
-    transparent calc(50% + 0.5px)
-  ) !important;
-  background-size: 20px 100% !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-}
-
-.custom-layout :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav .v-list-subheader__text) {
-  visibility: hidden !important;
-}
-
-.custom-layout :deep(.v-navigation-drawer .v-list-item-title),
-.custom-layout :deep(.v-navigation-drawer .v-list-item__prepend .v-icon) {
-  color: white !important;
-}
-
-.custom-layout :deep(.v-navigation-drawer .v-list-item--active .v-list-item__overlay),
-.custom-layout :deep(.v-navigation-drawer .v-btn--active .v-btn__overlay) {
-  background-color: rgba(255, 255, 255, 0.06) !important;
-  opacity: 1 !important;
-}
-
-.layout-border-top {
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-}
-
-.layout-border-bottom {
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-
-.sidebar-menu-mode {
-  color: rgba(var(--v-theme-on-sidebar), 0.56);
-}
-</style>
-
-<style lang="scss">
-.sidebar-nav {
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -265,13 +199,69 @@ const handleMouseLeave = () => {
     border-radius: 3px;
     transition: background-color 0.2s;
   }
+
+  .is-hovering & {
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
 }
 
-.is-hovering .sidebar-nav {
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+.custom-layout {
+  :deep(.v-navigation-drawer) {
+    border-inline-end: none !important;
 
-  &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    .v-list-item-title,
+    .v-list-item__prepend .v-icon {
+      color: white !important;
+    }
+
+    .v-list-item--active .v-list-item__overlay,
+    .v-btn--active .v-btn__overlay {
+      background-color: rgba(255, 255, 255, 0.06) !important;
+      opacity: 1 !important;
+    }
   }
+
+  :deep(.v-navigation-drawer__content) {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav) {
+    .v-list-item__content,
+    .v-list-item__append,
+    .v-list-group__items {
+      display: none !important;
+    }
+
+    .v-list-subheader {
+      background: linear-gradient(
+        transparent calc(50% - 0.5px),
+        rgba(var(--v-theme-on-sidebar), .45) calc(50% - 0.5px),
+        rgba(var(--v-theme-on-sidebar), .45) calc(50% + 0.5px),
+        transparent calc(50% + 0.5px)
+      ) center / 20px 100% no-repeat !important;
+
+      &__text {
+        visibility: hidden !important;
+      }
+    }
+  }
+}
+
+.layout-border-top {
+  border-radius: 6px 6px 0 0;
+}
+
+.layout-border-bottom {
+  border-radius: 0 0 6px 6px;
+}
+
+.sidebar-menu-mode {
+  color: rgba(var(--v-theme-on-sidebar), 0.56);
 }
 </style>
