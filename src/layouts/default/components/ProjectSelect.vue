@@ -49,7 +49,7 @@ watch(() => selectProject.value, project => {
       v-model="selectProject"
       :options="projects"
       label="publicName"
-      class="select-field select-field-color"
+      class="select-field"
       :clearable="false"
       :searchable="false"
       :no-drop="isCollapsedMenu && !cantSelect"
@@ -69,18 +69,18 @@ watch(() => selectProject.value, project => {
           >
           <div
             v-else
-            class="project-logo project-logo-no-ico d-flex align-center justify-center select-field-color"
+            class="project-logo project-logo-no-ico d-flex align-center justify-center"
           >
             {{ publicName[0].toUpperCase() }}
           </div>
           <span
             v-show="!isCollapsedMenu"
-            class="text-expanded select-field-color"
+            class="text-expanded"
           >{{ publicName || title }}</span>
         </div>
       </template>
       <template #option="{ publicName, title, alias, iconPath }">
-        <div class="d-flex  align-center overflow-hidden gap-2">
+        <div class="d-flex align-center overflow-hidden gap-2">
           <img
             v-if="iconPath"
             :alt="alias"
@@ -89,7 +89,7 @@ watch(() => selectProject.value, project => {
           >
           <div
             v-else
-            class="project-logo project-logo-no-ico d-flex align-center justify-center select-field-color"
+            class="project-logo project-logo-no-ico d-flex align-center justify-center"
           >
             {{ publicName[0].toUpperCase() }}
           </div>
@@ -108,7 +108,7 @@ watch(() => selectProject.value, project => {
         >
           <VIcon
             :icon="IconsList.ChevronDownIcon"
-            class="text-expanded select-field-color"
+            class="text-expanded"
           />
         </div>
       </template>
@@ -118,13 +118,8 @@ watch(() => selectProject.value, project => {
 
 <style scoped lang="scss">
 .project-select {
-  :deep(.v-select) {
-    min-height: 32px;
-    height: 32px;
-  }
   :deep(.vs__dropdown-toggle) {
     border: 1px solid rgba(var(--v-theme-on-sidebar), 0.2);
-    min-height: 32px;
     height: 32px;
   }
 
@@ -151,7 +146,6 @@ watch(() => selectProject.value, project => {
     }
   }
 
-  // ── Dropdown menu ────────────────────────────────────────────────────────
   :deep(.vs__dropdown-menu) {
     margin-top: -12px !important;
     background: rgb(var(--v-theme-sidebar)) !important;
@@ -179,14 +173,12 @@ watch(() => selectProject.value, project => {
   :deep(.vs__dropdown-option:hover),
   :deep(.vs__dropdown-option--highlight) {
     background: rgba(var(--v-theme-on-sidebar), 0.06) !important;
-    color: rgb(var(--v-theme-on-sidebar)) !important;
   }
 
   :deep(.vs__dropdown-option--selected),
   :deep(.vs__dropdown-option--selected.vs__dropdown-option--highlight),
   :deep(.vs__dropdown-option--selected:hover) {
     background: transparent !important;
-    color: rgb(var(--v-theme-on-sidebar)) !important;
   }
 
   &--collapsed {
@@ -199,13 +191,8 @@ watch(() => selectProject.value, project => {
     }
 
     :deep(.vs__dropdown-option) {
-      padding-left: 0.875rem;
-      padding-right: 0.875rem;
+      padding-inline: 0.875rem;
     }
-  }
-
-  .select-field-color {
-    color: rgb(var(--v-theme-on-sidebar));
   }
 
   .projects-dropdown-header {
@@ -224,8 +211,7 @@ watch(() => selectProject.value, project => {
   min-height: 1.5rem;
   border-radius: 50%;
   overflow: hidden;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  margin-block: 2px;
 }
 
 .project-logo-no-ico {
