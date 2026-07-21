@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, isRef } from 'vue'
 import { Field } from 'vee-validate'
 import type { BaseField } from '../../../@model/templates/baseField'
 import { CheckBaseField, FieldGeneratorSlots, RatesBaseField, SwitchBaseField } from '../../../@model/templates/baseField'
@@ -45,7 +45,7 @@ const rules = computed(() => !isRatesType.value ? props.modelValue?.validationRu
 const isCheckTypeWithInfo = computed(() => isCheckType.value && props.withInfo && props.modelValue.info)
 
 const groupLabel = computed(() =>
-  props.withLabel && !isCheckType.value ? props.modelValue.label : '',
+  props.withLabel && !isCheckType.value ? resolvedLabel.value : '',
 )
 
 const formGroupClasses = computed(() => ({
@@ -56,6 +56,7 @@ const formGroupClasses = computed(() => ({
 const fieldModel = computed({
   get: () => props.modelValue.value,
   set: value => {
+
     props.modelValue.value = value
     emits('update:modelValue', props.modelValue)
   },
@@ -75,10 +76,14 @@ const notFilledDateRange = computed(() => {
 
 const allCurrencies = computed<string[]>(() => appConfigCoreStore.allCurrencies)
 
-const validationLabel = computed(() => {
-  const isCurrencyLabel = allCurrencies.value.includes(props.modelValue.label)
+const resolvedLabel = computed((): string =>
+  isRef(props.modelValue.label) ? props.modelValue.label.value : String(props.modelValue.label),
+)
 
-  return isCurrencyLabel ? props.modelValue.label : props.modelValue.label.toLowerCase()
+const validationLabel = computed(() => {
+  const isCurrencyLabel = allCurrencies.value.includes(resolvedLabel.value)
+
+  return isCurrencyLabel ? resolvedLabel.value : resolvedLabel.value.toLowerCase()
 })
 </script>
 

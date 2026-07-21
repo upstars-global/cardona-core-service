@@ -1,0 +1,180 @@
+{
+  "auth": {
+    "login": "Логін"
+  },
+  "common": {
+    "callback": "Зворотній виклик",
+    "isActive": "Активний",
+    "unActive": "Неактивний",
+    "status": "Статус",
+    "editableField": "Редаговане поле",
+    "shortId": "Короткий ID",
+    "name": "Назва",
+    "nameWithShortId": "Назва з коротким ID",
+    "link": "Посилання",
+    "btn": "Кнопка",
+    "tags": "Теги",
+    "date": "Дата",
+    "created": "Створено",
+    "displayPeriod": "Період відображення",
+    "sumPeriod": "Сума за період",
+    "image": "Зображення",
+    "image-with-full-view": "Зображення з повним переглядом",
+    "priority": "Пріоритет",
+    "state": "Стан",
+    "sum": "Сума",
+    "comment": "Коментар",
+    "type": "Тип",
+    "settings": "Налаштування",
+    "email": "Електронна пошта",
+    "yes": "Так",
+    "no": "Ні",
+    "url": "URL",
+    "addTags": "Додати теги...",
+    "phone": {
+      "_": "Телефон"
+    },
+    "country": "Країна",
+    "empty": "Порожньо"
+  },
+  "action": {
+    "create": "Створити",
+    "createAndExit": "Створити та вийти",
+    "createAndStay": "Створити та залишитись",
+    "saveAndExit": "Зберегти та вийти",
+    "saveAndStay": "Зберегти та залишитись",
+    "add": "Додати",
+    "addAll": "Додати всі ({total})",
+    "addToCategory": "Додати до категорії",
+    "edit": "Редагувати",
+    "details": "Деталі",
+    "makeCopy": "Створити копію",
+    "save": "Зберегти",
+    "remove": "Видалити",
+    "delete": "Видалити",
+    "removeAll": "Видалити всі",
+    "removeAllWithTotal": "Видалити всі ({total})",
+    "removeSelected": "Видалити вибрані",
+    "cancel": "Скасувати",
+    "cancel_2": "Скасувати",
+    "withdraw": "Вивести",
+    "refill": "Поповнити",
+    "setNewPassword": "Встановити новий пароль",
+    "apply": "Застосувати",
+    "applyFilters": "Застосувати фільтри",
+    "saveByDefault": "Зберегти за замовчуванням",
+    "saveAsDefault": "Зберегти як типове",
+    "clearAll": "Очистити все",
+    "showAll": "Показати все",
+    "hideAll": "Приховати все",
+    "activate": "Активувати",
+    "deactivate": "Деактивувати",
+    "addEmail": "Додати email",
+    "download": "Завантажити",
+    "addPhone": "Додати телефон",
+    "login": "Увійти",
+    "selectEntity": "Вибрати сутність",
+    "addFilter": "Додати фільтр",
+    "export": "Експорт",
+    "creation": "Створення",
+    "updating": "Оновлення",
+    "deleting": "Видалення",
+    "reporting": "Звітність",
+    "repeat": "Повторити",
+    "send": "Відправити",
+    "extend": "Продовжити",
+    "assign": "Призначити",
+    "accrue": "Нарахувати",
+    "pin": "Закріпити",
+    "unpin": "Відкріпити",
+    "approveAll": "Схвалити все",
+    "rejectAll": "Відхилити все",
+    "hide": "Приховати",
+    "back": "Назад",
+    "saveChanges": "Зберегти зміни"
+  },
+  "locale": {
+    "localization": "Локалізація",
+    "default": {
+      "metaTitle": "Заголовок",
+      "metaDescription": "Опис",
+      "description": "Текст",
+      "text": "Текст",
+      "textWithCb": "Текст із зворотним викликом"
+    }
+  },
+  "filters": {
+    "gameId": "ID гри"
+  },
+  "page": {
+    "demo": {
+      "_": "Демо",
+      "expand": "Розгорнути",
+      "fields": "Поля",
+      "input": "Введення",
+      "check": "Перемикачі",
+      "select": "Вибір",
+      "textarea": "Текстова область",
+      "specific": "Специфічні",
+      "switchField": "Перемикач",
+      "switchWithStateField": "Перемикач зі станом",
+      "textField": "Текстове поле",
+      "textFieldWithCb": "Текстове поле зі зворотним викликом",
+      "numberField": "Числове поле",
+      "minuteField": "Поле хвилин",
+      "minutesRangeField": "Діапазон хвилин",
+      "sumRangeField": "Діапазон суми",
+      "percentField": "Поле відсотків",
+      "passwordField": "Поле пароля",
+      "passwordFieldWithGeneration": "Поле пароля з генерацією",
+      "phoneField": "Поле телефону",
+      "checkField": "Прапорець",
+      "checkGroupField": "Група прапорців",
+      "radioField": "Радіокнопка",
+      "dateField": "Поле дати",
+      "dateRangeField": "Діапазон дат",
+      "dateTimeRangeField": "Діапазон дати і часу",
+      "dateTimeField": "Поле дати і часу",
+      "timeField": "Поле часу",
+      "nonClearableSelectField": "Вибір без очищення",
+      "selectField": "Поле вибору",
+      "multiSelectField": "Множинний вибір",
+      "textareaField": "Текстова область",
+      "textareaWithCounterField": "Текстова область з лічильником",
+      "tagsField": "Поле тегів",
+      "conditionsField": "Поле умов",
+      "onlyPositiveNumbers": "Лише додатні числа",
+      "rates": "Ставки",
+      "usersList": "Список користувачів",
+      "uploadCSV": "Завантажити CSV"
+    }
+  },
+  "title": {
+    "demo": {
+      "list": "Демо список",
+      "create": "Демо: Створення",
+      "edit": "Демо: Редагування"
+    }
+  },
+  "placeholder": {
+    "search": {
+      "_": "Пошук"
+    }
+  },
+  "uploadImg": {
+    "label": "Зображення",
+    "textBtn": "Вибрати",
+    "selectImage": "Вибрати зображення",
+    "selectImageTooltip": "Виберіть зображення зі сховища"
+  },
+  "seo": {
+    "metaTitle": "Мета заголовок",
+    "metaDescription": "Мета опис",
+    "description": "Опис"
+  },
+  "component": {
+    "conditions": {
+      "placeholder": "Натисніть нижче, щоб вставити змінну або функцію"
+    }
+  }
+}

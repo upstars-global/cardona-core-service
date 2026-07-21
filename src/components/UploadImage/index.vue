@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, inject, nextTick, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Field } from 'vee-validate'
 import { IconsList } from '../../@model/enums/icons'
 import { ModalSizes, VColors, VSizes, VVariants } from '../../@model/vuetify'
-import { i18n } from '../../plugins/i18n'
 import BaseModal from '../../components/BaseModal/index.vue'
 import { UploadFileSizes } from '../../@model/enums/uploadFileSizes'
 import RemoveModal from '../../components/BaseModal/RemoveModal.vue'
@@ -38,10 +38,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   size: UploadFileSizes.md,
-  label: i18n.t('uploadImg.label'),
   type: 'banners',
-  textBtn: i18n.t('uploadImg.textBtn'),
-  dropPlaceholder: i18n.t('placeholder.dropFile'),
   withPreview: true,
   value: '',
   path: '',
@@ -56,6 +53,12 @@ const props = withDefaults(defineProps<Props>(), {
     name: '',
   }),
 })
+
+const { t } = useI18n()
+
+const displayLabel = computed(() => props.label ?? t('uploadImg.label'))
+const displayTextBtn = computed(() => props.textBtn ?? t('uploadImg.textBtn'))
+const displayDropPlaceholder = computed(() => props.dropPlaceholder ?? t('placeholder.dropFile'))
 
 const emits = defineEmits<{
   (e: 'update:modelValue', value: string): void
@@ -154,7 +157,7 @@ const isRequired = computed(() => !!props.field.rules?.required)
           class="mb-1 field-generator-label text-body-2 text-high-emphasis justify-between"
           :class="{ 'field-generator-label--required': isRequired }"
         >
-          {{ label }}
+          {{ displayLabel }}
         </VLabel>
         <div
           v-if="urlFile && withPreview"
@@ -192,7 +195,7 @@ const isRequired = computed(() => !!props.field.rules?.required)
           :open-select-modal="openSelectModal"
         >
           <FilesUpload
-            :text-btn="textBtn"
+            :text-btn="displayTextBtn"
             :on-submit-callback="onFileUpload"
             :max-size-file-mb="maxSizeFileMb"
             :on-btn-click-callback="openSelectModal"

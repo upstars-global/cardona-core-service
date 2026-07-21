@@ -223,19 +223,19 @@ export class DemoForm {
     this.switch = new SwitchBaseField({
       key: 'switch',
       value: data?.switch,
-      label: i18n.t('page.demo.switchField'),
+      labelKey: 'page.demo.switchField',
     })
     this.text = new TextBaseField({
       key: 'text',
       value: data?.text,
-      label: i18n.t('page.demo.textField'),
+      labelKey: 'page.demo.textField',
       validationRules: { required: true },
       isLocalization: true,
     })
     this.textWithCb = new TextBaseField({
       key: 'textWithCb',
       value: data?.textWithCb,
-      label: i18n.t('page.demo.textFieldWithCb'),
+      labelKey: 'page.demo.textFieldWithCb',
       validationRules: { required: true },
       isLocalization: true,
       serialize: (value: string) => {
@@ -254,7 +254,7 @@ export class DemoForm {
     this.number = new NumberBaseField({
       key: 'number',
       value: data?.number,
-      label: i18n.t('page.demo.numberField'),
+      labelKey: 'page.demo.numberField',
       validationRules: { required: true, min: 3 },
       withPositiveNumbers: true,
       info: i18n.t('page.demo.onlyPositiveNumbers'),
@@ -262,7 +262,7 @@ export class DemoForm {
     this.minute = new NumberBaseField({
       key: 'minute',
       value: data?.minute,
-      label: i18n.t('page.demo.minuteField'),
+      labelKey: 'page.demo.minuteField',
       validationRules: { positive: true },
       append: 'min',
       withPositiveNumbers: true,
@@ -274,38 +274,38 @@ export class DemoForm {
       isIntegerNumbers: true,
       append: 'min',
       key: 'minutesRange',
-      label: i18n.t('page.demo.minutesRangeField'),
+      labelKey: 'page.demo.minutesRangeField',
       validationRules: { required: true, required_object: true, range: ['from', 'to'] },
       isCurrency: false,
     })
     this.percent = new NumberBaseField({
       key: 'percent',
       value: data?.percent,
-      label: i18n.t('page.demo.percentField'),
+      labelKey: 'page.demo.percentField',
       validationRules: { required: true, length: 2 },
       append: '%',
     })
     this.digits = new NumberBaseField({
       key: 'digits',
       value: data?.digits,
-      label: i18n.t('page.demo.numberField'),
+      labelKey: 'page.demo.numberField',
       validationRules: { required: true, digits: 4 },
     })
     this.email = new TextBaseField({
       key: 'email',
       value: data?.email,
-      label: i18n.t('common.email'),
+      labelKey: 'common.email',
       validationRules: { required: true, email: true },
     })
     this.sumRange = new NumberRangeBaseField({
       key: 'sumRange',
       value: data?.sumRange,
-      label: i18n.t('page.demo.sumRangeField'),
+      labelKey: 'page.demo.sumRangeField',
     })
     this.rates = new RatesBaseField({
       key: 'rates',
       value: data?.rates,
-      label: i18n.t('page.demo.rates'),
+      labelKey: 'page.demo.rates',
       placeholder: '0.00',
       trackBy: 'bet',
       validationRules: { required: true },
@@ -321,20 +321,20 @@ export class DemoForm {
     this.phone = new PhoneBaseField({
       key: 'phone',
       value: data?.phone,
-      label: i18n.t('page.demo.phoneField'),
+      labelKey: 'page.demo.phoneField',
       validationRules: { required: true, phone: true },
     })
     this.phoneList = data?.phoneList?.map(createPhoneDomainFieldItem) || []
     this.password = new PasswordBaseField({
       key: 'password',
       value: data?.password,
-      label: i18n.t('page.demo.passwordField'),
+      labelKey: 'page.demo.passwordField',
       validationRules: { required: true, password: true },
     })
     this.passwordFieldWithGeneration = new PasswordBaseField({
       key: 'passwordWithGenerator',
       value: data?.passwordWithGenerator,
-      label: i18n.t('page.demo.passwordFieldWithGeneration'),
+      labelKey: 'page.demo.passwordFieldWithGeneration',
       validationRules: { required: true, password: true },
       showPassword: true,
       withPasswordGenerator: true,
@@ -342,18 +342,18 @@ export class DemoForm {
     this.switchWithState = new SwitchBaseField({
       key: 'switchWithState',
       value: true,
-      label: i18n.t('page.demo.switchWithStateField'),
+      labelKey: 'page.demo.switchWithStateField',
       withState: true,
     })
     this.check = new CheckBaseField({
       key: 'check',
       value: data?.check,
-      label: i18n.t('page.demo.checkField'),
+      labelKey: 'page.demo.checkField',
     })
     this.checkGroup = new CheckGroupBaseField({
       key: 'checkGroup',
       value: data?.checkGroup,
-      label: i18n.t('page.demo.checkGroupField'),
+      labelKey: 'page.demo.checkGroupField',
       options: [
         {
           id: 'option1',
@@ -382,7 +382,7 @@ export class DemoForm {
     this.radio = new RadioBaseField({
       key: 'radio',
       value: true,
-      label: i18n.t('page.demo.radioField'),
+      labelKey: 'page.demo.radioField',
       options: [
         { text: i18n.t('common.yes'), value: true },
         { text: i18n.t('common.no'), value: false },
@@ -391,67 +391,67 @@ export class DemoForm {
     this.date = new DateBaseField({
       key: 'date',
       value: data?.date,
-      label: i18n.t('page.demo.dateField'),
+      labelKey: 'page.demo.dateField',
       validationRules: { required: true },
     })
     this.dateRange = new DateBaseField({
       key: 'dateRange',
       value: new BaseDatePeriod(data?.dateRangeFrom, data?.dateRangeTo),
-      label: i18n.t('page.demo.dateRangeField'),
+      labelKey: 'page.demo.dateRangeField',
       isRangeMode: true,
     })
     this.dateTimeRange = new DateBaseField({
       key: 'dateTimeRange',
       value: new BaseDatePeriod(data?.dateTimeRangeFrom, data?.dateTimeRangeTo),
-      label: i18n.t('page.demo.dateTimeRangeField'),
+      labelKey: 'page.demo.dateTimeRangeField',
       isRangeMode: true,
       withTime: true,
     })
     this.dateTime = new DateBaseField({
       key: 'dateTime',
       value: data?.dateTime,
-      label: i18n.t('page.demo.dateTimeField'),
+      labelKey: 'page.demo.dateTimeField',
       withTime: true,
     })
     this.time = new TimeBaseField({
       key: 'time',
       value: data?.time,
-      label: i18n.t('page.demo.timeField'),
+      labelKey: 'page.demo.timeField',
     })
     this.nonClearableSelect = new SelectBaseField({
       key: 'nonClearableSelect',
       value: data?.nonClearableSelect,
-      label: i18n.t('page.demo.nonClearableSelectField'),
+      labelKey: 'page.demo.nonClearableSelectField',
       fetchOptionsActionName: 'demo/fetchOptions',
       clearable: false,
     })
     this.select = new SelectBaseField({
       key: 'select',
       value: data?.select,
-      label: i18n.t('page.demo.selectField'),
+      labelKey: 'page.demo.selectField',
       fetchOptionsActionName: 'demo/fetchOptions',
     })
     this.multiSelect = new MultiSelectBaseField({
       key: 'multiSelect',
       value: data?.multiSelect,
-      label: i18n.t('page.demo.multiSelectField'),
+      labelKey: 'page.demo.multiSelectField',
       fetchOptionsActionName: 'demo/fetchOptions',
     })
     this.textarea = new TextareaBaseField({
       value: data?.textarea,
       key: 'textarea',
-      label: i18n.t('page.demo.textareaField'),
+      labelKey: 'page.demo.textareaField',
     })
     this.textareaWithAutoHeight = new TextareaBaseField({
       value: data?.textareaWithAutoHeight,
       key: 'textareaForAutoHeight',
-      label: i18n.t('page.demo.textareaField'),
+      labelKey: 'page.demo.textareaField',
       autoHeight: true,
     })
     this.textareaWithCounter = new TextareaBaseField({
       value: data?.textareaWithCounter,
       key: 'textareaWithCounter',
-      label: i18n.t('page.demo.textareaWithCounterField'),
+      labelKey: 'page.demo.textareaWithCounterField',
       maxLength: 45,
       rows: 3,
       counter: true,
@@ -459,26 +459,26 @@ export class DemoForm {
     this.url = new TextBaseField({
       value: data?.url,
       key: 'url',
-      label: i18n.t('common.url'),
+      labelKey: 'common.url',
       validationRules: { url: true },
     })
     this.tags = new TagsBaseField({
       value: data?.tags,
       key: 'tags',
-      label: i18n.t('page.demo.tagsField'),
+      labelKey: 'page.demo.tagsField',
       placeholder: i18n.t('common.addTags'),
     })
     this.conditions = new ConditionsBaseField({
       value: data?.conditions,
       key: 'conditions',
-      label: i18n.t('page.demo.conditionsField'),
+      labelKey: 'page.demo.conditionsField',
       placeholder: i18n.t('component.conditions.placeholder'),
       validationRules: { required: true },
       fetchOptionsActionName: 'conditions/fetchConditions',
     })
     this.usersList = new UsersListBaseField({
       key: 'users-list',
-      label: i18n.t('page.demo.usersList'),
+      labelKey: 'page.demo.usersList',
       value: data?.usersList,
     })
     this.localisationParameters = data?.localisationParameters || {}
@@ -623,13 +623,13 @@ export const createPhoneDomainFieldItem = (item: PhoneAndCountry) => ({
   phone: new PhoneBaseField({
     key: `id-${uuidv4()}`,
     value: item?.phone || '',
-    label: i18n.t('common.phone._'),
+    labelKey: 'common.phone._',
     validationRules: { required: true, phone: true },
   }),
   domain: new SelectBaseField({
     key: `country-${uuidv4()}`,
     value: item?.country || '',
-    label: i18n.t('common.country'),
+    labelKey: 'common.country',
     options: [
       { id: 1, name: 'Ukraine' },
       { id: 2, name: 'Poland' },

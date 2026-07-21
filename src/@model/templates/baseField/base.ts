@@ -1,4 +1,4 @@
-import type { Component } from 'vue'
+import type { Component, ComputedRef } from 'vue'
 import { isFunction, uniqBy } from 'lodash'
 import type { TranslateResult } from 'vue-i18n'
 import type { IValidationConfig } from '../../../@model/validations'
@@ -12,9 +12,13 @@ const OPTION_VALUE_KEY = 'id'
 export interface IBaseField {
   readonly key: string
   readonly id?: string
-  readonly label: TranslateResult
+  readonly label?: TranslateResult | ComputedRef<string>
+  /** i18n key — label is resolved reactively via getter; takes precedence over `label` */
+  readonly labelKey?: string
   readonly placeholder?: TranslateResult
   readonly description?: TranslateResult
+  /** i18n key — description is resolved reactively via getter; takes precedence over `description` */
+  readonly descriptionKey?: string
   readonly info?: TranslateResult
   readonly validationRules?: IValidationConfig
   readonly permission?: PermissionType
@@ -29,9 +33,11 @@ export abstract class BaseField implements IBaseField {
   protected abstract _value?: any
   readonly key: string
   readonly id: string
-  readonly label: TranslateResult
+  private readonly _label?: TranslateResult | ComputedRef<string>
+  private readonly _labelKey?: string
+  private readonly _description?: TranslateResult
+  private readonly _descriptionKey?: string
   readonly placeholder?: TranslateResult
-  readonly description?: TranslateResult
   readonly info?: TranslateResult
   readonly validationRules?: IValidationConfig
   readonly permission?: PermissionType
@@ -40,13 +46,27 @@ export abstract class BaseField implements IBaseField {
   public serialize: (value: any) => any = value => value
   public deserialize: (value: any) => any = value => value
 
+  get label(): TranslateResult | ComputedRef<string> {
+    if (this._labelKey)
+      return i18n.t(this._labelKey)
+    return this._label ?? ''
+  }
+
+  get description(): TranslateResult | undefined {
+    if (this._descriptionKey)
+      return i18n.t(this._descriptionKey)
+    return this._description
+  }
+
   protected constructor(field: IBaseField) {
     this.key = field.key
     this.id = field.id ?? field.key
-    this.label = field.label
+    this._label = field.label
+    this._labelKey = field.labelKey
     this.placeholder = field.placeholder
     this.validationRules = field.validationRules
-    this.description = field.description
+    this._description = field.description
+    this._descriptionKey = field.descriptionKey
     this.info = field.info
     this.permission = field.permission
     this.isLocalization = field.isLocalization
