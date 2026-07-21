@@ -69,10 +69,7 @@ const handleMouseLeave = () => {
             bg-color="#252833"
             class="pa-0 ma-0 pt-4"
           >
-            <VListItem
-              class="pa-0 my-0"
-              style="margin-inline: 16px"
-            >
+            <VListItem class="pa-0 my-0 sidebar-list-item">
               <div class="d-flex align-center justify-space-between">
                 <ProductsSelect :is-collapsed-menu="isCollapsed" />
                 <VIcon
@@ -112,10 +109,7 @@ const handleMouseLeave = () => {
           density="compact"
           class="px-0 pb-3"
         >
-          <VListItem
-            class="px-0"
-            style="margin-inline: 16px"
-          >
+          <VListItem class="px-0 sidebar-list-item">
             <CustomMenu :is-collapsed-menu="isCollapsed" />
           </VListItem>
         </VList>
@@ -138,7 +132,7 @@ const handleMouseLeave = () => {
         </VBtn>
       </div>
     </VAppBar>
-    <VMain style="height: 100dvh; overflow: hidden;">
+    <VMain class="v-main--fullscreen">
       <div class="bg-sidebar w-100 h-100 pr-2 pb-2 d-flex flex-column">
         <div class="bg-surface flex-grow-1 layout-border-bottom overflow-y-auto pa-4">
           <VContainer
@@ -261,7 +255,16 @@ const handleMouseLeave = () => {
   border-radius: 0 0 6px 6px;
 }
 
+.sidebar-list-item {
+  margin-inline: 16px;
+}
+
 .sidebar-menu-mode {
   color: rgba(var(--v-theme-on-sidebar), 0.56);
+}
+
+.v-main--fullscreen {
+  height: 100dvh;
+  overflow: hidden;
 }
 </style>
