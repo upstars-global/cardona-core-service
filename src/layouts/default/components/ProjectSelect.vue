@@ -161,6 +161,7 @@ watch(() => selectProject.value, project => {
     padding: 8px 0 !important;
     width: 100% !important;
     min-width: unset !important;
+    left: 0 !important;
   }
 
   :deep(.vs__dropdown-option) {
@@ -235,5 +236,4 @@ watch(() => selectProject.value, project => {
 .text-expanded {
   color: rgb(var(--v-theme-on-sidebar)) !important;
 }
-//border: 1px solid rgba(255, 255, 255, 0.16);
 </style>
