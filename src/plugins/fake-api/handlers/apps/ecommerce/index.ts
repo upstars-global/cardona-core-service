@@ -1,4 +1,3 @@
-import is from '@sindresorhus/is'
 import { destr } from 'destr'
 import { rest } from 'msw'
 import { db } from '@db/apps/ecommerce/db'
@@ -18,23 +17,23 @@ export const handlerAppsEcommerce = [
     const itemsPerPage = req.url.searchParams.get('itemsPerPage')
     const page = req.url.searchParams.get('page')
 
-    const searchQuery = is.string(q) ? q : undefined
+    const searchQuery = typeof q === 'string' ? q : undefined
     const queryLower = (searchQuery ?? '').toString().toLowerCase()
 
     const parsedStock = destr(stock)
-    const stockLocal = is.boolean(parsedStock) ? parsedStock : undefined
+    const stockLocal = typeof parsedStock === 'boolean' ? parsedStock : undefined
 
     const parsedSortBy = destr(sortBy)
-    const sortByLocal = is.string(parsedSortBy) ? parsedSortBy : ''
+    const sortByLocal = typeof parsedSortBy === 'string' ? parsedSortBy : ''
 
     const parsedOrderBy = destr(orderBy)
-    const orderByLocal = is.string(parsedOrderBy) ? parsedOrderBy : ''
+    const orderByLocal = typeof parsedOrderBy === 'string' ? parsedOrderBy : ''
 
     const parsedItemsPerPage = destr(itemsPerPage)
     const parsedPage = destr(page)
 
-    const itemsPerPageLocal = is.number(parsedItemsPerPage) ? parsedItemsPerPage : 10
-    const pageLocal = is.number(parsedPage) ? parsedPage : 1
+    const itemsPerPageLocal = typeof parsedItemsPerPage === 'number' ? parsedItemsPerPage : 10
+    const pageLocal = typeof parsedPage === 'number' ? parsedPage : 1
 
     // Filtering Products
     let filteredProducts = db.products.filter(product => (
@@ -148,20 +147,20 @@ export const handlerAppsEcommerce = [
     const itemsPerPage = req.url.searchParams.get('itemsPerPage')
     const page = req.url.searchParams.get('page')
 
-    const searchQuery = is.string(q) ? q : undefined
+    const searchQuery = typeof q === 'string' ? q : undefined
     const queryLower = (searchQuery ?? '').toString().toLowerCase()
 
     const parsedSortBy = destr(sortBy)
-    const sortByLocal = is.string(parsedSortBy) ? parsedSortBy : ''
+    const sortByLocal = typeof parsedSortBy === 'string' ? parsedSortBy : ''
 
     const parsedOrderBy = destr(orderBy)
-    const orderByLocal = is.string(parsedOrderBy) ? parsedOrderBy : ''
+    const orderByLocal = typeof parsedOrderBy === 'string' ? parsedOrderBy : ''
 
     const parsedItemsPerPage = destr(itemsPerPage)
     const parsedPage = destr(page)
 
-    const itemsPerPageLocal = is.number(parsedItemsPerPage) ? parsedItemsPerPage : 10
-    const pageLocal = is.number(parsedPage) ? parsedPage : 1
+    const itemsPerPageLocal = typeof parsedItemsPerPage === 'number' ? parsedItemsPerPage : 10
+    const pageLocal = typeof parsedPage === 'number' ? parsedPage : 1
 
     const filterOrders = db.orderData.filter(order => {
       return (
@@ -277,18 +276,18 @@ export const handlerAppsEcommerce = [
     const page = req.url.searchParams.get('page')
 
     const parsedSortBy = destr(sortBy)
-    const sortByLocal = is.string(parsedSortBy) ? parsedSortBy : ''
+    const sortByLocal = typeof parsedSortBy === 'string' ? parsedSortBy : ''
 
     const parsedOrderBy = destr(orderBy)
-    const orderByLocal = is.string(parsedOrderBy) ? parsedOrderBy : ''
+    const orderByLocal = typeof parsedOrderBy === 'string' ? parsedOrderBy : ''
 
     const parsedItemsPerPage = destr(itemsPerPage)
     const parsedPage = destr(page)
 
-    const itemsPerPageLocal = is.number(parsedItemsPerPage) ? parsedItemsPerPage : 10
-    const pageLocal = is.number(parsedPage) ? parsedPage : 1
+    const itemsPerPageLocal = typeof parsedItemsPerPage === 'number' ? parsedItemsPerPage : 10
+    const pageLocal = typeof parsedPage === 'number' ? parsedPage : 1
 
-    const searchQuery = is.string(q) ? q : undefined
+    const searchQuery = typeof q === 'string' ? q : undefined
     const queryLowered = (searchQuery ?? '').toString().toLowerCase()
 
     const filteredCustomers = db.customerData.filter(customer => {
@@ -365,18 +364,18 @@ export const handlerAppsEcommerce = [
     const page = req.url.searchParams.get('page')
 
     const parsedSortBy = destr(sortBy)
-    const sortByLocal = is.string(parsedSortBy) ? parsedSortBy : ''
+    const sortByLocal = typeof parsedSortBy === 'string' ? parsedSortBy : ''
 
     const parsedOrderBy = destr(orderBy)
-    const orderByLocal = is.string(parsedOrderBy) ? parsedOrderBy : ''
+    const orderByLocal = typeof parsedOrderBy === 'string' ? parsedOrderBy : ''
 
     const parsedItemsPerPage = destr(itemsPerPage)
     const parsedPage = destr(page)
 
-    const itemsPerPageLocal = is.number(parsedItemsPerPage) ? parsedItemsPerPage : 10
-    const pageLocal = is.number(parsedPage) ? parsedPage : 1
+    const itemsPerPageLocal = typeof parsedItemsPerPage === 'number' ? parsedItemsPerPage : 10
+    const pageLocal = typeof parsedPage === 'number' ? parsedPage : 1
 
-    const searchQuery = is.string(q) ? q : undefined
+    const searchQuery = typeof q === 'string' ? q : undefined
     const queryLower = (searchQuery ?? '').toString().toLowerCase()
 
     // Filtering Reviews
@@ -473,16 +472,16 @@ export const handlerAppsEcommerce = [
     const page = req.url.searchParams.get('page')
 
     const parsedSortBy = destr(sortBy)
-    const sortByLocal = is.string(parsedSortBy) ? parsedSortBy : ''
+    const sortByLocal = typeof parsedSortBy === 'string' ? parsedSortBy : ''
 
     const parsedOrderBy = destr(orderBy)
-    const orderByLocal = is.string(parsedOrderBy) ? parsedOrderBy : ''
+    const orderByLocal = typeof parsedOrderBy === 'string' ? parsedOrderBy : ''
 
     const parsedItemsPerPage = destr(itemsPerPage)
     const parsedPage = destr(page)
 
-    const itemsPerPageLocal = is.number(parsedItemsPerPage) ? parsedItemsPerPage : 10
-    const pageLocal = is.number(parsedPage) ? parsedPage : 1
+    const itemsPerPageLocal = typeof parsedItemsPerPage === 'number' ? parsedItemsPerPage : 10
+    const pageLocal = typeof parsedPage === 'number' ? parsedPage : 1
 
     const filteredReferrals = [...db.referrals]
 
