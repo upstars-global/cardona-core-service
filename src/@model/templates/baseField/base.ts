@@ -16,6 +16,8 @@ export interface IBaseField {
   /** i18n key — label is resolved reactively via getter; takes precedence over `label` */
   readonly labelKey?: string
   readonly placeholder?: TranslateResult
+  /** i18n key — placeholder is resolved reactively via getter; takes precedence over `placeholder` */
+  readonly placeholderKey?: string
   readonly description?: TranslateResult
   /** i18n key — description is resolved reactively via getter; takes precedence over `description` */
   readonly descriptionKey?: string
@@ -35,9 +37,10 @@ export abstract class BaseField implements IBaseField {
   readonly id: string
   private readonly _label?: TranslateResult | ComputedRef<string>
   private readonly _labelKey?: string
+  private readonly _placeholder?: TranslateResult
+  private readonly _placeholderKey?: string
   private readonly _description?: TranslateResult
   private readonly _descriptionKey?: string
-  readonly placeholder?: TranslateResult
   readonly info?: TranslateResult
   readonly validationRules?: IValidationConfig
   readonly permission?: PermissionType
@@ -52,6 +55,12 @@ export abstract class BaseField implements IBaseField {
     return this._label ?? ''
   }
 
+  get placeholder(): TranslateResult | undefined {
+    if (this._placeholderKey)
+      return i18n.t(this._placeholderKey)
+    return this._placeholder
+  }
+
   get description(): TranslateResult | undefined {
     if (this._descriptionKey)
       return i18n.t(this._descriptionKey)
@@ -63,7 +72,8 @@ export abstract class BaseField implements IBaseField {
     this.id = field.id ?? field.key
     this._label = field.label
     this._labelKey = field.labelKey
-    this.placeholder = field.placeholder
+    this._placeholder = field.placeholder
+    this._placeholderKey = field.placeholderKey
     this.validationRules = field.validationRules
     this._description = field.description
     this._descriptionKey = field.descriptionKey
