@@ -21,8 +21,6 @@ export const redirects: RouteRecordRaw[] = [
   },
 ]
 
-export const constructor: RouteRecordRaw[] = []
-
 export const routes: RouteRecordRaw[] = [
   {
     path: '/register',

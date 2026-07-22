@@ -200,14 +200,10 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 
 .divider-color {
   border-top-color: #ffffff14;
-  //margin-block: 0.5rem;
-  //background-color: rgba(var(--v-border-color), var(--v-border-opacity));
 }
 
 .custom-menu {
   padding-bottom: 0.5rem;
-  //padding: 1rem;
-  //border-top: 1px solid rgb(var(--v-theme-grey-200));
 
   :deep(.v-badge__badge) {
     height: 11px;
