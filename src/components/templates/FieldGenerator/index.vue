@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, isRef } from 'vue'
+import { computed, isRef, ref, watch } from 'vue'
 import { Field } from 'vee-validate'
+import { useI18n } from 'vue-i18n'
 import type { BaseField } from '../../../@model/templates/baseField'
 import { CheckBaseField, FieldGeneratorSlots, RatesBaseField, SwitchBaseField } from '../../../@model/templates/baseField'
 import { IconsList } from '../../../@model/enums/icons'
@@ -56,7 +57,6 @@ const formGroupClasses = computed(() => ({
 const fieldModel = computed({
   get: () => props.modelValue.value,
   set: value => {
-
     props.modelValue.value = value
     emits('update:modelValue', props.modelValue)
   },
@@ -84,6 +84,14 @@ const validationLabel = computed(() => {
   const isCurrencyLabel = allCurrencies.value.includes(resolvedLabel.value)
 
   return isCurrencyLabel ? resolvedLabel.value : resolvedLabel.value.toLowerCase()
+})
+
+const veeField = ref<InstanceType<typeof Field> | null>(null)
+const { locale } = useI18n()
+
+watch(locale, () => {
+  if (veeField.value?.errorMessage)
+    veeField.value.validate()
 })
 </script>
 
@@ -125,6 +133,7 @@ const validationLabel = computed(() => {
     </VLabel>
 
     <Field
+      ref="veeField"
       v-model="fieldModel"
       :name="modelValue.id"
       :label="validationLabel"
