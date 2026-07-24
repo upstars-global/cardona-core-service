@@ -1,4 +1,4 @@
-import type { Component, ComputedRef } from 'vue'
+import type { Component } from 'vue'
 import { isFunction, uniqBy } from 'lodash'
 import type { TranslateResult } from 'vue-i18n'
 import type { IValidationConfig } from '../../../@model/validations'
@@ -12,15 +12,9 @@ const OPTION_VALUE_KEY = 'id'
 export interface IBaseField {
   readonly key: string
   readonly id?: string
-  readonly label?: TranslateResult | ComputedRef<string>
-  /** i18n key — label is resolved reactively via getter; takes precedence over `label` */
-  readonly labelKey?: string
+  readonly label?: TranslateResult
   readonly placeholder?: TranslateResult
-  /** i18n key — placeholder is resolved reactively via getter; takes precedence over `placeholder` */
-  readonly placeholderKey?: string
   readonly description?: TranslateResult
-  /** i18n key — description is resolved reactively via getter; takes precedence over `description` */
-  readonly descriptionKey?: string
   readonly info?: TranslateResult
   readonly validationRules?: IValidationConfig
   readonly permission?: PermissionType
@@ -35,13 +29,10 @@ export abstract class BaseField implements IBaseField {
   protected abstract _value?: any
   readonly key: string
   readonly id: string
-  private readonly _label?: TranslateResult | ComputedRef<string>
-  private readonly _labelKey?: string
+  private readonly _label?: TranslateResult
   private readonly _placeholder?: TranslateResult
-  private readonly _placeholderKey?: string
   private readonly _description?: TranslateResult
-  private readonly _descriptionKey?: string
-  readonly info?: TranslateResult
+  private readonly _info?: TranslateResult
   readonly validationRules?: IValidationConfig
   readonly permission?: PermissionType
   readonly isLocalization?: boolean
@@ -49,35 +40,36 @@ export abstract class BaseField implements IBaseField {
   public serialize: (value: any) => any = value => value
   public deserialize: (value: any) => any = value => value
 
-  get label(): TranslateResult | ComputedRef<string> {
-    if (this._labelKey)
-      return i18n.t(this._labelKey)
-    return this._label ?? ''
+  private resolveKey(value?: TranslateResult): TranslateResult | undefined {
+    if (typeof value === 'string' && i18n.te(value))
+      return i18n.t(value)
+    return value
+  }
+
+  get label(): TranslateResult {
+    return this.resolveKey(this._label) ?? ''
   }
 
   get placeholder(): TranslateResult | undefined {
-    if (this._placeholderKey)
-      return i18n.t(this._placeholderKey)
-    return this._placeholder
+    return this.resolveKey(this._placeholder)
   }
 
   get description(): TranslateResult | undefined {
-    if (this._descriptionKey)
-      return i18n.t(this._descriptionKey)
-    return this._description
+    return this.resolveKey(this._description)
+  }
+
+  get info(): TranslateResult | undefined {
+    return this.resolveKey(this._info)
   }
 
   protected constructor(field: IBaseField) {
     this.key = field.key
     this.id = field.id ?? field.key
     this._label = field.label
-    this._labelKey = field.labelKey
     this._placeholder = field.placeholder
-    this._placeholderKey = field.placeholderKey
     this.validationRules = field.validationRules
     this._description = field.description
-    this._descriptionKey = field.descriptionKey
-    this.info = field.info
+    this._info = field.info
     this.permission = field.permission
     this.isLocalization = field.isLocalization
     this.form = field.form

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, isRef, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { Field } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 import type { BaseField } from '../../../@model/templates/baseField'
@@ -76,9 +76,7 @@ const notFilledDateRange = computed(() => {
 
 const allCurrencies = computed<string[]>(() => appConfigCoreStore.allCurrencies)
 
-const resolvedLabel = computed((): string =>
-  isRef(props.modelValue.label) ? props.modelValue.label.value : String(props.modelValue.label),
-)
+const resolvedLabel = computed((): string => String(props.modelValue.label))
 
 const validationLabel = computed(() => {
   const isCurrencyLabel = allCurrencies.value.includes(resolvedLabel.value)
@@ -92,7 +90,7 @@ const { locale } = useI18n()
 watch(locale, () => {
   if (veeField.value?.errorMessage)
     veeField.value.validate()
-})
+}, { flush: 'post' })
 </script>
 
 <template>
