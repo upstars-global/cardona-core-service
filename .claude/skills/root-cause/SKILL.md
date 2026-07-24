@@ -137,10 +137,10 @@ setting the field (Step 6) and showing the user your reasoning (in Russian, in c
 
 Never post the comment without this explicit approval.
 
-## Step 9 — Mark the diff signature (silence the hook)
+## Step 9 — Mark the commit signature (silence the hook)
 
 Whatever the outcome (field written / declined / not-a-bug / no field / verify failed), record the
-current diff signature so the Stop-hook won't re-nag until the branch diff changes again:
+current commit (HEAD) signature so the Stop-hook won't re-nag until the branch gets a new commit:
 
 ```bash
 node node_modules/cardona-core-service/scripts/root-cause-guard.mjs --mark

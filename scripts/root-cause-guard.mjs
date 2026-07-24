@@ -2,17 +2,20 @@
 // root-cause-guard — Stop-хук Claude Code для авто-простановки поля «Root cause» в Jira.
 //
 // Без AI и почти без стоимости: детерминированно проверяет, что мы на ветке задачи
-// (`BAC-XXXX`), в ней есть дифф против дефолтной ветки (master/main) и этот дифф
-// изменился с прошлого раза. Если да — блокирует остановку и просит AI проставить
-// поле Root cause (скилл /root-cause). Иначе молча выходит.
+// (`BAC-XXXX`), в ней есть хотя бы один коммит поверх точки ветвления от дефолтной
+// ветки (master/main) и HEAD сместился с прошлого раза. Если да — блокирует остановку
+// и просит AI проставить поле Root cause (скилл /root-cause). Иначе молча выходит.
+//
+// Триггер именно по КОММИТУ, а не по любой правке: сигнатура привязана к HEAD (SHA
+// коммита), поэтому незакоммиченные изменения рабочего дерева хук не будят — только
+// новый/переписанный коммит (commit/amend/rebase) сдвигает HEAD и запускает напоминание.
 //
 // Хук НЕ ходит в Jira (в shell нет MCP): проверить тип задачи (Bug/Sub-bug) и наличие
-// поля — работа самого скилла. Хук лишь напоминает по факту «ветка бага изменилась».
+// поля — работа самого скилла. Хук лишь напоминает по факту «на ветке бага новый коммит».
 //
-// Дедуп: сигнатура диффа (hash(branch + git diff <base>)) хранится в
+// Дедуп: сигнатура HEAD (hash(branch + git rev-parse HEAD)) хранится в
 // `.git/cardona-root-cause.state`. Скилл в конце работы вызывает этот скрипт с `--mark`,
-// чтобы записать текущую сигнатуру и погасить повторные напоминания до следующего
-// изменения диффа.
+// чтобы записать текущую сигнатуру и погасить повторные напоминания до следующего коммита.
 //
 // Раздача в панели: команда хука ссылается на этот файл внутри пакета —
 //   node node_modules/cardona-core-service/scripts/root-cause-guard.mjs
@@ -47,10 +50,11 @@ const sh = (cmd) => {
   }
 }
 
-// Ветка + её дифф против дефолтной ветки → ключ задачи и сигнатура диффа.
+// Ветка + её HEAD относительно дефолтной ветки → ключ задачи и сигнатура коммита.
 function computeState() {
   const branch = sh('git rev-parse --abbrev-ref HEAD')
   const ticket = (branch.match(/^(BAC-\d+)/i) || [])[1]?.toUpperCase() || null
+  const head = sh('git rev-parse HEAD')
 
   let baseBranch = null
   let base = null
@@ -63,13 +67,15 @@ function computeState() {
     }
   }
 
-  let diff = ''
-  if (base && branch && branch !== baseBranch)
-    diff = sh(`git diff ${base}`)
+  // Триггер по коммиту: должен быть хотя бы один коммит поверх точки ветвления
+  // (head !== base). Незакоммиченные правки HEAD не меняют → не будят хук.
+  const hasCommits = Boolean(base && head && head !== base && branch !== baseBranch)
 
-  const signature = createHash('sha1').update(`${branch}\n${diff}`).digest('hex')
+  // Сигнатура привязана к закоммиченному HEAD → меняется только при новом коммите
+  // (или amend/rebase), а не при простой правке рабочего дерева.
+  const signature = createHash('sha1').update(`${branch}\n${head}`).digest('hex')
 
-  return { branch, ticket, baseBranch, base, diff, signature }
+  return { branch, ticket, baseBranch, base, head, hasCommits, signature }
 }
 
 const gitDir = sh('git rev-parse --git-dir')
@@ -132,16 +138,16 @@ catch {
   done()
 }
 
-// Не BAC-ветка, нет дефолтной ветки или пустой дифф — не мешаем остановке.
-if (!state.ticket || !state.base || !state.diff)
+// Не BAC-ветка или нет ни одного коммита поверх базы — не мешаем остановке.
+if (!state.ticket || !state.hasCommits)
   done()
 
-// Дифф не менялся с прошлого раза — не напоминаем повторно.
+// HEAD (коммит) не менялся с прошлого раза — не напоминаем повторно.
 if (state.signature === readMarked())
   done()
 
 const reason = [
-  `Ветка задачи ${state.ticket} изменилась (дифф против ${state.baseBranch}).`,
+  `На ветке задачи ${state.ticket} новый коммит (относительно ${state.baseBranch}).`,
   'Проставь поле **Root cause** в Jira: вызови скилл /root-cause.',
   'Скилл сам проверит тип задачи и наличие поля — если это не Bug/Sub-bug или поля нет,',
   'он ничего не сделает (и пометит дифф как обработанный, чтобы не напоминать снова).',

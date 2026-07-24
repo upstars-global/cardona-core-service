@@ -65,9 +65,11 @@ only the read-only diff analysis is delegated to the `root-cause` subagent.
 
 **Components (they live here):**
 - `scripts/root-cause-guard.mjs` — Stop hook (see the panels' `.claude/settings.json`): deterministic,
-  no AI. On a `BAC-*` branch with a changed diff (vs the marked signature in `.git/cardona-root-cause.state`)
-  it blocks the stop and asks the AI to run `/root-cause`. Loop protection — `stop_hook_active`.
-  `--mark` records the current signature (the skill calls it at the end to silence re-nagging).
+  no AI. On a `BAC-*` branch with a **new commit** (HEAD moved vs the marked signature in
+  `.git/cardona-root-cause.state`) it blocks the stop and asks the AI to run `/root-cause`. The
+  trigger is commit-based — uncommitted working-tree edits do not fire it. Loop protection —
+  `stop_hook_active`. `--mark` records the current HEAD signature (the skill calls it at the end to
+  silence re-nagging).
 - `.claude/skills/root-cause/SKILL.md` — the `/root-cause` skill (orchestration): derive ticket →
   read issue type + the "Root cause" field & its options dynamically (`getJiraIssueTypeMetaWithFields`,
   field id is **not** hardcoded) → delegate diff analysis → write the field (as an **option**, not
