@@ -2,20 +2,23 @@
 // root-cause-guard — Stop-хук Claude Code для авто-простановки поля «Root cause» в Jira.
 //
 // Без AI и почти без стоимости: детерминированно проверяет, что мы на ветке задачи
-// (`BAC-XXXX`), в ней есть хотя бы один коммит поверх точки ветвления от дефолтной
-// ветки (master/main) и HEAD сместился с прошлого раза. Если да — блокирует остановку
-// и просит AI проставить поле Root cause (скилл /root-cause). Иначе молча выходит.
+// (`BAC-XXXX`), она запушена (есть вершина удалённой ветки) с хотя бы одним коммитом
+// поверх точки ветвления от дефолтной ветки (master/main), и эта вершина сместилась с
+// прошлого раза. Если да — блокирует остановку и просит AI проставить поле Root cause
+// (скилл /root-cause). Иначе молча выходит.
 //
-// Триггер именно по КОММИТУ, а не по любой правке: сигнатура привязана к HEAD (SHA
-// коммита), поэтому незакоммиченные изменения рабочего дерева хук не будят — только
-// новый/переписанный коммит (commit/amend/rebase) сдвигает HEAD и запускает напоминание.
+// Триггер именно по ПУШУ, а не по коммиту/правке: сигнатура привязана к вершине
+// удалённой ветки (`@{upstream}` → `origin/<branch>`). `git push` обновляет локальный
+// remote-tracking ref, поэтому пуш сдвигает эту вершину, а локальные незапушенные
+// коммиты и незакоммиченные правки хук НЕ будят.
 //
-// Хук НЕ ходит в Jira (в shell нет MCP): проверить тип задачи (Bug/Sub-bug) и наличие
-// поля — работа самого скилла. Хук лишь напоминает по факту «на ветке бага новый коммит».
+// Хук НЕ ходит в Jira (в shell нет MCP) и НЕ ходит в сеть (читает локальный
+// remote-tracking ref): проверить тип задачи (Bug/Sub-bug) и наличие поля — работа
+// самого скилла. Хук лишь напоминает по факту «ветка бага запушена».
 //
-// Дедуп: сигнатура HEAD (hash(branch + git rev-parse HEAD)) хранится в
+// Дедуп: сигнатура вершины удалённой ветки (hash(branch + remoteHead)) хранится в
 // `.git/cardona-root-cause.state`. Скилл в конце работы вызывает этот скрипт с `--mark`,
-// чтобы записать текущую сигнатуру и погасить повторные напоминания до следующего коммита.
+// чтобы записать текущую сигнатуру и погасить повторные напоминания до следующего пуша.
 //
 // Раздача в панели: команда хука ссылается на этот файл внутри пакета —
 //   node node_modules/cardona-core-service/scripts/root-cause-guard.mjs
@@ -50,32 +53,38 @@ const sh = (cmd) => {
   }
 }
 
-// Ветка + её HEAD относительно дефолтной ветки → ключ задачи и сигнатура коммита.
+// Ветка + вершина её удалённого аналога → ключ задачи и сигнатура пуша.
 function computeState() {
   const branch = sh('git rev-parse --abbrev-ref HEAD')
   const ticket = (branch.match(/^(BAC-\d+)/i) || [])[1]?.toUpperCase() || null
-  const head = sh('git rev-parse HEAD')
+
+  // Вершина удалённой ветки — двигается только при пуше (git обновляет remote-tracking
+  // ref). Сначала настроенный upstream (@{upstream}), затем origin/<branch>.
+  let remoteHead = sh('git rev-parse --verify --quiet @{upstream}')
+  if (!remoteHead && branch && branch !== 'HEAD')
+    remoteHead = sh(`git rev-parse --verify --quiet origin/${branch}`)
 
   let baseBranch = null
   let base = null
-  for (const b of ['master', 'main']) {
-    const mb = sh(`git merge-base ${b} HEAD`)
-    if (mb) {
-      baseBranch = b
-      base = mb
-      break
+  if (remoteHead) {
+    for (const b of ['master', 'main']) {
+      const mb = sh(`git merge-base ${b} ${remoteHead}`)
+      if (mb) {
+        baseBranch = b
+        base = mb
+        break
+      }
     }
   }
 
-  // Триггер по коммиту: должен быть хотя бы один коммит поверх точки ветвления
-  // (head !== base). Незакоммиченные правки HEAD не меняют → не будят хук.
-  const hasCommits = Boolean(base && head && head !== base && branch !== baseBranch)
+  // Триггер по пушу: ветка должна быть запушена (remoteHead есть) с хотя бы одним
+  // коммитом поверх точки ветвления. Локальные незапушенные коммиты не будят хук.
+  const hasPushedCommits = Boolean(remoteHead && base && remoteHead !== base && branch !== baseBranch)
 
-  // Сигнатура привязана к закоммиченному HEAD → меняется только при новом коммите
-  // (или amend/rebase), а не при простой правке рабочего дерева.
-  const signature = createHash('sha1').update(`${branch}\n${head}`).digest('hex')
+  // Сигнатура привязана к вершине удалённой ветки → меняется только при пуше.
+  const signature = createHash('sha1').update(`${branch}\n${remoteHead}`).digest('hex')
 
-  return { branch, ticket, baseBranch, base, head, hasCommits, signature }
+  return { branch, ticket, baseBranch, base, remoteHead, hasPushedCommits, signature }
 }
 
 const gitDir = sh('git rev-parse --git-dir')
@@ -138,16 +147,16 @@ catch {
   done()
 }
 
-// Не BAC-ветка или нет ни одного коммита поверх базы — не мешаем остановке.
-if (!state.ticket || !state.hasCommits)
+// Не BAC-ветка или ветка не запушена (нет коммитов на удалённой поверх базы) — не мешаем.
+if (!state.ticket || !state.hasPushedCommits)
   done()
 
-// HEAD (коммит) не менялся с прошлого раза — не напоминаем повторно.
+// Вершина удалённой ветки не менялась с прошлого раза (не было нового пуша) — не напоминаем.
 if (state.signature === readMarked())
   done()
 
 const reason = [
-  `На ветке задачи ${state.ticket} новый коммит (относительно ${state.baseBranch}).`,
+  `Ветка задачи ${state.ticket} запушена (новый пуш относительно ${state.baseBranch}).`,
   'Проставь поле **Root cause** в Jira: вызови скилл /root-cause.',
   'Скилл сам проверит тип задачи и наличие поля — если это не Bug/Sub-bug или поля нет,',
   'он ничего не сделает (и пометит дифф как обработанный, чтобы не напоминать снова).',
