@@ -163,6 +163,50 @@
   "25": "25",
   "50": "50",
   "100": "100",
+  "common": {
+    "loading": "جارٍ التحميل..."
+  },
+  "action": {
+    "repeat": "تكرار"
+  },
+  "placeholder": {
+    "dropFile": "اسحب الملف هنا أو ارفعه من الجهاز"
+  },
+  "uploadFile": {
+    "textBtn": "رفع من الجهاز",
+    "dropFile": "اسحب الملف هنا أو ارفعه من الجهاز",
+    "dragTextDrop": "أفلت الملف",
+    "fileParams": "{accept}، الحجم الأقصى {size} ميغابايت"
+  },
+  "uploadImg": {
+    "label": "صورة",
+    "textBtn": "اختر",
+    "selectImage": "اختر صورة",
+    "selectImageTooltip": "قد يتسبب استخدام كلمات مثل «banner, promo, affiliate, marketing» في اسم الصورة في حظرها",
+    "errorLoadImage": "لم يتم تحميل الصورة. خطأ في الخادم.",
+    "delete": "حذف",
+    "dragText": "اسحب الملف هنا أو ارفعه من الجهاز",
+    "maxSize": "الحجم الأقصى {size} ميغابايت",
+    "downloadNew": "رفع جديد",
+    "downloadDevice": "رفع جديد",
+    "uploadFromDevice": "رفع من الجهاز",
+    "dragTextDrop": "اسحب الملف هنا",
+    "textDrop": "أفلت الملف هنا",
+    "chooseFromDownloaded": "اختر من المرفوعات",
+    "tableColImg": "صورة",
+    "tableColUrl": "رابط",
+    "nothingInFolder": "لا يوجد شيء في هذا المجلد",
+    "ChooseDifferentFolder": "اختر مجلدًا مختلفًا أو ارفع صورة جديدة",
+    "loadError": "خطأ في التحميل",
+    "modalLabel": {
+      "project": "هل أنت متأكد أنك تريد إزالة أيقونة المشروع؟",
+      "banners": "هل أنت متأكد أنك تريد حذف الصورة؟"
+    },
+    "modalTitle": {
+      "project": "حذف الأيقونة",
+      "banners": "إزالة الصورة"
+    }
+  },
   "$vuetify": {
     "badge": "شارة",
     "noDataText": "لا تتوافر بيانات",

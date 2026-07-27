@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { VColors } from '../../@model/vuetify'
 import BaseModal from '../BaseModal/index.vue'
 import type { ConfirmModalPropsOfSlotDefault, ModalActionsFromSlot } from '../../@model/modal'
-import { i18n } from '../../plugins/i18n'
 import { useLoaderStore } from '../../stores/loader'
 import ModalFooter from './ModalFooter.vue'
 
@@ -20,13 +20,14 @@ interface Emits {
   (event: 'on-close-modal'): void
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  confirmBtnText: i18n.t('action.add'),
-})
+const props = defineProps<Props>()
 
 const emits = defineEmits<Emits>()
 
+const { t } = useI18n()
 const loaderStore = useLoaderStore()
+
+const displayConfirmBtnText = computed(() => props.confirmBtnText ?? t('action.add'))
 
 const onClickModalOk = async (hide: Function) => {
   emits('on-click-modal-ok', { hide })
@@ -37,7 +38,7 @@ const onCloseModal = (hide: Function) => {
   hide()
 }
 
-const getButtonConfirm = (text: string) => text || props.confirmBtnText
+const getButtonConfirm = (text: string) => text || displayConfirmBtnText.value
 
 const isLoading = computed(() => props?.loadingUrls ? loaderStore.isLoadingEndpoint(props?.loadingUrls) : false)
 </script>

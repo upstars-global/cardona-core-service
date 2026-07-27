@@ -12,7 +12,7 @@ const OPTION_VALUE_KEY = 'id'
 export interface IBaseField {
   readonly key: string
   readonly id?: string
-  readonly label: TranslateResult
+  readonly label?: TranslateResult
   readonly placeholder?: TranslateResult
   readonly description?: TranslateResult
   readonly info?: TranslateResult
@@ -29,10 +29,10 @@ export abstract class BaseField implements IBaseField {
   protected abstract _value?: any
   readonly key: string
   readonly id: string
-  readonly label: TranslateResult
-  readonly placeholder?: TranslateResult
-  readonly description?: TranslateResult
-  readonly info?: TranslateResult
+  private readonly _label?: TranslateResult
+  private readonly _placeholder?: TranslateResult
+  private readonly _description?: TranslateResult
+  private readonly _info?: TranslateResult
   readonly validationRules?: IValidationConfig
   readonly permission?: PermissionType
   readonly isLocalization?: boolean
@@ -40,14 +40,36 @@ export abstract class BaseField implements IBaseField {
   public serialize: (value: any) => any = value => value
   public deserialize: (value: any) => any = value => value
 
+  private resolveKey(value?: TranslateResult): TranslateResult | undefined {
+    if (typeof value === 'string' && i18n.te(value))
+      return i18n.t(value)
+    return value
+  }
+
+  get label(): TranslateResult {
+    return this.resolveKey(this._label) ?? ''
+  }
+
+  get placeholder(): TranslateResult | undefined {
+    return this.resolveKey(this._placeholder)
+  }
+
+  get description(): TranslateResult | undefined {
+    return this.resolveKey(this._description)
+  }
+
+  get info(): TranslateResult | undefined {
+    return this.resolveKey(this._info)
+  }
+
   protected constructor(field: IBaseField) {
     this.key = field.key
     this.id = field.id ?? field.key
-    this.label = field.label
-    this.placeholder = field.placeholder
+    this._label = field.label
+    this._placeholder = field.placeholder
     this.validationRules = field.validationRules
-    this.description = field.description
-    this.info = field.info
+    this._description = field.description
+    this._info = field.info
     this.permission = field.permission
     this.isLocalization = field.isLocalization
     this.form = field.form

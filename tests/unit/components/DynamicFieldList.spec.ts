@@ -110,8 +110,9 @@ describe('DynamicFieldList', () => {
     const fieldsCount = 5
     const fieldToRemoveIndex = 1
 
-    props.modelValue = getTemplateFields(fieldsCount, getSingleField) as TextBaseField[]
-    props.modelValue.forEach((f, i) => ((f as { label: string }).label = `item-${i}`))
+    props.modelValue = Array.from({ length: fieldsCount }, (_, i) =>
+      new TextBaseField({ key: 'text', id: Math.random().toString(), label: `item-${i}` }),
+    ) as TextBaseField[]
 
     const wrapper = getMountComponent(props)
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
+import { computed, inject, isRef, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
@@ -99,7 +99,7 @@ const disableRowIds = ref<string[]>([])
 
 const {
   entityName,
-  fields,
+  fields: rawFields,
   ListFilterModel,
   SideBarModel,
   pageName,
@@ -205,7 +205,13 @@ watch(
   { deep: true },
 )
 
-const selectedFields = ref<TableField[]>(fields)
+const allFields = computed(() => isRef(rawFields) ? rawFields.value : rawFields)
+const selectedFields = ref<TableField[]>([...allFields.value])
+
+watch(allFields, (newFields) => {
+  const selectedKeys = new Set(selectedFields.value.map(f => f.key))
+  selectedFields.value = newFields.filter(f => selectedKeys.has(f.key))
+})
 
 const normalizedEntityName = computed(() => {
   const index = entityName.indexOf('-') + 1
@@ -799,7 +805,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           <TableFields
             v-model="selectedFields"
             :entity-name="pageName || entityName"
-            :list="fields"
+            :list="allFields"
           />
         </div>
       </div>

@@ -11,7 +11,14 @@ import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
 import BtnIcon from '../../../components/templates/_components/BtnIcon.vue'
 import { ProjectFilterTypes } from '@filterConfig'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+
+const languages = [
+  { label: 'EN', value: 'en' },
+  { label: 'FR', value: 'fr' },
+  { label: 'AR', value: 'ar' },
+  { label: 'UK', value: 'uk' },
+]
 
 const listConfig = new BaseListConfig({
   withSettings: true,
@@ -88,6 +95,19 @@ const setButtonState = (key: string): void => {
 </script>
 
 <template>
+  <div class="d-flex justify-end mb-3">
+    <VBtnGroup density="compact">
+      <VBtn
+        v-for="lang in languages"
+        :key="lang.value"
+        :variant="locale === lang.value ? VVariants.Tonal : VVariants.Outlined"
+        :color="locale === lang.value ? VColors.Primary : undefined"
+        @click="locale = lang.value"
+      >
+        {{ lang.label }}
+      </VBtn>
+    </VBtnGroup>
+  </div>
   <BaseList
     :use-list="useDemoList"
     :config="listConfig"

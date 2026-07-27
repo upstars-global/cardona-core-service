@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useToggle } from '@vueuse/core'
 import { debounce } from 'lodash'
 import type { OptionsItem } from '../../../../@model'
 import { IconsList } from '../../../../@model/enums/icons'
 import type { SelectBaseField } from '../../../../@model/templates/baseField'
-import { i18n } from '../../../../plugins/i18n'
 import { withPopper } from '../../../../helpers/selectPopper'
 import { useInfiniteScroll } from '../../../../helpers/infiniteScroll'
 
@@ -21,8 +21,10 @@ const props = withDefaults(
   {
     modelValue: '',
     size: '',
-    placeholder: i18n.t('placeholder.choose._') as string,
   })
+
+const { t } = useI18n()
+const displayPlaceholder = computed(() => props.placeholder ?? t('placeholder.choose._'))
 
 const emits = defineEmits<{
   (e: 'update:modelValue', value: string | number): void
@@ -139,7 +141,7 @@ defineExpose({
   <div>
     <VueSelect
       v-model="valueModel"
-      :placeholder="placeholder"
+      :placeholder="displayPlaceholder"
       label="name"
       :loading="isLoading"
       :multiple="isMultiple"
