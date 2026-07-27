@@ -2,6 +2,7 @@ import type { RouteLocationNormalized } from 'vue-router'
 import { kebabCase, uniq } from 'lodash'
 import type { IRouterConfig } from '../@model/router'
 import { convertCamelCase } from '../helpers/index'
+import { PermissionLevel } from '../@model/permission'
 import { permissionPrefix } from '@productConfig'
 import type { PermissionType } from '@permissions'
 
