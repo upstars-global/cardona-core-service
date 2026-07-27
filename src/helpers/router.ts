@@ -15,6 +15,9 @@ export const useRedirectToNotFoundPage = router => async (errorType: string): Pr
 
   return false
 }
+type PagesGlob = Record<string, () => Promise<unknown>>
+type ComponentResolver = (path: string) => () => Promise<unknown>
+
 interface BuildRouteArgs {
   importSTR: string
   entityUrl: string
@@ -22,6 +25,7 @@ interface BuildRouteArgs {
   permission: PermissionType | PermissionType[]
   sectionConfig: IRouterConfig
   prefixName: string
+  componentResolver: ComponentResolver
 }
 
 function permissionGroupMeta({ permission, sectionConfig }: BuildRouteArgs) {
@@ -43,7 +47,7 @@ const getPrefixNameKey = (prefixName: string, name: string) =>
     ? prefixName.charAt(0).toLowerCase() + prefixName.slice(1) + name.charAt(0).toUpperCase() + name.slice(1)
     : name
 
-function getCommonProps(sectionConfig: IRouterConfig): BuildRouteArgs {
+function getCommonProps(sectionConfig: IRouterConfig, componentResolver: ComponentResolver): BuildRouteArgs {
   let importSTR = sectionConfig.isConvertName
     ? convertCamelCase(sectionConfig.name, '/')
     : sectionConfig.name
@@ -53,18 +57,18 @@ function getCommonProps(sectionConfig: IRouterConfig): BuildRouteArgs {
 
   const entityUrl = getEntityUrl(importSTR, sectionConfig)
   const entityName = sectionConfig.name[0].toUpperCase() + sectionConfig.name.slice(1)
-  const permission: PermissionType | PermissionType[] = sectionConfig?.permission || `${permissionPrefix}-${convertCamelCase(sectionConfig.name, '-')}`
+  const permission: PermissionType | PermissionType[] = sectionConfig.permission || `${permissionPrefix}-${convertCamelCase(sectionConfig.name, '-')}`
   const prefixName = sectionConfig.prefixName || ''
 
-  return { importSTR, entityUrl, entityName, permission, sectionConfig, prefixName }
+  return { importSTR, entityUrl, entityName, permission, sectionConfig, prefixName, componentResolver }
 }
 
 const buildListRoute = ({
-  importSTR, entityUrl, entityName, permission, sectionConfig, prefixName,
+  importSTR, entityUrl, entityName, permission, sectionConfig, prefixName, componentResolver,
 }: BuildRouteArgs) => ({
   path: entityUrl,
   name: `${prefixName}${entityName}List`,
-  component: () => import(`@/pages/${importSTR}/list/index.vue`),
+  component: componentResolver(`${importSTR}/list/index.vue`),
   meta: {
     title: `${getPrefixNameKey(prefixName, sectionConfig.name)}.list`,
     permission,
@@ -75,7 +79,7 @@ const buildListRoute = ({
 const buildCreateRoute = (args: BuildRouteArgs) => ({
   path: `${args.entityUrl}/create/:type?/:id?`,
   name: `${args.prefixName}${args.entityName}Create`,
-  component: () => import(`@/pages/${args.importSTR}/create/index.vue`),
+  component: args.componentResolver(`${args.importSTR}/create/index.vue`),
   meta: {
     title: `${getPrefixNameKey(args.prefixName, args.sectionConfig.name)}.create`,
     permission: args.permission,
@@ -87,7 +91,7 @@ const buildCreateRoute = (args: BuildRouteArgs) => ({
 const buildUpdateRoute = (args: BuildRouteArgs) => ({
   path: `${args.entityUrl}/update/:id`,
   name: `${args.prefixName}${args.entityName}Update`,
-  component: () => import(`@/pages/${args.importSTR}/update/index.vue`),
+  component: args.componentResolver(`${args.importSTR}/update/index.vue`),
   meta: {
     title: `${getPrefixNameKey(args.prefixName, args.sectionConfig.name)}.edit`,
     ...permissionGroupMeta(args),
@@ -98,7 +102,7 @@ const buildUpdateRoute = (args: BuildRouteArgs) => ({
 const buildCardRoute = (args: BuildRouteArgs) => ({
   path: `${args.entityUrl}/card/:id`,
   name: `${args.prefixName}${args.entityName}Card`,
-  component: () => import(`@/pages/${args.importSTR}/card/index.vue`),
+  component: args.componentResolver(`${args.importSTR}/card/index.vue`),
   meta: {
     title: `${getPrefixNameKey(args.prefixName, args.sectionConfig.name)}.card`,
     ...permissionGroupMeta(args),
@@ -110,7 +114,7 @@ const buildCardRoute = (args: BuildRouteArgs) => ({
 const buildSingleRoute = (args: BuildRouteArgs) => ({
   path: args.entityUrl,
   name: `${args.prefixName}${args.entityName}`,
-  component: () => import(`@/pages/${args.importSTR}/index.vue`),
+  component: args.componentResolver(`${args.importSTR}/index.vue`),
   meta: {
     title: args.sectionConfig.name,
     ...permissionGroupMeta(args),
@@ -119,8 +123,11 @@ const buildSingleRoute = (args: BuildRouteArgs) => ({
 })
 
 export default function sectionRouterGenerator(sectionConfigs: Array<IRouterConfig>) {
+  const pages = import.meta.glob('/src/pages/**/*.vue') as PagesGlob
+  const componentResolver: ComponentResolver = path => pages[`/src/pages/${path}`]
+
   return sectionConfigs.flatMap((sectionConfig: IRouterConfig) => {
-    const buildRouteArgs = getCommonProps(sectionConfig)
+    const buildRouteArgs = getCommonProps(sectionConfig, componentResolver)
 
     if (sectionConfig.isSingleRoute)
       return buildSingleRoute(buildRouteArgs)
