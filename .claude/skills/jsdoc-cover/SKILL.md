@@ -21,171 +21,49 @@ description: |
 
 # JSDoc Cover
 
-Goal: every exported callable (function, method, constructor) gets a JSDoc block that
-makes IDE hover show **what each parameter means** and **what is returned**.
-
-## What good hover looks like
-
-When a developer hovers over `prepareDisplayedAmount(...)` in VS Code, they should see:
-
-```
-prepareDisplayedAmount(value, currency?, options?)
-Formats a monetary amount for display using the uk-UA locale.
-
-@param value — raw amount; treated as cents when `currency` is set (divided by 100)
-@param currency — ISO 4217 code appended after a non-breaking space (e.g. 'UAH')
-@param options — Intl.NumberFormat overrides; defaults to 2 decimal places with currency
-@returns formatted string, e.g. '1 500,00 UAH'
-```
-
-That's the target. Clear params, clear return, no noise.
+Goal: every exported callable gets a JSDoc block that makes IDE hover show **what each parameter means** and **what is returned**.
 
 ## Rules
 
-**Never duplicate TypeScript types in @param.** TS already shows the type in the tooltip.
-
-```ts
-// ✗ Redundant — TS shows the type anyway
-/** @param {string} key */
-
-// ✓ Correct — just the name and description
-/** @param key — the localStorage key to write under */
-```
-
-**Every exported symbol gets a JSDoc block** — even simple ones. Developers read hover
-tooltips to understand intent, not just types.
-
-**Keep descriptions short** — one line per @param fits better in IDE popups than long prose.
-
----
+- **Never duplicate TypeScript types in @param** — TS already shows the type; write only the name and description (`@param key — the localStorage key`, not `@param {string} key`)
+- **Every exported symbol gets a JSDoc block** — even simple ones; developers read hover to understand intent, not just types
+- **Keep descriptions short** — one line per @param fits IDE popups better than long prose
 
 ## Process
 
-### 1. Read the file
+1. Read the full file first
+2. For non-obvious params/returns — trace called helpers or type definitions via LSP `goToDefinition` or Read before writing (wrong description is worse than none)
+3. Write JSDoc for each exported symbol per the patterns below
+4. Apply all changes via Edit
 
-Read the full file before writing anything.
+## Patterns by symbol type
 
-### 2. Research when needed
+**Functions & arrow functions** — one-line summary + `@param name — description` for each non-obvious param + `@returns` if not void/self-evident.
 
-If a parameter or return value is non-obvious:
-- Read called helper functions to understand what they do
-- Trace type definitions with LSP `goToDefinition` or Read to understand field shapes
-- Only then write the @param description
+**Classes** — one-sentence class description; constructor `@param data — raw API payload; omit for default instance`; public method docs same as functions.
 
-This matters for accuracy: a wrong description is worse than no description.
+**Interfaces** — inline `/** */` only for non-obvious fields; skip fields where the name alone explains the shape (e.g. `id: number`).
 
-### 3. Write JSDoc for each exported symbol
+**Vue composables (`use*.ts`)** — one-line purpose + `@param options — what can be configured` + `@returns` listing key exposed values: `` `items`, `isLoading`, `load()` ``.
 
-#### Functions and arrow functions
+**Vue components (`<script setup>`)** — top-of-script block with `@component Name` + `@description`; inline comments only on non-obvious props.
 
-```ts
-/**
- * One-line description of what the function does.
- *
- * @param paramName — what this param controls or represents
- * @param optionalParam — what happens when omitted
- * @returns what is returned; omit if void or self-evident
- */
-```
-
-#### Classes
-
-```ts
-/**
- * What this class represents (one sentence).
- */
-class Foo {
-  /**
-   * @param data — raw API payload to build from; omit for a blank default instance
-   */
-  constructor(data?: FooInput) { ... }
-
-  /**
-   * What this method does.
-   * @param id — ...
-   * @returns ...
-   */
-  someMethod(id: number): string { ... }
-}
-```
-
-#### Interfaces
-
-Use inline `/** */` only for non-obvious fields — fields where the name alone
-does not explain the shape or behavior:
-
-```ts
-export interface IConfig {
-  /** Enables the search bar above the table */
-  withSearch?: boolean
-  id: number  // obvious — skip
-}
-```
-
-#### Vue composables (`use*.ts`)
-
-```ts
-/**
- * One-line purpose.
- *
- * @param options — describe what can be configured
- * @returns object with reactive state and actions; list the key ones:
- *   `items` (reactive list), `isLoading`, `load()`, `reset()`
- */
-```
-
-#### Vue components (`<script setup>`)
-
-Add a block at the top of `<script setup>` and inline comments on non-obvious props:
-
-```vue
-<script setup lang="ts">
-/**
- * @component ComponentName
- * @description What this component does.
- */
-
-interface Props {
-  /** Pre-selects the annual plan on first render */
-  annualDefault?: boolean
-  items: Item[]  // obvious
-}
-```
-
-#### Standalone utility / helper functions — add @example
-
-```ts
-/**
- * Compacts a large number into a short string with M / K suffix.
- *
- * @param value — raw numeric amount (string or number accepted)
- * @returns compact string: '1.5M', '25K', or the plain number for values < 10 000
- *
- * @example
- * amountFormatter(1_500_000)  // → '1.5M'
- * amountFormatter(25_000)     // → '25K'
- * amountFormatter(999)        // → '999'
- */
-```
-
----
+**Standalone utility helpers** — same as functions + `@example` showing 2–3 representative calls with expected output.
 
 ## Tags
 
 | Tag | When |
 |-----|------|
-| `@param name` | Every parameter whose purpose isn't 100% obvious from its name |
-| `@returns` | Whenever the return value meaning goes beyond its type |
+| `@param name` | Purpose isn't obvious from name alone |
+| `@returns` | Return value meaning goes beyond its type |
 | `@example` | Standalone utility/helper functions |
-| `@remarks` | Non-obvious side effects, performance notes, known caveats |
+| `@remarks` | Side effects, performance notes, known caveats |
 | `@throws` | Only if callers must handle thrown errors |
 
-**Never:** `@type`, `@property`, `@param {string} name` (type already in TS signature).
-
----
+Never use: `@type`, `@property`, `@param {Type} name`.
 
 ## After writing
 
-Apply all changes via Edit. Then show:
+Show:
 1. Summary table: file → symbols documented
 2. Anything skipped and why
