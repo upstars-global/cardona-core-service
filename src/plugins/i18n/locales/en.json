@@ -859,6 +859,7 @@
     "downloadDevice": "Upload new",
     "uploadFromDevice": "Upload from device",
     "dragTextDrop": "Drag file here",
+    "textDrop": "Drop file here",
     "chooseFromDownloaded": "Choose from uploaded",
     "tableColImg": "Image",
     "tableColUrl": "URL",

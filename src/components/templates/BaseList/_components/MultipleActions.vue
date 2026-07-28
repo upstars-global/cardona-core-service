@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { BaseListSlots } from '../../../../@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '../../../../@model/vuetify'
-import { i18n } from '../../../../plugins/i18n'
 import { ModalsId } from '../../../../@model/modalsId'
 import ConfirmationModal from '../../../../../src/components/BaseModal/ConfirmationModal.vue'
 import { MultipleActions } from '../../../../@model/enums/multipleActions'
@@ -26,9 +26,11 @@ const isToggleStatus = computed(() => !props.action || props.action === Multiple
 const isRemove = computed(() => !props.action || props.action === MultipleActions.Remove)
 
 const modal = inject('modal')
+const { t } = useI18n()
 
-const multipleRemoveTitle = computed(() => props.numberSelectedItems > 1 ? i18n.t(`modal.remove${props.entityName}.titleMultiple`) : i18n.t(`modal.remove${props.entityName}.title`))
-const multipleRemoveDescription = computed(() => props.numberSelectedItems > 1 ? i18n.t(`modal.remove${props.entityName}.descriptionMultiple`) : i18n.t(`modal.remove${props.entityName}.description`))
+const multipleRemoveTitle = computed(() => props.numberSelectedItems > 1 ? t(`modal.remove${props.entityName}.titleMultiple`) : t(`modal.remove${props.entityName}.title`))
+const multipleRemoveDescription = computed(() => props.numberSelectedItems > 1 ? t(`modal.remove${props.entityName}.descriptionMultiple`) : t(`modal.remove${props.entityName}.description`))
+const actionBtnText = computed(() => t('action.remove'))
 
 const onRemove = () => {
   modal.showModal(ModalsId.MultipleRemoveList)
@@ -40,7 +42,7 @@ const onRemove = () => {
     :title="multipleRemoveTitle"
     :description="multipleRemoveDescription"
     :modal-id="ModalsId.MultipleRemoveList"
-    :action-btn-text="i18n.t('action.remove')"
+    :action-btn-text="actionBtnText"
     @confirmed="emits('on-remove')"
   />
   <div class="table-settings w-100 align-center justify-space-between">

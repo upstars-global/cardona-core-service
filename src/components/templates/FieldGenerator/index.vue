@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { Field } from 'vee-validate'
+import { useI18n } from 'vue-i18n'
 import type { BaseField } from '../../../@model/templates/baseField'
 import { CheckBaseField, FieldGeneratorSlots, RatesBaseField, SwitchBaseField } from '../../../@model/templates/baseField'
 import { IconsList } from '../../../@model/enums/icons'
@@ -45,7 +46,7 @@ const rules = computed(() => !isRatesType.value ? props.modelValue?.validationRu
 const isCheckTypeWithInfo = computed(() => isCheckType.value && props.withInfo && props.modelValue.info)
 
 const groupLabel = computed(() =>
-  props.withLabel && !isCheckType.value ? props.modelValue.label : '',
+  props.withLabel && !isCheckType.value ? resolvedLabel.value : '',
 )
 
 const formGroupClasses = computed(() => ({
@@ -75,11 +76,21 @@ const notFilledDateRange = computed(() => {
 
 const allCurrencies = computed<string[]>(() => appConfigCoreStore.allCurrencies)
 
-const validationLabel = computed(() => {
-  const isCurrencyLabel = allCurrencies.value.includes(props.modelValue.label)
+const resolvedLabel = computed((): string => String(props.modelValue.label))
 
-  return isCurrencyLabel ? props.modelValue.label : props.modelValue.label.toLowerCase()
+const validationLabel = computed(() => {
+  const isCurrencyLabel = allCurrencies.value.includes(resolvedLabel.value)
+
+  return isCurrencyLabel ? resolvedLabel.value : resolvedLabel.value.toLowerCase()
 })
+
+const veeField = ref<InstanceType<typeof Field> | null>(null)
+const { locale } = useI18n()
+
+watch(locale, () => {
+  if (veeField.value?.errorMessage)
+    veeField.value.validate()
+}, { flush: 'post' })
 </script>
 
 <template>
@@ -120,6 +131,7 @@ const validationLabel = computed(() => {
     </VLabel>
 
     <Field
+      ref="veeField"
       v-model="fieldModel"
       :name="modelValue.id"
       :label="validationLabel"

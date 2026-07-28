@@ -164,6 +164,50 @@
   "25": "25",
   "50": "50",
   "100": "100",
+  "common": {
+    "loading": "Chargement..."
+  },
+  "action": {
+    "repeat": "Répéter"
+  },
+  "placeholder": {
+    "dropFile": "Faites glisser le fichier ici ou téléchargez depuis l'appareil"
+  },
+  "uploadFile": {
+    "textBtn": "Télécharger depuis l'appareil",
+    "dropFile": "Faites glisser le fichier ici ou téléchargez depuis l'appareil",
+    "dragTextDrop": "Déposez le fichier",
+    "fileParams": "{accept}, taille max {size} Mo"
+  },
+  "uploadImg": {
+    "label": "Image",
+    "textBtn": "Sélectionner",
+    "selectImage": "Sélectionner une image",
+    "selectImageTooltip": "L'utilisation de mots tels que «banner, promo, affiliate, marketing» dans le nom de l'image peut entraîner un blocage",
+    "errorLoadImage": "Image non chargée. Erreur serveur.",
+    "delete": "Supprimer",
+    "dragText": "Faites glisser le fichier ici ou téléchargez depuis l'appareil",
+    "maxSize": "Taille max {size} Mo",
+    "downloadNew": "Télécharger nouveau",
+    "downloadDevice": "Télécharger nouveau",
+    "uploadFromDevice": "Télécharger depuis l'appareil",
+    "dragTextDrop": "Faites glisser le fichier ici",
+    "textDrop": "Déposez le fichier ici",
+    "chooseFromDownloaded": "Choisir parmi les téléchargés",
+    "tableColImg": "Image",
+    "tableColUrl": "URL",
+    "nothingInFolder": "Rien dans ce dossier",
+    "ChooseDifferentFolder": "Choisissez un autre dossier ou téléchargez une nouvelle image",
+    "loadError": "Erreur de chargement",
+    "modalLabel": {
+      "project": "Êtes-vous sûr de vouloir supprimer l'icône du projet ?",
+      "banners": "Êtes-vous sûr de vouloir supprimer l'image ?"
+    },
+    "modalTitle": {
+      "project": "Supprimer l'icône",
+      "banners": "Suppression de l'image"
+    }
+  },
   "$vuetify": {
     "badge": "Badge",
     "noDataText": "Pas de données disponibles",
