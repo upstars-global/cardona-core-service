@@ -558,9 +558,9 @@ export enum BaseListSlots {
 export interface IBaseListSlots {
   [key: string]: (...args: any[]) => any
   [BaseListSlots.TableHeader]: (props: { selectedItems: any[]; total: number; search: string; entityName: string }) => any
-  [BaseListSlots.SidebarActions]: (props: { form: any; item: any; canRemove: boolean; inlineFilters: any; onClickRemove: (item?: any) => void }) => any
+  [BaseListSlots.SidebarActions]: (props: { form: any; item: any; canRemove: boolean; inlineFilters: Record<string, unknown>; onClickRemove: (item?: any) => void }) => any
   [BaseListSlots.SidebarActionItems]: (props: { form: any; item: any }) => any
-  [BaseListSlots.RightSearchBtn]: (props: { canCreate: boolean; canUpdate: boolean; createPageName: string; inlineFilters: any }) => any
+  [BaseListSlots.RightSearchBtn]: (props: { canCreate: boolean; canUpdate: boolean; createPageName: string; inlineFilters: Record<string, unknown> }) => any
   [BaseListSlots.LeftSearchBtn]: () => any
   [BaseListSlots.CustomFilter]: () => any
   [BaseListSlots.PrependMultipleAction]: (props: { selectedItems: any[]; canUpdate: boolean; entityName: string }) => any
