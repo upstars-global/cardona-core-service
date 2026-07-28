@@ -555,6 +555,23 @@ export enum BaseListSlots {
   DetailsActionItem = 'details-action-item',
 }
 
+export interface IBaseListSlots {
+  [key: string]: (...args: any[]) => any
+  [BaseListSlots.TableHeader]: (props: { selectedItems: any[]; total: number; search: string; entityName: string }) => any
+  [BaseListSlots.SidebarActions]: (props: { form: any; item: any; canRemove: boolean; inlineFilters: any; onClickRemove: (item?: any) => void }) => any
+  [BaseListSlots.SidebarActionItems]: (props: { form: any; item: any }) => any
+  [BaseListSlots.RightSearchBtn]: (props: { canCreate: boolean; canUpdate: boolean; createPageName: string; inlineFilters: any }) => any
+  [BaseListSlots.LeftSearchBtn]: () => any
+  [BaseListSlots.CustomFilter]: () => any
+  [BaseListSlots.PrependMultipleAction]: (props: { selectedItems: any[]; canUpdate: boolean; entityName: string }) => any
+  [BaseListSlots.MultipleActions]: (props: { selectedItems: any[]; canUpdate: boolean; entityName: string }) => any
+  [BaseListSlots.TableFieldSetting]: (props: { selectedItems: any[]; items: any[] }) => any
+  [BaseListSlots.Empty]: () => any
+  [BaseListSlots.PrependActionItem]: (props: { item: any; canUpdate: boolean }) => any
+  [BaseListSlots.AppendActionItem]: (props: { item: any; canUpdate: boolean; canCreate: boolean; entityName: string }) => any
+  [BaseListSlots.DetailsActionItem]: (props: { item: any; pageName: string }) => any
+}
+
 export interface ProjectsFilterOption {
   id: string
   alias: string
