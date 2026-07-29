@@ -68,7 +68,7 @@ const defaultRoute = { path: '/' }
     class="pt-4"
   >
     <div
-      v-if="isMenuTypeMain"
+      v-if="!isMenuTypeMain"
       class="d-flex align-center pb-4 pl-2"
     >
       <VBtn
