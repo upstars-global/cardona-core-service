@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { VVariants } from '../../../@model/vuetify'
 import { IconsList } from '../../../@model/enums/icons'
 import type { NavGroup, NavLink, VerticalNavItems } from '@layouts/types'
 import { getComputedNavLinkToProp, isNavGroupActive, isNavLinkActive } from '@layouts/utils'
@@ -11,6 +12,7 @@ defineOptions({ name: 'SideBar' })
 const props = defineProps<{
   items: VerticalNavItems
   isCollapsed: boolean
+  isMenuTypeMain: boolean
 }>()
 
 const { t } = useI18n()
@@ -53,6 +55,8 @@ const opened = computed({
 
 const getIcon = (item: NavGroup | NavLink) =>
   (item.icon as { icon?: string } | undefined)?.icon
+
+const defaultRoute = { path: '/' }
 </script>
 
 <template>
@@ -63,6 +67,18 @@ const getIcon = (item: NavGroup | NavLink) =>
     open-strategy="single"
     class="pt-4"
   >
+    <div
+      v-if="isMenuTypeMain"
+      class="d-flex align-center pb-4 pl-2"
+    >
+      <VBtn
+        :prepend-icon="IconsList.ArrowLeftIcon"
+        :variant="VVariants.Text"
+        :to="defaultRoute"
+      >
+        {{ $t('action.back') }}
+      </VBtn>
+    </div>
     <template
       v-for="item in items"
       :key="'heading' in item ? item.heading : (item as NavLink | NavGroup).title"
