@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useUserStore } from '../stores/user'
 import { IconsList } from '../@model/enums/icons'
+import { useAppConfigCoreStore } from '../stores/appConfigCore'
 import CustomMenu from './components/CustomMenu.vue'
 import ProjectSelect from './default/components/ProjectSelect.vue'
 import ProductsSelect from './default/components/ProductSelect.vue'
@@ -47,6 +48,12 @@ const handleMouseLeave = () => {
     isHovered.value = false
   }, 150)
 }
+
+const appConfigCoreStore = useAppConfigCoreStore()
+const isNeocore = computed(() => userStore.isNeocore)
+const isMarbella = computed(() => userStore.isMarbella)
+const isMenuTypeMain = computed(() => appConfigCoreStore.isMenuTypeMain)
+const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority && isMenuTypeMain.value && isNeocore.value || isMenuTypeMain.value && isMarbella.value)
 </script>
 
 <template>
@@ -83,7 +90,7 @@ const handleMouseLeave = () => {
           </VList>
 
           <div
-            v-if="userStore.selectedProjectWithoutPriority"
+            v-if="canSelectProject"
             class="pt-4 px-4 pb-1"
           >
             <ProjectSelect
@@ -101,6 +108,7 @@ const handleMouseLeave = () => {
           <SideBar
             :items="navItems"
             :is-collapsed="isCollapsed"
+            :is-menu-type-main="isMenuTypeMain"
           />
         </div>
 
