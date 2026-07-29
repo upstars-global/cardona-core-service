@@ -275,4 +275,8 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
   height: 100dvh;
   overflow: hidden;
 }
+
+.overflow-y-auto:has(.loading-base-section) {
+  overflow-y: hidden !important;
+}
 </style>
