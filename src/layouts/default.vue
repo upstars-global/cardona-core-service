@@ -101,7 +101,7 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
         </div>
 
         <div
-          class="sidebar-nav flex-grow-1 overflow-y-auto"
+          class="sidebar-nav overflow-y-auto h-100"
           :class="{ scrolled: isVerticalNavScrolled }"
           @scroll="handleNavScroll"
         >
@@ -113,9 +113,10 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
         </div>
 
         <VList
-          bg-color="#252833"
+          bg-color="sidebar"
           density="compact"
-          class="px-0 pb-3"
+          class="pa-0 mt-3 mb-5"
+          height="42px"
         >
           <VListItem class="px-0 sidebar-list-item">
             <CustomMenu :is-collapsed-menu="isCollapsed" />
@@ -177,10 +178,10 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
 
 .sidebar-inner {
   min-height: 0;
+  overflow: hidden;
 }
 
 .sidebar-nav {
-  min-height: 0;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
 
@@ -231,6 +232,7 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    height: 100%;
   }
 
   :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav) {

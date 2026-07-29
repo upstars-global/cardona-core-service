@@ -15,7 +15,7 @@ import { useAuthCoreStore } from '../../stores/authCore'
 import { useConfigStore } from '@core/stores/config'
 import { Theme } from '@core/enums'
 
-const props = defineProps<{
+defineProps<{
   isCollapsedMenu: boolean
 }>()
 
@@ -82,7 +82,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 </script>
 
 <template>
-  <div class="custom-menu mb-2">
+  <div class="custom-menu">
     <VMenu
       v-model="isMenuOpen"
       location="top"
