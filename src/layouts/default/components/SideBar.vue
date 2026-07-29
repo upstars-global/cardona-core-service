@@ -108,6 +108,11 @@ const defaultRoute = { path: '/' }
                 :size="24"
               />
             </template>
+            <template #title="{ title }">
+              <div class="text-body-1 on-primary font-weight-medium">
+                {{ title }}
+              </div>
+            </template>
             <template #append="{ isActive }">
               <VIcon
                 color="white"
@@ -125,14 +130,20 @@ const defaultRoute = { path: '/' }
           class="child-list-item mx-1"
           :active="isLinkActive(child as NavLink)"
           @click="navigateTo(child as NavLink)"
-        />
+        >
+          <template #title="{ title }">
+            <div class="text-body-1 on-primary">
+              {{ title }}
+            </div>
+          </template>
+        </VListItem>
       </VListGroup>
       <VListItem
         v-else-if="!('heading' in item) && !('children' in item)"
         :title="t((item as NavLink).title)"
         rounded="lg"
         base-color="white"
-        class="mx-1"
+        class="mx-1 text-body-1"
         :active="isLinkActive(item as NavLink)"
         @click="navigateTo(item as NavLink)"
       >
