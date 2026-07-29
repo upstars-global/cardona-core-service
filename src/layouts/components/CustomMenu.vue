@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { VIcon } from 'vuetify/components/VIcon'
 
-import { computed } from 'vue'
+import { computed, inject, ref } from 'vue'
+import type { Ref } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { IconsList } from '../../@model/enums/icons'
-import { VColors, VSizes } from '../../@model/vuetify'
-import { PermissionLevel } from '../../@model/permission'
-import { useUserStore } from '../../stores/user'
-import { useAppConfigCoreStore } from '../../stores/appConfigCore'
-import { useAuthCoreStore } from '../../stores/authCore'
+import { IconsList } from '../../../@model/enums/icons'
+import { VColors } from '../../../@model/vuetify'
+import { PermissionLevel } from '../../../@model/permission'
+import { useUserStore } from '../../../stores/user'
+import { useAppConfigCoreStore } from '../../../stores/appConfigCore'
+import { useAuthCoreStore } from '../../../stores/authCore'
 import { useConfigStore } from '@core/stores/config'
 import { Theme } from '@core/enums'
 
@@ -46,6 +47,8 @@ const logOutAction = {
 
 const configStore = useConfigStore()
 
+const isMenuOpen = inject<Ref<boolean>>('isVerticalNavMenuOpen', ref(false))
+
 const canAllAdminSection = computed(() => {
   return userStore.abilityCan('backoffice-users-control', PermissionLevel.view)
 })
@@ -79,15 +82,15 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 </script>
 
 <template>
-  <hr
-    v-if="!isCollapsedMenu"
-    class="divider-color ml-2 mr-3"
-  >
-  <div class="custom-menu">
-    <VMenu>
+  <div class="custom-menu mb-2">
+    <VMenu
+      v-model="isMenuOpen"
+      location="top"
+      :content-class="`custom-menu-popup ${isCollapsedMenu ? 'custom-menu-popup--collapsed' : ''}`"
+    >
       <template #activator="{ props }">
         <div
-          class="d-flex align-center cursor-pointer user-info"
+          class="d-flex align-center cursor-pointer w-100"
           v-bind="props"
         >
           <VBadge
@@ -95,13 +98,13 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
             color="success"
             location="bottom end"
             bordered
-            offset-x="5"
+            offset-x="2"
             offset-y="5"
-            class="badge cursor-pointer"
+            class="badge cursor-pointer badge-margin"
           >
             <VAvatar
               :color="VColors.Success"
-              :size="32"
+              size="32"
               class="avatar-block"
             >
               <VImg
@@ -109,47 +112,46 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
                 :src="userAvatar"
                 cover
                 class="object-contain"
+                referrerpolicy="no-referrer"
               />
               <h5
                 v-else
-                class="text-h5 text-body-1 first-letter text-success"
+                class="text-h5 text-body-1 first-letter"
               >
                 {{ firstLetter }}
               </h5>
             </VAvatar>
           </VBadge>
-          <div
-            v-if="!isCollapsedMenu"
-            class="full-name on-primary ml-5"
-          >
+          <div class="full-name ml-5 text-truncate on-primary">
             {{ userName }}
           </div>
         </div>
       </template>
-      <VList class="action-menu">
+      <VList class="action-menu" bg-color="sidebar">
         <VListItem
           v-for="(item, index) in customMenuActions"
           :key="index"
           :value="index"
-          class="action-item"
+          class="action-item on-primary "
           @click="item.action && item.action()"
         >
           <template #prepend>
             <VIcon :icon="item.icon" />
           </template>
-          <VListItemTitle class="px-0">
+          <VListItemTitle class="px-0 on-primary">
             {{ item.title }}
           </VListItemTitle>
         </VListItem>
+        <VDivider class="divider" />
         <VListItem
-          class="action-item"
+          class="action-item on-primary"
           value="-1"
           @click="logOutAction.action"
         >
           <template #prepend>
             <VIcon :icon="logOutAction.icon" />
           </template>
-          <VListItemTitle class="px-0">
+          <VListItemTitle class="px-0 on-primary">
             {{ logOutAction.title }}
           </VListItemTitle>
         </VListItem>
@@ -160,55 +162,78 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 
 <style lang="scss" scoped>
 .avatar-block {
-  height: 32px;
-  width: 32px;
-  background-color: rgba(var(--v-theme-success), var(--v-badge-opacity)) !important;
+  height: 40px;
+  width: 40px;
+  background-color: rgba(var(--v-theme-blue-800)) !important;
 }
 .first-letter {
   font-weight: 600;
+  font-size: 13px;
+  color: #ffffff;
 }
 
-.user-info {
-  overflow: hidden;
-  &:hover {
-    .full-name {
-      color: rgb(var(--v-theme-primary))
-    }
-  }
-}
 .full-name {
+  max-width: 172px;
   font-weight: 500;
   color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: opacity 0.3s ease, max-width 0.3s ease, margin-left 0.3s ease;
 }
 
 .action-menu {
+  border: 1px solid rgba(var(--v-theme-on-sidebar), .16) !important;
+  padding-inline: 0.5rem;
   :deep(.v-list-item) {
-    padding-inline: 0.5rem !important;
-    margin-inline: 0rem !important;
-    margin-block: 0rem !important;
-    padding-block: 0rem !important;
-    min-block-size: 2rem !important;
+    padding-inline: 1rem !important;
+    padding-block: 0.5rem !important;
+    margin-inline: 0 !important;
+    margin-block: 0 !important;
+    min-inline-size: 86px !important;
+    align-self: stretch !important;
     border-radius: 0 !important;
+    gap: 8px !important;
+
     .v-list-item__spacer {
-      width: 0.25rem;
+      width: 0 !important;
     }
+  }
+
+  :deep(.v-list-item__overlay) {
+    background-color: rgb(var(--v-theme-on-sidebar)) !important;
+  }
+
+  :deep(.v-list-item:hover .v-list-item__overlay) {
+    opacity: 0.06 !important;
   }
 }
 
-.divider-color {
-  border-top-color: #ffffff14;
+.divider {
+  margin-block: 0.5rem;
 }
 
 .custom-menu {
-  padding-bottom: 0.5rem;
-
   :deep(.v-badge__badge) {
     height: 11px;
     width: 11px;
     border-radius: 100%;
   }
+  :deep(.v-badge__badge::after) {
+    color: rgba(var(--v-theme-sidebar));
+    border-width: 1px;
+  }
+}
+</style>
+
+<style>
+.custom-menu-popup {
+  left: 16px !important;
+  min-width: 220px !important;
+}
+
+.custom-menu-popup--collapsed {
+  left: 0 !important;
+  min-width: 52px !important;
 }
 </style>
