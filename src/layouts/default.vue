@@ -111,11 +111,11 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
             :is-menu-type-main="isMenuTypeMain"
           />
         </div>
-
+        <hr class="my-0 mx-4 custom-menu-devider">
         <VList
           bg-color="sidebar"
           density="compact"
-          class="pa-0 mt-3 mb-5"
+          class="pa-0 mt-2 mb-5"
           height="42px"
         >
           <VListItem class="px-0 sidebar-list-item">
@@ -173,7 +173,7 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
 
 <style lang="scss" scoped>
 .bg-sidebar {
-  background-color: #252833 !important;
+  background-color: rgb(var(--v-theme-sidebar)) !important;
 }
 
 .sidebar-inner {
@@ -280,5 +280,9 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
 
 .overflow-y-auto:has(.loading-base-section) {
   overflow-y: hidden !important;
+}
+
+.custom-menu-devider {
+  border-color: rgba(255, 255, 255, 0.08) !important;
 }
 </style>
