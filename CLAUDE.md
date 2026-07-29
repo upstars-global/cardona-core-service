@@ -50,3 +50,39 @@ This is where the shared core code is documented (@core, @layouts, services, bas
 **Important about distribution:** the `scripts/docs-*.mjs` scripts reach the panels only after the
 `cardona-core-service` dependency is updated in them (the package is installed as a full copy of the repository). Until it is updated,
 the Stop hook in the panel simply does nothing (it does not interfere with work).
+
+## Root cause auto-fill (Jira)
+
+Canonical home of the mechanism that auto-fills the Jira **"Root cause"** select field for
+completed **Bug / Sub-bug** tasks across the panels. The ticket key is the `BAC-XXXX` prefix of the
+git branch. It analyses the whole branch diff (vs `master`/`main`), maps it to one of the field's
+own options, writes the field automatically and explains the choice; a justifying Ukrainian comment
+is posted only if the user approves it.
+
+**Two-layer design** (a background subagent cannot write to Jira — the permission system needs the
+real user's interactive intent): all Jira I/O runs **inline in the main assistant** (the skill);
+only the read-only diff analysis is delegated to the `root-cause` subagent.
+
+**Components (they live here):**
+- `scripts/root-cause-guard.mjs` — Stop hook (see the panels' `.claude/settings.json`): deterministic,
+  no AI. On a `BAC-*` branch that has been **pushed** (the remote-tracking tip `@{upstream}` /
+  `origin/<branch>` moved vs the marked signature in `.git/cardona-root-cause.state`) it blocks the
+  stop and asks the AI to run `/root-cause`. The trigger is push-based — local unpushed commits and
+  uncommitted edits do not fire it; it reads the local remote-tracking ref, no network call. Loop
+  protection — `stop_hook_active`. `--mark` records the current remote-tip signature (the skill
+  calls it at the end to silence re-nagging).
+- `.claude/skills/root-cause/SKILL.md` — the `/root-cause` skill (orchestration): derive ticket →
+  read issue type + the "Root cause" field & its options dynamically (`getJiraIssueTypeMetaWithFields`,
+  field id is **not** hardcoded) → delegate diff analysis → write the field (as an **option**, not
+  ADF) → verify → comment. Gate: does nothing for non-bug types or when the field is absent.
+- `.claude/skills/root-cause/scripts/collect-diff.mjs` — deterministic diff collector for the subagent.
+- `.claude/agents/root-cause.md` — the read-only classifier subagent (Sonnet): picks one option +
+  justification, never touches Jira or the repo.
+- `.claude/commands/root-cause.md` — the `/root-cause` command (runs the skill inline).
+
+**Disable auto-reminders:** `CARDONA_ROOT_CAUSE=0`.
+
+**Distribution:** the skill/agent/command ride the standard sync (symlinks via
+`scripts/sync-core-claude.mjs`); `scripts/root-cause-guard.mjs` reaches a panel with the dependency
+bump (like `docs-*.mjs`). The **Stop-hook registration in each panel's `.claude/settings.json` is
+NOT synced** — it is added manually per panel (`cardona`, `marbella-panel`, `compostela-panel`).

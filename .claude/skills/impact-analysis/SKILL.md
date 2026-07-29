@@ -21,9 +21,9 @@ Every completed Impact Analysis should offer to land in the branch's Jira issue.
 The field id is stable for the BAC project: **`customfield_10684`** ("Impact analysis"). cloudId: **`1cae3bd1-b0cd-4eb1-bfb6-0c11d5d77845`**. Load the Atlassian tools via ToolSearch if they aren't available yet.
 
 1. **Ticket** — `git rev-parse --abbrev-ref HEAD`; take the `^(BAC-\d+)` prefix (uppercase). No match → no Jira offer, stop silently.
-2. **Probe** — one targeted read: `getJiraIssue` with `issueIdOrKey: <ticket>`, `fields: ["customfield_10684"]`, `responseContentFormat: "markdown"`. (Targeted, not `*all` — keeps it tiny.)
+2. **Probe** — one targeted read: `getJiraIssue` with `issueIdOrKey: <ticket>`, `fields: ["customfield_10684", "issuetype"]`, `responseContentFormat: "markdown"`. (Targeted, not `*all` — keeps it tiny; `issuetype` is needed for the Root cause offer in step 6.)
    - Errors as not-found / no permission → the issue isn't actionable. One-line Russian note ("задачи BAC-XXXX нет в Jira — пропускаю") and stop.
-   - Found → note whether `customfield_10684` came back (field present) and its current content (for append).
+   - Found → note whether `customfield_10684` came back (field present) and its current content (for append), and the `issuetype.name`.
 3. **Ask** with `AskUserQuestion` (options in Russian):
    - **"Да — в поле Impact analysis"** — only if the field is present.
    - **"Да — в комментарий"** — always.
@@ -35,6 +35,7 @@ The field id is stable for the BAC project: **`customfield_10684`** ("Impact ana
      - **Verify the write stuck:** `editJiraIssue` can return 200 yet silently drop a custom field that isn't on this issue type's edit screen. After writing, re-read `getJiraIssue fields:["customfield_10684"]` and confirm the content is non-empty. If it came back empty, the field write didn't take — tell the user honestly and offer the comment path instead (comments always persist).
    - **"Не отправлять"** → do nothing.
 5. Report a one-line confirmation with the issue URL. On an API error, say what failed honestly — never claim a write that didn't land.
+6. **Offer Root cause next (bug tasks only).** If `issuetype.name` (from step 2) matches `/bug|баг/i` (Bug / Sub-bug), offer to also set the **Root cause** field: ask once with `AskUserQuestion` (Russian) — "Проставить Root cause сейчас" / "Не сейчас". On yes, run the `/root-cause` skill inline (it does its own type/field/options checks, writes the field, and offers the justifying comment). On no, do nothing. For non-bug types, skip this silently. Impact Analysis and Root cause are the two artefacts worth landing on a finished bug — this chains them.
 
 Never write to Jira without the user's explicit choice in step 3.
 
