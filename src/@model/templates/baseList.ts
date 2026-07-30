@@ -1,3 +1,4 @@
+import type { ComputedRef } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { i18n } from '../../plugins/i18n'
 import type { FilterType } from '../filter'
@@ -40,7 +41,7 @@ export interface UseListType<
 > {
   readonly entityName: string
   readonly pageName?: string
-  readonly fields: Array<TableField>
+  readonly fields: ComputedRef<Array<TableField>> | Array<TableField>
   readonly ListFilterModel?: new (...args: any[]) => ListFilterModel
   readonly SideBarModel?: new (...args: any[]) => SideBarModel
   readonly beforeRemoveCallback?: (item: ItemModel) => boolean

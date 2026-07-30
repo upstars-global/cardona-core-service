@@ -26,6 +26,11 @@
 - [[pinia-store-pattern]] — Паттерн Pinia-стора
 - [[websocket-centrifuge]] — WebSocket / Centrifuge
 
+## Services
+
+- [[api]] — ApiService
+- [[config]] — ApiService config
+
 ## Standards
 
 - [[architecture]] — Архитектура

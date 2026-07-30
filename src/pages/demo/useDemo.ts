@@ -1,3 +1,4 @@
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { DemoFilter, DemoForm, DemoListItem, DemoSideBar } from '../../@model/demo'
 import { AlignType, ListFieldType, TableField } from '../../@model/templates/tableFields'
@@ -12,7 +13,7 @@ export const useDemoList = (): UseListType => {
   const ListItemModel = DemoListItem
   const i18n = useI18n()
 
-  const fields = [
+  const fields = computed(() => [
     new TableField({
       key: 'expand',
       title: i18n.t('page.demo.expand'),
@@ -133,7 +134,7 @@ export const useDemoList = (): UseListType => {
     }),
     new TableField({ key: 'actions', title: '' }),
     new TableField({ key: 'settings', title: i18n.t('common.settings') }),
-  ]
+  ])
 
   return {
     ListItemModel,

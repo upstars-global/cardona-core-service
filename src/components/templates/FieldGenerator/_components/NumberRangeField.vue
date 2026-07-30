@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type { TranslateResult } from 'vue-i18n'
-import { i18n } from '../../../../plugins/i18n'
 import type { NumberBaseField } from '../../../../@model/templates/baseField'
 import NumberField from './NumberField.vue'
 
@@ -42,12 +42,14 @@ const numberRangeTo = computed({
   },
 })
 
+const { t } = useI18n()
+
 const getPlaceHolder = (translate: TranslateResult): string =>
   `${props.field.placeholder || ''} ${translate}`.trimLeft()
 
 const placeHolderRange = computed(() => ({
-  from: getPlaceHolder(i18n.t('placeholder.minutesRange.from')),
-  to: getPlaceHolder(i18n.t('placeholder.minutesRange.to')),
+  from: getPlaceHolder(t('placeholder.minutesRange.from')),
+  to: getPlaceHolder(t('placeholder.minutesRange.to')),
 }))
 </script>
 
