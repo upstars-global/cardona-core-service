@@ -9,7 +9,8 @@
 //   node scripts/docs-map.mjs --build-index     # пересобрать knowledge/index.md
 //   node scripts/docs-map.mjs --lint            # битые [[ссылки]] + orphans + stale
 //   node scripts/docs-map.mjs --check-links     # (алиас части --lint) только битые [[ссылки]]
-//   node scripts/docs-map.mjs --pending         # показать код без/с устаревшей докой
+//   node scripts/docs-map.mjs --pending         # код без/с устаревшей докой: долг коммитов (как у Stop-хука)
+//   node scripts/docs-map.mjs --pending --working  # то же, но по незакоммиченному рабочему дереву
 //   node scripts/docs-map.mjs --find <имя|путь> # найти страницу для сущности (операция query)
 //   node scripts/docs-map.mjs --log "PREFIX msg"# дописать строку в knowledge/log.md
 //
@@ -17,8 +18,9 @@
 //   import { mapSourceToDoc, changedFiles, pendingDocs, buildIndex, checkLinks, findDoc, lint, appendLog } from './docs-map.mjs'
 
 import { execFileSync } from 'node:child_process'
-import { appendFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
+import { appendFileSync, existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, statSync, writeFileSync } from 'node:fs'
 import { basename, dirname, extname, join, relative } from 'node:path'
+import { pathToFileURL } from 'node:url'
 
 export const VAULT = 'knowledge'
 
@@ -337,8 +339,20 @@ export function appendLog(cwd = process.cwd(), message = '') {
   return relative(cwd, logPath)
 }
 
+// «Запущен как скрипт, а не импортирован». Через realpath + pathToFileURL, потому что
+// `file://${argv[1]}` ломается, когда путь идёт через симлинк (node_modules в pnpm/
+// workspaces) или содержит пробелы: тогда CLI молча не запускается.
+function isMainModule(moduleUrl) {
+  try {
+    return Boolean(process.argv[1]) && moduleUrl === pathToFileURL(realpathSync(process.argv[1])).href
+  }
+  catch {
+    return false
+  }
+}
+
 // ---- CLI ----
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMainModule(import.meta.url)) {
   const cwd = process.cwd()
   const arg = process.argv[2]
 
@@ -359,9 +373,21 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     }
   }
   else if (arg === '--pending') {
-    const pending = pendingDocs(cwd)
+    // По умолчанию — тот же источник, что видит Stop-хук: долг, накопленный
+    // post-commit-хуком (или дифф запушенного диапазона, если очередь пуста).
+    // --working — незакоммиченное рабочее дерево, для ручной проверки на ходу.
+    const working = process.argv.includes('--working')
+    let files
+    if (working) {
+      files = changedFiles(cwd)
+    }
+    else {
+      const { debtFiles } = await import('./docs-queue.mjs')
+      files = debtFiles(cwd)
+    }
+    const pending = pendingDocs(cwd, files)
     if (!pending.length) {
-      console.log('[docs-map] вся затронутая дока актуальна.')
+      console.log(`[docs-map] вся затронутая дока актуальна (${working ? 'рабочее дерево' : 'долг коммитов'}).`)
     }
     else {
       for (const p of pending)

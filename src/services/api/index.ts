@@ -46,15 +46,40 @@ const getActionName = (string: string): string => [
   .includes(action))
   ?.replace('.', '_') || ''
 
+/**
+ * Static service layer for all API communication in the backoffice.
+ *
+ * Handles request serialisation, global loaders, success/error toasts, response caching,
+ * validation error display, token-expiry redirects, and per-endpoint request cancellation.
+ * All store actions should call `ApiService.request` — never call axios directly.
+ */
 class ApiService {
   private static headers: RequestHeaders
 
   private static pendingControllers = new Map<string, AbortController>()
 
+  /**
+   * Merges additional headers into the shared request headers applied to every subsequent request.
+   *
+   * @param headers — headers object to merge in; typically used to set `Authorization`
+   */
   static setHeaders(headers: RequestHeaders): void {
     ApiService.headers = { ...ApiService.headers, ...headers }
   }
 
+  /**
+   * Sends an API request with full infrastructure support: global loader, toasts, response caching,
+   * validation error display, token-expiry redirect, and per-endpoint cancellation.
+   *
+   * `payload.type` follows dot-notation (e.g. `AppDictionaries.getList`) and is automatically
+   * converted to a URL path.
+   *
+   * @param payload — request descriptor: `type` is required; `data`, `filter`, `pagination`, `sort`, `formData` are optional
+   * @param config — optional request behaviour flags; all fields are optional, see `IApiServiceConfig` for defaults
+   * @param retryCount — reserved for future retry logic (currently inactive)
+   * @param retryDelay — initial backoff delay in ms between retries (currently inactive)
+   * @returns API response `data`, a `Blob` for file downloads, or `{ data, headers }` when `config.withResponseHeaders` is `true`
+   */
   static async request(payload: IApiServiceRequestPayload, config: IApiServiceConfig = {}, retryCount = 0, retryDelay = 1000) {
     const loaderStore = useLoaderStore()
     const router = useRouter()

@@ -1,30 +1,62 @@
 #!/usr/bin/env node
-// docs-guard — Stop-хук Claude Code для механизма Obsidian-документации.
+// docs-guard — Stop-хук Claude Code для механизма Obsidian-документации (LLM Wiki).
 //
-// Без AI и почти без стоимости: детерминированно проверяет, есть ли среди
-// незакоммиченных изменений исходники, чья страница в `knowledge/` отсутствует
-// или устарела. Если есть — блокирует остановку и точечным сообщением просит
-// AI обновить только затронутые страницы (скилл /update-docs). Иначе молча выходит.
+// Без AI и почти без стоимости. Триггер — ПУШ ВЕТКИ, а не правка в редакторе:
+//   git commit  → хук post-commit копит долг в очереди (scripts/docs-queue.mjs)
+//   git push    → вершина удалённой ветки сдвинулась → этот Stop-хук один раз
+//                 блокирует остановку и просит обновить только затронутые страницы
+//                 (скилл /update-docs)
+//
+// Почему так: коммит — единица завершённой работы, а пуш — момент, когда её видят
+// остальные. Незакоммиченные правки хук НЕ будят вообще: документировать код,
+// который ещё в движении, рано (раньше хук дёргал именно на них).
+//
+// Источник списка файлов: очередь `.git/cardona-docs-queue.txt`, наполненная
+// post-commit-хуком. Если очередь пуста (хук не был установлен, коммиты сделаны
+// раньше) — fallback на дифф запушенного диапазона base..remoteHead, чтобы
+// механизм не терял изменения.
+//
+// Дедуп: сигнатура вершины удалённой ветки в `.git/cardona-docs.state`. Скилл
+// /update-docs в конце вызывает этот скрипт с `--mark` (записать сигнатуру +
+// очистить очередь), чтобы напоминание не повторялось до следующего пуша.
 //
 // Раздача в панели: команда хука ссылается на этот файл внутри пакета —
 //   node node_modules/cardona-core-service/scripts/docs-guard.mjs
 // cwd хука = корень проекта (панели), поэтому git и knowledge/ берутся из панели,
-// а сам скрипт и docs-map.mjs едут вместе внутри node_modules.
+// а сам скрипт и его модули едут вместе внутри node_modules.
 //
 // Выключение: переменная окружения CARDONA_DOCS_GUARD=0.
 // Контракт Stop-хука: читаем JSON из stdin (stop_hook_active), при блокировке
 // печатаем {"decision":"block","reason":...} в stdout и выходим с кодом 0.
 
 import { readFileSync } from 'node:fs'
+import { clearQueue, debtFiles } from './docs-queue.mjs'
 import { pendingDocs } from './docs-map.mjs'
+import { computePushState, gitDirPath, readMarked, writeMarked } from './push-state.mjs'
 
-function allow() {
+function done() {
   process.exit(0)
 }
 
 // Полное выключение через окружение.
 if (process.env.CARDONA_DOCS_GUARD === '0')
-  allow()
+  done()
+
+const cwdArgv = process.cwd()
+const stateFileFor = cwd => gitDirPath(cwd, 'cardona-docs.state')
+
+// --mark: погасить напоминание до следующего пуша и обнулить долг.
+// Вызывается скиллом /update-docs в конце работы.
+if (process.argv.includes('--mark')) {
+  try {
+    writeMarked(stateFileFor(cwdArgv), computePushState(cwdArgv).signature)
+    clearQueue(cwdArgv)
+  }
+  catch {
+    // best-effort
+  }
+  done()
+}
 
 // Вход Stop-хука. Пустой stdin (ручной запуск) → пустой объект.
 let input = {}
@@ -40,21 +72,52 @@ catch {
 // Защита от петли: если это уже продолжение после нашей блокировки — пропускаем.
 // Нагоняем ровно один раз за цикл остановки.
 if (input.stop_hook_active)
-  allow()
+  done()
 
-const cwd = input.cwd || process.cwd()
+const cwd = input.cwd || cwdArgv
+
+let state
+try {
+  state = computePushState(cwd)
+}
+catch {
+  // Не git-репо и прочее — не мешаем остановке.
+  done()
+}
+
+// Ветка не запушена (или мы на master/main) — молчим.
+if (!state.hasPushedCommits)
+  done()
+
+// Вершина удалённой ветки не сдвинулась с прошлого раза (нового пуша не было) — молчим.
+const stateFile = stateFileFor(cwd)
+if (state.signature === readMarked(stateFile))
+  done()
+
+// Файлы: долг, накопленный post-commit-хуком; если пусто — дифф запушенного диапазона.
+let files = []
+try {
+  files = debtFiles(cwd, state)
+}
+catch {
+  done()
+}
 
 let pending = []
 try {
-  pending = pendingDocs(cwd)
+  pending = pendingDocs(cwd, files)
 }
 catch {
-  // Любая ошибка (не git-репо, нет knowledge/ и т.п.) — не мешаем остановке.
-  allow()
+  done()
 }
 
-if (!pending.length)
-  allow()
+// Документировать нечего — гасим сигнатуру, чтобы не пересчитывать это на каждой
+// остановке до следующего пуша.
+if (!pending.length) {
+  writeMarked(stateFile, state.signature)
+  clearQueue(cwd)
+  done()
+}
 
 const MAX = 12
 const shown = pending.slice(0, MAX)
@@ -63,7 +126,8 @@ if (pending.length > MAX)
   lines.push(`  …и ещё ${pending.length - MAX}`)
 
 const reason = [
-  'Документация Obsidian отстала от кода. Затронуты страницы `knowledge/`:',
+  `Ветка ${state.branch} запушена (новый пуш относительно ${state.baseBranch}), `
+  + 'документация Obsidian отстала от кода. Затронуты страницы `knowledge/`:',
   ...lines,
   '',
   'Обнови/создай только эти страницы: вызови скилл /update-docs.',
@@ -77,8 +141,11 @@ process.stdout.write(JSON.stringify({
   hookSpecificOutput: {
     hookEventName: 'Stop',
     additionalContext: 'Правило сопоставления код→страница и хелперы: scripts/docs-map.mjs. '
-      + 'После правок: node scripts/docs-map.mjs --build-index, затем --lint '
-      + '(битые ссылки/orphans/stale), и запиши операцию: --log "INGEST <страницы>".',
+      + 'Список файлов пришёл из очереди `.git/cardona-docs-queue.txt`, которую наполняет '
+      + 'git-хук post-commit (scripts/docs-queue.mjs). После правок: '
+      + 'node scripts/docs-map.mjs --build-index, затем --lint (битые ссылки/orphans/stale), '
+      + 'запиши операцию: --log "INGEST <страницы>", и погаси напоминание: '
+      + 'node node_modules/cardona-core-service/scripts/docs-guard.mjs --mark.',
   },
 }))
-process.exit(0)
+done()
