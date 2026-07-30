@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { IBaseListConfig } from '../../../@model/templates/baseList'
+import type { IBaseListConfig, IBaseListSlots } from '../../../@model/templates/baseList'
 import { ListTypes } from '../../../@model/templates/baseList'
 import DefaultBaseList from './types/default.vue'
 import CompactBaseList from './types/compact.vue'
@@ -21,6 +21,8 @@ const emits = defineEmits<{
   rowClicked: [item: Record<string, unknown>]
   end: [item: Record<string, unknown>]
 }>()
+
+defineSlots<IBaseListSlots>()
 
 const listByTypeRef = ref<InstanceType<typeof DefaultBaseList> | null>(null)
 
