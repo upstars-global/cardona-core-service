@@ -7,18 +7,18 @@
 // прошлого раза. Если да — блокирует остановку и просит AI проставить поле Root cause
 // (скилл /root-cause). Иначе молча выходит.
 //
-// Триггер именно по ПУШУ, а не по коммиту/правке: сигнатура привязана к вершине
-// удалённой ветки (`@{upstream}` → `origin/<branch>`). `git push` обновляет локальный
-// remote-tracking ref, поэтому пуш сдвигает эту вершину, а локальные незапушенные
-// коммиты и незакоммиченные правки хук НЕ будят.
+// Триггер именно по ПУШУ, а не по коммиту/правке: общая механика вынесена в
+// scripts/push-state.mjs (её же использует docs-guard) — сигнатура привязана к вершине
+// удалённой ветки, поэтому локальные незапушенные коммиты и незакоммиченные правки
+// хук НЕ будят.
 //
 // Хук НЕ ходит в Jira (в shell нет MCP) и НЕ ходит в сеть (читает локальный
 // remote-tracking ref): проверить тип задачи (Bug/Sub-bug) и наличие поля — работа
 // самого скилла. Хук лишь напоминает по факту «ветка бага запушена».
 //
-// Дедуп: сигнатура вершины удалённой ветки (hash(branch + remoteHead)) хранится в
-// `.git/cardona-root-cause.state`. Скилл в конце работы вызывает этот скрипт с `--mark`,
-// чтобы записать текущую сигнатуру и погасить повторные напоминания до следующего пуша.
+// Дедуп: сигнатура вершины удалённой ветки хранится в `.git/cardona-root-cause.state`.
+// Скилл в конце работы вызывает этот скрипт с `--mark`, чтобы записать текущую
+// сигнатуру и погасить повторные напоминания до следующего пуша.
 //
 // Раздача в панели: команда хука ссылается на этот файл внутри пакета —
 //   node node_modules/cardona-core-service/scripts/root-cause-guard.mjs
@@ -29,10 +29,8 @@
 // Контракт Stop-хука: читаем JSON из stdin (stop_hook_active), при блокировке
 // печатаем {"decision":"block","reason":...} в stdout и выходим с кодом 0.
 
-import { execSync } from 'node:child_process'
-import { createHash } from 'node:crypto'
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { readFileSync } from 'node:fs'
+import { computePushState, gitDirPath, readMarked, writeMarked } from './push-state.mjs'
 
 function done() {
   process.exit(0)
@@ -43,80 +41,20 @@ if (process.env.CARDONA_ROOT_CAUSE === '0')
   done()
 
 const cwd = process.cwd()
+const stateFile = gitDirPath(cwd, 'cardona-root-cause.state')
 
-const sh = (cmd) => {
-  try {
-    return execSync(cmd, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 32 * 1024 * 1024 }).trim()
-  }
-  catch {
-    return ''
-  }
-}
-
-// Ветка + вершина её удалённого аналога → ключ задачи и сигнатура пуша.
+// Ключ задачи из имени ветки поверх общего push-состояния.
 function computeState() {
-  const branch = sh('git rev-parse --abbrev-ref HEAD')
-  const ticket = (branch.match(/^(BAC-\d+)/i) || [])[1]?.toUpperCase() || null
+  const push = computePushState(cwd)
+  const ticket = (push.branch.match(/^(BAC-\d+)/i) || [])[1]?.toUpperCase() || null
 
-  // Вершина удалённой ветки — двигается только при пуше (git обновляет remote-tracking
-  // ref). Сначала настроенный upstream (@{upstream}), затем origin/<branch>.
-  let remoteHead = sh('git rev-parse --verify --quiet @{upstream}')
-  if (!remoteHead && branch && branch !== 'HEAD')
-    remoteHead = sh(`git rev-parse --verify --quiet origin/${branch}`)
-
-  let baseBranch = null
-  let base = null
-  if (remoteHead) {
-    for (const b of ['master', 'main']) {
-      const mb = sh(`git merge-base ${b} ${remoteHead}`)
-      if (mb) {
-        baseBranch = b
-        base = mb
-        break
-      }
-    }
-  }
-
-  // Триггер по пушу: ветка должна быть запушена (remoteHead есть) с хотя бы одним
-  // коммитом поверх точки ветвления. Локальные незапушенные коммиты не будят хук.
-  const hasPushedCommits = Boolean(remoteHead && base && remoteHead !== base && branch !== baseBranch)
-
-  // Сигнатура привязана к вершине удалённой ветки → меняется только при пуше.
-  const signature = createHash('sha1').update(`${branch}\n${remoteHead}`).digest('hex')
-
-  return { branch, ticket, baseBranch, base, remoteHead, hasPushedCommits, signature }
-}
-
-const gitDir = sh('git rev-parse --git-dir')
-const stateFile = gitDir ? join(cwd, gitDir, 'cardona-root-cause.state') : null
-
-function readMarked() {
-  if (!stateFile)
-    return ''
-  try {
-    return readFileSync(stateFile, 'utf8').trim()
-  }
-  catch {
-    return ''
-  }
-}
-
-function writeMarked(signature) {
-  if (!stateFile)
-    return
-  try {
-    mkdirSync(join(cwd, gitDir), { recursive: true })
-    writeFileSync(stateFile, signature, 'utf8')
-  }
-  catch {
-    // Не мешаем работе, если .git недоступен для записи.
-  }
+  return { ...push, ticket }
 }
 
 // --mark: записать текущую сигнатуру и выйти (вызывается скиллом в конце работы).
 if (process.argv.includes('--mark')) {
   try {
-    writeMarked(computeState().signature)
+    writeMarked(stateFile, computeState().signature)
   }
   catch {
     // best-effort
@@ -152,7 +90,7 @@ if (!state.ticket || !state.hasPushedCommits)
   done()
 
 // Вершина удалённой ветки не менялась с прошлого раза (не было нового пуша) — не напоминаем.
-if (state.signature === readMarked())
+if (state.signature === readMarked(stateFile))
   done()
 
 const reason = [

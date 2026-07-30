@@ -1,5 +1,15 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/docs-hooks-install.mjs || true"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "matcher": "",
