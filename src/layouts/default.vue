@@ -248,7 +248,7 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
         rgba(var(--v-theme-on-sidebar), .45) calc(50% - 0.5px),
         rgba(var(--v-theme-on-sidebar), .45) calc(50% + 0.5px),
         transparent calc(50% + 0.5px)
-      ) center / 20px 100% no-repeat !important;
+      ) center / 12px 100% no-repeat !important;
 
       &__text {
         visibility: hidden !important;
