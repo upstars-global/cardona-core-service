@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { BaseSectionType, PageType } from '../../../@model/templates/baseSection'
+import { BaseSectionType, PageType, type IBaseSectionSlots } from '../../../@model/templates/baseSection'
 import { BaseSectionConfig } from '../../../@model/templates/baseList'
 import DefaultBaseSection from './types/default.vue'
 
@@ -26,6 +26,8 @@ const emits = defineEmits<{
   (event: 'on-cancel'): void
   (event: 'on-save'): void
 }>()
+
+defineSlots<IBaseSectionSlots>()
 
 const formRef = ref<InstanceType<any> | null>(null)
 
