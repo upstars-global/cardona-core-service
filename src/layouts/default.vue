@@ -66,33 +66,26 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
       rail-width="64"
       class="bg-sidebar border-r-0"
       width="252"
+      src@mouseleave="handleMouseLeave"
+      layouts
+      default.vue
       @mouseenter="handleMouseEnter"
-      @mouseleave="handleMouseLeave"
     >
       <div class="sidebar-inner d-flex flex-column h-100">
         <div class="sidebar-top">
-          <VList
-            density="compact"
-            bg-color="#252833"
-            class="pa-0 ma-0 pt-4"
-          >
-            <VListItem class="pa-0 my-0 sidebar-list-item">
-              <div class="d-flex align-center justify-space-between">
-                <ProductsSelect :is-collapsed-menu="isCollapsed" />
-                <VIcon
-                  v-if="!isCollapsed"
-                  class="sidebar-menu-mode"
-                  :icon="!layoutConfigStore.isVerticalNavCollapsed ? IconsList.CircleDotIcon : IconsList.CircleIcon"
-                  @click="toggleSidebar"
-                />
-              </div>
-            </VListItem>
-          </VList>
+          <div class="pa-0 ma-0 pt-4 mx-4 sidebar-list-item">
+            <div class="d-flex align-center justify-space-between">
+              <ProductsSelect :is-collapsed-menu="isCollapsed" />
+              <VIcon
+                v-if="!isCollapsed"
+                class="sidebar-menu-mode"
+                :icon="!layoutConfigStore.isVerticalNavCollapsed ? IconsList.CircleDotIcon : IconsList.CircleIcon"
+                @click="toggleSidebar"
+              />
+            </div>
+          </div>
 
-          <div
-            v-if="canSelectProject"
-            class="pt-4 px-4 pb-1"
-          >
+          <div class="pt-4 px-4 pb-1">
             <ProjectSelect
               :projects="projects"
               :is-collapsed-menu="isCollapsed"
@@ -178,7 +171,7 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
 
 .sidebar-inner {
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .sidebar-nav {
@@ -229,7 +222,7 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
   }
 
   :deep(.v-navigation-drawer__content) {
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
     height: 100%;

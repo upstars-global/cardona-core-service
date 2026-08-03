@@ -64,7 +64,6 @@ watch(selectedProduct, product => {
           class="select-text-color"
           :clearable="false"
           :searchable="false"
-          :append-to-body="true"
         >
           <template #list-header>
             <div class="products-dropdown-header">
@@ -118,15 +117,76 @@ watch(selectedProduct, product => {
   font-size: 14px;
 }
 
-
 :deep(.v-select) {
-  min-height: 2rem ;
+  min-height: 2rem;
   height: 2rem;
 }
+
 .product-select {
   position: relative;
   padding-left: 2rem;
   min-height: 2rem;
+
+  .select-item {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+  }
+
+  :deep(.vs__dropdown-toggle) {
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  :deep(.vs__selected),
+  :deep(.vs__open-indicator),
+  :deep(.vs__search) {
+    color: rgb(var(--v-theme-on-sidebar)) !important;
+  }
+
+  :deep(.vs__selected-options) {
+    flex-wrap: nowrap;
+
+    .vs__search {
+      flex: 0 0 0;
+      padding: 0;
+
+      &:focus {
+        padding: 0;
+      }
+    }
+  }
+
+  :deep(.vs__dropdown-menu) {
+    background: rgb(var(--v-theme-sidebar)) !important;
+    border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 16px rgb(var(--v-theme-shadow)) !important;
+    padding: 8px 0 !important;
+  }
+
+  :deep(.vs__dropdown-option) {
+    padding: 8px 16px !important;
+    font-size: 15px !important;
+    line-height: 22px !important;
+    color: rgb(var(--v-theme-on-sidebar)) !important;
+    background: transparent !important;
+  }
+
+  :deep(.vs__dropdown-option--selected::after) {
+    display: none !important;
+  }
+
+  :deep(.vs__dropdown-option:not(.vs__dropdown-option--selected):hover),
+  :deep(.vs__dropdown-option--highlight:not(.vs__dropdown-option--selected)) {
+    background: rgba(var(--v-theme-on-sidebar), 0.06) !important;
+  }
+
+  :deep(.vs__dropdown-option--selected),
+  :deep(.vs__dropdown-option--selected.vs__dropdown-option--highlight),
+  :deep(.vs__dropdown-option--selected:hover) {
+    background: transparent !important;
+  }
 }
 
 .product-text {
@@ -148,65 +208,17 @@ watch(selectedProduct, product => {
   color: rgba(var(--v-theme-on-sidebar), 0.7);
 }
 
-.product-select {
-  .select-item {
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 600;
-  }
-  :deep(.vs__dropdown-toggle) {
-    border-color: transparent !important;
-    box-shadow: none !important;
-  }
-}
-
 .product-select-fade-leave-active {
   transition: opacity 0.15s ease-out;
 }
+
 .product-select-fade-enter-active {
   transition: opacity 0.2s ease-in;
 }
+
 .product-select-fade-enter-from,
 .product-select-fade-leave-to {
   opacity: 0;
-}
-</style>
-
-<style lang="scss">
-// Dropdown is rendered in <body> via :append-to-body, selectors cannot use .product-select as parent
-.vs__dropdown-menu {
-  background: rgb(var(--v-theme-sidebar)) !important;
-  border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
-  border-radius: 6px !important;
-  box-shadow: 0 4px 16px rgb(var(--v-theme-shadow)) !important;
-  padding: 8px 0 !important;
-  width: 220px !important;
-  left: 16px !important;
-}
-
-.vs__dropdown-option {
-  padding: 8px 16px !important;
-  font-size: 15px !important;
-  line-height: 22px !important;
-  color: rgb(var(--v-theme-on-sidebar)) !important;
-  background: transparent !important;
-}
-
-.vs__dropdown-option--selected::after {
-  display: none !important;
-}
-
-.vs__dropdown-option:hover,
-.vs__dropdown-option--highlight {
-  background: rgba(var(--v-theme-on-sidebar), 0.06) !important;
-  color: rgb(var(--v-theme-on-sidebar)) !important;
-}
-
-.vs__dropdown-option--selected,
-.vs__dropdown-option--selected.vs__dropdown-option--highlight,
-.vs__dropdown-option--selected:hover {
-  background: transparent !important;
-  color: rgb(var(--v-theme-on-sidebar)) !important;
 }
 
 .products-dropdown-header {
