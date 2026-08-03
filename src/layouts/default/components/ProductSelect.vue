@@ -23,8 +23,8 @@ const selectedProduct = computed({
   set: val => {
     const url
       = val.name === productsName.neocore
-      ? window.location.origin
-      : `${window.location.origin}/${val.name}`
+        ? window.location.origin
+        : `${window.location.origin}/${val.name}`
 
     sessionStorage.removeItem(storageKeys.selectedProjectId)
     window.location.replace(url)
@@ -55,7 +55,10 @@ watch(selectedProduct, product => {
       <div class="select-item bg-info prodcut-short_size product-text d-flex align-center justify-center rounded">
         {{ selectedProductNameShort }}
       </div>
-      <Transition v-if="canSelect" name="product-select-fade">
+      <Transition
+        v-if="canSelect"
+        name="product-select-fade"
+      >
         <VueSelect
           v-show="!isCollapsedMenu"
           v-model="selectedProduct"
@@ -72,13 +75,14 @@ watch(selectedProduct, product => {
           </template>
           <template #selected-option>
             <div class="d-flex align-center flex-nowrap">
-              <span
-                class="full-product-name select-item product-text"
-              >{{ selectedProductName }}</span>
+              <span class="full-product-name select-item product-text">{{ selectedProductName }}</span>
             </div>
           </template>
           <template #option="{ name }">
-            <div class="products-dropdown-item d-flex align-center justify-space-between">
+            <div
+              class="products-dropdown-item d-flex align-center justify-space-between"
+              :class="{ 'products-dropdown-item--selected': selectedProduct?.name === name }"
+            >
               <span>{{ name[0].toUpperCase() + name.slice(1) }}</span>
               <VIcon
                 v-if="selectedProduct?.name === name"
@@ -102,10 +106,11 @@ watch(selectedProduct, product => {
         class="navbar-brand"
         to="/"
       >
-        <div v-if="!isCollapsedMenu" class="d-flex align-center flex-nowrap pa-3">
-              <span
-                class="full-product-name select-item product-text"
-              >{{ selectedProductName }}</span>
+        <div
+          v-if="!isCollapsedMenu"
+          class="d-flex align-center flex-nowrap pa-3"
+        >
+          <span class="full-product-name select-item product-text">{{ selectedProductName }}</span>
         </div>
       </RouterLink>
     </div>
@@ -166,7 +171,7 @@ watch(selectedProduct, product => {
   }
 
   :deep(.vs__dropdown-option) {
-    padding: 8px 16px !important;
+    padding: 0 !important;
     font-size: 15px !important;
     line-height: 22px !important;
     color: rgb(var(--v-theme-on-sidebar)) !important;
@@ -177,16 +182,6 @@ watch(selectedProduct, product => {
     display: none !important;
   }
 
-  :deep(.vs__dropdown-option:not(.vs__dropdown-option--selected):hover),
-  :deep(.vs__dropdown-option--highlight:not(.vs__dropdown-option--selected)) {
-    background: rgba(var(--v-theme-on-sidebar), 0.06) !important;
-  }
-
-  :deep(.vs__dropdown-option--selected),
-  :deep(.vs__dropdown-option--selected.vs__dropdown-option--highlight),
-  :deep(.vs__dropdown-option--selected:hover) {
-    background: transparent !important;
-  }
 }
 
 .product-text {
@@ -231,6 +226,11 @@ watch(selectedProduct, product => {
 
 .products-dropdown-item {
   width: 100%;
+  padding: 8px 16px;
+
+  &:not(.products-dropdown-item--selected):hover {
+    background: rgba(var(--v-theme-on-sidebar), 0.06);
+  }
 }
 
 .products-dropdown-check {
