@@ -127,7 +127,10 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
           </div>
         </div>
       </template>
-      <VList class="action-menu" bg-color="sidebar">
+      <VList
+        class="action-menu pa-0"
+        bg-color="sidebar"
+      >
         <VListItem
           v-for="(item, index) in customMenuActions"
           :key="index"
