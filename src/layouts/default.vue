@@ -48,6 +48,8 @@ const isNeocore = computed(() => userStore.isNeocore)
 const isMarbella = computed(() => userStore.isMarbella)
 const isMenuTypeMain = computed(() => appConfigCoreStore.isMenuTypeMain)
 const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority && isMenuTypeMain.value && isNeocore.value || isMenuTypeMain.value && isMarbella.value)
+
+const contentScrollEl = ref<HTMLElement | null>(null)
 </script>
 
 <template>
@@ -81,6 +83,7 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
 
           <div class="pt-4 px-4 pb-1">
             <ProjectSelect
+              v-if="canSelectProject"
               :projects="projects"
               :is-collapsed-menu="isCollapsed"
             />
@@ -123,7 +126,10 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
             </VBtn>
           </div>
         </div>
-        <div class="bg-surface flex-grow-1 layout-border-bottom overflow-y-auto pa-4">
+        <div
+          ref="contentScrollEl"
+          class="bg-surface flex-grow-1 layout-border-bottom overflow-y-auto pa-4"
+        >
           <VContainer
             fluid
             class="px-0"
@@ -148,6 +154,8 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
         </div>
       </div>
     </VMain>
+
+    <ScrollToTop :scroll-el="contentScrollEl" />
   </VLayout>
 </template>
 
