@@ -168,6 +168,8 @@ watch(selectedProduct, product => {
     border-radius: 6px !important;
     box-shadow: 0 4px 16px rgb(var(--v-theme-shadow)) !important;
     padding: 8px 0 !important;
+    left: -32px !important;
+    width: 220px;
   }
 
   :deep(.vs__dropdown-option) {
