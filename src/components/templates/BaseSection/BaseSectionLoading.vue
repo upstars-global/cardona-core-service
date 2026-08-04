@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import { VColors } from '../../../@model/vuetify'
 
 interface Props {
@@ -15,7 +15,6 @@ const canShowSlot = computed(() => {
 
   return true
 })
-
 </script>
 
 <template>
@@ -25,7 +24,7 @@ const canShowSlot = computed(() => {
     </div>
 
     <div
-      v-if="props.loading"
+      v-if="props.loading && fullscreenBackground"
       class="loading-base-section d-flex justify-center align-center"
       data-test-id="loader"
     >
@@ -57,7 +56,6 @@ const canShowSlot = computed(() => {
   z-index: 10;
   background-color: white;
 }
-
 
 .loading-base-section {
   height: calc(100vh - 124px);
