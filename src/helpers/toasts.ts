@@ -5,7 +5,9 @@ import type { VColors } from '../@model/vuetify'
 import { i18n } from '@/plugins/i18n'
 
 export interface ToastErrorItem {
+  /** i18n key suffix; resolved as `toast.error.<localizationKey>` */
   localizationKey: string
+  /** Interpolation params passed to `i18n.t` for this error entry */
   options?: Record<string, unknown>
 }
 
@@ -17,9 +19,20 @@ const defaultOptions: ToastOptions = {
   defaultDescription: '',
 }
 
+/**
+ * Provides typed toast notification helpers for success and error feedback.
+ *
+ * @returns `toastSuccess`, `toastError`, `toastErrorMessageString`, `toastBase`
+ */
 export default function useToastService() {
   const toast = useToast()
 
+  /**
+   * Shows a success toast, resolving title and description text from i18n keys.
+   *
+   * @param code — i18n key suffix; looked up as `toast.success.<code>`, falls back to `toast.success.default`
+   * @param options — `defaultDescription` overrides the i18n description text; other keys are interpolated into the title
+   */
   const toastSuccess = (code: string, options: ToastOptions = defaultOptions) => {
     const { defaultText = '', defaultCode = 'default', defaultDescription = undefined } = options
 
@@ -48,6 +61,12 @@ export default function useToastService() {
     return translated !== '' && translated !== key
   }
 
+  /**
+   * Shows an error toast. Multiple items display a count in the title and list individual messages in the body.
+   *
+   * @param input — error code string, a single `ToastErrorItem`, or an array of items
+   * @param options — `defaultCode` fallback key suffix; `defaultText` used when no i18n match is found
+   */
   const toastError = (input: string | ToastErrorItem | ToastErrorItem[], options: ToastOptions = defaultOptions) => {
     const codes: ToastErrorItem[] = typeof input === 'string'
       ? [{ localizationKey: input }]
@@ -74,6 +93,11 @@ export default function useToastService() {
     })
   }
 
+  /**
+   * Shows an error toast with a raw message string, stripping the `'Invalid response. '` prefix if present.
+   *
+   * @param message — raw server error message to display
+   */
   const toastErrorMessageString = (message: string) => {
     const strToRemove = 'Invalid response. '
     const newMessage = message.replace(strToRemove, '')
@@ -88,6 +112,12 @@ export default function useToastService() {
     })
   }
 
+  /**
+   * Low-level toast with explicit control over the component, variant, icon, and extra props.
+   *
+   * @param message — title text shown in the toast
+   * @param config — `variant` (Vuetify color), `icon` (`IconsList`), `component` (defaults to `ToastificationContent`), `params` (extra props spread onto the component)
+   */
   const toastBase = (message: string, config: {
     component: Component
     variant: VColors
