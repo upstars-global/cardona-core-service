@@ -27,12 +27,6 @@ const isFallbackStateActive = ref(false)
 
 const isCollapsed = computed(() => layoutConfigStore.isVerticalNavCollapsed && !isHovered.value)
 
-const isVerticalNavScrolled = ref(false)
-
-const handleNavScroll = (evt: Event) => {
-  isVerticalNavScrolled.value = (evt.target as HTMLElement).scrollTop > 0
-}
-
 let collapseTimer: ReturnType<typeof setTimeout> | null = null
 
 const handleMouseEnter = () => {
@@ -93,49 +87,42 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
           </div>
         </div>
 
-        <div
-          class="sidebar-nav overflow-y-auto h-100"
-          :class="{ scrolled: isVerticalNavScrolled }"
-          @scroll="handleNavScroll"
-        >
-          <SideBar
-            :items="navItems"
-            :is-collapsed="isCollapsed"
-            :is-menu-type-main="isMenuTypeMain"
-          />
+        <div class="sidebar-scroll overflow-y-auto flex-grow-1">
+          <div class="sidebar-nav">
+            <SideBar
+              :items="navItems"
+              :is-collapsed="isCollapsed"
+              :is-menu-type-main="isMenuTypeMain"
+            />
+          </div>
+          <hr class="my-0 mx-4 custom-menu-devider">
+          <VList
+            bg-color="sidebar"
+            density="compact"
+            class="pa-0 mt-2 mb-5"
+            height="42px"
+          >
+            <VListItem class="px-0 sidebar-list-item">
+              <CustomMenu :is-collapsed-menu="isCollapsed" />
+            </VListItem>
+          </VList>
         </div>
-        <hr class="my-0 mx-4 custom-menu-devider">
-        <VList
-          bg-color="sidebar"
-          density="compact"
-          class="pa-0 mt-2 mb-5"
-          height="42px"
-        >
-          <VListItem class="px-0 sidebar-list-item">
-            <CustomMenu :is-collapsed-menu="isCollapsed" />
-          </VListItem>
-        </VList>
       </div>
     </VNavigationDrawer>
 
-    <VAppBar
-      :elevation="0"
-      color="transparent"
-      class="px-2 pt-2 pl-0 bg-sidebar"
-      height="64"
-    >
-      <div class="w-100 h-100 d-flex align-center px-4 bg-surface layout-border-top">
-        <AppBreadcrumb class="flex-grow-1" />
-        <VBtn
-          icon
-          variant="text"
-        >
-          <VIcon icon="tabler-bell" />
-        </VBtn>
-      </div>
-    </VAppBar>
     <VMain class="v-main--fullscreen">
       <div class="bg-sidebar w-100 h-100 pr-2 pb-2 d-flex flex-column">
+        <div class="layout-appbar pt-2 d-flex flex-column">
+          <div class="flex-grow-1 d-flex align-center px-4 bg-surface layout-border-top">
+            <AppBreadcrumb class="flex-grow-1" />
+            <VBtn
+              icon
+              variant="text"
+            >
+              <VIcon icon="tabler-bell" />
+            </VBtn>
+          </div>
+        </div>
         <div class="bg-surface flex-grow-1 layout-border-bottom overflow-y-auto pa-4">
           <VContainer
             fluid
@@ -171,16 +158,12 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
 
 .sidebar-inner {
   min-height: 0;
-  overflow: visible;
 }
 
-.sidebar-nav {
+.sidebar-scroll {
+  min-height: 0;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
-
-  :deep(.v-list) {
-    background-color: transparent !important;
-  }
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -205,6 +188,12 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
   }
 }
 
+.sidebar-nav {
+  :deep(.v-list) {
+    background-color: transparent !important;
+  }
+}
+
 .custom-layout {
   :deep(.v-navigation-drawer) {
     border-inline-end: none !important;
@@ -219,13 +208,6 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
       background-color: rgba(255, 255, 255, 0.06) !important;
       opacity: 1 !important;
     }
-  }
-
-  :deep(.v-navigation-drawer__content) {
-    overflow: visible;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
   }
 
   :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav) {
@@ -269,6 +251,11 @@ const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority
 .v-main--fullscreen {
   height: 100dvh;
   overflow: hidden;
+}
+
+.layout-appbar {
+  height: 64px;
+  flex-shrink: 0;
 }
 
 .overflow-y-auto:has(.loading-base-section) {

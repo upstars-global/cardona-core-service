@@ -87,21 +87,22 @@ const onHide = () => {
     class="side-bar"
     @update:model-value="onHide"
   >
-    <!-- Header -->
-    <div class="content-sidebar-header d-flex justify-space-between align-center px-6 py-3 bg-light">
-      <h5
-        class="content-sidebar-header__title mb-0 text-h5 font-weight-medium"
-        data-test-id="sidebar-title"
-      >
-        {{ $t(title) }}
-      </h5>
-      <VIcon
-        class="ml-1 cursor-pointer"
-        :icon="IconsList.XIcon"
-        size="21"
-        @click="onHide"
-      />
-    </div>
+    <template #prepend>
+      <div class="content-sidebar-header d-flex justify-space-between align-center px-6 py-3 bg-light">
+        <h5
+          class="content-sidebar-header__title mb-0 text-h5 font-weight-medium"
+          data-test-id="sidebar-title"
+        >
+          {{ $t(title) }}
+        </h5>
+        <VIcon
+          class="ml-1 cursor-pointer"
+          :icon="IconsList.XIcon"
+          size="21"
+          @click="onHide"
+        />
+      </div>
+    </template>
     <div
       v-if="viewForm && sidebarActive"
       class="p-1 pb-2 bg-light px-4"
