@@ -130,7 +130,7 @@ const defaultRoute = { path: '/' }
               />
             </template>
             <template #title="{ title }">
-              <div class="text-body-1 on-primary font-weight-medium">
+              <div class="text-body-1 on-primary font-weight-regular">
                 {{ title }}
               </div>
             </template>
