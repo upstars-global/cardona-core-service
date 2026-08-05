@@ -118,7 +118,7 @@ const contentScrollEl = ref<HTMLElement | null>(null)
     <VMain class="v-main--fullscreen">
       <div class="bg-sidebar w-100 h-100 pr-2 pb-2 d-flex flex-column">
         <div class="layout-appbar pt-2 d-flex flex-column">
-          <div class="flex-grow-1 d-flex align-center px-4 bg-surface layout-border-top">
+          <div class="flex-grow-1 d-flex align-center pt-4 px-4 bg-surface layout-border-top">
             <AppBreadcrumb class="flex-grow-1" />
             <VBtn
               icon
