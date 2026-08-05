@@ -57,8 +57,8 @@ const contentScrollEl = ref<HTMLElement | null>(null)
   <VLayout class="custom-layout">
     <VNavigationDrawer
       v-model="drawer"
-      :rail="layoutConfigStore.isVerticalNavCollapsed && !isHovered"
-      :class="{ 'is-hovering': isHovered }"
+      :rail="layoutConfigStore.isVerticalNavCollapsed"
+      :class="{ 'is-hovering': layoutConfigStore.isVerticalNavCollapsed && isHovered }"
       permanent
       rail-width="64"
       class="bg-sidebar border-r-0"
@@ -215,6 +215,16 @@ const contentScrollEl = ref<HTMLElement | null>(null)
       background-color: rgba(255, 255, 255, 0.06) !important;
       opacity: 1 !important;
     }
+  }
+
+  :deep(.v-navigation-drawer--rail) {
+    transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  :deep(.v-navigation-drawer--rail.is-hovering) {
+    position: absolute !important;
+    width: 252px !important;
+    z-index: 1005;
   }
 
   :deep(.v-navigation-drawer--rail:not(.is-hovering) .sidebar-nav) {
