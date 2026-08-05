@@ -171,8 +171,6 @@ const defaultRoute = { path: '/' }
 
 .nav-heading {
   color: rgba(var(--v-theme-on-sidebar), .45) !important;
-  font-feature-settings: 'liga' off, 'clig' off !important;
-  font-family: Inter, sans-serif !important;
   font-size: 12px !important;
   font-style: normal !important;
   font-weight: 400 !important;
