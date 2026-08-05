@@ -97,6 +97,9 @@ const contentScrollEl = ref<HTMLElement | null>(null)
               :is-menu-type-main="isMenuTypeMain"
             />
           </div>
+        </div>
+
+        <div class="sidebar-bottom">
           <hr class="my-0 mx-4 custom-menu-devider">
           <VList
             bg-color="sidebar"
