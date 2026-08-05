@@ -85,6 +85,24 @@ export abstract class BaseField implements IBaseField {
     this._value = this.serialize(value)
   }
 
+  clone(params: Record<string, unknown> = {}): this {
+    const FieldClass = this.constructor as new (field: IBaseField) => this
+
+    const clonedField = new FieldClass({
+      ...this,
+      label: this._label,
+      placeholder: this._placeholder,
+      description: this._description,
+      info: this._info,
+      ...params,
+    } as IBaseField)
+
+    if (!('value' in params))
+      clonedField._value = this._value
+
+    return clonedField
+  }
+
   transformField() {
     return this._value
   }
