@@ -33,23 +33,44 @@ const isGroupItemActive = (group: NavGroup): boolean => isNavGroupActive(group.c
 
 const openedGroups = ref<string[]>([])
 
-watch(() => route.path, () => {
+const getActiveGroupTitles = (): string[] => {
+  const active: string[] = []
+
   for (const item of props.items) {
     if (!('children' in item))
       continue
     const group = item as NavGroup
-    if (isNavGroupActive(group.children, router) && !openedGroups.value.includes(group.title)) {
-      openedGroups.value = [group.title]
-      break
-    }
+
+    if (isNavGroupActive(group.children, router))
+      active.push(group.title)
   }
+
+  return active
+}
+
+watch(() => route.path, () => {
+  const active = getActiveGroupTitles()
+  const missing = active.filter(title => !openedGroups.value.includes(title))
+
+  if (missing.length)
+    openedGroups.value = [...openedGroups.value, ...missing]
 }, { immediate: true })
 
 const opened = computed({
   get: () => props.isCollapsed ? [] : openedGroups.value,
   set: (val: string[]) => {
-    if (!props.isCollapsed)
-      openedGroups.value = val
+    if (!props.isCollapsed) {
+      const active = getActiveGroupTitles()
+      const newlyOpened = val.filter(title => !openedGroups.value.includes(title) && !active.includes(title))
+
+      if (newlyOpened.length > 0) {
+        openedGroups.value = [...new Set([...active, newlyOpened[0]])]
+      }
+      else {
+        const remainingBrowse = val.filter(title => !active.includes(title))
+        openedGroups.value = [...new Set([...active, ...remainingBrowse])]
+      }
+    }
   },
 })
 
@@ -64,7 +85,7 @@ const defaultRoute = { path: '/' }
     v-model:opened="opened"
     density="compact"
     nav
-    open-strategy="single"
+    open-strategy="multiple"
     class="pt-4"
   >
     <div
@@ -92,7 +113,7 @@ const defaultRoute = { path: '/' }
         v-else-if="'children' in item"
         :value="(item as NavGroup).title"
       >
-        <template #activator="{ props: groupProps }">
+        <template #activator="{ props: groupProps, isOpen }">
           <VListItem
             class="mx-1"
             v-bind="groupProps"
@@ -116,7 +137,7 @@ const defaultRoute = { path: '/' }
             <template #append="{ isActive }">
               <VIcon
                 color="white"
-                :icon="isActive ? IconsList.ChevronUpIcon : IconsList.ChevronDownIcon"
+                :icon="isActive || isOpen ? IconsList.ChevronDownIcon : IconsList.ChevronRightIcon"
               />
             </template>
           </VListItem>
