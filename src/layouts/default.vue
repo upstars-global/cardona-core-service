@@ -63,9 +63,7 @@ const contentScrollEl = ref<HTMLElement | null>(null)
       rail-width="64"
       class="bg-sidebar border-r-0"
       width="252"
-      src@mouseleave="handleMouseLeave"
-      layouts
-      default.vue
+      @mouseleave="handleMouseLeave"
       @mouseenter="handleMouseEnter"
     >
       <div class="sidebar-inner d-flex flex-column h-100">

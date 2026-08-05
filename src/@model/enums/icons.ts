@@ -134,6 +134,6 @@ export const IconsList = {
   Photo: 'tabler-photo',
   Sparkles: 'tabler-sparkles',
   PointFilled: 'tabler-point-filled',
-  CircleIcon: 'CircleIcon',
+  CircleIcon: 'tabler-circle',
   CircleDotIcon: 'tabler-circle-dot',
 } as const
