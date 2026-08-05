@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useUserStore } from '../stores/user'
 import { IconsList } from '../@model/enums/icons'
 import { useAppConfigCoreStore } from '../stores/appConfigCore'
@@ -89,7 +90,11 @@ const contentScrollEl = ref<HTMLElement | null>(null)
           </div>
         </div>
 
-        <div class="sidebar-scroll overflow-y-auto flex-grow-1">
+        <PerfectScrollbar
+          tag="div"
+          class="sidebar-scroll flex-grow-1"
+          :options="{ wheelPropagation: false }"
+        >
           <div class="sidebar-nav">
             <SideBar
               :items="navItems"
@@ -97,7 +102,7 @@ const contentScrollEl = ref<HTMLElement | null>(null)
               :is-menu-type-main="isMenuTypeMain"
             />
           </div>
-        </div>
+        </PerfectScrollbar>
 
         <div class="sidebar-bottom">
           <hr class="my-0 mx-4 custom-menu-devider">
@@ -172,30 +177,6 @@ const contentScrollEl = ref<HTMLElement | null>(null)
 
 .sidebar-scroll {
   min-height: 0;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: transparent;
-    border-radius: 3px;
-    transition: background-color 0.2s;
-  }
-
-  .is-hovering & {
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-
-    &::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2);
-    }
-  }
 }
 
 .sidebar-nav {
