@@ -138,7 +138,7 @@ const defaultRoute = { path: '/' }
             <template #append="{ isActive }">
               <VIcon
                 color="white"
-                :icon="isActive || isOpen ? IconsList.ChevronDownIcon : IconsList.ChevronRightIcon"
+                :icon="isOpen ? IconsList.ChevronDownIcon : IconsList.ChevronRightIcon"
               />
             </template>
           </VListItem>
