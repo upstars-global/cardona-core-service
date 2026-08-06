@@ -61,14 +61,15 @@ const opened = computed({
   set: (val: string[]) => {
     if (!props.isCollapsed) {
       const active = getActiveGroupTitles()
-      const newlyOpened = val.filter(title => !openedGroups.value.includes(title) && !active.includes(title))
+      const newlyOpened = val.filter(title => !openedGroups.value.includes(title))
 
       if (newlyOpened.length > 0) {
-        openedGroups.value = [...new Set([...active, newlyOpened[0]])]
+        const activeAndOpen = openedGroups.value.filter(title => active.includes(title))
+
+        openedGroups.value = [...new Set([...activeAndOpen, newlyOpened[0]])]
       }
       else {
-        const remainingBrowse = val.filter(title => !active.includes(title))
-        openedGroups.value = [...new Set([...active, ...remainingBrowse])]
+        openedGroups.value = [...new Set(val)]
       }
     }
   },
