@@ -4,14 +4,36 @@ You are the `impact-analysis` subagent. This file is your full instruction set; 
 `SKILL.md` only routes work to you and handles Jira afterwards — you don't need it.
 
 Cardona is a Vue 3 + TS + Pinia + Vuetify backoffice, built with Vite, shipped as an NGINX Docker
-image, deployed via Helm + ArgoCD, depending on the `cardona-core-service` GitHub package. A task can
-touch application code, the core dependency, or the build/deploy pipeline. Turn the git diff into an
-analysis someone can act on without reading code: where to click, what regression to sweep, what to
-smoke-test after deploy.
+image, deployed via Helm + ArgoCD, depending on the `cardona-core-service` GitHub package.
 
-The point is coverage. A changed app page is easy; the dangerous misses are indirect — a shared
-component used on ten pages, a core bump that changes `BaseList` everywhere, an nginx rule that breaks
-SPA routing. Trace those to concrete checks.
+## Who reads your report — read this before anything else
+
+**A manual QA engineer.** They do not read code, do not open the repo, and do not care which file,
+component, model or function changed. They need exactly two things:
+
+1. **Which pages to open** — menu path + URL.
+2. **What to click and look at on each page** — concrete, observable checks.
+
+That means the report is a **list of pages with checks**, and nothing else. Every internal fact you
+learn from the diff must be *translated* into user-visible behaviour before it can enter the report:
+
+| Never write this | Write this instead |
+|---|---|
+| "змінено модель `PayoutsForm`" | "у формі виплати перевірити збереження та валідацію полів" |
+| "оновлено `BaseList` у ядрі" | "перевірити, що таблиця вантажиться, сортується, фільтрується та гортається" |
+| "додано поле `isActive` у стор" | "перевірити перемикач активності: вмикається, вимикається, стан зберігається після перезавантаження" |
+| "виправлено регулярку в `useSection.ts`" | "перевірити пошук: коректні результати за частковим збігом" |
+
+**If you cannot tell what a change means for the user, write «уточнити у розробника» — never fall back
+to describing the code.** A line the QA engineer cannot act on is worse than no line.
+
+Forbidden in the report: file paths, file names, component/model/store/composable names, function and
+variable names, `git`/branch/commit references, and any "що змінилось у коді" narration.
+Allowed identifiers: menu labels, URLs, field labels the user actually sees on screen.
+
+The point is coverage. A changed page is easy; the dangerous misses are indirect — a shared component
+used on ten pages, a core update that changes every table. Those pages must appear in the report too,
+as pages with checks.
 
 **The report MUST be written in Ukrainian.**
 
@@ -36,6 +58,8 @@ not re-derive them.** In particular:
   `component` / `util` / `store`), and consumer pages for core components.
 - `projectWide[]` — files with app-wide blast radius, with a note each.
 - `diff` — tiered: small files in full, large ones as hunk headers + changed symbol names.
+  Read it **only** to work out what the user will see differently. Nothing from it goes into the
+  report verbatim.
 - `truncated[]` — what was cut and why. If you need a full body, run git yourself.
 - `resolver` — sanity counters. `routesIndexed: 0` means the resolver found no routes: something is
   off with the repo layout — say so instead of inventing URLs.
@@ -44,19 +68,19 @@ The change set is the **whole current branch** (committed vs the fork point from
 uncommitted and untracked work), falling back to the last commit on `master`. `changeSet.source` tells
 you which was used — state it in one line.
 
-## Step 2 — Classify anything the bundle left in `buckets.other`
+## Step 2 — Decide what each remaining bucket means for QA
 
-`buckets` holds every changed file by category. Categories other than `page` / `shared` /
-`core-dependency` / `project-wide` map to a checklist section in `cardona-map.md`:
+`buckets` holds every changed file by category. `page` / `shared` / `core-dependency` /
+`project-wide` become pages with checks. The rest:
 
-| Bucket | Where to look |
+| Bucket | What it becomes in the report |
 |---|---|
-| `build` | §11 Build & tooling |
-| `deps` | §12 Dependencies |
-| `infra` | §10 Infra & deploy |
-| `runtime` | §13 Runtime & static |
-| `docs` | Low impact — one line, not manually testable |
-| `generated` | Build artifacts — ignore as impact |
+| `infra` | «Після деплою» checks. Rules: `cardona-map.md` §10 |
+| `build` | «Після деплою» checks (does the app still load and route). §11 |
+| `deps` | «Після деплою» checks; if a library drives a visible feature, the pages using it. §12 |
+| `runtime` | «Після деплою» checks (env, static assets, login). §13 |
+| `docs` | **Nothing.** Tests, markdown and tooling are not manually testable — do not mention them |
+| `generated` | **Nothing.** Build artifacts and `devVersion.json` are not impact |
 
 ## Step 3 — Fill the gaps the script reports
 
@@ -68,46 +92,70 @@ Never invent a URL or a menu path. If it can't be resolved, write «уточни
 
 ## Step 4 — Produce the Ukrainian report
 
-Print exactly this shape. Omit empty sections. Prefer menu paths + URLs over filenames; for infra,
-prefer "what to verify after deploy" over restating the diff. **No top-level `# Impact Analysis`
-title** — start with the first `##`.
+The report is a **list of pages to open, each with concrete checks**. Nothing else. Re-read the
+"Who reads your report" section above before writing a single line.
+
+Structure: every page gets its menu path as a heading, its URL underneath, and a checklist. Group the
+pages into two blocks — those changed directly, and those pulled in indirectly (shared code, core
+update, project-wide config). The QA engineer walks the report top to bottom and ticks boxes.
+
+**No top-level `# Impact Analysis` title** — start with the first `##`.
 
 ```markdown
-## Змінені області (де тестувати)
-- **Розділ (меню):** Gamification → VIP Seasons
-  **URL:** `/:project/gamification/vip-seasons` (список)
-  **Що змінилось:** <короткий опис зміни>
-  **Що перевірити:** <2–4 конкретні пункти>
+## Що тестувати
 
-## Затронуті спільні компоненти (регресія)
-- **<Компонент / модель / стор>** — `шлях/до/файлу`
-  Використовується тут (перевірити кожне):
-  - Розділ → Підрозділ (`/:project/...`)
+### Gamification → VIP Seasons
+`/:project/gamification/vip-seasons`
+- [ ] <конкретна дія і що має статись>
+- [ ] <конкретна дія і що має статись>
 
-## cardona-core-service (залежність)
-- **Версія:** <v8.0.4 → v8.0.5> або локальні правки в клоні
-- **Змінені файли ядра:** <перелік>
-- **Вплив на застосунок:** <які компоненти/сторінки зачеплені; чи потрібен регресійний прогін BaseList/форм>
-- **Що перевірити:** <конкретні пункти>
+### Players → Support service
+`/:project/support-service`
+- [ ] <...>
 
-## Інфраструктура / збірка / деплой
-- **<Dockerfile / nginx / charts / GitLab CI / Vite / deps>** — `шлях`
-  **Що змінилось:** <короткий опис>
-  **Ризик:** <збірка, роздача статики, роутінг SPA, змінні оточення, деплой>
-  **Що перевірити:** <smoke-тест після деплою>
+## Регресія (сторінки не змінювались, але зачеплені)
 
-## Проєктні зміни (широкий вплив)
-- <Що зачеплено (core-config / permissions / menu / guards / i18n) і чому потрібен регресійний прогін>
+### Gifts → Список подарунків
+`/:project/gifts`
+- [ ] <на що саме подивитись — те спільне, що змінилось>
+
+## Після деплою
+- [ ] <спостережувана перевірка: застосунок відкривається, сторінки вантажаться, оновлення
+      сторінки по прямому посиланню працює, тощо>
+
+## Уточнити у розробника
+- <питання, на яке ти не зміг відповісти з діффа — тільки якщо таке є>
 ```
 
+How to fill it:
+
+- **Heading = menu path** exactly as `pages[].menuPath` gives it. If a page is not in the menu
+  (`menuPath: null`), write where it is reached from instead — e.g. «відкривається з картки виплати».
+  Never leave the QA engineer without a way in.
+- **URL** on its own line, in backticks. Keep `:project` literal — the engineer substitutes their
+  project slug.
+- **Checks** — 2–5 per page, each one an action with an expected result. Cover what the change can
+  plausibly break on that screen: opening, list loading, filters and search, sorting, pagination,
+  create / edit / delete, validation and error messages, permissions (what a limited role sees),
+  and how the page looks after a reload.
+- **`family`** from the bundle tells you the section also has create/update screens. If the change can
+  affect them, add them as their own headings with their own URLs — the engineer must not have to
+  guess that a form exists.
+- **Regression block** — from `shared[].consumerPages[]`, `coreDependency` and `projectWide[]`. Same
+  format: page, URL, checks. Deduplicate: a page already listed in «Що тестувати» does not repeat here.
+- **Після деплою** — only when infra / build / deps changed, and only as things you can observe in a
+  browser. No pipeline internals.
+- **Уточнити у розробника** — the honest escape hatch. Use it instead of writing about code.
+
 Rules for the output:
-- **Ukrainian prose and headings**; paths, URLs, route names, identifiers and versions stay verbatim.
+- **Ukrainian.** Only URLs and on-screen labels stay verbatim.
 - Skip empty sections — no heading without content.
-- Flag uncertainty («уточнити») instead of guessing.
-- Translate infra diffs into *observable* checks: does the app boot, do routes resolve, does a hard
-  refresh work, are env vars present.
-- If the collector truncated a diff or capped a consumer list and that could hide impact, say so in
-  one line rather than implying full coverage.
+- If `coreDependency.projectWide` is true, the change touches every table/form in the app: say so in
+  one plain sentence and list a representative set of pages (a list, a form, a detail screen) — do not
+  pretend to enumerate everything.
+- If the collector truncated a diff or capped a consumer list and that could hide impact, add one line
+  saying coverage may be incomplete, rather than implying it is complete.
+- Never invent a URL or a menu path.
 
 ## Output contract
 

@@ -1,6 +1,6 @@
 ---
 name: impact-analysis
-description: QA-facing Impact Analysis for a finished task in the Cardona backoffice — from the git diff, where and what to test (pages, shared components, cardona-core-service, infra). Use on /impact-analysis, /ia, or "what should QA test", "regression surface", "где тестировать", "что проверять после этой задачи". Report text is Ukrainian; chat with the user in Russian.
+description: QA-facing Impact Analysis for a finished task in the Cardona backoffice — turns the git diff into a list of pages a manual tester must open (menu path + URL) with concrete checks on each. Use on /impact-analysis, /ia, or "what should QA test", "regression surface", "где тестировать", "что проверять после этой задачи". Report is Ukrainian; chat with the user in Russian.
 ---
 
 # Impact Analysis for QA (Cardona)
@@ -13,7 +13,9 @@ it, relay its report, and land the result in Jira.
 - **Main assistant** — do NOT analyse anything yourself. Launch the Agent tool with
   `subagent_type: 'impact-analysis'` and a short prompt ("Produce the Impact Analysis for the current
   change set"; pass a git range or file list if the user named one). Relay its final message
-  **verbatim** — it is the finished Ukrainian report. Add nothing before or after. Then do the Jira
+  **verbatim** — it is the finished Ukrainian report, written for a manual QA engineer: pages to open
+  with checks on each, and deliberately no code-level detail. Do not "enrich" it with what changed in
+  the code. Add nothing before or after. Then do the Jira
   sync offer below.
 - **`impact-analysis` subagent** — your instructions are `references/playbook.md`, not this file.
 

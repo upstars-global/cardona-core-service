@@ -77,7 +77,10 @@ function resolveChangeSet() {
 
 // ---------- Step 2: classification ----------
 
-const GENERATED = ['components.d.ts', 'typed-router.d.ts', 'auto-imports.d.ts']
+// Файлы, которые никогда не являются impact'ом: генерируемые артефакты сборки и
+// devVersion.json — служебный маркер версии для разработчиков (его только `cat`-ает
+// Dockerfile), в продукте он не виден и тестировать в нём нечего.
+const GENERATED = ['components.d.ts', 'typed-router.d.ts', 'auto-imports.d.ts', 'devVersion.json']
 const isGenerated = (f) => GENERATED.includes(f) || f.startsWith('dist/') || f.startsWith('coverage/')
 const PROJECT_WIDE = [
   'src/configs/productConfig.ts',
