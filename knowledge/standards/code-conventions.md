@@ -2,6 +2,7 @@
 title: Code Conventions
 type: standard
 source: .claude/rules/code-conventions.md
+source_hash: a551d2dd0b8d
 tags: [standard, conventions]
 updated: 2026-07-16
 ---

@@ -1,62 +1,56 @@
 ---
 name: backoffice-permissions
-description: Add or modify an access permission in a cardona-core-service backoffice — a new PermissionType enum key, its access-management group entry, and its English label on the roles screen. Use this whenever the user wants to add/register a permission, grant access to a section, wire a `backoffice-*` access key, or edit the permissions config — even phrased as "add access for X", "new permission key", "дай доступ к разделу", "добавь пермишен". Also the first stage when creating a whole new section, but it stands alone: reach for it any time only a permission needs to change, without touching routes, menu, or pages.
+description: Add or change an access permission in a cardona-core-service backoffice — the PermissionType enum key, its access-management group entry, and its English label. Use for "add a permission", "grant access to section X", "wire a backoffice-* access key", "добавь пермишен", "дай доступ к разделу". Also Stage 1 of creating a new section, but it stands alone.
 ---
 
 # Add a Permission
 
-The target is a Vue 3 + TS + Pinia + Vuetify backoffice built on `cardona-core-service`. Access is driven by a single enum + a grouped config that also renders the roles/access-management screen. This skill adds one permission end to end: the enum key, the group entry (in the right order), and the localized label.
+Access in these backoffices is one string enum + a grouped config that also renders the roles screen.
+Adding a permission means three edits in a fixed shape, so **a script does them** — you only gather the
+inputs and check the result.
 
-This is a self-contained task. It is Stage 1 of creating a new section, but most of the time you only need a permission — do just this and stop.
+## Step 1 — Gather the inputs
 
-## Execution model — delegate to the worker subagent
-
-This skill can run in a dedicated subagent so the main window stays clean and the edits run on a cheaper model (Sonnet). Route by who you are:
-
-- **You are the main assistant** (the user asked to add/change a permission): first **gather the inputs** — permission key (`backoffice-*`, from the backend — don't guess), localized name, target group + the neighbor to place after, type (`Table`/`Switch`), any `notAccessLevel`. The subagent can't stop to ask, so collect these **before** launching. Then launch the Agent tool with `subagent_type: 'backoffice-permissions'`, passing all inputs in the prompt. Relay its final summary to the user verbatim.
-- **You are the `backoffice-permissions` subagent** (your system prompt says so): execute the steps below and return only the summary, as your system prompt requires.
-
-If the subagent is unavailable, fall back to running the steps inline — delegation is the intended path, but the steps below stand on their own.
-
-## Files
-
-- `src/configs/permissions.ts` — the `PermissionType` string enum + the `default` export object of permission *groups* (each an array of entry objects). This file only builds the access-management UI; nothing in it imports routes/menu/list, so editing it is safe in isolation.
-- `src/plugins/i18n/locales/en.json` — the human-readable name shown on the roles screen.
-
-## What to ask
-
-| What | Behavior |
+| Input | Behavior |
 |---|---|
-| **Permission key** (`backoffice-<...>`) | **Must ask** — comes from the backend, not derived from the section name. Do not guess. |
-| **Localized name** (en.json value) | Suggest from the key/section (`vipSeasons` → `"VIP Seasons"`) and confirm. |
-| **Enum name** (PascalCase) | Derive from the key: `backoffice-season-vip-status` → `BackofficeSeasonVipStatus`. |
-| **Group + placement** | Which group (`Gamification`, `Players`, `Promo`, `Settings`, …) and which neighbor to sit after. |
-| **Type** | `Table` (access levels 0–4) or `Switch` (binary). Default `Table`. |
+| **Permission key** (`backoffice-<...>`) | **Must ask.** Comes from the backend, never derived from the section name. Do not guess. |
+| **Label** (roles screen) | Suggest from the key (`backoffice-vip-seasons` → `"VIP Seasons"`) and confirm. |
+| **Group + neighbour** | Which group (`gamification`, `players`, `promo`, `settings`, …) and which existing permission to sit **after**. Order = order on the roles screen = menu order, so the neighbour matters. |
+| **Type** | `Table` (levels 0–4, default) or `Switch` (binary). |
+| **`notAccessLevel`** | Forbidden levels, e.g. `2,4`, when the backend has no create/delete. Only if nearby sections in the same group already use it. |
 
-## What to do
+## Step 2 — Run the script
 
-1. Add to `enum PermissionType`, near thematically related keys:
-   ```ts
-   BackofficeSeasonVipStatus = 'backoffice-season-vip-status',
-   ```
+```bash
+node node_modules/cardona-core-service/scripts/permissions-add.mjs \
+  --key backoffice-season-vip-status --label "VIP Seasons" \
+  --group gamification --after backoffice-vip-seasons \
+  [--type Switch] [--not-access-level 2,4] [--enum BackofficeSeasonVipStatus] [--dry-run]
+```
 
-2. Add to the group's `default` array. **Order matters — it must match the intended menu order, because the roles screen renders in this same order:**
-   ```ts
-   {
-     target: PermissionType.BackofficeSeasonVipStatus,
-     type: PermissionFormType.Table,
-   },
-   ```
-   - `type`: `PermissionFormType.Table` (levels 0–4) or `PermissionFormType.Switch` (binary on/off).
-   - `notAccessLevel: [2, 4]` — forbidden levels when the backend doesn't support create/delete. Only add if similar nearby sections already use it; otherwise default to `Table` with no restrictions.
+(In `cardona-core-service` itself: `node scripts/permissions-add.mjs …`.)
 
-3. Add to `en.json` among the other `backoffice-*` keys:
-   ```json
-   "backoffice-season-vip-status": "VIP Seasons",
-   ```
+It inserts the `PermissionType` member, the group entry in the right position, and the `en.json` label
+under `"permission"`. It is idempotent, prints exactly what it changed, and refuses to write when the
+files don't match the expected shape. `--after` accepts either a permission key or an enum member name.
+Use `--enum` only when the auto-derived PascalCase name is wrong (the project has irregular pairs like
+`BackofficGroups = 'backoffice-neocore-groups'`).
 
-## Check
+## Step 3 — Check and report
 
-Confirm to the user: added `<key>` (enum `<EnumName>`) to group `<group>` after `<sibling>`, label `"<Label>"`. Run `yarn typecheck && yarn lint`.
+Run `yarn lint` on the two touched files and relay the script's summary to the user: which key, which
+group, after which neighbour, what label.
 
-If this permission is for a brand-new section, the next steps are the `section-list` skill (list page) and then `section-form` skill (create/update) — but only continue if the user asked for the full section.
+Files touched: `src/configs/permissions.ts`, `src/plugins/i18n/locales/en.json`.
+
+## When the script can't do it
+
+Non-standard cases — a new group, reordering existing entries, a permission that isn't a plain
+`{ type, target }` entry — the script will say it can't and stop. Then launch the Agent tool with
+`subagent_type: 'backoffice-permissions'` (runs on Haiku), passing all the inputs plus what the script
+reported; it edits the files by hand. Relay its summary verbatim.
+
+## Next
+
+If this permission is for a brand-new section, the next steps are `section-list`, then `section-form` —
+but only continue if the user asked for the full section.

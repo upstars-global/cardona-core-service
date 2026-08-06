@@ -142,8 +142,9 @@ process.stdout.write(JSON.stringify({
     hookEventName: 'Stop',
     additionalContext: 'Правило сопоставления код→страница и хелперы: scripts/docs-map.mjs. '
       + 'Список файлов пришёл из очереди `.git/cardona-docs-queue.txt`, которую наполняет '
-      + 'git-хук post-commit (scripts/docs-queue.mjs). После правок: '
-      + 'node scripts/docs-map.mjs --build-index, затем --lint (битые ссылки/orphans/stale), '
+      + 'git-хук post-commit (scripts/docs-queue.mjs). Индекс knowledge/index.md пересобирает '
+      + 'тот же хук — руками не трогать. После правок: --rehash (проставить source_hash '
+      + 'обновлённым страницам), --lint (ссылки/orphans/stale/коллизии имён), '
       + 'запиши операцию: --log "INGEST <страницы>", и погаси напоминание: '
       + 'node node_modules/cardona-core-service/scripts/docs-guard.mjs --mark.',
   },

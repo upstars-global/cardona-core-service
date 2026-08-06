@@ -2,6 +2,7 @@
 title: WebSocket / Centrifuge
 type: pattern
 source: src/services/ws/index.ts
+source_hash: 9dca31eee755
 tags: []
 updated: 2026-07-16
 ---

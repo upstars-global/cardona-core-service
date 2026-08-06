@@ -1,22 +1,6 @@
 ---
 name: jsdoc-cover
-description: |
-  Generates JSDoc documentation for TypeScript (.ts) and Vue (.vue) files so that
-  IDE hover tooltips (VS Code, WebStorm) show parameter names, descriptions, and
-  return value info for every exported function, method, class, and composable.
-
-  Covers: exported functions and arrow functions, class constructors and public methods,
-  interfaces (inline property comments), Vue composables (use*.ts), Vue components
-  (props/emits via <script setup>).
-
-  For complex or non-obvious code, reads called functions and type definitions first
-  to write accurate parameter descriptions. Adds @example only for standalone utility
-  functions where a quick usage sample helps.
-
-  Trigger whenever the user wants IDE hover support, parameter hints, JSDoc, code docs:
-  "add JSDoc", "document this", "cover with docs", "хочу hover підказки",
-  "додай документацію", "документируй", "покрой JSDoc", "добавь описание параметров".
-  Works on a single file path or a glob (e.g. src/helpers/**/*.ts).
+description: Generate JSDoc for .ts and .vue files so IDE hover shows parameter names, descriptions and return values for every exported function, class, composable and component. Use for "add JSDoc", "document this", "покрой JSDoc", "додай документацію", "хочу hover підказки". Takes a file path or a glob.
 ---
 
 # JSDoc Cover

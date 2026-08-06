@@ -7,17 +7,23 @@
 //
 // CLI:
 //   node scripts/docs-map.mjs --build-index     # пересобрать knowledge/index.md
-//   node scripts/docs-map.mjs --lint            # битые [[ссылки]] + orphans + stale
+//   node scripts/docs-map.mjs --lint            # битые [[ссылки]] + orphans + stale + коллизии имён
 //   node scripts/docs-map.mjs --check-links     # (алиас части --lint) только битые [[ссылки]]
-//   node scripts/docs-map.mjs --pending         # код без/с устаревшей докой: долг коммитов (как у Stop-хука)
+//   node scripts/docs-map.mjs --pending         # долг коммитов + расхождения по всему vault
 //   node scripts/docs-map.mjs --pending --working  # то же, но по незакоммиченному рабочему дереву
+//   node scripts/docs-map.mjs --rehash [--all]  # проставить source_hash (миграция с mtime)
 //   node scripts/docs-map.mjs --find <имя|путь> # найти страницу для сущности (операция query)
 //   node scripts/docs-map.mjs --log "PREFIX msg"# дописать строку в knowledge/log.md
 //
+// Актуальность страницы определяется ХЕШЕМ исходника (`source_hash` во frontmatter),
+// а не mtime: mtime сбивался после любого yarn install / checkout и объявлял устаревшим
+// полvault'а. Для страниц без хеша сохранено старое поведение — до `--rehash`.
+//
 // Как модуль:
-//   import { mapSourceToDoc, changedFiles, pendingDocs, buildIndex, checkLinks, findDoc, lint, appendLog } from './docs-map.mjs'
+//   import { mapSourceToDoc, resolveDocPath, changedFiles, pendingDocs, pageFreshness, buildIndex, checkLinks, findDoc, lint, rehash, appendLog } from './docs-map.mjs'
 
 import { execFileSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import { appendFileSync, existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, statSync, writeFileSync } from 'node:fs'
 import { basename, dirname, extname, join, relative } from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -73,6 +79,32 @@ export function mapSourceToDoc(relPath) {
   return { dir: rule.dir, base, docPath: `${VAULT}/${rule.dir}/${base}.md` }
 }
 
+// Obsidian резолвит [[ссылку]] по basename, поэтому при коллизии имён (models/games.md и
+// stores/games.md) страницу переименовывают с суффиксом типа: stores/games-store.md.
+// Сопоставление код→страница обязано это учитывать, иначе переименованная страница
+// навсегда становится «missing».
+const TYPE_SUFFIX = {
+  models: 'model',
+  stores: 'store',
+  composables: 'composable',
+  components: 'component',
+  configs: 'config',
+  services: 'service',
+  core: 'core',
+}
+
+export function resolveDocPath(cwd, mapped) {
+  if (!mapped)
+    return null
+  if (existsSync(join(cwd, mapped.docPath)))
+    return mapped.docPath
+
+  const suffix = TYPE_SUFFIX[mapped.dir]
+  const alt = suffix ? `${VAULT}/${mapped.dir}/${mapped.base}-${suffix}.md` : null
+
+  return alt && existsSync(join(cwd, alt)) ? alt : mapped.docPath
+}
+
 function git(cwd, args) {
   try {
     return execFileSync('git', args, { cwd, encoding: 'utf8' })
@@ -110,7 +142,54 @@ export function changedFiles(cwd = process.cwd()) {
   return files
 }
 
-// Список исходников, у которых страница отсутствует или устарела (исходник новее .md).
+// ---- Актуальность страницы: по содержимому исходника, а не по mtime ----
+//
+// mtime врал: любой `yarn install` трогает node_modules, любой checkout переписывает
+// файлы — и полвault'а становилось «устаревшим», хотя код не менялся. Признак актуальности —
+// хеш исходника, записанный во frontmatter страницы (`source_hash`).
+//
+// Миграция: у страниц без `source_hash` сравниваем по-старому (mtime), а `--lint`
+// показывает их отдельно; `--rehash` проставляет хеши разом.
+
+export const sourceHash = (abs) => {
+  try {
+    return createHash('sha1').update(readFileSync(abs)).digest('hex').slice(0, 12)
+  }
+  catch {
+    return null
+  }
+}
+
+// Исходники вне src/ (например node_modules/<пакет>) не версионируются вместе с проектом
+// и по хешу не проверяются — такие страницы считаем нарративными.
+const isTrackedSource = source => Boolean(source) && !source.startsWith('node_modules/') && !source.startsWith('..')
+
+// 'ok' | 'stale' | 'missing' | 'unhashed-ok' | 'unhashed-stale' | 'untracked'
+export function pageFreshness(cwd, source, docPath) {
+  const docAbs = join(cwd, docPath)
+  if (!existsSync(docAbs))
+    return 'missing'
+  if (!isTrackedSource(source))
+    return 'untracked'
+
+  const srcAbs = join(cwd, source)
+  if (!existsSync(srcAbs))
+    return 'orphan'
+
+  // Некоторые обзорные страницы указывают в source директорию (`src/`, `src/@model/`).
+  // Хешировать нечего, а mtime директории меняется от любого файла внутри — такие страницы
+  // нарративные, актуальность у них не проверяется.
+  if (statSync(srcAbs).isDirectory())
+    return 'untracked'
+
+  const recorded = frontmatterField(docAbs, 'source_hash')
+  if (recorded)
+    return recorded === sourceHash(srcAbs) ? 'ok' : 'stale'
+
+  return statSync(srcAbs).mtimeMs > statSync(docAbs).mtimeMs ? 'unhashed-stale' : 'unhashed-ok'
+}
+
+// Список исходников, у которых страница отсутствует или разошлась с кодом.
 export function pendingDocs(cwd = process.cwd(), files = changedFiles(cwd)) {
   const pending = []
   for (const f of files) {
@@ -118,19 +197,15 @@ export function pendingDocs(cwd = process.cwd(), files = changedFiles(cwd)) {
     if (!mapped)
       continue
 
-    const srcAbs = join(cwd, f)
-    const docAbs = join(cwd, mapped.docPath)
-    if (!existsSync(srcAbs))
+    if (!existsSync(join(cwd, f)))
       continue
 
-    let reason = null
-    if (!existsSync(docAbs))
-      reason = 'missing'
-    else if (statSync(srcAbs).mtimeMs > statSync(docAbs).mtimeMs)
-      reason = 'stale'
-
-    if (reason)
-      pending.push({ source: f, doc: mapped.docPath, reason })
+    const docPath = resolveDocPath(cwd, mapped)
+    const freshness = pageFreshness(cwd, f, docPath)
+    if (freshness === 'missing')
+      pending.push({ source: f, doc: docPath, reason: 'missing' })
+    else if (freshness === 'stale' || freshness === 'unhashed-stale')
+      pending.push({ source: f, doc: docPath, reason: 'stale' })
   }
 
   return pending
@@ -264,13 +339,18 @@ export function findDoc(cwd = process.cwd(), query = '') {
     if (!mapped)
       return { query: q, matches: [] }
 
-    const srcAbs = join(cwd, q.replace(/^\.?\//, ''))
-    const docAbs = join(cwd, mapped.docPath)
-    const exists = existsSync(docAbs)
-    const stale = exists && existsSync(srcAbs)
-      && statSync(srcAbs).mtimeMs > statSync(docAbs).mtimeMs
+    const src = q.replace(/^\.?\//, '')
+    const docPath = resolveDocPath(cwd, mapped)
+    const freshness = pageFreshness(cwd, src, docPath)
 
-    return { query: q, matches: [{ doc: mapped.docPath, exists, stale }] }
+    return {
+      query: q,
+      matches: [{
+        doc: docPath,
+        exists: freshness !== 'missing',
+        stale: freshness === 'stale' || freshness === 'unhashed-stale',
+      }],
+    }
   }
 
   // Имя сущности → ищем страницу по basename (сначала точное, потом частичное).
@@ -296,24 +376,84 @@ export function lint(cwd = process.cwd()) {
   const broken = checkLinks(cwd)
   const orphans = []
   const stale = []
+  const unhashed = []
+  const untracked = []
 
-  for (const abs of vaultPages(cwd)) {
+  const pages = vaultPages(cwd)
+
+  for (const abs of pages) {
     const source = frontmatterField(abs, 'source')
     // Narrative-страницы (standards/patterns) без `source:` не выводятся из кода — пропускаем.
     if (!source)
       continue
 
-    const srcAbs = join(cwd, source)
     const page = relative(cwd, abs).split('\\').join('/')
-    if (!existsSync(srcAbs)) {
-      orphans.push({ page, source })
-      continue
+    switch (pageFreshness(cwd, source, page)) {
+      case 'orphan':
+        orphans.push({ page, source })
+        break
+      case 'stale':
+        stale.push({ page, source })
+        break
+      case 'unhashed-stale':
+        stale.push({ page, source })
+        unhashed.push({ page, source })
+        break
+      case 'unhashed-ok':
+        unhashed.push({ page, source })
+        break
+      case 'untracked':
+        untracked.push({ page, source })
+        break
     }
-    if (statSync(srcAbs).mtimeMs > statSync(abs).mtimeMs)
-      stale.push({ page, source })
   }
 
-  return { broken, orphans, stale }
+  // Obsidian резолвит [[ссылку]] по basename, поэтому одинаковые имена в разных папках
+  // (models/games.md и stores/games.md) делают ссылку неоднозначной.
+  const byBase = new Map()
+  for (const abs of pages) {
+    const base = basename(abs, '.md').toLowerCase()
+    if (!byBase.has(base))
+      byBase.set(base, [])
+
+    byBase.get(base).push(relative(cwd, abs).split('\\').join('/'))
+  }
+  const collisions = [...byBase.entries()]
+    .filter(([, list]) => list.length > 1)
+    .map(([base, list]) => ({ base, pages: list.sort() }))
+
+  return { broken, orphans, stale, unhashed, untracked, collisions }
+}
+
+// Проставить/обновить `source_hash` во frontmatter страниц (разовая миграция с mtime
+// и способ подтвердить «страница соответствует текущему коду»).
+export function rehash(cwd = process.cwd(), { onlyMissing = true } = {}) {
+  const updated = []
+  for (const abs of vaultPages(cwd)) {
+    const source = frontmatterField(abs, 'source')
+    if (!isTrackedSource(source) || !existsSync(join(cwd, source)))
+      continue
+
+    const existing = frontmatterField(abs, 'source_hash')
+    if (existing && onlyMissing)
+      continue
+
+    const hash = sourceHash(join(cwd, source))
+    if (!hash)
+      continue
+
+    const text = readFileSync(abs, 'utf8')
+    const next = existing
+      ? text.replace(/^source_hash:\s*.+$/m, `source_hash: ${hash}`)
+      : text.replace(/^(source:\s*.+)$/m, `$1\nsource_hash: ${hash}`)
+
+    if (next !== text) {
+      writeFileSync(abs, next)
+      updated.push(relative(cwd, abs).split('\\').join('/'))
+    }
+  }
+
+  return updated
 }
 
 // Дописать строку в append-only журнал knowledge/log.md (операции ingest/query/lint).
@@ -386,12 +526,22 @@ if (isMainModule(import.meta.url)) {
       files = debtFiles(cwd)
     }
     const pending = pendingDocs(cwd, files)
-    if (!pending.length) {
-      console.log(`[docs-map] вся затронутая дока актуальна (${working ? 'рабочее дерево' : 'долг коммитов'}).`)
+
+    // Долг коммитов показывает только то, что менялось в этой пачке. Страницы, разошедшиеся
+    // с кодом раньше, оставались невидимыми (--pending говорил «1», --lint показывал «9»),
+    // и долг копился молча. Показываем оба источника в одном списке.
+    const known = new Set(pending.map(p => p.doc))
+    const extra = lint(cwd).stale.filter(s => !known.has(s.page)).map(s => ({ source: s.source, doc: s.page, reason: 'stale', origin: 'lint' }))
+    const all = [...pending.map(p => ({ ...p, origin: working ? 'working' : 'queue' })), ...extra]
+
+    if (!all.length) {
+      console.log(`[docs-map] вся дока актуальна (${working ? 'рабочее дерево' : 'долг коммитов'} + весь vault).`)
     }
     else {
-      for (const p of pending)
-        console.log(`  ${p.reason.padEnd(7)} ${p.source} → ${p.doc}`)
+      for (const p of all)
+        console.log(`  ${p.reason.padEnd(7)} ${String(p.origin).padEnd(7)} ${p.source} → ${p.doc}`)
+      if (extra.length)
+        console.log(`\n  origin=lint — расхождения вне текущего долга (${extra.length}). Они копятся, пока их не обновить.`)
     }
   }
   else if (arg === '--find') {
@@ -409,10 +559,14 @@ if (isMainModule(import.meta.url)) {
     }
   }
   else if (arg === '--lint') {
-    const { broken, orphans, stale } = lint(cwd)
-    const total = broken.length + orphans.length + stale.length
+    const { broken, orphans, stale, unhashed, untracked, collisions } = lint(cwd)
+    const total = broken.length + orphans.length + stale.length + collisions.length
     if (!total) {
-      console.log('[docs-map] lint: чисто (ссылки, orphans, stale — проблем нет).')
+      console.log('[docs-map] lint: чисто (ссылки, orphans, stale, коллизии имён — проблем нет).')
+      if (unhashed.length)
+        console.log(`[docs-map] без source_hash: ${unhashed.length} — актуальность считается по mtime. Проставить: --rehash`)
+      if (untracked.length)
+        console.log(`[docs-map] source вне проекта: ${untracked.length} — эти страницы нарративные, актуальность не проверяется`)
     }
     else {
       if (broken.length) {
@@ -426,12 +580,29 @@ if (isMainModule(import.meta.url)) {
           console.log(`  ${o.page} → ${o.source}`)
       }
       if (stale.length) {
-        console.log(`[docs-map] устаревших страниц (исходник новее): ${stale.length}`)
+        console.log(`[docs-map] устаревших страниц (исходник изменился): ${stale.length}`)
         for (const s of stale)
           console.log(`  ${s.page} → ${s.source}`)
       }
+      if (collisions.length) {
+        console.log(`[docs-map] коллизий имён (Obsidian резолвит [[ссылку]] по basename): ${collisions.length}`)
+        for (const c of collisions)
+          console.log(`  [[${c.base}]] → ${c.pages.join('  |  ')}`)
+      }
+      if (unhashed.length)
+        console.log(`[docs-map] без source_hash: ${unhashed.length} — актуальность считается по mtime. Проставить: --rehash`)
+      if (untracked.length)
+        console.log(`[docs-map] source вне проекта: ${untracked.length} — нарративные, актуальность не проверяется`)
+
       process.exit(1)
     }
+  }
+  else if (arg === '--rehash') {
+    // --all перештампует и уже проставленные хеши: это заявление «страницы соответствуют коду».
+    const updated = rehash(cwd, { onlyMissing: !process.argv.includes('--all') })
+    console.log(updated.length
+      ? `[docs-map] source_hash проставлен: ${updated.length}\n${updated.map(p => `  ${p}`).join('\n')}`
+      : '[docs-map] нечего проставлять — все страницы с source уже с хешем.')
   }
   else if (arg === '--log') {
     const p = appendLog(cwd, process.argv.slice(3).join(' '))
@@ -441,6 +612,6 @@ if (isMainModule(import.meta.url)) {
       console.log('[docs-map] --log: пустое сообщение, ничего не записано.')
   }
   else {
-    console.log('usage: docs-map.mjs [--build-index | --lint | --check-links | --pending | --find <имя|путь> | --log "PREFIX msg"]')
+    console.log('usage: docs-map.mjs [--build-index | --lint | --check-links | --pending [--working] | --rehash [--all] | --find <имя|путь> | --log "PREFIX msg"]')
   }
 }

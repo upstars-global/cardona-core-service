@@ -2,6 +2,7 @@
 title: filter (модель)
 type: model
 source: src/@model/filter.ts
+source_hash: 511b96fce261
 tags: []
 updated: 2026-07-16
 ---

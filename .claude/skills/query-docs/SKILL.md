@@ -1,6 +1,6 @@
 ---
 name: query-docs
-description: Reads the Obsidian wiki in knowledge/ BEFORE reading source code — the LLM-Wiki "query" operation. Use it to understand a project entity (@model, store, composable, component, config, service) cheaply and save context. Triggers — you need to understand "what is X / how does X work / where is X defined" for a code entity; you are about to open a source file just to learn how something works. Also trigger on /query-docs.
+description: Read the knowledge/ wiki BEFORE the source — the LLM-Wiki "query" step. Use when you need to understand what X is or how X works for a code entity (model, store, composable, component, config, service), or are about to open a source file just to learn how something works. Also on /query-docs.
 ---
 
 # query-docs — consult the wiki before the source

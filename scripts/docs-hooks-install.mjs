@@ -6,9 +6,10 @@
 // и дёшев, поэтому вешается на SessionStart Claude Code: хук доустанавливается сам
 // после `git clone`, смены `core.hooksPath` или обновления версии.
 //
-// Что делает хук: после каждого коммита вызывает `docs-queue.mjs --record`, то есть
-// детерминированно копит «долг по документации». Напоминание приходит позже, по
-// пушу ветки (scripts/docs-guard.mjs).
+// Что делает хук: после каждого коммита (1) вызывает `docs-queue.mjs --record`, то есть
+// детерминированно копит «долг по документации», и (2) пересобирает `knowledge/index.md`,
+// чтобы карта vault никогда не отставала. Напоминание приходит позже, по пушу ветки
+// (scripts/docs-guard.mjs).
 //
 // Бережно к чужим хукам: если post-commit уже есть и он не наш, он один раз
 // сохраняется рядом как `post-commit.pre-cardona`, а наш хук вызывает его в конце.
@@ -25,19 +26,27 @@ import { join } from 'node:path'
 import { sh } from './push-state.mjs'
 
 const MARKER = 'cardona-docs-hook'
-const VERSION = 'v1'
+const VERSION = 'v2'
 
 // Хук работает и в панели (скрипт внутри node_modules), и в самом core-service.
+//
+// v2: кроме учёта долга ещё и пересобирает knowledge/index.md. Раньше это делала модель
+// по инструкции внутри /update-docs — и не делала: индекс отставал от vault на несколько
+// страниц, а SessionStart инжектил устаревшую карту. Работа детерминированная, её место в хуке.
 const HOOK_BODY = `#!/bin/sh
-# ${MARKER} ${VERSION} — фиксирует «долг по документации» после коммита (LLM Wiki).
+# ${MARKER} ${VERSION} — фиксирует «долг по документации» и пересобирает индекс (LLM Wiki).
 # Ставится скриптом docs-hooks-install.mjs. Никогда не ломает коммит: exit 0 всегда.
 
 HOOK_DIR="$(dirname "$0")"
 
 if [ "$CARDONA_DOCS_GUARD" != "0" ] && command -v node >/dev/null 2>&1; then
-  for q in "node_modules/cardona-core-service/scripts/docs-queue.mjs" "scripts/docs-queue.mjs"; do
-    if [ -f "$q" ]; then
-      node "$q" --record >/dev/null 2>&1 || true
+  for dir in "node_modules/cardona-core-service/scripts" "scripts"; do
+    if [ -f "$dir/docs-queue.mjs" ]; then
+      node "$dir/docs-queue.mjs" --record >/dev/null 2>&1 || true
+      # Индекс пересобираем только если vault существует — иначе создавали бы его на пустом месте.
+      if [ -d "knowledge" ] && [ -f "$dir/docs-map.mjs" ]; then
+        node "$dir/docs-map.mjs" --build-index >/dev/null 2>&1 || true
+      fi
       break
     fi
   done
