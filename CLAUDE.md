@@ -31,12 +31,8 @@ Freshness is a **content hash** of the source (`source_hash` in the page frontma
 mtime made half the vault "stale" after any `yarn install` or checkout. Pages without a hash fall back
 to mtime until `docs-map.mjs --rehash`.
 
-**Scripts** (`scripts/`, each with a full header comment — read it before changing one):
-`docs-map.mjs` (core: mapping, index, lint, find, rehash) - `docs-queue.mjs` (debt queue) -
-`docs-guard.mjs` (Stop hook) - `docs-inject.mjs` (SessionStart: compact vault map) -
-`docs-hooks-install.mjs` (deploys the git hook per clone) - `docs-hotpath.mjs` (what to document next,
-ranked by git churn) - `push-state.mjs` (shared push detection) - `claude-budget.mjs` (token cost of
-the whole skills/agents setup, with `--baseline` / `--compare`).
+**Scripts** live in `scripts/` (`ls scripts/` for the list); each has a full header comment that
+is its spec — read it before changing one.
 
 Kill switch: `CARDONA_DOCS_GUARD=0` (also makes the git hook a no-op).
 
