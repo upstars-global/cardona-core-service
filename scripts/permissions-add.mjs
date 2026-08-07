@@ -68,15 +68,15 @@ function fail(message) {
 const args = parseArgs(process.argv.slice(2))
 
 if (!args.key || !args.group)
-  fail('обязательны --key и --group. Подсказка по аргументам — в шапке скрипта.')
+  fail('--key and --group are required. See the script header for the argument reference.')
 if (!/^[a-z][a-z0-9-]*$/.test(args.key))
-  fail(`--key "${args.key}" не похож на ключ доступа (ожидается kebab-case, например backoffice-vip-seasons).`)
+  fail(`--key "${args.key}" does not look like an access key (kebab-case expected, e.g. backoffice-vip-seasons).`)
 if (!existsSync(PERMISSIONS_TS))
-  fail(`не найден ${PERMISSIONS_TS} — запускать из корня проекта-панели.`)
+  fail(`${PERMISSIONS_TS} not found — run this from the root of a panel project.`)
 
 const formType = args.type || 'Table'
 if (!['Table', 'Switch'].includes(formType))
-  fail(`--type должен быть Table или Switch, получено "${formType}".`)
+  fail(`--type must be Table or Switch, got "${formType}".`)
 
 const pascal = key => key.split('-').filter(Boolean).map(s => s[0].toUpperCase() + s.slice(1)).join('')
 const enumName = args.enum || pascal(args.key)
@@ -94,11 +94,11 @@ const tsLines = readFileSync(PERMISSIONS_TS, 'utf8').split('\n')
 // Границы блока `export enum PermissionType { … }`.
 const enumStart = tsLines.findIndex(l => /^export enum PermissionType\s*\{/.test(l))
 if (enumStart === -1)
-  fail('в permissions.ts не найден `export enum PermissionType {`.')
+  fail('`export enum PermissionType {` not found in permissions.ts.')
 
 const enumEnd = tsLines.findIndex((l, i) => i > enumStart && /^\}/.test(l))
 if (enumEnd === -1)
-  fail('не найдена закрывающая скобка enum PermissionType.')
+  fail('the closing brace of enum PermissionType was not found.')
 
 // Карта member → value по строкам enum.
 const enumMembers = new Map()
@@ -125,15 +125,15 @@ function resolveNeighbor(ref) {
 
 const afterEnum = resolveNeighbor(args.after)
 if (args.after && !afterEnum)
-  fail(`сосед --after "${args.after}" не найден в enum PermissionType (ни как имя члена, ни как значение).`)
+  fail(`the --after neighbour "${args.after}" was not found in enum PermissionType (neither as a member name nor as a value).`)
 
 // 1. Член enum.
 const existingByValue = [...enumMembers].find(([, info]) => info.value === args.key)
 if (existingByValue) {
-  skipped.push(`enum: ${existingByValue[0]} = '${args.key}' уже есть`)
+  skipped.push(`enum: ${existingByValue[0]} = '${args.key}' already exists`)
 }
 else if (enumMembers.has(enumName)) {
-  fail(`имя члена enum ${enumName} уже занято значением '${enumMembers.get(enumName).value}'. Задайте другое через --enum.`)
+  fail(`the enum member name ${enumName} is already taken by the value '${enumMembers.get(enumName).value}'. Pass a different one via --enum.`)
 }
 else {
   const insertAt = afterEnum ? enumMembers.get(afterEnum).line + 1 : enumEnd
@@ -144,25 +144,25 @@ else {
       tsLines[lastIdx] = `${tsLines[lastIdx].trimEnd()},`
   }
   tsLines.splice(insertAt, 0, `  ${enumName} = '${args.key}',`)
-  changes.push(`permissions.ts: enum ${enumName} = '${args.key}'${afterEnum ? ` (после ${afterEnum})` : ' (в конец enum)'}`)
+  changes.push(`permissions.ts: enum ${enumName} = '${args.key}'${afterEnum ? ` (after ${afterEnum})` : ' (at the end of the enum)'}`)
 }
 
 // 2. Запись в группе. Границы группы ищем заново — строки могли сдвинуться после вставки в enum.
 const groupStart = tsLines.findIndex(l => new RegExp(`^  ${args.group}:\\s*\\[`).test(l))
 if (groupStart === -1) {
   const groups = tsLines.filter(l => /^ {2}[A-Za-z]\w*:\s*\[/.test(l)).map(l => l.trim().split(':')[0])
-  fail(`группа "${args.group}" не найдена в default-экспорте. Доступные: ${groups.join(', ')}`)
+  fail(`group "${args.group}" was not found in the default export. Available: ${groups.join(', ')}`)
 }
 
 const groupEnd = tsLines.findIndex((l, i) => i > groupStart && /^ {2}\] as PermissionUpdatableTable\[\],/.test(l))
 if (groupEnd === -1)
-  fail(`не найден конец группы "${args.group}" (строка \`] as PermissionUpdatableTable[],\`).`)
+  fail(`the end of group "${args.group}" was not found (the \`] as PermissionUpdatableTable[],\` line).`)
 
 const groupBody = tsLines.slice(groupStart + 1, groupEnd)
 const alreadyInGroup = groupBody.some(l => l.includes(`PermissionType.${enumName}`) || l.includes(`PermissionType.${existingByValue?.[0]}`))
 
 if (alreadyInGroup) {
-  skipped.push(`группа ${args.group}: запись для ${enumName} уже есть`)
+  skipped.push(`group ${args.group}: an entry for ${enumName} already exists`)
 }
 else {
   // Позиция: сразу после записи соседа (её закрывающая `},`), иначе в конец группы.
@@ -171,7 +171,7 @@ else {
   if (afterEnum) {
     const targetIdx = groupBody.findIndex(l => new RegExp(`target:\\s*PermissionType\\.${afterEnum}\\b`).test(l))
     if (targetIdx === -1) {
-      console.warn(`[permissions-add] предупреждение: соседа ${afterEnum} нет в группе "${args.group}" — запись уйдёт в конец группы.`)
+      console.warn(`[permissions-add] warning: the neighbour ${afterEnum} is not in group "${args.group}" — the entry will go to the end of the group.`)
     }
     else {
       const closeIdx = groupBody.findIndex((l, i) => i > targetIdx && /^ {4}\},/.test(l))
@@ -190,7 +190,7 @@ else {
     '    },',
   ]
   tsLines.splice(insertAt, 0, ...entry)
-  changes.push(`permissions.ts: группа ${args.group} ← ${formType}/${enumName}${placedAfter ? ` (после ${placedAfter})` : ' (в конец группы)'}${notAccessLevel ? ` notAccessLevel [${notAccessLevel.join(', ')}]` : ''}`)
+  changes.push(`permissions.ts: group ${args.group} ← ${formType}/${enumName}${placedAfter ? ` (after ${placedAfter})` : ' (at the end of the group)'}${notAccessLevel ? ` notAccessLevel [${notAccessLevel.join(', ')}]` : ''}`)
 }
 
 // ---------- en.json ----------
@@ -198,22 +198,22 @@ else {
 const jsonLines = existsSync(EN_JSON) ? readFileSync(EN_JSON, 'utf8').split('\n') : null
 
 if (!jsonLines) {
-  skipped.push(`en.json не найден (${EN_JSON}) — подпись не добавлена`)
+  skipped.push(`en.json not found (${EN_JSON}) — the label was not added`)
 }
 else if (!args.label) {
-  skipped.push('en.json: --label не задан — подпись не добавлена')
+  skipped.push('en.json: --label was not given — the label was not added')
 }
 else {
   const nsStart = jsonLines.findIndex(l => /^ {2}"permission":\s*\{/.test(l))
   if (nsStart === -1) {
-    skipped.push('en.json: не найден неймспейс "permission" — подпись не добавлена')
+    skipped.push('en.json: the "permission" namespace was not found — the label was not added')
   }
   else {
     const nsEnd = jsonLines.findIndex((l, i) => i > nsStart && /^ {2}\},?$/.test(l))
     const body = jsonLines.slice(nsStart + 1, nsEnd)
 
     if (body.some(l => l.trim().startsWith(`"${args.key}":`))) {
-      skipped.push(`en.json: ключ "${args.key}" уже есть`)
+      skipped.push(`en.json: the key "${args.key}" already exists`)
     }
     else {
       const neighborKey = afterEnum ? enumMembers.get(afterEnum)?.value : null
@@ -230,7 +230,7 @@ else {
       }
 
       jsonLines.splice(insertAt, 0, `    "${args.key}": ${JSON.stringify(args.label)}${atEnd ? '' : ','}`)
-      changes.push(`en.json: "${args.key}": "${args.label}"${neighborIdx !== -1 ? ` (после "${neighborKey}")` : ' (в конец неймспейса)'}`)
+      changes.push(`en.json: "${args.key}": "${args.label}"${neighborIdx !== -1 ? ` (after "${neighborKey}")` : ' (at the end of the namespace)'}`)
     }
   }
 }
@@ -238,13 +238,13 @@ else {
 // ---------- запись / вывод ----------
 
 if (!changes.length) {
-  console.log('[permissions-add] нечего делать — всё уже на месте:')
+  console.log('[permissions-add] nothing to do — everything is already in place:')
   skipped.forEach(s => console.log(`  • ${s}`))
   process.exit(0)
 }
 
 if (args.dryRun) {
-  console.log('[permissions-add] --dry-run, файлы не тронуты. Было бы сделано:')
+  console.log('[permissions-add] --dry-run, files untouched. What would have been done:')
   changes.forEach(c => console.log(`  + ${c}`))
   skipped.forEach(s => console.log(`  • ${s}`))
   process.exit(0)
@@ -254,7 +254,7 @@ writeFileSync(PERMISSIONS_TS, tsLines.join('\n'))
 if (jsonLines)
   writeFileSync(EN_JSON, jsonLines.join('\n'))
 
-console.log('[permissions-add] готово:')
+console.log('[permissions-add] done:')
 changes.forEach(c => console.log(`  + ${c}`))
 skipped.forEach(s => console.log(`  • ${s}`))
-console.log('  Дальше: yarn typecheck && yarn lint')
+console.log('  Next: yarn typecheck && yarn lint')

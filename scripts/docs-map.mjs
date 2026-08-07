@@ -498,15 +498,15 @@ if (isMainModule(import.meta.url)) {
 
   if (arg === '--build-index') {
     const r = buildIndex(cwd)
-    console.log(`[docs-map] индекс собран: ${r.pages} страниц, ${r.dirs} разделов → ${r.indexPath}`)
+    console.log(`[docs-map] index built: ${r.pages} pages, ${r.dirs} sections → ${r.indexPath}`)
   }
   else if (arg === '--check-links') {
     const broken = checkLinks(cwd)
     if (!broken.length) {
-      console.log('[docs-map] битых [[ссылок]] не найдено.')
+      console.log('[docs-map] no broken [[links]] found.')
     }
     else {
-      console.log(`[docs-map] битых ссылок: ${broken.length}`)
+      console.log(`[docs-map] broken links: ${broken.length}`)
       for (const b of broken)
         console.log(`  ${b.page}: [[${b.link}]]`)
       process.exit(1)
@@ -535,26 +535,26 @@ if (isMainModule(import.meta.url)) {
     const all = [...pending.map(p => ({ ...p, origin: working ? 'working' : 'queue' })), ...extra]
 
     if (!all.length) {
-      console.log(`[docs-map] вся дока актуальна (${working ? 'рабочее дерево' : 'долг коммитов'} + весь vault).`)
+      console.log(`[docs-map] all docs are up to date (${working ? 'working tree' : 'commit debt'} + the whole vault).`)
     }
     else {
       for (const p of all)
         console.log(`  ${p.reason.padEnd(7)} ${String(p.origin).padEnd(7)} ${p.source} → ${p.doc}`)
       if (extra.length)
-        console.log(`\n  origin=lint — расхождения вне текущего долга (${extra.length}). Они копятся, пока их не обновить.`)
+        console.log(`\n  origin=lint — divergences outside the current debt (${extra.length}). They pile up until updated.`)
     }
   }
   else if (arg === '--find') {
     const r = findDoc(cwd, process.argv[3] || '')
     if (!r.matches.length) {
       console.log(
-        `[docs-map] страница для «${r.query}» не найдена — прочитай исходник `
-        + 'и заведи страницу через /update-docs.',
+        `[docs-map] no page found for "${r.query}" — read the source `
+        + 'and create the page via /update-docs.',
       )
       process.exit(1)
     }
     for (const m of r.matches) {
-      const status = !m.exists ? 'нет страницы' : m.stale ? 'устарела' : 'ok'
+      const status = !m.exists ? 'no page' : m.stale ? 'stale' : 'ok'
       console.log(`  ${m.doc} (${status})`)
     }
   }
@@ -562,37 +562,37 @@ if (isMainModule(import.meta.url)) {
     const { broken, orphans, stale, unhashed, untracked, collisions } = lint(cwd)
     const total = broken.length + orphans.length + stale.length + collisions.length
     if (!total) {
-      console.log('[docs-map] lint: чисто (ссылки, orphans, stale, коллизии имён — проблем нет).')
+      console.log('[docs-map] lint: clean (links, orphans, stale, name collisions — no problems).')
       if (unhashed.length)
-        console.log(`[docs-map] без source_hash: ${unhashed.length} — актуальность считается по mtime. Проставить: --rehash`)
+        console.log(`[docs-map] without source_hash: ${unhashed.length} — freshness falls back to mtime. Stamp them with: --rehash`)
       if (untracked.length)
-        console.log(`[docs-map] source вне проекта: ${untracked.length} — эти страницы нарративные, актуальность не проверяется`)
+        console.log(`[docs-map] source outside the project: ${untracked.length} — these pages are narrative, freshness is not checked`)
     }
     else {
       if (broken.length) {
-        console.log(`[docs-map] битых [[ссылок]]: ${broken.length}`)
+        console.log(`[docs-map] broken [[links]]: ${broken.length}`)
         for (const b of broken)
           console.log(`  ${b.page}: [[${b.link}]]`)
       }
       if (orphans.length) {
-        console.log(`[docs-map] orphan-страниц (source удалён): ${orphans.length}`)
+        console.log(`[docs-map] orphan pages (source deleted): ${orphans.length}`)
         for (const o of orphans)
           console.log(`  ${o.page} → ${o.source}`)
       }
       if (stale.length) {
-        console.log(`[docs-map] устаревших страниц (исходник изменился): ${stale.length}`)
+        console.log(`[docs-map] stale pages (the source changed): ${stale.length}`)
         for (const s of stale)
           console.log(`  ${s.page} → ${s.source}`)
       }
       if (collisions.length) {
-        console.log(`[docs-map] коллизий имён (Obsidian резолвит [[ссылку]] по basename): ${collisions.length}`)
+        console.log(`[docs-map] name collisions (Obsidian resolves a [[link]] by basename): ${collisions.length}`)
         for (const c of collisions)
           console.log(`  [[${c.base}]] → ${c.pages.join('  |  ')}`)
       }
       if (unhashed.length)
-        console.log(`[docs-map] без source_hash: ${unhashed.length} — актуальность считается по mtime. Проставить: --rehash`)
+        console.log(`[docs-map] without source_hash: ${unhashed.length} — freshness falls back to mtime. Stamp them with: --rehash`)
       if (untracked.length)
-        console.log(`[docs-map] source вне проекта: ${untracked.length} — нарративные, актуальность не проверяется`)
+        console.log(`[docs-map] source outside the project: ${untracked.length} — narrative pages, freshness is not checked`)
 
       process.exit(1)
     }
@@ -601,17 +601,17 @@ if (isMainModule(import.meta.url)) {
     // --all перештампует и уже проставленные хеши: это заявление «страницы соответствуют коду».
     const updated = rehash(cwd, { onlyMissing: !process.argv.includes('--all') })
     console.log(updated.length
-      ? `[docs-map] source_hash проставлен: ${updated.length}\n${updated.map(p => `  ${p}`).join('\n')}`
-      : '[docs-map] нечего проставлять — все страницы с source уже с хешем.')
+      ? `[docs-map] source_hash stamped: ${updated.length}\n${updated.map(p => `  ${p}`).join('\n')}`
+      : '[docs-map] nothing to stamp — every page with a source already has a hash.')
   }
   else if (arg === '--log') {
     const p = appendLog(cwd, process.argv.slice(3).join(' '))
     if (p)
-      console.log(`[docs-map] записано в ${p}`)
+      console.log(`[docs-map] written to ${p}`)
     else
-      console.log('[docs-map] --log: пустое сообщение, ничего не записано.')
+      console.log('[docs-map] --log: empty message, nothing written.')
   }
   else {
-    console.log('usage: docs-map.mjs [--build-index | --lint | --check-links | --pending [--working] | --rehash [--all] | --find <имя|путь> | --log "PREFIX msg"]')
+    console.log('usage: docs-map.mjs [--build-index | --lint | --check-links | --pending [--working] | --rehash [--all] | --find <name|path> | --log "PREFIX msg"]')
   }
 }

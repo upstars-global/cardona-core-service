@@ -30,8 +30,8 @@ import { resolve } from 'node:path'
 const REPO = process.cwd()
 const CORE_CLONES = ['../cardona-core-service-github', '../cardona-core-service']
 
-const DIFF_TOTAL_CAP = 25000 // символов на весь дифф
-const DIFF_FILE_FULL = 4000 // до этого размера файл входит целиком
+const DIFF_TOTAL_CAP = 25000 // characters for the whole diff
+const DIFF_FILE_FULL = 4000 // up to this size a file goes in whole
 
 const sh = (cmd, opts = {}) => {
   try {
@@ -43,8 +43,8 @@ const sh = (cmd, opts = {}) => {
 const lines = (s) => (s ? s.split('\n').filter(Boolean) : [])
 const readIf = (rel) => (existsSync(resolve(REPO, rel)) ? readFileSync(resolve(REPO, rel), 'utf8') : '')
 
-// Панели нумеруют плагин роутера по-разному (cardona — 2.router, compostela — 1.router),
-// поэтому директорию ищем, а не хардкодим.
+// The panels number the router plugin differently (cardona — 2.router, compostela — 1.router),
+// so the directory is discovered rather than hard-coded.
 const ROUTER_DIR = ['src/plugins/2.router', 'src/plugins/1.router'].find((d) => existsSync(resolve(REPO, d))) || 'src/plugins/2.router'
 
 const ADDITIONAL_ROUTES = `${ROUTER_DIR}/additional-routes.ts`
@@ -77,9 +77,9 @@ function resolveChangeSet() {
 
 // ---------- Step 2: classification ----------
 
-// Файлы, которые никогда не являются impact'ом: генерируемые артефакты сборки и
-// devVersion.json — служебный маркер версии для разработчиков (его только `cat`-ает
-// Dockerfile), в продукте он не виден и тестировать в нём нечего.
+// Files that are never an impact: generated build artefacts and devVersion.json — an internal
+// version marker for developers (only `cat`-ed by the Dockerfile); it is invisible in the
+// product, so there is nothing to test in it.
 const GENERATED = ['components.d.ts', 'typed-router.d.ts', 'auto-imports.d.ts', 'devVersion.json']
 const isGenerated = (f) => GENERATED.includes(f) || f.startsWith('dist/') || f.startsWith('coverage/')
 const PROJECT_WIDE = [
@@ -105,9 +105,9 @@ function classify(f) {
 
 // ---------- route resolution (port of src/helper/router.ts) ----------
 
-// URL строит lodash.kebabCase — берём именно его, чтобы совпадать с приложением
-// символ в символ. Локальная реализация — только страховка, если lodash не разрешился
-// (например, скрипт запущен вне проекта).
+// The URL is built by lodash.kebabCase — use exactly that one, to match the app character for
+// character. The local implementation is only a safety net for when lodash cannot be resolved
+// (e.g. the script is run outside the project).
 const localKebabCase = (s) =>
   String(s)
     .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
@@ -131,7 +131,7 @@ for (const specifier of ['lodash', resolve(REPO, 'node_modules/lodash/lodash.js'
       break
     }
   } catch {
-    // пробуем следующий вариант
+    // try the next specifier
   }
 }
 
@@ -141,8 +141,8 @@ const convertCamelCase = (s, sep) => (s ? s[0].toLowerCase() + s.slice(1).replac
 const getPrefixNameKey = (prefixName, name) =>
   prefixName ? prefixName.charAt(0).toLowerCase() + prefixName.slice(1) + upper1(name) : name
 
-// Записи sectionRouterGenerator из additional-routes.ts. Формат в файле — однострочные
-// объектные литералы, поэтому построчный разбор надёжнее и дешевле полноценного парсера.
+// sectionRouterGenerator entries from additional-routes.ts. In that file they are single-line
+// object literals, so line-by-line parsing is more reliable and cheaper than a real parser.
 function parseGeneratorConfigs() {
   const src = readIf(ADDITIONAL_ROUTES)
   if (!src) return []
@@ -215,8 +215,8 @@ function generatedRoutes() {
   return out
 }
 
-// Ближайший объемлющий `{ … }` для позиции в исходнике — через сопоставление скобок.
-// Кавычки пропускаем, чтобы скобка внутри строки не сбивала глубину.
+// The nearest enclosing `{ … }` for a position in the source, via brace matching.
+// Quoted spans are skipped so that a brace inside a string does not throw off the depth.
 function enclosingBlock(src, index) {
   const stack = []
   let best = null
@@ -243,8 +243,8 @@ function enclosingBlock(src, index) {
   return best ? src.slice(best[0], best[1] + 1) : null
 }
 
-// Рукописные модули: путь/имя могут быть вынесены в локальные const, поэтому сначала
-// собираем их значения, потом резолвим ссылки и shorthand-свойства.
+// Hand-written modules: the path/name may be extracted into local consts, so their values are
+// collected first and only then the references and shorthand properties are resolved.
 function moduleRoutes() {
   const dir = resolve(REPO, ROUTER_MODULES)
   if (!existsSync(dir)) return []
@@ -262,16 +262,16 @@ function moduleRoutes() {
       return consts.get(raw.trim())
     }
 
-    // Роут — объект, внутри которого есть component: () => import('@/pages/...').
-    // Вложенность произвольная (meta.breadcrumb[]), поэтому границы объекта берём
-    // сопоставлением скобок, а не регуляркой.
+    // A route is an object containing component: () => import('@/pages/...').
+    // Nesting is arbitrary (meta.breadcrumb[]), so the object boundaries come from brace
+    // matching rather than from a regex.
     for (const hit of src.matchAll(/component:\s*\(\)\s*=>\s*import\(\s*[`'"]([^`'"]+)[`'"]/g)) {
-      // Путь часто собирают шаблонной строкой: import(`@/pages${path}/list/index.vue`).
+      // The path is often assembled with a template literal: import(`@/pages${path}/list/index.vue`).
       const comp = hit[1].replace(/\$\{(\w+)\}/g, (whole, name) => consts.get(name) ?? whole)
       const body = enclosingBlock(src, hit.index)
       if (!body) continue
 
-      // breadcrumb содержит свои title: — вырезаем, чтобы не перепутать с meta.title.
+      // breadcrumb carries its own title: entries — strip them so they are not confused with meta.title.
       const flat = body.replace(/breadcrumb:\s*\[[\s\S]*?\n\s*\],?/g, '')
 
       const rawPath = (flat.match(/(?:^|[\s,])path:\s*([^,\n]+)/) || [])[1]
@@ -298,8 +298,8 @@ const ROUTES = [...generatedRoutes(), ...moduleRoutes()]
 
 // ---------- i18n ----------
 
-// В панелях en.json иногда содержит висячую запятую (строгий JSON её не допускает).
-// Терять из-за этого все подписи меню не стоит — вторая попытка после мягкой чистки.
+// In the panels en.json sometimes contains a trailing comma (strict JSON forbids it).
+// Losing every menu label over that is not worth it — retry after a soft cleanup.
 let EN = {}
 let enJsonNote = null
 const rawEn = readIf(EN_JSON) || '{}'
@@ -308,10 +308,10 @@ try {
 } catch {
   try {
     EN = JSON.parse(rawEn.replace(/,(\s*[}\]])/g, '$1'))
-    enJsonNote = `${EN_JSON} — невалидный строгий JSON (висячая запятая); разобран после мягкой чистки, файл стоит починить`
+    enJsonNote = `${EN_JSON} is not valid strict JSON (trailing comma); parsed after a soft cleanup — the file should be fixed`
   } catch (e) {
     EN = {}
-    enJsonNote = `${EN_JSON} не разобран (${e.message}) — подписи меню будут показаны i18n-ключами`
+    enJsonNote = `${EN_JSON} could not be parsed (${e.message}) — menu labels will be shown as i18n keys`
   }
 }
 const i18n = (key) => {
@@ -322,9 +322,9 @@ const i18n = (key) => {
 
 // ---------- menu ----------
 
-// buildMenu.ts — вложенные литералы, отформатированные prettier. Разбираем по отступам:
-// заголовок группы всегда левее свойств своих детей, поэтому стек «отступ → заголовок»
-// даёт корректных предков для каждого листа с `to:`.
+// buildMenu.ts is nested literals formatted by prettier. Parse it by indentation: a group title
+// always sits to the left of its children's properties, so an "indent → title" stack yields the
+// correct ancestors for every leaf carrying a `to:`.
 function parseMenu(rel) {
   const src = readIf(rel)
   if (!src) return []
@@ -336,9 +336,9 @@ function parseMenu(rel) {
   srcLines.forEach((line, idx) => {
     const indent = line.match(/^\s*/)[0].length
 
-    // Каждый вызов clearMenu( — отдельное меню со своим уровнем отступов
-    // (generalMenu, managingMenu, …). Без сброса заголовок группы из предыдущего
-    // блока остаётся «фантомным предком» для всех листьев следующего.
+    // Every clearMenu( call starts a separate menu with its own indentation level
+    // (generalMenu, managingMenu, …). Without a reset, a group title from the previous block
+    // stays on as a "phantom ancestor" for every leaf of the next one.
     if (line.includes('clearMenu(')) titleByIndent.clear()
 
     const titleMatch = line.match(/^\s*title:\s*'([^']+)'/)
@@ -350,7 +350,7 @@ function parseMenu(rel) {
     const toMatch = line.match(/^\s*to:\s*'([^']+)'/)
     if (!toMatch) return
 
-    // title может стоять и после to: внутри того же объекта — досматриваем пару строк.
+    // title may also come after to: inside the same object — look ahead a couple of lines.
     let leafKey = titleByIndent.get(indent)
     if (!leafKey) {
       for (let i = idx + 1; i < Math.min(idx + 4, srcLines.length); i++) {
@@ -386,11 +386,11 @@ function menuPathFor(routeName) {
 
 // ---------- evidence: pages ----------
 
-// Самое длинное совпадение по префиксу компонента: src/pages/a/b/list/index.vue должен
-// выиграть у src/pages/a/b/index.vue, когда изменён файл внутри list/.
-// Все роуты секции, которой принадлежит файл. Поднимаемся от его директории вверх,
-// пока не найдём уровень, под которым живут роуты: так `.../vipSeasons/_components/Foo.vue`
-// и `.../vipSeasons/list/index.vue` одинаково приводят к семейству VipSeasons*.
+// Longest match on the component prefix: src/pages/a/b/list/index.vue must beat
+// src/pages/a/b/index.vue when the changed file lives inside list/.
+// All routes of the section a file belongs to. Walk up from its directory until the level under
+// which the routes live is found: that way `.../vipSeasons/_components/Foo.vue` and
+// `.../vipSeasons/list/index.vue` both lead to the VipSeasons* family.
 function routesForPage(file) {
   const under = (child, parent) => child === parent || child.startsWith(`${parent}/`)
   const exact = ROUTES.filter((r) => r.component === file)
@@ -410,8 +410,8 @@ function routeForPage(file) {
   const candidates = routesForPage(file)
   if (!candidates.length) return null
 
-  // Приоритет: разобранное имя (в модулях встречаются фабрики с вычисляемым name),
-  // затем List (это то, куда QA заходит первым), затем длина пути компонента.
+  // Priority: a parsed name (modules contain factories with a computed name), then List (that is
+  // where QA lands first), then the length of the component path.
   return candidates.sort(
     (a, b) =>
       Number(Boolean(b.routeName)) - Number(Boolean(a.routeName)) ||
@@ -420,8 +420,8 @@ function routeForPage(file) {
   )[0]
 }
 
-// Изменённые страницы группируем по разделу: один раздел — одна запись в отчёте,
-// со списком его файлов и всем семейством роутов (list/create/update/card).
+// Changed pages are grouped by section: one section — one entry in the report, with the list of
+// its files and the whole route family (list/create/update/card).
 function pageEvidence(files) {
   const sections = new Map()
   const unresolved = []
@@ -431,7 +431,7 @@ function pageEvidence(files) {
     if (!route) {
       unresolved.push({
         file: f,
-        reason: 'роут не найден ни среди записей sectionRouterGenerator, ни в src/plugins/2.router/modules — см. references/cardona-map.md §1–§2',
+        reason: 'route found neither among the sectionRouterGenerator entries nor in src/plugins/2.router/modules — see references/cardona-map.md §1–§2',
       })
       continue
     }
@@ -449,7 +449,7 @@ function pageEvidence(files) {
         menuPath: menuPathFor(route.routeName)?.path || null,
         family: family.map((r) => ({ routeName: r.routeName, url: r.url, menuPath: menuPathFor(r.routeName)?.path || null })),
         files: [],
-        ...(route.routeName ? {} : { reason: `имя роута вычисляется в ${route.origin} — взять вручную из модуля` }),
+        ...(route.routeName ? {} : { reason: `the route name is computed in ${route.origin} — take it from the module by hand` }),
       })
     }
     sections.get(key).files.push(f)
@@ -463,12 +463,12 @@ function pageEvidence(files) {
 const grepConsumers = (pattern) => lines(sh(`grep -rlE ${JSON.stringify(pattern)} src`)).slice(0, 60)
 const pascal = upper1
 
-// foo/index.ts импортируют как '…/foo', а не '…/foo/index' — ищем оба написания,
-// иначе потребители index-файлов (а это большинство моделей и сторов) теряются.
+// foo/index.ts is imported as '…/foo', not '…/foo/index' — search for both spellings, otherwise
+// the consumers of index files (which is most models and stores) are lost.
 const pathForms = (rel) => [...new Set([rel, rel.replace(/\/index$/, '')])]
 
-// Потребители → страницы: каждый потребитель прогоняется через тот же резолвер роутов,
-// чтобы в отчёт попали пункты меню и URL, а не пути файлов.
+// Consumers → pages: every consumer goes through the same route resolver, so the report gets
+// menu entries and URLs rather than file paths.
 function consumersToPages(files) {
   const out = []
   for (const f of files) {
@@ -481,12 +481,12 @@ function consumersToPages(files) {
       file: f,
       page: route ? { routeName: route.routeName, url: route.url, menuPath: menuPathFor(route.routeName)?.path || null } : null,
       ...(route && !route.routeName
-        ? { reason: `имя роута вычисляется в ${route.origin} — открыть модуль и взять его вручную` }
+        ? { reason: `the route name is computed in ${route.origin} — open the module and take it by hand` }
         : {}),
     })
   }
 
-  // Дедуп по разделу: одна секция — одна строка в отчёте.
+  // Dedup by section: one section — one line in the report.
   const seen = new Set()
 
   return out.filter((c) => {
@@ -530,8 +530,8 @@ function sharedEvidence(f) {
 
 // ---------- evidence: cardona-core-service ----------
 
-// Каждый изменённый файл ядра — либо точечный (компонент/composable, ищем потребителей),
-// либо project-wide (BaseList/BaseSection/ApiService/права/layouts → регрессионный прогон).
+// Every changed core file is either targeted (a component/composable — look for its consumers)
+// or project-wide (BaseList/BaseSection/ApiService/permissions/layouts → regression sweep).
 function classifyCoreFile(f) {
   if (/BaseList|BaseSection|baseStoreCore|ApiService|services\/api|@model\/permission|permissions|@layouts|initCore|templates\/tableFields|templates\/baseList|templates\/baseSection/.test(f))
     return 'project-wide'
@@ -563,7 +563,7 @@ function coreDependencyEvidence(files) {
   const inRepoCore = files.filter((f) => f.startsWith('cardona-core-service/'))
   const allCore = [...new Set([...changedCoreFiles, ...inRepoCore.map((f) => f.replace(/^cardona-core-service\//, ''))])]
 
-  // Для точечных изменений ядра сразу ищем, кто их использует в приложении.
+  // For targeted core changes, immediately look up who uses them in the app.
   const classified = allCore.map((f) => {
     const kind = classifyCoreFile(f)
     let consumerPages = null
@@ -589,8 +589,8 @@ function coreDependencyEvidence(files) {
 
 // ---------- tiered diff ----------
 
-// Полный дифф режется по двум порогам, и КАЖДОЕ урезание попадает в bundle.truncated —
-// молчаливое обрезание читается как «покрыто всё», хотя это не так.
+// The full diff is cut by two thresholds, and EVERY cut is recorded in bundle.truncated —
+// silent truncation reads as "everything is covered" when it is not.
 function tieredDiff(diffCmd, files) {
   const parts = []
   const truncated = []
@@ -606,7 +606,7 @@ function tieredDiff(diffCmd, files) {
       continue
     }
 
-    // Крупный файл: заголовки ханков + изменённые символы верхнего уровня.
+    // Large file: hunk headers + changed top-level symbols.
     const hunks = body.split('\n').filter((l) => l.startsWith('@@'))
     const symbols = [
       ...new Set(
@@ -619,9 +619,9 @@ function tieredDiff(diffCmd, files) {
     ].slice(0, 25)
 
     const summary = [
-      `--- ${f} (сокращён: ${body.length} симв.)`,
+      `--- ${f} (shortened: ${body.length} chars)`,
       ...hunks.slice(0, 20),
-      symbols.length ? `изменённые символы: ${symbols.join(', ')}` : '',
+      symbols.length ? `changed symbols: ${symbols.join(', ')}` : '',
     ]
       .filter(Boolean)
       .join('\n')
@@ -629,9 +629,9 @@ function tieredDiff(diffCmd, files) {
     if (summary.length <= budget) {
       parts.push(summary)
       budget -= summary.length
-      truncated.push({ file: f, fullChars: body.length, kept: 'ханки + символы' })
+      truncated.push({ file: f, fullChars: body.length, kept: 'hunks + symbols' })
     } else {
-      truncated.push({ file: f, fullChars: body.length, kept: 'ничего — бюджет диффа исчерпан' })
+      truncated.push({ file: f, fullChars: body.length, kept: 'nothing — the diff budget is exhausted' })
     }
   }
 
@@ -662,8 +662,8 @@ const bundle = {
     file: f,
     note:
       f === 'src/plugins/i18n/locales/en.json'
-        ? 'изменены ключи i18n — сверить, какие страницы их используют'
-        : 'регрессионный прогон ключевых разделов (роутинг / меню / права / конфиг продукта)',
+        ? 'i18n keys changed — check which pages use them'
+        : 'regression sweep over the key areas (routing / menu / permissions / product config)',
   })),
   diff,
   truncated,
@@ -676,13 +676,13 @@ const bundle = {
   },
   notes: [
     ...(enJsonNote ? [enJsonNote] : []),
-    'pages[] — по одной записи на РАЗДЕЛ: готовые routeName / url / menuPath / title + files (какие файлы раздела изменены) + family (соседние роуты list/create/update). Брать как есть, выводить заново не нужно.',
-    'pagesUnresolved[] — только эти файлы требуют ручного разбора; тогда и только тогда идти в references/cardona-map.md §1–§2.',
-    'shared[].consumerPages — потребители, уже сопоставленные со страницами (routeName + url + menuPath); file без page значит «не страница».',
-    'truncated — файлы, чей дифф урезан. Если нужен полный, взять его командой git самому.',
-    'consumer-списки ограничены 60 файлами; при подозрении на обрезку расширить grep вручную.',
+    'pages[] — one entry per SECTION: ready-made routeName / url / menuPath / title + files (which files of the section changed) + family (the sibling list/create/update routes). Take them as they are, do not derive them again.',
+    'pagesUnresolved[] — only these files need manual resolution; then and only then go to references/cardona-map.md §1–§2.',
+    'shared[].consumerPages — consumers already mapped to pages (routeName + url + menuPath); a file without a page means "not a page".',
+    'truncated — files whose diff was cut. If you need the full one, fetch it yourself with git.',
+    'consumer lists are capped at 60 files; if you suspect truncation, widen the grep by hand.',
   ],
 }
 
-// Компактный JSON намеренно: bundle читает модель, отступы стоили бы ~25% лишних токенов.
+// Compact JSON on purpose: the bundle is read by the model, and indentation would cost ~25% extra tokens.
 process.stdout.write(JSON.stringify(bundle))

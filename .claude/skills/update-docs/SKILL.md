@@ -22,10 +22,10 @@ Written as `docs-map.mjs` below — substitute the right prefix. Same for `docs-
 
 A page earns its place only if it carries knowledge you **cannot cheaply derive from the source**:
 
-- **инварианты и контракты** — что обязан соблюдать вызывающий код или бэкенд;
-- **ловушки** — что сломается, если сделать «как кажется правильным»;
-- **почему так** — решение и его причина;
-- **порядок и связи** — кто кого дёргает и что должно случиться раньше.
+- **invariants and contracts** — what the calling code or the backend is obliged to honour;
+- **gotchas** — what breaks if you do "the obviously right thing";
+- **why it is this way** — the decision and its reason;
+- **order and wiring** — who calls whom and what has to happen first.
 
 **A page that retells the file must not be written.** Field lists, signatures and method inventories
 are more expensive to read than the source and go stale immediately — that is what made the previous
@@ -64,8 +64,8 @@ whitelist, and why the "exclude everything" case short-circuits without a reques
 
 3. **Stamp the hashes and lint:**
    ```bash
-   node docs-map.mjs --rehash    # записать source_hash в обновлённые страницы
-   node docs-map.mjs --lint      # битые [[ссылки]], orphans, stale, коллизии имён
+   node docs-map.mjs --rehash    # write source_hash into the updated pages
+   node docs-map.mjs --lint      # broken [[links]], orphans, stale pages, name collisions
    ```
    Freshness is tracked by the source's content hash, so **a page is not "done" until `--rehash` ran**
    — otherwise it will keep showing up as stale. Don't rebuild the index: the `post-commit` hook does it.

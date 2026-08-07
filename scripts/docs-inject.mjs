@@ -88,8 +88,8 @@ function compactIndex(md) {
 
   // Vault перерос бюджет инжекта: отдаём только разделы с количеством,
   // конкретную страницу модель найдёт через --find.
-  return `${filled.map(s => `- **${s.title}:** ${s.names.length} стр.`).join('\n')}\n`
-    + '(полный список не влезает в бюджет инжекта — искать через `--find`)'
+  return `${filled.map(s => `- **${s.title}:** ${s.names.length} pages`).join('\n')}\n`
+    + '(the full list does not fit the inject budget — look pages up with `--find`)'
 }
 
 const index = compactIndex(rawIndex)
@@ -100,16 +100,16 @@ const pkgScript = 'node_modules/cardona-core-service/scripts/docs-map.mjs'
 const docsMap = existsSync(join(cwd, pkgScript)) ? pkgScript : 'scripts/docs-map.mjs'
 
 const additionalContext = [
-  '# LLM Wiki проекта (knowledge/)',
+  '# Project LLM Wiki (knowledge/)',
   '',
-  'Страницы описывают НЕОЧЕВИДНОЕ про сущности: инварианты, ловушки, «почему так»,',
-  'порядок вызовов. Не пересказ исходника. Прежде чем читать код «чтобы понять,',
-  'как работает X» — проверь страницу X.',
+  'The pages describe what is NON-OBVIOUS about an entity: invariants, gotchas, "why it is this',
+  'way", call order. Not a retelling of the source. Before reading code just "to understand how X',
+  'works" — check the page for X.',
   '',
-  `- Найти: \`node ${docsMap} --find <Имя|src/путь>\` (или /query-docs). Нет страницы или устарела — читай исходник.`,
-  '- Изменил код — /update-docs (Stop-хук напомнит после пуша).',
+  `- Find it: \`node ${docsMap} --find <Name|src/path>\` (or /query-docs). No page, or a stale one — read the source.`,
+  '- Changed the code — /update-docs (the Stop hook will remind you after a push).',
   '',
-  '## Что есть в vault',
+  '## What the vault contains',
   '',
   index,
 ].join('\n')

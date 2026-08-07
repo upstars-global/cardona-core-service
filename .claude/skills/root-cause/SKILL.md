@@ -97,7 +97,7 @@ The subagent runs `collect-diff.mjs`, analyses the whole-branch diff, and return
 CHOSEN_VALUE: <value>
 CHOSEN_ID: <id>
 CONFIDENCE: <high|medium|low>
-JUSTIFICATION: <1–3 предложения на русском>
+JUSTIFICATION: <1–3 sentences in Russian>
 ```
 
 Parse those four fields. If the subagent is unavailable, fall back to running `collect-diff.mjs` and

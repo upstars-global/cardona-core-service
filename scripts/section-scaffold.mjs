@@ -75,12 +75,12 @@ const args = parseArgs(process.argv.slice(2))
 
 for (const required of ['section', 'folder', 'permission', 'entityName', 'menuGroup', 'label']) {
   if (!args[required])
-    fail(`обязателен --${required.replace(/[A-Z]/g, c => `-${c.toLowerCase()}`)}. Подсказка по аргументам — в шапке скрипта.`)
+    fail(`--${required.replace(/[A-Z]/g, c => `-${c.toLowerCase()}`)} is required. See the script header for the argument reference.`)
 }
 if (!/^[a-z][A-Za-z0-9]*$/.test(args.section))
-  fail(`--section "${args.section}" должен быть camelCase, например vipSeasons.`)
+  fail(`--section "${args.section}" must be camelCase, e.g. vipSeasons.`)
 if (!existsSync(P.additionalRoutes))
-  fail(`не найден ${P.additionalRoutes} — запускать из корня проекта-панели.`)
+  fail(`${P.additionalRoutes} not found — run this from the root of a panel project.`)
 
 // ---------- производные имена ----------
 
@@ -107,7 +107,7 @@ const notes = []
 const writeFile = (rel, content) => {
   const abs = join(CWD, rel)
   if (existsSync(abs)) {
-    skipped.push(`${rel} уже существует — не перезаписан`)
+    skipped.push(`${rel} already exists — not overwritten`)
 
     return
   }
@@ -158,7 +158,7 @@ export default ${args.section}
   const hasSpread = lines.some(l => new RegExp(`^\\s*\\.\\.\\.${args.section}\\s*,?\\s*$`).test(l))
 
   if (hasImport && hasSpread) {
-    skipped.push('additional-routes.ts: модуль уже подключён')
+    skipped.push('additional-routes.ts: the module is already wired in')
   }
   else {
     if (!hasImport) {
@@ -167,7 +167,7 @@ export default ${args.section}
       const anyImport = lines.reduce((acc, l, i) => (/^import /.test(l) ? i : acc), -1)
       const at = (lastImport !== -1 ? lastImport : anyImport) + 1
       if (at === 0)
-        fail('additional-routes.ts: не найден ни один import — структура файла неожиданная.')
+        fail('additional-routes.ts: no import found — the file structure is unexpected.')
 
       lines.splice(at, 0, importLine)
       changes.push(`additional-routes.ts: + ${importLine}`)
@@ -177,14 +177,14 @@ export default ${args.section}
       // Спред — в конец массива routes, после последнего существующего `...module,`.
       const lastSpread = lines.reduce((acc, l, i) => (/^\s*\.\.\.[A-Za-z_]\w*\s*,?\s*$/.test(l) ? i : acc), -1)
       if (lastSpread === -1)
-        fail('additional-routes.ts: не найден блок спредов модулей — структура файла неожиданная.')
+        fail('additional-routes.ts: the module spread block was not found — the file structure is unexpected.')
 
       // У последнего элемента массива может не быть запятой — дописываем.
       if (!lines[lastSpread].trimEnd().endsWith(','))
         lines[lastSpread] = `${lines[lastSpread].trimEnd()},`
 
       lines.splice(lastSpread + 1, 0, spreadLine)
-      changes.push(`additional-routes.ts: + ...${args.section} в routes`)
+      changes.push(`additional-routes.ts: + ...${args.section} in routes`)
     }
 
     if (!args.dryRun)
@@ -195,13 +195,13 @@ export default ${args.section}
 // ---------- 3. buildMenu.ts: пункт меню ----------
 
 if (!existsSync(P.buildMenu)) {
-  skipped.push('buildMenu.ts не найден — пункт меню не добавлен')
+  skipped.push('buildMenu.ts not found — the menu entry was not added')
 }
 else {
   const lines = readFileSync(P.buildMenu, 'utf8').split('\n')
 
   if (lines.some(l => l.includes(`to: '${routeName}'`))) {
-    skipped.push(`buildMenu.ts: пункт ${routeName} уже есть`)
+    skipped.push(`buildMenu.ts: the entry ${routeName} already exists`)
   }
   else {
     const groupKey = args.menuGroup.startsWith('title.') ? args.menuGroup : `title.${args.menuGroup}`
@@ -210,8 +210,8 @@ else {
 
     if (groupIdx === -1) {
       const groups = lines.filter(l => /title:\s*'title\.[\w.]+',?\s*$/.test(l)).map(l => l.trim())
-      skipped.push(`buildMenu.ts: группа "${groupKey}" не найдена — пункт меню НЕ добавлен`)
-      notes.push(`доступные заголовки в buildMenu.ts: ${[...new Set(groups)].slice(0, 30).join(' | ')}`)
+      skipped.push(`buildMenu.ts: group "${groupKey}" was not found — the menu entry was NOT added`)
+      notes.push(`available titles in buildMenu.ts: ${[...new Set(groups)].slice(0, 30).join(' | ')}`)
     }
     else {
       const childrenIdx = lines.findIndex((l, i) => i > groupIdx && /children:\s*\[/.test(l))
@@ -219,7 +219,7 @@ else {
       const closeIdx = lines.findIndex((l, i) => i > childrenIdx && l === `${childIndent}],`)
 
       if (childrenIdx === -1 || closeIdx === -1) {
-        skipped.push(`buildMenu.ts: не разобрал блок children группы "${groupKey}" — пункт меню НЕ добавлен`)
+        skipped.push(`buildMenu.ts: could not parse the children block of group "${groupKey}" — the menu entry was NOT added`)
       }
       else {
         let insertAt = closeIdx
@@ -227,7 +227,7 @@ else {
         if (args.menuAfter) {
           const neighbourIdx = lines.findIndex((l, i) => i > childrenIdx && i < closeIdx && l.includes(`to: '${args.menuAfter}'`))
           if (neighbourIdx === -1) {
-            notes.push(`сосед по меню ${args.menuAfter} не найден в группе — пункт встал в конец группы`)
+            notes.push(`the menu neighbour ${args.menuAfter} was not found in the group — the entry went to the end of the group`)
           }
           else {
             const entryClose = lines.findIndex((l, i) => i > neighbourIdx && /^\s*\},$/.test(l))
@@ -246,7 +246,7 @@ else {
           `${ind}  permission: PermissionType.${args.permission},`,
           `${ind}},`,
         ])
-        changes.push(`buildMenu.ts: пункт ${routeName} в группе ${groupKey}${placedAfter ? ` (после ${placedAfter})` : ' (в конец группы)'}`)
+        changes.push(`buildMenu.ts: entry ${routeName} in group ${groupKey}${placedAfter ? ` (after ${placedAfter})` : ' (at the end of the group)'}`)
 
         if (!args.dryRun)
           writeFileSync(P.buildMenu, lines.join('\n'))
@@ -258,7 +258,7 @@ else {
 // ---------- 4. en.json: title.<prefix>.list и emptyState.<prefix> ----------
 
 if (!existsSync(P.enJson)) {
-  skipped.push('en.json не найден — ключи i18n не добавлены')
+  skipped.push('en.json not found — the i18n keys were not added')
 }
 else {
   const lines = readFileSync(P.enJson, 'utf8').split('\n')
@@ -267,15 +267,15 @@ else {
   const insertIntoNamespace = (ns, block) => {
     const start = lines.findIndex(l => new RegExp(`^ {2}"${ns}":\\s*\\{`).test(l))
     if (start === -1)
-      return `en.json: неймспейс "${ns}" не найден`
+      return `en.json: namespace "${ns}" not found`
 
     const end = lines.findIndex((l, i) => i > start && /^ {2}\},?$/.test(l))
     if (end === -1)
-      return `en.json: не найден конец неймспейса "${ns}"`
+      return `en.json: the end of namespace "${ns}" was not found`
 
     const body = lines.slice(start + 1, end)
     if (body.some(l => l.trim().startsWith(`"${i18nPrefix}":`)))
-      return `en.json: "${ns}.${i18nPrefix}" уже есть`
+      return `en.json: "${ns}.${i18nPrefix}" already exists`
 
     // Встаём последним ключом объекта: предыдущему нужна запятая, своей последней строке —
     // наоборот, без неё (иначе висячая запятая ломает JSON).
@@ -301,7 +301,7 @@ else {
   emptyErr ? skipped.push(emptyErr) : changes.push(`en.json: emptyState.${i18nPrefix} = "${emptyText}"`)
 
   if (!args.emptyText)
-    notes.push(`emptyState.${i18nPrefix} — заглушка, уточнить точный текст по Figma на стадии C.2`)
+    notes.push(`emptyState.${i18nPrefix} is a placeholder — confirm the exact copy against Figma at stage C.2`)
 
   // Последняя вставленная строка нового блока не должна оставить объект без запятой —
   // insertIntoNamespace уже проставил запятую предыдущему ключу, а свои блоки пишет с запятой.
@@ -394,17 +394,17 @@ const config = new BaseListConfig({
 
 // ---------- вывод ----------
 
-console.log(args.dryRun ? '[section-scaffold] --dry-run, файлы не тронуты. Было бы сделано:' : '[section-scaffold] готово:')
-created.forEach(f => console.log(`  + создан  ${f}`))
+console.log(args.dryRun ? '[section-scaffold] --dry-run, files untouched. What would have been done:' : '[section-scaffold] done:')
+created.forEach(f => console.log(`  + created  ${f}`))
 changes.forEach(c => console.log(`  ~ ${c}`))
 skipped.forEach(s => console.log(`  • ${s}`))
 notes.forEach(n => console.log(`  ! ${n}`))
 
 console.log(`
-  Роут:  ${routeName}  →  ${url}
-  Меню:  title.${i18nPrefix}.list = "${args.label}"
+  Route: ${routeName}  →  ${url}
+  Menu:  title.${i18nPrefix}.list = "${args.label}"
   API:   entityName '${args.entityName}', pageName '${pageName}'
 
-  Дальше (стадия C.2, нужен человек):
-    1. yarn dev → открыть ${url} → DevTools → Network → скопировать полный JSON ответа списка
-    2. передать JSON + Figma агенту section-list — он достроит модель, колонки и фильтры`)
+  Next (stage C.2, a human is required):
+    1. yarn dev → open ${url} → DevTools → Network → copy the full JSON of the list response
+    2. hand the JSON + Figma to the section-list agent — it will build the model, columns and filters`)

@@ -76,7 +76,7 @@ function coverage(docPath) {
 const rows = []
 for (const [file, count] of commits) {
   if (!existsSync(join(CWD, file)))
-    continue // файл удалён — документировать нечего
+    continue // file deleted — nothing to document
 
   const mapped = mapSourceToDoc(file)
   if (!mapped)
@@ -98,20 +98,20 @@ if (AS_JSON) {
 const covered = rows.filter(r => r.coverage === 'ok').length
 const pct = rows.length ? Math.round((covered / rows.length) * 100) : 0
 
-console.log(`\n[docs-hotpath] изменённых документируемых сущностей за ${MONTHS} мес: ${rows.length}`)
-console.log(`               из них покрыто актуальными страницами: ${covered} (${pct}%)\n`)
+console.log(`\n[docs-hotpath] documentable entities changed in the last ${MONTHS} months: ${rows.length}`)
+console.log(`               of them covered by up-to-date pages: ${covered} (${pct}%)\n`)
 
 if (!shown.length) {
-  console.log('  Всё горячее покрыто. Нечего добавлять.\n')
+  console.log('  Every hot path is covered. Nothing to add.\n')
   process.exit(0)
 }
 
-const label = { missing: 'нет страницы', stale: 'устарела', ok: 'ок' }
-console.log(`  Приоритет (${SHOW_ALL ? 'все' : 'непокрытые'}, топ-${shown.length}):\n`)
+const label = { missing: 'no page', stale: 'stale', ok: 'ok' }
+console.log(`  Priority (${SHOW_ALL ? 'all' : 'uncovered'}, top ${shown.length}):\n`)
 for (const r of shown)
-  console.log(`  ${String(r.commits).padStart(3)} коммитов  ${label[r.coverage].padEnd(12)} ${r.file}\n${' '.repeat(21)}→ ${r.doc}`)
+  console.log(`  ${String(r.commits).padStart(3)} commits  ${label[r.coverage].padEnd(12)} ${r.file}\n${' '.repeat(21)}→ ${r.doc}`)
 
 console.log(`
-  Документировать по доктрине /update-docs: не пересказ файла, а неочевидное —
-  инварианты, ловушки, «почему так», порядок вызовов. Пересказ исходника не нужен.
+  Document them per the /update-docs doctrine: not a retelling of the file, but the non-obvious —
+  invariants, gotchas, "why it is this way", call order. A retelling of the source is not wanted.
 `)

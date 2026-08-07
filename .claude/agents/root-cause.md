@@ -45,5 +45,5 @@ Return exactly this shape (Russian justification, since the caller reads Russian
 CHOSEN_VALUE: <exact option value>
 CHOSEN_ID: <exact option id, or "" if the caller gave only values>
 CONFIDENCE: <high | medium | low>
-JUSTIFICATION: <1–3 предложения: в чём первопричина бага по диффу и почему выбрана эта категория; сослаться на конкретные файлы/изменения>
+JUSTIFICATION: <1–3 sentences IN RUSSIAN: what the root cause of the bug is according to the diff and why this category was chosen; cite the concrete files/changes>
 ```

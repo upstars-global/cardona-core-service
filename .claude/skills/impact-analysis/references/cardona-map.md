@@ -2,47 +2,50 @@
 
 Detailed rules for turning a changed file into a UI location and for finding what a shared change affects. Read this when Step 3/Step 4 of the skill needs precise behavior.
 
-## Содержание
-1–4. Роут, URL, меню, i18n — считает скрипт (ручной фолбэк)
-5. Компоненты (auto-import → grep потребителей)
-6. Таблицы / list-страницы
-7. Пути с широким радиусом поражения
-8. Переиспользуемые grep-паттерны
-9. Анализ изменений cardona-core-service
-10. Инфраструктура и деплой (Docker, nginx, Helm, GitLab CI)
-11. Сборка и тулинг
-12. Зависимости
-13. Runtime и статика
+## Contents
+1–4. Route, URL, menu, i18n — computed by the script (manual fallback)
+5. Components (auto-import → grep consumers)
+6. Tables / list pages
+7. High-blast-radius paths
+8. Reusable grep patterns
+9. cardona-core-service change analysis
+10. Infra & deploy (Docker, nginx, Helm, GitLab CI)
+11. Build & tooling
+12. Dependencies
+13. Runtime & static
 
 ---
 
-## 1–4. Роут, URL, меню, i18n — считает скрипт
+## 1–4. Route, URL, menu, i18n — computed by the script
 
-`collect-evidence.mjs` реализует алгоритм `sectionRouterGenerator` (`src/helper/router.ts`), разбирает
-рукописные модули `src/plugins/2.router/modules/`, строит дерево `buildMenu.ts` и резолвит подписи по
-`en.json`. Готовые `routeName` / `url` / `menuPath` / `title` приходят в `pages[]` — **выводить их
-заново не нужно**.
+`collect-evidence.mjs` implements the `sectionRouterGenerator` algorithm (`src/helper/router.ts`),
+parses the hand-written modules in `src/plugins/2.router/modules/`, builds the `buildMenu.ts` tree and
+resolves labels against `en.json`. Ready-made `routeName` / `url` / `menuPath` / `title` arrive in
+`pages[]` — **do not derive them again**.
 
-Этот раздел нужен только когда скрипт вернул файл в `pagesUnresolved[]` или роут без имени.
+This section is only needed when the script put a file in `pagesUnresolved[]` or returned a route
+without a name.
 
-### Как разрешить вручную
+### How to resolve it by hand
 
-1. **Секция в реестре?** `grep -n "name: '<section>'" src/plugins/2.router/additional-routes.ts`.
-   Есть → имя роута `<prefixName><PascalSection>List|Create|Update|Card`; URL = `importSTR`
-   (`<sectionName>/<name>`), разбитый по `/`, дедуплицированный, каждый сегмент в kebab-case,
-   с префиксом `/:project/` — если только не `isProject: false`. `withoutSectionNameInUrl: true`
-   вырезает сегмент `sectionName`. Ключ заголовка — `<key>.list|create|edit|card` в неймспейсе `title.*`.
-2. **Нет в реестре** → роут рукописный, ищи в `src/plugins/2.router/modules/` (`payouts`,
-   `transactions`, `adminSection`, `logging`, `malagaChannels`, `malagaTemplates`, `supportService`,
-   `cashbackStatsDetail`, `dashboard`, `auth`, `error`, `noAccess`). Там бывают фабрики, где `name`
-   вычисляется, — тогда скрипт и не мог его разобрать, бери из кода.
-3. **Путь в меню** — `grep -n "to: '<RouteName>'" src/navigation/vertical/apps-and-pages/buildMenu.ts`,
-   поднимись к ближайшему родительскому `title:`, оба ключа резолвь по `en.json`. Админское меню —
-   `buildAdminMenu.ts` (переключается по `appConfigCoreStore.isMenuTypeMain`).
-4. **i18n-неймспейсы:** `title.*` — меню и breadcrumbs; `page.<section>.*` — заголовки колонок и
-   контент; `emptyState.<section>`, `placeholder.*`, `modal.*`, `entities.*`, `permission.*`.
+1. **Section in the registry?** `grep -n "name: '<section>'" src/plugins/2.router/additional-routes.ts`.
+   Found → route name is `<prefixName><PascalSection>List|Create|Update|Card`; URL = `importSTR`
+   (`<sectionName>/<name>`) split on `/`, deduplicated, every segment in kebab-case, prefixed with
+   `/:project/` — unless `isProject: false`. `withoutSectionNameInUrl: true` drops the `sectionName`
+   segment. The title key is `<key>.list|create|edit|card` in the `title.*` namespace.
+2. **Not in the registry** → the route is hand-written; look in `src/plugins/2.router/modules/`
+   (`payouts`, `transactions`, `adminSection`, `logging`, `malagaChannels`, `malagaTemplates`,
+   `supportService`, `cashbackStatsDetail`, `dashboard`, `auth`, `error`, `noAccess`). Some are
+   factories where `name` is computed — that is exactly why the script could not parse it, so take
+   the value from the code.
+3. **Menu path** — `grep -n "to: '<RouteName>'" src/navigation/vertical/apps-and-pages/buildMenu.ts`,
+   walk up to the nearest parent `title:`, and resolve both keys against `en.json`. The admin menu is
+   `buildAdminMenu.ts` (switched by `appConfigCoreStore.isMenuTypeMain`).
+4. **i18n namespaces:** `title.*` — menu and breadcrumbs; `page.<section>.*` — column headers and
+   content; `emptyState.<section>`, `placeholder.*`, `modal.*`, `entities.*`, `permission.*`.
 
-Если роут не разрешается — так и напиши («уточнити»). URL не выдумывать.
+If a route cannot be resolved, say so in the report (the Ukrainian word «уточнити») instead of
+inventing a URL.
 
 ## 5. Components (auto-import)
 

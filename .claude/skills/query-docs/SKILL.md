@@ -26,7 +26,7 @@ Below it is written as `docs-map.mjs` — substitute the correct path for your r
    node docs-map.mjs --find PayoutsForm
    node docs-map.mjs --find src/@model/Payouts.ts
    ```
-   Prints the page path and its status: `ok`, `устарела` (stale), or `нет страницы` (missing).
+   Prints the page path and its status: `ok`, `stale`, or `no page`.
    The auto-injected index (`knowledge/index.md`, added to context at session start) is also a
    fast way to spot the right page.
 
@@ -34,7 +34,7 @@ Below it is written as `docs-map.mjs` — substitute the correct path for your r
    do **not** open the source just to re-derive what the page already states.
 
 3. **Fall back to source only when needed:**
-   - `нет страницы` (missing) or `устарела` (stale) → read the source, then create/refresh the
+   - `no page` or `stale` → read the source, then create/refresh the
      page via **/update-docs** so the next query is cheap.
    - The page exists but lacks a detail you need → read only the relevant part of the source,
      and consider adding that detail to the page via /update-docs.

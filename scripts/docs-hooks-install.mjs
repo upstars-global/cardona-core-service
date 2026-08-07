@@ -68,11 +68,11 @@ function main() {
   // `--git-path hooks` учитывает core.hooksPath, в отличие от join(gitDir, 'hooks').
   const hooksRel = sh(cwd, 'git rev-parse --git-path hooks')
   if (!hooksRel)
-    return report(status, 'не git-репозиторий — хук не ставлю.')
+    return report(status, 'not a git repository — skipping hook installation.')
 
   const hooksDir = join(cwd, hooksRel)
   if (!existsSync(hooksDir))
-    return report(status, `нет каталога хуков ${hooksRel} — хук не ставлю.`)
+    return report(status, `no hooks directory ${hooksRel} — skipping hook installation.`)
 
   const hookPath = join(hooksDir, 'post-commit')
   const existing = existsSync(hookPath) ? safeRead(hookPath) : null
@@ -81,10 +81,10 @@ function main() {
 
   if (status) {
     const state = existing === null
-      ? 'хука нет'
+      ? 'no hook'
       : isCurrent
-        ? `установлен наш ${VERSION}`
-        : isOurs ? 'установлена наша старая версия' : 'установлен чужой хук'
+        ? `ours, ${VERSION}, installed`
+        : isOurs ? 'an older version of ours is installed' : 'a foreign hook is installed'
 
     console.log(`[docs-hooks] ${hooksRel}/post-commit: ${state}`)
 
@@ -104,7 +104,7 @@ function main() {
       }
       catch {
         // Не смогли отодвинуть чужой хук — не перезаписываем его вслепую.
-        console.log('[docs-hooks] не удалось сохранить существующий post-commit — оставляю как есть.')
+        console.log('[docs-hooks] could not preserve the existing post-commit — leaving it as is.')
 
         return
       }
@@ -114,10 +114,10 @@ function main() {
   try {
     writeFileSync(hookPath, HOOK_BODY, 'utf8')
     chmodSync(hookPath, 0o755)
-    console.log(`[docs-hooks] post-commit установлен (${VERSION}): коммит копит долг по документации.`)
+    console.log(`[docs-hooks] post-commit installed (${VERSION}): commits now accumulate documentation debt.`)
   }
   catch {
-    console.log('[docs-hooks] не удалось записать post-commit — пропускаю.')
+    console.log('[docs-hooks] could not write post-commit — skipping.')
   }
 }
 
