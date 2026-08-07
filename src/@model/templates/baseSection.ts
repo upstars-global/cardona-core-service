@@ -30,6 +30,28 @@ export enum BaseSectionSlots {
   Actions = 'actions',
 }
 
+export interface IBaseSectionSlots {
+  [key: string]: (...args: any[]) => any
+  default: (props: {
+    entityId: string
+    entityName: string
+    form: any
+    canUpdate: boolean
+    canRemove: boolean
+    canViewSeo: boolean
+    canCreateSeo: boolean
+    canUpdateSeo: boolean
+    onClickRemove: (...args: any[]) => Promise<void>
+  }) => any
+  [BaseSectionSlots.Actions]: (props: {
+    form: any
+    loading: boolean
+    cancel: () => void
+    submit: (isStay: boolean) => Promise<void>
+    canUpdate: boolean
+  }) => any
+}
+
 export enum BaseSectionType {
   Default = 'default',
 }

@@ -16,7 +16,8 @@ nothing.
 
 Constants for the BAC project: cloudId **`1cae3bd1-b0cd-4eb1-bfb6-0c11d5d77845`**. The "Root cause"
 custom-field id is **not hardcoded** — discover it per task (field ids can differ across projects).
-Load the Atlassian tools via ToolSearch (`select:mcp__claude_ai_Atlassian__getJiraIssue,mcp__claude_ai_Atlassian__getJiraIssueTypeMetaWithFields,mcp__claude_ai_Atlassian__editJiraIssue,mcp__claude_ai_Atlassian__addCommentToJiraIssue`) if they aren't available yet.
+Load the Atlassian tools via ToolSearch (`select:mcp__claude_ai_Atlassian__getJiraIssue,mcp__claude_ai_Atlassian__getJiraIssueTypeMetaWithFields,mcp__claude_ai_Atlassian__editJiraIssue,mcp__claude_ai_Atlassian__addCommentToJiraIssue`) if they aren't available yet; add
+`mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql` when Step 3b's fallback is needed.
 
 ## Execution model — Jira I/O stays inline
 
@@ -38,8 +39,9 @@ able to surface the permission prompt, both of which require the main context.
 No match → this isn't a task branch. Say so in one Russian line and stop. Do **not** mark the
 signature (nothing to dedup).
 
-> **Token discipline (important):** never fetch `fields: ["*all"]` — that payload is huge. Use the
-> minimal targeted reads below, and don't echo whole Jira JSON blobs into your reasoning; extract
+> **Token discipline (important):** never fetch `fields: ["*all"]` in this context — that payload is
+> huge (the one exception is Step 3b, where the `*all` read happens inside a throwaway subagent). Use
+> the minimal targeted reads below, and don't echo whole Jira JSON blobs into your reasoning; extract
 > only the handful of values you need. The expensive diff reading is delegated to the Sonnet
 > subagent (Step 5) so it never enters this context.
 
@@ -56,17 +58,52 @@ the cheapest possible probe and lets a non-bug task bail before any further work
   of the exact type names, `getJiraProjectIssueTypesMetadata` for `BAC` lists them (do this once).
 - Keep `issuetype.id` for Step 3.
 
-## Step 3 — Discover the "Root cause" field, its options and editability (one meta call)
+## Step 3 — Discover the "Root cause" field, its options and editability
 
-`getJiraIssueTypeMetaWithFields` for `projectIdOrKey: "BAC"`, `issueTypeId: <issuetype.id>`. This one
-call gives everything about the field — no separate names-map lookup needed:
+### 3a — Try the cheap meta call first
+
+`getJiraIssueTypeMetaWithFields` for `projectIdOrKey: "BAC"`, `issueTypeId: <issuetype.id>`. When the
+field is there, this one call gives everything — no separate names-map lookup needed:
 - Find the field whose **name** equals **"Root cause"** case-insensitively (also "Root Cause").
-  Take its `customfield_XXXXX` id from there — never guess the id, beware decoy fields.
-  Not present in the edit metadata → the field isn't on this issue type's edit screen (a write would
-  silently no-op): one-line note, Step 9, stop.
-- `allowedValues` → the option list `[{ id, value }, …]`. Empty/absent → nothing to choose from:
-  one-line note, Step 9, stop.
+  Take its `customfield_XXXXX` id from there — never guess the id, beware decoy fields
+  (e.g. "Root cause (AT)" is a different field).
+- `allowedValues` → the option list `[{ id, value }, …]`.
 - `schema.type` → **single** (`option`) vs **multi** (`array`) select. Remember for Step 6.
+
+### 3b — Field absent from 3a is NOT proof it doesn't exist
+
+`getJiraIssueTypeMetaWithFields` returns **create**-screen metadata. A field that lives only on the
+**edit** screen (or only in the issue's "Details" panel) is missing there while still being perfectly
+writable — observed on BAC / issue type "Баг", where "Root cause" is absent from createmeta yet users
+set it in the UI every day. **Never conclude "the field doesn't exist" from 3a alone.** Also note that
+`getJiraIssue` with `expand: "editmeta"` does not help: the MCP wrapper trims `editmeta` down to the
+fields you requested, so the custom field never appears.
+
+Fallback, in order:
+
+1. **Find the id** — delegate one read to a subagent (Agent tool, `subagent_type: 'general-purpose'`)
+   so the huge payload never enters this context. Instruct it to call `getJiraIssue` with
+   `issueIdOrKey: <ticket>`, `fields: ["*all"]`, `expand: "names"`, locate in the `names` map the
+   entry whose value is exactly `Root cause`, and return **only** its `customfield_XXXXX` key, the
+   current value of that field, and whether that value is an array or an object. (`*all` is banned in
+   the main context — inside a throwaway subagent it is fine.)
+2. **Harvest the options** — `allowedValues` is unavailable outside createmeta, so collect the
+   options actually in use across the project:
+   `searchJiraIssuesUsingJql`, `jql: 'project = BAC AND "Root cause" is not EMPTY ORDER BY updated DESC'`,
+   `fields: ["customfield_XXXXX"]`, `maxResults: 100`. JQL accepts the field **by name**, so this also
+   proves the field exists. The response is oversized and the tool spills it to a file — do **not**
+   read that file, extract with `jq`:
+
+   ```bash
+   jq -r '[.issues.nodes[].fields.customfield_XXXXX | select(.!=null) | if type=="array" then .[] else . end | {id, value}] | unique_by(.value) | .[] | "\(.id)\t\(.value)"' <spilled-file>
+   ```
+
+   Add `| type] | unique` on the same path to confirm single (`object`) vs multi (`array`) select.
+3. Only if **both** the id lookup and the JQL sweep come back empty does the field truly not exist:
+   one-line note, Step 9, stop.
+
+The harvested list is "options observed in use" — it can miss an option nobody has picked yet. That is
+acceptable for categorising, but say so if none of the harvested options fits well.
 
 ## Step 4 — Read the current field value (targeted)
 

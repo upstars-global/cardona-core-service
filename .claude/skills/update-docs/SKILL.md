@@ -26,7 +26,19 @@ in English, but the pages you write are Russian text + English code identifiers.
 - In `cardona-core-service`: `node scripts/docs-map.mjs …`
 - In panels (cardona, marbella, compostela): `node node_modules/cardona-core-service/scripts/docs-map.mjs …`
 
-Below it is written as `docs-map.mjs` — substitute the correct path for your repo.
+Below it is written as `docs-map.mjs` — substitute the correct path for your repo. The same prefix
+applies to `docs-guard.mjs` and `docs-queue.mjs`.
+
+## What triggers this, and what "changed code" means
+
+The trigger is **committed work, surfaced at push time** — not your working tree:
+
+- the git hook `post-commit` records every commit's documentable files into a debt queue
+  (`.git/cardona-docs-queue.txt`, written by `docs-queue.mjs --record`);
+- the Stop hook `docs-guard.mjs` fires **once per push** of the branch and asks for this skill.
+
+So the pending list is the accumulated debt of the pushed commits. Uncommitted edits are
+deliberately ignored — code still in motion is not worth documenting.
 
 ## Steps
 
@@ -35,7 +47,10 @@ Below it is written as `docs-map.mjs` — substitute the correct path for your r
    node docs-map.mjs --pending
    ```
    Prints lines `<reason> <source> → <page>`. `missing` — no page yet, `stale` — source is newer.
-   If empty — nothing to document, stop.
+   If empty — nothing to document, go straight to step 5 (clear the debt) and stop.
+
+   `--pending` reads the same debt the hook does. Add `--working` to inspect the uncommitted
+   working tree instead (manual check while coding; the hook never uses it).
 
 2. **For each line** (and only those):
    - Read the given source (one file).
@@ -63,6 +78,14 @@ Below it is written as `docs-map.mjs` — substitute the correct path for your r
    node docs-map.mjs --log "INGEST <pages you created/updated>"
    ```
    e.g. `--log "INGEST models/PayoutsForm.md, stores/payouts.md"`.
+
+5. **Clear the debt and silence the hook** — always, even when there was nothing to document
+   (otherwise the same reminder returns on the next stop):
+   ```bash
+   node docs-guard.mjs --mark
+   ```
+   This records the current pushed-branch-tip signature in `.git/cardona-docs.state` and empties
+   the queue. The next push starts a fresh debt.
 
 ## Page standard
 
