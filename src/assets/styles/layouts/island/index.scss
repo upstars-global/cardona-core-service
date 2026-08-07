@@ -13,7 +13,7 @@ body[data-layout="island"] {
     }
   }
 
-  .v-overlay-container:has(.v-list){
+  .v-overlay-container:has(.v-list):not(:has(.custom-menu-popup)) {
     .v-overlay__content {
       border: 1px solid rgb(var(--v-island-border-color));
     }
@@ -48,6 +48,7 @@ body[data-layout="island"] {
     border-bottom-right-radius: 1.5rem;
     border-bottom-left-radius: 1.5rem;
     overflow: hidden;
+    padding: 1.5rem;
   }
 
   .title-text-color {
