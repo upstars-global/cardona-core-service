@@ -75,10 +75,11 @@ body[data-layout="island"] {
   }
 
   .custom-menu {
+    padding: 1rem;
     border-top: initial !important;
 
     .full-name {
-      color: rgba(var(--v-island-menu-section-color));
+      color: rgba(var(--v-island-menu-section-color)) !important;
     }
   }
 

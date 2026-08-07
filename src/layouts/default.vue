@@ -262,3 +262,17 @@ const contentScrollEl = ref<HTMLElement | null>(null)
   border-color: rgba(255, 255, 255, 0.08) !important;
 }
 </style>
+
+<style lang="scss">
+body[data-layout="default"] {
+  .custom-menu-popup {
+    left: 16px !important;
+    min-width: 220px !important;
+  }
+
+  .custom-menu-popup--collapsed {
+    left: 0 !important;
+    min-width: 52px !important;
+  }
+}
+</style>
