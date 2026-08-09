@@ -4,12 +4,13 @@ import ColorField from '../../../components/templates/FieldGenerator/_components
 import type { IATextBaseField } from './base'
 import { ATextBaseField } from './base'
 
-export interface IColorBaseField extends IATextBaseField {
+export interface IColorBaseField extends Omit<IATextBaseField, 'prepend'> {
   readonly value?: string
 }
 
 export class ColorBaseField extends ATextBaseField implements IColorBaseField {
   readonly component: Component = markRaw(ColorField)
+  readonly prepend = '#'
   protected _value?: string
 
   constructor(field: IColorBaseField) {
@@ -18,6 +19,6 @@ export class ColorBaseField extends ATextBaseField implements IColorBaseField {
   }
 
   transformField(): string {
-    return `${this.prepend ?? ''}${this._value ?? ''}`
+    return `${this.prepend}${this._value ?? ''}`
   }
 }
