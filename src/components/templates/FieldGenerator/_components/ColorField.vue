@@ -40,7 +40,7 @@ const appendInnerIcon = computed(() => {
 const previewValue = computed(() => {
   const trimmedValue = props.modelValue?.trim()
 
-  return trimmedValue ? `${props.field?.prepend ?? ''}${trimmedValue}` : ''
+  return trimmedValue ? `${props.field.prepend}${trimmedValue}` : ''
 })
 </script>
 
