@@ -16,4 +16,8 @@ export class ColorBaseField extends ATextBaseField implements IColorBaseField {
     super(field)
     this._value = field.value
   }
+
+  transformField(): string {
+    return `${this.prepend ?? ''}${this._value ?? ''}`
+  }
 }
