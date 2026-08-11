@@ -424,6 +424,7 @@ defineExpose({
               :can-create-seo="canCreateSeo"
               :can-update-seo="canUpdateSeo"
               :on-click-remove="onClickRemove"
+              :is-loading="isLoadingPage"
             />
           </div>
           <slot
