@@ -6,6 +6,9 @@ body[data-layout="island"] {
   background-color: rgba(var(--v-island-layout-bg)) !important;
 
   .product-select {
+    .v-select {
+      height: initial;
+    }
     .select-item {
       font-size: 14px;
       line-height: 20px;
