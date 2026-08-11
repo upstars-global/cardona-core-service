@@ -141,22 +141,9 @@ const contentScrollEl = ref<HTMLElement | null>(null)
             fluid
             class="px-0"
           >
-            <RouterView v-slot="{ Component }">
-              <template v-if="Component">
-                <Transition
-                  name="zoom-fade"
-                  mode="out-in"
-                >
-                  <Suspense
-                    :timeout="0"
-                    @fallback="isFallbackStateActive = true"
-                    @resolve="isFallbackStateActive = false"
-                  >
-                    <component :is="Component" />
-                  </Suspense>
-                </Transition>
-              </template>
-            </RouterView>
+            <slot :is-fallback-state-active="isFallbackStateActive">
+              <RouterView />
+            </slot>
           </VContainer>
         </div>
       </div>
