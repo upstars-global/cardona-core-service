@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { VVariants } from '../../../@model/vuetify'
 import { IconsList } from '../../../@model/enums/icons'
+import { useAppConfigCoreStore } from '../../../stores/appConfigCore'
 import type { NavGroup, NavLink, VerticalNavItems } from '@layouts/types'
 import { getComputedNavLinkToProp, isNavGroupActive, isNavLinkActive } from '@layouts/utils'
 
@@ -78,7 +79,24 @@ const opened = computed({
 const getIcon = (item: NavGroup | NavLink) =>
   (item.icon as { icon?: string } | undefined)?.icon
 
+const appConfigCoreStore = useAppConfigCoreStore()
+
 const defaultRoute = { path: '/' }
+
+const onBackClick = () => {
+  appConfigCoreStore.onToggleMenuType()
+}
+
+watch(() => props.isMenuTypeMain, async isMain => {
+  if (!isMain)
+    return
+  await nextTick()
+  openedGroups.value = []
+
+  const firstGroup = props.items.find(item => 'children' in item) as NavGroup | undefined
+  if (firstGroup)
+    openedGroups.value = [firstGroup.title]
+})
 </script>
 
 <template>
@@ -97,6 +115,7 @@ const defaultRoute = { path: '/' }
         :prepend-icon="IconsList.ArrowLeftIcon"
         :variant="VVariants.Text"
         :to="defaultRoute"
+        @click="onBackClick"
       >
         {{ $t('action.back') }}
       </VBtn>
