@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, inject, nextTick, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Form } from 'vee-validate'
 import { omit } from 'lodash'
@@ -260,6 +260,12 @@ const onSubmit = async (isStay: boolean) => {
   await onSave(isStay)
 }
 
+const submitWithData = async (data: Record<string, unknown>, isStay = true) => {
+  form.value = new EntityFormClass(data)
+  await nextTick()
+  await onSubmit(isStay)
+}
+
 const redirectToListOrPrevPage = () => {
   const cleanPath = (path = '') => path?.replaceAll('/', '').toUpperCase() || ''
   const backRoute = router.options.history.state.back
@@ -372,6 +378,8 @@ defineExpose({
   form,
   validate,
   formRef,
+  onSubmit,
+  submitWithData,
 })
 </script>
 
