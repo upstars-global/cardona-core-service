@@ -188,6 +188,11 @@ watch(() => props.isMenuTypeMain, async isMain => {
         :active="isLinkActive(item as NavLink)"
         @click="navigateTo(item as NavLink)"
       >
+        <template #title="{ title }">
+          <div class="text-body-1 on-primary">
+            {{ title }}
+          </div>
+        </template>
         <template #prepend>
           <VIcon
             :icon="getIcon(item as NavLink)"
