@@ -85,9 +85,15 @@ export default function usePagination(
     else {
       perPage.value = value
     }
-
     setStorage(storageKey, value)
   }
+
+  watch(() => perPage.value, (newPerPage, oldPerPage) => {
+    // Keep the user's position when perPage changes
+    const newPage = Math.floor((currentPage.value - 1) * oldPerPage / newPerPage) + 1
+
+    setPage(newPage)
+  })
 
   const setPage = (page = 1, perPageProps: any = null) => {
     if (isUseRouter) {
