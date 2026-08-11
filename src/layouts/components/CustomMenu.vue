@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { VIcon } from 'vuetify/components/VIcon'
 
-import { computed, inject, ref } from 'vue'
-import type { Ref } from 'vue'
+import { computed } from 'vue'
 import type { TranslateResult } from 'vue-i18n'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -15,7 +14,7 @@ import { useAuthCoreStore } from '../../stores/authCore'
 import { useConfigStore } from '@core/stores/config'
 import { Theme } from '@core/enums'
 
-defineProps<{
+const props = defineProps<{
   isCollapsedMenu: boolean
 }>()
 
@@ -46,8 +45,6 @@ const logOutAction = {
 }
 
 const configStore = useConfigStore()
-
-const isMenuOpen = inject<Ref<boolean>>('isVerticalNavMenuOpen', ref(false))
 
 const canAllAdminSection = computed(() => {
   return userStore.abilityCan('backoffice-users-control', PermissionLevel.view)
@@ -82,15 +79,14 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 </script>
 
 <template>
-  <div class="custom-menu">
-    <VMenu
-      v-model="isMenuOpen"
-      location="top"
-      :content-class="`custom-menu-popup ${isCollapsedMenu ? 'custom-menu-popup--collapsed' : ''}`"
-    >
+  <div
+    class="custom-menu"
+    :class="{ 'custom-menu--collapsed': isCollapsedMenu }"
+  >
+    <VMenu>
       <template #activator="{ props }">
         <div
-          class="d-flex align-center cursor-pointer w-100"
+          class="d-flex align-center cursor-pointer user-info"
           v-bind="props"
         >
           <VBadge
@@ -98,13 +94,13 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
             color="success"
             location="bottom end"
             bordered
-            offset-x="2"
+            offset-x="5"
             offset-y="5"
-            class="badge cursor-pointer badge-margin"
+            class="badge cursor-pointer"
           >
             <VAvatar
               :color="VColors.Success"
-              size="32"
+              size="large"
               class="avatar-block"
             >
               <VImg
@@ -112,49 +108,45 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
                 :src="userAvatar"
                 cover
                 class="object-contain"
-                referrerpolicy="no-referrer"
               />
               <h5
                 v-else
-                class="text-h5 text-body-1 first-letter"
+                class="text-h5 text-body-1 first-letter text-success"
               >
                 {{ firstLetter }}
               </h5>
             </VAvatar>
           </VBadge>
-          <div class="full-name ml-5 text-truncate on-primary">
+          <div class="full-name ml-5">
             {{ userName }}
           </div>
         </div>
       </template>
-      <VList
-        class="action-menu pa-0"
-        bg-color="sidebar"
-      >
+      <VList class="action-menu">
         <VListItem
           v-for="(item, index) in customMenuActions"
           :key="index"
           :value="index"
-          class="action-item on-primary "
+          class="action-item"
           @click="item.action && item.action()"
         >
           <template #prepend>
             <VIcon :icon="item.icon" />
           </template>
-          <VListItemTitle class="px-0 on-primary">
+          <VListItemTitle class="px-0">
             {{ item.title }}
           </VListItemTitle>
         </VListItem>
         <VDivider class="divider" />
         <VListItem
-          class="action-item on-primary"
+          class="action-item"
           value="-1"
           @click="logOutAction.action"
         >
           <template #prepend>
             <VIcon :icon="logOutAction.icon" />
           </template>
-          <VListItemTitle class="px-0 on-primary">
+          <VListItemTitle class="px-0">
             {{ logOutAction.title }}
           </VListItemTitle>
         </VListItem>
@@ -167,65 +159,55 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 .avatar-block {
   height: 40px;
   width: 40px;
-  background-color: rgba(var(--v-theme-blue-800)) !important;
+  background-color: rgba(var(--v-theme-success), var(--v-badge-opacity)) !important;
 }
 .first-letter {
   font-weight: 600;
-  font-size: 13px;
-  color: #ffffff;
 }
 
+.user-info {
+  overflow: hidden;
+  &:hover {
+    .full-name {
+      color: rgb(var(--v-theme-primary))
+    }
+  }
+}
 .full-name {
-  max-width: 172px;
   font-weight: 500;
   color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: opacity 0.3s ease, max-width 0.3s ease, margin-left 0.3s ease;
 }
 
 .action-menu {
-  border: 1px solid rgba(var(--v-theme-on-sidebar), .16) !important;
-  padding-inline: 0.5rem;
   :deep(.v-list-item) {
-    padding-inline: 1rem !important;
-    padding-block: 0.5rem !important;
-    margin-inline: 0 !important;
-    margin-block: 0 !important;
-    min-inline-size: 86px !important;
-    align-self: stretch !important;
+    padding-inline: 0.5rem !important;
+    margin-inline: 0rem !important;
+    margin-block: 0rem !important;
+    padding-block: 0rem !important;
+    min-block-size: 2rem !important;
     border-radius: 0 !important;
-    gap: 8px !important;
-
     .v-list-item__spacer {
-      width: 0 !important;
+      width: 0.25rem;
     }
-  }
-
-  :deep(.v-list-item__overlay) {
-    background-color: rgb(var(--v-theme-on-sidebar)) !important;
-  }
-
-  :deep(.v-list-item:hover .v-list-item__overlay) {
-    opacity: 0.06 !important;
   }
 }
 
 .divider {
   margin-block: 0.5rem;
+  background-color: rgba(var(--v-border-color), var(--v-border-opacity));
 }
 
 .custom-menu {
+  padding: 1rem;
+  border-top: 1px solid rgb(var(--v-theme-grey-200));
+
   :deep(.v-badge__badge) {
     height: 11px;
     width: 11px;
     border-radius: 100%;
   }
-  :deep(.v-badge__badge::after) {
-    color: rgba(var(--v-theme-sidebar));
-    border-width: 1px;
-  }
 }
 </style>
-

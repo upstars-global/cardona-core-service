@@ -15,7 +15,7 @@ import { useAuthCoreStore } from '../../../stores/authCore'
 import { useConfigStore } from '@core/stores/config'
 import { Theme } from '@core/enums'
 
-const props = defineProps<{
+defineProps<{
   isCollapsedMenu: boolean
 }>()
 
@@ -82,7 +82,7 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 </script>
 
 <template>
-  <div class="custom-menu mb-2">
+  <div class="custom-menu">
     <VMenu
       v-model="isMenuOpen"
       location="top"
@@ -122,36 +122,39 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
               </h5>
             </VAvatar>
           </VBadge>
-          <div class="full-name ml-5 text-truncate">
+          <div class="full-name ml-5 text-truncate on-primary">
             {{ userName }}
           </div>
         </div>
       </template>
-      <VList class="action-menu">
+      <VList
+        class="action-menu pa-0"
+        bg-color="sidebar"
+      >
         <VListItem
           v-for="(item, index) in customMenuActions"
           :key="index"
           :value="index"
-          class="action-item"
+          class="action-item on-primary "
           @click="item.action && item.action()"
         >
           <template #prepend>
             <VIcon :icon="item.icon" />
           </template>
-          <VListItemTitle class="px-0">
+          <VListItemTitle class="px-0 on-primary">
             {{ item.title }}
           </VListItemTitle>
         </VListItem>
         <VDivider class="divider" />
         <VListItem
-          class="action-item"
+          class="action-item on-primary"
           value="-1"
           @click="logOutAction.action"
         >
           <template #prepend>
             <VIcon :icon="logOutAction.icon" />
           </template>
-          <VListItemTitle class="px-0">
+          <VListItemTitle class="px-0 on-primary">
             {{ logOutAction.title }}
           </VListItemTitle>
         </VListItem>
@@ -183,6 +186,8 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
 }
 
 .action-menu {
+  border: 1px solid rgba(var(--v-theme-on-sidebar), .16) !important;
+  padding-inline: 0.5rem;
   :deep(.v-list-item) {
     padding-inline: 1rem !important;
     padding-block: 0.5rem !important;
@@ -221,17 +226,5 @@ const customMenuActions = computed((): Array<{ title: TranslateResult; icon: Ico
     color: rgba(var(--v-theme-sidebar));
     border-width: 1px;
   }
-}
-</style>
-
-<style>
-.custom-menu-popup {
-  left: 16px !important;
-  min-width: 220px !important;
-}
-
-.custom-menu-popup--collapsed {
-  left: 0 !important;
-  min-width: 52px !important;
 }
 </style>
