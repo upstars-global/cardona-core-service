@@ -121,18 +121,18 @@ if (!pending.length) {
 
 const MAX = 12
 const shown = pending.slice(0, MAX)
-const lines = shown.map(p => `  - ${p.source} → ${p.doc} (${p.reason === 'missing' ? 'нет страницы' : 'устарела'})`)
+const lines = shown.map(p => `  - ${p.source} → ${p.doc} (${p.reason === 'missing' ? 'no page' : 'stale'})`)
 if (pending.length > MAX)
-  lines.push(`  …и ещё ${pending.length - MAX}`)
+  lines.push(`  …and ${pending.length - MAX} more`)
 
 const reason = [
-  `Ветка ${state.branch} запушена (новый пуш относительно ${state.baseBranch}), `
-  + 'документация Obsidian отстала от кода. Затронуты страницы `knowledge/`:',
+  `Branch ${state.branch} was pushed (a new push relative to ${state.baseBranch}), `
+  + 'and the Obsidian docs lag behind the code. Affected `knowledge/` pages:',
   ...lines,
   '',
-  'Обнови/создай только эти страницы: вызови скилл /update-docs.',
-  'Если документировать не нужно — ответь пользователю и остановись снова',
-  '(повторно этот хук в текущем цикле не сработает).',
+  'Update/create only these pages: invoke the /update-docs skill.',
+  'If they do not need documenting, tell the user so and stop again',
+  '(this hook will not fire twice in the current cycle).',
 ].join('\n')
 
 process.stdout.write(JSON.stringify({
@@ -140,11 +140,12 @@ process.stdout.write(JSON.stringify({
   reason,
   hookSpecificOutput: {
     hookEventName: 'Stop',
-    additionalContext: 'Правило сопоставления код→страница и хелперы: scripts/docs-map.mjs. '
-      + 'Список файлов пришёл из очереди `.git/cardona-docs-queue.txt`, которую наполняет '
-      + 'git-хук post-commit (scripts/docs-queue.mjs). После правок: '
-      + 'node scripts/docs-map.mjs --build-index, затем --lint (битые ссылки/orphans/stale), '
-      + 'запиши операцию: --log "INGEST <страницы>", и погаси напоминание: '
+    additionalContext: 'The code→page mapping rule and its helpers live in scripts/docs-map.mjs. '
+      + 'The file list came from the `.git/cardona-docs-queue.txt` queue, which is filled by the '
+      + 'post-commit git hook (scripts/docs-queue.mjs). knowledge/index.md is rebuilt by that same '
+      + 'hook — do not touch it by hand. After editing: --rehash (stamp source_hash onto the '
+      + 'updated pages), --lint (links/orphans/stale/name collisions), record the operation with '
+      + '--log "INGEST <pages>", and silence the reminder with '
       + 'node node_modules/cardona-core-service/scripts/docs-guard.mjs --mark.',
   },
 }))

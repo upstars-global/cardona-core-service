@@ -1,6 +1,6 @@
 ---
 name: section-creator
-description: Create a whole new CRUD section in a cardona-core-service backoffice, end to end — permissions, route, menu, list page, and create/update form. Use for "add a new section", "create section X", "make a list page with create/edit for Y", "заведи новый раздел", "новый раздел с CRUD". This is the orchestrator: it runs the focused sub-skills in order (backoffice-permissions → section-list → section-form) with a confirmation gate between stages. If the user only needs one piece (just a permission, just a list, just a form), use that sub-skill directly instead.
+description: Create a whole new CRUD section in a cardona-core-service backoffice end to end — permission, route, menu, list page, create/update form. Use for "add a new section", "create section X", "заведи новый раздел", "новый раздел с CRUD". Orchestrates backoffice-permissions → section-list → section-form with a gate between stages; for one piece only, use that sub-skill directly.
 ---
 
 # Create a New Section (orchestrator)

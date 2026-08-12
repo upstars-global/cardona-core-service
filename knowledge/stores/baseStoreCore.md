@@ -2,6 +2,7 @@
 title: baseStoreCore
 type: store
 source: src/stores/baseStoreCore.ts
+source_hash: 76444c6e05d2
 tags: []
 updated: 2026-07-16
 ---
