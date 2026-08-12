@@ -1,14 +1,12 @@
 .v-btn {
   text-transform: none;
-  .v-btn--size-default {
-    transform: scale(1);
+  &.v-btn--size-default {
     --v-btn-size: 0.9375rem;
     --v-btn-height: 2.5rem;
     line-height: 1.375rem;
     letter-spacing: 0.02688rem;
   }
-  .v-btn--size-small {
-    transform: scale(1);
+  &.v-btn--size-small {
     --v-btn-size: 0.8125rem;
     --v-btn-height: 2rem;
     line-height: 1.125rem;
