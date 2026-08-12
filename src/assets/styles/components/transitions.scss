@@ -5,7 +5,7 @@
 .zoom-fade-leave-active {
   transition: transform 0.35s, opacity 0.28s ease-in-out;
 }
-.zoom-fade-enter {
+.zoom-fade-enter-from {
   transform: scale(0.97);
   opacity: 0;
 }
@@ -24,7 +24,7 @@
   transition: opacity 0.28s ease-in-out;
 }
 
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
