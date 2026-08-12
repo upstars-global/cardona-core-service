@@ -4,4 +4,10 @@
       color: rgba(var(--v-theme-surface-invert), var(--v-high-emphasis-opacity)) !important;
     }
   }
+
+  .base-checkbox {
+    .v-label--clickable {
+      color: rgba(var(--v-theme-surface-invert), var(--v-high-emphasis-opacity)) !important;
+    }
+  }
 }

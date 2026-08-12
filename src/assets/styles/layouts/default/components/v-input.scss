@@ -56,6 +56,10 @@
     -moz-appearance: textfield;
   }
 
+  .v-counter {
+    color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+  }
+
   .app-text-field {
     &--small {
       .v-input {

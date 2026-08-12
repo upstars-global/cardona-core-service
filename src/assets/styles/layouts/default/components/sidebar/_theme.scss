@@ -61,18 +61,10 @@
       // Open/active group: no highlighted background
       .nav-group.open > .nav-group-label,
       .nav-group.active > .nav-group-label {
-        // background-color: transparent !important;
-
         &::before {
-          background-color: white !important;
+          background-color: rgb(var(--v-theme-on-sidebar)) !important;
           opacity: 0.06 !important;
-          // background-color: rgba(var(--v-theme-on-sidebar), 0.06) !important;
-          // opacity: 0 !important;
         }
-      }
-
-      .nav-group.open div {
-        /// background-color: transparent !important;
       }
 
       .nav-section-title {

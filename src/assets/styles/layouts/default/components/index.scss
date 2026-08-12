@@ -5,6 +5,7 @@
 @use "./v-list" as v-list;
 @use "./v-check" as v-check;
 @use "./v-switch" as v-switch;
+@use "./code-view-editor" as code-view-editor;
 
 @mixin apply {
   @include sidebar.apply;
@@ -14,4 +15,5 @@
   @include v-list.apply;
   @include v-check.apply;
   @include v-switch.apply;
+  @include code-view-editor.apply;
 }

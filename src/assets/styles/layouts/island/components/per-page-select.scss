@@ -1,6 +1,5 @@
 @mixin apply {
   $option-color: rgba(var(--v-theme-surface-invert), var(--v-medium-emphasis-opacity));
-  $selected-option-color: white;
 
   .v-select.per-page-selector{
     .vs__dropdown-toggle {
@@ -17,10 +16,10 @@
     }
     .vs__dropdown-menu {
       .vs__dropdown-option--selected {
-        color: $selected-option-color !important;
+        color: rgb(var(--v-theme-on-primary)) !important;
       }
       .vs__dropdown-option--selected.vs__dropdown-option--highlight {
-        color: $selected-option-color !important;
+        color: rgb(var(--v-theme-on-primary)) !important;
       }
     }
   }

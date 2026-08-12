@@ -5,13 +5,11 @@
 @import "./components/v-breadcrumb";
 @import "./components/sidebar";
 @import "./components/transitions";
-@import "./components/code-view-editor";
 @import "./components/v-textarea";
 @import "./components/v-tabs";
 @import "./components/v-icon";
 @import "./components/toasts";
 @import "./components/gallery";
-@import "./components/check-field";
 
 // vue-select: base library CSS + structural root variables (layout-agnostic)
 @import "vue-select/dist/vue-select.css";
@@ -21,18 +19,6 @@
 
 html {
   overflow-y: auto;
-}
-
-.text-color-base {
-  color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
-}
-
-.text-color-mute {
-  color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)) !important;
-}
-
-.text-color-placeholder-disabled {
-  color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)) !important;
 }
 
 .no-border {
@@ -50,42 +36,12 @@ html {
 
 hr {
   border: 0;
-  border-top: 1px solid rgb(var(--v-theme-grey-200));
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
 .full-width {
   width: 100%;
-}
-
-.input-field {
-  .v-input--density-compact {
-    height: initial;
-  }
-  .v-input__control {
-    .v-field__field {
-      height: 2rem;
-      min-height: 2rem;
-    }
-  }
-  .v-text-field {
-    input.v-field__input {
-      border: 1px solid var(--v-theme-grey-300);
-      height: 2rem;
-      min-height: 2rem;
-    }
-  }
-}
-
-.layout-wrapper.layout-nav-type-vertical {
-  .navbar-blur.layout-navbar {
-    .navbar-content-container {
-      background: rgb(var(--v-theme-background));
-      box-shadow: none;
-      padding: 0;
-    }
-  }
 }
 
 .v-window {
@@ -122,11 +78,6 @@ html.custom-scroll {
   }
 }
 
-.text-body-1,
-.text-body-2 {
-  color: rgba(var(--v-theme-grey-900), var(--v-high-emphasis-opacity));
-}
-
 .lh-normal {
   line-height: normal;
 }
@@ -145,4 +96,3 @@ body {
     background-color: rgb(var(--v-theme-surface)) !important;
   }
 }
-
