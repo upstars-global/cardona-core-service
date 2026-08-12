@@ -1,5 +1,17 @@
 @use "./sidebar" as sidebar;
+@use "./v-input" as v-input;
+@use "./vue-select" as vue-select;
+@use "./v-card" as v-card;
+@use "./v-list" as v-list;
+@use "./v-check" as v-check;
+@use "./v-switch" as v-switch;
 
 @mixin apply {
   @include sidebar.apply;
+  @include v-input.apply;
+  @include vue-select.apply;
+  @include v-card.apply;
+  @include v-list.apply;
+  @include v-check.apply;
+  @include v-switch.apply;
 }

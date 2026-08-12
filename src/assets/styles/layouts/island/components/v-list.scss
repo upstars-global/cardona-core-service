@@ -1,0 +1,19 @@
+@mixin apply {
+  .v-list {
+    .v-list-item {
+      &:not(:hover) {
+        color: rgba(var(--v-theme-surface-invert), var(--v-high-emphasis-opacity));
+      }
+      &__content {
+        &:not(:hover) {
+          color: rgba(var(--v-theme-surface-invert), var(--v-high-emphasis-opacity));
+        }
+      }
+    }
+    .v-list-item-title {
+      &:not(:hover) {
+        color: rgba(var(--v-theme-surface-invert), var(--v-high-emphasis-opacity));
+      }
+    }
+  }
+}
