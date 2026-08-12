@@ -109,7 +109,7 @@ const contentScrollEl = ref<HTMLElement | null>(null)
           <VList
             bg-color="sidebar"
             density="compact"
-            class="pa-0 mt-2 mb-5"
+            class="pa-0 mt-2 mb-3"
             height="42px"
           >
             <VListItem class="px-0 sidebar-list-item">
