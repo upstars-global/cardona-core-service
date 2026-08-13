@@ -2,6 +2,7 @@
 title: ApiService
 type: service
 source: src/services/api/index.ts
+source_hash: 963e4a053157
 tags: [api, http, axios]
 updated: 2026-07-27
 ---
@@ -107,6 +108,6 @@ await ApiService.request(
 
 ## Связанные
 
-- [[loader]] — стор лоадера (`useLoaderStore`)
-- [[authCore]] — стор авторизации (`useAuthCoreStore`)
-- [[baseSectionErrors]] — стор ошибок секций (`useBaseSectionErrorsStore`)
+- `src/stores/loader.ts` — `useLoaderStore`
+- `src/stores/authCore.ts` — `useAuthCoreStore`
+- `src/stores/baseSectionErrors.ts` — `useBaseSectionErrorsStore`

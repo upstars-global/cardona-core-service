@@ -6,9 +6,10 @@
 // и дёшев, поэтому вешается на SessionStart Claude Code: хук доустанавливается сам
 // после `git clone`, смены `core.hooksPath` или обновления версии.
 //
-// Что делает хук: после каждого коммита вызывает `docs-queue.mjs --record`, то есть
-// детерминированно копит «долг по документации». Напоминание приходит позже, по
-// пушу ветки (scripts/docs-guard.mjs).
+// Что делает хук: после каждого коммита (1) вызывает `docs-queue.mjs --record`, то есть
+// детерминированно копит «долг по документации», и (2) пересобирает `knowledge/index.md`,
+// чтобы карта vault никогда не отставала. Напоминание приходит позже, по пушу ветки
+// (scripts/docs-guard.mjs).
 //
 // Бережно к чужим хукам: если post-commit уже есть и он не наш, он один раз
 // сохраняется рядом как `post-commit.pre-cardona`, а наш хук вызывает его в конце.
@@ -25,19 +26,27 @@ import { join } from 'node:path'
 import { sh } from './push-state.mjs'
 
 const MARKER = 'cardona-docs-hook'
-const VERSION = 'v1'
+const VERSION = 'v2'
 
 // Хук работает и в панели (скрипт внутри node_modules), и в самом core-service.
+//
+// v2: кроме учёта долга ещё и пересобирает knowledge/index.md. Раньше это делала модель
+// по инструкции внутри /update-docs — и не делала: индекс отставал от vault на несколько
+// страниц, а SessionStart инжектил устаревшую карту. Работа детерминированная, её место в хуке.
 const HOOK_BODY = `#!/bin/sh
-# ${MARKER} ${VERSION} — фиксирует «долг по документации» после коммита (LLM Wiki).
+# ${MARKER} ${VERSION} — фиксирует «долг по документации» и пересобирает индекс (LLM Wiki).
 # Ставится скриптом docs-hooks-install.mjs. Никогда не ломает коммит: exit 0 всегда.
 
 HOOK_DIR="$(dirname "$0")"
 
 if [ "$CARDONA_DOCS_GUARD" != "0" ] && command -v node >/dev/null 2>&1; then
-  for q in "node_modules/cardona-core-service/scripts/docs-queue.mjs" "scripts/docs-queue.mjs"; do
-    if [ -f "$q" ]; then
-      node "$q" --record >/dev/null 2>&1 || true
+  for dir in "node_modules/cardona-core-service/scripts" "scripts"; do
+    if [ -f "$dir/docs-queue.mjs" ]; then
+      node "$dir/docs-queue.mjs" --record >/dev/null 2>&1 || true
+      # Индекс пересобираем только если vault существует — иначе создавали бы его на пустом месте.
+      if [ -d "knowledge" ] && [ -f "$dir/docs-map.mjs" ]; then
+        node "$dir/docs-map.mjs" --build-index >/dev/null 2>&1 || true
+      fi
       break
     fi
   done
@@ -59,11 +68,11 @@ function main() {
   // `--git-path hooks` учитывает core.hooksPath, в отличие от join(gitDir, 'hooks').
   const hooksRel = sh(cwd, 'git rev-parse --git-path hooks')
   if (!hooksRel)
-    return report(status, 'не git-репозиторий — хук не ставлю.')
+    return report(status, 'not a git repository — skipping hook installation.')
 
   const hooksDir = join(cwd, hooksRel)
   if (!existsSync(hooksDir))
-    return report(status, `нет каталога хуков ${hooksRel} — хук не ставлю.`)
+    return report(status, `no hooks directory ${hooksRel} — skipping hook installation.`)
 
   const hookPath = join(hooksDir, 'post-commit')
   const existing = existsSync(hookPath) ? safeRead(hookPath) : null
@@ -72,10 +81,10 @@ function main() {
 
   if (status) {
     const state = existing === null
-      ? 'хука нет'
+      ? 'no hook'
       : isCurrent
-        ? `установлен наш ${VERSION}`
-        : isOurs ? 'установлена наша старая версия' : 'установлен чужой хук'
+        ? `ours, ${VERSION}, installed`
+        : isOurs ? 'an older version of ours is installed' : 'a foreign hook is installed'
 
     console.log(`[docs-hooks] ${hooksRel}/post-commit: ${state}`)
 
@@ -95,7 +104,7 @@ function main() {
       }
       catch {
         // Не смогли отодвинуть чужой хук — не перезаписываем его вслепую.
-        console.log('[docs-hooks] не удалось сохранить существующий post-commit — оставляю как есть.')
+        console.log('[docs-hooks] could not preserve the existing post-commit — leaving it as is.')
 
         return
       }
@@ -105,10 +114,10 @@ function main() {
   try {
     writeFileSync(hookPath, HOOK_BODY, 'utf8')
     chmodSync(hookPath, 0o755)
-    console.log(`[docs-hooks] post-commit установлен (${VERSION}): коммит копит долг по документации.`)
+    console.log(`[docs-hooks] post-commit installed (${VERSION}): commits now accumulate documentation debt.`)
   }
   catch {
-    console.log('[docs-hooks] не удалось записать post-commit — пропускаю.')
+    console.log('[docs-hooks] could not write post-commit — skipping.')
   }
 }
 

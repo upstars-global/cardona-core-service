@@ -2,6 +2,7 @@
 title: permissions store
 type: store
 source: src/stores/permissions.ts
+source_hash: 727a2fdb556c
 tags: []
 updated: 2026-07-16
 ---

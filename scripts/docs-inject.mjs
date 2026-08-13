@@ -45,16 +45,54 @@ const indexPath = join(cwd, 'knowledge', 'index.md')
 if (!existsSync(indexPath))
   done()
 
-let index = ''
+let rawIndex = ''
 try {
-  index = readFileSync(indexPath, 'utf8').trim()
+  rawIndex = readFileSync(indexPath, 'utf8').trim()
 }
 catch {
   done()
 }
 
-if (!index)
+if (!rawIndex)
   done()
+
+// Инжект платится в КАЖДОЙ сессии, поэтому шлём не весь index.md, а сжатую форму:
+// строка на раздел, только имена страниц — без хвостов «— описание» и без шапки
+// «не редактируйте вручную» (она нужна человеку в Obsidian, не модели).
+const MAX_INDEX_CHARS = 2000
+
+function compactIndex(md) {
+  const sections = []
+  let current = null
+
+  for (const line of md.split('\n')) {
+    const heading = line.match(/^##\s+(.+)$/)
+    if (heading) {
+      current = { title: heading[1].trim(), names: [] }
+      sections.push(current)
+      continue
+    }
+
+    const item = line.match(/^-\s*\[\[([^\]|#]+)/)
+    if (item && current)
+      current.names.push(item[1].trim())
+  }
+
+  const filled = sections.filter(s => s.names.length)
+  if (!filled.length)
+    return md.slice(0, MAX_INDEX_CHARS)
+
+  const full = filled.map(s => `- **${s.title}:** ${s.names.join(', ')}`).join('\n')
+  if (full.length <= MAX_INDEX_CHARS)
+    return full
+
+  // Vault перерос бюджет инжекта: отдаём только разделы с количеством,
+  // конкретную страницу модель найдёт через --find.
+  return `${filled.map(s => `- **${s.title}:** ${s.names.length} pages`).join('\n')}\n`
+    + '(the full list does not fit the inject budget — look pages up with `--find`)'
+}
+
+const index = compactIndex(rawIndex)
 
 // Правильный путь к docs-map зависит от окружения: в панели скрипт едет в node_modules,
 // в самом core-service — в scripts/. Подставляем в инструкцию актуальный.
@@ -62,17 +100,16 @@ const pkgScript = 'node_modules/cardona-core-service/scripts/docs-map.mjs'
 const docsMap = existsSync(join(cwd, pkgScript)) ? pkgScript : 'scripts/docs-map.mjs'
 
 const additionalContext = [
-  '# База знаний Obsidian (knowledge/) — читай ПЕРВОЙ',
+  '# Project LLM Wiki (knowledge/)',
   '',
-  'В проекте поддерживается LLM Wiki в `knowledge/`: маленькие страницы, одна сущность на',
-  'страницу (model / store / composable / component / config / service). ПРЕЖДЕ чем читать',
-  'исходник сущности — прочитай её страницу `knowledge/`, это дешевле и экономит контекст.',
+  'The pages describe what is NON-OBVIOUS about an entity: invariants, gotchas, "why it is this',
+  'way", call order. Not a retelling of the source. Before reading code just "to understand how X',
+  'works" — check the page for X.',
   '',
-  `- Найти страницу: \`node ${docsMap} --find <Имя|src/путь>\` (или скилл /query-docs).`,
-  '  Открывай исходник, только если страницы нет или она устарела.',
-  '- Держи актуальной: изменил код — вызови /update-docs (Stop-хук docs-guard напомнит).',
+  `- Find it: \`node ${docsMap} --find <Name|src/path>\` (or /query-docs). No page, or a stale one — read the source.`,
+  '- Changed the code — /update-docs (the Stop hook will remind you after a push).',
   '',
-  '## Индекс (карта содержимого)',
+  '## What the vault contains',
   '',
   index,
 ].join('\n')

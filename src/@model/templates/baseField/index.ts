@@ -20,6 +20,8 @@ export { RadioBaseField } from './radio'
 export { RichTextBaseField } from './rich-text'
 export { TagsBaseField } from './tags'
 export { CurrencyBaseField } from './currency'
+export { ColorBaseField } from './color'
+export { GradientBaseField } from './gradient'
 
 export { getInstanceClass } from './getInstanceClass'
 

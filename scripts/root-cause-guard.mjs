@@ -94,10 +94,11 @@ if (state.signature === readMarked(stateFile))
   done()
 
 const reason = [
-  `Ветка задачи ${state.ticket} запушена (новый пуш относительно ${state.baseBranch}).`,
-  'Проставь поле **Root cause** в Jira: вызови скилл /root-cause.',
-  'Скилл сам проверит тип задачи и наличие поля — если это не Bug/Sub-bug или поля нет,',
-  'он ничего не сделает (и пометит дифф как обработанный, чтобы не напоминать снова).',
+  `The branch of ticket ${state.ticket} was pushed (a new push relative to ${state.baseBranch}).`,
+  'Set the **Root cause** field in Jira: invoke the /root-cause skill.',
+  'The skill checks the issue type and the presence of the field itself — if this is not a',
+  'Bug/Sub-bug, or the field is absent, it does nothing (and marks the diff as handled so the',
+  'reminder does not come back).',
 ].join('\n')
 
 process.stdout.write(JSON.stringify({
@@ -105,9 +106,9 @@ process.stdout.write(JSON.stringify({
   reason,
   hookSpecificOutput: {
     hookEventName: 'Stop',
-    additionalContext: 'Root cause — select-поле Jira. Скилл /root-cause получает его options '
-      + 'динамически (getJiraIssueTypeMetaWithFields), анализирует дифф ветки и выставляет категорию. '
-      + 'Выключение авто-напоминаний: env CARDONA_ROOT_CAUSE=0.',
+    additionalContext: '"Root cause" is a Jira select field. The /root-cause skill reads its options '
+      + 'live (getJiraIssueTypeMetaWithFields), analyses the branch diff and sets the category. '
+      + 'Turn the auto-reminders off with env CARDONA_ROOT_CAUSE=0.',
   },
 }))
 done()

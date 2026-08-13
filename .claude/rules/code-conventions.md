@@ -34,10 +34,6 @@ class ProjectsForm {}               // form model
 
 Interfaces: `I` prefix + entity name + `Data` suffix. Classes: entity name only, no prefix.
 
-### Type-only imports
-
-Use `import type` for type-only imports (`@typescript-eslint/consistent-type-imports`).
-
 ### Multi-value comparisons: array + `includes`
 
 For 2+ values — use array + `includes` instead of `===`/`||` chains.
@@ -55,21 +51,13 @@ Single value → `===`.
 
 ## Vue / Templates
 
-### PascalCase in templates
-
-Components in templates must be named in PascalCase (eslint-plugin-vue).
-
-### Vuetify imports
-
-Direct imports from `vuetify/components` are restricted by ESLint. Components are auto-imported — no manual imports needed.
-
 ### Tabler icons only
 
 mdi icons are forbidden by ESLint rule.
 
 ## Formatting
 
-No semicolons, 2-space indentation, trailing commas, camelCase, single quotes.
+Trailing commas, camelCase, single quotes.
 
 ## Path aliases
 

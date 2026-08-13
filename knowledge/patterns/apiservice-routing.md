@@ -2,6 +2,7 @@
 title: ApiService: type-based роутинг
 type: pattern
 source: src/services/api/index.ts
+source_hash: 963e4a053157
 tags: []
 updated: 2026-07-16
 ---

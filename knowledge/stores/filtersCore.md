@@ -2,6 +2,7 @@
 title: filtersCore store
 type: store
 source: src/stores/filtersCore.ts
+source_hash: 45f7abfba89b
 tags: []
 updated: 2026-07-16
 ---
