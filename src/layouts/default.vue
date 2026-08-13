@@ -137,7 +137,7 @@ const contentScrollEl = ref<HTMLElement | null>(null)
               </VBtn>
             </div>
           </div>
-          <div class="bg-surface flex-grow-1 layout-border-bottom pa-4 pt-0">
+          <div class="bg-surface flex-grow-1 layout-border-bottom pa-4 pt-0 layout-page-content position-relative">
             <VContainer
               fluid
               class="px-0"
@@ -195,7 +195,7 @@ const contentScrollEl = ref<HTMLElement | null>(null)
   }
 
   :deep(.v-navigation-drawer--rail.is-hovering) {
-    position: absolute !important;
+    position: fixed !important;
     width: 252px !important;
     z-index: 1005;
   }
@@ -222,14 +222,6 @@ const contentScrollEl = ref<HTMLElement | null>(null)
   }
 }
 
-.layout-border-top {
-  border-radius: 6px 6px 0 0;
-}
-
-.layout-border-bottom {
-  border-radius: 0 0 6px 6px;
-}
-
 .sidebar-list-item {
   margin-inline: 16px;
 }
@@ -241,6 +233,14 @@ const contentScrollEl = ref<HTMLElement | null>(null)
 .v-main--fullscreen {
   height: 100dvh;
   overflow: hidden;
+}
+
+.layout-border-top {
+  border-radius: 6px 6px 0 0;
+}
+
+.layout-border-bottom {
+  border-radius: 0 0 6px 6px;
 }
 
 .overflow-y-auto:has(.loading-base-section) {
