@@ -2,6 +2,7 @@
 title: permission (модель)
 type: model
 source: src/@model/permission.ts
+source_hash: 226fdde659e9
 tags: []
 updated: 2026-07-16
 ---

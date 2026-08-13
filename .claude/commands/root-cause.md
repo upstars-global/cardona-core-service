@@ -1,5 +1,5 @@
 ---
-description: Проставить поле Root cause в Jira для текущей задачи-бага (по ветке BAC-XXXX)
+description: Set the Jira "Root cause" field for the current bug ticket (derived from the BAC-XXXX branch)
 ---
 
 Run the `root-cause` skill **inline in the main assistant** — do not hand the whole flow to a

@@ -7,3 +7,4 @@
 - INGEST services/config.md
 - INGEST services/api.md
 - INGEST services/api.md, services/config.md
+- INGEST patterns/entity-name-to-api-type.md; удалена мусорная страница из шаблона, битые ссылки в services/api.md заменены путями

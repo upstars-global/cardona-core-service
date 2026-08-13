@@ -4,10 +4,6 @@
 > `node scripts/docs-map.mjs --build-index` — не редактируйте вручную.
 > Хроника операций — в [[log]] (append-only журнал ingest/query/lint).
 
-## (root)
-
-- [[имя-другой-страницы]] — имя-другой-страницы
-
 ## Composables
 
 - [[useApi]] — useApi
@@ -22,6 +18,7 @@
 - [[access-control]] — Права доступа (abilityCan)
 - [[apiservice-routing]] — ApiService: type-based роутинг
 - [[composable-pattern]] — Паттерн composable
+- [[entity-name-to-api-type]] — entityName → тип запроса (transformNameToType)
 - [[model-class-pattern]] — Паттерн модели-класса
 - [[pinia-store-pattern]] — Паттерн Pinia-стора
 - [[websocket-centrifuge]] — WebSocket / Centrifuge

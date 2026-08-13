@@ -45,3 +45,6 @@ public/mockServiceWorker.js
 *storybook.log
 storybook-static
 public/storybook/
+
+# локальный снапшот замера обвязки Claude Code (scripts/claude-budget.mjs)
+.claude/.budget-baseline.json

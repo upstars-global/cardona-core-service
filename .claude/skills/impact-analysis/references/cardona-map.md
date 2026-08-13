@@ -2,70 +2,50 @@
 
 Detailed rules for turning a changed file into a UI location and for finding what a shared change affects. Read this when Step 3/Step 4 of the skill needs precise behavior.
 
-## Table of contents
-1. Route generation (file → route name + URL)
-2. Section registry and hand-written route modules
-3. Side menu (route name → menu path)
-4. i18n namespaces (labels the QA engineer sees)
-5. Components (auto-import naming → usage grep)
+## Contents
+1–4. Route, URL, menu, i18n — computed by the script (manual fallback)
+5. Components (auto-import → grep consumers)
 6. Tables / list pages
-7. High-blast-radius paths (project-wide triage)
+7. High-blast-radius paths
 8. Reusable grep patterns
 9. cardona-core-service change analysis
-10. Infra & deploy (Docker, nginx, Helm charts, GitLab CI)
+10. Infra & deploy (Docker, nginx, Helm, GitLab CI)
 11. Build & tooling
-12. Dependencies (package.json, yarn.lock)
-13. Runtime & static (.env, public, server)
-8. Reusable grep patterns
+12. Dependencies
+13. Runtime & static
 
 ---
 
-## 1. Route generation
+## 1–4. Route, URL, menu, i18n — computed by the script
 
-Almost every CRUD section's routes are generated programmatically by `sectionRouterGenerator` (default export of `src/helper/router.ts`) — NOT by file-based routing, despite `unplugin-vue-router` being installed.
+`collect-evidence.mjs` implements the `sectionRouterGenerator` algorithm (`src/helper/router.ts`),
+parses the hand-written modules in `src/plugins/2.router/modules/`, builds the `buildMenu.ts` tree and
+resolves labels against `en.json`. Ready-made `routeName` / `url` / `menuPath` / `title` arrive in
+`pages[]` — **do not derive them again**.
 
-For a config `{ name, sectionName, permission, ...flags }`:
+This section is only needed when the script put a file in `pagesUnresolved[]` or returned a route
+without a name.
 
-- **`importSTR`** (component path) = `sectionName ? "<sectionName>/<name>" : name`. With `isConvertName: true`, `name` is camelCase→slash-converted via `convertCamelCase(name, '/')`.
-- **Component files loaded:**
-  - List → `@/pages/<importSTR>/list/index.vue`
-  - Create → `@/pages/<importSTR>/create/index.vue`
-  - Update → `@/pages/<importSTR>/update/index.vue`
-  - Card (if `withCard: true`) → `@/pages/<importSTR>/card/index.vue`
-  - Single (if `isSingleRoute: true`) → `@/pages/<importSTR>/index.vue`
-- **Route names:** `<prefixName><Entity>List|Create|Update|Card`, where `Entity` = `name` with first letter uppercased and `prefixName` (e.g. `Analytics`, `Malaga`) prepended when present. So `vipSeasons` → `VipSeasonsList`, `VipSeasonsCreate`, `VipSeasonsUpdate`.
-- **URL** (`getEntityUrl`): split `importSTR` on `/`, dedupe segments, kebab-case each, join with `/`. Then prefix:
-  - default → `/:project/<kebab-path>` (project-scoped)
-  - `isProject: false` → `/<kebab-path>` (no project prefix)
-  - `withoutSectionNameInUrl: true` → the `sectionName` segment is stripped from the URL.
-- **`meta.title` key** (`getPrefixNameKey`): for `vipSeasons` with no prefix → `vipSeasons.list` / `.create` / `.edit` / `.card`; with `prefixName: 'Analytics'` + `name: 'dashboard'` → `analyticsDashboard.*`. Resolves against the `title.*` i18n namespace.
+### How to resolve it by hand
 
-**Worked example:** `src/pages/gamification/vipSeasons/list/index.vue` → config `{ name: 'vipSeasons', sectionName: 'gamification' }` → route name `VipSeasonsList`, URL `/:project/gamification/vip-seasons`. At runtime `:project` is a slug like `neocore`, so QA opens `/neocore/gamification/vip-seasons`.
+1. **Section in the registry?** `grep -n "name: '<section>'" src/plugins/2.router/additional-routes.ts`.
+   Found → route name is `<prefixName><PascalSection>List|Create|Update|Card`; URL = `importSTR`
+   (`<sectionName>/<name>`) split on `/`, deduplicated, every segment in kebab-case, prefixed with
+   `/:project/` — unless `isProject: false`. `withoutSectionNameInUrl: true` drops the `sectionName`
+   segment. The title key is `<key>.list|create|edit|card` in the `title.*` namespace.
+2. **Not in the registry** → the route is hand-written; look in `src/plugins/2.router/modules/`
+   (`payouts`, `transactions`, `adminSection`, `logging`, `malagaChannels`, `malagaTemplates`,
+   `supportService`, `cashbackStatsDetail`, `dashboard`, `auth`, `error`, `noAccess`). Some are
+   factories where `name` is computed — that is exactly why the script could not parse it, so take
+   the value from the code.
+3. **Menu path** — `grep -n "to: '<RouteName>'" src/navigation/vertical/apps-and-pages/buildMenu.ts`,
+   walk up to the nearest parent `title:`, and resolve both keys against `en.json`. The admin menu is
+   `buildAdminMenu.ts` (switched by `appConfigCoreStore.isMenuTypeMain`).
+4. **i18n namespaces:** `title.*` — menu and breadcrumbs; `page.<section>.*` — column headers and
+   content; `emptyState.<section>`, `placeholder.*`, `modal.*`, `entities.*`, `permission.*`.
 
-## 2. Section registry and hand-written modules
-
-- **Registry (authoritative section → folder → permission map):** `src/plugins/2.router/additional-routes.ts` — one `IRouterConfig` entry per generated section. Grep it first: `grep -n "name: '<section>'" src/plugins/2.router/additional-routes.ts`.
-- **Router assembly:** `src/plugins/2.router/index.ts` combines the generated routes with hand-written modules in `src/plugins/2.router/modules/`.
-- **Hand-written modules (do NOT go through the generator)** — check here when a page isn't in the registry: `auth`, `dashboard`, `payouts`, `transactions`, `adminSection`, `logging`, `malagaChannels`, `malagaTemplates`, `cashbackStatsDetail`, `supportService`, plus `error`, `noAccess`, `old/templates`. Read the module to get the route's `name`, `path`, and `component`.
-
-## 3. Side menu (route name → menu path)
-
-- **Main menu:** `src/navigation/vertical/apps-and-pages/buildMenu.ts` — `buildMenu(userStore)` returns nested `MenuItem`s. Top-level groups: `{ title: 'title.<group>', icon, children: [...] }`. Leaves: `{ title: '<i18n key>', to: '<RouteName>', permission }`.
-- **Admin menu:** `buildAdminMenu.ts` in the same directory (the app switches menus on `appConfigCoreStore.isMenuTypeMain`, see `useAppsAndPages.ts`).
-- **`MenuItem` shape:** `src/navigation/vertical/model.ts` (`title`, `heading`, `icon`, `to`, `route`, `children`, `permission`, `level`). `clearMenu.ts` filters items the user has no permission for.
-- **Join key is the route name.** Given a page, derive its route name (§1) or read `defineOptions({ name: '...' })` in its `index.vue`, then `grep -n "to: '<RouteName>'" buildMenu.ts` and read upward to the nearest parent `title:` for the group.
-
-Example: `to: 'VipSeasonsList'` sits under group `title: 'title.gamification'` → menu path **Gamification → VIP Seasons**.
-
-## 4. i18n namespaces
-
-Single locale file: `src/plugins/i18n/locales/en.json`. Relevant top-level namespaces:
-
-- `title.*` — menu labels and route `meta.title` (breadcrumbs). e.g. `title.gamification`, `title.vipSeasons.list`.
-- `page.<section>.*` — table column headers and page content. e.g. `page.vipSeasons.name`.
-- `emptyState.<section>`, `placeholder.*`, `modal.*`, `entities.*`, `permission.*`.
-
-To get the label the QA engineer sees: resolve the menu leaf's `title` key and its parent group `title` key against `en.json`. A changed/removed key is itself an impact — grep the key across `src`.
+If a route cannot be resolved, say so in the report (the Ukrainian word «уточнити») instead of
+inventing a URL.
 
 ## 5. Components (auto-import)
 

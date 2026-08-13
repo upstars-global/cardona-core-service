@@ -1,50 +1,18 @@
 ---
 name: write-tests
-description: Writing unit tests for the cardona-core-service project. Use this skill whenever the user asks to write tests, create spec files, add unit tests, cover a component/helper/composable/store with tests, or generate any *.spec.ts file. Also trigger when the user says "test this", "add coverage for", or shares a component and asks what tests to write. Do NOT trigger for implementing features, fixing bugs, refactoring, or explaining code.
+description: Write Vitest unit tests for the cardona-core-service project. Use whenever asked to write, add or fix unit tests, create a spec file, or cover a component/helper/composable/store. Also on "test this", "add coverage for". Not for implementing features, fixing bugs or explaining code.
 ---
 
 # Skill: Write Tests
 
-## Stack
+## Where specs live
 
-| Tool | Version | Role |
-|------|---------|------|
-| Vitest | 2.0.5 | Test runner |
-| @vue/test-utils | 2.4.6 | Vue component mounting |
-| @testing-library/vue | 8.1.0 | Additional testing utilities |
-| jsdom | 25.0.1 | DOM simulation |
-| msw | 1.3.2 | API mocking (Mock Service Worker) |
+Mirror the source tree: a spec for `src/<path>` goes to `tests/unit/<path>`. Reusable mocks live in
+`tests/unit/mocks/`, shared helpers in `tests/unit/templates/shared-tests/` (helpers, not specs).
+Read `references/toolbox.md` if you need the full tree or the stack versions.
 
-Global setup file: `vitest.setup.ts`
-Global plugins loaded for every test: **vuetify**, **i18n** (via `getI18n()`), **pinia**
-
----
-
-## Directory Layout
-
-```
-tests/
-├── __mocks__/                          # Auto-mocked node_modules (e.g. tus-js-client)
-└── unit/
-    ├── utils.ts                        # Core mount & DOM helpers
-    ├── mocks/                          # Reusable mock objects & static vi.mock() files
-    │   ├── base-list/
-    │   │   ├── utils.ts                # Store mocks, mount helpers, factories for BaseList
-    │   │   └── static-mock.ts         # Top-level vi.mock() calls (router, stores, toasts)
-    │   ├── modal-provide-config.ts     # mockModal provide object
-    │   └── permission-keys.ts         # Permission locale key fixtures
-    ├── components/                     # Spec files mirroring src/components/
-    ├── helpers/                        # Spec files for src/helpers/
-    ├── templates/
-    │   ├── FieldGenerator/             # 20 field-type specs
-    │   ├── _components/                # Shared component specs
-    │   └── shared-tests/              # Reusable test utilities (NOT spec files)
-    └── ViewGenerator/                  # ViewGenerator-specific specs
-```
-
-**Rule:** Place spec files in the same hierarchy under `tests/unit/` as the source file lives under `src/`.
-
----
+Runner: Vitest + jsdom. `vitest.setup.ts` loads **vuetify**, **i18n** and **pinia** globally for every
+test — don't re-register them.
 
 ## Core Test Utilities — `tests/unit/utils.ts`
 
@@ -195,13 +163,15 @@ describe('MyComponent.vue', () => {
 
 ---
 
-## Async Testing Rules
+## Async & data patterns (short form)
 
-- After mounting a component that makes API calls on mount: `await flushPromises()`
-- After user interactions: `await nextTick()` or `await flushPromises()` if async operations follow
-- Use `mockResolvedValueOnce` for single-call overrides; `mockResolvedValue` for permanent overrides
+- Component fetches on mount → `await flushPromises()` after mounting.
+- After a user interaction → `await nextTick()`, or `flushPromises()` if async work follows.
+- Props always come from a `createDefaultProps(overrides = {})` factory, never hardcoded per `it`.
+- `mockResolvedValueOnce` for a single call, `mockResolvedValue` for a permanent override.
 
----
+Read `references/toolbox.md` only if you need an exact import path, the list of globals
+`vitest.setup.ts` provides, or the full versions of the patterns above.
 
 ## Selector Convention
 
@@ -227,21 +197,6 @@ Add `data-test-id` only when:
 
 ---
 
-## Data Factory Pattern
-
-Always use a `createDefaultProps` factory with override support. Never hardcode props in every `it` block.
-
-```typescript
-const createDefaultProps = (overrides: Partial<MyComponentProps> = {}): MyComponentProps => ({
-  modelValue: '',
-  label: 'Default Label',
-  disabled: false,
-  ...overrides,
-})
-```
-
----
-
 ## Do / Don't
 
 ### Do
@@ -264,34 +219,6 @@ const createDefaultProps = (overrides: Partial<MyComponentProps> = {}): MyCompon
 
 ---
 
-## Quick Reference — Imports Cheat Sheet
-
-```typescript
-// Core mounting
-import { setMountComponent, setMountComponentWithGlobal, getSelectorTestId, findByTestId, getWrapperElement, clickTrigger, setValue } from '../../utils'
-
-// Assertion API
-import { testOn } from '../../templates/shared-tests/test-case-generator'
-
-// Modal provide
-import { mockModal } from '../../mocks/modal-provide-config'
-
-// BaseList infrastructure
-import '../../mocks/base-list/static-mock'
-import { getMountComponent, defaultProps, global, mockBaseStoreCore, exportDataMock, getSelectorCField } from '../../mocks/base-list/utils'
-
-// Shared field test helpers
-import { testOnCalledEmittedEvent, getPropsWithDisabledTrue } from '../../templates/shared-tests/text-input-fields'
-import { showModal, isEqualModalTitle } from '../../templates/shared-tests/modal'
-
-// Vitest
-import { describe, it, beforeEach, afterEach, vi, expect } from 'vitest'
-import { flushPromises, nextTick } from '@vue/test-utils'
-import { cloneDeep } from 'lodash'
-```
-
----
-
 ## Reference Files
 
 | File | When to read |
@@ -299,18 +226,7 @@ import { cloneDeep } from 'lodash'
 | `references/testOn-api.md` | Full testOn assertion API with all overloads |
 | `references/mock-patterns.md` | Full examples for all 6 mock patterns |
 | `references/shared-tests.md` | All shared-tests helpers (modal, text inputs, date, etc.) |
+| `references/toolbox.md` | Imports cheat sheet, globals, directory tree, async & data-factory patterns |
 | `references/advanced-patterns.md` | BaseList, Permission helpers, ViewGenerator, FieldGenerator |
 
 ---
-
-## Globals Available Without Import
-
-| Global | Source |
-|--------|--------|
-| `vuetify` plugin | `vitest.setup.ts` |
-| `i18n` plugin | `vitest.setup.ts` |
-| `pinia` plugin | `vitest.setup.ts` |
-| `ResizeObserver` stub | `vitest.setup.ts` |
-| `IntersectionObserver` stub | `vitest.setup.ts` |
-| `tus-js-client` mocked | `vi.mock('tus-js-client')` |
-| `clipboard` helper mocked | `vi.mock('./src/helpers/clipboard')` |

@@ -2,6 +2,7 @@
 title: ApiService config
 type: service
 source: src/services/api/config.ts
+source_hash: 7389a1aa3289
 tags: [api, config, types]
 updated: 2026-07-27
 ---

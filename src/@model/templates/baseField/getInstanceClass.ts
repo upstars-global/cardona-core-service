@@ -19,6 +19,8 @@ import { RadioBaseField } from './radio'
 import { RichTextBaseField } from './rich-text'
 import { TagsBaseField } from './tags'
 import { CurrencyBaseField } from './currency'
+import { ColorBaseField } from './color'
+import { GradientBaseField } from './gradient'
 
 export const getInstanceClass = (instance: object) => {
   // TODO: The order in the method is important, since some classes inherit from each other
@@ -26,6 +28,8 @@ export const getInstanceClass = (instance: object) => {
   // and the check dummySelectInstance instanceof SelectBaseField will return true
 
   const fields = [
+    ColorBaseField,
+    GradientBaseField,
     TagsBaseField,
     RichTextBaseField,
     RadioBaseField,
