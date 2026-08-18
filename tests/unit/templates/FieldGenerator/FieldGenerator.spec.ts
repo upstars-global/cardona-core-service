@@ -190,4 +190,63 @@ describe('FieldGenerator.vue', () => {
 
     testOn.notExistElement({ wrapper, testId: '.field-generator' })
   })
+
+  describe('BaseField setter methods', () => {
+    it('setLabel — renders updated label in FieldGenerator', () => {
+      const field = new TextBaseField({ key: 'f', label: 'Original' })
+
+      field.setLabel('Updated Label')
+
+      const wrapper = mountFieldGenerator({ modelValue: field })
+
+      testOn.equalTextValue({ wrapper, selector: '.field-generator-label' }, 'Updated Label')
+    })
+
+    it('setDescription — renders updated description in FieldGenerator', () => {
+      const field = new TextBaseField({ key: 'f', label: 'L', description: 'Original desc' })
+
+      field.setDescription('Updated Description')
+
+      const wrapper = mountFieldGenerator({ modelValue: field })
+
+      testOn.equalTextValue({ wrapper, testId: 'description' }, 'Updated Description')
+    })
+
+    it('setInfo — shows tooltip icon after setInfo is called', () => {
+      const field = new TextBaseField({ key: 'f', label: 'L' })
+
+      field.setInfo('Tooltip text')
+
+      const wrapper = mountFieldGenerator({ modelValue: field })
+
+      testOn.existElement({ wrapper, selector: '.v-icon' })
+    })
+
+    it('setValidationRules — applies updated rules to the vee-validate Field', () => {
+      const field = new TextBaseField({ key: 'f', label: 'L', validationRules: { required: false } })
+
+      field.setValidationRules({ required: true, min: 3 })
+
+      const wrapper = mountFieldGenerator({ modelValue: field })
+      const veeField = wrapper.findComponent(Field)
+
+      expect(veeField.props('rules')).toEqual({ required: true, min: 3 })
+    })
+
+    it('chained setters — FieldGenerator reflects all mutated field properties', () => {
+      const field = new TextBaseField({ key: 'f', label: 'Old Label', description: 'Old Desc' })
+
+      field
+        .setLabel('Chain Label')
+        .setDescription('Chain Desc')
+        .setValidationRules({ required: true })
+
+      const wrapper = mountFieldGenerator({ modelValue: field })
+      const veeField = wrapper.findComponent(Field)
+
+      testOn.equalTextValue({ wrapper, selector: '.field-generator-label' }, 'Chain Label')
+      testOn.equalTextValue({ wrapper, testId: 'description' }, 'Chain Desc')
+      expect(veeField.props('rules')).toEqual({ required: true })
+    })
+  })
 })
