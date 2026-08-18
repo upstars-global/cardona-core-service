@@ -1,5 +1,25 @@
 @use "./sidebar" as sidebar;
+@use "./v-input" as v-input;
+@use "./vue-select" as vue-select;
+@use "./v-card" as v-card;
+@use "./v-check" as v-check;
+@use "./v-list" as v-list;
+@use "./v-switch" as v-switch;
+@use "./v-textarea" as v-textarea;
+@use "./check-field" as check-field;
+@use "./code-view-editor" as code-view-editor;
+@use "./toasts" as toasts;
 
 @mixin apply {
   @include sidebar.apply;
+  @include v-input.apply;
+  @include vue-select.apply;
+  @include v-card.apply;
+  @include v-check.apply;
+  @include v-list.apply;
+  @include v-switch.apply;
+  @include v-textarea.apply;
+  @include check-field.apply;
+  @include code-view-editor.apply;
+  @include toasts.apply;
 }
