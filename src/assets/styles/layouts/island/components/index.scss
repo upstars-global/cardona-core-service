@@ -8,6 +8,10 @@
 @use "./base-input" as base-input;
 @use "./filters-block" as filters-block;
 @use "./data-picker" as data-picker;
+@use "./v-check" as v-check;
+@use "./v-switch" as v-switch;
+@use "./v-textarea" as v-textarea;
+@use "./check-field" as check-field;
 
 @mixin apply {
   @include skeleton.apply;
@@ -20,6 +24,10 @@
   @include base-input.apply;
   @include filters-block.apply;
   @include data-picker.apply;
+  @include v-check.apply;
+  @include v-switch.apply;
+  @include v-textarea.apply;
+  @include check-field.apply;
 
 
   $card-internal-radius: 12px;
