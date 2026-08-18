@@ -12,27 +12,14 @@
 
 html {
   overflow-y: auto;
-}
 
-.text-color-base {
-  color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
-}
-
-.text-color-mute {
-  color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)) !important;
-}
-
-.text-color-placeholder-disabled {
-  color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)) !important;
+  &.v-overlay-scroll-blocked {
+    overflow-y: hidden;
+  }
 }
 
 .no-border {
   border-style: none !important;
-}
-html {
-  &.v-overlay-scroll-blocked {
-    overflow-y: hidden;
-  }
 }
 
 .font-weight-semi-bold {
@@ -41,32 +28,12 @@ html {
 
 hr {
   border: 0;
-  border-top: 1px solid rgb(var(--v-theme-grey-200));
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
 .full-width {
   width: 100%;
-}
-
-.input-field {
-  .v-input--density-compact {
-    height: initial;
-  }
-  .v-input__control {
-    .v-field__field {
-      height: 2rem;
-      min-height: 2rem;
-    }
-  }
-  .v-text-field {
-    input.v-field__input {
-      border: 1px solid var(--v-theme-grey-300);
-      height: 2rem;
-      min-height: 2rem;
-    }
-  }
 }
 
 .layout-wrapper.layout-nav-type-vertical {
@@ -87,7 +54,7 @@ hr {
 
 html.custom-scroll {
   .base-modal__body {
-    *{
+    * {
       &::-webkit-scrollbar {
         width: 6px;
         height: 6px;
@@ -113,11 +80,6 @@ html.custom-scroll {
   }
 }
 
-.text-body-1,
-.text-body-2 {
-  color: rgba(var(--v-theme-grey-900), var(--v-high-emphasis-opacity));
-}
-
 .lh-normal {
   line-height: normal;
 }
@@ -136,4 +98,3 @@ body {
     background-color: rgb(var(--v-theme-surface)) !important;
   }
 }
-
