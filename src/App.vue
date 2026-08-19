@@ -20,13 +20,6 @@ const configStore = useConfigStore()
 const { activeLayout } = useLayoutChanger(CoreLayoutsMap)
 
 const { name } = useDisplay()
-
-// Array.from({ length: 100 })
-//   .fill(0)
-//   .map((_, index) => `show-filter-list-${index}`)
-//   .forEach(item => {
-//     localStorage.setItem(item, 'false')
-//   })
 </script>
 
 <template>
