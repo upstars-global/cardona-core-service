@@ -2,24 +2,20 @@ import { useStorage } from '@vueuse/core'
 import { computed } from 'vue'
 
 export function useListFilterShow(key: string) {
-  const filterStates = useStorage('list-filters-state', {})
+  const filterStates = useStorage<Record<string, boolean>>('list-filters-state', {})
 
-  const deprecatedKeys = Object.keys(localStorage)
+  Object.keys(localStorage)
     .filter(item => item.includes('show-filter-list-'))
+    .forEach(deprecatedKey => {
+      const entityKey = deprecatedKey.replace('show-filter-list-', '')
 
-  const entityKeys = deprecatedKeys
-    .map(item => item.replace('show-filter-list-', ''))
+      filterStates.value[entityKey] = localStorage.getItem(deprecatedKey) === 'true'
 
-  entityKeys.forEach(entityKey => {
-    filterStates.value[entityKey] = localStorage.getItem(entityKey) === 'true'
-  })
+      localStorage.removeItem(deprecatedKey)
+    })
 
-  deprecatedKeys.forEach(key => {
-    localStorage.removeItem(key)
-  })
-
-  const isFiltersShown = computed(() => key in filterStates.value ? filterStates.value[key] : false)
-  const setFilterShown = value => filterStates.value[key] = value
+  const isFiltersShown = computed(() => filterStates.value[key] ?? false)
+  const setFilterShown = (value: boolean) => filterStates.value[key] = value
 
   return {
     isFiltersShown,
