@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, isRef, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
-import { useStorage } from '@vueuse/core'
+import { useListFilterShow } from '../../../../composables/useListFilterShow'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
 import { BaseListSlots } from '../../../../@model/templates/baseList'
@@ -350,7 +350,7 @@ const reFetchList = () => getList()
 
 onChangePagination(() => {
   if (props.config.closeFilterOnPagination)
-    isFiltersShown.value = false
+    setFilterShown(false)
   reFetchList()
 })
 
@@ -472,7 +472,7 @@ const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
   props.config?.filterList,
 )
 
-const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, false)
+const { isFiltersShown, setFilterShown } = useListFilterShow(entityName || pageName)
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
 const appliedFilters = computed<BaseField[]>(() => {
@@ -485,7 +485,7 @@ const hasSelectedFilters = computed(() => selectedFilters && selectedFilters.val
 
 watch(() => hasSelectedFilters.value, hasFilters => {
   if (hasFilters)
-    isFiltersShown.value = hasFilters
+    setFilterShown(hasFilters)
 }, { immediate: true })
 
 // Selectable
@@ -690,7 +690,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       :is-loading-export="isLoadingExport"
       :config="config"
       :is-open-filter-block="isOpenFilterBlock"
-      @on-click-filter="isFiltersShown = !isFiltersShown"
+      @on-click-filter="setFilterShown(!isFiltersShown)"
       @on-export-format-selected="onExportFormatSelected"
     >
       <template #right-search-btn>

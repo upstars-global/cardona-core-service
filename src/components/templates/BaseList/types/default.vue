@@ -477,7 +477,6 @@ const { inlineFilters, filterFields, onFieldUpdate } = useInlineFilters(props.co
 
 const { isFiltersShown, setFilterShown } = useListFilterShow(entityName || pageName)
 
-// const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, false)
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
 watch(() => userStore.getSelectedProject?.alias, (_newAlias, oldAlias) => {
