@@ -65,7 +65,7 @@ class SideBarModelWithCollapseItem {
 const getMountSideBar = (props?: Record<string, unknown>, global = {}, slots?: Record<string, unknown>) => setMountComponent(SideBar)(props, {
   ...global,
   stubs: {
-    VNavigationDrawer: { template: '<div> <slot /> </div>' },
+    VNavigationDrawer: { template: '<div> <slot name="prepend" /> <slot /> </div>' },
   },
 }, slots)
 
