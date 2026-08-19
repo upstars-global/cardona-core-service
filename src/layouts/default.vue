@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useUserStore } from '../stores/user'
 import { IconsList } from '../@model/enums/icons'
 import { useAppConfigCoreStore } from '../stores/appConfigCore'
-import ScrollToTop from '../@core/components/ScrollToTop.vue'
+import { useLayoutConfigStore } from '../@layouts/stores/config'
 import CustomMenu from './default/components/CustomMenu.vue'
 import ProjectSelect from './default/components/ProjectSelect.vue'
 import ProductsSelect from './default/components/ProductSelect.vue'
 import SideBar from './default/components/SideBar.vue'
 import AppBreadcrumb from './components/AppBreadcrumb.vue'
 import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
-import { useLayoutConfigStore } from '@layouts/stores/config'
 
 const layoutConfigStore = useLayoutConfigStore()
 
@@ -52,6 +52,15 @@ const isMenuTypeMain = computed(() => appConfigCoreStore.isMenuTypeMain)
 const canSelectProject = computed(() => userStore.selectedProjectWithoutPriority && isMenuTypeMain.value && isNeocore.value || isMenuTypeMain.value && isMarbella.value)
 
 const contentScrollEl = ref<HTMLElement | null>(null)
+
+const route = useRoute()
+
+watch(
+  () => route.name,
+  () => {
+    contentScrollEl.value?.scrollTo({ top: 0, behavior: 'smooth' })
+  },
+)
 </script>
 
 <template>
@@ -142,7 +151,10 @@ const contentScrollEl = ref<HTMLElement | null>(null)
               fluid
               class="px-0"
             >
-              <slot :is-fallback-state-active="isFallbackStateActive">
+              <slot
+                :is-fallback-state-active="isFallbackStateActive"
+                :content-scroll-el="contentScrollEl"
+              >
                 <RouterView />
               </slot>
             </VContainer>
@@ -150,8 +162,6 @@ const contentScrollEl = ref<HTMLElement | null>(null)
         </div>
       </div>
     </VMain>
-
-    <ScrollToTop :scroll-el="contentScrollEl" />
   </VLayout>
 </template>
 
