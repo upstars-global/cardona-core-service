@@ -46,6 +46,7 @@ import InlineFilters from '../_components/InlineFilters.vue'
 import ImageDetailModal from '../_components/ImageDetailModal.vue'
 import { ModalsId } from '../../../../@model/modalsId'
 import BaseListCell from '../_components/BaseListCell.vue'
+import {useListFilterShow} from "@/composables/useListFilterShow";
 
 defineOptions({
   name: 'DefaultBaseList',
@@ -474,6 +475,7 @@ const defaultSelectedFilters = computed(() =>
 
 const { inlineFilters, filterFields, onFieldUpdate } = useInlineFilters(props.config?.inlineFilters, reFetchList)
 
+useListFilterShow(entityName || pageName)
 const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, false)
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDisplay, useTheme } from 'vuetify'
 
-import {CoreLayouts, CoreLayoutsMap} from './@model/layouts'
+import { CoreLayoutsMap } from './@model/layouts'
 import { useLayoutChanger } from './composables/useLayoutChanger'
 import ScrollToTop from '@core/components/ScrollToTop.vue'
 import initCore from '@core/initCore'
@@ -20,6 +20,13 @@ const configStore = useConfigStore()
 const { activeLayout } = useLayoutChanger(CoreLayoutsMap)
 
 const { name } = useDisplay()
+
+// Array.from({ length: 100 })
+//   .fill(0)
+//   .map((_, index) => `show-filter-list-${index}`)
+//   .forEach(item => {
+//     localStorage.setItem(item, 'false')
+//   })
 </script>
 
 <template>
