@@ -84,7 +84,7 @@ const onHide = () => {
     :model-value="sidebarActive"
     temporary
     location="right"
-    class="side-bar"
+    class="side-bar position-fixed"
     @update:model-value="onHide"
   >
     <template #prepend>
@@ -240,9 +240,5 @@ const onHide = () => {
     padding-left: 0;
     padding-right: 0;
   }
-}
-
-.v-navigation-drawer__scrim {
-  position: fixed;
 }
 </style>

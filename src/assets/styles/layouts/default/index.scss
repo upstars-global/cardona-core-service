@@ -32,4 +32,12 @@ body[data-layout="default"] {
   .layout-footer {
     display: none;
   }
+
+  .v-navigation-drawer__scrim {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+  }
 }
