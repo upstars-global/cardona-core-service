@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 import moment from 'moment'
 import { EventEmittersNames, testOn } from '../shared-tests/test-case-generator'
@@ -23,6 +23,16 @@ describe('DateField.vue', () => {
     const wrapper = mountDateFieldWithDefaultProps({ field: { isRangeMode: false } })
 
     testOn.existElement({ wrapper, testId: 'single-picker' })
+  })
+
+  it('Renders weekdays from Monday to Sunday', () => {
+    const wrapper = mountDateFieldWithDefaultProps({
+      field: { config: { static: true }, isRangeMode: false },
+    })
+
+    const weekdays = wrapper.findAll('.flatpickr-weekday').map(day => day.text())
+
+    expect(weekdays).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'])
   })
 
   it('Emits on date value update', async () => {
