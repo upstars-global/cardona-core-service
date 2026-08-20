@@ -40,4 +40,14 @@ body[data-layout="default"] {
     width: 100vw !important;
     height: 100dvh !important;
   }
+
+  .custom-menu-popup {
+    left: 16px !important;
+    min-width: 220px !important;
+  }
+
+  .custom-menu-popup--collapsed {
+    left: 0 !important;
+    min-width: 52px !important;
+  }
 }
