@@ -51,10 +51,9 @@ const getActiveGroupTitles = (): string[] => {
 
 watch(() => route.path, () => {
   const active = getActiveGroupTitles()
-  const missing = active.filter(title => !openedGroups.value.includes(title))
 
-  if (missing.length)
-    openedGroups.value = [...openedGroups.value, ...missing]
+  if (active.length)
+    openedGroups.value = active
 }, { immediate: true })
 
 const opened = computed({
