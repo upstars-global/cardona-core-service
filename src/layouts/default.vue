@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useUserStore } from '../stores/user'
 import { IconsList } from '../@model/enums/icons'
 import { useAppConfigCoreStore } from '../stores/appConfigCore'
 import { useLayoutConfigStore } from '../@layouts/stores/config'
+import NotificationExport from '../components/NotificationExport/index.vue'
 import CustomMenu from './default/components/CustomMenu.vue'
 import ProjectSelect from './default/components/ProjectSelect.vue'
 import ProductsSelect from './default/components/ProductSelect.vue'
@@ -22,16 +24,18 @@ const navItems = computed(() => appsAndPages.value)
 const userStore = useUserStore()
 const projects = computed(() => userStore.projectsBySelectedProduct)
 
-const drawer = ref(true)
-
 const isHovered = ref(false)
 const isFallbackStateActive = ref(false)
 
-const isCollapsed = computed(() => layoutConfigStore.isVerticalNavCollapsed && !isHovered.value)
+const isSmallScreen = useMediaQuery('(max-width: 1279px)')
+
+const isCollapsed = computed(() => !isSmallScreen.value && layoutConfigStore.isVerticalNavCollapsed && !isHovered.value)
 
 let collapseTimer: ReturnType<typeof setTimeout> | null = null
 
 const handleMouseEnter = () => {
+  if (isSmallScreen.value)
+    return
   if (collapseTimer) {
     clearTimeout(collapseTimer)
     collapseTimer = null
@@ -40,6 +44,8 @@ const handleMouseEnter = () => {
 }
 
 const handleMouseLeave = () => {
+  if (isSmallScreen.value)
+    return
   collapseTimer = setTimeout(() => {
     isHovered.value = false
   }, 150)
@@ -61,15 +67,19 @@ watch(
     contentScrollEl.value?.scrollTo({ top: 0, behavior: 'smooth' })
   },
 )
+
+const canShowNotificationExport = computed(() => userStore.haveSomePermissionReport)
+const userId = computed(() => userStore.userInfo.id)
 </script>
 
 <template>
   <VLayout class="custom-layout">
     <VNavigationDrawer
-      v-model="drawer"
-      :rail="layoutConfigStore.isVerticalNavCollapsed"
-      :class="{ 'is-hovering': layoutConfigStore.isVerticalNavCollapsed && isHovered }"
-      permanent
+      v-model="layoutConfigStore.isHiddenMenu"
+      :rail="!isSmallScreen && layoutConfigStore.isVerticalNavCollapsed"
+      :class="{ 'is-hovering': !isSmallScreen && layoutConfigStore.isVerticalNavCollapsed && isHovered }"
+      :permanent="!isSmallScreen"
+      :temporary="isSmallScreen"
       rail-width="64"
       class="bg-sidebar border-r-0"
       width="252"
@@ -82,7 +92,7 @@ watch(
             <div class="d-flex align-center justify-space-between">
               <ProductsSelect :is-collapsed-menu="isCollapsed" />
               <VIcon
-                v-if="!isCollapsed"
+                v-if="!isCollapsed && !isSmallScreen"
                 class="sidebar-menu-mode"
                 :icon="!layoutConfigStore.isVerticalNavCollapsed ? IconsList.CircleDotIcon : IconsList.CircleIcon"
                 @click="toggleSidebar"
@@ -137,13 +147,26 @@ watch(
         >
           <div class="layout-appbar pt-2 d-flex flex-column">
             <div class="flex-grow-1 d-flex align-center pt-4 px-6 bg-surface layout-border-top">
-              <AppBreadcrumb class="flex-grow-1" />
-              <VBtn
-                icon
-                variant="text"
-              >
-                <VIcon icon="tabler-bell" />
-              </VBtn>
+              <AppBreadcrumb>
+                <template #content-right="{ time }">
+                  <VDivider
+                    v-if="canShowNotificationExport"
+                    class="mx-4"
+                    vertical
+                  />
+
+                  <div
+                    v-if="canShowNotificationExport"
+                    cols="1"
+                    class="d-flex align-center justify-end notification-export-wrapper"
+                  >
+                    <NotificationExport
+                      :time="time"
+                      :user-id="userId"
+                    />
+                  </div>
+                </template>
+              </AppBreadcrumb>
             </div>
           </div>
           <div class="bg-surface flex-grow-1 layout-border-bottom pa-4 pt-0 layout-page-content position-relative">
