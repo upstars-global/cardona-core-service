@@ -216,6 +216,7 @@
   "common": {
     "dateFrom": "From",
     "dateTo": "To",
+    "optionRequiredError": "At least one option must be selected",
     "generatePassword": "Generate password",
     "segments": "Segments",
     "manager": "Manager",
