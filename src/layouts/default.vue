@@ -68,6 +68,7 @@ const userId = computed(() => userStore.userInfo.id)
                 v-if="!isCollapsed && !isSmallScreen"
                 class="sidebar-menu-mode"
                 :icon="!layoutConfigStore.isVerticalNavCollapsed ? IconsList.CircleDotIcon : IconsList.CircleIcon"
+                data-test-id="toggle-sidebar"
                 @click="toggleSidebar"
               />
             </div>
@@ -132,6 +133,7 @@ const userId = computed(() => userStore.userInfo.id)
                     v-if="canShowNotificationExport"
                     cols="1"
                     class="d-flex align-center justify-end notification-export-wrapper"
+                    data-test-id="notification-export"
                   >
                     <NotificationExport
                       :time="time"

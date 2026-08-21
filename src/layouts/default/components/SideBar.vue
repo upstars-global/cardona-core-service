@@ -60,6 +60,7 @@ const { opened } = useNavGroups(
     <div
       v-if="!isMenuTypeMain"
       class="d-flex align-center pb-4 pl-2"
+      data-test-id="back-btn"
     >
       <VBtn
         :prepend-icon="IconsList.ArrowLeftIcon"
@@ -78,10 +79,12 @@ const { opened } = useNavGroups(
         v-if="'heading' in item"
         :title="t(item.heading)"
         class="nav-heading"
+        data-test-id="nav-heading"
       />
       <VListGroup
         v-else-if="'children' in item"
         :value="(item as NavGroup).title"
+        data-test-id="nav-group"
       >
         <template #activator="{ props: groupProps, isOpen }">
           <VListItem
@@ -120,6 +123,7 @@ const { opened } = useNavGroups(
           base-color="white"
           class="child-list-item mx-1"
           :active="isLinkActive(child as NavLink)"
+          data-test-id="nav-child-link"
           @click="navigateTo(child as NavLink)"
         >
           <template #title="{ title }">
@@ -136,6 +140,7 @@ const { opened } = useNavGroups(
         base-color="white"
         class="mx-1 text-body-1"
         :active="isLinkActive(item as NavLink)"
+        data-test-id="nav-link"
         @click="navigateTo(item as NavLink)"
       >
         <template #title="{ title }">
