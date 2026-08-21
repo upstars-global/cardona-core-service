@@ -7,7 +7,8 @@ import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import type { BaseField } from '../../@model/templates/baseField'
-import { ASelectBaseField } from '../../@model/templates/baseField/base'
+import { RadioBaseField } from '../../@model/templates/baseField'
+import type { ASelectBaseField } from '../../@model/templates/baseField/base'
 import type { IDefaultFilter } from '../../@model/filter'
 import { useFiltersStore } from '../../stores/filtersCore'
 import FilterSelector from './_components/FilterSelector.vue'
@@ -121,6 +122,12 @@ defineExpose({
     filtersCoreStore.setListFilters([])
     selectedFilters.value = []
     props.filters.forEach(field => {
+      if (field instanceof RadioBaseField) {
+        field.reset()
+
+        return
+      }
+
       field.value = undefined
       if ('resetOptions' in field)
         (field as ASelectBaseField).resetOptions()
