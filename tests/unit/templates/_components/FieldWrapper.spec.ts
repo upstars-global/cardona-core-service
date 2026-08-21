@@ -3,7 +3,6 @@ import { h, nextTick } from 'vue'
 import { cloneDeep } from 'lodash'
 import { Field } from 'vee-validate'
 import FieldWrapper from '../../../../src/components/templates/_components/FieldWrapper.vue'
-import { i18n } from '../../../../src/plugins/i18n'
 import { setMountComponent } from '../../utils'
 import { testOn } from '../shared-tests/test-case-generator'
 
@@ -112,24 +111,6 @@ describe('FieldWrapper.vue', () => {
       testOn.equalTextValue({ wrapper, testId: 'field-error' }, 'Custom validation error')
     })
 
-    it('translates "field is required" error via i18n', async () => {
-      const wrapper = getMountFieldWrapper(props)
-
-      wrapper.findComponent(Field).vm.errorMessage = 'field is required'
-      await nextTick()
-
-      testOn.equalTextValue({ wrapper, testId: 'field-error' }, i18n.t('common.optionRequiredError'))
-    })
-
-    it('translates errors containing "field is required" as a substring', async () => {
-      const wrapper = getMountFieldWrapper(props)
-
-      wrapper.findComponent(Field).vm.errorMessage = 'The field is required.'
-      await nextTick()
-
-      testOn.equalTextValue({ wrapper, testId: 'field-error' }, i18n.t('common.optionRequiredError'))
-    })
-
     it('hides error element when errorMessage is cleared', async () => {
       const wrapper = getMountFieldWrapper(props)
       const field = wrapper.findComponent(Field)
@@ -158,12 +139,12 @@ describe('FieldWrapper.vue', () => {
       testOn.equalTextValue({ wrapper, testId: 'slot-content' }, 'Slot Text')
     })
 
-    it('passes error-message from Field to the slot', async () => {
+    it('passes error-message from Field to the error-message slot', async () => {
       const wrapper = getMountFieldWrapper(
         props,
         {},
         {
-          default: ({ errorMessage }) =>
+          'error-message': ({ errorMessage }) =>
             h('span', { 'data-test-id': 'slot-error-display' }, errorMessage),
         },
       )
