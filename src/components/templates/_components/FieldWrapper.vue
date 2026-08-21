@@ -44,6 +44,7 @@ const isRequired = computed(() => !!(props.field.rules?.required))
         >
           {{ field.label }}
         </VLabel>
+        <slot />
         <span
           v-if="errorMessage"
           data-test-id="field-error"
