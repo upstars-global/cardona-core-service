@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Field } from 'vee-validate'
-import { i18n } from '@/plugins/i18n'
 
 const props = defineProps<{
   modelValue: unknown
@@ -18,19 +17,10 @@ const emit = defineEmits<{
 
 const internalValue = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val),
+  set: val => emit('update:modelValue', val),
 })
 
 const isRequired = computed(() => !!(props.field.rules?.required))
-
-const REQUIRED_VALIDATION_MESSAGE = 'field is required'
-
-const getErrorMessage = (errorMessage: string): string => {
-  if (errorMessage.includes(REQUIRED_VALIDATION_MESSAGE))
-    return i18n.t('common.optionRequiredError')
-
-  return errorMessage
-}
 </script>
 
 <template>
@@ -54,13 +44,17 @@ const getErrorMessage = (errorMessage: string): string => {
         >
           {{ field.label }}
         </VLabel>
-        <slot :error-message="errorMessage" />
         <span
           v-if="errorMessage"
           data-test-id="field-error"
           class="error-message text-caption text-error mt-4"
         >
-          {{ getErrorMessage(errorMessage) }}
+          <slot
+            name="error-message"
+            :error-message="errorMessage"
+          >
+            {{ errorMessage }}
+          </slot>
         </span>
       </div>
     </template>
