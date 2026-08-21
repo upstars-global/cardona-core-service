@@ -1,59 +1,28 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
-import { useMediaQuery } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useUserStore } from '../stores/user'
 import { IconsList } from '../@model/enums/icons'
 import { useAppConfigCoreStore } from '../stores/appConfigCore'
-import { useLayoutConfigStore } from '../@layouts/stores/config'
 import NotificationExport from '../components/NotificationExport/index.vue'
 import CustomMenu from './default/components/CustomMenu.vue'
 import ProjectSelect from './default/components/ProjectSelect.vue'
 import ProductsSelect from './default/components/ProductSelect.vue'
 import SideBar from './default/components/SideBar.vue'
 import AppBreadcrumb from './components/AppBreadcrumb.vue'
+import { useSidebarCollapse } from './default/composables/useSidebarCollapse'
 import { useAppsAndPages } from '@/navigation/vertical/apps-and-pages'
 
-const layoutConfigStore = useLayoutConfigStore()
+const { layoutConfigStore, isSmallScreen, isHovered, isCollapsed, handleMouseEnter, handleMouseLeave, toggleSidebar } = useSidebarCollapse()
 
-const toggleSidebar = () => layoutConfigStore.isVerticalNavCollapsed = !layoutConfigStore.isVerticalNavCollapsed
 const { appsAndPages } = useAppsAndPages()
 const navItems = computed(() => appsAndPages.value)
 
 const userStore = useUserStore()
 const projects = computed(() => userStore.projectsBySelectedProduct)
 
-const isHovered = ref(false)
 const isFallbackStateActive = ref(false)
-
-const isSmallScreen = useMediaQuery('(max-width: 1279px)')
-
-const isCollapsed = computed(() => !isSmallScreen.value && layoutConfigStore.isVerticalNavCollapsed && !isHovered.value)
-
-watch(isSmallScreen, isSmall => {
-  layoutConfigStore.isHiddenMenu = !isSmall
-}, { immediate: true })
-
-let collapseTimer: ReturnType<typeof setTimeout> | null = null
-
-const handleMouseEnter = () => {
-  if (isSmallScreen.value)
-    return
-  if (collapseTimer) {
-    clearTimeout(collapseTimer)
-    collapseTimer = null
-  }
-  isHovered.value = true
-}
-
-const handleMouseLeave = () => {
-  if (isSmallScreen.value)
-    return
-  collapseTimer = setTimeout(() => {
-    isHovered.value = false
-  }, 150)
-}
 
 const appConfigCoreStore = useAppConfigCoreStore()
 const isNeocore = computed(() => userStore.isNeocore)

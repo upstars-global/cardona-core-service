@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { VVariants } from '../../../@model/vuetify'
 import { IconsList } from '../../../@model/enums/icons'
 import { useAppConfigCoreStore } from '../../../stores/appConfigCore'
+import { useNavGroups } from '../composables/useNavGroups'
 import type { NavGroup, NavLink, VerticalNavItems } from '@layouts/types'
 import { getComputedNavLinkToProp, isNavGroupActive, isNavLinkActive } from '@layouts/utils'
 
@@ -17,63 +17,19 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
-const route = useRoute()
 const router = useRouter()
 
 const navigateTo = (item: NavLink) => {
-  const props = getComputedNavLinkToProp.value(item)
-  if (props.to)
+  const navProps = getComputedNavLinkToProp.value(item)
+  if (navProps.to)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    router.push(props.to as any)
-  else if (props.href)
-    window.open(props.href, props.target ?? '_self')
+    router.push(navProps.to as any)
+  else if (navProps.href)
+    window.open(navProps.href, navProps.target ?? '_self')
 }
 
 const isLinkActive = (item: NavLink): boolean => isNavLinkActive(item, router)
 const isGroupItemActive = (group: NavGroup): boolean => isNavGroupActive(group.children, router)
-
-const openedGroups = ref<string[]>([])
-
-const getActiveGroupTitles = (): string[] => {
-  const active: string[] = []
-
-  for (const item of props.items) {
-    if (!('children' in item))
-      continue
-    const group = item as NavGroup
-
-    if (isNavGroupActive(group.children, router))
-      active.push(group.title)
-  }
-
-  return active
-}
-
-watch(() => route.path, () => {
-  const active = getActiveGroupTitles()
-
-  if (active.length)
-    openedGroups.value = active
-}, { immediate: true })
-
-const opened = computed({
-  get: () => props.isCollapsed ? [] : openedGroups.value,
-  set: (val: string[]) => {
-    if (!props.isCollapsed) {
-      const active = getActiveGroupTitles()
-      const newlyOpened = val.filter(title => !openedGroups.value.includes(title))
-
-      if (newlyOpened.length > 0) {
-        const activeAndOpen = openedGroups.value.filter(title => active.includes(title))
-
-        openedGroups.value = [...new Set([...activeAndOpen, newlyOpened[0]])]
-      }
-      else {
-        openedGroups.value = [...new Set(val)]
-      }
-    }
-  },
-})
 
 const getIcon = (item: NavGroup | NavLink) =>
   (item.icon as { icon?: string } | undefined)?.icon
@@ -86,16 +42,11 @@ const onBackClick = () => {
   appConfigCoreStore.onToggleMenuType()
 }
 
-watch(() => props.isMenuTypeMain, async isMain => {
-  if (!isMain)
-    return
-  await nextTick()
-  openedGroups.value = []
-
-  const firstGroup = props.items.find(item => 'children' in item) as NavGroup | undefined
-  if (firstGroup)
-    openedGroups.value = [firstGroup.title]
-})
+const { opened } = useNavGroups(
+  () => props.items,
+  () => props.isCollapsed,
+  () => props.isMenuTypeMain,
+)
 </script>
 
 <template>
@@ -153,7 +104,7 @@ watch(() => props.isMenuTypeMain, async isMain => {
                 {{ title }}
               </div>
             </template>
-            <template #append="{ isActive }">
+            <template #append>
               <VIcon
                 color="white"
                 :icon="isOpen ? IconsList.ChevronDownIcon : IconsList.ChevronRightIcon"
@@ -179,7 +130,7 @@ watch(() => props.isMenuTypeMain, async isMain => {
         </VListItem>
       </VListGroup>
       <VListItem
-        v-else-if="!('heading' in item) && !('children' in item)"
+        v-else
         :title="t((item as NavLink).title)"
         rounded="lg"
         base-color="white"
