@@ -31,6 +31,10 @@ const isSmallScreen = useMediaQuery('(max-width: 1279px)')
 
 const isCollapsed = computed(() => !isSmallScreen.value && layoutConfigStore.isVerticalNavCollapsed && !isHovered.value)
 
+watch(isSmallScreen, isSmall => {
+  layoutConfigStore.isHiddenMenu = !isSmall
+}, { immediate: true })
+
 let collapseTimer: ReturnType<typeof setTimeout> | null = null
 
 const handleMouseEnter = () => {
