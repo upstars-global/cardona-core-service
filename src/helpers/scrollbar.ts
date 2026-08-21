@@ -5,14 +5,10 @@ export const scrollToBottom = (selector: string): void => {
     scrollEl.scrollTop = scrollEl.scrollHeight
 }
 
-export const scrollToElement = (selector: string, offsetY = 0) => {
+export const scrollToElement = (selector: string) => {
   const element = document.querySelector(selector)
-  if (element) {
-    const elementTop = element.getBoundingClientRect().top + window.scrollY
+  if (!element)
+    return
 
-    window.scrollTo({
-      top: elementTop - offsetY,
-      behavior: 'smooth',
-    })
-  }
+  element.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 }
