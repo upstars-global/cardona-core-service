@@ -1,13 +1,21 @@
 <script setup lang="ts">
-import { useWindowScroll } from '@vueuse/core';
+import { computed } from 'vue'
+import { useWindowScroll, useScroll } from '@vueuse/core'
 
-const { y } = useWindowScroll()
+const props = withDefaults(defineProps<{
+  scrollEl?: HTMLElement | null
+}>(), { scrollEl: null })
+
+const { y: windowY } = useWindowScroll()
+const { y: elY } = useScroll(() => props.scrollEl)
+
+const y = computed(() => props.scrollEl ? elY.value : windowY.value)
 
 const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  })
+  if (props.scrollEl)
+    props.scrollEl.scrollTo({ top: 0, behavior: 'smooth' })
+  else
+    window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 </script>
 
