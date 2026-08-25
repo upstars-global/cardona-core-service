@@ -62,7 +62,7 @@ onMounted(() => {
   position: absolute;
   inset: 0;
   z-index: 10;
-  background-color: white;
+  background-color: rgb(var(--v-theme-surface)) !important;
 }
 
 .custom-overlay--fullscreen {
@@ -70,5 +70,9 @@ onMounted(() => {
   inset: 0;
   z-index: 10;
   background-color: white;
+}
+
+.loading-base-section {
+  height: calc(100% - 10px)
 }
 </style>
