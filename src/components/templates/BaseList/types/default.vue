@@ -475,7 +475,8 @@ const defaultSelectedFilters = computed(() =>
 
 const { inlineFilters, filterFields, onFieldUpdate } = useInlineFilters(props.config?.inlineFilters, reFetchList)
 
-const { isFiltersShown, setFilterShown } = useListFilterShow(entityName || pageName)
+const isFiltersShown = ref(false)
+const setFilterShown = (value: boolean) => { isFiltersShown.value = value }
 
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
@@ -802,6 +803,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       :default-selected-filters="defaultSelectedFilters"
       @apply="reFetchList"
       @change-selected-filters="onChangeSelectedFilters"
+      @init-selected-filters="setFilterShown"
     >
       <template
         v-for="filter in filters"

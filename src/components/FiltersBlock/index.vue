@@ -7,7 +7,6 @@ import FieldGenerator from '../../components/templates/FieldGenerator/index.vue'
 import { IconsList } from '../../@model/enums/icons'
 import { VColors, VSizes, VVariants } from '../../@model/vuetify'
 import type { BaseField } from '../../@model/templates/baseField'
-import { RadioBaseField } from '../../@model/templates/baseField'
 import type { ASelectBaseField } from '../../@model/templates/baseField/base'
 import type { IDefaultFilter } from '../../@model/filter'
 import { useFiltersStore } from '../../stores/filtersCore'
@@ -27,6 +26,7 @@ const props = withDefaults(defineProps<{
 const emits = defineEmits<{
   (e: 'apply'): void
   (e: 'change-selected-filters', filters: BaseField[]): void
+  (e: 'init-selected-filters', payload: boolean): void
 }>()
 
 const route = useRoute()
@@ -93,6 +93,7 @@ onMounted(async () => {
       )
 
       emits('change-selected-filters', selectedFilters.value)
+      emits('init-selected-filters', selectedFilters.value?.isNotEmpty)
     }
     else if (props.defaultSelectedFilters?.length) {
       selectedFilters.value = [...props.defaultSelectedFilters]
@@ -122,12 +123,6 @@ defineExpose({
     filtersCoreStore.setListFilters([])
     selectedFilters.value = []
     props.filters.forEach(field => {
-      if (field instanceof RadioBaseField) {
-        field.reset()
-
-        return
-      }
-
       field.value = undefined
       if ('resetOptions' in field)
         (field as ASelectBaseField).resetOptions()
