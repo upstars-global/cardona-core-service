@@ -4,7 +4,10 @@ import { useFocus } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, useAttrs, watch } from 'vue'
 
 import type { PropType } from 'vue'
+import type { key as LocaleKey } from 'flatpickr/dist/types/locale'
+import type { Options } from 'flatpickr/dist/types/options'
 
+import flatpickr from 'flatpickr'
 import FlatPickr from 'vue-flatpickr-component'
 import { useTheme } from 'vuetify'
 
@@ -45,7 +48,7 @@ const props = defineProps({
     variant: 'outlined',
     color: 'primary',
   }),
-  config: Object as PropType<Record<string, unknown>>,
+  config: Object as PropType<Options>,
   isInvalid: Boolean,
 })
 
@@ -66,6 +69,22 @@ const configStore = useConfigStore()
 const attrs = useAttrs()
 
 const [rootAttrs, compAttrs] = filterInputAttrs(attrs)
+
+const calendarConfig = computed<Options>(() => {
+  const locale = props.config?.locale
+
+  const localeConfig = typeof locale === 'string'
+    ? flatpickr.l10ns[locale as LocaleKey]
+    : locale
+
+  return {
+    ...props.config,
+    locale: {
+      ...localeConfig,
+      firstDayOfWeek: 1,
+    },
+  }
+})
 
 const [{ modelValue: _, ...inputProps }] = VInput.filterProps(props)
 const [fieldProps] = filterFieldProps(props)
@@ -185,7 +204,7 @@ defineExpose({ refFlatPicker })
                 :readonly="isReadonly.value"
                 class="flat-picker-custom-style"
                 :disabled="isReadonly.value"
-                :config="config"
+                :config="calendarConfig"
                 :class="{
                   'flat-picker-custom-style--static': config?.static,
                 }"
@@ -215,6 +234,7 @@ defineExpose({ refFlatPicker })
       v-bind="compAttrs"
       ref="refFlatPicker"
       :model-value="modelValue"
+      :config="calendarConfig"
       @update:model-value="emitModelValue"
       @on-open="isCalendarOpen = true"
       @on-close="isCalendarOpen = false"
