@@ -1,15 +1,17 @@
 // Write your overrides
 
 @import "./layouts/default/index";
-@import "./components/templates/baseList";
-@import "./components/v-btn";
 @import "./components/v-input-base";
 @import "./components/vue-select";
-@import "./components/v-breadcrumb";
 @import "./components/transitions";
-@import "./components/v-tabs";
-@import "./components/v-icon";
-@import "./components/gallery";
+
+// Table density vars — density-specific (default/compact), not layout-specific
+:root {
+  --default__c-table-cell-padding: 0.75rem 1rem;
+  --default__c-table-sm-cell-padding: 0.5rem 0.75rem;
+  --compact__c-table-cell-padding: 0.5rem 0.75rem;
+  --compact__c-table-td-height: auto;
+}
 
 html {
   overflow-y: auto;
