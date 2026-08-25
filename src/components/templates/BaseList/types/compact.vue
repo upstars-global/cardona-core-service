@@ -472,7 +472,8 @@ const { filters, selectedFilters, onChangeSelectedFilters } = useFilters(
   props.config?.filterList,
 )
 
-const { isFiltersShown, setFilterShown } = useListFilterShow(entityName || pageName)
+const isFiltersShown = ref(false)
+const setFilterShown = (value: boolean) => { isFiltersShown.value = value }
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
 const appliedFilters = computed<BaseField[]>(() => {
@@ -722,6 +723,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       :size="size"
       @apply="reFetchList"
       @change-selected-filters="onChangeSelectedFilters"
+      @init-selected-filters="setFilterShown"
     >
       <template
         v-for="filter in filters"
