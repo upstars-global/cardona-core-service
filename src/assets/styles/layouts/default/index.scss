@@ -33,6 +33,24 @@ body[data-layout="default"] {
     display: none;
   }
 
+  .v-navigation-drawer__scrim {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+  }
+
+  .custom-menu-popup {
+    left: 16px !important;
+    min-width: 220px !important;
+  }
+
+  .custom-menu-popup--collapsed {
+    left: 0 !important;
+    min-width: 52px !important;
+  }
+
   .text-color-base {
     color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
   }

@@ -18,12 +18,18 @@ export interface IRadioBaseField extends IBaseField {
 export class RadioBaseField extends BaseField implements IRadioBaseField {
   readonly component: Component = markRaw(RadioField)
   protected _value?: string | boolean
+  private readonly _defaultValue?: string | boolean
   readonly options: RadioOption[]
 
   constructor(field: IRadioBaseField) {
     super(field)
     this._value = field.value
+    this._defaultValue = field.value
     this.options = field.options
+  }
+
+  reset() {
+    this._value = this._defaultValue
   }
 
   transformField() {

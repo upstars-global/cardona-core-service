@@ -6,6 +6,9 @@ body[data-layout="island"] {
   background-color: rgba(var(--v-island-layout-bg)) !important;
 
   .product-select {
+    .v-select {
+      height: initial;
+    }
     .select-item {
       font-size: 14px;
       line-height: 20px;
@@ -13,7 +16,7 @@ body[data-layout="island"] {
     }
   }
 
-  .v-overlay-container:has(.v-list){
+  .v-overlay-container:has(.v-list) {
     .v-overlay__content {
       border: 1px solid rgb(var(--v-island-border-color));
     }
@@ -48,6 +51,8 @@ body[data-layout="island"] {
     border-bottom-right-radius: 1.5rem;
     border-bottom-left-radius: 1.5rem;
     overflow: hidden;
+    padding-inline: 1.5rem;
+    flex-grow: 1;
   }
 
   .title-text-color {
@@ -75,10 +80,11 @@ body[data-layout="island"] {
   }
 
   .custom-menu {
+    padding: 1rem;
     border-top: initial !important;
 
     .full-name {
-      color: rgba(var(--v-island-menu-section-color));
+      color: rgba(var(--v-island-menu-section-color)) !important;
     }
   }
 

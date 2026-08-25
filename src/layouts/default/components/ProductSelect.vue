@@ -23,8 +23,8 @@ const selectedProduct = computed({
   set: val => {
     const url
       = val.name === productsName.neocore
-      ? window.location.origin
-      : `${window.location.origin}/${val.name}`
+        ? window.location.origin
+        : `${window.location.origin}/${val.name}`
 
     sessionStorage.removeItem(storageKeys.selectedProjectId)
     window.location.replace(url)
@@ -55,7 +55,10 @@ watch(selectedProduct, product => {
       <div class="select-item bg-info prodcut-short_size product-text d-flex align-center justify-center rounded">
         {{ selectedProductNameShort }}
       </div>
-      <Transition v-if="canSelect" name="product-select-fade">
+      <Transition
+        v-if="canSelect"
+        name="product-select-fade"
+      >
         <VueSelect
           v-show="!isCollapsedMenu"
           v-model="selectedProduct"
@@ -72,13 +75,14 @@ watch(selectedProduct, product => {
           </template>
           <template #selected-option>
             <div class="d-flex align-center flex-nowrap">
-              <span
-                class="full-product-name select-item product-text"
-              >{{ selectedProductName }}</span>
+              <span class="full-product-name select-item product-text">{{ selectedProductName }}</span>
             </div>
           </template>
           <template #option="{ name }">
-            <div class="products-dropdown-item d-flex align-center justify-space-between">
+            <div
+              class="products-dropdown-item d-flex align-center justify-space-between"
+              :class="{ 'products-dropdown-item--selected': selectedProduct?.name === name }"
+            >
               <span>{{ name[0].toUpperCase() + name.slice(1) }}</span>
               <VIcon
                 v-if="selectedProduct?.name === name"
@@ -102,10 +106,11 @@ watch(selectedProduct, product => {
         class="navbar-brand"
         to="/"
       >
-        <div v-if="!isCollapsedMenu" class="d-flex align-center flex-nowrap pa-3">
-              <span
-                class="full-product-name select-item product-text"
-              >{{ selectedProductName }}</span>
+        <div
+          v-if="!isCollapsedMenu"
+          class="d-flex align-center flex-nowrap pa-3"
+        >
+          <span class="full-product-name select-item product-text">{{ selectedProductName }}</span>
         </div>
       </RouterLink>
     </div>
@@ -117,9 +122,68 @@ watch(selectedProduct, product => {
   font-size: 14px;
 }
 
+:deep(.v-select) {
+  min-height: 2rem;
+  height: 2rem;
+}
+
 .product-select {
   position: relative;
   padding-left: 2rem;
+  min-height: 2rem;
+
+  .select-item {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+  }
+
+  :deep(.vs__dropdown-toggle) {
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  :deep(.vs__selected),
+  :deep(.vs__open-indicator),
+  :deep(.vs__search) {
+    color: rgb(var(--v-theme-on-sidebar)) !important;
+  }
+
+  :deep(.vs__selected-options) {
+    flex-wrap: nowrap;
+
+    .vs__search {
+      flex: 0 0 0;
+      padding: 0;
+
+      &:focus {
+        padding: 0;
+      }
+    }
+  }
+
+  :deep(.vs__dropdown-menu) {
+    background: rgb(var(--v-theme-sidebar)) !important;
+    border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 16px rgb(var(--v-theme-shadow)) !important;
+    padding: 8px 0 !important;
+    left: -32px !important;
+    width: 220px;
+  }
+
+  :deep(.vs__dropdown-option) {
+    padding: 0 !important;
+    font-size: 15px !important;
+    line-height: 22px !important;
+    color: rgb(var(--v-theme-on-sidebar)) !important;
+    background: transparent !important;
+  }
+
+  :deep(.vs__dropdown-option--selected::after) {
+    display: none !important;
+  }
+
 }
 
 .product-text {
@@ -141,66 +205,17 @@ watch(selectedProduct, product => {
   color: rgba(var(--v-theme-on-sidebar), 0.7);
 }
 
-.product-select {
-  .select-item {
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 600;
-  }
-  :deep(.vs__dropdown-toggle) {
-    border-color: transparent !important;
-    box-shadow: none !important;
-  }
-}
-
 .product-select-fade-leave-active {
   transition: opacity 0.15s ease-out;
 }
+
 .product-select-fade-enter-active {
   transition: opacity 0.2s ease-in;
 }
+
 .product-select-fade-enter-from,
 .product-select-fade-leave-to {
   opacity: 0;
-}
-</style>
-
-<style lang="scss">
-.product-select {
-  .vs__dropdown-menu {
-    background: rgb(var(--v-theme-sidebar)) !important;
-    border: 1px solid rgba(var(--v-theme-on-sidebar), 0.16) !important;
-    border-radius: 6px !important;
-    box-shadow: 0 4px 16px rgb(var(--v-theme-shadow)) !important;
-    padding: 8px 0 !important;
-    width: 220px !important;
-    left: -32px !important;
-  }
-
-  .vs__dropdown-option {
-    padding: 8px 16px !important;
-    font-size: 15px !important;
-    line-height: 22px !important;
-    color: rgb(var(--v-theme-on-sidebar)) !important;
-    background: transparent !important;
-  }
-
-  .vs__dropdown-option--selected::after {
-    display: none !important;
-  }
-
-  .vs__dropdown-option:hover,
-  .vs__dropdown-option--highlight {
-    background: rgba(var(--v-theme-on-sidebar), 0.06) !important;
-    color: rgb(var(--v-theme-on-sidebar)) !important;
-  }
-
-  .vs__dropdown-option--selected,
-  .vs__dropdown-option--selected.vs__dropdown-option--highlight,
-  .vs__dropdown-option--selected:hover {
-    background: transparent !important;
-    color: rgb(var(--v-theme-on-sidebar)) !important;
-  }
 }
 
 .products-dropdown-header {
@@ -213,6 +228,11 @@ watch(selectedProduct, product => {
 
 .products-dropdown-item {
   width: 100%;
+  padding: 8px 16px;
+
+  &:not(.products-dropdown-item--selected):hover {
+    background: rgba(var(--v-theme-on-sidebar), 0.06);
+  }
 }
 
 .products-dropdown-check {
