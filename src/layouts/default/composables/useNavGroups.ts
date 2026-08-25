@@ -25,9 +25,7 @@ export function useNavGroups(
   }
 
   watch(() => route.path, () => {
-    const active = getActiveGroupTitles()
-    if (active.length)
-      openedGroups.value = active
+    openedGroups.value = getActiveGroupTitles()
   }, { immediate: true })
 
   watch(isMenuTypeMain, async isMain => {
