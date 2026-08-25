@@ -1,4 +1,11 @@
 @use "./sidebar" as sidebar;
+@use "./v-btn" as v-btn;
+@use "./v-icon" as v-icon;
+@use "./v-tabs" as v-tabs;
+@use "./v-breadcrumb" as v-breadcrumb;
+@use "./gallery" as gallery;
+@use "./upload" as upload;
+@use "./base-list-vars" as base-list-vars;
 @use "./v-input" as v-input;
 @use "./vue-select" as vue-select;
 @use "./v-card" as v-card;
@@ -12,6 +19,13 @@
 
 @mixin apply {
   @include sidebar.apply;
+  @include v-btn.apply;
+  @include v-icon.apply;
+  @include v-tabs.apply;
+  @include v-breadcrumb.apply;
+  @include gallery.apply;
+  @include upload.apply;
+  @include base-list-vars.apply;
   @include v-input.apply;
   @include vue-select.apply;
   @include v-card.apply;
