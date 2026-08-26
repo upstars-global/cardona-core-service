@@ -46,6 +46,11 @@ textarea.v-field__input::placeholder
 {
   color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity))!important;
 }
+.v-input--disabled .v-field__input input::placeholder,
+.v-input--disabled input.v-field__input::placeholder
+{
+  color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity))!important;
+}
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
