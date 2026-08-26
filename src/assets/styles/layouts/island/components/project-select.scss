@@ -1,10 +1,8 @@
 @mixin apply {
-
-  .select-field-color {
-    color: rgba(var(--v-island-project-select-color)) !important;
-  }
-
   .project-select {
+    .select-field-color {
+      color: rgba(var(--v-island-project-select-color));
+    }
     &:has(.vs--open) {
       .vs__dropdown-toggle {
         border-color: rgba(var(--v-theme-primary));
@@ -20,11 +18,11 @@
     }
 
     .vs__dropdown-option--selected {
-      background-color: rgb(var(--v-theme-primary)) !important;
-      color: rgb(var(--v-theme-background)) !important;
+      background-color: rgb(var(--v-theme-primary));
+      color: rgb(var(--v-theme-background));
 
       .select-field-color {
-        color: rgb(var(--v-theme-background)) !important;
+        color: rgb(var(--v-theme-background));
       }
     }
   }
