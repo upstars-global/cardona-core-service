@@ -16,7 +16,16 @@
     }
 
     .vs__dropdown-menu {
-      border: 1px solid rgb(var(--v-island-border-color))
+      border: 1px solid rgb(var(--v-island-border-color));
+    }
+
+    .vs__dropdown-option--selected {
+      background-color: rgb(var(--v-theme-primary)) !important;
+      color: rgb(var(--v-theme-background)) !important;
+
+      .select-field-color {
+        color: rgb(var(--v-theme-background)) !important;
+      }
     }
   }
 }
