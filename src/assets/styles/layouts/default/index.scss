@@ -41,6 +41,10 @@ body[data-layout="default"] {
     height: 100dvh !important;
   }
 
+  .v-navigation-drawer {
+    position: fixed !important;
+  }
+
   .custom-menu-popup {
     left: 16px !important;
     min-width: 220px !important;
