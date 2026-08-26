@@ -1,7 +1,6 @@
-// Library bootstrap + structural styles (semantic tokens — layout-neutral)
+// Library bootstrap + structural styles + grey-900 color overrides (global baseline).
 // Layout-specific color overrides live in each layout's components/:
-//   default → layouts/default/components/vue-select.scss  (grey-900)
-//   island  → layouts/island/components/base-select.scss  (surface-invert)
+//   island → layouts/island/components/base-select.scss (surface-invert)
 
 // ─── Library SASS vars (must precede @import) ─────────────────────────────────
 $vs-component-line-height: 1.8;
@@ -261,6 +260,137 @@ $options-padding-y: 7px;
   .vs__actions {
     .v-icon {
       font-size: 1rem;
+    }
+  }
+}
+
+// ─── Grey-900 color overrides (global baseline, applies to all layouts) ───────
+// Island overrides specific properties via surface-invert tokens (higher specificity).
+
+.vs--disabled {
+  .vs__open-indicator {
+    background-color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+  }
+
+  .selected-option-value {
+    color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+  }
+
+  .vs__selected-options {
+    input::placeholder {
+      color: rgba(var(--v-theme-grey-900), 0.42);
+    }
+  }
+}
+
+.vs__dropdown-toggle {
+  border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
+}
+
+.vs__dropdown-option {
+  color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
+}
+
+.vs__selected {
+  input.vs__search,
+  input.vs__search:focus {
+    color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
+  }
+}
+
+.selected-option-value {
+  color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
+}
+
+.v-select.vs--open {
+  input::placeholder {
+    color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+  }
+}
+
+.v-select {
+  .vs__search {
+    &::placeholder {
+      color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+    }
+
+    color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
+  }
+
+  .vs__actions {
+    color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
+  }
+
+  &.vs--single .vs__selected {
+    color: rgba(var(--v-theme-grey-700));
+  }
+}
+
+.vs--multiple.vs--disabled {
+  .vs__selected {
+    color: rgba(var(--v-theme-grey-500));
+    background-color: rgba(var(--v-theme-grey-500), var(--v-activated-opacity));
+  }
+}
+
+.vs__dropdown-menu {
+  background: rgb(var(--v-theme-surface));
+}
+
+.dark-layout {
+  .vs__dropdown-toggle {
+    background: rgb(var(--v-theme-primary));
+    border-color: rgb(var(--v-theme-primary));
+    color: rgb(var(--v-theme-primary));
+  }
+
+  .vs__selected-options {
+    input {
+      color: rgb(var(--v-theme-primary));
+
+      &::placeholder {
+        color: rgb(var(--v-theme-primary));
+      }
+    }
+  }
+
+  .vs__actions {
+    svg {
+      fill: rgb(var(--v-theme-primary));
+    }
+  }
+
+  .vs__dropdown-menu {
+    background: rgb(var(--v-theme-primary));
+
+    li {
+      color: rgb(var(--v-theme-primary));
+    }
+  }
+
+  .v-select {
+    &:not(.vs--single) {
+      .vs__selected {
+        background-color: rgba(var(--v-theme-primary), 0.12);
+        color: rgb(var(--v-theme-primary));
+      }
+    }
+
+    &.vs--single {
+      .vs__selected {
+        color: rgb(var(--v-theme-primary)) !important;
+      }
+    }
+  }
+
+  .vs--disabled {
+    .vs__dropdown-toggle,
+    .vs__clear,
+    .vs__search,
+    .vs__selected,
+    .vs__open-indicator {
+      background-color: rgb(var(--v-theme-primary));
+      opacity: 0.5;
     }
   }
 }
