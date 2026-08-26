@@ -21,12 +21,7 @@
     }
   }
 
-  .v-field__input input::placeholder,
-  input.v-field__input::placeholder,
-  textarea.v-field__input::placeholder {
-    color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
-  }
-
+  // [forced-vuetify] Vuetify sets icon colors via its own opacity chain
   .v-field__prepend-inner > .v-icon,
   .v-field__append-inner > .v-icon,
   .v-field__clearable > .v-icon {

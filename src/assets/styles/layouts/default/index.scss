@@ -55,23 +55,6 @@ body[data-layout="default"] {
     min-width: 52px !important;
   }
 
-  .text-color-base {
-    color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
-  }
-
-  .text-color-mute {
-    color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)) !important;
-  }
-
-  .text-color-placeholder-disabled {
-    color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)) !important;
-  }
-
-  .text-body-1,
-  .text-body-2 {
-    color: rgba(var(--v-theme-grey-900), var(--v-high-emphasis-opacity));
-  }
-
   hr {
     border-top: 1px solid rgb(var(--v-theme-grey-200));
   }

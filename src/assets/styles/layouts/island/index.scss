@@ -87,21 +87,4 @@ body[data-layout="island"] {
       color: rgba(var(--v-island-menu-section-color)) !important;
     }
   }
-
-  .text-color-base {
-    color: rgba(var(--v-theme-surface-invert), var(--v-high-emphasis-opacity)) !important;
-  }
-
-  .text-color-mute {
-    color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
-  }
-
-  .text-color-placeholder-disabled {
-    color: rgba(var(--v-theme-surface-invert), var(--v-disabled-opacity)) !important;
-  }
-
-  .text-body-1,
-  .text-body-2 {
-    color: rgba(var(--v-theme-surface-invert), var(--v-high-emphasis-opacity));
-  }
 }
