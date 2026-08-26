@@ -58,6 +58,10 @@ $options-padding-y: 7px;
 
 .vs__dropdown-option--disabled {
   opacity: 0.5;
+
+  &.vs__dropdown-option--selected {
+    background: rgb(var(--v-theme-primary)) !important;
+  }
 }
 
 .vs__dropdown-option {
@@ -268,6 +272,10 @@ $options-padding-y: 7px;
 // Island overrides specific properties via surface-invert tokens (higher specificity).
 
 .vs--disabled {
+  .vs__clear {
+    opacity: 0;
+  }
+
   .vs__open-indicator {
     background-color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
   }
@@ -303,6 +311,10 @@ $options-padding-y: 7px;
 }
 
 .v-select.vs--open {
+  .vs__selected {
+    opacity: 1 !important;
+  }
+
   input::placeholder {
     color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
   }
