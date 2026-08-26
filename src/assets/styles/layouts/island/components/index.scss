@@ -19,6 +19,7 @@
 @use "./v-switch" as v-switch;
 @use "./v-textarea" as v-textarea;
 @use "./check-field" as check-field;
+@use "./v-card" as v-card;
 
 @mixin apply {
   @include skeleton.apply;
@@ -42,7 +43,7 @@
   @include v-switch.apply;
   @include v-textarea.apply;
   @include check-field.apply;
-
+  @include v-card.apply;
 
   $card-internal-radius: 12px;
 
