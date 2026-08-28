@@ -1,5 +1,5 @@
+import { RESET_SKIP_STORES } from '../plugins/useInitState'
 import { store } from '@/plugins/1.pinia'
-import { RESET_SKIP_STORES } from '@/stores/plugins/useInitState'
 
 export const resetAllStores = () => {
   ;(store as any)._s.forEach((s: { $id: string; $reset: () => void }) => {
