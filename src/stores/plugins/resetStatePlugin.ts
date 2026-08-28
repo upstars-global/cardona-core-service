@@ -6,7 +6,7 @@ declare module 'pinia' {
     $reset: () => void
   }
 }
-export const RESET_SKIP_STORES = ['config', 'layout-config']
+export const RESET_SKIP_STORES = ['config', 'layoutConfig']
 
 export function resetStatePlugin({ store }: PiniaPluginContext) {
   if (RESET_SKIP_STORES.includes(store.$id))
