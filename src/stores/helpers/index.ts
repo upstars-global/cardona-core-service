@@ -1,4 +1,4 @@
-import { RESET_SKIP_STORES } from '../plugins/useInitState'
+import { RESET_SKIP_STORES } from '../plugins/resetStatePlugin'
 import { store } from '@/plugins/1.pinia'
 
 export const resetAllStores = () => {
