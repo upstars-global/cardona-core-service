@@ -7,8 +7,8 @@ import type { ILoginData } from '../@model/auth'
 import { checkIsLoggedIn } from '../helpers/token-auth'
 import { useUserStore } from '../stores/user'
 import { ERRORS } from '../utils/constants'
+import { resetAllStores } from '../stores/helpers'
 import { useCookie } from '@core/composable/useCookie'
-import { store } from '@/plugins/1.pinia'
 
 const { toastError } = useToastService()
 
@@ -92,7 +92,13 @@ export const useAuthCoreStore = defineStore('authCore', {
       await clearAuthTokens()
       this.setAuthState(false)
       useUserStore().clearProjects()
-      store._s.forEach(s => s.$reset?.())
+      resetAllStores()
+
+      // ;(store as any)._s.forEach((s: { $id: string; $reset: () => void }) => {
+      //   if ([...RESET_SKIP_STORES, 'authCore'].includes(s.$id))
+      //     return
+      //   s.$reset()
+      // })
     },
   },
 })

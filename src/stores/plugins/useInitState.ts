@@ -6,10 +6,10 @@ declare module 'pinia' {
     $reset: () => void
   }
 }
-const SKIP_STORES = ['config', 'layout-config']
+export const RESET_SKIP_STORES = ['config', 'layout-config']
 
-export function useResetState({ store }: PiniaPluginContext) {
-  if (SKIP_STORES.includes(store.$id))
+export function useInitState({ store }: PiniaPluginContext) {
+  if (RESET_SKIP_STORES.includes(store.$id))
     return
 
   const initialState = cloneDeep(store.$state)
