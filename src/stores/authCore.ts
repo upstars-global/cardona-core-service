@@ -8,7 +8,7 @@ import { checkIsLoggedIn } from '../helpers/token-auth'
 import { useUserStore } from '../stores/user'
 import { ERRORS } from '../utils/constants'
 import { useCookie } from '@core/composable/useCookie'
-import { store } from '@/plugins/2.pinia'
+import { store } from '@/plugins/1.pinia'
 
 const { toastError } = useToastService()
 
