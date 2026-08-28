@@ -7,8 +7,8 @@ import type { ILoginData } from '../@model/auth'
 import { checkIsLoggedIn } from '../helpers/token-auth'
 import { useUserStore } from '../stores/user'
 import { ERRORS } from '../utils/constants'
-import { storageKeys } from '../configs/storage'
 import { useCookie } from '@core/composable/useCookie'
+import { store } from '@/plugins/2.pinia'
 
 const { toastError } = useToastService()
 
@@ -92,10 +92,7 @@ export const useAuthCoreStore = defineStore('authCore', {
       await clearAuthTokens()
       this.setAuthState(false)
       useUserStore().clearProjects()
-
-      ///      dispatch('filtersCore/clearLocalDefaultFilters', null, { root: true })
-      // dispatch root action
-      // this.$pinia._s.get('filtersCore')?.clearLocalDefaultFilters()
+      store._s.forEach(s => s.$reset?.())
     },
   },
 })
