@@ -29,11 +29,11 @@ export abstract class BaseField implements IBaseField {
   protected abstract _value?: any
   readonly key: string
   readonly id: string
-  private readonly _label?: TranslateResult
-  private readonly _placeholder?: TranslateResult
-  private readonly _description?: TranslateResult
-  private readonly _info?: TranslateResult
-  readonly validationRules?: IValidationConfig
+  private _label?: TranslateResult
+  private _placeholder?: TranslateResult
+  private _description?: TranslateResult
+  private _info?: TranslateResult
+  validationRules?: IValidationConfig
   readonly permission?: PermissionType
   readonly isLocalization?: boolean
   public form?: object | null
@@ -60,6 +60,31 @@ export abstract class BaseField implements IBaseField {
 
   get info(): TranslateResult | undefined {
     return this.resolveKey(this._info)
+  }
+
+  setLabel(value: TranslateResult): this {
+    this._label = value
+    return this
+  }
+
+  setPlaceholder(value: TranslateResult): this {
+    this._placeholder = value
+    return this
+  }
+
+  setDescription(value: TranslateResult): this {
+    this._description = value
+    return this
+  }
+
+  setInfo(value: TranslateResult): this {
+    this._info = value
+    return this
+  }
+
+  setValidationRules(value: IValidationConfig): this {
+    this.validationRules = value
+    return this
   }
 
   protected constructor(field: IBaseField) {
