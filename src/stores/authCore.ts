@@ -93,12 +93,6 @@ export const useAuthCoreStore = defineStore('authCore', {
       this.setAuthState(false)
       useUserStore().clearProjects()
       resetAllStores()
-
-      // ;(store as any)._s.forEach((s: { $id: string; $reset: () => void }) => {
-      //   if ([...RESET_SKIP_STORES, 'authCore'].includes(s.$id))
-      //     return
-      //   s.$reset()
-      // })
     },
   },
 })
