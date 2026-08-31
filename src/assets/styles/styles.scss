@@ -112,6 +112,16 @@ body {
 // ─── Layout color tokens ──────────────────────────────────────────────────────
 // Each layout defines its surface tokens here.
 // Global components below consume var() — no duplicated layout-specific rules.
+body[data-layout="blank"] {
+  --c-text-base:         rgba(var(--v-theme-grey-900), var(--v-body-opacity));
+  --c-text-mute:         rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+  --c-text-disabled:     rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
+  --c-text-high:         rgba(var(--v-theme-grey-900), var(--v-high-emphasis-opacity));
+  --c-label-color:       rgba(var(--v-theme-grey-900), var(--v-body-opacity));
+  --c-placeholder-color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+  --c-counter-color:     rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+}
+
 body[data-layout="default"] {
   --c-text-base:         rgba(var(--v-theme-grey-900), var(--v-body-opacity));
   --c-text-mute:         rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
