@@ -19,13 +19,9 @@ const props = defineProps<{
 const { t } = useI18n()
 const router = useRouter()
 
-const navigateTo = (item: NavLink) => {
-  const navProps = getComputedNavLinkToProp.value(item)
-  if (navProps.to)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    router.push(navProps.to as any)
-  else if (navProps.href)
-    window.open(navProps.href, navProps.target ?? '_self')
+const getNavItemProps = (item: NavLink) => {
+  const { to, ...rest } = getComputedNavLinkToProp.value(item)
+  return { ...rest, to: to ?? undefined }
 }
 
 const isLinkActive = (item: NavLink): boolean => isNavLinkActive(item, router)
@@ -124,7 +120,7 @@ const { opened } = useNavGroups(
           class="child-list-item mx-1"
           :active="isLinkActive(child as NavLink)"
           data-test-id="nav-child-link"
-          @click="navigateTo(child as NavLink)"
+          v-bind="getNavItemProps(child as NavLink)"
         >
           <template #title="{ title }">
             <div class="text-body-1 on-primary">
@@ -141,7 +137,7 @@ const { opened } = useNavGroups(
         class="mx-1 text-body-1"
         :active="isLinkActive(item as NavLink)"
         data-test-id="nav-link"
-        @click="navigateTo(item as NavLink)"
+        v-bind="getNavItemProps(item as NavLink)"
       >
         <template #title="{ title }">
           <div class="text-body-1 on-primary">
