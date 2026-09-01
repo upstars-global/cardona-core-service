@@ -105,7 +105,7 @@ const onSetVariablesPresets = (value: Record<string, number>) => {
       </div>
     </template>
     <div class="full-width variable-modal">
-      <div class="pa-6">
+      <div class="variable-modal__content pa-6">
         <VariableGiftPreset
           v-if="canUseVariablePreset"
           @set-variables="onSetVariablesPresets($event)"
@@ -185,6 +185,12 @@ const onSetVariablesPresets = (value: Record<string, number>) => {
 <style lang="scss" scoped>
 .variable-modal {
   min-width: 31.25rem;
+
+  &__content {
+    max-height: calc(100dvh - 13rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 
   :deep(.v-chip__content) {
     overflow: hidden;
