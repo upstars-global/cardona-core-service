@@ -832,6 +832,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :pagination-config="paginationConfig"
         :data-meta="dataMeta"
         :small="config.small"
+        :with-go-to-page="config.withGoToPage"
         @update:model-value="setPage"
       />
     </div>
@@ -1153,6 +1154,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :pagination-config="paginationConfig"
         :data-meta="dataMeta"
         :small="config.small"
+        :with-go-to-page="config.withGoToPage"
         @update:model-value="setPage"
       />
     </div>
