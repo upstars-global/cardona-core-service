@@ -67,6 +67,7 @@ declare module 'vue' {
     ErrorHeader: typeof import('./src/components/ErrorHeader.vue')['default']
     ExportFormatSelector: typeof import('./src/components/templates/BaseList/_components/ExportFormatSelector.vue')['default']
     FieldGenerator: typeof import('./src/components/templates/FieldGenerator/index.vue')['default']
+    FieldWrapper: typeof import('./src/components/templates/_components/FieldWrapper.vue')['default']
     FileGallery: typeof import('./src/components/UploadImage/FileGallery.vue')['default']
     FilesUpload: typeof import('./src/components/FilesUpload/FilesUpload.vue')['default']
     FiltersBlock: typeof import('./src/components/FiltersBlock/index.vue')['default']
