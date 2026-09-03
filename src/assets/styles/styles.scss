@@ -29,18 +29,6 @@ html {
   }
 }
 
-.text-color-base {
-  color: rgba(var(--v-theme-grey-900), var(--v-body-opacity)) !important;
-}
-
-.text-color-mute {
-  color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity)) !important;
-}
-
-.text-color-placeholder-disabled {
-  color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity)) !important;
-}
-
 .no-border {
   border-style: none !important;
 }
@@ -178,11 +166,11 @@ body[data-layout="island"] {
 // ─── Token-based global overrides ────────────────────────────────────────────
 
 // Utility text classes — no Vuetify competition, no !important needed
-.text-color-base                 { color: var(--c-text-base); }
-.text-color-mute                 { color: var(--c-text-mute); }
-.text-color-placeholder-disabled { color: var(--c-text-disabled); }
+.text-color-base                 { color: var(--c-text-base) !important; }
+.text-color-mute                 { color: var(--c-text-mute) !important; }
+.text-color-placeholder-disabled { color: var(--c-text-disabled) !important; }
 .text-body-1,
-.text-body-2                     { color: var(--c-text-high); }
+.text-body-2                     { color: var(--c-text-high) !important; }
 
 // Switch label — no competing Vuetify rule at this specificity
 .v-switch.v-switch--inset .v-label { color: var(--c-label-color); }
