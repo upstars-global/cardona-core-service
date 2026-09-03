@@ -1,0 +1,26 @@
+// Default-layout color overrides for v-input (grey-900 palette)
+
+@mixin apply {
+  .v-input {
+    &.v-text-field {
+      .v-field__input {
+        color: rgb(var(--v-theme-grey-900), var(--v-body-opacity));
+      }
+      &.v-input--disabled {
+        background: rgb(var(--v-theme-grey-100));
+        color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+
+        input.v-field__input {
+          color: rgba(var(--v-theme-grey-900), var(--v-muted-placeholder-opacity));
+        }
+      }
+    }
+    .v-field--variant-outlined .v-field__outline__start,
+    .v-field--variant-outlined .v-field__outline__notch::before,
+    .v-field--variant-outlined .v-field__outline__notch::after,
+    .v-field--variant-outlined .v-field__outline__end {
+      border-color: rgba(var(--v-theme-grey-900), var(--v-disabled-opacity));
+      opacity: 1;
+    }
+  }
+}
