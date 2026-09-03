@@ -424,10 +424,10 @@
 /Users/v.pecheritsya/projects/core/cardona-core-service/src/pages/permission/form/index.vue
 /Users/v.pecheritsya/projects/core/cardona-core-service/src/pages/permission/useSettings.ts
 /Users/v.pecheritsya/projects/core/cardona-core-service/src/pages/register.vue
-/Users/v.pecheritsya/projects/core/cardona-core-service/src/plugins/1.router/additional-routes.ts
-/Users/v.pecheritsya/projects/core/cardona-core-service/src/plugins/1.router/guards.ts
-/Users/v.pecheritsya/projects/core/cardona-core-service/src/plugins/1.router/index.ts
-/Users/v.pecheritsya/projects/core/cardona-core-service/src/plugins/2.pinia.ts
+/Users/v.pecheritsya/projects/core/cardona-core-service/src/plugins/2.router/additional-routes.ts
+/Users/v.pecheritsya/projects/core/cardona-core-service/src/plugins/2.router/guards.ts
+/Users/v.pecheritsya/projects/core/cardona-core-service/src/plugins/2.router/index.ts
+/Users/v.pecheritsya/projects/core/cardona-core-service/src/plugins/1.pinia.ts
 /Users/v.pecheritsya/projects/core/cardona-core-service/src/plugins/3.toast.ts
 /Users/v.pecheritsya/projects/core/cardona-core-service/src/plugins/casl/ability.ts
 /Users/v.pecheritsya/projects/core/cardona-core-service/src/plugins/casl/composables/useAbility.ts

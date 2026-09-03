@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { h } from 'vue'
+import { h, nextTick, reactive } from 'vue'
 import { Field } from 'vee-validate'
 import FieldGenerator from '../../../../src/components/templates/FieldGenerator/index.vue'
 import { CheckBaseField, DummySelectBaseField, TextBaseField } from '../../../../src/@model/templates/baseField'
@@ -189,5 +189,77 @@ describe('FieldGenerator.vue', () => {
     })
 
     testOn.notExistElement({ wrapper, testId: '.field-generator' })
+  })
+
+  describe('BaseField setter methods', () => {
+    // Setters mutate the class instance in-place. Plain class properties are
+    // not tracked by Vue's reactivity system, so we wrap the field in
+    // reactive() before mounting. This causes Vue to intercept property
+    // writes (including _label, _info, etc.) and invalidate any computed
+    // that reads them — no setProps call needed.
+
+    it('setLabel — FieldGenerator reflects updated label reactively', async () => {
+      const field = reactive(new TextBaseField({ key: 'f', label: 'Original' }))
+      const wrapper = mountFieldGenerator({ modelValue: field })
+
+      testOn.equalTextValue({ wrapper, selector: '.field-generator-label' }, 'Original')
+
+      field.setLabel('Updated Label')
+      await nextTick()
+
+      testOn.equalTextValue({ wrapper, selector: '.field-generator-label' }, 'Updated Label')
+    })
+
+    it('setDescription — FieldGenerator reflects updated description reactively', async () => {
+      const field = reactive(new TextBaseField({ key: 'f', label: 'L', description: 'Original desc' }))
+      const wrapper = mountFieldGenerator({ modelValue: field })
+
+      testOn.equalTextValue({ wrapper, testId: 'description' }, 'Original desc')
+
+      field.setDescription('Updated Description')
+      await nextTick()
+
+      testOn.equalTextValue({ wrapper, testId: 'description' }, 'Updated Description')
+    })
+
+    it('setInfo — tooltip icon appears reactively after setInfo', async () => {
+      const field = reactive(new TextBaseField({ key: 'f', label: 'L' }))
+      const wrapper = mountFieldGenerator({ modelValue: field })
+
+      testOn.notExistElement({ wrapper, selector: '.v-icon' })
+
+      field.setInfo('Tooltip text')
+      await nextTick()
+
+      testOn.existElement({ wrapper, selector: '.v-icon' })
+    })
+
+    it('setValidationRules — vee-validate Field receives updated rules reactively', async () => {
+      const field = reactive(new TextBaseField({ key: 'f', label: 'L', validationRules: { required: false } }))
+      const wrapper = mountFieldGenerator({ modelValue: field })
+
+      expect(wrapper.findComponent(Field).props('rules')).toEqual({ required: false })
+
+      field.setValidationRules({ required: true, min: 3 })
+      await nextTick()
+
+      expect(wrapper.findComponent(Field).props('rules')).toEqual({ required: true, min: 3 })
+    })
+
+    it('chained setters — all mutations reflected after nextTick', async () => {
+      const field = reactive(new TextBaseField({ key: 'f', label: 'Old Label', description: 'Old Desc' }))
+      const wrapper = mountFieldGenerator({ modelValue: field })
+
+      field
+        .setLabel('Chain Label')
+        .setDescription('Chain Desc')
+        .setValidationRules({ required: true })
+
+      await nextTick()
+
+      testOn.equalTextValue({ wrapper, selector: '.field-generator-label' }, 'Chain Label')
+      testOn.equalTextValue({ wrapper, testId: 'description' }, 'Chain Desc')
+      expect(wrapper.findComponent(Field).props('rules')).toEqual({ required: true })
+    })
   })
 })

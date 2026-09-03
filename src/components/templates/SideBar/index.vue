@@ -84,24 +84,25 @@ const onHide = () => {
     :model-value="sidebarActive"
     temporary
     location="right"
-    class="side-bar"
+    class="side-bar position-fixed"
     @update:model-value="onHide"
   >
-    <!-- Header -->
-    <div class="content-sidebar-header d-flex justify-space-between align-center px-6 py-3 bg-light">
-      <h5
-        class="content-sidebar-header__title mb-0 text-h5 font-weight-medium"
-        data-test-id="sidebar-title"
-      >
-        {{ $t(title) }}
-      </h5>
-      <VIcon
-        class="ml-1 cursor-pointer"
-        :icon="IconsList.XIcon"
-        size="21"
-        @click="onHide"
-      />
-    </div>
+    <template #prepend>
+      <div class="content-sidebar-header d-flex justify-space-between align-center px-6 py-3 bg-light">
+        <h5
+          class="content-sidebar-header__title mb-0 text-h5 font-weight-medium"
+          data-test-id="sidebar-title"
+        >
+          {{ $t(title) }}
+        </h5>
+        <VIcon
+          class="ml-1 cursor-pointer"
+          :icon="IconsList.XIcon"
+          size="21"
+          @click="onHide"
+        />
+      </div>
+    </template>
     <div
       v-if="viewForm && sidebarActive"
       class="p-1 pb-2 bg-light px-4"
@@ -239,9 +240,5 @@ const onHide = () => {
     padding-left: 0;
     padding-right: 0;
   }
-}
-
-.v-navigation-drawer__scrim {
-  position: fixed;
 }
 </style>
