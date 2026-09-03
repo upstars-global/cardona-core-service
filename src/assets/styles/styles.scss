@@ -170,7 +170,7 @@ body[data-layout="island"] {
 .text-color-mute                 { color: var(--c-text-mute) !important; }
 .text-color-placeholder-disabled { color: var(--c-text-disabled) !important; }
 .text-body-1,
-.text-body-2                     { color: var(--c-text-high) !important; }
+.text-body-2                     { color: var(--c-text-high); }
 
 // Switch label — no competing Vuetify rule at this specificity
 .v-switch.v-switch--inset .v-label { color: var(--c-label-color); }
