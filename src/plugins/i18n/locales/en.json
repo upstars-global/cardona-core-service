@@ -605,7 +605,8 @@
     }
   },
   "pagination": {
-    "showing": "Results: {from} to {to} of {of}"
+    "showing": "Results: {from} to {to} of {of}",
+    "goTo": "Go to"
   },
   "validations": {
     "incorrectLoginOrPassword": "Incorrect login or password",

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, isRef, onBeforeMount, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue'
-import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex, has, isUndefined } from 'lodash'
 import type { ExportFormat, IBaseListConfig, ProjectsFilterOption } from '../../../../@model/templates/baseList'
@@ -200,8 +199,9 @@ watch(
 const allFields = computed(() => isRef(rawFields) ? rawFields.value : rawFields)
 const selectedFields = ref<TableField[]>([...allFields.value])
 
-watch(allFields, (newFields) => {
+watch(allFields, newFields => {
   const selectedKeys = new Set(selectedFields.value.map(f => f.key))
+
   selectedFields.value = newFields.filter(f => selectedKeys.has(f.key))
 })
 
@@ -352,7 +352,7 @@ const reFetchList = () => getList()
 
 onChangePagination(() => {
   if (props.config.closeFilterOnPagination)
-    isFiltersShown.value = false
+    setFilterShown(false)
   reFetchList()
 })
 
@@ -474,7 +474,9 @@ const defaultSelectedFilters = computed(() =>
 
 const { inlineFilters, filterFields, onFieldUpdate } = useInlineFilters(props.config?.inlineFilters, reFetchList)
 
-const isFiltersShown = useStorage(`show-filter-list-${entityName || pageName}`, false)
+const isFiltersShown = ref(false)
+const setFilterShown = (value: boolean) => { isFiltersShown.value = value }
+
 const isOpenFilterBlock = computed(() => props.config.filterList?.isNotEmpty && isFiltersShown.value)
 
 watch(() => userStore.getSelectedProject?.alias, (_newAlias, oldAlias) => {
@@ -498,7 +500,7 @@ const hasSelectedFilters = computed(() => selectedFilters && selectedFilters.val
 
 watch(() => hasSelectedFilters.value, hasFilters => {
   if (hasFilters)
-    isFiltersShown.value = hasFilters
+    setFilterShown(hasFilters)
 }, { immediate: true })
 
 // Selectable
@@ -752,7 +754,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       :is-loading-export="isLoadingExport"
       :config="config"
       :is-open-filter-block="isOpenFilterBlock"
-      @on-click-filter="isFiltersShown = !isFiltersShown"
+      @on-click-filter="setFilterShown(!isFiltersShown)"
       @on-export-format-selected="onExportFormatSelected"
     >
       <template #right-search-btn>
@@ -800,6 +802,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       :default-selected-filters="defaultSelectedFilters"
       @apply="reFetchList"
       @change-selected-filters="onChangeSelectedFilters"
+      @init-selected-filters="setFilterShown"
     >
       <template
         v-for="filter in filters"
@@ -829,6 +832,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :pagination-config="paginationConfig"
         :data-meta="dataMeta"
         :small="config.small"
+        :with-go-to-page="config.withGoToPage"
         @update:model-value="setPage"
       />
     </div>
@@ -1150,6 +1154,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :pagination-config="paginationConfig"
         :data-meta="dataMeta"
         :small="config.small"
+        :with-go-to-page="config.withGoToPage"
         @update:model-value="setPage"
       />
     </div>

@@ -213,13 +213,16 @@ export interface IBaseListConfig {
   /** closeFilterOnPagination - Закрывать фильтр во время переключения пагинации */
   readonly closeFilterOnPagination?: boolean
 
-  /** withTopPagination - Показывть пагинацию вверху страницы */
+  /** withTopPagination - Показывать пагинацию вверху страницы */
   readonly withTopPagination?: boolean
 
-  /** showExpand - Показывать выпаадшку (expand) для строки спсика для этого надо поместить данные в поле groups  */
+  /** withGoToPage - Вкл/выкл поле прямого перехода на страницу в пагинации */
+  readonly withGoToPage?: boolean
+
+  /** showExpand - Показывать выпадшку (expand) для строки списка для этого надо поместить данные в поле groups  */
   readonly showExpand?: boolean
 
-  /** saveSort - Flag для сохранния сортировки в local storage  */
+  /** saveSort - Flag для сохранения сортировки в local storage  */
   readonly saveSort?: boolean
 
   /** disableLoading - Flag для блокирования loading state  */
@@ -298,6 +301,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly closeFilterOnPagination?: boolean
   readonly showExpand?: boolean
   readonly withTopPagination?: boolean
+  readonly withGoToPage?: boolean
   readonly saveSort?: boolean
   readonly disableLoading?: boolean
   readonly cancelPreviousRequest?: boolean
@@ -355,6 +359,7 @@ export class BaseListConfig implements IBaseListConfig {
     closeFilterOnPagination,
     showExpand,
     withTopPagination,
+    withGoToPage,
     saveSort,
     disableLoading,
     cancelPreviousRequest,
@@ -411,6 +416,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.closeFilterOnPagination = closeFilterOnPagination
     this.showExpand = showExpand
     this.withTopPagination = withTopPagination
+    this.withGoToPage = withGoToPage
     this.saveSort = saveSort ?? true
     this.disableLoading = disableLoading
     this.cancelPreviousRequest = cancelPreviousRequest

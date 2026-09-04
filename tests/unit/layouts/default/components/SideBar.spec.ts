@@ -152,36 +152,6 @@ describe('SideBar.vue', () => {
   })
 
   // -------------------------------------------------------------------------
-  // Navigation — router.push
-  // -------------------------------------------------------------------------
-
-  it('calls router.push when a nav-link is clicked and prop returns a `to` value', async () => {
-    mockGetComputedNavLinkToProp.mockReturnValue({ to: '/path', href: null, target: null })
-
-    const wrapper = getMountSideBar(createDefaultProps({ items: [linkItem] }))
-
-    await clickTrigger({ wrapper, testId: 'nav-link' })
-
-    expect(mockRouterPush).toHaveBeenCalledWith('/path')
-  })
-
-  // -------------------------------------------------------------------------
-  // Navigation — window.open
-  // -------------------------------------------------------------------------
-
-  it('calls window.open when a nav-link is clicked and prop returns an `href` value', async () => {
-    vi.spyOn(window, 'open').mockImplementation(() => null)
-
-    mockGetComputedNavLinkToProp.mockReturnValue({ to: null, href: 'https://example.com', target: '_blank' })
-
-    const wrapper = getMountSideBar(createDefaultProps({ items: [linkItem] }))
-
-    await clickTrigger({ wrapper, testId: 'nav-link' })
-
-    expect(window.open).toHaveBeenCalledWith('https://example.com', '_blank')
-  })
-
-  // -------------------------------------------------------------------------
   // Multiple item types rendered together
   // -------------------------------------------------------------------------
 

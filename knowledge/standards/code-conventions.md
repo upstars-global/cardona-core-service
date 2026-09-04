@@ -2,9 +2,9 @@
 title: Code Conventions
 type: standard
 source: .claude/rules/code-conventions.md
-source_hash: a551d2dd0b8d
+source_hash: b6c81e5b475a
 tags: [standard, conventions]
-updated: 2026-07-16
+updated: 2026-08-27
 ---
 
 # Code Conventions
@@ -24,18 +24,15 @@ updated: 2026-07-16
 - **Модели — классы, не голые объекты**: `new User({...})`, не `{ firstName: '...' }`. См. [[model-class-pattern]].
 - **Именование**: интерфейс `I` + имя + `Data` (`IProjectsData`, `IProjectsListItemData`);
   класс — только имя сущности (`ProjectsListItem`, `ProjectsForm`).
-- **`import type`** для type-only импортов (`@typescript-eslint/consistent-type-imports`).
 - **Сравнение с 2+ значениями** — массив + `includes`, а не цепочки `===`/`||`. Одно значение → `===`.
 
 ## Vue / шаблоны
 
-- Компоненты в шаблонах — **PascalCase**.
-- Прямые импорты из `vuetify/components` запрещены ESLint — компоненты авто-импортируются.
-- Только иконки **Tabler**; mdi запрещены ESLint.
+- Только иконки **Tabler**; mdi запрещены ESLint-правилом.
 
 ## Форматирование
 
-Без точек с запятой, отступ 2 пробела, trailing commas, camelCase, одинарные кавычки.
+Trailing commas, camelCase, одинарные кавычки.
 
 ## Пути (алиасы)
 
@@ -43,7 +40,6 @@ updated: 2026-07-16
 
 ## Связанные
 
-- [[architecture]]
 - [[model-class-pattern]]
 - [[pinia-store-pattern]]
 - [[apiservice-routing]]

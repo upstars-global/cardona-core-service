@@ -37,6 +37,11 @@ Pages/Components → Composables & Stores (Pinia) → ApiService (HTTP) / Centri
 - Механизм этой документации (`scripts/docs-map.mjs`, `docs-guard.mjs`, скилл `update-docs`)
   живёт здесь и едет в панели через `node_modules/cardona-core-service`.
 
+## Стили
+
+Архитектура SCSS-слоёв, CSS Custom Properties для layout-токенов, правила размещения и классификация
+`!important` — см. [STYLES_GUIDE.md](../../src/assets/styles/layouts/STYLES_GUIDE.md).
+
 ## Связанные
 
 - [[code-conventions]]

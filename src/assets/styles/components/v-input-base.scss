@@ -1,0 +1,64 @@
+// Behavioral rules shared across all layouts (no layout-specific colors)
+
+.v-text-field {
+  &:not(.v-textarea) {
+    height: 2.5rem;
+  }
+  input.v-field__input {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+.v-input--error {
+  .v-field--variant-outlined .v-field__outline__start,
+  .v-field--variant-outlined .v-field__outline__notch::before,
+  .v-field--variant-outlined .v-field__outline__notch::after,
+  .v-field--variant-outlined .v-field__outline__end {
+    border-color: rgb(var(--v-theme-error)) !important;
+  }
+}
+
+.v-input {
+  .v-text-field__suffix {
+    opacity: 1;
+  }
+
+  .v-field--disabled {
+    opacity: 1;
+  }
+
+  &.v-text-field {
+    .v-field__input {
+      line-height: 1.5rem;
+    }
+  }
+}
+
+.v-field__field {
+  textarea.v-field__input {
+    opacity: 1 !important;
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.app-text-field {
+  &--small {
+    .v-input {
+      height: 2rem;
+      .v-field__input {
+        padding: 0.375rem 0.75rem;
+        line-height: 1.25rem;
+        min-height: 1.25rem;
+      }
+    }
+  }
+}

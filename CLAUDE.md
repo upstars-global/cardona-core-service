@@ -9,6 +9,12 @@ Pinia + Vuetify), reused by the `cardona`, `marbella`, `compostela` panels.
 - Everything you author — skills, agents, `CLAUDE.md`, settings and configuration files — is always written in English.
 - Questions you ask the user are always in Russian.
 
+## Path aliases
+
+`$PROJECTS` = projects root directory for the current developer (resolve via `echo $PROJECTS`). Each developer sets this in their shell profile, e.g. `export PROJECTS="$HOME/projects"`.
+
+When displaying file paths to the user, replace the prefix that `$PROJECTS` resolves to with the literal string `$PROJECTS`. Do not apply this substitution to bash commands or paths passed to tools — only to text shown in chat.
+
 ## Documentation (Obsidian, LLM Wiki)
 
 **Canonical home** of the mechanism: scripts ship to the panels via `node_modules/cardona-core-service`,

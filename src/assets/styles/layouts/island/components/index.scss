@@ -2,25 +2,28 @@
 @use "./tooltip" as tooltip;
 @use "./project-select" as project-select;
 @use "./base-list" as base-list;
+@use "./base-list-vars" as base-list-vars;
 @use "./per-page-select" as per-page-select;
 @use "./base-modal" as base-modal;
 @use "./base-select" as base-select;
 @use "./base-input" as base-input;
 @use "./filters-block" as filters-block;
 @use "./data-picker" as data-picker;
+@use "./v-switch" as v-switch;
 
 @mixin apply {
   @include skeleton.apply;
   @include tooltip.apply;
   @include project-select.apply;
   @include base-list.apply;
+  @include base-list-vars.apply;
   @include per-page-select.apply;
   @include base-modal.apply;
   @include base-select.apply;
   @include base-input.apply;
   @include filters-block.apply;
   @include data-picker.apply;
-
+  @include v-switch.apply;
 
   $card-internal-radius: 12px;
 
