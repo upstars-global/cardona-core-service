@@ -93,7 +93,12 @@ const onHide = () => {
           class="content-sidebar-header__title mb-0 text-h5 font-weight-medium"
           data-test-id="sidebar-title"
         >
-          {{ $t(title) }}
+          <slot
+            name="sidebar-title"
+            :item="item"
+          >
+            {{ $t(title) }}
+          </slot>
         </h5>
         <VIcon
           class="ml-1 cursor-pointer"

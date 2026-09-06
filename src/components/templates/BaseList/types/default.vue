@@ -729,6 +729,16 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       </template>
 
       <template
+        v-if="checkSlotExistence(BaseListSlots.SidebarTitle)"
+        #sidebar-title
+      >
+        <slot
+          :name="BaseListSlots.SidebarTitle"
+          :item="selectedItem"
+        />
+      </template>
+
+      <template
         v-for="key in sidebarSlots"
         #[key]="{ item }"
       >

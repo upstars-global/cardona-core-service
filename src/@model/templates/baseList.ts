@@ -550,6 +550,7 @@ export enum BaseListSlots {
   TableHeader = 'table-header',
   SidebarActions = 'sidebar-actions',
   SidebarActionItems = 'sidebar-action-items',
+  SidebarTitle = 'sidebar-title',
   RightSearchBtn = 'right-search-btn',
   LeftSearchBtn = 'left-search-btn',
   CustomFilter = 'custom-filter',
@@ -567,6 +568,7 @@ export interface IBaseListSlots {
   [BaseListSlots.TableHeader]: (props: { selectedItems: any[]; total: number; search: string; entityName: string }) => any
   [BaseListSlots.SidebarActions]: (props: { form: any; item: any; canRemove: boolean; inlineFilters: Record<string, unknown>; onClickRemove: (item?: any) => void }) => any
   [BaseListSlots.SidebarActionItems]: (props: { form: any; item: any }) => any
+  [BaseListSlots.SidebarTitle]: (props: { item: any }) => any
   [BaseListSlots.RightSearchBtn]: (props: { canCreate: boolean; canUpdate: boolean; createPageName: string; inlineFilters: Record<string, unknown> }) => any
   [BaseListSlots.LeftSearchBtn]: () => any
   [BaseListSlots.CustomFilter]: () => any
