@@ -2,7 +2,7 @@ import { beforeEach, describe, it } from 'vitest'
 import { computed, ref } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 import ListPagination from '../../../../../../src/components/templates/BaseList/_components/ListPagination.vue'
-import { clickTrigger, setMountComponent } from '../../../../utils'
+import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../../utils'
 import { testOn } from '../../../../templates/shared-tests/test-case-generator'
 import { i18n } from '../../../../../../src/plugins/i18n'
 import { VColors } from '../../../../../../src/@model/vuetify'
@@ -142,5 +142,70 @@ describe('ListPagination.vue', () => {
     const wrapper = getMountListPagination(props)
 
     testOn.equalTextValue({ wrapper, testId: 'pagination-meta' }, i18n.t('pagination.showing', props.dataMeta))
+  })
+
+  describe('Go to page field', () => {
+    const goToPageInput = (wrapper: VueWrapper) =>
+      wrapper.find(`${getSelectorTestId('pagination-go-to-input')} input`)
+
+    const setGoToPageValue = async (wrapper: VueWrapper, value: string) => {
+      await goToPageInput(wrapper).setValue(value)
+    }
+
+    beforeEach(() => {
+      props.withGoToPage = true
+    })
+
+    it('Is not rendered without withGoToPage prop', () => {
+      props.withGoToPage = false
+
+      testOn.notExistElement({ wrapper: getMountListPagination(props), testId: 'pagination-go-to' })
+    })
+
+    it('Is not rendered when there is only one page', () => {
+      props.paginationConfig = getPaginationConfig({ total: 10, perPage: 10, currentPage: 1 })
+
+      testOn.notExistElement({ wrapper: getMountListPagination(props), testId: 'pagination-go-to' })
+    })
+
+    it('Goes to the entered page and clears the field', async () => {
+      const wrapper = getMountListPagination(props)
+
+      await setGoToPageValue(wrapper, '5')
+      await goToPageInput(wrapper).trigger('keydown.enter')
+
+      testOn.isCalledEmitEventValueToBe({ wrapper }, { event: 'update:modelValue', value: 5, index: 0 })
+      testOn.inputAttributeValueToBe(
+        { wrapper, selector: `${getSelectorTestId('pagination-go-to-input')} input` }, '',
+      )
+    })
+
+    it('Goes to the first page when the value is less than one', async () => {
+      props.modelValue = 5
+
+      const wrapper = getMountListPagination(props)
+
+      await setGoToPageValue(wrapper, '0')
+      await clickTrigger({ wrapper, testId: 'pagination-go-to-button' })
+
+      testOn.isCalledEmitEventValueToBe({ wrapper }, { event: 'update:modelValue', value: 1, index: 0 })
+    })
+
+    it('Goes to the last page when the value is greater than the number of pages', async () => {
+      const wrapper = getMountListPagination(props)
+
+      await setGoToPageValue(wrapper, '32')
+      await clickTrigger({ wrapper, testId: 'pagination-go-to-button' })
+
+      testOn.isCalledEmitEventValueToBe({ wrapper }, { event: 'update:modelValue', value: 10, index: 0 })
+    })
+
+    it('Does nothing on empty value', async () => {
+      const wrapper = getMountListPagination(props)
+
+      await clickTrigger({ wrapper, testId: 'pagination-go-to-button' })
+
+      testOn.isNotCalledEmittedEvent({ wrapper })
+    })
   })
 })

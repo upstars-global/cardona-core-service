@@ -1,0 +1,8 @@
+@mixin apply {
+  .v-field__field {
+    textarea.v-field__input {
+      // [forced-vuetify] Vuetify sets opacity: 0 on textarea in some states
+      opacity: 1!important;
+    }
+  }
+}

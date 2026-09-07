@@ -1,20 +1,29 @@
+// Island-layout vue-select: surface-invert color overrides only.
+// Structural styles live in the global components/vue-select.scss.
+
 $box-shadow: 0 2px 4px 0 rgba(132, 129, 157, 0.24);
 $border-popup: 1px solid rgba(var(--v-theme-border-system));
 $border-popup-shadow: 0 10px 20px 0 rgba(var(--v-theme-skeleton-bg), 0.10);
 
 @mixin apply {
-  .v-select.vs--open{
+
+  // ─── Surface-invert color overrides ──────────────────────────────────────────
+
+  .v-select.vs--open {
     .vs__dropdown-toggle {
       border: 1px solid rgba(var(--v-theme-primary));
       box-shadow: $box-shadow;
     }
   }
+
   .v-select {
     .vs__search::placeholder {
       color: rgba(var(--v-theme-surface-invert), var(--v-low-emphasis-opacity)) !important;
     }
+
     .vs__dropdown-toggle {
       border: 1px solid rgba(var(--v-theme-surface-invert), var(--v-border-opacity));
+
       .vs__selected-options {
         .vs__selected {
           .selected-option-value {
@@ -22,9 +31,9 @@ $border-popup-shadow: 0 10px 20px 0 rgba(var(--v-theme-skeleton-bg), 0.10);
           }
         }
       }
-
     }
   }
+
   .vs__dropdown-menu {
     border: $border-popup;
     box-shadow: $border-popup-shadow;

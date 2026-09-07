@@ -21,6 +21,7 @@
 - [[entity-name-to-api-type]] — entityName → тип запроса (transformNameToType)
 - [[model-class-pattern]] — Паттерн модели-класса
 - [[pinia-store-pattern]] — Паттерн Pinia-стора
+- [[styles-layout]] — Styles Layout Architecture
 - [[websocket-centrifuge]] — WebSocket / Centrifuge
 
 ## Services

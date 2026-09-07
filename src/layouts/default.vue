@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useResizeObserver } from '@vueuse/core'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useUserStore } from '../stores/user'
 import { IconsList } from '../@model/enums/icons'
@@ -43,6 +44,13 @@ watch(
 
 const canShowNotificationExport = computed(() => userStore.haveSomePermissionReport)
 const userId = computed(() => userStore.userInfo.id)
+
+const psRef = ref<InstanceType<typeof PerfectScrollbar> | null>(null)
+const sidebarNavRef = ref<HTMLElement | null>(null)
+
+useResizeObserver(sidebarNavRef, () => {
+  psRef.value?.update()
+})
 </script>
 
 <template>
@@ -84,11 +92,15 @@ const userId = computed(() => userStore.userInfo.id)
         </div>
 
         <PerfectScrollbar
+          ref="psRef"
           tag="div"
           class="sidebar-scroll flex-grow-1"
           :options="{ wheelPropagation: false }"
         >
-          <div class="sidebar-nav">
+          <div
+            ref="sidebarNavRef"
+            class="sidebar-nav"
+          >
             <SideBar
               :items="navItems"
               :is-collapsed="isCollapsed"
