@@ -20,7 +20,7 @@ const checkActionNameWithColor = (actionType: ActionType) => {
 }
 
 describe('TableFields.vue', () => {
-  Object.values(ActionType).forEach(key => {
-    checkActionNameWithColor(key)
+  Object.values(ActionType).forEach(value => {
+    checkActionNameWithColor(value?.toLocaleLowerCase())
   })
 })
