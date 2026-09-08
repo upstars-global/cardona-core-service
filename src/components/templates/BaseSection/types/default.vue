@@ -379,7 +379,9 @@ defineExpose({
   validate,
   formRef,
   onSubmit,
-  submitWithData,
+  get submitWithData() {
+    return submitWithData
+  },
 })
 </script>
 
