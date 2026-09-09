@@ -58,6 +58,7 @@ const label = computed(() => useAttrs().label as string | undefined)
   .app-text-field {
     :deep(.v-field__field){
       .v-text-field__prefix {
+        color: rgba(var(--v-theme-grey-900), var(--v-body-opacity));
         opacity: 1;
       }
     }

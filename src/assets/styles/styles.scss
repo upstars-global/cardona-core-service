@@ -189,5 +189,10 @@ body[data-layout="island"] {
 input.v-field__input::placeholder,
 textarea.v-field__input::placeholder { color: var(--c-placeholder-color) !important; }
 
+// Disabled input placeholder — dimmer than the enabled one
+// [forced-pseudo] ::placeholder cross-browser consistency requires !important
+.v-input--disabled .v-field__input input::placeholder,
+.v-input--disabled input.v-field__input::placeholder { color: var(--c-text-disabled) !important; }
+
 
 
