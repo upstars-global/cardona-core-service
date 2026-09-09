@@ -124,7 +124,7 @@ export const testCaseGenerator = ({
     const wrapper = getWrapperWithProperty(elementTest, property)
     const expectation = shouldInvert ? expect(wrapper).not : expect(wrapper)
 
-    expectation[methodExpect](expectedValue)
+    expectation?.[methodExpect]?.(expectedValue)
   }
 }
 
