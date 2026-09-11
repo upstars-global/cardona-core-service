@@ -1,13 +1,14 @@
 <script setup>
 import { computed, onMounted, onUnmounted } from 'vue'
-import { useRoute } from 'vue-router'
-
+import { useRoute, useRouter } from 'vue-router'
 import { IconsList } from '../../@model/enums/icons'
 import { VVariants } from '../../@model/vuetify'
 import { useClockUtc } from '../../use/useClockUtc'
 import { useLayoutConfigStore } from '@layouts/stores/config'
+import { safeResolveRoute } from '@layouts/utils'
 
 const route = useRoute()
+const router = useRouter()
 
 const allBreadcrumb = computed(() => {
   const breadcrumbs = route.meta.breadcrumb
@@ -16,7 +17,11 @@ const allBreadcrumb = computed(() => {
       : route.meta.breadcrumb
     : []
 
-  return [{ to: '/', disabled: false }, ...breadcrumbs]
+  return [{ to: '/', disabled: false }, ...breadcrumbs].map(item => {
+    const resolved = item.to ? safeResolveRoute(router, item.to) : undefined
+
+    return { ...item, to: resolved?.fullPath ?? '' }
+  })
 })
 
 const layoutConfig = useLayoutConfigStore()

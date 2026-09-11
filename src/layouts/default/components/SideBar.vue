@@ -6,7 +6,7 @@ import { IconsList } from '../../../@model/enums/icons'
 import { useAppConfigCoreStore } from '../../../stores/appConfigCore'
 import { useNavGroups } from '../composables/useNavGroups'
 import type { NavGroup, NavLink, VerticalNavItems } from '@layouts/types'
-import { getComputedNavLinkToProp, isNavGroupActive, isNavLinkActive } from '@layouts/utils'
+import { getComputedNavLinkToProp, isNavGroupActive, isNavLinkActive, safeResolveRoute } from '@layouts/utils'
 
 defineOptions({ name: 'SideBar' })
 
@@ -21,7 +21,9 @@ const router = useRouter()
 
 const getNavItemProps = (item: NavLink) => {
   const { to, ...rest } = getComputedNavLinkToProp.value(item)
-  return { ...rest, to: to ?? undefined }
+  const resolved = to ? safeResolveRoute(router, to) : undefined
+
+  return { ...rest, to: resolved?.fullPath ?? '' }
 }
 
 const isLinkActive = (item: NavLink): boolean => isNavLinkActive(item, router)
