@@ -1,12 +1,23 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { layoutConfig } from '@layouts'
 import { useLayoutConfigStore } from '@layouts/stores/config'
 import type { NavLink } from '@layouts/types'
-import { getComputedNavLinkToProp, getDynamicI18nProps, isNavLinkActive } from '@layouts/utils'
+import { getComputedNavLinkToProp, getDynamicI18nProps, isNavLinkActive, safeResolveRoute } from '@layouts/utils'
 
 const props = defineProps<{
   item: NavLink
 }>()
+
+const router = useRouter()
+
+const navLinkProps = computed(() => {
+  const { to, ...rest } = getComputedNavLinkToProp.value(props.item)
+  const resolved = to ? safeResolveRoute(router, to) : undefined
+
+  return { ...rest, to: resolved?.fullPath ?? '' }
+})
 
 const configStore = useLayoutConfigStore()
 const hideTitleAndBadge = configStore.isVerticalNavMini()
@@ -24,7 +35,7 @@ const onClick = () => {
   >
     <Component
       :is="item.to ? 'RouterLink' : 'a'"
-      v-bind="getComputedNavLinkToProp(item)"
+      v-bind="navLinkProps"
       :class="{ 'router-link-active router-link-exact-active': isNavLinkActive(item, $router) }"
       @click="onClick"
     >

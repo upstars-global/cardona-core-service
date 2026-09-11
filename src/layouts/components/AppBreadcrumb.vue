@@ -17,10 +17,11 @@ const allBreadcrumb = computed(() => {
       : route.meta.breadcrumb
     : []
 
-  return [{ to: '/', disabled: false }, ...breadcrumbs].map(item => ({
-    ...item,
-    to: item.to ? safeResolveRoute(router, item.to)?.fullPath ?? '' : item.to,
-  }))
+  return [{ to: '/', disabled: false }, ...breadcrumbs].map(item => {
+    const resolved = item.to ? safeResolveRoute(router, item.to) : undefined
+
+    return { ...item, to: resolved?.fullPath ?? '' }
+  })
 })
 
 const layoutConfig = useLayoutConfigStore()
