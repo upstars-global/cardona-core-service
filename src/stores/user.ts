@@ -113,7 +113,7 @@ export const useUserStore = defineStore('user', {
 
           const permission = state.userInfo.permissions.find(p => p.target === target)
 
-          return permission && permission.access >= access
+          return !!(permission && permission.access >= access)
         },
 
     abilityCanInGroup:
