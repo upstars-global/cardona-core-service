@@ -1,5 +1,5 @@
 import { ref, computed, watch } from 'vue';
-import type { Router } from 'vue-router'
+import type { RouteLocationRaw, Router } from 'vue-router'
 import { layoutConfig } from '@layouts/config'
 import { AppContentLayoutNav } from '@layouts/enums'
 import { useLayoutConfigStore } from '@layouts/stores/config'
@@ -28,6 +28,22 @@ export const getComputedNavLinkToProp = computed(() => (link: NavLink) => {
 })
 
 /**
+ * Resolve a nav link target, returning undefined instead of throwing.
+ * `router.resolve` throws when the target route needs a param the current route does not
+ * provide — e.g. `project` right after logout — and that would break the render it runs in.
+ * `@param {Object} router` router instance
+ * `@param {Object, String} to` route location to resolve
+ */
+export const safeResolveRoute = (router: Router, to: RouteLocationRaw) => {
+  try {
+    return router.resolve(to)
+  }
+  catch {
+    return undefined
+  }
+}
+
+/**
  * Return route name for navigation link
  * If link is string then it will assume it is route-name
  * IF link is object it will resolve the object and will return the link
@@ -40,7 +56,7 @@ export const resolveNavLinkRouteName = (link: NavLink, router: Router) => {
   if (typeof link.to === 'string')
     return link.to
 
-  return router.resolve(link.to).name
+  return safeResolveRoute(router, link.to)?.name ?? null
 }
 
 /**

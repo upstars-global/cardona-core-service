@@ -16,6 +16,7 @@ const mockUseAppConfigCoreStore = vi.hoisted(() => vi.fn())
 const mockGetComputedNavLinkToProp = vi.hoisted(() => vi.fn())
 const mockIsNavLinkActive = vi.hoisted(() => vi.fn(() => false))
 const mockIsNavGroupActive = vi.hoisted(() => vi.fn(() => false))
+const mockSafeResolveRoute = vi.hoisted(() => vi.fn())
 
 // ---------------------------------------------------------------------------
 // Module mocks
@@ -43,6 +44,7 @@ vi.mock('../../../../../src/@layouts/utils', () => ({
   getComputedNavLinkToProp: { value: mockGetComputedNavLinkToProp },
   isNavLinkActive: mockIsNavLinkActive,
   isNavGroupActive: mockIsNavGroupActive,
+  safeResolveRoute: mockSafeResolveRoute,
 }))
 
 // ---------------------------------------------------------------------------
@@ -81,7 +83,8 @@ describe('SideBar.vue', () => {
   beforeEach(() => {
     mockUseNavGroups.mockReturnValue({ opened: ref([]) })
     mockUseAppConfigCoreStore.mockReturnValue({ onToggleMenuType: mockOnToggleMenuType })
-    mockGetComputedNavLinkToProp.mockReturnValue({ to: '/dashboard', href: null, target: null })
+    mockGetComputedNavLinkToProp.mockReturnValue({ to: { name: 'dashboard' }, href: null, target: null })
+    mockSafeResolveRoute.mockReturnValue({ fullPath: '/dashboard' })
   })
 
   afterEach(() => vi.clearAllMocks())
@@ -149,6 +152,38 @@ describe('SideBar.vue', () => {
     const wrapper = getMountSideBar(createDefaultProps({ items: [groupItem] }))
 
     testOn.checkLengthElements({ wrapper, testId: 'nav-child-link', all: true }, 1)
+  })
+
+  // -------------------------------------------------------------------------
+  // Link markup — BAC-8570 (items must stay real links) / BAC-8617 (no throw
+  // when the target needs a route param the current route does not provide)
+  // -------------------------------------------------------------------------
+
+  it('renders nav-link as an anchor built from the resolved path', () => {
+    const wrapper = getMountSideBar(createDefaultProps({ items: [linkItem] }))
+
+    expect(wrapper.find('[data-test-id="nav-link"]').element.tagName).toBe('A')
+    expect(mockSafeResolveRoute).toHaveBeenCalledWith(expect.anything(), { name: 'dashboard' })
+  })
+
+  it('renders nav-link without link markup when its target cannot be resolved', () => {
+    mockSafeResolveRoute.mockReturnValue(undefined)
+
+    const wrapper = getMountSideBar(createDefaultProps({ items: [linkItem] }))
+
+    testOn.existElement({ wrapper, testId: 'nav-link' })
+    expect(wrapper.find('[data-test-id="nav-link"]').element.tagName).not.toBe('A')
+  })
+
+  it('keeps an external item an anchor with its href', () => {
+    mockGetComputedNavLinkToProp.mockReturnValue({ to: null, href: 'https://example.com', target: '_blank' })
+
+    const wrapper = getMountSideBar(createDefaultProps({ items: [linkItem] }))
+    const navLink = wrapper.find('[data-test-id="nav-link"]')
+
+    expect(navLink.element.tagName).toBe('A')
+    expect(navLink.attributes('href')).toBe('https://example.com')
+    expect(mockSafeResolveRoute).not.toHaveBeenCalled()
   })
 
   // -------------------------------------------------------------------------
