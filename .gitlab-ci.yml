@@ -13,12 +13,15 @@ include:
     ref: master
   - project: common/gitlab-ci-templates
     file: "/rules/common-latest.yaml"
+  - project: common/gitlab-ci-templates
+    file: "/code-check/code-review/code-review-2.0.0.yaml"
 
 
 stages:
   - docker-build
   - generate_app_json
   - publish_to_argo
+  - code-review
 
 Check Image Tag:
   extends: .check_if_tag_exists
@@ -36,6 +39,12 @@ Build Image:
     - !reference [ .exclude_charts_and_mr_only, rules ]
     - !reference [ .exclude_charts_and_develop_only, rules ]
     - !reference [ .exclude_charts_and_main_only, rules ]
+
+code_review:
+  stage: code-review
+  extends: .run_code_review
+  variables:
+    PROJECT_LANGUAGE: "javascript"
 
 generate-changelog-with-master:
   extends: .generate-changelog-with-master

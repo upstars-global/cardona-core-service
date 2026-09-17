@@ -1,0 +1,50 @@
+{{- if eq .Values.dynamic.isDynamic "true" -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app.kubernetes.io/project: bo
+    app.kubernetes.io/component: httproute
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/brand: cardona
+    app.kubernetes.io/part-of: cardona
+    app.kubernetes.io/env: {{ .Values.desc.env }}
+
+spec:
+  parentRefs:
+    - name: {{ .Values.gateway.name }}
+      namespace: {{ .Values.gateway.namespace }}
+      {{- with .Values.gateway.sectionName }}
+      sectionName: {{ . }}
+      {{- end }}
+  hostnames:
+    - {{ include "ingressHostname" . }}
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: {{ .Release.Name }}
+          port: 80
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: ClientSettingsPolicy
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app.kubernetes.io/project: bo
+    app.kubernetes.io/component: httproute
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/brand: cardona
+    app.kubernetes.io/part-of: cardona
+    app.kubernetes.io/env: {{ .Values.desc.env }}
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: {{ .Release.Name }}
+  body:
+    maxSize: {{ .Values.gateway.clientSettings.maxBodySize | quote }}
+{{- end -}}
