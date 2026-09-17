@@ -25,24 +25,35 @@ import ItemActions from './fields/ItemActions.vue'
 
 defineOptions({ name: 'BaseListCell' })
 
-const props = defineProps<{
-  field: TableField
-  item: { raw: Record<string, unknown>; value: unknown }
-  cell: unknown
-  getUpdateRoute: (item: { id: string }) => object
-  getDetailsRoute: (item: { id: string }) => object
-  isShowYou: boolean
-  canUpdate: boolean
-  editingId: string | null
-  createPageName: string
-  detailsPageName: string
-  canCreate: boolean
-  canUpdateSeo: boolean
-  canUpdateItem: boolean
-  canRemoveItem: boolean
-  canCopyItem: boolean
-  config: IBaseListConfig
-}>()
+withDefaults(
+  defineProps<{
+    field: TableField
+    item: { raw: Record<string, unknown>; value: unknown }
+    cell: unknown
+    getUpdateRoute: (item: { id: string }) => object
+    getDetailsRoute: (item: { id: string }) => object
+    isShowYou?: boolean
+    canUpdate?: boolean
+    editingId: string | null
+    createPageName: string
+    detailsPageName: string
+    canCreate?: boolean
+    canUpdateSeo?: boolean
+    canUpdateItem?: boolean
+    canRemoveItem?: boolean
+    canCopyItem?: boolean
+    config: IBaseListConfig
+  }>(),
+  {
+    isShowYou: false,
+    canUpdate: false,
+    canCreate: false,
+    canUpdateSeo: false,
+    canUpdateItem: false,
+    canRemoveItem: false,
+    canCopyItem: false,
+  },
+)
 
 const emit = defineEmits<{
   'edit-position': [item: Record<string, unknown>, val: number]
@@ -144,7 +155,7 @@ const emit = defineEmits<{
 
   <PositionField
     v-else-if="field.type === ListFieldType.Priority"
-    :id="(item.raw.id as string)"
+    :id="item.raw.id as string"
     :position="cell"
     :size="field.size"
     :can-update="canUpdate"
@@ -171,7 +182,7 @@ const emit = defineEmits<{
 
   <ImageDetailField
     v-else-if="field.type === ListFieldType.ImageFull"
-    :id="(item.raw.id as string)"
+    :id="item.raw.id as string"
     :image-path="(item.raw[field.key] as any)?.imagePath"
     :size="field.size"
     :compression-for-preview="(item.raw[field.key] as any)?.compressionForPreview || 0"
@@ -204,7 +215,7 @@ const emit = defineEmits<{
 
   <ItemActions
     v-if="field.key === 'actions'"
-    :key="(item.raw as any)"
+    :key="item.raw as any"
     :item="item.raw"
     :create-page-name="createPageName"
     :details-page-name="detailsPageName"
@@ -220,7 +231,7 @@ const emit = defineEmits<{
     @on-toggle-status="emit('on-toggle-status', $event)"
   >
     <template
-      v-if="$slots['prependActionItem']"
+      v-if="$slots.prependActionItem"
       #[BaseListSlots.PrependActionItem]
     >
       <slot
@@ -239,7 +250,7 @@ const emit = defineEmits<{
     </template>
 
     <template
-      v-if="$slots['appendActionItem']"
+      v-if="$slots.appendActionItem"
       #[BaseListSlots.AppendActionItem]
     >
       <slot
