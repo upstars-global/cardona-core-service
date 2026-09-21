@@ -3,6 +3,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    external-dns.alpha.kubernetes.io/controller: "ignore"
     cert-manager.io/cluster-issuer: "letsencrypt-certs"
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
   name: {{ .Release.Name }}
