@@ -44,7 +44,69 @@ code_review:
   stage: code-review
   extends: .run_code_review
   variables:
-    PROJECT_LANGUAGE: "javascript"
+    PROJECT_LANGUAGE: "typescript"
+    REVIEWER_DEBUG: "true"
+    REVIEWER_EXTRA_PROMPT: |
+      PROJECT CONTEXT — read this before applying the generic checklist above.
+
+      This is a Vue 3 + TypeScript + Pinia + Vuetify 3 backoffice SPA (gambling operations:
+      players, payouts, bonuses, games, analytics). There is NO server code and NO React here.
+      Ignore every React-specific rule (dangerouslySetInnerHTML, useMemo/useCallback) and every
+      backend-specific rule (response DTOs, over-exposed database records, dependency injection of
+      HTTP/DB clients) — they do not apply and reporting them is noise. Their Vue equivalents
+      (v-html, lost reactivity, missing onUnmounted cleanup) are in the guide named below.
+
+      The code is built on the private core library `cardona-core-service`, which supplies
+      ApiService, the permission system, base stores, base components (BaseList, BaseSection, form
+      controls) and shared models. Components, composables and Vue globals are AUTO-IMPORTED (see
+      vite.config.mts, auto-imports.d.ts, components.d.ts) — a symbol used without an import
+      statement is almost certainly auto-imported. Never report "undefined symbol", "missing import"
+      or "unknown component" without checking there first.
+
+      BEFORE REVIEWING, use the repository — you have file access:
+      1. Read `ai-review/review-guide.md`. It is the authoritative rule set for this codebase and
+         takes precedence over the generic checklist wherever the two disagree.
+      2. `knowledge/` is an Obsidian wiki of NON-OBVIOUS invariants and silent-failure traps
+         (Russian prose, English identifiers). Before flagging anything about BaseList, section
+         routing, permissions, models or stores, read the matching page under
+         `knowledge/patterns/`, `knowledge/standards/`, `knowledge/configs/`, `knowledge/models/`
+         or `knowledge/stores/`. In panels the core's own wiki is at
+         `node_modules/cardona-core-service/knowledge/` when dependencies are installed.
+      3. Open the whole changed file, not only the diff hunk, before judging a change.
+      4. To judge blast radius, grep the repository for consumers of a changed export.
+         Do NOT use `graphify-out/` — it is a stale graph of the unit tests, not of the app.
+
+      HIGHEST-VALUE CHECKS (full versions with rationale in the guide):
+      - ApiService called outside a Pinia store action; a literal URL instead of a
+        `App.V2.<Entity>.<Method>` type string.
+      - A new route, page or action with no `abilityCan` / `abilityCanInGroup` guard, with a level
+        below what the operation needs (0 none, 1 view, 2 add, 3 edit, 4 delete), or guarding only
+        the button while the action stays reachable — critical in a backoffice.
+      - `<BaseList :config>` written as `:list-config`; BaseListConfig without an explicit
+        `permissionKey`; without `pageName` when `entityName` is not the route's PascalCase prefix;
+        a section route without an explicit `permission`. All of these fail silently.
+      - Lost reactivity (destructured props / reactive objects / store state), prop mutation,
+        store state mutated outside an action, side effects in computed.
+      - v-html bound to API data; listeners, timers and Centrifuge subscriptions without teardown.
+      - Money as floats, mixed currency units, timezone-naive date handling.
+      - Irreversible actions (payout approve/reject, bulk ops, delete) without confirmation or
+        without disabling the control while the request is in flight.
+      - PII (player email, phone, document number, token) sent to console/Sentry or stored in
+        localStorage. `no-console` only warns under NODE_ENV=production, so the linter misses it.
+      - A plain object literal where a model class exists; `any` casts (no-explicit-any is OFF here).
+
+      OUTPUT CONTRACT — every comment, in this order:
+      - `path/to/file.ts:LINE`
+      - `severity: critical | warning | info` and `confidence: high | medium | low`
+      - one sentence naming the defect
+      - a concrete failure scenario (which input or state leads to which wrong behaviour), not a
+        restatement of the rule
+      - the fix, as a GitLab `suggestion` block whenever it is a 1-3 line change
+      Coverage is deliberately broad: report anything that looks like a real defect, but mark
+      uncertain findings `confidence: low` instead of asserting them. Collapse repeated instances of
+      one issue into a single comment listing the locations. Comment only on lines the merge request
+      changed, unless a changed line breaks untouched code — then say which code and why.
+      Do not report anything ESLint or Prettier already enforces. Write comments in English.
 
 generate-changelog-with-master:
   extends: .generate-changelog-with-master
