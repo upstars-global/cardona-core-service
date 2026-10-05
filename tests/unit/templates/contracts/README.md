@@ -1,11 +1,3 @@
----
-title: Контракт-тестирование BaseList/BaseSection
-type: pattern
-source: tests/unit/templates/contracts/
-tags: []
-updated: 2026-10-05
----
-
 # Контракт-тестирование BaseList/BaseSection
 
 `createBaseListContract`/`createBaseSectionContract` генерируют стандартный набор
@@ -68,11 +60,3 @@ createBaseListContract({
   },
 })
 ```
-
-## Связанные
-
-- [[model-class-pattern]] — модели-классы, которые контракт инстанцирует напрямую.
-- [[pinia-store-pattern]] — `baseStoreCore`/кастомные сторы, подменяемые моками.
-- [[access-control]] — `abilityCan`; `basePermissions` (мокает
-  `createBasePermissionsMock`) — отдельный, более узкий механизм для create/update/
-  remove/seo-флагов секции.
