@@ -1,6 +1,30 @@
 import { type BaseWrapper, type VueWrapper, mount } from '@vue/test-utils'
+import { defineComponent } from 'vue'
 
 export const getSelectorTestId = (testId: string): string => `[data-test-id="${testId}"]`
+
+/**
+ * Runs a composable inside a real Vue setup() context, then discards the throwaway component.
+ * Needed for production composables like `useDemoList` that call `useI18n()`/other
+ * injection-dependent APIs internally — calling them as bare functions at module/describe scope
+ * (outside any component) throws "Must be called at the top of a setup function", even though
+ * `config.global.plugins` (i18n/pinia/vuetify) is already set up for every test-utils mount.
+ */
+export function withSetup<T>(composable: () => T): T {
+  let result!: T
+
+  const wrapper = mount(defineComponent({
+    setup() {
+      result = composable()
+
+      return () => null
+    },
+  }))
+
+  wrapper.unmount()
+
+  return result
+}
 
 export const getConfig = (props: Record<string, unknown>, global?: Record<string, unknown>, slots?: Record<string, unknown>) => ({ props, global, slots })
 
@@ -55,4 +79,3 @@ export const clickTrigger = async (params: GetWrapperElementPrams) => {
 export const setValue = async (wrapper: VueWrapper, value: string) => {
   await wrapper.setValue(value)
 }
-

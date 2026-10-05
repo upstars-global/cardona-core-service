@@ -4,7 +4,7 @@ import type { UseEntityType } from '../../../../src/@model/templates/baseSection
 import { PageType } from '../../../../src/@model/templates/baseSection'
 import { BaseSectionConfig } from '../../../../src/@model/templates/baseList'
 import DefaultBaseSection from '../../../../src/components/templates/BaseSection/types/default.vue'
-import { setMountComponent } from '../../utils'
+import { setMountComponent, withSetup } from '../../utils'
 import { testOn } from '../shared-tests/test-case-generator'
 import { mockModal } from '../../mocks/modal-provide-config'
 import { basePermissionsMock, mockBaseStoreCore, router } from '../../mocks/base-section/utils'
@@ -54,7 +54,7 @@ export interface BaseSectionContractConfig {
 
 export function createBaseSectionContract(config: BaseSectionContractConfig) {
   const mountComponent = setMountComponent(DefaultBaseSection)
-  const { entityName, EntityFormClass, useStore } = config.useEntity()
+  const { entityName, EntityFormClass, useStore } = withSetup(config.useEntity)
 
   if (useStore && !config.customStoreMock) {
     throw new Error(
@@ -179,7 +179,7 @@ export function createBaseSectionContract(config: BaseSectionContractConfig) {
 
         if (readConfig.triggersOnReceiveEntity) {
           it('passes the read response through onReceiveEntity', async () => {
-            const { onReceiveEntity } = config.useEntity()
+            const { onReceiveEntity } = withSetup(config.useEntity)
 
             mount({ pageType: PageType.Update, entityId, withReadAction: true })
 

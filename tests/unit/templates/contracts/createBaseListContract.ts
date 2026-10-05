@@ -2,7 +2,7 @@ import { unref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
 import type { UseListType } from '../../../../src/@model/templates/baseList'
-import { setMountComponent } from '../../utils'
+import { setMountComponent, withSetup } from '../../utils'
 import DefaultBaseList from '../../../../src/components/templates/BaseList/types/default.vue'
 import { testOn } from '../shared-tests/test-case-generator'
 import { mockModal } from '../../mocks/modal-provide-config'
@@ -89,7 +89,7 @@ const getFieldKey = (field: { key: string }) => field.key
 export function createBaseListContract(config: BaseListContractConfig) {
   const mountComponent = setMountComponent(DefaultBaseList)
 
-  const { entityName, fields: rawFields, useStore, ListItemModel } = config.useList()
+  const { entityName, fields: rawFields, useStore, ListItemModel } = withSetup(config.useList)
   const fields = unref(rawFields) as Array<{ key: string }>
 
   // Mirrors what baseStoreCore.fetchEntityList does in production (maps raw API items through
@@ -275,18 +275,24 @@ export function createBaseListContract(config: BaseListContractConfig) {
       }
 
       if (config.actions.multiDelete) {
-        it('calls multipleDeleteEntity for multiple selected items', async () => {
+        it('calls multipleDeleteEntity when 2+ items are selected', async () => {
           mockBaseStoreCore.fetchEntityList.mockResolvedValue({ list: [renderedItem], total: 1 })
 
           const wrapper = mountComponent(props, global)
 
           await flushPromises()
 
-          wrapper.vm.selectedItems = [renderedItem]
-          await wrapper.vm.onClickMultipleRemove?.({ hide: vi.fn(), commentToRemove: '' })
-          await flushPromises()
+          const items = [renderedItem, { ...renderedItem, id: `${renderedItem.id}-2` }]
 
-          expect(mockBaseStoreCore.multipleDeleteEntity).toHaveBeenCalled()
+          wrapper.vm.items = items
+          wrapper.vm.onRowSelected(items)
+          await wrapper.vm.$nextTick()
+
+          await wrapper.vm.onClickDeleteMultiple()
+
+          expect(mockBaseStoreCore.multipleDeleteEntity).toHaveBeenCalledWith(
+            expect.objectContaining({ type: entityName, ids: items.map(item => item.id) }),
+          )
         })
       }
     })

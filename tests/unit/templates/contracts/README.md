@@ -7,15 +7,17 @@ Vitest-спеков (store state, рендер полей, CRUD, permission-ге
 
 ## Статус (2026-10-05)
 
-Готово и покрыто тестами (коммит `ff8ffd35`, branch `test_complex`): консолидация
-`mocks/baselist` → `mocks/base-list`, общие фабрики моков в `tests/unit/mocks/shared/`
+Готово и покрыто тестами (branch `test_complex`): консолидация `mocks/baselist` →
+`mocks/base-list`, общие фабрики моков в `tests/unit/mocks/shared/`
 (`createStoreMockFactory`, `createLoaderStoreMock`, `createBaseSectionErrorsStoreMock`,
-`createBasePermissionsMock`), оба генератора + pilot-спеки.
+`createBasePermissionsMock`), оба генератора, pilot-спеки на синтетических фикстурах,
+и pilot на реальной продакшен-секции `src/pages/demo`
+(`tests/unit/pages/demo/demoList.contract.spec.ts`,
+`tests/unit/pages/demo/demoSection.contract.spec.ts`) — включая ветку `customStoreMock`
+на реальном `useDemoStore`.
 
-Осталось: pilot на `src/pages/demo` (первый реальный тест ветки `customStoreMock` —
-`useDemoSection` использует `useDemoStore`), миграция 2-3 реальных секций cardona
-(`gifts`/`players` как чистый `baseStoreCore`, `payouts` как стресс-тест
-`actions.fetch: 'custom'`), документация в
+Осталось: миграция 2-3 реальных секций cardona (`gifts`/`players` как чистый
+`baseStoreCore`, `payouts` как стресс-тест `actions.fetch: 'custom'`), документация в
 `.claude/skills/write-tests/references/advanced-patterns.md`, общий chrome-спек
 export/search/settings, проверка i18n-полноты лейблов. `SideBarModel` — опционально,
 вне v1 (только `promo/banners` его использует).
@@ -45,6 +47,26 @@ export/search/settings, проверка i18n-полноты лейблов. `Si
 - **Select — никогда не `ListFieldType`** (`tableFields.ts`), только `SelectBaseField`/
   `MultiSelectBaseField` на стороне формы. Проверка `selectFields` поэтому живёт в
   `createBaseSectionContract`, не в `createBaseListContract`.
+- **Композиции секции (`useList`/`useEntity`), которые вызывают `useI18n()`/другие
+  injection-зависимые API, нельзя вызвать как голую функцию** — падает с "Must be called
+  at the top of a setup function", даже если `config.global.plugins` (i18n/pinia) уже
+  подключены для моунта. Оба генератора оборачивают вызов в `withSetup()`
+  (`tests/unit/utils.ts`) — монтирует одноразовый компонент, вызывает композабл внутри
+  его `setup()`, забирает результат, демонтирует.
+- **Multi-delete в `BaseList` триггерится не напрямую**, а через
+  `wrapper.vm.onRowSelected(items)` + `wrapper.vm.onClickDeleteMultiple()`; ветка на
+  `multipleDeleteEntity` срабатывает только при 2+ выбранных id
+  (`allSelectedIds` из `baseListSelectionStore`), один id идёт в обычный `deleteEntity`.
+- **Формы с SEO/локализацией (`DemoForm` и, вероятно, другие) требуют мок `useUserStore`**
+  с согласованными `getSelectedProject.locales`/`.mainLocale` — `getTranslationForm`
+  строит `fieldTranslations` по `locales`, а `transformFormData` на submit пишет в
+  `fieldTranslations[key][mainLocale]` (дефолт `'ru'`); рассинхрон между ними падает
+  с "Cannot set properties of undefined", а не тихо игнорируется.
+- **Pilot на `demo` уже нашёл реальный пример того, что должен ловить этот механизм**:
+  несколько `TableField.key` в `useDemoList` (`shortId`, `nameSlot`, `innerLink`,
+  `sumPeriod`, `winBack`) не соответствуют ни одному свойству `DemoListItem` — рендерят
+  пустую ячейку сегодня. Это не баг демо-страницы (вне скоупа чинить), но подтверждает,
+  зачем вообще нужен `expectedFieldValues`: без него такие расхождения проходят молча.
 
 ## Пример
 
