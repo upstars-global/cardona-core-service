@@ -59,6 +59,8 @@ declare module 'vue-router/auto/routes' {
     'error404': RouteRecordInfo<'error404', '/error/404', Record<never, never>, Record<never, never>>,
     'forgot-password': RouteRecordInfo<'forgot-password', '/forgot-password', Record<never, never>, Record<never, never>>,
     'login': RouteRecordInfo<'login', '/login', Record<never, never>, Record<never, never>>,
+    'logs-list': RouteRecordInfo<'logs-list', '/logs/list', Record<never, never>, Record<never, never>>,
+    'logs-password-change': RouteRecordInfo<'logs-password-change', '/logs/password-change', Record<never, never>, Record<never, never>>,
     'not-authorized': RouteRecordInfo<'not-authorized', '/not-authorized', Record<never, never>, Record<never, never>>,
     'register': RouteRecordInfo<'register', '/register', Record<never, never>, Record<never, never>>,
     'storybook': RouteRecordInfo<'storybook', '/storybook', Record<never, never>, Record<never, never>>,
