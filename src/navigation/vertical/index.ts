@@ -18,7 +18,8 @@ export default [
   },
   {
     title: 'Component Library',
-    to: { name: 'storybook' },
+    href: '/storybook/index.html',
+    target: '_blank',
     icon: { icon: 'tabler-book' },
   },
 ] as VerticalNavItems
