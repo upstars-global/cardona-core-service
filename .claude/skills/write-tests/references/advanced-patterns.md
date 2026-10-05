@@ -62,6 +62,34 @@ const getSelectorCField = (name: string) => `td[data-c-field="${name}"]`
 testOn.equalTextValue({ wrapper, selector: getSelectorCField('name') }, 'Item 1')
 ```
 
+### Contract generators — prefer these over a hand-written spec
+
+For a section that already has a real `useList()`/`useEntity()`, `createBaseListContract`/
+`createBaseSectionContract` (`tests/unit/templates/contracts/`) generate the store-state,
+field-rendering, CRUD and permission-gate tests above from a ~40-line config instead of a
+hand-written spec file — derived directly from the section's real composable, not duplicated.
+Full gotchas (model-mock tautology risk, `vi.mock` TDZ, per-action store resolution,
+`withSetup()` for `useI18n()`-dependent composables) are in
+`tests/unit/templates/contracts/README.md` — read it before writing a new contract config.
+Reach for a hand-written spec only for section-specific business logic the generators
+explicitly don't cover (custom `onSerializeFormCb`/`validationErrorCb`, row-level
+`canUpdateCb`/`canRemoveCb` guards, polymorphic form fields).
+
+```typescript
+import { createBaseListContract } from 'cardona-core-service/tests/unit/templates/contracts/createBaseListContract'
+import { useGiftsList } from '@/pages/gifts/gifts/list/useSection'
+
+createBaseListContract({
+  useList: useGiftsList,
+  sampleBackendResponse: { id: '1', templateTitle: 'Gift', isActive: true, period: 90 },
+  expectedFieldValues: { templateTitle: 'Gift' }, // independent ground truth, not an echo of the mock
+  actions: {
+    fetch: { expect: 'fetchEntityList', assertPayload: true },
+    toggleStatus: { expect: 'baseStoreCore.updateEntity' },
+  },
+})
+```
+
 ---
 
 ## Permission Helper Tests

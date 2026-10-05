@@ -16,11 +16,16 @@ Vitest-спеков (store state, рендер полей, CRUD, permission-ге
 `tests/unit/pages/demo/demoSection.contract.spec.ts`) — включая ветку `customStoreMock`
 на реальном `useDemoStore`.
 
-Осталось: миграция 2-3 реальных секций cardona (`gifts`/`players` как чистый
-`baseStoreCore`, `payouts` как стресс-тест `actions.fetch: 'custom'`), документация в
-`.claude/skills/write-tests/references/advanced-patterns.md`, общий chrome-спек
-export/search/settings, проверка i18n-полноты лейблов. `SideBarModel` — опционально,
-вне v1 (только `promo/banners` его использует).
+Документация расширена в `.claude/skills/write-tests/references/advanced-patterns.md`
+(подсекция под "BaseList Component Tests"); примеры конфигов для реальных секций `cardona`
+(`gifts`/`payouts`/`players`) — ниже, в "Stage 5 — примеры на реальных секциях".
+
+**Заблокировано (не моё решение):** реальный запуск этих тестов в самом репозитории `cardona`
+требует релиза этой ветки (`cardona` зависит от `cardona-core-service` как от зафиксированного
+GitHub-тега, сейчас `v8.4.5` — генераторов там ещё нет) — конфиги ниже справочные,
+не выполнялись в `cardona`. Общий chrome-спек export/search/settings и проверка i18n-полноты
+лейблов — не реализованы ни разу. `SideBarModel` — опционально, вне v1 (только
+`promo/banners` его использует).
 
 ## Что неочевидно
 
@@ -73,12 +78,83 @@ export/search/settings, проверка i18n-полноты лейблов. `Si
 ```ts
 createBaseListContract({
   useList: useGiftsList,
-  sampleBackendResponse: { id: 1, name: 'Item 1', minutes: 90 },
-  expectedFieldValues: { minutesLabel: '1h 30m' }, // независимый ground truth
+  sampleBackendResponse: { id: '1', templateTitle: 'New Year gift', period: 90, isActive: true },
+  expectedFieldValues: { timeForActivation: '1h 30m' }, // независимый ground truth
   actions: {
     fetch: { expect: 'fetchEntityList', assertPayload: true },
-    delete: { expect: 'deleteEntity', refetchesAfter: true },
     toggleStatus: { expect: 'baseStoreCore.updateEntity' },
+  },
+})
+```
+
+## Stage 5 — примеры на реальных секциях cardona (referencе, пока не executable)
+
+**Важно:** `cardona` подключает `cardona-core-service` как зафиксированную GitHub-зависимость
+(`v8.4.5` на момент написания), которая не содержит генераторы из этой ветки. Конфиги ниже
+основаны на реальном коде `cardona` (прочитанном только для справки — сам репозиторий `cardona`
+не редактировался) и показывают, как будет выглядеть подключение после релиза; реально выполнить
+их в `cardona` можно будет только после merge/tag этой ветки и обновления зависимости.
+
+### `gifts` — чистый `baseStoreCore`, реальный пример расхождения модели
+
+`src/pages/gifts/gifts/list/useSection.ts`: `GiftsListItem.title = data?.templateTitle` (поле
+модели называется `title`), но `TableField.key = 'templateTitle'` — ключ в конфиге не совпадает
+с именем свойства модели. Сегодня это рендерит пустую ячейку; `expectedFieldValues` это бы
+поймал сразу (ровно та же природа расхождения, что нашёл pilot на `demo` — см. выше).
+
+```ts
+createBaseListContract({
+  useList: useGiftsList,
+  sampleBackendResponse: { id: '1', templateTitle: 'New Year gift', period: 90, isActive: true },
+  expectedFieldValues: {
+    timeForActivation: '1h 30m', // GiftsListItem.timeForActivation = minutesToHumanReadable(period)
+    // templateTitle сюда сознательно не добавлен — реальный рендер пуст, так и должно быть,
+    // пока расхождение title/templateTitle не исправлено в самой секции
+  },
+  actions: {
+    fetch: { expect: 'fetchEntityList', assertPayload: true },
+    toggleStatus: { expect: 'baseStoreCore.updateEntity' },
+  },
+})
+```
+
+### `payouts` — стресс-тест полностью кастомного стора
+
+`src/pages/payouts/useSection.ts` → `useStore: usePayoutsStore`. Стор переопределяет
+`fetchEntityList` полностью (фанаутит `Promise.all` по проектам, фильтрует/сортирует на
+клиенте) — никакого стандартного `{ type, data: { perPage, page, filter, sort } }` payload.
+Колонка `project` условна (`useUserStore().userProjects.length > 1`) — фикс-поля ниже покрывают
+только безусловный набор.
+
+```ts
+import { usePayoutsStore } from '@/stores/payouts'
+
+const payoutsStoreMock = createStoreMockFactory(['fetchEntityList'] as const)
+
+vi.mock('@/stores/payouts', () => ({ usePayoutsStore: () => payoutsStoreMock.mock }))
+
+createBaseListContract({
+  useList: useList, // из src/pages/payouts/useSection.ts
+  customStoreMock: payoutsStoreMock.mock,
+  sampleBackendResponse: { id: '1', playerId: 'p1', amount: 500, vipStatus: 'gold' },
+  actions: {
+    fetch: 'custom', // не assert-ить payload — он не стандартный
+  },
+})
+```
+
+### `players` — минимальный baseline (list-only, без формы, без Select)
+
+`src/pages/players/players/useSection.ts` — только `useList()`, без `useEntity()`, без
+кастомного стора, без единого Select-поля. Хороший дефолтный кейс для проверки, что контракт
+не требует ничего лишнего, когда у секции нет форм/кастомных сторов.
+
+```ts
+createBaseListContract({
+  useList, // из src/pages/players/players/useSection.ts
+  sampleBackendResponse: { id: '1', name: 'Player', nickname: 'pl1', vipStatus: 'silver' },
+  actions: {
+    fetch: { expect: 'fetchEntityList', assertPayload: true },
   },
 })
 ```
