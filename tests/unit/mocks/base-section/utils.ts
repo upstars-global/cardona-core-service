@@ -9,6 +9,16 @@ import { mockModal } from '../../mocks/modal-provide-config'
 
 import { setMountComponent } from '../../utils'
 import { BaseSectionConfig } from '../../../../src/@model/templates/baseList'
+import { createStoreMockFactory } from '../shared/createStoreMockFactory'
+import { createBasePermissionsMock } from '../shared/createBasePermissionsMock'
+
+export const basePermissionsMock = createBasePermissionsMock({
+  canCreateSeo: true,
+  canUpdate: true,
+  canUpdateSeo: false,
+  canRemove: false,
+  canViewSeo: true,
+})
 
 const routes = [
   { path: '/mock-form-list', name: 'mock-formList', component: { template: '<div>Mock Form List</div>' } },
@@ -47,17 +57,16 @@ export const useMockForm = (): UseEntityType<MockForm> => {
   }
 }
 
-export const createEntity = vi.fn()
-export const updateEntity = vi.fn()
-export const readEntity = vi.fn()
-export const deleteEntity = vi.fn()
+const baseStoreCoreFactory = createStoreMockFactory([
+  'createEntity',
+  'updateEntity',
+  'readEntity',
+  'deleteEntity',
+] as const)
 
-export const mockBaseStoreCore = {
-  createEntity,
-  updateEntity,
-  readEntity,
-  deleteEntity,
-}
+export const mockBaseStoreCore = baseStoreCoreFactory.mock
+
+export const { createEntity, updateEntity, readEntity, deleteEntity } = mockBaseStoreCore
 
 export const mockStore = createStore({
   state: {

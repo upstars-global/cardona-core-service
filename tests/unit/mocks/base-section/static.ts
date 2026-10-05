@@ -1,14 +1,10 @@
 import { vi } from 'vitest'
-import { goMock, mockBaseStoreCore, pushMock } from './utils'
+import { basePermissionsMock, goMock, mockBaseStoreCore, pushMock } from './utils'
 
 vi.mock('../../../../src/helpers/base-permissions', () => ({
-  basePermissions: vi.fn(() => ({
-    canCreateSeo: true,
-    canUpdate: true,
-    canUpdateSeo: false,
-    canRemove: false,
-    canViewSeo: true,
-  })),
+  // Lazily deref basePermissionsMock (imported from ./utils) only when actually called —
+  // referencing it eagerly here races the cross-file import against vi.mock's hoisting.
+  basePermissions: vi.fn((...args: unknown[]) => basePermissionsMock.basePermissions(...args)),
 }))
 
 vi.mock('../../../../src/components/templates/BaseSection/composables/tabs', () => ({

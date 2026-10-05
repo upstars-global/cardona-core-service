@@ -1,16 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
-import '../../../mocks/baselist/static-mock'
+import '../../../mocks/base-list/static-mock'
 import { createPinia, setActivePinia } from 'pinia'
 import { flushPromises } from '@vue/test-utils'
 import BaseList from '../../../../../src/components/templates/BaseList/index.vue'
 import { setMountComponent } from '../../../utils'
 import DefaultBaseList from '../../../../../src/components/templates/BaseList/types/default.vue'
 import { testOn } from '../../../templates/shared-tests/test-case-generator'
-import { mockBaseStoreCore } from '../../../mocks/baselist/utils'
 import {
   defaultProps,
   global,
+  mockBaseStoreCore,
   mockCustomStore,
   useListForCustomStore,
 } from '../../../mocks/base-list/utils'

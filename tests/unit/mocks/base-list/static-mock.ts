@@ -1,11 +1,13 @@
 import { vi } from 'vitest'
+import { createLoaderStoreMock } from '../shared/createLoaderStoreMock'
 import { mockBaseStoreCore } from './utils'
 
 export const projects = [
   { id: 'p1', alias: 'alpha', name: 'Project A' },
   { id: 'p2', alias: 'beta', name: 'Project B' },
 ]
-export const isLoadingValue = false
+
+export const loaderStoreMock = createLoaderStoreMock()
 
 vi.mock('../../../../src/stores/appConfigCore', () => {
   return {
@@ -16,9 +18,7 @@ vi.mock('../../../../src/stores/appConfigCore', () => {
 })
 
 vi.mock('../../../../src/stores/loader', () => ({
-  useLoaderStore: () => ({
-    isLoadingEndpoint: () => isLoadingValue,
-  }),
+  useLoaderStore: () => loaderStoreMock.mock,
 }))
 
 vi.mock('../../../../src/stores/user', () => {

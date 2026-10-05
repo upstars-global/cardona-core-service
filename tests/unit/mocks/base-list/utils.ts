@@ -8,6 +8,7 @@ import { clickTrigger, setMountComponent } from '../../utils'
 import DefaultBaseList from '../../../../src/components/templates/BaseList/types/default.vue'
 import CompactBaseList from '../../../../src/components/templates/BaseList/types/compact.vue'
 import { testOn } from '../../templates/shared-tests/test-case-generator'
+import { createStoreMockFactory } from '../shared/createStoreMockFactory'
 
 export const exportDataMock = () => {
   if (!window.URL.createObjectURL) {
@@ -108,13 +109,18 @@ export const useListForCustomStore = customStore => () => {
   }
 }
 
-export const updateEntity = vi.fn()
-export const fetchReport = vi.fn()
-export const toggleStatusEntity = vi.fn()
-export const deleteEntity = vi.fn()
-export const multipleDeleteEntity = vi.fn()
+const baseStoreCoreFactory = createStoreMockFactory([
+  'fetchEntityList',
+  'updateEntity',
+  'multipleDeleteEntity',
+  'fetchReport',
+  'toggleStatusEntity',
+  'deleteEntity',
+] as const)
 
-export const fetchEntityList = vi.fn().mockResolvedValue({
+export const mockBaseStoreCore = baseStoreCoreFactory.mock
+
+mockBaseStoreCore.fetchEntityList.mockResolvedValue({
   list: [{
     id: 1,
     name: 'Item 1',
@@ -124,25 +130,29 @@ export const fetchEntityList = vi.fn().mockResolvedValue({
   total: 1,
 })
 
-export const mockBaseStoreCore = {
+export const {
   fetchEntityList,
   updateEntity,
   multipleDeleteEntity,
   fetchReport,
   toggleStatusEntity,
   deleteEntity,
-}
+} = mockBaseStoreCore
 
-export const mockCustomStore = {
-  fetchEntityList: vi.fn().mockResolvedValue({
-    list: [],
-    total: 101,
-  }),
-  updateEntity: vi.fn(),
-  fetchReport: vi.fn(),
-  toggleStatusEntity: vi.fn(),
-  deleteEntity: vi.fn(),
-}
+const customStoreFactory = createStoreMockFactory([
+  'fetchEntityList',
+  'updateEntity',
+  'fetchReport',
+  'toggleStatusEntity',
+  'deleteEntity',
+] as const)
+
+export const mockCustomStore = customStoreFactory.mock
+
+mockCustomStore.fetchEntityList.mockResolvedValue({
+  list: [],
+  total: 101,
+})
 export const modalSpy = vi.spyOn(mockModal, 'showModal')
 
 export const global = {
