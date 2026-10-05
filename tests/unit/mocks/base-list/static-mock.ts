@@ -2,10 +2,17 @@ import { vi } from 'vitest'
 import { createLoaderStoreMock } from '../shared/createLoaderStoreMock'
 import { mockBaseStoreCore } from './utils'
 
-export const projects = [
+// vi.hoisted guarantees this runs as part of the same hoisting pass as the vi.mock calls below,
+// in declaration order — a plain `const` here raced a transitive consumer that calls
+// useUserStore() this early (e.g. a Pinia store module whose state() factory calls it eagerly),
+// throwing "Cannot access 'projects' before initialization" in real-world import graphs.
+// (vi.hoisted's result can't be exported directly — Vitest rejects `export const x = vi.hoisted(...)`.)
+const projects = vi.hoisted(() => [
   { id: 'p1', alias: 'alpha', name: 'Project A' },
   { id: 'p2', alias: 'beta', name: 'Project B' },
-]
+])
+
+export { projects }
 
 export const loaderStoreMock = createLoaderStoreMock()
 

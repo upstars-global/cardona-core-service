@@ -1,7 +1,7 @@
 import { unref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
-import type { UseListType } from '../../../../src/@model/templates/baseList'
+import type { BaseListConfig, UseListType } from '../../../../src/@model/templates/baseList'
 import { setMountComponent, withSetup } from '../../utils'
 import DefaultBaseList from '../../../../src/components/templates/BaseList/types/default.vue'
 import { testOn } from '../shared-tests/test-case-generator'
@@ -25,8 +25,14 @@ export interface DeleteActionConfig {
 
 export interface ToggleStatusActionConfig {
 
-  /** Always baseStoreCore, regardless of a custom useStore — see BaseList/types/default.vue onClickToggleStatus. */
-  expect: 'baseStoreCore.updateEntity'
+  /**
+   * Always baseStoreCore, regardless of a custom useStore — see BaseList/types/default.vue
+   * onClickToggleStatus. Which action depends on the section's own listConfig:
+   * `withDeactivationBySpecificAction: true` routes through `toggleStatusEntity` instead of the
+   * default `updateEntity` (confirmed in default.vue — the two are not interchangeable, and
+   * which one a section uses is a property of its BaseListConfig, not of this generator).
+   */
+  expect: 'baseStoreCore.updateEntity' | 'baseStoreCore.toggleStatusEntity'
 }
 
 export interface MultiDeleteActionConfig {
@@ -78,6 +84,14 @@ export interface BaseListContractConfig {
    * resulting mock object here so the contract has something to assert against.
    */
   customStoreMock?: Record<string, ActionMock>
+
+  /**
+   * The section's own BaseListConfig overrides (e.g. withDeactivationBySpecificAction,
+   * withExport, withSettings). useList() carries no config — it's set independently by the
+   * page (see e.g. src/pages/demo/list/index.vue) — so without this the contract always mounts
+   * with a minimal generic config, silently missing any config-flag-dependent behavior.
+   */
+  listConfig?: ConstructorParameters<typeof BaseListConfig>[0]
 }
 
 const getFieldKey = (field: { key: string }) => field.key
@@ -107,6 +121,7 @@ export function createBaseListContract(config: BaseListContractConfig) {
       filterList: [],
       loadingEndpointArr: [],
       loadingOnlyByList: false,
+      ...config.listConfig,
     },
   }
 
@@ -129,6 +144,7 @@ export function createBaseListContract(config: BaseListContractConfig) {
       mockBaseStoreCore.fetchEntityList.mockReset()
       mockBaseStoreCore.deleteEntity.mockReset()
       mockBaseStoreCore.updateEntity.mockReset()
+      mockBaseStoreCore.toggleStatusEntity.mockReset()
       mockBaseStoreCore.multipleDeleteEntity.mockReset()
     })
 
@@ -263,7 +279,13 @@ export function createBaseListContract(config: BaseListContractConfig) {
       }
 
       if (config.actions.toggleStatus) {
-        it('always calls baseStoreCore.updateEntity for toggle status, even with a custom store', async () => {
+        const toggleStatusConfig = config.actions.toggleStatus
+
+        const toggleStatusAction = toggleStatusConfig.expect === 'baseStoreCore.toggleStatusEntity'
+          ? mockBaseStoreCore.toggleStatusEntity
+          : mockBaseStoreCore.updateEntity
+
+        it(`always calls ${toggleStatusConfig.expect}, even with a custom store`, async () => {
           mockBaseStoreCore.fetchEntityList.mockResolvedValue({ list: [renderedItem], total: 1 })
 
           const wrapper = mountComponent(props, global)
@@ -273,7 +295,7 @@ export function createBaseListContract(config: BaseListContractConfig) {
           await wrapper.vm.onClickToggleStatus({ id: renderedItem.id, isActive: true })
           await flushPromises()
 
-          expect(mockBaseStoreCore.updateEntity).toHaveBeenCalledWith(
+          expect(toggleStatusAction).toHaveBeenCalledWith(
             expect.objectContaining({ type: entityName }),
           )
 
