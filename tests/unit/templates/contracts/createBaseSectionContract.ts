@@ -8,6 +8,9 @@ import { setMountComponent, withSetup } from '../../utils'
 import { testOn } from '../shared-tests/test-case-generator'
 import { mockModal } from '../../mocks/modal-provide-config'
 import { basePermissionsMock, mockBaseStoreCore, router } from '../../mocks/base-section/utils'
+import { BaseField } from '../../../../src/@model/templates/baseField'
+import { i18n } from '../../../../src/plugins/i18n'
+import { looksLikeI18nKey } from './i18nChecks'
 
 type ActionMock = ReturnType<typeof vi.fn>
 
@@ -130,6 +133,23 @@ export function createBaseSectionContract(config: BaseSectionContractConfig) {
         })
       })
     }
+
+    describe('i18n label completeness', () => {
+      // Unlike BaseList's TableField.title (resolved eagerly by useList()), a BaseField's
+      // `label` is stored as the raw key and only resolved by the real field component at
+      // render time — which our FieldGeneratorStub never renders. So we check `i18n.te()`
+      // directly against the form instance instead of spying on a render that never happens.
+      it('form field labels resolve to real translations', () => {
+        const instance = new EntityFormClass(sampleData) as Record<string, unknown>
+
+        const missingLabels = Object.entries(instance)
+          .filter((entry): entry is [string, BaseField] => entry[1] instanceof BaseField)
+          .map(([key, field]) => ({ key, label: field.label }))
+          .filter(({ label }) => looksLikeI18nKey(label) && !i18n.te(label))
+
+        expect(missingLabels).toEqual([])
+      })
+    })
 
     describe('CRUD actions', () => {
       if (config.actions?.create) {

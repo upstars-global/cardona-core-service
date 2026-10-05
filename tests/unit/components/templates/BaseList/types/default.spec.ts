@@ -1,9 +1,8 @@
-import '../../../../mocks/base-list/static-mock'
-import { permissionsMock } from '../../../../mocks/base-list/static-mock'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cloneDeep } from 'lodash'
 import { flushPromises } from '@vue/test-utils'
 import { h } from 'vue'
+import { permissionsMock } from '../../../../mocks/base-list/static-mock'
 import { clickTrigger, getSelectorTestId } from '../../../../utils'
 import { testOn } from '../../../../templates/shared-tests/test-case-generator'
 import { FilterID } from '../../../../../../src/@model/filter'
@@ -72,6 +71,18 @@ describe('BaseList', () => {
 
     // Verify that the search input is no longer rendered
     testOn.notExistElement({ wrapper, testId: 'search-input' })
+  })
+
+  it('Should display the export selector only when withExport is enabled and the user can export', async () => {
+    // withExport is opt-in per BaseListConfig — undefined/false means no export button at all,
+    // regardless of permissions (canExport defaults to true in the shared permissions mock).
+    const wrapper = getMountComponent(props, global)
+
+    testOn.notExistElement({ wrapper, testId: 'export-format-selector' })
+
+    await wrapper.setProps(getUpdatePropsConfig({ withExport: true }, props))
+
+    testOn.existElement({ wrapper, testId: 'export-format-selector' })
   })
 
   it('Should correctly pass parameters when using staticFilters', async () => {
@@ -545,6 +556,7 @@ describe('BaseList', () => {
       props.config.selectable = true
 
       const wrapper = getMountComponent(props, global)
+
       await flushPromises()
 
       testOn.existElement({ wrapper, testId: 'selectable-th' })
@@ -556,6 +568,7 @@ describe('BaseList', () => {
       props.config.selectable = true
 
       const wrapper = getMountComponent(props, global)
+
       await flushPromises()
 
       testOn.existElement({ wrapper, testId: 'selectable-th' })
@@ -566,6 +579,7 @@ describe('BaseList', () => {
       props.config.selectable = false
 
       const wrapper = getMountComponent(props, global)
+
       await flushPromises()
 
       testOn.notExistElement({ wrapper, testId: 'selectable-th' })
@@ -578,6 +592,7 @@ describe('BaseList', () => {
       props.config.selectable = true
 
       const wrapper = getMountComponent(props, global)
+
       await flushPromises()
 
       testOn.notExistElement({ wrapper, testId: 'selectable-th' })
@@ -590,6 +605,7 @@ describe('BaseList', () => {
       props.config.selectable = false
 
       const wrapper = getMountComponent(props, global)
+
       await flushPromises()
 
       testOn.notExistElement({ wrapper, testId: 'selectable-th' })

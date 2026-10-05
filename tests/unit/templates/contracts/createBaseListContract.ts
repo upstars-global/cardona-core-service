@@ -7,6 +7,7 @@ import DefaultBaseList from '../../../../src/components/templates/BaseList/types
 import { testOn } from '../shared-tests/test-case-generator'
 import { mockModal } from '../../mocks/modal-provide-config'
 import { mockBaseStoreCore } from '../../mocks/base-list/utils'
+import { looksLikeI18nKey } from './i18nChecks'
 
 type ActionMock = ReturnType<typeof vi.fn>
 
@@ -77,11 +78,6 @@ export interface BaseListContractConfig {
    * resulting mock object here so the contract has something to assert against.
    */
   customStoreMock?: Record<string, ActionMock>
-  features?: {
-
-    /** Set to false only when this entity explicitly has no report/export action. */
-    export?: boolean
-  }
 }
 
 const getFieldKey = (field: { key: string }) => field.key
@@ -196,6 +192,18 @@ export function createBaseListContract(config: BaseListContractConfig) {
       })
     })
 
+    describe('i18n label completeness', () => {
+      // useList() resolves field.title via i18n.t(key) eagerly (see useDemoList), so by the
+      // time fields reach us the key is already gone — but vue-i18n's default missing-key
+      // fallback returns the key string unchanged, so a title that still LOOKS like a dotted
+      // i18n key (not real translated text) means the translation doesn't exist.
+      it.each(fields.map(getFieldKey))('field "%s" title is not an unresolved i18n key', key => {
+        const field = fields.find(f => f.key === key)!
+
+        expect(looksLikeI18nKey((field as { title?: unknown }).title)).toBe(false)
+      })
+    })
+
     describe('user actions', () => {
       const fetchConfig = config.actions.fetch
 
@@ -296,17 +304,5 @@ export function createBaseListContract(config: BaseListContractConfig) {
         })
       }
     })
-
-    if (config.features?.export === false) {
-      it('does not render an export button (explicitly disabled for this entity)', async () => {
-        mockListResponse()
-
-        const wrapper = mountComponent(props, global)
-
-        await flushPromises()
-
-        testOn.notExistElement({ wrapper, testId: 'export-button' })
-      })
-    }
   })
 }

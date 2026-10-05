@@ -20,12 +20,21 @@ Vitest-спеков (store state, рендер полей, CRUD, permission-ге
 (подсекция под "BaseList Component Tests"); примеры конфигов для реальных секций `cardona`
 (`gifts`/`payouts`/`players`) — ниже, в "Stage 5 — примеры на реальных секциях".
 
+Generic chrome (search/settings/export) — один общий regression-тест в
+`default.spec.ts`, не per-контракт (поиск и settings уже были покрыты; добавлен
+недостающий export-toggle, заодно нашёл и убрал из генератора нерабочую раннюю попытку —
+см. ниже).
+
+Проверка i18n-полноты лейблов реализована в обоих генераторах (`i18nChecks.ts`): для
+`BaseList` — эвристика по форме уже резолвленного `field.title` (см. "Что неочевидно"), для
+`BaseSection` — прямой `i18n.te(field.label)` на инстансе формы. Оба варианта проверены
+негативным контролем (поддельный `page.totally.missing.key` реально падает).
+
 **Заблокировано (не моё решение):** реальный запуск этих тестов в самом репозитории `cardona`
 требует релиза этой ветки (`cardona` зависит от `cardona-core-service` как от зафиксированного
 GitHub-тега, сейчас `v8.4.5` — генераторов там ещё нет) — конфиги ниже справочные,
-не выполнялись в `cardona`. Общий chrome-спек export/search/settings и проверка i18n-полноты
-лейблов — не реализованы ни разу. `SideBarModel` — опционально, вне v1 (только
-`promo/banners` его использует).
+не выполнялись в `cardona`. `SideBarModel` — опционально, вне v1 (только `promo/banners`
+его использует).
 
 ## Что неочевидно
 
@@ -72,6 +81,23 @@ GitHub-тега, сейчас `v8.4.5` — генераторов там ещё 
   `sumPeriod`, `winBack`) не соответствуют ни одному свойству `DemoListItem` — рендерят
   пустую ячейку сегодня. Это не баг демо-страницы (вне скоупа чинить), но подтверждает,
   зачем вообще нужен `expectedFieldValues`: без него такие расхождения проходят молча.
+- **Search/settings/export в `BaseList` — opt-in через `BaseListConfig`, не default-on.**
+  Ни `withSearch`, ни `withSettings`, ни `withExport` не имеют дефолта `true` в конструкторе
+  (`@model/templates/baseList.ts`) — без явного флага в конфиге секции кнопка просто не
+  рендерится, это не баг. Экспорт дополнительно требует `canExport` из `basePermissions()`.
+  Реальный `data-test-id` кнопки экспорта — `export-format-selector`
+  (`ListSearch.vue`), не `export-button`: ранняя версия `createBaseListContract` проверяла
+  несуществующий тест-id и никогда не могла упасть — убрана, generic-проверка теперь живёт
+  в `default.spec.ts` рядом с уже существовавшими toggle-тестами search/settings.
+- **`TableField.title` и `BaseField.label` резолвятся по-разному — i18n-проверка для них
+  тоже разная.** `useList()` вызывает `i18n.t(key)` сам и возвращает уже готовую строку, так
+  что к моменту, когда контракт видит `fields`, ключа уже нет — проверяем эвристикой "похоже
+  ли резолвленное значение на нерезолвленный dotted-key" (`i18nChecks.ts`). `BaseField.label`
+  — геттер (`base.ts`), который сам вызывает `i18n.te()`/`i18n.t()` при каждом обращении и
+  возвращает ключ как есть, если перевода нет — поэтому для формы можно и нужно проверять
+  `i18n.te(label)` напрямую, без эвристики. Оба варианта не ловят рендер форм через
+  `FieldGeneratorStub` (он не вызывает `$t()` вообще) — именно поэтому `BaseSection`-проверка
+  читает `label` с инстанса модели, а не из DOM.
 
 ## Пример
 
@@ -158,3 +184,46 @@ createBaseListContract({
   },
 })
 ```
+
+## Stage 6 (TODO, не реализовано) — поддержка `SideBarModel`
+
+Опционально, вне v1 — единственный потребитель сегодня: `promo/banners`
+(`BannersSideBarFields`, см. Stage 5 выше). Ничего из описанного ниже не реализовано;
+раздел фиксирует то, что уже выяснено про механизм, чтобы не переисследовать с нуля.
+
+**Как это устроено (прочитано из src/):**
+
+- `UseListType`'s 3-й generic — `SideBarModel?: new (...args: any[]) => SideBarModel`
+  (`src/@model/templates/baseList.ts:46`) — класс, не инстанс, как и `ListItemModel`.
+- Рендерится только при `config.sidebar === true`
+  (`src/components/templates/BaseList/types/default.vue:699`,
+  `<SideBar v-if="config.sidebar" :side-bar-model="SideBarModel">`) — тот же opt-in
+  паттерн, что у `withSearch`/`withSettings`/`withExport` (см. "Что неочевидно" выше).
+- `SideBar/index.vue:55` инстанцирует модель лениво, на выбранном элементе:
+  `viewForm.value = new props.sideBarModel(item)` — аналог `new ListItemModel(...)`
+  в `fetchEntityList`, только по требованию (открыл конкретную строку), а не на весь список.
+- Инстанс `SideBarModel` — это **не массив `TableField`**, а объект, где каждое поле —
+  `SideBarCollapseItem` (`src/@model/templates/baseList.ts:533`): `{ title, withBottomSeparator,
+  views: Record<string, ViewInfo> }`. Каждый `ViewInfo` (`src/@model/view.ts:106`) — отдельная
+  структура с `type` (`ViewType` enum — другой enum, не `ListFieldType`), `value`, `label`,
+  `description`, `icon`, `permission`.
+- `ViewInfo.label` — **обычное read-only поле**, не геттер с автовызовом `i18n.te()`/`i18n.t()`
+  (в отличие от `BaseField.label`, см. "Что неочевидно"). Вызывающий код сам решает, резолвить
+  ли его через `i18n.t(...)` до передачи в конструктор (как делает `DemoSideBar`:
+  `label: i18n.t('common.generalInformation')`) — значит для i18n-проверки `SideBarModel`
+  нужна та же эвристика по форме строки, что для `TableField.title`, а не прямой `i18n.te()`,
+  как для форм.
+
+**Что нужно реализовать:**
+
+1. Опциональный `sideBarModel?: new (...args: any[]) => unknown` в `BaseListContractConfig`
+   (дериватив из `useList()`, как и остальные поля — не дублировать).
+2. Structural integrity: `new SideBarModel(sampleBackendResponse)` не падает; каждый ключ
+   `views` — валидный `ViewInfo`.
+3. Рендер: замокать `config.sidebar: true`, открыть конкретную строку (как реально делает
+   `SideBar/index.vue` — через клик/selected item, не напрямую вызывать конструктор в обход
+   компонента), проверить что сайдбар рендерится без ошибок.
+4. i18n-check для `ViewInfo.label` — эвристика `looksLikeI18nKey`, как для `TableField.title`
+   (не `i18n.te()` напрямую, как для `BaseField.label` — другая структура, см. выше).
+5. Нужен `expectedFieldValues`-аналог для `views` (ground truth, не тавтология) — та же
+   проблема, что в Stage 2, только для `ViewInfo.value`, а не `TableField`.
