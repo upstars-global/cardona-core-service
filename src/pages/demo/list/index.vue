@@ -9,16 +9,10 @@ import { IconsList } from '../../../@model/enums/icons'
 import { BaseListConfig, SortDirection } from '../../../@model/templates/baseList'
 import { VColors, VSizes, VVariants } from '../../../@model/vuetify'
 import BtnIcon from '../../../components/templates/_components/BtnIcon.vue'
+import LanguageSwitcher from '../_components/LanguageSwitcher.vue'
 import { ProjectFilterTypes } from '@filterConfig'
 
-const { t, locale } = useI18n()
-
-const languages = [
-  { label: 'EN', value: 'en' },
-  { label: 'FR', value: 'fr' },
-  { label: 'AR', value: 'ar' },
-  { label: 'UK', value: 'uk' },
-]
+const { t } = useI18n()
 
 const listConfig = new BaseListConfig({
   withSettings: true,
@@ -95,136 +89,128 @@ const setButtonState = (key: string): void => {
 </script>
 
 <template>
-  <div class="d-flex justify-end mb-3">
-    <VBtnGroup density="compact">
-      <VBtn
-        v-for="lang in languages"
-        :key="lang.value"
-        :variant="locale === lang.value ? VVariants.Tonal : VVariants.Outlined"
-        :color="locale === lang.value ? VColors.Primary : undefined"
-        @click="locale = lang.value"
-      >
-        {{ lang.label }}
-      </VBtn>
-    </VBtnGroup>
-  </div>
-  <BaseList
-    :use-list="useDemoList"
-    :config="listConfig"
-    class="demo-list mr-md-1 mr-sm-0"
-  >
-    <template #table-field-setting>
-      <VIcon
-        :icon="IconsList.BookIcon"
-        class="mr-1"
-      />
-    </template>
-    <template #cell(expand)="{ item, isExpanded, toggleExpand }">
-      <VBtn
-        :variant="VVariants.Outlined"
-        :size="42"
-        @click.stop="toggleExpand(item.id)"
-      >
-        <VIcon :icon="isExpanded ? IconsList.ChevronUpIcon : IconsList.ChevronDownIcon" />
-      </VBtn>
-    </template>
-    <template #cellExpand(expand)>
-      <!--      It need for not render expand button into expand -->
-      <div />
-    </template>
-    <template #cell(winBack)="{ item }">
-      <SumAndCurrency
-        :data="{
-          amount: item.wagerValue,
-          currency: item?.currency,
-          remainder: item.wagerLimit,
-        }"
-      />
-    </template>
-    <template #nameSlot-nameWithIdTitle="{ item }">
-      {{ item.name }}
-    </template>
-    <template #cell(editableField)="{ item }">
-      <EditFieldWrapper :value="item.editableField">
-        <template #default="{ value }">
-          <div>{{ value.from }} - {{ value.to }}</div>
-        </template>
-        <template #input="{ inputValue, updateValue }">
-          <NumberRangeField
-            :model-value="inputValue"
-            @update:model-value="updateValue"
-          />
-        </template>
-      </EditFieldWrapper>
-    </template>
-
-    <template #cell(type)="{ item }">
-      {{ item.type.name }}
-    </template>
-
-    <template #cell(innerLink)="{ item }">
-      <InnerBlankLink
-        :value="{ title: item.name, route: getUpdateRoute(item) }"
-        :size="VSizes.Large"
-        :copy-element="item.name"
-      />
-      <InnerBlankLink :value="{ title: item.name, route: getUpdateRoute(item) }" />
-      <InnerBlankLink
-        :value="{ title: item.name, route: getUpdateRoute(item) }"
-        :size="VSizes.Small"
-      />
-    </template>
-
-    <template #cell(sumPeriod)="{ item }">
-      <SumPeriod
-        :data="{
-          today: item.paymentsToday,
-          week: item.paymentsWeek,
-          month: item.paymentsMonth,
-          currency: item.currency,
-        }"
-      />
-    </template>
-    <template #sidebar-row(callbackData)="{ item }">
-      <template v-if="item">
-        <h6 class="mb-1">
-          {{ $t('common.callback') }}
-        </h6>
-        <CodeViewEditor :model-value="item" />
+  <div>
+    <div class="d-flex justify-end mb-3">
+      <LanguageSwitcher />
+    </div>
+    <BaseList
+      :use-list="useDemoList"
+      :config="listConfig"
+      class="demo-list mr-md-1 mr-sm-0"
+    >
+      <template #table-field-setting>
+        <VIcon
+          :icon="IconsList.BookIcon"
+          class="mr-1"
+        />
       </template>
-    </template>
-    <template #cell(settings)="{ item }">
-      <div class="d-flex gap-2">
-        <BtnIcon
-          :icon="IconsList.ClockIcon"
-          :value="!!buttonState[item.id]"
-          :tooltip-text="Boolean(buttonState[item.id]) ? $t('common.isActive') : $t('common.unActive')"
-          @click="setButtonState(item.id)"
+      <template #cell(expand)="{ item, isExpanded, toggleExpand }">
+        <VBtn
+          :variant="VVariants.Outlined"
+          :size="42"
+          @click.stop="toggleExpand(item.id)"
+        >
+          <VIcon :icon="isExpanded ? IconsList.ChevronUpIcon : IconsList.ChevronDownIcon" />
+        </VBtn>
+      </template>
+      <template #cellExpand(expand)>
+        <!--      It need for not render expand button into expand -->
+        <div />
+      </template>
+      <template #cell(winBack)="{ item }">
+        <SumAndCurrency
+          :data="{
+            amount: item.wagerValue,
+            currency: item?.currency,
+            remainder: item.wagerLimit,
+          }"
         />
-        <BtnIcon
-          is-static
-          :icon="IconsList.ClockIcon"
-          :value="!!buttonState[item.id]"
-          :tooltip-text="Boolean(buttonState[item.id]) ? $t('common.isActive') : $t('common.unActive')"
-          @click="setButtonState(item.id)"
-        />
-        <VTooltip location="bottom">
-          <template #activator="{ props }">
-            <VBtn
-              :color="Boolean(buttonState[item.id]) ? VColors.Success : VColors.Error"
-              :variant="VVariants.Tonal"
-              :size="VSizes.XSmall"
-              :icon="IconsList.ClockIcon"
-              rounded="lg"
-              v-bind="props"
-              @click.stop="setButtonState(item.id)"
+      </template>
+      <template #nameSlot-nameWithIdTitle="{ item }">
+        {{ item.name }}
+      </template>
+      <template #cell(editableField)="{ item }">
+        <EditFieldWrapper :value="item.editableField">
+          <template #default="{ value }">
+            <div>{{ value.from }} - {{ value.to }}</div>
+          </template>
+          <template #input="{ inputValue, updateValue }">
+            <NumberRangeField
+              :model-value="inputValue"
+              @update:model-value="updateValue"
             />
           </template>
-          {{ Boolean(buttonState[item.id]) ? $t('common.isActive') : $t('common.unActive') }}
-        </VTooltip>
-      </div>
-    </template>
-  </BaseList>
+        </EditFieldWrapper>
+      </template>
+
+      <template #cell(type)="{ item }">
+        {{ item.type.name }}
+      </template>
+
+      <template #cell(innerLink)="{ item }">
+        <InnerBlankLink
+          :value="{ title: item.name, route: getUpdateRoute(item) }"
+          :size="VSizes.Large"
+          :copy-element="item.name"
+        />
+        <InnerBlankLink :value="{ title: item.name, route: getUpdateRoute(item) }" />
+        <InnerBlankLink
+          :value="{ title: item.name, route: getUpdateRoute(item) }"
+          :size="VSizes.Small"
+        />
+      </template>
+
+      <template #cell(sumPeriod)="{ item }">
+        <SumPeriod
+          :data="{
+            today: item.paymentsToday,
+            week: item.paymentsWeek,
+            month: item.paymentsMonth,
+            currency: item.currency,
+          }"
+        />
+      </template>
+      <template #sidebar-row(callbackData)="{ item }">
+        <template v-if="item">
+          <h6 class="mb-1">
+            {{ $t('common.callback') }}
+          </h6>
+          <CodeViewEditor :model-value="item" />
+        </template>
+      </template>
+      <template #cell(settings)="{ item }">
+        <div class="d-flex gap-2">
+          <BtnIcon
+            :icon="IconsList.ClockIcon"
+            :value="!!buttonState[item.id]"
+            :tooltip-text="Boolean(buttonState[item.id]) ? $t('common.isActive') : $t('common.unActive')"
+            @click="setButtonState(item.id)"
+          />
+          <BtnIcon
+            is-static
+            :icon="IconsList.ClockIcon"
+            :value="!!buttonState[item.id]"
+            :tooltip-text="Boolean(buttonState[item.id]) ? $t('common.isActive') : $t('common.unActive')"
+            @click="setButtonState(item.id)"
+          />
+          <VTooltip location="bottom">
+            <template #activator="{ props }">
+              <VBtn
+                :color="Boolean(buttonState[item.id]) ? VColors.Success : VColors.Error"
+                :variant="VVariants.Tonal"
+                :size="VSizes.XSmall"
+                :icon="IconsList.ClockIcon"
+                rounded="lg"
+                v-bind="props"
+                @click.stop="setButtonState(item.id)"
+              />
+            </template>
+            {{ Boolean(buttonState[item.id]) ? $t('common.isActive') : $t('common.unActive') }}
+          </VTooltip>
+        </div>
+      </template>
+    </BaseList>
+  </div>
 </template>
 
  <style scoped lang="scss">

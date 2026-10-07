@@ -1,25 +1,15 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue'
-import { useI18n } from 'vue-i18n'
 import type { DemoForm } from '../../../@model/demo'
 import { createPhoneDomainFieldItem } from '../../../@model/demo'
 // import store from '../../../store'
 import { useUserStore } from '../../../stores/user'
+import LanguageSwitcher from './LanguageSwitcher.vue'
 import useToastService from '@/helpers/toasts'
-import { VColors, VVariants } from '../../../@model/vuetify'
 
 const props = defineProps<Props>()
 
 const { toastSuccess } = useToastService()
-
-const { locale } = useI18n()
-
-const languages = [
-  { label: 'EN', value: 'en' },
-  { label: 'FR', value: 'fr' },
-  { label: 'AR', value: 'ar' },
-  { label: 'UK', value: 'uk' },
-]
 
 interface Props {
   entityId?: string
@@ -64,17 +54,7 @@ const mockUploadFile = async () => {
 
 <template>
   <div class="d-flex justify-end mb-3">
-    <VBtnGroup density="compact">
-      <VBtn
-        v-for="lang in languages"
-        :key="lang.value"
-        :variant="locale === lang.value ? VVariants.Tonal : VVariants.Outlined"
-        :color="locale === lang.value ? VColors.Primary : undefined"
-        @click="locale = lang.value"
-      >
-        {{ lang.label }}
-      </VBtn>
-    </VBtnGroup>
+    <LanguageSwitcher />
   </div>
 
   <VTabs
