@@ -50,7 +50,9 @@ defineExpose({
     if (listByTypeRef.value)
       listByTypeRef.value.disableRowIds = ids
   },
-  sortData: listByTypeRef.value?.sortData,
+  get sortData() {
+    return listByTypeRef.value?.sortData
+  },
   get items() {
     return listByTypeRef.value?.items
   },

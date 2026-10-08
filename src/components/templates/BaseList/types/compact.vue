@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, isRef, onBeforeMount, onMounted, ref, useSlots, watch } from 'vue'
-import { useListFilterShow } from '../../../../composables/useListFilterShow'
 import { useI18n } from 'vue-i18n'
 import { debounce, findIndex } from 'lodash'
 import { BaseListSlots } from '../../../../@model/templates/baseList'
@@ -208,8 +207,9 @@ watch(
 const allFields = computed(() => isRef(rawFields) ? rawFields.value : rawFields)
 const selectedFields = ref<TableField[]>([...allFields.value])
 
-watch(allFields, (newFields) => {
+watch(allFields, newFields => {
   const selectedKeys = new Set(selectedFields.value.map(f => f.key))
+
   selectedFields.value = newFields.filter(f => selectedKeys.has(f.key))
 })
 
@@ -270,6 +270,12 @@ const sortFromStorage: SortItem = getStorage(sortStorageKey, SortedItem) as Sort
 const sortBy = sortFromStorage?.key || props.config.staticSorts?.key
 const sortDir = sortFromStorage?.order || props.config.staticSorts?.order
 const sortData = ref(sortBy && sortDir ? [{ key: sortBy, order: sortDir }] as SortItem[] : [])
+
+const initialSortData = sortData.value
+
+const onUpdateSortData = (value: SortItem[]) => {
+  sortData.value = value
+}
 
 watch(() => sortData.value, async ([newSortData]) => {
   if (props.config.saveSort) {
@@ -753,8 +759,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :pagination-config="paginationConfig"
         :data-meta="dataMeta"
         :small="config.small"
-        @update:model-value="setPage"
         class-showing="text-color-label"
+        @update:model-value="setPage"
       />
     </div>
     <VCard class="table-card-settings table-wrapper">
@@ -785,12 +791,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
               <VIcon
                 v-bind="attributes"
                 :icon="IconsList.ChevronDownIcon"
-
               />
             </template>
-            <template #option="{label}">
-              <div class="d-flex align-center justify-space-between" v-if="label === perPage">
-                <span>{{label}}</span>
+            <template #option="{ label }">
+              <div
+                v-if="label === perPage"
+                class="d-flex align-center justify-space-between"
+              >
+                <span>{{ label }}</span>
                 <VIcon :icon="IconsList.CheckIcon" />
               </div>
             </template>
@@ -829,7 +837,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       </MultipleActions>
 
       <CTable
-        v-model:sort-data="sortData"
+        :sort-data="initialSortData"
         :is-loading-list="isLoadingList"
         :fields="selectedFields"
         :rows="items"
@@ -844,6 +852,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :selected-items="selectedItems"
         :items-per-page="itemsPerPage"
         :disabled-row-ids="disableRowIds"
+        @update:sort-data="onUpdateSortData"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"
@@ -1324,15 +1333,14 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :pagination-config="paginationConfig"
         :data-meta="dataMeta"
         :small="config.small"
-        @update:model-value="setPage"
         class-showing="text-color-label"
+        @update:model-value="setPage"
       />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-
 $pagination-button-text-color: white;
 
 .compact__base-list {
