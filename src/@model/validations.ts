@@ -69,6 +69,11 @@ const customMessageOfRules: Record<
 
       return i18n.t(`validations.${ctx.rule?.name}`, { _field_: ctx.label, _max_ })
     },
+    range_max_value(ctx: FieldValidationMetaInfo): string {
+      const _max_ = ctx.rule.params.at(0)
+
+      return i18n.t('validations.max_value', { _field_: ctx.label, _max_ })
+    },
     between(ctx: FieldValidationMetaInfo): TranslateResult {
       const _min_ = ctx.rule.params.min
       const _max_ = ctx.rule.params.max
@@ -142,6 +147,13 @@ const validatorRange = (value: Record<string, NumberOrString>, args: []): boolea
   return +value[keyMin] < +value[keyMax]
 }
 
+const validatorRangeMaxValue = (value: Record<string, NumberOrString> | null, [max]: [NumberOrString]): boolean => {
+  if (!value || typeof value !== 'object')
+    return true
+
+  return Object.values(value).every(item => item === '' || item == null || +item <= +max)
+}
+
 export const rangeDate = (dateDiapason: string, args: string[]): boolean => {
   if (!dateDiapason)
     return true
@@ -183,6 +195,7 @@ defineRule('url', validatorUrlValidator)
 defineRule('phone', validatorPhone)
 defineRule('required_object', validatorObject)
 defineRule('range', validatorRange)
+defineRule('range_max_value', validatorRangeMaxValue)
 defineRule('range_date', rangeDate)
 defineRule('range_date_different', dateRangeDifferent)
 defineRule('date_format', date_format)
@@ -215,6 +228,7 @@ export interface IValidationConfig {
   url?: boolean
   required_object?: boolean
   range?: Array<string>
+  range_max_value?: number
   range_date?: boolean | string
   range_date_different?: boolean | string
   date_format?: string
