@@ -45,7 +45,6 @@ const onCreateCopyForAnotherProject = ({ id, project }: { id: string; project: s
 <template>
   <VMenu
     v-if="copyForAllProjects && userProjects.length > 1"
-    activator="parent"
     location="start"
     open-on-hover
   >
