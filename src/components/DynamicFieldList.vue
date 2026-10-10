@@ -46,17 +46,19 @@ const isSelectItemNotEmpty = computed(() => {
     && Object.values(props.modelValue[0])?.[0]
     && isBaseField(Object.values(props.modelValue[0])?.[0])
   )
-    return isSelect(Object.values(props.modelValue[0])[0]) && !filteredOptions.value.length
+    return isSelect(Object.values(props.modelValue[0])[0]) && !!selectField.value && !filteredOptions.value.length
 
   return false
 })
 
 const isDisabled = computed(() => {
   return props.modelValue?.some((row: DynamicField): boolean => {
-    if (isBaseField(row))
+    if (isBaseField(row)) {
       return !row.value
-    else
+    }
+    else {
       return !Object.values(row)?.[0].value
+    }
   })
 })
 
@@ -141,7 +143,15 @@ const getFieldCol = (key: string): number | string | boolean => {
 </script>
 
 <template>
+  <!--  {{modelValue?.some((row): boolean => {-->
+  <!--  -->
+  <!--  if (isBaseField(row))-->
+  <!--    return !row.value-->
+  <!--  else-->
+  <!--    return !Object.values(row)?.[0].value-->
+  <!--})}}-->
   <div class="dynamic-field-list">
+    {{isDisabled}}
     <VRow v-if="templateField && !hideLabelOnEmptyList">
       <VCol
         v-if="isBaseField(templateField)"
