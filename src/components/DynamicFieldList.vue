@@ -12,21 +12,21 @@ type DynamicField = BaseField | Record<string, BaseField>
 type FieldCol = Record<string, number> | number | string
 
 const props = withDefaults(defineProps<{
-    modelValue: DynamicField[]
-    templateField: Function
-    disabled?: boolean
-    disabledAddBtn?: boolean
-    required?: boolean
-    allowAddWithEmpty?: boolean
-    hideLabelOnEmptyList?: boolean
-    fieldCol?: FieldCol
-    withInfo?: boolean
-  }>(),
-  {
-    fieldCol: 4,
-    hideLabelOnEmptyList: true,
-    required: false,
-  })
+  modelValue: DynamicField[]
+  templateField: Function
+  disabled?: boolean
+  disabledAddBtn?: boolean
+  required?: boolean
+  allowAddWithEmpty?: boolean
+  hideLabelOnEmptyList?: boolean
+  fieldCol?: FieldCol
+  withInfo?: boolean
+}>(),
+{
+  fieldCol: 4,
+  hideLabelOnEmptyList: true,
+  required: false,
+})
 
 const emits = defineEmits<{
   (event: 'update:model-value', value: Record<string, string>): void
@@ -63,6 +63,12 @@ const isDisabled = computed(() => {
 const isBaseField = (field: object): boolean => field instanceof BaseField
 
 const isSelect = (field: object): boolean => field instanceof SelectBaseField
+
+const getRowKey = (row: DynamicField, index: number): NumberOrString => {
+  const field = isBaseField(row) ? row as BaseField : Object.values(row)[0]
+
+  return field?.id ?? index
+}
 
 // Options
 const filteredOptions = computed<Array<any>>(() => {
@@ -164,7 +170,7 @@ const getFieldCol = (key: string): number | string | boolean => {
 
     <div
       v-for="(row, rowIndex) in rows"
-      :key="rowIndex"
+      :key="getRowKey(row, rowIndex)"
       class="filed-list__item d-flex align-start"
     >
       <VRow class="flex-grow-1 ma-0 mx-n3">
