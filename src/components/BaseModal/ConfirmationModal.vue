@@ -36,7 +36,12 @@ const isLoading = computed(() => props?.loadingUrls ? loaderStore.isLoadingEndpo
   >
     <template #default>
       <p data-test-id="modal-description">
-        {{ description }}
+        <slot
+          name="description"
+          :description="description"
+        >
+          {{ description }}
+        </slot>
       </p>
     </template>
     <template #modal-footer="{ action, payload = '' } : BaseModalDefaultPropsOfSlot">
