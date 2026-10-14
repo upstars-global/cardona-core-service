@@ -1,3 +1,6 @@
+// static-mock must load first (vi.mock + pinia), do not let import/order move it
+/* eslint-disable import/order */
+import '../../../../mocks/base-list/static-mock'
 import { permissionsMock } from '../../../../mocks/base-list/static-mock'
 import { flushPromises } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
@@ -66,29 +69,39 @@ export const TYPE_COMPONENT: Partial<Record<ListFieldType, Component>> = {
  * harness сам монтує слот під правильним ім'ям і сам перевіряє, що текст з'явився в td.
  */
 export interface CellSlots {
+
   /** `cell(key)` — повністю перебиває дефолтний рендер клітинки */
   cell?: string
+
   /** `cellExpand(key)` — те саме, але для expand-рядка (потрібен `expand`) */
   cellExpand?: string
+
   /** `${key}-nameWithIdTitle` (для NameWithId / NameWithShortId) */
   nameWithIdTitle?: string
+
   /** `${key}-badgeTitle` (для Badges) */
   badgeTitle?: string
 }
 
 export interface RowCellDef {
+
   /** ключ поля = ключ колонки, `td[data-c-field="<key>"]` */
   key: string
   type?: ListFieldType
   title?: string
+
   /** значення клітинки: `cell = row[key]` */
   value?: unknown
+
   /** додаткові поля raw-рядка (напр. `{ currency: 'USD' }` для SumAndCurrency) */
   rawExtra?: Record<string, unknown>
+
   /** очікуваний текст у td (contains) */
   text?: string
+
   /** `data-test-id` усередині td (для полів, що їх мають) */
   testId?: string | string[]
+
   /** явно вказати очікуваний дочірній компонент; `false` — вимкнути авто-перевірку за `type` */
   child?: Component | false
   slots?: CellSlots
@@ -97,24 +110,32 @@ export interface RowCellDef {
 const defaultPermissions = { ...permissionsMock }
 
 export interface MountRowOptions {
+
+  /** патч до результату `props.useList()` (canRemoveCb, beforeRemoveCallback, pageName, entityName, ...) */
+  useList?: Record<string, unknown>
+
   /** патч до `basePermissions` (canUpdate/canRemove/canCreate/...); перед кожним mount скидається до дефолту */
   permissions?: Partial<typeof permissionsMock>
   rowId?: string | number
+
   /** патч до `config` поверх дефолтного */
   config?: Partial<IBaseListConfig> & Record<string, unknown>
+
   /** глобальні слоти BaseList для колонки `actions` (`prepend/append/details-action-item`) */
   actionSlots?: {
     prepend?: string
     append?: string
     details?: string
   }
+
   /** сирі додаткові слоти BaseList */
   extraSlots?: Record<string, unknown>
+
   /**
    * Expand: монтує рядок з `groups` і `config.showExpand`, у `toggleKey` клітинку кладе кнопку-тригер
    * (`[data-test-id="expand-toggle"]`), що викликає `toggleExpand` зі slot-payload.
    */
-  expand?: { toggleKey: string, groups: Record<string, unknown>[] }
+  expand?: { toggleKey: string; groups: Record<string, unknown>[] }
 }
 
 export interface MountedRow {
@@ -122,10 +143,13 @@ export interface MountedRow {
   row: Record<string, any>
   cells: RowCellDef[]
   rowEl: ReturnType<VueWrapper<any>['find']>
+
   /** `td` основного рядка */
   cellEl: (key: string) => ReturnType<VueWrapper<any>['find']>
+
   /** `td` expand-рядка (`data-c-expand-field`) */
   expandCellEl: (key: string) => ReturnType<VueWrapper<any>['find']>
+
   /** розгорнути рядок (потребує `expand`) */
   toggleExpand: () => Promise<void>
 }
@@ -169,7 +193,8 @@ function buildSlots(cells: RowCellDef[], opts: MountRowOptions): Record<string, 
 
 /** Монтує BaseList з одним рядком, зібраним з `cells`. */
 export async function mountRow(cells: RowCellDef[], opts: MountRowOptions = {}): Promise<MountedRow> {
-  const { rowId = 'row-1', config = {}, expand, permissions = {} } = opts
+  const { rowId = 'row-1', config = {}, expand, permissions = {}, useList: useListPatch = {} } = opts
+
   Object.assign(permissionsMock, defaultPermissions, permissions)
 
   const fields = cells.map(c => new TableField({
@@ -188,7 +213,7 @@ export async function mountRow(cells: RowCellDef[], opts: MountRowOptions = {}):
 
   mockBaseStoreCore.fetchEntityList.mockResolvedValueOnce({ list: [row], total: 1 })
 
-  const useList = () => ({ ListFilterModel: FilterID, entityName: 'Test', fields })
+  const useList = () => ({ ListFilterModel: FilterID, entityName: 'Test', fields, ...useListPatch })
 
   const wrapper = getMountComponent(
     {
@@ -226,6 +251,7 @@ const toArray = <T>(v: T | T[] | undefined): T[] => (v === undefined ? [] : Arra
 /** Перевірка однієї клітинки за її описом: td → дочірній компонент → слоти → text → testId. */
 function assertCell(td: ReturnType<VueWrapper<any>['find']>, c: RowCellDef, which: 'cell' | 'cellExpand') {
   const label = `td[${c.key}]`
+
   expect(td.exists(), `${label} must exist`).toBe(true)
 
   const slots = c.slots ?? {}
@@ -237,6 +263,7 @@ function assertCell(td: ReturnType<VueWrapper<any>['find']>, c: RowCellDef, whic
 
   if (overridden) {
     const name = `${which}(${c.key})`
+
     expect(td.find(`[data-test-id="${slotTestId(name)}"]`).exists(), `${label} must render custom slot ${name}`).toBe(true)
     expect(td.text()).toContain(slots[which]!)
   }
@@ -247,6 +274,7 @@ function assertCell(td: ReturnType<VueWrapper<any>['find']>, c: RowCellDef, whic
       if (text === undefined)
         continue
       const name = `${c.key}-${slotKey}`
+
       expect(td.find(`[data-test-id="${slotTestId(name)}"]`).exists(), `${label} must render slot ${name}`).toBe(true)
       expect(td.text()).toContain(text)
     }
@@ -283,10 +311,13 @@ export function expectItemActions(m: MountedRow, actionKey = 'actions'): void {
 /** Slot-payload: що саме BaseList прокинув у слот (field/item/cell/index/toggleExpand/...). */
 export function captureSlot(name: string) {
   let props: Record<string, any> | null = null
+
   const slot = (p: Record<string, any>) => {
     props = p
+
     return h('div', { 'data-test-id': slotTestId(name) }, name)
   }
+
   return { name, slot, props: () => props }
 }
 
@@ -298,5 +329,6 @@ export async function openActionMenu(m: MountedRow, actionKey = 'actions') {
     await flushPromises()
   }
   const has = (testId: string) => m.cellEl(actionKey).find(`[data-test-id="${testId}"]`).exists()
+
   return { hasMenu: activator.exists(), has }
 }
