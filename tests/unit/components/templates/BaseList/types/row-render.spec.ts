@@ -1,7 +1,11 @@
-import { describe, expect, it } from 'vitest'
-import { ListFieldType } from '../../../../../../src/@model/templates/tableFields'
-import type { RowCellDef } from './row-render.harness'
 import { captureSlot, expectExpandRow, expectItemActions, expectRow, mountRow, openActionMenu } from './row-render.harness'
+import type { RowCellDef } from './row-render.harness'
+import { flushPromises } from '@vue/test-utils'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { ListFieldType } from '../../../../../../src/@model/templates/tableFields'
+import { ModalsId } from '../../../../../../src/@model/modalsId'
+import BaseListCell from '../../../../../../src/components/templates/BaseList/_components/BaseListCell.vue'
+import { modalSpy, updateEntity, toggleStatusEntity } from '../../../../mocks/base-list/utils'
 
 /** Мінімальні валідні значення для кожного типу — harness сам знає, який компонент очікувати. */
 const TYPE_CASES: [ListFieldType, RowCellDef['value'], Partial<RowCellDef>?][] = [
@@ -104,6 +108,108 @@ describe('BaseList row render', () => {
       const menu = await openActionMenu(m)
       expect(menu.hasMenu).toBe(true)
       expect(m.cellEl('actions').text()).toContain('PRE')
+    })
+  })
+
+  describe('slot payload contract (default.vue -> BaseListCell -> consumer)', () => {
+    it('cell(key): full payload', async () => {
+      const cap = captureSlot('cell(name)')
+      const m = await mountRow([{ key: 'name', value: 'Item 1' }], { extraSlots: { 'cell(name)': cap.slot } })
+      const p = cap.props()!
+      expect(p.field).toMatchObject({ key: 'name' })
+      expect(p.item).toEqual(m.row) // raw
+      expect(p.value).toEqual(m.row)
+      expect(p.cell).toBe('Item 1')
+      expect(p.index).toBe(0)
+      expect(p).toMatchObject({ canCreate: true, canRemove: true, isExpanded: false })
+      expect(p.createPageName).toEqual(expect.any(String))
+      for (const fn of ['getUpdateRoute', 'toggleExpand', 'onClickRemove'])
+        expect(p[fn], fn).toEqual(expect.any(Function))
+      expect(p).toHaveProperty('inlineFilters')
+    })
+
+    it('cell(key): canRemove/canCreate follow permissions', async () => {
+      const cap = captureSlot('cell(name)')
+      await mountRow([{ key: 'name', value: 'x' }], { extraSlots: { 'cell(name)': cap.slot }, permissions: { canRemove: false, canCreate: false } })
+      expect(cap.props()).toMatchObject({ canCreate: false, canRemove: false })
+    })
+
+    it('nameWithIdTitle: item + canUpdate', async () => {
+      const cap = captureSlot('name-nameWithIdTitle')
+      const m = await mountRow([{ key: 'name', type: ListFieldType.NameWithId, value: 'N', rawExtra: { name: 'N' } }], { extraSlots: { 'name-nameWithIdTitle': cap.slot } })
+      expect(cap.props()).toMatchObject({ item: m.row, canUpdate: true })
+      const cap2 = captureSlot('name-nameWithIdTitle')
+      await mountRow([{ key: 'name', type: ListFieldType.NameWithId, value: 'N', rawExtra: { name: 'N' } }], { extraSlots: { 'name-nameWithIdTitle': cap2.slot }, permissions: { canUpdate: false } })
+      expect(cap2.props()!.canUpdate).toBe(false)
+    })
+
+    it('badgeTitle: item + cell + value (single badge)', async () => {
+      const cap = captureSlot('b-badgeTitle')
+      const badges = [{ name: 'b1' }]
+      const m = await mountRow([{ key: 'b', type: ListFieldType.Badges, value: badges }], { extraSlots: { 'b-badgeTitle': cap.slot } })
+      expect(cap.props()).toMatchObject({ item: m.row, cell: badges })
+      expect(cap.props()!.value).toEqual(badges[0])
+    })
+
+    it('action-item slots: payload', async () => {
+      const prepend = captureSlot('prepend-action-item')
+      const append = captureSlot('append-action-item')
+      const details = captureSlot('details-action-item')
+      const m = await mountRow([{ key: 'name', value: 'x' }, { key: 'actions' }], {
+        extraSlots: { 'prepend-action-item': prepend.slot, 'append-action-item': append.slot, 'details-action-item': details.slot },
+      })
+      await openActionMenu(m)
+      expect(prepend.props()).toMatchObject({ canUpdate: true })
+      expect(append.props()).toMatchObject({ canUpdate: true, canCreate: true, entityName: 'Test' })
+      expect(details.props()).toHaveProperty('pageName')
+      for (const c of [prepend, append, details])
+        // на відміну від cell()/nameWithIdTitle/badgeTitle (raw), тут приходить vuetify-обгортка { raw, value, ... }
+        expect(c.props()!.item, c.name).toMatchObject({ raw: m.row, value: m.row })
+    })
+  })
+
+  describe('events: BaseListCell -> BaseList handlers', () => {
+    beforeEach(() => {
+      vi.clearAllMocks()
+    })
+    const emitFromCell = async (cells: RowCellDef[], event: string, ...args: unknown[]) => {
+      const m = await mountRow(cells)
+      m.wrapper.findComponent(BaseListCell).vm.$emit(event, ...args)
+      await flushPromises()
+      return m
+    }
+
+    it('edit-position -> updateEntity({ id, position })', async () => {
+      await emitFromCell([{ key: 'p', type: ListFieldType.Priority, value: 1 }], 'edit-position', { id: 'row-1' }, 5)
+      expect(updateEntity).toHaveBeenCalledWith(expect.objectContaining({ type: 'Test', data: { form: { id: 'row-1', position: 5 } } }))
+    })
+
+    it('open-edit -> editingId is passed back to cell', async () => {
+      const m = await emitFromCell([{ key: 'p', type: ListFieldType.Priority, value: 1 }], 'open-edit', 'row-1')
+      expect(m.wrapper.findComponent(BaseListCell).props('editingId')).toBe('row-1')
+    })
+
+    it('show-detail-image -> image modal', async () => {
+      await emitFromCell([{ key: 'i', type: ListFieldType.ImageFull, value: { imagePath: 'a.png' } }], 'show-detail-image', 'a.png')
+      expect(modalSpy).toHaveBeenCalledWith(ModalsId.ImageDetailModal, { imagePath: 'a.png' })
+    })
+
+    it('on-remove -> remove modal', async () => {
+      await emitFromCell([{ key: 'name', value: 'x' }], 'on-remove', { id: 'row-1' })
+      expect(modalSpy).toHaveBeenCalledTimes(1)
+    })
+
+    it('on-toggle-status -> updateEntity({ id, isActive: !isActive })', async () => {
+      await emitFromCell([{ key: 'name', value: 'x' }], 'on-toggle-status', { id: 'row-1', isActive: true })
+      expect(updateEntity).toHaveBeenCalledWith(expect.objectContaining({ data: { form: { id: 'row-1', isActive: false } } }))
+    })
+
+    it('on-toggle-status with withDeactivationBySpecificAction -> toggleStatusEntity', async () => {
+      const m = await mountRow([{ key: 'name', value: 'x' }], { config: { withDeactivationBySpecificAction: true } })
+      m.wrapper.findComponent(BaseListCell).vm.$emit('on-toggle-status', { id: 'row-1', isActive: false })
+      await flushPromises()
+      expect(toggleStatusEntity).toHaveBeenCalledWith(expect.objectContaining({ data: { form: { id: 'row-1', isActive: true } } }))
+      expect(updateEntity).not.toHaveBeenCalled()
     })
   })
 
