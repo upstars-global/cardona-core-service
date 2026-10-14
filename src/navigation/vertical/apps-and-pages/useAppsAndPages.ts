@@ -20,7 +20,8 @@ export function useAppsAndPages() {
       },
       {
         title: 'Storybook',
-        to: { name: 'Storybook' },
+        href: '/storybook/index.html',
+        target: '_blank',
         icon: { icon: 'tabler-book' },
       },
     ]),
