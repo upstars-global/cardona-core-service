@@ -1,4 +1,4 @@
-import '../../../../mocks/base-list/static-mock'
+import { permissionsMock } from '../../../../mocks/base-list/static-mock'
 import { flushPromises } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import { expect } from 'vitest'
@@ -94,7 +94,11 @@ export interface RowCellDef {
   slots?: CellSlots
 }
 
+const defaultPermissions = { ...permissionsMock }
+
 export interface MountRowOptions {
+  /** патч до `basePermissions` (canUpdate/canRemove/canCreate/...); перед кожним mount скидається до дефолту */
+  permissions?: Partial<typeof permissionsMock>
   rowId?: string | number
   /** патч до `config` поверх дефолтного */
   config?: Partial<IBaseListConfig> & Record<string, unknown>
@@ -165,7 +169,8 @@ function buildSlots(cells: RowCellDef[], opts: MountRowOptions): Record<string, 
 
 /** Монтує BaseList з одним рядком, зібраним з `cells`. */
 export async function mountRow(cells: RowCellDef[], opts: MountRowOptions = {}): Promise<MountedRow> {
-  const { rowId = 'row-1', config = {}, expand } = opts
+  const { rowId = 'row-1', config = {}, expand, permissions = {} } = opts
+  Object.assign(permissionsMock, defaultPermissions, permissions)
 
   const fields = cells.map(c => new TableField({
     key: c.key,
@@ -283,4 +288,15 @@ export function captureSlot(name: string) {
     return h('div', { 'data-test-id': slotTestId(name) }, name)
   }
   return { name, slot, props: () => props }
+}
+
+/** Відкриває меню дій рядка і повертає, які пункти в ньому є (за `data-test-id`). */
+export async function openActionMenu(m: MountedRow, actionKey = 'actions') {
+  const activator = m.cellEl(actionKey).find('[data-test-id="activator"]')
+  if (activator.exists()) {
+    await activator.trigger('click')
+    await flushPromises()
+  }
+  const has = (testId: string) => m.cellEl(actionKey).find(`[data-test-id="${testId}"]`).exists()
+  return { hasMenu: activator.exists(), has }
 }

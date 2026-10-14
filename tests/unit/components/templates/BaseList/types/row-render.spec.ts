@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { ListFieldType } from '../../../../../../src/@model/templates/tableFields'
 import type { RowCellDef } from './row-render.harness'
-import { captureSlot, expectExpandRow, expectItemActions, expectRow, mountRow } from './row-render.harness'
+import { captureSlot, expectExpandRow, expectItemActions, expectRow, mountRow, openActionMenu } from './row-render.harness'
 
 /** Мінімальні валідні значення для кожного типу — harness сам знає, який компонент очікувати. */
 const TYPE_CASES: [ListFieldType, RowCellDef['value'], Partial<RowCellDef>?][] = [
@@ -67,6 +67,49 @@ describe('BaseList row render', () => {
       actionSlots: { prepend: 'PRE', append: 'APP' },
     })
     expectItemActions(m)
+  })
+
+  describe('actions menu', () => {
+    const cells: RowCellDef[] = [{ key: 'name', value: 'x' }, { key: 'actions', rawExtra: { isActive: true } }]
+
+    it('canRemove: remove item is shown / hidden', async () => {
+      expect((await openActionMenu(await mountRow(cells))).has('remove')).toBe(true)
+      expect((await openActionMenu(await mountRow(cells, { permissions: { canRemove: false } }))).has('remove')).toBe(false)
+    })
+
+    it('config.withDeactivation shows status-toggle only with canUpdate', async () => {
+      const config = { withDeactivation: true }
+      expect((await openActionMenu(await mountRow(cells, { config }))).has('status-toggle')).toBe(true)
+      expect((await openActionMenu(await mountRow(cells, { config, permissions: { canUpdate: false } }))).has('status-toggle')).toBe(false)
+      expect((await openActionMenu(await mountRow(cells))).has('status-toggle')).toBe(false)
+    })
+
+    it('config.createFromCopy shows copy item only with canCreate', async () => {
+      const config = { createFromCopy: true }
+      expect((await openActionMenu(await mountRow(cells, { config }))).has('copy')).toBe(true)
+      expect((await openActionMenu(await mountRow(cells, { config, permissions: { canCreate: false } }))).has('copy')).toBe(false)
+      expect((await openActionMenu(await mountRow(cells))).has('copy')).toBe(false)
+    })
+
+    it('no permissions and no slots -> no menu at all', async () => {
+      const m = await mountRow(cells, { permissions: { canUpdate: false, canUpdateSeo: false, canCreate: false, canRemove: false } })
+      expect((await openActionMenu(m)).hasMenu).toBe(false)
+    })
+
+    it('prepend/append slots alone are enough to show the menu', async () => {
+      const m = await mountRow(cells, {
+        permissions: { canUpdate: false, canUpdateSeo: false, canCreate: false, canRemove: false },
+        actionSlots: { prepend: 'PRE' },
+      })
+      const menu = await openActionMenu(m)
+      expect(menu.hasMenu).toBe(true)
+      expect(m.cellEl('actions').text()).toContain('PRE')
+    })
+  })
+
+  it('config.cellCbClass adds class to td', async () => {
+    const m = await mountRow([{ key: 'name', value: 'x' }], { config: { cellCbClass: (_item: any, key: string) => `cb-${key}` } })
+    expect(m.cellEl('name').classes()).toContain('cb-name')
   })
 
   it('expand row renders cellExpand slot after toggle (requires cell() slot too)', async () => {
