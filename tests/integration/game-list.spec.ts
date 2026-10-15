@@ -6,6 +6,7 @@ import { SelectMode } from '../../src/@model/enums/selectMode'
 import { FilterType } from '../../src/@model/filter'
 import { getMountComponent, global, mockCustomStore } from '../unit/mocks/base-list/utils'
 import { useGamesList } from './useSection'
+import { expectSidebarWorks } from './sidebar.helper'
 
 vi.mock('../../src/stores/filtersCore', () => ({
   useFiltersStore: () => ({
@@ -50,6 +51,8 @@ const config = new BaseListConfig({
   ],
 })
 
+const sidebarConfig = new BaseListConfig({ ...config, sidebar: true })
+
 const mountGames = async () => {
   const wrapper = getMountComponent({ useList: useGamesList, config }, global)
 
@@ -92,5 +95,29 @@ describe('Games list (integration: real useList + config)', () => {
     const wrapper = await mountGames()
 
     expect(wrapper.findAll('tr[data-test-id="table-row"]')).toHaveLength(0)
+  })
+
+  describe('sidebar', () => {
+    it('config.sidebar + useList.SideBarModel: row click renders every SideBarModel field', async () => {
+      const { keys } = await expectSidebarWorks({ useList: useGamesList, config: sidebarConfig, row: gameRow })
+
+      expect(keys).toEqual(expect.arrayContaining(['id', 'name', 'slug', 'updatedAt']))
+    })
+
+    it('does not open without config.sidebar', async () => {
+      await expect(
+        expectSidebarWorks({ useList: useGamesList, config: new BaseListConfig({}), row: gameRow }),
+      ).rejects.toThrow('config.sidebar must be true')
+    })
+
+    it('does not work without SideBarModel in useList', async () => {
+      await expect(
+        expectSidebarWorks({
+          useList: () => ({ ...useGamesList(), SideBarModel: undefined }),
+          config: sidebarConfig,
+          row: gameRow,
+        }),
+      ).rejects.toThrow('useList must return SideBarModel')
+    })
   })
 })
