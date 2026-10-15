@@ -1,12 +1,14 @@
 import '../unit/mocks/base-list/static-mock'
 import { flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { FilterListItem } from '../../src/@model/templates/baseList'
 import { BaseListConfig } from '../../src/@model/templates/baseList'
 import { SelectMode } from '../../src/@model/enums/selectMode'
 import { FilterType } from '../../src/@model/filter'
 import { getMountComponent, global, mockCustomStore } from '../unit/mocks/base-list/utils'
 import { useGamesList } from './useSection'
 import { expectSidebarWorks } from './sidebar.helper'
+import { expectFiltersMatchModel } from './filters.helper'
 
 vi.mock('../../src/stores/filtersCore', () => ({
   useFiltersStore: () => ({
@@ -118,6 +120,60 @@ describe('Games list (integration: real useList + config)', () => {
           row: gameRow,
         }),
       ).rejects.toThrow('useList must return SideBarModel')
+    })
+  })
+
+  describe('filters (from the spec config)', () => {
+    const allModelKeys = Object.keys(new (useGamesList().ListFilterModel!)({}))
+
+    // model filters the spec config intentionally does not expose
+    const notExposed = allModelKeys.filter(key => !['isActive', 'updatedFrom', 'updatedTo', 'search'].includes(key))
+
+    const withFilters = (...extra: FilterListItem[]) =>
+      new BaseListConfig({ ...config, filterList: [...config.filterList, ...extra] })
+
+    it('every filter in config exists in GamesFilters', () => {
+      expectFiltersMatchModel({ useList: useGamesList, config, ignoreModelKeys: notExposed })
+    })
+
+    it('fails when the model has filters that config does not expose', () => {
+      expect(() => expectFiltersMatchModel({ useList: useGamesList, config }))
+        .toThrow('in ListFilterModel, but not reachable from config')
+    })
+
+    it('fails when config gets a filter key the model does not know', () => {
+      const bad = withFilters({ type: FilterType.Status, key: 'isEnabled' })
+
+      expect(() => expectFiltersMatchModel({ useList: useGamesList, config: bad, ignoreModelKeys: notExposed }))
+        .toThrow('in config, but ListFilterModel drops them')
+    })
+
+    it('fails when a date range produces from/to the model does not know', () => {
+      const bad = withFilters({ type: FilterType.DateRangeApproved, key: 'approved' })
+
+      expect(() => expectFiltersMatchModel({ useList: useGamesList, config: bad, ignoreModelKeys: notExposed }))
+        .toThrow('in config, but ListFilterModel drops them')
+    })
+
+    it('fails on a filter type without a registered field', () => {
+      const bad = withFilters({ type: FilterType.Name, key: 'name' })
+
+      expect(() => expectFiltersMatchModel({ useList: useGamesList, config: bad, ignoreModelKeys: notExposed }))
+        .toThrow('filterList types without a registered field')
+    })
+
+    it('fails when useList has no ListFilterModel', () => {
+      expect(() => expectFiltersMatchModel({
+        useList: () => ({ ...useGamesList(), ListFilterModel: undefined }),
+        config,
+      })).toThrow('useList must return ListFilterModel')
+    })
+
+    it('reports staticFilters that the model does not know', () => {
+      const bad = new BaseListConfig({ ...config, staticFilters: { playerId: 1 } })
+
+      expect(() => expectFiltersMatchModel({ useList: useGamesList, config: bad, ignoreModelKeys: notExposed }))
+        .toThrow('in config, but ListFilterModel drops them')
     })
   })
 })
