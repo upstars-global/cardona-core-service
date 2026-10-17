@@ -7,6 +7,7 @@ import 'flatpickr/dist/flatpickr.css'
 import {
   checkEmittedValue,
   getArialLabelOfCalendar,
+  getInput,
   mountDateFieldWithDefaultProps, setAndCheckInputValue, testChangeInputValue,
   testOnCallEventEmitAndEqualValue,
 } from '../shared-tests/date-field'
@@ -157,5 +158,197 @@ describe('DateField.vue', () => {
     })
 
     testOn.existClassList({ wrapper, testId: 'single-picker' }, ['v-input--error', 'error'])
+  })
+
+  describe('isStartDateNow', () => {
+    const DISABLED_CLASS = 'flatpickr-disabled'
+    const HOUR_SELECTOR = 'input.flatpickr-hour'
+    const MINUTE_SELECTOR = 'input.flatpickr-minute'
+    const RANGE_SEPARATOR = ' to '
+
+    const now = new Date()
+    const savedHours = 9
+    const savedMinutes = 37
+
+    const getIso = (date: moment.Moment) => date.toISOString()
+    const getPastMoment = () => moment(now).subtract(40, 'day').hours(savedHours).minutes(savedMinutes).seconds(0).milliseconds(0)
+    const getFutureMoment = () => moment(now).add(5, 'day')
+
+    const getFieldProps = (overrides = {}) => ({
+      config: { static: true },
+      isRangeMode: false,
+      isStartDateNow: true,
+      withTime: true,
+      ...overrides,
+    })
+
+    const mountSingle = (modelValue: string, fieldOverrides = {}) =>
+      mountDateFieldWithDefaultProps({ field: getFieldProps(fieldOverrides), modelValue })
+
+    const mountRange = (modelValue: string, fieldOverrides = {}) =>
+      mountDateFieldWithDefaultProps({ field: getFieldProps({ isRangeMode: true, ...fieldOverrides }), modelValue })
+
+    const getDaySelector = (date: moment.MomentInput, pickerTestId?: string) => {
+      const daySelector = getArialLabelOfCalendar(moment(date).format('YYYY-MM-DD'))
+
+      return pickerTestId ? `[data-test-id="${pickerTestId}"] ${daySelector}` : daySelector
+    }
+
+    const expectDayDisabled = (wrapper: VueWrapper, date: moment.MomentInput, pickerTestId?: string) =>
+      testOn.existClass({ wrapper, selector: getDaySelector(date, pickerTestId) }, DISABLED_CLASS)
+
+    const expectDayEnabled = (wrapper: VueWrapper, date: moment.MomentInput, pickerTestId?: string) =>
+      testOn.notExistClasses({ wrapper, selector: getDaySelector(date, pickerTestId) }, DISABLED_CLASS)
+
+    const tryChangeTime = async (wrapper: VueWrapper, scope = '') => {
+      const hourInput = wrapper.find(`${scope} ${HOUR_SELECTOR}`.trim())
+
+      const minuteInput = wrapper.find(`${scope} ${MINUTE_SELECTOR}`.trim())
+
+      ;(hourInput.element as HTMLInputElement).value = '15'
+      await hourInput.trigger('input')
+      await hourInput.trigger('blur')
+      ;(minuteInput.element as HTMLInputElement).value = '45'
+      await minuteInput.trigger('input')
+      await minuteInput.trigger('blur')
+
+      return {
+        hours: (hourInput.element as HTMLInputElement).value,
+        minutes: (minuteInput.element as HTMLInputElement).value,
+      }
+    }
+
+    const expectTimeLocked = async (wrapper: VueWrapper, scope = '') => {
+      const time = await tryChangeTime(wrapper, scope)
+
+      expect(time).toEqual({
+        hours: String(savedHours).padStart(2, '0'),
+        minutes: String(savedMinutes).padStart(2, '0'),
+      })
+    }
+
+    const expectTimeEditable = async (wrapper: VueWrapper, scope = '') => {
+      const time = await tryChangeTime(wrapper, scope)
+
+      expect(time).toEqual({ hours: '15', minutes: '45' })
+    }
+
+    describe('single mode', () => {
+      it('Keeps a saved past date visible', () => {
+        const wrapper = mountSingle(getIso(getPastMoment()))
+
+        testOn.inputAttributeValueToBe(
+          { wrapper, selector: 'input.form-control[type="text"]' },
+          getPastMoment().format('DD.MM.YYYY, HH:mm'),
+        )
+      })
+
+      it('Disables other past days but keeps the saved day enabled', () => {
+        const savedDate = getPastMoment()
+        const wrapper = mountSingle(getIso(savedDate))
+
+        expectDayEnabled(wrapper, savedDate)
+        expectDayDisabled(wrapper, moment(savedDate).subtract(2, 'day'))
+        expectDayDisabled(wrapper, moment(savedDate).add(2, 'day'))
+      })
+
+      it('Disables past days when there is no value', () => {
+        const wrapper = mountSingle('')
+
+        expectDayDisabled(wrapper, moment(now).subtract(1, 'day'))
+        expectDayEnabled(wrapper, moment(now).add(1, 'day'))
+      })
+
+      it('Restores the start-of-today limit once a future date is set', async () => {
+        const savedDate = getPastMoment()
+        const wrapper = mountSingle(getIso(savedDate))
+
+        expectDayEnabled(wrapper, savedDate)
+
+        await wrapper.setProps({ modelValue: getIso(getFutureMoment()) })
+        await nextTick()
+
+        expectDayDisabled(wrapper, moment(now).subtract(1, 'day'))
+        expectDayEnabled(wrapper, moment(now))
+        expectDayEnabled(wrapper, moment(now).add(1, 'day'))
+      })
+
+      it('Does not restrict past days without the flag', () => {
+        const savedDate = getPastMoment()
+        const wrapper = mountSingle(getIso(savedDate), { isStartDateNow: false })
+
+        expectDayEnabled(wrapper, savedDate)
+        expectDayEnabled(wrapper, moment(savedDate).subtract(2, 'day'))
+        expectDayEnabled(wrapper, moment(savedDate).add(2, 'day'))
+      })
+
+      it('Locks the time of a saved past date', async () => {
+        const wrapper = mountSingle(getIso(getPastMoment()))
+
+        await expectTimeLocked(wrapper)
+      })
+
+      it('Does not lock the time without a value', async () => {
+        const wrapper = mountSingle('')
+
+        await expectTimeEditable(wrapper)
+      })
+
+      it('Does not lock the time for a future date', async () => {
+        const wrapper = mountSingle(getIso(getFutureMoment()))
+
+        await expectTimeEditable(wrapper)
+      })
+
+      it('Unlocks the time once a future date is set', async () => {
+        const wrapper = mountSingle(getIso(getPastMoment()))
+
+        await wrapper.setProps({ modelValue: getIso(getFutureMoment()) })
+        await nextTick()
+
+        await expectTimeEditable(wrapper)
+      })
+
+      it('Does not lock the time of a saved past date without the flag', async () => {
+        const wrapper = mountSingle(getIso(getPastMoment()), { isStartDateNow: false })
+
+        await expectTimeEditable(wrapper)
+      })
+    })
+
+    describe('range mode (from picker)', () => {
+      const getRangeValue = () => `${getIso(getPastMoment())}${RANGE_SEPARATOR}${getIso(getFutureMoment())}`
+
+      it('Keeps the saved past start date visible', () => {
+        const wrapper = mountRange(getRangeValue())
+        const fromInput = getInput(wrapper, 'from')
+
+        expect(fromInput.element.value).not.toBe('')
+        expect(moment(fromInput.element.value).isSame(getPastMoment(), 'minute')).toBe(true)
+      })
+
+      it('Disables other past days but keeps the saved start day enabled', () => {
+        const savedDate = getPastMoment()
+        const wrapper = mountRange(getRangeValue())
+
+        expectDayEnabled(wrapper, savedDate, 'from')
+        expectDayDisabled(wrapper, moment(savedDate).subtract(2, 'day'), 'from')
+        expectDayDisabled(wrapper, moment(savedDate).add(2, 'day'), 'from')
+      })
+
+      it('Locks the time of the saved past start date', async () => {
+        const wrapper = mountRange(getRangeValue())
+
+        await expectTimeLocked(wrapper, '[data-test-id="from"]')
+      })
+
+      it('Does not restrict the start date without the flag', () => {
+        const savedDate = getPastMoment()
+        const wrapper = mountRange(getRangeValue(), { isStartDateNow: false })
+
+        expectDayEnabled(wrapper, moment(savedDate).subtract(2, 'day'), 'from')
+        expectDayEnabled(wrapper, moment(savedDate).add(2, 'day'), 'from')
+      })
+    })
   })
 })
