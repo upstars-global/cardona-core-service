@@ -6,6 +6,7 @@ import { RatesBaseField } from '../../../../src/@model/templates/baseField'
 import { testOn } from '../shared-tests/test-case-generator'
 import type { IRatesBaseField, RatesValueItem } from '../../../../src/@model/templates/baseField/rates'
 import { textOnEqualDataAndValueInput } from '../shared-tests/rates'
+import '../../../../src/@model/validations'
 
 const getMountRatesField = setMountComponent(RatesField)
 
