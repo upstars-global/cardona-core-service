@@ -256,6 +256,12 @@ const sortBy = sortFromStorage?.key || props.config.staticSorts?.key
 const sortDir = sortFromStorage?.order || props.config.staticSorts?.order
 const sortData = ref(sortBy && sortDir ? [{ key: sortBy, order: sortDir }] as SortItem[] : [])
 
+const initialSortData = sortData.value
+
+const onUpdateSortData = (value: SortItem[]) => {
+  sortData.value = value
+}
+
 watch(() => sortData.value, async ([newSortData]) => {
   if (props.config.saveSort) {
     newSortData
@@ -924,7 +930,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
       </MultipleActions>
 
       <CTable
-        v-model:sort-data="sortData"
+        :sort-data="initialSortData"
         :is-loading-list="isLoadingList"
         :fields="selectedFields"
         :rows="items"
@@ -935,6 +941,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :hover="config.hover"
         :show-expand="config.showExpand"
         :skeleton-rows="config.skeletonRows"
+        @update:sort-data="onUpdateSortData"
         :skeleton-cols="config.skeletonCols"
         :selected-items="selectedItems"
         :items-per-page="itemsPerPage"
