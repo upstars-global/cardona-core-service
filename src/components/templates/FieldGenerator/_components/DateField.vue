@@ -57,8 +57,35 @@ const modelValue = computed({
   },
 })
 
+interface PastDateRestriction {
+  minDate?: Date
+  disable: ((date: Date) => boolean)[]
+  minTime?: string
+  maxTime?: string
+}
+
 const startedAt = ref()
 const endedAt = ref()
+
+const getPastDateRestriction = (value?: string): PastDateRestriction => {
+  if (!props.field.isStartDateNow)
+    return { minDate: undefined, disable: [], minTime: undefined, maxTime: undefined }
+
+  const startOfDay = getStartOfDayDate()
+  const savedDate = value ? moment(value) : null
+
+  if (!savedDate?.isValid() || !savedDate.isBefore(startOfDay))
+    return { minDate: startOfDay, disable: [], minTime: undefined, maxTime: undefined }
+
+  const savedTime = savedDate.format('HH:mm:ss')
+
+  return {
+    minDate: undefined,
+    disable: [date => moment(date).isBefore(startOfDay) && !moment(date).isSame(savedDate, 'day')],
+    minTime: savedTime,
+    maxTime: savedTime,
+  }
+}
 
 watch(
   () => props.modelValue,
@@ -126,7 +153,7 @@ const setRangeDate = (value, isStartDate = true) => {
 const configFrom = computed(() => {
   return {
     ...flatPickrConfig.value,
-    minDate: props.field.isStartDateNow && getStartOfDayDate(),
+    ...getPastDateRestriction(startedAt.value),
     maxDate: endedAt.value || props.field.allowFutureDate || new Date(),
     mode: 'single',
     defaultHour: 0,
@@ -149,6 +176,8 @@ const configTo = computed(() => {
   }
 })
 
+const singlePastDateRestriction = computed(() => getPastDateRestriction(props.modelValue))
+
 const dateFromRef = ref()
 const dateToRef = ref()
 
@@ -167,7 +196,7 @@ const onOpenByAppendInner = dateRef => {
     :placeholder="field.placeholder || field.label"
     :config="{
       ...flatPickrConfig,
-      minDate: field.isStartDateNow && getStartOfDayDate(),
+      ...singlePastDateRestriction,
       mode: field.isRangeMode ? 'range' : 'single',
       allowInput: true,
       ...field.config,
