@@ -19,7 +19,7 @@ interface ConfigType {
   noPermissionPrefix?: boolean
   customPermissionPrefix?: string
   onePermissionKey?: string
-  noPermissions?: ListPermissionLevel | ListPermissionLevel[]
+  noPermissions?: ListPermissionLevel | ListPermissionLevel[] | boolean
 }
 
 interface PermissionsParams<T> {

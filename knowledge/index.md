@@ -4,6 +4,11 @@
 > `node scripts/docs-map.mjs --build-index` — не редактируйте вручную.
 > Хроника операций — в [[log]] (append-only журнал ingest/query/lint).
 
+## Components
+
+- [[ConfirmationModal]] — ConfirmationModal
+- [[ItemActionCopy]] — ItemActionCopy
+
 ## Composables
 
 - [[useApi]] — useApi
