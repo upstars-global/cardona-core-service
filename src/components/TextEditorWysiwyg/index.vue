@@ -74,13 +74,14 @@ const globalEditor = ref<any>()
 const isUpdateVar = computed(() => textEditorStore.isUpdateVar)
 const isSave = computed(() => textEditorStore.isSave)
 const variableTextBufferStore = computed(() => textEditorStore.variableTextBuffer || {})
+const isDisableVariables = props.config?.isDisableVariables || false
 
 const setVariableTextBuffer = params => textEditorStore.setVariableTextBuffer(params)
 const setVariableByKey = ({ key, value }) => textEditorStore.setVariableByKey({ key, value })
 const removeVariableValueByKey = key => textEditorStore.removeVariableValueByKey(key)
 
 watch(() => isUpdateVar.value, () => {
-  if (isUpdateVar.value) {
+  if (isUpdateVar.value && !isDisableVariables) {
     findNoUseVarAndDelete()
     textEditorStore.setUpdateVar(false)
   }
@@ -92,10 +93,12 @@ const variableTextBuffer = computed({
 })
 
 watch(() => variableTextBuffer, () => {
+  if(isDisableVariables) return
   emit('update-localisation-parameters', variableTextBuffer.value)
 }, { deep: true })
 
 watch(() => props.localisationParameters, async () => {
+  if(isDisableVariables) return
   setVariableTextBuffer(props.localisationParameters)
 }, { deep: true, immediate: true })
 
@@ -178,6 +181,12 @@ const config = {
         globalEditor.value = this
 
       const editor: any = this
+
+      if(isDisableVariables) {
+        fixEmailTemplate();
+        return;
+      }
+
       let contentChanged = editor.html.get()
       const regex = /{{(.*?)}}/g
 
@@ -328,6 +337,35 @@ const updateVariableInContent = (editor: any) => {
       }
     }
   })
+}
+
+//TODO FIX EMAIL BAC-8880
+const fixEmailTemplate = () => {
+  if (!globalEditor.value)
+    return
+  const regex = /<span class="variable-box">\{(.*?)\}<\/span>/g
+
+  const text = ref(globalEditor.value.html.get(true).replaceAll('&nbsp;', ''))
+  let match: RegExpExecArray | null
+  let isUpdateCursor = false
+
+  while ((match = regex.exec(text.value)) !== null) {
+    // @ts-expect-error
+    if (globalEditor.value && !variableTextBuffer.value[match[1]]) {
+      isUpdateCursor = true
+      text.value = text.value
+        .replaceAll(`<span class="variable-box">{${match[1]}}</span>`, `{{${match[1]}}}`)
+        .replaceAll('&nbsp;&nbsp;', '')
+    }
+  }
+
+  if (isUpdateCursor) {
+    globalEditor.value.html.set(text.value)
+    globalEditor.value.selection.restore()
+    globalEditor.value.selection.setAfter(globalEditor.value.selection.element())
+    globalEditor.value.selection.restore()
+    content.value = text.value
+  }
 }
 
 const findNoUseVarAndDelete = () => {
