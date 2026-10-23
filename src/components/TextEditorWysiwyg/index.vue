@@ -356,6 +356,8 @@ const fixEmailTemplate = () => {
       const variableClear = match[1]
         .replaceAll('{', '')
         .replaceAll('}', '')
+        .replaceAll('&nbsp;', '')
+        .replaceAll(' ', '')
       text.value = text.value
         .replaceAll(`<span class="variable-box">{${match[1]}}</span>`, `{{${variableClear}}}`)
         .replaceAll('&nbsp;&nbsp;', '')
