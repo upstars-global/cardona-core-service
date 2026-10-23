@@ -56,8 +56,20 @@ defineExpose({
   get items() {
     return listByTypeRef.value?.items
   },
-  isSidebarShown: listByTypeRef.value?.isSidebarShown,
-  searchQuery: listByTypeRef.value?.searchQuery,
+  get isSidebarShown(): boolean {
+    return listByTypeRef.value?.isSidebarShown ?? false
+  },
+  set isSidebarShown(value: boolean) {
+    if (listByTypeRef.value)
+      listByTypeRef.value.isSidebarShown = value
+  },
+  get searchQuery(): string {
+    return listByTypeRef.value?.searchQuery ?? ''
+  },
+  set searchQuery(value: string) {
+    if (listByTypeRef.value)
+      listByTypeRef.value.searchQuery = value
+  },
 })
 </script>
 
