@@ -1,6 +1,4 @@
 // Library bootstrap + structural styles + grey-900 color overrides (global baseline).
-// Layout-specific color overrides live in each layout's components/:
-//   island → layouts/island/components/base-select.scss (surface-invert)
 
 // ─── Library SASS vars (must precede @import) ─────────────────────────────────
 $vs-component-line-height: 1.8;
@@ -267,9 +265,6 @@ $options-padding-y: 7px;
     }
   }
 }
-
-// ─── Grey-900 color overrides (global baseline, applies to all layouts) ───────
-// Island overrides specific properties via surface-invert tokens (higher specificity).
 
 .vs--disabled {
   .vs__clear {
