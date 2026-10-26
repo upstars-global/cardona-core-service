@@ -81,6 +81,7 @@ export const IconsList = {
   PlayCircleIcon: 'tabler-circle-caret-right',
   PlayIcon: 'tabler-player-play',
   PlusIcon: 'tabler-plus',
+  ReceiptIcon: 'tabler-receipt',
   RefreshCcwIcon: 'tabler-refresh',
   RefreshCwIcon: 'tabler-refresh',
   ReportIcon: 'tabler-report',
