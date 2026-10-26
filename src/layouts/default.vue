@@ -129,7 +129,7 @@ useResizeObserver(sidebarNavRef, () => {
       <div class="bg-sidebar w-100 h-100 pr-2 pb-2">
         <div
           ref="contentScrollEl"
-          class="d-flex flex-column h-100 overflow-y-auto"
+          class="d-flex flex-column h-100 overflow-y-auto layout-scroll-containers"
         >
           <div class="layout-appbar pt-2 d-flex flex-column">
             <div class="flex-grow-1 d-flex align-center pt-4 px-6 bg-surface layout-border-top">
