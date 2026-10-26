@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, isRef, onBeforeMount, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { debounce, findIndex, has, isUndefined } from 'lodash'
 import type { ExportFormat, IBaseListConfig, ProjectsFilterOption } from '../../../../@model/templates/baseList'
 import { BaseListSlots, ProjectsFilterMode } from '../../../../@model/templates/baseList'
@@ -13,19 +12,12 @@ import { ListSort, SortedItem } from '../../../../@model'
 import { useFilters } from '../../../../components/FiltersBlock/useFilters'
 import type { BaseField } from '../../../../@model/templates/baseField'
 import type { TableField } from '../../../../@model/templates/tableFields'
-import { basePermissions } from '../../../../helpers/base-permissions'
 import type { SortItem } from '../../../../@core/types'
 import { IconsList } from '../../../../@model/enums/icons'
-import {
-  checkExistsPage,
-  convertCamelCase,
-  isEmptyString,
-  isNullOrUndefinedValue,
-} from '../../../../helpers'
+import { isEmptyString, isNullOrUndefinedValue } from '../../../../helpers'
 import { VSizes } from '../../../../@model/vuetify'
 import SideBar from '../../../../components/templates/SideBar/index.vue'
 import FiltersBlock from '../../../../components/FiltersBlock/index.vue'
-import { useLoaderStore } from '../../../../stores/loader'
 import { useBaseStoreCore } from '../../../../stores/baseStoreCore'
 import { useUserStore } from '../../../../stores/user'
 import { useAppConfigCoreStore } from '../../../../stores/appConfigCore'
@@ -41,6 +33,9 @@ import ProjectsFilter from '../_components/ProjectsFilter.vue'
 import { mapSortData } from '../сomposables/sorting'
 import { transformFilters } from '../сomposables/filters'
 import { useInlineFilters } from '../сomposables/inlineFilters'
+import { parseEntityNameWithTabs, useListContext } from '../сomposables/useListContext'
+import { useListPermissions } from '../сomposables/useListPermissions'
+import { useListLoading } from '../сomposables/useListLoading'
 import InlineFilters from '../_components/InlineFilters.vue'
 import ImageDetailModal from '../_components/ImageDetailModal.vue'
 import { ModalsId } from '../../../../@model/modalsId'
@@ -67,10 +62,8 @@ const slots = useSlots()
 const baseStoreCore = useBaseStoreCore()
 const appConfigCoreStore = useAppConfigCoreStore()
 const userStore = useUserStore()
-const loaderStore = useLoaderStore()
 const filtersCoreStore = useFiltersStore()
 const baseListSelectionStore = useBaseListSelection()
-const { t } = useI18n()
 
 const router = useRouter()
 const route = useRoute()
@@ -78,71 +71,39 @@ const searchQuery = ref('')
 const currentPageName = route.name?.toString()
 const disableRowIds = ref<string[]>([])
 
+const ctx = useListContext(props)
+
 const {
   entityName,
   fields: rawFields,
   ListFilterModel,
   SideBarModel,
-  pageName,
-  canUpdateCb,
-  canRemoveCb,
-  canCopyCb,
-  beforeRemoveCallback,
   ListItemModel,
-  useStore,
-} = props.useList()
-
-const customStore: ReturnType<typeof useBaseStoreCore> = useStore ? useStore() : null
-
-const parseEntityNameWithTabs = (entityName: string) => {
-  // Removes the #tabName from entityName
-  // Example: "Tournaments#tabName" -> "Tournaments"
-  // This helps save different settings for the same entity across different tabs
-  return entityName.replace(/#\w+/, '').replace('..', '.')
-}
-
-// Pages
-const CreatePageName = pageName ? `${pageName}Create` : `${parseEntityNameWithTabs(entityName)}Create`
-const UpdatePageName = pageName ? `${pageName}Update` : `${parseEntityNameWithTabs(entityName)}Update`
-const DetailsPageName = pageName ? `${pageName}Card` : `${parseEntityNameWithTabs(entityName)}Card`
-
-const isExistsCreatePage = checkExistsPage(CreatePageName)
-const isExistsUpdatePage = checkExistsPage(UpdatePageName)
-const isExistsDetailsPage = checkExistsPage(DetailsPageName)
-
-// Actions
-const fetchAction: CallableFunction = customStore?.fetchEntityList
-  ? customStore.fetchEntityList
-  : baseStoreCore.fetchEntityList
-
-const deleteAction = customStore?.deleteEntity
-  ? customStore.deleteEntity
-  : baseStoreCore.deleteEntity
-
-const multipleDeleteAction = customStore?.multipleDeleteEntity
-  ? customStore.multipleDeleteEntity
-  : baseStoreCore.multipleDeleteEntity
-
-const fetchReportAction = customStore?.fetchReport
-  ? customStore.fetchReport
-  : baseStoreCore.fetchReport
+  pageName,
+  beforeRemoveCallback,
+  CreatePageName,
+  DetailsPageName,
+  fetchAction,
+  deleteAction,
+  multipleDeleteAction,
+  fetchReportAction,
+} = ctx
 
 // Permissions
-const { canCreate, canUpdate, canUpdateSeo, canRemove, canExport }
-  = basePermissions<IBaseListConfig>({ entityName, config: props.config })
-
-const isShownCreateBtn = !!props.config?.withCreateBtn && isExistsCreatePage && canCreate
-
-const canUpdateItem = (item): boolean =>
-  canUpdateCb && item ? isExistsUpdatePage && canUpdateCb(item) : isExistsUpdatePage
-
-const canRemoveItem = (item): boolean =>
-  canRemoveCb && item ? canRemove && canRemoveCb(item) : canRemove
-
-const canCopyItem = (item): boolean =>
-  canCopyCb && item ? canCopyCb(item) : true
-
-const canDraggable = computed(() => { return props.config.small ? canUpdate && props.config.draggable && !searchQuery.value : canUpdate && props.config.draggable })
+const {
+  canCreate,
+  canUpdate,
+  canUpdateSeo,
+  canRemove,
+  canExport,
+  isShownCreateBtn,
+  canUpdateItem,
+  canRemoveItem,
+  canCopyItem,
+  canDraggable,
+  getUpdateRoute,
+  getDetailsRoute,
+} = useListPermissions(ctx, props, searchQuery)
 
 // Sidebar
 const isSidebarShown = ref(false)
@@ -205,48 +166,7 @@ watch(allFields, newFields => {
   selectedFields.value = newFields.filter(f => selectedKeys.has(f.key))
 })
 
-const normalizedEntityName = computed(() => {
-  return entityName.replace(/-(.)/g, (_, char) => `-${char.toLowerCase()}`)
-})
-
-const entityUrl = computed(() => {
-  return parseEntityNameWithTabs(convertCamelCase(normalizedEntityName.value, '/'))
-})
-
-const isLoadingExport = computed(() => {
-  const listUrl = `${entityUrl.value}/list/report`
-
-  return loaderStore.isLoadingEndpoint([listUrl])
-})
-
-const isLoadingList = computed(() => {
-  if (props.config.disableLoading)
-    return false
-
-  if (isInitialState.value || isDebouncedSearch.value)
-    return true
-
-  const listUrl = `${entityUrl.value}/list`
-
-  if (props.config.loadingOnlyByList) {
-    return loaderStore.isLoadingEndpoint([
-      listUrl,
-      ...(props.config.loadingEndpointArr ?? []),
-    ])
-  }
-
-  return loaderStore.isLoadingEndpoint([
-    listUrl,
-    `${entityUrl.value}/update`,
-    `${entityUrl.value}/active/switch`,
-    `${entityUrl.value}/delete`,
-    ...(props.config.loadingEndpointArr ?? []),
-  ])
-})
-
 const size = props.config?.small ? VSizes.Small : VSizes.Medium
-
-const emptyListText = computed(() => searchQuery.value || hasSelectedFilters.value ? t('emptyState.emptyRequest') : props.config.emptyText)
 
 // Sort
 const sortStorageKey = `${currentPageName}-${entityName}-sort`
@@ -363,16 +283,6 @@ onChangePagination(() => {
 })
 
 const checkSlotExistence = (slotName: string): boolean => !!slots[slotName]
-
-const getUpdateRoute = ({ id }): Location => {
-  return isExistsUpdatePage && (canUpdateCb?.() ?? true)
-    ? { name: UpdatePageName, params: { id } }
-    : {}
-}
-
-const getDetailsRoute = ({ id }): Location => {
-  return isExistsDetailsPage ? { name: DetailsPageName, params: { id } } : {}
-}
 
 const onClickToggleStatus = async ({ id, isActive }) => {
   const actionToggleStatus = props.config.withDeactivationBySpecificAction
@@ -503,6 +413,14 @@ const appliedFilters = computed<BaseField[]>(() => {
 })
 
 const hasSelectedFilters = computed(() => selectedFilters && selectedFilters.value.isNotEmpty)
+
+// Loading
+const { isLoadingList, isLoadingExport, emptyListText } = useListLoading(ctx, props, {
+  isInitialState,
+  isDebouncedSearch,
+  searchQuery,
+  hasSelectedFilters,
+})
 
 watch(() => hasSelectedFilters.value, hasFilters => {
   if (hasFilters)
@@ -941,12 +859,12 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :hover="config.hover"
         :show-expand="config.showExpand"
         :skeleton-rows="config.skeletonRows"
-        @update:sort-data="onUpdateSortData"
         :skeleton-cols="config.skeletonCols"
         :selected-items="selectedItems"
         :items-per-page="itemsPerPage"
         :disabled-row-ids="disableRowIds"
         :cell-cb-class="config.cellCbClass"
+        @update:sort-data="onUpdateSortData"
         @end="onDragChanged"
         @row-selected="onRowSelected"
         @row-clicked="onClickRow"
