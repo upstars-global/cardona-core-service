@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<{
   title: TranslateResult
   description: TranslateResult
   actionBtnText: TranslateResult
-  actionBtnColor: VColors
+  actionBtnColor?: VColors
   loadingUrls?: string[] | string
 }>(), {
   actionBtnColor: VColors.Error,
