@@ -34,8 +34,8 @@ interface ButtonConfig {
 }
 
 interface Props {
-  accept: ButtonConfig
-  cancel: ButtonConfig
+  accept?: ButtonConfig
+  cancel?: ButtonConfig
 }
 
 const defaultAcceptProps = {
