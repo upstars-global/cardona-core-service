@@ -75,7 +75,7 @@ watch(() => selectProject.value, project => {
           </div>
           <span
             v-show="!isCollapsedMenu"
-            class="text-expanded"
+            class="text-expanded project-selected-label text-truncate"
           >{{ publicName || title }}</span>
         </div>
       </template>
@@ -221,5 +221,9 @@ watch(() => selectProject.value, project => {
 
 .text-expanded {
   color: rgb(var(--v-theme-on-sidebar)) !important;
+}
+
+.project-selected-label {
+  max-width: 11rem;
 }
 </style>
