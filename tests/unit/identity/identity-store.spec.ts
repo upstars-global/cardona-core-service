@@ -59,9 +59,113 @@ describe('identity store', () => {
     expect(await store.ensureSession()).toBe(true)
     expect(await store.ensureSession()).toBe(true)
 
-    // No timer and no expiry arithmetic: the refusal path notices expiry.
+    // No stated lifetime, so only the refusal path notices expiry.
     expect(requestSessionMock).toHaveBeenCalledTimes(1)
     expect(store.isEstablished).toBe(true)
+  })
+
+  describe('renewal ahead of the stated expiry', () => {
+    beforeEach(() => {
+      vi.useFakeTimers()
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
+    it('should keep the session while it is well inside its lifetime', async () => {
+      requestSessionMock.mockResolvedValue({ provisioned: false, requestId: '', expiresIn: 60 })
+
+      const store = useIdentityStore()
+
+      await store.ensureSession()
+      vi.advanceTimersByTime(49_000)
+
+      expect(await store.ensureSession()).toBe(true)
+      expect(requestSessionMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should ask for a new session ten seconds before the lifetime ends', async () => {
+      requestSessionMock.mockResolvedValue({ provisioned: false, requestId: '', expiresIn: 60 })
+
+      const store = useIdentityStore()
+
+      await store.ensureSession()
+
+      const before = store.generation
+
+      vi.advanceTimersByTime(50_000)
+
+      expect(await store.ensureSession()).toBe(true)
+      expect(requestSessionMock).toHaveBeenCalledTimes(2)
+      expect(store.generation).toBe(before + 1)
+    })
+
+    it('should use half of a short lifetime as the margin', async () => {
+      requestSessionMock.mockResolvedValue({ provisioned: false, requestId: '', expiresIn: 8 })
+
+      const store = useIdentityStore()
+
+      await store.ensureSession()
+      vi.advanceTimersByTime(3_900)
+      await store.ensureSession()
+
+      expect(requestSessionMock).toHaveBeenCalledTimes(1)
+
+      vi.advanceTimersByTime(200)
+      await store.ensureSession()
+
+      expect(requestSessionMock).toHaveBeenCalledTimes(2)
+    })
+
+    it('should give a burst of requests one renewal', async () => {
+      requestSessionMock.mockResolvedValue({ provisioned: false, requestId: '', expiresIn: 60 })
+
+      const store = useIdentityStore()
+
+      await store.ensureSession()
+      vi.advanceTimersByTime(55_000)
+
+      await Promise.all([store.ensureSession(), store.ensureSession(), store.ensureSession()])
+
+      expect(requestSessionMock).toHaveBeenCalledTimes(2)
+    })
+
+    it('should not renew on a timer', async () => {
+      requestSessionMock.mockResolvedValue({ provisioned: false, requestId: '', expiresIn: 60 })
+
+      const store = useIdentityStore()
+
+      await store.ensureSession()
+      vi.advanceTimersByTime(600_000)
+
+      expect(requestSessionMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not renew a session the operator is leaving', async () => {
+      requestSessionMock.mockResolvedValue({ provisioned: false, requestId: '', expiresIn: 60 })
+
+      const store = useIdentityStore()
+
+      await store.ensureSession()
+      await store.leave()
+      vi.advanceTimersByTime(55_000)
+
+      expect(await store.ensureSession()).toBe(false)
+      expect(requestSessionMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not renew while no lifetime was stated', async () => {
+      requestSessionMock.mockResolvedValue({ provisioned: false, requestId: '', expiresIn: null })
+
+      const store = useIdentityStore()
+
+      await store.ensureSession()
+      vi.advanceTimersByTime(600_000)
+      await store.ensureSession()
+
+      expect(requestSessionMock).toHaveBeenCalledTimes(1)
+    })
   })
 
   it('should hold no credential of any kind', async () => {

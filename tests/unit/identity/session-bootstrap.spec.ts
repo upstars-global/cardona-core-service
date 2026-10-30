@@ -122,13 +122,27 @@ describe('session bootstrap transport', () => {
   // account was just created, with the reference to quote.
   describe('what a grant says', () => {
     it('should read an empty body as an ordinary grant', async () => {
-      expect(await requestSession()).toEqual({ provisioned: false, requestId: 'hdr-1' })
+      expect(await requestSession()).toEqual({ provisioned: false, requestId: 'hdr-1', expiresIn: null })
     })
 
     it('should read the provisioning mark and the reference off the body', async () => {
       answer = { provisioned: true, requestId: 'req-9' }
 
-      expect(await requestSession()).toEqual({ provisioned: true, requestId: 'req-9' })
+      expect(await requestSession()).toEqual({ provisioned: true, requestId: 'req-9', expiresIn: null })
+    })
+
+    it('should read the stated lifetime in seconds off the body', async () => {
+      answer = { expiresIn: 60 }
+
+      expect((await requestSession()).expiresIn).toBe(60)
+    })
+
+    it('should take no lifetime that is not a positive whole number', async () => {
+      for (const expiresIn of [0, -5, 1.5, '60', null]) {
+        answer = { expiresIn }
+
+        expect((await requestSession()).expiresIn).toBeNull()
+      }
     })
 
     it('should not take anything but the literal boolean as the mark', async () => {

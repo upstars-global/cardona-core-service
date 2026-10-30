@@ -46,7 +46,14 @@ const client = (): AxiosInstance => {
 export interface ISessionGrantData {
   readonly provisioned: boolean
   readonly requestId: string
+
+  // Seconds the cookie lives, as the issuer states it; null when the body
+  // does not say, in which case only a refusal tells the app it has expired.
+  readonly expiresIn: number | null
 }
+
+const expiresInOf = (data: any): number | null =>
+  Number.isInteger(data?.expiresIn) && data.expiresIn > 0 ? data.expiresIn : null
 
 // Success is the absence of a throw; the token never appears in the body.
 export const requestSession = async (): Promise<ISessionGrantData> => {
@@ -55,6 +62,7 @@ export const requestSession = async (): Promise<ISessionGrantData> => {
   return {
     provisioned: response?.data?.provisioned === true,
     requestId: requestIdOf(response),
+    expiresIn: expiresInOf(response?.data),
   }
 }
 

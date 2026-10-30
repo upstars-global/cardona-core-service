@@ -1,10 +1,11 @@
 /*
  * Whether this browser currently has a session, as far as the edge is
  * concerned, and nothing about what it contains. The Internal-JWT is an
- * HttpOnly cookie the page cannot read, so there is no expiry arithmetic:
- * the app only decides when to ask for a session, once before the first
- * protected request and once in answer to a refusal. `libs/identity/interceptors`
- * is the only caller.
+ * HttpOnly cookie the page cannot read, so the only clock is the lifetime
+ * the issuer states in the grant: the app asks for a session before the
+ * first protected request, again shortly before that lifetime ends, and in
+ * answer to a refusal as the fallback. `libs/identity/interceptors` is the
+ * only caller.
  */
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
@@ -35,6 +36,10 @@ const isOurs = (target: string): boolean => {
     return false
   }
 }
+
+// The renewal starts this long (at most) before the stated expiry, so a
+// request does not leave with a cookie the browser drops on the way.
+const RENEWAL_MARGIN_SECONDS = 10
 
 export const useIdentityStore = defineStore('identity', () => {
   const refusal = ref<IIdentityRefusalData | null>(null)
@@ -75,6 +80,11 @@ export const useIdentityStore = defineStore('identity', () => {
    * while the old one is being expired.
    */
   let leaving = false
+
+  // When the current grant was made and how long the issuer said it lives.
+  // Outside the state for the same reason as `inFlight`: nothing renders it.
+  let grantedAt = 0
+  let expiresIn: number | null = null
 
   // One probe answers a page full of unreadable answers; see
   // `followProviderChallenge`. The target is the first one named while it
@@ -210,6 +220,8 @@ export const useIdentityStore = defineStore('identity', () => {
 
       refusal.value = null
       isEstablished.value = true
+      grantedAt = Date.now()
+      expiresIn = grant?.expiresIn ?? null
       // Sticky: the requests that follow the creation renew the session on
       // an ordinary grant within seconds, and the notice must outlive that.
       if (grant?.provisioned)
@@ -258,13 +270,25 @@ export const useIdentityStore = defineStore('identity', () => {
     return inFlight
   }
 
-  // Before the first protected request, and only then. No timer, no expiry
-  // arithmetic: the refusal path below handles expiry.
+  // Whether the stated lifetime is about to run out. Unknown lifetime is
+  // never due: the refusal path below handles that case.
+  const isDueForRenewal = (): boolean => {
+    if (expiresIn === null)
+      return false
+
+    const margin = Math.min(RENEWAL_MARGIN_SECONDS, expiresIn / 2)
+
+    return Date.now() - grantedAt >= (expiresIn - margin) * 1000
+  }
+
+  // Before a protected request: the first session, or a new one when the
+  // stated lifetime is nearly over. No timer: only a request that needs the
+  // session renews it, and concurrent ones share one bootstrap.
   const ensureSession = async (): Promise<boolean> => {
     if (refusal.value)
       return false
 
-    if (isEstablished.value)
+    if (isEstablished.value && !isDueForRenewal())
       return true
 
     return await bootstrap()
