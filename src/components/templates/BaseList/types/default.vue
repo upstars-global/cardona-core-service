@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, isRef, onBeforeMount, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue'
+import { computed, inject, isRef, onBeforeMount, onBeforeUnmount, onMounted, ref, toRaw, useSlots, watch } from 'vue'
 import { debounce, findIndex, has, isUndefined } from 'lodash'
 import type { ExportFormat, IBaseListConfig, ProjectsFilterOption } from '../../../../@model/templates/baseList'
 import { BaseListSlots, ProjectsFilterMode } from '../../../../@model/templates/baseList'
@@ -109,8 +109,6 @@ const {
 const isSidebarShown = ref(false)
 const selectedItem: any = ref(null)
 
-const getIndexByItemFromList = item => findIndex(items.value, item)
-
 const sidebarSlots = computed(() =>
   Object.keys(slots).filter(
     key => key.includes('sidebar-row') || key.includes('sidebar-value'),
@@ -146,6 +144,22 @@ const routerToUpdatePageId = item => {
 
 // Table
 const items = ref([])
+
+const itemIndexMap = computed(() => {
+  const map = new Map()
+
+  items.value.forEach((item, index) => {
+    const rawItem = toRaw(item)
+
+    if (!map.has(rawItem))
+      map.set(rawItem, index)
+  })
+
+  return map
+})
+
+const getIndexByItemFromList = item => itemIndexMap.value.get(toRaw(item)) ?? findIndex(items.value, item)
+
 const isInitialState = ref(true)
 
 watch(
