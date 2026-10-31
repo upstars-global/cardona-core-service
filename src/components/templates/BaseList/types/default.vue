@@ -154,7 +154,6 @@ watch(
     if (selectedItem.value)
       selectedItem.value = items.value[getIndexByItemFromList(selectedItem.value)]
   },
-  { deep: true },
 )
 
 const allFields = computed(() => isRef(rawFields) ? rawFields.value : rawFields)
