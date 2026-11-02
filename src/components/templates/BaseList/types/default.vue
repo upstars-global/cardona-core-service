@@ -21,6 +21,7 @@ import FiltersBlock from '../../../../components/FiltersBlock/index.vue'
 import { useBaseStoreCore } from '../../../../stores/baseStoreCore'
 import { useUserStore } from '../../../../stores/user'
 import { useAppConfigCoreStore } from '../../../../stores/appConfigCore'
+import { useProjectsStore } from '../../../../stores/projects'
 import { useFiltersStore } from '../../../../stores/filtersCore'
 import { useBaseListSelection } from '../../../../stores/baseListSelection'
 import usePagination from '../сomposables/pagination'
@@ -61,6 +62,7 @@ const slots = useSlots()
 
 const baseStoreCore = useBaseStoreCore()
 const appConfigCoreStore = useAppConfigCoreStore()
+const projectsStore = useProjectsStore()
 const userStore = useUserStore()
 const filtersCoreStore = useFiltersStore()
 const baseListSelectionStore = useBaseListSelection()
@@ -366,7 +368,7 @@ const onExportFormatSelected = async (format: ExportFormat) => {
 }
 
 // Projects filters
-const userProjects = computed<ProjectsFilterOption[]>(() => appConfigCoreStore.verifiedProjects.map(({ id, alias, name }) => ({
+const userProjects = computed<ProjectsFilterOption[]>(() => projectsStore.getProjectOptions.map(({ id, alias, name }) => ({
   id,
   alias,
   title: name,
@@ -568,8 +570,12 @@ const initDefaultFilters = () => {
 }
 
 onBeforeMount(async () => {
-  if (props.config.withProjectsFilter)
+  if (props.config.withProjectsFilter) {
+    if (projectsStore.getProjectOptions.isEmpty)
+      await projectsStore.fetchProjectWithCache()
+
     projectsFilter.value = props.config.projectsFilterMode === ProjectsFilterMode.All ? userProjects.value.map(project => project.alias) : [userStore.getSelectedProject?.alias]
+  }
 
   initDefaultFilters()
 
