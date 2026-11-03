@@ -308,7 +308,7 @@ class ApiService {
           options: {
             field,
             defaultCode: 'field_ALREADY_EXISTS',
-            options,
+            ...options,
           },
         }
       })

@@ -73,11 +73,12 @@ export default function useToastService() {
       : Array.isArray(input) ? input : [input]
 
     const isListErrors = codes.length > 1
+    const params = isListErrors ? options : { ...options, ...codes[0].options }
     const fullKey = isListErrors ? 'toast.error.amount' : `toast.error.${codes[0].localizationKey}`
     const fallbackKey = `toast.error.${options?.defaultCode}`
 
     const message = safeTe(fullKey)
-      ? i18n.t(fullKey, { ...options, amount: codes.length })
+      ? i18n.t(fullKey, { ...params, amount: codes.length })
       : options?.defaultText || i18n.t(fallbackKey, options)
 
     const text = isListErrors ? codes.map(code => i18n.t(`toast.error.${code.localizationKey}`, code.options)) : ''
