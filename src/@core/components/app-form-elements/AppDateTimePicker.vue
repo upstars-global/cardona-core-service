@@ -248,7 +248,6 @@ defineExpose({ refFlatPicker })
 
 .flat-picker-custom-style {
   position: absolute;
-  color: inherit;
   inline-size: 100%;
   inset: 0;
   outline: none;
