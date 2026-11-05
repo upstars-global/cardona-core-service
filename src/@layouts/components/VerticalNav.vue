@@ -300,7 +300,7 @@ const canSelectProject = computed(() => isMenuTypeMain.value && isNeocore.value 
   transform: translateX(0) !important;
 }
 
-// ─── Shared: collapse behaviour (both default and island) ────────────────────
+// ─── Shared: collapse behaviour ──────────────────────────────────────────────
 
 .layout-vertical-nav-collapsed {
   transition: transform 0.3s ease-in-out;

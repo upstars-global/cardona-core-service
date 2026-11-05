@@ -39,8 +39,8 @@ Pages/Components → Composables & Stores (Pinia) → ApiService (HTTP) / Centri
 
 ## Стили
 
-Архитектура SCSS-слоёв, CSS Custom Properties для layout-токенов, правила размещения и классификация
-`!important` — см. [STYLES_GUIDE.md](../../src/assets/styles/layouts/STYLES_GUIDE.md).
+Архитектура SCSS-слоёв, CSS Custom Properties для layout-токенов и классификация `!important` —
+см. [[styles-layout]].
 
 ## Связанные
 
