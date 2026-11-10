@@ -10,6 +10,15 @@ import Layouts from 'vite-plugin-vue-layouts'
 import vuetify from 'vite-plugin-vuetify'
 import Components from 'unplugin-vue-components/vite'
 
+// Dart Sass deprecation noise we cannot fix on our side:
+// - `if-function`, `global-builtin`: vuetify@3.3.x sources in node_modules. `quietDeps` does not help
+//   (vite-plugin-vuetify loads them through its own importer, so Sass doesn't see them as dependencies).
+// - `legacy-js-api`: Vite 5 drives Sass through the legacy JS API.
+// - `import`: our own `@import`s in src/ — silenced until they are migrated to `@use` (tracked as tech debt).
+const sassOptions = {
+  silenceDeprecations: ['if-function', 'global-builtin', 'legacy-js-api', 'import'],
+}
+
 // https://vitejs.dev/config/
 
 export default defineConfig({
@@ -111,6 +120,14 @@ export default defineConfig({
     },
   },
   define: { 'process.env': {} },
+  css: {
+    preprocessorOptions: {
+      // Vuetify's component styles are `.sass` (plugin-vuetify:components/*.sass), our own are `.scss`:
+      // Vite reads options per syntax, so both keys are needed.
+      scss: sassOptions,
+      sass: sassOptions,
+    },
+  },
   resolve: {
     dedupe: ['countries-list'],
     alias: {
