@@ -29,7 +29,7 @@ const openEdit = ref(props.isEdit)
 watch(
   () => props.isEdit,
   value => {
-    if (props.disableAcceptUpdate)
+    if (props.disableAcceptUpdate || value === openEdit.value)
       return
     openEdit.value = value
     emits('reject-change', editableValue.value)
@@ -41,6 +41,7 @@ const acceptedValue = ref<unknown>(cloneDeep(props.value))
 
 watch(() => props.value, value => {
   !openEdit.value && (editableValue.value = cloneDeep(value))
+  acceptedValue.value = cloneDeep(value)
 })
 
 const setEditMode = (value: boolean) => {
