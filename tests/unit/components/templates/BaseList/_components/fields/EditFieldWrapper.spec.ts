@@ -1,4 +1,4 @@
-import { beforeEach, describe, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import EditFieldWrapper from '../../../../../../../src/components/templates/BaseList/_components/EditFieldWrapper.vue'
 import { clickTrigger, getSelectorTestId, setMountComponent } from '../../../../../utils'
@@ -138,6 +138,45 @@ describe('EditFieldWrapper.vue', () => {
       isActiveReadMode(wrapper)
     })
   })
+
+  it('Accepts the value updated by parent instead of the stale typed one', async () => {
+    const wrapper = getMountEditFieldWrapper(props, {}, mockedSlot)
+
+    await clickTrigger({ wrapper, testId: testIds.editIcon })
+    await wrapper.find(getSelectorTestId('input-in-slot')).setValue('66')
+    await clickTrigger({ wrapper, testId: testIds.acceptUpdateButton })
+
+    await wrapper.setProps({ value: 3 })
+
+    await clickTrigger({ wrapper, testId: testIds.editIcon })
+    await clickTrigger({ wrapper, testId: testIds.acceptUpdateButton })
+
+    testOn.isCalledEmitEventValueToBe({ wrapper }, { event: 'accept-change', value: 3, index: 1 })
+  })
+
+  it('Does not emit reject-change when parent mirrors the wrapper edit mode', async () => {
+    const wrapper = getMountEditFieldWrapper(props, {}, mockedSlot)
+
+    await clickTrigger({ wrapper, testId: testIds.editIcon })
+    await wrapper.setProps({ isEdit: true })
+
+    await clickTrigger({ wrapper, testId: testIds.acceptUpdateButton })
+    await wrapper.setProps({ isEdit: false })
+
+    expect(wrapper.emitted('reject-change')).toBeUndefined()
+  })
+
+  it('Emits reject-change when parent closes edit mode', async () => {
+    props.isEdit = true
+
+    const wrapper = getMountEditFieldWrapper(props, {}, mockedSlot)
+
+    await wrapper.setProps({ isEdit: false })
+
+    testOn.isCalledEmitEventValue({ wrapper }, { event: 'reject-change', value: props.value })
+    isActiveReadMode(wrapper)
+  })
+
   it('Check possibility to edit and canEdit is false', async () => {
     props.canEdit = false
 
