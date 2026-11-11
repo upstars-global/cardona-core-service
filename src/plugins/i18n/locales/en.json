@@ -462,6 +462,41 @@
     }
   },
   "component": {
+    "provisionedNotice": {
+      "title": "Your account has just been created",
+      "text": "You are signed in, but no rights have been assigned to you yet. Ask an administrator to add you to the right groups and quote the reference below.",
+      "requestId": "Reference for the administrator: {id}"
+    },
+    "identityRefusal": {
+      "accessNotConfirmed": {
+        "title": "We could not confirm your access",
+        "text": "Your sign-in could not be verified. Continue to sign in to try again."
+      },
+      "accessNotGranted": {
+        "title": "Access has not been granted",
+        "text": "Your account exists but is not allowed into the backoffice — it may be blocked or have no roles assigned. Ask an administrator to check it."
+      },
+      "registryUnavailable": {
+        "title": "Sign-in is temporarily unavailable",
+        "text": "We could not reach the service that grants access. Nothing is wrong with your account — please try again in a moment."
+      },
+      "sessionNotConfigured": {
+        "title": "Sign-in is not set up on this environment",
+        "text": "The address that hands out sessions answered {status}, which means it is not there. This is a deployment problem rather than something with your account, and waiting will not fix it — please report it."
+      },
+      "providerSignInNeeded": {
+        "title": "Your sign-in needs renewing",
+        "text": "We could not reach the backoffice — most likely your sign-in with the access provider has expired. Copy anything you have not saved, then continue to sign in."
+      },
+      "signInDidNotHelp": {
+        "title": "Signing in again did not restore your access",
+        "text": "We sent you back to sign in, you came back, and your access still cannot be confirmed. Repeating it would give the same result, so we stopped. Please report this with the reference below."
+      },
+      "requestId": "Reference for support: {id}",
+      "retry": "Try again",
+      "signIn": "Continue to sign in",
+      "signOut": "Sign out and try another account"
+    },
     "tags": {
       "duplicateTag": "Duplicate {label}:"
     },
@@ -663,6 +698,7 @@
       "BAD_CREDENTIALS": "Wrong login or password",
       "TOKEN_EXPIRED": "Token expired",
       "TOKEN_INVALID": "Token invalid",
+      "IDENTITY_SESSION_REFUSED": "This needs a session we could not arrange. The notice at the top of the page says why.",
       "field_ALREADY_EXISTS": "This {field} already exists in the collection",
       "games_desktopKey_ALREADY_EXISTS": "This desktop key already exists in the games",
       "games_mobileKey_ALREADY_EXISTS": "This mobile key already exists in the games",
