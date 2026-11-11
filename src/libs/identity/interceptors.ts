@@ -15,7 +15,7 @@ import type { IIdentityRefusalData } from '../../@model/identity'
 import { IdentityRefusal, IdentityRefusedError, isCredentialRefused, isProviderChallenge, isRegistryUnavailable } from '../../@model/identity'
 import { isSessionBootstrapEnabled } from '../../configs/identity'
 import { forgetHandoff } from './identity-handoff'
-import { dropDeadLegacyPair } from './legacy-pair'
+import { dropLegacyPair } from './legacy-pair'
 import { requestIdOf } from './session-bootstrap'
 import { useIdentityStore } from '../../stores/identity'
 
@@ -171,7 +171,7 @@ export default function () {
   if (!isSessionBootstrapEnabled())
     return
 
-  dropDeadLegacyPair()
+  dropLegacyPair()
 
   // Registered after the existing mechanism's interceptor, which axios runs
   // in reverse order on requests, so the older one keeps the last word on

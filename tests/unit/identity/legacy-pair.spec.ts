@@ -1,13 +1,13 @@
 /*
- * A password-era pair whose refresh token has expired made the vendored
- * interceptor refresh before every request on a session build, forever:
- * the backoffice answers ACCESS_DENIED and nothing clears the pair. Only a
- * dead pair goes; a live one is what keeps a switched-off session flag
- * working without a password.
+ * On a session build the password-era pair keeps the operator on the legacy
+ * credential: the guard counts it as signed in and opens no session, and the
+ * vendored interceptor refreshes it before every request, which the
+ * backoffice refuses once the legacy sign-in is off for Cardona. So every
+ * pair is emptied, live or dead.
  */
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { checkIsLoggedIn } from '../../../src/helpers/token-auth'
-import { dropDeadLegacyPair } from '../../../src/libs/identity/legacy-pair'
+import { dropLegacyPair } from '../../../src/libs/identity/legacy-pair'
 
 const clearAuthMock = vi.hoisted(() => vi.fn())
 const fetchCurrentUserMock = vi.hoisted(() => vi.fn(async () => undefined))
@@ -18,96 +18,90 @@ vi.mock('../../../src/stores/user', () => ({ useUserStore: () => ({ fetchCurrent
 vi.mock('../../../src/helpers/toasts', () => ({ default: () => ({ toastError: vi.fn() }) }))
 
 const KEY = 'auth-tokens-production'
-const NOW = Date.UTC(2026, 9, 16, 12, 0, 0)
-const nowSeconds = Math.floor(NOW / 1000)
+const nowSeconds = Math.floor(Date.UTC(2026, 9, 16, 12, 0, 0) / 1000)
+const EMPTY = { accessToken: '', refreshToken: '' }
 
 const b64url = (value: object) =>
   btoa(JSON.stringify(value)).replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_')
 
 const jwt = (payload: object) => `${b64url({ alg: 'HS256', typ: 'JWT' })}.${b64url(payload)}.signature`
 
-const storePair = (refreshToken: unknown, key = KEY) =>
-  localStorage.setItem(key, JSON.stringify({ accessToken: jwt({ exp: nowSeconds - 60 }), refreshToken }))
+const storePair = (refreshToken: unknown, key = KEY, accessToken: unknown = jwt({ exp: nowSeconds - 60 })) =>
+  localStorage.setItem(key, JSON.stringify({ accessToken, refreshToken }))
 
-const refreshTokenOf = (key = KEY) => JSON.parse(localStorage.getItem(key) as string).refreshToken
+const pairOf = (key = KEY) => JSON.parse(localStorage.getItem(key) as string)
 
-describe('dropDeadLegacyPair', () => {
+describe('dropLegacyPair', () => {
   beforeEach(() => {
     localStorage.clear()
     vi.clearAllMocks()
   })
 
-  it('should empty a pair whose refresh token has expired, so nobody counts it as signed in', () => {
-    storePair(jwt({ username: 'a', exp: nowSeconds - 1 }))
+  it('should empty a live pair, so the guard opens a session instead of using it', () => {
+    storePair(jwt({ username: 'a', exp: nowSeconds + 3600 }), KEY, jwt({ exp: nowSeconds + 300 }))
 
-    dropDeadLegacyPair(NOW)
+    expect(checkIsLoggedIn()).toBe(true)
 
-    expect(refreshTokenOf()).toBe('')
+    dropLegacyPair()
+
+    expect(pairOf()).toEqual(EMPTY)
     expect(checkIsLoggedIn()).toBe(false)
   })
 
-  it('should keep a pair whose refresh token still lives, even with an expired access token', () => {
-    const live = jwt({ username: 'a', exp: nowSeconds + 3600 })
+  it('should empty a pair whose refresh token has expired', () => {
+    storePair(jwt({ username: 'a', exp: nowSeconds - 1 }))
 
-    storePair(live)
+    dropLegacyPair()
 
-    dropDeadLegacyPair(NOW)
-
-    expect(refreshTokenOf()).toBe(live)
-  })
-
-  it('should empty a pair whose refresh token has no exp, as the backoffice reads it', () => {
-    storePair(jwt({ username: 'a' }))
-
-    dropDeadLegacyPair(NOW)
-
-    expect(refreshTokenOf()).toBe('')
+    expect(pairOf()).toEqual(EMPTY)
   })
 
   it('should empty a pair whose refresh token cannot be read', () => {
     storePair('not-a-jwt')
 
-    dropDeadLegacyPair(NOW)
+    dropLegacyPair()
 
-    expect(refreshTokenOf()).toBe('')
+    expect(pairOf()).toEqual(EMPTY)
   })
 
-  // Without a refresh token the interceptor refreshes nothing and nobody
-  // counts the pair as signed in, so there is nothing to empty or rewrite.
-  it('should leave a pair without a refresh token as it is', () => {
+  it('should empty a pair that carries only an access token', () => {
     storePair('')
 
-    const empty = localStorage.getItem(KEY)
+    dropLegacyPair()
 
-    dropDeadLegacyPair(NOW)
-
-    expect(localStorage.getItem(KEY)).toBe(empty)
-
-    storePair(undefined)
-
-    const missing = localStorage.getItem(KEY)
-
-    dropDeadLegacyPair(NOW)
-
-    expect(localStorage.getItem(KEY)).toBe(missing)
+    expect(pairOf()).toEqual(EMPTY)
   })
 
-  it('should check every pair key, not only the first', () => {
-    const live = jwt({ username: 'a', exp: nowSeconds + 3600 })
+  // An empty pair is already no pair: rewriting it would only wake every
+  // other open tab's storage listener for nothing.
+  it('should leave an already empty pair untouched', () => {
+    localStorage.setItem(KEY, JSON.stringify(EMPTY))
 
-    storePair(live, 'auth-tokens-development')
+    const before = localStorage.getItem(KEY)
+    const setItem = vi.spyOn(Storage.prototype, 'setItem')
+
+    dropLegacyPair()
+
+    expect(localStorage.getItem(KEY)).toBe(before)
+    expect(setItem).not.toHaveBeenCalled()
+
+    setItem.mockRestore()
+  })
+
+  it('should empty every pair key, not only the first', () => {
+    storePair(jwt({ username: 'a', exp: nowSeconds + 3600 }), 'auth-tokens-development')
     storePair(jwt({ username: 'a', exp: nowSeconds - 1 }))
 
-    dropDeadLegacyPair(NOW)
+    dropLegacyPair()
 
-    expect(refreshTokenOf('auth-tokens-development')).toBe(live)
-    expect(refreshTokenOf()).toBe('')
+    expect(pairOf('auth-tokens-development')).toEqual(EMPTY)
+    expect(pairOf()).toEqual(EMPTY)
   })
 
   it('should leave everything else in storage alone', () => {
     localStorage.setItem('selectedProjectId', '1')
 
-    dropDeadLegacyPair(NOW)
+    dropLegacyPair()
 
     expect(localStorage.getItem('selectedProjectId')).toBe('1')
   })
@@ -115,7 +109,7 @@ describe('dropDeadLegacyPair', () => {
   it('should leave a pair that is not JSON in place rather than throw', () => {
     localStorage.setItem(KEY, '{broken')
 
-    expect(() => dropDeadLegacyPair(NOW)).not.toThrow()
+    expect(() => dropLegacyPair()).not.toThrow()
     expect(localStorage.getItem(KEY)).toBe('{broken')
   })
 
@@ -125,9 +119,9 @@ describe('dropDeadLegacyPair', () => {
     const { useCheckToken } = await import('../../../src/use/useCheckToken')
 
     useCheckToken()
-    storePair(jwt({ username: 'a', exp: nowSeconds - 1 }))
+    storePair(jwt({ username: 'a', exp: nowSeconds + 3600 }))
 
-    dropDeadLegacyPair(NOW)
+    dropLegacyPair()
     window.dispatchEvent(new StorageEvent('storage', { key: KEY, newValue: localStorage.getItem(KEY) }))
     await new Promise(resolve => setTimeout(resolve, 0))
 
