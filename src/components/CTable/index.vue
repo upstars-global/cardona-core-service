@@ -7,6 +7,7 @@ import { find } from 'lodash'
 import type { TableField } from '../../@model/templates/tableFields'
 import type { SortItem } from '../../@core/types'
 import type { SelectMode } from '../../@model/enums/selectMode'
+import type { BaseListRowKey, BaseListRowMemo } from '../../@model/templates/baseList'
 import { AlignType } from '../../@model/templates/tableFields'
 import { IconsList } from '../../@model/enums/icons'
 import { SortDirection } from '../../@model/templates/baseList'
@@ -30,6 +31,8 @@ const props = withDefaults(defineProps<{
   skeletonRows?: number
   skeletonCols?: number
   cellCbClass?: (item: Record<string, unknown>, cell: string) => string
+  rowKey?: BaseListRowKey
+  rowMemo?: BaseListRowMemo
 }>(), {
   cellCbClass: () => () => '',
   disabledRowIds: () => [],
@@ -125,13 +128,39 @@ const getActualField = (fields: Array<unknown>) => {
 
 const expanded = ref<string[]>([])
 
+const getRowKey = (row: Record<string, any>, index: number): string | number =>
+  props.rowKey ? props.rowKey(row) : `c-table-row_${index}`
+
+const getCellKey = (row: Record<string, any>, index: number, fieldKey: string): string =>
+  props.rowKey ? `c-table-cell_${props.rowKey(row)}_${fieldKey}` : `c-table-cell_${index}_${fieldKey}`
+
+const getRowMemo = (row: Record<string, any>, isRowSelected: boolean): unknown[] => {
+  if (!props.rowKey || !props.rowMemo)
+    return [Symbol('no-memo')]
+
+  return [
+    row,
+    isRowSelected,
+    expanded.value.includes(row.id),
+    props.fields,
+    cellClasses.value,
+    props.hover,
+    props.disabledRowIds,
+    props.selectable,
+    props.draggable,
+    props.showExpand,
+    props.isLoadingList,
+    props.cellCbClass,
+    ...props.rowMemo(),
+  ]
+}
+
 const toggleExpand = (id: string) => {
   if (expanded.value.includes(id))
     expanded.value = expanded.value.filter(expandId => expandId !== id)
   else
     expanded.value.push(id)
 }
-
 </script>
 
 <template>
@@ -275,7 +304,8 @@ const toggleExpand = (id: string) => {
       >
         <template
           v-for="(item, index) in items"
-          :key="`c-table-row_${index}`"
+          :key="getRowKey(item.raw, index)"
+          v-memo="getRowMemo(item.raw, isSelected([item]))"
         >
           <!-- Main row -->
           <tr
@@ -315,7 +345,7 @@ const toggleExpand = (id: string) => {
 
             <td
               v-for="field in fields"
-              :key="`c-table-cell_${index}_${field.key}`"
+              :key="getCellKey(item.raw, index, field.key)"
               class="c-table__cell text-body-1 whitespace-no-wrap"
               :class="[cellClasses, cellCbClass(item, field.key)]"
               :data-c-field="field.key"
