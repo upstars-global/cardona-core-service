@@ -4,6 +4,7 @@ import type { NumberBaseField } from '../../../../@model/templates/baseField'
 import type { NumberOrString } from '../../../../@model'
 import { toIntegerNumbers, toPositiveNumbers } from '../../../../helpers'
 import AppTextField from '../../../../@core/components/app-form-elements/AppTextField.vue'
+import { useNumberMaxValue } from '../../../../composables/useNumberMaxValue'
 import { IconsList } from '../../../../@model/enums/icons'
 
 interface Props {
@@ -17,6 +18,7 @@ const props = withDefaults(defineProps<Props>(), { modelValue: '' })
 
 const emits = defineEmits<{
   (e: 'update:modelValue', string: NumberOrString): void
+  (e: 'validate'): void
 }>()
 
 const getPositiveNumbers = (value: NumberOrString): NumberOrString =>
@@ -31,10 +33,19 @@ const getMappedValue = (value: NumberOrString): NumberOrString =>
     value,
   )
 
+const { isLimitExceeded } = useNumberMaxValue(
+  () => props.field?.validationRules?.max_value,
+  () => props.modelValue,
+  () => emits('validate'),
+)
+
 const localValue = computed({
   get: () => props.modelValue,
   set: value => {
-    emits('update:modelValue', getMappedValue(value))
+    const mappedValue = getMappedValue(value)
+
+    if (!isLimitExceeded(mappedValue))
+      emits('update:modelValue', mappedValue)
   },
 })
 
@@ -45,9 +56,16 @@ const disabledKeys = computed(() => [
   props.field.withPositiveNumbers && '-',
 ])
 
-const onKeyDown = event => {
+const onKeyDown = (event: KeyboardEvent) => {
   if (disabledKeys.value.includes(event.key))
     event.preventDefault()
+}
+
+const onInput = (event: Event) => {
+  const input = event.target as HTMLInputElement
+
+  if (isLimitExceeded(getMappedValue(input.value)))
+    input.value = props.modelValue?.toString() ?? ''
 }
 
 const onWheel = (event: WheelEvent) => {
@@ -77,6 +95,7 @@ const appendInnerIcon = computed(() => {
       class="number-field"
       hide-details
       @keydown="onKeyDown"
+      @input="onInput"
       @wheel="onWheel"
     />
   </div>

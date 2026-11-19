@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { Field } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 import type { BaseField } from '../../../@model/templates/baseField'
@@ -65,6 +65,8 @@ const fieldModel = computed({
 const localValue = computed(() => props.modelValue.component)
 
 const onSearch = (search: string) => emits('search', search)
+
+const onValidate = () => nextTick(() => veeField.value?.validate())
 
 const canUpdate = computed<boolean>(() =>
   props.modelValue?.permission ? userStore.abilityCan(props.modelValue?.permission, PermissionLevel.update) : true,
@@ -155,6 +157,7 @@ watch(locale, () => {
             v-bind="{ ...$attrs }"
             :errors="Boolean(errorMessage)"
             @search="onSearch"
+            @validate="onValidate"
           >
             <template #[FieldGeneratorSlots.SelectedOptionName]="{ id, optionName }">
               <slot

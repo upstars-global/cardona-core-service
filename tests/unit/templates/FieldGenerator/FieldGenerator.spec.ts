@@ -1,8 +1,8 @@
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { h, nextTick, reactive } from 'vue'
 import { Field } from 'vee-validate'
 import FieldGenerator from '../../../../src/components/templates/FieldGenerator/index.vue'
-import { CheckBaseField, DummySelectBaseField, TextBaseField } from '../../../../src/@model/templates/baseField'
+import { CheckBaseField, DummySelectBaseField, NumberBaseField, TextBaseField } from '../../../../src/@model/templates/baseField'
 import { i18n } from '../../../../src/plugins/i18n'
 import { EventEmittersNames, testOn } from '../shared-tests/test-case-generator'
 import { setMountComponent } from '../../utils'
@@ -10,6 +10,7 @@ import { setMountComponent } from '../../utils'
 const getMountFieldGenerator = setMountComponent(FieldGenerator)
 
 const mockAbilityCan = vi.fn()
+const { mockValidate } = vi.hoisted(() => ({ mockValidate: vi.fn() }))
 
 vi.mock('../../../../src/stores/user', () => ({
   useUserStore: () => ({
@@ -31,6 +32,9 @@ vi.mock('vee-validate', () => ({
       return {
         errorMessage: '',
       }
+    },
+    methods: {
+      validate: mockValidate,
     },
   },
 }))
@@ -189,6 +193,43 @@ describe('FieldGenerator.vue', () => {
     })
 
     testOn.notExistElement({ wrapper, testId: '.field-generator' })
+  })
+
+  describe('Validate request from a field component', () => {
+    const mountNumberField = (value: number | string, max_value = 100) =>
+      mountFieldGenerator({
+        modelValue: new NumberBaseField({ key: 'num', label: 'Number', value, validationRules: { max_value } }),
+      })
+
+    beforeEach(() => {
+      mockValidate.mockClear()
+    })
+
+    it('validates the field when the value from props is over max_value', async () => {
+      mountNumberField(150)
+
+      expect(mockValidate).not.toHaveBeenCalled()
+
+      await nextTick()
+
+      expect(mockValidate).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not validate the field when the value is within max_value', async () => {
+      mountNumberField(50)
+
+      await nextTick()
+
+      expect(mockValidate).not.toHaveBeenCalled()
+    })
+
+    it('does not validate the field for a component that never asks for it', async () => {
+      mountFieldGenerator({ modelValue: new TextBaseField({ key: 't', label: 'Text', value: 'abc' }) })
+
+      await nextTick()
+
+      expect(mockValidate).not.toHaveBeenCalled()
+    })
   })
 
   describe('BaseField setter methods', () => {
