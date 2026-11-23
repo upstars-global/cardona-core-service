@@ -26,6 +26,12 @@ describe('NumberBaseField', () => {
       expect(field.validationRules).toEqual({ max_value: max })
     })
 
+    it.each([0, '', null, undefined])('replaces an empty max_value (%s) with the default', max => {
+      const field = createField({ validationRules: { required: true, max_value: max } })
+
+      expect(field.validationRules).toEqual({ required: true, max_value: NUMBER_FIELD_MAX_VALUE })
+    })
+
     it('does not mutate the passed validationRules object', () => {
       const rules = { required: true }
 

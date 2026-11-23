@@ -17,8 +17,8 @@ export class NumberBaseField extends ANumberBaseField implements INumberBaseFiel
     const defaultMaxValueRule = !field.validationRules?.max_value ? { max_value: NUMBER_FIELD_MAX_VALUE } : {}
     if (!field.validationRules?.max_value) {
       field.validationRules = {
-        ...defaultMaxValueRule,
         ...field.validationRules,
+        ...defaultMaxValueRule,
       }
     }
     super(field)

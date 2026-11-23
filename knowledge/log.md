@@ -13,3 +13,4 @@
 - INGEST components/ItemActionCopy, components/ConfirmationModal
 - INGEST components/NumberField, components/FieldGenerator
 - INGEST models/number, components/NumberField
+- INGEST models/number
