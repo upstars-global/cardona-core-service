@@ -63,6 +63,10 @@ type StaticFilters = Record<string, string | string[] | number | number[]>
 
 export type NoPermissions = ListPermissionLevel[] | boolean
 
+export type BaseListRowKey = (row: Record<string, any>) => string | number
+
+export type BaseListRowMemo = () => unknown[]
+
 /**
  * IBaseListConfig - Конфиг базового листа
  *
@@ -250,6 +254,18 @@ export interface IBaseListConfig {
 
   //* *  copyForAllProjects - Копіювати на інші проєкти   */
   readonly copyForAllProjects?: boolean
+
+  /** rowKey - Функция стабильного ключа строки таблицы (например `${project}_${id}`). Без неё ключ — индекс строки */
+  readonly rowKey?: BaseListRowKey
+
+  /**
+   * rowMemo - Включает v-memo для строк таблицы, работает только вместе с rowKey.
+   * Возвращает внешние зависимости, от которых зависит рендер слотов страницы (тема, права, локаль и т.п.).
+   *
+   * ⚠️ Внутреннее состояние BaseList (editingId, права на строку, index) в memo не попадает —
+   * не включать для списков с inline-редактированием или правами на отдельные строки.
+   */
+  readonly rowMemo?: BaseListRowMemo
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -309,6 +325,8 @@ export class BaseListConfig implements IBaseListConfig {
   readonly noPermissions?: NoPermissions
   readonly inlineFilters?: Array<FilterListItem>
   readonly copyForAllProjects?: boolean
+  readonly rowKey?: BaseListRowKey
+  readonly rowMemo?: BaseListRowMemo
 
   constructor({
     withSearch,
@@ -367,6 +385,8 @@ export class BaseListConfig implements IBaseListConfig {
     noPermissions,
     inlineFilters,
     copyForAllProjects,
+    rowKey,
+    rowMemo,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -424,6 +444,8 @@ export class BaseListConfig implements IBaseListConfig {
     this.noPermissions = noPermissions ?? false
     this.inlineFilters = inlineFilters ?? []
     this.copyForAllProjects = copyForAllProjects ?? false
+    this.rowKey = rowKey
+    this.rowMemo = rowKey ? rowMemo : undefined
   }
 }
 
