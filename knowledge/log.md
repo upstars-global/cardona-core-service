@@ -11,3 +11,4 @@
 - INGEST knowledge/patterns/styles-layout.md
 - INGEST knowledge/standards/code-conventions.md
 - INGEST components/ItemActionCopy, components/ConfirmationModal
+- INGEST components/NumberField, components/FieldGenerator

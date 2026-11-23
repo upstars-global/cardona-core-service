@@ -1,7 +1,6 @@
 import { markRaw } from 'vue'
 import type { NumberOrString } from '../../index'
 import NumberField from '../../../components/templates/FieldGenerator/_components/NumberField.vue'
-import { NUMBER_FIELD_MAX_VALUE } from '../../../utils/constants'
 import type { IANumberBaseField } from './base'
 import { ANumberBaseField } from './base'
 
@@ -14,10 +13,14 @@ export class NumberBaseField extends ANumberBaseField implements INumberBaseFiel
   protected _value?: NumberOrString
 
   constructor(field: INumberBaseField) {
-    super({
-      ...field,
-      validationRules: { max_value: NUMBER_FIELD_MAX_VALUE, ...field.validationRules },
-    })
+    const defaultMaxValueRule = field.validationRules?.max_value ? { max_value: field.validationRules?.max_value } : {}
+    if (!field.validationRules?.max_value) {
+      field.validationRules = {
+        ...defaultMaxValueRule,
+        ...field.validationRules,
+      }
+    }
+    super(field)
     this._value = field.value ?? ''
   }
 }

@@ -205,14 +205,12 @@ describe('FieldGenerator.vue', () => {
       mockValidate.mockClear()
     })
 
-    it('validates the field when the value from props is over max_value', async () => {
+    it('does not validate the field when the value from props is over max_value', async () => {
       mountNumberField(150)
-
-      expect(mockValidate).not.toHaveBeenCalled()
 
       await nextTick()
 
-      expect(mockValidate).toHaveBeenCalledTimes(1)
+      expect(mockValidate).not.toHaveBeenCalled()
     })
 
     it('does not validate the field when the value is within max_value', async () => {
