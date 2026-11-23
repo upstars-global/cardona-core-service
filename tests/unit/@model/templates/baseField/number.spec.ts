@@ -2,24 +2,25 @@ import { describe, expect, it } from 'vitest'
 import { validate } from 'vee-validate'
 import { NumberBaseField } from '../../../../../src/@model/templates/baseField/number'
 import { NumberRangeBaseField } from '../../../../../src/@model/templates/baseField/number-range'
+import { NUMBER_FIELD_MAX_VALUE } from '../../../../../src/utils/constants'
 import '../../../../../src/@model/validations'
 
 const createField = (overrides: Record<string, unknown> = {}) =>
   new NumberBaseField({ key: 'amount', label: 'Amount', ...overrides })
 
 describe('NumberBaseField', () => {
-  describe('validationRules', () => {
-    it('does not add a default max_value when no validationRules are given', () => {
-      expect(createField().validationRules).toEqual({})
+  describe('default max_value', () => {
+    it('adds the default when no validationRules are given', () => {
+      expect(createField().validationRules).toEqual({ max_value: NUMBER_FIELD_MAX_VALUE })
     })
 
-    it('keeps other rules and does not add a default max_value', () => {
+    it('keeps other rules and adds the default', () => {
       const field = createField({ validationRules: { required: true, min_value: 1 } })
 
-      expect(field.validationRules).toEqual({ required: true, min_value: 1 })
+      expect(field.validationRules).toEqual({ required: true, min_value: 1, max_value: NUMBER_FIELD_MAX_VALUE })
     })
 
-    it.each([100, 10_000_000_000_000_000])('keeps explicit max_value %s', max => {
+    it.each([100, 10_000_000_000_000_000])('explicit max_value %s overrides the default', max => {
       const field = createField({ validationRules: { max_value: max } })
 
       expect(field.validationRules).toEqual({ max_value: max })
@@ -49,8 +50,8 @@ describe('NumberBaseField', () => {
   })
 
   describe('clone', () => {
-    it('does not add a default max_value', () => {
-      expect(createField().clone().validationRules).toEqual({})
+    it('keeps the default max_value', () => {
+      expect(createField().clone().validationRules).toEqual({ max_value: NUMBER_FIELD_MAX_VALUE })
     })
 
     it('keeps an explicit max_value', () => {
@@ -59,15 +60,15 @@ describe('NumberBaseField', () => {
       expect(clone.validationRules).toEqual({ max_value: 100 })
     })
 
-    it('uses passed rules as is', () => {
+    it('re-applies the default when passed rules have no max_value', () => {
       const clone = createField().clone({ validationRules: { required: true } })
 
-      expect(clone.validationRules).toEqual({ required: true })
+      expect(clone.validationRules).toEqual({ required: true, max_value: NUMBER_FIELD_MAX_VALUE })
     })
   })
 
   describe('setValidationRules', () => {
-    it('replaces the rules entirely', () => {
+    it('replaces the rules entirely (default is lost)', () => {
       const field = createField({ validationRules: { max_value: 100 } }).setValidationRules({ required: true })
 
       expect(field.validationRules).toEqual({ required: true })
@@ -78,10 +79,13 @@ describe('NumberBaseField', () => {
     const check = (value: string, rules: Record<string, unknown>) =>
       validate(value, rules, { name: 'amount', label: 'Amount' })
 
-    it('has no upper limit without an explicit max_value', async () => {
-      const result = await check('1000000000000000000000', createField().validationRules as Record<string, unknown>)
+    it.each([
+      [String(NUMBER_FIELD_MAX_VALUE), true],
+      [String(NUMBER_FIELD_MAX_VALUE + 1), false],
+    ])('default max_value: value "%s" valid=%s', async (value, valid) => {
+      const result = await check(value, createField().validationRules as Record<string, unknown>)
 
-      expect(result.valid).toBe(true)
+      expect(result.valid).toBe(valid)
     })
 
     it.each([

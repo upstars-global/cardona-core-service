@@ -7,7 +7,9 @@
 ## Components
 
 - [[ConfirmationModal]] — ConfirmationModal
+- [[FieldGenerator]] — FieldGenerator
 - [[ItemActionCopy]] — ItemActionCopy
+- [[NumberField]] — NumberField
 
 ## Composables
 
