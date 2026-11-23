@@ -26,6 +26,12 @@ describe('NumberBaseField', () => {
       expect(field.validationRules).toEqual({ max_value: max })
     })
 
+    it.each([0, '', null, undefined])('replaces an empty max_value (%s) with the default', max => {
+      const field = createField({ validationRules: { required: true, max_value: max } })
+
+      expect(field.validationRules).toEqual({ required: true, max_value: NUMBER_FIELD_MAX_VALUE })
+    })
+
     it('does not mutate the passed validationRules object', () => {
       const rules = { required: true }
 
@@ -54,7 +60,7 @@ describe('NumberBaseField', () => {
       expect(createField().clone().validationRules).toEqual({ max_value: NUMBER_FIELD_MAX_VALUE })
     })
 
-    it('keeps an explicit override', () => {
+    it('keeps an explicit max_value', () => {
       const clone = createField({ validationRules: { max_value: 100 } }).clone()
 
       expect(clone.validationRules).toEqual({ max_value: 100 })
@@ -69,29 +75,43 @@ describe('NumberBaseField', () => {
 
   describe('setValidationRules', () => {
     it('replaces the rules entirely (default is lost)', () => {
-      const field = createField().setValidationRules({ required: true })
+      const field = createField({ validationRules: { max_value: 100 } }).setValidationRules({ required: true })
 
       expect(field.validationRules).toEqual({ required: true })
     })
   })
 
-  describe('validation with default rules', () => {
+  describe('validation', () => {
+    const check = (value: string, rules: Record<string, unknown>) =>
+      validate(value, rules, { name: 'amount', label: 'Amount' })
+
     it.each([
       [String(NUMBER_FIELD_MAX_VALUE), true],
       [String(NUMBER_FIELD_MAX_VALUE + 1), false],
-      ['', true],
-      ['-5', true],
-      ['1.5', true],
-    ])('value "%s" valid=%s', async (value, valid) => {
-      const result = await validate(value, createField().validationRules as Record<string, unknown>, { name: 'amount', label: 'Amount' })
+    ])('default max_value: value "%s" valid=%s', async (value, valid) => {
+      const result = await check(value, createField().validationRules as Record<string, unknown>)
 
       expect(result.valid).toBe(valid)
     })
 
-    it('error message contains the max number', async () => {
-      const result = await validate(String(NUMBER_FIELD_MAX_VALUE + 1), createField().validationRules as Record<string, unknown>, { name: 'amount', label: 'Amount' })
+    it.each([
+      ['100', true],
+      ['101', false],
+      ['', true],
+      ['-5', true],
+      ['1.5', true],
+    ])('explicit max_value 100: value "%s" valid=%s', async (value, valid) => {
+      const field = createField({ validationRules: { max_value: 100 } })
+      const result = await check(value, field.validationRules as Record<string, unknown>)
 
-      expect(result.errors[0]).toContain(String(NUMBER_FIELD_MAX_VALUE))
+      expect(result.valid).toBe(valid)
+    })
+
+    it('error message contains the max number and the label', async () => {
+      const field = createField({ validationRules: { max_value: 100 } })
+      const result = await check('101', field.validationRules as Record<string, unknown>)
+
+      expect(result.errors[0]).toContain('100')
       expect(result.errors[0]).toContain('Amount')
     })
   })

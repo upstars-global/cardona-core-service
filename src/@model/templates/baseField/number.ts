@@ -14,10 +14,14 @@ export class NumberBaseField extends ANumberBaseField implements INumberBaseFiel
   protected _value?: NumberOrString
 
   constructor(field: INumberBaseField) {
-    super({
-      ...field,
-      validationRules: { max_value: NUMBER_FIELD_MAX_VALUE, ...field.validationRules },
-    })
+    const defaultMaxValueRule = !field.validationRules?.max_value ? { max_value: NUMBER_FIELD_MAX_VALUE } : {}
+    if (!field.validationRules?.max_value) {
+      field.validationRules = {
+        ...field.validationRules,
+        ...defaultMaxValueRule,
+      }
+    }
+    super(field)
     this._value = field.value ?? ''
   }
 }
