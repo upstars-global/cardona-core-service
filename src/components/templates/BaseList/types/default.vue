@@ -877,6 +877,8 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :items-per-page="itemsPerPage"
         :disabled-row-ids="disableRowIds"
         :cell-cb-class="config.cellCbClass"
+        :row-key="config.rowKey"
+        :row-memo="config.rowMemo"
         @update:sort-data="onUpdateSortData"
         @end="onDragChanged"
         @row-selected="onRowSelected"
