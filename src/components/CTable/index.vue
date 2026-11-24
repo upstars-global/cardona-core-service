@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { Fragment, computed, h, isMemoSame, ref, watch } from 'vue'
+import type { FunctionalComponent, VNode } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
@@ -134,10 +135,9 @@ const getRowKey = (row: Record<string, any>, index: number): string | number =>
 const getCellKey = (row: Record<string, any>, index: number, fieldKey: string): string =>
   props.rowKey ? `c-table-cell_${props.rowKey(row)}_${fieldKey}` : `c-table-cell_${index}_${fieldKey}`
 
-const getRowMemo = (row: Record<string, any>, isRowSelected: boolean): unknown[] => {
-  if (!props.rowKey || !props.rowMemo)
-    return [Symbol('no-memo')]
+const isRowCacheEnabled = computed(() => !!props.rowKey && !!props.rowMemo)
 
+const getRowMemo = (row: Record<string, any>, isRowSelected: boolean): unknown[] => {
   return [
     row,
     isRowSelected,
@@ -151,9 +151,57 @@ const getRowMemo = (row: Record<string, any>, isRowSelected: boolean): unknown[]
     props.showExpand,
     props.isLoadingList,
     props.cellCbClass,
-    ...props.rowMemo(),
+    ...(props.rowMemo?.() ?? []),
   ]
 }
+
+type MemoVNode = VNode & { memo?: unknown[] }
+
+const rowVNodeCache = new Map<string | number, MemoVNode>()
+const duplicateRowKeys = new Set<string | number>()
+
+const MemoRow: FunctionalComponent<{ cacheKey: string | number; memo: unknown[] }> = (memoProps, { slots }) => {
+  if (duplicateRowKeys.has(memoProps.cacheKey))
+    return h(Fragment, null, slots.default?.())
+
+  const cached = rowVNodeCache.get(memoProps.cacheKey)
+  if (cached && isMemoSame(cached, memoProps.memo))
+    return cached
+
+  const vnode: MemoVNode = h(Fragment, null, slots.default?.())
+
+  vnode.memo = memoProps.memo
+  rowVNodeCache.set(memoProps.cacheKey, vnode)
+
+  return vnode
+}
+
+MemoRow.props = ['cacheKey', 'memo']
+
+watch(() => props.rows, rows => {
+  duplicateRowKeys.clear()
+
+  if (!isRowCacheEnabled.value) {
+    rowVNodeCache.clear()
+
+    return
+  }
+
+  const keys = new Set<string | number>()
+
+  rows.forEach(row => {
+    const key = props.rowKey!(row)
+
+    if (keys.has(key))
+      duplicateRowKeys.add(key)
+    keys.add(key)
+  })
+
+  for (const key of rowVNodeCache.keys()) {
+    if (!keys.has(key) || duplicateRowKeys.has(key))
+      rowVNodeCache.delete(key)
+  }
+}, { immediate: true })
 
 const toggleExpand = (id: string) => {
   if (expanded.value.includes(id))
@@ -302,101 +350,202 @@ const toggleExpand = (id: string) => {
         tag="tbody"
         @change="onDragEnd"
       >
-        <template
-          v-for="(item, index) in items"
-          :key="getRowKey(item.raw, index)"
-          v-memo="getRowMemo(item.raw, isSelected([item]))"
-        >
-          <!-- Main row -->
-          <tr
-            class="c-table__row"
-            data-test-id="table-row"
-            :class="compareClasses(item.raw, isSelected([item]))"
-            @click="onRowClicked(item.raw)"
+        <template v-if="isRowCacheEnabled">
+          <MemoRow
+            v-for="(item, index) in items"
+            :key="getRowKey(item.raw, index)"
+            :cache-key="getRowKey(item.raw, index)"
+            :memo="getRowMemo(item.raw, isSelected([item]))"
           >
-            <td
-              v-if="draggable"
-              class="pl-1 pr-0 c-table__cell"
-              data-c-field="draggable"
-              data-test-id="draggable-trigger"
-            >
-              <VIcon
-                v-if="!isLoadingList"
-                :icon="IconsList.DragVerticalIcon"
-                class="dragging-icon"
-              />
-            </td>
-
-            <td
-              v-if="props.selectable"
-              class="c-table__cell pa-0"
-              data-c-field="selectable"
-              data-test-id="selectable"
-            >
-              <VCheckbox
-                :model-value="isSelected([item])"
-                data-test-id="selectable-checkbox"
-                :disabled="disabledRowIds?.includes(item.raw.id)"
-                class="selectable-checkbox"
-                @update:model-value="select([item], $event)"
-                @click.stop
-              />
-            </td>
-
-            <td
-              v-for="field in fields"
-              :key="getCellKey(item.raw, index, field.key)"
-              class="c-table__cell text-body-1 whitespace-no-wrap"
-              :class="[cellClasses, cellCbClass(item, field.key)]"
-              :data-c-field="field.key"
-            >
-              <slot
-                :name="`cell(${field.key})`"
-                :field="field"
-                :item="item"
-                :cell="item.raw[field.key]"
-                :toggle-expand="toggleExpand"
-                :is-expanded="expanded.includes(item.raw.id)"
-              >
-                {{ item.raw[field.key] }}
-              </slot>
-            </td>
-          </tr>
-
-          <!-- Expand row -->
-          <template v-for="raw in item.raw?.groups">
+            <!-- Main row -->
             <tr
-              v-if="showExpand && expanded.includes(item.raw.id)"
-              :key="`${item.raw.id}-expand`"
+              class="c-table__row"
+              data-test-id="table-row"
+              :class="compareClasses(item.raw, isSelected([item]))"
+              @click="onRowClicked(item.raw)"
             >
-              <!-- [START] Add for similar col and cell in table  -->
-              <td v-if="props.selectable" />
+              <td
+                v-if="draggable"
+                class="pl-1 pr-0 c-table__cell"
+                data-c-field="draggable"
+                data-test-id="draggable-trigger"
+              >
+                <VIcon
+                  v-if="!isLoadingList"
+                  :icon="IconsList.DragVerticalIcon"
+                  class="dragging-icon"
+                />
+              </td>
+
               <td
                 v-if="props.selectable"
-                class="c-table-expand__cell"
-                :class="{ 'c-table-cell-padding': !props.small, 'px-0': props.small }"
-                data-c-expand-field="selectable"
-              />
-              <!-- [END] Add for similar col and cell in table -->
+                class="c-table__cell pa-0"
+                data-c-field="selectable"
+                data-test-id="selectable"
+              >
+                <VCheckbox
+                  :model-value="isSelected([item])"
+                  data-test-id="selectable-checkbox"
+                  :disabled="disabledRowIds?.includes(item.raw.id)"
+                  class="selectable-checkbox"
+                  @update:model-value="select([item], $event)"
+                  @click.stop
+                />
+              </td>
+
               <td
                 v-for="field in fields"
-                :key="`c-table-expand-cell_${index}_${field.key}`"
-                class="c-table-expand__cell text-body-1 whitespace-no-wrap"
-                :class="cellClasses"
-                :data-c-expand-field="field.key"
+                :key="getCellKey(item.raw, index, field.key)"
+                class="c-table__cell text-body-1 whitespace-no-wrap"
+                :class="[cellClasses, cellCbClass(item, field.key)]"
+                :data-c-field="field.key"
               >
                 <slot
-                  :name="`cellExpand(${field.key})`"
+                  :name="`cell(${field.key})`"
                   :field="field"
-                  :item="{ ...item, raw, value: raw }"
-                  :cell="raw[field.key]"
+                  :item="item"
+                  :cell="item.raw[field.key]"
                   :toggle-expand="toggleExpand"
                   :is-expanded="expanded.includes(item.raw.id)"
                 >
-                  {{ raw[field.key] }}
+                  {{ item.raw[field.key] }}
                 </slot>
               </td>
             </tr>
+
+            <!-- Expand row -->
+            <template v-for="raw in item.raw?.groups">
+              <tr
+                v-if="showExpand && expanded.includes(item.raw.id)"
+                :key="`${item.raw.id}-expand`"
+              >
+                <!-- [START] Add for similar col and cell in table  -->
+                <td v-if="props.selectable" />
+                <td
+                  v-if="props.selectable"
+                  class="c-table-expand__cell"
+                  :class="{ 'c-table-cell-padding': !props.small, 'px-0': props.small }"
+                  data-c-expand-field="selectable"
+                />
+                <!-- [END] Add for similar col and cell in table -->
+                <td
+                  v-for="field in fields"
+                  :key="`c-table-expand-cell_${index}_${field.key}`"
+                  class="c-table-expand__cell text-body-1 whitespace-no-wrap"
+                  :class="cellClasses"
+                  :data-c-expand-field="field.key"
+                >
+                  <slot
+                    :name="`cellExpand(${field.key})`"
+                    :field="field"
+                    :item="{ ...item, raw, value: raw }"
+                    :cell="raw[field.key]"
+                    :toggle-expand="toggleExpand"
+                    :is-expanded="expanded.includes(item.raw.id)"
+                  >
+                    {{ raw[field.key] }}
+                  </slot>
+                </td>
+              </tr>
+            </template>
+          </MemoRow>
+        </template>
+        <template v-else>
+          <template
+            v-for="(item, index) in items"
+            :key="getRowKey(item.raw, index)"
+          >
+            <!-- Main row -->
+            <tr
+              class="c-table__row"
+              data-test-id="table-row"
+              :class="compareClasses(item.raw, isSelected([item]))"
+              @click="onRowClicked(item.raw)"
+            >
+              <td
+                v-if="draggable"
+                class="pl-1 pr-0 c-table__cell"
+                data-c-field="draggable"
+                data-test-id="draggable-trigger"
+              >
+                <VIcon
+                  v-if="!isLoadingList"
+                  :icon="IconsList.DragVerticalIcon"
+                  class="dragging-icon"
+                />
+              </td>
+
+              <td
+                v-if="props.selectable"
+                class="c-table__cell pa-0"
+                data-c-field="selectable"
+                data-test-id="selectable"
+              >
+                <VCheckbox
+                  :model-value="isSelected([item])"
+                  data-test-id="selectable-checkbox"
+                  :disabled="disabledRowIds?.includes(item.raw.id)"
+                  class="selectable-checkbox"
+                  @update:model-value="select([item], $event)"
+                  @click.stop
+                />
+              </td>
+
+              <td
+                v-for="field in fields"
+                :key="getCellKey(item.raw, index, field.key)"
+                class="c-table__cell text-body-1 whitespace-no-wrap"
+                :class="[cellClasses, cellCbClass(item, field.key)]"
+                :data-c-field="field.key"
+              >
+                <slot
+                  :name="`cell(${field.key})`"
+                  :field="field"
+                  :item="item"
+                  :cell="item.raw[field.key]"
+                  :toggle-expand="toggleExpand"
+                  :is-expanded="expanded.includes(item.raw.id)"
+                >
+                  {{ item.raw[field.key] }}
+                </slot>
+              </td>
+            </tr>
+
+            <!-- Expand row -->
+            <template v-for="raw in item.raw?.groups">
+              <tr
+                v-if="showExpand && expanded.includes(item.raw.id)"
+                :key="`${item.raw.id}-expand`"
+              >
+                <!-- [START] Add for similar col and cell in table  -->
+                <td v-if="props.selectable" />
+                <td
+                  v-if="props.selectable"
+                  class="c-table-expand__cell"
+                  :class="{ 'c-table-cell-padding': !props.small, 'px-0': props.small }"
+                  data-c-expand-field="selectable"
+                />
+                <!-- [END] Add for similar col and cell in table -->
+                <td
+                  v-for="field in fields"
+                  :key="`c-table-expand-cell_${index}_${field.key}`"
+                  class="c-table-expand__cell text-body-1 whitespace-no-wrap"
+                  :class="cellClasses"
+                  :data-c-expand-field="field.key"
+                >
+                  <slot
+                    :name="`cellExpand(${field.key})`"
+                    :field="field"
+                    :item="{ ...item, raw, value: raw }"
+                    :cell="raw[field.key]"
+                    :toggle-expand="toggleExpand"
+                    :is-expanded="expanded.includes(item.raw.id)"
+                  >
+                    {{ raw[field.key] }}
+                  </slot>
+                </td>
+              </tr>
+            </template>
           </template>
         </template>
       </Component>
