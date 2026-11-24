@@ -101,7 +101,7 @@ const validatorPositive = (value: number): boolean => {
 }
 
 export const validatorPassword = (password: string): boolean => {
-  const regExp = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*()]).{8,}/
+  const regExp = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()]).{8,}/
 
   return regExp.test(password)
 }

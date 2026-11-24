@@ -50,3 +50,19 @@ describe('max_value rule message', () => {
     expect(result.errors).toEqual([`The Amount field must be ${MAX} or less`])
   })
 })
+
+describe('password rule', () => {
+  const checkPassword = (value: string) =>
+    validate(value, { password: true } as Record<string, unknown>, { name: 'password', label: 'Password' })
+
+  it.each(['Abcdef1!', 'Abcdef1@', 'Abcdef1#', 'Abcdef1$', 'Abcdef1%', 'Abcdef1^', 'yH^0Pe4EMM', 'Abcdef1&', 'Abcdef1*', 'Abcdef1(', 'Abcdef1)'])(
+    'accepts "%s" (each special char from the generator counts)',
+    async value => {
+      expect((await checkPassword(value)).valid).toBe(true)
+    },
+  )
+
+  it.each(['Abcdef1', 'abcdef1!', 'ABCDEF1!', 'Abcdefg!', 'Abcdefg1', 'Abc1!'])('rejects "%s"', async value => {
+    expect((await checkPassword(value)).valid).toBe(false)
+  })
+})
