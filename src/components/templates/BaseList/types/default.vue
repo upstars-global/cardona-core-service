@@ -145,10 +145,10 @@ const routerToUpdatePageId = item => {
 // Table
 const items = ref([])
 
-const itemIndexMap = computed(() => {
-  const map = new Map()
+const buildItemIndexMap = (list: unknown[]): Map<unknown, number> => {
+  const map = new Map<unknown, number>()
 
-  items.value.forEach((item, index) => {
+  list.forEach((item, index) => {
     const rawItem = toRaw(item)
 
     if (!map.has(rawItem))
@@ -156,9 +156,20 @@ const itemIndexMap = computed(() => {
   })
 
   return map
-})
+}
 
-const getIndexByItemFromList = item => itemIndexMap.value.get(toRaw(item)) ?? findIndex(items.value, item)
+const itemIndexMap = computed(() => props.config?.rowMemo ? null : buildItemIndexMap(items.value))
+
+let staticItemIndexMap = new Map()
+
+if (props.config?.rowMemo) {
+  watch(items, list => {
+    staticItemIndexMap = buildItemIndexMap(list)
+  }, { deep: 1, flush: 'sync', immediate: true })
+}
+
+const getIndexByItemFromList = item =>
+  (itemIndexMap.value ?? staticItemIndexMap).get(toRaw(item)) ?? findIndex(items.value, item)
 
 const isInitialState = ref(true)
 
@@ -985,7 +996,29 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
           :key="`base-list_cell-${fieldItem.key}`"
           #[`cell(${fieldItem.key})`]="{ field, item, cell, toggleExpand, isExpanded }"
         >
+          <span
+            v-if="config.rowMemo && checkSlotExistence(`cell(${fieldItem.key})`)"
+            style="display: contents"
+          >
+            <slot
+              :name="`cell(${fieldItem.key})`"
+              :field="field"
+              :item="item.raw"
+              :cell="cell"
+              :value="item.value"
+              :create-page-name="CreatePageName"
+              :can-create="canCreate"
+              :can-remove="canRemove"
+              :inline-filters="inlineFilters"
+              :get-update-route="getUpdateRoute"
+              :index="getIndexByItemFromList(item.value)"
+              :toggle-expand="toggleExpand"
+              :is-expanded="isExpanded"
+              :on-click-remove="onClickRemove"
+            />
+          </span>
           <BaseListCell
+            v-else
             :field="field"
             :item="item"
             :cell="cell"

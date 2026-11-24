@@ -1,4 +1,5 @@
 import '../../../../mocks/base-list/static-mock'
+import { h } from 'vue'
 import { flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ListFieldType } from '../../../../../../src/@model/templates/tableFields'
@@ -183,6 +184,56 @@ describe('BaseList row render', () => {
 
         // на відміну від cell()/nameWithIdTitle/badgeTitle (raw), тут приходить vuetify-обгортка { raw, value, ... }
         expect(c.props()!.item, c.name).toMatchObject({ raw: m.row, value: m.row })
+    })
+  })
+
+  describe('config.rowMemo: cell() slot without BaseListCell wrapper', () => {
+    const rowMemoConfig = { rowKey: (row: Record<string, unknown>) => row.id as string, rowMemo: () => [] }
+
+    it('slot column renders the same DOM without BaseListCell', async () => {
+      const cells: RowCellDef[] = [{ key: 'name', value: 'Item 1' }]
+      const slot = () => h('b', { class: 'custom' }, 'Custom')
+
+      const wrapped = await mountRow(cells, { extraSlots: { 'cell(name)': slot } })
+      const direct = await mountRow(cells, { extraSlots: { 'cell(name)': slot }, config: rowMemoConfig })
+
+      // scoped-атрибути (`data-v-*`) і порожній `<!--v-if-->` BaseListCell на вигляд не впливають
+      const normalize = (html: string) => html.replace(/ data-v-[\w-]+=""/g, '').replace(/<!--v-if-->/g, '').replace(/\s+/g, '')
+
+      expect(normalize(direct.cellEl('name').html())).toBe(normalize(wrapped.cellEl('name').html()))
+      expect(wrapped.wrapper.findAllComponents(BaseListCell)).toHaveLength(1)
+      expect(direct.wrapper.findAllComponents(BaseListCell)).toHaveLength(0)
+    })
+
+    it('slot payload is the same as through BaseListCell', async () => {
+      const cells: RowCellDef[] = [{ key: 'name', value: 'Item 1' }]
+      const viaCell = captureSlot('cell(name)')
+      const direct = captureSlot('cell(name)')
+
+      await mountRow(cells, { extraSlots: { 'cell(name)': viaCell.slot } })
+      await mountRow(cells, { extraSlots: { 'cell(name)': direct.slot }, config: rowMemoConfig })
+
+      const expected = viaCell.props()!
+      const actual = direct.props()!
+
+      expect(Object.keys(actual).sort()).toEqual(Object.keys(expected).sort())
+      for (const key of Object.keys(expected)) {
+        if (typeof expected[key] === 'function')
+          expect(actual[key], key).toEqual(expect.any(Function))
+        else
+          expect(actual[key], key).toEqual(expected[key])
+      }
+      expect(actual.index).toBe(0)
+    })
+
+    it('columns without a page slot still render through BaseListCell', async () => {
+      const m = await mountRow(
+        [{ key: 'name', value: 'Item 1', text: 'Item 1' }, { key: 's', type: ListFieldType.Status, value: 'active', testId: 'status-field' }],
+        { config: rowMemoConfig },
+      )
+
+      expectRow(m)
+      expect(m.wrapper.findAllComponents(BaseListCell)).toHaveLength(2)
     })
   })
 
