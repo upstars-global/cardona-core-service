@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Fragment, computed, h, isMemoSame, ref, watch } from 'vue'
+import { Fragment, computed, h, isMemoSame, onBeforeUnmount, ref, watch } from 'vue'
 import type { FunctionalComponent, VNode } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 import { VDataTable } from 'vuetify/labs/VDataTable'
@@ -12,6 +12,7 @@ import type { BaseListRowKey, BaseListRowMemo } from '../../@model/templates/bas
 import { AlignType } from '../../@model/templates/tableFields'
 import { IconsList } from '../../@model/enums/icons'
 import { SortDirection } from '../../@model/templates/baseList'
+import { VColors } from '../../@model/vuetify'
 
 const props = withDefaults(defineProps<{
   fields: TableField[]
@@ -34,6 +35,7 @@ const props = withDefaults(defineProps<{
   cellCbClass?: (item: Record<string, unknown>, cell: string) => string
   rowKey?: BaseListRowKey
   rowMemo?: BaseListRowMemo
+  progressiveRender?: boolean
 }>(), {
   cellCbClass: () => () => '',
   disabledRowIds: () => [],
@@ -81,6 +83,7 @@ const skeletonRows = computed(() =>
       : +props.itemsPerPage)
 
 const emptyColspan = computed(() => props.selectable ? props.fields.length + 1 : props.fields.length)
+const fullRowColspan = computed(() => emptyColspan.value + (props.draggable ? 1 : 0))
 const isSortableColumn = (column: TableField): boolean => props.fields?.find(item => item?.key === column?.key)?.sortable
 
 const sortParams = ref(props.sortData?.map(item => ({
@@ -136,6 +139,7 @@ const getCellKey = (row: Record<string, any>, index: number, fieldKey: string): 
   props.rowKey ? `c-table-cell_${props.rowKey(row)}_${fieldKey}` : `c-table-cell_${index}_${fieldKey}`
 
 const isRowCacheEnabled = computed(() => !!props.rowKey && !!props.rowMemo)
+const isProgressiveRenderEnabled = computed(() => isRowCacheEnabled.value && props.progressiveRender)
 
 const getRowMemo = (row: Record<string, any>, isRowSelected: boolean): unknown[] => {
   return [
@@ -178,30 +182,86 @@ const MemoRow: FunctionalComponent<{ cacheKey: string | number; memo: unknown[] 
 
 MemoRow.props = ['cacheKey', 'memo']
 
+const PROGRESSIVE_CHUNK = 200
+
+const renderedCount = ref(Number.POSITIVE_INFINITY)
+let progressiveFrame = 0
+
+const stopProgressive = () => {
+  cancelAnimationFrame(progressiveFrame)
+  progressiveFrame = 0
+}
+
+const renderNextChunk = () => {
+  renderedCount.value += PROGRESSIVE_CHUNK
+
+  if (renderedCount.value < props.rows.length) {
+    progressiveFrame = requestAnimationFrame(renderNextChunk)
+
+    return
+  }
+
+  progressiveFrame = 0
+  renderedCount.value = Number.POSITIVE_INFINITY
+}
+
+const scheduleProgressive = (uncachedInViewCount: number) => {
+  if (!isProgressiveRenderEnabled.value || uncachedInViewCount <= PROGRESSIVE_CHUNK) {
+    if (!progressiveFrame)
+      renderedCount.value = Number.POSITIVE_INFINITY
+
+    return
+  }
+
+  renderedCount.value = PROGRESSIVE_CHUNK
+
+  if (!progressiveFrame)
+    progressiveFrame = requestAnimationFrame(renderNextChunk)
+}
+
+function visibleItems<T>(list: readonly T[]): readonly T[] {
+  return renderedCount.value < list.length ? list.slice(0, renderedCount.value) : list
+}
+
 watch(() => props.rows, rows => {
   duplicateRowKeys.clear()
 
   if (!isRowCacheEnabled.value) {
     rowVNodeCache.clear()
+    stopProgressive()
+    renderedCount.value = Number.POSITIVE_INFINITY
 
     return
   }
 
   const keys = new Set<string | number>()
+  let uncachedInViewCount = 0
 
-  rows.forEach(row => {
+  rows.forEach((row, index) => {
     const key = props.rowKey!(row)
 
     if (keys.has(key))
       duplicateRowKeys.add(key)
     keys.add(key)
+
+    if (index < renderedCount.value && rowVNodeCache.get(key)?.memo?.[0] !== row)
+      uncachedInViewCount++
   })
 
   for (const key of rowVNodeCache.keys()) {
     if (!keys.has(key) || duplicateRowKeys.has(key))
       rowVNodeCache.delete(key)
   }
+
+  scheduleProgressive(uncachedInViewCount)
 }, { immediate: true })
+
+watch(() => props.isLoadingList, (isLoading, wasLoading) => {
+  if (wasLoading && !isLoading && isRowCacheEnabled.value)
+    scheduleProgressive(props.rows.length)
+})
+
+onBeforeUnmount(stopProgressive)
 
 const toggleExpand = (id: string) => {
   if (expanded.value.includes(id))
@@ -352,7 +412,7 @@ const toggleExpand = (id: string) => {
       >
         <template v-if="isRowCacheEnabled">
           <MemoRow
-            v-for="(item, index) in items"
+            v-for="(item, index) in visibleItems(items)"
             :key="getRowKey(item.raw, index)"
             :cache-key="getRowKey(item.raw, index)"
             :memo="getRowMemo(item.raw, isSelected([item]))"
@@ -449,6 +509,21 @@ const toggleExpand = (id: string) => {
               </tr>
             </template>
           </MemoRow>
+          <tr
+            v-if="renderedCount < items.length"
+            data-test-id="progressive-render-row"
+          >
+            <td
+              :colspan="fullRowColspan"
+              class="pa-0"
+            >
+              <VProgressLinear
+                indeterminate
+                :color="VColors.Primary"
+                height="3"
+              />
+            </td>
+          </tr>
         </template>
         <template v-else>
           <template

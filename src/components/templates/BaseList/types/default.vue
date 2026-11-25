@@ -890,6 +890,7 @@ defineExpose({ reFetchList, resetSelectedItem, selectedItems, disableRowIds, sor
         :cell-cb-class="config.cellCbClass"
         :row-key="config.rowKey"
         :row-memo="config.rowMemo"
+        :progressive-render="config.progressiveRender"
         @update:sort-data="onUpdateSortData"
         @end="onDragChanged"
         @row-selected="onRowSelected"
