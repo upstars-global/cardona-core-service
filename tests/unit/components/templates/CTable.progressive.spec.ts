@@ -42,7 +42,7 @@ const defaultProps: Props = {
   fields: [new TableField({ key: 'name', title: 'Name' })],
   rows: [],
   isLoadingList: false,
-  itemsPerPage: -1,
+  itemsPerPage: 1000,
   selectedItems: [],
   rowKey: row => row.id,
   rowMemo: () => [],
@@ -71,13 +71,10 @@ const expectRowCount = (wrapper: VueWrapper, count: number) => {
   testOn.checkLengthElements({ wrapper, testId: TEST_IDS.row, all: true }, count)
 }
 
+// testOn has no check for the texts of a list in order; a per-row nth-child lookup is O(n²) on hundreds of rows
 const expectRowNames = (wrapper: VueWrapper, names: string[]) => {
   expectRowCount(wrapper, names.length)
-  names.forEach((name, index) => {
-    const selector = `${getSelectorTestId(TEST_IDS.row)}:nth-child(${index + 1}) ${getSelectorTestId(TEST_IDS.cellName)}`
-
-    testOn.equalTextValue({ wrapper, selector }, name)
-  })
+  expect(wrapper.findAll(`${getSelectorTestId(TEST_IDS.row)} ${getSelectorTestId(TEST_IDS.cellName)}`).map(cell => cell.text())).toEqual(names)
 }
 
 describe('CTable progressive mount (progressiveRender + rowKey + rowMemo)', () => {

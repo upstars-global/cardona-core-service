@@ -42,7 +42,7 @@ const defaultProps: Props = {
   fields: [new TableField({ key: 'name', title: 'Name' })],
   rows: [],
   isLoadingList: false,
-  itemsPerPage: -1,
+  itemsPerPage: 1000,
   selectedItems: [],
   rowKey: row => row.id,
   rowMemo: () => [memoDeps.value],
