@@ -266,6 +266,14 @@ export interface IBaseListConfig {
    * не включать для списков с inline-редактированием или правами на отдельные строки.
    */
   readonly rowMemo?: BaseListRowMemo
+
+  /**
+   * progressiveRender - Порционная отрисовка строк таблицы: при открытии или замене списка сначала 200 строк,
+   * остальные — порциями по 200 между кадрами, чтобы вкладка не «замерзала» на больших списках.
+   * Работает только вместе с rowKey и rowMemo (без кеша строк каждая порция перерисовывала бы весь список),
+   * иначе игнорируется. Сортировка, WS-события и прочие мелкие изменения рисуются сразу целиком.
+   */
+  readonly progressiveRender?: boolean
 }
 
 export class BaseListConfig implements IBaseListConfig {
@@ -327,6 +335,7 @@ export class BaseListConfig implements IBaseListConfig {
   readonly copyForAllProjects?: boolean
   readonly rowKey?: BaseListRowKey
   readonly rowMemo?: BaseListRowMemo
+  readonly progressiveRender?: boolean
 
   constructor({
     withSearch,
@@ -387,6 +396,7 @@ export class BaseListConfig implements IBaseListConfig {
     copyForAllProjects,
     rowKey,
     rowMemo,
+    progressiveRender,
   }: IBaseListConfig) {
     this.withSearch = withSearch
     this.withDeactivation = withDeactivation
@@ -446,6 +456,7 @@ export class BaseListConfig implements IBaseListConfig {
     this.copyForAllProjects = copyForAllProjects ?? false
     this.rowKey = rowKey
     this.rowMemo = rowKey ? rowMemo : undefined
+    this.progressiveRender = rowKey && rowMemo ? progressiveRender : undefined
   }
 }
 
